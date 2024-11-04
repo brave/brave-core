@@ -27,9 +27,9 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     name="eye-off"
                     @click=${this.OnEyeIconClick}>
           </leo-icon>
-          <div id="password_strength_indicator" slot="errors">
+          <div id="password_strength_indicator" slot="errors" class=${this.score !== 0 ? 'visible' : ''}>
             <div class="password-strength-bar">
-              <div id="password_strength_value"></div>
+              <div id="password_strength_value" style="width: ${`calc(100% * ${this.score}/${this.regexps.length})`}"></div>
             </div>
             <div id="password_strength_category"></div>
           </div>
@@ -56,7 +56,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
         </leo-checkbox>
       </div>
       <div slot="buttons">
-        <leo-button size="medium" ?isDisabled=${!this.isEmailAddressValid || !this.isAccountNameValid || !this.isPasswordStrong || this.passwordConfirmation !== this.password || !this.isChecked}>
+        <leo-button size="medium" ?isDisabled=${!this.isEmailAddressValid || !this.isAccountNameValid || this.score !== this.regexps.length || this.passwordConfirmation !== this.password || !this.isChecked}>
           Create account
         </leo-button>
       </div>

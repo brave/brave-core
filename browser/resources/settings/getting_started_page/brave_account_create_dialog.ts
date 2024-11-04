@@ -19,7 +19,6 @@ import { getHtml } from './brave_account_create_dialog.html.js'
 export interface SettingsBraveAccountCreateDialogElement {
   $: {
     password_strength_indicator: HTMLElement,
-    password_strength_value: HTMLElement,
     password_strength_category: HTMLElement,
   }
 }
@@ -41,10 +40,10 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     return {
       isEmailAddressValid: { type: Boolean },
       isAccountNameValid: { type: Boolean },
-      isPasswordStrong: { type: Boolean },
       isChecked: { type: Boolean },
       password: { type: String },
       passwordConfirmation: { type: String },
+      score: { type: Number },
     }
   }
 
@@ -58,27 +57,11 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
   protected onCreatePasswordInput(detail: { value: string }) {
     this.password = detail.value
+    this.score = this.regexps.filter(regexp => regexp.test(this.password)).length
 
-    const regexps = [ /^.{5,}$/, /[a-z]/, /[A-Z]/, /[0-9]/, /[^a-zA-Z0-9]/ ]
-    const percentage = Array.from({ length: regexps.length + 1 }, (_, i) => `calc(100% * ${i}/${regexps.length})`)
-    const cagetories = [ 'error', 'error', 'error', 'warning', 'warning', 'success' ]
-    const strength = [ 'Weak', 'Weak', 'Weak', 'Medium', 'Medium', 'Strong' ]
-
-    const color = (category: string, type: string) => `var(--leo-color-systemfeedback-${category}-${type})`
-
-    const score = regexps.filter(regexp => regexp.test(this.password)).length
-
-    this.$.password_strength_indicator.style.setProperty("--primary-color", color(cagetories[score], 'icon'))
-    this.$.password_strength_indicator.style.setProperty("--secondary-color", color(cagetories[score], 'background'))
-    this.$.password_strength_value.style.width = percentage[score]
-    this.$.password_strength_category.textContent = strength[score]
-    if (score === 0) {
-      this.$.password_strength_indicator.classList.remove('visible')
-    } else {
-      this.$.password_strength_indicator.classList.add('visible')
-    }
-
-    this.isPasswordStrong = score === regexps.length
+    this.$.password_strength_indicator.style.setProperty("--primary-color", `var(--leo-color-systemfeedback-${this.categories[this.score]}-icon)`)
+    this.$.password_strength_indicator.style.setProperty("--secondary-color", `var(--leo-color-systemfeedback-${this.categories[this.score]}-background)`)
+    this.$.password_strength_category.textContent = this.strength[this.score]
   }
 
   protected onConfirmPasswordInput(detail: { value: string }) {
@@ -107,11 +90,15 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
   protected isEmailAddressValid: boolean = false
   protected isAccountNameValid: boolean = false
-  protected isPasswordStrong: boolean = false
   protected isChecked: boolean = false
   protected password: string = ''
   protected passwordConfirmation: string = ''
   protected icon: string = 'warning-triangle-filled'
+
+  protected score: number = 0
+  protected regexps = [ /^.{5,}$/, /[a-z]/, /[A-Z]/, /[0-9]/, /[^a-zA-Z0-9]/ ]
+  protected categories = [ 'error', 'error', 'error', 'warning', 'warning', 'success' ]
+  protected strength = [ 'Weak', 'Weak', 'Weak', 'Medium', 'Medium', 'Strong' ]
 }
 
 declare global {
