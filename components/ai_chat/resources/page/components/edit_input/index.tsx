@@ -19,6 +19,16 @@ interface Props {
 
 function EditInput(props: Props) {
   const [text, setText] = React.useState(props.text)
+  const textareaRef = React.useCallback((node: HTMLTextAreaElement | null) => {
+    /**
+     * When editing, we want the cursor to be positioned
+     * at the end of the text. Typically we would also call
+     * focus() here, but that isn't necessary in this case
+     * because the textarea already has [autoFocus] set.
+     */
+    node && node.setSelectionRange(node.value.length, node.value.length)
+  }, [])
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing &&
         !props.isSubmitDisabled) {
@@ -38,6 +48,7 @@ function EditInput(props: Props) {
         data-replicated-value={text}
       >
           <textarea
+            ref={textareaRef}
             value={text}
             onChange={(e) => setText(e.currentTarget.value)}
             onKeyDown={handleKeyDown}
