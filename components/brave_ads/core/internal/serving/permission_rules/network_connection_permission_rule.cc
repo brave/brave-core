@@ -18,7 +18,7 @@ bool HasNetworkConnectionPermission() {
     return true;
   }
 
-  if (GetAdsClient()->IsNetworkConnectionAvailable()) {
+  if (GetAdsClient().IsNetworkConnectionAvailable()) {
     return true;
   }
 

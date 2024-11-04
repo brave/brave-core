@@ -28,7 +28,7 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   document.Parse(json.c_str());
 
   const std::string json_schema =
-      GetAdsClient()->LoadDataResource(kCatalogJsonSchemaDataResourceName);
+      GetAdsClient().LoadDataResource(kCatalogJsonSchemaDataResourceName);
 
   if (!helper::json::Validate(&document, json_schema)) {
     BLOG(1, helper::json::GetLastError(&document));

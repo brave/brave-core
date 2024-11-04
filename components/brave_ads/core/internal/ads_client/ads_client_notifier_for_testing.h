@@ -105,7 +105,8 @@ class AdsClientNotifierForTesting : public AdsClientNotifier {
 
   void RunTaskEnvironmentUntilIdle();
 
-  raw_ptr<base::test::TaskEnvironment> task_environment_ = nullptr;
+  raw_ptr<base::test::TaskEnvironment> task_environment_ =
+      nullptr;  // Not owned.
 
   std::optional<int32_t> visible_tab_id_;
   std::map</*tab_id*/ int32_t, std::vector<GURL>> redirect_chains_;

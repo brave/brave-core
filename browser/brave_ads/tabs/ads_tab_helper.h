@@ -125,7 +125,7 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   SessionID session_id_;
 
-  raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
+  raw_ptr<AdsService> ads_service_ = nullptr;  // Not owned.
 
   bool is_web_contents_visible_ = false;
 

@@ -45,12 +45,12 @@ bool DoesRequireResource() {
 }  // namespace
 
 Catalog::Catalog() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
   DatabaseManager::GetInstance().AddObserver(this);
 }
 
 Catalog::~Catalog() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
   DatabaseManager::GetInstance().RemoveObserver(this);
 }
 

@@ -54,7 +54,7 @@ class NotificationAdControlButtonsView : public views::View {
   void CreateCloseButton();
   void UpdateCloseButton();
 
-  raw_ref<NotificationAdView> notification_ad_view_;
+  const raw_ref<NotificationAdView> notification_ad_view_;
 
   raw_ptr<PaddedImageView> info_button_ = nullptr;
   raw_ptr<PaddedImageButton> close_button_ = nullptr;

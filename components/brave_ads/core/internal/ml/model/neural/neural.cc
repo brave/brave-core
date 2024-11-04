@@ -24,11 +24,8 @@ constexpr char kPostMatrixFunctionTypeSoftmax[] = "softmax";
 
 }  // namespace
 
-NeuralModel::NeuralModel(
-    const neural_text_classification::flat::Model* const model)
-    : model_(model) {
-  CHECK(model_);
-}
+NeuralModel::NeuralModel(const neural_text_classification::flat::Model& model)
+    : model_(model) {}
 
 NeuralModel::NeuralModel(NeuralModel&& other) noexcept = default;
 

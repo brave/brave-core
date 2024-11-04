@@ -53,7 +53,7 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
   mojom_db_action->type = mojom::DBActionInfo::Type::kInitialize;
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));

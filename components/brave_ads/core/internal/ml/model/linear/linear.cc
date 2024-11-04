@@ -16,13 +16,8 @@
 
 namespace brave_ads::ml {
 
-LinearModel::LinearModel() = default;
-
-LinearModel::LinearModel(
-    const linear_text_classification::flat::Model* const model)
-    : model_(model) {
-  CHECK(model_);
-}
+LinearModel::LinearModel(const linear_text_classification::flat::Model& model)
+    : model_(model) {}
 
 LinearModel::LinearModel(LinearModel&& other) noexcept = default;
 

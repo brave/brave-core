@@ -58,7 +58,7 @@ class BraveAdsMappedTokensTransformationTest : public test::TestBase {
       return std::nullopt;
     }
 
-    return MappedTokensTransformation(transformation);
+    return MappedTokensTransformation(*transformation);
   }
 
  private:

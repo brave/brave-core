@@ -89,7 +89,8 @@ class PromotedContentAdEventHandler final
       const std::string& creative_instance_id,
       mojom::PromotedContentAdEventType mojom_ad_event_type) const;
 
-  raw_ptr<PromotedContentAdEventHandlerDelegate> delegate_ = nullptr;
+  raw_ptr<PromotedContentAdEventHandlerDelegate> delegate_ =
+      nullptr;  // Not owned.
 
   const database::table::CreativePromotedContentAds
       creative_ads_database_table_;
