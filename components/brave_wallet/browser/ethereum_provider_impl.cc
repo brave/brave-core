@@ -473,7 +473,7 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
   }
 
   auto signature_bytes_span =
-      base::make_span(*signature_bytes)
+      base::span(*signature_bytes)
           .to_fixed_extent<65>(); /*kRecoverableSignatureSize*/
   if (!signature_bytes_span) {
     return RejectInvalidParams(std::move(id), std::move(callback));

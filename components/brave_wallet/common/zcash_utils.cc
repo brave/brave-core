@@ -40,7 +40,7 @@ std::array<uint8_t, kPaddedHrpSize> GetPaddedHRP(bool is_testnet) {
                 "Wrong kPaddedHrpSize size");
   std::string hrp = is_testnet ? kTestnetHRP : kMainnetHRP;
   std::array<uint8_t, kPaddedHrpSize> padded_hrp = {};
-  base::ranges::copy(base::make_span(hrp), padded_hrp.begin());
+  base::ranges::copy(base::as_byte_span(hrp), padded_hrp.begin());
   return padded_hrp;
 }
 
@@ -292,7 +292,7 @@ std::optional<std::vector<ParsedAddress>> ExtractParsedAddresses(
   }
 
   auto parts = ParseUnifiedAddressBody(
-      base::make_span(*reverted).subspan(0, reverted->size() - kPaddedHrpSize));
+      base::span(*reverted).subspan(0, reverted->size() - kPaddedHrpSize));
 
   return parts;
 }

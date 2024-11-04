@@ -44,10 +44,9 @@ std::string GetFunctionHash(const std::string& input) {
 }
 
 eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input) {
-  auto full_hash = KeccakHash(base::as_bytes(base::make_span(input)));
+  auto full_hash = KeccakHash(base::as_byte_span(input));
   eth_abi::Bytes4 bytes_result;
-  base::ranges::copy(base::make_span(full_hash).first<4>(),
-                     bytes_result.begin());
+  base::ranges::copy(base::span(full_hash).first<4>(), bytes_result.begin());
   return bytes_result;
 }
 

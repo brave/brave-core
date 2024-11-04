@@ -21,7 +21,6 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/brave_wallet/common/mem_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
@@ -38,6 +37,13 @@
 
 using crypto::Encryptor;
 using crypto::SymmetricKey;
+
+namespace base {
+namespace internal {
+template <size_t N>
+struct ExtentImpl<brave_wallet::SecureByteArray<N>> : size_constant<N> {};
+}  // namespace internal
+}  // namespace base
 
 namespace brave_wallet {
 
@@ -160,7 +166,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(base::span<const uint8_t> seed) {
   DCHECK(out_len == kSHA512Length);
 
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
-  auto [IL, IR] = base::make_span(hmac).split_at<kSHA512Length / 2>();
+  auto [IL, IR] = base::span(hmac).split_at<kSHA512Length / 2>();
   hdkey->SetPrivateKey(IL);
   hdkey->SetChainCode(IR);
   hdkey->path_ = kMasterNode;
@@ -580,7 +586,7 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
   }
   DCHECK(out_len == kSHA512Length);
 
-  auto [IL, IR] = base::make_span(hmac).split_at<kSHA512Length / 2>();
+  auto [IL, IR] = base::span(hmac).split_at<kSHA512Length / 2>();
 
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
   hdkey->SetChainCode(IR);

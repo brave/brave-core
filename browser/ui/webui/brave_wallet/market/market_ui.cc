@@ -32,11 +32,11 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
     untrusted_source->AddString(str.name, l10n_str);
   }
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML);
-  untrusted_source->AddResourcePaths(base::make_span(kMarketDisplayGenerated));
+  untrusted_source->AddResourcePaths(base::span(kMarketDisplayGenerated));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   webui::SetupWebUIDataSource(untrusted_source,
-                              base::make_span(kMarketDisplayGenerated),
+                              base::span(kMarketDisplayGenerated),
                               IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML);
 
   untrusted_source->OverrideContentSecurityPolicy(

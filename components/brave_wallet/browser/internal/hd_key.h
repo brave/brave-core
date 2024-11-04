@@ -22,7 +22,6 @@ inline constexpr size_t kRecoverableSignatureSize = 65;
 inline constexpr size_t kSecp256k1PubkeySize = 33;
 inline constexpr size_t kSecp256k1MsgSize = 32;
 
-using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 inline constexpr size_t kSecp256k1PrivateKeySize = 32;
 inline constexpr size_t kSecp256k1SignMsgSize = 32;
 inline constexpr size_t kBip32ChainCodeSize = 32;
@@ -32,10 +31,15 @@ inline constexpr size_t kBip32FingerprintSize = 4;
 using Secp256k1PubkeyKeySpan = base::span<const uint8_t, kSecp256k1PubkeySize>;
 using Secp256k1PrivateKeySpan =
     base::span<const uint8_t, kSecp256k1PrivateKeySize>;
-using SecureVector = std::vector<uint8_t, SecureZeroAllocator<uint8_t>>;
 using Secp256k1SignMsgSpan = base::span<const uint8_t, kSecp256k1SignMsgSize>;
 using Bip32ChainCodeSpan = base::span<const uint8_t, kBip32ChainCodeSize>;
 using CompactSignatureSpan = base::span<const uint8_t, kCompactSignatureSize>;
+
+using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
+template <size_t N>
+struct SecureByteArray : public std::array<uint8_t, N> {
+  ~SecureByteArray() { crypto::internal::SecureZeroBuffer(base::span(*this)); }
+};
 
 enum class ExtendedKeyVersion : uint32_t {
   // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format

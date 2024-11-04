@@ -45,7 +45,7 @@ TEST(PermissionUtilsUnitTest, GetConcatOriginFromWalletAddresses) {
       }};
 
   url::Origin origin = url::Origin::Create(GURL("https://test.com"));
-  for (auto& test_case : cases) {
+  for (const auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.expected_out_origin);
 
     url::Origin out_origin;

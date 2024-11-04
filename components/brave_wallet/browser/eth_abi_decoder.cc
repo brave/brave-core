@@ -12,6 +12,7 @@
 
 #include "base/containers/span.h"
 #include "base/containers/span_reader.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
@@ -476,7 +477,7 @@ std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
   }
 
   // Parse first hop address.
-  path.push_back("0x" + HexEncodeLower(*reader.Read(20u)));
+  path.push_back(base::StrCat({"0x", HexEncodeLower(*reader.Read(20u))}));
 
   while (true) {
     if (!reader.remaining()) {

@@ -34,12 +34,11 @@ UntrustedLineChartUI::UntrustedLineChartUI(content::WebUI* web_ui)
 
   untrusted_source->SetDefaultResource(
       IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML);
-  untrusted_source->AddResourcePaths(
-      base::make_span(kLineChartDisplayGenerated));
+  untrusted_source->AddResourcePaths(base::span(kLineChartDisplayGenerated));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   webui::SetupWebUIDataSource(untrusted_source,
-                              base::make_span(kLineChartDisplayGenerated),
+                              base::span(kLineChartDisplayGenerated),
                               IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML);
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

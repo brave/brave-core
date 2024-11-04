@@ -52,8 +52,7 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
 
   // Add required resources.
   if (url.host() == kWalletPageHost) {
-    webui::SetupWebUIDataSource(source,
-                                base::make_span(kBraveWalletPageGenerated),
+    webui::SetupWebUIDataSource(source, base::span(kBraveWalletPageGenerated),
                                 IDR_WALLET_PAGE_HTML);
   } else {
     NOTREACHED_IN_MIGRATION()
