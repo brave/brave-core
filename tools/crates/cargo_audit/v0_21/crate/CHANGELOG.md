@@ -4,7 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.21.0 (2024-10-29)
+
+### Added
+- V4 lockfile support ([#1275])
+
+### Changed
+- Bump `auditable-info` => 0.8; `auditable-serde` => v0.7 ([#1229])
+- Bump `abscissa` to v0.8 ([#1262])
+- Bump `rustsec` to v0.30; adds V4 lockfile support ([#1275])
+
+[#1229]: https://github.com/rustsec/rustsec/pull/1229
+[#1262]: https://github.com/rustsec/rustsec/pull/1262
+[#1275]: https://github.com/rustsec/rustsec/pull/1275
+
+## 0.20.1 (2024-08-16)
+
+TODO
+
 ## 0.20.0 (2024-02-16)
+
+### Changed
 
  - Completely rewritten `cargo audit fix` subcommand ([#1113])
    - Now it edits `Cargo.lock` as opposed to `Cargo.toml`, and performs only semver-compatible upgrades.

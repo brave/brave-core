@@ -60,6 +60,17 @@ fn at_least_one_os_runs_binary(binary_type: &BinaryFormat, os_list: &[OS]) -> bo
             // Perhaps we can make `platforms` expose the `family` which can be `windows` or `unix` or `unknown`?
             // That way we can capture all the unix-likes as using ELF and discard everything else
         }
+        Wasm => {
+            // WASM doesn't have an OS, so OS-specific vulns should not be an issue.
+            // There isn't really a way to indicate WASM-specific vulns,
+            // because in Rustc's terms WASM is not an OS.
+            // Assume vulns with `Unknown` and `None` OS still apply,
+            // just to have some last-ditch way to indicate WASM is affected
+            // other than including all the platforms ever.
+            os_list
+                .iter()
+                .any(|os| os == &OS::Unknown || os == &OS::None)
+        }
         Unknown => true, // might be possible for detection based on panic messages?
     }
 }

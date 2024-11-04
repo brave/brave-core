@@ -3,7 +3,7 @@
 //! `cargo audit` is a Cargo subcommand. Install it using the following:
 //!
 //! ```text
-//! $ cargo install cargo-audit
+//! $ cargo install cargo-audit --locked
 //! ```
 //!
 //! Then run `cargo audit` in the toplevel directory of any crate or workspace.
@@ -27,7 +27,6 @@ mod binary_deps;
 mod binary_format;
 #[cfg(feature = "binary-scanning")]
 mod binary_type_filter;
-mod cli_config;
 pub mod commands;
 pub mod config;
 pub mod error;
