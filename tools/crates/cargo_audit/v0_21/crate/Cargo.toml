@@ -11,11 +11,16 @@
 
 [package]
 edition = "2021"
-rust-version = "1.70.0"
+rust-version = "1.74.0"
 name = "cargo-audit"
-version = "0.20.0"
+version = "0.21.0"
 authors = ["Tony Arcieri <bascule@gmail.com>"]
+build = false
 exclude = ["tests/"]
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Audit Cargo.lock for crates with security vulnerabilities"
 homepage = "https://rustsec.org"
 readme = "README.md"
@@ -27,18 +32,26 @@ keywords = [
 ]
 categories = ["development-tools::cargo-plugins"]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/RustSec/rustsec/tree/main/cargo-audit"
+repository = "https://github.com/rustsec/rustsec"
+
+[lib]
+name = "cargo_audit"
+path = "src/lib.rs"
+
+[[bin]]
+name = "cargo-audit"
+path = "src/bin/cargo-audit/main.rs"
 
 [dependencies.abscissa_core]
-version = "0.7"
+version = "0.8"
 
 [dependencies.auditable-info]
-version = "0.7"
+version = "0.8"
+features = ["wasm"]
 optional = true
 
 [dependencies.auditable-serde]
-version = "0.6"
-features = ["toml"]
+version = "0.7"
 optional = true
 
 [dependencies.binfarce]
@@ -46,8 +59,7 @@ version = "0.2"
 optional = true
 
 [dependencies.cargo-lock]
-version = "9"
-optional = true
+version = "10.0.1"
 
 [dependencies.clap]
 version = "4"
@@ -58,19 +70,16 @@ version = "0.2.0"
 [dependencies.home]
 version = "0.5"
 
-[dependencies.is-terminal]
-version = "0.4.12"
-
 [dependencies.once_cell]
-version = "1.5"
+version = "1.15.0"
 optional = true
 
 [dependencies.quitters]
-version = "0.1"
+version = "0.1.0"
 optional = true
 
 [dependencies.rustsec]
-version = "0.29.0"
+version = "0.30"
 features = ["dependency-tree"]
 
 [dependencies.serde]
@@ -84,22 +93,21 @@ version = "1"
 version = "1"
 
 [dev-dependencies.abscissa_core]
-version = "0.7"
+version = "0.8"
 features = ["testing"]
 
 [dev-dependencies.once_cell]
-version = "1.5"
+version = "1.15.0"
 
 [dev-dependencies.tempfile]
 version = "3"
 
 [dev-dependencies.toml]
-version = "0.7"
+version = "0.8"
 
 [features]
 binary-scanning = [
     "dep:auditable-info",
-    "dep:cargo-lock",
     "dep:auditable-serde",
     "dep:binfarce",
     "dep:quitters",

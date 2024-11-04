@@ -1,10 +1,12 @@
 /// A shim around `binfarce::Format` so that `binfarce` crate could be an optional dependency
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[allow(dead_code)] // May be unused when the "binary-scanning" feature is disabled
 pub enum BinaryFormat {
     Elf32,
     Elf64,
     Macho,
     PE,
+    Wasm,
     Unknown,
 }
 

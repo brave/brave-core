@@ -12,7 +12,7 @@ Audit your dependencies for crates with security vulnerabilities reported to the
 
 ## Requirements
 
-`cargo audit` requires Rust **1.70** or later.
+`cargo audit` requires Rust **1.74** or later.
 
 ## Installation
 
@@ -21,7 +21,7 @@ Audit your dependencies for crates with security vulnerabilities reported to the
 `cargo audit` is a Cargo subcommand and can be installed with `cargo install`:
 
 ```
-$ cargo install cargo-audit
+$ cargo install cargo-audit --locked
 ```
 
 Once installed, run `cargo audit` at the toplevel of any Cargo project.
@@ -62,7 +62,7 @@ to fix vulnerable dependency requirements.
 To enable it, install `cargo audit` with the `fix` feature enabled:
 
 ```
-$ cargo install cargo-audit --features=fix
+$ cargo install cargo-audit --locked --features=fix
 ```
 
 Once installed, run `cargo audit fix` to automatically fix vulnerable
@@ -111,7 +111,7 @@ To automatically run `cargo audit` on every build in Travis CI, you can add the 
 language: rust
 cache: cargo # cache cargo-audit once installed
 before_script:
-  - cargo install --force cargo-audit
+  - cargo install --force --locked cargo-audit
   - cargo generate-lockfile
 script:
   - cargo audit
@@ -147,12 +147,12 @@ additional terms or conditions.
 
 [//]: # (badges)
 
-[crate-image]: https://buildstats.info/crate/cargo-audit
+[crate-image]: https://img.shields.io/crates/v/cargo-audit.svg?logo=rust
 [crate-link]: https://crates.io/crates/cargo-audit
 [build-image]: https://github.com/RustSec/rustsec/actions/workflows/cargo-audit.yml/badge.svg
 [build-link]: https://github.com/RustSec/rustsec/actions/workflows/cargo-audit.yml
 [license-image]: https://img.shields.io/badge/license-Apache2.0%2FMIT-blue.svg
-[rustc-image]: https://img.shields.io/badge/rustc-1.65+-blue.svg
+[rustc-image]: https://img.shields.io/badge/rustc-1.74+-blue.svg
 [safety-image]: https://img.shields.io/badge/unsafe-forbidden-success.svg
 [safety-link]: https://github.com/rust-secure-code/safety-dance/
 [chat-image]: https://img.shields.io/badge/zulip-join_chat-blue.svg

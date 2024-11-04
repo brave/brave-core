@@ -8,16 +8,17 @@ mod binary_scanning;
 
 use crate::{
     auditor::Auditor,
-    cli_config::CliConfig,
-    config::{AuditConfig, DenyOption},
+    config::{AuditConfig, DenyOption, FilterList, OutputFormat},
     error::display_err_with_source,
     lockfile,
     prelude::*,
 };
-use abscissa_core::{config::Override, terminal::ColorChoice, FrameworkError};
-use clap::Parser;
+use abscissa_core::{
+    config::Override, error::Context, terminal::ColorChoice, FrameworkError, FrameworkErrorKind,
+};
+use clap::{Parser, ValueEnum};
 use rustsec::platforms::target::{Arch, OS};
-use std::{path::PathBuf, process::exit};
+use std::{fmt, path::PathBuf, process::exit};
 
 #[cfg(feature = "binary-scanning")]
 use self::binary_scanning::BinCommand;
@@ -25,6 +26,38 @@ use self::binary_scanning::BinCommand;
 use self::fix::FixCommand;
 #[cfg(any(feature = "fix", feature = "binary-scanning"))]
 use clap::Subcommand;
+
+#[derive(Debug, Clone, Copy, Default, ValueEnum)]
+#[value(rename_all = "kebab-case")] // If you change this, remember to update `fmt::Display` impl.
+enum Color {
+    Always,
+    // TODO: Should this be also supported?
+    // AlwaysAnsi,
+    #[default]
+    Auto,
+    Never,
+}
+
+impl From<Color> for ColorChoice {
+    fn from(value: Color) -> Self {
+        match value {
+            Color::Always => ColorChoice::Always,
+            Color::Auto => ColorChoice::Auto,
+            Color::Never => ColorChoice::Never,
+        }
+    }
+}
+
+impl fmt::Display for Color {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        // NOTE: This must be in sync with values genereted in ValueEnum implementation.
+        match self {
+            Color::Always => f.write_str("always"),
+            Color::Auto => f.write_str("auto"),
+            Color::Never => f.write_str("never"),
+        }
+    }
+}
 
 /// The `cargo audit` subcommand
 #[derive(Command, Clone, Default, Debug, Parser)]
@@ -39,9 +72,9 @@ pub struct AuditCommand {
     #[arg(
         short = 'c',
         long = "color",
-        help = "color configuration: always, never (default: auto)"
+        help = "color configuration (default: auto)"
     )]
-    color: Option<String>,
+    color: Option<Color>,
 
     /// Filesystem path to the advisory database git repository
     #[arg(
@@ -97,16 +130,16 @@ pub struct AuditCommand {
     /// Target CPU architecture to find vulnerabilities for
     #[arg(
         long = "target-arch",
-        help = "filter vulnerabilities by CPU (default: no filter)"
+        help = "filter vulnerabilities by CPU (default: no filter). Can be specified multiple times"
     )]
-    target_arch: Option<Arch>,
+    target_arch: Vec<Arch>,
 
     /// Target OS to find vulnerabilities for
     #[arg(
         long = "target-os",
-        help = "filter vulnerabilities by OS (default: no filter)"
+        help = "filter vulnerabilities by OS (default: no filter). Can be specified multiple times"
     )]
-    target_os: Option<OS>,
+    target_os: Vec<OS>,
 
     /// URL to the advisory database git repository
     #[arg(short = 'u', long = "url", help = "URL for advisory database git repo")]
@@ -148,48 +181,66 @@ If not, recovers a part of the dependency list from panic messages."
 
 impl AuditCommand {
     /// Get the color configuration
-    pub fn color_config(&self) -> Option<ColorChoice> {
-        // suppress the warning that occurs with the `binary-scanning` feature disabled
-        #[allow(unused_mut)]
-        let mut raw_color_setting = self.color.as_ref();
-        #[cfg(feature = "binary-scanning")]
-        if let Some(AuditSubcommand::Bin(ref command)) = self.subcommand {
-            raw_color_setting = command.color.as_ref()
-        };
-        raw_color_setting.map(|colors| match colors.as_ref() {
-            "always" => ColorChoice::Always,
-            "auto" => ColorChoice::Auto,
-            "never" => ColorChoice::Never,
-            _ => panic!("invalid color choice setting: {}", &colors),
-        })
-    }
-}
-
-impl From<AuditCommand> for CliConfig {
-    fn from(c: AuditCommand) -> Self {
-        CliConfig {
-            db: c.db,
-            deny: c.deny,
-            ignore: c.ignore,
-            ignore_source: c.ignore_source,
-            no_fetch: c.no_fetch,
-            stale: c.stale,
-            target_arch: c.target_arch,
-            target_os: c.target_os,
-            url: c.url,
-            quiet: c.quiet,
-            output_json: c.output_json,
+    pub fn term_colors(&self) -> ColorChoice {
+        if let Some(color) = self.color {
+            color.into()
+        } else {
+            match std::env::var("CARGO_TERM_COLOR") {
+                Ok(e) if e == "always" => ColorChoice::Always,
+                Ok(e) if e == "never" => ColorChoice::Never,
+                Ok(e) if e == "auto" => ColorChoice::Auto,
+                _ => ColorChoice::default(),
+            }
         }
     }
 }
 
 impl Override<AuditConfig> for AuditCommand {
     fn override_config(&self, config: AuditConfig) -> Result<AuditConfig, FrameworkError> {
-        #[cfg(feature = "binary-scanning")]
-        if let Some(AuditSubcommand::Bin(bin)) = &self.subcommand {
-            return CliConfig::from(bin.clone()).override_config(config);
+        let mut config = config;
+        if let Some(db) = &self.db {
+            config.database.path = Some(db.into());
         }
-        CliConfig::from(self.clone()).override_config(config)
+
+        for advisory_id in &self.ignore {
+            config.advisories.ignore.push(
+                advisory_id
+                    .parse()
+                    .map_err(|e| Context::new(FrameworkErrorKind::ParseError, Some(Box::new(e))))?,
+            );
+        }
+
+        config.advisories.ignore_source |= self.ignore_source;
+        config.database.fetch |= !self.no_fetch;
+        config.database.stale |= self.stale;
+
+        if !self.target_arch.is_empty() {
+            config.target.arch = Some(FilterList::Many(self.target_arch.clone()));
+        }
+
+        if !self.target_os.is_empty() {
+            config.target.os = Some(FilterList::Many(self.target_os.clone()));
+        }
+
+        if let Some(url) = &self.url {
+            config.database.url = Some(url.clone())
+        }
+
+        for kind in &self.deny {
+            if *kind == DenyOption::Warnings {
+                config.output.deny = DenyOption::all();
+            } else {
+                config.output.deny.push(*kind);
+            }
+        }
+
+        config.output.quiet |= self.quiet;
+
+        if self.output_json {
+            config.output.format = OutputFormat::Json;
+        }
+
+        Ok(config)
     }
 }
 

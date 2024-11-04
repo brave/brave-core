@@ -95,12 +95,12 @@ impl From<rustsec::Error> for Error {
     }
 }
 
-impl From<rustsec::cargo_lock::Error> for Error {
-    fn from(err: rustsec::cargo_lock::Error) -> Self {
+impl From<cargo_lock::Error> for Error {
+    fn from(err: cargo_lock::Error) -> Self {
         match err {
-            rustsec::cargo_lock::Error::Io(_) => ErrorKind::Io,
-            rustsec::cargo_lock::Error::Parse(_) => ErrorKind::Parse,
-            rustsec::cargo_lock::Error::Version(_) => ErrorKind::Version,
+            cargo_lock::Error::Io(_) => ErrorKind::Io,
+            cargo_lock::Error::Parse(_) => ErrorKind::Parse,
+            cargo_lock::Error::Version(_) => ErrorKind::Version,
             _ => ErrorKind::Other,
         }
         .context(err)
