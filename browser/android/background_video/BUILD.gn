@@ -18,6 +18,8 @@ source_set("background_video") {
     "//base",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/constants",
+    # Is this needed?
+    # "//brave/components/script_injector/common/mojom",
     "//chrome/browser/profiles:profile",
     "//components/prefs",
     "//net",
