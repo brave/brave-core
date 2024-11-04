@@ -60,6 +60,7 @@ struct SubmitReportView: View {
               self.contactDetails = await webcompatReporterAPI.contactInfo() ?? ""
             }
           }
+          Text(Strings.Shields.reportBrokenContactMeDescription).font(.caption)
         }
       }
       .padding()
@@ -152,8 +153,7 @@ struct SubmitReportView: View {
         details: additionalDetails,
         contact: contactDetails,
         adBlockComponentsVersion: nil,
-        screenshotPng: nil,
-        isPrivateWindow: isPrivateBrowsing ? "true" : "false"
+        screenshotPng: nil
       )
     )
   }

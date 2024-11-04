@@ -164,7 +164,7 @@ struct DefaultShieldsSectionView: View {
 
       ToggleView(
         title: Strings.braveShieldsSaveContactInfo,
-        subtitle: nil,
+        subtitle: Strings.braveShieldsSaveContactInfoDescription,
         toggle: $settings.isSaveContactInfoEnabled
       )
 

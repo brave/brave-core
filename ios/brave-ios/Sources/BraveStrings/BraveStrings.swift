@@ -4397,6 +4397,14 @@ extension Strings {
       comment:
         "A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field)."
     )
+
+    public static let reportBrokenContactMeDescription = NSLocalizedString(
+      "ReportBrokenContactMeDescription",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "If you provide contact info it will be stored for reporting broken sites in the future.",
+      comment: "Contact info storing description"
+    )
   }
 }
 
@@ -8780,8 +8788,16 @@ extension Strings {
     "BraveShieldsSaveContactInfo",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Store contact information for future webcompat reports",
+    value: "Store Contact Info",
     comment: "Shields panel toggle label that would save webcompat report contact info data when enabled."
+  )
+
+  public static let braveShieldsSaveContactInfoDescription = NSLocalizedString(
+    "BraveShieldsSaveContactInfoDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Store contact information for reporting broken sites in the future",
+    comment: "Description for shields panel toggle label that would save webcompat report contact info data when enabled."
   )
 }
 

@@ -118,7 +118,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL" desc="Shields panel toggle label that would save webcompat report contact info data when enabled.">
-    Store contact information for future webcompat reports
+    Store contact information for reporting broken sites in the future
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies.">

@@ -1610,7 +1610,7 @@ Are you sure you want to do this?
         Reduces how much websites can learn about you based on your browser's language settings.
       </message>
       <message name="IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_SWITCH" desc="Shields panel toggle label that would save webcompat report contact info data when enabled.">
-        Store contact information for future webcompat reports
+        Store contact information for reporting broken sites in the future
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING_TEXT" desc="Text for shields option.">
         Prevents websites from recognizing your device
