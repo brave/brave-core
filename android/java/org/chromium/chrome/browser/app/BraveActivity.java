@@ -525,7 +525,7 @@ public abstract class BraveActivity extends ChromeActivity
                 && isYTVideoUrl(currentTab.getUrl())
                 && !isInPictureInPictureMode()
                 && BackgroundVideoPlaybackTabHelper.isPlayingMedia(currentTab.getWebContents())) {
-            BackgroundVideoPlaybackTabHelper.toggleFullscreen(currentTab.getWebContents(), true);
+            BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
             try {
                 enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
             } catch (IllegalStateException | IllegalArgumentException e) {
@@ -542,10 +542,10 @@ public abstract class BraveActivity extends ChromeActivity
         if (currentTab != null
                 && currentTab.getUrl() != null
                 && isYTVideoUrl(currentTab.getUrl())
-                && !isInPictureInPictureMode()) {
-            BackgroundVideoPlaybackTabHelper.toggleFullscreen(
-                    currentTab.getWebContents(),
-                    newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE);
+                && !isInPictureInPictureMode()
+                && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            BackgroundVideoPlaybackTabHelper.setFullscreen(
+                    currentTab.getWebContents());
         }
     }
 
