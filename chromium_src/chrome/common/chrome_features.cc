@@ -28,6 +28,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kImmersiveFullscreen, base::FEATURE_DISABLED_BY_DEFAULT},
     {kUseChromiumUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+    {kShortcutsNotApps, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
 }});
 
 }  // namespace features
