@@ -44,13 +44,17 @@ BraveBookmarkTabHelper::BraveBookmarkTabHelper(
 BraveBookmarkTabHelper::~BraveBookmarkTabHelper() = default;
 
 void BraveBookmarkTabHelper::AddObserver(BookmarkTabHelperObserver* observer) {
-  BookmarkTabHelper::FromWebContents(&GetWebContents())->AddObserver(observer);
+  // TODO: revert?
+  if (auto* helper = BookmarkTabHelper::FromWebContents(&GetWebContents())) {
+    helper->AddObserver(observer);
+  }
 }
 
 void BraveBookmarkTabHelper::RemoveObserver(
     BookmarkTabHelperObserver* observer) {
-  BookmarkTabHelper::FromWebContents(&GetWebContents())
-      ->RemoveObserver(observer);
+  if (auto* helper = BookmarkTabHelper::FromWebContents(&GetWebContents())) {
+    helper->RemoveObserver(observer);
+  }
 }
 
 bool BraveBookmarkTabHelper::ShouldShowBookmarkBar() {
