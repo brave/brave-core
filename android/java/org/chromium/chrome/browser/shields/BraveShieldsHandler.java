@@ -299,7 +299,7 @@ public class BraveShieldsHandler
             popupWindow.setElevation(20);
         }
         // mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.drawable.picture_frame));
-        //Set the location of the window on the screen
+        // Set the location of the window on the screen
         popupWindow.showAsDropDown(anchorView, 0, 0);
         popupWindow.setAnimationStyle(R.style.EndIconMenuAnim);
 

@@ -152,8 +152,7 @@ void WebcompatReporterService::SetContactInfoSaveFlag(bool value) {
   if (!value) {
     profile_prefs_->SetString(kContactInfoPrefs, "");
   }
-  profile_prefs_->SetBoolean(kContactInfoSaveFlagPrefs,
-                             value);
+  profile_prefs_->SetBoolean(kContactInfoSaveFlagPrefs, value);
 }
 
 void WebcompatReporterService::GetContactInfoSaveFlag(
@@ -162,8 +161,7 @@ void WebcompatReporterService::GetContactInfoSaveFlag(
     std::move(callback).Run(false);
     return;
   }
-  auto save_flag_value =
-      profile_prefs_->GetBoolean(kContactInfoSaveFlagPrefs);
+  auto save_flag_value = profile_prefs_->GetBoolean(kContactInfoSaveFlagPrefs);
   std::move(callback).Run(std::move(save_flag_value));
 }
 
@@ -172,15 +170,13 @@ void WebcompatReporterService::GetContactInfo(GetContactInfoCallback callback) {
     std::move(callback).Run(std::nullopt);
     return;
   }
-  auto save_flag_value =
-      profile_prefs_->GetBoolean(kContactInfoSaveFlagPrefs);
+  auto save_flag_value = profile_prefs_->GetBoolean(kContactInfoSaveFlagPrefs);
   if (!save_flag_value) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  auto contact_value =
-      profile_prefs_->GetString(kContactInfoPrefs);
+  auto contact_value = profile_prefs_->GetString(kContactInfoPrefs);
   std::move(callback).Run(std::move(contact_value));
 }
 
