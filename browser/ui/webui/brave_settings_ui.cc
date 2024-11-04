@@ -37,6 +37,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
