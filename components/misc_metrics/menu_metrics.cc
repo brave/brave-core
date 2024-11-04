@@ -37,7 +37,7 @@ const char* GetMenuGroupPrefKey(MenuGroup group) {
     case MenuGroup::kBrowserViews:
       return kBrowserViewsPrefKey;
   }
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 }  // namespace
