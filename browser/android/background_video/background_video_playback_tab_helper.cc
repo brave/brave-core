@@ -108,15 +108,12 @@ void BackgroundVideoPlaybackTabHelper::MediaStoppedPlaying(
 namespace chrome {
 namespace android {
 
-void JNI_BackgroundVideoPlaybackTabHelper_ToggleFullscreen(
+void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
     JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jweb_contents,
-    jboolean is_full_screen) {
+    const base::android::JavaParamRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
-  // Injecting this script to make youtube video fullscreen on landscape mode
-  // and exit fullscreen on portrait mode.
-  if (is_full_screen) {
+  // Injecting this script to make youtube video fullscreen on landscape mode.
     constexpr const char16_t script[] =
         uR"js(if(!document.fullscreenElement) {
            var fullscreenBtn =
@@ -142,11 +139,6 @@ void JNI_BackgroundVideoPlaybackTabHelper_ToggleFullscreen(
             ISOLATED_WORLD_ID_BRAVE_INTERNAL, script,
             blink::mojom::UserActivationOption::kActivate,
             blink::mojom::PromiseResultOption::kAwait, base::NullCallback());
-  } else {
-    if (web_contents->HasActiveEffectivelyFullscreenVideo()) {
-      web_contents->ExitFullscreen(true);
-    }
-  }
 }
 
 jboolean JNI_BackgroundVideoPlaybackTabHelper_IsPlayingMedia(
