@@ -31,7 +31,7 @@ export const getRelativeTime = (time: Date | number) => {
     const amount = Math.floor(diff / duration)
     return {
         formatted: rtf.format(amount, unit ),
-        updatesIn: 10 * minute,
+        updatesIn: Math.max(10 * minute, duration - (Math.abs(diff - amount))),
     }
 }
 
