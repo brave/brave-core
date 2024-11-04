@@ -50,12 +50,6 @@
   font: var(--leo-font-small-regular);
 }
 
-.button-wrapper {
-  flex-shrink: 0;
-  width: 89px;
-}
-
 .button {
-  --leo-button-padding: 0px; /* feels hackish - there must be a better way */
-  width: 100%;
+  flex-shrink: 0;
 }

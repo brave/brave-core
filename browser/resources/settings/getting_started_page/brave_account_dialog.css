@@ -22,6 +22,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 0px 0px 40px;
 }
 
 .buttons {
@@ -56,7 +57,7 @@
 }
 
 .body {
-  padding: 40px;
+  padding: 0px 24px 24px 24px;
 }
 
 .texts {
@@ -68,14 +69,11 @@
 }
 
 .text-top {
-  font: var(--leo-font-heading-h3);
-  letter-spacing: var(--leo-typography-heading-h3-letter-spacing);
-  text-align: center;
+  font: var(--leo-font-heading-h4);
 }
 
 .text-bottom {
   font: var(--leo-font-default-regular);
-  text-align: center;
 }
 
 :host ::slotted([slot=inputs]) {
@@ -89,4 +87,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+:host([horizontal-buttons]) ::slotted([slot=buttons]) {
+  flex-direction: row;
+  justify-content: flex-end;
 }

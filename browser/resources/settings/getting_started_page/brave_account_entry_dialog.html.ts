@@ -24,11 +24,9 @@ export function getHtml(this: SettingsBraveAccountEntryDialogElement) {
         <div class="footer-text">
           For advanced users, we also support self-custody of your Brave account keys for an extra layer of privacy. <a href="#">Learn more</a>
         </div>
-        <div class="button-wrapper">
-          <leo-button class="button" kind="plain" size="medium" @click=${() => this.fire('self-custody-button-clicked')}>
-            Use self-custody
-          </leo-button>
-        </div>
+        <leo-button class="button" kind="plain-faint" size="medium" @click=${() => this.fire('self-custody-button-clicked')}>
+          Use self-custody
+        </leo-button>
       </div>
     </settings-brave-account-dialog>
   <!--_html_template_end_-->`

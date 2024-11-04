@@ -8,16 +8,15 @@
  * #css_wrapper_metadata_end */
 
 .footer {
+  align-items: center;
   display: flex;
-  justify-content: space-between;
-  padding: 24px 40px;
+  gap: var(--leo-spacing-xl);
+  padding: var(--leo-spacing-2xl);
 }
 
 .footer-text {
   color: var(--leo-color-text-tertiary);
   font: var(--leo-font-small-regular);
-  height: 54px;
-  width: 270px;
 }
 
 .footer-text a {
@@ -26,14 +25,6 @@
   text-underline-offset: 2.5px;
 }
 
-.button-wrapper {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  width: 134px;
-}
-
 .button {
-  --leo-button-padding: 0px; /* feels hackish - there must be a better way */
-  width: 100%;
+  flex: none;
 }

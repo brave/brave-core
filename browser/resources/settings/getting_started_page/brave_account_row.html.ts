@@ -20,11 +20,9 @@ export function getHtml(this: SettingsBraveAccountRow) {
         <div class="text-top">Sign in or create a Brave account</div>
         <div class="text-bottom">$i18n{braveSyncBraveAccountDesc}</div>
       </div>
-      <div class="button-wrapper">
-        <leo-button class="button" size="small" @click=${() => this.dialogType = DialogType.ENTRY}>
-          Get started
-        </leo-button>
-      </div>
+      <leo-button class="button" size="small" @click=${() => this.dialogType = DialogType.ENTRY}>
+        Get started
+      </leo-button>
     </div>
     ${(() => {
       switch(this.dialogType) {
