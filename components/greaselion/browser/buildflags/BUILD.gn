@@ -1,9 +1,0 @@
-import("//build/buildflag_header.gni")
-import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [
-    "ENABLE_GREASELION=$enable_greaselion",
-  ]
-}

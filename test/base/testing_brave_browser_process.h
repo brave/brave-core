@@ -50,9 +50,6 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   // BraveBrowserProcess overrides:
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
-#if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionDownloadService* greaselion_download_service() override;
-#endif
   debounce::DebounceComponentInstaller* debounce_component_installer() override;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRComponentInstallerPolicy*

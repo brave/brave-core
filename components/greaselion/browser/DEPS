@@ -1,6 +1,0 @@
-include_rules = [
-  "+brave/components/version_info",
-  "+content/public/browser",
-  "+extensions/browser",
-  "+extensions/common",
-]

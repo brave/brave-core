@@ -72,13 +72,6 @@ brave_shields::AdBlockService* TestingBraveBrowserProcess::ad_block_service() {
   return ad_block_service_.get();
 }
 
-#if BUILDFLAG(ENABLE_GREASELION)
-greaselion::GreaselionDownloadService*
-TestingBraveBrowserProcess::greaselion_download_service() {
-  return nullptr;
-}
-#endif
-
 debounce::DebounceComponentInstaller*
 TestingBraveBrowserProcess::debounce_component_installer() {
   return nullptr;

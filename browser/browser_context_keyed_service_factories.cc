@@ -39,7 +39,6 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -47,10 +46,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/browser/greaselion/greaselion_service_factory.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -110,9 +105,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SearchEngineProviderServiceFactory::GetInstance();
   misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
   BraveFarblingServiceFactory::GetInstance();
-#if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionServiceFactory::GetInstance();
-#endif
 #if BUILDFLAG(ENABLE_TOR)
   TorProfileServiceFactory::GetInstance();
 #endif

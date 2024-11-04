@@ -212,10 +212,6 @@ declare namespace chrome.rewardsNotifications {
   }
 }
 
-declare namespace chrome.greaselion {
-  const isGreaselionExtension: (id: string, callback: (valid: boolean) => void) => {}
-}
-
 declare namespace chrome.braveNews {
   const onClearHistory: {
     addListener: (callback: () => any) => void

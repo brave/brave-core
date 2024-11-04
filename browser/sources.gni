@@ -49,7 +49,6 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
-import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -191,7 +190,6 @@ brave_chrome_browser_deps = [
   "//brave/components/decentralized_dns/content",
   "//brave/components/decentralized_dns/core",
   "//brave/components/google_sign_in_permission",
-  "//brave/components/greaselion/browser/buildflags",
   "//brave/components/https_upgrade_exceptions/browser",
   "//brave/components/ipfs",
   "//brave/components/ipfs/buildflags",
@@ -447,13 +445,6 @@ if (enable_tor) {
     "//brave/components/tor",
     "//brave/components/tor:common",
     "//brave/components/tor:pref_names",
-  ]
-}
-
-if (enable_greaselion) {
-  brave_chrome_browser_deps += [
-    "//brave/browser/greaselion",
-    "//brave/components/greaselion/browser",
   ]
 }
 
