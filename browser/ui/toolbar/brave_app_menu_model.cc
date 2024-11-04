@@ -67,9 +67,7 @@ BraveAppMenuModel::BraveAppMenuModel(
     Browser* browser,
     AppMenuIconController* app_menu_icon_controller,
     AlertMenuItem alert_item)
-    : AppMenuModel(provider, browser, app_menu_icon_controller, alert_item)
-{
-}
+    : AppMenuModel(provider, browser, app_menu_icon_controller, alert_item) {}
 
 BraveAppMenuModel::~BraveAppMenuModel() = default;
 
@@ -286,8 +284,13 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
                                              ui::NORMAL_SEPARATOR);
     need_separator = false;
   }
-  if (auto index = more_tools_menu_model->GetIndexOfCommandId(IDC_NAME_WINDOW)) {
-    more_tools_menu_model->InsertItemWithStringIdAt(*index + 1, IDC_SHOW_APPS_PAGE, IDS_IDC_SHOW_APPS_PAGE);
+
+  if (!browser()->profile()->IsOffTheRecord()) {
+    if (auto index =
+            more_tools_menu_model->GetIndexOfCommandId(IDC_NAME_WINDOW)) {
+      more_tools_menu_model->InsertItemWithStringIdAt(
+          *index + 1, IDC_SHOW_APPS_PAGE, IDS_IDC_SHOW_APPS_PAGE);
+    }
   }
 
 #if BUILDFLAG(ENABLE_COMMANDER)

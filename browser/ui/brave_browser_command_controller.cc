@@ -275,7 +275,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_COMMANDER, commander::IsEnabled());
 #endif
 
-  UpdateCommandEnabled(IDC_SHOW_APPS_PAGE, true);
+  UpdateCommandEnabled(IDC_SHOW_APPS_PAGE,
+                       !browser_->profile()->IsPrimaryOTRProfile());
 
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 
