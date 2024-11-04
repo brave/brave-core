@@ -79,14 +79,16 @@ public class BraveVpnApiResponseUtils {
             String regionPrecision = braveVpnServerRegion.getRegionPrecision();
 
             // Determine the region for host name and precision
-            if (BraveVpnUtils.selectedServerRegion != null
-                    && !BraveVpnUtils.selectedServerRegion
-                            .getRegionName()
-                            .equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
-
-                regionForHostName = BraveVpnUtils.selectedServerRegion.getRegionName();
-                braveVpnServerRegion = BraveVpnUtils.selectedServerRegion;
-                regionPrecision = braveVpnServerRegion.getRegionPrecision();
+            if (BraveVpnUtils.selectedServerRegion != null) {
+                if (!BraveVpnUtils.selectedServerRegion
+                        .getRegionName()
+                        .equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
+                    regionForHostName = BraveVpnUtils.selectedServerRegion.getRegionName();
+                    braveVpnServerRegion = BraveVpnUtils.selectedServerRegion;
+                    regionPrecision = braveVpnServerRegion.getRegionPrecision();
+                } else {
+                    regionPrecision = BraveVpnConstants.REGION_PRECISION_DEFAULT;
+                }
             } else {
                 String serverRegion = BraveVpnPrefUtils.getRegionName();
                 if (serverRegion.equals(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC)) {
