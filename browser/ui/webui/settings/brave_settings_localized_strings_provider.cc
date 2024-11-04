@@ -755,7 +755,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"settingsSelectValueNo", IDS_SETTINGS_SELECT_VALUE_NO},
       {"settingsSelectValueAsk", IDS_SETTINGS_SELECT_VALUE_ASK},
       {"braveShieldsSaveContactInfo",
-       IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL}};
+       IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL},
+      {"braveShieldsSaveContactInfoSublabel",
+       IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL_SUBLABEL}};
 
   html_source->AddLocalizedStrings(localized_strings);
   html_source->AddString("braveShieldsExampleTemplate", "example.com");

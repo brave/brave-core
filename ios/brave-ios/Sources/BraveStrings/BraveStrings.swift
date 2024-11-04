@@ -8788,7 +8788,7 @@ extension Strings {
     "BraveShieldsSaveContactInfo",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Store Contact Info",
+    value: "Store contact information for future broken site reports",
     comment: "Shields panel toggle label that would save webcompat report contact info data when enabled."
   )
 
@@ -8796,7 +8796,7 @@ extension Strings {
     "BraveShieldsSaveContactInfoDescription",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Store contact information for reporting broken sites in the future",
+    value: "If you provide contact info it will be stored for future reports",
     comment: "Description for shields panel toggle label that would save webcompat report contact info data when enabled."
   )
 }
