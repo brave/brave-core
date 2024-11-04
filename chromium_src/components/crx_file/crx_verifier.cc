@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/no_destructor.h"
+#include "base/containers/span.h"
 
 namespace {
 
@@ -21,14 +21,13 @@ constexpr uint8_t kBravePublisherKeyHash[] = {
     0xc0, 0x55, 0xea, 0xf2, 0x6e, 0x10, 0x7,  0x45, 0x6,  0xb9, 0xd5,
     0x35, 0xc8, 0x35, 0x8,  0x28, 0x97, 0x5f, 0x7a, 0xc1, 0x97};
 
-std::vector<uint8_t>& GetBravePublisherKeyHash() {
-  static base::NoDestructor<std::vector<uint8_t>> brave_publisher_key(
-      std::begin(kBravePublisherKeyHash), std::end(kBravePublisherKeyHash));
-  return *brave_publisher_key;
+auto GetBravePublisherKeyHash() {
+  static auto brave_publisher_key = std::to_array(kBravePublisherKeyHash);
+  return base::span(brave_publisher_key);
 }
 
 // Used in the patch in crx_verifier.cc.
-bool IsBravePublisher(const std::vector<uint8_t>& key_hash) {
+bool IsBravePublisher(base::span<const uint8_t> key_hash) {
   return GetBravePublisherKeyHash() == key_hash;
 }
 
@@ -36,8 +35,8 @@ bool IsBravePublisher(const std::vector<uint8_t>& key_hash) {
 
 namespace crx_file {
 
-void SetBravePublisherKeyHashForTesting(const std::vector<uint8_t>& test_key) {
-  GetBravePublisherKeyHash() = test_key;
+void SetBravePublisherKeyHashForTesting(base::span<const uint8_t> test_key) {
+  GetBravePublisherKeyHash().copy_from(test_key);
 }
 
 }  // namespace crx_file

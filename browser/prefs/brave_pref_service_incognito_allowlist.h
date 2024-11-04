@@ -6,13 +6,14 @@
 #ifndef BRAVE_BROWSER_PREFS_BRAVE_PREF_SERVICE_INCOGNITO_ALLOWLIST_H_
 #define BRAVE_BROWSER_PREFS_BRAVE_PREF_SERVICE_INCOGNITO_ALLOWLIST_H_
 
-#include <vector>
+#include "base/containers/span.h"
+#include "base/strings/cstring_view.h"
 
 namespace brave {
 
 // Returns names of preferences that should be persistent on incognito profile.
 // This list should be preferred over GetOriginalProfile().
-const std::vector<const char*>& GetBravePersistentPrefNames();
+base::span<const base::cstring_view> GetBravePersistentPrefNames();
 
 }  // namespace brave
 

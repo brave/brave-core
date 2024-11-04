@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <array>
 #include <optional>
 #include <string_view>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/no_destructor.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
@@ -342,10 +342,10 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
                                 ignore_patterns);
   }
 
-  const std::vector<std::string>& GetWebUISchemes() {
-    static base::NoDestructor<std::vector<std::string>> kWebUISchemes(
-        {"chrome://", "brave://"});
-    return *kWebUISchemes;
+  base::span<const std::string_view> GetWebUISchemes() {
+    static auto constexpr kWebUISchemes =
+        std::to_array<std::string_view>({"chrome://", "brave://"});
+    return kWebUISchemes;
   }
 
   base::ScopedTempDir temp_dir_;
@@ -366,7 +366,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestWalletPageRoute) {
       GURL("chrome://wallet/crypto/portfolio/assets");
   const GURL expected_virtual_url =
       GURL("brave://wallet/crypto/portfolio/assets");
-  for (const std::string& scheme : GetWebUISchemes()) {
+  for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/"}));
 
     auto* web_contents = GetActiveWebContents();
@@ -382,7 +382,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestWalletPageRoute) {
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestPortfolioPageAppearing) {
   const GURL expected_url = GURL("brave://wallet/crypto/portfolio/assets");
-  for (const std::string& scheme : GetWebUISchemes()) {
+  for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/portfolio/assets"}));
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading "
@@ -395,7 +395,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
   const GURL expected_url = GURL("brave://wallet/swap");
-  for (const std::string& scheme : GetWebUISchemes()) {
+  for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/swap"}));
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
@@ -410,7 +410,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
   const GURL expected_url = GURL("brave://wallet/send");
-  for (const std::string& scheme : GetWebUISchemes()) {
+  for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/send"}));
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
@@ -422,7 +422,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
                        TestDepositPageAppearing) {
   const GURL expected_url = GURL("brave://wallet/crypto/deposit-funds");
-  for (const std::string& scheme : GetWebUISchemes()) {
+  for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/deposit-funds"}));
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
@@ -433,7 +433,7 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestBuyPageAppearing) {
   const GURL expected_url = GURL("brave://wallet/crypto/fund-wallet");
-  for (const std::string& scheme : GetWebUISchemes()) {
+  for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/fund-wallet"}));
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
