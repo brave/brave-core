@@ -10,6 +10,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -61,6 +62,8 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
+import org.chromium.chrome.browser.BackgroundVideoPlaybackTabHelper;
+import org.chromium.url.GURL;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -308,6 +311,8 @@ public abstract class BraveActivity extends ChromeActivity
     private static final List<String> sYandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
+    private static final String TAG = "BraveActivity";
+
     private boolean mIsVerification;
     private boolean mIsDefaultCheckOnResume;
     private boolean mIsSetDefaultBrowserNotification;
@@ -511,6 +516,52 @@ public abstract class BraveActivity extends ChromeActivity
         cleanUpBraveNewsController();
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
+    }
+
+    @Override
+    public void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        if (isActivityFinishingOrDestroyed()) return;
+        Tab currentTab = getActivityTab();
+        if (currentTab != null
+                && currentTab.getUrl() != null
+                && isYTVideoUrl(currentTab.getUrl())
+                && !isInPictureInPictureMode()
+                && BackgroundVideoPlaybackTabHelper.isPlayingMedia(currentTab.getWebContents())) {
+            BackgroundVideoPlaybackTabHelper.toggleFullscreen(currentTab.getWebContents(), true);
+            try {
+                enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+            } catch (IllegalStateException | IllegalArgumentException e) {
+                Log.e(TAG, "Error while entering picture in picture mode", e);
+            }
+        }
+    }
+
+    @Override
+    public void performOnConfigurationChanged(Configuration newConfig) {
+        super.performOnConfigurationChanged(newConfig);
+
+        Tab currentTab = getActivityTab();
+        if (currentTab != null
+                && currentTab.getUrl() != null
+                && isYTVideoUrl(currentTab.getUrl())
+                && !isInPictureInPictureMode()) {
+            BackgroundVideoPlaybackTabHelper.toggleFullscreen(
+                    currentTab.getWebContents(),
+                    newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE);
+        }
+    }
+
+    private boolean isYTVideoUrl(GURL url) {
+        if (!GURL.isEmptyOrInvalid(url)
+                && url.domainIs(BraveConstants.YOUTUBE_DOMAIN)
+                && url.getPath() != null
+                && url.getPath().equalsIgnoreCase("/watch")
+                && url.getQuery() != null) {
+            String videoId = UrlUtilities.getValueForKeyInQuery(url, "v");
+            return videoId != null && videoId.trim().length() > 0;
+        }
+        return false;
     }
 
     /**
