@@ -2,7 +2,6 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
-
  const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
@@ -11,10 +10,6 @@ const l10nUtil = require('./l10nUtil')
 const pullL10n = (options) => {
   const cmdOptions = config.defaultOptions
   cmdOptions.cwd = config.braveCoreDir
-  if (options.extension) {
-    console.error('No extension is supported now')
-    process.exit(1)
-  }
 
   // Revert to originals before string replacement because original grd(p)s are
   // overwritten with modified versions from ./src/brave during build.
