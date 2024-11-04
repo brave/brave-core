@@ -328,7 +328,7 @@ void BraveNewTabPageHandler::LaunchVPNPanel() {
   tab->GetBrowserWindowInterface()
       ->GetFeatures()
       .GetBraveVPNController()
-      ->ShowBraveVPNBubble();
+      ->ShowBraveVPNBubble(/* show_select */ true);
 #endif
 }
 
