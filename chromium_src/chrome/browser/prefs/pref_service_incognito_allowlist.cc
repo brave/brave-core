@@ -20,9 +20,9 @@ namespace prefs {
 std::vector<const char*> GetIncognitoPersistentPrefsAllowlist() {
   std::vector<const char*> allowlist =
       GetIncognitoPersistentPrefsAllowlist_ChromiumImpl();
-  allowlist.insert(allowlist.end(),
-                   brave::GetBravePersistentPrefNames().begin(),
-                   brave::GetBravePersistentPrefNames().end());
+  for (auto pref : brave::GetBravePersistentPrefNames()) {
+    allowlist.push_back(pref.data());
+  }
   return allowlist;
 }
 

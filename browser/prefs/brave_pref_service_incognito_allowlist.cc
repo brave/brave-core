@@ -5,7 +5,10 @@
 
 #include "brave/browser/prefs/brave_pref_service_incognito_allowlist.h"
 
-#include "base/no_destructor.h"
+#include <array>
+
+#include "base/containers/span.h"
+#include "base/strings/cstring_view.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -23,8 +26,8 @@
 
 namespace brave {
 
-const std::vector<const char*>& GetBravePersistentPrefNames() {
-  static base::NoDestructor<std::vector<const char*>> brave_allowlist({
+base::span<const base::cstring_view> GetBravePersistentPrefNames() {
+  static constexpr auto kAllowlist = std::to_array<base::cstring_view>({
       kBraveAutofillPrivateWindows,
 #if !BUILDFLAG(IS_ANDROID)
       kShowWalletIconOnToolbar,
@@ -47,7 +50,7 @@ const std::vector<const char*>& GetBravePersistentPrefNames() {
       brave::bookmarks::prefs::kShowAllBookmarksButton,
   });
 
-  return *brave_allowlist;
+  return kAllowlist;
 }
 
 }  // namespace brave
