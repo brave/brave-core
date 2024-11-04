@@ -30,8 +30,8 @@ handler.on(Actions.initialize.getType(),
   async (store) => {
     const serviceObserver = new ServiceObserverReceiver(observer)
     getWidgetBrowserAPI().serviceHandler.addObserver(
-    serviceObserver.$.bindNewPipeAndPassRemote())
-    getWidgetBrowserAPI().serviceHandler.initialize();
+      serviceObserver.$.bindNewPipeAndPassRemote())
+    getNTPBrowserAPI().pageHandler.refreshVPNState()
   }
 )
 
@@ -66,7 +66,7 @@ handler.on<PurchasedState>(Actions.purchasedStateChanged.getType(),
       return
     }
 
-    const [ { state }, { currentRegion }] = await Promise.all([
+    const [{ state }, { currentRegion }] = await Promise.all([
       getWidgetBrowserAPI().serviceHandler.getConnectionState(),
       getWidgetBrowserAPI().serviceHandler.getSelectedRegion(),
     ])

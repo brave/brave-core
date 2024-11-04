@@ -60,7 +60,9 @@
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #endif
 
 namespace {
@@ -319,6 +321,14 @@ void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
   content::OpenURLParams params(search_url, content::Referrer(), disposition,
                                 ui::PAGE_TRANSITION_FROM_ADDRESS_BAR, false);
   web_contents_->OpenURL(params, /*navigation_handle_callback=*/{});
+}
+
+void BraveNewTabPageHandler::RefreshVPNState() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto* vpn_service =
+      brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
+  vpn_service->ReloadPurchasedState();
+#endif
 }
 
 void BraveNewTabPageHandler::LaunchVPNPanel() {

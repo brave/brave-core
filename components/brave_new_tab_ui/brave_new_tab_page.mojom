@@ -83,6 +83,7 @@ interface PageHandler {
   SearchWhatYouTyped(string host, string query, bool alt_key, bool ctrl_key, bool meta_key, bool shift_key);
 
   // BraveVPN
+  RefreshVPNState();
   LaunchVPNPanel();
   OpenVPNAccountPage();
 };

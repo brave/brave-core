@@ -47,9 +47,6 @@ interface ServiceHandler {
   LoadPurchasedState(string domain);
 
   [EnableIfNot=is_android]
-  Initialize();
-
-  [EnableIfNot=is_android]
   GetConnectionState() => (ConnectionState state);
 
   [EnableIfNot=is_android]
