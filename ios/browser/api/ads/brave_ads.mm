@@ -103,10 +103,10 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 @end
 
 @interface BraveAds () <AdsClientBridge> {
-  raw_ptr<AdsClientIOS> adsClient;
-  raw_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
+  std::unique_ptr<AdsClientIOS> adsClient;
+  std::unique_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
   std::unique_ptr<brave_ads::Ads> ads;
-  raw_ptr<brave_ads::AdEventCache> adEventCache;
+  std::unique_ptr<brave_ads::AdEventCache> adEventCache;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
   base::SequenceBound<brave_ads::Database> adsDatabase;
   nw_path_monitor_t networkMonitor;
@@ -153,10 +153,10 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
         {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
          base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 
-    adEventCache = new brave_ads::AdEventCache();
+    adEventCache = std::make_unique<brave_ads::AdEventCache>();
 
-    adsClient = new AdsClientIOS(self);
-    adsClientNotifier = new brave_ads::AdsClientNotifier();
+    adsClient = std::make_unique<AdsClientIOS>(self);
+    adsClientNotifier = std::make_unique<brave_ads::AdsClientNotifier>();
   }
   return self;
 }
@@ -182,24 +182,15 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)deallocAdsClientNotifier {
-  if (adsClientNotifier != nil) {
-    delete adsClientNotifier;
-    adsClientNotifier = nil;
-  }
+  adsClientNotifier.reset();
 }
 
 - (void)deallocAdsClient {
-  if (adsClient != nil) {
-    delete adsClient;
-    adsClient = nil;
-  }
+  adsClient.reset();
 }
 
 - (void)deallocAdEventCache {
-  if (adEventCache != nil) {
-    delete adEventCache;
-    adEventCache = nil;
-  }
+  adEventCache.reset();
 }
 
 #pragma mark -
