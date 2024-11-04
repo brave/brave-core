@@ -100,11 +100,9 @@ RegisterPolymerTemplateModifications({
         curChild++
       }
       // AI Chat feature
-      const isOpenLeoFromBraveSearchFeatureEnabled =
-        loadTimeData.getBoolean('isOpenLeoFromBraveSearchFeatureEnabled')
       const isOpenAIChatFromBraveSearchEnabled =
         loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
-      if (isOpenAIChatFromBraveSearchEnabled && isOpenLeoFromBraveSearchFeatureEnabled) {
+      if (isOpenAIChatFromBraveSearchEnabled) {
         firstPermissionItem.insertAdjacentHTML(
           'beforebegin',
           getTrustedHTML`
