@@ -22,8 +22,6 @@ export interface VPNProps {
 export const VPNWidget = createWidget((props: VPNProps) => {
   const dispatch = useDispatch()
 
-  // TODO(simonhong): Delete this.
-  // Initialize from c++ and only observer this
   React.useEffect(() => {
     dispatch(Actions.initialize())
   }, [])
