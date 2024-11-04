@@ -12,7 +12,7 @@
 :host {
   --cr-dialog-body-border-bottom: 0px;
   --cr-dialog-body-border-top: 0px;
-  --cr-dialog-border-radius: 16px;
+  --cr-dialog-border-radius: var(--leo-radius-xl);
   --cr-dialog-top-container-min-height: 0px;
   --cr-dialog-width: 500px;
 }
@@ -21,13 +21,12 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 0px 0px 40px;
+  padding: 0px 0px var(--leo-spacing-4xl);
 }
 
 .buttons {
   display: flex;
-  min-height: 40px;
+  min-height: var(--leo-spacing-4xl);
   width: 100%;
 }
 
@@ -46,8 +45,8 @@
 .logo {
   background-image: url('../images/brave-logo-light.svg');
   background-size: cover;
-  height: 40px;
-  width: 129px;
+  height: var(--leo-spacing-4xl);
+  width: calc(var(--leo-spacing-4xl) * 129/40);
 }
 
 @media (prefers-color-scheme: dark) {
