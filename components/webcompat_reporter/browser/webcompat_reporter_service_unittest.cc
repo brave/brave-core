@@ -96,7 +96,7 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
         "channel", "brave_version", "https://abc.url/p1/p2", "true",
         "ad_block_setting", "fp_block_setting", "ad_block_list_names",
         "languages", "true", "true", "details", contact, std::move(components),
-        screenshot, is_incognito ? "true" : "false");
+        screenshot);
     EXPECT_CALL(*GetMockWebcompatReportUploader(), SubmitReport(_))
         .Times(1)
         .WillOnce([&](webcompat_reporter::mojom::ReportInfoPtr report) {
@@ -124,7 +124,6 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
 
           EXPECT_TRUE(report->screenshot_png);
           EXPECT_EQ(report->screenshot_png.value(), screenshot);
-          EXPECT_EQ(report->is_private_window, is_incognito ? "true" : "false");
         });
     EXPECT_CALL(*delegate_, GetChannelName).Times(0);
     EXPECT_CALL(*delegate_, GetAdblockFilterListNames).Times(0);

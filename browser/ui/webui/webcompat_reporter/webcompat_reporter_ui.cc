@@ -93,8 +93,6 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
   pending_report_->language_farbling = BoolToString(
       profile_prefs->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled));
   pending_report_->channel = brave::GetChannelName();
-  pending_report_->is_private_window =
-      BoolToString(profile->IsIncognitoProfile());
 }
 
 WebcompatReporterDOMHandler::~WebcompatReporterDOMHandler() = default;

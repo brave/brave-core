@@ -301,7 +301,6 @@ public class BraveShieldsHandler
         // mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.drawable.picture_frame));
         //Set the location of the window on the screen
         popupWindow.showAsDropDown(anchorView, 0, 0);
-        popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NOT_NEEDED);
         popupWindow.setAnimationStyle(R.style.EndIconMenuAnim);
 
         // Turn off window animations for low end devices, and on Android M, which has built-in menu
@@ -872,8 +871,6 @@ public class BraveShieldsHandler
         reportInfo.details = mEditTextDetails.getText().toString();
         reportInfo.contact = mEditTextContact.getText().toString();
         Tab currentActiveTab = mIconFetcher.getTab();
-        reportInfo.isPrivateWindow =
-                BoolToString(currentActiveTab != null ? currentActiveTab.isIncognito() : false);
         return reportInfo;
     }
 

@@ -9,7 +9,6 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
-#include "base/logging.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/prefs/pref_registry_simple.h"
 
