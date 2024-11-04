@@ -28,9 +28,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kImmersiveFullscreen, base::FEATURE_DISABLED_BY_DEFAULT},
     {kUseChromiumUpdater, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
-#if !BUILDFLAG(IS_ANDROID)
-    {kWebAppUniversalInstall, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
 }});
 
 }  // namespace features
