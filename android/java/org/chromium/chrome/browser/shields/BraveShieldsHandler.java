@@ -149,10 +149,6 @@ public class BraveShieldsHandler
         return cont;
     }
 
-    private static String BoolToString(boolean val) {
-        return val ? "true" : "false";
-    }
-
     /**
      * Constructs a BraveShieldsHandler object.
      *
