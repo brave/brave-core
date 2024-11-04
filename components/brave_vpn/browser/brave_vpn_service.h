@@ -96,7 +96,6 @@ class BraveVpnService :
   bool IsConnected() const;
 
   // mojom::vpn::ServiceHandler
-  void Initialize() override;
   void GetConnectionState(GetConnectionStateCallback callback) override;
   void Connect() override;
   void Disconnect() override;
