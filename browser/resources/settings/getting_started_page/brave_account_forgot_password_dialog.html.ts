@@ -9,7 +9,7 @@ import { SettingsBraveAccountForgotPasswordDialogElement } from './brave_account
 
 export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog show-back-button
+    <settings-brave-account-dialog show-back-button horizontal-buttons
       header-text-top="Forgot your password?"
       header-text-bottom="Confirm your Brave account email and we'll email you a link to reset your password. The link will only be valid for [X] hours.">
       <div slot="inputs">
@@ -18,11 +18,11 @@ export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
         </leo-input>
       </div>
       <div slot="buttons">
-        <leo-button size="medium" ?isDisabled=${!this.isEmailValid}>
-          Reset your password
-        </leo-button>
         <leo-button size="medium" kind="plain-faint" @click=${() => this.fire('cancel-button-clicked')}>
           Cancel
+        </leo-button>
+        <leo-button size="medium" ?isDisabled=${!this.isEmailValid}>
+          Reset your password
         </leo-button>
       </div>
     </settings-brave-account-dialog>
