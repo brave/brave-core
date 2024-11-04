@@ -642,7 +642,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
           .Add<brave_new_tab_page::mojom::PageHandlerFactory>()
           .Add<brave_news::mojom::BraveNewsController>();
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     ntp_registration.Add<brave_vpn::mojom::NTPWidgetHandlerFactory>();
   }

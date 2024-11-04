@@ -39,7 +39,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -98,9 +98,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
 
   source->AddBoolean("vpnWidgetSupported",
-  // Used ENABLE_BRAVE_VPN_PANEL as it's enabled on desktop platforms
-  // that supports vpn.
-#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
                      brave_vpn::IsBraveVPNFeatureEnabled()
 #else
                      false
@@ -156,7 +154,7 @@ void BraveNewTabUI::BindInterface(
       /*omnibox_controller=*/nullptr);
 }
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN_PANEL)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
 void BraveNewTabUI::BindInterface(
     mojo::PendingReceiver<brave_vpn::mojom::NTPWidgetHandlerFactory>
         pending_receiver) {
