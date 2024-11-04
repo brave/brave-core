@@ -182,9 +182,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kUseChromiumUpdater,
       &features::kImmersiveFullscreen,
 #endif
-#if !BUILDFLAG(IS_ANDROID)
-      &features::kWebAppUniversalInstall,
-#endif
       &features::kWebIdentityDigitalCredentials,
       &features::kWebOTP,
       &heap_profiling::kHeapProfilerReporting,
