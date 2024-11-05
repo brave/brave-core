@@ -14,7 +14,7 @@ import { getHtml } from './brave_account_sign_in_dialog.html.js'
 
 export interface SettingsBraveAccountSignInDialogElement {
   $: {
-    email: HTMLInputElement,
+    emailAddress: HTMLInputElement,
     password: HTMLInputElement,
   }
 }
@@ -34,21 +34,20 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
 
   static override get properties() {
     return {
-      isEmailValid: { type: Boolean },
+      isEmailAddressValid: { type: Boolean },
       isPasswordValid: { type: Boolean },
     }
   }
 
-  protected onEmailInput() {
-    // https://www.regular-expressions.info
-    this.isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.$.email.value)
+  protected onEmailAddressInput() {
+    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.$.emailAddress.value)
   }
 
   protected onPasswordInput() {
     this.isPasswordValid = this.$.password.value.length !== 0
   }
 
-  protected show(event: Event) {
+  protected OnEyeIconClicked(event: Event) {
     event.preventDefault()
     const target = event.target as Element
     const isShowing = target.getAttribute('name') === 'eye-on'
@@ -56,7 +55,7 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
     target.parentElement!.setAttribute('type', isShowing ? 'password' : 'text')
   }
 
-  protected isEmailValid: boolean = false
+  protected isEmailAddressValid: boolean = false
   protected isPasswordValid: boolean = false
 }
 

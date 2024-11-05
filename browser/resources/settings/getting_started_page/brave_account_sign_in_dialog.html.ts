@@ -13,23 +13,31 @@ export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
                                    text-bottom="$i18n{braveSyncBraveAccountDesc}"
                                    text-top="Sign in to your account">
       <div slot="inputs">
-        <leo-input id="email" placeholder="Enter your email address" @input=${this.onEmailInput}>
+        <leo-input id="emailAddress"
+                   placeholder="Enter your email address"
+                   @input=${this.onEmailAddressInput}>
           <div class="label">Email address</div>
         </leo-input>
-        <leo-input id="password" type="password" placeholder="Enter your password" @input=${this.onPasswordInput}>
+        <leo-input id="password"
+                   placeholder="Enter your password"
+                   type="password"
+                   @input=${this.onPasswordInput}>
           <div class="password">
             <div class="label">Password</div>
-            <div class="forgot-password" @click=${() => this.fire('forgot-password-button-clicked')}>Forgot your password?</div>
+            <div class="forgot-password"
+                 @click=${() => this.fire('forgot-password-button-clicked')}>
+              Forgot your password?
+            </div>
           </div>
-          <leo-icon slot="right-icon"
-                    id="icon"
+          <leo-icon id="icon"
                     name="eye-off"
-                    @click=${this.show}>
+                    slot="right-icon"
+                    @click=${this.OnEyeIconClicked}>
           </leo-icon>
         </leo-input>
       </div>
       <div slot="buttons">
-        <leo-button ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}>
+        <leo-button ?isDisabled=${!this.isEmailAddressValid || !this.isPasswordValid}>
           Sign in
         </leo-button>
       </div>
