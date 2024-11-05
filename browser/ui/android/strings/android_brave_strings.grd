@@ -2342,14 +2342,17 @@ Are you sure you want to do this?
     <message name="IDS_RENEWS_MONTHLY" desc="Brave VPN plan text">
       Renews monthly
     </message>
+    <message name="IDS_RENEWS_ANNUALLY" desc="Brave VPN plan annually renewal text">
+      Renews annually
+    </message>
     <message name="IDS_MONTHLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="MONTHLY_AMOUNT">%1$s</ph> /month
     </message>
     <message name="IDS_ONE_YEAR" desc="Brave VPN plan text">
       One Year
     </message>
-    <message name="IDS_RENEW_MONTHLY_SAVE" desc="Brave VPN plan text">
-      Renews annually (<ph name="DISCOUNT_TEXT_START">&lt;discount_text&gt;</ph>save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%<ph name="DISCOUNT_TEXT_END">&lt;/discount_text&gt;</ph>)
+    <message name="IDS_RENEW_YEARLY_SAVE" desc="Brave VPN plan text">
+      (<ph name="DISCOUNT_TEXT_START">&lt;discount_text&gt;</ph>save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%<ph name="DISCOUNT_TEXT_END">&lt;/discount_text&gt;</ph>)
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="YEARLY_AMOUNT">%1$s</ph> /year
