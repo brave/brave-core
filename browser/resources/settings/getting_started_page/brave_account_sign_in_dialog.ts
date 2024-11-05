@@ -12,13 +12,6 @@ import { getHtml } from './brave_account_sign_in_dialog.html.js'
  * 'settings-brave-account-sign-in-dialog'...
  */
 
-export interface SettingsBraveAccountSignInDialogElement {
-  $: {
-    emailAddress: HTMLInputElement,
-    password: HTMLInputElement,
-  }
-}
-
 export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
   static get is() {
     return 'settings-brave-account-sign-in-dialog'
@@ -39,12 +32,12 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
     }
   }
 
-  protected onEmailAddressInput() {
-    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.$.emailAddress.value)
+  protected onEmailAddressInput(detail: { value: string }) {
+    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(detail.value)
   }
 
-  protected onPasswordInput() {
-    this.isPasswordValid = this.$.password.value.length !== 0
+  protected onPasswordInput(detail: { value: string }) {
+    this.isPasswordValid = detail.value.length !== 0
   }
 
   protected OnEyeIconClicked(event: Event) {

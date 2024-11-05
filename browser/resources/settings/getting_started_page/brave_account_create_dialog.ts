@@ -12,10 +12,6 @@ import { getHtml } from './brave_account_create_dialog.html.js'
  * 'settings-brave-account-create-dialog'...
  */
 
-// https://github.com/brave/leo/blob/main/src/components/checkbox/checkbox.svelte
-// https://github.com/brave/leo/blob/main/src/components/input/input.svelte
-// https://www.regular-expressions.info
-
 export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   static get is() {
     return 'settings-brave-account-create-dialog'

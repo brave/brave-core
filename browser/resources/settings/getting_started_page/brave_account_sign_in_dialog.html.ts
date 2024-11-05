@@ -13,13 +13,11 @@ export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
                                    text-bottom="$i18n{braveSyncBraveAccountDesc}"
                                    text-top="Sign in to your account">
       <div slot="inputs">
-        <leo-input id="emailAddress"
-                   placeholder="Enter your email address"
+        <leo-input placeholder="Enter your email address"
                    @input=${this.onEmailAddressInput}>
           <div class="label">Email address</div>
         </leo-input>
-        <leo-input id="password"
-                   placeholder="Enter your password"
+        <leo-input placeholder="Enter your password"
                    type="password"
                    @input=${this.onPasswordInput}>
           <div class="password">
