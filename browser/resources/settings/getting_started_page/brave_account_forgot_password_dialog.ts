@@ -14,7 +14,7 @@
 
 export interface SettingsBraveAccountForgotPasswordDialogElement {
   $: {
-    email: HTMLInputElement,
+    emailAddress: HTMLInputElement,
   }
 }
 
@@ -33,16 +33,16 @@ export class SettingsBraveAccountForgotPasswordDialogElement extends CrLitElemen
 
   static override get properties() {
     return {
-      isEmailValid: { type: Boolean },
+      isEmailAddressValid: { type: Boolean },
     }
   }
 
-  protected onEmailInput() {
+  protected onEmailAddressInput() {
     // https://www.regular-expressions.info
-    this.isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.$.email.value)
+    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.$.emailAddress.value)
   }
 
-  protected isEmailValid: boolean = false
+  protected isEmailAddressValid: boolean = false
 }
 
 declare global {

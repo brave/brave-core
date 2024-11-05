@@ -14,15 +14,18 @@ export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
                                    text-bottom="Confirm your Brave account email and we'll email you a link to reset your password. The link will only be valid for [X] hours."
                                    text-top="Forgot your password?">
       <div slot="inputs">
-        <leo-input id="email" placeholder="Enter your email address" @input=${this.onEmailInput}>
+        <leo-input id="emailAddress"
+                   placeholder="Enter your email address"
+                   @input=${this.onEmailAddressInput}>
           <div class="label">Email address</div>
         </leo-input>
       </div>
       <div slot="buttons">
-        <leo-button kind="plain-faint" @click=${() => this.fire('cancel-button-clicked')}>
+        <leo-button kind="plain-faint"
+                    @click=${() => this.fire('cancel-button-clicked')}>
           Cancel
         </leo-button>
-        <leo-button ?isDisabled=${!this.isEmailValid}>
+        <leo-button ?isDisabled=${!this.isEmailAddressValid}>
           Reset your password
         </leo-button>
       </div>
