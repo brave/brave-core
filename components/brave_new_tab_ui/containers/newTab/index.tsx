@@ -60,7 +60,6 @@ interface Props {
   saveShowBackgroundImage: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
   saveShowBraveTalk: (value: boolean) => void
-  saveShowBraveVPN: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
   saveSetAllStackWidgets: (value: boolean) => void
   chooseNewCustomBackgroundImage: () => void
@@ -316,10 +315,6 @@ class NewTabPage extends React.Component<Props, State> {
 
   toggleShowBraveTalk = () => {
     this.props.saveShowBraveTalk(!this.props.newTabData.showBraveTalk)
-  }
-
-  toggleShowBraveVPN = () => {
-    this.props.saveShowBraveVPN(!this.props.newTabData.showBraveVPN)
   }
 
   disableBrandedWallpaper = () => {
@@ -594,24 +589,16 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   renderBraveVPNWidget = (showContent: boolean, position: number) => {
-    const { newTabData } = this.props
-    const { showBraveVPN, textDirection, braveVPNSupported } = newTabData
-
-    if (!showBraveVPN || !braveVPNSupported) {
-      return null
-    }
-
     return (
       <VPNWidget
         isCardWidget
         paddingType={'none'}
         menuPosition={'left'}
-        textDirection={textDirection}
+        textDirection={this.props.newTabData.textDirection}
         widgetTitle={getLocale('braveVpnWidgetTitle')}
         onShowContent={this.setForegroundStackWidget.bind(this, 'braveVPN')}
         isForeground={showContent}
         showContent={showContent}
-        hideWidget={this.toggleShowBraveVPN}
         braveVPNState={this.props.braveVPNData}
       />
     )
