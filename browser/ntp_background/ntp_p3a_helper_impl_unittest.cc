@@ -13,11 +13,13 @@
 #include "base/strings/strcat.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
@@ -31,12 +33,17 @@ namespace ntp_background_images {
 
 namespace {
 constexpr char kTestCreativeMetricId[] = "2ba3659a-4737-4c4e-892a-a6a2e0e2a871";
-constexpr char kHistogramPrefix[] = "creativeInstanceId.";
+constexpr char kTestCampaign1[] = "40a357fd-a6e3-485c-92a0-7ff057dd7686";
+constexpr char kTestCampaign2[] = "a5d13b23-a59d-4a3f-a92b-499edd5dfce4";
+constexpr char kCreativeHistogramPrefix[] = "creativeInstanceId.";
+constexpr char kCampaignHistogramPrefix[] = "campaignId.";
 constexpr char kCreativeTotalHistogramName[] = "creativeInstanceId.total.count";
 
 constexpr char kClicksEventType[] = "clicks";
 constexpr char kViewsEventType[] = "views";
 constexpr char kLandsEventType[] = "lands";
+constexpr char kAwareEventType[] = "aware";
+constexpr char kViewedEventType[] = "viewed";
 
 constexpr char kTestP3AJsonHost[] = "https://p3a-json.brave.com";
 constexpr char kTestP2AJsonHost[] = "https://p2a-json.brave.com";
@@ -68,7 +75,9 @@ class NTPP3AHelperImplTest : public testing::Test {
         local_state_, "release", "2049-01-01", std::move(config)));
 
     ntp_p3a_helper_ = std::make_unique<NTPP3AHelperImpl>(
-        &local_state_, p3a_service_.get(), &prefs_, true);
+        &local_state_, p3a_service_.get(),
+        g_brave_browser_process->ntp_background_images_service(), &prefs_,
+        true);
   }
 
   void TearDown() override {
@@ -77,9 +86,15 @@ class NTPP3AHelperImplTest : public testing::Test {
     p3a_service_ = nullptr;
   }
 
-  std::string GetExpectedHistogramName(const std::string& event_type) {
+  std::string GetExpectedCreativeHistogramName(const std::string& event_type) {
     return base::StrCat(
-        {kHistogramPrefix, kTestCreativeMetricId, ".", event_type});
+        {kCreativeHistogramPrefix, kTestCreativeMetricId, ".", event_type});
+  }
+
+  std::string GetExpectedCampaignHistogramName(const std::string& campaign_id,
+                                               const std::string& event_type) {
+    return base::StrCat(
+        {kCampaignHistogramPrefix, campaign_id, ".", event_type});
   }
 
   void NotifyRotation() {
@@ -107,9 +122,10 @@ class NTPP3AHelperImplTest : public testing::Test {
 };
 
 TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReported) {
-  ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
+  ntp_p3a_helper_->RecordView(kTestCreativeMetricId, kTestCampaign1);
 
-  const std::string histogram_name = GetExpectedHistogramName(kViewsEventType);
+  const std::string histogram_name =
+      GetExpectedCreativeHistogramName(kViewsEventType);
 
   EXPECT_TRUE(
       p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
@@ -123,7 +139,7 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReported) {
   histogram_tester_->ExpectUniqueSample(histogram_name, 1, 1);
   histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 1);
 
-  ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
+  ntp_p3a_helper_->RecordView(kTestCreativeMetricId, kTestCampaign1);
   NotifyRotation();
 
   histogram_tester_->ExpectBucketCount(histogram_name, 2, 1);
@@ -144,7 +160,8 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
 
-  const std::string histogram_name = GetExpectedHistogramName(kClicksEventType);
+  const std::string histogram_name =
+      GetExpectedCreativeHistogramName(kClicksEventType);
 
   EXPECT_TRUE(
       p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
@@ -186,9 +203,9 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
 
   const std::string clicks_histogram_name =
-      GetExpectedHistogramName(kClicksEventType);
+      GetExpectedCreativeHistogramName(kClicksEventType);
   const std::string lands_histogram_name =
-      GetExpectedHistogramName(kLandsEventType);
+      GetExpectedCreativeHistogramName(kLandsEventType);
 
   EXPECT_FALSE(
       p3a_service_->GetDynamicMetricLogType(lands_histogram_name).has_value());
@@ -255,9 +272,10 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
 }
 
 TEST_F(NTPP3AHelperImplTest, StopSendingAfterEnablingRewards) {
-  const std::string histogram_name = GetExpectedHistogramName(kViewsEventType);
+  const std::string histogram_name =
+      GetExpectedCreativeHistogramName(kViewsEventType);
 
-  ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
+  ntp_p3a_helper_->RecordView(kTestCreativeMetricId, kTestCampaign1);
 
   EXPECT_FALSE(
       p3a_service_->GetDynamicMetricLogType(kCreativeTotalHistogramName)
@@ -270,7 +288,7 @@ TEST_F(NTPP3AHelperImplTest, StopSendingAfterEnablingRewards) {
   NotifyMetricCycle(histogram_name);
   NotifyMetricCycle(kCreativeTotalHistogramName);
 
-  ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
+  ntp_p3a_helper_->RecordView(kTestCreativeMetricId, kTestCampaign1);
 
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
 
@@ -295,6 +313,77 @@ TEST_F(NTPP3AHelperImplTest, StopSendingAfterEnablingRewards) {
 
   EXPECT_FALSE(
       p3a_service_->GetDynamicMetricLogType(histogram_name).has_value());
+}
+
+TEST_F(NTPP3AHelperImplTest, CampaignMetricReporting) {
+  NTPSponsoredImagesData data;
+  data.campaigns.emplace_back().campaign_id = kTestCampaign1;
+  data.campaigns.emplace_back().campaign_id = kTestCampaign2;
+
+  auto campaign1_aware_histogram =
+      GetExpectedCampaignHistogramName(kTestCampaign1, kAwareEventType);
+  auto campaign2_aware_histogram =
+      GetExpectedCampaignHistogramName(kTestCampaign2, kAwareEventType);
+  auto campaign1_viewed_histogram =
+      GetExpectedCampaignHistogramName(kTestCampaign1, kViewedEventType);
+  auto campaign2_viewed_histogram =
+      GetExpectedCampaignHistogramName(kTestCampaign2, kViewedEventType);
+
+  for (size_t i = 0; i < 3; i++) {
+    ntp_p3a_helper_->CheckLoadedCampaigns(data);
+
+    histogram_tester_->ExpectUniqueSample(campaign1_aware_histogram, 1, 1);
+    histogram_tester_->ExpectUniqueSample(campaign2_aware_histogram, 1, 1);
+    histogram_tester_->ExpectTotalCount(campaign1_viewed_histogram, 0);
+    histogram_tester_->ExpectTotalCount(campaign2_viewed_histogram, 0);
+    EXPECT_TRUE(p3a_service_->GetDynamicMetricLogType(campaign1_aware_histogram)
+                    .has_value());
+    EXPECT_TRUE(p3a_service_->GetDynamicMetricLogType(campaign2_aware_histogram)
+                    .has_value());
+    EXPECT_FALSE(
+        p3a_service_->GetDynamicMetricLogType(campaign1_viewed_histogram)
+            .has_value());
+    EXPECT_FALSE(
+        p3a_service_->GetDynamicMetricLogType(campaign2_viewed_histogram)
+            .has_value());
+  }
+
+  auto expect_status_quo = [&]() {
+    histogram_tester_->ExpectUniqueSample(campaign1_aware_histogram, 1, 1);
+    histogram_tester_->ExpectUniqueSample(campaign2_aware_histogram, 1, 1);
+    histogram_tester_->ExpectUniqueSample(campaign1_viewed_histogram, 1, 1);
+    histogram_tester_->ExpectTotalCount(campaign2_viewed_histogram, 0);
+    EXPECT_TRUE(p3a_service_->GetDynamicMetricLogType(campaign1_aware_histogram)
+                    .has_value());
+    EXPECT_TRUE(p3a_service_->GetDynamicMetricLogType(campaign2_aware_histogram)
+                    .has_value());
+    EXPECT_TRUE(
+        p3a_service_->GetDynamicMetricLogType(campaign1_viewed_histogram)
+            .has_value());
+    EXPECT_FALSE(
+        p3a_service_->GetDynamicMetricLogType(campaign2_viewed_histogram)
+            .has_value());
+  };
+
+  for (size_t i = 0; i < 3; i++) {
+    ntp_p3a_helper_->RecordView(kTestCreativeMetricId, kTestCampaign1);
+    expect_status_quo();
+  }
+
+  task_environment_.FastForwardBy(base::Days(15));
+  NotifyRotation();
+  expect_status_quo();
+
+  task_environment_.FastForwardBy(base::Days(16));
+  NotifyRotation();
+  EXPECT_FALSE(p3a_service_->GetDynamicMetricLogType(campaign1_aware_histogram)
+                   .has_value());
+  EXPECT_FALSE(p3a_service_->GetDynamicMetricLogType(campaign2_aware_histogram)
+                   .has_value());
+  EXPECT_FALSE(p3a_service_->GetDynamicMetricLogType(campaign1_viewed_histogram)
+                   .has_value());
+  EXPECT_FALSE(p3a_service_->GetDynamicMetricLogType(campaign2_viewed_histogram)
+                   .has_value());
 }
 
 }  // namespace ntp_background_images

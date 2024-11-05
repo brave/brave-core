@@ -173,12 +173,14 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
       data.FindBool(ntp_background_images::kIsSponsoredKey).value_or(false);
   auto* creative_instance_id =
       data.FindString(ntp_background_images::kCreativeInstanceIDKey);
+  auto* campaign_id = data.FindString(ntp_background_images::kCampaignIdKey);
   const std::string* wallpaper_id =
       data.FindString(ntp_background_images::kWallpaperIDKey);
 
   view_counter_service_->BrandedWallpaperWillBeDisplayed(
       wallpaper_id ? *wallpaper_id : "",
-      creative_instance_id ? *creative_instance_id : "");
+      creative_instance_id ? *creative_instance_id : "",
+      campaign_id ? *campaign_id : "");
 
   return Java_NTPBackgroundImagesBridge_createBrandedWallpaper(
       env, ConvertUTF8ToJavaString(env, *image_path), focal_point_x,

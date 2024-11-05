@@ -15,6 +15,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/uploader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -53,7 +54,8 @@ bool IsMetricP2A(const std::string& histogram_name) {
 }
 
 bool IsMetricCreative(const std::string& histogram_name) {
-  return histogram_name.starts_with(kCreativeMetricPrefix);
+  return histogram_name.starts_with(kCreativeMetricPrefix) ||
+         histogram_name.starts_with(kCampaignMetricPrefix);
 }
 
 }  // namespace
