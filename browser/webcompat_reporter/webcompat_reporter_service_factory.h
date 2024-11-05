@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_SERVICE_FACTORY_H_
 
+#include <memory>
+
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -40,7 +42,7 @@ class WebcompatReporterServiceFactory : public ProfileKeyedServiceFactory {
   WebcompatReporterServiceFactory();
   ~WebcompatReporterServiceFactory() override;
 
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };
 
