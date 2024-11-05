@@ -32,6 +32,11 @@ handler.on(Actions.initialize.getType(),
     getVPNServiceHandler().addObserver(
       serviceObserver.$.bindNewPipeAndPassRemote())
     getNTPBrowserAPI().pageHandler.refreshVPNState()
+
+    // If already purchased state, refresh could be completed before
+    // start observing. Fetch current state.
+    const { state } = await getVPNServiceHandler().getPurchasedState()
+    store.dispatch(Actions.purchasedStateChanged(state.state))
   }
 )
 
