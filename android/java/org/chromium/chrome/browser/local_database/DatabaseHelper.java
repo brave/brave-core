@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Pair;
 
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-
+    private static final String TAG = "DatabaseHelper";
     private static volatile DatabaseHelper sInstance;
 
     // Database Version
@@ -113,8 +114,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteDisplayAdsFromTab(int tabId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(DisplayAdsTable.TABLE_NAME, DisplayAdsTable.COLUMN_TAB_ID + " = " + tabId, null);
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(
+                    DisplayAdsTable.TABLE_NAME,
+                    DisplayAdsTable.COLUMN_TAB_ID + " = " + tabId,
+                    null);
+        } catch (SQLiteException exc) {
+            // There is a possible crash https://github.com/brave/brave-browser/issues/42024
+            // when the database can't be open. I don't think we can do anything in that
+            // case, so just ignore.
+            Log.e(TAG, "deleteDisplayAdsFromTab " + exc);
+        }
     }
 
     @SuppressLint("Range")
