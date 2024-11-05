@@ -70,7 +70,7 @@ leo-input:not(:focus).red-border {
   width: 0%;
 }
 
-#password_strength_category {
+.password-strength {
   color: var(--primary-color);
   font: var(--leo-font-x-small-regular);
   transition: 750ms;
@@ -99,18 +99,20 @@ leo-checkbox a {
   text-underline-offset: 2.8px;
 }
 
+/* clean-css ignore:start */
 leo-icon[name="check-circle-filled"] {
   color: var(--leo-color-text-interactive);
-}
 
-leo-icon[name="check-circle-filled"] + div {
-  color: var(--leo-color-text-interactive);
+  & + div {
+    color: var(--leo-color-text-interactive);  
+  }
 }
 
 leo-icon[name="warning-triangle-filled"] {
   color: var(--leo-color-systemfeedback-error-icon);
-}
 
-leo-icon[name="warning-triangle-filled"] + div {
-  color: var(--leo-color-systemfeedback-error-text);
+  & + div {
+    color: var(--leo-color-systemfeedback-error-text);
+  }
 }
+/* clean-css ignore:end */
