@@ -19,10 +19,10 @@ export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
         </leo-input>
       </div>
       <div slot="buttons">
-        <leo-button size="medium" kind="plain-faint" @click=${() => this.fire('cancel-button-clicked')}>
+        <leo-button kind="plain-faint" @click=${() => this.fire('cancel-button-clicked')}>
           Cancel
         </leo-button>
-        <leo-button size="medium" ?isDisabled=${!this.isEmailValid}>
+        <leo-button ?isDisabled=${!this.isEmailValid}>
           Reset your password
         </leo-button>
       </div>

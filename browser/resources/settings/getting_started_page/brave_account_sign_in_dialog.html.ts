@@ -29,7 +29,7 @@ export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
         </leo-input>
       </div>
       <div slot="buttons">
-        <leo-button size="medium" ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}>
+        <leo-button ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}>
           Sign in
         </leo-button>
       </div>

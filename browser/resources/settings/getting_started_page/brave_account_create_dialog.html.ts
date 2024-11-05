@@ -58,7 +58,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
         </leo-checkbox>
       </div>
       <div slot="buttons">
-        <leo-button size="medium" ?isDisabled=${!this.isEmailAddressValid || !this.isAccountNameValid || this.score !== this.regexps.length || this.passwordConfirmation !== this.password || !this.isChecked}>
+        <leo-button ?isDisabled=${!this.isEmailAddressValid || !this.isAccountNameValid || this.score !== this.regexps.length || this.passwordConfirmation !== this.password || !this.isChecked}>
           Create account
         </leo-button>
       </div>
