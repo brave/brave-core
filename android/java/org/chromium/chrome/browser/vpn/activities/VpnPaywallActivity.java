@@ -42,7 +42,6 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
     private LinearLayout mMonthlySelectorLayout;
     private TextView mMonthlySubscriptionAmountText;
 
-
     private ProgressBar mYearlyPlanProgress;
     private LinearLayout mYearlySelectorLayout;
     private TextView mYearlySubscriptionAmountText;
@@ -53,7 +52,7 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
 
     private InAppPurchaseWrapper.SubscriptionType mSelectedPlanType =
             InAppPurchaseWrapper.SubscriptionType.YEARLY;
-    
+
     private ProductDetails mMonthlyProductDetails;
     private ProductDetails mYearlyProductDetails;
 
@@ -88,10 +87,10 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
         mMonthlySubscriptionAmountText = findViewById(R.id.monthly_subscription_amount_text);
         mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
         mMonthlySelectorLayout.setOnClickListener(
-                                                v -> {
-                                                    mSelectedPlanType = InAppPurchaseWrapper.SubscriptionType.MONTHLY;
-                                                    updateSelectedPlanView();
-                                                });
+                v -> {
+                    mSelectedPlanType = InAppPurchaseWrapper.SubscriptionType.MONTHLY;
+                    updateSelectedPlanView();
+                });
 
         TextView trialText = findViewById(R.id.trial_text);
         String trialString = getResources().getString(R.string.trial_text);
@@ -114,6 +113,12 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
         mYearlyPlanProgress = findViewById(R.id.yearly_plan_progress);
         mYearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
         mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
+        mYearlySelectorLayout.setOnClickListener(
+                v -> {
+                    mSelectedPlanType = InAppPurchaseWrapper.SubscriptionType.YEARLY;
+                    updateSelectedPlanView();
+                });
+
         mYearlyText = findViewById(R.id.yearly_text);
 
         TextView refreshCredentialsButton = findViewById(R.id.refresh_credentials_button);
@@ -130,15 +135,14 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
                     ProductDetails productDetails = null;
                     if (mSelectedPlanType == InAppPurchaseWrapper.SubscriptionType.MONTHLY) {
                         productDetails = mMonthlyProductDetails;
-                    } else if (mSelectedPlanType
-                            == InAppPurchaseWrapper.SubscriptionType.YEARLY) {
+                    } else if (mSelectedPlanType == InAppPurchaseWrapper.SubscriptionType.YEARLY) {
                         productDetails = mYearlyProductDetails;
                     }
                     if (productDetails == null) {
                         return;
                     }
                     InAppPurchaseWrapper.getInstance()
-                                .initiatePurchase(VpnPaywallActivity.this, productDetails);
+                            .initiatePurchase(VpnPaywallActivity.this, productDetails);
                 });
     }
 
@@ -152,6 +156,7 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
         verifySubscription();
 
         getMonthlyProductDetails();
+        updateSelectedPlanView();
     }
 
     private void getMonthlyProductDetails() {
@@ -193,34 +198,30 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
         if (mMonthlyProductDetails == null) {
             return;
         }
-            runOnUiThread(
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        SpannableString monthlyFormattedPrice =
-                                                InAppPurchaseWrapper.getInstance()
-                                                        .getFormattedProductPrice(
-                                                                VpnPaywallActivity.this,
-                                                                mMonthlyProductDetails,
-                                                                R.string
-                                                                        .monthly_subscription_amount);
-                                        if (monthlyFormattedPrice != null) {
-                                            mMonthlySubscriptionAmountText.setText(
-                                                    monthlyFormattedPrice,
-                                                    TextView.BufferType.SPANNABLE);
-                                            mMonthlyPlanProgress.setVisibility(View.GONE);
-                                        }
-                                        SpannableString fullPrice =
-                                                InAppPurchaseWrapper.getInstance()
-                                                        .getFormattedFullProductPrice(
-                                                                VpnPaywallActivity.this,
-                                                                mMonthlyProductDetails);
-                                        if (fullPrice != null) {
-                                            mRemovedValueText.setText(
-                                                    fullPrice, TextView.BufferType.SPANNABLE);
-                                        }
-                                    }
-                                });
+        runOnUiThread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        SpannableString monthlyFormattedPrice =
+                                InAppPurchaseWrapper.getInstance()
+                                        .getFormattedProductPrice(
+                                                VpnPaywallActivity.this,
+                                                mMonthlyProductDetails,
+                                                R.string.monthly_subscription_amount);
+                        if (monthlyFormattedPrice != null) {
+                            mMonthlySubscriptionAmountText.setText(
+                                    monthlyFormattedPrice, TextView.BufferType.SPANNABLE);
+                            mMonthlyPlanProgress.setVisibility(View.GONE);
+                        }
+                        SpannableString fullPrice =
+                                InAppPurchaseWrapper.getInstance()
+                                        .getFormattedFullProductPrice(
+                                                VpnPaywallActivity.this, mMonthlyProductDetails);
+                        if (fullPrice != null) {
+                            mRemovedValueText.setText(fullPrice, TextView.BufferType.SPANNABLE);
+                        }
+                    }
+                });
     }
 
     private void updateYearlyPlanUI() {
@@ -228,43 +229,45 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
             return;
         }
         runOnUiThread(
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        SpannableString yearlyFormattedPrice =
-                                                InAppPurchaseWrapper.getInstance()
-                                                        .getFormattedProductPrice(
-                                                                VpnPaywallActivity.this,
-                                                                mYearlyProductDetails,
-                                                                R.string
-                                                                        .yearly_subscription_amount);
-                                        if (yearlyFormattedPrice != null) {
-                                            mYearlySubscriptionAmountText.setText(
-                                                    yearlyFormattedPrice,
-                                                    TextView.BufferType.SPANNABLE);
-                                            mYearlyPlanProgress.setVisibility(View.GONE);
-                                        }
-                                        mBtnVpnPlanAction.setEnabled(true);
-                                        if (mMonthlyProductDetails != null) {
-                                            String discountText =
-                                                    getString(
-                                                            R.string.renew_monthly_save,
-                                                            InAppPurchaseWrapper.getInstance()
-                                                                    .getYearlyDiscountPercentage(
-                                                                            mMonthlyProductDetails,
-                                                                            mYearlyProductDetails));
-                                            SpannableString discountSpannableString =
-                                                    SpanApplier.applySpans(
-                                                            discountText,
-                                                            new SpanInfo(
-                                                                    "<discount_text>",
-                                                                    "</discount_text>",
-                                                                    new StyleSpan(android.graphics.Typeface.BOLD),
-                                                                    new UnderlineSpan()));
-                                            mYearlyText.setText(discountSpannableString);
-                                        }
-                                    }
-                                });
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        SpannableString yearlyFormattedPrice =
+                                InAppPurchaseWrapper.getInstance()
+                                        .getFormattedProductPrice(
+                                                VpnPaywallActivity.this,
+                                                mYearlyProductDetails,
+                                                R.string.yearly_subscription_amount);
+                        if (yearlyFormattedPrice != null) {
+                            mYearlySubscriptionAmountText.setText(
+                                    yearlyFormattedPrice, TextView.BufferType.SPANNABLE);
+                            mYearlyPlanProgress.setVisibility(View.GONE);
+                        }
+                        mBtnVpnPlanAction.setEnabled(true);
+                        if (mMonthlyProductDetails != null) {
+                            String annualSaveText =
+                                    getString(
+                                            R.string.renew_yearly_save,
+                                            InAppPurchaseWrapper.getInstance()
+                                                    .getYearlyDiscountPercentage(
+                                                            mMonthlyProductDetails,
+                                                            mYearlyProductDetails));
+                            String discountText =
+                                    getString(R.string.renews_annually)
+                                            .concat(" ")
+                                            .concat(annualSaveText);
+                            SpannableString discountSpannableString =
+                                    SpanApplier.applySpans(
+                                            discountText,
+                                            new SpanInfo(
+                                                    "<discount_text>",
+                                                    "</discount_text>",
+                                                    new StyleSpan(android.graphics.Typeface.BOLD),
+                                                    new UnderlineSpan()));
+                            mYearlyText.setText(discountSpannableString);
+                        }
+                    }
+                });
     }
 
     @Override
