@@ -807,9 +807,6 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowRewards={this.toggleShowRewards}
           braveTalkSupported={newTabData.braveTalkSupported}
           toggleShowBraveTalk={this.toggleShowBraveTalk}
-          showBraveVPN={newTabData.showBraveVPN}
-          braveVPNSupported={newTabData.braveVPNSupported}
-          toggleShowBraveVPN={this.toggleShowBraveVPN}
           showBraveTalk={newTabData.showBraveTalk}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}
