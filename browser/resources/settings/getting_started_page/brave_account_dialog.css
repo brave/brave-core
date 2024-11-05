@@ -30,16 +30,22 @@
   width: 100%;
 }
 
-.buttons:has(> cr-icon-button:nth-of-type(1)) {
+.buttons:has(> leo-button:nth-of-type(1)) {
   justify-content: flex-end;
 }
 
-.buttons:has(> cr-icon-button:nth-of-type(2)) {
+.buttons:has(> leo-button:nth-of-type(2)) {
   justify-content: space-between;
 }
 
 .button {
-  margin: 4px 4px 0px 4px;
+  --leo-button-padding: 0px;
+  flex: none;
+  margin: 12px 12px 0px 12px;
+}
+
+leo-icon {
+  --leo-icon-size: 20px;  
 }
 
 .logo {
