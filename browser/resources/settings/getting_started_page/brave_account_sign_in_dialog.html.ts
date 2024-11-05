@@ -10,8 +10,8 @@ import { SettingsBraveAccountSignInDialogElement } from './brave_account_sign_in
 export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
   return html`<!--_html_template_start_-->
     <settings-brave-account-dialog show-back-button
-      header-text-top="Sign in to your account"
-      header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
+                                   text-bottom="$i18n{braveSyncBraveAccountDesc}"
+                                   text-top="Sign in to your account">
       <div slot="inputs">
         <leo-input id="email" placeholder="Enter your email address" @input=${this.onEmailInput}>
           <div class="label">Email address</div>
