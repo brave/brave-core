@@ -17,14 +17,7 @@ using BraveNonClientHitTestHelperBrowserTest = InProcessBrowserTest;
 
 // TODO(sko) It might be good to have resizable area tests. But testing it
 // is pretty flaky depending on platforms.
-// The test is failing on Linux CI in Chromium 131, but passes locally:
-// https://github.com/brave/brave-browser/issues/41674
-#if BUILDFLAG(IS_LINUX)
-#define MAYBE_Toolbar DISABLED_Toolbar
-#else
-#define MAYBE_Toolbar Toolbar
-#endif  // BUILDFLAG(IS_LINUX)
-IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest, MAYBE_Toolbar) {
+IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest, Toolbar) {
   auto* browser_view = static_cast<BrowserView*>(browser()->window());
   auto* toolbar = browser_view->toolbar();
   // Upstream has two more children |background_view_left_| and
