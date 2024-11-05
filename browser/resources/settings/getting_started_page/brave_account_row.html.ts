@@ -21,7 +21,8 @@ export function getHtml(this: SettingsBraveAccountRow) {
         <div class="text-top">Sign in or create a Brave account</div>
         <div class="text-bottom">$i18n{braveSyncBraveAccountDesc}</div>
       </div>
-      <leo-button size="small" @click=${() => this.dialogType = DialogType.ENTRY}>
+      <leo-button size="small"
+                  @click=${() => this.dialogType = DialogType.ENTRY}>
         Get started
       </leo-button>
     </div>

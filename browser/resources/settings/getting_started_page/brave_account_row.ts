@@ -7,18 +7,18 @@ import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
 
+/**
+ * @fileoverview
+ * 'settings-brave-account-row'...
+ */
+
 export enum DialogType {
-  NONE = 0,
+  NONE,
   CREATE,
   ENTRY,
   FORGOT_PASSWORD,
   SIGN_IN
 }
-
-/**
- * @fileoverview
- * 'settings-brave-account-row'...
- */
 
 export class SettingsBraveAccountRow extends CrLitElement {
   static get is() {
@@ -39,8 +39,6 @@ export class SettingsBraveAccountRow extends CrLitElement {
     }
   }
 
-  protected dialogType: DialogType = DialogType.NONE
-
   protected onBackButtonClicked() {
     switch (this.dialogType) {
       case DialogType.CREATE:
@@ -54,6 +52,8 @@ export class SettingsBraveAccountRow extends CrLitElement {
         break
     }
   }
+
+  protected dialogType: DialogType = DialogType.NONE
 }
 
 declare global {
