@@ -275,6 +275,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_COMMANDER, commander::IsEnabled());
 #endif
 
+  UpdateCommandEnabled(IDC_SHOW_APPS_PAGE,
+                       !browser_->profile()->IsPrimaryOTRProfile());
+
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
@@ -655,6 +658,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(ENABLE_COMMANDER)
       brave::ToggleCommander(base::to_address(browser_));
 #endif
+      break;
+    case IDC_SHOW_APPS_PAGE:
+      brave::ShowAppsPage(&*browser_);
       break;
     case IDC_WINDOW_GROUP_UNGROUPED_TABS:
       brave::GroupUngroupedTabs(&*browser_);
