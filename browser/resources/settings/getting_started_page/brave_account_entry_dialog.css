@@ -7,7 +7,7 @@
  * #type=style-lit
  * #css_wrapper_metadata_end */
 
-.footer {
+[slot=footer] {
   align-items: center;
   display: flex;
   gap: var(--leo-spacing-xl);
