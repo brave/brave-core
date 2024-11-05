@@ -31,9 +31,6 @@ class BraveNewsController;
 class BraveNewTabPageHandler;
 
 class BraveNewTabUI : public ui::MojoWebUIController,
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-                      public brave_vpn::mojom::NTPWidgetHandlerFactory,
-#endif
                       public brave_new_tab_page::mojom::PageHandlerFactory {
  public:
   BraveNewTabUI(content::WebUI* web_ui, const std::string& name);
@@ -54,9 +51,8 @@ class BraveNewTabUI : public ui::MojoWebUIController,
                          pending_page_handler);
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  void BindInterface(
-      mojo::PendingReceiver<brave_vpn::mojom::NTPWidgetHandlerFactory>
-          pending_receiver);
+  void BindInterface(mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
+                         pending_vpn_service_handler);
 #endif
 
  private:
@@ -68,22 +64,10 @@ class BraveNewTabUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics>
           pending_new_tab_metrics) override;
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  // brave_vpn::mojom::NTPWidgetHandlerFactory:
-  void BindServiceHandler(
-      mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
-          vpn_service_receiver) override;
-#endif
-
   std::unique_ptr<BraveNewTabPageHandler> page_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
   mojo::Receiver<brave_new_tab_page::mojom::PageHandlerFactory>
       page_factory_receiver_;
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  mojo::Receiver<brave_vpn::mojom::NTPWidgetHandlerFactory>
-      ntp_widget_factory_receiver_{this};
-#endif
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

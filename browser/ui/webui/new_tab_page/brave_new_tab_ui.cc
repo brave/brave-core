@@ -156,23 +156,13 @@ void BraveNewTabUI::BindInterface(
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void BraveNewTabUI::BindInterface(
-    mojo::PendingReceiver<brave_vpn::mojom::NTPWidgetHandlerFactory>
-        pending_receiver) {
-  if (ntp_widget_factory_receiver_.is_bound()) {
-    ntp_widget_factory_receiver_.reset();
-  }
-
-  ntp_widget_factory_receiver_.Bind(std::move(pending_receiver));
-}
-
-void BraveNewTabUI::BindServiceHandler(
     mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
-        vpn_service_receiver) {
+        pending_vpn_service_handler) {
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
   auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
   if (vpn_service) {
-    vpn_service->BindInterface(std::move(vpn_service_receiver));
+    vpn_service->BindInterface(std::move(pending_vpn_service_handler));
   }
 }
 #endif

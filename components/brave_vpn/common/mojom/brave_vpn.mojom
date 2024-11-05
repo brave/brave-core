@@ -13,11 +13,6 @@ interface PanelHandlerFactory {
     pending_receiver<ServiceHandler> service_handler);
 };
 
-interface NTPWidgetHandlerFactory {
-  // The NTP widget calls this method when widget is first initialized.
-  BindServiceHandler(pending_receiver<ServiceHandler> service_handler);
-};
-
 // Browser-side handler for requests from WebUI page.
 interface PanelHandler {
   // Notify the backend that the UI is ready to be shown.

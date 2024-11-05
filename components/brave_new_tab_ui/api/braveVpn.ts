@@ -7,29 +7,6 @@ import * as BraveVPN from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn
 // Provide access to all the generated types
 export * from 'gen/brave/components/brave_vpn/common/mojom/brave_vpn.mojom.m.js'
 
-interface API {
-  serviceHandler: BraveVPN.ServiceHandlerInterface
-}
-
-let widgetBrowserAPIInstance: API
-class WidgetBrowserAPI implements API {
-  serviceHandler = new BraveVPN.ServiceHandlerRemote()
-
-  constructor () {
-    const factory = BraveVPN.NTPWidgetHandlerFactory.getRemote()
-    factory.bindServiceHandler(
-      this.serviceHandler.$.bindNewPipeAndPassReceiver()
-    )
-  }
-}
-
-export default function getWidgetBrowserAPI () {
-  if (!widgetBrowserAPIInstance) {
-    widgetBrowserAPIInstance = new WidgetBrowserAPI()
-  }
-  return widgetBrowserAPIInstance
-}
-
-export function setWidgetBrowserApiForTesting (api: API) {
-  widgetBrowserAPIInstance = api
+export default function getVPNServiceHandler () {
+  return BraveVPN.ServiceHandler.getRemote()
 }
