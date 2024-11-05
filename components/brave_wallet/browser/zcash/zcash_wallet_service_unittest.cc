@@ -120,7 +120,7 @@ class ZCashWalletServiceUnitTest : public testing::Test {
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     auto zcash_rpc = std::make_unique<testing::NiceMock<MockZCashRPC>>();
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
-        db_path, keyring_service_.get(), std::move(zcash_rpc));
+        db_path, *keyring_service_, std::move(zcash_rpc));
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
     zcash_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
@@ -135,8 +135,8 @@ class ZCashWalletServiceUnitTest : public testing::Test {
     return zcash_account_->account_id.Clone();
   }
 
-  testing::NiceMock<MockZCashRPC>* zcash_rpc() {
-    return static_cast<testing::NiceMock<MockZCashRPC>*>(
+  testing::NiceMock<MockZCashRPC>& zcash_rpc() {
+    return static_cast<testing::NiceMock<MockZCashRPC>&>(
         zcash_wallet_service_->zcash_rpc());
   }
 
@@ -170,7 +170,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
                                             mojom::AccountKind::kDerived, 1);
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
 
-  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([&](const std::string& chain_id,
                                 ZCashRpc::GetLatestBlockCallback callback) {
@@ -181,7 +181,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, const std::string& addr,
              uint64_t block_start, uint64_t block_end,
@@ -206,7 +206,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
             std::move(callback).Run(false);
           }));
 
-  ON_CALL(*zcash_rpc(), GetUtxoList(_, _, _))
+  ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
       .WillByDefault(::testing::Invoke(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
@@ -276,7 +276,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
                                             mojom::AccountKind::kDerived, 1);
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
 
-  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([&](const std::string& chain_id,
                                 ZCashRpc::GetLatestBlockCallback callback) {
@@ -287,7 +287,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, const std::string& addr,
              uint64_t block_start, uint64_t block_end,
@@ -300,7 +300,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
             std::move(callback).Run(false);
           }));
 
-  ON_CALL(*zcash_rpc(), GetUtxoList(_, _, _))
+  ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
       .WillByDefault(::testing::Invoke(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
@@ -361,7 +361,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
                                             mojom::AccountKind::kDerived, 1);
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
 
-  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([&](const std::string& chain_id,
                                 ZCashRpc::GetLatestBlockCallback callback) {
@@ -372,7 +372,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, const std::string& addr,
              uint64_t block_start, uint64_t block_end,
@@ -385,7 +385,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
             std::move(callback).Run(false);
           }));
 
-  ON_CALL(*zcash_rpc(), GetUtxoList(_, _, _))
+  ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
       .WillByDefault(::testing::Invoke(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
@@ -478,7 +478,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
     zcash_transaction.transparent_part().outputs.push_back(std::move(output));
   }
 
-  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
@@ -499,7 +499,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
           WithArg<1>([&](const ZCashTransaction& tx) { signed_tx = tx; }));
 
   std::vector<uint8_t> captured_data;
-  EXPECT_CALL(*zcash_rpc(), SendTransaction(_, _, _))
+  EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _))
       .WillOnce([&](const std::string& chain_id, base::span<const uint8_t> data,
                     ZCashRpc::SendTransactionCallback callback) {
         captured_data = std::vector<uint8_t>(data.begin(), data.end());
@@ -533,7 +533,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
 }
 
 TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
-  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
@@ -542,7 +542,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, const std::string& addr,
              uint64_t block_start, uint64_t block_end,
@@ -598,7 +598,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
     EXPECT_TRUE(callback_called);
   }
 
-  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, const std::string& addr,
              uint64_t block_start, uint64_t block_end,
@@ -648,7 +648,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
 }
 
 TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
-  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
@@ -657,7 +657,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, const std::string& addr,
              uint64_t block_start, uint64_t block_end,
@@ -851,7 +851,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 1);
 
-  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([&](const std::string& chain_id,
                                 ZCashRpc::GetLatestBlockCallback callback) {
@@ -860,7 +860,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(*zcash_rpc(), GetTreeState(_, _, _))
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
       .WillByDefault(::testing::Invoke(
           [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
               ZCashRpc::GetTreeStateCallback callback) {
@@ -931,7 +931,7 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
                                             mojom::KeyringId::kZCashMainnet,
                                             mojom::AccountKind::kDerived, 0);
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
-  ON_CALL(*zcash_rpc(), GetUtxoList(_, _, _))
+  ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
       .WillByDefault(::testing::Invoke(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
@@ -952,7 +952,7 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
                 zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
             std::move(callback).Run(std::move(response));
           }));
-  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([&](const std::string& chain_id,
                                 ZCashRpc::GetLatestBlockCallback callback) {
@@ -960,7 +960,7 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
                 zcash::mojom::BlockID::New(100000u, std::vector<uint8_t>());
             std::move(callback).Run(std::move(response));
           }));
-  ON_CALL(*zcash_rpc(), GetLatestTreeState(_, _))
+  ON_CALL(zcash_rpc(), GetLatestTreeState(_, _))
       .WillByDefault(
           ::testing::Invoke([&](const std::string& chain_id,
                                 ZCashRpc::GetTreeStateCallback callback) {
@@ -1009,7 +1009,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
                                             mojom::AccountKind::kDerived, 1);
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
 
-  ON_CALL(*zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, const std::string& addr,
              uint64_t block_start, uint64_t block_end,
@@ -1017,7 +1017,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             std::move(callback).Run(false);
           }));
 
-  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([&](const std::string& chain_id,
                                 ZCashRpc::GetLatestBlockCallback callback) {
@@ -1028,7 +1028,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(*zcash_rpc(), GetLatestTreeState(_, _))
+  ON_CALL(zcash_rpc(), GetLatestTreeState(_, _))
       .WillByDefault(::testing::Invoke([&](const std::string& chain_id,
                                            ZCashRpc::GetTreeStateCallback
                                                callback) {
@@ -1068,7 +1068,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
         std::move(callback).Run(std::move(tree_state));
       }));
 
-  ON_CALL(*zcash_rpc(), GetUtxoList(_, _, _))
+  ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
       .WillByDefault(::testing::Invoke(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
@@ -1110,7 +1110,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
   testing::Mock::VerifyAndClearExpectations(&create_transaction_callback);
 
   std::vector<uint8_t> captured_data;
-  EXPECT_CALL(*zcash_rpc(), SendTransaction(_, _, _))
+  EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _))
       .WillOnce([&](const std::string& chain_id, base::span<const uint8_t> data,
                     ZCashRpc::SendTransactionCallback callback) {
         captured_data = std::vector<uint8_t>(data.begin(), data.end());
@@ -1410,7 +1410,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
                                             mojom::AccountKind::kDerived, 0);
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
 
-  ON_CALL(*zcash_rpc(), GetLatestBlock(_, _))
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([&](const std::string& chain_id,
                                 ZCashRpc::GetLatestBlockCallback callback) {
@@ -1421,7 +1421,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(*zcash_rpc(), GetLatestTreeState(_, _))
+  ON_CALL(zcash_rpc(), GetLatestTreeState(_, _))
       .WillByDefault(
           ::testing::Invoke([&](const std::string& chain_id,
                                 ZCashRpc::GetTreeStateCallback callback) {
@@ -1467,7 +1467,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
             std::move(callback).Run(std::move(tree_state));
           }));
 
-  ON_CALL(*zcash_rpc(), GetUtxoList(_, _, _))
+  ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
       .WillByDefault(::testing::Invoke(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
@@ -1490,7 +1490,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
           }));
 
   std::vector<uint8_t> captured_data;
-  EXPECT_CALL(*zcash_rpc(), SendTransaction(_, _, _))
+  EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _))
       .WillOnce([&](const std::string& chain_id, base::span<const uint8_t> data,
                     ZCashRpc::SendTransactionCallback callback) {
         captured_data = std::vector<uint8_t>(data.begin(), data.end());

@@ -219,7 +219,7 @@ void ZCashShieldSyncService::VerifyChainState(
   // is the same
   auto block_id = zcash::mojom::BlockID::New(
       account_meta.latest_scanned_block_id, std::vector<uint8_t>());
-  zcash_rpc()->GetTreeState(
+  zcash_rpc().GetTreeState(
       chain_id_, std::move(block_id),
       base::BindOnce(
           &ZCashShieldSyncService::OnGetTreeStateForChainVerification,
@@ -257,7 +257,7 @@ void ZCashShieldSyncService::GetTreeStateForChainReorg(
   // Query block info by block height
   auto block_id =
       zcash::mojom::BlockID::New(new_block_height, std::vector<uint8_t>());
-  zcash_rpc()->GetTreeState(
+  zcash_rpc().GetTreeState(
       chain_id_, std::move(block_id),
       base::BindOnce(&ZCashShieldSyncService::OnGetTreeStateForChainReorg,
                      weak_ptr_factory_.GetWeakPtr(), new_block_height));
@@ -320,7 +320,7 @@ void ZCashShieldSyncService::OnGetSpendableNotes(
 }
 
 void ZCashShieldSyncService::UpdateChainTip() {
-  zcash_rpc()->GetLatestBlock(
+  zcash_rpc().GetLatestBlock(
       chain_id_, base::BindOnce(&ZCashShieldSyncService::OnGetLatestBlock,
                                 weak_ptr_factory_.GetWeakPtr()));
 }
@@ -336,7 +336,7 @@ void ZCashShieldSyncService::OnGetLatestBlock(
 }
 
 void ZCashShieldSyncService::DownloadBlocks() {
-  zcash_rpc()->GetCompactBlocks(
+  zcash_rpc().GetCompactBlocks(
       chain_id_, *latest_scanned_block_ + 1,
       std::min(*chain_tip_block_, *latest_scanned_block_ + kScanBatchSize),
       base::BindOnce(&ZCashShieldSyncService::OnBlocksDownloaded,
@@ -421,7 +421,7 @@ uint32_t ZCashShieldSyncService::GetSpendableBalance() {
   return balance;
 }
 
-ZCashRpc* ZCashShieldSyncService::zcash_rpc() {
+ZCashRpc& ZCashShieldSyncService::zcash_rpc() {
   return zcash_wallet_service_->zcash_rpc();
 }
 

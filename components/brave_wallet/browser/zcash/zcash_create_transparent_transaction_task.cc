@@ -54,7 +54,7 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
   }
 
   if (!chain_height_) {
-    zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
+    zcash_wallet_service_->zcash_rpc().GetLatestBlock(
         chain_id_,
         base::BindOnce(&ZCashCreateTransparentTransactionTask::OnGetChainHeight,
                        weak_ptr_factory_.GetWeakPtr()));
