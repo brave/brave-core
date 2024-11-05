@@ -11,10 +11,12 @@ export function getHtml(this: SettingsBraveAccountDialogElement) {
     <cr-dialog id="dialog" show-on-attach>
       <div slot="header" class="header">
         <div class="buttons">${this.showBackButton ? html`
-          <cr-icon-button class="button icon-arrow-back" @click=${() => this.fire('back-button-clicked')}>
-          </cr-icon-button>` : nothing}
-          <cr-icon-button class="button icon-clear" @click=${() => this.$.dialog.cancel()}>
-          </cr-icon-button>
+          <leo-button kind="plain-faint" size="tiny" class="button" @click=${() => this.fire('back-button-clicked')}>
+            <leo-icon name="arrow-left"></leo-icon>
+          </leo-button>` : nothing}
+          <leo-button kind="plain-faint" size="tiny" class="button" @click=${() => this.$.dialog.cancel()}>
+            <leo-icon name="close"></leo-icon>
+          </leo-button>
         </div>
         <div class="logo"></div>
       </div>
