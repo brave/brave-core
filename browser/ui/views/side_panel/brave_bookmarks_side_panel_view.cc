@@ -143,7 +143,9 @@ END_METADATA
 
 }  // namespace
 
-BraveBookmarksSidePanelView::BraveBookmarksSidePanelView(Browser* browser) {
+BraveBookmarksSidePanelView::BraveBookmarksSidePanelView(
+    Browser* browser,
+    SidePanelEntryScope& scope) {
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
   AddChildView(std::make_unique<BookmarksSidePanelHeaderView>(browser));
@@ -153,7 +155,7 @@ BraveBookmarksSidePanelView::BraveBookmarksSidePanelView(Browser* browser) {
   // Reuse upstream's bookmarks panl nwebui.
   auto* web_view =
       AddChildView(BookmarksSidePanelCoordinator::GetOrCreateForBrowser(browser)
-                       ->CreateBookmarksWebView());
+                       ->CreateBookmarksWebView(scope));
   web_view->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,

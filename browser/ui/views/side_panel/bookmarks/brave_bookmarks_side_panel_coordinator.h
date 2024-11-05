@@ -12,6 +12,7 @@
 
 class Browser;
 class SidePanelRegistry;
+class SidePanelEntryScope;
 
 namespace views {
 class View;
@@ -42,7 +43,8 @@ class BraveBookmarksSidePanelCoordinator
  private:
   friend class BrowserUserData<BraveBookmarksSidePanelCoordinator>;
 
-  std::unique_ptr<views::View> CreateBookmarksPanelView();
+  std::unique_ptr<views::View> CreateBookmarksPanelView(
+      SidePanelEntryScope& scope);
 
   BROWSER_USER_DATA_KEY_DECL();
 };

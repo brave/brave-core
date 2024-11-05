@@ -11,6 +11,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class Browser;
+class SidePanelEntryScope;
 
 // Gives reading list specific header view with web view.
 class BraveReadLaterSidePanelView : public BraveSidePanelViewBase {
@@ -18,6 +19,7 @@ class BraveReadLaterSidePanelView : public BraveSidePanelViewBase {
 
  public:
   BraveReadLaterSidePanelView(Browser* browser,
+                              SidePanelEntryScope& scope,
                               base::RepeatingClosure close_cb);
   ~BraveReadLaterSidePanelView() override;
   BraveReadLaterSidePanelView(const BraveReadLaterSidePanelView&) = delete;
