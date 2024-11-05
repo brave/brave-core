@@ -6,12 +6,15 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 
 #include <algorithm>
+#include <iterator>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
+#include "base/rand_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -33,6 +36,10 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#define STARTER_PROMPT(TYPE)                                         \
+  l10n_util::GetStringUTF8(IDS_AI_CHAT_STATIC_STARTER_TITLE_##TYPE), \
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_STATIC_STARTER_PROMPT_##TYPE)
+
 namespace ai_chat {
 
 namespace {
@@ -42,6 +49,8 @@ using ai_chat::mojom::ConversationTurn;
 
 using AssociatedContentDelegate =
     ConversationHandler::AssociatedContentDelegate;
+
+constexpr size_t kDefaultNonContextualSuggestionsCount = 4;
 
 }  // namespace
 
@@ -131,6 +140,16 @@ void AssociatedContentDelegate::OnTextEmbedderInitialized(bool initialized) {
   pending_top_similarity_requests_.clear();
 }
 
+ConversationHandler::Suggestion::Suggestion(std::string title)
+    : title(std::move(title)) {}
+ConversationHandler::Suggestion::Suggestion(std::string title,
+                                            std::string prompt)
+    : title(std::move(title)), prompt(std::move(prompt)) {}
+ConversationHandler::Suggestion::Suggestion(Suggestion&&) = default;
+ConversationHandler::Suggestion& ConversationHandler::Suggestion::operator=(
+    Suggestion&&) = default;
+ConversationHandler::Suggestion::~Suggestion() = default;
+
 ConversationHandler::ConversationHandler(
     const mojom::Conversation* conversation,
     AIChatService* ai_chat_service,
@@ -154,6 +173,7 @@ ConversationHandler::ConversationHandler(
   models_observer_.Observe(model_service_.get());
   // TODO(petemill): differ based on premium status, if different
   ChangeModel(model_service->GetDefaultModelKey());
+  GenerateDefaultSuggestions();
 }
 
 ConversationHandler::~ConversationHandler() {
@@ -352,9 +372,12 @@ void ConversationHandler::GetState(GetStateCallback callback) {
 
   BuildAssociatedContentInfo();
 
+  std::vector<std::string> suggestions;
+  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
+                         [](const auto& s) { return s.title; });
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
-      model_key, suggestions_, suggestion_generation_status_,
+      model_key, std::move(suggestions), suggestion_generation_status_,
       associated_content_info_->Clone(), should_send_page_contents_,
       current_error_);
 
@@ -505,13 +528,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
   DCHECK(latest_turn->character_type == mojom::CharacterType::HUMAN);
   is_request_in_progress_ = true;
   OnAPIRequestInProgressChanged();
-  // If it's a suggested question, remove it
-  auto found_question_iter =
-      base::ranges::find(suggestions_, latest_turn->text);
-  if (found_question_iter != suggestions_.end()) {
-    suggestions_.erase(found_question_iter);
-    OnSuggestedQuestionsChanged();
-  }
+
   // Directly modify Entry's text to remove engine-breaking substrings
   if (!has_edits) {  // Edits are already sanitized.
     engine_->SanitizeInput(latest_turn->text);
@@ -525,7 +542,15 @@ void ConversationHandler::SubmitHumanConversationEntry(
   // callers of SubmitHumanConversationEntry mojo API currently don't have
   // action_type specified.
   std::string question_part = latest_turn->text;
-  if (latest_turn->action_type == mojom::ActionType::UNSPECIFIED) {
+  // If it's a suggested question, remove it
+  auto found_question_iter =
+      base::ranges::find(suggestions_, latest_turn->text, &Suggestion::title);
+  if (found_question_iter != suggestions_.end()) {
+    question_part =
+        found_question_iter->prompt.value_or(found_question_iter->title);
+    suggestions_.erase(found_question_iter);
+    OnSuggestedQuestionsChanged();
+  } else if (latest_turn->action_type == mojom::ActionType::UNSPECIFIED) {
     if (latest_turn->text ==
         l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
       latest_turn->action_type = mojom::ActionType::SUMMARIZE_PAGE;
@@ -671,9 +696,11 @@ void ConversationHandler::SubmitSummarizationRequest() {
   SubmitHumanConversationEntry(std::move(turn));
 }
 
-void ConversationHandler::GetSuggestedQuestions(
-    GetSuggestedQuestionsCallback callback) {
-  std::move(callback).Run(suggestions_, suggestion_generation_status_);
+std::vector<std::string> ConversationHandler::GetSuggestedQuestionsForTest() {
+  std::vector<std::string> suggestions;
+  base::ranges::transform(suggestions_, std::back_inserter(suggestions),
+                          [](const auto& s) { return s.title; });
+  return suggestions;
 }
 
 void ConversationHandler::GenerateQuestions() {
@@ -744,6 +771,27 @@ void ConversationHandler::DisassociateContentDelegate() {
     associated_content_delegate_->OnRelatedConversationDisassociated(this);
     associated_content_delegate_ = nullptr;
   }
+}
+
+void ConversationHandler::GenerateDefaultSuggestions() {
+  suggestions_.emplace_back(STARTER_PROMPT(MEMO));
+  suggestions_.emplace_back(STARTER_PROMPT(INTERVIEW));
+  suggestions_.emplace_back(STARTER_PROMPT(STUDY_PLAN));
+  suggestions_.emplace_back(STARTER_PROMPT(PROJECT_TIMELINE));
+  suggestions_.emplace_back(STARTER_PROMPT(MARKETING_STRATEGY));
+  suggestions_.emplace_back(STARTER_PROMPT(PRESENTATION_OUTLINE));
+  suggestions_.emplace_back(STARTER_PROMPT(BRAINSTORM));
+  suggestions_.emplace_back(STARTER_PROMPT(PROFESSIONAL_EMAIL));
+  suggestions_.emplace_back(STARTER_PROMPT(BUSINESS_PROPOSAL));
+
+  // We don't have an external list of all the available suggestions, so we
+  // generate all of them  and remove random ones until we have the required
+  // number and then shuffle the result.
+  while (suggestions_.size() > kDefaultNonContextualSuggestionsCount) {
+    auto remove_at = base::RandInt(0, suggestions_.size() - 1);
+    suggestions_.erase(suggestions_.begin() + remove_at);
+  }
+  base::RandomShuffle(suggestions_.begin(), suggestions_.end());
 }
 
 void ConversationHandler::GetAssociatedContentInfo(
@@ -1019,6 +1067,12 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     return;
   }
 
+  // This means we have the default suggestions
+  if (suggestion_generation_status_ ==
+      mojom::SuggestionGenerationStatus::None) {
+    suggestions_.clear();
+  }
+
   if (is_page_associated && suggestions_.empty() &&
       suggestion_generation_status_ !=
           mojom::SuggestionGenerationStatus::IsGenerating &&
@@ -1207,18 +1261,20 @@ void ConversationHandler::OnEngineCompletionComplete(
 void ConversationHandler::OnSuggestedQuestionsResponse(
     EngineConsumer::SuggestedQuestionResult result) {
   if (result.has_value()) {
-    suggestions_.insert(suggestions_.end(), result->begin(), result->end());
+    std::ranges::transform(result.value(), std::back_inserter(suggestions_),
+                           [](const auto& s) { return Suggestion(s); });
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::HasGenerated;
+    DVLOG(2) << "Got questions:" << base::JoinString(result.value(), "\n");
   } else {
     // TODO(nullhook): Set a specialized error state generated questions
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
+    DVLOG(2) << "Got no questions";
   }
 
   // Notify observers
   OnSuggestedQuestionsChanged();
-  DVLOG(2) << "Got questions:" << base::JoinString(suggestions_, "\n");
 }
 
 void ConversationHandler::OnModelListUpdated() {
@@ -1373,8 +1429,12 @@ void ConversationHandler::OnAssociatedContentFaviconImageDataChanged() {
 }
 
 void ConversationHandler::OnSuggestedQuestionsChanged() {
+  std::vector<std::string> suggestions;
+  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
+                         [](const auto& s) { return s.title; });
+
   for (auto& client : conversation_ui_handlers_) {
-    client->OnSuggestedQuestionsChanged(suggestions_,
+    client->OnSuggestedQuestionsChanged(suggestions,
                                         suggestion_generation_status_);
   }
 }
@@ -1386,3 +1446,5 @@ void ConversationHandler::OnAPIRequestInProgressChanged() {
 }
 
 }  // namespace ai_chat
+
+#undef STARTER_PROMPT

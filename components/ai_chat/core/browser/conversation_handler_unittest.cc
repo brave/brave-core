@@ -440,11 +440,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
         // once conversation history is committed.
         EXPECT_FALSE(site_info->is_content_association_possible);
       }));
-  conversation_handler_->GetSuggestedQuestions(
-      base::BindLambdaForTesting([&](const std::vector<std::string>& questions,
-                                     mojom::SuggestionGenerationStatus status) {
-        EXPECT_TRUE(questions.empty());
-      }));
+  EXPECT_TRUE(conversation_handler_->GetSuggestedQuestionsForTest().empty());
 
   EXPECT_TRUE(conversation_handler_->HasAnyHistory());
   const auto& history = conversation_handler_->GetConversationHistory();
@@ -527,12 +523,9 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
 
   // Should not be any LLM-generated suggested questions yet because they
   // weren't asked for
-  conversation_handler_->GetSuggestedQuestions(
-      base::BindLambdaForTesting([&](const std::vector<std::string>& questions,
-                                     mojom::SuggestionGenerationStatus status) {
-        EXPECT_EQ(1u, questions.size());
-        EXPECT_EQ(questions[0], "Summarize this page");
-      }));
+  const auto questions = conversation_handler_->GetSuggestedQuestionsForTest();
+  EXPECT_EQ(1u, questions.size());
+  EXPECT_EQ(questions[0], "Summarize this page");
 
   const auto& history2 = conversation_handler_->GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> expected_history2;
