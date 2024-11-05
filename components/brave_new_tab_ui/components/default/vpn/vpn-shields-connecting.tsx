@@ -12,9 +12,9 @@ const lottieContent = `{"v":"5.5.2","meta":{"a":"SVGator","d":"SVGator, the ulti
 export default function VPNShieldsConnecting() {
   return (
     <Lottie
-      loop={true}
+      loop
       animationData={JSON.parse(lottieContent)}
-      play={true}
+      play
       style={{ width: 62, height: 62}}
     />
   )

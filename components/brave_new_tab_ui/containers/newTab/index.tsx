@@ -420,7 +420,7 @@ class NewTabPage extends React.Component<Props, State> {
       },
       'braveVPN': {
         display: braveVPNSupported && showBraveVPN,
-        render: this.renderBraveVPNWidget.bind(this)
+        render: this.renderBraveVPNWidget
       },
       'braveTalk': {
         display: braveTalkSupported && showBraveTalk,
@@ -593,7 +593,7 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  renderBraveVPNWidget (showContent: boolean, position: number) {
+  renderBraveVPNWidget = (showContent: boolean, position: number) => {
     const { newTabData } = this.props
     const { showBraveVPN, textDirection, braveVPNSupported } = newTabData
 
