@@ -12,41 +12,46 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                                    text-bottom="$i18n{braveSyncBraveAccountDesc}"
                                    text-top="Create your account">
       <div slot="inputs">
-        <leo-input placeholder="Enter your email address" @input=${this.onEmailAddressInput}>
+        <leo-input placeholder="Enter your email address"
+                   @input=${this.onEmailAddressInput}>
           <div class="label">Email address</div>
         </leo-input>
-        <leo-input placeholder="Enter a name for your account" @input=${this.onAccountNameInput}>
+        <leo-input placeholder="Enter a name for your account"
+                   @input=${this.onAccountNameInput}>
           <div class="label">Account name</div>
         </leo-input>
-        <leo-input showErrors
+        <leo-input placeholder="Enter your password"
+                   showErrors
                    type="password"
-                   placeholder="Enter your password"
                    @input=${this.onCreatePasswordInput}>
           <div class="label">Create a password</div>
-          <leo-icon slot="right-icon"
-                    name="eye-off"
+          <leo-icon name="eye-off"
+                    slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
           </leo-icon>
-          <div id="password_strength_indicator"
-               slot="errors"
-               class="${this.score !== 0 ? 'visible' : ''} ${this.strength[this.score].toLocaleLowerCase()}">
+          <div class="${this.score !== 0 ? 'visible' : ''} ${this.strength[this.score].toLocaleLowerCase()}"
+               id="password_strength_indicator"
+               slot="errors">
             <div class="password-strength-bar">
-              <div id="password_strength_value" style="width: ${`calc(100% * ${this.score}/${this.regexps.length})`}"></div>
+              <div id="password_strength_value"
+                   style="width: ${`calc(100% * ${this.score}/${this.regexps.length})`}">
+              </div>
             </div>
-            <div id="password_strength_category">${this.strength[this.score]}</div>
+            <div id="password-strength">${this.strength[this.score]}</div>
           </div>
         </leo-input>
         <leo-input class=${this.passwordConfirmation.length !== 0 && this.passwordConfirmation !== this.password ? 'red-border' : ''}
+                   placeholder="Confirm your password"
                    showErrors
                    type="password"
-                   placeholder="Confirm your password"
                    @input=${this.onConfirmPasswordInput}>
           <div class="label">Confirm password</div>
-          <leo-icon slot="right-icon"
-                    name="eye-off"
+          <leo-icon name="eye-off"
+                    slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
           </leo-icon>
-          <div slot="errors" class="password-confirmation-result ${this.passwordConfirmation.length !== 0 ? 'visible' : ''}">
+          <div class="password-confirmation-result ${this.passwordConfirmation.length !== 0 ? 'visible' : ''}"
+               slot="errors">
             <leo-icon name=${this.getIconName()}></leo-icon>
             <div>${`Passwords ${this.icon === 'check-circle-filled' ? '' : 'don\'t'} match`}</div>
           </div>
