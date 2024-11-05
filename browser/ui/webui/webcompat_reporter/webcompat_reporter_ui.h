@@ -62,10 +62,6 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
 
   void HandleSubmitReport(const base::Value::List& args);
 
-  void HandleGetSavedContactInfo(const base::Value::List& args);
-  void OnGetContactInfo(base::Value javascript_callback,
-                        const std::optional<std::string>& contact_info);
-
   raw_ptr<WebcompatReporterService> reporter_service_ = nullptr;
   raw_ptr<PrefService> pref_service_ = nullptr;
   raw_ptr<content::RenderWidgetHostView> render_widget_host_view_;

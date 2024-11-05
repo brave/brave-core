@@ -9,6 +9,7 @@ declare namespace WebcompatReporter {
     adBlockSetting: string
     fpBlockSetting: string
     shieldsEnabled: string
+    contactInfo: string
   }
 
   export interface State {

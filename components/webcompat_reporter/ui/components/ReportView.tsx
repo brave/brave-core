@@ -30,11 +30,11 @@ import {
   captureScreenshot,
   clearScreenshot,
   getCapturedScreenshot,
-  getSavedContactInfo
 } from '../browser_proxy'
 
 interface Props {
   siteUrl: string
+  contactInfo: string
   isErrorPage: boolean
   isHttpPage: boolean
   isLocalPage: boolean
@@ -54,11 +54,7 @@ const WEBCOMPAT_INFO_WIKI_URL = 'https://github.com/brave/brave-browser/wiki/Web
 export default class ReportView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { details: '', contact: '', attachScreenshot: false, screenshotObjectUrl: null }
-    getSavedContactInfo().then((ci) => {
-      console.log('getSavedContactInfo:' + ci)
-      this.setState({contact: ci})
-    })
+    this.state = { details: '', contact: props.contactInfo, attachScreenshot: false, screenshotObjectUrl: null }
   }
 
   handleContactInfoChange = async (ev: React.ChangeEvent<HTMLInputElement>) => {

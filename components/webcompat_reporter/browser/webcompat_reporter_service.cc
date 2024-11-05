@@ -11,10 +11,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/values.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
-#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
+#include "brave/components/webcompat_reporter/common/pref_names.h"
 
 namespace {
 
@@ -98,9 +97,9 @@ void ProcessContactInfo(
     return;
   }
   profile_prefs->SetString(
-      webcompat_reporter::kContactInfoPrefs,
-      profile_prefs->GetBooleanOr(webcompat_reporter::kContactInfoSaveFlagPrefs,
-                                  false)
+      webcompat_reporter::prefs::kContactInfoPrefs,
+      profile_prefs->GetBooleanOr(
+          webcompat_reporter::prefs::kContactInfoSaveFlagPrefs, false)
           ? report_info->contact.value()
           : "");
 }
@@ -150,9 +149,9 @@ void WebcompatReporterService::SetContactInfoSaveFlag(bool value) {
     return;
   }
   if (!value) {
-    profile_prefs_->SetString(kContactInfoPrefs, "");
+    profile_prefs_->SetString(prefs::kContactInfoPrefs, "");
   }
-  profile_prefs_->SetBoolean(kContactInfoSaveFlagPrefs, value);
+  profile_prefs_->SetBoolean(prefs::kContactInfoSaveFlagPrefs, value);
 }
 
 void WebcompatReporterService::GetContactInfoSaveFlag(
@@ -161,7 +160,8 @@ void WebcompatReporterService::GetContactInfoSaveFlag(
     std::move(callback).Run(false);
     return;
   }
-  auto save_flag_value = profile_prefs_->GetBoolean(kContactInfoSaveFlagPrefs);
+  auto save_flag_value =
+      profile_prefs_->GetBoolean(prefs::kContactInfoSaveFlagPrefs);
   std::move(callback).Run(std::move(save_flag_value));
 }
 
@@ -170,13 +170,14 @@ void WebcompatReporterService::GetContactInfo(GetContactInfoCallback callback) {
     std::move(callback).Run(std::nullopt);
     return;
   }
-  auto save_flag_value = profile_prefs_->GetBoolean(kContactInfoSaveFlagPrefs);
+  auto save_flag_value =
+      profile_prefs_->GetBoolean(prefs::kContactInfoSaveFlagPrefs);
   if (!save_flag_value) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  auto contact_value = profile_prefs_->GetString(kContactInfoPrefs);
+  auto contact_value = profile_prefs_->GetString(prefs::kContactInfoPrefs);
   std::move(callback).Run(std::move(contact_value));
 }
 

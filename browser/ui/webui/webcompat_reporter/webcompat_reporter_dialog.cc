@@ -6,16 +6,20 @@
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 
 #include <memory>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-shared.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -112,6 +116,32 @@ bool WebcompatReporterDialogDelegate::ShouldShowDialogTitle() const {
   return false;
 }
 
+void PrepareParamsAndShowDialog(
+    content::WebContents* initiator,
+    const std::string report_url,
+    bool shields_enabled,
+    const std::string_view adblock_mode,
+    const std::string_view fingerprint_mode,
+    const int source,
+    const bool is_error_page,
+    const std::optional<std::string>& contact_info) {
+  base::Value::Dict params_dict;
+  params_dict.Set(kSiteURLField, report_url);
+  params_dict.Set(kShieldsEnabledField, shields_enabled);
+  params_dict.Set(kAdBlockSettingField, adblock_mode);
+  params_dict.Set(kFPBlockSettingField, fingerprint_mode);
+  params_dict.Set(kContactField, contact_info.value_or(""));
+  params_dict.Set(kUISourceField, source);
+  params_dict.Set(kIsErrorPage, static_cast<int>(is_error_page));
+
+  gfx::Size min_size(kDialogWidth, kDialogMinHeight);
+  gfx::Size max_size(kDialogWidth, kDialogMaxHeight);
+  ShowConstrainedWebDialogWithAutoResize(
+      initiator->GetBrowserContext(),
+      std::make_unique<WebcompatReporterDialogDelegate>(std::move(params_dict)),
+      initiator, min_size, max_size);
+}
+
 void OpenReporterDialog(content::WebContents* initiator, UISource source) {
   bool shields_enabled = false;
   brave_shields::mojom::FingerprintMode fp_block_mode =
@@ -140,21 +170,22 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
   GURL report_url =
       initiator->GetLastCommittedURL().ReplaceComponents(replacements);
 
-  base::Value::Dict params_dict;
-  params_dict.Set(kSiteURLField, report_url.spec());
-  params_dict.Set(kShieldsEnabledField, shields_enabled);
-  params_dict.Set(kAdBlockSettingField, GetAdBlockModeString(ad_block_mode));
-  params_dict.Set(kFPBlockSettingField,
-                  GetFingerprintModeString(fp_block_mode));
-  params_dict.Set(kUISourceField, static_cast<int>(source));
-  params_dict.Set(kIsErrorPage, static_cast<int>(is_error_page));
+  if (auto* webcompat_reporter_service =
+          WebcompatReporterServiceFactory::GetServiceForContext(
+              initiator->GetBrowserContext())) {
+    webcompat_reporter_service->GetContactInfo(base::BindOnce(
+        &PrepareParamsAndShowDialog, initiator, report_url.spec(),
+        shields_enabled, GetAdBlockModeString(ad_block_mode),
+        GetFingerprintModeString(fp_block_mode), static_cast<int>(source),
+        is_error_page));
+    return;
+  }
 
-  gfx::Size min_size(kDialogWidth, kDialogMinHeight);
-  gfx::Size max_size(kDialogWidth, kDialogMaxHeight);
-  ShowConstrainedWebDialogWithAutoResize(
-      initiator->GetBrowserContext(),
-      std::make_unique<WebcompatReporterDialogDelegate>(std::move(params_dict)),
-      initiator, min_size, max_size);
+  PrepareParamsAndShowDialog(initiator, report_url.spec(), shields_enabled,
+                             GetAdBlockModeString(ad_block_mode),
+                             GetFingerprintModeString(fp_block_mode),
+                             static_cast<int>(source), is_error_page,
+                             std::nullopt);
 }
 
 }  // namespace webcompat_reporter

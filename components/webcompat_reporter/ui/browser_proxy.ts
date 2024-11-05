@@ -29,7 +29,3 @@ export function clearScreenshot() {
 export function getCapturedScreenshot(): Promise<string> {
   return sendWithPromise('webcompat_reporter.getCapturedScreenshot')
 }
-
-export function getSavedContactInfo(): Promise<string> {
-  return sendWithPromise('webcompat_reporter.getSavedContactInfo')
-}

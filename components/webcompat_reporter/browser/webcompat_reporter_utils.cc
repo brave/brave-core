@@ -10,6 +10,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace {
@@ -38,8 +39,8 @@ bool NeedsToGetComponentInfo(std::string_view component_id) {
 }
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kContactInfoSaveFlagPrefs, true);
-  registry->RegisterStringPref(kContactInfoPrefs, "");
+  registry->RegisterBooleanPref(prefs::kContactInfoSaveFlagPrefs, true);
+  registry->RegisterStringPref(prefs::kContactInfoPrefs, "");
 }
 
 std::string BoolToString(bool value) {

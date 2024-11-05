@@ -115,11 +115,6 @@ void WebcompatReporterDOMHandler::RegisterMessages() {
       "webcompat_reporter.clearScreenshot",
       base::BindRepeating(&WebcompatReporterDOMHandler::HandleClearScreenshot,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "webcompat_reporter.getSavedContactInfo",
-      base::BindRepeating(
-          &WebcompatReporterDOMHandler::HandleGetSavedContactInfo,
-          base::Unretained(this)));
 }
 
 void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
@@ -202,29 +197,6 @@ void WebcompatReporterDOMHandler::HandleGetCapturedScreenshot(
 
   auto screenshot_b64 = base::Base64Encode(*pending_report_->screenshot_png);
   ResolveJavascriptCallback(args[0], screenshot_b64);
-}
-
-void WebcompatReporterDOMHandler::OnGetContactInfo(
-    base::Value javascript_callback,
-    const std::optional<std::string>& contact_info) {
-  ResolveJavascriptCallback(javascript_callback,
-                            base::Value(contact_info.value_or("")));
-}
-
-void WebcompatReporterDOMHandler::HandleGetSavedContactInfo(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1u);
-
-  AllowJavascript();
-
-  if (!reporter_service_) {
-    RejectJavascriptCallback(args[0], {});
-    return;
-  }
-
-  reporter_service_->GetContactInfo(
-      base::BindOnce(&WebcompatReporterDOMHandler::OnGetContactInfo,
-                     weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
 }
 
 void WebcompatReporterDOMHandler::HandleClearScreenshot(

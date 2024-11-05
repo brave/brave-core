@@ -23,7 +23,7 @@
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
+#include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
 #include "chrome/common/extensions/api/settings_private.h"
 #include "chrome/common/pref_names.h"
@@ -101,7 +101,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
 
   // Webcompat Reporter
-  (*s_brave_allowlist)[webcompat_reporter::kContactInfoSaveFlagPrefs] =
+  (*s_brave_allowlist)[webcompat_reporter::prefs::kContactInfoSaveFlagPrefs] =
       settings_api::PrefType::kBoolean;
 
   // Rewards/Ads prefs
