@@ -1,0 +1,122 @@
+/* Basic reset and background styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Full screen background */
+body,
+html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('background.jpg') no-repeat center center/cover;
+}
+
+/* Apply tint to background */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  animation: color-tint 8s infinite;
+  mix-blend-mode: overlay;
+  z-index: -1;
+}
+
+/* Basic styles for the element */
+.animated-box {
+  width: 150px;
+  height: 150px;
+  background-color: #3498db;
+  margin: 50px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* Pulsate animation */
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Wobble animation */
+@keyframes wobble {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(5deg);
+  }
+
+  50% {
+    transform: rotate(-5deg);
+  }
+
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+/* Apply pulsate on mouseover */
+.animated-box:not(:hover) {
+  animation: pulsate 0.8s ease-in-out infinite;
+}
+
+/* Apply wobble on mouseout */
+.animated-box.mouseout {
+  animation: wobble 0.5s ease;
+}
+
+/* Keyframes for color tint cycling */
+@keyframes color-tint {
+  0% {
+    background-color: rgba(255, 0, 0, 0.3);
+  }
+
+  /* Red */
+  25% {
+    background-color: rgba(0, 255, 0, 0.3);
+  }
+
+  /* Green */
+  50% {
+    background-color: rgba(0, 0, 255, 0.3);
+  }
+
+  /* Blue */
+  75% {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* White */
+  100% {
+    background-color: rgba(255, 0, 0, 0.3);
+  }
+
+  /* Back to Red */
+}

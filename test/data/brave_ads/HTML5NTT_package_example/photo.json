@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "campaigns2": [
+    {
+      "campaignId": "9f8323c8-a9f9-4f04-8829-1eab40f919b2",
+      "logo": {
+        "alt": "HTML5NTT package example",
+        "imageUrl": "logo.png",
+        "companyName": "Brave Software",
+        "destinationUrl": "https://brave.com"
+      },
+      "wallpapers": [
+        {
+          "htmlUrl": "index.html",
+          "focalPoint": {
+            "x": 508,
+            "y": 720
+          },
+          "creativeInstanceId": "54370ecc-8c78-4e87-ad8d-7758d9dcea7d",
+          "assets": [
+            "index.html",
+            "background.jpg",
+            "styles.css",
+            "script.js"
+          ]
+        }
+      ]
+    }
+  ]
+}
