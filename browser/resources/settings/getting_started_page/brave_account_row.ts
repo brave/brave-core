@@ -56,4 +56,10 @@ export class SettingsBraveAccountRow extends CrLitElement {
   }
 }
 
+declare global {
+  interface HTMLElementTagNameMap {
+    'settings-brave-account-row': SettingsBraveAccountRow
+  }
+}
+
 customElements.define(SettingsBraveAccountRow.is, SettingsBraveAccountRow)
