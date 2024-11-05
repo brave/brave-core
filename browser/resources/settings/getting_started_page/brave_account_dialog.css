@@ -15,7 +15,7 @@
   --cr-dialog-width: 500px;
 }
 
-.header {
+[slot=header] {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -59,7 +59,7 @@ leo-icon {
   }
 }
 
-.body {
+[slot=body] {
   padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl) var(--leo-spacing-2xl);
 }
 
