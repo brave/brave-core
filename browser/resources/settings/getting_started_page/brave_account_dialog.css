@@ -36,7 +36,7 @@
   justify-content: space-between;
 }
 
-.button {
+leo-button {
   --leo-button-padding: 0px;
   flex: none;
   margin: var(--leo-spacing-l) var(--leo-spacing-l) 0px var(--leo-spacing-l);
