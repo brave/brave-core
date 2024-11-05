@@ -45,7 +45,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...initialDataPayload.privateTabData,
         braveRewardsSupported: initialDataPayload.braveRewardsSupported,
         braveTalkSupported: initialDataPayload.braveTalkSupported,
-        braveVPNSupported: initialDataPayload.braveVPNSupported,
         searchPromotionEnabled: initialDataPayload.searchPromotionEnabled,
         customImageBackgrounds: initialDataPayload.customImageBackgrounds
       }
