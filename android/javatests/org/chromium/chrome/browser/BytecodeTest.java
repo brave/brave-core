@@ -134,7 +134,7 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
-import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateProvider;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeStateProvider;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
@@ -1156,7 +1156,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         View.class,
                         ObservableSupplier.class,
-                        DesktopWindowStateProvider.class));
+                        DesktopWindowStateManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1286,7 +1286,7 @@ public class BytecodeTest {
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         FullscreenManager.class,
                         TabObscuringHandler.class,
-                        DesktopWindowStateProvider.class,
+                        DesktopWindowStateManager.class,
                         OneshotSupplier.class,
                         OnLongClickListener.class,
                         ToolbarProgressBar.class));

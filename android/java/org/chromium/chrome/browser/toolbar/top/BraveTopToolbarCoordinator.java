@@ -40,7 +40,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
-import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateProvider;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.ui.resources.ResourceManager;
 import org.chromium.ui.util.ColorUtils;
 
@@ -85,7 +85,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                     browserStateBrowserControlsVisibilityDelegate,
             FullscreenManager fullscreenManager,
             TabObscuringHandler tabObscuringHandler,
-            @Nullable DesktopWindowStateProvider desktopWindowStateProvider,
+            @Nullable DesktopWindowStateManager desktopWindowStateManager,
             OneshotSupplier<TabStripTransitionDelegate> tabStripTransitionDelegateSupplier,
             @Nullable OnLongClickListener onLongClickListener,
             ToolbarProgressBar progressBar) {
@@ -113,7 +113,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 browserStateBrowserControlsVisibilityDelegate,
                 fullscreenManager,
                 tabObscuringHandler,
-                desktopWindowStateProvider,
+                desktopWindowStateManager,
                 tabStripTransitionDelegateSupplier,
                 onLongClickListener,
                 progressBar);

@@ -76,7 +76,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
-import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateProvider;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
@@ -182,7 +182,7 @@ public class BraveToolbarManager extends ToolbarManager {
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             @Nullable View baseChromeLayout,
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
-            @Nullable DesktopWindowStateProvider desktopWindowStateProvider) {
+            @Nullable DesktopWindowStateManager desktopWindowStateManager) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -226,7 +226,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 overviewColorSupplier,
                 baseChromeLayout,
                 readAloudControllerSupplier,
-                desktopWindowStateProvider);
+                desktopWindowStateManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
