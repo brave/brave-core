@@ -47,7 +47,7 @@ leo-icon {
 }
 
 .logo {
-  background-image: url('../images/brave-logo-light.svg');
+  background-image: url('../images/full_brave_brand.svg');
   background-size: cover;
   height: var(--leo-spacing-4xl);
   width: calc(var(--leo-spacing-4xl) * 129/40);
@@ -55,7 +55,7 @@ leo-icon {
 
 @media (prefers-color-scheme: dark) {
   .logo {
-    background-image: url('../images/brave-logo-dark.svg');
+    background-image: url('../images/full_brave_brand_dark.svg');
   }
 }
 
