@@ -19,12 +19,12 @@ import guardianLogoUrl from '../vpn/assets/guardian-logo.svg'
 import vpnShieldsConnectedUrl from '../vpn/assets/vpn-shields-connected.svg'
 import vpnShieldsDisconnectedUrl from '../vpn/assets/vpn-shields-disconnected.svg'
 
-export const HeaderIcon = styled(Icon)`
+const HeaderIcon = styled(Icon)`
   --leo-icon-size: 24px;
   --leo-icon-color: ${gradient.iconsActive};
 `
 
-export const StyledTitle = styled.div`
+const StyledTitle = styled.div`
   font: ${font.heading.h4};
   color: ${color.white};
   display: flex;
@@ -32,7 +32,7 @@ export const StyledTitle = styled.div`
   gap: 8px;
 `
 
-export const WidgetWrapper = styled.div.attrs({ 'data-theme': 'dark' })`
+const WidgetWrapper = styled.div.attrs({ 'data-theme': 'dark' })`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -41,7 +41,7 @@ export const WidgetWrapper = styled.div.attrs({ 'data-theme': 'dark' })`
   gap: ${spacing['2Xl']};
 `
 
-export const WidgetContent = styled.div`
+const WidgetContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,7 +49,7 @@ export const WidgetContent = styled.div`
   align-self: stretch;
 `
 
-export const PoweredBy = styled.div`
+const PoweredBy = styled.div`
   display: flex;
   align-items: center;
   opacity: 0.5;
@@ -62,13 +62,13 @@ export const PoweredBy = styled.div`
   }
 `
 
-export const GuardianLogo = styled.span`
+const GuardianLogo = styled.span`
   width: 56px;
   height: 12px;
   background-image: url(${guardianLogoUrl});
 `
 
-export const SellingPoints = styled.div`
+const SellingPoints = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -77,26 +77,26 @@ export const SellingPoints = styled.div`
   align-self: stretch;
 `
 
-export const SellingPoint = styled.div`
+const SellingPoint = styled.div`
   display: flex;
   align-items: center;
   gap: ${spacing.m};
   align-self: stretch;
 `
 
-export const SellingPointIcon = styled(Icon)`
+const SellingPointIcon = styled(Icon)`
   align-self: start;
   margin: 1px;
   --leo-icon-size: ${spacing.l};
   --leo-icon-color: ${color.icon.disabled};
 `
 
-export const SellingPointLabel = styled.span`
+const SellingPointLabel = styled.span`
   color: ${color.text.primary};
   font: ${font.xSmall.regular};
 `
 
-export const ActionArea = styled.div`
+const ActionArea = styled.div`
   display: flex;
   padding: 0px;
   flex-direction: column;
@@ -106,17 +106,17 @@ export const ActionArea = styled.div`
   align-self: stretch;
 `
 
-export const ActionButton = styled(Button)`
+const ActionButton = styled(Button)`
   align-self: stretch;
 `
 
-export const ActionLabel = styled.div`
+const ActionLabel = styled.div`
   color: #fff;
   opacity: 0.5;
   font: ${font.xSmall.regular};
 `
 
-export const VPNShileldsIcon = styled.div<{ connectionState: ConnectionState }>`
+const VPNShileldsIcon = styled.div<{ connectionState: ConnectionState }>`
   width: 62px;
   height: 62px;
   background-image: url(${(p) =>
@@ -125,14 +125,14 @@ export const VPNShileldsIcon = styled.div<{ connectionState: ConnectionState }>`
       : vpnShieldsDisconnectedUrl});
 `
 
-export const ActionBox = styled.div`
+const ActionBox = styled.div`
   display: flex;
   align-items: center;
   gap: 23px;
   align-self: stretch;
 `
 
-export const ConnectionInfoBox = styled.div`
+const ConnectionInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -140,31 +140,31 @@ export const ConnectionInfoBox = styled.div`
   flex: 1 0 0;
 `
 
-export const ConnectionStateLabel = styled.span<{ connected: boolean }>`
+const ConnectionStateLabel = styled.span<{ connected: boolean }>`
   align-self: stretch;
   color: ${(p) => (p.connected ? color.green[60] : color.text.primary)};
   font: ${font.small.regular};
 `
 
-export const RegionAction = styled.div`
+const RegionAction = styled.div`
   display: flex;
   align-items: center;
   gap: ${spacing.m};
 `
 
-export const RegionCountryLabel = styled.span`
+const RegionCountryLabel = styled.span`
   color: ${color.text.primary};
   font: ${font.large.semibold};
 `
 
-export const RegionChangeLink = styled.a`
+const RegionChangeLink = styled.a`
   color: ${color.text.primary};
   font: ${font.xSmall.link};
   text-decoration-line: underline;
   cursor: pointer;
 `
 
-export const RegionCityLabel = styled.span`
+const RegionCityLabel = styled.span`
   color: ${color.text.tertiary};
   font: ${font.xSmall.regular};
 `
@@ -178,7 +178,7 @@ export const VPNWidgetTitle = () => {
   )
 }
 
-export const VPNWidgetHeader = () => {
+const VPNWidgetHeader = () => {
   return (
     <StyledTitle>
       <VPNWidgetTitle />
@@ -187,7 +187,7 @@ export const VPNWidgetHeader = () => {
 }
 
 const FeatureList = () => (
-  <>
+  <SellingPoints>
     {[
       getLocale('braveVpnFeature1'),
       getLocale('braveVpnFeature2'),
@@ -198,7 +198,7 @@ const FeatureList = () => (
         <SellingPointLabel>{entry}</SellingPointLabel>
       </SellingPoint>
     ))}
-  </>
+  </SellingPoints>
 )
 
 export const VPNPromoWidget = () => {
