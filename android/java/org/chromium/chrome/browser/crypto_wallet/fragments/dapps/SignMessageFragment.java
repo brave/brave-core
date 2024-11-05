@@ -155,7 +155,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         if (accountId == null) {
             return;
         }
-        assert (accountId.coin == CoinType.ETH);
+        assert (accountId.coin == CoinType.ETH || accountId.coin == CoinType.SOL);
 
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
