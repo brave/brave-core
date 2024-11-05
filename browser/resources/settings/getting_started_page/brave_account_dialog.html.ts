@@ -8,19 +8,24 @@ import { SettingsBraveAccountDialogElement } from './brave_account_dialog.js'
 
 export function getHtml(this: SettingsBraveAccountDialogElement) {
   return html`<!--_html_template_start_-->
-    <cr-dialog id="dialog" show-on-attach>
-      <div slot="header" class="header">
+    <cr-dialog id="dialog"
+               show-on-attach>
+      <div slot="header">
         <div class="buttons">${this.showBackButton ? html`
-          <leo-button kind="plain-faint" size="tiny" @click=${() => this.fire('back-button-clicked')}>
+          <leo-button kind="plain-faint"
+                      size="tiny"
+                      @click=${() => this.fire('back-button-clicked')}>
             <leo-icon name="arrow-left"></leo-icon>
           </leo-button>` : nothing}
-          <leo-button kind="plain-faint" size="tiny" @click=${() => this.$.dialog.cancel()}>
+          <leo-button kind="plain-faint"
+                      size="tiny"
+                      @click=${() => this.$.dialog.cancel()}>
             <leo-icon name="close"></leo-icon>
           </leo-button>
         </div>
         <div class="logo"></div>
       </div>
-      <div slot="body" class="body">
+      <div slot="body">
         <div class="texts">
           <div class="text-top">${this.textTop}</div>
           <div class="text-bottom">${this.textBottom}</div>
@@ -28,7 +33,9 @@ export function getHtml(this: SettingsBraveAccountDialogElement) {
         <slot name="inputs"></slot>
         <slot name="buttons"></slot>
       </div>
-      <slot name="footer" slot="footer"></slot>
+      <slot name="footer"
+            slot="footer">
+      </slot>
     </cr-dialog>
   <!--_html_template_end_-->`
 }
