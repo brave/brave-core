@@ -154,7 +154,7 @@ class ZCashShieldSyncService {
   void UpdateNotesComplete(uint32_t new_latest_scanned_block,
                            std::optional<ZCashOrchardStorage::Error> error);
 
-  ZCashRpc* zcash_rpc();
+  ZCashRpc& zcash_rpc();
   base::SequenceBound<ZCashOrchardStorage>& orchard_storage();
 
   uint32_t GetSpendableBalance();

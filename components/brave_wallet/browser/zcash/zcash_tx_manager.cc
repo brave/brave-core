@@ -27,19 +27,17 @@ namespace brave_wallet {
 
 ZCashTxManager::ZCashTxManager(
     TxService& tx_service,
-    ZCashWalletService* zcash_wallet_service,
+    ZCashWalletService& zcash_wallet_service,
     KeyringService& keyring_service,
     TxStorageDelegate& delegate,
     AccountResolverDelegate& account_resolver_delegate)
     : TxManager(
           std::make_unique<ZCashTxStateManager>(delegate,
                                                 account_resolver_delegate),
-          std::make_unique<ZCashBlockTracker>(
-              *zcash_wallet_service->zcash_rpc()),
+          std::make_unique<ZCashBlockTracker>(zcash_wallet_service.zcash_rpc()),
           tx_service,
           keyring_service),
-      zcash_wallet_service_(zcash_wallet_service),
-      zcash_rpc_(zcash_wallet_service->zcash_rpc()) {
+      zcash_wallet_service_(zcash_wallet_service) {
   block_tracker_observation_.Observe(&GetZCashBlockTracker());
 }
 

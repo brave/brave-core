@@ -27,8 +27,8 @@ struct DiscoveredBitcoinAccount;
 // transactions.
 class AccountDiscoveryManager {
  public:
-  AccountDiscoveryManager(JsonRpcService* rpc_service,
-                          KeyringService* keyring_service,
+  AccountDiscoveryManager(JsonRpcService& rpc_service,
+                          KeyringService& keyring_service,
                           BitcoinWalletService* bitcoin_wallet_service);
   ~AccountDiscoveryManager();
 
@@ -75,8 +75,8 @@ class AccountDiscoveryManager {
   void ProcessDiscoveryResult(std::unique_ptr<DiscoveryContext> context,
                               bool result);
 
-  raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_;
-  raw_ptr<brave_wallet::KeyringService> keyring_service_;
+  raw_ref<brave_wallet::JsonRpcService> json_rpc_service_;
+  raw_ref<brave_wallet::KeyringService> keyring_service_;
   raw_ptr<brave_wallet::BitcoinWalletService> bitcoin_wallet_service_;
 
   base::WeakPtrFactory<AccountDiscoveryManager> weak_ptr_factory_{this};

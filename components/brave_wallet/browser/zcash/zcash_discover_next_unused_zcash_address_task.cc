@@ -35,13 +35,10 @@ void ZCashDiscoverNextUnusedZCashAddressTask::ScheduleWorkOnTask() {
 
 mojom::ZCashAddressPtr ZCashDiscoverNextUnusedZCashAddressTask::GetNextAddress(
     const mojom::ZCashAddressPtr& address) {
-  auto* keyring_service = zcash_wallet_service_->keyring_service_.get();
-  CHECK(keyring_service);
   auto next_key_id = current_address_->key_id.Clone();
-
   next_key_id->index++;
-
-  return keyring_service->GetZCashAddress(*account_id_, *next_key_id);
+  return zcash_wallet_service_->keyring_service().GetZCashAddress(*account_id_,
+                                                                  *next_key_id);
 }
 
 void ZCashDiscoverNextUnusedZCashAddressTask::WorkOnTask() {
@@ -66,7 +63,7 @@ void ZCashDiscoverNextUnusedZCashAddressTask::WorkOnTask() {
   }
 
   if (!block_end_) {
-    zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
+    zcash_wallet_service_->zcash_rpc().GetLatestBlock(
         GetNetworkForZCashKeyring(account_id_->keyring_id),
         base::BindOnce(&ZCashDiscoverNextUnusedZCashAddressTask::OnGetLastBlock,
                        this));
@@ -85,7 +82,7 @@ void ZCashDiscoverNextUnusedZCashAddressTask::WorkOnTask() {
     return;
   }
 
-  zcash_wallet_service_->zcash_rpc()->IsKnownAddress(
+  zcash_wallet_service_->zcash_rpc().IsKnownAddress(
       GetNetworkForZCashKeyring(account_id_->keyring_id),
       current_address_->address_string, 1, block_end_.value(),
       base::BindOnce(

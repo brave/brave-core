@@ -88,7 +88,7 @@ TxService::TxService(JsonRpcService* json_rpc_service,
   delegate_ = std::make_unique<TxStorageDelegateImpl>(prefs, store_factory_,
                                                       ui_task_runner);
   account_resolver_delegate_ =
-      std::make_unique<AccountResolverDelegateImpl>(&keyring_service);
+      std::make_unique<AccountResolverDelegateImpl>(keyring_service);
 
   tx_manager_map_[mojom::CoinType::ETH] = std::unique_ptr<TxManager>(
       new EthTxManager(*this, json_rpc_service, keyring_service, *delegate_,
@@ -115,7 +115,7 @@ TxService::TxService(JsonRpcService* json_rpc_service,
       CHECK_IS_TEST();
     } else {
       tx_manager_map_[mojom::CoinType::ZEC] = std::make_unique<ZCashTxManager>(
-          *this, zcash_wallet_service, keyring_service, *delegate_,
+          *this, *zcash_wallet_service, keyring_service, *delegate_,
           *account_resolver_delegate_);
     }
   }

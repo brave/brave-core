@@ -44,7 +44,7 @@ ZCashTransactionCompleteManager::ParamsBundle::ParamsBundle(
     ParamsBundle&& other) = default;
 
 ZCashTransactionCompleteManager::ZCashTransactionCompleteManager(
-    ZCashWalletService* zcash_wallet_service)
+    ZCashWalletService& zcash_wallet_service)
     : zcash_wallet_service_(zcash_wallet_service) {}
 
 ZCashTransactionCompleteManager::~ZCashTransactionCompleteManager() {}
@@ -54,7 +54,7 @@ void ZCashTransactionCompleteManager::CompleteTransaction(
     const ZCashTransaction& transaction,
     const mojom::AccountIdPtr& account_id,
     CompleteTransactionCallback callback) {
-  zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
+  zcash_wallet_service_->zcash_rpc().GetLatestBlock(
       chain_id,
       base::BindOnce(&ZCashTransactionCompleteManager::OnGetLatestBlockHeight,
                      weak_ptr_factory_.GetWeakPtr(),
@@ -80,7 +80,7 @@ void ZCashTransactionCompleteManager::OnGetLatestBlockHeight(
     return;
   }
   std::string chain_id = params.chain_id;
-  zcash_wallet_service_->zcash_rpc()->GetLatestTreeState(
+  zcash_wallet_service_->zcash_rpc().GetLatestTreeState(
       chain_id,
       base::BindOnce(&ZCashTransactionCompleteManager::OnGetTreeState,
                      weak_ptr_factory_.GetWeakPtr(), std::move(params)));

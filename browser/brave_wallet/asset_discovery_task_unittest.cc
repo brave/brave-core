@@ -184,8 +184,8 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     simple_hash_client_ =
         std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
     asset_discovery_task_ = std::make_unique<AssetDiscoveryTask>(
-        api_request_helper_.get(), simple_hash_client_.get(),
-        wallet_service_.get(), json_rpc_service_, GetPrefs());
+        *api_request_helper_, *simple_hash_client_, *wallet_service_,
+        *json_rpc_service_, GetPrefs());
     wallet_service_observer_ =
         std::make_unique<TestBraveWalletServiceObserverForAssetDiscoveryTask>();
     wallet_service_->AddObserver(wallet_service_observer_->GetReceiver());

@@ -24,6 +24,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -32,7 +33,10 @@ namespace brave_wallet {
 class AccountDiscoveryManagerUnitTest : public testing::Test {
  public:
   AccountDiscoveryManagerUnitTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        shared_url_loader_factory_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &url_loader_factory_)) {}
 
   ~AccountDiscoveryManagerUnitTest() override = default;
 
@@ -43,6 +47,8 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         *keyring_service_, *network_manager_,
@@ -71,8 +77,11 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
 
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
   std::unique_ptr<NetworkManager> network_manager_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
   std::unique_ptr<BitcoinHDKeyring> keyring_;
@@ -89,8 +98,8 @@ TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountCreatesNew) {
 
   EXPECT_EQ(0u, GetAccountUtils().AllBtcAccounts().size());
 
-  AccountDiscoveryManager discovery_manager(nullptr, keyring_service_.get(),
-                                            bitcoin_wallet_service_.get());
+  AccountDiscoveryManager discovery_manager(
+      *json_rpc_service_, *keyring_service_, bitcoin_wallet_service_.get());
   discovery_manager.StartDiscovery();
   task_environment_.RunUntilIdle();
 
@@ -130,8 +139,8 @@ TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountUpdatesExisting) {
             *keyring_service_->GetBitcoinAccountInfo(account_id)
                  ->next_change_address->key_id);
 
-  AccountDiscoveryManager discovery_manager(nullptr, keyring_service_.get(),
-                                            bitcoin_wallet_service_.get());
+  AccountDiscoveryManager discovery_manager(
+      *json_rpc_service_, *keyring_service_, bitcoin_wallet_service_.get());
   discovery_manager.StartDiscovery();
   task_environment_.RunUntilIdle();
 

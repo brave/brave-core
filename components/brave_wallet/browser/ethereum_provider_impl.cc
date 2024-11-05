@@ -1319,7 +1319,7 @@ mojom::AccountIdPtr EthereumProviderImpl::FindAuthenticatedAccountByAddress(
 
 mojom::AccountIdPtr EthereumProviderImpl::FindAccountByAddress(
     const std::string& address) {
-  AccountResolverDelegateImpl resolver(keyring_service_);
+  AccountResolverDelegateImpl resolver(*keyring_service_);
 
   auto account_id = resolver.ResolveAccountId(nullptr, &address);
   if (!account_id || account_id->coin != mojom::CoinType::ETH) {

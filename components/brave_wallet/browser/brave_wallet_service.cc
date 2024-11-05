@@ -131,8 +131,7 @@ BraveWalletService::BraveWalletService(
   if (IsZCashEnabled()) {
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
         delegate_->GetWalletBaseDirectory().AppendASCII(kZCashDataFolderName),
-        keyring_service(), profile_prefs, network_manager(),
-        url_loader_factory);
+        *keyring_service(), network_manager(), url_loader_factory);
   }
 
   tx_service_ = std::make_unique<TxService>(
@@ -145,8 +144,8 @@ BraveWalletService::BraveWalletService(
 
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
   asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
-      url_loader_factory, this, json_rpc_service(), keyring_service(),
-      simple_hash_client_.get(), profile_prefs);
+      url_loader_factory, *this, *json_rpc_service(), *keyring_service(),
+      *simple_hash_client_, profile_prefs);
 
   delegate_->AddObserver(this);
 
@@ -1134,8 +1133,7 @@ void BraveWalletService::OnActiveOriginChanged(
 
 void BraveWalletService::WalletRestored() {
   account_discovery_manager_ = std::make_unique<AccountDiscoveryManager>(
-      json_rpc_service_.get(), keyring_service_.get(),
-      bitcoin_wallet_service_.get());
+      *json_rpc_service_, *keyring_service_, bitcoin_wallet_service_.get());
   account_discovery_manager_->StartDiscovery();
 }
 

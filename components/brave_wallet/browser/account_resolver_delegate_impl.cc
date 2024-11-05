@@ -8,7 +8,7 @@
 namespace brave_wallet {
 
 AccountResolverDelegateImpl::AccountResolverDelegateImpl(
-    KeyringService* keyring_service)
+    KeyringService& keyring_service)
     : keyring_service_(keyring_service) {}
 
 mojom::AccountIdPtr AccountResolverDelegateImpl::ResolveAccountId(
