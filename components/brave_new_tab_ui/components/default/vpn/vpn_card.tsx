@@ -5,18 +5,174 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
+import styled from 'styled-components'
 
 import Toggle from '@brave/leo/react/toggle'
 import { getLocale } from '$web-common/locale'
-import * as S from './styles'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import { color, font, gradient, spacing } from '@brave/leo/tokens/css/variables'
 import VPNShieldsConnecting from './vpn-shields-connecting'
 import * as Actions from '../../../actions/brave_vpn_actions'
 import { ConnectionState, Region } from '../../../api/braveVpn'
+import guardianLogoUrl from '../vpn/assets/guardian-logo.svg'
+import vpnShieldsConnectedUrl from '../vpn/assets/vpn-shields-connected.svg'
+import vpnShieldsDisconnectedUrl from '../vpn/assets/vpn-shields-disconnected.svg'
+
+export const HeaderIcon = styled(Icon)`
+  --leo-icon-size: 24px;
+  --leo-icon-color: ${gradient.iconsActive};
+`
+
+export const StyledTitle = styled.div`
+  font: ${font.heading.h4};
+  color: ${color.white};
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+
+export const WidgetWrapper = styled.div.attrs({ 'data-theme': 'dark' })`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  color: ${color.white};
+  gap: ${spacing['2Xl']};
+`
+
+export const WidgetContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  align-self: stretch;
+`
+
+export const PoweredBy = styled.div`
+  display: flex;
+  align-items: center;
+  opacity: 0.5;
+  gap: 4px;
+
+  span {
+    color: ${color.white};
+    font: ${font.xSmall.regular};
+    text-align: center;
+  }
+`
+
+export const GuardianLogo = styled.span`
+  width: 56px;
+  height: 12px;
+  background-image: url(${guardianLogoUrl});
+`
+
+export const SellingPoints = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${spacing.s};
+  padding-left: ${spacing.xs};
+  align-self: stretch;
+`
+
+export const SellingPoint = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing.m};
+  align-self: stretch;
+`
+
+export const SellingPointIcon = styled(Icon)`
+  align-self: start;
+  margin: 1px;
+  --leo-icon-size: ${spacing.l};
+  --leo-icon-color: ${color.icon.disabled};
+`
+
+export const SellingPointLabel = styled.span`
+  color: ${color.text.primary};
+  font: ${font.xSmall.regular};
+`
+
+export const ActionArea = styled.div`
+  display: flex;
+  padding: 0px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: ${spacing.s};
+  align-self: stretch;
+`
+
+export const ActionButton = styled(Button)`
+  align-self: stretch;
+`
+
+export const ActionLabel = styled.div`
+  color: #fff;
+  opacity: 0.5;
+  font: ${font.xSmall.regular};
+`
+
+export const VPNShileldsIcon = styled.div<{ connectionState: ConnectionState }>`
+  width: 62px;
+  height: 62px;
+  background-image: url(${(p) =>
+    p.connectionState === ConnectionState.CONNECTED
+      ? vpnShieldsConnectedUrl
+      : vpnShieldsDisconnectedUrl});
+`
+
+export const ActionBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 23px;
+  align-self: stretch;
+`
+
+export const ConnectionInfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${spacing.xs};
+  flex: 1 0 0;
+`
+
+export const ConnectionStateLabel = styled.span<{ connected: boolean }>`
+  align-self: stretch;
+  color: ${(p) => (p.connected ? color.green[60] : color.text.primary)};
+  font: ${font.small.regular};
+`
+
+export const RegionAction = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing.m};
+`
+
+export const RegionCountryLabel = styled.span`
+  color: ${color.text.primary};
+  font: ${font.large.semibold};
+`
+
+export const RegionChangeLink = styled.a`
+  color: ${color.text.primary};
+  font: ${font.xSmall.link};
+  text-decoration-line: underline;
+  cursor: pointer;
+`
+
+export const RegionCityLabel = styled.span`
+  color: ${color.text.tertiary};
+  font: ${font.xSmall.regular};
+`
 
 export const VPNWidgetTitle = () => {
   return (
     <>
-      <S.HeaderIcon name='product-vpn' />
+      <HeaderIcon name='product-vpn' />
       {getLocale('braveVpnWidgetTitle')}
     </>
   )
@@ -24,9 +180,9 @@ export const VPNWidgetTitle = () => {
 
 export const VPNWidgetHeader = () => {
   return (
-    <S.StyledTitle>
+    <StyledTitle>
       <VPNWidgetTitle />
-    </S.StyledTitle>
+    </StyledTitle>
   )
 }
 
@@ -43,31 +199,29 @@ export const VPNPromoWidget = () => {
   )
 
   return (
-    <S.WidgetWrapper>
+    <WidgetWrapper>
       <VPNWidgetHeader />
-      <S.WidgetContent>
-        <S.PoweredBy>
+      <WidgetContent>
+        <PoweredBy>
           <span>{getLocale('braveVpnPoweredBy')}</span>
-          <S.GuardianLogo />
-        </S.PoweredBy>
-        <S.SellingPoints>
+          <GuardianLogo />
+        </PoweredBy>
+        <SellingPoints>
           {featureList.map((entry, i) => (
-            <S.SellingPoint key={i}>
-              <S.SellingPointIcon name='shield-done' />
-              <S.SellingPointLabel>{entry}</S.SellingPointLabel>
-            </S.SellingPoint>
+            <SellingPoint key={i}>
+              <SellingPointIcon name='shield-done' />
+              <SellingPointLabel>{entry}</SellingPointLabel>
+            </SellingPoint>
           ))}
-        </S.SellingPoints>
-        <S.ActionArea>
-          <S.ActionButton
-            onClick={() => dispatch(Actions.openVPNAccountPage())}
-          >
+        </SellingPoints>
+        <ActionArea>
+          <ActionButton onClick={() => dispatch(Actions.openVPNAccountPage())}>
             {getLocale('braveVpnCTA')}
-          </S.ActionButton>
-          <S.ActionLabel>{getLocale('braveVpnFreeTrial')}</S.ActionLabel>
-        </S.ActionArea>
-      </S.WidgetContent>
-    </S.WidgetWrapper>
+          </ActionButton>
+          <ActionLabel>{getLocale('braveVpnFreeTrial')}</ActionLabel>
+        </ActionArea>
+      </WidgetContent>
+    </WidgetWrapper>
   )
 }
 
@@ -96,35 +250,35 @@ export const VPNMainWidget = (props: MainWidgetProps) => {
   const connected = props.connectionState === ConnectionState.CONNECTED
 
   return (
-    <S.WidgetWrapper>
+    <WidgetWrapper>
       <VPNWidgetHeader />
-      <S.WidgetContent>
+      <WidgetContent>
         {props.connectionState === ConnectionState.CONNECTING ? (
           <VPNShieldsConnecting />
         ) : (
-          <S.VPNShileldsIcon connectionState={props.connectionState} />
+          <VPNShileldsIcon connectionState={props.connectionState} />
         )}
-        <S.ActionBox>
-          <S.ConnectionInfoBox>
-            <S.ConnectionStateLabel connected={connected}>
+        <ActionBox>
+          <ConnectionInfoBox>
+            <ConnectionStateLabel connected={connected}>
               {GetConnectionStateLabel(props.connectionState)}
-            </S.ConnectionStateLabel>
-            <S.RegionAction>
-              <S.RegionCountryLabel>
+            </ConnectionStateLabel>
+            <RegionAction>
+              <RegionCountryLabel>
                 {props.selectedRegion.country}
-              </S.RegionCountryLabel>
-              <S.RegionChangeLink
+              </RegionCountryLabel>
+              <RegionChangeLink
                 onClick={() => dispatch(Actions.launchVPNPanel())}
               >
                 {getLocale('braveVpnChangeRegion')}
-              </S.RegionChangeLink>
-            </S.RegionAction>
-            <S.RegionCityLabel>
+              </RegionChangeLink>
+            </RegionAction>
+            <RegionCityLabel>
               {props.selectedRegion.namePretty === props.selectedRegion.country
                 ? getLocale('braveVpnOptimal')
                 : props.selectedRegion.namePretty}
-            </S.RegionCityLabel>
-          </S.ConnectionInfoBox>
+            </RegionCityLabel>
+          </ConnectionInfoBox>
           <Toggle
             checked={
               props.connectionState === ConnectionState.CONNECTED ||
@@ -132,8 +286,8 @@ export const VPNMainWidget = (props: MainWidgetProps) => {
             }
             onChange={() => dispatch(Actions.toggleConnection())}
           />
-        </S.ActionBox>
-      </S.WidgetContent>
-    </S.WidgetWrapper>
+        </ActionBox>
+      </WidgetContent>
+    </WidgetWrapper>
   )
 }
