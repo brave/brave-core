@@ -26,9 +26,11 @@ import Toggle from '@brave/leo/react/toggle'
 import Button from '@brave/leo/react/button'
 
 import { getLocale } from '$web-common/locale'
+import { loadTimeData } from '$web-common/loadTimeData'
 import Icon from '@brave/leo/react/icon'
 import styled, { css } from 'styled-components'
 import { spacing } from '@brave/leo/tokens/css/variables'
+import { useNewTabPref } from '../../../hooks/usePref'
 
 const StyledButton = styled(Button) <{ float: boolean }>`
   margin-top: ${spacing.xl};
@@ -46,9 +48,6 @@ interface Props {
   toggleShowRewards: () => void
   showRewards: boolean
   braveRewardsSupported: boolean
-  toggleShowBraveVPN: () => void
-  showBraveVPN: boolean
-  braveVPNSupported: boolean
   toggleCards: (show: boolean) => void
   cardsHidden: boolean
 }
@@ -62,7 +61,9 @@ const ToggleButton = ({ on, toggleFunc, float }: { on: boolean, toggleFunc: any,
   </StyledButton>
 }
 
-function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, toggleShowBraveVPN, showBraveVPN, braveVPNSupported, toggleShowRewards, showRewards, braveRewardsSupported, toggleCards, cardsHidden }: Props) {
+function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, toggleShowRewards, showRewards, braveRewardsSupported, toggleCards, cardsHidden }: Props) {
+  const [showBraveVPN, saveShowBraveVPN] = useNewTabPref('showBraveVPN')
+
   return <StyledWidgetSettings>
     {braveTalkSupported && <FeaturedSettingsWidget>
       <StyledBannerImage src={braveTalkBanner} />
@@ -88,7 +89,7 @@ function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, 
       </StyledSettingsInfo>
       <ToggleButton on={showRewards} toggleFunc={toggleShowRewards} />
     </SettingsWidget>}
-    {braveVPNSupported && <SettingsWidget>
+    {loadTimeData.getBoolean('vpnWidgetSupported') && <SettingsWidget>
       <StyledBannerImage src={braveVPNBanner} />
       <StyledSettingsInfo>
         <StyledSettingsTitle>
@@ -98,7 +99,7 @@ function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, 
           {getLocale('braveVpnWidgetSettingDesc')}
         </StyledSettingsCopy>
       </StyledSettingsInfo>
-      <ToggleButton on={showBraveVPN} toggleFunc={toggleShowBraveVPN} />
+      <ToggleButton on={!!showBraveVPN} toggleFunc={() => saveShowBraveVPN(!showBraveVPN)} />
     </SettingsWidget>}
     <FeaturedSettingsWidget>
       <ToggleCardsWrapper>
