@@ -35,14 +35,15 @@ import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
 public class VpnPaywallActivity extends BraveVpnParentActivity {
-    private ProgressBar mMonthlyPlanProgress;
-    private ProgressBar mYearlyPlanProgress;
     private LinearLayout mPlanLayout;
     private boolean mShouldShowRestoreMenu;
 
+    private ProgressBar mMonthlyPlanProgress;
     private LinearLayout mMonthlySelectorLayout;
     private TextView mMonthlySubscriptionAmountText;
 
+
+    private ProgressBar mYearlyPlanProgress;
     private LinearLayout mYearlySelectorLayout;
     private TextView mYearlySubscriptionAmountText;
     private TextView mRemovedValueText;
@@ -50,13 +51,11 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
 
     private Button mBtnVpnPlanAction;
 
-    enum SelectedPlanType {
-        YEARLY,
-        MONTHLY
-    }
-
-    private SelectedPlanType mSelectedPlanType = SelectedPlanType.YEARLY;
-    private ProductDetails mProductDetails;
+    private InAppPurchaseWrapper.SubscriptionType mSelectedPlanType =
+            InAppPurchaseWrapper.SubscriptionType.YEARLY;
+    
+    private ProductDetails mMonthlyProductDetails;
+    private ProductDetails mYearlyProductDetails;
 
     @Override
     public void onResumeWithNative() {
@@ -75,10 +74,9 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_close_24);
         actionBar.setTitle(getResources().getString(R.string.brave_vpn));
 
-        mMonthlyPlanProgress = findViewById(R.id.monthly_plan_progress);
-
-        mYearlyPlanProgress = findViewById(R.id.yearly_plan_progress);
         mPlanLayout = findViewById(R.id.plan_layout);
+
+        mMonthlyPlanProgress = findViewById(R.id.monthly_plan_progress);
 
         mRemovedValueText = findViewById(R.id.removed_value_tv);
         mRemovedValueText.setPaintFlags(
@@ -89,6 +87,11 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
                 String.format(getResources().getString(R.string.monthly_subscription), ""));
         mMonthlySubscriptionAmountText = findViewById(R.id.monthly_subscription_amount_text);
         mMonthlySelectorLayout = findViewById(R.id.monthly_selector_layout);
+        mMonthlySelectorLayout.setOnClickListener(
+                                                v -> {
+                                                    mSelectedPlanType = InAppPurchaseWrapper.SubscriptionType.MONTHLY;
+                                                    updateSelectedPlanView();
+                                                });
 
         TextView trialText = findViewById(R.id.trial_text);
         String trialString = getResources().getString(R.string.trial_text);
@@ -108,6 +111,7 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
                 SPAN_EXCLUSIVE_EXCLUSIVE);
         trialText.setText(trialTextSpan);
 
+        mYearlyPlanProgress = findViewById(R.id.yearly_plan_progress);
         mYearlySubscriptionAmountText = findViewById(R.id.yearly_subscription_amount_text);
         mYearlySelectorLayout = findViewById(R.id.yearly_selector_layout);
         mYearlyText = findViewById(R.id.yearly_text);
@@ -123,10 +127,18 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
         mBtnVpnPlanAction = findViewById(R.id.vpn_plan_action_button);
         mBtnVpnPlanAction.setOnClickListener(
                 v -> {
-                    if (mProductDetails != null) {
-                        InAppPurchaseWrapper.getInstance()
-                                .initiatePurchase(VpnPaywallActivity.this, mProductDetails);
+                    ProductDetails productDetails = null;
+                    if (mSelectedPlanType == InAppPurchaseWrapper.SubscriptionType.MONTHLY) {
+                        productDetails = mMonthlyProductDetails;
+                    } else if (mSelectedPlanType
+                            == InAppPurchaseWrapper.SubscriptionType.YEARLY) {
+                        productDetails = mYearlyProductDetails;
                     }
+                    if (productDetails == null) {
+                        return;
+                    }
+                    InAppPurchaseWrapper.getInstance()
+                                .initiatePurchase(VpnPaywallActivity.this, productDetails);
                 });
     }
 
@@ -140,7 +152,6 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
         verifySubscription();
 
         getMonthlyProductDetails();
-        updateSelectedPlanView();
     }
 
     private void getMonthlyProductDetails() {
@@ -150,22 +161,47 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
                 InAppPurchaseWrapper.getInstance()
                         .getMonthlyProductDetails(InAppPurchaseWrapper.SubscriptionProduct.VPN),
                 monthlyProductDetails -> {
-                    if (monthlyProductDetails != null) {
-                        runOnUiThread(
+                    mMonthlyProductDetails = monthlyProductDetails;
+                    updateMonthlyPlanUI();
+                    getYearlyProductDetails();
+                });
+    }
+
+    private void getYearlyProductDetails() {
+        mYearlyPlanProgress.setVisibility(View.VISIBLE);
+        LiveDataUtil.observeOnce(
+                InAppPurchaseWrapper.getInstance()
+                        .getYearlyProductDetails(InAppPurchaseWrapper.SubscriptionProduct.VPN),
+                yearlyProductDetails -> {
+                    mYearlyProductDetails = yearlyProductDetails;
+                    updateYearlyPlanUI();
+                });
+    }
+
+    private void updateSelectedPlanView() {
+        mYearlySelectorLayout.setBackgroundResource(
+                mSelectedPlanType == InAppPurchaseWrapper.SubscriptionType.YEARLY
+                        ? R.drawable.vpn_paywall_selected_bg
+                        : R.drawable.vpn_paywall_bg);
+        mMonthlySelectorLayout.setBackgroundResource(
+                mSelectedPlanType == InAppPurchaseWrapper.SubscriptionType.MONTHLY
+                        ? R.drawable.vpn_paywall_selected_bg
+                        : R.drawable.vpn_paywall_bg);
+    }
+
+    private void updateMonthlyPlanUI() {
+        if (mMonthlyProductDetails == null) {
+            return;
+        }
+            runOnUiThread(
                                 new Runnable() {
                                     @Override
                                     public void run() {
-                                        mMonthlySelectorLayout.setOnClickListener(
-                                                v -> {
-                                                    mSelectedPlanType = SelectedPlanType.MONTHLY;
-                                                    mProductDetails = monthlyProductDetails;
-                                                    updateSelectedPlanView();
-                                                });
                                         SpannableString monthlyFormattedPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedProductPrice(
                                                                 VpnPaywallActivity.this,
-                                                                monthlyProductDetails,
+                                                                mMonthlyProductDetails,
                                                                 R.string
                                                                         .monthly_subscription_amount);
                                         if (monthlyFormattedPrice != null) {
@@ -178,40 +214,28 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedFullProductPrice(
                                                                 VpnPaywallActivity.this,
-                                                                monthlyProductDetails);
+                                                                mMonthlyProductDetails);
                                         if (fullPrice != null) {
                                             mRemovedValueText.setText(
                                                     fullPrice, TextView.BufferType.SPANNABLE);
                                         }
                                     }
                                 });
-                        getYearlyProductDetails(monthlyProductDetails);
-                    }
-                });
     }
 
-    private void getYearlyProductDetails(ProductDetails monthlyProductDetails) {
-        mYearlyPlanProgress.setVisibility(View.VISIBLE);
-        LiveDataUtil.observeOnce(
-                InAppPurchaseWrapper.getInstance()
-                        .getYearlyProductDetails(InAppPurchaseWrapper.SubscriptionProduct.VPN),
-                yearlyProductDetails -> {
-                    if (yearlyProductDetails != null) {
-                        runOnUiThread(
+    private void updateYearlyPlanUI() {
+        if (mYearlyProductDetails == null) {
+            return;
+        }
+        runOnUiThread(
                                 new Runnable() {
                                     @Override
                                     public void run() {
-                                        mYearlySelectorLayout.setOnClickListener(
-                                                v -> {
-                                                    mSelectedPlanType = SelectedPlanType.YEARLY;
-                                                    mProductDetails = yearlyProductDetails;
-                                                    updateSelectedPlanView();
-                                                });
                                         SpannableString yearlyFormattedPrice =
                                                 InAppPurchaseWrapper.getInstance()
                                                         .getFormattedProductPrice(
                                                                 VpnPaywallActivity.this,
-                                                                yearlyProductDetails,
+                                                                mYearlyProductDetails,
                                                                 R.string
                                                                         .yearly_subscription_amount);
                                         if (yearlyFormattedPrice != null) {
@@ -220,41 +244,27 @@ public class VpnPaywallActivity extends BraveVpnParentActivity {
                                                     TextView.BufferType.SPANNABLE);
                                             mYearlyPlanProgress.setVisibility(View.GONE);
                                         }
+                                        mBtnVpnPlanAction.setEnabled(true);
+                                        if (mMonthlyProductDetails != null) {
+                                            String discountText =
+                                                    getString(
+                                                            R.string.renew_monthly_save,
+                                                            InAppPurchaseWrapper.getInstance()
+                                                                    .getYearlyDiscountPercentage(
+                                                                            mMonthlyProductDetails,
+                                                                            mYearlyProductDetails));
+                                            SpannableString discountSpannableString =
+                                                    SpanApplier.applySpans(
+                                                            discountText,
+                                                            new SpanInfo(
+                                                                    "<discount_text>",
+                                                                    "</discount_text>",
+                                                                    new StyleSpan(android.graphics.Typeface.BOLD),
+                                                                    new UnderlineSpan()));
+                                            mYearlyText.setText(discountSpannableString);
+                                        }
                                     }
                                 });
-                        mProductDetails = yearlyProductDetails;
-                        mBtnVpnPlanAction.setEnabled(true);
-                        if (monthlyProductDetails != null) {
-                            String discountText =
-                                    getString(
-                                            R.string.renew_monthly_save,
-                                            InAppPurchaseWrapper.getInstance()
-                                                    .getYearlyDiscountPercentage(
-                                                            monthlyProductDetails,
-                                                            yearlyProductDetails));
-                            SpannableString discountSpannableString =
-                                    SpanApplier.applySpans(
-                                            discountText,
-                                            new SpanInfo(
-                                                    "<discount_text>",
-                                                    "</discount_text>",
-                                                    new StyleSpan(android.graphics.Typeface.BOLD),
-                                                    new UnderlineSpan()));
-                            mYearlyText.setText(discountSpannableString);
-                        }
-                    }
-                });
-    }
-
-    private void updateSelectedPlanView() {
-        mYearlySelectorLayout.setBackgroundResource(
-                mSelectedPlanType == SelectedPlanType.YEARLY
-                        ? R.drawable.vpn_paywall_selected_bg
-                        : R.drawable.vpn_paywall_bg);
-        mMonthlySelectorLayout.setBackgroundResource(
-                mSelectedPlanType == SelectedPlanType.MONTHLY
-                        ? R.drawable.vpn_paywall_selected_bg
-                        : R.drawable.vpn_paywall_bg);
     }
 
     @Override
