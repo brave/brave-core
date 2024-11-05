@@ -22,7 +22,6 @@ const defaultState: BraveVPNState = {
 const reducer = createReducer<BraveVPNState>({}, defaultState)
 
 reducer.on(Actions.connectionStateChanged, (state, payload): BraveVPNState => {
-  console.log('connection state', payload)
   return {
     ...state,
     connectionState: payload
@@ -30,7 +29,6 @@ reducer.on(Actions.connectionStateChanged, (state, payload): BraveVPNState => {
 })
 
 reducer.on(Actions.purchasedStateChanged, (state, payload): BraveVPNState => {
-  console.log('purchased state', payload)
   return {
     ...state,
     purchasedState: payload
@@ -38,7 +36,6 @@ reducer.on(Actions.purchasedStateChanged, (state, payload): BraveVPNState => {
 })
 
 reducer.on(Actions.selectedRegionChanged, (state, payload): BraveVPNState => {
-  console.log('selected region', payload)
   return {
     ...state,
     selectedRegion: payload

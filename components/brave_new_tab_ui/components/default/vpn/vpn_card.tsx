@@ -186,17 +186,23 @@ export const VPNWidgetHeader = () => {
   )
 }
 
-export const VPNPromoWidget = () => {
-  const dispatch = useDispatch()
-
-  const featureList = React.useMemo(
-    () => [
+const FeatureList = () => (
+  <>
+    {[
       getLocale('braveVpnFeature1'),
       getLocale('braveVpnFeature2'),
       getLocale('braveVpnWidgetFeature3')
-    ],
-    []
-  )
+    ].map((entry) => (
+      <SellingPoint key={entry}>
+        <SellingPointIcon name='shield-done' />
+        <SellingPointLabel>{entry}</SellingPointLabel>
+      </SellingPoint>
+    ))}
+  </>
+)
+
+export const VPNPromoWidget = () => {
+  const dispatch = useDispatch()
 
   return (
     <WidgetWrapper>
@@ -206,14 +212,7 @@ export const VPNPromoWidget = () => {
           <span>{getLocale('braveVpnPoweredBy')}</span>
           <GuardianLogo />
         </PoweredBy>
-        <SellingPoints>
-          {featureList.map((entry, i) => (
-            <SellingPoint key={i}>
-              <SellingPointIcon name='shield-done' />
-              <SellingPointLabel>{entry}</SellingPointLabel>
-            </SellingPoint>
-          ))}
-        </SellingPoints>
+        <FeatureList />
         <ActionArea>
           <ActionButton onClick={() => dispatch(Actions.openVPNAccountPage())}>
             {getLocale('braveVpnCTA')}
