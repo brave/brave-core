@@ -12,12 +12,6 @@
  * 'settings-brave-account-forgot-password-dialog'...
  */
 
-export interface SettingsBraveAccountForgotPasswordDialogElement {
-  $: {
-    emailAddress: HTMLInputElement,
-  }
-}
-
 export class SettingsBraveAccountForgotPasswordDialogElement extends CrLitElement {
   static get is() {
     return 'settings-brave-account-forgot-password-dialog'
@@ -37,9 +31,8 @@ export class SettingsBraveAccountForgotPasswordDialogElement extends CrLitElemen
     }
   }
 
-  protected onEmailAddressInput() {
-    // https://www.regular-expressions.info
-    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.$.emailAddress.value)
+  protected onEmailAddressInput(detail: { value: string }) {
+    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(detail.value)
   }
 
   protected isEmailAddressValid: boolean = false
