@@ -14,13 +14,14 @@ export function getHtml(this: SettingsBraveAccountRow) {
   return html`<!--_html_template_start_-->
     <div class="row">
       <div class="circle">
-        <div class="logo"></div>
+        <leo-icon name="social-brave-release-favicon-fullheight-color">
+        </leo-icon>
       </div>
       <div class="texts">
         <div class="text-top">Sign in or create a Brave account</div>
         <div class="text-bottom">$i18n{braveSyncBraveAccountDesc}</div>
       </div>
-      <leo-button class="button" size="small" @click=${() => this.dialogType = DialogType.ENTRY}>
+      <leo-button size="small" @click=${() => this.dialogType = DialogType.ENTRY}>
         Get started
       </leo-button>
     </div>
@@ -33,31 +34,31 @@ export function getHtml(this: SettingsBraveAccountRow) {
             <settings-brave-account-entry-dialog
               @close=${() => this.dialogType = DialogType.NONE}
               @create-button-clicked=${() => this.dialogType = DialogType.CREATE}
-              @sign-in-button-clicked=${() => this.dialogType = DialogType.SIGN_IN}
-              @self-custody-button-clicked=${() => this.dialogType = DialogType.NONE}>
+              @self-custody-button-clicked=${() => this.dialogType = DialogType.NONE}
+              @sign-in-button-clicked=${() => this.dialogType = DialogType.SIGN_IN}>
             </settings-brave-account-entry-dialog>
           `
         case DialogType.CREATE:
           return html`
             <settings-brave-account-create-dialog
-              @close=${() => this.dialogType = DialogType.NONE}
-              @back-button-clicked=${this.onBackButtonClicked}>
+              @back-button-clicked=${this.onBackButtonClicked}
+              @close=${() => this.dialogType = DialogType.NONE}>
             </settings-brave-account-create-dialog>
           `
         case DialogType.SIGN_IN:
           return html`
             <settings-brave-account-sign-in-dialog
-              @close=${() => this.dialogType = DialogType.NONE}
               @back-button-clicked=${this.onBackButtonClicked}
+              @close=${() => this.dialogType = DialogType.NONE}
               @forgot-password-button-clicked=${() => this.dialogType = DialogType.FORGOT_PASSWORD}>
             </settings-brave-account-sign-in-dialog>
           `
         case DialogType.FORGOT_PASSWORD:
           return html`
             <settings-brave-account-forgot-password-dialog
-              @close=${() => this.dialogType = DialogType.NONE}
               @back-button-clicked=${this.onBackButtonClicked}
-              @cancel-button-clicked=${this.onBackButtonClicked}>
+              @cancel-button-clicked=${this.onBackButtonClicked}
+              @close=${() => this.dialogType = DialogType.NONE}>
             </settings-brave-account-forgot-password-dialog>
           `
       }

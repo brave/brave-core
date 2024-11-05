@@ -49,7 +49,6 @@ generate_grd("build_grd") {
     "brave_sync_page/device_mobile.svg",
     "brave_sync_page/qr_scanning.svg",
     "brave_sync_page/start_icon.svg",
-    "images/brave-favicon.svg",
     "images/brave-logo-dark.svg",
     "images/brave-logo-light.svg",
     "images/cookies_banner.svg",
