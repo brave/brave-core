@@ -34,17 +34,17 @@ export class SettingsBraveAccountDialogElement extends CrLitElement {
 
   static override get properties() {
     return {
-      showBackButton: { type: Boolean },
-      headerTextTop: { type: String },
-      headerTextBottom: { type: String },
       horizontalButtons: { type: Boolean },
+      showBackButton: { type: Boolean },
+      textBottom: { type: String },
+      textTop: { type: String },
     }
   }
 
-  protected showBackButton: boolean
-  protected headerTextTop: string
-  protected headerTextBottom: string
   protected horizontalButtons: boolean
+  protected showBackButton: boolean
+  protected textBottom: string
+  protected textTop: string
 }
 
 declare global {

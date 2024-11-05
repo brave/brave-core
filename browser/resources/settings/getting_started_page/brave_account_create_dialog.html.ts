@@ -9,8 +9,8 @@ import { SettingsBraveAccountCreateDialogElement } from './brave_account_create_
 export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
   return html`<!--_html_template_start_-->
     <settings-brave-account-dialog show-back-button
-      header-text-top="Create your account"
-      header-text-bottom="$i18n{braveSyncBraveAccountDesc}">
+                                   text-bottom="$i18n{braveSyncBraveAccountDesc}"
+                                   text-top="Create your account">
       <div slot="inputs">
         <leo-input placeholder="Enter your email address" @input=${this.onEmailAddressInput}>
           <div class="label">Email address</div>

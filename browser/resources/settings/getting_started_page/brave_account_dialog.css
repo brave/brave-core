@@ -5,8 +5,6 @@
 
 /* #css_wrapper_metadata_start
  * #type=style-lit
- * #import=chrome://resources/cr_elements/cr_icons_lit.css.js
- * #include=cr-icons-lit
  * #css_wrapper_metadata_end */
 
 :host {
@@ -41,11 +39,11 @@
 .button {
   --leo-button-padding: 0px;
   flex: none;
-  margin: 12px 12px 0px 12px;
+  margin: var(--leo-spacing-l) var(--leo-spacing-l) 0px var(--leo-spacing-l);
 }
 
 leo-icon {
-  --leo-icon-size: 20px;  
+  --leo-icon-size: var(--leo-icon-m);
 }
 
 .logo {
@@ -62,15 +60,15 @@ leo-icon {
 }
 
 .body {
-  padding: 0px 24px 24px 24px;
+  padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl) var(--leo-spacing-2xl);
 }
 
 .texts {
   color: var(--leo-color-text-secondary);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 0px 0px 32px;
+  gap: var(--leo-spacing-m);
+  margin: 0px 0px var(--leo-spacing-3xl);
 }
 
 .text-top {
@@ -84,14 +82,14 @@ leo-icon {
 :host ::slotted([slot=inputs]) {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  margin: 0px 0px 24px;
+  gap: var(--leo-spacing-2xl);
+  margin: 0px 0px var(--leo-spacing-2xl);
 }
 
 :host ::slotted([slot=buttons]) {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--leo-spacing-m);
 }
 
 :host([horizontal-buttons]) ::slotted([slot=buttons]) {

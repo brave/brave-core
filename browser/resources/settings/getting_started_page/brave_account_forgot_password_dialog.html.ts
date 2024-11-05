@@ -9,9 +9,10 @@ import { SettingsBraveAccountForgotPasswordDialogElement } from './brave_account
 
 export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog show-back-button horizontal-buttons
-      header-text-top="Forgot your password?"
-      header-text-bottom="Confirm your Brave account email and we'll email you a link to reset your password. The link will only be valid for [X] hours.">
+    <settings-brave-account-dialog horizontal-buttons
+                                   show-back-button
+                                   text-bottom="Confirm your Brave account email and we'll email you a link to reset your password. The link will only be valid for [X] hours."
+                                   text-top="Forgot your password?">
       <div slot="inputs">
         <leo-input id="email" placeholder="Enter your email address" @input=${this.onEmailInput}>
           <div class="label">Email address</div>
