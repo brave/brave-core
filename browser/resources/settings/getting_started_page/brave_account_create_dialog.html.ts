@@ -25,7 +25,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           <div class="label">Create a password</div>
           <leo-icon slot="right-icon"
                     name="eye-off"
-                    @click=${this.OnEyeIconClick}>
+                    @click=${this.OnEyeIconClicked}>
           </leo-icon>
           <div id="password_strength_indicator"
                slot="errors"
@@ -44,7 +44,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           <div class="label">Confirm password</div>
           <leo-icon slot="right-icon"
                     name="eye-off"
-                    @click=${this.OnEyeIconClick}>
+                    @click=${this.OnEyeIconClicked}>
           </leo-icon>
           <div slot="errors" class="password-confirmation-result ${this.passwordConfirmation.length !== 0 ? 'visible' : ''}">
             <leo-icon name=${this.getIconName()}></leo-icon>

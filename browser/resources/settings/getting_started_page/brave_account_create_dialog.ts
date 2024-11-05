@@ -61,7 +61,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     this.isChecked = detail.checked
   }
 
-  protected OnEyeIconClick(event: Event) {
+  protected OnEyeIconClicked(event: Event) {
     event.preventDefault()
     const target = event.target as Element
     const isShowing = target.getAttribute('name') === 'eye-on'

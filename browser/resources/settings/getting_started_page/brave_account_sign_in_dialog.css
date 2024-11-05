@@ -7,14 +7,10 @@
  * #type=style-lit
  * #css_wrapper_metadata_end */
 
-:host {
-  --brave-account-sign-in-dialog-label-margin: 4px;
-}
-
 .label {
   color: var(--leo-color-text-primary);
   font: var(--leo-font-small-semibold);
-  margin: 0px 0px 0px var(--brave-account-sign-in-dialog-label-margin);
+  margin: 0px 0px 0px var(--leo-spacing-s);
 }
 
 .password {
@@ -27,7 +23,7 @@
   color: var(--leo-color-text-secondary);
   cursor: pointer;
   font: var(--leo-font-small-link);
-  margin: 0px var(--brave-account-sign-in-dialog-label-margin) 0px 0px;
+  margin: 0px var(--leo-spacing-s) 0px 0px;
   text-decoration-line: underline;
   text-decoration-skip-ink: none;
   text-underline-offset: 2.4px;
