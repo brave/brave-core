@@ -40,7 +40,7 @@ public class BraveReaderModeManager extends ReaderModeManager {
 
         super.tryShowingPrompt();
 
-        //There is no need to spoof custom tab after showing the prompt.
+        // There is no need to spoof custom tab after showing the prompt.
         spoofCustomTab(false);
     }
 
