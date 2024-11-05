@@ -8,6 +8,7 @@
 
 class Browser;
 class WebUIContentsWrapper;
+class SidePanelEntryScope;
 
 #include "base/functional/callback_forward.h"
 #include "brave/browser/ui/webui/playlist_ui.h"
@@ -16,6 +17,7 @@ class WebUIContentsWrapper;
 class PlaylistSidePanelWebView : public SidePanelWebUIView {
  public:
   PlaylistSidePanelWebView(Browser* browser,
+                           SidePanelEntryScope& scope,
                            base::RepeatingClosure close_cb,
                            WebUIContentsWrapper* contents_wrapper);
   PlaylistSidePanelWebView(const PlaylistSidePanelWebView&) = delete;

@@ -22,10 +22,12 @@ END_METADATA
 namespace {
 
 std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
-    base::WeakPtr<Profile> profile) {
+    base::WeakPtr<Profile> profile,
+    SidePanelEntryScope& scope) {
   CHECK(profile);
+
   auto web_view = std::make_unique<SidePanelWebUIViewT<AIChatUI>>(
-      base::RepeatingClosure(), base::RepeatingClosure(),
+      scope, base::RepeatingClosure(), base::RepeatingClosure(),
       std::make_unique<WebUIContentsWrapperT<AIChatUI>>(
           GURL(base::StrCat({kChatUIURL, "tab"})), profile.get(),
           IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
