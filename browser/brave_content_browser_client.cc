@@ -644,7 +644,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
-    ntp_registration.Add<brave_vpn::mojom::NTPWidgetHandlerFactory>();
+    ntp_registration.Add<brave_vpn::mojom::ServiceHandler>();
   }
 #endif
 

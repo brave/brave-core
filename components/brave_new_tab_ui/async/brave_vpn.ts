@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import getWidgetBrowserAPI, { ServiceObserverReceiver, ConnectionState, PurchasedState, Region } from '../api/braveVpn'
+import getVPNServiceHandler, { ServiceObserverReceiver, ConnectionState, PurchasedState, Region } from '../api/braveVpn'
 import * as Actions from '../actions/brave_vpn_actions'
 import store from '../store'
 import { ApplicationState } from '../reducers'
@@ -29,7 +29,7 @@ const handler = new AsyncActionHandler()
 handler.on(Actions.initialize.getType(),
   async (store) => {
     const serviceObserver = new ServiceObserverReceiver(observer)
-    getWidgetBrowserAPI().serviceHandler.addObserver(
+    getVPNServiceHandler().addObserver(
       serviceObserver.$.bindNewPipeAndPassRemote())
     getNTPBrowserAPI().pageHandler.refreshVPNState()
   }
@@ -53,9 +53,9 @@ handler.on(Actions.toggleConnection.getType(),
     const connectionState = state.braveVPN.connectionState
     if (connectionState === ConnectionState.CONNECTED ||
         connectionState === ConnectionState.CONNECTING) {
-      getWidgetBrowserAPI().serviceHandler.disconnect();
+      getVPNServiceHandler().disconnect();
     } else {
-      getWidgetBrowserAPI().serviceHandler.connect()
+      getVPNServiceHandler().connect()
     }
   }
 )
@@ -67,8 +67,8 @@ handler.on<PurchasedState>(Actions.purchasedStateChanged.getType(),
     }
 
     const [{ state }, { currentRegion }] = await Promise.all([
-      getWidgetBrowserAPI().serviceHandler.getConnectionState(),
-      getWidgetBrowserAPI().serviceHandler.getSelectedRegion(),
+      getVPNServiceHandler().getConnectionState(),
+      getVPNServiceHandler().getSelectedRegion(),
     ])
 
     store.dispatch(Actions.connectionStateChanged(state))
