@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 46369bcb300556a63ea7394943af693d84ff8063..ae549ee89f126fa726e287fd1ea3ff9d8486c6df 100644
+index 46369bcb300556a63ea7394943af693d84ff8063..f5dc0b7586381fa847e73466c983dd7de2069e15 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -1941,6 +1941,7 @@
@@ -18,7 +18,7 @@ index 46369bcb300556a63ea7394943af693d84ff8063..ae549ee89f126fa726e287fd1ea3ff9d
      },
      {
        name: "FileSystemAccessLockingScheme",
-@@ -2502,7 +2504,7 @@
+@@ -2469,7 +2471,7 @@
        // enterprise policies have both expired. See the
        // KeyboardFocusableScrollersOptOut flag.
        name: "KeyboardFocusableScrollers",
