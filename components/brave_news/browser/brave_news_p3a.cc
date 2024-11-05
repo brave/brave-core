@@ -335,8 +335,8 @@ void NewsMetrics::OnPublishersChanged() {
 void NewsMetrics::OnChannelsChanged() {
   DVLOG(1) << __FUNCTION__;
   base::flat_set<std::string> distinct_channels;
-  for (const auto& [locale, channels] :
-       pref_manager_->GetSubscriptions().channels()) {
+  auto channels_map = pref_manager_->GetSubscriptions().channels();
+  for (const auto& [locale, channels] : channels_map) {
     distinct_channels.insert(channels.begin(), channels.end());
   }
   RecordTotalSubscribedCount(SubscribeType::kChannels,
