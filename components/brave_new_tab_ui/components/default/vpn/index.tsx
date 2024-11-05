@@ -6,12 +6,14 @@
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 
-import createWidget from '../widget/index'
+import { loadTimeData } from '$web-common/loadTimeData'
+import createWidget, { WidgetProps } from '../widget/index'
 import { StyledCard, StyledTitleTab } from '../widgetCard'
 import { VPNMainWidget, VPNPromoWidget, VPNWidgetTitle } from '../vpn/vpn_card'
 import { BraveVPNState } from 'components/brave_new_tab_ui/reducers/brave_vpn'
 import * as BraveVPN from '../../../api/braveVpn'
 import * as Actions from '../../../actions/brave_vpn_actions'
+import { useNewTabPref } from '../../../hooks/usePref'
 
 export interface VPNProps {
   showContent: boolean
@@ -19,7 +21,7 @@ export interface VPNProps {
   braveVPNState: BraveVPNState
 }
 
-export const VPNWidget = createWidget((props: VPNProps) => {
+const VPNWidgetInternal = createWidget((props: VPNProps) => {
   const dispatch = useDispatch()
 
   React.useEffect(() => {
@@ -48,3 +50,17 @@ export const VPNWidget = createWidget((props: VPNProps) => {
     </StyledCard>
   )
 })
+
+export const VPNWidget = (props: WidgetProps & VPNProps) => {
+  const [showBraveVPN, saveShowBraveVPN] = useNewTabPref('showBraveVPN')
+  if (!showBraveVPN || !loadTimeData.getBoolean('vpnWidgetSupported')) {
+    return null
+  }
+
+  return (
+    <VPNWidgetInternal
+      {...props}
+      hideWidget={() => saveShowBraveVPN(false)}
+    />
+  )
+}
