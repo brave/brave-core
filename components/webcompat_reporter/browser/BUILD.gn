@@ -61,6 +61,7 @@ source_set("unittests") {
     "//base/test:test_support",
     "//brave/components/brave_stats/browser",
     "//brave/components/version_info",
+    "//brave/components/webcompat_reporter/common:common",
     "//brave/components/webcompat_reporter/common:mojom",
     "//components/component_updater:test_support",
     "//components/prefs:test_support",

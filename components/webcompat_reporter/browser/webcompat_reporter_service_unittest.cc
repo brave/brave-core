@@ -14,6 +14,7 @@
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
+#include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom-forward.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
 #include "components/prefs/testing_pref_service.h"
@@ -141,27 +142,24 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
 };
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReport) {
-  pref_service()->SetBoolean(webcompat_reporter::kContactInfoSaveFlagPrefs,
-                             true);
+  pref_service()->SetBoolean(prefs::kContactInfoSaveFlagPrefs, true);
   const std::string contact_value = "contact";
   TestSubmitWebcompatReport(contact_value, false);
-  EXPECT_EQ(contact_value, pref_service()->GetString(kContactInfoPrefs));
+  EXPECT_EQ(contact_value, pref_service()->GetString(prefs::kContactInfoPrefs));
 }
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportDoNotSaveContactInfo) {
-  pref_service()->SetBoolean(webcompat_reporter::kContactInfoSaveFlagPrefs,
-                             false);
+  pref_service()->SetBoolean(prefs::kContactInfoSaveFlagPrefs, false);
   const std::string contact_value = "contact";
   TestSubmitWebcompatReport(contact_value, false);
-  EXPECT_TRUE(pref_service()->GetString(kContactInfoPrefs).empty());
+  EXPECT_TRUE(pref_service()->GetString(prefs::kContactInfoPrefs).empty());
 }
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportIncognito) {
-  pref_service()->SetBoolean(webcompat_reporter::kContactInfoSaveFlagPrefs,
-                             true);
+  pref_service()->SetBoolean(prefs::kContactInfoSaveFlagPrefs, true);
   const std::string contact_value = "contact";
   TestSubmitWebcompatReport(contact_value, true);
-  EXPECT_EQ("", pref_service()->GetString(kContactInfoPrefs));
+  EXPECT_EQ("", pref_service()->GetString(prefs::kContactInfoPrefs));
 }
 
 TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {

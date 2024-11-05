@@ -83,7 +83,7 @@
         android:layout_marginBottom="14dp"
         android:hint="@string/report_broken_site_contact_placeholder"
         android:importantForAutofill="no"
-        android:singleLine="true"
+        android:maxLines="1"
         android:maxLength="30"
         android:textSize="14sp"
         android:inputType="text"
