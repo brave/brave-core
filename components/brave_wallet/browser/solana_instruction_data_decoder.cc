@@ -877,8 +877,7 @@ std::vector<InsParamPair> GetAccountParamsForTesting(
     return GetTokenInstructionAccountParams().at(*token_ins_type);
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return std::vector<InsParamPair>();
+  NOTREACHED();
 }
 
 std::vector<mojom::SolanaInstructionAccountParamPtr>

@@ -99,12 +99,7 @@ struct ImportInfo {
   size_t number_of_accounts;
 };
 
-enum class ImportError {
-  kNone = 0,
-  kJsonError,
-  kPasswordError,
-  kInternalError
-};
+enum class ImportError { kJsonError = 1, kPasswordError, kInternalError };
 
 struct SolanaSignatureStatus {
   SolanaSignatureStatus() = default;

@@ -27,7 +27,7 @@ class BraveWalletServiceDelegate {
   using IsExternalWalletInstalledCallback = base::OnceCallback<void(bool)>;
   using IsExternalWalletInitializedCallback = base::OnceCallback<void(bool)>;
   using GetImportInfoCallback =
-      base::OnceCallback<void(bool, ImportInfo, ImportError)>;
+      base::OnceCallback<void(bool, ImportInfo, std::optional<ImportError>)>;
   using GetWebSitesWithPermissionCallback =
       mojom::BraveWalletService::GetWebSitesWithPermissionCallback;
   using ResetWebSitePermissionCallback =

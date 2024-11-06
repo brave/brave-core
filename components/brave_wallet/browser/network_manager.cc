@@ -642,8 +642,7 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
     case mojom::CoinType::SOL:
       return kSolanaPrefKey;
   }
-  NOTREACHED_IN_MIGRATION() << coin;
-  return "";
+  NOTREACHED() << coin;
 }
 
 const base::Value::List* GetCustomNetworksList(PrefService* prefs,
@@ -770,8 +769,8 @@ mojom::NetworkInfoPtr NetworkManager::GetKnownChain(const std::string& chain_id,
     }
     return nullptr;
   }
-  NOTREACHED_IN_MIGRATION();
-  return nullptr;
+
+  NOTREACHED() << coin;
 }
 
 mojom::NetworkInfoPtr NetworkManager::GetCustomChain(
@@ -907,7 +906,7 @@ bool NetworkManager::KnownChainExists(const std::string& chain_id,
       }
     }
   } else {
-    NOTREACHED_IN_MIGRATION() << coin;
+    NOTREACHED() << coin;
   }
   return false;
 }
@@ -1013,8 +1012,7 @@ std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllKnownChains(
     return result;
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return result;
+  NOTREACHED() << coin;
 }
 
 GURL NetworkManager::GetNetworkURL(const std::string& chain_id,
@@ -1145,7 +1143,6 @@ std::string GetKnownNetworkId(mojom::CoinType coin,
   if (coin == mojom::CoinType::ZEC) {
     return GetKnownZecNetworkId(chain_id);
   }
-  NOTREACHED_IN_MIGRATION() << coin;
   return "";
 }
 

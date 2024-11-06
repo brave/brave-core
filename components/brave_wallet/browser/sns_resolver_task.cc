@@ -954,7 +954,7 @@ void SnsResolverTask::OnFetchNextRecord(APIRequestResult api_request_result) {
       }
     }
   } else {
-    NOTREACHED_IN_MIGRATION();
+    SetError(MakeInternalError());
   }
 }
 

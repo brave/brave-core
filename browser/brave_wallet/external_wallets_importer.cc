@@ -86,7 +86,7 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
     return std::string();
   }
 
-  // We need to count characters here because js implemenation forcibly utf8
+  // We need to count characters here because js implementation forcibly utf8
   // decode random bytes
   // (https://github.com/brave/KeyringController/blob/0769514cea07e85ae190f30765d0a301c631c56b/index.js#L91)
   // and causes 0xEFBFBD which is � (code point 0xFFFD) to be // NOLINT
@@ -121,7 +121,7 @@ std::string GetLegacyCryptoWalletsPassword(const std::string& password,
   }
 
   // We need to go through whole buffer trying to see if there is an invalid
-  // unicdoe encoding and replace it with � (code point 0xFFFD) // NOLINT
+  // unicode encoding and replace it with � (code point 0xFFFD) // NOLINT
   // because js implementation forcibly utf8 decode sub_key
   // https://github.com/brave/KeyringController/blob/0769514cea07e85ae190f30765d0a301c631c56b/index.js#L547
   for (size_t i = 0; i < sub_key.size(); ++i) {
@@ -175,10 +175,8 @@ void ExternalWalletsImporter::Initialize(InitCallback callback) {
       return;
     }
   } else {
-    NOTREACHED_IN_MIGRATION() << "Unsupported ExternalWalletType type. value="
-                              << base::to_underlying(type_);
-    std::move(callback).Run(false);
-    return;
+    NOTREACHED() << "Unsupported ExternalWalletType type. value="
+                 << base::to_underlying(type_);
   }
 
   GetLocalStorage(*extension, std::move(callback));
@@ -440,7 +438,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
         }
       }
       if (utf8_encoded_mnemonic.empty()) {
-        VLOG(0) << "keyring.data.menmonic is missing";
+        VLOG(0) << "keyring.data.mnemonic is missing";
 
         std::move(callback).Run(false, ImportInfo(), ImportError::kJsonError);
         return;
@@ -465,7 +463,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
       ImportInfo(
           {*mnemonic, is_legacy_crypto_wallets,
            number_of_accounts ? static_cast<size_t>(*number_of_accounts) : 1}),
-      ImportError::kNone);
+      std::nullopt);
 }
 
 void ExternalWalletsImporter::SetStorageDataForTesting(base::Value::Dict data) {

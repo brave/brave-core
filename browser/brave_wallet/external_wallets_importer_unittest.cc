@@ -101,7 +101,7 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
                              const std::string& json_str,
                              bool* out_success,
                              ImportInfo* out_info,
-                             ImportError* out_error) {
+                             std::optional<ImportError>* out_error) {
     ASSERT_NE(out_success, nullptr);
 
     auto json =
@@ -116,13 +116,14 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
 
       base::RunLoop run_loop;
       importer.GetImportInfo(
-          password, base::BindLambdaForTesting(
-                        [&](bool success, ImportInfo info, ImportError error) {
-                          *out_success = success;
-                          *out_info = info;
-                          *out_error = error;
-                          run_loop.Quit();
-                        }));
+          password,
+          base::BindLambdaForTesting([&](bool success, ImportInfo info,
+                                         std::optional<ImportError> error) {
+            *out_success = success;
+            *out_info = info;
+            *out_error = error;
+            run_loop.Quit();
+          }));
       run_loop.Run();
     }
     {
@@ -133,17 +134,17 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
 
       base::RunLoop run_loop;
       importer.GetImportInfo(
-          password, base::BindLambdaForTesting(
-                        [&](bool success, ImportInfo info, ImportError error) {
-                          EXPECT_EQ(*out_success, success);
-                          EXPECT_EQ(out_info->mnemonic, info.mnemonic);
-                          EXPECT_EQ(out_info->is_legacy_crypto_wallets,
-                                    info.is_legacy_crypto_wallets);
-                          EXPECT_EQ(out_info->number_of_accounts,
-                                    info.number_of_accounts);
-                          EXPECT_EQ(*out_error, error);
-                          run_loop.Quit();
-                        }));
+          password,
+          base::BindLambdaForTesting([&](bool success, ImportInfo info,
+                                         std::optional<ImportError> error) {
+            EXPECT_EQ(*out_success, success);
+            EXPECT_EQ(out_info->mnemonic, info.mnemonic);
+            EXPECT_EQ(out_info->is_legacy_crypto_wallets,
+                      info.is_legacy_crypto_wallets);
+            EXPECT_EQ(out_info->number_of_accounts, info.number_of_accounts);
+            EXPECT_EQ(*out_error, error);
+            run_loop.Quit();
+          }));
       run_loop.Run();
     }
   }
@@ -175,14 +176,14 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
 TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   bool result = true;
   ImportInfo info;
-  ImportError error;
+  std::optional<ImportError> error;
   // empty password
   SimulateGetImportInfo("", valid_data_10K, &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kPasswordError);
 
   result = true;
-  error = ImportError::kNone;
+  error.reset();
   // no vault
   SimulateGetImportInfo("123", R"({"data": { "KeyringController": {}}})",
                         &result, &info, &error);
@@ -190,7 +191,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   EXPECT_EQ(error, ImportError::kJsonError);
 
   result = true;
-  error = ImportError::kNone;
+  error.reset();
   // vault is not a valid json
   SimulateGetImportInfo(
       "123", R"({"data": { "KeyringController": { "vault": "{[}]"}}})", &result,
@@ -199,7 +200,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   EXPECT_EQ(error, ImportError::kJsonError);
 
   result = true;
-  error = ImportError::kNone;
+  error.reset();
   // vault missing iv and salt
   SimulateGetImportInfo(
       "123",
@@ -209,7 +210,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   EXPECT_EQ(error, ImportError::kJsonError);
 
   result = true;
-  error = ImportError::kNone;
+  error.reset();
   // data is not base64 encoded
   SimulateGetImportInfo("123",
                         R"({"data": {"KeyringController": {
@@ -220,7 +221,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   EXPECT_EQ(error, ImportError::kJsonError);
 
   result = true;
-  error = ImportError::kNone;
+  error.reset();
   // wrong password
   SimulateGetImportInfo("123", valid_data_10K, &result, &info, &error);
   EXPECT_FALSE(result);
@@ -230,10 +231,10 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
 TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_10K_Iterations) {
   bool result = false;
   ImportInfo info;
-  ImportError error;
+  std::optional<ImportError> error;
   SimulateGetImportInfo("brave4ever", valid_data_10K, &result, &info, &error);
   EXPECT_TRUE(result);
-  EXPECT_EQ(error, ImportError::kNone);
+  EXPECT_EQ(error, std::nullopt);
   EXPECT_EQ(info.mnemonic, kMnemonicDripCaution);
   EXPECT_FALSE(info.is_legacy_crypto_wallets);
   EXPECT_EQ(info.number_of_accounts, 1u);
@@ -242,10 +243,10 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_10K_Iterations) {
 TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_600K_Iterations) {
   bool result = false;
   ImportInfo info;
-  ImportError error;
+  std::optional<ImportError> error;
   SimulateGetImportInfo("12345qwert", valid_data_600K, &result, &info, &error);
   EXPECT_TRUE(result);
-  EXPECT_EQ(error, ImportError::kNone);
+  EXPECT_EQ(error, std::nullopt);
   EXPECT_EQ(info.mnemonic,
             "try fossil lesson direct toddler favorite wedding opera camera "
             "sand great hammer");
@@ -256,11 +257,11 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_600K_Iterations) {
 TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_UTF8Mnemonic) {
   bool result = false;
   ImportInfo info;
-  ImportError error;
+  std::optional<ImportError> error;
   SimulateGetImportInfo("brave4ever", valid_data_with_utf8_mnemonic, &result,
                         &info, &error);
   EXPECT_TRUE(result);
-  EXPECT_EQ(error, ImportError::kNone);
+  EXPECT_EQ(error, std::nullopt);
   EXPECT_EQ(info.mnemonic, kMnemonicDripCaution);
   EXPECT_FALSE(info.is_legacy_crypto_wallets);
   EXPECT_EQ(info.number_of_accounts, 1u);
@@ -270,7 +271,7 @@ TEST_F(ExternalWalletsImporterUnitTest, ImportLegacyWalletError) {
   bool result = true;
   // argonParams is not a dict
   ImportInfo info;
-  ImportError error;
+  std::optional<ImportError> error;
   SimulateGetImportInfo("123", R"({
           "data": { "KeyringController": {
                   "argonParams": "123"
@@ -280,7 +281,7 @@ TEST_F(ExternalWalletsImporterUnitTest, ImportLegacyWalletError) {
   EXPECT_EQ(error, ImportError::kInternalError);
 
   result = true;
-  error = ImportError::kNone;
+  error.reset();
   // argonParams multiple fields are missing
   SimulateGetImportInfo("123", R"({
           "data": { "KeyringController": {
@@ -293,7 +294,7 @@ TEST_F(ExternalWalletsImporterUnitTest, ImportLegacyWalletError) {
   EXPECT_EQ(error, ImportError::kInternalError);
 
   result = true;
-  error = ImportError::kNone;
+  error.reset();
   // argonParams type is not 2
   SimulateGetImportInfo("123", R"({
           "data": { "KeyringController": {
@@ -309,7 +310,7 @@ TEST_F(ExternalWalletsImporterUnitTest, ImportLegacyWalletError) {
   EXPECT_EQ(error, ImportError::kInternalError);
 
   result = true;
-  error = ImportError::kNone;
+  error.reset();
   // KeyringController.salt is missing
   SimulateGetImportInfo("123", R"({
           "data": { "KeyringController": {
@@ -328,10 +329,10 @@ TEST_F(ExternalWalletsImporterUnitTest, ImportLegacyWalletError) {
 TEST_F(ExternalWalletsImporterUnitTest, ImportLegacyWallet) {
   bool result = false;
   ImportInfo info;
-  ImportError error;
+  std::optional<ImportError> error;
   SimulateGetImportInfo("bbbravey", valid_legacy_data, &result, &info, &error);
   EXPECT_TRUE(result);
-  EXPECT_EQ(error, ImportError::kNone);
+  EXPECT_EQ(error, std::nullopt);
   EXPECT_EQ(info.mnemonic, valid_legacy_mnemonic);
   EXPECT_TRUE(info.is_legacy_crypto_wallets);
   EXPECT_EQ(info.number_of_accounts, 2u);

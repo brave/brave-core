@@ -308,8 +308,7 @@ std::vector<uint8_t> BitcoinSerializer::AddressToScriptPubkey(
     return data;
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return {};
+  NOTREACHED();
 }
 
 // static

@@ -253,7 +253,7 @@ void BitcoinTestRpcServer::RequestInterceptor(
     return;
   }
 
-  NOTREACHED_IN_MIGRATION() << request.url.spec();
+  NOTREACHED() << request.url.spec();
 }
 
 void BitcoinTestRpcServer::SetUpBitcoinRpc(

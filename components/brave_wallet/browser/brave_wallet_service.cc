@@ -1159,9 +1159,9 @@ void BraveWalletService::OnGetImportInfo(
     base::OnceCallback<void(bool, const std::optional<std::string>&)> callback,
     bool result,
     ImportInfo info,
-    ImportError error) {
+    std::optional<ImportError> error) {
   if (!result) {
-    switch (error) {
+    switch (error.value_or(ImportError::kInternalError)) {
       case ImportError::kJsonError:
         std::move(callback).Run(false, l10n_util::GetStringUTF8(
                                            IDS_BRAVE_WALLET_IMPORT_JSON_ERROR));
@@ -1176,9 +1176,8 @@ void BraveWalletService::OnGetImportInfo(
             false,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
         break;
-      case ImportError::kNone:
       default:
-        NOTREACHED_IN_MIGRATION();
+        NOTREACHED();
     }
     return;
   }
@@ -1625,8 +1624,7 @@ void BraveWalletService::GenerateReceiveAddress(
     return;
   }
 
-  NOTREACHED_IN_MIGRATION() << account_id->coin;
-  std::move(callback).Run("", WalletInternalErrorMessage());
+  NOTREACHED() << account_id->coin;
 }
 
 void BraveWalletService::OnGenerateBtcReceiveAddress(

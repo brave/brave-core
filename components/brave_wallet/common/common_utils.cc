@@ -159,8 +159,7 @@ mojom::KeyringId GetFilecoinKeyringId(const std::string& network) {
              network == mojom::kLocalhostChainId) {
     return mojom::KeyringId::kFilecoinTestnet;
   }
-  NOTREACHED_IN_MIGRATION() << "Unsupported chain id for filecoin " << network;
-  return mojom::KeyringId::kFilecoin;
+  NOTREACHED() << "Unsupported chain id for filecoin " << network;
 }
 
 std::string GetFilecoinChainId(mojom::KeyringId keyring_id) {
@@ -169,8 +168,7 @@ std::string GetFilecoinChainId(mojom::KeyringId keyring_id) {
   } else if (keyring_id == mojom::KeyringId::kFilecoinTestnet) {
     return mojom::kFilecoinTestnet;
   }
-  NOTREACHED_IN_MIGRATION() << "Unsupported keyring id for filecoin";
-  return "";
+  NOTREACHED() << "Unsupported keyring id for filecoin";
 }
 
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {

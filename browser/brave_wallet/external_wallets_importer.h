@@ -36,7 +36,7 @@ class ExternalWalletsImporter {
  public:
   using InitCallback = base::OnceCallback<void(bool)>;
   using GetImportInfoCallback =
-      base::OnceCallback<void(bool, ImportInfo, ImportError)>;
+      base::OnceCallback<void(bool, ImportInfo, std::optional<ImportError>)>;
 
   explicit ExternalWalletsImporter(mojom::ExternalWalletType,
                                    content::BrowserContext*);

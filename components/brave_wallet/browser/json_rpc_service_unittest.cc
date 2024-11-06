@@ -5576,7 +5576,7 @@ class EnsGetRecordHandler : public EthCallHandler {
     bool host_matches =
         base::ranges::equal(*namehash_bytes, Namehash(host_name_));
 
-    if (base::ranges::equal(selector, GetFunctionHashBytes4("addr(bytes32)"))) {
+    if (selector == GetFunctionHashBytes4("addr(bytes32)")) {
       auto eth_address = EthAddress::ZeroAddress();
       if (host_matches) {
         eth_address = result_address_;
@@ -5584,8 +5584,9 @@ class EnsGetRecordHandler : public EthCallHandler {
 
       return MakeJsonRpcTupleResponse(
           eth_abi::TupleEncoder().AddAddress(eth_address));
-    } else if (base::ranges::equal(
-                   selector, GetFunctionHashBytes4("contenthash(bytes32)"))) {
+    }
+
+    if (selector == GetFunctionHashBytes4("contenthash(bytes32)")) {
       std::vector<uint8_t> contenthash;
       if (host_matches) {
         contenthash = result_contenthash_;
@@ -5594,7 +5595,7 @@ class EnsGetRecordHandler : public EthCallHandler {
       return MakeJsonRpcTupleResponse(
           eth_abi::TupleEncoder().AddBytes(contenthash));
     }
-    NOTREACHED_IN_MIGRATION();
+
     return std::nullopt;
   }
 
@@ -5704,8 +5705,7 @@ class OffchainGatewayHandler {
     auto* data = payload->GetDict().FindString("data");
     auto bytes = PrefixedHexStringToBytes(*data);
     if (!bytes) {
-      NOTREACHED_IN_MIGRATION();
-      return std::nullopt;
+      NOTREACHED();
     }
 
     auto [selector, args] =
@@ -5758,8 +5758,7 @@ class OffchainGatewayHandler {
         }
       }
     } else {
-      NOTREACHED_IN_MIGRATION();
-      return std::nullopt;
+      NOTREACHED();
     }
 
     if (ensip10_resolve) {

@@ -692,7 +692,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   void SimulateOnGetImportInfo(const std::string& new_password,
                                bool result,
                                const ImportInfo& info,
-                               ImportError error,
+                               std::optional<ImportError> error,
                                bool* success_out,
                                std::string* error_message_out) {
     // People import with a blank default keyring, so clear it out
@@ -2232,8 +2232,8 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   error_message.clear();
   const char* valid_mnemonic = kMnemonicDripCaution;
   SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({valid_mnemonic, false, 3}),
-                          ImportError::kNone, &success, &error_message);
+                          ImportInfo({valid_mnemonic, false, 3}), std::nullopt,
+                          &success, &error_message);
   EXPECT_TRUE(success);
   EXPECT_TRUE(error_message.empty());
   {
@@ -2259,7 +2259,7 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
       "laundry";
   SimulateOnGetImportInfo(new_password, true,
                           ImportInfo({valid_legacy_mnemonic, true, 4}),
-                          ImportError::kNone, &success, &error_message);
+                          std::nullopt, &success, &error_message);
   EXPECT_TRUE(success);
   EXPECT_TRUE(error_message.empty());
   {
@@ -2281,7 +2281,7 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   const char* invalid_mnemonic = "not correct seed word";
   SimulateOnGetImportInfo(new_password, true,
                           ImportInfo({invalid_mnemonic, false, 2}),
-                          ImportError::kNone, &success, &error_message);
+                          std::nullopt, &success, &error_message);
   EXPECT_FALSE(success);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_MNEMONIC_ERROR));
@@ -2858,7 +2858,7 @@ TEST_F(BraveWalletServiceUnitTest, EnsureSelectedAccountForChain) {
   std::string error_message;
   SimulateOnGetImportInfo(new_password, true,
                           ImportInfo({kMnemonicDripCaution, false, 1}),
-                          ImportError::kNone, &success, &error_message);
+                          std::nullopt, &success, &error_message);
 
   auto accounts = std::move(keyring_service_->GetAllAccountsSync()->accounts);
   auto eth_account_id = accounts[0]->account_id->Clone();

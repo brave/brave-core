@@ -338,7 +338,7 @@ class BraveWalletService : public KeyedService,
           callback,
       bool result,
       ImportInfo info,
-      ImportError error);
+      std::optional<ImportError> error);
   void OnGetEthNftStandard(mojom::BlockchainTokenPtr token,
                            AddUserAssetCallback callback,
                            const std::optional<std::string>& standard,
