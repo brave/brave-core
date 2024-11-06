@@ -60,7 +60,7 @@ export type BuyParamOverrides = {
   sourceCurrencyCode?: string
   destinationCurrencyCode?: string
   amount?: string
-  account?: string
+  receiveAddress?: string
 }
 
 const DEFAULT_ASSET: MeldCryptoCurrency = {
@@ -257,15 +257,11 @@ export const useBuy = () => {
         destinationCurrencyCode:
           overrides.destinationCurrencyCode ?? selectedAsset?.currencyCode,
         amount: overrides.amount ?? amount,
-        account: overrides.account ?? selectedAccount.address,
+        receiveAddress: overrides.receiveAddress ?? receiveAddress,
         paymentMethod: overrides.paymentMethod ?? selectedPaymentMethod
       }
 
-      if (
-        !params.sourceCurrencyCode ||
-        !params.destinationCurrencyCode ||
-        !params.account
-      ) {
+      if (!params.sourceCurrencyCode || !params.destinationCurrencyCode) {
         return
       }
 
@@ -287,7 +283,7 @@ export const useBuy = () => {
       let quoteResponse
       try {
         quoteResponse = await generateQuotes({
-          account: selectedAccount.address,
+          account: params.receiveAddress,
           amount: amountWrapped.toNumber(),
           country: params.country || 'US',
           sourceCurrencyCode: params.sourceCurrencyCode,
@@ -322,10 +318,10 @@ export const useBuy = () => {
       amount,
       selectedCountryCode,
       generateQuotes,
-      selectedAccount?.address,
       selectedAsset?.currencyCode,
       selectedCurrency?.currencyCode,
-      selectedPaymentMethod
+      selectedPaymentMethod,
+      receiveAddress
     ]
   )
 
