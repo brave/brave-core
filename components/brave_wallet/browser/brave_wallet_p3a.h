@@ -123,7 +123,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   FRIEND_TEST_ALL_PREFIXES(BraveWalletP3AUnitTest, ReportTransactionSent);
   friend class BraveWalletP3AUnitTest;
 
-  void MigrateUsageProfilePrefsToLocalState();
   void OnUpdateTimerFired();
   void WriteUsageStatsToHistogram();
   void RecordInitialBraveWalletP3AState();
