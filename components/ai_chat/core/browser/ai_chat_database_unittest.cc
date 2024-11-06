@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "sql/init_status.h"
 #include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -56,19 +57,24 @@ class AIChatDatabaseTest : public testing::Test,
             }));
     run_loop.Run();
 
-    ASSERT_TRUE(IsOpen());
-
     if (GetParam()) {
       db_->DeleteAllData();
     }
   }
 
   void TearDown() override {
+    // Verify that the db was init successfully and not using default return
+    // values.
+    EXPECT_TRUE(IsInitOk());
+
     db_.reset();
     CHECK(temp_directory_.Delete());
   }
 
-  bool IsOpen() { return db_->GetDB().is_open(); }
+  bool IsInitOk() {
+    return (db_->db_init_status_.has_value() &&
+            db_->db_init_status_.value() == sql::InitStatus::INIT_OK);
+  }
 
   base::FilePath db_file_path() {
     return temp_directory_.GetPath().AppendASCII("ai_chat");

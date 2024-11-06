@@ -515,7 +515,6 @@ TEST_P(AIChatServiceUnitTest, GetConversation_AfterRestart) {
   } else {
     EXPECT_CALL(*client_, OnConversationListChanged).Times(0);
   }
-  task_environment_.RunUntilIdle();
   // Can get conversation data
   if (IsAIChatHistoryEnabled()) {
     base::RunLoop run_loop;
@@ -531,6 +530,48 @@ TEST_P(AIChatServiceUnitTest, GetConversation_AfterRestart) {
                   }));
     run_loop.Run();
   }
+}
+
+TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
+  // This test is only relevant when history feature is enabled initially
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  // Create history, verify it's persisted, then disable storage and verify
+  // no history is returned, even in-memory (unless a client is connected).
+  ConversationHandler* conversation_handler1 = CreateConversation();
+  auto client1 = CreateConversationClient(conversation_handler1);
+  conversation_handler1->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ConversationHandler* conversation_handler2 = CreateConversation();
+  auto client2 = CreateConversationClient(conversation_handler2);
+  conversation_handler2->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ConversationHandler* conversation_handler3 = CreateConversation();
+  auto client3 = CreateConversationClient(conversation_handler3);
+  conversation_handler3->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  DisconnectConversationClient(client2.get());
+  ExpectVisibleConversationsSize(FROM_HERE, 3);
+
+  // Disable storage
+  prefs_.SetBoolean(prefs::kStorageEnabled, false);
+  // Conversation with no client was erased from memory
+  ExpectVisibleConversationsSize(FROM_HERE, 2);
+
+  // Disconnecting conversations should erase them fom memory
+  DisconnectConversationClient(client1.get());
+  DisconnectConversationClient(client3.get());
+  ExpectVisibleConversationsSize(FROM_HERE, 0);
+
+  // Restart service and verify still doesn't load from storage
+  ResetService();
+  ExpectVisibleConversationsSize(FROM_HERE, 0);
+
+  // Re-enable storage preference
+  prefs_.SetBoolean(prefs::kStorageEnabled, true);
+  // Conversations are still in persistant storage
+  ExpectVisibleConversationsSize(FROM_HERE, 3);
 }
 
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {

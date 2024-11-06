@@ -59,6 +59,22 @@ constexpr base::FilePath::StringPieceType kDBFileName =
 static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
 
+std::vector<mojom::Conversation*> FilterVisibleConversations(
+    std::map<std::string, mojom::ConversationPtr>& conversations_map) {
+  std::vector<mojom::Conversation*> conversations;
+  for (const auto& kv : conversations_map) {
+    auto& conversation = kv.second;
+    // Conversations are only visible if they have content
+    if (!conversation->has_content) {
+      continue;
+    }
+    conversations.push_back(conversation.get());
+  }
+  base::ranges::sort(conversations, std::greater<>(),
+                     &mojom::Conversation::updated_time);
+  return conversations;
+}
+
 }  // namespace
 
 AIChatService::AIChatService(
@@ -73,26 +89,25 @@ AIChatService::AIChatService(
     : model_service_(model_service),
       profile_prefs_(profile_prefs),
       ai_chat_metrics_(ai_chat_metrics),
+      os_crypt_async_(os_crypt_async),
       url_loader_factory_(url_loader_factory),
       feedback_api_(
           std::make_unique<AIChatFeedbackAPI>(url_loader_factory_,
                                               std::string(channel_string))),
-      credential_manager_(std::move(ai_chat_credential_manager)) {
+      credential_manager_(std::move(ai_chat_credential_manager)),
+      profile_path_(profile_path) {
   DCHECK(profile_prefs_);
   pref_change_registrar_.Init(profile_prefs_);
   pref_change_registrar_.Add(
       prefs::kLastAcceptedDisclaimer,
       base::BindRepeating(&AIChatService::OnUserOptedIn,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kStorageEnabled,
+      base::BindRepeating(&AIChatService::MaybeInitStorage,
+                          weak_ptr_factory_.GetWeakPtr()));
 
-  if (features::IsAIChatHistoryEnabled()) {
-    DVLOG(0) << "Initializing OS Crypt Async";
-    encryptor_ready_subscription_ = os_crypt_async->GetInstance(
-        base::BindOnce(&AIChatService::OnOsCryptAsyncReady,
-                       weak_ptr_factory_.GetWeakPtr(), profile_path));
-    // Don't init DB until oscrypt is ready - we don't want to use the DB
-    // if we can't use encryption.
-  }
+  MaybeInitStorage();
 }
 
 AIChatService::~AIChatService() = default;
@@ -172,21 +187,25 @@ void AIChatService::GetConversation(
     return;
   }
   // Load from database
-  if (!ai_chat_db_ || !conversations_.contains(conversation_uuid.data())) {
-    LOG(ERROR) << "Asked for conversation that does not exist: "
-               << conversation_uuid;
+  if (!ai_chat_db_) {
     std::move(callback).Run(nullptr);
     return;
   }
-  CHECK(ai_chat_db_);
-  mojom::ConversationPtr& metadata =
-      conversations_.at(conversation_uuid.data());
-  // Get archive content and conversation entries
-  ai_chat_db_.AsyncCall(&AIChatDatabase::GetConversationData)
-      .WithArgs(metadata->uuid)
-      .Then(base::BindOnce(&AIChatService::OnConversationDataReceived,
-                           weak_ptr_factory_.GetWeakPtr(), metadata->uuid,
-                           std::move(callback)));
+  LoadConversationsLazy(base::BindOnce(
+      [](base::WeakPtr<AIChatService> instance, std::string conversation_uuid,
+         base::OnceCallback<void(ConversationHandler*)> callback,
+         ConversationMap& conversations) {
+        mojom::ConversationPtr& metadata =
+            conversations.at(conversation_uuid.data());
+        // Get archive content and conversation entries
+        instance->ai_chat_db_.AsyncCall(&AIChatDatabase::GetConversationData)
+            .WithArgs(metadata->uuid)
+            .Then(base::BindOnce(&AIChatService::OnConversationDataReceived,
+                                 std::move(instance), metadata->uuid,
+                                 std::move(callback)));
+      },
+      weak_ptr_factory_.GetWeakPtr(), std::string(conversation_uuid),
+      std::move(callback)));
 }
 
 void AIChatService::OnConversationDataReceived(
@@ -270,42 +289,70 @@ void AIChatService::ClearAllHistory() {
   }
 }
 
-void AIChatService::OnOsCryptAsyncReady(const base::FilePath& storage_dir,
-                                        os_crypt_async::Encryptor encryptor,
+void AIChatService::MaybeInitStorage() {
+  if (IsAIChatHistoryEnabled() && !ai_chat_db_) {
+    DVLOG(0) << "Initializing OS Crypt Async";
+    encryptor_ready_subscription_ = os_crypt_async_->GetInstance(base::BindOnce(
+        &AIChatService::OnOsCryptAsyncReady, weak_ptr_factory_.GetWeakPtr()));
+    // Don't init DB until oscrypt is ready - we don't want to use the DB
+    // if we can't use encryption.
+  } else {
+    ai_chat_db_.Reset();
+    has_loaded_conversations_from_storage_ = false;
+    // Remove any conversations from in-memory that aren't connected to UI.
+    // Iterate in reverse and call MaybeEraseConversation to avoid iterator
+    // invalidation.
+    for (auto it = conversation_handlers_.rbegin();
+         it != conversation_handlers_.rend(); ++it) {
+      MaybeEraseConversation(it->second.get());
+    }
+    // Erase any conversations metadata that is not connected to UI
+    for (auto it = conversations_.begin(); it != conversations_.end();) {
+      if (!conversation_handlers_.contains(it->first)) {
+        it = conversations_.erase(it);
+      } else {
+        ++it;
+      }
+    }
+    OnConversationListChanged();
+  }
+}
+
+void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor,
                                         bool success) {
   CHECK(features::IsAIChatHistoryEnabled());
   if (!success) {
     LOG(ERROR) << "Failed to initialize AIChat DB due to OSCrypt failure";
     return;
   }
-
-  ai_chat_db_ = base::SequenceBound<AIChatDatabase>(
-      GetDBTaskRunner(), storage_dir.Append(kDBFileName), std::move(encryptor));
-
-  ai_chat_db_.AsyncCall(&AIChatDatabase::IsInitialized)
-      .Then(base::BindOnce(&AIChatService::OnDBInit,
-                           weak_ptr_factory_.GetWeakPtr()));
-}
-
-void AIChatService::OnDBInit(bool success) {
-  CHECK(ai_chat_db_);
-  if (!success) {
-    LOG(ERROR) << "Failed to initialize AIChat DB";
-    // Ensure any pending tasks are cancelled. Sometimes, especially during unit
-    // tests that are very quick to run, initilization might fail because of
-    // shutdown but the next task in the sequence still executes, causing a
-    // crash because of bad database state.
-    ai_chat_db_.Reset();
+  // Pref might have changed since we started this process
+  if (!profile_prefs_->GetBoolean(prefs::kStorageEnabled)) {
     return;
   }
-  DVLOG(0) << "AIChat DB initialized";
-  // Load all conversations
-  ai_chat_db_.AsyncCall(&AIChatDatabase::GetAllConversations)
-      .Then(base::BindOnce(&AIChatService::OnAllConversationsRetrieved,
-                           weak_ptr_factory_.GetWeakPtr()));
+  ai_chat_db_ = base::SequenceBound<AIChatDatabase>(
+      GetDBTaskRunner(), profile_path_.Append(kDBFileName),
+      std::move(encryptor));
 }
 
-void AIChatService::OnAllConversationsRetrieved(
+void AIChatService::LoadConversationsLazy(ConversationMapCallback callback) {
+  // TODO(petemill): If there's a timing issue on startup with multiple
+  // clients requesting conversations whilst an initial request is still loading
+  // then we can make a OneShotEvent. But without it, those clients will still
+  // get notified when the initial request completes. They won't know there's
+  // data incoming though.
+  if (!ai_chat_db_ || has_loaded_conversations_from_storage_) {
+    std::move(callback).Run(conversations_);
+    return;
+  }
+  has_loaded_conversations_from_storage_ = true;
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetAllConversations)
+      .Then(base::BindOnce(&AIChatService::OnLoadConversationsLazyData,
+                           weak_ptr_factory_.GetWeakPtr(),
+                           std::move(callback)));
+}
+
+void AIChatService::OnLoadConversationsLazyData(
+    ConversationMapCallback callback,
     std::vector<mojom::ConversationPtr> conversations) {
   for (auto& conversation : conversations) {
     DVLOG(2) << "Loaded conversation " << conversation->uuid
@@ -324,6 +371,7 @@ void AIChatService::OnAllConversationsRetrieved(
                                     std::move(conversation));
   }
   DVLOG(1) << "Loaded " << conversations.size() << " conversations.";
+  std::move(callback).Run(conversations_);
   OnConversationListChanged();
 }
 
@@ -470,7 +518,7 @@ void AIChatService::MaybeEraseConversation(
              << conversations_.size() << " Conversation metadata items and "
              << conversation_handlers_.size()
              << " ConversationHandler instances.";
-    if (!features::IsAIChatHistoryEnabled() || !has_history) {
+    if (!IsAIChatHistoryEnabled() || !has_history) {
       // Can erase because no active UI and no history, so it's
       // not a real / persistable conversation
       conversations_.erase(uuid);
@@ -490,6 +538,11 @@ void AIChatService::MaybeEraseConversation(
              << " Request is in progress: "
              << (conversation_handler->IsRequestInProgress() ? "yes" : "no");
   }
+}
+
+bool AIChatService::IsAIChatHistoryEnabled() {
+  return (features::IsAIChatHistoryEnabled() &&
+          profile_prefs_->GetBoolean(prefs::kStorageEnabled));
 }
 
 base::SequencedTaskRunner* AIChatService::GetDBTaskRunner() {
@@ -653,11 +706,17 @@ void AIChatService::OnConversationTitleChanged(ConversationHandler* handler,
 
 void AIChatService::GetVisibleConversations(
     GetVisibleConversationsCallback callback) {
-  std::vector<mojom::ConversationPtr> conversations;
-  for (const auto& conversation : FilterVisibleConversations()) {
-    conversations.push_back(conversation->Clone());
-  }
-  std::move(callback).Run(std::move(conversations));
+  LoadConversationsLazy(base::BindOnce(
+      [](GetVisibleConversationsCallback callback,
+         ConversationMap& conversations_map) {
+        std::vector<mojom::ConversationPtr> conversations;
+        for (const auto& conversation :
+             FilterVisibleConversations(conversations_map)) {
+          conversations.push_back(conversation->Clone());
+        }
+        std::move(callback).Run(std::move(conversations));
+      },
+      std::move(callback)));
 }
 
 void AIChatService::BindConversation(
@@ -719,23 +778,8 @@ void AIChatService::OnUserOptedIn() {
   }
 }
 
-std::vector<mojom::Conversation*> AIChatService::FilterVisibleConversations() {
-  std::vector<mojom::Conversation*> conversations;
-  for (const auto& kv : conversations_) {
-    auto& conversation = kv.second;
-    // Conversations are only visible if they have content
-    if (!conversation->has_content) {
-      continue;
-    }
-    conversations.push_back(conversation.get());
-  }
-  base::ranges::sort(conversations, std::greater<>(),
-                     &mojom::Conversation::updated_time);
-  return conversations;
-}
-
 void AIChatService::OnConversationListChanged() {
-  auto conversations = FilterVisibleConversations();
+  auto conversations = FilterVisibleConversations(conversations_);
   for (auto& remote : observer_remotes_) {
     std::vector<mojom::ConversationPtr> client_conversations;
     for (const auto& conversation : conversations) {

@@ -15,10 +15,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "sql/database.h"
-
-namespace sql {
-class Database;
-}  // namespace sql
+#include "sql/init_status.h"
 
 namespace ai_chat {
 
@@ -33,13 +30,11 @@ class AIChatDatabase {
     int32_t associated_content_id = -1;
   };
 
-  AIChatDatabase(const base::FilePath& storage_dir,
+  AIChatDatabase(const base::FilePath& db_file_path,
                  os_crypt_async::Encryptor encryptor);
   AIChatDatabase(const AIChatDatabase&) = delete;
   AIChatDatabase& operator=(const AIChatDatabase&) = delete;
   ~AIChatDatabase();
-
-  bool IsInitialized() const;
 
   // Gets lightweight metadata for all conversations. No high-memory-consuming
   // data is returned.
@@ -84,7 +79,8 @@ class AIChatDatabase {
 
   sql::Database& GetDB();
 
-  bool Init(const base::FilePath& db_file_path);
+  bool LazyInit();
+  sql::InitStatus InitInternal();
 
   std::vector<mojom::ConversationTurnPtr> GetConversationEntries(
       std::string_view conversation_id);
@@ -108,11 +104,14 @@ class AIChatDatabase {
   bool CreateConversationEntryTextTable();
   bool CreateSearchQueriesTable();
 
-  bool is_initialized_ GUARDED_BY_CONTEXT(sequence_checker_) = false;
+  // The directory storing the database.
+  const base::FilePath db_file_path_;
 
   // The underlying SQL database
   sql::Database db_ GUARDED_BY_CONTEXT(sequence_checker_);
   os_crypt_async::Encryptor encryptor_ GUARDED_BY_CONTEXT(sequence_checker_);
+  // The initialization status of the database. It's not set if never attempted.
+  std::optional<sql::InitStatus> db_init_status_ = std::nullopt;
 
   // Verifies that all operations happen on the same sequence.
   SEQUENCE_CHECKER(sequence_checker_);

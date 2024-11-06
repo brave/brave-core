@@ -16,10 +16,14 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/os_crypt/async/common/encryptor.h"
+#include "sql/init_status.h"
+#include "sql/meta_table.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
 namespace {
+
+constexpr int kCurrentDatabaseVersion = 1;
 
 constexpr char kSearchQueriesSeparator[] = "|||";
 
@@ -35,50 +39,65 @@ std::optional<std::string> GetOptionalString(sql::Statement& statement,
 
 namespace ai_chat {
 
-AIChatDatabase::AIChatDatabase(const base::FilePath& storage_dir,
+AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
-    : db_({.page_size = 4096, .cache_size = 1000}),
-      encryptor_(std::move(encryptor)) {
-  is_initialized_ = Init(storage_dir);
-  if (!is_initialized_) {
-    LOG(ERROR) << "Failed to initialize AI Chat database";
-  }
-}
+    : db_file_path_(db_file_path),
+      db_({.page_size = 4096, .cache_size = 1000}),
+      encryptor_(std::move(encryptor)) {}
 
 AIChatDatabase::~AIChatDatabase() = default;
 
-bool AIChatDatabase::IsInitialized() const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return is_initialized_;
+bool AIChatDatabase::LazyInit() {
+  if (!db_init_status_.has_value()) {
+    db_init_status_ = InitInternal();
+  }
+
+  return *db_init_status_ == sql::InitStatus::INIT_OK;
 }
 
-bool AIChatDatabase::Init(const base::FilePath& db_file_path) {
+sql::InitStatus AIChatDatabase::InitInternal() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!GetDB().Open(db_file_path)) {
-    return false;
+  if (!GetDB().Open(db_file_path_)) {
+    return sql::InitStatus::INIT_FAILURE;
   }
 
   sql::Transaction transaction(&GetDB());
   if (!transaction.Begin()) {
-    return false;
+    return sql::InitStatus::INIT_FAILURE;
+  }
+
+  sql::MetaTable meta_table;
+  if (!meta_table.Init(&GetDB(), kCurrentDatabaseVersion,
+                       /*compatible_version=*/kCurrentDatabaseVersion)) {
+    DVLOG(0) << "Failed to init meta table";
+    return sql::InitStatus::INIT_FAILURE;
+  }
+
+  if (meta_table.GetCompatibleVersionNumber() > kCurrentDatabaseVersion) {
+    LOG(ERROR) << "AIChat database version is too new.";
+    return sql::InitStatus::INIT_TOO_NEW;
   }
 
   if (!CreateConversationTable() || !CreateAssociatedContentTable() ||
       !CreateConversationEntryTable() || !CreateConversationEntryTextTable() ||
       !CreateSearchQueriesTable()) {
     DVLOG(0) << "Failure to create tables";
-    return false;
+    return sql::InitStatus::INIT_FAILURE;
   }
 
   if (!transaction.Commit()) {
-    return false;
+    return sql::InitStatus::INIT_FAILURE;
   }
 
-  return true;
+  return sql::InitStatus::INIT_OK;
 }
 
 std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+
   static const std::string kQuery =
       "SELECT conversation.uuid, conversation.title,"
       " MAX(conversation_entry.date) AS date"
@@ -146,6 +165,10 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
 mojom::ConversationArchivePtr AIChatDatabase::GetConversationData(
     std::string_view conversation_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return nullptr;
+  }
+
   return mojom::ConversationArchive::New(
       GetConversationEntries(conversation_uuid),
       GetArchiveContentsForConversation(conversation_uuid));
@@ -304,6 +327,9 @@ AIChatDatabase::AddConversationResult AIChatDatabase::AddConversation(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(!conversation->uuid.empty());
   CHECK(first_entry);
+  if (!LazyInit()) {
+    return AddConversationResult{};
+  }
 
   sql::Transaction transaction(&GetDB());
   CHECK(GetDB().is_open());
@@ -367,6 +393,10 @@ int32_t AIChatDatabase::AddOrUpdateAssociatedContent(
     mojom::SiteInfoPtr associated_content,
     std::optional<std::string> contents) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return INT32_C(-1);
+  }
+
   // TODO(petemill): handle multiple associated content per conversation
   CHECK(!conversation_uuid.empty());
 
@@ -435,6 +465,10 @@ bool AIChatDatabase::AddConversationEntry(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(!conversation_uuid.empty());
   CHECK(entry->uuid.has_value() && !entry->uuid->empty());
+  if (!LazyInit()) {
+    return false;
+  }
+
   // Verify the conversation exists
   static const std::string kGetConversationIdQuery =
       "SELECT uuid FROM conversation WHERE uuid=?";
@@ -565,6 +599,10 @@ bool AIChatDatabase::AddConversationEntry(
 bool AIChatDatabase::UpdateConversationTitle(std::string conversation_uuid,
                                              std::string title) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
   static const std::string kUpdateConversationTitleQuery =
       "UPDATE conversation SET title=? WHERE uuid=?";
   sql::Statement statement(
@@ -581,6 +619,10 @@ bool AIChatDatabase::UpdateConversationTitle(std::string conversation_uuid,
 
 bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
   sql::Transaction transaction(&db_);
   if (!transaction.Begin()) {
     DVLOG(0) << "Transaction cannot begin\n";
@@ -664,6 +706,10 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
 bool AIChatDatabase::DeleteConversationEntry(
     std::string conversation_entry_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
   sql::Transaction transaction(&db_);
   CHECK(!conversation_entry_uuid.empty());
   if (!transaction.Begin()) {
@@ -741,6 +787,10 @@ bool AIChatDatabase::DeleteConversationEntry(
 
 bool AIChatDatabase::DeleteAllData() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
   static const std::string kDropConversationTableQuery =
       "DROP TABLE conversation";
   static const std::string kDropAssociatedContentTableQuery =

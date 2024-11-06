@@ -159,13 +159,15 @@ class AIChatService : public KeyedService,
   size_t GetInMemoryConversationCountForTesting();
 
  private:
-  // Called when the encryptor is ready.
-  void OnOsCryptAsyncReady(const base::FilePath& storage_dir,
-                           os_crypt_async::Encryptor encryptor,
-                           bool success);
+  using ConversationMap = std::map<std::string, mojom::ConversationPtr>;
+  using ConversationMapCallback = base::OnceCallback<void(ConversationMap&)>;
 
-  void OnDBInit(bool success);
-  void OnAllConversationsRetrieved(
+  void MaybeInitStorage();
+  // Called when the database encryptor is ready.
+  void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor, bool success);
+  void LoadConversationsLazy(ConversationMapCallback callback);
+  void OnLoadConversationsLazyData(
+      ConversationMapCallback callback,
       std::vector<mojom::ConversationPtr> conversations);
   void OnConversationDataReceived(
       std::string conversation_uuid,
@@ -192,28 +194,32 @@ class AIChatService : public KeyedService,
   void OnSkusServiceReceived(
       SkusServiceGetter getter,
       mojo::PendingRemote<skus::mojom::SkusService> service);
-  std::vector<mojom::Conversation*> FilterVisibleConversations();
   void OnConversationListChanged();
   void OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                mojom::PremiumStatus status,
                                mojom::PremiumInfoPtr info);
 
+  bool IsAIChatHistoryEnabled();
   base::SequencedTaskRunner* GetDBTaskRunner();
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  raw_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   PrefChangeRegistrar pref_change_registrar_;
 
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
+  base::FilePath profile_path_;
+
   base::SequenceBound<AIChatDatabase> ai_chat_db_;
   scoped_refptr<base::SequencedTaskRunner> db_task_runner_;
 
   // All conversation metadata. Mainly just titles and uuids. Key is uuid
-  std::map<std::string, mojom::ConversationPtr> conversations_;
+  ConversationMap conversations_;
+  bool has_loaded_conversations_from_storage_ = false;
 
   // Only keep ConversationHandlers around that are being
   // actively used. Any metadata that needs to stay in-memory
@@ -239,7 +245,6 @@ class AIChatService : public KeyedService,
   // subscription status changes. So we cache it and fetch latest fairly
   // often (whenever UI is focused).
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
-
   // Maintains the subscription for `OSCryptAsync` and cancels upon destruction.
   base::CallbackListSubscription encryptor_ready_subscription_;
 
