@@ -29,7 +29,7 @@ static std::string ToPageGraphArg(Isolate* isolate, Handle<Object> object) {
   if (!maybe_string.ToHandle(&string_handle)) {
     return {};
   }
-  if (auto c_string = string_handle->ToCString(DISALLOW_NULLS)) {
+  if (auto c_string = string_handle->ToCString()) {
     return std::string(c_string.get());
   }
   return {};
