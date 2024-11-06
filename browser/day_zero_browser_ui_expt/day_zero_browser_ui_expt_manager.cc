@@ -124,17 +124,17 @@ void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
   prefs->SetDefaultPrefValue(kShowWalletIconOnToolbar, base::Value(false));
   prefs->SetDefaultPrefValue(brave_rewards::prefs::kShowLocationBarButton,
                              base::Value(false));
-  prefs->SetDefaultPrefValue(brave_news::prefs::kNewTabPageShowToday,
-                             base::Value(false));
-  bool should_show_ntp_si = false;
+  bool should_show_ntp_si_and_news = false;
 #if BUILDFLAG(IS_ANDROID)
-  should_show_ntp_si = true;
+  should_show_ntp_si_and_news = true;
   Java_DayZeroHelper_setDayZeroExptAndroid(
       base::android::AttachCurrentThread(), false);
 #endif  // #BUILDFLAG(IS_ANDROID)
   prefs->SetDefaultPrefValue(ntp_background_images::prefs::
                                  kNewTabPageShowSponsoredImagesBackgroundImage,
-                             base::Value(should_show_ntp_si));
+                             base::Value(should_show_ntp_si_and_news));
+  prefs->SetDefaultPrefValue(brave_news::prefs::kNewTabPageShowToday,
+                             base::Value(should_show_ntp_si_and_news));
 }
 
 void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
