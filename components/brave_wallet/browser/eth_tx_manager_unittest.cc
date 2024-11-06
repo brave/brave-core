@@ -2419,11 +2419,9 @@ TEST_F(EthTxManagerUnitTest, Reset) {
   meta.set_tx(std::make_unique<EthTransaction>(*tx));
   ASSERT_TRUE(eth_tx_manager()->tx_state_manager().AddOrUpdateTx(meta));
   EXPECT_EQ(tx_service_->GetDelegateForTesting()->GetTxs().size(), 1u);
-  GetPrefs()->Set(kBraveWalletTransactions, ParseJson(R"({"ethereum":{}})"));
 
   tx_service_->Reset();
 
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));
   EXPECT_TRUE(eth_tx_manager()->pending_chain_ids().empty());
   EXPECT_FALSE(
       eth_tx_manager()->block_tracker().IsRunning(mojom::kLocalhostChainId));

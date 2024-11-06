@@ -147,52 +147,8 @@ class TxStorageDelegateImplUnitTest : public testing::Test {
   scoped_refptr<value_store::TestValueStoreFactory> factory_;
 };
 
-TEST_F(TxStorageDelegateImplUnitTest,
-       BraveWalletTransactionsFromPrefsToDBMigrated) {
-  {  // Nothing to migrate, ex. fresh profile
-    ASSERT_FALSE(
-        prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
-    ASSERT_FALSE(prefs_.HasPrefPath(kBraveWalletTransactions));
-    auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
-    EXPECT_TRUE(delegate->IsInitialized());
-    EXPECT_TRUE(
-        prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
-    EXPECT_FALSE(prefs_.HasPrefPath(kBraveWalletTransactions));
-    prefs_.ClearPref(kBraveWalletTransactionsFromPrefsToDBMigrated);
-  }
-  {  // already migrated
-    prefs_.SetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated, true);
-    auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
-    EXPECT_TRUE(delegate->IsInitialized());
-    EXPECT_TRUE(
-        prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
-    prefs_.ClearPref(kBraveWalletTransactionsFromPrefsToDBMigrated);
-  }
-  {  // migration happened
-    ASSERT_FALSE(
-        prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
-
-    base::Value::Dict txs_value = ParseJsonDict(kLegacyFormatTransactionsDict);
-    prefs_.Set(kBraveWalletTransactions, base::Value(txs_value.Clone()));
-    auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
-    auto txs_from_db = GetTxsFromDB(delegate.get());
-    ASSERT_TRUE(txs_from_db);
-    EXPECT_EQ(txs_from_db->GetDict(), txs_value);
-    EXPECT_EQ(delegate->GetTxs(), txs_value);
-    EXPECT_TRUE(delegate->IsInitialized());
-    EXPECT_TRUE(
-        prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
-    // We don't clear pref transactions for this migration
-    EXPECT_TRUE(prefs_.HasPrefPath(kBraveWalletTransactions));
-  }
-}
-
 TEST_F(TxStorageDelegateImplUnitTest, BraveWalletTransactionsDBFormatMigrated) {
-  prefs_.SetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated, true);
-
   {  // Nothing to migrate, ex. fresh profile
-    ASSERT_FALSE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
-    ASSERT_FALSE(prefs_.HasPrefPath(kBraveWalletTransactions));
     auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
     EXPECT_TRUE(delegate->IsInitialized());
     EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
@@ -226,21 +182,6 @@ TEST_F(TxStorageDelegateImplUnitTest, BraveWalletTransactionsDBFormatMigrated) {
     EXPECT_EQ(delegate->GetTxs(),
               ParseJsonDict(kCurrentFormatTransactionsDict));
   }
-}
-
-TEST_F(TxStorageDelegateImplUnitTest, DBFormatMigrationAfterPrefsMigration) {
-  ASSERT_FALSE(
-      prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
-  ASSERT_FALSE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
-
-  prefs_.Set(kBraveWalletTransactions,
-             ParseJson(kLegacyFormatTransactionsDict));
-
-  auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
-  EXPECT_EQ(delegate->GetTxs(), ParseJsonDict(kCurrentFormatTransactionsDict));
-
-  EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletTransactionsFromPrefsToDBMigrated));
-  EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletTransactionsDBFormatMigrated));
 }
 
 TEST_F(TxStorageDelegateImplUnitTest, ReadWriteAndClear) {
