@@ -134,6 +134,32 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     EXPECT_EQ(1, private_browser->tab_strip_model()->count());
   }
 
+  // Check loading |url| wallet URL in private window results in a load failure
+  void TestURLIsNotLoadedInPrivateWindowOrRedirected(const std::string& url) {
+    Browser* private_browser = CreateIncognitoBrowser(nullptr);
+    TabStripModel* private_model = private_browser->tab_strip_model();
+
+    // Check normal & private window have one blank tab.
+    EXPECT_EQ("about:blank",
+              private_model->GetActiveWebContents()->GetVisibleURL().spec());
+    EXPECT_EQ(1, private_model->count());
+    EXPECT_EQ("about:blank", active_contents()->GetVisibleURL().spec());
+    EXPECT_EQ(1, browser()->tab_strip_model()->count());
+
+    // Unable to navigate expected url.
+    EXPECT_FALSE(content::NavigateToURL(private_model->GetActiveWebContents(),
+                                        GURL(url)));
+    auto* entry = private_model->GetActiveWebContents()
+                      ->GetController()
+                      .GetLastCommittedEntry();
+    EXPECT_EQ(entry->GetPageType(), content::PageType::PAGE_TYPE_ERROR);
+    EXPECT_STREQ("about:blank",
+                 base::UTF16ToUTF8(
+                     browser()->location_bar_model()->GetFormattedFullURL())
+                     .c_str());
+    EXPECT_EQ(1, browser()->tab_strip_model()->count());
+  }
+
   void TestURLIsLoadedInPrivateWindow(const std::string& url) {
     Browser* private_browser = CreateIncognitoBrowser();
     TabStripModel* private_model = private_browser->tab_strip_model();
@@ -301,23 +327,16 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   // window. chrome scheme is used because brave scheme is already replaced with
   // chrome when IsURLAllowedInIncognito() is called. Verify brave scheme url
   // with TestURLIsNotLoadedInPrivateWindow().
-  EXPECT_FALSE(
-      IsURLAllowedInIncognito(GURL("chrome://rewards"), browser()->profile()));
-  EXPECT_TRUE(
-      IsURLAllowedInIncognito(GURL("http://rewards"), browser()->profile()));
+  EXPECT_FALSE(IsURLAllowedInIncognito(GURL("chrome://rewards")));
+  EXPECT_TRUE(IsURLAllowedInIncognito(GURL("http://rewards")));
   TestURLIsNotLoadedInPrivateWindow("brave://rewards");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        WalletPageIsNotAllowedInPrivateWindow) {
-  EXPECT_FALSE(
-      IsURLAllowedInIncognito(GURL("chrome://wallet"), browser()->profile()));
-  EXPECT_TRUE(
-      IsURLAllowedInIncognito(GURL("http://wallet"), browser()->profile()));
-  TestURLIsNotLoadedInPrivateWindow("brave://wallet");
+  EXPECT_TRUE(IsURLAllowedInIncognito(GURL("http://wallet")));
+  TestURLIsNotLoadedInPrivateWindowOrRedirected("brave://wallet");
   prefs()->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
-  EXPECT_TRUE(
-      IsURLAllowedInIncognito(GURL("brave://wallet"), browser()->profile()));
   TestURLIsLoadedInPrivateWindow("chrome://wallet/crypto/onboarding/welcome");
 }
 
@@ -328,19 +347,15 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        BraveSyncPageIsNotAllowedInPrivateWindow) {
-  EXPECT_FALSE(
-      IsURLAllowedInIncognito(GURL("chrome://sync"), browser()->profile()));
-  EXPECT_TRUE(
-      IsURLAllowedInIncognito(GURL("http://sync"), browser()->profile()));
+  EXPECT_FALSE(IsURLAllowedInIncognito(GURL("chrome://sync")));
+  EXPECT_TRUE(IsURLAllowedInIncognito(GURL("http://sync")));
   TestURLIsNotLoadedInPrivateWindow("brave://sync");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        BraveWelcomePageIsNotAllowedInPrivateWindow) {
-  EXPECT_FALSE(
-      IsURLAllowedInIncognito(GURL("chrome://welcome"), browser()->profile()));
-  EXPECT_TRUE(
-      IsURLAllowedInIncognito(GURL("http://welcome"), browser()->profile()));
+  EXPECT_FALSE(IsURLAllowedInIncognito(GURL("chrome://welcome")));
+  EXPECT_TRUE(IsURLAllowedInIncognito(GURL("http://welcome")));
   TestURLIsNotLoadedInPrivateWindow("brave://welcome");
 }
 
