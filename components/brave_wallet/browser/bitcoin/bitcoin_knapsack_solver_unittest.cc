@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/containers/span.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
@@ -75,7 +74,7 @@ class BitcoinKnapsackSolverUnitTest : public testing::Test {
     tx_input.utxo_address = address;
     std::string txid_fake = address + base::NumberToString(amount);
     tx_input.utxo_outpoint.txid =
-        crypto::SHA256Hash(base::as_byte_span(txid_fake));
+        crypto::SHA256Hash(base::as_bytes(base::make_span(txid_fake)));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid.back();
     tx_input.utxo_value = amount;
 

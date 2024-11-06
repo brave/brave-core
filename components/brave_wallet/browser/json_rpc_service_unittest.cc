@@ -409,8 +409,10 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
 
   static std::vector<uint8_t> MakeMintData(int supply) {
     std::vector<uint8_t> data(82);
-    base::span(data).subspan(36).first<8u>().copy_from(
-        base::U64ToNativeEndian(supply));
+    base::as_writable_bytes(base::make_span(data))
+        .subspan(36)
+        .first<8u>()
+        .copy_from(base::U64ToNativeEndian(supply));
     return data;
   }
 
@@ -418,7 +420,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
       const SolanaAddress& owner,
       const std::vector<uint8_t>& data = {}) {
     std::vector<uint8_t> result(96 + data.size());
-    auto result_span = base::span(result);
+    auto result_span = base::as_writable_bytes(base::make_span(result));
     // Header.
     base::ranges::copy(owner.bytes(), result_span.subspan(32, 32).begin());
 
@@ -433,7 +435,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
       const SolanaAddress& sol_record_address,
       const std::vector<uint8_t>& signer_key) {
     std::vector<uint8_t> result(32 + 64);  // payload_address + signature.
-    auto result_span = base::span(result);
+    auto result_span = base::as_writable_bytes(base::make_span(result));
 
     base::ranges::copy(sol_record_payload_address.bytes(), result_span.begin());
 
@@ -607,12 +609,15 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
   static std::vector<uint8_t> MakeTokenAccountData(const SolanaAddress& mint,
                                                    const SolanaAddress& owner) {
     std::vector<uint8_t> data(165);
-    auto mint_span = base::span(data).subspan(0, 32);
+    auto mint_span =
+        base::as_writable_bytes(base::make_span(data)).subspan(0, 32);
     base::ranges::copy(mint.bytes(), mint_span.begin());
-    auto owner_span = base::span(data).subspan(32, 32);
+    auto owner_span =
+        base::as_writable_bytes(base::make_span(data)).subspan(32, 32);
     base::ranges::copy(owner.bytes(), owner_span.begin());
 
-    auto amount_span = base::span(data).subspan(64, 1);
+    auto amount_span =
+        base::as_writable_bytes(base::make_span(data)).subspan(64, 1);
     *amount_span.data() = 1;
 
     return data;
@@ -627,7 +632,7 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
     auto* filters = (*dict.FindList("params"))[1].GetDict().FindList("filters");
     EXPECT_TRUE(filters);
 
-    auto data_span = base::span(token_account_data_);
+    auto data_span = base::make_span(token_account_data_);
     base::Value::List expected_filters;
     expected_filters.Append(base::Value::Dict());
     expected_filters.back().GetDict().SetByDottedPath("memcmp.offset", 0);
@@ -3152,7 +3157,7 @@ class UDGetManyCallHandler : public EthCallHandler {
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
     auto [_, args] = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
     auto keys_array = eth_abi::ExtractStringArrayFromTuple(args, 0);
-    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
+    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
     EXPECT_TRUE(keys_array);
     EXPECT_TRUE(namehash_bytes);
 
@@ -5487,7 +5492,7 @@ class EnsGetResolverHandler : public EthCallHandler {
 
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
     auto [_, args] = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
-    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple<32>(args, 0);
+    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple(args, 32, 0);
     EXPECT_TRUE(namehash_bytes);
 
     if (!base::ranges::equal(*namehash_bytes, Namehash(host_name_))) {
@@ -5514,7 +5519,7 @@ class Ensip10SupportHandler : public EthCallHandler {
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
     auto [_, args] = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
 
-    auto arg_selector = eth_abi::ExtractFixedBytesFromTuple<4>(args, 0);
+    auto arg_selector = eth_abi::ExtractFixedBytesFromTuple(args, 4, 0);
     EXPECT_TRUE(arg_selector);
     EXPECT_TRUE(base::ranges::equal(*arg_selector, kResolveBytesBytesSelector));
 
@@ -5566,7 +5571,7 @@ class EnsGetRecordHandler : public EthCallHandler {
     auto [selector, args] =
         eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
 
-    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple<32>(args, 0);
+    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple(args, 32, 0);
     EXPECT_TRUE(namehash_bytes);
     bool host_matches =
         base::ranges::equal(*namehash_bytes, Namehash(host_name_));
@@ -5724,7 +5729,7 @@ class OffchainGatewayHandler {
         eth_abi::ExtractFunctionSelectorAndArgsFromCall(*encoded_call);
 
     auto domain_namehash =
-        eth_abi::ExtractFixedBytesFromTuple<32>(enconed_call_args, 0);
+        eth_abi::ExtractFixedBytesFromTuple(enconed_call_args, 32, 0);
     EXPECT_TRUE(domain_namehash);
 
     std::vector<uint8_t> data_value;

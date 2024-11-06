@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/containers/extend.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -162,9 +161,11 @@ Eip2930Transaction::ValueToAccessList(const base::Value::List& value) {
   return access_list;
 }
 
-std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
-    uint256_t chain_id) const {
+std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(uint256_t chain_id,
+                                                          bool hash) const {
   DCHECK(nonce_);
+  std::vector<uint8_t> result;
+  result.push_back(type_);
 
   base::Value::List list;
   list.Append(RLPUint256ToBlob(chain_id_));
@@ -176,10 +177,9 @@ std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
 
-  std::vector<uint8_t> result;
-  result.push_back(type_);
-  base::Extend(result, RLPEncode(list));
-  return result;
+  const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
+  result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
+  return hash ? KeccakHash(result) : result;
 }
 
 std::string Eip2930Transaction::GetSignedTransaction() const {
@@ -196,7 +196,7 @@ std::string Eip2930Transaction::GetTransactionHash() const {
   return ToHex(KeccakHash(Serialize()));
 }
 
-void Eip2930Transaction::ProcessSignature(base::span<const uint8_t> signature,
+void Eip2930Transaction::ProcessSignature(const std::vector<uint8_t> signature,
                                           int recid,
                                           uint256_t chain_id) {
   EthTransaction::ProcessSignature(signature, recid, chain_id_);
@@ -241,7 +241,10 @@ std::vector<uint8_t> Eip2930Transaction::Serialize() const {
 
   std::vector<uint8_t> result;
   result.push_back(type_);
-  base::Extend(result, RLPEncode(list));
+
+  const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
+  result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
+
   return result;
 }
 

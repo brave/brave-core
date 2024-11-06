@@ -6,9 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_DISCOVER_ACCOUNT_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_DISCOVER_ACCOUNT_TASK_H_
 
-#include <memory>
 #include <string>
-#include <utility>
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
@@ -76,7 +74,7 @@ class DiscoverAccountTaskBase {
   uint32_t active_requests_ = 0;
   // Indexed by 0 and 1 for receive and change addresses discovery states
   // respectively.
-  std::array<State, 2> states_;
+  State states_[2];
   bool account_is_used_ = false;
   mojom::BitcoinBalancePtr balance_;
 

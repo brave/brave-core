@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <array>
 
+#include "base/check.h"
+#include "base/compiler_specific.h"
 #include "base/containers/adapters.h"
 #include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
@@ -29,35 +31,47 @@ std::array<uint8_t, 64> ConcatArrays(const std::array<uint8_t, 32>& arr1,
 }
 }  // namespace
 
-KeccakHashArray KeccakHash(base::span<const uint8_t> input) {
+std::string KeccakHash(const std::string& input, bool to_hex) {
+  std::vector<uint8_t> bytes(input.begin(), input.end());
+  std::vector<uint8_t> result = KeccakHash(bytes);
+  std::string result_str(result.begin(), result.end());
+  return to_hex ? ToHex(result_str) : result_str;
+}
+
+std::vector<uint8_t> KeccakHash(const std::vector<uint8_t>& input) {
   auto hash = ethash_keccak256(input.data(), input.size());
-  KeccakHashArray result;
+  return UNSAFE_TODO(std::vector<uint8_t>(hash.bytes, hash.bytes + 32));
+}
+
+eth_abi::Bytes32 KeccakHashBytes32(base::span<const uint8_t> input) {
+  auto hash = ethash_keccak256(input.data(), input.size());
+  eth_abi::Bytes32 result;
   static_assert(sizeof(result) == sizeof(hash.bytes));
   base::ranges::copy(hash.bytes, result.begin());
   return result;
 }
 
 std::string GetFunctionHash(const std::string& input) {
-  auto hex_hash = ToHex(KeccakHash(base::as_byte_span(input)));
-  CHECK_EQ(hex_hash.size(), 66u);
-  return hex_hash.substr(0, 10);
+  std::string result = KeccakHash(input);
+  return result.substr(0, std::min(static_cast<size_t>(10), result.length()));
 }
 
 eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input) {
-  auto full_hash = KeccakHash(base::as_byte_span(input));
+  auto full_hash = KeccakHashBytes32(base::as_bytes(base::make_span(input)));
   eth_abi::Bytes4 bytes_result;
-  base::ranges::copy(base::span(full_hash).first<4>(), bytes_result.begin());
+  base::ranges::copy(base::make_span(full_hash).first<4>(),
+                     bytes_result.begin());
   return bytes_result;
 }
 
 eth_abi::Bytes32 Namehash(const std::string& name) {
   eth_abi::Bytes32 hash = {};
-  auto labels = SplitStringPiece(name, ".", base::KEEP_WHITESPACE,
-                                 base::SPLIT_WANT_NONEMPTY);
+  std::vector<std::string> labels =
+      SplitString(name, ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   for (const auto& label : base::Reversed(labels)) {
-    auto label_hash = KeccakHash(base::as_byte_span(label));
-    hash = KeccakHash(ConcatArrays(hash, label_hash));
+    auto label_hash = KeccakHashBytes32(base::as_bytes(base::make_span(label)));
+    hash = KeccakHashBytes32(ConcatArrays(hash, label_hash));
   }
   return hash;
 }
@@ -66,11 +80,15 @@ SHA256HashArray DoubleSHA256Hash(base::span<const uint8_t> input) {
   return crypto::SHA256Hash(crypto::SHA256Hash(input));
 }
 
-Ripemd160HashArray Hash160(base::span<const uint8_t> input) {
-  Ripemd160HashArray result = {};
+std::vector<uint8_t> Hash160(base::span<const uint8_t> input) {
+  std::vector<uint8_t> result(CRIPEMD160::OUTPUT_SIZE);
+
+  std::array<uint8_t, crypto::kSHA256Length> sha256hash =
+      crypto::SHA256Hash(input);
+  DCHECK(!sha256hash.empty());
 
   CRIPEMD160()
-      .Write(crypto::SHA256Hash(input).data(), crypto::kSHA256Length)
+      .Write(sha256hash.data(), sha256hash.size())
       .Finalize(result.data());
 
   return result;

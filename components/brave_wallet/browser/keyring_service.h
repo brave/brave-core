@@ -158,7 +158,7 @@ class KeyringService : public mojom::KeyringService {
       base::span<const uint8_t> message);
   std::optional<std::string> RecoverAddressByDefaultKeyring(
       base::span<const uint8_t> message,
-      base::span<const uint8_t, 65 /*kRecoverableSignatureSize*/> signature);
+      base::span<const uint8_t> signature);
   bool GetPublicKeyFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
       const mojom::AccountIdPtr& account_id,
       std::string* key);

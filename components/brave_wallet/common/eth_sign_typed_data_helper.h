@@ -16,7 +16,6 @@
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace brave_wallet {
 
@@ -35,20 +34,20 @@ class EthSignTypedDataHelper {
   void SetTypes(base::Value::Dict types);
   void SetVersion(Version version);
 
-  KeccakHashArray GetTypeHash(const std::string& primary_type_name) const;
-  std::optional<std::pair<KeccakHashArray, base::Value::Dict>> HashStruct(
+  std::vector<uint8_t> GetTypeHash(const std::string& primary_type_name) const;
+  std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> HashStruct(
       const std::string& primary_type_name,
       const base::Value::Dict& data) const;
   std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> EncodeData(
       const std::string& primary_type_name,
       const base::Value::Dict& data) const;
-  static KeccakHashArray GetTypedDataMessageToSign(
+  static std::vector<uint8_t> GetTypedDataMessageToSign(
       base::span<const uint8_t> domain_hash,
       base::span<const uint8_t> primary_hash);
-  std::optional<std::pair<KeccakHashArray, base::Value::Dict>>
+  std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
   GetTypedDataPrimaryHash(const std::string& primary_type_name,
                           const base::Value::Dict& message) const;
-  std::optional<std::pair<KeccakHashArray, base::Value::Dict>>
+  std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
   GetTypedDataDomainHash(const base::Value::Dict& domain) const;
 
  private:
@@ -67,8 +66,9 @@ class EthSignTypedDataHelper {
                          const std::string& type_name) const;
   std::string EncodeTypes(const std::string& primary_type_name) const;
 
-  std::optional<KeccakHashArray> EncodeField(const std::string& type,
-                                             const base::Value& value) const;
+  std::optional<std::vector<uint8_t>> EncodeField(
+      const std::string& type,
+      const base::Value& value) const;
 
   base::Value::Dict types_;
   Version version_;

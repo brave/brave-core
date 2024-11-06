@@ -3,15 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 
 #include <limits>
+#include <map>
 #include <memory>
 #include <optional>
 #include <utility>
 
 #include "base/containers/span.h"
-#include "base/containers/span_reader.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -90,8 +96,8 @@ std::optional<DecoderResult<base::Value>> GetAddressFromData(ByteView input) {
   }
 
   return DecoderResult<base::Value>(
-      base::Value("0x" +
-                  HexEncodeLower(input.first(kWordSize).last(kAddressSize))),
+      base::Value("0x" + HexEncodeLower(input.data() + kWordSize - kAddressSize,
+                                        kAddressSize)),
       GetSubByteView(input, kWordSize), kWordSize);
 }
 
@@ -466,35 +472,37 @@ std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
   if (!PrefixedHexStringToBytes(encoded_path, &data)) {
     return std::nullopt;
   }
+  size_t offset = 0;
   std::vector<std::string> path;
-
-  auto reader = base::SpanReader(base::as_byte_span(data));
 
   // The path should be long enough to encode a single-hop swap.
   // 43 = 20(address) + 3(fee) + 20(address)
-  if (reader.remaining() < 43) {
+  if (data.size() < 43) {
     return std::nullopt;
   }
 
   // Parse first hop address.
-  path.push_back(base::StrCat({"0x", HexEncodeLower(*reader.Read(20u))}));
+  path.push_back("0x" + HexEncodeLower(data.data(), 20));
+  offset += 20;
 
   while (true) {
-    if (!reader.remaining()) {
+    if (offset == data.size()) {
       break;
     }
 
     // Parse the pool fee, and ignore.
-    if (!reader.Skip(3u)) {
+    if (data.size() - offset < 3) {
       return std::nullopt;
     }
 
+    offset += 3;
+
     // Parse next hop.
-    if (auto address = reader.Read(20u)) {
-      path.push_back("0x" + HexEncodeLower(*address));
-    } else {
+    if (data.size() - offset < 20) {
       return std::nullopt;
     }
+    path.push_back("0x" + HexEncodeLower(data.data() + offset, 20));
+    offset += 20;
   }
 
   // Require a minimum of 2 addresses for a single-hop swap.
@@ -507,7 +515,9 @@ std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
 
 std::optional<base::Value::List> ABIDecode(const eth_abi::Type& type,
                                            const ByteArray& data) {
-  auto decoded = DecodeParam(type, data);
+  ByteView input = base::make_span(data.data(), data.size());
+
+  auto decoded = DecodeParam(type, input);
   if (!decoded) {
     return std::nullopt;
   }
