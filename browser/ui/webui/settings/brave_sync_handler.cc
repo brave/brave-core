@@ -52,6 +52,10 @@ std::string GetSyncCodeValidationString(
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_EXPIRED);
     case ValidationStatus::kValidForTooLong:
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_VALID_FOR_TOO_LONG);
+    case ValidationStatus::kValid:
+      DCHECK(false) << "kValid means no error and we don't display any error "
+                       "when all is ok";
+      return "";
     default:
       NOTREACHED_NORETURN();
   }
