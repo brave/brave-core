@@ -395,7 +395,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       }
 
       return params_.link_url.is_valid() &&
-             IsURLAllowedInIncognito(params_.link_url, browser_context_) &&
+             IsURLAllowedInIncognito(params_.link_url) &&
              !GetProfile()->IsTor();
 #else
       return false;
