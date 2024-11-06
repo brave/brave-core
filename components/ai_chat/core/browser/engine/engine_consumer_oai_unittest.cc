@@ -246,6 +246,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Push a single user turn into the history.
   history.push_back(mojom::ConversationTurn::New(
+      std::nullopt,
       mojom::CharacterType::HUMAN,                 // Author is the user
       mojom::ActionType::UNSPECIFIED,              // No specific action
       mojom::ConversationTurnVisibility::VISIBLE,  // Visible to the user

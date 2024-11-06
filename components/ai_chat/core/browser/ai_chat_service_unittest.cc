@@ -531,6 +531,8 @@ TEST_P(AIChatServiceUnitTest, GetConversation_AfterRestart) {
                   }));
     run_loop.Run();
   }
+}
+
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
   NiceMock<MockAssociatedContent> associated_content{};
   ConversationHandler* conversation =

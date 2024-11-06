@@ -8,7 +8,9 @@
 #include <memory>
 #include <utility>
 
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
@@ -21,8 +23,6 @@
 #include "chrome/common/buildflags.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(
     content::BrowserContext* browser_context)
     : ChromeBrowsingDataRemoverDelegate(browser_context),

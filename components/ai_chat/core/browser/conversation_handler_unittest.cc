@@ -286,6 +286,7 @@ class ConversationHandlerUnitTest : public testing::Test {
       }
 
       auto entry = mojom::ConversationTurn::New(
+          std::nullopt,
           is_human ? mojom::CharacterType::HUMAN
                    : mojom::CharacterType::ASSISTANT,
           is_human ? mojom::ActionType::QUERY : mojom::ActionType::RESPONSE,
@@ -1057,10 +1058,10 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       // Mock the response from the engine
       .WillOnce(::testing::DoAll(
-          base::test::RunOnceCallback<4>(
+          base::test::RunOnceCallback<5>(
               mojom::ConversationEntryEvent::NewCompletionEvent(
                   mojom::CompletionEvent::New("new answer"))),
-          base::test::RunOnceCallback<5>(base::ok(""))));
+          base::test::RunOnceCallback<6>(base::ok(""))));
 
   EXPECT_CALL(observer, OnConversationEntryAdded).Times(6);
   EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(3);
