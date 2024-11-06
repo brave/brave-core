@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import LottiePlayer from '../../../../brave_welcome_ui/components/lottie-player'
+import LottiePlayer from '$web-common/lottiePlayer'
 
 const LottieBox = styled.div`
   width: 124px;
