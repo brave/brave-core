@@ -10,12 +10,12 @@ assert(enable_ai_chat)
 
 static_library("ai_chat") {
   sources = [
-    "//brave/browser/ai_chat/ai_chat_service_factory.cc",
-    "//brave/browser/ai_chat/ai_chat_service_factory.h",
-    "//brave/browser/ai_chat/ai_chat_settings_helper.cc",
-    "//brave/browser/ai_chat/ai_chat_settings_helper.h",
-    "//brave/browser/ai_chat/ai_chat_utils.cc",
-    "//brave/browser/ai_chat/ai_chat_utils.h",
+    "ai_chat_service_factory.cc",
+    "ai_chat_service_factory.h",
+    "ai_chat_settings_helper.cc",
+    "ai_chat_settings_helper.h",
+    "ai_chat_utils.cc",
+    "ai_chat_utils.h",
   ]
 
   deps = [
@@ -46,7 +46,10 @@ static_library("ai_chat") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "ai_chat_throttle_unittest.cc" ]
+  sources = [
+    "ai_chat_throttle_unittest.cc",
+    "brave_open_ai_chat_permission_context_unittest.cc",
+  ]
 
   deps = [
     "//base",
@@ -70,6 +73,7 @@ source_set("browser_tests") {
     sources = [
       "//chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.cc",
       "//chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h",
+      "ai_chat_brave_search_throttle_browsertest.cc",
       "ai_chat_browsertests.cc",
       "ai_chat_metrics_browsertest.cc",
       "ai_chat_policy_browsertest.cc",

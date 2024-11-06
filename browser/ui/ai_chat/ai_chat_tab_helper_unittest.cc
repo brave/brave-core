@@ -51,6 +51,10 @@ class MockPageContentFetcher
               GetSearchSummarizerKey,
               (mojom::PageContentExtractor::GetSearchSummarizerKeyCallback),
               (override));
+  MOCK_METHOD(void,
+              GetOpenAIChatButtonNonce,
+              (mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback),
+              (override));
 };
 
 class MockAssociatedContentObserver : public AssociatedContentDriver::Observer {
