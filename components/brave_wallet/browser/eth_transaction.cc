@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/containers/extend.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -172,8 +171,8 @@ std::optional<EthTransaction> EthTransaction::FromValue(
   return tx;
 }
 
-std::vector<uint8_t> EthTransaction::GetMessageToSign(
-    uint256_t chain_id) const {
+std::vector<uint8_t> EthTransaction::GetMessageToSign(uint256_t chain_id,
+                                                      bool hash) const {
   DCHECK(nonce_);
   base::Value::List list;
   list.Append(RLPUint256ToBlob(nonce_.value()));
@@ -188,12 +187,9 @@ std::vector<uint8_t> EthTransaction::GetMessageToSign(
     list.Append(RLPUint256ToBlob(0));
   }
 
-  return RLPEncode(list);
-}
-
-KeccakHashArray EthTransaction::GetHashedMessageToSign(
-    uint256_t chain_id) const {
-  return KeccakHash(GetMessageToSign(chain_id));
+  const std::string message = RLPEncode(base::Value(std::move(list)));
+  auto result = std::vector<uint8_t>(message.begin(), message.end());
+  return hash ? KeccakHash(result) : result;
 }
 
 std::string EthTransaction::GetSignedTransaction() const {
@@ -206,7 +202,7 @@ std::string EthTransaction::GetTransactionHash() const {
   DCHECK(IsSigned());
   DCHECK(nonce_);
 
-  return ToHex(KeccakHash(RLPEncode(Serialize())));
+  return KeccakHash(RLPEncode(Serialize()));
 }
 
 bool EthTransaction::ProcessVRS(const std::vector<uint8_t>& v,
@@ -227,7 +223,7 @@ bool EthTransaction::ProcessVRS(const std::vector<uint8_t>& v,
 }
 
 // signature and recid will be used to produce v, r, s
-void EthTransaction::ProcessSignature(base::span<const uint8_t> signature,
+void EthTransaction::ProcessSignature(const std::vector<uint8_t> signature,
                                       int recid,
                                       uint256_t chain_id) {
   if (signature.size() != 64) {

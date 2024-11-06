@@ -72,8 +72,7 @@ std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkeyHash(
     return std::nullopt;
   }
 
-  auto hashed = Hash160(hd_key_base->GetPublicKeyBytes());
-  return std::vector<uint8_t>(hashed.begin(), hashed.end());
+  return Hash160(hd_key_base->GetPublicKeyBytes());
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)

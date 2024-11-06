@@ -11,7 +11,7 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/containers/span.h"
+#include "base/compiler_specific.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
@@ -408,9 +408,8 @@ bool ParseEthDecryptParams(const std::string& json,
   }
 
   // IsValidHexString guarantees at least 2 bytes and starts with 0x
-  if (!base::HexStringToString(
-          base::as_string_view(*untrusted_hex_json_str).substr(2),
-          &untrusted_json)) {
+  if (!UNSAFE_TODO(base::HexStringToString(untrusted_hex_json_str->data() + 2,
+                                           &untrusted_json))) {
     return false;
   }
 
@@ -529,14 +528,12 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     result->meta = nullptr;
   }
 
-  result->domain_hash.assign(domain_hash->first.begin(),
-                             domain_hash->first.end());
+  result->domain_hash = domain_hash->first;
   if (!base::JSONWriter::Write(domain_hash->second, &result->domain_json)) {
     return nullptr;
   }
 
-  result->primary_hash.assign(primary_hash->first.begin(),
-                              primary_hash->first.end());
+  result->primary_hash = primary_hash->first;
   if (!base::JSONWriter::Write(primary_hash->second, &result->message_json)) {
     return nullptr;
   }

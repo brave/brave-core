@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,10 +14,10 @@ namespace brave_wallet {
 
 TEST(HashUtilsUnitTest, KeccakHash) {
   ASSERT_EQ(
-      ToHex(KeccakHash({})),
+      KeccakHash(""),
       "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470");
   ASSERT_EQ(
-      ToHex(KeccakHash(base::byte_span_from_cstring("hello world"))),
+      KeccakHash("hello world"),
       "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad");
 }
 

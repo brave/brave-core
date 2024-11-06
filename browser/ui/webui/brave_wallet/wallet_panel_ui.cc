@@ -66,8 +66,11 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   plural_string_handler->AddLocalizedString(
       "braveWalletPendingTransactions", IDS_BRAVE_WALLET_PENDING_TRANSACTIONS);
   web_ui->AddMessageHandler(std::move(plural_string_handler));
-  webui::SetupWebUIDataSource(source, base::span(kBraveWalletPanelGenerated),
-                              IDR_WALLET_PANEL_HTML);
+  webui::SetupWebUIDataSource(
+      source,
+      UNSAFE_TODO(base::make_span(kBraveWalletPanelGenerated,
+                                  kBraveWalletPanelGeneratedSize)),
+      IDR_WALLET_PANEL_HTML);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,

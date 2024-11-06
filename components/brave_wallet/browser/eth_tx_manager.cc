@@ -446,8 +446,8 @@ void EthTxManager::GetEthTransactionMessageToSign(
     std::move(callback).Run(std::nullopt);
     return;
   }
-  std::move(callback).Run(
-      HexEncodeLower(meta->tx()->GetMessageToSign(chain_id)));
+  std::move(callback).Run(base::ToLowerASCII(
+      base::HexEncode(meta->tx()->GetMessageToSign(chain_id, false))));
 }
 
 mojom::CoinType EthTxManager::GetCoinType() const {
