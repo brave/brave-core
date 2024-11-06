@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 07f855c52c5c0fd4eb63171ed861b34d6de2e387..b2da10cf5bdaa9a48afc737968248a1762e1f020 100644
+index 021b4d87e7db2799bc31e60c48df4c1ab163be32..b30a151ec48edaa29b631e6c1c26e93c967a9872 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -1952,6 +1952,7 @@
@@ -35,7 +35,7 @@ index 07f855c52c5c0fd4eb63171ed861b34d6de2e387..b2da10cf5bdaa9a48afc737968248a17
      },
      // Killswitch. Remove after 1 or 2 stable releases.
      {
-@@ -3836,6 +3839,7 @@
+@@ -3837,6 +3840,7 @@
      {
        name: "Serial",
        status: {"Android": "", "default": "stable"},
