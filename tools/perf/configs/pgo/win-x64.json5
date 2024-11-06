@@ -1,0 +1,25 @@
+{
+  "configurations": [{
+    "dashboard-bot-name": "test-agent",
+    "browser-type": "brave",
+    "profile": "brave-typical-win",
+    "extra-browser-args": [
+      "--disable-features=CalculateNativeWinOcclusion",
+    ],
+    "extra-benchmark-args": [
+      "--also-run-disabled-tests"
+    ],
+    "save-artifacts": true,
+  }],
+  "benchmarks": [
+    {
+      "name": "system_health.common_desktop",
+      "pageset-repeat": 1,
+      "stories": [
+        "load:site:example:2023",      ]
+    }
+    {
+      "name": "speedometer3",
+    },
+  ]
+}
