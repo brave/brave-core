@@ -181,8 +181,7 @@ int SOCKS5ClientSocketAuth::Authenticate(
 
       case STATE_BAD:
       default:
-        NOTREACHED_IN_MIGRATION() << "bad state";
-        return ERR_UNEXPECTED;
+        NOTREACHED() << "bad state";
     }
   } while (rv != ERR_IO_PENDING);
   return rv;
