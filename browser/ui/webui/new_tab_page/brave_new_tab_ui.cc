@@ -79,6 +79,17 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 
   AddBackgroundColorToSource(source, web_contents);
 
+  // Lottie animations tick on a worker thread and requires the document CSP to
+  // be set to "worker-src blob: 'self';".
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::WorkerSrc,
+      "worker-src blob: chrome://resources 'self';");
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::TrustedTypes,
+      "trusted-types static-types lottie-worker-script-loader lit-html-desktop "
+      "default; ");
+
   source->AddBoolean(
       "featureCustomBackgroundEnabled",
       !profile->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
