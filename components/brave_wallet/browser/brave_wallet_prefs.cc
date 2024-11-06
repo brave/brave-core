@@ -325,9 +325,6 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   ClearDeprecatedProfilePrefsMigrationFlags(prefs);
 
-  // Added 07/2023
-  MigrateDerivedAccountIndex(prefs);
-
   // Added 01/2024 migrate assets pref to plain list.
   BraveWalletService::MigrateAssetsPrefToList(prefs);
 

@@ -13,7 +13,6 @@
 
 namespace brave_wallet {
 
-void MigrateDerivedAccountIndex(PrefService* profile_prefs);
 void MaybeMigrateSelectedAccountPrefs(
     PrefService* profile_prefs,
     const std::vector<mojom::AccountInfoPtr>& all_accounts);
