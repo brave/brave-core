@@ -222,7 +222,9 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
           brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment());
       break;
     default:
-      NOTREACHED_IN_MIGRATION();
+      NOTREACHED() << "This should only be called with one of the above VPN "
+                      "commands. (was "
+                   << command_id << ")";
   }
 
   chrome::AddTabAt(browser, GURL(target_url), -1, true);
