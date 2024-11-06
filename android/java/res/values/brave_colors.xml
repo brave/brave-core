@@ -98,7 +98,6 @@
     <color name="systemfeedback_info_background">#e2f0ff</color>
     <color name="systemfeedback_info_icon">#0061aa</color>
     <color name="systemfeedback_info_text">#0061aa</color>
-    <color name="text_interactive">#3f39e8</color>
     <color name="container_background">#ffffff</color>
     <color name="primitive_private_window_5">#160041</color>
     <color name="primitive_private_window_10">#22005D</color>
@@ -408,6 +407,8 @@
 
     <color name="divider_interactive">#c1c4ff</color>
 
+    <color name="text_interactive">#3f39e8</color>
+
     <color name="location_bar_background_color_for_ntp">#f2f2f2</color>
     <color name="toolbar_background_color_for_ntp">@android:color/white</color>
 
@@ -427,4 +428,6 @@
     <color name="schemes_outline_variant">#e3e3e8</color>
     <color name="schemes_primary">#3e37d4</color>
     <color name="schemes_surface_container_highest">#c7c7cc</color>
+
+    <color name="quick_search_bg">#FFFFFF</color>
 </resources>

@@ -13,6 +13,7 @@
     <item name="brave_leo_id" type="id"/>
     <item name="brave_news_id" type="id"/>
     <item name="exit_id" type="id"/>
+    <item name="action_save" type="id"/>
     <item name="help_id" type="id"/>
     <item name="request_brave_vpn_row_menu_id" type="id"/>
     <item name="request_brave_vpn_id" type="id"/>

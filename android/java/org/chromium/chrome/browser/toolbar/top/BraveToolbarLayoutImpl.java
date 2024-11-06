@@ -75,6 +75,7 @@ import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.ntp.NtpUtil;
+import org.chromium.chrome.browser.omnibox.BraveLocationBarCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
@@ -144,9 +145,13 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
-        implements BraveToolbarLayout, OnClickListener, View.OnLongClickListener,
-                   BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver,
-                   ConnectionErrorHandler, PlaylistServiceObserverImplDelegate {
+        implements BraveToolbarLayout,
+                OnClickListener,
+                View.OnLongClickListener,
+                BraveRewardsObserver,
+                BraveRewardsNativeWorker.PublisherObserver,
+                ConnectionErrorHandler,
+                PlaylistServiceObserverImplDelegate {
     private static final String TAG = "BraveToolbar";
 
     private static final List<String> BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS =
@@ -364,6 +369,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
         updateShieldsLayoutBackground(isIncognito() || !NtpUtil.shouldShowRewardsIcon());
+    }
+
+    public String getLocationBarQuery() {
+        if (getLocationBar() instanceof BraveLocationBarCoordinator) {
+            String query =
+                    ((BraveLocationBarCoordinator) getLocationBar())
+                            .getUrlBarTextWithoutAutocomplete();
+            return query;
+        }
+        return "";
+    }
+
+    public void clearOmniboxFocus() {
+        if (getLocationBar() instanceof BraveLocationBarCoordinator) {
+            ((BraveLocationBarCoordinator) getLocationBar()).clearOmniboxFocus();
+        }
     }
 
     @Override
