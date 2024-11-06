@@ -89,8 +89,8 @@ class FeedGenerationInfo {
 
   Signals signals_;
 
-  base::raw_span<TopicAndArticles> topics_span_;
   TopicsResult topics_;
+  base::raw_span<TopicAndArticles> topics_span_;
 
   std::optional<ArticleInfos> article_infos_;
   std::optional<std::vector<ContentGroup>> content_groups_;
