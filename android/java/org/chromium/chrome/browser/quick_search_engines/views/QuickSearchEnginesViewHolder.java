@@ -15,6 +15,6 @@ public class QuickSearchEnginesViewHolder extends RecyclerView.ViewHolder {
 
     QuickSearchEnginesViewHolder(View itemView) {
         super(itemView);
-        this.mSearchEngineLogo = (ImageView) itemView;
+        mSearchEngineLogo = (ImageView) itemView;
     }
 }

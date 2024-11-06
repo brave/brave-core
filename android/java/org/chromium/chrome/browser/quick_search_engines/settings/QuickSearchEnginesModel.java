@@ -13,10 +13,10 @@ public class QuickSearchEnginesModel {
 
     public QuickSearchEnginesModel(
             String shortName, String keyword, String url, boolean isEnabled) {
-        this.mShortName = shortName;
-        this.mKeyword = keyword;
-        this.mUrl = url;
-        this.mIsEnabled = isEnabled;
+        mShortName = shortName;
+        mKeyword = keyword;
+        mUrl = url;
+        mIsEnabled = isEnabled;
     }
 
     public String getShortName() {
@@ -36,6 +36,6 @@ public class QuickSearchEnginesModel {
     }
 
     public void setEnabled(boolean isEnabled) {
-        this.mIsEnabled = isEnabled;
+        mIsEnabled = isEnabled;
     }
 }
