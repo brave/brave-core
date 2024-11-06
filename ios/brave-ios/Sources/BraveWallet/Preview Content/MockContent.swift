@@ -663,7 +663,7 @@ extension BraveWallet.ZeroExQuote {
         proportionBps: "10000"
       )]
     ),
-    sellAmount: "1000000000000000000",
+    sellAmount: "1000000000000000000",  // 1 ETH
     sellToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",  // ETH
     totalNetworkFee: "2034668056550000",
     allowanceTarget: "0x0000000000000000000000000000000000000000"
