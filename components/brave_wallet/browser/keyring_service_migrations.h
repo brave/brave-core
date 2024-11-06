@@ -8,14 +8,10 @@
 
 #include <string>
 
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_wallet {
 
-void MaybeMigrateSelectedAccountPrefs(
-    PrefService* profile_prefs,
-    const std::vector<mojom::AccountInfoPtr>& all_accounts);
 void MaybeRunPasswordMigrations(PrefService* profile_prefs,
                                 const std::string& password);
 void MaybeMigratePBKDF2Iterations(PrefService* profile_prefs,

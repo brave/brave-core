@@ -631,10 +631,6 @@ KeyringService::KeyringService(JsonRpcService* json_rpc_service,
       base::BindRepeating(&KeyringService::OnAutoLockPreferenceChanged,
                           base::Unretained(this)));
 
-  // Added 06/2023
-  MaybeMigrateSelectedAccountPrefs(profile_prefs_, GetAllAccountInfos());
-  ResetAllAccountInfosCache();  // Reset cache state after migration above.
-
   MaybeUnlockWithCommandLine();
 }
 

@@ -93,9 +93,6 @@ inline constexpr char kBraveWalletIsCompressedNftMigrated[] =
 inline constexpr char kBraveWalletIsSPLTokenProgramMigrated[] =
     "brave.wallet.is_spl_token_program_migrated";
 
-// 06/2023
-inline constexpr char kBraveWalletSelectedCoinDeprecated[] =
-    "brave.wallet.selected_coin";
 // 01/2024
 inline constexpr char kBraveWalletUserAssetsDeprecated[] =
     "brave.wallet.wallet_user_assets";

@@ -3716,50 +3716,6 @@ TEST_F(KeyringServiceUnitTest, SignMessageByBitcoinKeyring) {
           btc_acc->account_id, mojom::BitcoinKeyId::New(1, 7), message)));
 }
 
-TEST_F(KeyringServiceUnitTest, MigrateSelectedAccount) {
-  auto service = std::make_unique<KeyringService>(json_rpc_service(),
-                                                  GetPrefs(), GetLocalState());
-
-  ASSERT_TRUE(
-      RestoreWallet(service.get(), kMnemonicDivideCruise, "brave", false));
-
-  auto eth_acc = AddAccount(service.get(), mojom::CoinType::ETH,
-                            mojom::KeyringId::kDefault, "ETH 1");
-  auto sol_acc = AddAccount(service.get(), mojom::CoinType::SOL,
-                            mojom::KeyringId::kSolana, "SOL 1");
-  auto fil_acc = AddAccount(service.get(), mojom::CoinType::FIL,
-                            mojom::KeyringId::kFilecoin, "FIL 1");
-  service.reset();
-
-  // Setup legacy selected account prefs.
-  GetPrefs()->ClearPref(kBraveWalletSelectedWalletAccount);
-  GetPrefs()->ClearPref(kBraveWalletSelectedSolDappAccount);
-  GetPrefs()->ClearPref(kBraveWalletSelectedEthDappAccount);
-  GetPrefs()->SetInteger(kBraveWalletSelectedCoinDeprecated,
-                         static_cast<int>(mojom::CoinType::FIL));
-  auto keyrings = GetPrefs()->GetDict(kBraveWalletKeyrings).Clone();
-  keyrings.SetByDottedPath("default.selected_account", eth_acc->address);
-  keyrings.SetByDottedPath("solana.selected_account", sol_acc->address);
-  keyrings.SetByDottedPath("filecoin.selected_account", fil_acc->address);
-  GetPrefs()->SetDict(kBraveWalletKeyrings, std::move(keyrings));
-
-  // Instantiate service, migration should happen.
-  service = std::make_unique<KeyringService>(json_rpc_service(), GetPrefs(),
-                                             GetLocalState());
-
-  // Legacy prefs are missing.
-  EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletSelectedCoinDeprecated));
-  keyrings = GetPrefs()->GetDict(kBraveWalletKeyrings).Clone();
-  EXPECT_FALSE(keyrings.FindByDottedPath("default.selected_account"));
-  EXPECT_FALSE(keyrings.FindByDottedPath("solana.selected_account"));
-  EXPECT_FALSE(keyrings.FindByDottedPath("filecoin.selected_account"));
-
-  auto all_accounts = service->GetAllAccountsSync();
-  EXPECT_EQ(all_accounts->eth_dapp_selected_account, eth_acc);
-  EXPECT_EQ(all_accounts->sol_dapp_selected_account, sol_acc);
-  EXPECT_EQ(all_accounts->selected_account, fil_acc);
-}
-
 #if BUILDFLAG(ENABLE_ORCHARD)
 
 // Generated using https://github.com/zcash/zcash-test-vectors
