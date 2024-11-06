@@ -7,6 +7,7 @@
 
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
@@ -52,6 +53,12 @@ bool IsAllowedToLandOnPage(const mojom::AdType mojom_ad_type) {
 
   NOTREACHED_NORETURN() << "Unexpected value for mojom::AdType: "
                         << base::to_underlying(mojom_ad_type);
+}
+
+bool ShouldResumePageLand(const int32_t tab_id) {
+  return TabManager::GetInstance().IsVisible(tab_id) &&
+         BrowserManager::GetInstance().IsActive() &&
+         BrowserManager::GetInstance().IsInForeground();
 }
 
 bool DidLandOnPage(const int32_t tab_id, const GURL& url) {

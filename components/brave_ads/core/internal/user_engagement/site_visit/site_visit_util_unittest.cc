@@ -162,6 +162,63 @@ TEST_F(
   EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kSearchResultAd));
 }
 
+TEST_F(BraveAdsSiteVisitUtilTest, ShouldResumePageLand) {
+  // Arrange
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
+
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_TRUE(ShouldResumePageLand(/*tab_id=*/1));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, ShouldNotResumePageLandIfTabIsOccluded) {
+  // Arrange
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
+
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
+  SimulateOpeningNewTab(
+      /*tab_id=*/2,
+      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
+      net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_FALSE(ShouldResumePageLand(/*tab_id=*/1));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, ShouldNotResumePageLandIfBrowserIsInactive) {
+  // Arrange
+  NotifyBrowserDidResignActive();
+  NotifyBrowserDidEnterForeground();
+
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_FALSE(ShouldResumePageLand(/*tab_id=*/1));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       ShouldNotResumePageLandIfBrowserDidEnterBackground) {
+  // Arrange
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterBackground();
+
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_FALSE(ShouldResumePageLand(/*tab_id=*/1));
+}
+
 TEST_F(BraveAdsSiteVisitUtilTest, DidLandOnPage) {
   // Arrange
   SimulateOpeningNewTab(/*tab_id=*/1,

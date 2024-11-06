@@ -16,6 +16,8 @@ namespace brave_ads {
 
 bool IsAllowedToLandOnPage(mojom::AdType mojom_ad_type);
 
+bool ShouldResumePageLand(int32_t tab_id);
+
 bool DidLandOnPage(int32_t tab_id, const GURL& url);
 
 }  // namespace brave_ads
