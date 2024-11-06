@@ -337,6 +337,9 @@
 /* The title for disliking response to clipboard action */
 "aichat.responseContextMenuDislikeAnswerTitle" = "回答を「不満」と評価する";
 
+/* The title for editing AI response action from context menu */
+"aichat.responseContextMenuEditAnswerTitle" = "回答を編集";
+
 /* The title for editing user prompt action from context menu */
 "aichat.responseContextMenuEditPromptTitle" = "プロンプトを編集";
 

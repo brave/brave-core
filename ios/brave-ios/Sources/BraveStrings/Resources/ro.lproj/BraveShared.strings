@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Apasă de două ori pentru a activa sau dezactiva Brave Shields";
 
-/* Sync page title */
-"BraveSync" = "Sincronizare";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Detalii Sincronizare";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "Pentru a începe, trebuie să ai Brave instalat pe toate dispozitivele pe care vrei să le sincronizezi. Pentru a le sincroniza, pornește un lanț de sincronizare pe care îl vei utiliza pentru a conecta în siguranță toate dispozitivele tale.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Închide toate %i file";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Scrie cuvintele cod furnizate pentru lanțul de sincronizare în formularul de mai jos.";
-
-/* Code words section title */
-"CodeWords" = "Cuvinte cod";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Descarcă";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookie-uri și date privind site-ul";
-
-/* Copied action complete title */
-"Copied" = "Copiat!";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Copiat în clipboard!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Copiază informațiile aplicației in clipboard.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Copiază informațiile filelor in clipboard.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Copiază în Clipboard";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Copiază info pentru asistență";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Șterge";
 
-/* Sync device settings page title. */
-"Devices" = "Dispozitive în lanțul de sincronizare";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispozitiv %1$@ (%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Activează Trage-pentru-actualizare";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Introdu cuvintele codului";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Introdu cuvintele de cod mai jos";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Introdu numele dosarului";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Safe Browsing te protejează împotriva site-urilor cunoscute ca fiind periculoase. [Află mai multe](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Activează camera";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Ascunde previzualizări";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Detalii invalide în cererea de plată";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Cod de sincronizare invalid, verifică și încearcă din nou.";
 
 /* History tableview section header */
 "LastMonth" = "Luna trecută";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Fereastră privată nouă";
 
-/* New sync code button title */
-"NewSyncCode" = "Inițiază un lanț nou de sincronizare";
-
 /* New Tab title */
 "NewTab" = "Filă nouă";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Nu s-au găsit rezultate în urma căutării.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Te rog să introduci toate cuvintele și să încerci din nou.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Nu sunt destule cuvinte";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Redirecționează automat link-urile NPR către versiunea lor bazată pe text (la text.npr.org).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Zoom pagină";
-
-/* Sync pair device settings section title */
-"Pair" = "Asociază";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Parole";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Filă privată";
 
-/* QR Code section title */
-"QRCode" = "Cod QR";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Motoare de căutare rapidă";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Redirecționează automat link-urile Reddit către interfața mai veche (la old.reddit.com). Pentru a folosi noua interfață Reddit, accesați new.reddit.com.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Șterge";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Șterge favorit";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Salvează credențiale";
-
-/* Scan sync code title */
-"Scan" = "Scanează";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Am un Cod de Sincronizare";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Script-uri blocate";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Afișează marcajele";
 
-/* Show code words instead */
-"ShowCodeWords" = "Afișează în schimb cuvintele de cod";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Afișează descărcări";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Suprimă alertele";
 
-/* Sync settings section title */
-"Sync" = "Sincronizare";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Adaugă dispozitiv nou";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Adaugă un computer";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "Cod QR lanț sincronizare";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "Pe cel de-al doilea telefon mobil dispozitiv, mergi la sincronizare în panoul Setări și apasă butonul \"Scanare cod sincronizare\". Folosește aparatul foto pentru a scana codul QR de mai jos.\n\n Ai grijă de acest cod ca de o parolă. Dacă cineva intră în posesia acestuia, îți poate citi și modifica datele sincronizate.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Introdu codul de sincronizare ";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Pe dispozitivul tău, mergi la Sincronizare în panoul de Setări și apasă butonul \"%@\".  Introdu cuvintele codului lanțului de sincronizare afișate mai jos. \n\nAi grijă de acest cod ca de o parolă. Dacă cineva intră în posesia lui, poate citi și modifica datele tale sincronizate.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Introdu cuvintele cod";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Adaugă o tabletă sau un telefon";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Marcaje exportate cu succes";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Marcaje importate cu succes";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Sincronizare dispozitiv";
+"sync.chainAccountDeletionErrorDescription" = "Sincronizare dispozitiv";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Sincronizare dispozitiv";
+"sync.chainAccountDeletionErrorTitle" = "Sincronizare dispozitiv";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Nu a putut fi accesat acest lanț. Contul a fost șters.";
+"sync.chainAlreadyDeletedAlertDescription" = "Nu a putut fi accesat acest lanț. Contul a fost șters.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Sincronizare dispozitiv";
+"sync.chainAlreadyDeletedAlertTitle" = "Sincronizare dispozitiv";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Alege tip dispozitiv";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Alege tipul dispozitivului cu care vrei să te sincronizezi.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Codul a expirat. Generează unul nou apăsând pe butonul de mai jos.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "min";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "ore";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "secunde";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Acest cod temporar este valid doar pentru următoarele %@";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "oră";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "secundă";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Scrie cuvintele cod furnizate pentru lanțul de sincronizare în formularul de mai jos.";
+
+/* Code words section title */
+"sync.codeWords" = "Cuvinte cod";
+
+/* Computer device button title */
+"sync.computerDevice" = "Computer";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Gestionează informațiile pe care vrei să le sincronizezi între dispozitive. Aceste setări se aplică doar acestui dispozitiv.";
+"sync.configurationInformationText" = "Gestionează informațiile pe care vrei să le sincronizezi între dispozitive. Aceste setări se aplică doar acestui dispozitiv.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Șterge contul de sincronizare";
+/* Copied action complete title */
+"sync.copied" = "Copiat!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Copiat în clipboard!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Copiază în Clipboard";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Șterge contul de sincronizare";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Șterge contul de sincronizare";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Ștergerea contului tău va elimina datele tale criptate de pe serverele Brave și va dezactiva Sync de pe toate dispozitivele conectate.";
+"sync.deleteAccountAlertDescriptionPart1" = "Ștergerea contului tău va elimina datele tale criptate de pe serverele Brave și va dezactiva Sync de pe toate dispozitivele conectate.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "În schimb, nu vor fi șterse datele stocate local pe dispozitivele respective.";
+"sync.deleteAccountAlertDescriptionPart2" = "În schimb, nu vor fi șterse datele stocate local pe dispozitivele respective.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Se pare că acest cod a fost creat pe un dispozitiv care rulează o versiune mai veche a lui Brave. Actualizează Brave la cea mai recentă versiune pe celălalt dispozitiv apoi generează un cod nou de sincronizare.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Ceva nu a mers bine în timpul recuperării dispozitivelor din lanțul de sincronizare.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Dispozitive în lanțul de sincronizare";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Dispozitive în lanțul de sincronizare";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Introdu cuvintele codului";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Introdu cuvintele de cod mai jos";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Acest cod de sincronizare a expirat, te rog să generezi un cod nou de sincronizare și să încerci din nou.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Îmi pare rău, a apărut o problemă";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Activează camera";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Agentul de sincronizare este în prezent offline sau nu este accesibil. Te rog să încerci din nou mai târziu.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Eroare de comunicare la sincronizare";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Detalii Sincronizare";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Cod de sincronizare invalid, verifică și încearcă din nou.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Notă: Ar trebui să verifici dacă recunoști fiecare dispozitiv din lista de mai sus. Dispozitivele dintr-un lanț de sincronizare pot primi date personale cum ar fi parolele și istoricul navigării.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Confirmare dispozitiv";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Ai atins numărul maxim de dispozitive (10) permis într-un lanț de sincronizare. Elimină unul dintre ele pentru a putea continua.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Limită dispozitive";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Inițiază un lanț nou de sincronizare";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Verifică conexiunea la internet și încearcă din nou.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Nu se poate conecta la sincronizare";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Te rog să introduci toate cuvintele și să încerci din nou.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Nu sunt destule cuvinte";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Asociază";
+
+/* QR Code section title */
+"sync.qrCode" = "Cod QR";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Datele locale vor rămâne intacte pe fiecare dispozitiv. Celelalte dispozitive din acest lanț de sincronizare vor rămâne sincronizate. ";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Elimină %@ din lanțul de sincronizare?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Șterge";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Elimină dispozitiv";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Dispozitiv";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Datele sincronizate în prezent vor fi păstrate însă toate datele din cache-ul de sincronizare al lui Brave vor fi șterse. Va trebui să inițializezi un nou lanț de sincronizare pentru a putea sincroniza din nou datele dispozitivului.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Șterge lanț de sincronizare";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "Eliminarea lui %@ va duce la ștergerea lanțului de sincronizare .";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Eliminarea dispozitivului din lanțul de sincronizare nu va șterge datele anterior sincronizate de pe dispozitiv.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Elimină %@ din lanțul de sincronizare?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Elimină acest dispozitiv";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Acest dispozitiv va fi deconectat de la grupul de sincronizare și nu va mai primi sau trimite date de sincronizare. Toate datele existente vor rămâne pe dispozitiv.";
+
+/* Scan sync code title */
+"sync.scan" = "Scanează";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Am un Cod de Sincronizare";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Pentru a putea adăuga un dispozitiv la lanțul de sincronizare sau pentru a comuta parola sincronizare, trebuie mai întâi să setezi un cod de acces pe dispozitiv.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Setează un cod de acces";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "Lista de dispozitive de mai jos include toate dispozitivele din lanțul de sincronizare. Fiecare dispozitiv poate fi administrat de pe orice alt dispozitiv.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Setări sincronizare";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Afișează în schimb cuvintele de cod";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Voi folosi camera mea...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Această ștergere este permanentă și nu există nicio modalitate de a recupera date. În cazul în care te decizi să utilizezi din nou sincronizarea, va trebui să creezi un cont nou și să adaugi fiecare dispozitiv, unul câte unul.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Ceva nu a mers bine în timpul recuperării dispozitivelor din lanțul de sincronizare.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Dispozitive și setări";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Dispozitive în lanțul de sincronizare";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Elimină acest dispozitiv?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Notă: Ar trebui să verifici dacă recunoști fiecare dispozitiv din lista de mai sus. Dispozitivele dintr-un lanț de sincronizare pot primi date personale cum ar fi parolele și istoricul navigării.";
+/* Sync settings section title */
+"sync.syncTitle" = "Sincronizare";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Confirmare dispozitiv";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Nereușit";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Ai atins numărul maxim de dispozitive (10) permis într-un lanț de sincronizare. Elimină unul dintre ele pentru a putea continua.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Tabletă sau telefon";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Limită dispozitive";
+/* This device cell */
+"sync.thisDevice" = "Acest dispozitiv";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Pentru a putea adăuga un dispozitiv la lanțul de sincronizare sau pentru a comuta parola sincronizare, trebuie mai întâi să setezi un cod de acces pe dispozitiv.";
+/* Sync to existing device */
+"sync.toDevice" = "Sincronizare la dispozitiv";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Setează un cod de acces";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Utilizând un dispozitiv sincronizat existent, deschide Setările Brave și mergi la Setări -> Sincronizare. Alege „Adaugă dispozitiv” și scanează codul afișat pe ecran.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Setări sincronizare";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Nu se poate sincroniza acest dispozitiv";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Adaugă dispozitiv nou";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Nu se poate alătura grupului de sincronizare. Te rog să verifici cuvintele introduse și să încerci din nou.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Adaugă un computer";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Cod QR lanț sincronizare";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Pe cel de-al doilea telefon mobil dispozitiv, mergi la sincronizare în panoul Setări și apasă butonul \"Scanare cod sincronizare\". Folosește aparatul foto pentru a scana codul QR de mai jos.\n\n Ai grijă de acest cod ca de o parolă. Dacă cineva intră în posesia acestuia, îți poate citi și modifica datele sincronizate.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Introdu codul de sincronizare ";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Pe dispozitivul tău, mergi la Sincronizare în panoul de Setări și apasă butonul \"%@\".  Introdu cuvintele codului lanțului de sincronizare afișate mai jos. \n\nAi grijă de acest cod ca de o parolă. Dacă cineva intră în posesia lui, poate citi și modifica datele tale sincronizate.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Introdu cuvintele cod";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Adaugă o tabletă sau un telefon";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Alege tip dispozitiv";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Alege tipul dispozitivului cu care vrei să te sincronizezi.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Codul a expirat. Generează unul nou apăsând pe butonul de mai jos.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Acest cod temporar este valid doar pentru următoarele %@";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Computer";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Șterge contul de sincronizare";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Nu se poate conecta";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Se pare că acest cod a fost creat pe un dispozitiv care rulează o versiune mai veche a lui Brave. Actualizează Brave la cea mai recentă versiune pe celălalt dispozitiv apoi generează un cod nou de sincronizare.";
+"sync.validForTooLongError" = "Acest cod nu este corect. Verifică dacă ora și fusul orar sunt setate corect pe dispozitivul tău.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Dispozitive și setări";
+/* Sync settings welcome */
+"sync.welcome" = "Pentru a începe, trebuie să ai Brave instalat pe toate dispozitivele pe care vrei să le sincronizezi. Pentru a le sincroniza, pornește un lanț de sincronizare pe care îl vei utiliza pentru a conecta în siguranță toate dispozitivele tale.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Acest cod de sincronizare a expirat, te rog să generezi un cod nou de sincronizare și să încerci din nou.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Îmi pare rău, a apărut o problemă";
+/* Word count title */
+"sync.wordCount" = "Număr de cuvinte: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Marcaje importate";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Agentul de sincronizare este în prezent offline sau nu este accesibil. Te rog să încerci din nou mai târziu.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Eroare de comunicare la sincronizare";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Verifică conexiunea la internet și încearcă din nou.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Nu se poate conecta la sincronizare";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Datele locale vor rămâne intacte pe fiecare dispozitiv. Celelalte dispozitive din acest lanț de sincronizare vor rămâne sincronizate. ";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Elimină %@ din lanțul de sincronizare?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Elimină dispozitiv";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Dispozitiv";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Datele sincronizate în prezent vor fi păstrate însă toate datele din cache-ul de sincronizare al lui Brave vor fi șterse. Va trebui să inițializezi un nou lanț de sincronizare pentru a putea sincroniza din nou datele dispozitivului.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Șterge lanț de sincronizare";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "Eliminarea lui %@ va duce la ștergerea lanțului de sincronizare .";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Eliminarea dispozitivului din lanțul de sincronizare nu va șterge datele anterior sincronizate de pe dispozitiv.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Elimină %@ din lanțul de sincronizare?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Elimină acest dispozitiv";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Elimină acest dispozitiv?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Acest dispozitiv va fi deconectat de la grupul de sincronizare și nu va mai primi sau trimite date de sincronizare. Toate datele existente vor rămâne pe dispozitiv.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "Lista de dispozitive de mai jos include toate dispozitivele din lanțul de sincronizare. Fiecare dispozitiv poate fi administrat de pe orice alt dispozitiv.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Voi folosi camera mea...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Tabletă sau telefon";
-
-/* This device cell */
-"SyncThisDevice" = "Acest dispozitiv";
-
-/* Sync to existing device */
-"SyncToDevice" = "Sincronizare la dispozitiv";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Utilizând un dispozitiv sincronizat existent, deschide Setările Brave și mergi la Setări -> Sincronizare. Alege „Adaugă dispozitiv” și scanează codul afișat pe ecran.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Nu se poate sincroniza acest dispozitiv";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Nereușit";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Acest cod nu este corect. Verifică dacă ora și fusul orar sunt setate corect pe dispozitivul tău.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Închide";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Activează sugestiile de căutare?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Nu se poate alătura grupului de sincronizare. Te rog să verifici cuvintele introduse și să încerci din nou.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Nu se poate conecta";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Deblochează";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widget-uri";
-
-/* Word count title */
-"WordCount" = "Număr de cuvinte: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "an";
