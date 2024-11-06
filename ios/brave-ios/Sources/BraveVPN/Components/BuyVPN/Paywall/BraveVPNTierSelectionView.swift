@@ -30,12 +30,12 @@ struct BraveVPNPremiumTierSelectionView: View {
       label: {
         VStack(alignment: .leading, spacing: 8.0) {
           HStack {
-            Text(type == .yearly ? "One Year" : "Monthly Subscription")
+            Text(type == .yearly ? Strings.VPN.yearlySubTitle : Strings.VPN.monthlySubTitle)
               .font(.body.weight(.semibold))
               .foregroundStyle(.white)
 
             if type == .yearly {
-              Text("BEST VALUE")
+              Text(Strings.VPN.yearlySubDisclaimer)
                 .font(.caption2.weight(.bold))
                 .foregroundColor(.white)
                 .padding(4.0)
@@ -68,7 +68,7 @@ struct BraveVPNPremiumTierSelectionView: View {
           }
 
           HStack(spacing: 2) {
-            Text(type == .yearly ? "Renews Annually" : "Renews Monthly")
+            Text(type == .yearly ? Strings.VPN.renewAnnually : Strings.VPN.renewMonthly)
               .font(.subheadline)
               .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
 
@@ -118,7 +118,7 @@ struct BraveVPNPremiumTierSelectionView: View {
       .foregroundColor(.white)
 
       + Text(
-        "/ \(type == .monthly ? "month" : "year")"
+        "/ \(type == .monthly ? Strings.VPN.paywallMonthlyPriceDividend : Strings.VPN.paywallYearlyPriceDividend)"
       )
       .font(.footnote)
       .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
@@ -131,16 +131,15 @@ struct BraveVPNPremiumTierSelectionView: View {
     let discountSavingPercentage =
       discountDouble > 0.0 ? 100 - Int((yearlyDouble * 100) / discountDouble) : 0
 
-    Text("(")
-      .font(.subheadline)
-      .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
-      + Text("save \(discountSavingPercentage)%")
-      .underline()
-      .font(.subheadline)
-      .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
-      + Text(")")
-      .font(.subheadline)
-      .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
+    Group {
+      Text("(")
+        + Text("\(Strings.VPN.save) \(discountSavingPercentage)%")
+        .underline()
+        .fontWeight(.semibold)
+        + Text(")")
+    }
+    .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
+    .font(.subheadline)
   }
 
   @ViewBuilder
@@ -151,19 +150,15 @@ struct BraveVPNPremiumTierSelectionView: View {
       ) ?? ""
 
     Group {
-      Text(
-        "\(product.priceLocale.currency?.identifier ?? "") "
-      )
-      .font(.footnote)
-      .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
-      .strikethrough()
-
+      Text(product.priceLocale.currency?.identifier ?? "")
+        .font(.footnote)
+        .foregroundColor(Color(braveSystemName: .primitiveBlurple95))
         + Text("\(discountDouble)")
         .font(.subheadline.weight(.semibold))
         .kerning(0.075)
-        .strikethrough()
         .foregroundColor(.white)
     }
+    .strikethrough()
     .opacity(0.6)
   }
 }

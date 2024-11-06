@@ -9,7 +9,7 @@ import SwiftUI
 struct BraveVPNPremiumUpsellView: View {
 
   var body: some View {
-    VStack(spacing: 8) {
+    VStack(spacing: 10) {
       BraveVPNUpsellTopicView(topicType: .privacy)
       BraveVPNUpsellTopicView(topicType: .location)
       BraveVPNUpsellTopicView(topicType: .server)
@@ -32,15 +32,15 @@ private struct BraveVPNUpsellTopicView: View {
     var title: String {
       switch self {
       case .privacy:
-        return "Extra privacy & security online"
+        return Strings.VPN.infoCheckPrivacy
       case .location:
-        return "Hide your IP & change your location"
+        return Strings.VPN.infoCheckLocation
       case .server:
-        return "Hundreds of servers around the world"
+        return Strings.VPN.infoCheckServers
       case .speed:
-        return "Lightning-fast connection speeds"
+        return Strings.VPN.infoCheckConnectionSpeed
       case .device:
-        return "Protect up to 10 devices with one plan"
+        return Strings.VPN.infoCheckLimitDevice
       }
     }
   }
@@ -48,7 +48,7 @@ private struct BraveVPNUpsellTopicView: View {
   let topicType: UpsellTopicType
 
   var body: some View {
-    HStack {
+    HStack(spacing: 10) {
       Image(braveSystemName: topicType.icon)
         .foregroundStyle(
           LinearGradient(

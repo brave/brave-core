@@ -12,37 +12,37 @@ enum SubscriptionActionType {
   var mainTitle: String {
     switch self {
     case .refreshCredentials:
-      return "Already purchased on brave.com?"
+      return Strings.Paywall.alreadyPurchasedTitle
     case .redeemPromoCode:
-      return "Have a promo code?"
+      return Strings.Paywall.havePromoCodeTitle
     }
   }
 
   var actionTitle: String {
     switch self {
     case .refreshCredentials:
-      return "Refresh your credentials"
+      return Strings.Paywall.refreshCredentialsButtonTitle
     case .redeemPromoCode:
-      return "Redeem Promo Code"
+      return Strings.Paywall.redeemPromoCodeButtonTitle
     }
   }
 }
 
 struct BraveVPNSubscriptionActionView: View {
-  @Binding var shouldRefreshCredentials: Bool
 
-  @Binding var shouldRedeedPromoCode: Bool
+  let refreshCredentials: () -> Void
+  let redeedPromoCode: () -> Void
 
   var body: some View {
     VStack(spacing: 16) {
       BraveVPNTitleActionsView(
         actionType: .refreshCredentials,
-        shouldRefreshCredentials: $shouldRefreshCredentials
+        action: refreshCredentials
       )
 
       BraveVPNTitleActionsView(
         actionType: .redeemPromoCode,
-        shouldRefreshCredentials: $shouldRedeedPromoCode
+        action: redeedPromoCode
       )
     }
     .padding(.vertical)
@@ -51,39 +51,27 @@ struct BraveVPNSubscriptionActionView: View {
 
 struct BraveVPNTitleActionsView: View {
   let actionType: SubscriptionActionType
-
-  @Binding var shouldRefreshCredentials: Bool
+  let action: () -> Void
 
   var body: some View {
-    VStack(spacing: 8) {
+    VStack(spacing: 10) {
       Text(actionType.mainTitle)
-        .font(.callout.weight(.semibold))
-        .foregroundColor(Color(braveSystemName: .primitivePrimary90))
-
+        .font(.subheadline)
+        .foregroundColor(Color(braveSystemName: .primitiveBlurple98))
       Button(
-        action: {
-          shouldRefreshCredentials = true
-        },
+        action: { action() },
         label: {
-          HStack {
-            Text(actionType.actionTitle)
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(.white))
-              .padding()
-          }
-          .frame(maxWidth: .infinity)
-          .contentShape(ContainerRelativeShape())
+          Text(actionType.actionTitle)
+            .font(.subheadline.weight(.semibold))
+            .foregroundColor(Color(.white))
+            .padding()
+            .frame(maxWidth: .infinity)
+            .overlay(
+              RoundedRectangle(cornerRadius: 8)
+                .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
+            )
         }
       )
-      .overlay(
-        ContainerRelativeShape()
-          .strokeBorder(
-            Color(braveSystemName: .dividerInteractive),
-            lineWidth: 1.0
-          )
-      )
-      .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
-      .padding([.horizontal], 16.0)
     }
   }
 }
@@ -91,11 +79,10 @@ struct BraveVPNTitleActionsView: View {
 #if DEBUG
 struct BraveVPNRefreshCredentialsView_Previews: PreviewProvider {
   static var previews: some View {
-    @State var shouldDoAction: Bool = false
 
     BraveVPNSubscriptionActionView(
-      shouldRefreshCredentials: $shouldDoAction,
-      shouldRedeedPromoCode: $shouldDoAction
+      refreshCredentials: {},
+      redeedPromoCode: {}
     )
     .background(
       Color(braveSystemName: .primitivePrimary10)

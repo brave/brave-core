@@ -10,28 +10,21 @@ struct BraveVPNPoweredBrandView: View {
   @State var isFreeTrialAvailable: Bool
 
   var body: some View {
-    VStack(spacing: 8) {
+    VStack(alignment: UIDevice.current.orientation.isLandscape ? .leading : .center, spacing: 8) {
       HStack(spacing: 5) {
-        Text("Powered by")
-          .font(.subheadline)
-          .foregroundStyle(Color.white)
+        Text(Strings.VPN.poweredBy)
         Image(sharedName: "vpn_brand")
       }
 
       if isFreeTrialAvailable {
-        HStack(alignment: .firstTextBaseline) {
-          Text("All plans include a")
-            .font(.subheadline)
-            .foregroundStyle(Color.white)
-          Text("free 7-day trial!")
-            .font(.subheadline.weight(.semibold))
-            .foregroundStyle(Color.white)
-            .underline()
-        }
+        Text("\(Strings.VPN.freeTrialDetail) ")
+          + Text("\(Strings.VPN.freeTrialPeriod)!")
+          .underline()
+          .fontWeight(.medium)
       }
     }
-    .padding()
-    .frame(maxWidth: .infinity, alignment: .center)
+    .font(.subheadline)
+    .foregroundColor(.white)
   }
 }
 

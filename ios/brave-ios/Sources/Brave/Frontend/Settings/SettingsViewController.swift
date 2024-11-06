@@ -223,24 +223,26 @@ class SettingsViewController: TableViewController {
   // MARK: - Sections
 
   private lazy var enableBraveVPNSection: Static.Section = {
-    let header = BraveVPNEnableSettingsHeader()
-    header.enableVPNTapped = { [weak self] in
-      self?.enableVPNTapped()
-    }
+    let header = BraveVPNEnableSettingsHeaderView(
+      enableVPNTapped: { [weak self] in
+        self?.enableVPNTapped()
+      },
+      dismissHeaderTapped: { [weak self] in
+        self?.dismissVPNHeaderTapped()
+      }
+    )
+    let headerHostingVC = UIHostingController(rootView: header)
 
-    header.dismissHeaderTapped = { [weak self] in
-      self?.dismissVPNHeaderTapped()
-    }
-
-    let calculatedSize = header.systemLayoutSizeFitting(
+    let calculatedSize = headerHostingVC.view.systemLayoutSizeFitting(
       CGSize(width: navigationController?.navigationBar.frame.width ?? 0, height: 300),
       withHorizontalFittingPriority: .required,
       verticalFittingPriority: .fittingSizeLevel
     )
 
-    header.bounds = CGRect(size: calculatedSize)
+    headerHostingVC.view.backgroundColor = .clear
+    headerHostingVC.view.bounds = CGRect(size: calculatedSize)
 
-    return Static.Section(header: .view(header))
+    return Static.Section(header: .view(headerHostingVC.view))
   }()
 
   private lazy var defaultBrowserSection: Static.Section = {
@@ -776,7 +778,12 @@ class SettingsViewController: TableViewController {
         guard let vcToShow = vc else { return }
 
         if BraveVPNProductInfo.isComplete {
-          self.navigationController?.pushViewController(vcToShow, animated: true)
+          switch BraveVPN.vpnState {
+          case .notPurchased, .expired:
+            self.present(vcToShow, animated: true)
+          case .purchased:
+            self.navigationController?.pushViewController(vcToShow, animated: true)
+          }
         } else {
           let alert = UIAlertController(
             title: Strings.VPN.errorCantGetPricesTitle,
@@ -1358,14 +1365,24 @@ class SettingsViewController: TableViewController {
 
       let vpnPaywallView = BraveVPNPaywallView(openVPNAuthenticationInNewTab: { [weak self] in
         guard let self = self else { return }
-
         self.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNRefreshCredentials)
       })
 
-      navigationController?.pushViewController(
-        UIHostingController(rootView: vpnPaywallView),
-        animated: true
-      )
+      let vpnHostingVC = BraveVPNPaywallHostingViewController(rootView: vpnPaywallView)
+      vpnHostingVC.delegate = self
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        if UIDevice.current.orientation.isLandscape {
+          vpnHostingVC.modalPresentationStyle = .fullScreen
+          self.present(vpnHostingVC, animated: true)
+        } else {
+          (self.navigationController as? MenuViewController)?.presentInnerMenu(vpnHostingVC)
+        }
+      } else {
+        self.navigationController?.present(
+          vpnHostingVC,
+          animated: true
+        )
+      }
     case .purchased:
       BraveVPN.reconnect()
       dismiss(animated: true)
@@ -1376,5 +1393,11 @@ class SettingsViewController: TableViewController {
     if dataSource.sections.isEmpty { return }
     dataSource.sections[0] = Static.Section()
     Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
+  }
+}
+
+extension SettingsViewController: BraveVPNPaywallHostingViewControllerDelegate {
+  func deviceOrientationChanged() {
+    enableVPNTapped()
   }
 }
