@@ -55,9 +55,6 @@ inline constexpr char kBraveWalletUserAssetsList[] =
     "brave.wallet.wallet_user_assets_list";
 inline constexpr char kBraveWalletEthAllowancesCache[] =
     "brave.wallet.eth_allowances_cache";
-// Added 03/2023 to add networks hidden by default
-inline constexpr char kBraveWalletDefaultHiddenNetworksVersion[] =
-    "brave.wallet.user.assets.default_hidden_networks_version";
 inline constexpr char kBraveWalletAutoLockMinutes[] =
     "brave.wallet.auto_lock_minutes";
 inline constexpr char kBraveWalletP3AFirstUnlockTime[] =
