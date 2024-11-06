@@ -133,7 +133,7 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
       android_tools.RebootAndroid()
     android_tools.SetupAndroidDevice()
 
-  if options.mode == PerfMode.RUN:
+  if options.mode == PerfMode.RUN or options.mode == PerfMode.GENERATE_PGO:
     if len(config.runners) != 1:
       raise RuntimeError('Only one configuration should be specified.')
 
@@ -152,8 +152,8 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
   if options.mode == PerfMode.RECORD_WPR:
     return 0 if wpr_utils.record_wpr(config, options) else 1
 
-  if options.mode == PerfMode.GENERATE_PGO:
-    return 0  # TODO
+  # if options.mode == PerfMode.GENERATE_PGO:
+  #   return 0  # TODO
   raise RuntimeError('Unknown mode')
 
 if __name__ == '__main__':
