@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
+#include "base/memory/raw_span.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -61,10 +62,10 @@ class FeedGenerationInfo {
   FeedItems& raw_feed_items() { return feed_items_; }
 
   // A modifiable span of the available topics.
-  base::span<TopicAndArticles>& topics() { return topics_span_; }
+  base::span<TopicAndArticles> topics() { return topics_span_; }
 
   // A modifiable span
-  base::span<std::string>& suggested_publisher_ids() {
+  base::span<std::string> suggested_publisher_ids() {
     return suggested_publisher_ids_span_;
   }
 
@@ -84,11 +85,11 @@ class FeedGenerationInfo {
   FeedItems feed_items_;
 
   std::vector<std::string> suggested_publisher_ids_;
-  base::span<std::string> suggested_publisher_ids_span_;
+  base::raw_span<std::string> suggested_publisher_ids_span_;
 
   Signals signals_;
 
-  base::span<TopicAndArticles> topics_span_;
+  base::raw_span<TopicAndArticles> topics_span_;
   TopicsResult topics_;
 
   std::optional<ArticleInfos> article_infos_;

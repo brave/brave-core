@@ -313,7 +313,7 @@ mojom::FeedItemMetadataPtr FromTopicArticle(
 // (more or less) what Brave Search does.
 std::vector<mojom::FeedItemV2Ptr> GenerateTopTopicsBlock(
     FeedGenerationInfo& info) {
-  auto& topics = info.topics();
+  auto topics = info.topics();
   if (topics.empty()) {
     return {};
   }
@@ -421,7 +421,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
     FeedGenerationInfo& info) {
   DVLOG(1) << __FUNCTION__;
 
-  auto& suggested_publisher_ids = info.suggested_publisher_ids();
+  auto suggested_publisher_ids = info.suggested_publisher_ids();
   std::vector<mojom::FeedItemV2Ptr> result;
   if (!suggested_publisher_ids.empty()) {
     size_t preferred_count = 3;
