@@ -65,8 +65,6 @@ class TxStorageDelegateImpl final : public TxStorageDelegate {
   void OnTxsInitialRead(std::optional<base::Value> txs);
   void RunDBMigrations();
 
-  bool MigrateTransactionsFromPrefsToDB();
-
   base::ObserverList<TxStorageDelegate::Observer> observers_;
 
   // Used to indicate if transactions is loaded to memory caches txs_
