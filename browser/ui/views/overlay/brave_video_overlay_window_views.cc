@@ -352,7 +352,7 @@ void BraveVideoOverlayWindowViews::UpdateControlIcons() {
 }
 
 void BraveVideoOverlayWindowViews::SetMediaPosition(
-    const std::optional<media_session::MediaPosition>& media_position) {
+    const media_session::MediaPosition& media_position) {
   CHECK(timestamp_);
 
   media_position_ = media_position;

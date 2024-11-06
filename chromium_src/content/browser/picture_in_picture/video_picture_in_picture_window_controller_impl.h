@@ -9,9 +9,8 @@
 #include "content/public/browser/video_picture_in_picture_window_controller.h"
 #include "services/media_session/public/mojom/media_session.mojom.h"
 
-#define NextSlide                             \
-  SeekTo(base::TimeDelta seek_time) override; \
-  void RequestFullscreen() override;          \
+#define NextSlide               \
+  RequestFullscreen() override; \
   void NextSlide
 #define media_session_action_next_slide_handled_    \
   media_session_action_next_slide_handled_ = false; \

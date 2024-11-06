@@ -29,8 +29,7 @@ class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews,
   void SetUpViews() override;
   void OnUpdateControlsBounds() override;
   void SetPlaybackState(PlaybackState playback_state) override;
-  void SetMediaPosition(const std::optional<media_session::MediaPosition>&
-                            media_position) override;
+  void SetMediaPosition(const media_session::MediaPosition& position) override;
   bool ControlsHitTestContainsPoint(const gfx::Point& point) override;
   void SetSeekerEnabled(bool enabled) override;
   void ShowInactive() override;
