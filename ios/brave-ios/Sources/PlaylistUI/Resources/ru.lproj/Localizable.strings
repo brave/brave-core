@@ -1,0 +1,159 @@
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle AirPlay */
+"playlist.accessibilityAirPlay" = "AirPlay";
+
+/* A label that VoiceOver accessibility technology will read out if the user taps the media progress bar */
+"playlist.accessibilityCurrentMediaTime" = "Текущее время воспроизведения";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
+"playlist.accessibilityEnterFullscreen" = "Включить полноэкранный режим";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will enter picture in picture mode */
+"playlist.accessibilityEnterPictureInPicture" = "Включить режим «Картинка в картинке»";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
+"playlist.accessibilityExitFullscreen" = "Обычный режим";
+
+/* A label shown on an item when the item is ready for offline play */
+"playlist.accessibilityItemDownloadStatusReady" = "Объект готов";
+
+/* A button title that VoiceOver accessibility technology will read out when highlighting the more menu button (ellipsis icon) */
+"playlist.accessibilityMoreMenuButtonTitle" = "Подробнее";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play the next item in the queue */
+"playlist.accessibilityNextItem" = "Следующий объект";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will pause some currently playing media */
+"playlist.accessibilityPause" = "Пауза";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play some media */
+"playlist.accessibilityPlay" = "Воспроизвести";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will display playback speed options */
+"playlist.accessibilityPlaybackSpeed" = "Скорость воспроизведения";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the All option (repeats entire playlist) */
+"playlist.accessibilityRepeatModeAll" = "Повторять всё";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled off */
+"playlist.accessibilityRepeatModeOff" = "Не повторять";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the One option (repeats single item) */
+"playlist.accessibilityRepeatModeOne" = "Повторить один раз";
+
+/* A label read by VoiceOver accessibility technology that indicates the shuffle mode button is toggled off */
+"playlist.accessibilityShuffleModeOff" = "Перемешивание отключено";
+
+/* A label read by VoiceOver accessibility technology that indicates the shuffle mode button is toggled off */
+"playlist.accessibilityShuffleModeOn" = "Перемешивание включено";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step backwards */
+"playlist.accessibilityStepBack" = "Перемотать назад";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step forward */
+"playlist.accessibilityStepForwards" = "Перемотать вперед";
+
+/* A label read by VoiceOver accessibility technology that indicates that tapping the screen will display playback controls */
+"playlist.accessibilityTapToToggleControls" = "Нажмите, чтобы показать или скрыть элементы управления";
+
+/* A button title that when tapped will create a new playlist */
+"playlist.createNewPlaylistButtonTitle" = "Создать";
+
+/* A button title that when tapped will allow the user to delete the selected item. */
+"playlist.deleteItem" = "Удалить";
+
+/* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
+"playlist.deletePlaylist" = "Удалить плейлист…";
+
+/* A message display when the user attempts to delete a playlist. */
+"playlist.deletePlaylistConfirmationMessage" = "Весь контент в этом плейлисте будет удален";
+
+/* A button call to action that allows the user to dismiss the active modal */
+"playlist.doneButtonTitle" = "Готово";
+
+/* A button title that when tapped will allow the user to edit the selected playlist. */
+"playlist.editPlaylist" = "Переименовать";
+
+/* A button title that when tapped will allow the user to edit the selected playlist. */
+"playlist.editPlaylistShortTitle" = "Изменить";
+
+/* A title shown above a list of videos in your default playlist. */
+"playlist.fillNewPlaylistSubtitle" = "Нажмите, чтобы выбрать контент";
+
+/* A title shown above a list of videos in your default playlist. '%@' will be replaced with the default playlist name which has already been localized, for example: 'Add from your Play Later playlist' */
+"playlist.fillNewPlaylistTitle" = "Добавить из плейлиста **%@**";
+
+/* A count of how many items there are in the playlist. '%lld' would be replaced with a number, for example: 10 items */
+"playlist.itemCountPlural" = "Объекты (%lld)";
+
+/* A count of how many items there are in the playlist */
+"playlist.itemCountSingular" = "1 объект";
+
+/* A label shown on an item when it is being prepared for offline play */
+"playlist.itemDownloadStatusPreparing" = "Подготовка файла";
+
+/* A label shown next to the media progress bar that when the particular media being played is being live streamed. */
+"playlist.liveIndicator" = "Прямая трансляция";
+
+/* A button title that when tapped will allow the user to move the selected item to another playlist. */
+"playlist.moveItem" = "Перемещение";
+
+/* A button title that will display a list of menu options to move an item to a different playlist */
+"playlist.moveMenuItemTitle" = "Переместить…";
+
+/* A button title that when tapped will prompt the user to create a new playlist */
+"playlist.newPlaylistButtonTitle" = "Создать";
+
+/* A placeholder shown in the text field when creating a new playlist. */
+"playlist.newPlaylistPlaceholder" = "Новый плейлист";
+
+/* Shown when the user has not selected any media to play. */
+"playlist.noMediaSelectedEmptyState" = "Нажмите, чтобы включить видео из плейлиста";
+
+/* Shown when there is no content available to play for a given folder */
+"playlist.noMediaToPickFromEmptyState" = "Добавьте контент с любимых сайтов и воспроизведите его здесь";
+
+/* A button title that will open the selected item in a new private tab. */
+"playlist.openInNewPrivateTab" = "Открыть в новой вкладке инкогнито";
+
+/* A button title that will open the selected item in a new tab. */
+"playlist.openInNewTab" = "Открыть в новой вкладке";
+
+/* A button title that will delete the selected items data saved to the users device. */
+"playlist.removeOfflineData" = "Удаление офлайн-данных";
+
+/* A menu button that when tapped will present the user with a text box to change the name of the selected playlist */
+"playlist.renamePlaylist" = "Переименовать плейлист";
+
+/* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
+"playlist.repeatModeOptionAll" = "Все";
+
+/* A repeat mode option, where selecting None will mean that repeat mode is off and nothing will repeat. */
+"playlist.repeatModeOptionNone" = "Нет";
+
+/* A repeat mode option, where selecting One will mean that the current playing item will repeat itself when completing. */
+"playlist.repeatModeOptionOne" = "Один раз";
+
+/* A button call to action that allows the user to save their selection */
+"playlist.saveButtonTitle" = "Сохранить";
+
+/* A button title that will attempt to save the selected item for offline playback. */
+"playlist.saveOfflineData" = "Сохранение данных офлайн";
+
+/* A button title that will present a share sheet for the selected item */
+"playlist.share" = "Поделиться";
+
+/* Describes an icon which allows the user to set a timer that when reaches 0 will stop playback of any media. */
+"playlist.sleepTimer" = "Таймер сна";
+
+/* A button title shown when the sleep timer is currently active and allows the user to turn off the sleep timer. */
+"playlist.sleepTimerCancelTimer" = "Отключить таймер";
+
+/* An option in the sleep timer menu which describes that playback will stop when the current media item that is playing finishes. */
+"playlist.sleepTimerEndOfItem" = "После этого объекта";
+
+/* A title shown above a set of time based options that describe when playback should stop. */
+"playlist.sleepTimerStopPlaybackAfter" = "Остановить воспроизведение…";
+
+/* A fallback error message displayed when a video fails to play */
+"playlist.somethingWentWrong" = "Произошла ошибка";
+

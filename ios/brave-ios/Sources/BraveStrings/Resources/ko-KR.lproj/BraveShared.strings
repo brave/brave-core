@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "두 번 탭하여 Brave Shields 토글";
 
-/* Sync page title */
-"BraveSync" = "동기화";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "동기화 문제 해결 필요";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "시작하려면 동기화하려는 모든 기기에 Brave가 설치되어 있어야 합니다. 모든 기기를 연결하려면 모든 기기를 안전하게 연결하는 데 사용할 동기화 체인을 시작하십시오.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "모든 %i 탭 닫기";
 
-/* Code words input help */
-"CodeWordInputHelp" = "제공된 동기화 체인 코드 단어를 아래 양식에 입력하십시오.";
-
-/* Code words section title */
-"CodeWords" = "코드 단어";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "다운로드";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "쿠키 및 사이트 데이터";
-
-/* Copied action complete title */
-"Copied" = "복사되었습니다.";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "클립보드에 복사되었습니다.";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "앱 정보를 클립보드에 복사합니다.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "탭 정보를 클립보드에 복사합니다.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "클립보드에 복사";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "후원 정보 복사";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "삭제";
 
-/* Sync device settings page title. */
-"Devices" = "동기화 체인에 있는 기기";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "기기 %1$@(%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "밀어서 새로고침 활성화";
-
-/* Sync enter code words */
-"EnterCodeWords" = "코드 단어 입력";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "아래에 코드 단어 입력";
 
 /* Description for new folder popup */
 "EnterFolderName" = "폴더 이름 입력";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "세이프 브라우징은 위험한 것으로 알려진 웹사이트로부터 보호합니다. [자세히 알아보기](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "카메라 활성화";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "링크 미리보기 숨기기";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "결제 요청 내 세부정보가 유효하지 않음";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "잘못된 동기화 코드입니다. 확인하고 다시 시도하세요.";
 
 /* History tableview section header */
 "LastMonth" = "지난달";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "새 시크릿 창";
 
-/* New sync code button title */
-"NewSyncCode" = "새로운 동기화 체인 시작";
-
 /* New Tab title */
 "NewTab" = "새 탭";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "검색 결과가 없습니다.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "모든 단어를 입력한 후 다시 시도하십시오.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "단어가 충분하지 않음";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPR 링크를 텍스트 기반 버전(text.npr.org)으로 자동 리디렉션합니다.";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "페이지 확대";
-
-/* Sync pair device settings section title */
-"Pair" = "페어링";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "비밀번호";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "비공개 탭";
 
-/* QR Code section title */
-"QRCode" = "QR 코드";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "빠른 검색 엔진";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Reddit 링크를 기존 인터페이스(old.reddit.com)로 자동 리디렉션합니다. 무시하고 새 Reddit 인터페이스를 이용하려면 new.reddit.com 주소를 사용하세요.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "제거";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "즐겨찾기 제거";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "로그인 정보 저장";
-
-/* Scan sync code title */
-"Scan" = "스캔";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "동기화 코드가 있습니다.";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "차단된 스크립트";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "북마크 표시";
 
-/* Show code words instead */
-"ShowCodeWords" = "대신 코드 단어 표시";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "다운로드 표시";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "억제 경고";
 
-/* Sync settings section title */
-"Sync" = "동기화";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "새 기기 추가";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "컴퓨터 추가";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "체인 QR 코드 동기화";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "두 번째 모바일 기기에서 설정 패널에 있는 동기화로 이동한 다음 \"동기화 코드 스캔\" 버튼을 탭합니다. 카메라를 사용하여 아래 QR 코드를 스캔합니다.\n\n 이 코드는 일종의 비밀번호로 취급하세요. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "동기화 코드 입력";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "기기에서 설정 패널에 있는 동기화로 이동한 다음 \"%@\" 버튼을 탭하고 아래 표시된 동기화 체인 코드 단어를 입력합니다.\n\n 이 코드는 일종의 비밀번호로 취급하세요. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "코드 단어 입력";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "태블릿 또는 전화 추가";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "북마크 내보내기 성공";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "북마크 가져오기 성공";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "기기 동기화";
+"sync.chainAccountDeletionErrorDescription" = "기기 동기화";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "기기 동기화";
+"sync.chainAccountDeletionErrorTitle" = "기기 동기화";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "이 체인에 참여할 수 없습니다. 계정이 삭제되었습니다.";
+"sync.chainAlreadyDeletedAlertDescription" = "이 체인에 참여할 수 없습니다. 계정이 삭제되었습니다.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "기기 동기화";
+"sync.chainAlreadyDeletedAlertTitle" = "기기 동기화";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "기기 유형 선택";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "동기화할 기기 유형을 선택하십시오.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "코드가 만료되었습니다. 아래 버튼을 탭하여 새로 생성하세요.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "분";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "시간";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "초";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "임시 코드는 다음 %@ 동안 유효함";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "시간";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "초";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "제공된 동기화 체인 코드 단어를 아래 양식에 입력하십시오.";
+
+/* Code words section title */
+"sync.codeWords" = "코드 단어";
+
+/* Computer device button title */
+"sync.computerDevice" = "컴퓨터";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "기기 간에 동기화할 정보를 관리합니다. 이 설정은 이 기기에만 적용됩니다.";
+"sync.configurationInformationText" = "기기 간에 동기화할 정보를 관리합니다. 이 설정은 이 기기에만 적용됩니다.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "동기화 계정 삭제";
+/* Copied action complete title */
+"sync.copied" = "복사되었습니다.";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "클립보드에 복사되었습니다.";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "클립보드에 복사";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "동기화 계정 삭제";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "동기화 계정 삭제";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "계정을 삭제하면 암호화된 데이터가 Brave 서버에서 제거되고 연결된 모든 디바이스에서 동기화가 비활성화됩니다.";
+"sync.deleteAccountAlertDescriptionPart1" = "계정을 삭제하면 암호화된 데이터가 Brave 서버에서 제거되고 연결된 모든 디바이스에서 동기화가 비활성화됩니다.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "이들 디바이스에 로컬로 저장된 데이터는 삭제되지 않습니다.";
+"sync.deleteAccountAlertDescriptionPart2" = "이들 디바이스에 로컬로 저장된 데이터는 삭제되지 않습니다.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "이 코드는 구버전 Brave를 실행 중인 기기에서 만들어진 것 같습니다. 다른 기기에서 최신 버전의 Brave로 업데이트한 다음, 새 동기화 코드를 만드세요.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "동기화 체인 내 기기를 불러오는 중에 문제가 발생했습니다.";
+
+/* Sync device settings page title. */
+"sync.devices" = "동기화 체인에 있는 기기";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "동기화 체인 내 기기";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "코드 단어 입력";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "아래에 코드 단어 입력";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "동기화 코드가 만료되었습니다. 새 코드를 생성하고 다시 시도하세요.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "문제가 발생했습니다.";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "카메라 활성화";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "동기화 에이전트가 현재 오프라인 상태이거나 연결되지 않고 있습니다. 나중에 다시 시도하십시오.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "동기화 통신 오류";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "동기화 문제 해결 필요";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "잘못된 동기화 코드입니다. 확인하고 다시 시도하세요.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "참고: 위 목록에 있는 기기가 모두 아는 기기인지 확인하세요. 동기화 체인 내의 기기는 비밀번호와 브라우징 기록 등 개인 데이터를 수신할 수 있습니다.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "기기 확인";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "동기화 체인 내 기기 개수 한도(10개)에 도달했습니다. 계속하려면 기존 기기를 제거하세요.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "기기 한도";
+
+/* New sync code button title */
+"sync.newSyncCode" = "새로운 동기화 체인 시작";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "인터넷 연결을 확인한 후 다시 시도하십시오.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "동기화할 수 없음";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "모든 단어를 입력한 후 다시 시도하십시오.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "단어가 충분하지 않음";
+
+/* Sync pair device settings section title */
+"sync.pair" = "페어링";
+
+/* QR Code section title */
+"sync.qrCode" = "QR 코드";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "로컬 기기 데이터는 모든 기기에서 그대로 유지됩니다. 이 동기화 체인의 다른 기기는 동기화된 상태로 유지됩니다.";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "동기화 체인에서 %@을(를) 제거하시겠습니까?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "제거";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "기기 제거";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "기기";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "현재 동기화된 데이터는 유지되지만, Brave의 동기화 캐시에 있는 데이터는 모두 삭제됩니다. 기기 데이터를 다시 동기화하려면 새 동기화 체인을 시작해야 합니다.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "동기화 체인 삭제";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "동기화 체인에서 %@을(를) 제거하는 중입니다.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "동기화 체인에서 기기를 제거해도 이전에 동기화된 데이터는 기기에서 지워지지 않습니다.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "동기화 체인에서 %@을(를) 제거하시겠습니까?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "이 기기 제거";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "이 기기가 동기화 그룹에서 연결이 해제되며, 해당 기기에서 더 이상 동기화 데이터를 수신하거나 전송하지 않습니다. 기존의 모든 데이터는 기기에 남아 있습니다.";
+
+/* Scan sync code title */
+"sync.scan" = "스캔";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "동기화 코드가 있습니다.";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "기기를 동기화 체인에 추가하거나 비밀번호 동기화를 토글하려면 먼저 기기에서 패스코드를 설정해야 합니다.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "패스코드 설정";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "아래의 기기 목록에는 동기화 체인의 모든 기기가 포함되어 있습니다. 각 기기는 다른 기기에서 관리할 수 있습니다.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "동기화 설정";
+
+/* Show code words instead */
+"sync.showCodeWords" = "대신 코드 단어 표시";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "내 카메라 사용";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면 새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "동기화 체인 내 기기를 불러오는 중에 문제가 발생했습니다.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "기기 및 설정";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "동기화 체인 내 기기";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "이 기기를 제거하시겠습니까?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "참고: 위 목록에 있는 기기가 모두 아는 기기인지 확인하세요. 동기화 체인 내의 기기는 비밀번호와 브라우징 기록 등 개인 데이터를 수신할 수 있습니다.";
+/* Sync settings section title */
+"sync.syncTitle" = "동기화";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "기기 확인";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "실패";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "동기화 체인 내 기기 개수 한도(10개)에 도달했습니다. 계속하려면 기존 기기를 제거하세요.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "태블릿 또는 전화";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "기기 한도";
+/* This device cell */
+"sync.thisDevice" = "이 기기";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "기기를 동기화 체인에 추가하거나 비밀번호 동기화를 토글하려면 먼저 기기에서 패스코드를 설정해야 합니다.";
+/* Sync to existing device */
+"sync.toDevice" = "기기에 동기화";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "패스코드 설정";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "기존에 동기화된 기기를 사용하여 Brave 설정을 열고 설정 -> 동기화로 이동하여 \"기기 추가\"를 선택한 다음, 화면에 표시되는 코드를 스캔하십시오.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "동기화 설정";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "이 기기를 동기화할 수 없음";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "새 기기 추가";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "동기화 그룹에 연결할 수 없습니다. 입력한 단어를 확인한 후 다시 시도하십시오.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "컴퓨터 추가";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "체인 QR 코드 동기화";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "두 번째 모바일 기기에서 설정 패널에 있는 동기화로 이동한 다음 \"동기화 코드 스캔\" 버튼을 탭합니다. 카메라를 사용하여 아래 QR 코드를 스캔합니다.\n\n 이 코드는 일종의 비밀번호로 취급하세요. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "동기화 코드 입력";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "기기에서 설정 패널에 있는 동기화로 이동한 다음 \"%@\" 버튼을 탭하고 아래 표시된 동기화 체인 코드 단어를 입력합니다.\n\n 이 코드는 일종의 비밀번호로 취급하세요. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "코드 단어 입력";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "태블릿 또는 전화 추가";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "기기 유형 선택";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "동기화할 기기 유형을 선택하십시오.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "코드가 만료되었습니다. 아래 버튼을 탭하여 새로 생성하세요.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "임시 코드는 다음 %@ 동안 유효함";
-
-/* Computer device button title */
-"SyncComputerDevice" = "컴퓨터";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "동기화 계정 삭제";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "연결할 수 없음";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "이 코드는 구버전 Brave를 실행 중인 기기에서 만들어진 것 같습니다. 다른 기기에서 최신 버전의 Brave로 업데이트한 다음, 새 동기화 코드를 만드세요.";
+"sync.validForTooLongError" = "유효하지 않은 코드입니다. 디바이스에 시간과 시간대가 제대로 설정되어 있는지 확인하세요.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "기기 및 설정";
+/* Sync settings welcome */
+"sync.welcome" = "시작하려면 동기화하려는 모든 기기에 Brave가 설치되어 있어야 합니다. 모든 기기를 연결하려면 모든 기기를 안전하게 연결하는 데 사용할 동기화 체인을 시작하십시오.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "동기화 코드가 만료되었습니다. 새 코드를 생성하고 다시 시도하세요.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "문제가 발생했습니다.";
+/* Word count title */
+"sync.wordCount" = "단어 수: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "가져온 북마크";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "동기화 에이전트가 현재 오프라인 상태이거나 연결되지 않고 있습니다. 나중에 다시 시도하십시오.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "동기화 통신 오류";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "인터넷 연결을 확인한 후 다시 시도하십시오.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "동기화할 수 없음";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "로컬 기기 데이터는 모든 기기에서 그대로 유지됩니다. 이 동기화 체인의 다른 기기는 동기화된 상태로 유지됩니다.";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "동기화 체인에서 %@을(를) 제거하시겠습니까?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "기기 제거";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "기기";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "현재 동기화된 데이터는 유지되지만, Brave의 동기화 캐시에 있는 데이터는 모두 삭제됩니다. 기기 데이터를 다시 동기화하려면 새 동기화 체인을 시작해야 합니다.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "동기화 체인 삭제";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "동기화 체인에서 %@을(를) 제거하는 중입니다.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "동기화 체인에서 기기를 제거해도 이전에 동기화된 데이터는 기기에서 지워지지 않습니다.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "동기화 체인에서 %@을(를) 제거하시겠습니까?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "이 기기 제거";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "이 기기를 제거하시겠습니까?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "이 기기가 동기화 그룹에서 연결이 해제되며, 해당 기기에서 더 이상 동기화 데이터를 수신하거나 전송하지 않습니다. 기존의 모든 데이터는 기기에 남아 있습니다.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "아래의 기기 목록에는 동기화 체인의 모든 기기가 포함되어 있습니다. 각 기기는 다른 기기에서 관리할 수 있습니다.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "내 카메라 사용";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "태블릿 또는 전화";
-
-/* This device cell */
-"SyncThisDevice" = "이 기기";
-
-/* Sync to existing device */
-"SyncToDevice" = "기기에 동기화";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "기존에 동기화된 기기를 사용하여 Brave 설정을 열고 설정 -> 동기화로 이동하여 \"기기 추가\"를 선택한 다음, 화면에 표시되는 코드를 스캔하십시오.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "이 기기를 동기화할 수 없음";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "실패";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "유효하지 않은 코드입니다. 디바이스에 시간과 시간대가 제대로 설정되어 있는지 확인하세요.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "닫기";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "동기화 그룹에 연결할 수 없습니다. 입력한 단어를 확인한 후 다시 시도하십시오.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "연결할 수 없음";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "잠금 해제";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "위젯";
-
-/* Word count title */
-"WordCount" = "단어 수: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "년";
