@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Koppintson duplán a Brave pajzsok átkapcsolásához";
 
-/* Sync page title */
-"BraveSync" = "Szinkronizálás";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Belső szinkronizálás";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "A kezdéshez telepítsd minden szinkronizálni kívánt készülékre a Brave-et. Az összeláncolásukhoz indíts egy szinkronláncot, amellyel minden készülékedet biztonságosan összeláncolhatod.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Az összes %i lap bezárása";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Írd be a kapott szinkronizálásilánc-kódszavakat az alábbi űrlapon.";
-
-/* Code words section title */
-"CodeWords" = "Kódszavak";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Letöltés";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookie-k és webhelyadatok";
-
-/* Copied action complete title */
-"Copied" = "Kimásolva!";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Vágólapra másolva!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Alkalmazásinformációk másolása a vágólapra.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Lapok adatainak másolása a vágólapra.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Másolás vágólapra";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Támogatási adatok másolása";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Törlés";
 
-/* Sync device settings page title. */
-"Devices" = "A szinkronizálási láncon lévő eszközök";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Eszköz %1$ @ (%2$ @)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Lefelé húzva frissítés engedélyezése";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Kódszavak beírása";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Adja meg a kódszavakat lentebb";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Adja meg a mappa nevét";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "A Biztonságos Böngészés védelmet nyújt az ismerten veszélyes webhelyek ellen. [További tudnivalók] (%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Kamera engedélyezése";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Linkelőnézet elrejtése";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Érvénytelen adatok a fizetési kérelemben";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Érvénytelen szinkronizálási kód. Ellenőrizze, majd próbálja újra.";
 
 /* History tableview section header */
 "LastMonth" = "Előző hónap";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Új &amp;inkognitóablak";
 
-/* New sync code button title */
-"NewSyncCode" = "Új szinkronlác indítása";
-
 /* New Tab title */
 "NewTab" = "Új lap";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Nem található keresési eredmény.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Kérjük, írja be az összes szót, és próbálja újra.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Túl kevés szó";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Automatikusan átirányítja az NPR-hivatkozásokat a szöveges verziójukra (a text.npr.org címen).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Oldalnagyítás";
-
-/* Sync pair device settings section title */
-"Pair" = "Párosítás";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Jelszavak";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Privát fül";
 
-/* QR Code section title */
-"QRCode" = "QR-kód";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Gyorskeresők";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Automatikusan átirányítja a Reddit-hivatkozásokat a régebbi felületre (az old.reddit.com címen). Az új Reddit-felület kényszerítéséhez használja a new.reddit.com webhelyet.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Eltávolítás";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Kedvenc eltávolítása";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Bejelentkezések mentése";
-
-/* Scan sync code title */
-"Scan" = "Keresés";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Rendelkezek szinkronizálási kóddal";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Scriptek blokkolva";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Könyvjelzők megjelenítése";
 
-/* Show code words instead */
-"ShowCodeWords" = "Helyettesítés kódszavakkal";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Letöltések megjelenítése";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Figyelmeztetések letiltása";
 
-/* Sync settings section title */
-"Sync" = "Szinkronizálás";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Új készülék hozzáadása";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Számítógép hozzáadása";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "Szinkronlánc QR-kód";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "Második mobileszközén navigáljon a Beállítások panelen a Szinkronizálás elemre, és koppintson a „Szinkronizálási kód beolvasása” gombra. Használja kameráját az alábbi QR-kód beolvasásához.\n\n Kezelje ezt a kódot jelszóként. Ha valaki a birtokába jut, elolvashatja és módosíthatja az Ön szinkronizált adatait.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Írja be a szinkronizálási kódot";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Az eszközén navigáljon a Szinkronizálás elemre a Beállítások panelen, és koppintson a(z) „%@” gombra. Írja be az alább látható szinkronizálásilánc-kódszavakat.\n\n Kezelje ezt a kódot jelszóként. Ha valaki a birtokába jut, elolvashatja és módosíthatja az Ön szinkronizált adatait.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Írja be a kódszavakat";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Táblagép vagy telefon hozzáadása";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Könyvjelzők sikeresen exportálva";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Könyvjelzők sikeresen importálva";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Eszköz szinkronizálása";
+"sync.chainAccountDeletionErrorDescription" = "Eszköz szinkronizálása";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Eszköz szinkronizálása";
+"sync.chainAccountDeletionErrorTitle" = "Eszköz szinkronizálása";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Nem sikerült csatlakozni ehhez a lánchoz. A fiók törölve lett.";
+"sync.chainAlreadyDeletedAlertDescription" = "Nem sikerült csatlakozni ehhez a lánchoz. A fiók törölve lett.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Eszköz szinkronizálása";
+"sync.chainAlreadyDeletedAlertTitle" = "Eszköz szinkronizálása";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Válaszd ki a készülék típusát";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Válaszd ki a szinkronizálni kívánt készülék típusát.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "A kód lejárt. Generáljon egy újat az alábbi gombra koppintva.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "perc";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "órák";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "másodpercek";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Ez az ideiglenes kód a következő ideig érvényes: %@ ";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "óra";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "másodperc";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Írd be a kapott szinkronizálásilánc-kódszavakat az alábbi űrlapon.";
+
+/* Code words section title */
+"sync.codeWords" = "Kódszavak";
+
+/* Computer device button title */
+"sync.computerDevice" = "Számítógép";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Kezeld, hogy mely információkat  szeretnél szinkronizálni az eszközök között. Ezek a beállítások csak erre az eszközre vonatkoznak.";
+"sync.configurationInformationText" = "Kezeld, hogy mely információkat  szeretnél szinkronizálni az eszközök között. Ezek a beállítások csak erre az eszközre vonatkoznak.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Szinkronizálási fiók törlése";
+/* Copied action complete title */
+"sync.copied" = "Kimásolva!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Vágólapra másolva!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Másolás vágólapra";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Szinkronizálási fiók törlése";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Szinkronizálási fiók törlése";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Ha törli a fiókját, azzal eltávolítja a Brave szerverein található titkosított adatait, és letiltja a Szinkronizálást az összes csatlakoztatott eszközén.";
+"sync.deleteAccountAlertDescriptionPart1" = "Ha törli a fiókját, azzal eltávolítja a Brave szerverein található titkosított adatait, és letiltja a Szinkronizálást az összes csatlakoztatott eszközén.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Az ezeken az eszközökön helyileg tárolt adatokat azonban ezúton nem törli.";
+"sync.deleteAccountAlertDescriptionPart2" = "Az ezeken az eszközökön helyileg tárolt adatokat azonban ezúton nem törli.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Úgy tűnik, ezt a kódot a Brave régebbi verzióját használó eszközön hozták létre. Frissítsen a legújabb Brave-verzióra a másik eszközén, majd hozzon létre új szinkronizálási kódot.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Hiba történt a szinkronizálási láncban szereplő eszközök lekérése közben.";
+
+/* Sync device settings page title. */
+"sync.devices" = "A szinkronizálási láncon lévő eszközök";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Eszközök a szinkronizálási láncban";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Kódszavak beírása";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Adja meg a kódszavakat lentebb";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Ez a szinkronizálási kód lejárt. Hozzon létre új szinkronizálási kódot, és próbálja újra.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Elnézést, valamilyen hiba történt";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Kamera engedélyezése";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "A Szinkronizálási ügynök jelenleg offline vagy nem érhető el. Kérjük, próbálja újra később.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Szinkronizálási kommunikációs hiba";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Belső szinkronizálás";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Érvénytelen szinkronizálási kód. Ellenőrizze, majd próbálja újra.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Megjegyzés: győződjön meg arról, hogy felismeri a fenti listán szereplő összes eszközt. A szinkronizálási láncban szereplő eszközök személyes adatokat, például jelszavakat és böngészési előzményeket fogadhatnak.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Eszköz megerősítése";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Elérte a szinkronizálási láncban engedélyezett eszközök maximális számát (10). A folytatáshoz távolítson el egy eszközt.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Eszközkorlát";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Új szinkronlác indítása";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Ellenőrizze az internetkapcsolatot, és próbálja újra.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Nem lehet csatlakozni a szinkronizáláshoz";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Kérjük, írja be az összes szót, és próbálja újra.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Túl kevés szó";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Párosítás";
+
+/* QR Code section title */
+"sync.qrCode" = "QR-kód";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "A helyi eszközadatok érintetlenek maradnak az összes eszközön. A szinkronizálási lánc többi eszköze szinkronizálva marad. ";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Eltávolítja a következőt a szinkronizálási láncból: %@?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Eltávolítás";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Készülék eltávolítása";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Készülék";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "A jelenleg szinkronizált adatok megmaradnak, de a Brave szinkronizálási gyorsítótárában lévő összes adat törlődik. Az eszközadatok ismételt szinkronizálásához új szinkronizálási láncot kell indítania.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Szinkronizálási lánc törlése";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "A(z) %@ eltávolítása törli a szinkronizálási láncot.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Az eszköz szinkronizálási láncból való eltávolítása nem törli a korábban szinkronizált adatokat az eszközről.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Eltávolítja a következőt a szinkronizálási láncból: %@?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "A készülék eltávolítása";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Ez az eszköz le lesz választva a szinkronizálási csoportról, és többé nem fogad vagy küld szinkronizálási adatokat. Minden meglévő adat az eszközön marad.";
+
+/* Scan sync code title */
+"sync.scan" = "Keresés";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Rendelkezek szinkronizálási kóddal";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Be kell állítania egy jelkódot az eszközön ahhoz, hogy hozzáadhassa az eszközt egy szinkronizálási lánchoz, illetve átkapcsolhassa a jelszó-szinkronizálást.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Jelkód beállítása";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "Az alábbi készülékek listáján megtalálható szinkronláncod minden készüléke. Minden készülék kezelhető minden másik készülékről.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Szinkronizálási beállítások";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Helyettesítés kódszavakkal";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Kamerámat használom...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Ez a törlés végleges, és nincs mód az adatok helyreállítására. Ha úgy dönt, hogy újra elkezdi használni a Szinkronizálást, létre kell hoznia egy új fiókot, és egyenként újra hozzá kell adnia az egyes eszközöket.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Hiba történt a szinkronizálási láncban szereplő eszközök lekérése közben.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Eszközök és beállítások";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Eszközök a szinkronizálási láncban";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Eltávolítja ezt az eszközt?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Megjegyzés: győződjön meg arról, hogy felismeri a fenti listán szereplő összes eszközt. A szinkronizálási láncban szereplő eszközök személyes adatokat, például jelszavakat és böngészési előzményeket fogadhatnak.";
+/* Sync settings section title */
+"sync.syncTitle" = "Szinkronizálás";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Eszköz megerősítése";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Sikertelen";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Elérte a szinkronizálási láncban engedélyezett eszközök maximális számát (10). A folytatáshoz távolítson el egy eszközt.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Táblagép vagy telefon";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Eszközkorlát";
+/* This device cell */
+"sync.thisDevice" = "Ez az eszköz";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Be kell állítania egy jelkódot az eszközön ahhoz, hogy hozzáadhassa az eszközt egy szinkronizálási lánchoz, illetve átkapcsolhassa a jelszó-szinkronizálást.";
+/* Sync to existing device */
+"sync.toDevice" = "Szinkronizálás eszközzel";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Jelkód beállítása";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "A meglévő szinkronizált eszköz használatával nyissa meg a Brave beállításait, és lépjen a Beállítások -> Szinkronizálás elemre. Válassza az „Eszköz hozzáadása” lehetőséget, és olvassa be a képernyőn megjelenő kódot.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Szinkronizálási beállítások";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Nem lehet szinkronizálni ezt az eszközt";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Új készülék hozzáadása";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Nem sikerült csatlakozni a szinkronizálási csoporthoz. Kérjük, ellenőrizze a beírt szavakat, és próbálja újra.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Számítógép hozzáadása";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Szinkronlánc QR-kód";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Második mobileszközén navigáljon a Beállítások panelen a Szinkronizálás elemre, és koppintson a „Szinkronizálási kód beolvasása” gombra. Használja kameráját az alábbi QR-kód beolvasásához.\n\n Kezelje ezt a kódot jelszóként. Ha valaki a birtokába jut, elolvashatja és módosíthatja az Ön szinkronizált adatait.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Írja be a szinkronizálási kódot";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Az eszközén navigáljon a Szinkronizálás elemre a Beállítások panelen, és koppintson a(z) „%@” gombra. Írja be az alább látható szinkronizálásilánc-kódszavakat.\n\n Kezelje ezt a kódot jelszóként. Ha valaki a birtokába jut, elolvashatja és módosíthatja az Ön szinkronizált adatait.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Írja be a kódszavakat";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Táblagép vagy telefon hozzáadása";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Válaszd ki a készülék típusát";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Válaszd ki a szinkronizálni kívánt készülék típusát.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "A kód lejárt. Generáljon egy újat az alábbi gombra koppintva.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Ez az ideiglenes kód a következő ideig érvényes: %@ ";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Számítógép";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Szinkronizálási fiók törlése";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Nem sikerült csatlakozni";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Úgy tűnik, ezt a kódot a Brave régebbi verzióját használó eszközön hozták létre. Frissítsen a legújabb Brave-verzióra a másik eszközén, majd hozzon létre új szinkronizálási kódot.";
+"sync.validForTooLongError" = "Ez a kód érvénytelen. Ellenőrizze, hogy az eszköze idő- és időzóna-beállításai helyesek-e.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Eszközök és beállítások";
+/* Sync settings welcome */
+"sync.welcome" = "A kezdéshez telepítsd minden szinkronizálni kívánt készülékre a Brave-et. Az összeláncolásukhoz indíts egy szinkronláncot, amellyel minden készülékedet biztonságosan összeláncolhatod.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Ez a szinkronizálási kód lejárt. Hozzon létre új szinkronizálási kódot, és próbálja újra.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Elnézést, valamilyen hiba történt";
+/* Word count title */
+"sync.wordCount" = "Szavak száma: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Importált könyvjelzők";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "A Szinkronizálási ügynök jelenleg offline vagy nem érhető el. Kérjük, próbálja újra később.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Szinkronizálási kommunikációs hiba";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Ellenőrizze az internetkapcsolatot, és próbálja újra.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Nem lehet csatlakozni a szinkronizáláshoz";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "A helyi eszközadatok érintetlenek maradnak az összes eszközön. A szinkronizálási lánc többi eszköze szinkronizálva marad. ";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Eltávolítja a következőt a szinkronizálási láncból: %@?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Készülék eltávolítása";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Készülék";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "A jelenleg szinkronizált adatok megmaradnak, de a Brave szinkronizálási gyorsítótárában lévő összes adat törlődik. Az eszközadatok ismételt szinkronizálásához új szinkronizálási láncot kell indítania.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Szinkronizálási lánc törlése";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "A(z) %@ eltávolítása törli a szinkronizálási láncot.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Az eszköz szinkronizálási láncból való eltávolítása nem törli a korábban szinkronizált adatokat az eszközről.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Eltávolítja a következőt a szinkronizálási láncból: %@?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "A készülék eltávolítása";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Eltávolítja ezt az eszközt?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Ez az eszköz le lesz választva a szinkronizálási csoportról, és többé nem fogad vagy küld szinkronizálási adatokat. Minden meglévő adat az eszközön marad.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "Az alábbi készülékek listáján megtalálható szinkronláncod minden készüléke. Minden készülék kezelhető minden másik készülékről.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Kamerámat használom...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Táblagép vagy telefon";
-
-/* This device cell */
-"SyncThisDevice" = "Ez az eszköz";
-
-/* Sync to existing device */
-"SyncToDevice" = "Szinkronizálás eszközzel";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "A meglévő szinkronizált eszköz használatával nyissa meg a Brave beállításait, és lépjen a Beállítások -> Szinkronizálás elemre. Válassza az „Eszköz hozzáadása” lehetőséget, és olvassa be a képernyőn megjelenő kódot.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Nem lehet szinkronizálni ezt az eszközt";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Sikertelen";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Ez a kód érvénytelen. Ellenőrizze, hogy az eszköze idő- és időzóna-beállításai helyesek-e.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Bezárás";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Bekapcsolja a keresési javaslatokat?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Nem sikerült csatlakozni a szinkronizálási csoporthoz. Kérjük, ellenőrizze a beírt szavakat, és próbálja újra.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Nem sikerült csatlakozni";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Feloldás";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widgetek";
-
-/* Word count title */
-"WordCount" = "Szavak száma: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "év";
