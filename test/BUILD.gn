@@ -1225,7 +1225,7 @@ if (is_android) {
     ]
   }
 
-  chrome_public_test_apk_tmpl("brave_public_test_apk") {
+  chrome_public_test_apk_tmpl("brave_java_unit_tests") {
     apk_name = "BravePublicTest"
     android_manifest = brave_public_test_apk_manifest
     android_manifest_dep = ":brave_public_test_apk_manifest"
