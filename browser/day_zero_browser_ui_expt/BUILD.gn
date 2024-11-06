@@ -21,20 +21,3 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
 }
-
-source_set("browser_tests") {
-  testonly = true
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-
-  sources = [ "day_zero_browser_ui_expt_browsertest.cc" ]
-
-  deps = [
-    "//base",
-    "//chrome/browser",
-    "//chrome/browser:browser_process",
-    "//chrome/browser/ui",
-    "//chrome/test:test_support_ui",
-    "//components/prefs",
-    "//content/test:test_support",
-  ]
-}
