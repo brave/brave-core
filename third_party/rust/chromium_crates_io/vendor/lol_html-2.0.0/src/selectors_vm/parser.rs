@@ -11,16 +11,32 @@ use std::str::FromStr;
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct SelectorImplDescriptor;
 
+#[derive(Clone, Default, Eq, PartialEq)]
+pub struct CssString(pub String);
+
+impl<'a> From<&'a str> for CssString {
+    fn from(value: &'a str) -> Self {
+        Self(value.to_string())
+    }
+}
+
+impl ToCss for CssString {
+    fn to_css<W>(&self, dest: &mut W) -> fmt::Result
+    where
+        W: fmt::Write,
+    {
+        write!(dest, "{}", self.0)
+    }
+}
+
 impl SelectorImpl for SelectorImplDescriptor {
-    type AttrValue = String;
-    type Identifier = String;
-    type ClassName = String;
-    type PartName = String;
-    type LocalName = String;
-    type NamespacePrefix = String;
+    type AttrValue = CssString;
+    type Identifier = CssString;
+    type LocalName = CssString;
+    type NamespacePrefix = CssString;
     type NamespaceUrl = Namespace;
     type BorrowedNamespaceUrl = Namespace;
-    type BorrowedLocalName = String;
+    type BorrowedLocalName = CssString;
 
     type NonTSPseudoClass = NonTSPseudoClassStub;
     type PseudoElement = PseudoElementStub;
@@ -52,10 +68,6 @@ impl NonTSPseudoClass for NonTSPseudoClassStub {
     }
 
     fn is_user_action_state(&self) -> bool {
-        match *self {}
-    }
-
-    fn has_zero_specificity(&self) -> bool {
         match *self {}
     }
 }
@@ -105,14 +117,15 @@ impl SelectorsParser {
             | Component::AttributeInNoNamespaceExists { .. }
             | Component::AttributeInNoNamespace { .. } => Ok(()),
 
-            Component::Negation(components) => {
-                components.iter().try_for_each(Self::validate_component)
-            }
+            Component::Negation(selectors) => selectors
+                .iter()
+                .try_for_each(|s| s.iter().try_for_each(Self::validate_component)),
 
             // Unsupported
             Component::Empty
             | Component::Part(_)
             | Component::Host(_)
+            | Component::Is(_)
             | Component::LastChild
             | Component::LastOfType
             | Component::NthLastChild(_, _)
@@ -121,6 +134,7 @@ impl SelectorsParser {
             | Component::OnlyOfType
             | Component::Root
             | Component::Scope
+            | Component::Where(_)
             | Component::PseudoElement(_)
             | Component::NonTSPseudoClass(_)
             | Component::Slotted(_) => Err(SelectorError::UnsupportedPseudoClassOrElement),

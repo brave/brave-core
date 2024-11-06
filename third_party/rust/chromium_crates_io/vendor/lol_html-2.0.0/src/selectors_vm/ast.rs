@@ -119,16 +119,16 @@ impl From<&Component<SelectorImplDescriptor>> for Condition {
     fn from(component: &Component<SelectorImplDescriptor>) -> Self {
         match component {
             Component::LocalName(n) => {
-                Condition::OnTagName(OnTagNameExpr::LocalName(n.name.to_owned()))
+                Condition::OnTagName(OnTagNameExpr::LocalName(n.name.0.to_owned()))
             }
             Component::ExplicitUniversalType | Component::ExplicitAnyNamespace => {
                 Condition::OnTagName(OnTagNameExpr::ExplicitAny)
             }
             Component::ExplicitNoNamespace => Condition::OnTagName(OnTagNameExpr::Unmatchable),
-            Component::ID(id) => Condition::OnAttributes(OnAttributesExpr::Id(id.to_owned())),
-            Component::Class(c) => Condition::OnAttributes(OnAttributesExpr::Class(c.to_owned())),
+            Component::ID(id) => Condition::OnAttributes(OnAttributesExpr::Id(id.0.to_owned())),
+            Component::Class(c) => Condition::OnAttributes(OnAttributesExpr::Class(c.0.to_owned())),
             Component::AttributeInNoNamespaceExists { local_name, .. } => {
-                Condition::OnAttributes(OnAttributesExpr::AttributeExists(local_name.to_owned()))
+                Condition::OnAttributes(OnAttributesExpr::AttributeExists(local_name.0.to_owned()))
             }
             &Component::AttributeInNoNamespace {
                 ref local_name,
@@ -142,8 +142,8 @@ impl From<&Component<SelectorImplDescriptor>> for Condition {
                 } else {
                     Condition::OnAttributes(OnAttributesExpr::AttributeComparisonExpr(
                         AttributeComparisonExpr::new(
-                            local_name.to_owned(),
-                            value.to_owned(),
+                            local_name.0.to_owned(),
+                            value.0.to_owned(),
                             case_sensitivity,
                             operator,
                         ),
@@ -306,8 +306,9 @@ where
                             "Unsupported selector components should be filtered out by the parser."
                         ),
                     },
-                    Component::Negation(c) => {
-                        c.iter().for_each(|c| predicate.add_component(c, true))
+                    Component::Negation(ss) => {
+                        ss.iter()
+                            .for_each(|s| s.iter().for_each(|c| predicate.add_component(c, true)))
                     }
                     _ => predicate.add_component(component, false),
                 }
@@ -824,10 +825,9 @@ mod tests {
             r#"div[foo~"bar"]"#,
             SelectorError::UnexpectedTokenInAttribute,
         );
-        assert_err(":not(:not(p))", SelectorError::NestedNegation);
         assert_err("svg|img", SelectorError::NamespacedSelector);
         assert_err(".foo()", SelectorError::InvalidClassName);
-        assert_err(":not()", SelectorError::EmptyNegation);
+        assert_err(":not()", SelectorError::EmptySelector);
         assert_err("div + span", SelectorError::UnsupportedCombinator('+'));
         assert_err("div ~ span", SelectorError::UnsupportedCombinator('~'));
     }
