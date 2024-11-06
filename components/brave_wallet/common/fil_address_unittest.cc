@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/common/fil_address.h"
+
 #include <string>
 #include <vector>
 
 #include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -283,7 +284,7 @@ TEST(FilAddressUnitTest, GetBytes) {
         "4t"
         "pa4mvigcrayh4a");
     EXPECT_EQ(
-        ToHex(base::make_span(fil_address.GetBytes())),
+        ToHex(fil_address.GetBytes()),
         base::ToLowerASCII("0x03B5774F3D8546D3E797653A5423EFFA7AB06D4CD3587"
                            "697D3647798D9FE739167EBEAF1EF"
                            "053F957A7678EE4DE0E32A83"));

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/containers/span.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -164,7 +165,8 @@ void EthAllowanceManager::OnGetCurrentBlock(
     return;
   }
 
-  const auto approval_topic_hash = KeccakHash(kApprovalTopicFunctionSignature);
+  const auto approval_topic_hash = ToHex(KeccakHash(
+      base::byte_span_from_cstring(kApprovalTopicFunctionSignature)));
   for (const auto& account_address : account_addresses) {
     std::string account_address_hex;
     if (!PadHexEncodedParameter(account_address, &account_address_hex)) {

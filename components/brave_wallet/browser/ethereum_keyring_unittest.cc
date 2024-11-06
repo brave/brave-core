@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 
 #include <memory>
@@ -115,10 +109,10 @@ TEST(EthereumKeyringUnitTest, SignTransaction) {
 }
 
 TEST(EthereumKeyringUnitTest, SignMessage) {
-  std::vector<uint8_t> private_key;
-  EXPECT_TRUE(base::HexStringToBytes(
+  std::array<uint8_t, 32> private_key;
+  EXPECT_TRUE(base::HexStringToSpan(
       "6969696969696969696969696969696969696969696969696969696969696969",
-      &private_key));
+      private_key));
 
   std::unique_ptr<HDKey> key = std::make_unique<HDKey>();
   key->SetPrivateKey(private_key);
@@ -189,10 +183,10 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
       &seed));
   EthereumKeyring keyring(seed);
   size_t private_keys_size = sizeof(private_keys) / sizeof(private_keys[0]);
-  for (size_t i = 0; i < private_keys_size; ++i) {
+  for (auto& test_case : private_keys) {
     std::vector<uint8_t> private_key;
-    EXPECT_TRUE(base::HexStringToBytes(private_keys[i].key, &private_key));
-    EXPECT_EQ(keyring.ImportAccount(private_key), private_keys[i].address);
+    EXPECT_TRUE(base::HexStringToBytes(test_case.key, &private_key));
+    EXPECT_EQ(keyring.ImportAccount(private_key), test_case.address);
   }
   EXPECT_EQ(keyring.GetImportedAccountsForTesting().size(), private_keys_size);
   // Trying to add a duplicate account

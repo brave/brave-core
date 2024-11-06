@@ -18,8 +18,7 @@ TEST(HexUtilsUnitTest, ToHex) {
   const std::string_view str = "hello world";
   ASSERT_EQ(ToHex(""), "0x0");
   ASSERT_EQ(ToHex(std::string(str)), "0x68656c6c6f20776f726c64");
-  ASSERT_EQ(ToHex(base::as_bytes(base::make_span(str))),
-            "0x68656c6c6f20776f726c64");
+  ASSERT_EQ(ToHex(base::as_byte_span(str)), "0x68656c6c6f20776f726c64");
 
   ASSERT_EQ(ToHex(std::vector<uint8_t>()), "0x0");
   ASSERT_EQ(ToHex(std::vector<uint8_t>(str.begin(), str.end())),
@@ -28,7 +27,7 @@ TEST(HexUtilsUnitTest, ToHex) {
 
 TEST(HexUtilsUnitTest, HexEncodeLower) {
   std::string test_string = "hello world";
-  ASSERT_EQ(HexEncodeLower(base::as_bytes(base::make_span(test_string))),
+  ASSERT_EQ(HexEncodeLower(base::as_byte_span(test_string)),
             "68656c6c6f20776f726c64");
   ASSERT_EQ(HexEncodeLower(test_string.data(), test_string.size()),
             "68656c6c6f20776f726c64");

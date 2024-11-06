@@ -122,9 +122,8 @@ base::FilePath WalletDataFilesInstallerPolicy::GetRelativeInstallDir() const {
 }
 
 void WalletDataFilesInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
-  UNSAFE_TODO(hash->assign(
-      kWalletDataFilesSha2Hash,
-      kWalletDataFilesSha2Hash + std::size(kWalletDataFilesSha2Hash)));
+  hash->assign(std::begin(kWalletDataFilesSha2Hash),
+               std::end(kWalletDataFilesSha2Hash));
 }
 
 std::string WalletDataFilesInstallerPolicy::GetName() const {

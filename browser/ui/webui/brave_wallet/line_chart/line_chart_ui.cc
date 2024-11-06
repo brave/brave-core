@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/browser/ui/webui/brave_wallet/line_chart/line_chart_ui.h"
 
 #include <string>
@@ -40,13 +34,11 @@ UntrustedLineChartUI::UntrustedLineChartUI(content::WebUI* web_ui)
 
   untrusted_source->SetDefaultResource(
       IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML);
-  untrusted_source->AddResourcePaths(base::make_span(
-      kLineChartDisplayGenerated, kLineChartDisplayGeneratedSize));
+  untrusted_source->AddResourcePaths(base::span(kLineChartDisplayGenerated));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   webui::SetupWebUIDataSource(untrusted_source,
-                              base::make_span(kLineChartDisplayGenerated,
-                                              kLineChartDisplayGeneratedSize),
+                              base::span(kLineChartDisplayGenerated),
                               IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML);
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

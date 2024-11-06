@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
 
 #include <string>
@@ -39,14 +33,12 @@ UntrustedNftUI::UntrustedNftUI(content::WebUI* web_ui)
   }
 
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_NFT_DISPLAY_HTML);
-  untrusted_source->AddResourcePaths(
-      base::make_span(kNftDisplayGenerated, kNftDisplayGeneratedSize));
+  untrusted_source->AddResourcePaths(base::span(kNftDisplayGenerated));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
-  webui::SetupWebUIDataSource(
-      untrusted_source,
-      base::make_span(kNftDisplayGenerated, kNftDisplayGeneratedSize),
-      IDR_BRAVE_WALLET_NFT_DISPLAY_HTML);
+  webui::SetupWebUIDataSource(untrusted_source,
+                              base::span(kNftDisplayGenerated),
+                              IDR_BRAVE_WALLET_NFT_DISPLAY_HTML);
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       std::string("script-src 'self' chrome-untrusted://resources;"));

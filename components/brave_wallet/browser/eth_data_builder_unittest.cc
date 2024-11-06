@@ -253,7 +253,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_ETH) {
     ASSERT_TRUE(keys_array);
     EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.ETH.address"}));
 
-    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     ASSERT_TRUE(name_hash);
     EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
   }
@@ -272,7 +272,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_ETH) {
         ElementsAreArray({"crypto.USDT.version.BEP20.address",
                           "crypto.USDT.address", "crypto.ETH.address"}));
 
-    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     ASSERT_TRUE(name_hash);
     EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
   }
@@ -290,7 +290,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_ETH) {
     EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.QWEQWE.address",
                                                "crypto.ETH.address"}));
 
-    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     ASSERT_TRUE(name_hash);
     EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
   }
@@ -309,7 +309,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_SOL) {
     ASSERT_TRUE(keys_array);
     EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.SOL.address"}));
 
-    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     ASSERT_TRUE(name_hash);
     EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
   }
@@ -325,7 +325,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_SOL) {
     ASSERT_TRUE(keys_array);
     EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.SOL.address"}));
 
-    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     ASSERT_TRUE(name_hash);
     EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
   }
@@ -344,7 +344,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_SOL) {
                 ElementsAreArray({"crypto.QWEQWE.version.SOLANA.address",
                                   "crypto.SOL.address"}));
 
-    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     ASSERT_TRUE(name_hash);
     EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
   }
@@ -363,7 +363,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_FIL) {
     ASSERT_TRUE(keys_array);
     EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.FIL.address"}));
 
-    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     ASSERT_TRUE(name_hash);
     EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
   }
@@ -379,7 +379,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_FIL) {
     ASSERT_TRUE(keys_array);
     EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.FIL.address"}));
 
-    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     ASSERT_TRUE(name_hash);
     EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
   }
@@ -396,7 +396,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_FIL) {
     ASSERT_TRUE(keys_array);
     EXPECT_THAT(*keys_array, ElementsAreArray({"crypto.FIL.address"}));
 
-    auto name_hash = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    auto name_hash = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     ASSERT_TRUE(name_hash);
     EXPECT_TRUE(base::ranges::equal(*name_hash, Namehash("test.crypto")));
   }

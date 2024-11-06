@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "base/base64.h"
+#include "base/containers/span.h"
 #include "base/test/values_test_util.h"
 #include "crypto/aead.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -16,7 +17,7 @@ namespace brave_wallet {
 
 namespace {
 base::span<const uint8_t> ToSpan(std::string_view sv) {
-  return base::as_bytes(base::make_span(sv));
+  return base::as_byte_span(sv);
 }
 std::string ToString(const std::vector<uint8_t>& v) {
   return std::string(v.begin(), v.end());

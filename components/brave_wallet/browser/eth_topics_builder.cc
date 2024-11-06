@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -17,7 +18,8 @@ bool MakeAssetDiscoveryTopics(
     const std::vector<std::string>& to_account_addresses,
     base::Value::List* topics) {
   // First topic matches full keccak hash of the erc20::Transfer event signature
-  topics->Append(brave_wallet::KeccakHash("Transfer(address,address,uint256)"));
+  topics->Append(ToHex(KeccakHash(
+      base::byte_span_from_cstring("Transfer(address,address,uint256)"))));
 
   // Second topic matches everything (any from_address)
   topics->Append(base::Value());
