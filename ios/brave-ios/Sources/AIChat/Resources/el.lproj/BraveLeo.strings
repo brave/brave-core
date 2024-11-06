@@ -337,6 +337,9 @@
 /* The title for disliking response to clipboard action */
 "aichat.responseContextMenuDislikeAnswerTitle" = "Η απάντηση δεν μου αρέσει";
 
+/* The title for editing AI response action from context menu */
+"aichat.responseContextMenuEditAnswerTitle" = "Επεξεργασία απάντησης";
+
 /* The title for editing user prompt action from context menu */
 "aichat.responseContextMenuEditPromptTitle" = "Επεξεργασία εντολής";
 
