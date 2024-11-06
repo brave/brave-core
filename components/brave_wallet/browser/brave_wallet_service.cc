@@ -766,30 +766,6 @@ bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
          base::ToLowerASCII(*selected_chain_id) == chain_id;
 }
 
-void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
-    PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated)) {
-    return;
-  }
-
-  if (ShouldMigrateRemovedPreloadedNetwork(prefs, mojom::CoinType::ETH,
-                                           mojom::kFantomMainnetChainId)) {
-    NetworkManager network_manager(prefs);
-    mojom::NetworkInfo network(
-        mojom::kFantomMainnetChainId, "Fantom Opera", {"https://ftmscan.com"},
-        {}, 0, {GURL("https://rpc.ftm.tools")}, "FTM", "Fantom", 18,
-        mojom::CoinType::ETH,
-        GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                       mojom::kFantomMainnetChainId));
-    network_manager.AddCustomNetwork(network);
-    network_manager.SetEip1559ForCustomChain(mojom::kFantomMainnetChainId,
-                                             true);
-    EnsureNativeTokenForNetwork(prefs, network);
-  }
-
-  prefs->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated, true);
-}
-
 void BraveWalletService::MigrateGoerliNetwork(PrefService* prefs) {
   if (prefs->GetBoolean(kBraveWalletGoerliNetworkMigrated)) {
     return;

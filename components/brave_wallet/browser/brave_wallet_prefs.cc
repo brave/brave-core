@@ -64,6 +64,9 @@ constexpr char kAutoPinEnabledMigrated[] = "brave.wallet.auto_pin_enabled";
 // Deprecated 11/2024
 constexpr char kBraveWalletDefaultHiddenNetworksVersion[] =
     "brave.wallet.user.assets.default_hidden_networks_version";
+// Deprecated 11/2024
+inline constexpr char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
+    "brave.wallet.custom_networks.fantom_mainnet_migrated";
 
 base::Value::Dict GetDefaultSelectedNetworks() {
   base::Value::Dict selected_networks;
@@ -143,6 +146,9 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
   registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
   // Deprecated 11/2024.
   registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
+  // Deprecated 11/2024.
+  registry->RegisterBooleanPref(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                                false);
 }
 
 void RegisterDeprecatedIpfsPrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -171,6 +177,8 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletTransactionsChainIdMigrated);
   // Deprecated 11/2024.
   prefs->ClearPref(kBraveWalletDefaultHiddenNetworksVersion);
+  // Deprecated 11/2024.
+  prefs->ClearPref(kBraveWalletCustomNetworksFantomMainnetMigrated);
 }
 
 void ClearDeprecatedIpfsPrefs(PrefService* prefs) {
@@ -278,10 +286,6 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(kBraveWalletTransactionsFromPrefsToDBMigrated,
                                 false);
 
-  // Added 08/2023
-  registry->RegisterBooleanPref(kBraveWalletCustomNetworksFantomMainnetMigrated,
-                                false);
-
   // Added 01/2024
   registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
   // Added 01/2024
@@ -341,10 +345,6 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   ClearDeprecatedProfilePrefsMigrationFlags(prefs);
-
-  // Added 08/2023 to add Fantom as a custom network if selected for the default
-  // or custom origins.
-  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(prefs);
 
   // Added 07/2023
   MigrateDerivedAccountIndex(prefs);
