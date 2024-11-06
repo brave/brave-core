@@ -337,6 +337,9 @@
 /* The title for disliking response to clipboard action */
 "aichat.responseContextMenuDislikeAnswerTitle" = "Metti Non mi piace alla risposta";
 
+/* The title for editing AI response action from context menu */
+"aichat.responseContextMenuEditAnswerTitle" = "Modifica la risposta";
+
 /* The title for editing user prompt action from context menu */
 "aichat.responseContextMenuEditPromptTitle" = "Modifica il prompt";
 
