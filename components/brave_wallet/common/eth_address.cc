@@ -3,11 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/components/brave_wallet/common/eth_address.h"
 
 #include <utility>
 
-#include "base/containers/span.h"
+#include "base/check_op.h"
 #include "base/logging.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
@@ -39,8 +45,12 @@ EthAddress EthAddress::FromPublicKey(const std::vector<uint8_t>& public_key) {
     return EthAddress();
   }
 
-  return EthAddress(
-      base::as_byte_span(KeccakHash(public_key)).last(kEthAddressLength));
+  std::vector<uint8_t> hash = KeccakHash(public_key);
+  std::vector<uint8_t> result(hash.end() - kEthAddressLength, hash.end());
+
+  DCHECK_EQ(result.size(), kEthAddressLength);
+
+  return EthAddress(std::move(result));
 }
 
 // static
@@ -85,7 +95,8 @@ bool EthAddress::IsValidAddress(const std::string& input) {
 }
 
 std::string EthAddress::ToHex() const {
-  return ::brave_wallet::ToHex(bytes_);
+  const std::string input(bytes_.begin(), bytes_.end());
+  return ::brave_wallet::ToHex(input);
 }
 
 // static
@@ -110,20 +121,21 @@ std::optional<std::string> EthAddress::ToEip1191ChecksumAddress(
 
 std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
   std::string result = "0x";
-  std::string prefix;
+  std::string input;
 
   if (eip1191_chaincode == static_cast<uint256_t>(30) ||
       eip1191_chaincode == static_cast<uint256_t>(31)) {
     // TODO(jocelyn): We will need to revise this if there are supported chains
     // with ID larger than uint64_t.
-    prefix =
+    input +=
         base::NumberToString(static_cast<uint64_t>(eip1191_chaincode)) + "0x";
   }
 
+  input += std::string(ToHex().data() + 2);
+
+  const std::string hash_str(KeccakHash(input).data() + 2);
   const std::string address_str =
       base::ToLowerASCII(base::HexEncode(bytes_.data(), bytes_.size()));
-  const std::string hash_str =
-      base::HexEncode(KeccakHash(base::as_byte_span(prefix + address_str)));
 
   for (size_t i = 0; i < address_str.length(); ++i) {
     if (isdigit(address_str[i])) {

@@ -72,7 +72,7 @@ std::optional<std::vector<uint8_t>> Forward(const FilAddress& fil_address) {
 
   return eth_abi::TupleEncoder()
       .AddBytes(fil_address.GetBytes())
-      .EncodeWithSelector(base::span(kFilForwarderSelector));
+      .EncodeWithSelector(base::make_span(kFilForwarderSelector));
 }
 
 }  // namespace filforwarder

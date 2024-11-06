@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 
 namespace brave_wallet {
 

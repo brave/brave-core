@@ -80,7 +80,7 @@ SolanaMessageAddressTableLookup::Deserialize(const std::vector<uint8_t>& bytes,
     return std::nullopt;
   }
   auto account_key = SolanaAddress::FromBytes(
-      base::span(bytes).subspan(*bytes_index, kSolanaPubkeySize));
+      base::make_span(bytes).subspan(*bytes_index, kSolanaPubkeySize));
   if (!account_key) {
     return std::nullopt;
   }

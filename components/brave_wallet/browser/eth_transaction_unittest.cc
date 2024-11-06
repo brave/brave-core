@@ -40,12 +40,11 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
                          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                          "0x016345785d8a0000", data, false, std::nullopt));
 
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx1.GetHashedMessageToSign(0))),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx1.GetMessageToSign(0))),
             "61e1ec33764304dddb55348e7883d4437426f44ab3ef65e6da1e025734c03ff0");
 
-  EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(tx1.GetHashedMessageToSign(1337))),
-      "9ad82175b6921c5525fc52ebc08b97118cc9709952a16b2249a3f42d44614721");
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx1.GetMessageToSign(1337))),
+            "9ad82175b6921c5525fc52ebc08b97118cc9709952a16b2249a3f42d44614721");
 
   data.clear();
   EthTransaction tx2 = *EthTransaction::FromTxData(
@@ -54,11 +53,11 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
                          "0x2386f26fc10000", data, false, std::nullopt));
 
   // with chain id (mainnet)
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx2.GetHashedMessageToSign(1))),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx2.GetMessageToSign(1))),
             "f97c73fdca079da7652dbc61a46cd5aeef804008e057be3e712c43eac389aaf0");
 
   EXPECT_EQ(
-      base::ToLowerASCII(base::HexEncode(tx2.GetMessageToSign(1))),
+      base::ToLowerASCII(base::HexEncode(tx2.GetMessageToSign(1, false))),
       "eb0b85051f4d5c0082520894656e929d6fc0cac52d3d9526d288fe02dcd56fbd872386f"
       "26fc1000080018080");
 
@@ -108,16 +107,16 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
         entry.nonce, entry.gas_price, entry.gas_limit, entry.to, entry.value,
         std::vector<uint8_t>(), false, std::nullopt));
     // with chain id (mainnet)
-    EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetHashedMessageToSign(1))),
+    EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetMessageToSign(1))),
               entry.hash);
   }
 }
 
 TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
-  std::array<uint8_t, 32> private_key;
-  EXPECT_TRUE(base::HexStringToSpan(
+  std::vector<uint8_t> private_key;
+  EXPECT_TRUE(base::HexStringToBytes(
       "4646464646464646464646464646464646464646464646464646464646464646",
-      private_key));
+      &private_key));
 
   HDKey key;
   key.SetPrivateKey(private_key);
@@ -126,12 +125,12 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
       "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
       std::vector<uint8_t>(), false, std::nullopt));
 
-  auto message = tx.GetHashedMessageToSign(1);
+  const std::vector<uint8_t> message = tx.GetMessageToSign(1);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message)),
             "daf5a779ae972f972197303d7b574746c7ef83eadac0f2791ad23db92e4c8e53");
 
   int recid;
-  auto signature = *key.SignCompact(message, &recid);
+  const std::vector<uint8_t> signature = key.SignCompact(message, &recid);
 
   // invalid
   tx.ProcessSignature(std::vector<uint8_t>(63), recid, 1);
@@ -166,11 +165,12 @@ TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
             "67CBE9D8997F761AECB703304B3800CCF555C9F3DC64214B297FB1966A3B6D83");
 
   // Bigger chain_id
-  auto message1337 = tx.GetHashedMessageToSign(1337);
+  const std::vector<uint8_t> message1337 = tx.GetMessageToSign(1337);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message1337)),
             "9df81edc908cd622cbbab86525a4588fdcbaf6c88757f39b42b1f8f58fd617c2");
   recid = 0;
-  auto signature1337 = *key.SignCompact(message1337, &recid);
+  const std::vector<uint8_t> signature1337 =
+      key.SignCompact(message1337, &recid);
   tx.ProcessSignature(signature1337, recid, 1337);
   EXPECT_EQ(tx.GetSignedTransaction(),
             "0xf86e098504a817c8008252089435353535353535353535353535353535353535"

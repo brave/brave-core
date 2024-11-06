@@ -3,6 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
+// convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 
 #include <string>
@@ -32,12 +38,14 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
     untrusted_source->AddString(str.name, l10n_str);
   }
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML);
-  untrusted_source->AddResourcePaths(base::span(kMarketDisplayGenerated));
+  untrusted_source->AddResourcePaths(
+      base::make_span(kMarketDisplayGenerated, kMarketDisplayGeneratedSize));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
-  webui::SetupWebUIDataSource(untrusted_source,
-                              base::span(kMarketDisplayGenerated),
-                              IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML);
+  webui::SetupWebUIDataSource(
+      untrusted_source,
+      base::make_span(kMarketDisplayGenerated, kMarketDisplayGeneratedSize),
+      IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML);
 
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

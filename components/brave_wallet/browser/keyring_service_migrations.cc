@@ -333,8 +333,8 @@ void MaybeMigratePBKDF2Iterations(PrefService* profile_prefs,
                                                       /*force_create = */ true);
 
     SetPrefForKeyring(profile_prefs, kEncryptedMnemonicDeprecated,
-                      base::Value(base::Base64Encode(
-                          encryptor->Encrypt(base::span(*mnemonic), nonce))),
+                      base::Value(base::Base64Encode(encryptor->Encrypt(
+                          base::make_span(*mnemonic), nonce))),
                       keyring_id);
 
     if (keyring_id == mojom::kDefaultKeyringId) {
@@ -368,7 +368,7 @@ void MaybeMigratePBKDF2Iterations(PrefService* profile_prefs,
       }
 
       auto private_key = deprecated_encryptor->Decrypt(
-          base::span(*deprecated_private_key_decoded), *deprecated_nonce);
+          base::make_span(*deprecated_private_key_decoded), *deprecated_nonce);
       if (!private_key) {
         continue;
       }
@@ -504,7 +504,7 @@ void MaybeMigrateToWalletMnemonic(PrefService* profile_prefs,
       }
 
       auto private_key = deprecated_encryptor->Decrypt(
-          base::span(*deprecated_private_key_decoded), *deprecated_nonce);
+          base::make_span(*deprecated_private_key_decoded), *deprecated_nonce);
       if (!private_key) {
         continue;
       }

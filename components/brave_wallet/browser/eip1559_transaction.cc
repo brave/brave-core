@@ -9,7 +9,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/containers/extend.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -271,9 +270,11 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
   return tx;
 }
 
-std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(
-    uint256_t chain_id) const {
+std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(uint256_t chain_id,
+                                                          bool hash) const {
   DCHECK(nonce_);
+  std::vector<uint8_t> result;
+  result.push_back(type_);
 
   base::Value::List list;
   list.Append(RLPUint256ToBlob(chain_id_));
@@ -286,10 +287,9 @@ std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
 
-  std::vector<uint8_t> result;
-  result.push_back(type_);
-  base::Extend(result, RLPEncode(list));
-  return result;
+  const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
+  result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
+  return hash ? KeccakHash(result) : result;
 }
 
 std::string Eip1559Transaction::GetSignedTransaction() const {
@@ -361,7 +361,10 @@ std::vector<uint8_t> Eip1559Transaction::Serialize() const {
 
   std::vector<uint8_t> result;
   result.push_back(type_);
-  base::Extend(result, RLPEncode(list));
+
+  const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
+  result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
+
   return result;
 }
 
