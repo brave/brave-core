@@ -1636,7 +1636,7 @@ KeyringService::SignatureWithError KeyringService::SignMessageByDefaultKeyring(
 
 std::optional<std::string> KeyringService::RecoverAddressByDefaultKeyring(
     base::span<const uint8_t> message,
-    base::span<const uint8_t> signature) {
+    base::span<const uint8_t, kRecoverableSignatureSize> signature) {
   return EthereumKeyring::RecoverAddress(message, signature);
 }
 

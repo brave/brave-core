@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 
 namespace brave_wallet::eth_abi {
+
 constexpr size_t kRowLength = 32;
 constexpr size_t kSelectorLength = 4;
 
@@ -25,6 +26,14 @@ using Span4 = base::span<const uint8_t, kSelectorLength>;
 using Span32 = base::span<const uint8_t, kRowLength>;
 using Bytes4 = std::array<uint8_t, kSelectorLength>;
 using Bytes32 = std::array<uint8_t, kRowLength>;
+
+namespace internal {
+
+std::optional<Span32> ExtractFixedBytesRowFromTuple(Span data,
+                                                    size_t fixed_size,
+                                                    size_t tuple_pos);
+
+}
 
 std::pair<Span, Span> ExtractFunctionSelectorAndArgsFromCall(Span data);
 
@@ -47,8 +56,22 @@ ExtractBoolBytesArray(Span string_array);
 std::optional<std::vector<std::pair<bool, std::vector<uint8_t>>>>
 ExtractBoolBytesArrayFromTuple(Span data, size_t tuple_pos);
 
-std::optional<std::vector<uint8_t>>
-ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos);
+template <size_t N>
+std::optional<std::array<uint8_t, N>> ExtractFixedBytesFromTuple(
+    Span data,
+    size_t tuple_pos)
+  requires(N > 0 && N <= 32)
+{
+  auto head = internal::ExtractFixedBytesRowFromTuple(data, N, tuple_pos);
+  if (!head) {
+    return std::nullopt;
+  }
+
+  std::array<uint8_t, N> result;
+  base::span(result).copy_from(head->first(N));
+
+  return result;
+}
 
 class TupleEncoder {
  public:

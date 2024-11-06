@@ -461,10 +461,6 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
                                           RequestCallback callback,
                                           base::Value id) {
   bool reject = false;
-  // 65 * 2 hex chars per byte + 2 chars for  0x
-  if (signature.length() != 132) {
-    return RejectInvalidParams(std::move(id), std::move(callback));
-  }
 
   auto message_bytes = PrefixedHexStringToBytes(message);
   if (!message_bytes) {
@@ -476,8 +472,15 @@ void EthereumProviderImpl::RecoverAddress(const std::string& message,
     return RejectInvalidParams(std::move(id), std::move(callback));
   }
 
+  auto signature_bytes_span =
+      base::span(*signature_bytes)
+          .to_fixed_extent<65>(); /*kRecoverableSignatureSize*/
+  if (!signature_bytes_span) {
+    return RejectInvalidParams(std::move(id), std::move(callback));
+  }
+
   auto address = keyring_service_->RecoverAddressByDefaultKeyring(
-      *message_bytes, *signature_bytes);
+      *message_bytes, *signature_bytes_span);
   if (!address) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInternalError,
@@ -684,9 +687,10 @@ void EthereumProviderImpl::SignTypedMessage(
   mojom::SignDataUnionPtr sign_data =
       mojom::SignDataUnion::NewEthSignTypedData(std::move(eth_sign_typed_data));
 
-  SignMessageInternal(account_id, std::move(sign_data),
-                      std::move(message_to_sign), std::move(callback),
-                      std::move(id));
+  SignMessageInternal(
+      account_id, std::move(sign_data),
+      std::vector<uint8_t>(message_to_sign.begin(), message_to_sign.end()),
+      std::move(callback), std::move(id));
 }
 
 void EthereumProviderImpl::SignMessageInternal(

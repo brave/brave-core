@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_wallet/browser/eth_gas_utils.h"
 
 #include <algorithm>
@@ -62,9 +56,9 @@ std::optional<uint256_t> ScaleBaseFeePerGas(const std::string& value) {
 //   base_fee_per_gas (last element) * 33%
 // - avg_priority_fee will be the 0.4 * length's element of the sorted
 //   reward array.
-// - The same applies to low_prirority_fee, but if it was equal to avg
+// - The same applies to low_priority_fee, but if it was equal to avg
 //   then we walk it back to the next smallest element if possible.
-// - The same applies to high_prirority_fee, but if it was equal to avg
+// - The same applies to high_priority_fee, but if it was equal to avg
 //   then we walk it forward to the next biggest element if possible.
 bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
                           const std::vector<double>& gas_used_ratio,
@@ -104,40 +98,37 @@ bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
     return true;
   }
 
-  std::vector<uint256_t> priority_fee_uints[3];
-  uint256_t* priority_fees[3] = {low_priority_fee, avg_priority_fee,
-                                 high_priority_fee};
+  std::array<std::vector<uint256_t>, 3> priority_fee_uints;
+  std::array<uint256_t*, 3> priority_fees = {low_priority_fee, avg_priority_fee,
+                                             high_priority_fee};
   for (size_t i = 0; i < 3; i++) {
-    uint256_t& current_priority_fee = *(priority_fees[i]);
     std::vector<uint256_t>& current_priority_fee_uints = priority_fee_uints[i];
     bool invalid_data = false;
     // Convert the string priority fees to uints
-    std::transform(reward.begin(), reward.end(),
-                   std::back_inserter(current_priority_fee_uints),
-                   [&](const std::vector<std::string>& v) -> uint256_t {
-                     uint256_t val = fallback_priority_fee;
-                     if (v.size() != 3) {
-                       invalid_data = true;
-                     } else if (!HexValueToUint256(v[i], &val)) {
-                       invalid_data = true;
-                     }
-                     return val;
-                   });
+    for (auto& v : reward) {
+      uint256_t val = fallback_priority_fee;
+      if (v.size() != 3) {
+        invalid_data = true;
+      } else if (!HexValueToUint256(v[i], &val)) {
+        invalid_data = true;
+      }
+      current_priority_fee_uints.push_back(val);
+    }
 
     // We allow no reward info but we don't allow invalid reward info
     if (invalid_data) {
       return false;
     }
 
-    // Sort the priroirty fee uints
+    // Sort the priority fee uints
     std::sort(current_priority_fee_uints.begin(),
               current_priority_fee_uints.end());
-    // Calculate the avg priorty fee first to be the 40th percentile of the avg
+    // Calculate the avg priority fee first to be the 40th percentile of the avg
     // percentiles.  We use this same method as the initial value for low
     // and high too.
     size_t percentile_index = current_priority_fee_uints.size() * 0.4;
 
-    current_priority_fee = current_priority_fee_uints[percentile_index];
+    *(priority_fees[i]) = current_priority_fee_uints[percentile_index];
   }
 
   // Re-adjust the percentiles for low down to the next non-equal value if

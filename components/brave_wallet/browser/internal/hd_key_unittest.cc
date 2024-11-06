@@ -41,7 +41,10 @@ std::string GetHexAddr(const HDKey* key) {
   return addr.ToHex();
 }
 
-std::string GetWifPrivateKey(std::vector<uint8_t> private_key, bool testnet) {
+std::string GetWifPrivateKey(base::span<uint8_t> private_key_bytes,
+                             bool testnet) {
+  std::vector<uint8_t> private_key(private_key_bytes.begin(),
+                                   private_key_bytes.end());
   private_key.insert(private_key.begin(),
                      testnet ? 0xef : 0x80);  // Version Byte.
   auto sha256hash = DoubleSHA256Hash(private_key);
@@ -284,7 +287,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(parsed_xprv->version, ExtendedKeyVersion::kXprv);
   auto* hdkey_from_pri = parsed_xprv->hdkey.get();
   EXPECT_EQ(hdkey_from_pri->depth_, 5u);
-  EXPECT_EQ(hdkey_from_pri->parent_fingerprint_, 0x31a507b8u);
+  EXPECT_EQ(HexEncodeLower(hdkey_from_pri->parent_fingerprint_), "31a507b8");
   EXPECT_EQ(hdkey_from_pri->index_, 2u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pri->chain_code_)),
             "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
@@ -294,8 +297,9 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_pri->public_key_)),
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pri->identifier_)),
+  EXPECT_EQ(HexEncodeLower(hdkey_from_pri->GetIdentifier()),
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
+  EXPECT_EQ(HexEncodeLower(hdkey_from_pri->GetFingerprint()), "26132fdb");
   EXPECT_EQ(hdkey_from_pri->GetPath(), "");
 
   // m/0/2147483647'/1/2147483646'/2
@@ -305,7 +309,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(parsed_xpub->version, ExtendedKeyVersion::kXpub);
   auto* hdkey_from_pub = parsed_xpub->hdkey.get();
   EXPECT_EQ(hdkey_from_pub->depth_, 5u);
-  EXPECT_EQ(hdkey_from_pub->parent_fingerprint_, 0x31a507b8u);
+  EXPECT_EQ(HexEncodeLower(hdkey_from_pub->parent_fingerprint_), "31a507b8");
   EXPECT_EQ(hdkey_from_pub->index_, 2u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pub->chain_code_)),
             "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
@@ -313,15 +317,16 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_pub->public_key_)),
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pub->identifier_)),
+  EXPECT_EQ(HexEncodeLower(hdkey_from_pub->GetIdentifier()),
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
+  EXPECT_EQ(HexEncodeLower(hdkey_from_pub->GetFingerprint()), "26132fdb");
   EXPECT_EQ(hdkey_from_pub->GetPath(), "");
 
   auto parsed_zprv = HDKey::GenerateFromExtendedKey(kBtcMainnetImportAccount0);
   EXPECT_EQ(parsed_zprv->version, ExtendedKeyVersion::kZprv);
   auto* hdkey_from_zprv = parsed_zprv->hdkey.get();
   EXPECT_EQ(hdkey_from_zprv->depth_, 3u);
-  EXPECT_EQ(hdkey_from_zprv->parent_fingerprint_, 0x7ef32bdbu);
+  EXPECT_EQ(HexEncodeLower(hdkey_from_zprv->parent_fingerprint_), "7ef32bdb");
   EXPECT_EQ(hdkey_from_zprv->index_, 2147483648u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_zprv->chain_code_)),
             "4a53a0ab21b9dc95869c4e92a161194e03c0ef3ff5014ac692f433c4765490fc");
@@ -331,15 +336,16 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_zprv->public_key_)),
       "02707a62fdacc26ea9b63b1c197906f56ee0180d0bcf1966e1a2da34f5f3a09a9b");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_zprv->identifier_)),
+  EXPECT_EQ(HexEncodeLower(hdkey_from_zprv->GetIdentifier()),
             "fd13aac9a294188cdfe1331a8d94880bccbef8c1");
+  EXPECT_EQ(HexEncodeLower(hdkey_from_zprv->GetFingerprint()), "fd13aac9");
   EXPECT_EQ(hdkey_from_zprv->GetPath(), "");
 
   auto parsed_vprv = HDKey::GenerateFromExtendedKey(kBtcTestnetImportAccount0);
   EXPECT_EQ(parsed_vprv->version, ExtendedKeyVersion::kVprv);
   auto* hdkey_from_vprv = parsed_vprv->hdkey.get();
   EXPECT_EQ(hdkey_from_vprv->depth_, 3u);
-  EXPECT_EQ(hdkey_from_vprv->parent_fingerprint_, 0x0ef4b1afu);
+  EXPECT_EQ(HexEncodeLower(hdkey_from_vprv->parent_fingerprint_), "0ef4b1af");
   EXPECT_EQ(hdkey_from_vprv->index_, 2147483648u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_vprv->chain_code_)),
             "3c8c2037ee4c1621da0d348db51163709a622d0d2838dde6d8419c51f6301c62");
@@ -349,25 +355,27 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_vprv->public_key_)),
       "03b88e0fbe3f646337ed93bc0c0f3b843fcf7d2589e5ec884754e6402027a890b4");
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_vprv->identifier_)),
+  EXPECT_EQ(HexEncodeLower(hdkey_from_vprv->GetIdentifier()),
             "e99b862826a40a32c24c79785d06b19de3fb076f");
+  EXPECT_EQ(HexEncodeLower(hdkey_from_vprv->GetFingerprint()), "e99b8628");
   EXPECT_EQ(hdkey_from_vprv->GetPath(), "");
 }
 
 TEST(HDKeyUnitTest, GenerateFromPrivateKey) {
-  std::vector<uint8_t> private_key;
-  ASSERT_TRUE(base::HexStringToBytes(
+  std::array<uint8_t, 32> private_key;
+  ASSERT_TRUE(base::HexStringToSpan(
       "bb7d39bdb83ecf58f2fd82b6d918341cbef428661ef01ab97c28a4842125ac23",
-      &private_key));
+      private_key));
   std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
   EXPECT_NE(key, nullptr);
   EXPECT_EQ(key->GetPath(), "");
-  const std::vector<uint8_t> msg_a(32, 0x00);
-  const std::vector<uint8_t> msg_b(32, 0x08);
+  std::array<uint8_t, 32> msg_a = {};
+  std::array<uint8_t, 32> msg_b = {};
+  msg_b.fill(0x08);
   int recid_a = -1;
   int recid_b = -1;
-  const std::vector<uint8_t> sig_a = key->SignCompact(msg_a, &recid_a);
-  const std::vector<uint8_t> sig_b = key->SignCompact(msg_b, &recid_b);
+  auto sig_a = *key->SignCompact(msg_a, &recid_a);
+  auto sig_b = *key->SignCompact(msg_b, &recid_b);
   EXPECT_NE(recid_a, -1);
   EXPECT_NE(recid_b, -1);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a)),
@@ -378,9 +386,6 @@ TEST(HDKeyUnitTest, GenerateFromPrivateKey) {
             "532e5c0ae2a25392d97f5e55ab1288ef1e08d5c034bad3b0956fbbab73b381");
   EXPECT_TRUE(key->VerifyForTesting(msg_a, sig_a));
   EXPECT_TRUE(key->VerifyForTesting(msg_b, sig_b));
-
-  EXPECT_EQ(HDKey::GenerateFromPrivateKey(std::vector<uint8_t>(33)), nullptr);
-  EXPECT_EQ(HDKey::GenerateFromPrivateKey(std::vector<uint8_t>(31)), nullptr);
 }
 
 TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
@@ -389,12 +394,13 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
       "GfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j");
   auto* key = parsed_xprv->hdkey.get();
 
-  const std::vector<uint8_t> msg_a(32, 0x00);
-  const std::vector<uint8_t> msg_b(32, 0x08);
+  std::array<uint8_t, 32> msg_a = {};
+  std::array<uint8_t, 32> msg_b = {};
+  msg_b.fill(0x08);
   int recid_a = -1;
   int recid_b = -1;
-  const std::vector<uint8_t> sig_a = key->SignCompact(msg_a, &recid_a);
-  const std::vector<uint8_t> sig_b = key->SignCompact(msg_b, &recid_b);
+  auto sig_a = *key->SignCompact(msg_a, &recid_a);
+  auto sig_b = *key->SignCompact(msg_b, &recid_b);
   EXPECT_NE(recid_a, -1);
   EXPECT_NE(recid_b, -1);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a)),
@@ -420,25 +426,11 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   EXPECT_EQ(base::HexEncode(uncompressed_public_key_b),
             base::HexEncode(key->GetUncompressedPublicKey()));
 
-  EXPECT_FALSE(key->VerifyForTesting(std::vector<uint8_t>(32),
-                                     std::vector<uint8_t>(64)));
+  EXPECT_FALSE(key->VerifyForTesting(std::array<uint8_t, 32>{},
+                                     std::array<uint8_t, 64>{}));
   EXPECT_FALSE(key->VerifyForTesting(msg_a, sig_b));
   EXPECT_FALSE(key->VerifyForTesting(msg_b, sig_a));
 
-  EXPECT_FALSE(key->VerifyForTesting(std::vector<uint8_t>(31), sig_a));
-  EXPECT_FALSE(key->VerifyForTesting(std::vector<uint8_t>(33), sig_a));
-
-  EXPECT_FALSE(key->VerifyForTesting(msg_a, std::vector<uint8_t>(63)));
-  EXPECT_FALSE(key->VerifyForTesting(msg_a, std::vector<uint8_t>(65)));
-
-  EXPECT_TRUE(IsPublicKeyEmpty(
-      key->RecoverCompact(true, std::vector<uint8_t>(31), sig_a, recid_a)));
-  EXPECT_TRUE(IsPublicKeyEmpty(
-      key->RecoverCompact(true, std::vector<uint8_t>(33), sig_a, recid_a)));
-  EXPECT_TRUE(IsPublicKeyEmpty(
-      key->RecoverCompact(true, msg_a, std::vector<uint8_t>(31), recid_a)));
-  EXPECT_TRUE(IsPublicKeyEmpty(
-      key->RecoverCompact(true, msg_a, std::vector<uint8_t>(33), recid_a)));
   EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(true, msg_a, sig_a, -1)));
   EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(true, msg_a, sig_a, 4)));
   EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(false, msg_a, sig_a, -1)));
@@ -447,11 +439,7 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
 
 TEST(HDKeyUnitTest, SetPrivateKey) {
   HDKey key;
-  key.SetPrivateKey(std::vector<uint8_t>(31));
-  ASSERT_TRUE(key.GetPrivateKeyBytes().empty());
-  key.SetPrivateKey(std::vector<uint8_t>(33));
-  ASSERT_TRUE(key.GetPrivateKeyBytes().empty());
-  key.SetPrivateKey(std::vector<uint8_t>(32, 0x1));
+  key.SetPrivateKey(std::array<uint8_t, 32>({1, 2, 3}));
   EXPECT_FALSE(key.GetPrivateKeyBytes().empty());
   EXPECT_TRUE(!IsPublicKeyEmpty(key.public_key_));
 }
@@ -636,7 +624,7 @@ TEST(HDKeyUnitTest, GenerateFromV3UTC) {
 
 // https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#examples
 TEST(HDKeyUnitTest, GetSegwitAddress) {
-  std::vector<uint8_t> private_key_bytes(32, 0);
+  std::array<uint8_t, 32> private_key_bytes = {};
   private_key_bytes.back() = 1;
   std::unique_ptr<HDKey> hdkey =
       HDKey::GenerateFromPrivateKey(private_key_bytes);
@@ -652,10 +640,10 @@ TEST(HDKeyUnitTest, GetSegwitAddress) {
 
 // TODO(apaymyshev): Consider more tests. Also test R grinding.
 TEST(HDKeyUnitTest, SignDer) {
-  std::vector<uint8_t> private_key_bytes;
-  ASSERT_TRUE(base::HexStringToBytes(
+  std::array<uint8_t, 32> private_key_bytes;
+  ASSERT_TRUE(base::HexStringToSpan(
       "12b004fff7f4b69ef8650e767f18f11ede158148b425660723b9f9a66e61f747",
-      &private_key_bytes));
+      private_key_bytes));
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/test/key_tests.cpp#L20
   ASSERT_EQ(GetWifPrivateKey(private_key_bytes, false),
             "5HxWvvfubhXpYYpS3tJkw6fq9jE9j18THftkZjHHfmFiWtmAbrj");
@@ -664,7 +652,7 @@ TEST(HDKeyUnitTest, SignDer) {
       HDKey::GenerateFromPrivateKey(private_key_bytes);
 
   std::string message = "Very deterministic message";
-  auto hashed = DoubleSHA256Hash(base::as_bytes(base::make_span(message)));
+  auto hashed = DoubleSHA256Hash(base::as_byte_span(message));
 
   auto signature = hdkey->SignDer(hashed);
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/test/key_tests.cpp#L141

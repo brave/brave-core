@@ -50,10 +50,9 @@ class Eip2930Transaction : public EthTransaction {
   const AccessList* access_list() const { return &access_list_; }
   AccessList* access_list() { return &access_list_; }
 
-  // keccak256(0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
-  // accessList]))
-  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id = 0,
-                                        bool hash = true) const override;
+  // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
+  // accessList])
+  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id) const override;
 
   // 0x01 || rlp([chainId, nonce, gasPrice, gasLimit, to, value, data,
   // accessList, signatureYParity, signatureR, signatureS])
@@ -63,9 +62,9 @@ class Eip2930Transaction : public EthTransaction {
   // accessList, signatureYParity, signatureR, signatureS]))
   std::string GetTransactionHash() const override;
 
-  void ProcessSignature(const std::vector<uint8_t> signature,
+  void ProcessSignature(base::span<const uint8_t> signature,
                         int recid,
-                        uint256_t chain_id = 0) override;
+                        uint256_t chain_id) override;
 
   bool IsSigned() const override;
 

@@ -8,10 +8,10 @@
 #include <limits>
 #include <optional>
 
-#include "base/compiler_specific.h"
+#include "base/containers/adapters.h"
+#include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 
 namespace brave_wallet {
 
@@ -152,18 +152,32 @@ bool HexValueToInt256(const std::string& hex_input, int256_t* out) {
 
 std::string Uint256ValueToHex(uint256_t input) {
   std::string result;
-  result.reserve(32);
+  result.reserve(34);
+  result.append("0x");
 
-  static constexpr char kHexChars[] = "0123456789abcdef";
-  while (input) {
-    uint8_t i = static_cast<uint8_t>(input & static_cast<uint256_t>(0x0F));
-    UNSAFE_TODO(result.insert(result.begin(), kHexChars[i]));
-    input >>= 4;
+  auto input_span = base::byte_span_from_ref(input);
+  bool skipping_zeros = true;
+  for (auto& byte : base::Reversed(input_span)) {
+    if (skipping_zeros && !byte) {
+      continue;
+    }
+    if (skipping_zeros && byte) {
+      skipping_zeros = false;
+      if (byte <= 0xf) {
+        std::string one_char_byte;
+        base::AppendHexEncodedByte(byte, one_char_byte, false);
+        result += one_char_byte[1];
+        continue;
+      }
+    }
+    base::AppendHexEncodedByte(byte, result, false);
   }
-  if (result.empty()) {
-    return "0x0";
+
+  if (result.size() == 2) {
+    return result += '0';  // 0x0 case
   }
-  return "0x" + result;
+
+  return result;
 }
 
 bool PrefixedHexStringToBytes(const std::string& input,
