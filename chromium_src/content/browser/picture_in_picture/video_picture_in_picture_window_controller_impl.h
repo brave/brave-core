@@ -12,13 +12,9 @@
 #define NextSlide               \
   RequestFullscreen() override; \
   void NextSlide
-#define media_session_action_next_slide_handled_    \
-  media_session_action_next_slide_handled_ = false; \
-  bool media_session_action_seek_to_handled_
 
 #include "src/content/browser/picture_in_picture/video_picture_in_picture_window_controller_impl.h"  // IWYU pragma: export
 
-#undef media_session_action_next_slide_handled_
 #undef NextSlide
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_PICTURE_IN_PICTURE_VIDEO_PICTURE_IN_PICTURE_WINDOW_CONTROLLER_IMPL_H_
