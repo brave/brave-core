@@ -45,10 +45,11 @@ class BraveAdsSiteVisitTest : public test::TestBase {
 
   void SimulateClickingAd(const AdInfo& ad,
                           const int32_t tab_id,
-                          const std::vector<GURL>& redirect_chain) {
+                          const std::vector<GURL>& redirect_chain,
+                          const int http_status_code) {
     site_visit_->set_last_clicked_ad(ad);
 
-    SimulateOpeningNewTab(tab_id, redirect_chain);
+    SimulateOpeningNewTab(tab_id, redirect_chain, http_status_code);
   }
 
   std::unique_ptr<SiteVisit> site_visit_;
@@ -62,7 +63,8 @@ TEST_F(BraveAdsSiteVisitTest, LandOnInlineContentAdPage) {
   const AdInfo ad = test::BuildAd(mojom::AdType::kInlineContentAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_,
@@ -78,7 +80,8 @@ TEST_F(BraveAdsSiteVisitTest,
   const AdInfo ad = test::BuildAd(mojom::AdType::kInlineContentAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -93,7 +96,8 @@ TEST_F(BraveAdsSiteVisitTest,
   const AdInfo ad = test::BuildAd(mojom::AdType::kInlineContentAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_,
@@ -110,7 +114,8 @@ TEST_F(BraveAdsSiteVisitTest,
   const AdInfo ad = test::BuildAd(mojom::AdType::kInlineContentAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -122,7 +127,8 @@ TEST_F(BraveAdsSiteVisitTest, LandOnPromotedContentAdPage) {
   const AdInfo ad = test::BuildAd(mojom::AdType::kPromotedContentAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_,
@@ -138,7 +144,8 @@ TEST_F(BraveAdsSiteVisitTest,
   const AdInfo ad = test::BuildAd(mojom::AdType::kPromotedContentAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -153,7 +160,8 @@ TEST_F(BraveAdsSiteVisitTest,
   const AdInfo ad = test::BuildAd(mojom::AdType::kPromotedContentAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_,
@@ -171,7 +179,8 @@ TEST_F(
   const AdInfo ad = test::BuildAd(mojom::AdType::kPromotedContentAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -183,7 +192,8 @@ TEST_F(BraveAdsSiteVisitTest, LandOnNewTabPageAdPage) {
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_,
@@ -199,7 +209,8 @@ TEST_F(BraveAdsSiteVisitTest,
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -218,7 +229,8 @@ TEST_F(
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -234,7 +246,8 @@ TEST_F(
   const AdInfo ad = test::BuildAd(mojom::AdType::kNewTabPageAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -246,7 +259,8 @@ TEST_F(BraveAdsSiteVisitTest, LandOnNotificationAdPage) {
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_,
@@ -262,7 +276,8 @@ TEST_F(BraveAdsSiteVisitTest,
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -276,7 +291,8 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnNotificationAdPageForNonRewardsUser) {
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -290,7 +306,8 @@ TEST_F(BraveAdsSiteVisitTest,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(
       ad, /*tab_id=*/1,
-      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")});
+      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
+      net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -304,10 +321,12 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheSameTabIsAlreadyLanding) {
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   SimulateNavigateToURL(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com/about")});
+                        /*redirect_chain=*/{GURL("https://brave.com/about")},
+                        net::HTTP_OK);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Act & Assert
@@ -329,7 +348,8 @@ TEST_F(
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad_1, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad_1, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Tab 1 (Occluded/Suspend page landing)
@@ -345,7 +365,8 @@ TEST_F(
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad_2, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad_2, /*tab_id=*/2,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Tab 2 (Occluded/Suspend page landing)
@@ -394,7 +415,8 @@ TEST_F(
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Browser (Entered background/Suspend page landing)
@@ -431,7 +453,8 @@ TEST_F(
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Browser (Resign active/Suspend page landing)
@@ -471,7 +494,8 @@ TEST_F(BraveAdsSiteVisitTest, DoNotSuspendOrResumePageLand) {
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Browser (Resign active/Suspend page landing)
@@ -505,7 +529,8 @@ TEST_F(
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnMaybeLandOnPage).Times(0);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
   EXPECT_EQ(0U, GetPendingTaskCount());
 }
 
@@ -517,7 +542,8 @@ TEST_F(BraveAdsSiteVisitTest,
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad_1, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad_1, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Tab 1 (Occluded/Suspend page landing)
@@ -531,7 +557,8 @@ TEST_F(BraveAdsSiteVisitTest,
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad_2, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad_2, /*tab_id=*/2,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Tab 2 (Occluded/Suspend page landing)
@@ -571,7 +598,8 @@ TEST_F(BraveAdsSiteVisitTest,
   EXPECT_CALL(site_visit_observer_mock_,
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Act & Assert
@@ -603,7 +631,8 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheTabIsOccluded) {
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -622,7 +651,8 @@ TEST_F(
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(
       ad, /*tab_id=*/1,
-      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")});
+      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
+      net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
@@ -635,12 +665,15 @@ TEST_F(BraveAdsSiteVisitTest,
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnCanceledPageLand(/*tab_id=*/1, ad));
-  SimulateNavigateToURL(/*tab_id=*/1, /*redirect_chain=*/{
-                            GURL("https://basicattentiontoken.org")});
+  SimulateNavigateToURL(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
+      net::HTTP_OK);
   FastForwardClockBy(kPageLandAfter.Get());
 }
 
@@ -649,7 +682,8 @@ TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_OK);
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnCanceledPageLand(/*tab_id=*/1, ad));
