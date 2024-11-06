@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.ntp;
 
-import org.chromium.chrome.browser.day_zero.DayZeroHelper;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
@@ -35,8 +34,6 @@ public class NtpUtil {
 
     public static boolean shouldShowRewardsIcon() {
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(
-                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON,
-                        true);
+                .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true);
     }
 }

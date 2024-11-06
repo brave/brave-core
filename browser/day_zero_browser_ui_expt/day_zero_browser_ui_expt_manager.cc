@@ -132,7 +132,7 @@ void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
   Java_DayZeroHelper_setDayZeroExptAndroid(
       base::android::AttachCurrentThread(), false);
 #endif  // #BUILDFLAG(IS_ANDROID)
-prefs->SetDefaultPrefValue(ntp_background_images::prefs::
+  prefs->SetDefaultPrefValue(ntp_background_images::prefs::
                                  kNewTabPageShowSponsoredImagesBackgroundImage,
                              base::Value(should_show_ntp_si));
 }
