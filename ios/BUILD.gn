@@ -61,6 +61,7 @@ group("brave_ios") {
     ":brave_core_xcframework",
     ":generated_xcconfig",
     ":material_components_xcframework",
+    ":nala_assets_xcframework",
   ]
 }
 
@@ -195,6 +196,11 @@ ios_create_xcframework("material_components_xcframework") {
   framework_dir = "$root_build_dir/MaterialComponents.framework"
   fix_info_plist_versions = true
   deps = [ "//ios/third_party/material_components_ios" ]
+}
+
+ios_create_xcframework("nala_assets_xcframework") {
+  framework_dir = "$root_build_dir/NalaAssets.framework"
+  deps = [ "//brave/ios/nala:nala_assets_framework" ]
 }
 
 # Generates an xcconfig based on GN args that are needed in the Xcode app build

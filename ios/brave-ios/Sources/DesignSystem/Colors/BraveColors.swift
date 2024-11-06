@@ -4,19 +4,20 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
+import NalaAssets
 import SwiftUI
 import UIKit
 
 extension Color {
   /// Initialize a `Color` with a color resource.
   public init(braveSystemName resource: FigmaColorResource) {
-    self.init(resource.name, bundle: resource.bundle)
+    self.init(resource.name, bundle: .nalaAssets)
   }
 }
 
 extension UIColor {
   /// Initialize a `UIColor` with a color resource.
   public convenience init(braveSystemName resource: FigmaColorResource) {
-    self.init(named: resource.name, in: resource.bundle, compatibleWith: nil)!
+    self.init(named: resource.name, in: .nalaAssets, compatibleWith: nil)!
   }
 }

@@ -18,7 +18,7 @@ var package = Package(
     .library(name: "BraveShared", targets: ["BraveShared"]),
     .library(name: "BraveShields", targets: ["BraveShields"]),
     .library(name: "BraveUI", targets: ["BraveUI"]),
-    .library(name: "DesignSystem", targets: ["DesignSystem"]),
+    .library(name: "DesignSystem", targets: ["DesignSystem", "NalaAssets"]),
     .library(name: "BraveWallet", targets: ["BraveWallet"]),
     .library(name: "Data", targets: ["Data"]),
     .library(name: "Storage", targets: ["Storage"]),
@@ -140,7 +140,12 @@ var package = Package(
       dependencies: ["Strings", "Preferences", "BraveCore"],
       plugins: ["LoggerPlugin"]
     ),
-    .target(name: "DesignSystem", dependencies: ["Then"], plugins: ["LeoAssetsPlugin"]),
+    .target(
+      name: "DesignSystem",
+      dependencies: ["Then", "NalaAssets"],
+      plugins: ["LeoAssetsPlugin"]
+    ),
+    .binaryTarget(name: "NalaAssets", path: "../../../out/ios_current_link/NalaAssets.xcframework"),
     .binaryTarget(name: "BraveCore", path: "../../../out/ios_current_link/BraveCore.xcframework"),
     .binaryTarget(
       name: "MaterialComponents",
