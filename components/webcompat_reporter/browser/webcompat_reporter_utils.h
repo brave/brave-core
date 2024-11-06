@@ -8,14 +8,9 @@
 
 #include <string>
 
-class PrefRegistrySimple;
-
 namespace webcompat_reporter {
 
 bool NeedsToGetComponentInfo(std::string_view component_id);
-
-void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
-void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 std::string BoolToString(bool value);
 

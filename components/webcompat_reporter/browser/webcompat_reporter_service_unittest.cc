@@ -67,7 +67,7 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
   ~WebcompatReporterServiceUnitTest() override = default;
 
   void SetUp() override {
-    RegisterProfilePrefs(pref_service_.registry());
+    prefs::RegisterProfilePrefs(pref_service_.registry());
     auto delegate = std::make_unique<MockWebCompatServiceDelegate>();
     delegate_ = delegate.get();
     webcompat_reporter_service_ = std::make_unique<WebcompatReporterService>(
