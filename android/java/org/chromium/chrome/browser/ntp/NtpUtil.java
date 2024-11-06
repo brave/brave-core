@@ -37,6 +37,6 @@ public class NtpUtil {
         return ChromeSharedPreferences.getInstance()
                 .readBoolean(
                         AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON,
-                        DayZeroHelper.getDayZeroExptFlag());
+                        true);
     }
 }
