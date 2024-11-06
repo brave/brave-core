@@ -366,33 +366,24 @@ class SwapStoreTests: XCTestCase {
       ethTxManagerProxy, solTxManagerProxy, mockAssetManager
     ) = setupServices()
     let zeroExQuote: BraveWallet.ZeroExQuote = .init(
-      price: "",
-      guaranteedPrice: "",
-      to: "",
-      data: "",
-      value: "",
-      gas: "",
-      estimatedGas: "",
-      gasPrice: "",
-      protocolFee: "",
-      minimumProtocolFee: "",
-      buyTokenAddress: "",
-      sellTokenAddress: "",
       buyAmount: "2000000000000000000",
-      sellAmount: "",
-      allowanceTarget: "",
-      sellTokenToEthRate: "",
-      buyTokenToEthRate: "",
-      estimatedPriceImpact: "",
-      sources: [],
+      buyToken: "",
       fees: .init(
         zeroExFee: .init(
-          feeType: "",
-          feeToken: "",
-          feeAmount: "",
-          billingType: ""
+          amount: "",
+          token: "",
+          type: ""
         )
-      )
+      ),
+      gas: "",
+      gasPrice: "",
+      liquidityAvailable: true,
+      minBuyAmount: "",
+      route: .init(fills: []),
+      sellAmount: "",
+      sellToken: "",
+      totalNetworkFee: "",
+      allowanceTarget: ""
     )
     swapService._quote = { _, completion in
       completion(.init(zeroExQuote: zeroExQuote), .mockEthFees, nil, "")

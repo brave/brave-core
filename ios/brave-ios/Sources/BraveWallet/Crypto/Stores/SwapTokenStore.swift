@@ -424,7 +424,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       }
       // these values are already in wei
       gasLimit =
-        "0x\(walletAmountFormatter.weiString(from: zeroExQuote.estimatedGas, radix: .hex, decimals: 0) ?? "0")"
+        "0x\(walletAmountFormatter.weiString(from: zeroExQuote.gas, radix: .hex, decimals: 0) ?? "0")"
       to = zeroExQuote.to
       value =
         "0x\(walletAmountFormatter.weiString(from: zeroExQuote.value, radix: .hex, decimals: 0) ?? "0")"
@@ -647,43 +647,45 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   ) async {
     guard !Task.isCancelled else { return }
     let walletAmountFormatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
+    var buyTokenDecimal = 18
+    var sellTokenDecimal = 18
+    if let buyToken = selectedToToken {
+      buyTokenDecimal = Int(buyToken.decimals)
+    }
+    if let sellToken = selectedFromToken {
+      sellTokenDecimal = Int(sellToken.decimals)
+    }
+    let buyAmountDecimalString =
+      walletAmountFormatter.decimalString(
+        for: zeroExQuote.buyAmount,
+        decimals: buyTokenDecimal
+      ) ?? ""
+    let sellAmountDecimalString =
+      walletAmountFormatter.decimalString(
+        for: zeroExQuote.sellAmount,
+        decimals: sellTokenDecimal
+      ) ?? ""
     switch base {
     case .perSellAsset:
-      var decimal = 18
-      if let buyToken = selectedToToken {
-        decimal = Int(buyToken.decimals)
-      }
-      let decimalString =
-        walletAmountFormatter.decimalString(for: zeroExQuote.buyAmount, decimals: decimal) ?? ""
-      if let bv = BDouble(decimalString) {
-        buyAmount = bv.decimalDescription
+      if let buyAmountBDouble = BDouble(buyAmountDecimalString) {
+        buyAmount = buyAmountBDouble.decimalDescription
+        if let sellAmountBDouble = BDouble(sellAmountDecimalString), sellAmountBDouble != 0 {
+          let rate = buyAmountBDouble / sellAmountBDouble
+          selectedFromTokenPrice = rate.decimalDescription
+        }
       }
     case .perBuyAsset:
-      var decimal = 18
-      if let sellToken = selectedFromToken {
-        decimal = Int(sellToken.decimals)
-      }
-      let decimalString =
-        walletAmountFormatter.decimalString(for: zeroExQuote.sellAmount, decimals: decimal) ?? ""
-      if let bv = BDouble(decimalString) {
-        sellAmount = bv.decimalDescription
-      }
-    }
-
-    if let bv = BDouble(zeroExQuote.price) {
-      switch base {
-      case .perSellAsset:
-        selectedFromTokenPrice = bv.decimalDescription
-      case .perBuyAsset:
-        // will need to invert price if price quote is based on buyAmount
-        if bv != 0 {
-          selectedFromTokenPrice = (1 / bv).decimalDescription
+      if let sellAmountBDouble = BDouble(sellAmountDecimalString) {
+        sellAmount = sellAmountBDouble.decimalDescription
+        if let buyAmountBDouble = BDouble(buyAmountDecimalString), buyAmountBDouble != 0 {
+          let rate = sellAmountBDouble / buyAmountBDouble
+          selectedFromTokenPrice = rate.decimalDescription
         }
       }
     }
 
     guard let accountInfo,
-      let gasLimit = BDouble(zeroExQuote.estimatedGas),
+      let gasLimit = BDouble(zeroExQuote.gas),
       let gasPrice = BDouble(zeroExQuote.gasPrice, over: "1000000000000000000"),
       let sellAmountValue = BDouble(sellAmount.normalizedDecimals),
       let fromToken = selectedFromToken

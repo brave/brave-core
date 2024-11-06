@@ -71,6 +71,26 @@ export function getZeroExQuoteOptions({
 }): QuoteOption[] {
   const networkFee = getZeroExNetworkFee({ quote, fromNetwork })
 
+  const fromAmount = new Amount(quote.sellAmount).divideByDecimals(
+    fromToken.decimals
+  )
+
+  const toAmount = new Amount(quote.buyAmount).divideByDecimals(
+    toToken.decimals
+  )
+
+  const fromAmountFiat = fromAmount.times(
+    getTokenPriceAmountFromRegistry(spotPrices, fromToken)
+  )
+
+  const toAmountFiat = toAmount.times(
+    getTokenPriceAmountFromRegistry(spotPrices, toToken)
+  )
+
+  const fiatDiff = toAmountFiat.minus(fromAmountFiat)
+  const fiatDiffRatio = fiatDiff.div(fromAmountFiat)
+  const impact = fiatDiffRatio.times(100).toAbsoluteValue()
+
   return [
     {
       fromAmount: new Amount(quote.sellAmount).divideByDecimals(
@@ -83,11 +103,11 @@ export function getZeroExQuoteOptions({
       rate: new Amount(quote.buyAmount)
         .divideByDecimals(toToken.decimals)
         .div(new Amount(quote.sellAmount).divideByDecimals(fromToken.decimals)),
-      impact: new Amount(quote.estimatedPriceImpact),
-      sources: ensureUnique(quote.sources, 'name')
-        .map((source) => ({
-          name: source.name,
-          proportion: new Amount(source.proportion)
+      impact,
+      sources: ensureUnique(quote.route.fills, 'source')
+        .map((fill) => ({
+          name: fill.source,
+          proportion: new Amount(fill.proportionBps).times(0.00001)
         }))
         .filter((source) => source.proportion.gt(0)),
       routing: 'split', // 0x supports split routing only

@@ -16,7 +16,9 @@ namespace brave_wallet {
 namespace zeroex {
 
 mojom::ZeroExQuotePtr ParseQuoteResponse(const base::Value& json_value,
-                                         bool expect_transaction_data);
+                                         const std::string& chain_id);
+mojom::ZeroExTransactionPtr ParseTransactionResponse(
+    const base::Value& json_value);
 mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value);
 
 }  // namespace zeroex

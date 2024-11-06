@@ -63,7 +63,8 @@ class SwapService : public KeyedService, public mojom::SwapService {
   static GURL GetSquidURL();
 
  private:
-  void OnGetZeroExQuote(mojom::SwapFeesPtr swap_fee,
+  void OnGetZeroExQuote(const std::string& chain_id,
+                        mojom::SwapFeesPtr swap_fee,
                         GetQuoteCallback callback,
                         APIRequestResult api_request_result);
   void OnGetJupiterQuote(mojom::SwapFeesPtr swap_fee,
