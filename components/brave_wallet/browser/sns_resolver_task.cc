@@ -12,6 +12,7 @@
 
 #include "base/base64.h"
 #include "base/containers/span.h"
+#include "base/memory/raw_span.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/numerics/byte_conversions.h"
@@ -133,7 +134,7 @@ struct SnsRecordV2 {
   uint32_t content_length = 0;
   SolanaAddress staleness_validation_id = SolanaAddress::ZeroAddress();
   SolanaAddress roa_validation_id = SolanaAddress::ZeroAddress();
-  base::span<const uint8_t> content;
+  base::raw_span<const uint8_t> content;
 };
 
 base::span<const uint8_t> ExtractSpan(base::span<const uint8_t>& data,
