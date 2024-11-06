@@ -109,7 +109,7 @@ bool QrCodeDataValidator::IsValidSeedHex(const std::string& seed_hex) {
       base::SplitResult::SPLIT_WANT_NONEMPTY);
 
   if (words.size() != kPassphraseWordsCount) {
-    NOTREACHED_IN_MIGRATION() << "Passphrase words number is " << words.size();
+    DCHECK(false) << "Passphrase words number is " << words.size();
     return false;
   }
 
