@@ -80,7 +80,6 @@ class BraveWalletService : public KeyedService,
   template <class T>
   void Bind(mojo::PendingReceiver<T> receiver);
 
-  static void MigrateHiddenNetworks(PrefService* profile_prefs);
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
   static void MigrateGoerliNetwork(PrefService* prefs);
   static void MigrateAssetsPrefToList(PrefService* prefs);

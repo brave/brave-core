@@ -61,6 +61,9 @@ constexpr char kBraveWalletTransactionsChainIdMigrated[] =
 constexpr char kPinnedNFTAssetsMigrated[] = "brave.wallet.user_pin_data";
 // Deprecated 07/2024
 constexpr char kAutoPinEnabledMigrated[] = "brave.wallet.auto_pin_enabled";
+// Deprecated 11/2024
+constexpr char kBraveWalletDefaultHiddenNetworksVersion[] =
+    "brave.wallet.user.assets.default_hidden_networks_version";
 
 base::Value::Dict GetDefaultSelectedNetworks() {
   base::Value::Dict selected_networks;
@@ -138,6 +141,8 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
                                 false);
   // Deprecated 06/2024.
   registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
+  // Deprecated 11/2024.
+  registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
 }
 
 void RegisterDeprecatedIpfsPrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -164,6 +169,8 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssetsAddIsERC1155Migrated);
   // Deprecated 06/2024.
   prefs->ClearPref(kBraveWalletTransactionsChainIdMigrated);
+  // Deprecated 11/2024.
+  prefs->ClearPref(kBraveWalletDefaultHiddenNetworksVersion);
 }
 
 void ClearDeprecatedIpfsPrefs(PrefService* prefs) {
@@ -262,9 +269,6 @@ void RegisterProfilePrefsForMigration(
                              base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorageDeprecated);
 
-  // Added 03/2023
-  registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
-
   // Added 06/2023
   registry->RegisterIntegerPref(
       kBraveWalletSelectedCoinDeprecated,
@@ -337,9 +341,6 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   ClearDeprecatedProfilePrefsMigrationFlags(prefs);
-
-  // Added 03/2023 to add filecoin evm support.
-  BraveWalletService::MigrateHiddenNetworks(prefs);
 
   // Added 08/2023 to add Fantom as a custom network if selected for the default
   // or custom origins.
