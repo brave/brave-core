@@ -19,42 +19,15 @@
 
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
 // Brave Ethereum/Solana permission has its own permission request prompt.
-#if BUILDFLAG(IS_ANDROID)
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH                              \
-  case RequestType::kBraveEthereum:                              \
-  case RequestType::kBraveSolana:                                \
-    NOTREACHED_IN_MIGRATION();                                   \
-    return permissions::PermissionRequest::AnnotatedMessageText( \
-        std::u16string(), {});                                   \
-  case RequestType::kWidevine:                                   \
-    NOTREACHED_IN_MIGRATION();                                   \
-    return permissions::PermissionRequest::AnnotatedMessageText( \
-        std::u16string(), {});
-#else
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
-    NOTREACHED_IN_MIGRATION();      \
-    return std::u16string();        \
   case RequestType::kWidevine:      \
-    NOTREACHED_IN_MIGRATION();      \
-    return std::u16string();
-#endif
+    NOTREACHED();
 
 // For permission strings that we also need on Android, we need to use
 // a string that has a placeholder ($1) in it.
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP                \
-  BRAVE_ENUM_ITEMS_FOR_SWITCH                              \
-  case RequestType::kBraveGoogleSignInPermission:          \
-    message_id = IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT;   \
-    break;                                                 \
-  case RequestType::kBraveLocalhostAccessPermission:       \
-    message_id = IDS_LOCALHOST_ACCESS_PERMISSION_FRAGMENT; \
-    break;                                                 \
-  case RequestType::kBraveOpenAIChat:                      \
-    message_id = IDS_OPEN_AI_CHAT_PERMISSION_FRAGMENT;     \
-    break;
-
+#if BUILDFLAG(IS_ANDROID)
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID          \
   BRAVE_ENUM_ITEMS_FOR_SWITCH                        \
   case RequestType::kBraveGoogleSignInPermission:    \
@@ -66,6 +39,19 @@
   case RequestType::kBraveOpenAIChat:                \
     message_id = IDS_OPEN_AI_CHAT_INFOBAR_TEXT;      \
     break;
+#else
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP                \
+  BRAVE_ENUM_ITEMS_FOR_SWITCH                              \
+  case RequestType::kBraveGoogleSignInPermission:          \
+    message_id = IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT;   \
+    break;                                                 \
+  case RequestType::kBraveLocalhostAccessPermission:       \
+    message_id = IDS_LOCALHOST_ACCESS_PERMISSION_FRAGMENT; \
+    break;                                                 \
+  case RequestType::kBraveOpenAIChat:                      \
+    message_id = IDS_OPEN_AI_CHAT_PERMISSION_FRAGMENT;     \
+    break;
+#endif
 
 namespace {
 #if BUILDFLAG(IS_ANDROID)
@@ -93,10 +79,13 @@ const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
 #endif
 
 #include "src/components/permissions/permission_request.cc"
+#if BUILDFLAG(IS_ANDROID)
 #undef IDS_VR_INFOBAR_TEXT
-#undef IDS_VR_PERMISSION_FRAGMENT
 #undef BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID
+#else
+#undef IDS_VR_PERMISSION_FRAGMENT
 #undef BRAVE_ENUM_ITEMS_FOR_SWITCH_DESKTOP
+#endif
 #undef BRAVE_ENUM_ITEMS_FOR_SWITCH
 #undef IsDuplicateOf
 #undef PermissionRequest
