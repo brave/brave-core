@@ -18,10 +18,12 @@
 BraveTabSearchButton::BraveTabSearchButton(
     TabStripController* tab_strip_controller,
     BrowserWindowInterface* browser_window_interface,
-    Edge flat_edge)
+    Edge fixed_flat_edge,
+    Edge animated_flat_edge)
     : TabSearchButton(tab_strip_controller,
                       browser_window_interface,
-                      flat_edge) {
+                      fixed_flat_edge,
+                      animated_flat_edge) {
   // Resetting the tab search bubble host first, to avoid a dangling in
   // `BraveTabSearchButton`, triggered `TabSearchBubbleHost` calling
   // `SetButtonController` and in the process destroying the still alive
