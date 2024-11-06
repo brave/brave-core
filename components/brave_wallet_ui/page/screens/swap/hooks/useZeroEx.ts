@@ -112,7 +112,7 @@ export function useZeroEx(params: SwapParams) {
         return
       }
 
-      const { data, to, value, estimatedGas } =
+      const { data, to, value, gas } =
         transactionResponse.response.zeroExTransaction
 
       try {
@@ -120,7 +120,7 @@ export function useZeroEx(params: SwapParams) {
           fromAccount,
           to,
           value: new Amount(value).toHex(),
-          gasLimit: new Amount(estimatedGas).toHex(),
+          gasLimit: new Amount(gas).toHex(),
           data: hexStrToNumberArray(data),
           network: fromNetwork
         })

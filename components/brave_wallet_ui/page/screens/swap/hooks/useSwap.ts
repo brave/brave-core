@@ -1006,13 +1006,10 @@ export const useSwap = () => {
         return 'insufficientAllowance'
       }
 
+      // 0x specific validations
       if (quoteErrorUnion?.zeroExError) {
         if (quoteErrorUnion.zeroExError.isInsufficientLiquidity) {
           return 'insufficientLiquidity'
-        }
-
-        if (quoteErrorUnion.zeroExError.isInsufficientAllowance) {
-          return 'insufficientAllowance'
         }
 
         return 'unknownError'

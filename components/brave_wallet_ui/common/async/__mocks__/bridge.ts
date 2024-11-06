@@ -140,29 +140,30 @@ export class MockedWalletApiProxy {
     createEmptyTokenBalancesRegistry()
 
   mockZeroExQuote = {
-    price: '1705.399509',
-    guaranteedPrice: '',
-    to: '',
-    data: '',
-    value: '124067000000000000',
-    gas: '280000',
-    estimatedGas: '280000',
-    gasPrice: '2000000000',
-    protocolFee: '0',
-    minimumProtocolFee: '0',
-    sellTokenAddress: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
-    buyTokenAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-    buyAmount: '211599920',
-    sellAmount: '124067000000000000',
-    allowanceTarget: '0x0000000000000000000000000000000000000000',
-    sellTokenToEthRate: '1',
-    buyTokenToEthRate: '1720.180416',
-    estimatedPriceImpact: '0.0782',
-    sources: [],
+    buyAmount: '100032748',
+    buyToken: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+    sellAmount: '100000000',
+    sellToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     fees: {
       zeroExFee: undefined
-    }
-  }
+    },
+    gas: '288095',
+    gasPrice: '7062490000',
+    liquidityAvailable: true,
+    minBuyAmount: '99032421',
+    route: {
+      fills: [
+        {
+          from: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+          to: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+          source: 'SolidlyV3',
+          proportionBps: '10000'
+        }
+      ]
+    },
+    totalNetworkFee: '2034668056550000',
+    allowanceTarget: '0x0000000000001fF3684f28c67538d4D072C22734'
+  } as BraveWallet.ZeroExQuote
 
   mockZeroExTransaction = {
     allowanceTarget: '',
@@ -521,19 +522,15 @@ export class MockedWalletApiProxy {
           }
         }
 
-        const { fromToken, toToken, fromAmount, toAmount } =
-          zeroExTransactionParams
-
         return {
           error: null,
           response: {
             zeroExTransaction: {
-              ...this.mockZeroExQuote,
-              buyTokenAddress: toToken,
-              sellTokenAddress: fromToken,
-              buyAmount: toAmount || '',
-              sellAmount: fromAmount || '',
-              price: '1'
+              to: '0x7f6cee965959295cc64d0e6c00d99d6532d8e86b',
+              data: '0xdeadbeef',
+              gas: '288079',
+              gasPrice: '4837860000',
+              value: '0'
             },
             jupiterTransaction: undefined,
             lifiTransaction: undefined,
@@ -1416,7 +1413,7 @@ export class MockedWalletApiProxy {
     this.mockZeroExQuote = newQuote
   }
 
-  setMockedTransactionPayload(newTx: typeof this.mockZeroExQuote) {
+  setMockedTransactionPayload(newTx: typeof this.mockZeroExTransaction) {
     this.mockZeroExTransaction = newTx
   }
 

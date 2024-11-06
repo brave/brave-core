@@ -4,16 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 namespace swap_responses {
-  dictionary ZeroExSource {
-    DOMString name;
-    DOMString proportion;
-  };
-
   dictionary ZeroExFee {
-    DOMString feeType;
-    DOMString feeToken;
-    DOMString feeAmount;
-    DOMString billingType;
+    DOMString amount;
+    DOMString token;
+    DOMString type;
   };
 
   dictionary ZeroExFees {
@@ -21,45 +15,47 @@ namespace swap_responses {
     any zeroExFee;
   };
 
-  dictionary SwapResponse0x {
-    DOMString price;
-    DOMString? guaranteedPrice;
-    DOMString? to;
-    DOMString? data;
-    DOMString value;
+  dictionary ZeroExTransaction {
+    DOMString to;
+    DOMString data;
     DOMString gas;
-    DOMString estimatedGas;
     DOMString gasPrice;
-    DOMString protocolFee;
-    DOMString minimumProtocolFee;
-    DOMString buyTokenAddress;
-    DOMString buyTokenAddress;
-    DOMString sellTokenAddress;
-    DOMString buyAmount;
-    DOMString sellAmount;
-    DOMString allowanceTarget;
-    DOMString sellTokenToEthRate;
-    DOMString buyTokenToEthRate;
-    DOMString estimatedPriceImpact;
-    ZeroExSource[] sources;
-    ZeroExFees fees;
+    DOMString value;
   };
 
-  dictionary ZeroExValidationError {
-    DOMString field;
-    DOMString code;
-    DOMString reason;
+  dictionary ZeroExRouteFill {
+    DOMString from;
+    DOMString to;
+    DOMString source;
+    DOMString proportionBps;
   };
 
-  dictionary ZeroExGenericError {
-    DOMString message;
+  dictionary ZeroExRoute {
+    ZeroExRouteFill[] fills;
+  };
+
+  dictionary ZeroExQuoteResponse {
+    DOMString? blockNumber;
+    DOMString? buyAmount;
+    DOMString? buyToken;
+    ZeroExFees? fees;
+    DOMString? gas;
+    DOMString? gasPrice;
+    boolean liquidityAvailable;
+    DOMString? minBuyAmount;
+    ZeroExRoute? route;
+    DOMString? sellAmount;
+    DOMString? sellToken;
+    DOMString? totalNetworkFee;
+  };
+
+  dictionary ZeroExTransactionResponse {
+    ZeroExTransaction transaction;
   };
 
   dictionary ZeroExErrorResponse {
-    DOMString code;
-    DOMString reason;
-    ZeroExValidationError[]? validationErrors;
-    ZeroExGenericError? values;
+    DOMString name;
+    DOMString message;
   };
 
   dictionary JupiterPlatformFee {
