@@ -16,8 +16,9 @@
       "name": "system_health.common_desktop",
       "pageset-repeat": 1,
       "stories": [
-        "load:site:example:2023",      ]
-    }
+        "load:site:example:2023",
+      ]
+    },
     {
       "name": "speedometer3",
     },
