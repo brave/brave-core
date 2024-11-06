@@ -45,7 +45,8 @@ NTPBackgroundPrefs::Type StringToType(const std::string& type_string) {
     return NTPBackgroundPrefs::Type::kColor;
   }
 
-  NOTREACHED() << "Encountered unknown background type " << type_string;
+  // This shouldn't occur normally, but is possible if prefs are corrupted.
+  return NTPBackgroundPrefs::Type::kBrave;
 }
 
 }  // namespace

@@ -32,11 +32,10 @@ ui::NavButtonProvider::ButtonState ButtonStateToNavButtonProviderState(
       return ui::NavButtonProvider::ButtonState::kPressed;
     case views::Button::STATE_DISABLED:
       return ui::NavButtonProvider::ButtonState::kDisabled;
-
     case views::Button::STATE_COUNT:
-    default:
-      NOTREACHED();
+      return ui::NavButtonProvider::ButtonState::kNormal;
   }
+  NOTREACHED();
 }
 
 }  // namespace
