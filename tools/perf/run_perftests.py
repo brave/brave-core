@@ -23,6 +23,7 @@ import sys
 import os
 import tempfile
 
+from components.pgo_utils import ProcessAndUploadPgoProfile
 import components.android_tools as android_tools
 import components.perf_config as perf_config
 import components.perf_test_runner as perf_test_runner
@@ -152,6 +153,17 @@ npm run perf_tests -- smoke-brave.json5 v1.58.45
   if options.mode == PerfMode.RECORD_WPR:
     return 0 if wpr_utils.record_wpr(config, options) else 1
 
+  if options.mode == PerfMode.GENERATE_PGO:
+    # TODO: Unify with PerfMode.RUN
+    options.do_report = False
+    configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
+        options.targets, config.runners[0])
+    if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
+                                              options):
+      raise RuntimeError('Failed to generate pgo profiles')
+    ProcessAndUploadPgoProfile('win64', options.working_directory)
+
+    return 0
   raise RuntimeError('Unknown mode')
 
 if __name__ == '__main__':

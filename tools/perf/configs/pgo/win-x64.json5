@@ -1,0 +1,67 @@
+{
+  "configurations": [{
+    "dashboard-bot-name": "test-agent",
+    "browser-type": "brave",
+    "profile": "brave-typical-win",
+    "extra-browser-args": [
+      "--disable-features=CalculateNativeWinOcclusion",
+      '--assert-gpu-compositing',
+    ],
+    "extra-benchmark-args": [
+      "--also-run-disabled-tests",
+      "--max-failures=0", // Fail fast
+    ],
+    "save-artifacts": true,
+    // "profile-rebase": "none",
+    // "field-trials": "",
+  }],
+  "benchmarks": [
+    {
+      "name": "system_health.common_desktop",
+      "pageset-repeat": 1,
+      "stories": [
+        "load:site:example:2023",
+        "load:site:twitter:2023",
+        "load:site:imdb:2024",
+        "load:ntp:brave_news:2024",
+      ]
+    },
+    {
+      "name": "system_health.common_desktop",
+      "pageset-repeat": 1,
+      "extra-benchmark-args": [
+        "--use-live-sites",
+      ],
+
+      "stories": [
+        "load:ntp:brave_news:2024",
+        "load:media:youtube:2018",
+      ]
+    },
+    {
+      "name": "system_health.memory_desktop",
+      "pageset-repeat": 1,
+      "stories": [
+        "load:media:youtube:2018",
+        "multitab_load:site:example.com:2024",
+      ]
+    },
+    {
+      "name": "speedometer3",
+      "pageset-repeat": 1,
+    },
+    {
+      "name": "jetstream2",
+      "pageset-repeat": 1,
+    },
+    {
+      "name": "rendering.desktop",
+      "stories": [
+        "motionmark_fixed_2_seconds"
+      ],
+      "extra-benchmark-args": [
+         "--use-live-sites",
+      ],
+    }
+  ]
+}
