@@ -8,6 +8,7 @@
 #include <numeric>
 #include <string>
 
+#include "base/notreached.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -34,8 +35,7 @@ ui::NavButtonProvider::ButtonState ButtonStateToNavButtonProviderState(
 
     case views::Button::STATE_COUNT:
     default:
-      NOTREACHED_IN_MIGRATION();
-      return ui::NavButtonProvider::ButtonState::kNormal;
+      NOTREACHED();
   }
 }
 
@@ -121,8 +121,7 @@ views::Button* BraveBrowserFrameViewLinuxNative::FrameButtonToButton(
     case views::FrameButton::kClose:
       return close_button();
   }
-  NOTREACHED_IN_MIGRATION();
-  return nullptr;
+  NOTREACHED();
 }
 
 void BraveBrowserFrameViewLinuxNative::
