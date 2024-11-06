@@ -10,6 +10,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
@@ -54,18 +55,23 @@ void SiteVisit::MaybeLandOnPage(const TabInfo& tab,
     // No ad interactions have occurred in the current browsing session.
     return;
   }
-
-  if (!IsAllowedToLandOnPage(last_clicked_ad_->type)) {
-    return;
-  }
-
-  if (!IsLandingOnPage(tab.id)) {
-    MaybeLandOnPageAfter(tab, http_status_code, *last_clicked_ad_,
-                         kPageLandAfter.Get());
-  }
+  const AdInfo ad = *last_clicked_ad_;
 
   // Reset the last clicked ad to prevent multiple landings on the same ad.
   last_clicked_ad_.reset();
+
+  if (!IsAllowedToLandOnPage(ad.type)) {
+    // Not allowed to land on the page.
+    return;
+  }
+
+  if (IsLandingOnPage(tab.id)) {
+    // Already landing on the page.
+    return;
+  }
+
+  // The page loaded successfully, so land on the page after a delay.
+  MaybeLandOnPageAfter(tab, http_status_code, ad, kPageLandAfter.Get());
 }
 
 void SiteVisit::MaybeLandOnPageAfter(const TabInfo& tab,
@@ -178,17 +184,16 @@ void SiteVisit::MaybeSuspendOrResumePageLandForVisibleTab() {
 
 void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
   if (!kShouldSuspendAndResumePageLand.Get()) {
+    // Suspend and resume page land is disabled.
     return;
   }
 
   if (!IsLandingOnPage(tab_id)) {
+    // Not landing on the page.
     return;
   }
 
-  const bool should_resume = TabManager::GetInstance().IsVisible(tab_id) &&
-                             BrowserManager::GetInstance().IsActive() &&
-                             BrowserManager::GetInstance().IsInForeground();
-  if (should_resume) {
+  if (ShouldResumePageLand(tab_id)) {
     return ResumePageLand(tab_id);
   }
 
