@@ -33,7 +33,8 @@ class BraveAdsInlineContentAdIntegrationTest : public test::TestBase {
     test::TestBase::SetUp(/*is_integration_test=*/true);
 
     SimulateOpeningNewTab(/*tab_id=*/1,
-                          /*redirect_chain=*/{GURL("brave://newtab")});
+                          /*redirect_chain=*/{GURL("brave://newtab")},
+                          net::HTTP_OK);
   }
 
   void SetUpMocks() override {

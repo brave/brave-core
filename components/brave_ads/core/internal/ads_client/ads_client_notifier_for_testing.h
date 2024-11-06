@@ -94,9 +94,11 @@ class AdsClientNotifierForTesting : public AdsClientNotifier {
 
   // Simulate helper functions.
   void SimulateOpeningNewTab(int32_t tab_id,
-                             const std::vector<GURL>& redirect_chain);
+                             const std::vector<GURL>& redirect_chain,
+                             int http_status_code);
   void SimulateNavigateToURL(int32_t tab_id,
-                             const std::vector<GURL>& redirect_chain);
+                             const std::vector<GURL>& redirect_chain,
+                             int http_status_code);
   void SimulateSelectTab(int32_t tab_id);
   void SimulateClosingTab(int32_t tab_id);
 

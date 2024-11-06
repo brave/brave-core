@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
+#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -222,7 +223,8 @@ TEST_F(BraveAdsSiteVisitUtilTest,
 TEST_F(BraveAdsSiteVisitUtilTest, DidLandOnPage) {
   // Arrange
   SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")});
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
 
   // Act & Assert
   EXPECT_TRUE(DidLandOnPage(/*tab_id=*/1, GURL("https://brave.com")));
@@ -231,7 +233,8 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidLandOnPage) {
 TEST_F(BraveAdsSiteVisitUtilTest, DoNotLandOnPageForClosedTab) {
   // Arrange
   SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")});
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
 
   NotifyDidCloseTab(/*tab_id=*/1);
 
@@ -242,7 +245,8 @@ TEST_F(BraveAdsSiteVisitUtilTest, DoNotLandOnPageForClosedTab) {
 TEST_F(BraveAdsSiteVisitUtilTest, DoNotLandOnPageForDomainOrHostMismatch) {
   // Arrange
   SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://foo.com")});
+                        /*redirect_chain=*/{GURL("https://foo.com")},
+                        net::HTTP_OK);
 
   // Act & Assert
   EXPECT_FALSE(DidLandOnPage(/*tab_id=*/1, GURL("https://brave.com")));

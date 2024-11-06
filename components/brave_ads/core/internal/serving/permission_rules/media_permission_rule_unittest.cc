@@ -8,6 +8,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
+#include "net/http/http_status_code.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -25,7 +26,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsStoppedForSingleTab) {
   // Arrange
   SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")});
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
@@ -39,7 +41,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsStoppedOnMultipleTabs) {
   // Arrange
   SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")});
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
@@ -55,7 +58,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldAllowIfMediaIsPlayingOnMultipleTabsButStoppedForVisibleTab) {
   // Arrange
   SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")});
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
@@ -70,7 +74,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnVisibleTab) {
   // Arrange
   SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")});
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
@@ -88,7 +93,8 @@ TEST_F(
       {{"should_only_serve_ads_if_media_is_not_playing", "false"}});
 
   SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")});
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
@@ -100,7 +106,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnMultipleTabs) {
   // Arrange
   SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")});
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
@@ -113,7 +120,8 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
        ShouldNotAllowIfMediaIsPlayingOnMultipleTabsButStoppedForOccludedTab) {
   // Arrange
   SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")});
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
