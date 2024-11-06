@@ -1946,55 +1946,6 @@ TEST_F(BraveWalletServiceUnitTest, MigrateEip1559ForCustomNetworks) {
       GetPrefs()->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated));
 }
 
-TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks) {
-  // Note: The testing profile has already performed the prefs migration by the
-  // time this test runs, so undo its effects here for testing purposes
-  ASSERT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultHiddenNetworksVersion),
-            1);
-  GetPrefs()->SetInteger(kBraveWalletDefaultHiddenNetworksVersion, 0);
-
-  BraveWalletService::MigrateHiddenNetworks(GetPrefs());
-  {
-    auto* list =
-        GetPrefs()->GetDict(kBraveWalletHiddenNetworks).FindList("ethereum");
-    ASSERT_NE(std::find_if(list->begin(), list->end(),
-                           [](const auto& v) { return v == "0x4cb2f"; }),
-              list->end());
-  }
-  ASSERT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultHiddenNetworksVersion),
-            1);
-  network_manager_->RemoveHiddenNetwork(mojom::CoinType::ETH, "0x4cb2f");
-  BraveWalletService::MigrateHiddenNetworks(GetPrefs());
-  {
-    auto* list =
-        GetPrefs()->GetDict(kBraveWalletHiddenNetworks).FindList("ethereum");
-    ASSERT_EQ(std::find_if(list->begin(), list->end(),
-                           [](const auto& v) { return v == "0x4cb2f"; }),
-              list->end());
-  }
-}
-
-TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks_NoList) {
-  // Note: The testing profile has already performed the prefs migration by the
-  // time this test runs, so undo its effects here for testing purposes
-  ASSERT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultHiddenNetworksVersion),
-            1);
-  GetPrefs()->SetInteger(kBraveWalletDefaultHiddenNetworksVersion, 0);
-
-  {
-    ScopedDictPrefUpdate update(GetPrefs(), kBraveWalletHiddenNetworks);
-    update.Get().Remove("ethereum");
-  }
-  BraveWalletService::MigrateHiddenNetworks(GetPrefs());
-  {
-    auto* list =
-        GetPrefs()->GetDict(kBraveWalletHiddenNetworks).FindList("ethereum");
-    EXPECT_NE(std::find_if(list->begin(), list->end(),
-                           [](const auto& v) { return v == "0x4cb2f"; }),
-              list->end());
-  }
-}
-
 TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
   // Note: The testing profile has already performed the prefs migration by the
   // time this test runs, so undo its effects here for testing purposes
