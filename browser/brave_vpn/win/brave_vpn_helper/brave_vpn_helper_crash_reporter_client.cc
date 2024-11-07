@@ -117,8 +117,7 @@ bool BraveVPNHelperCrashReporterClient::GetShouldDumpLargerDumps() {
 
 int BraveVPNHelperCrashReporterClient::GetResultCodeRespawnFailed() {
   // The restart dialog is never shown.
-  NOTREACHED_IN_MIGRATION();
-  return 0;
+  NOTREACHED();
 }
 
 bool BraveVPNHelperCrashReporterClient::GetCrashDumpLocation(
@@ -160,6 +159,5 @@ bool BraveVPNHelperCrashReporterClient::ShouldMonitorCrashHandlerExpensively() {
 bool BraveVPNHelperCrashReporterClient::EnableBreakpadForProcess(
     const std::string& process_type) {
   // This is not used by Crashpad (at least on Windows).
-  NOTREACHED_IN_MIGRATION();
-  return true;
+  NOTREACHED();
 }
