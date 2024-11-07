@@ -325,18 +325,18 @@ source_set("ui") {
     ]
 
     allow_circular_includes_from =
-      [ "//brave/browser/ui/webui/brave_news_internals" ]
+        [ "//brave/browser/ui/webui/brave_news_internals" ]
 
     deps += [
       "//base",
       "//brave/browser/profiles:util",
+      "//brave/browser/ui/webui/brave_news_internals",
       "//brave/common",
       "//brave/components/constants",
       "//brave/components/misc_metrics",
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",
       "//brave/components/speedreader/common/buildflags",
-      "//brave/browser/ui/webui/brave_news_internals",
       "//chrome/app:generated_resources",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/favicon",
