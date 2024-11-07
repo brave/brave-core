@@ -328,6 +328,7 @@ export interface SendBtcTransactionParams extends BaseTransactionParams {
 
 export interface SendZecTransactionParams extends BaseTransactionParams {
   useShieldedPool: boolean
+  memo: number[] | undefined
 }
 
 /**

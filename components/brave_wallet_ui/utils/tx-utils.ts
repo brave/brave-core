@@ -139,6 +139,7 @@ export interface ParsedTransaction
   // Solana Specific
   isAssociatedTokenAccountCreation: boolean
   hasSystemProgramAssignInstruction: boolean
+  zcashMemo: number[] | undefined
 }
 
 export type ParsedTransactionWithoutFiatValues = Omit<
@@ -1745,7 +1746,8 @@ export const parseTransactionWithoutPrices = ({
     weiTransferredValue,
     formattedSendCurrencyTotal,
     isAssociatedTokenAccountCreation: isAssociatedTokenAccountCreationTx(tx),
-    hasSystemProgramAssignInstruction: hasSystemProgramAssignInstruction(tx)
+    hasSystemProgramAssignInstruction: hasSystemProgramAssignInstruction(tx),
+    zcashMemo: tx.txDataUnion.zecTxData?.memo ?? undefined
   }
 }
 
@@ -1809,7 +1811,8 @@ export const parseTransactionWithPrices = ({
       token,
       txNetwork: transactionNetwork,
       transferredValueWei: weiTransferredValue
-    })
+    }),
+    zcashMemo: tx.txDataUnion.zecTxData?.memo ?? undefined
   }
 }
 

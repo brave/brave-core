@@ -9,8 +9,11 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useHistory, useLocation } from 'react-router'
 
 // Selectors
-import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../common/selectors'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector
+} from '../../../../common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '../../../../common/selectors'
 
 // Types
 import {
@@ -21,6 +24,9 @@ import {
   BaseTransactionParams,
   AmountValidationErrorType
 } from '../../../../constants/types'
+
+// Constants
+import { MAX_ZCASH_MEMO_LENGTH } from '../constants/magics'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
@@ -52,7 +58,8 @@ import {
   useSendSolTransactionMutation,
   useSendFilTransactionMutation,
   useSendBtcTransactionMutation,
-  useSendZecTransactionMutation
+  useSendZecTransactionMutation,
+  useValidateUnifiedAddressQuery
 } from '../../../../common/slices/api.slice'
 import {
   useAccountFromAddressQuery //
@@ -86,6 +93,7 @@ import {
 import {
   SelectAddressButton //
 } from '../../composer_ui/select_address_button/select_address_button'
+import { AddMemo } from '../components/add_memo/add_memo'
 
 interface Props {
   isAndroid?: boolean
@@ -125,9 +133,13 @@ export const SendScreen = React.memo((props: Props) => {
     React.useState<string>('')
   const [isWarningAcknowledged, setIsWarningAcknowledged] =
     React.useState<boolean>(false)
+  const [memoText, setMemoText] = React.useState<string>('')
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashShieldedTransactionsEnabled
+  )
 
   // Mutations
   const [sendSPLTransfer] = useSendSPLTransferMutation()
@@ -146,6 +158,20 @@ export const SendScreen = React.memo((props: Props) => {
       userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result)
     })
   })
+
+  const {
+    data: zecAddressValidationResult = BraveWallet.ZCashAddressValidationResult
+      .Unknown
+  } = useValidateUnifiedAddressQuery(
+    networkFromParams?.coin === BraveWallet.CoinType.ZEC &&
+      isZCashShieldedTransactionsEnabled &&
+      toAddressOrUrl
+      ? {
+          address: toAddressOrUrl,
+          testnet: networkFromParams.chainId === BraveWallet.Z_CASH_TESTNET
+        }
+      : skipToken
+  )
 
   const tokenFromParams = React.useMemo(() => {
     if (!networkFromParams) {
@@ -416,6 +442,8 @@ export const SendScreen = React.memo((props: Props) => {
       }
 
       case BraveWallet.CoinType.ZEC: {
+        const memoArray =
+          memoText !== '' ? new TextEncoder().encode(memoText) : undefined
         await sendZecTransaction({
           useShieldedPool: tokenFromParams.isShielded,
           network: networkFromParams,
@@ -423,7 +451,8 @@ export const SendScreen = React.memo((props: Props) => {
           to: toAddress,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
-            .toHex()
+            .toHex(),
+          memo: memoArray ? Array.from(memoArray) : undefined
         })
         resetSendFields()
       }
@@ -437,6 +466,7 @@ export const SendScreen = React.memo((props: Props) => {
     sendingMaxAmount,
     sendAmount,
     resolvedDomainAddress,
+    memoText,
     resetSendFields,
     sendEvmTransaction,
     sendERC20Transfer,
@@ -557,12 +587,23 @@ export const SendScreen = React.memo((props: Props) => {
                     onChange={setIsWarningAcknowledged}
                   />
                 )}
+                {isZCashShieldedTransactionsEnabled &&
+                  tokenFromParams?.coin === BraveWallet.CoinType.ZEC &&
+                  toAddressOrUrl &&
+                  zecAddressValidationResult ===
+                    BraveWallet.ZCashAddressValidationResult.ValidShielded && (
+                    <AddMemo
+                      memoText={memoText}
+                      onUpdateMemoText={setMemoText}
+                    />
+                  )}
               </Column>
               <ReviewButtonRow width='100%'>
                 <LeoSquaredButton
                   onClick={submitSend}
                   size='large'
                   isDisabled={
+                    memoText.length > MAX_ZCASH_MEMO_LENGTH ||
                     !toAddressOrUrl ||
                     insufficientFundsError ||
                     sendAmount === '' ||
