@@ -67,6 +67,10 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     target.parentElement!.setAttribute('type', isShowing ? 'password' : 'text')
   }
 
+  protected getCategory() {
+    return this.percent < 60 ? 'weak' : this.percent < 100 ? 'medium' : 'strong'
+  }
+
   protected getIconName() {
     if (this.passwordConfirmation.length !== 0) {
       this.icon = this.passwordConfirmation === this.password ? 'check-circle-filled' : 'warning-triangle-filled'

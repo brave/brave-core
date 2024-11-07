@@ -29,7 +29,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
           </leo-icon>
-          <div class="${this.percent !== 0 ? 'visible' : ''} ${this.percent < 60 ? 'weak' : this.percent < 100 ? 'medium' : 'strong'}"
+          <div class="${this.percent !== 0 ? 'visible' : ''} ${this.getCategory()}"
                id="password_strength_indicator"
                slot="errors"
                style="--strength: ${this.percent}">
@@ -37,11 +37,22 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
               <div id="password_strength_value"></div>
             </div>
             <div class="password-strength">
-              ${this.percent < 60 ? 'Weak' : this.percent < 100 ? 'Medium' : 'Strong'}
+              ${(() => {
+                switch(this.getCategory()) {
+                  case 'weak':
+                    return 'Weak'
+                  case 'medium':
+                    return 'Medium'
+                  case 'strong':
+                    return 'Strong'
+                }
+              })()}
             </div>
           </div>
         </leo-input>
-        <leo-input class=${this.passwordConfirmation.length !== 0 && this.passwordConfirmation !== this.password ? 'red-border' : ''}
+        <leo-input class=${this.passwordConfirmation.length !== 0
+                        && this.passwordConfirmation !== this.password ?
+                        'red-border' : ''}
                    placeholder="Confirm your password"
                    showErrors
                    type="password"
@@ -64,7 +75,11 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
         </leo-checkbox>
       </div>
       <div slot="buttons">
-        <leo-button ?isDisabled=${!this.isEmailAddressValid || !this.isAccountNameValid || this.percent !== 100 || this.passwordConfirmation !== this.password || !this.isChecked}>
+        <leo-button ?isDisabled=${!this.isEmailAddressValid
+                               || !this.isAccountNameValid
+                               || this.percent !== 100
+                               || this.passwordConfirmation !== this.password
+                               || !this.isChecked}>
           Create account
         </leo-button>
       </div>
