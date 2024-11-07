@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_discover_account_task.h"
 
 #include <stdint.h>
@@ -73,17 +67,20 @@ DiscoverAccountTaskBase::DiscoverAccountTaskBase(
 }
 DiscoverAccountTaskBase::~DiscoverAccountTaskBase() = default;
 
+DiscoverAccountTaskBase::State& DiscoverAccountTaskBase::GetState(
+    DiscoveryStage stage) {
+  return stage == DiscoveryStage::kReceive ? receive_addresses_state_
+                                           : change_addresses_state_;
+}
+
 void DiscoverAccountTaskBase::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&DiscoverAccountTaskBase::WorkOnTask,
                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
-bool DiscoverAccountTaskBase::MaybeQueueRequests(uint32_t state_index) {
-  CHECK_LE(state_index, 1u);
-  CHECK(state_index == kBitcoinReceiveIndex ||
-        state_index == kBitcoinChangeIndex);
-  auto& state = states_[state_index];
+bool DiscoverAccountTaskBase::MaybeQueueRequests(DiscoveryStage stage) {
+  auto& state = GetState(stage);
 
   uint32_t start_index = 0;
 
@@ -101,8 +98,10 @@ bool DiscoverAccountTaskBase::MaybeQueueRequests(uint32_t state_index) {
       continue;
     }
 
-    auto address =
-        GetAddressById(mojom::BitcoinKeyId::New(state_index, address_index));
+    auto address = GetAddressById(mojom::BitcoinKeyId::New(
+        stage == DiscoveryStage::kReceive ? kBitcoinReceiveIndex
+                                          : kBitcoinChangeIndex,
+        address_index));
     if (!address) {
       return false;
     }
@@ -112,7 +111,8 @@ bool DiscoverAccountTaskBase::MaybeQueueRequests(uint32_t state_index) {
     bitcoin_wallet_service_->bitcoin_rpc().GetAddressStats(
         network_id_, address->address_string,
         base::BindOnce(&DiscoverAccountTaskBase::OnGetAddressStats,
-                       weak_ptr_factory_.GetWeakPtr(), address->Clone()));
+                       weak_ptr_factory_.GetWeakPtr(), stage,
+                       address->Clone()));
   }
 
   return true;
@@ -129,11 +129,11 @@ void DiscoverAccountTaskBase::WorkOnTask() {
   }
 
   bool queue_requests_failed = false;
-  if (!MaybeQueueRequests(kBitcoinReceiveIndex)) {
+  if (!MaybeQueueRequests(DiscoveryStage::kReceive)) {
     queue_requests_failed = true;
   }
   if (account_is_used_) {
-    if (!MaybeQueueRequests(kBitcoinChangeIndex)) {
+    if (!MaybeQueueRequests(DiscoveryStage::kChange)) {
       queue_requests_failed = true;
     }
   }
@@ -150,16 +150,15 @@ void DiscoverAccountTaskBase::WorkOnTask() {
   DiscoveredBitcoinAccount result;
 
   result.next_unused_receive_index = 0;
-  if (states_[kBitcoinReceiveIndex].last_transacted_address) {
+  if (receive_addresses_state_.last_transacted_address) {
     result.next_unused_receive_index =
-        1 +
-        states_[kBitcoinReceiveIndex].last_transacted_address->key_id->index;
+        1 + receive_addresses_state_.last_transacted_address->key_id->index;
   }
 
   result.next_unused_change_index = 0;
-  if (states_[kBitcoinChangeIndex].last_transacted_address) {
+  if (change_addresses_state_.last_transacted_address) {
     result.next_unused_change_index =
-        1 + states_[kBitcoinChangeIndex].last_transacted_address->key_id->index;
+        1 + change_addresses_state_.last_transacted_address->key_id->index;
   }
 
   result.balance = std::move(balance_);
@@ -168,6 +167,7 @@ void DiscoverAccountTaskBase::WorkOnTask() {
 }
 
 void DiscoverAccountTaskBase::OnGetAddressStats(
+    DiscoveryStage stage,
     mojom::BitcoinAddressPtr address,
     base::expected<bitcoin_rpc::AddressStats, std::string> stats) {
   DCHECK_GT(active_requests_, 0u);
@@ -195,10 +195,8 @@ void DiscoverAccountTaskBase::OnGetAddressStats(
     account_is_used_ = true;
   }
 
-  CHECK_LE(address->key_id->change, 1u);
-  CHECK(address->key_id->change == kBitcoinReceiveIndex ||
-        address->key_id->change == kBitcoinChangeIndex);
-  auto& state = states_[address->key_id->change];
+  CHECK_EQ(address->key_id->change, static_cast<uint32_t>(stage));
+  auto& state = GetState(stage);
 
   if (address_is_transacted) {
     if (!state.last_transacted_address ||

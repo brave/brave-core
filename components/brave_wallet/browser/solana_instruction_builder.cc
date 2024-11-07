@@ -3,18 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 
 #include <optional>
-#include <type_traits>
 #include <utility>
 
+#include "base/containers/extend.h"
+#include "base/containers/span.h"
+#include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
@@ -22,30 +18,19 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "build/build_config.h"
+
+namespace brave_wallet {
+
 namespace {
 
-// Solana uses bincode::serialize when encoding instruction data, which encodes
-// unsigned numbers in little endian byte order.
-template <typename T>
-void UintToLEBytes(T val, std::vector<uint8_t>* bytes) {
-  static_assert(
-      std::is_same<T, uint64_t>::value || std::is_same<T, uint32_t>::value,
-      "Incorrect type passed to function UintToLEBytes.");
-
-  DCHECK(bytes);
-  size_t vec_size = sizeof(T) / sizeof(uint8_t);
-  *bytes = std::vector<uint8_t>(vec_size);
-
-  uint8_t* ptr = reinterpret_cast<uint8_t*>(&val);
-  for (size_t i = 0; i < vec_size; i++) {
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-    bytes->at(i) = *ptr++;
-#else
-    bytes->at(vec_size - 1 - i) = *ptr++;
-#endif
-  }
-}
+constexpr auto kSetComputeUnitLimit = static_cast<uint8_t>(
+    mojom::SolanaComputeBudgetInstruction::kSetComputeUnitLimit);
+constexpr auto kSetComputeUnitPrice = static_cast<uint8_t>(
+    mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice);
+constexpr auto kTransfer =
+    static_cast<uint8_t>(mojom::SolanaSystemInstruction::kTransfer);
+constexpr auto kTransferChecked =
+    static_cast<uint8_t>(mojom::SolanaTokenInstruction::kTransferChecked);
 
 }  // namespace
 
@@ -67,14 +52,8 @@ std::optional<SolanaInstruction> Transfer(const std::string& from_pubkey,
 
   // Instruction data is consisted of u32 instruction index and u64 lamport.
   std::vector<uint8_t> instruction_data;
-  UintToLEBytes(
-      static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer),
-      &instruction_data);
-
-  std::vector<uint8_t> lamport_bytes;
-  UintToLEBytes(lamport, &lamport_bytes);
-  instruction_data.insert(instruction_data.end(), lamport_bytes.begin(),
-                          lamport_bytes.end());
+  base::Extend(instruction_data, base::U32ToLittleEndian(kTransfer));
+  base::Extend(instruction_data, base::U64ToLittleEndian(lamport));
 
   return SolanaInstruction(
       mojom::kSolanaSystemProgramId,
@@ -102,7 +81,7 @@ namespace spl_token_program {
 //   3. Authority account (source account's multisignature owner/delegate)
 //      [non-signer, readonly]
 //   4~4+M. M signer accounts [signer, readonly].
-// Insturction data: u8 instruction index and u64 amount.
+// Instruction data: u8 instruction index and u64 amount.
 std::optional<SolanaInstruction> TransferChecked(
     const std::string& token_program_id,
     const std::string& source_pubkey,
@@ -119,15 +98,10 @@ std::optional<SolanaInstruction> TransferChecked(
   }
 
   // Instruction data is consisted of u8 instruction index and u64 amount.
-  std::vector<uint8_t> instruction_data = {
-      static_cast<uint8_t>(mojom::SolanaTokenInstruction::kTransferChecked)};
-
-  std::vector<uint8_t> amount_bytes;
-  UintToLEBytes(amount, &amount_bytes);
-  instruction_data.insert(instruction_data.end(), amount_bytes.begin(),
-                          amount_bytes.end());
-
-  instruction_data.emplace_back(decimals);
+  std::vector<uint8_t> instruction_data;
+  base::Extend(instruction_data, base::U8ToLittleEndian(kTransferChecked));
+  base::Extend(instruction_data, base::U64ToLittleEndian(amount));
+  base::Extend(instruction_data, base::U8ToLittleEndian(decimals));
 
   std::vector<SolanaAccountMeta> account_metas = {
       SolanaAccountMeta(source_pubkey, std::nullopt, false, true),
@@ -193,13 +167,11 @@ namespace compute_budget_program {
 // Set the compute unit limit for transaction execution.
 // https://docs.rs/solana-sdk/1.18.14/src/solana_sdk/compute_budget.rs.html#33
 SolanaInstruction SetComputeUnitLimit(uint32_t units) {
-  std::vector<uint8_t> instruction_data = {static_cast<uint8_t>(
-      mojom::SolanaComputeBudgetInstruction::kSetComputeUnitLimit)};
+  std::vector<uint8_t> instruction_data;
 
-  std::vector<uint8_t> units_bytes;
-  UintToLEBytes(units, &units_bytes);
-  instruction_data.insert(instruction_data.end(), units_bytes.begin(),
-                          units_bytes.end());
+  base::Extend(instruction_data, base::U8ToLittleEndian(kSetComputeUnitLimit));
+  base::Extend(instruction_data, base::U32ToLittleEndian(units));
+
   return SolanaInstruction(mojom::kSolanaComputeBudgetProgramId, {},
                            instruction_data);
 }
@@ -207,13 +179,10 @@ SolanaInstruction SetComputeUnitLimit(uint32_t units) {
 // Set the compute unit price for transaction execution.
 // https://docs.rs/solana-sdk/1.18.14/src/solana_sdk/compute_budget.rs.html#36
 SolanaInstruction SetComputeUnitPrice(uint64_t price) {
-  std::vector<uint8_t> instruction_data = {static_cast<uint8_t>(
-      mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice)};
+  std::vector<uint8_t> instruction_data;
 
-  std::vector<uint8_t> price_bytes;
-  UintToLEBytes(price, &price_bytes);
-  instruction_data.insert(instruction_data.end(), price_bytes.begin(),
-                          price_bytes.end());
+  base::Extend(instruction_data, base::U8ToLittleEndian(kSetComputeUnitPrice));
+  base::Extend(instruction_data, base::U64ToLittleEndian(price));
 
   return SolanaInstruction(mojom::kSolanaComputeBudgetProgramId, {},
                            instruction_data);
@@ -237,38 +206,27 @@ std::optional<SolanaInstruction> Transfer(
   if (!Base58Decode(proof.root, &root_bytes, kSolanaHashSize)) {
     return std::nullopt;
   }
-  instruction_data.insert(instruction_data.end(), root_bytes.begin(),
-                          root_bytes.end());
+  base::Extend(instruction_data, root_bytes);
 
   std::vector<uint8_t> data_hash_bytes;
   if (!Base58Decode(proof.data_hash, &data_hash_bytes, kSolanaHashSize)) {
     return std::nullopt;
   }
-  instruction_data.insert(instruction_data.end(), data_hash_bytes.begin(),
-                          data_hash_bytes.end());
+  base::Extend(instruction_data, data_hash_bytes);
 
   std::vector<uint8_t> creator_hash_bytes;
   if (!Base58Decode(proof.creator_hash, &creator_hash_bytes, kSolanaHashSize)) {
     return std::nullopt;
   }
-  instruction_data.insert(instruction_data.end(), creator_hash_bytes.begin(),
-                          creator_hash_bytes.end());
-
-  std::vector<uint8_t> tempVec;
+  base::Extend(instruction_data, creator_hash_bytes);
 
   // Nonce
-  tempVec.clear();
   // Use leaf.index for nonce like the example
   // https://solana.com/developers/guides/javascript/compressed-nfts#build-the-transfer-instruction
-  UintToLEBytes(static_cast<uint64_t>(proof.leaf_index), &tempVec);
-  instruction_data.insert(instruction_data.end(), tempVec.begin(),
-                          tempVec.end());
+  base::Extend(instruction_data, base::U64ToLittleEndian(proof.leaf_index));
 
   // Index
-  tempVec.clear();
-  UintToLEBytes(proof.leaf_index, &tempVec);
-  instruction_data.insert(instruction_data.end(), tempVec.begin(),
-                          tempVec.end());
+  base::Extend(instruction_data, base::U32ToLittleEndian(proof.leaf_index));
 
   // Create account metas.
   std::vector<SolanaAccountMeta> account_metas({
@@ -290,8 +248,7 @@ std::optional<SolanaInstruction> Transfer(
   }
   size_t end = proof.proof.size() - proof.canopy_depth;
   for (size_t i = 0; i < end; ++i) {
-    account_metas.push_back(
-        SolanaAccountMeta(proof.proof[i], std::nullopt, false, false));
+    account_metas.emplace_back(proof.proof[i], std::nullopt, false, false);
   }
 
   return SolanaInstruction(mojom::kSolanaBubbleGumProgramId,

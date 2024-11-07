@@ -409,10 +409,8 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
 
   static std::vector<uint8_t> MakeMintData(int supply) {
     std::vector<uint8_t> data(82);
-    base::as_writable_bytes(base::make_span(data))
-        .subspan(36)
-        .first<8u>()
-        .copy_from(base::U64ToNativeEndian(supply));
+    base::span(data).subspan(36).first<8u>().copy_from(
+        base::U64ToLittleEndian(supply));
     return data;
   }
 
@@ -420,7 +418,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
       const SolanaAddress& owner,
       const std::vector<uint8_t>& data = {}) {
     std::vector<uint8_t> result(96 + data.size());
-    auto result_span = base::as_writable_bytes(base::make_span(result));
+    auto result_span = base::span(result);
     // Header.
     base::ranges::copy(owner.bytes(), result_span.subspan(32, 32).begin());
 
@@ -435,7 +433,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
       const SolanaAddress& sol_record_address,
       const std::vector<uint8_t>& signer_key) {
     std::vector<uint8_t> result(32 + 64);  // payload_address + signature.
-    auto result_span = base::as_writable_bytes(base::make_span(result));
+    auto result_span = base::span(result);
 
     base::ranges::copy(sol_record_payload_address.bytes(), result_span.begin());
 
@@ -609,15 +607,12 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
   static std::vector<uint8_t> MakeTokenAccountData(const SolanaAddress& mint,
                                                    const SolanaAddress& owner) {
     std::vector<uint8_t> data(165);
-    auto mint_span =
-        base::as_writable_bytes(base::make_span(data)).subspan(0, 32);
+    auto mint_span = base::span(data).subspan(0, 32);
     base::ranges::copy(mint.bytes(), mint_span.begin());
-    auto owner_span =
-        base::as_writable_bytes(base::make_span(data)).subspan(32, 32);
+    auto owner_span = base::span(data).subspan(32, 32);
     base::ranges::copy(owner.bytes(), owner_span.begin());
 
-    auto amount_span =
-        base::as_writable_bytes(base::make_span(data)).subspan(64, 1);
+    auto amount_span = base::span(data).subspan(64, 1);
     *amount_span.data() = 1;
 
     return data;
@@ -632,7 +627,7 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
     auto* filters = (*dict.FindList("params"))[1].GetDict().FindList("filters");
     EXPECT_TRUE(filters);
 
-    auto data_span = base::make_span(token_account_data_);
+    auto data_span = base::span(token_account_data_);
     base::Value::List expected_filters;
     expected_filters.Append(base::Value::Dict());
     expected_filters.back().GetDict().SetByDottedPath("memcmp.offset", 0);
