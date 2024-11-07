@@ -88,6 +88,10 @@ export const TransactionInfo = ({
       ? 'braveWalletConfirmTransactionTransactionFee'
       : 'braveWalletConfirmTransactionGasFee'
 
+      const memoText = String.fromCharCode(
+        ...transactionDetails.zcashMemo ?? []
+      )
+
   // render
   return (
     <>
@@ -262,6 +266,14 @@ export const TransactionInfo = ({
                 )}
           </TransactionTypeText>
         </>
+      )}
+
+      {memoText && (
+        <SectionColumn>
+          <Divider />
+          <TransactionTitle>{getLocale('braveWalletMemo')}</TransactionTitle>
+          <TransactionTypeText>{memoText}</TransactionTypeText>
+        </SectionColumn>
       )}
     </>
   )

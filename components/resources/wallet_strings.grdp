@@ -481,6 +481,12 @@
   <message name="IDS_BRAVE_WALLET_RECENT_TRANSACTIONS" desc="Transactions panel title">Recent transactions</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_HASH" desc="Transaction Detail Panel Transaction Hash">Transaction hash</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_NETWORK" desc="Transaction Detail Panel Blockchain Network">Network</message>
+  <message name="IDS_BRAVE_WALLET_MEMO" desc="Transaction Details Memo label">Memo</message>
+  <message name="IDS_BRAVE_WALLET_ENTER_A_MESSAGE" desc="Transaction memo input placeholder">You can enter a message...</message>
+  <message name="IDS_BRAVE_WALLET_MESSAGE_OPTIONAL" desc="Transaction memo input label">Message (Optional)</message>
+  <message name="IDS_BRAVE_WALLET_ADD_MEMO" desc="Transaction Add memo button text">Add memo</message>
+  <message name="IDS_BRAVE_WALLET_REMOVE_MEMO" desc="Transaction Remove memo button text">Remove memo</message>
+  <message name="IDS_BRAVE_WALLET_MEMO_LENGTH_ERROR" desc="Transaction memo error">Memo must be less than 512 characters long.</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_TITLE1" desc="Edit gas panel max fee label">Max priority fee</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_TITLE2" desc="Edit gas panel edit gas button">Edit gas</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_DESCRIPTION" desc="Edit gas panel description">While not a guarantee, miners will likely prioritize your transaction if you pay a higher fee.</message>

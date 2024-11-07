@@ -401,6 +401,12 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
     accountInfosRegistry
   )
 
+  const memoFromTransaction = transaction.txDataUnion.zecTxData?.memo
+
+  const memoText = String.fromCharCode(
+    ...memoFromTransaction ?? []
+  )
+
   // render
   return (
     <PopupModal
@@ -590,6 +596,26 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
             </StatusBoxWrapper>
           </HeroContent>
         </HeroContainer>
+
+        {memoText && (
+          <>
+            <SectionRow padding='16px 0px'>
+              <SectionLabel
+                textAlign='left'
+                textSize='14px'
+              >
+                {getLocale('braveWalletMemo')}
+              </SectionLabel>
+              <SectionInfoText
+                textAlign='left'
+                textSize='14px'
+              >
+                {memoText}
+              </SectionInfoText>
+            </SectionRow>
+            <VerticalDivider />
+          </>
+        )}
 
         {transaction.txHash && (
           <>

@@ -1120,6 +1120,14 @@ provideStrings({
   braveWalletTransactionDetailHash: 'Transaction hash',
   braveWalletTransactionDetailNetwork: 'Network',
 
+  // Transaction Memo
+  braveWalletMemo: 'Memo',
+  braveWalletEnterAMessage: 'You can enter a message...',
+  braveWalletMessageOptional: 'Message (Optional)',
+  braveWalletAddMemo: 'Add memo',
+  braveWalletRemoveMemo: 'Remove memo',
+  braveWalletMemoLengthError: 'Memo must be less than 512 characters long.',
+
   // Transactions Status
   braveWalletTransactionStatusUnapproved: 'Unapproved',
   braveWalletTransactionStatusApproved: 'Approved',

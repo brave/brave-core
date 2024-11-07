@@ -605,7 +605,7 @@ export const transactionEndpoints = ({
           const zecTxData: BraveWallet.ZecTxData = {
             useShieldedPool: payload.useShieldedPool,
             to: payload.to,
-            memo: undefined,
+            memo: payload.memo,
             amount: BigInt(payload.value),
             fee: BigInt(0),
             inputs: [],
