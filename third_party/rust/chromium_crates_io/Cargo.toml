@@ -26,6 +26,7 @@ adblock-cxx = { version = "1" }
 constellation-cxx = "0.1"
 challenge-bypass-ristretto-cxx = "1"
 zcash = "1"
+foldhash = "0.1.3" # for lol_html patch
 
 [patch.crates-io.futures-retry_v0_5]
 path = "../futures_retry/v0_5/crate"

@@ -38,6 +38,5 @@ cargo_crate("lib") {
     "alloc",
     "race",
     "std",
-    "unstable",
   ]
 }
