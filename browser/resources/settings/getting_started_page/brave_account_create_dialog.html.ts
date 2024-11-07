@@ -20,7 +20,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                             'red' : ''}">
             Email address
           </div>
-          <div class="brave-alias-error ${this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias ? 'visible' : ''}"
+          <div class="brave-alias-error dropdown ${this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias ? 'visible' : ''}"
                slot="errors">
             <leo-icon name="warning-triangle-filled"></leo-icon>
             <div>You can't use @bravealias.com addresses for creating Brave accounts. Please try again with a different domain.</div>
@@ -39,7 +39,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
           </leo-icon>
-          <div class="password-strength-indicator ${this.percent !== 0 ? 'visible' : ''} ${this.getCategory()}"
+          <div class="password-strength-indicator dropdown ${this.percent !== 0 ? 'visible' : ''} ${this.getCategory()}"
                slot="errors">
             <div class="password-strength-bar">
               <div class="password-strength"
@@ -73,7 +73,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
           </leo-icon>
-          <div class="password-confirmation-result ${this.passwordConfirmation.length !== 0 ? 'visible' : ''}"
+          <div class="password-confirmation-result dropdown ${this.passwordConfirmation.length !== 0 ? 'visible' : ''}"
                slot="errors">
             <leo-icon name=${this.getIconName()}></leo-icon>
             <div>${`Passwords ${this.icon === 'check-circle-filled' ? '' : 'don\'t'} match`}</div>

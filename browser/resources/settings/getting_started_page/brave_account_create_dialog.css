@@ -7,6 +7,14 @@
  * #type=style-lit
  * #css_wrapper_metadata_end */
 
+leo-input {
+  --leo-control-border-color: var(--leo-color-divider-strong);
+}
+
+leo-input:not(:focus):has(> .red) {
+  --leo-control-border-color: var(--leo-color-systemfeedback-error-icon);
+}
+
 .label {
   color: var(--leo-color-text-primary);
   font: var(--leo-font-small-semibold);
@@ -17,40 +25,32 @@
   color: var(--leo-color-systemfeedback-error-text);
 }
 
-leo-input {
-  --leo-control-border-color: var(--leo-color-divider-strong);
-}
-
-leo-input:not(:focus):has(> .red) {
-  --leo-control-border-color: var(--leo-color-systemfeedback-error-icon);
-}
-
-.brave-alias-error {
+.dropdown {
   --leo-icon-size: 16px;
   align-items: flex-start;
   display: flex;
   font: var(--leo-font-small-regular);
   gap: 4px;
-  margin: -36px 4px 0px 4px;
+  height: var(--height);
+  margin: calc(-1 * var(--height)) 4px 0px 4px;
   position: relative;
   transition: 750ms;
   z-index: -1;
 }
 
-.brave-alias-error.visible {
+.dropdown.visible {
   margin: 4px 4px 0px 4px;
 }
 
+.brave-alias-error {
+  --height: 36px;
+}
+
 .password-strength-indicator {
+  --height: 16px;
   align-items: center;
-  display: flex;
-  height: 16px;
+  gap: unset;
   justify-content: space-between;
-  margin: -16px 0px 0px 0px;
-  padding: 0px 4px;
-  position: relative;
-  transition: 750ms;
-  z-index: -1;
 }
 
 .password-strength-indicator.weak {
@@ -66,10 +66,6 @@ leo-input:not(:focus):has(> .red) {
 .password-strength-indicator.strong {
   --primary-color: var(--leo-color-systemfeedback-success-icon);
   --secondary-color: var(--leo-color-systemfeedback-success-background);
-}
-
-.password-strength-indicator.visible {
-  margin: 4px 0px 0px 0px;
 }
 
 .password-strength-bar {
@@ -95,19 +91,23 @@ leo-input:not(:focus):has(> .red) {
 }
 
 .password-confirmation-result {
-  --leo-icon-size: 16px;
-  align-items: flex-start;
-  display: flex;
-  font: var(--leo-font-small-regular);
-  gap: 4px;
-  margin: -18px 4px 0px 4px;
-  position: relative;
-  transition: 750ms;
-  z-index: -1;
+  --height: 18px;
 }
 
-.password-confirmation-result.visible {
-  margin: 4px 4px 0px 4px;
+leo-icon[name=check-circle-filled] {
+  color: var(--leo-color-text-interactive);
+}
+
+leo-icon[name=check-circle-filled] + div {
+  color: var(--leo-color-text-interactive);  
+}
+
+leo-icon[name=warning-triangle-filled] {
+  color: var(--leo-color-systemfeedback-error-icon);
+}
+
+leo-icon[name=warning-triangle-filled] + div {
+  color: var(--leo-color-systemfeedback-error-text);
 }
 
 leo-checkbox a {
@@ -116,21 +116,3 @@ leo-checkbox a {
   text-decoration-skip-ink: none;
   text-underline-offset: 2.8px;
 }
-
-/* clean-css ignore:start */
-leo-icon[name="check-circle-filled"] {
-  color: var(--leo-color-text-interactive);
-
-  & + div {
-    color: var(--leo-color-text-interactive);  
-  }
-}
-
-leo-icon[name="warning-triangle-filled"] {
-  color: var(--leo-color-systemfeedback-error-icon);
-
-  & + div {
-    color: var(--leo-color-systemfeedback-error-text);
-  }
-}
-/* clean-css ignore:end */
