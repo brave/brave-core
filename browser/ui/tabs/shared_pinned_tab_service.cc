@@ -237,7 +237,7 @@ SharedPinnedTabService::GetTabRendererDataForDummyContents(
     }
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 void SharedPinnedTabService::Shutdown() {
