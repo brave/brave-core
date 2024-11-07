@@ -63,6 +63,7 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
+#include "brave/components/playlist/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -244,8 +245,10 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
   }
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url)) {
-    return WebUI::kNoWebUI;
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url)) {
+      return WebUI::kNoWebUI;
+    }
   }
 #endif
 

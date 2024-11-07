@@ -1321,6 +1321,10 @@ source_set("ui") {
     ]
   }
 
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/common" ]
+  }
+
   if (enable_playlist_webui) {
     sources += [
       "playlist/playlist_browser_finder.cc",
