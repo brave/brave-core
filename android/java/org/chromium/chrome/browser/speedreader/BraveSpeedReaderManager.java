@@ -45,9 +45,6 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
     /** If the infobar was closed due to the close button. */
     private boolean mIsDismissed;
 
-    /** Whether this manager and tab have been destroyed. */
-    private boolean mIsDestroyed;
-
     /** The tab this manager is attached to. */
     private final Tab mTab;
 
@@ -77,13 +74,9 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
                         tab, () -> MessageDispatcherProvider.from(tab.getWindowAndroid())));
     }
 
-    /**
-     * Clear the status map and references to other objects.
-     */
+    /** Clear the status map and references to other objects. */
     @Override
-    public void destroy() {
-        mIsDestroyed = true;
-    }
+    public void destroy() {}
 
     @Override
     public void onShown(Tab shownTab, @TabSelectionType int type) {
@@ -158,7 +151,7 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
                 mMessageModel, mTab.getWebContents(), MessageScopeType.NAVIGATION, false);
     }
 
-    private void onMessageDismissed(GURL url, @DismissReason int dismissReason) {
+    private void onMessageDismissed(GURL unused_url, @DismissReason int dismissReason) {
         mMessageModel = null;
         if (dismissReason == DismissReason.GESTURE) {
             mIsDismissed = true;

@@ -33,6 +33,10 @@ import androidx.annotation.LayoutRes;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 
+// This class has many fields reported as unused:
+// - mModal
+// This class uses a builder, so all they seems introduced by intent.
+@SuppressWarnings("UnusedVariable")
 public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
     private static final String TAG = PopupWindowTooltip.class.getSimpleName();
 

@@ -93,7 +93,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
 
         final Button btnAdd = findViewById(R.id.btn_add);
         TextView importBtn = findViewById(R.id.import_btn);
-        EditText mImportAccountPasswordText = findViewById(R.id.import_account_password_text);
+        mImportAccountPasswordText = findViewById(R.id.import_account_password_text);
 
         btnAdd.setEnabled(false);
         try {

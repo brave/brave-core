@@ -30,14 +30,12 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,7 +83,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.List;
 
 /** Settings fragment that allows to control Sync functionality. */
 public class BraveSyncScreensPreference extends BravePreferenceFragment
@@ -100,13 +97,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private static final int RC_HANDLE_CAMERA_PERM = 2;
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
-    // For QR code generation
-    private static final int WHITE = 0xFFFFFFFF;
-    private static final int BLACK = 0xFF000000;
-    private static final int WIDTH = 300;
-    // For view sizes limit
-    private static final int MAX_WIDTH = 512;
-    private static final int MAX_HEIGHT = 1024;
 
     // The have a sync code button displayed in the Sync view.
     private Button mScanChainCodeButton;
@@ -125,16 +115,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private Button mDeleteAccountButton;
     private Button mNewCodeWordsButton;
     private Button mNewQrCodeButton;
-    // Brave Sync message text view
-    private TextView mBraveSyncTextViewInitial;
     private TextView mBraveSyncTextDevicesTitle;
     private TextView mBraveSyncWordCountTitle;
     private TextView mBraveSyncAddDeviceCodeWords;
     private CameraSource mCameraSource;
     private CameraSourcePreview mCameraSourcePreview;
-    private ListView mDevicesListView;
-    private ArrayAdapter<String> mDevicesAdapter;
-    private List<String> mDevicesList;
     private ScrollView mScrollViewSyncInitial;
     private ScrollView mScrollViewSyncChainCode;
     private ScrollView mScrollViewSyncStartChain;
@@ -436,7 +421,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mCopyButton.setOnClickListener(this);
         }
 
-        mBraveSyncTextViewInitial = getView().findViewById(R.id.brave_sync_text_initial);
         mBraveSyncTextDevicesTitle = getView().findViewById(R.id.brave_sync_devices_title);
         mBraveSyncWordCountTitle = getView().findViewById(R.id.brave_sync_text_word_count);
         mBraveSyncWordCountTitle.setText(getString(R.string.brave_sync_word_count_text, 0));

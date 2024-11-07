@@ -53,13 +53,11 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.brave_news.mojom.Article;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_news.mojom.CardType;
 import org.chromium.brave_news.mojom.DisplayAd;
 import org.chromium.brave_news.mojom.Feed;
 import org.chromium.brave_news.mojom.FeedItem;
-import org.chromium.brave_news.mojom.FeedItemMetadata;
 import org.chromium.brave_news.mojom.FeedPage;
 import org.chromium.brave_news.mojom.FeedPageItem;
 import org.chromium.chrome.R;
@@ -126,11 +124,13 @@ public class BraveNewTabPageLayout
 
     // To delete in bytecode, parent variable will be used instead.
     private ViewGroup mMvTilesContainerLayout;
+
+    @SuppressWarnings("UnusedVariable")
     private LogoCoordinator mLogoCoordinator;
+
     private Integer mInitialTileNum;
 
     // Own members.
-    private final Context mContext;
     private ImageView mBgImageView;
     private Profile mProfile;
     private SponsoredTab mSponsoredTab;
@@ -177,21 +177,17 @@ public class BraveNewTabPageLayout
     private FeedItemsCard mVisibleCard;
     private String mFeedHash;
     private SharedPreferences.OnSharedPreferenceChangeListener mPreferenceListener;
-    private boolean mComesFromNewTab;
     private boolean mIsTopSitesEnabled;
     private boolean mIsBraveStatsEnabled;
     private boolean mIsDisplayNewsFeed;
     private boolean mIsDisplayNewsOptin;
     private long mNewsFeedLastViewTime;
 
-    private Supplier<Tab> mTabProvider;
-
     private static final int SHOW_BRAVE_RATE_ENTRY_AT = 10; // 10th row
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mContext = context;
         mProfile = ProfileManager.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(mNewTabPageListener);
@@ -202,7 +198,6 @@ public class BraveNewTabPageLayout
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mComesFromNewTab = false;
         mFeedHash = "";
         initBraveNewsController();
         try {
@@ -1006,10 +1001,6 @@ public class BraveNewTabPageLayout
             FeedItem featuredItem = feed.featuredItem;
             FeedItemsCard featuredItemsCard = new FeedItemsCard();
 
-            FeedItemMetadata featuredItemMetaData = new FeedItemMetadata();
-            Article featuredArticle = featuredItem.getArticle();
-            FeedItemMetadata featuredArticleData = featuredArticle.data;
-
             FeedItemCard featuredItemCard = new FeedItemCard();
             List<FeedItemCard> featuredCardItems = new ArrayList<>();
 
@@ -1035,8 +1026,6 @@ public class BraveNewTabPageLayout
         }
 
         // start page loop
-        int noPages = 0;
-        int itemIndex = 0;
         for (FeedPage page : feed.pages) {
             for (FeedPageItem cardData : page.items) {
                 // if for any reason we get an empty object, unless it's a
@@ -1052,7 +1041,6 @@ public class BraveNewTabPageLayout
                 feedItemsCard.setUuid(UUID.randomUUID().toString());
                 List<FeedItemCard> cardItems = new ArrayList<>();
                 for (FeedItem item : cardData.items) {
-                    FeedItemMetadata itemMetaData = new FeedItemMetadata();
                     FeedItemCard feedItemCard = new FeedItemCard();
                     feedItemCard.setFeedItem(item);
 
@@ -1223,9 +1211,7 @@ public class BraveNewTabPageLayout
                 .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 
-    public void setTabProvider(Supplier<Tab> tabProvider) {
-        mTabProvider = tabProvider;
-    }
+    public void setTabProvider(Supplier<Tab> unused_tabProvider) {}
 
     private void showNTPImage(NTPImage ntpImage) {
         Display display = mActivity.getWindowManager().getDefaultDisplay();
