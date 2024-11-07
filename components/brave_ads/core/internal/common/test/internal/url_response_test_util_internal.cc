@@ -123,7 +123,7 @@ std::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
     const base::FilePath path = UrlResponsesDataPath().AppendASCII(
         ParseFilenameFromResponseBody(response_body));
     if (!base::ReadFileToString(path, &response_body)) {
-      NOTREACHED_NORETURN() << path << " not found";
+      NOTREACHED() << path << " not found";
     }
 
     ParseAndReplaceTags(response_body);

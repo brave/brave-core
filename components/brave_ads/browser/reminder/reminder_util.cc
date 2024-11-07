@@ -62,8 +62,8 @@ base::Value::Dict BuildReminder(const mojom::ReminderType mojom_reminder_type) {
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::ReminderType: "
-                        << mojom_reminder_type;
+  NOTREACHED() << "Unexpected value for mojom::ReminderType: "
+               << mojom_reminder_type;
 }
 
 bool IsReminder(const std::string& placement_id) {

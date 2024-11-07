@@ -57,7 +57,7 @@ std::optional<T> MaybeSampleCreativeAd(
     }
   }
 
-  NOTREACHED_NORETURN() << "Sum should always be less than probability";
+  NOTREACHED() << "Sum should always be less than probability";
 }
 
 }  // namespace brave_ads

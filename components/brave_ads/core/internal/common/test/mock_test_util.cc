@@ -113,8 +113,8 @@ void MockBuildChannel(const BuildChannelType type) {
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for BuildChannelType: "
-                        << base::to_underlying(type);
+  NOTREACHED() << "Unexpected value for BuildChannelType: "
+               << base::to_underlying(type);
 }
 
 void MockIsNetworkConnectionAvailable(const AdsClientMock& ads_client_mock,
