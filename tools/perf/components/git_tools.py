@@ -124,6 +124,18 @@ def GetCommitDate(revision: str, cwd=path_util.GetBraveDir()) -> str:
   return commit_date
 
 
+def GetRevisionFromDate(date: str, branch: str,
+                        cwd=path_util.GetBraveDir()) -> str:
+  # fetch the branch:
+  GetProcessOutput(['git', 'fetch', 'origin', branch], cwd, check=True)
+
+  args = ['git', 'rev-list', 'FETCH_HEAD', '-n', '1', '--first-parent']
+  if date:
+    args.append(f'--before={date}')
+  _, output = GetProcessOutput(args, cwd, check=True)
+  return output.rstrip()
+
+
 def GetGitHash(revision: str, cwd=path_util.GetBraveDir()) -> str:
   _, git_hash_output = GetProcessOutput(
       ['git', 'rev-list', '-n', '1', revision], cwd, check=True)

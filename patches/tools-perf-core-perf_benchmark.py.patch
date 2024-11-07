@@ -1,9 +1,0 @@
-diff --git a/tools/perf/core/perf_benchmark.py b/tools/perf/core/perf_benchmark.py
-index 7cfd6f8f42670112e33e2d875bf0acb361f27228..acd5e5fd538d3809c43785f3936478c1f41108a3 100644
---- a/tools/perf/core/perf_benchmark.py
-+++ b/tools/perf/core/perf_benchmark.py
-@@ -219,3 +219,4 @@ class PerfBenchmark(benchmark.Benchmark):
-     if 'XVFB_DISPLAY' in os.environ:
-       return True
-     return False
-+from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
