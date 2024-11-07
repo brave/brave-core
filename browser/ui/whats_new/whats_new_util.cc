@@ -39,12 +39,10 @@ double g_testing_major_version = 0;
 std::optional<double> GetBraveMajorVersionAsDouble(
     const base::Version& version) {
   double brave_major_version;
-  if (!base::StringToDouble(base::StringPrintf("%d.%d", version.components()[1],
-                                               version.components()[2]),
-                            &brave_major_version)) {
-    return std::nullopt;
-  }
-
+  CHECK(
+      base::StringToDouble(base::StringPrintf("%d.%d", version.components()[1],
+                                              version.components()[2]),
+                           &brave_major_version));
   return brave_major_version;
 }
 
@@ -55,8 +53,8 @@ std::optional<double> GetCurrentBrowserVersion() {
   }
 
   const auto& version = version_info::GetVersion();
-  DCHECK(version.IsValid());
-  DCHECK_EQ(version.components().size(), 4ul);
+  CHECK(version.IsValid());
+  CHECK_EQ(version.components().size(), 4ul);
 
   return GetBraveMajorVersionAsDouble(version);
 }
@@ -126,8 +124,10 @@ std::string GetTargetMajorVersionParamName() {
       return "target_major_version_nightly";
     case Channel::UNKNOWN:
       return "target_major_version_unknown";
+    default:
+      break;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED() << "All channels are handled above";
 }
 
 void SetCurrentVersionForTesting(double major_version) {
@@ -161,10 +161,7 @@ bool ShouldShowBraveWhatsNewForState(PrefService* local_state) {
   }
 
   const auto current_version = GetCurrentBrowserVersion();
-  if (!current_version) {
-    NOTREACHED_IN_MIGRATION() << __func__ << " Should get current version.";
-    return false;
-  }
+  CHECK(current_version);
 
   if (*current_version != *target_major_version) {
     VLOG(2) << __func__ << " Current version is different with target version";

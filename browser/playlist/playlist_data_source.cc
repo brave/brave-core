@@ -191,8 +191,7 @@ void PlaylistDataSource::StartDataRequest(
       GetFavicon(data_request, wc_getter, std::move(got_data_callback));
       break;
     case DataRequest::Type::kMedia:
-      NOTREACHED()
-          << "This request should call StartRangeDataRequest()";
+      NOTREACHED() << "This request should call StartRangeDataRequest()";
   }
 }
 
