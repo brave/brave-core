@@ -396,6 +396,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   braveVPNSupported = loadTimeData.getBoolean('vpnWidgetSupported')
+
   getCryptoContent () {
     if (this.props.newTabData.hideAllWidgets) {
       return null
@@ -410,17 +411,13 @@ class NewTabPage extends React.Component<Props, State> {
       showBraveVPN,
     } = this.props.newTabData
 
-    const {
-      initialized
-    } = this.props.braveVPNData
-
     const lookup: { [p: string]: { display: boolean, render: any } } = {
       'rewards': {
         display: braveRewardsSupported && showRewards,
         render: this.renderRewardsWidget.bind(this)
       },
       'braveVPN': {
-        display: this.braveVPNSupported && showBraveVPN && initialized,
+        display: this.braveVPNSupported && showBraveVPN,
         render: this.renderBraveVPNWidget
       },
       'braveTalk': {
