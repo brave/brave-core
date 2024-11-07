@@ -109,6 +109,7 @@ bool ZCashCreateShieldTransactionTask::CreateTransaction() {
   }
   zcash_transaction.set_amount(orchard_output.value);
   zcash_transaction.set_to(*orchard_unified_addr);
+  zcash_transaction.set_memo(memo_);
 
   transaction_ = std::move(zcash_transaction);
 
