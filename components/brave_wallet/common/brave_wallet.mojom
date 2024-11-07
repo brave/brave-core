@@ -1845,10 +1845,11 @@ struct ZCashAccountInfo {
 
 enum ZCashAddressValidationResult {
   Unknown = 0,
-  Success = 1,
-  InvalidTransparent = 2,
-  InvalidUnified = 3,
-  NetworkMismatch = 4
+  ValidTransparent = 1,
+  ValidShielded = 2,
+  InvalidTransparent = 3,
+  InvalidUnified = 4,
+  NetworkMismatch = 5
 };
 
 struct ZCashShieldSyncStatus {

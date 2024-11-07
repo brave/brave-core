@@ -377,7 +377,8 @@ void ZCashWalletService::ValidateZCashAddress(
 #if BUILDFLAG(ENABLE_ORCHARD)
     if (IsZCashShieldedTransactionsEnabled() &&
         ExtractOrchardPart(addr, testnet)) {
-      std::move(callback).Run(mojom::ZCashAddressValidationResult::Success);
+      std::move(callback).Run(
+          mojom::ZCashAddressValidationResult::ValidShielded);
       return;
     }
 #endif
@@ -400,7 +401,8 @@ void ZCashWalletService::ValidateZCashAddress(
     }
   }
 
-  std::move(callback).Run(mojom::ZCashAddressValidationResult::Success);
+  std::move(callback).Run(
+      mojom::ZCashAddressValidationResult::ValidTransparent);
 }
 
 void ZCashWalletService::OnSendTransactionResult(
