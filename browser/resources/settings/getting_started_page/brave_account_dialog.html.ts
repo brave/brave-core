@@ -27,8 +27,11 @@ export function getHtml(this: SettingsBraveAccountDialogElement) {
       </div>
       <div slot="body">
         <div class="texts">
-          <div class="text-top">${this.textTop}</div>
-          <div class="text-bottom">${this.textBottom}</div>
+          <div class="dialog-title">${this.dialogTitle}</div>
+          <div class="dialog-description">${this.dialogDescription}</div>
+          ${this.alertMessage.length !== 0 ? html`
+          <leo-alert>${this.alertMessage}</leo-alert>
+          ` : nothing}
         </div>
         <slot name="inputs"></slot>
         <slot name="buttons"></slot>

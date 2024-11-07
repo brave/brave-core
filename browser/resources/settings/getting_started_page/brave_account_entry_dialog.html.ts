@@ -9,8 +9,8 @@ import { SettingsBraveAccountEntryDialogElement } from './brave_account_entry_di
 
 export function getHtml(this: SettingsBraveAccountEntryDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog text-bottom="$i18n{braveSyncBraveAccountDesc}"
-                                   text-top="Get started with your Brave account">
+    <settings-brave-account-dialog dialog-description="$i18n{braveSyncBraveAccountDesc}"
+                                   dialog-title="Get started with your Brave account">
       <div slot="buttons">
         <leo-button @click=${() => this.fire('create-button-clicked')}>
           Create a Brave account

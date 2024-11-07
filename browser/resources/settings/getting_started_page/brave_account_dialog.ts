@@ -34,17 +34,19 @@ export class SettingsBraveAccountDialogElement extends CrLitElement {
 
   static override get properties() {
     return {
+      alertMessage: { type: String },
+      dialogDescription: { type: String },
+      dialogTitle: { type: String },
       horizontalButtons: { type: Boolean },
       showBackButton: { type: Boolean },
-      textBottom: { type: String },
-      textTop: { type: String },
     }
   }
 
+  protected alertMessage: string = ''
+  protected dialogDescription: string
+  protected dialogTitle: string
   protected horizontalButtons: boolean
   protected showBackButton: boolean
-  protected textBottom: string
-  protected textTop: string
 }
 
 declare global {

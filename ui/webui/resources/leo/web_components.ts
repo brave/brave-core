@@ -5,6 +5,7 @@
 
 // Import web components here. They will be available on the page
 // as <leo-{component}></leo-{component}>.
+import '@brave/leo/web-components/alert'
 import '@brave/leo/web-components/button'
 import '@brave/leo/web-components/dropdown'
 import '@brave/leo/web-components/checkbox'

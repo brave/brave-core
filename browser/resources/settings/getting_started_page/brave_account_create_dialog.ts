@@ -27,6 +27,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
   static override get properties() {
     return {
+      emailAddress: { type: String },
       isEmailAddressValid: { type: Boolean },
       isAccountNameValid: { type: Boolean },
       isChecked: { type: Boolean },
@@ -37,7 +38,8 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   }
 
   protected onEmailAddressInput(detail: { value: string }) {
-    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(detail.value)
+    this.emailAddress = detail.value
+    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.emailAddress)
   }
 
   protected onAccountNameInput(detail: { value: string }) {
@@ -79,6 +81,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     return this.icon
   }
 
+  protected emailAddress: string = ''
   protected isEmailAddressValid: boolean = false
   protected isAccountNameValid: boolean = false
   protected isChecked: boolean = false

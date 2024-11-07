@@ -71,11 +71,11 @@ leo-icon {
   margin: 0px 0px var(--leo-spacing-3xl);
 }
 
-.text-top {
+.dialog-title {
   font: var(--leo-font-heading-h4);
 }
 
-.text-bottom {
+.dialog-description {
   font: var(--leo-font-default-regular);
 }
 
