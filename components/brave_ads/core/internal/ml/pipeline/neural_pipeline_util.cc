@@ -71,7 +71,7 @@ std::optional<TransformationVector> LoadTransformations(
       }
       case neural_text_classification::flat::TransformationType::
           TransformationType_NONE: {
-        NOTREACHED_NORETURN();
+        NOTREACHED();
       }
     }
     if (!transformation_ptr) {

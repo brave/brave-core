@@ -79,7 +79,7 @@ std::optional<TransformationVector> LoadTransformations(
       }
       case linear_text_classification::flat::TransformationType::
           TransformationType_NONE: {
-        NOTREACHED_NORETURN();
+        NOTREACHED();
       }
     }
     if (!transformation_ptr) {

@@ -59,8 +59,8 @@ bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::AdType: "
-                        << base::to_underlying(ad_event.type);
+  NOTREACHED() << "Unexpected value for mojom::AdType: "
+               << base::to_underlying(ad_event.type);
 }
 
 bool DidAdEventOccurWithinObservationWindow(
