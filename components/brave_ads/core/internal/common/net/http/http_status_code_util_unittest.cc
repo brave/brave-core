@@ -15,6 +15,13 @@
 
 namespace brave_ads {
 
+TEST(BraveAdsHttpStatusCodeUtilTest, IsSuccessfulHttpStatusCode) {
+  // Act & Assert
+  for (int i = /*200*/ net::HTTP_OK; i < net::HTTP_STATUS_CODE_MAX; ++i) {
+    EXPECT_EQ(IsSuccessfulHttpStatusCode(i), i < /*400*/ net::HTTP_BAD_REQUEST);
+  }
+}
+
 TEST(BraveAdsHttpStatusCodeUtilTest, HttpStatusCodeToString) {
   // Arrange
   static constexpr auto kAllowedHttpStatusCodes = base::MakeFixedFlatSet<int>({
