@@ -718,7 +718,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateZCashAddress) {
   {
     base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
         callback;
-    EXPECT_CALL(callback, Run(mojom::ZCashAddressValidationResult::Success));
+    EXPECT_CALL(callback,
+                Run(mojom::ZCashAddressValidationResult::ValidTransparent));
     zcash_wallet_service_->ValidateZCashAddress(
         "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3EvQ", false, callback.Get());
   }
@@ -727,7 +728,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateZCashAddress) {
   {
     base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
         callback;
-    EXPECT_CALL(callback, Run(mojom::ZCashAddressValidationResult::Success));
+    EXPECT_CALL(callback,
+                Run(mojom::ZCashAddressValidationResult::ValidTransparent));
     zcash_wallet_service_->ValidateZCashAddress(
         "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpTE", true, callback.Get());
   }
@@ -755,7 +757,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateZCashAddress) {
   {
     base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
         callback;
-    EXPECT_CALL(callback, Run(mojom::ZCashAddressValidationResult::Success));
+    EXPECT_CALL(callback,
+                Run(mojom::ZCashAddressValidationResult::ValidTransparent));
     zcash_wallet_service_->ValidateZCashAddress(
         "u1lmy8anuylj33arxh3sx7ysq54tuw7zehsv6pdeeaqlrhkjhm3uvl9egqxqfd7hcsp3ms"
         "zp6jxxx0gsw0ldp5wyu95r4mfzlueh8h5xhrjqgz7xtxp3hvw45dn4gfrz5j54ryg6reyf"
@@ -767,7 +770,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateZCashAddress) {
   {
     base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
         callback;
-    EXPECT_CALL(callback, Run(mojom::ZCashAddressValidationResult::Success));
+    EXPECT_CALL(callback,
+                Run(mojom::ZCashAddressValidationResult::ValidTransparent));
     zcash_wallet_service_->ValidateZCashAddress(
         "utest1vergg5jkp4xy8sqfasw6s5zkdpnxvfxlxh35uuc3me7dp596y2r05t6dv9htwe3p"
         "f8ksrfr8ksca2lskzjanqtl8uqp5vln3zyy246ejtx86vqftp73j7jg9099jxafyjhfm6u"
@@ -824,7 +828,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
   {
     base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
         callback;
-    EXPECT_CALL(callback, Run(mojom::ZCashAddressValidationResult::Success));
+    EXPECT_CALL(callback,
+                Run(mojom::ZCashAddressValidationResult::ValidShielded));
     zcash_wallet_service_->ValidateZCashAddress(
         "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
         "ugytcmlf96rrmtgwldc75x94qn4n8pgen36y8tywlq6yjk7lkf3"
