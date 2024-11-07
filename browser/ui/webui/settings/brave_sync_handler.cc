@@ -38,7 +38,7 @@ using brave_sync::TimeLimitedWords;
 
 namespace {
 
-std::string GetSyncCodeValidationString(
+std::string GetSyncCodeValidationErrorString(
     TimeLimitedWords::ValidationStatus validation_result) {
   using ValidationStatus = TimeLimitedWords::ValidationStatus;
   switch (validation_result) {
@@ -52,9 +52,9 @@ std::string GetSyncCodeValidationString(
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_EXPIRED);
     case ValidationStatus::kValidForTooLong:
       return l10n_util::GetStringUTF8(IDS_BRAVE_SYNC_CODE_VALID_FOR_TOO_LONG);
-    default:
-      NOTREACHED_IN_MIGRATION();
-      return "";
+    case ValidationStatus::kValid:
+      // kValid means no error and we don't display any error when all is ok
+      return "OK";
   }
   NOTREACHED() << "Unexpected value for TimeLimitedWords::ValidationStatus: "
                << base::to_underlying(validation_result);
@@ -224,9 +224,11 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
   if (!pure_words_with_status.has_value()) {
     LOG(ERROR) << "Could not validate a sync code, validation_result="
                << static_cast<int>(pure_words_with_status.error()) << " "
-               << GetSyncCodeValidationString(pure_words_with_status.error());
-    RejectJavascriptCallback(args[0], base::Value(GetSyncCodeValidationString(
-                                          pure_words_with_status.error())));
+               << GetSyncCodeValidationErrorString(
+                      pure_words_with_status.error());
+    RejectJavascriptCallback(args[0],
+                             base::Value(GetSyncCodeValidationErrorString(
+                                 pure_words_with_status.error())));
     return;
   }
 
