@@ -313,6 +313,7 @@ test("brave_unit_tests") {
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//services/preferences/public/cpp",
+    "//ui/gfx:gfx_switches",
 
     # This is only used in the unit test for brave referrals, not the browser
     # test.

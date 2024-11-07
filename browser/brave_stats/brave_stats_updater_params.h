@@ -26,6 +26,10 @@ FORWARD_DECLARE_TEST(BraveStatsUpdaterTest, UsageBitstringInactive);
 
 namespace brave_stats {
 
+inline constexpr char kHeadlessRefcode[] = "HED001";
+
+bool IsHeadlessOrAutomationMode();
+
 class BraveStatsUpdaterParams {
  public:
   explicit BraveStatsUpdaterParams(PrefService* stats_pref_service,
