@@ -608,7 +608,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
       brave::ShowPlaylistBubble(&*browser_);
 #else
-      NOTREACHED_IN_MIGRATION() << " This command shouldn't be enabled";
+      NOTREACHED() << " This command shouldn't be enabled";
 #endif
       break;
     case IDC_SHOW_WAYBACK_MACHINE_BUBBLE:
