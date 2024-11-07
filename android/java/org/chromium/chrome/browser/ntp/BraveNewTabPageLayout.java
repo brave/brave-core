@@ -124,8 +124,10 @@ public class BraveNewTabPageLayout
 
     // To delete in bytecode, parent variable will be used instead.
     private ViewGroup mMvTilesContainerLayout;
+
     @SuppressWarnings("UnusedVariable")
     private LogoCoordinator mLogoCoordinator;
+
     private Integer mInitialTileNum;
 
     // Own members.

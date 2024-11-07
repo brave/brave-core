@@ -145,6 +145,7 @@ public class CameraSource {
     // references maintained to them.
     @SuppressWarnings("UnusedVariable")
     private SurfaceView mDummySurfaceView;
+
     private SurfaceTexture mDummySurfaceTexture;
 
     /**
@@ -152,11 +153,12 @@ public class CameraSource {
      * frames become available from the camera.
      */
     private Thread mProcessingThread;
+
     private FrameProcessingRunnable mFrameProcessor;
 
     /**
      * Map to convert between a byte array, received from the camera, and its associated byte
-     * buffer.  We use byte buffers internally because this is a more efficient way to call into
+     * buffer. We use byte buffers internally because this is a more efficient way to call into
      * native code later (avoids a potential copy).
      */
     @SuppressWarnings("ArrayAsKeyOfSetOrMap")

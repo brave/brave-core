@@ -870,9 +870,10 @@ public class BraveRewardsPanel
             String text = "";
 
             double probiDouble = report[i];
-            String value = Double.isNaN(probiDouble)
-                    ? "0.000" + batText
-                    : String.format(Locale.getDefault(), "%.3f", probiDouble);
+            String value =
+                    Double.isNaN(probiDouble)
+                            ? "0.000" + batText
+                            : String.format(Locale.getDefault(), "%.3f", probiDouble);
 
             switch (i) {
                 case BALANCE_REPORT_EARNING_FROM_ADS:

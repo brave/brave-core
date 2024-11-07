@@ -940,7 +940,8 @@ public class BraveShieldsHandler
         TextView siteBrokenWarningText = mMainLayout.findViewById(R.id.site_broken_warning_text);
 
         TextView mShieldsUpText = mMainLayout.findViewById(R.id.shield_up_text);
-        String mBraveShieldsText = mContext.getResources().getString(R.string.brave_shields_onboarding_title);
+        String mBraveShieldsText =
+                mContext.getResources().getString(R.string.brave_shields_onboarding_title);
 
         if (isChecked) {
             mShieldDownText.setVisibility(View.GONE);

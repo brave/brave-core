@@ -42,8 +42,12 @@ public class HighlightDialogFragment extends DialogFragment {
         void onLearnMore();
     }
 
-    private static final List<Integer> highlightViews = Arrays.asList(R.id.brave_stats_ads,
-            R.id.brave_stats_data_saved, R.id.brave_stats_time, R.id.ntp_stats_layout);
+    private static final List<Integer> highlightViews =
+            Arrays.asList(
+                    R.id.brave_stats_ads,
+                    R.id.brave_stats_data_saved,
+                    R.id.brave_stats_time,
+                    R.id.ntp_stats_layout);
 
     private HighlightView highlightView;
     private ViewPager viewpager;

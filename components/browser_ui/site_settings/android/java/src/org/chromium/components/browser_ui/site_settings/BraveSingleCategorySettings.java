@@ -20,8 +20,10 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
 
     public String getAddExceptionDialogMessage() {
         int resource = 0;
-        SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
-                SingleCategorySettings.class, "mCategory", this);
+        SiteSettingsCategory mCategory =
+                (SiteSettingsCategory)
+                        BraveReflectionUtil.getField(
+                                SingleCategorySettings.class, "mCategory", this);
 
         if (mCategory.getType() == SiteSettingsCategory.Type.AUTOPLAY) {
             resource = R.string.website_settings_add_site_description_autoplay;
@@ -41,8 +43,10 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
     public void resetList() {
         BraveReflectionUtil.invokeMethod(SingleCategorySettings.class, this, "resetList");
         boolean exception = false;
-        SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
-                SingleCategorySettings.class, "mCategory", this);
+        SiteSettingsCategory mCategory =
+                (SiteSettingsCategory)
+                        BraveReflectionUtil.getField(
+                                SingleCategorySettings.class, "mCategory", this);
 
         if (mCategory.getType() == SiteSettingsCategory.Type.AUTOPLAY
                 || mCategory.getType() == SiteSettingsCategory.Type.BRAVE_GOOGLE_SIGN_IN

@@ -58,7 +58,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     /** The tab switcher mode bottom toolbar stub that will be inflated when native is ready. */
     private final ViewStub mTabSwitcherModeStub;
 
-    /** A provider that notifies components when the theme color changes.*/
+    /** A provider that notifies components when the theme color changes. */
     private final ThemeColorProvider mThemeColorProvider;
 
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;

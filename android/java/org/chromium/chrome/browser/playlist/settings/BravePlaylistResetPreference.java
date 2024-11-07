@@ -23,9 +23,7 @@ public class BravePlaylistResetPreference
 
     private int mPrefAccentColor;
 
-    /**
-     * Constructor for BravePlaylistResetPreference.
-     */
+    /** Constructor for BravePlaylistResetPreference. */
     public BravePlaylistResetPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 

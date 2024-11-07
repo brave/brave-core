@@ -194,8 +194,9 @@ public class CardBuilderFeedCard {
         RecyclerView.LayoutParams linearLayoutParams =
                 (RecyclerView.LayoutParams) mLinearLayout.getLayoutParams();
 
-        TableLayout.LayoutParams rowTableParams = new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        TableLayout.LayoutParams rowTableParams =
+                new TableLayout.LayoutParams(
+                        TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         FrameLayout adLayoutUp = new FrameLayout(mActivity);
         ImageView adImage = new ImageView(mActivity);
@@ -211,17 +212,23 @@ public class CardBuilderFeedCard {
         TableRow row1 = new TableRow(mActivity);
         TableRow row2 = new TableRow(mActivity);
 
-        TableRow.LayoutParams adLayoutParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow.LayoutParams adLayoutParams =
+                new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
 
-        FrameLayout.LayoutParams adImageParams = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams adImageParams =
+                new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT);
 
-        TableRow.LayoutParams adButtonParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow.LayoutParams adButtonParams =
+                new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
 
-        tableLayoutTopNews.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        tableLayoutTopNews.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
         mLinearLayout.addView(tableLayoutTopNews);
 
         linearLayoutParams.height = 0;
@@ -233,8 +240,10 @@ public class CardBuilderFeedCard {
         if (adData != null) {
             linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
             mLinearLayout.setLayoutParams(linearLayoutParams);
-            FrameLayout.LayoutParams adLogoParams = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            FrameLayout.LayoutParams adLogoParams =
+                    new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT);
 
             rowTableParams.setMargins(50, 0, 50, 0);
             rowTableParams.width = TableLayout.LayoutParams.MATCH_PARENT;
@@ -301,8 +310,11 @@ public class CardBuilderFeedCard {
             row2.addView(adDesc);
             row2.addView(adButton);
 
-            TableRow.LayoutParams adItemsParams = new TableRow.LayoutParams(
-                    TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
+            TableRow.LayoutParams adItemsParams =
+                    new TableRow.LayoutParams(
+                            TableRow.LayoutParams.MATCH_PARENT,
+                            TableRow.LayoutParams.WRAP_CONTENT,
+                            1.0f);
             adTitle.setTextSize(17);
             adItemsParams.bottomMargin = 2 * MARGIN_VERTICAL;
             adTitle.setTypeface(null, Typeface.BOLD);
@@ -352,10 +364,12 @@ public class CardBuilderFeedCard {
     public LinearLayout createCard(int type, int position) {
         TableLayout tableLayoutTopNews = new TableLayout(mActivity);
 
-        TableLayout.LayoutParams tableParamsTopNews = new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        TableLayout.LayoutParams rowTableParams = new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        TableLayout.LayoutParams tableParamsTopNews =
+                new TableLayout.LayoutParams(
+                        TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        TableLayout.LayoutParams rowTableParams =
+                new TableLayout.LayoutParams(
+                        TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         TableRow rowTop = new TableRow(mActivity);
         TextView topText = new TextView(mActivity);
         BraveTouchUtils.ensureMinTouchTarget(topText);
@@ -729,30 +743,49 @@ public class CardBuilderFeedCard {
         TextView source = new TextView(mActivity);
         TextView desc = new TextView(mActivity);
 
-        LinearLayout.LayoutParams publisherParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
-        LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
-        LinearLayout.LayoutParams descParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+        LinearLayout.LayoutParams publisherParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        1f);
+        LinearLayout.LayoutParams imageParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        1f);
+        LinearLayout.LayoutParams titleParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        1f);
+        LinearLayout.LayoutParams descParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        1f);
 
-        TableLayout.LayoutParams tableParamsTopNews = new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        TableLayout.LayoutParams tableParamsTopNews =
+                new TableLayout.LayoutParams(
+                        TableLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        TableRow.LayoutParams linearLayoutRowParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-        TableRow.LayoutParams linearLayoutRowParams1 = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-        TableRow.LayoutParams sourceRowParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-        TableRow.LayoutParams titleRowParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-        TableRow.LayoutParams descRowParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-        TableRow.LayoutParams imageRowParams = new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow.LayoutParams linearLayoutRowParams =
+                new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow.LayoutParams linearLayoutRowParams1 =
+                new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow.LayoutParams sourceRowParams =
+                new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow.LayoutParams titleRowParams =
+                new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow.LayoutParams descRowParams =
+                new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow.LayoutParams imageRowParams =
+                new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
 
         LinearLayout layoutSingleCard = new LinearLayout(mActivity);
         publisher.setLetterSpacing(0.03f);
@@ -1268,8 +1301,7 @@ public class CardBuilderFeedCard {
         return itemDataFinal;
     }
 
-    private void setListeners(
-            View view, String creativeInstanceId, boolean isPromo) {
+    private void setListeners(View view, String creativeInstanceId, boolean isPromo) {
         DisplayAd displayAd = mNewsItem.getDisplayAd();
         view.setOnClickListener(
                 new View.OnClickListener() {
@@ -1397,13 +1429,21 @@ public class CardBuilderFeedCard {
     private RequestListener<Drawable> createLoggerListener(final String unused_name) {
         return new RequestListener<Drawable>() {
             @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target target,
+            public boolean onLoadFailed(
+                    @Nullable GlideException e,
+                    Object model,
+                    Target target,
                     boolean isFirstResource) {
                 return false;
             }
+
             @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target target,
-                    DataSource dataSource, boolean isFirstResource) {
+            public boolean onResourceReady(
+                    Drawable resource,
+                    Object model,
+                    Target target,
+                    DataSource dataSource,
+                    boolean isFirstResource) {
                 if (resource instanceof BitmapDrawable) {
                     // Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
                     // Log.d(TAG,String.format(Locale.getDefault(), "Ready %s bitmap %,d bytes,

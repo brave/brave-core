@@ -74,9 +74,7 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
                         tab, () -> MessageDispatcherProvider.from(tab.getWindowAndroid())));
     }
 
-    /**
-     * Clear the status map and references to other objects.
-     */
+    /** Clear the status map and references to other objects. */
     @Override
     public void destroy() {}
 

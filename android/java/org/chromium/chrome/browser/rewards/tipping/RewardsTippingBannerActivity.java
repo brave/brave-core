@@ -17,8 +17,8 @@ import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 
-public class RewardsTippingBannerActivity
-        extends AsyncInitializationActivity implements BraveRewardsObserver {
+public class RewardsTippingBannerActivity extends AsyncInitializationActivity
+        implements BraveRewardsObserver {
     public static final String TAB_ID_EXTRA = "currentTabId";
     public static final String TIP_MONTHLY_EXTRA = "tipMonthly";
     public static final String TIP_AMOUNT_EXTRA = "tipAmount";

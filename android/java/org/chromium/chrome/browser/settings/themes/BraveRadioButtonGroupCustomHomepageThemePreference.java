@@ -22,7 +22,8 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.user_prefs.UserPrefs;
 
-public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioButtonGroupThemePreference {
+public class BraveRadioButtonGroupCustomHomepageThemePreference
+        extends RadioButtonGroupThemePreference {
 
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
 

@@ -172,12 +172,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private FrameLayout mShieldsLayout;
     private FrameLayout mRewardsLayout;
     private BraveShieldsHandler mBraveShieldsHandler;
+
     // TabModelSelectorTabObserver setups observer at the ctor
     @SuppressWarnings("UnusedVariable")
     private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
+
     // TabModelSelectorTabModelObserver setups observer at the ctor
     @SuppressWarnings("UnusedVariable")
     private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
+
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private BraveRewardsPanel mRewardsPopup;
     private DAppsWalletController mDAppsWalletController;
@@ -274,10 +277,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mDarkModeTint = ThemeUtils.getThemedToolbarIconTint(getContext(), false);
         mLightModeTint =
                 ColorStateList.valueOf(ContextCompat.getColor(getContext(), R.color.brave_white));
-        
+
         // See comment at onUrlFocusChange
         // mSearchWidgetPromoPanel = new SearchWidgetPromoPanel(getContext());
-        
+
         if (mHomeButton != null) {
             mHomeButton.setOnLongClickListener(this);
         }
@@ -1054,8 +1057,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Override
             protected Void doInBackground() {
                 try {
-                    SavedBandwidthTable savedBandwidthTable = new SavedBandwidthTable(
-                            savings, BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+                    SavedBandwidthTable savedBandwidthTable =
+                            new SavedBandwidthTable(
+                                    savings, BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
                     long unused_rowId = mDatabaseHelper.insertSavedBandwidth(savedBandwidthTable);
                 } catch (Exception e) {
                     // Do nothing if url is invalid.
@@ -1064,6 +1068,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void result) {
                 assert ThreadUtils.runningOnUiThread();
@@ -1079,9 +1084,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 try {
                     URL urlObject = new URL(url);
                     URL siteObject = new URL(statSite);
-                    BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(),
-                            statType, statSite, siteObject.getHost(),
-                            BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+                    BraveStatsTable braveStatsTable =
+                            new BraveStatsTable(
+                                    url,
+                                    urlObject.getHost(),
+                                    statType,
+                                    statSite,
+                                    siteObject.getHost(),
+                                    BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
                     long unused_rowId = mDatabaseHelper.insertStats(braveStatsTable);
                 } catch (Exception e) {
                     // Do nothing if url is invalid.
@@ -1090,6 +1100,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 }
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void result) {
                 assert ThreadUtils.runningOnUiThread();

@@ -233,7 +233,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
 
     private void setPublisherNoteText(int pubStatus) {
         if ((pubStatus == PublisherStatus.UPHOLD_VERIFIED
-                    && !mWalletType.equals(BraveWalletProvider.UPHOLD))
+                        && !mWalletType.equals(BraveWalletProvider.UPHOLD))
                 || (pubStatus == PublisherStatus.BITFLYER_VERIFIED
                         && !mWalletType.equals(BraveWalletProvider.BITFLYER))
                 || (pubStatus == PublisherStatus.GEMINI_VERIFIED
@@ -412,10 +412,11 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     }
 
     private void web3ButtonClick() {
-        mWeb3WalletButton.setOnClickListener(v -> {
-            TabUtils.openUrlInNewTab(false, mWeb3Url);
-            dismissRewardsPanel();
-        });
+        mWeb3WalletButton.setOnClickListener(
+                v -> {
+                    TabUtils.openUrlInNewTab(false, mWeb3Url);
+                    dismissRewardsPanel();
+                });
     }
 
     private void sendTipButtonClick(View view) {
