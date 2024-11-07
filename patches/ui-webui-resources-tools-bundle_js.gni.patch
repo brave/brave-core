@@ -1,16 +1,16 @@
 diff --git a/ui/webui/resources/tools/bundle_js.gni b/ui/webui/resources/tools/bundle_js.gni
-index 5f158aee8fbd1820fe8bdedb41af3a9bb722ff49..cd48e37a3a85cca496bd96d2b5e4e3b83b4b56b8 100644
+index dc7540cfe05c6e8779814cc432c1dbb8e0460a47..c66cdf2d91a6d742b6120072b2d11249136a43b1 100644
 --- a/ui/webui/resources/tools/bundle_js.gni
 +++ b/ui/webui/resources/tools/bundle_js.gni
-@@ -100,6 +100,7 @@ template("bundle_js") {
+@@ -99,6 +99,7 @@ template("bundle_js") {
      is_chrome_untrusted =
          string_replace(invoker.host, "chrome-untrusted://", "") != invoker.host
  
 +    import("//brave/ui/webui/resources/sources.gni") foreach(cr_override, brave_override_cr_elements) { target_path = rebase_path("$root_gen_dir/brave/ui/webui/resources/tsc/cr_elements/$cr_override") base_path_map = "//resources/cr_elements/$cr_override|$target_path" if (!is_chrome_untrusted) { external_paths += [ "chrome:" + base_path_map ] } external_paths += [ base_path_map, "../$cr_override|$target_path" ] }
-     if (is_chromeos_ash) {
+     if (is_chromeos) {
        ash_resources_path =
            rebase_path("$root_gen_dir/ash/webui/common/resources/preprocessed/",
-@@ -124,6 +125,7 @@ template("bundle_js") {
+@@ -123,6 +124,7 @@ template("bundle_js") {
      external_paths += [ "//resources/lit/v3_0/|$lit_path" ]
  
      if (!is_chrome_untrusted) {
