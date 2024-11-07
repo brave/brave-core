@@ -54,13 +54,15 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
     private static int TYPE_ITEMS = 2;
 
     private static final int ONE_ITEM_SPACE = 1;
-    private static final int TWO_ITEMS_SPACE = 2;
 
-    public BraveNewsPreferencesTypeAdapter(Context context,
+    public BraveNewsPreferencesTypeAdapter(
+            Context context,
             BraveNewsPreferencesListener braveNewsPreferencesListener,
             BraveNewsPreferencesSearchType braveNewsPreferencesSearchType,
-            BraveNewsController braveNewsController, RequestManager glide,
-            String braveNewsPreferencesType, List<Channel> channelList,
+            BraveNewsController braveNewsController,
+            RequestManager glide,
+            String braveNewsPreferencesType,
+            List<Channel> channelList,
             List<Publisher> publisherList) {
         mContext = context;
         mBraveNewsController = braveNewsController;

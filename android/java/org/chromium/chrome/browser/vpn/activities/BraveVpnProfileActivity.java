@@ -10,8 +10,6 @@ package org.chromium.chrome.browser.vpn.activities;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -27,8 +25,6 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
     private TextView mProfileText;
     private Button mInstallVpnButton;
     private Button mContactSupportButton;
-    private ProgressBar mProfileProgress;
-    private LinearLayout mProfileLayout;
 
     private void initializeViews() {
         setContentView(R.layout.activity_brave_vpn_profile);
@@ -40,9 +36,6 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_close_24);
         actionBar.setTitle(getResources().getString(R.string.install_vpn));
-
-        mProfileProgress = findViewById(R.id.profile_progress);
-        mProfileLayout = findViewById(R.id.profile_layout);
 
         mProfileTitle = findViewById(R.id.brave_vpn_profile_title);
         mProfileText = findViewById(R.id.brave_vpn_profile_text);

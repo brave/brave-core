@@ -142,7 +142,6 @@ import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
-import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
@@ -278,9 +277,7 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String BRAVE_WEBCOMPAT_INFO_WIKI_URL =
             "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
 
-    private static final int DAYS_1 = 1;
     private static final int DAYS_4 = 4;
-    private static final int DAYS_5 = 5;
     private static final int DAYS_7 = 7;
     private static final int DAYS_12 = 12;
 
@@ -1186,7 +1183,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         checkFingerPrintingOnUpgrade(isFirstInstall);
-        checkForVpnCallout(isFirstInstall);
+        checkForVpnCallout();
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
                 && BraveVpnPrefUtils.isSubscriptionPurchase()
@@ -1407,7 +1404,7 @@ public abstract class BraveActivity extends ChromeActivity
         BraveVpnUtils.openBraveVpnPlansActivity(this);
     }
 
-    private void checkForVpnCallout(boolean isFirstInstall) {
+    private void checkForVpnCallout() {
         String countryCode = Locale.getDefault().getCountry();
 
         if (!countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
@@ -1675,14 +1672,6 @@ public abstract class BraveActivity extends ChromeActivity
             }
         }
     }
-
-    private BraveNotificationWarningDialog.DismissListener mCloseDialogListener =
-            new BraveNotificationWarningDialog.DismissListener() {
-                @Override
-                public void onDismiss() {
-                    checkForNotificationData();
-                }
-            };
 
     private void checkForNotificationData() {
         Intent notifIntent = getIntent();

@@ -111,14 +111,11 @@ public class BraveRewardsPanel
     private static final String BRAVE_REWARDS_CHANGES_PAGE = "https://brave.com/rewards-changes";
 
     private static final String TAG = "BraveRewards";
-    private static final int UPDATE_BALANCE_INTERVAL = 60000; // In milliseconds
     private static final int PUBLISHER_INFO_FETCH_RETRY = 3 * 1000; // In milliseconds
     private static final int PUBLISHER_FETCHES_COUNT = 3;
 
     private static final String YOUTUBE_TYPE = "youtube#";
     private static final String TWITCH_TYPE = "twitch#";
-
-    private static final String SUCCESS = "success";
 
     // Balance report codes
     private static final int BALANCE_REPORT_EARNING_FROM_ADS = 0;
@@ -127,10 +124,7 @@ public class BraveRewardsPanel
     private static final int BALANCE_REPORT_ONE_TIME_DONATION = 3;
 
     // Custom Android notification
-    private static final char NOTIFICATION_PROMID_SEPARATOR = '_';
     private static final int REWARDS_NOTIFICATION_NO_INTERNET = 1000;
-    private static final String REWARDS_NOTIFICATION_NO_INTERNET_ID =
-            "29d835c2-5752-4152-93c3-8a1ded9dd4ec";
     private static final int REWARDS_PROMOTION_CLAIM_ERROR = REWARDS_NOTIFICATION_NO_INTERNET + 1;
     private static final String REWARDS_PROMOTION_CLAIM_ERROR_ID =
             "rewards_promotion_claim_error_id";
@@ -138,7 +132,6 @@ public class BraveRewardsPanel
     // Auto contribute results
     private static final String AUTO_CONTRIBUTE_SUCCESS = "0";
     private static final String AUTO_CONTRIBUTE_GENERAL_ERROR = "1";
-    private static final String AUTO_CONTRIBUTE_NOT_ENOUGH_FUNDS = "15";
     private static final String ERROR_CONVERT_PROBI = "ERROR";
     public static final String WALLET_GENERATION_DISABLED_ERROR = "wallet-generation-disabled";
 
@@ -146,8 +139,6 @@ public class BraveRewardsPanel
     private static final String PAYOUT_STATUS_PENDING = "off";
     private static final String PAYOUT_STATUS_PROCESSING = "processing";
     private static final String PAYOUT_STATUS_COMPLETE = "complete";
-
-    private static final int CLICK_DISABLE_INTERVAL = 1000; // In milliseconds
 
     private static final String SELF_CUSTODY_AVAILABLE = "self_custody_available";
     private static final String WALLET_DISCONNECTED = "wallet_disconnected";
@@ -201,7 +192,6 @@ public class BraveRewardsPanel
     private View mNotificationPermissionLayout;
     private boolean mNotificationShown;
 
-    private View mBraveRewardsOnboardingModalView;
     private View mRewardsResponseModal;
     private View mConnectAccountModal;
     private View mRewardsVbatExpireNoticeModal;
@@ -306,8 +296,6 @@ public class BraveRewardsPanel
         mBravePanelShadow = mPopupView.findViewById(R.id.panel_shadow);
         mBraveRewardsOnboardingView =
                 mPopupView.findViewById(R.id.brave_rewards_onboarding_layout_id);
-        mBraveRewardsOnboardingModalView =
-                mPopupView.findViewById(R.id.brave_rewards_onboarding_modal_id);
         mNotificationLayout =
                 mPopupView.findViewById(R.id.brave_rewards_panel_notification_layout_id);
         mNotificationPermissionLayout =
@@ -525,7 +513,7 @@ public class BraveRewardsPanel
         return valid;
     }
 
-    private void showNotification(String id, int type, long timestamp, String[] args) {
+    private void showNotification(String id, int type, String[] args) {
         if (mBraveRewardsNativeWorker == null) {
             return;
         }
@@ -809,15 +797,14 @@ public class BraveRewardsPanel
         }
         String batText = BraveRewardsHelper.BAT_TEXT;
         for (int i = 0; i < report.length; i++) {
-            TextView tvTitle = null;
             TextView tv = null;
             String text = "";
 
             double probiDouble = report[i];
-            boolean hideControls = (probiDouble == 0);
-            String value = Double.isNaN(probiDouble)
-                    ? "0.000" + batText
-                    : String.format(Locale.getDefault(), "%.3f", probiDouble);
+            String value =
+                    Double.isNaN(probiDouble)
+                            ? "0.000" + batText
+                            : String.format(Locale.getDefault(), "%.3f", probiDouble);
 
             switch (i) {
                 case BALANCE_REPORT_EARNING_FROM_ADS:
@@ -1122,9 +1109,9 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void onGetLatestNotification(String id, int type, long timestamp, String[] args) {
+    public void onGetLatestNotification(String id, int type, long unused_timestamp, String[] args) {
         if (!mCurrentNotificationId.equals(REWARDS_PROMOTION_CLAIM_ERROR_ID)) {
-            showNotification(id, type, timestamp, args);
+            showNotification(id, type, args);
         }
     }
 
@@ -1377,11 +1364,6 @@ public class BraveRewardsPanel
                 });
         View rewardsPanelUnverifiedCreatorSection =
                 unverifiedStateLayout.findViewById(R.id.rewards_panel_unverified_creator_section);
-        TextView rewardsPanelUnverifiedCreatorCountText =
-                unverifiedStateLayout.findViewById(
-                        R.id.rewards_panel_unverified_creator_count_text);
-        TextView rewardsPanelUnverifiedCreatorText =
-                unverifiedStateLayout.findViewById(R.id.rewards_panel_unverified_creator_text);
         View rewardsPanelUnverifiedOffSection =
                 unverifiedStateLayout.findViewById(R.id.rewards_panel_unverified_off_section);
         LinearLayout rewardsSettingsButton =

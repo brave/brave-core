@@ -366,10 +366,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                             boolean isFallbackColorDefault,
                             @IconType int iconType) {
                         if (icon == null)
-                            updateTileIcon(
-                                    imageViewId,
-                                    getTileIconFromColor(
-                                            gurl, fallbackColor, isFallbackColorDefault));
+                            updateTileIcon(imageViewId, getTileIconFromColor(gurl, fallbackColor));
                         else updateTileIcon(imageViewId, getRoundedTileIconFromBitmap(icon));
                     }
                 };
@@ -384,10 +381,10 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         return getBitmap(roundedIcon);
     }
 
-    private static Bitmap getTileIconFromColor(
-            GURL gurl, int fallbackColor, boolean isFallbackColorDefault) {
-        RoundedIconGenerator mIconGenerator = FaviconUtils.createRoundedRectangleIconGenerator(
-                ContextUtils.getApplicationContext());
+    private static Bitmap getTileIconFromColor(GURL gurl, int fallbackColor) {
+        RoundedIconGenerator mIconGenerator =
+                FaviconUtils.createRoundedRectangleIconGenerator(
+                        ContextUtils.getApplicationContext());
         mIconGenerator.setBackgroundColor(fallbackColor);
         return mIconGenerator.generateIconForUrl(gurl);
     }

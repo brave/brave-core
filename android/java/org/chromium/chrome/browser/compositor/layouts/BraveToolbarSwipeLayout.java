@@ -19,6 +19,7 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
      * Whether or not to move toolbar with tab contents. Will be deleted in bytecode, value from the
      * parent class will be used instead.
      */
+    @SuppressWarnings("UnusedVariable")
     private boolean mMoveToolbar;
 
     public BraveToolbarSwipeLayout(

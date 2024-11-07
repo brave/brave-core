@@ -55,7 +55,6 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
 
     private BraveNewsPreferencesTypeAdapter mAdapter;
     private BraveNewsController mBraveNewsController;
-    private List<Publisher> mPublisherList;
     private String mBraveNewsPreferencesType;
     private String mSearch = "";
     private HashMap<String, String> mFeedSearchResultItemFollowMap = new HashMap<>();

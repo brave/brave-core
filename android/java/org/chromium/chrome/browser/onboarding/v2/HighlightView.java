@@ -41,15 +41,12 @@ public class HighlightView extends FrameLayout {
     private boolean mIsHighlightTransparent;
     private AnimatorSet mAnimatorSet;
 
-    private Context mContext;
-
     private float mInnerRadius;
     private float mOuterRadius;
     private int mColor = -1;
 
     public HighlightView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
         PorterDuffXfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.MULTIPLY);
         mBasicPaint = new Paint();
         mEraserPaint = new Paint();

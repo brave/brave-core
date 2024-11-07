@@ -27,7 +27,7 @@ public class BraveStrictPreferenceKeyChecker extends StrictPreferenceKeyChecker 
      * Dummy method that will be deleted form the bytecode. {@link
      * StrictPreferenceKeyChecker#isKeyInUse} will be used instead.
      */
-    private boolean isKeyInUse(String key) {
+    private boolean isKeyInUse(String unused_key) {
         assert false : "This method should be deleted in bytecode!";
         return false;
     }

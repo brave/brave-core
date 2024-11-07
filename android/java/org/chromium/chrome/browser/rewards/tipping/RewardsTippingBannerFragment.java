@@ -32,7 +32,6 @@ import org.json.JSONException;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
-import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveWalletProvider;
@@ -54,8 +53,6 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
     private static final String TAG = "TippingBanner";
     private int mCurrentTabId = -1;
     private BraveRewardsBannerInfo mBannerInfo;
-
-    private BraveRewardsHelper mIconFetcher;
 
     private static final String TWITTER = "twitter";
     private static final String YOUTUBE = "youtube";
