@@ -306,6 +306,17 @@ void MessageManager::StartScheduledUpload(bool is_constellation,
     log_store->StageNextLog();
   }
 
+  if (!is_constellation && log_type == MetricLogType::kExpress &&
+      features::ShouldOnlyAllowNTTJSON() &&
+      !IsMetricCreative(json_log_stores_[log_type]->staged_log_key())) {
+    // NTT metrics are the only allowed express/daily JSON metrics. Mark other
+    // express JSON metrics as sent.
+    log_store->MarkStagedLogAsSent();
+    log_store->DiscardStagedLog();
+    scheduler->UploadFinished(true);
+    return;
+  }
+
   const std::string log = log_store->staged_log();
   const std::string upload_type =
       is_constellation

@@ -68,13 +68,15 @@ class P3AMessageManagerTest : public testing::Test,
   void InitFeatures(bool is_constellation_enabled) {
     if (is_constellation_enabled) {
       scoped_feature_list_.InitWithFeatures(
-          {features::kConstellation,
-           features::kConstellationEnclaveAttestation},
+          {features::kConstellation, features::kConstellationEnclaveAttestation,
+           features::kNTTJSONDeprecation},
           {});
     } else {
       scoped_feature_list_.InitWithFeatures(
-          {}, {features::kConstellation,
-               features::kConstellationEnclaveAttestation});
+          {},
+          {features::kConstellation, features::kConstellationEnclaveAttestation,
+           features::kTypicalJSONDeprecation, features::kOtherJSONDeprecation,
+           features::kNTTJSONDeprecation});
     }
     base::Time future_mock_time;
     if (base::Time::FromString("2050-01-04", &future_mock_time)) {
@@ -290,7 +292,7 @@ class P3AMessageManagerTest : public testing::Test,
 };
 
 TEST_F(P3AMessageManagerTest, UpdateLogsAndSendJson) {
-  InitFeatures(true);
+  InitFeatures(false);
   for (MetricLogType log_type : kAllMetricLogTypes) {
     size_t p2a_count = log_type == MetricLogType::kTypical ? 4 : 0;
     SetUpManager();

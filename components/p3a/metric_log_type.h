@@ -31,6 +31,8 @@ const char* MetricLogTypeToString(MetricLogType log_type);
 std::optional<MetricLogType> StringToMetricLogType(
     const std::string& log_type_str);
 
+bool IsMetricCreative(const std::string& histogram_name);
+
 }  // namespace p3a
 
 #endif  // BRAVE_COMPONENTS_P3A_METRIC_LOG_TYPE_H_
