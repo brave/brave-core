@@ -8,6 +8,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "net/http/http_status_code.h"
 
 namespace brave_ads {
 
@@ -39,6 +40,11 @@ std::optional<std::string> HttpStatusCodeClassToString(
 }
 
 }  // namespace
+
+bool IsSuccessfulHttpStatusCode(const int http_status_code) {
+  return http_status_code >= /*200*/ net::HTTP_OK &&
+         http_status_code < /*400*/ net::HTTP_BAD_REQUEST;
+}
 
 std::optional<std::string> HttpStatusCodeToString(const int http_status_code) {
   const int http_status_code_class = http_status_code / 100;
