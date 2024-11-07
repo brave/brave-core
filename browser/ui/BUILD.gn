@@ -23,11 +23,9 @@ import("//mojo/public/tools/bindings/mojom.gni")
 import("//printing/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-# Some targets have allow_circular_includes_from for //chrome/browser/ui so they
-# are missing the dependency that would otherwise be required for it. This is a
-# workaround to add the public deps from //brave/browser/ui that would be added
-# automatically if the //chrome/browser/ui dependency was present.
+# See //chrome/browser/ui:ui_public_depdendencies.
 group("ui_public_dependencies") {
+  visibility = [ "//brave/browser/ui", "//chrome/browser/ui:ui_public_dependencies" ]
   public_deps = [
     ":brave_rewards_source",
     ":brave_tab_features",
@@ -52,10 +50,13 @@ source_set("ui") {
     "//brave/browser/brave_ads",
     "//brave/browser/brave_rewards",
     "//brave/browser/skus",
+    "//brave/browser/ui/webui/brave_news_internals",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
     "//chrome/browser/ui:browser_navigator_params_headers",
   ]
+
+  allow_circular_includes_from = [ "//brave/browser/ui/webui/brave_news_internals" ]
 
   public_deps = [ ":ui_public_dependencies" ]
 
@@ -1245,8 +1246,6 @@ source_set("ui") {
       "views/wallet_bubble_focus_observer.h",
       "wallet_bubble_manager_delegate_impl.cc",
       "wallet_bubble_manager_delegate_impl.h",
-      "webui/brave_news_internals/brave_news_internals_ui.cc",
-      "webui/brave_news_internals/brave_news_internals_ui.h",
       "webui/brave_wallet/ledger/ledger_ui.cc",
       "webui/brave_wallet/ledger/ledger_ui.h",
       "webui/brave_wallet/page_handler/wallet_page_handler.cc",

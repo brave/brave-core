@@ -20,6 +20,7 @@
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_federated/features.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -128,7 +129,10 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (base::FeatureList::IsEnabled(
                  brave_news::features::kBraveNewsFeedUpdate) &&
              host == kBraveNewsInternalsHost) {
-    return new BraveNewsInternalsUI(web_ui, url.host());
+    return new BraveNewsInternalsUI(
+
+        web_ui, url.host(),
+        brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile));
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host == chrome::kChromeUINewTabHost) {
