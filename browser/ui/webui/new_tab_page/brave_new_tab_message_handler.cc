@@ -393,7 +393,7 @@ void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
   // Cleanup "toggleAlternativePrivateSearchEngine" message handler when it's
   // deleted from NTP Webui.
   // https://github.com/brave/brave-browser/issues/23493
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
