@@ -32,7 +32,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
       isChecked: { type: Boolean },
       password: { type: String },
       passwordConfirmation: { type: String },
-      score: { type: Number },
+      percent: { type: Number },
     }
   }
 
@@ -46,7 +46,9 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
 
   protected onCreatePasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.score = this.regexps.filter(regexp => regexp.test(this.password)).length
+    this.percent = this.regexps.filter(
+      regexp => regexp.test(this.password)
+    ).length / this.regexps.length * 100
   }
 
   protected onConfirmPasswordInput(detail: { value: string }) {
@@ -81,8 +83,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   protected icon: string = 'warning-triangle-filled'
 
   protected regexps = [ /^.{5,}$/, /[a-z]/, /[A-Z]/, /[0-9]/, /[^a-zA-Z0-9]/ ]
-  protected score: number = 0
-  protected strength = [ 'Weak', 'Weak', 'Weak', 'Medium', 'Medium', 'Strong' ]
+  protected percent: number = 0
 }
 
 declare global {
