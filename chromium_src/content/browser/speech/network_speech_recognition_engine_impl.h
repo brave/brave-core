@@ -24,8 +24,7 @@ class CONTENT_EXPORT NetworkSpeechRecognitionEngineImpl
     : public NetworkSpeechRecognitionEngineImpl_ChromiumImpl {
  public:
   NetworkSpeechRecognitionEngineImpl(
-      scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory,
-      const std::string& accept_language);
+      scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory);
   ~NetworkSpeechRecognitionEngineImpl() override;
 
   void StartRecognition() override;
