@@ -8,6 +8,8 @@
 #include <string>
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/notreached.h"
 #include "base/strings/stringprintf.h"
 #include "v8/include/v8-context.h"
@@ -154,8 +156,10 @@ class ExtensionImpl : public v8::Extension {
     if (name->StringEquals(ToV8StringUnsafe(isolate, "Save"))) {
       return v8::FunctionTemplate::New(isolate, Save);
     }
-    NOTREACHED_IN_MIGRATION()
-        << std::string(*v8::String::Utf8Value(isolate, name));
+    SCOPED_CRASH_KEY_STRING64(
+        "GetNativeFunctionTemplate", "name",
+        std::string(*v8::String::Utf8Value(isolate, name)));
+    base::debug::DumpWithoutCrashing();
     return v8::Local<v8::FunctionTemplate>();
   }
 
