@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_delegate.h"
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 

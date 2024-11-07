@@ -14,9 +14,9 @@ namespace brave_ads {
 
 namespace {
 
-struct DisallwedMask {
+struct DisallowedMask {
   template <typename... Args>
-  constexpr DisallwedMask(Args... args)  // NOLINT(runtime/explicit)
+  constexpr DisallowedMask(Args... args)  // NOLINT(runtime/explicit)
       : address{static_cast<uint8_t>(args)...}, size(sizeof...(args)) {}
 
   base::span<const uint8_t> as_span() const {
@@ -27,7 +27,7 @@ struct DisallwedMask {
   size_t size;
 };
 
-void TestDisallowedRange(DisallwedMask mask) {
+void TestDisallowedRange(DisallowedMask mask) {
   std::array<uint8_t, 6u> address;
 
   // test the lower bound of the match
