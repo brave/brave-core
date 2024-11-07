@@ -8,11 +8,14 @@
 import os
 from typing import List, Optional
 
+from components.field_trials import (FieldTrialConfig, FieldTrialsMode,
+                                     MaybeInjectSeedToLocalState,
+                                     MakeFieldTrials)
 import components.path_util as path_util
-
+import components.field_trials as field_trials
 from components.android_tools import InstallApk
 from components.common_options import CommonOptions
-from components.browser_type import BrowserType, FieldTrialConfig
+from components.browser_type import BrowserType
 from components.perf_config import RunnerConfig
 from components.perf_profile import GetProfilePath
 
@@ -26,12 +29,12 @@ class BrowserBinary:
   android_package: Optional[str] = None
 
   profile_dir: Optional[str] = None
-  field_trial_config: Optional[FieldTrialConfig] = None
+  field_trial_config: FieldTrialConfig
   _browser_type: BrowserType
 
   def __init__(self, browser_type: BrowserType, binary_path: Optional[str],
                android_package: Optional[str], profile_dir: Optional[str],
-               field_trial_config: Optional[FieldTrialConfig]):
+               field_trial_config: FieldTrialConfig):
     self._browser_type = browser_type
     self.binary_path = binary_path
     self.android_package = android_package
@@ -75,13 +78,22 @@ class BrowserBinary:
       raise RuntimeError('Bad binary spec, no browser to run')
 
     args.extend(self._browser_type.extra_benchmark_args)
+
+    if self.field_trial_config.mode != FieldTrialsMode.TESTING_FIELD_TRIALS:
+      # Don't use chromium mechanism to inject field trials
+      args.append('--compatibility-mode=no-field-trials')
+
     return args
 
   def get_browser_args(self) -> List[str]:
     args: List[str] = []
-    if self.field_trial_config:
-      args.append(f'--field-trial-config={self.field_trial_config.filename}')
-
+    if self.field_trial_config.mode != FieldTrialsMode.TESTING_FIELD_TRIALS:
+      args.append('--disable-field-trial-config')
+      args.append('--accept-empty-variations-seed-signature')
+      args.append('--variations-override-country=us')
+      if self.field_trial_config.fake_channel:
+        args.append('--fake-variations-channel=' +
+                    self.field_trial_config.fake_channel)
     args.extend(self._browser_type.extra_browser_args)
     return args
 
@@ -105,8 +117,10 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
                                  common_options.working_directory,
                                  config.version)
 
-  field_trial_config = config.browser_type.MakeFieldTrials(
-      config.version, artifacts_dir, common_options)
+  trials = config.field_trials or config.browser_type.GetDefaultFieldTrials()
+  field_trial_config = MakeFieldTrials(trials, artifacts_dir, config.version,
+                                       common_options.variations_repo_dir)
+  MaybeInjectSeedToLocalState(field_trial_config, profile_dir)
 
   binary_location = None
   package = None

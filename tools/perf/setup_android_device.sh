@@ -14,4 +14,5 @@ resetprop ro.debuggable 1 && \
 magiskpolicy --live "allow adbd adbd process setcurrent" && \
 magiskpolicy --live "allow adbd su process dyntransition" && \
 magiskpolicy --live "permissive { su }" && \
-input keyevent 82
+input keyevent 82 && \
+rm -f /data/local/tmp/chrome-command-line
