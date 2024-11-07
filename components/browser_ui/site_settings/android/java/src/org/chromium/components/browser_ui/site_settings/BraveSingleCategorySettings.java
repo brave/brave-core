@@ -9,7 +9,6 @@ import android.os.Bundle;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.build.annotations.UsedByReflection;
-import org.chromium.content_public.browser.BrowserContextHandle;
 
 @UsedByReflection("brave_site_settings_preferences.xml")
 public class BraveSingleCategorySettings extends BaseSiteSettingsFragment

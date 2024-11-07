@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.shields;
 
-import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -50,7 +49,6 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;

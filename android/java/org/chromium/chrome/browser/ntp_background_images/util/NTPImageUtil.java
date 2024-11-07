@@ -15,7 +15,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
-import gen._content._public._android._content_full_java__assetres.srcjar.R.string;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;

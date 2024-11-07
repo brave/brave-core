@@ -5,14 +5,11 @@
 
 package org.chromium.chrome.browser;
 
-import android.content.Context;
-
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
 import org.chromium.base.Callback;
-import org.chromium.base.ContextUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

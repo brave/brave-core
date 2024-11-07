@@ -6,8 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +19,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class CreateAccountAdapter extends RecyclerView.Adapter<CreateAccountAdapter.ViewHolder> {
     private final LayoutInflater inflater;

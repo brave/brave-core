@@ -12,12 +12,10 @@ import android.view.View;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
-import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
 
 public class RewardsTippingBannerActivity
         extends AsyncInitializationActivity implements BraveRewardsObserver {

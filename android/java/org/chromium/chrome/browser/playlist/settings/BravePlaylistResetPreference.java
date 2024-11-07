@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.playlist.settings;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
