@@ -25,7 +25,10 @@ import("//third_party/widevine/cdm/widevine.gni")
 
 # See //chrome/browser/ui:ui_public_depdendencies.
 group("ui_public_dependencies") {
-  visibility = [ "//brave/browser/ui", "//chrome/browser/ui:ui_public_dependencies" ]
+  visibility = [
+    "//brave/browser/ui",
+    "//chrome/browser/ui:ui_public_dependencies",
+  ]
   public_deps = [
     ":brave_rewards_source",
     ":brave_tab_features",
@@ -56,7 +59,8 @@ source_set("ui") {
     "//chrome/browser/ui:browser_navigator_params_headers",
   ]
 
-  allow_circular_includes_from = [ "//brave/browser/ui/webui/brave_news_internals" ]
+  allow_circular_includes_from =
+      [ "//brave/browser/ui/webui/brave_news_internals" ]
 
   public_deps = [ ":ui_public_dependencies" ]
 
