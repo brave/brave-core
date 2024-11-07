@@ -35,12 +35,12 @@ source_set("ads") {
     "//brave/components/brave_rewards/common",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/common",
+    "//brave/ios/browser/ads",
     "//brave/ios/browser/api/common",
     "//components/prefs",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/shared/model/profile",
-    "//sql:sql",
   ]
 
   frameworks = [

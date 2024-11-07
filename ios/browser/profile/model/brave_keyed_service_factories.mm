@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/profile/model/brave_keyed_service_factories.h"
 
+#include "brave/ios/browser/ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/api/ai_chat/model_service_factory.h"
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_factory.h"
@@ -33,6 +34,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   brave::URLSanitizerServiceFactory::GetInstance();
   debounce::DebounceServiceFactory::GetInstance();
   webcompat_reporter::WebcompatReporterServiceFactory::GetInstance();
+  brave_ads::AdsServiceFactoryIOS::GetInstance();
 }
 
 }  // namespace brave
