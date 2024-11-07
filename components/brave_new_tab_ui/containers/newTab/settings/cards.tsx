@@ -99,7 +99,7 @@ function CardSettings({ toggleShowBraveTalk, showBraveTalk, braveTalkSupported, 
           {getLocale('braveVpnWidgetSettingDesc')}
         </StyledSettingsCopy>
       </StyledSettingsInfo>
-      <ToggleButton on={!!showBraveVPN} toggleFunc={() => saveShowBraveVPN(!showBraveVPN)} />
+      <ToggleButton on={showBraveVPN!} toggleFunc={() => saveShowBraveVPN(!showBraveVPN)} />
     </SettingsWidget>}
     <FeaturedSettingsWidget>
       <ToggleCardsWrapper>

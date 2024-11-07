@@ -395,15 +395,16 @@ class NewTabPage extends React.Component<Props, State> {
     window.open('https://brave.com/brave-rewards/', '_blank', 'noopener')
   }
 
+  braveVPNSupported = loadTimeData.getBoolean('vpnWidgetSupported')
   getCryptoContent () {
     if (this.props.newTabData.hideAllWidgets) {
       return null
     }
+
     const {
       widgetStackOrder,
       braveRewardsSupported,
       braveTalkSupported,
-      braveVPNSupported,
       showRewards,
       showBraveTalk,
       showBraveVPN
@@ -414,7 +415,7 @@ class NewTabPage extends React.Component<Props, State> {
         render: this.renderRewardsWidget.bind(this)
       },
       'braveVPN': {
-        display: braveVPNSupported && showBraveVPN,
+        display: this.braveVPNSupported && showBraveVPN,
         render: this.renderBraveVPNWidget
       },
       'braveTalk': {
@@ -449,7 +450,6 @@ class NewTabPage extends React.Component<Props, State> {
     const {
       braveRewardsSupported,
       braveTalkSupported,
-      braveVPNSupported,
       showRewards,
       showBraveTalk,
       showBraveVPN,
@@ -458,7 +458,7 @@ class NewTabPage extends React.Component<Props, State> {
     return hideAllWidgets || [
       braveRewardsSupported && showRewards,
       braveTalkSupported && showBraveTalk,
-      braveVPNSupported && showBraveVPN,
+      this.braveVPNSupported && showBraveVPN,
     ].every((widget: boolean) => !widget)
   }
 

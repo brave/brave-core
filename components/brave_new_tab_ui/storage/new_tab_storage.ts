@@ -41,7 +41,6 @@ export const defaultState: NewTab.State = {
   showEmptyPage: false,
   braveRewardsSupported: false,
   braveTalkSupported: false,
-  braveVPNSupported: loadTimeData.getBoolean('vpnWidgetSupported'),
   bitcoinDotComSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
