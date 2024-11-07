@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 
 import { loadTimeData } from '$web-common/loadTimeData'
 import createWidget, { WidgetProps } from '../widget/index'
@@ -12,7 +11,6 @@ import { StyledCard, StyledTitleTab } from '../widgetCard'
 import { VPNMainWidget, VPNPromoWidget, VPNWidgetTitle } from '../vpn/vpn_card'
 import { BraveVPNState } from 'components/brave_new_tab_ui/reducers/brave_vpn'
 import * as BraveVPN from '../../../api/braveVpn'
-import * as Actions from '../../../actions/brave_vpn_actions'
 import { useNewTabPref } from '../../../hooks/usePref'
 
 export interface VPNProps {
@@ -22,12 +20,6 @@ export interface VPNProps {
 }
 
 const VPNWidgetInternal = createWidget((props: VPNProps) => {
-  const dispatch = useDispatch()
-
-  React.useEffect(() => {
-    dispatch(Actions.initialize())
-  }, [])
-
   if (!props.showContent) {
     return (
       <StyledTitleTab onClick={props.onShowContent}>

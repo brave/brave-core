@@ -407,15 +407,20 @@ class NewTabPage extends React.Component<Props, State> {
       braveTalkSupported,
       showRewards,
       showBraveTalk,
-      showBraveVPN
+      showBraveVPN,
     } = this.props.newTabData
+
+    const {
+      initialized
+    } = this.props.braveVPNData
+
     const lookup: { [p: string]: { display: boolean, render: any } } = {
       'rewards': {
         display: braveRewardsSupported && showRewards,
         render: this.renderRewardsWidget.bind(this)
       },
       'braveVPN': {
-        display: this.braveVPNSupported && showBraveVPN,
+        display: this.braveVPNSupported && showBraveVPN && initialized,
         render: this.renderBraveVPNWidget
       },
       'braveTalk': {
