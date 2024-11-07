@@ -176,8 +176,13 @@ export const sortNativeAndAndBatAssetsToTop = (
 
 export type GetBlockchainTokenIdArg = Pick<
   BraveWallet.BlockchainToken,
-  'coin' | 'chainId' | 'contractAddress' | 'isErc721' |
-  'tokenId' | 'isNft' | 'isShielded'
+  | 'coin'
+  | 'chainId'
+  | 'contractAddress'
+  | 'isErc721'
+  | 'tokenId'
+  | 'isNft'
+  | 'isShielded'
 >
 
 /**
@@ -192,9 +197,13 @@ export const getAssetIdKey = (
 ) => {
   return asset.tokenId
     ? `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.tokenId}-${
-      asset.chainId}-${asset.isShielded}`
-    : `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.chainId}-${
-      asset.isShielded}`
+        asset.chainId
+      }`
+    : asset.isShielded
+    ? `${asset.coin}-${asset.contractAddress.toLowerCase()}-${
+        asset.chainId
+      }-shielded`
+    : `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.chainId}`
 }
 
 export const findTokenByContractAddress = <
