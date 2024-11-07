@@ -15,9 +15,15 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
         <leo-input placeholder="Enter your email address"
                    showErrors
                    @input=${this.onEmailAddressInput}>
-          <div class="label ${this.emailAddress.length !== 0 && !this.isEmailAddressValid ?
+          <div class="label ${this.emailAddress.length !== 0 && !this.isEmailAddressValid
+                           || this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias ?
                             'red' : ''}">
             Email address
+          </div>
+          <div class="brave-alias-error ${this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias ? 'visible' : ''}"
+               slot="errors">
+            <leo-icon name="warning-triangle-filled"></leo-icon>
+            <div>You can't use @bravealias.com addresses for creating Brave accounts. Please try again with a different domain.</div>
           </div>
         </leo-input>
         <leo-input placeholder="Enter a name for your account"

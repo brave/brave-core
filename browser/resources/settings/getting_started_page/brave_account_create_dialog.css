@@ -25,6 +25,22 @@ leo-input:not(:focus):has(> .red) {
   --leo-control-border-color: var(--leo-color-systemfeedback-error-icon);
 }
 
+.brave-alias-error {
+  --leo-icon-size: 16px;
+  align-items: flex-start;
+  display: flex;
+  font: var(--leo-font-small-regular);
+  gap: 4px;
+  margin: -36px 4px 0px 4px;
+  position: relative;
+  transition: 750ms;
+  z-index: -1;
+}
+
+.brave-alias-error.visible {
+  margin: 4px 4px 0px 4px;
+}
+
 .password-strength-indicator {
   align-items: center;
   display: flex;
@@ -74,24 +90,24 @@ leo-input:not(:focus):has(> .red) {
 
 .password-strength-category {
   color: var(--primary-color);
-  font: var(--leo-font-x-small-regular);
+  font: var(--leo-font-small-regular);
   transition: 750ms;
 }
 
 .password-confirmation-result {
-  --leo-icon-size: 14px;
-  align-items: center;
+  --leo-icon-size: 16px;
+  align-items: flex-start;
   display: flex;
-  font: var(--leo-font-x-small-regular);
+  font: var(--leo-font-small-regular);
   gap: 4px;
-  margin: -16px 0px 0px 4px;
+  margin: -18px 4px 0px 4px;
   position: relative;
   transition: 750ms;
   z-index: -1;
 }
 
 .password-confirmation-result.visible {
-  margin: 4px 0px 0px 4px;
+  margin: 4px 4px 0px 4px;
 }
 
 leo-checkbox a {
