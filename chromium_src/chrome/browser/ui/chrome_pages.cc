@@ -5,7 +5,7 @@
 
 // It has caller in the same file
 #define BRAVE_GET_SETTINGS_URL \
-GURL GetSettingsUrl_ChromiumImpl(const std::string& sub_page) {
+  GURL GetSettingsUrl_ChromiumImpl(std::string_view sub_page) {
 // BRAVE_GET_SETTINGS_URL
 
 #include "src/chrome/browser/ui/chrome_pages.cc"
@@ -16,7 +16,7 @@ GURL GetSettingsUrl_ChromiumImpl(const std::string& sub_page) {
 
 namespace chrome {
 
-GURL GetSettingsUrl(const std::string& sub_page) {
+GURL GetSettingsUrl(std::string_view sub_page) {
   if (sub_page == chrome::kSyncSetupSubPage)
     return chrome::GetSettingsUrl(kBraveSyncSetupPath);
   return GetSettingsUrl_ChromiumImpl(sub_page);
