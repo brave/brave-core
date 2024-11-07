@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 
-import { loadTimeData } from '$web-common/loadTimeData'
 import createWidget, { WidgetProps } from '../widget/index'
 import { StyledCard, StyledTitleTab } from '../widgetCard'
 import { VPNMainWidget, VPNPromoWidget, VPNWidgetTitle } from '../vpn/vpn_card'
@@ -44,10 +43,7 @@ const VPNWidgetInternal = createWidget((props: VPNProps) => {
 })
 
 export const VPNWidget = (props: WidgetProps & VPNProps) => {
-  const [showBraveVPN, saveShowBraveVPN] = useNewTabPref('showBraveVPN')
-  if (!showBraveVPN || !loadTimeData.getBoolean('vpnWidgetSupported')) {
-    return null
-  }
+  const [, saveShowBraveVPN] = useNewTabPref('showBraveVPN')
 
   return (
     <VPNWidgetInternal
