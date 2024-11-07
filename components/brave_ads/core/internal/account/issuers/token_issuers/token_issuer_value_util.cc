@@ -43,8 +43,8 @@ std::optional<std::string> ToString(const TokenIssuerType token_issuer_type) {
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for TokenIssuerType: "
-                        << base::to_underlying(token_issuer_type);
+  NOTREACHED() << "Unexpected value for TokenIssuerType: "
+               << base::to_underlying(token_issuer_type);
 }
 
 std::optional<TokenIssuerType> ParseTokenIssuerType(

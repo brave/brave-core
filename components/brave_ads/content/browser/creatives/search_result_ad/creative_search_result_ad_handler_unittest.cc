@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/strcat.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
@@ -270,7 +269,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
             creative_search_result_ads =
                 ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
                     mojom_web_page->entities);
-        ASSERT_EQ(creative_search_result_ads.size(), 1u);
+        ASSERT_EQ(creative_search_result_ads.size(), 1U);
         ASSERT_EQ(creative_search_result_ads[0]->placement_id,
                   test::kCreativeAdPlacementId);
 
@@ -310,7 +309,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
             creative_search_result_ads =
                 ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
                     mojom_web_page->entities);
-        ASSERT_EQ(creative_search_result_ads.size(), 1u);
+        ASSERT_EQ(creative_search_result_ads.size(), 1U);
         ASSERT_EQ(creative_search_result_ads[0]->placement_id,
                   test::kEscapedCreativeAdPlacementIdWithUnreservedCharacters);
 

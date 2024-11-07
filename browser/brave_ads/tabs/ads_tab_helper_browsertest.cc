@@ -15,7 +15,6 @@
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
-#include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -435,8 +434,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
       }
     }
 
-    NOTREACHED_NORETURN()
-        << "Query key not found. Unable to handle the request.";
+    NOTREACHED() << "Query key not found. Unable to handle the request.";
   }
 
   std::vector<GURL> RedirectChainExpectation(
