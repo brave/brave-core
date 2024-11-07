@@ -70,6 +70,11 @@ void SiteVisit::MaybeLandOnPage(const TabInfo& tab,
     return;
   }
 
+  if (!IsSuccessfulHttpStatusCode(http_status_code)) {
+    // If the page did not load successfully, immediately land on the page.
+    return LandedOnPage(tab.id, http_status_code, ad);
+  }
+
   // The page loaded successfully, so land on the page after a delay.
   MaybeLandOnPageAfter(tab, http_status_code, ad, kPageLandAfter.Get());
 }

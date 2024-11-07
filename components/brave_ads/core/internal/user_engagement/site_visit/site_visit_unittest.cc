@@ -590,8 +590,9 @@ TEST_F(BraveAdsSiteVisitTest,
   EXPECT_FALSE(HasPendingTasks());
 }
 
-TEST_F(BraveAdsSiteVisitTest,
-       LandOnPageIfTheTabIsVisibleAndTheRedirectChainMatchesTheLastClickedAd) {
+TEST_F(
+    BraveAdsSiteVisitTest,
+    LandOnPageIfTheTabIsVisibleAndTheRedirectChainMatchesTheLastClickedAdForHttpSuccessfulResponseStatusCode) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
@@ -610,20 +611,40 @@ TEST_F(BraveAdsSiteVisitTest,
 
 TEST_F(
     BraveAdsSiteVisitTest,
-    LandOnPageIfTheTabIsVisibleAndTheRedirectChainMatchesTheLastClickedAdForHttpResponseStatusErrorPage) {
+    LandOnPageIfTheTabIsVisibleAndTheRedirectChainMatchesTheLastClickedAdForHttpClientErrorResponseStatusCode) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   EXPECT_CALL(site_visit_observer_mock_,
-              OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()));
-  SimulateClickingAd(ad, /*tab_id=*/1,
-                     /*redirect_chain=*/{GURL("https://brave.com")});
-  ASSERT_EQ(1U, GetPendingTaskCount());
+              OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()))
+      .Times(0);
 
   // Act & Assert
-  EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage(
-                                             /*tab_id=*/1, net::HTTP_OK, ad));
-  FastForwardClockBy(kPageLandAfter.Get());
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnDidLandOnPage(
+                  /*tab_id=*/1, net::HTTP_BAD_REQUEST, ad));
+  SimulateClickingAd(ad, /*tab_id=*/1,
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_BAD_REQUEST);
+}
+
+TEST_F(
+    BraveAdsSiteVisitTest,
+    LandOnPageIfTheTabIsVisibleAndTheRedirectChainMatchesTheLastClickedAdForHttpServerErrorResponseStatusCode) {
+  // Arrange
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*should_generate_random_uuids=*/true);
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()))
+      .Times(0);
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_,
+              OnDidLandOnPage(
+                  /*tab_id=*/1, net::HTTP_INTERNAL_SERVER_ERROR, ad));
+  SimulateClickingAd(ad, /*tab_id=*/1,
+                     /*redirect_chain=*/{GURL("https://brave.com")},
+                     net::HTTP_INTERNAL_SERVER_ERROR);
 }
 
 TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheTabIsOccluded) {
