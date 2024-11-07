@@ -3,18 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_stats/brave_stats_updater.h"
+
 #include <memory>
 #include <utility>
 
+#include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/string_split.h"
 #include "base/system/sys_info.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
-#include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
+#include "brave/browser/brave_stats/features.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -23,15 +27,16 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
-
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/common/content_switches.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/gfx/switches.h"
 
 using testing::HasSubstr;
 
@@ -81,6 +86,8 @@ class BraveStatsUpdaterTest : public testing::Test {
     brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(true);
   }
 
+  void TearDown() override { brave_stats_updater_ = nullptr; }
+
   PrefService* GetLocalState() { return &testing_local_state_; }
   std::unique_ptr<brave_stats::BraveStatsUpdaterParams> BuildUpdaterParams() {
     return std::make_unique<brave_stats::BraveStatsUpdaterParams>(
@@ -97,9 +104,29 @@ class BraveStatsUpdaterTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
+  base::test::ScopedFeatureList scoped_feature_list_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   base::HistogramTester histogram_tester_;
+  std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
+
+  void SetupStatsUpdater(
+      brave_stats::BraveStatsUpdater::StatsUpdatedCallback* update_cb) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), "{\"ok\":1}");
+          EXPECT_EQ(request.url.spec().find("https://localhost:8443"),
+                    (size_t)0);
+        }));
+    brave_stats_updater_ = std::make_unique<brave_stats::BraveStatsUpdater>(
+        GetLocalState(),
+        /*profile_manager*/ nullptr);
+    brave_stats_updater_->SetURLLoaderFactoryForTesting(
+        shared_url_loader_factory_);
+    brave_stats_updater_->SetStatsUpdatedCallbackForTesting(update_cb);
+    brave_stats_updater_->SetUsageServerForTesting("https://localhost:8443");
+  }
 
  private:
   TestingPrefServiceSimple testing_local_state_;
@@ -680,43 +707,103 @@ TEST_F(BraveStatsUpdaterTest, UsagePingRequest) {
   int ping_count = 0;
   GURL last_url;
 
-  url_loader_factory_.SetInterceptor(
-      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-        url_loader_factory_.ClearResponses();
-        url_loader_factory_.AddResponse(request.url.spec(), "{\"ok\":1}");
-        EXPECT_EQ(request.url.spec().find("https://localhost:8443"), (size_t)0);
-      }));
-
-  brave_stats::BraveStatsUpdater updater(GetLocalState(),
-                                         /*profile_manager*/ nullptr);
-  updater.SetURLLoaderFactoryForTesting(shared_url_loader_factory_);
   brave_stats::BraveStatsUpdater::StatsUpdatedCallback cb = base::BindRepeating(
       [](int* ping_count, GURL* last_url, const GURL& url) {
         *last_url = url;
         (*ping_count)++;
       },
       &ping_count, &last_url);
-  updater.SetStatsUpdatedCallbackForTesting(&cb);
-  updater.SetUsageServerForTesting("https://localhost:8443");
+  SetupStatsUpdater(&cb);
 
   // daily, monthly, weekly ping
   task_environment_.FastForwardBy(base::Hours(1));
   EXPECT_THAT(last_url.query(),
               HasSubstr("daily=true&weekly=true&monthly=true"));
+  EXPECT_THAT(last_url.query(), Not(HasSubstr(brave_stats::kHeadlessRefcode)));
 
   // daily ping
   task_environment_.AdvanceClock(base::Days(1));
   task_environment_.FastForwardBy(base::Seconds(1));
   EXPECT_THAT(last_url.query(),
               HasSubstr("daily=true&weekly=false&monthly=false"));
+  EXPECT_THAT(last_url.query(), Not(HasSubstr(brave_stats::kHeadlessRefcode)));
 
   // daily, weekly ping
   task_environment_.AdvanceClock(base::Days(7));
   task_environment_.FastForwardBy(base::Seconds(1));
   EXPECT_THAT(last_url.query(),
               HasSubstr("daily=true&weekly=true&monthly=false"));
+  EXPECT_THAT(last_url.query(), Not(HasSubstr(brave_stats::kHeadlessRefcode)));
 
   ASSERT_EQ(ping_count, 3);
+}
+
+#if !BUILDFLAG(IS_ANDROID)
+TEST_F(BraveStatsUpdaterTest, HeadlessPing) {
+  scoped_feature_list_.InitWithFeatures(
+      {}, {brave_stats::features::kHeadlessRefcode});
+  base::CommandLine::ForCurrentProcess()->AppendSwitch(switches::kHeadless);
+
+  brave_stats::BraveStatsUpdater::StatsUpdatedCallback cb =
+      base::BindRepeating([](const GURL& url) { FAIL(); });
+  SetupStatsUpdater(&cb);
+
+  // daily, monthly, weekly ping
+  task_environment_.FastForwardBy(base::Hours(1));
+
+  brave_stats_updater_ = nullptr;
+
+  scoped_feature_list_.Reset();
+  scoped_feature_list_.InitWithFeatures(
+      {brave_stats::features::kHeadlessRefcode}, {});
+
+  size_t pings_sent = 0;
+  cb = base::BindRepeating(
+      [](size_t* pings_sent, const GURL& url) {
+        (*pings_sent)++;
+        EXPECT_THAT(url.query(), HasSubstr(brave_stats::kHeadlessRefcode));
+      },
+      &pings_sent);
+  SetupStatsUpdater(&cb);
+
+  // daily, monthly, weekly ping
+  task_environment_.FastForwardBy(base::Hours(1));
+  EXPECT_EQ(pings_sent, 1u);
+}
+#endif
+
+TEST_F(BraveStatsUpdaterTest, AutomationEnabledPing) {
+  scoped_feature_list_.InitWithFeatures(
+      {}, {brave_stats::features::kHeadlessRefcode});
+  base::CommandLine::ForCurrentProcess()->AppendSwitch(
+      switches::kEnableAutomation);
+
+  brave_stats::BraveStatsUpdater::StatsUpdatedCallback cb =
+      base::BindRepeating([](const GURL& url) { FAIL(); });
+  SetupStatsUpdater(&cb);
+
+  // daily, monthly, weekly ping
+  task_environment_.FastForwardBy(base::Hours(1));
+
+  brave_stats_updater_ = nullptr;
+
+  scoped_feature_list_.Reset();
+  scoped_feature_list_.InitWithFeatures(
+      {brave_stats::features::kHeadlessRefcode}, {});
+
+  size_t pings_sent = 0;
+  cb = base::BindRepeating(
+      [](size_t* pings_sent, const GURL& url) {
+        (*pings_sent)++;
+
+        EXPECT_THAT(url.query(), HasSubstr(brave_stats::kHeadlessRefcode));
+      },
+      &pings_sent);
+  SetupStatsUpdater(&cb);
+
+  // daily, monthly, weekly ping
+  task_environment_.FastForwardBy(base::Hours(1));
+  EXPECT_EQ(pings_sent, 1u);
 }
 
 TEST_F(BraveStatsUpdaterTest, RecordP3APing) {
