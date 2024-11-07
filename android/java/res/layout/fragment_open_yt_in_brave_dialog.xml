@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="32dp"
+    android:paddingBottom="16dp"
+    android:paddingHorizontal="24dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="130dp"
+        android:layout_height="92dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/open_yt_in_brave"
+        android:contentDescription="@null"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/HeadingH4"
+        android:gravity="center_horizontal"
+        android:text="@string/watch_youtube_not_ads"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/shield_text_color"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        style="@style/SmallRegular"
+        android:text="@string/watch_youtube_not_ads_text"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/shield_text_color"/>
+
+    <android.widget.Button
+        android:id="@+id/btn_done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/always_on_tutorial_action_bg"
+        android:text="@string/turn_on_now"
+        android:textAllCaps="false"
+        android:layout_marginBottom="12dp"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="16dp"
+        style="?android:attr/borderlessButtonStyle"/>
+
+    <TextView
+        android:id="@+id/btn_ignore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:text="@string/no_thank_you"
+        android:textColor="@color/schemes_primary"/>
+
+</LinearLayout>
