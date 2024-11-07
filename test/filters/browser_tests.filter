@@ -1928,6 +1928,9 @@
 -WhatsNewFetcherMultipleCustomizationsBrowserTest.GetV2ServerURLForRender
 -WhatsNewFetcherOneCustomizationBrowserTest.GetV2ServerURLForRender
 
+# This test fails because we stub out NetworkService::UpdateKeysPinList
+-PKIMetadataComponentInstallerTest.InstallComponentUpdatesPinningConfig
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
