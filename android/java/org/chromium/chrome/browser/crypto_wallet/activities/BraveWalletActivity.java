@@ -47,8 +47,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
     private static final String TAG = "BWalletBaseActivity";
 
-    private MaterialToolbar mToolbar;
-
     private View mCryptoOnboardingLayout;
     private ImageView mOnboardingCloseButton;
     private ImageView mOnboardingBackButton;

@@ -21,9 +21,6 @@ import java.time.ZoneOffset;
 public class BraveSyncWorker {
     private static final String TAG = "SYNC";
 
-    private Context mContext;
-    private String mDebug = "true";
-
     private long mNativeBraveSyncWorker;
 
     private static BraveSyncWorker sBraveSyncWorker;
@@ -67,7 +64,6 @@ public class BraveSyncWorker {
     }
 
     public BraveSyncWorker() {
-        mContext = ContextUtils.getApplicationContext();
         init();
     }
 

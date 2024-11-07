@@ -28,8 +28,7 @@ public class QRCodeShareDialogFragment extends DialogFragment implements View.On
     private static final String TAG = "SUPER-REFERRAL";
 
     // For QR code generation
-    private static final int WHITE = 0xFFFFFFFF;
-    private static final int BLACK = 0xFF000000;
+    // WHITE/BLACK depend on the normal/Night mode
     private static final int WIDTH = 300;
 
     private ImageView mQRImage;

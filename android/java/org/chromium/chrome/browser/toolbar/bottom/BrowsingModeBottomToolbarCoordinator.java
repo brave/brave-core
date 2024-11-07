@@ -76,7 +76,6 @@ public class BrowsingModeBottomToolbarCoordinator {
     /** The activity tab provider that used for making the IPH. */
     private final ActivityTabProvider mTabProvider;
 
-    private CallbackController mCallbackController = new CallbackController();
     private final BookmarksButton mBookmarkButton;
     private final MenuButton mMenuButton;
     private ThemeColorProvider mThemeColorProvider;

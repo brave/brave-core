@@ -55,8 +55,6 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
     private int mCurrentTabId = -1;
     private BraveRewardsBannerInfo mBannerInfo;
 
-    private BraveRewardsHelper mIconFetcher;
-
     private static final String TWITTER = "twitter";
     private static final String YOUTUBE = "youtube";
     private static final String TWITCH = "twitch";

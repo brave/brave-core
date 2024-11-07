@@ -25,7 +25,6 @@ import java.util.List;
 
 public class QuickSearchEnginesAdapter
         extends RecyclerView.Adapter<QuickSearchEnginesSettingsViewHolder> {
-    private Context mContext;
     private List<QuickSearchEnginesModel> mSearchEngines;
     private QuickSearchEnginesCallback mQuickSearchEnginesCallback;
     private ItemTouchHelperCallback.OnStartDragListener mDragStartListener;
@@ -36,7 +35,6 @@ public class QuickSearchEnginesAdapter
             List<QuickSearchEnginesModel> searchEngines,
             QuickSearchEnginesCallback quickSearchEnginesCallback,
             ItemTouchHelperCallback.OnStartDragListener dragStartListener) {
-        mContext = context;
         mSearchEngines = searchEngines;
         mQuickSearchEnginesCallback = quickSearchEnginesCallback;
         mDragStartListener = dragStartListener;

@@ -47,8 +47,6 @@ import java.util.List;
 
 public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragment {
     final public static String TAG_FRAGMENT = "BRAVESTATS_FRAG";
-    private static final String APP_PACKAGE = "app_package";
-    private static final String APP_UID = "app_uid";
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
     private static final int WEBSITES = 0;

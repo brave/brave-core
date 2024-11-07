@@ -20,8 +20,6 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
 
     public String getAddExceptionDialogMessage() {
-        BrowserContextHandle browserContextHandle =
-                getSiteSettingsDelegate().getBrowserContextHandle();
         int resource = 0;
         SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
                 SingleCategorySettings.class, "mCategory", this);
@@ -43,8 +41,6 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
 
     public void resetList() {
         BraveReflectionUtil.invokeMethod(SingleCategorySettings.class, this, "resetList");
-        BrowserContextHandle browserContextHandle =
-                getSiteSettingsDelegate().getBrowserContextHandle();
         boolean exception = false;
         SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
                 SingleCategorySettings.class, "mCategory", this);

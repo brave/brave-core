@@ -15,6 +15,7 @@ import org.chromium.base.Log;
 public class TunnelModel implements Tunnel {
     public static final String TUNNEL_NAME = "Brave";
     private final String name;
+    @SuppressWarnings("UnusedVariable")
     private Config config;
     private final TunnelStateUpdateListener tunnelStateUpdateListener;
 

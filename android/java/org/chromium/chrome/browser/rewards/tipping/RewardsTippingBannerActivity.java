@@ -25,11 +25,6 @@ public class RewardsTippingBannerActivity
     public static final String TIP_MONTHLY_EXTRA = "tipMonthly";
     public static final String TIP_AMOUNT_EXTRA = "tipAmount";
     private int mCurrentTabId = -1;
-    private BraveRewardsBannerInfo mBannerInfo;
-
-    private BraveRewardsHelper mIconFetcher;
-
-    private static final String IMAGE_URL_PREFIX = "chrome://rewards-image/";
 
     @Override
     protected void triggerLayoutInflation() {

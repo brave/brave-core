@@ -23,7 +23,6 @@ public class BravePlaylistResetPreference
     private String TAG = "BravePlaylistResetPreference";
 
     private int mPrefAccentColor;
-    private final String mConfirmationPhrase;
 
     /**
      * Constructor for BravePlaylistResetPreference.
@@ -31,10 +30,7 @@ public class BravePlaylistResetPreference
     public BravePlaylistResetPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        Resources resources = getContext().getResources();
         mPrefAccentColor = getContext().getColor(R.color.wallet_error_text_color);
-        mConfirmationPhrase =
-                resources.getString(R.string.brave_wallet_reset_settings_confirmation_phrase);
         setOnPreferenceClickListener(this);
     }
 

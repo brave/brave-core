@@ -45,6 +45,7 @@ public class BraveNewTabPage extends NewTabPage {
     // To delete in bytecode, members from parent class will be used instead.
     private BrowserControlsStateProvider mBrowserControlsStateProvider;
     private NewTabPageLayout mNewTabPageLayout;
+    @SuppressWarnings("UnusedVariable")
     private FeedSurfaceProvider mFeedSurfaceProvider;
     private Supplier<Toolbar> mToolbarSupplier;
     private BottomSheetController mBottomSheetController;

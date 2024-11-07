@@ -137,8 +137,6 @@ public class MediaPreferences extends BravePreferenceFragment
         String key = preference.getKey();
         boolean shouldRelaunch = false;
         if (PREF_WIDEVINE_ENABLED.equals(key)) {
-            ChromeSwitchPreference enableWidevinePref =
-                    (ChromeSwitchPreference) findPreference(PREF_WIDEVINE_ENABLED);
             BraveLocalState.get().setBoolean(BravePref.WIDEVINE_ENABLED,
                     !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
             shouldRelaunch = true;

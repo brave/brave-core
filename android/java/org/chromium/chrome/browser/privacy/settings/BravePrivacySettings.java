@@ -99,8 +99,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_ENS = "ens";
     private static final String PREF_SNS = "sns";
     private static final String PREF_REQUEST_OTR = "request_otr";
-    private static final String PREF_HTTPS_ONLY_MODE_ENABLED_SAVED_STATE =
-            "https_only_mode_enabled_saved_state";
 
     public static final String PREF_BLOCK_TRACKERS_ADS = "block_trackers_ads";
     private static final String PREF_BLOCK_CROSS_SITE_COOKIES = "block_cross_site_cookies";
@@ -159,8 +157,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final int STANDARD = 1;
     private static final int ALLOW = 2;
 
-    private final PrefService mPrefServiceBridge =
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile());
     private final PrivacyPreferencesManagerImpl mPrivacyPrefManager =
             PrivacyPreferencesManagerImpl.getInstance();
     private ChromeSwitchPreference mCanMakePayment;

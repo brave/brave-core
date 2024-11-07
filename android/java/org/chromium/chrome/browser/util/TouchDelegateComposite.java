@@ -41,7 +41,6 @@ public class TouchDelegateComposite extends TouchDelegate {
      * Add a delegate by bounds and view.
      */
     public void addDelegate(Rect bounds, View view) {
-        boolean dup = false;
         mDelegates = mDelegates.stream()
                              .filter(e -> e.first == null || e.first.getId() != view.getId())
                              .collect(Collectors.toList());

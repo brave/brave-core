@@ -354,7 +354,7 @@ public class InAppPurchaseWrapper {
         startBillingServiceConnection(_billingConnectionState);
         LiveDataUtil.observeOnce(billingConnectionState, isConnected -> {
             if (isConnected) {
-                BillingResult billingResult =
+                BillingResult unused_billingResult =
                         mBillingClient.launchBillingFlow(activity, billingFlowParams);
             }
         });

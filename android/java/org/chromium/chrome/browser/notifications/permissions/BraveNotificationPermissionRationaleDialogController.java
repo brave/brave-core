@@ -27,6 +27,7 @@ public class BraveNotificationPermissionRationaleDialogController
     @Override
     public void showRationaleUi(Callback<Integer> rationaleCallback) {}
 
+    @SuppressWarnings("UnusedVariable")
     private Callback<Integer> wrapDialogDismissalCallback(Callback<Integer> rationaleCallback) {
         assert false : "wrapDialogDismissalCallback should be redirected to parent in bytecode!";
         return null;

@@ -70,7 +70,6 @@ import java.util.regex.Pattern;
 
 public class ImageLoader {
     private static final String TAG = "ImageLoader";
-    private static final List<String> ANIMATED_LIST = Arrays.asList(".gif");
     private static final String UNUSED_CLIENT_NAME = "unused";
     private static final String BASE64_ENCODING_PATTERN =
             "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$";

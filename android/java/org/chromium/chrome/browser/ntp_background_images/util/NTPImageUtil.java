@@ -15,6 +15,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import gen._content._public._android._content_full_java__assetres.srcjar.R.string;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -42,12 +43,16 @@ import java.util.Set;
 public class NTPImageUtil {
     private static final String TAG = "NTPUtil";
 
-    private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
     private static final String REMOVED_SITES = "removed_sites";
 
     public static HashMap<String, SoftReference<Bitmap>> imageCache =
             new HashMap<String, SoftReference<Bitmap>>();
 
+    // This function is not used, but removing it completely causes errors for unused resources:
+    // The resource R.string.earn_tokens_for_viewing appears to be unused [UnusedResources]
+    // The resource R.string.you_are_earning_tokens appears to be unused [UnusedResources]
+    // This is related to rewards, so I keep it till review
+    @SuppressWarnings("UnusedVariable")
     private static SpannableString getBannerText(ChromeActivity chromeActivity, int ntpType,
             View bannerLayout, SponsoredTab sponsoredTab, NewTabPageListener newTabPageListener) {
         String bannerText = "";

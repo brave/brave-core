@@ -62,22 +62,16 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private final ThemeColorProvider mThemeColorProvider;
 
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
-    private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
     private LayoutStateProvider mLayoutStateProvider;
-
-    /** The activity tab provider. */
-    private ActivityTabProvider mTabProvider;
 
     private ObservableSupplierImpl<OnClickListener> mShareButtonListenerSupplier =
             new ObservableSupplierImpl<>();
     private CallbackController mCallbackController = new CallbackController();
     ObservableSupplier<AppMenuButtonHelper> mMenuButtonHelperSupplier;
-    private BottomControlsMediator mBottomControlsMediator;
     private Runnable mOriginalHomeButtonRunnable;
     private final BraveScrollingBottomViewResourceFrameLayout mScrollingBottomView;
     private HomeButton mHomeButton;
     private BookmarksButton mBookmarksButton;
-    private SearchAccelerator mSearchAccelerator;
     private BottomToolbarNewTabButton mNewTabButton;
     private View mBottomContainerTopShadow;
     private boolean mBookmarkButtonFilled;
@@ -123,10 +117,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         mTabSwitcherModeStub = root.findViewById(R.id.bottom_toolbar_tab_switcher_mode_stub);
 
         mThemeColorProvider = themeColorProvider;
-        mTabProvider = tabProvider;
 
         mMenuButtonHelperSupplier = menuButtonHelperSupplier;
-        mBottomControlsMediator = bottomControlsMediator;
         mOriginalHomeButtonRunnable = openHomepageAction;
         mScrollingBottomView = (BraveScrollingBottomViewResourceFrameLayout) scrollingBottomView;
 

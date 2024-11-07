@@ -517,9 +517,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
             final double price =
                     Utils.getOrDefault(
                             assetPrices, txNetwork.symbol.toLowerCase(Locale.ENGLISH), 0.0d);
-            for (String k : assetPrices.keySet()) {
-                String v = String.valueOf(assetPrices.get(k));
-            }
             double sendAmount = 0;
             if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER) {
                 sendAmount = Utils.fromWei(value, txNetwork.decimals);

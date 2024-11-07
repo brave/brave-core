@@ -14,13 +14,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class OnboardingViewPagerAdapter extends FragmentPagerAdapter {
     private final OnViewPagerAction onViewPagerAction;
-    private final Context context;
     private static final int ONBOARDING_WITH_3_PAGES = 3;
 
-    public OnboardingViewPagerAdapter(Context context, FragmentManager fm,
+    public OnboardingViewPagerAdapter(Context unused_context, FragmentManager fm,
                                       OnViewPagerAction onViewPagerAction) {
         super(fm);
-        this.context = context;
         this.onViewPagerAction = onViewPagerAction;
     }
 

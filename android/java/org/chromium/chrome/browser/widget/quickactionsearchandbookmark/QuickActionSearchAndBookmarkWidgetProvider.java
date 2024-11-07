@@ -362,7 +362,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                             updateTileIcon(
                                     imageViewId,
                                     getTileIconFromColor(
-                                            gurl, fallbackColor, isFallbackColorDefault));
+                                            gurl, fallbackColor));
                         else updateTileIcon(imageViewId, getRoundedTileIconFromBitmap(icon));
                     }
                 };
@@ -378,7 +378,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static Bitmap getTileIconFromColor(
-            GURL gurl, int fallbackColor, boolean isFallbackColorDefault) {
+            GURL gurl, int fallbackColor) {
         RoundedIconGenerator mIconGenerator = FaviconUtils.createRoundedRectangleIconGenerator(
                 ContextUtils.getApplicationContext());
         mIconGenerator.setBackgroundColor(fallbackColor);
