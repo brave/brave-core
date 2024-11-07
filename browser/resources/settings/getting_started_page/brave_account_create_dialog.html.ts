@@ -29,14 +29,12 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
           </leo-icon>
-          <div class=${this.percent !== 0 ? 'visible' : ''}
+          <div class="${this.percent !== 0 ? 'visible' : ''} ${this.percent < 60 ? 'weak' : this.percent < 100 ? 'medium' : 'strong'}"
                id="password_strength_indicator"
                slot="errors"
                style="--strength: ${this.percent}">
             <div class="password-strength-bar">
-              <div id="password_strength_value"
-                   strength=${this.percent < 60 ? '' : this.percent < 100 ? 'medium' : 'strong'}>
-              </div>
+              <div id="password_strength_value"></div>
             </div>
             <div class="password-strength">
               ${this.percent < 60 ? 'Weak' : this.percent < 100 ? 'Medium' : 'Strong'}
