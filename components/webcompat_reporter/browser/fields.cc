@@ -28,7 +28,7 @@ const char* GetAdBlockModeString(
     case brave_shields::mojom::AdBlockMode::ALLOW:
       return kAllow;
   }
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 const char* GetFingerprintModeString(
@@ -41,7 +41,7 @@ const char* GetFingerprintModeString(
     case brave_shields::mojom::FingerprintMode::ALLOW_MODE:
       return kAllow;
   }
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 }  // namespace webcompat_reporter
