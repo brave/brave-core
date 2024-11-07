@@ -72,14 +72,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private boolean mInitializeViewsDone;
     private boolean mInvokePostWorkAtInitializeViews;
-    private boolean mIsP3aEnabled;
     private boolean mIsTablet;
     private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private int mCurrentStep = -1;
 
     private View mVLeafAlignTop;
     private View mVLeafAlignBottom;
-    private ImageView mIvBackground;
     private ImageView mIvLeafTop;
     private ImageView mIvLeafBottom;
     private ImageView mIvBrave;
@@ -160,7 +158,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private void initViews() {
-        mIvBackground = findViewById(R.id.iv_background);
         mIvLeafTop = findViewById(R.id.iv_leaf_top);
         mIvLeafBottom = findViewById(R.id.iv_leaf_bottom);
         mVLeafAlignTop = findViewById(R.id.view_leaf_top_align);

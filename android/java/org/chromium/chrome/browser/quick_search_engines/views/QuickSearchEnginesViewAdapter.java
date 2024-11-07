@@ -22,7 +22,6 @@ import java.util.List;
 
 public class QuickSearchEnginesViewAdapter
         extends RecyclerView.Adapter<QuickSearchEnginesViewHolder> {
-    private Context mContext;
     private List<QuickSearchEnginesModel> mSearchEngines;
     private QuickSearchEnginesCallback mQuickSearchEnginesCallback;
 
@@ -30,7 +29,6 @@ public class QuickSearchEnginesViewAdapter
             Context context,
             List<QuickSearchEnginesModel> searchEngines,
             QuickSearchEnginesCallback quickSearchEnginesCallback) {
-        mContext = context;
         mSearchEngines = searchEngines;
         mQuickSearchEnginesCallback = quickSearchEnginesCallback;
     }

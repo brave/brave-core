@@ -58,15 +58,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_BASICS_SECTION = "basics_section";
     private static final String PREF_ADVANCED_SECTION = "advanced_section";
     private static final String PREF_ONLINE_CHECKOUT_SECTION = "online_checkout_section";
-    private static final String PREF_SEARCH_ENGINE_SECTION = "search_engine_section";
     private static final String PREF_SUPPORT_SECTION = "support_section";
     private static final String PREF_ABOUT_SECTION = "about_section";
 
     // prefs
 
     private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
-    private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
-    private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
     private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE =
             "closing_all_tabs_closes_brave";
     private static final String PREF_PRIVACY = "privacy";
@@ -361,8 +358,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             findPreference(MainSettings.PREF_DEVELOPER).setOrder(++aboutSectionOrder);
         }
         findPreference(PREF_ABOUT_CHROME).setOrder(++aboutSectionOrder);
-
-        int order = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).getOrder();
 
         // We don't have home button on top toolbar at the moment
         if (!DeviceFormFactor.isTablet() && !BottomToolbarConfiguration.isBottomToolbarEnabled()) {

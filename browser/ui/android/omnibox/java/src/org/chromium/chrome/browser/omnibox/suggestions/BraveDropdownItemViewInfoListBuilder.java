@@ -11,7 +11,6 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.Px;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
@@ -45,10 +44,6 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private @NonNull Supplier<Tab> mActivityTabSupplier;
     private static final List<String> sBraveSearchEngineDefaultRegions =
             Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX");
-    @Px
-    private static final int DROPDOWN_HEIGHT_UNKNOWN = -1;
-    private static final int DEFAULT_SIZE_OF_VISIBLE_GROUP = 5;
-    private Context mContext;
     private AutocompleteDelegate mAutocompleteDelegate;
     private BraveLeoAutocompleteDelegate mLeoAutocompleteDelegate;
     private @NonNull Optional<OmniboxImageSupplier> mImageSupplier;
@@ -71,7 +66,6 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     @Override
     void initDefaultProcessors(
             Context context, SuggestionHost host, UrlBarEditingTextStateProvider textProvider) {
-        mContext = context;
         mUrlBarEditingTextProvider = textProvider;
         super.initDefaultProcessors(context, host, textProvider);
         if (host instanceof BraveSuggestionHost) {
@@ -150,7 +144,6 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                 && !mUrlBarEditingTextProvider.getTextWithoutAutocomplete().isEmpty()) {
             final PropertyModel leoModel = mBraveLeoSuggestionProcessor.createModel();
             mBraveLeoSuggestionProcessor.populateModel(leoModel);
-            var newMatches = autocompleteResult.getSuggestionsList();
 
             GroupConfig config;
             int tileNavSuggestPosition = getTileNavSuggestPosition(viewInfoList);
