@@ -28,10 +28,9 @@ std::string GetAPIKey() {
 namespace content {
 
 NetworkSpeechRecognitionEngineImpl::NetworkSpeechRecognitionEngineImpl(
-    scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory,
-    const std::string& accept_language)
-    : NetworkSpeechRecognitionEngineImpl_ChromiumImpl(shared_url_loader_factory,
-                                                      accept_language),
+    scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory)
+    : NetworkSpeechRecognitionEngineImpl_ChromiumImpl(
+          shared_url_loader_factory),
       shared_url_loader_factory_(std::move(shared_url_loader_factory)) {}
 
 NetworkSpeechRecognitionEngineImpl::~NetworkSpeechRecognitionEngineImpl() =
