@@ -26,7 +26,6 @@ public class BraveVpnPrefUtils {
     private static final String PREF_BRAVE_VPN_PURCHASE_TOKEN = "brave_vpn_purchase_token";
     private static final String PREF_BRAVE_VPN_PRODUCT_ID = "brave_vpn_product_id";
     private static final String PREF_BRAVE_VPN_PURCHASE_EXPIRY = "brave_vpn_purchase_expiry";
-    private static final String PREF_BRAVE_VPN_SERVER_REGIONS = "brave_vpn_server_regions";
     private static final String PREF_BRAVE_VPN_SERVER_CHANGE_LOCATION = "server_change_location";
     private static final String PREF_BRAVE_VPN_SERVER_COUNTRY = "server_country";
     private static final String PREF_BRAVE_VPN_SERVER_CONTINENT = "server_continent";

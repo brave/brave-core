@@ -143,9 +143,9 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
         if (getArguments() != null) {
             mLaunchedFrom = getArguments().getInt(LAUNCHED_FROM);
             if (mLaunchedFrom == FROM_LAUNCHED_BRAVE_ACTIVITY) {
-                launchedFromBraveActivity(view);
+                launchedFromBraveActivity();
             } else if (mLaunchedFrom == FROM_LAUNCHED_BRAVE_SETTINGS) {
-                launchedFromBraveSettings(view);
+                launchedFromBraveSettings();
                 view.findViewById(R.id.btn_not_now).setVisibility(View.GONE);
             } else if (mLaunchedFrom == FROM_LAUNCHED_BRAVE_PANEL) {
                 launchedFromBravePanel(view);
@@ -166,7 +166,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
                 view.getResources(), R.drawable.blue_48_rounded_bg, null));
     }
 
-    private void launchedFromBraveActivity(View view) {
+    private void launchedFromBraveActivity() {
         mPrimaryButton.setText(R.string.turn_on_brave_notifications);
 
         if (shouldShowBothWarningDialog(getContext())) {
@@ -182,7 +182,7 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
         }
     }
 
-    private void launchedFromBraveSettings(View view) {
+    private void launchedFromBraveSettings() {
         mPrimaryButton.setText(R.string.got_it);
 
         if (shouldShowBothWarningDialog(getContext())) {

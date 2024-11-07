@@ -397,7 +397,7 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
             return null;
         }
 
-        if (isOmnibox(node, hint)) {
+        if (isOmnibox(node)) {
             return null;
         }
 
@@ -457,7 +457,7 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
         return null;
     }
 
-    private boolean isOmnibox(ViewNode node, String hint) {
+    private boolean isOmnibox(ViewNode node) {
 
         int inputType = node.getInputType();
         if ((inputType & EditorInfo.TYPE_TEXT_VARIATION_URI)

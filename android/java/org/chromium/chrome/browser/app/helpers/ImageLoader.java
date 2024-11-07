@@ -61,16 +61,13 @@ import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ImageLoader {
     private static final String TAG = "ImageLoader";
-    private static final List<String> ANIMATED_LIST = Arrays.asList(".gif");
     private static final String UNUSED_CLIENT_NAME = "unused";
     private static final String BASE64_ENCODING_PATTERN =
             "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$";

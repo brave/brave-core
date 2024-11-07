@@ -42,7 +42,6 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
     private static final String LEO_START_WORD_UPPER_CASE = "LEO";
 
-    private Context mContext;
     private AutocompleteDelegate mDelegate;
     private Supplier<Tab> mActivityTabSupplier;
 
@@ -94,7 +93,6 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                 windowAndroid,
                 deferredIMEWindowInsetApplicationCallback);
 
-        mContext = context;
         mDelegate = delegate;
         mActivityTabSupplier = activityTabSupplier;
     }

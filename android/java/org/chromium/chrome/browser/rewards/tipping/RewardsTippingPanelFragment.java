@@ -144,9 +144,9 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         initTipChoice(mToggle);
         setAlreadyMonthlyContributionSetMessage();
         sendTipButtonClick(view);
-        web3ButtonClick(view);
+        web3ButtonClick();
         exchangeButtonClick(view);
-        setCustodianIconAndName(view);
+        setCustodianIconAndName();
         updateTermsOfServicePlaceHolder(view);
         checkEnoughFund();
         setMonthlyInformationClick(view);
@@ -220,7 +220,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                         setLogoutStateMessage();
                     } else {
                         int pubStatus = mBraveRewardsNativeWorker.getPublisherStatus(mCurrentTabId);
-                        setPublisherNoteText(pubStatus, walletStatus);
+                        setPublisherNoteText(pubStatus);
                     }
                 } else {
                     mCustodianText.setVisibility(View.GONE);
@@ -231,9 +231,9 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         }
     }
 
-    private void setPublisherNoteText(int pubStatus, int walletStatus) {
+    private void setPublisherNoteText(int pubStatus) {
         if ((pubStatus == PublisherStatus.UPHOLD_VERIFIED
-                    && !mWalletType.equals(BraveWalletProvider.UPHOLD))
+                        && !mWalletType.equals(BraveWalletProvider.UPHOLD))
                 || (pubStatus == PublisherStatus.BITFLYER_VERIFIED
                         && !mWalletType.equals(BraveWalletProvider.BITFLYER))
                 || (pubStatus == PublisherStatus.GEMINI_VERIFIED
@@ -411,11 +411,12 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         }
     }
 
-    private void web3ButtonClick(View view) {
-        mWeb3WalletButton.setOnClickListener(v -> {
-            TabUtils.openUrlInNewTab(false, mWeb3Url);
-            dismissRewardsPanel();
-        });
+    private void web3ButtonClick() {
+        mWeb3WalletButton.setOnClickListener(
+                v -> {
+                    TabUtils.openUrlInNewTab(false, mWeb3Url);
+                    dismissRewardsPanel();
+                });
     }
 
     private void sendTipButtonClick(View view) {
@@ -541,7 +542,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         }
     }
 
-    private void setCustodianIconAndName(View view) {
+    private void setCustodianIconAndName() {
         int custodianIcon = R.drawable.ic_logo_solana;
         int custodianName = R.string.wallet_sol_name;
 

@@ -43,7 +43,6 @@ public class WireguardServiceImpl
     private final IBinder mBinder = new LocalBinder();
     private Timer mVpnStatisticsTimer;
     private Timer mVpnRecordStatisticsTimer;
-    private Timer mRecordDaysUsedTimer;
     private static final int BRAVE_VPN_NOTIFICATION_ID = 801;
     private Context mContext = ContextUtils.getApplicationContext();
 
