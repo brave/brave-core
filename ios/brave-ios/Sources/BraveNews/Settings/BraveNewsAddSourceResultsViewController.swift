@@ -113,7 +113,7 @@ public class BraveNewsAddSourceResultsViewController: UITableViewController {
     let cell = tableView.dequeueReusableCell(for: indexPath) as FeedLocationCell
     cell.imageView?.image =
       indexPath.section == 0
-      ? UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil)?
+      ? UIImage(braveSystemNamed: "leo.lock.plain", compatibleWith: nil)?
         .applyingSymbolConfiguration(
           .init(font: .preferredFont(for: .body, weight: .semibold), scale: .small)
         ) : UIImage(named: "insecure-site-icon", in: .module, compatibleWith: nil)!

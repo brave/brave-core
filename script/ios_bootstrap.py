@@ -58,11 +58,11 @@ def create_required_spm_resources(force=False):
         # Remove the directory entirely
         shutil.rmtree(ios_current_link)
     ios_current_link.mkdir(parents=True, exist_ok=True)
-    # Make BraveCore.xcframework and MaterialComponents.xcframework placeholders
+    # Make xcframework placeholders for targets exported by the iOS GN target
     # These are essentially the bare-essential requirements for SPM to validate
     # the Package.swift manifest: The existence of the xcframework directory
     # itself, plus a valid Info.plist inside it.
-    frameworks = ['BraveCore', 'MaterialComponents']
+    frameworks = ['BraveCore', 'MaterialComponents', 'NalaAssets']
     for frmk in frameworks:
         framework_dir = os.path.join(ios_current_link, f'{frmk}.xcframework')
         if force and os.path.exists(framework_dir):
