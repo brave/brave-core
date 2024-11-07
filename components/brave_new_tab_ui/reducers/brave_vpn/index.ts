@@ -13,14 +13,12 @@ export type BraveVPNState = {
   purchasedState: BraveVPN.PurchasedState
   connectionState: BraveVPN.ConnectionState
   selectedRegion: BraveVPN.Region
-  initialized: boolean
 }
 
 const defaultState: BraveVPNState = {
   purchasedState: BraveVPN.PurchasedState.NOT_PURCHASED,
   connectionState: BraveVPN.ConnectionState.DISCONNECTED,
-  selectedRegion: new BraveVPN.Region(),
-  initialized: false
+  selectedRegion: new BraveVPN.Region()
 }
 
 const reducer = createReducer<BraveVPNState>({}, defaultState)
@@ -34,7 +32,6 @@ reducer.on(Actions.connectionStateChanged, (state, payload): BraveVPNState => {
 
 reducer.on(Actions.purchasedStateChanged, (state, payload): BraveVPNState => {
   // Don't update if it's in-progress to prevent unnecessary vpn card page chanage.
-  // Set initialized when final state is received once.
   const isLoading = payload === BraveVPN.PurchasedState.LOADING
 
   return {
@@ -42,8 +39,7 @@ reducer.on(Actions.purchasedStateChanged, (state, payload): BraveVPNState => {
     purchasedState:
       isLoading
         ? state.purchasedState
-        : payload,
-    initialized: isLoading ? state.initialized : true
+        : payload
   }
 })
 

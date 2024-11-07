@@ -156,6 +156,7 @@ const RegionAction = styled.div`
 const RegionCountryLabel = styled.span`
   color: ${color.text.primary};
   font: ${font.large.semibold};
+  height: 24px;
 `
 
 const RegionChangeLink = styled.a`
