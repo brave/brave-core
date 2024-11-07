@@ -1090,16 +1090,18 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             std::move(callback).Run(std::move(response));
           }));
 
+  OrchardMemo memo;
+  memo.fill('a');
+
   std::optional<ZCashTransaction> created_transaction;
   base::MockCallback<ZCashWalletService::CreateTransactionCallback>
       create_transaction_callback;
   EXPECT_CALL(create_transaction_callback, Run(_))
       .WillOnce([&](base::expected<ZCashTransaction, std::string> tx) {
+        EXPECT_EQ(tx->memo(), memo);
         created_transaction = tx.value();
       });
 
-  OrchardMemo memo;
-  memo.fill('a');
   zcash_wallet_service_->CreateShieldTransaction(
       mojom::kZCashMainnet, account_id.Clone(),
       "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzuap4"
