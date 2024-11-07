@@ -248,7 +248,7 @@ function Main() {
             <div className={styles.promptContainer}>
               <LongConversationInfo />
             </div>}
-          {!aiChatContext.hasAcceptedAgreement && <WelcomeGuide />}
+          {!aiChatContext.hasAcceptedAgreement && !conversationContext.conversationHistory.length && <WelcomeGuide />}
         </div>
       </div>
       <div className={styles.input}>
