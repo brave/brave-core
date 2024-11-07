@@ -29,6 +29,8 @@ namespace brave_ads {
 
 class AdsService : public KeyedService {
  public:
+  // TODO(tmancey): Decouple.
+  // TODO(tmancey): Mock.
   class Delegate {
    public:
     virtual ~Delegate() = default;
