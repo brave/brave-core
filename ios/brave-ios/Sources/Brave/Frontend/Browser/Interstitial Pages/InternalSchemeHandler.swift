@@ -127,6 +127,11 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
 
     let path = url.path.starts(with: "/") ? String(url.path.dropFirst()) : url.path
 
+    if activeTasks.object(forKey: urlSchemeTask) != nil {
+      // Already a task ongoing, technically this shouldn't happen.
+      return
+    }
+
     let task = Task {
       // For non-main doc URL, try load it as a resource
       if !urlSchemeTask.request.isPrivileged,
@@ -168,5 +173,7 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
     activeTasks.setObject(TaskHolder(task: task), forKey: urlSchemeTask)
   }
 
-  public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
+  public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
+    activeTasks.removeObject(forKey: urlSchemeTask)
+  }
 }
