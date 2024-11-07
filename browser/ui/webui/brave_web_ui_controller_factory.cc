@@ -130,7 +130,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
                  brave_news::features::kBraveNewsFeedUpdate) &&
              host == kBraveNewsInternalsHost) {
     return new BraveNewsInternalsUI(
-
         web_ui, url.host(),
         brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile));
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
