@@ -13,7 +13,6 @@
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "sql/init_status.h"
