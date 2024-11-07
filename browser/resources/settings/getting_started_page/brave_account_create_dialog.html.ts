@@ -41,11 +41,14 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           </leo-icon>
           <div class="password-strength-indicator dropdown ${this.percent !== 0 ? 'visible' : ''} ${this.getCategory()}"
                slot="errors">
-            <div class="password-strength-bar">
-              <div class="password-strength"
-                   style="--password-strength: ${this.percent}">
+            <leo-tooltip mode="default">
+              <div class="password-strength-bar">
+                <div class="password-strength"
+                     style="--password-strength: ${this.percent}">
+                </div>
               </div>
-            </div>
+              <div slot="content">Tooltip</div>
+            </leo-tooltip>
             <div class="password-strength-category">
               ${(() => {
                 switch(this.getCategory()) {

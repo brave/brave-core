@@ -34,12 +34,14 @@ leo-input:not(:focus):has(> .red) {
   height: var(--height);
   margin: calc(-1 * var(--height)) 4px 0px 4px;
   position: relative;
-  transition: 750ms;
+  transition: all 750ms, z-index 0ms;
   z-index: -1;
 }
 
 .dropdown.visible {
   margin: 4px 4px 0px 4px;
+  transition: all 750ms, z-index 0ms 750ms;
+  z-index: 0;
 }
 
 .brave-alias-error {
