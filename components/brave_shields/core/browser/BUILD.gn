@@ -37,6 +37,7 @@ static_library("browser") {
     "//brave/components/brave_shields/core/common",
     "//components/component_updater:component_updater",
     "//components/prefs",
+    "//components/value_store",
     "//crypto",
   ]
   public_deps = [ "//base" ]

@@ -298,25 +298,31 @@ void BraveAdBlockHandler::GetCustomScriptlets(const base::Value::List& args) {
   CHECK(base::FeatureList::IsEnabled(
       brave_shields::features::kCosmeticFilteringCustomScriptlets));
   CHECK(args.size() == 1u && args[0].is_string());
+
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->GetCustomResources(
+          base::BindOnce(&BraveAdBlockHandler::OnGetCustomScriptlets,
+                         weak_factory_.GetWeakPtr(), args[0].GetString()));
+}
+
+void BraveAdBlockHandler::OnGetCustomScriptlets(const std::string& callback_id,
+                                                base::Value custom_resources) {
   AllowJavascript();
-
-  const auto& custom_resources = g_brave_browser_process->ad_block_service()
-                                     ->custom_resource_provider()
-                                     ->GetCustomResources();
-
-  ResolveJavascriptCallback(args[0].GetString(), custom_resources);
+  ResolveJavascriptCallback(callback_id, custom_resources);
 }
 
 void BraveAdBlockHandler::AddCustomScriptlet(const base::Value::List& args) {
   CHECK(base::FeatureList::IsEnabled(
       brave_shields::features::kCosmeticFilteringCustomScriptlets));
   CHECK(args.size() == 2u && args[0].is_string() && args[1].is_dict());
-  AllowJavascript();
-  auto error_code = g_brave_browser_process->ad_block_service()
-                        ->custom_resource_provider()
-                        ->AddResource(args[1]);
-  ResolveJavascriptCallback(args[0].GetString(),
-                            base::Value(static_cast<int>(error_code)));
+
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->AddResource(
+          args[1],
+          base::BindOnce(&BraveAdBlockHandler::OnScriptletUpdateStatus,
+                         weak_factory_.GetWeakPtr(), args[0].GetString()));
 }
 
 void BraveAdBlockHandler::UpdateCustomScriptlet(const base::Value::List& args) {
@@ -324,24 +330,33 @@ void BraveAdBlockHandler::UpdateCustomScriptlet(const base::Value::List& args) {
       brave_shields::features::kCosmeticFilteringCustomScriptlets));
   CHECK(args.size() == 3u && args[0].is_string() && args[1].is_string() &&
         args[2].is_dict());
-  AllowJavascript();
-  auto error_code = g_brave_browser_process->ad_block_service()
-                        ->custom_resource_provider()
-                        ->UpdateResource(args[1].GetString(), args[2]);
-  ResolveJavascriptCallback(args[0].GetString(),
-                            base::Value(static_cast<int>(error_code)));
+
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->UpdateResource(
+          args[1].GetString(), args[2],
+          base::BindOnce(&BraveAdBlockHandler::OnScriptletUpdateStatus,
+                         weak_factory_.GetWeakPtr(), args[0].GetString()));
 }
 
 void BraveAdBlockHandler::RemoveCustomScriptlet(const base::Value::List& args) {
   CHECK(base::FeatureList::IsEnabled(
       brave_shields::features::kCosmeticFilteringCustomScriptlets));
   CHECK(args.size() == 2u && args[0].is_string() && args[1].is_string());
-  AllowJavascript();
-  auto error_code = g_brave_browser_process->ad_block_service()
-                        ->custom_resource_provider()
-                        ->RemoveResource(args[1].GetString());
 
-  ResolveJavascriptCallback(args[0].GetString(),
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->RemoveResource(
+          args[1].GetString(),
+          base::BindOnce(&BraveAdBlockHandler::OnScriptletUpdateStatus,
+                         weak_factory_.GetWeakPtr(), args[0].GetString()));
+}
+
+void BraveAdBlockHandler::OnScriptletUpdateStatus(
+    const std::string& callback_id,
+    brave_shields::AdBlockCustomResourceProvider::ErrorCode error_code) {
+  AllowJavascript();
+  ResolveJavascriptCallback(callback_id,
                             base::Value(static_cast<int>(error_code)));
 }
 

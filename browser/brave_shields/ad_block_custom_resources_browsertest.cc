@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/base64.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
@@ -13,15 +14,10 @@
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
-#include "chrome/test/base/in_process_browser_test.h"
-#endif
 
 namespace {
 
@@ -150,6 +146,20 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
               *custom_scriptlet.GetDict().FindStringByDottedPath("kind.mime"));
   }
 
+  base::Value GetCustomResources() {
+    base::RunLoop loop;
+    base::Value result;
+    g_brave_browser_process->ad_block_service()
+        ->custom_resource_provider()
+        ->GetCustomResources(
+            base::BindLambdaForTesting([&loop, &result](base::Value resources) {
+              result = std::move(resources);
+              loop.Quit();
+            }));
+    loop.Run();
+    return result;
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
 };
@@ -162,11 +172,8 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
   ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
   SaveCustomScriptlet("custom-script", kContent);
 
-  auto* ad_block_service = g_brave_browser_process->ad_block_service();
-
   {
-    const auto& custom_resources =
-        ad_block_service->custom_resource_provider()->GetCustomResources();
+    const auto& custom_resources = GetCustomResources();
     ASSERT_TRUE(custom_resources.is_list());
     ASSERT_EQ(1u, custom_resources.GetList().size());
     CheckCustomScriptlet(custom_resources.GetList().front(),
@@ -182,8 +189,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
   EXPECT_EQ(kContent, GetCustomScriptletContent(web_contents()));
   SaveCustomScriptlet("custom-script-edited", kEditedContent);
   {
-    const auto& custom_resources =
-        ad_block_service->custom_resource_provider()->GetCustomResources();
+    const auto& custom_resources = GetCustomResources();
     ASSERT_TRUE(custom_resources.is_list());
     ASSERT_EQ(1u, custom_resources.GetList().size());
     CheckCustomScriptlet(custom_resources.GetList().front(),
@@ -193,8 +199,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
   ASSERT_TRUE(ClickCustomScriplet(web_contents(),
                                   "brave-custom-script-edited.js", "delete"));
   {
-    const auto& custom_resources =
-        ad_block_service->custom_resource_provider()->GetCustomResources();
+    const auto& custom_resources = GetCustomResources();
     ASSERT_TRUE(custom_resources.is_list());
     ASSERT_TRUE(custom_resources.GetList().empty());
   }

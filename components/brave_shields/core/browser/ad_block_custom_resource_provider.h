@@ -8,12 +8,14 @@
 
 #include <string>
 
+#include "base/files/file_path.h"
 #include "base/functional/callback.h"
-#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 
-class PrefService;
+namespace value_store {
+class ValueStoreFrontend;
+}  // namespace value_store
 
 namespace brave_shields {
 
@@ -28,16 +30,21 @@ class AdBlockCustomResourceProvider
     kNotFound,
   };
 
+  using GetCallback = base::OnceCallback<void(base::Value)>;
+  using StatusCallback = base::OnceCallback<void(ErrorCode)>;
+
   AdBlockCustomResourceProvider(
-      PrefService* local_state,
+      const base::FilePath& storage_root,
       std::unique_ptr<AdBlockResourceProvider> default_resource_provider);
   ~AdBlockCustomResourceProvider() override;
 
-  const base::Value& GetCustomResources();
-  ErrorCode AddResource(const base::Value& resource);
-  ErrorCode UpdateResource(const std::string& name,
-                           const base::Value& resource);
-  ErrorCode RemoveResource(const std::string& resource_name);
+  void GetCustomResources(GetCallback callback);
+  void AddResource(const base::Value& resource, StatusCallback on_complete);
+  void UpdateResource(const std::string& name,
+                      const base::Value& resource,
+                      StatusCallback on_complete);
+  void RemoveResource(const std::string& resource_name,
+                      StatusCallback on_complete);
 
   // AdBlockResourceProvider:
   void LoadResources(
@@ -47,14 +54,31 @@ class AdBlockCustomResourceProvider
   // AdBlockResourceProvider::Observer:
   void OnResourcesLoaded(const std::string& resources_json) override;
 
-  std::string GetCustomResourcesJson();
+  void AddResourceInternal(base::Value resource,
+                           StatusCallback on_complete,
+                           base::Value resources);
+  void UpdateResourceInternal(const std::string& name,
+                              base::Value resource,
+                              StatusCallback on_complete,
+                              base::Value resources);
+  void RemoveResourceInternal(const std::string& name,
+                              StatusCallback on_complete,
+                              base::Value resources);
+
+  void SaveResources(base::Value resources);
+
   void OnDefaultResourcesLoaded(
       base::OnceCallback<void(const std::string& resources_json)> on_load,
       const std::string& resources_json);
+  void OnCustomResourcesLoaded(
+      base::OnceCallback<void(const std::string& resources_json)> on_load,
+      const std::string& default_resources,
+      base::Value custom_resources);
+
   void ReloadResourcesAndNotify();
 
-  const raw_ptr<PrefService> local_state_ = nullptr;
   std::unique_ptr<AdBlockResourceProvider> default_resource_provider_ = nullptr;
+  std::unique_ptr<value_store::ValueStoreFrontend> storage_;
 
   base::WeakPtrFactory<AdBlockCustomResourceProvider> weak_ptr_factory_{this};
 };

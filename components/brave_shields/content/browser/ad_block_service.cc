@@ -320,7 +320,7 @@ AdBlockService::AdBlockService(
   if (base::FeatureList::IsEnabled(
           features::kCosmeticFilteringCustomScriptlets)) {
     custom_resource_provider_ = new AdBlockCustomResourceProvider(
-        local_state_, std::move(default_resource_provider));
+        profile_dir_, std::move(default_resource_provider));
     resource_provider_.reset(custom_resource_provider_.get());
   } else {
     resource_provider_ = std::move(default_resource_provider);
@@ -418,7 +418,6 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(
       prefs::kAdBlockMobileNotificationsListSettingTouched, false);
   registry->RegisterStringPref(prefs::kAdBlockCustomFilters, std::string());
-  registry->RegisterListPref(prefs::kAdBlockCustomResources);
   registry->RegisterDictionaryPref(prefs::kAdBlockRegionalFilters);
   registry->RegisterDictionaryPref(prefs::kAdBlockListSubscriptions);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
