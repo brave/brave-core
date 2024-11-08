@@ -9,6 +9,7 @@ from enum import Enum
 import gzip
 import json
 import os
+import sys
 import tempfile
 from typing import Optional
 
@@ -61,9 +62,10 @@ def MakeFieldTrials(mode: FieldTrialsMode, artifacts_dir: str,
 
   seed_path = os.path.join(artifacts_dir, 'seed.bin')
 
-  GetProcessOutput(['npm', 'install'], cwd=variations_repo_dir, check=True)
+  npm = 'npm.cmd' if sys.platform == 'win32' else 'npm'
+  GetProcessOutput([npm, 'install'], cwd=variations_repo_dir, check=True)
 
-  args = ['npm', 'run', 'seed_tools', 'create', '--'] + [
+  args = [npm, 'run', 'seed_tools', 'create', '--'] + [
       'studies', seed_path, '--perf_mode'
   ] + ['--revision', sha1] + ['--version', f'perf@{sha1}']
 
