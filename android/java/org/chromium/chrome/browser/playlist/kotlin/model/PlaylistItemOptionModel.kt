@@ -7,13 +7,13 @@
 
 package org.chromium.chrome.browser.playlist.kotlin.model
 
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
 import org.chromium.playlist.mojom.PlaylistItem
 
 data class PlaylistItemOptionModel(
     val optionTitle: String,
     val optionIcon: Int,
-    val optionType: PlaylistOptionsEnum,
+    val optionType: PlaylistBaseActivity.PlaylistOptionsEnum,
     val playlistItem: PlaylistItem?,
     val playlistId: String?
 )

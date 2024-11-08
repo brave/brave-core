@@ -429,7 +429,6 @@
     <color name="schemes_primary">#3e37d4</color>
     <color name="schemes_surface_container_highest">#c7c7cc</color>
 
-    <color name="quick_search_bg">#FFFFFF</color>
     <!-- Playlist colors -->
     <color name="playlist_background">#FFFFFF</color>
     <color name="red_playlist">#FB542B</color>

@@ -25,7 +25,6 @@ import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.activity.NewPlaylistActivity
 import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistAdapter
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.extension.setTopCornersRounded
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
 import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
@@ -102,9 +101,9 @@ class MoveOrCopyToPlaylistBottomSheet : BottomSheetDialogFragment(), PlaylistCli
                 )
             if (
                 PlaylistUtils.moveOrCopyModel.playlistOptionsEnum ==
-                    PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM ||
+                    PlaylistBaseActivity.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM ||
                     PlaylistUtils.moveOrCopyModel.playlistOptionsEnum ==
-                        PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS
+                        PlaylistBaseActivity.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS
             ) {
                 PlaylistUtils.moveOrCopyModel.playlistItems.forEach {
                     getPlaylistService()

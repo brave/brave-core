@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
@@ -78,9 +78,9 @@ class NewPlaylistActivity : PlaylistBaseActivity(), PlaylistClickListener {
                         mPlaylistService?.createPlaylist(playlist) { createdPlaylist ->
                             if (
                                 PlaylistUtils.moveOrCopyModel.playlistOptionsEnum ==
-                                    PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM ||
+                                    PlaylistBaseActivity.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM ||
                                     PlaylistUtils.moveOrCopyModel.playlistOptionsEnum ==
-                                        PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS
+                                        PlaylistBaseActivity.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS
                             ) {
                                 PlaylistUtils.moveOrCopyModel.playlistItems.forEach {
                                     mPlaylistService?.moveItem(
