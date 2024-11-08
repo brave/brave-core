@@ -1093,13 +1093,6 @@ TEST_F(ConversationHandlerUnitTest,
   conversation_handler_->OnGetStagedEntriesFromContent(entries);
   task_environment_.RunUntilIdle();
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
-
-  // No staged entries if user opt-out.
-  conversation_handler_->SetShouldSendPageContents(true);
-  EmulateUserOptedOut();
-  conversation_handler_->OnGetStagedEntriesFromContent(entries);
-  task_environment_.RunUntilIdle();
-  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
 }
 
 TEST_F(ConversationHandlerUnitTest, OnGetStagedEntriesFromContent) {
@@ -1135,19 +1128,15 @@ TEST_F(ConversationHandlerUnitTest, OnGetStagedEntriesFromContent) {
   EXPECT_EQ(history[5]->text, "summary2");
 }
 
-TEST_F(ConversationHandlerUnitTest_OptedOut,
+TEST_F(ConversationHandlerUnitTest,
        MaybeFetchOrClearSearchQuerySummary_NotOptedIn) {
-  // Content will have staged entries, but we want to make sure that
-  // ConversationHandler won't ask for them when not opted-in yet.
+  // Staged entries could be retrieved before user opts in.
   SetAssociatedContentStagedEntries(/*empty=*/false);
-  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(0);
-  // Modifying whether page contents should be sent should trigger content
-  // staging.
+  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   // Don't get a false positive because no client is automatically connected.
+  // Connecting a client will trigger content staging.
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
-  conversation_handler_->SetShouldSendPageContents(false);
-  conversation_handler_->SetShouldSendPageContents(true);
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
       [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
         EXPECT_TRUE(should_send_page_contents);
@@ -1156,7 +1145,7 @@ TEST_F(ConversationHandlerUnitTest_OptedOut,
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(conversation_handler_.get());
 
-  EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
+  EXPECT_FALSE(conversation_handler_->GetConversationHistory().empty());
 }
 
 TEST_F(ConversationHandlerUnitTest,
