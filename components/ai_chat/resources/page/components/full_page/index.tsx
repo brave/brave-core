@@ -86,6 +86,7 @@ export default function FullScreen() {
 
   }, [isSmall])
 
+  // change to <Icon name={isNavigationCollapsed ? 'sidenav-expand' : 'sidenav-collapse'} />
   return (
     <div className={styles.fullscreen}>
       <div className={styles.left}>
