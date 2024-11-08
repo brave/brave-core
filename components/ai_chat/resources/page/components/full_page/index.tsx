@@ -86,17 +86,18 @@ export default function FullScreen() {
 
   }, [isSmall])
 
+  // change to <Icon name={isNavigationCollapsed ? 'sidenav-expand' : 'sidenav-collapse'} />
   return (
     <div className={styles.fullscreen}>
       <div className={styles.left}>
         <div className={styles.controls}>
-          <Button
+            <Button
             fab
             kind='plain-faint'
             onClick={toggleAside}
-          >
-            <Icon name='window-tabs-vertical-expanded' />
-          </Button>
+            >
+            <Icon name={isNavigationCollapsed ? 'sidepanel-retract' : 'sidepanel-open'} />
+            </Button>
           {!isNavigationRendered && (
             <>
               <Button
