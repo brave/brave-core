@@ -1,0 +1,6 @@
+specific_include_rules = {
+  "shard_store.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+}
+

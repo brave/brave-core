@@ -189,7 +189,7 @@ TEST(OrchardBlockScannerTest, DiscoverNewNotes) {
   EXPECT_EQ(result.value().discovered_notes[3].block_id, 11u);
   EXPECT_EQ(result.value().discovered_notes[3].amount, 2549979667u);
 
-  EXPECT_EQ(result.value().spent_notes.size(), 0u);
+  EXPECT_EQ(result.value().found_spends.size(), 5u);
 }
 
 TEST(OrchardBlockScannerTest, WrongInput) {
@@ -469,11 +469,13 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers_SameBatch) {
   EXPECT_EQ(result.value().discovered_notes[0].block_id, 10u);
   EXPECT_EQ(result.value().discovered_notes[0].amount, 3625561528u);
 
-  EXPECT_EQ(result.value().spent_notes.size(), 1u);
-  EXPECT_EQ(result.value().spent_notes[0].block_id, 11u);
+  EXPECT_EQ(result.value().found_spends.size(), 2u);
+  EXPECT_EQ(result.value().found_spends[0].block_id, 10u);
+  EXPECT_EQ(result.value().found_spends[1].block_id, 11u);
+
   EXPECT_EQ(
-      std::vector<uint8_t>(result.value().spent_notes[0].nullifier.begin(),
-                           result.value().spent_notes[0].nullifier.end()),
+      std::vector<uint8_t>(result.value().found_spends[1].nullifier.begin(),
+                           result.value().found_spends[1].nullifier.end()),
       PrefixedHexStringToBytes(
           "0x6588cc7fabfab2b2a4baa89d4dfafaa50cc89d22f96d10fb7689461b921ad40d")
           .value());
@@ -525,11 +527,13 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
   notes.push_back(note);
   blocks.push_back(std::move(block));
 
-  auto result = scanner.ScanBlocks(std::move(notes), std::move(blocks));
+  OrchardTreeState tree_state;
+
+  auto result = scanner.ScanBlocks(tree_state, std::move(blocks));
 
   EXPECT_TRUE(result.has_value());
-  EXPECT_EQ(result.value().spent_notes.size(), 1u);
-  EXPECT_EQ(result.value().spent_notes[0], spend);
+  EXPECT_EQ(result.value().found_spends.size(), 1u);
+  EXPECT_EQ(result.value().found_spends[0].nullifier, spend.nullifier);
   EXPECT_EQ(result.value().discovered_notes.size(), 0u);
 }
 

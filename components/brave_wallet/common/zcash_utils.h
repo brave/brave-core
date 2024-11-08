@@ -265,6 +265,51 @@ struct OrchardTreeState {
   std::vector<uint8_t> frontier;
 };
 
+class OrchardShardTreeDelegate {
+ public:
+  enum Error { kStorageError = 0, kConsistensyError = 1 };
+
+  virtual ~OrchardShardTreeDelegate() {}
+
+  virtual base::expected<std::optional<OrchardShardTreeCap>, Error> GetCap() const = 0;
+  virtual base::expected<bool, Error> PutCap(OrchardShardTreeCap shard) = 0;
+
+  virtual base::expected<std::optional<uint32_t>, Error> GetLatestShardIndex()
+      const = 0;
+  virtual base::expected<bool, Error> PutShard(OrchardShard shard) = 0;
+  virtual base::expected<std::optional<OrchardShard>, Error> GetShard(
+      OrchardShardAddress address) const = 0;
+  virtual base::expected<std::optional<OrchardShard>, Error> LastShard(
+      uint8_t shard_height) const = 0;
+  virtual base::expected<bool, Error> Truncate(uint32_t block_height) = 0;
+
+  virtual base::expected<bool, Error> TruncateCheckpoints(
+      uint32_t checkpoint_id) = 0;
+  virtual base::expected<size_t, Error> CheckpointCount() const = 0;
+  virtual base::expected<std::optional<uint32_t>, Error> MinCheckpointId()
+      const = 0;
+  virtual base::expected<std::optional<uint32_t>, Error> MaxCheckpointId()
+      const = 0;
+  virtual base::expected<std::optional<uint32_t>, Error> GetCheckpointAtDepth(
+      uint32_t depth) const = 0;
+  virtual base::expected<std::optional<OrchardCheckpointBundle>, Error>
+  GetCheckpoint(uint32_t checkpoint_id) const = 0;
+  virtual base::expected<std::vector<OrchardCheckpointBundle>, Error>
+  GetCheckpoints(size_t limit) const = 0;
+  virtual base::expected<bool, Error> RemoveCheckpointAt(uint32_t depth) = 0;
+  virtual base::expected<bool, Error> RemoveCheckpoint(
+      uint32_t checkpoint_id) = 0;
+  virtual base::expected<bool, Error> AddCheckpoint(
+      uint32_t id,
+      OrchardCheckpoint checkpoint) = 0;
+  virtual base::expected<bool, Error> UpdateCheckpoint(
+      uint32_t id,
+      OrchardCheckpoint checkpoint) = 0;
+
+  virtual base::expected<std::vector<OrchardShardAddress>, Error> GetShardRoots(
+      uint8_t shard_level) const = 0;
+};
+
 bool OutputZCashAddressSupported(const std::string& address, bool is_testnet);
 // https://zips.z.cash/zip-0317
 uint64_t CalculateZCashTxFee(const uint32_t tx_input_count,

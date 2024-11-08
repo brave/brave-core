@@ -37,6 +37,7 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
     CHECK_IS_TEST();
     auto bundle_result = create_testing_orchard_bundle(
         ::rust::Slice<const uint8_t>{tree_state.data(), tree_state.size()},
+        ::rust::Vec<::brave_wallet::orchard::OrchardSpend>(),
         std::move(outputs), random_seed_for_testing.value());
     if (!bundle_result->is_ok()) {
       return nullptr;
@@ -46,6 +47,7 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
   } else {
     auto bundle_result = create_orchard_bundle(
         ::rust::Slice<const uint8_t>{tree_state.data(), tree_state.size()},
+        ::rust::Vec<::brave_wallet::orchard::OrchardSpend>(),
         std::move(outputs));
     if (!bundle_result->is_ok()) {
       return nullptr;

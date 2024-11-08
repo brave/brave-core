@@ -51,7 +51,7 @@ ReadSizedBlob(sql::Statement& statement, size_t position) {
 
 // Implements SQLite database to store found incoming notes,
 // nullifiers, wallet zcash accounts and commitment trees.
-class ZCashOrchardStorage {
+class ZCashOrchardStorage : public base::RefCounted<ZCashOrchardStorage> {
  public:
   struct AccountMeta {
     AccountMeta();
@@ -80,7 +80,6 @@ class ZCashOrchardStorage {
   };
 
   explicit ZCashOrchardStorage(base::FilePath path_to_database);
-  ~ZCashOrchardStorage();
 
   base::expected<AccountMeta, Error> RegisterAccount(
       const mojom::AccountIdPtr& account_id,
@@ -175,6 +174,10 @@ class ZCashOrchardStorage {
       uint8_t shard_level);
 
  private:
+  friend class base::RefCounted<ZCashOrchardStorage>;
+
+  ~ZCashOrchardStorage();
+
   bool EnsureDbInit();
   bool CreateOrUpdateDatabase();
   bool CreateSchema();

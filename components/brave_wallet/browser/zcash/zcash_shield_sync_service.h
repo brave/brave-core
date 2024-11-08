@@ -15,7 +15,7 @@
 #include "base/threading/sequence_bound.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_storage.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_sync_state.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -64,7 +64,7 @@ class ZCashShieldSyncService {
     explicit OrchardBlockScannerProxy(OrchardFullViewKey full_view_key);
     virtual ~OrchardBlockScannerProxy();
     virtual void ScanBlocks(
-        std::vector<OrchardNote> known_notes,
+        OrchardTreeState tree_state,
         std::vector<zcash::mojom::CompactBlockPtr> blocks,
         base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
                                                OrchardBlockScanner::ErrorCode>)>
@@ -147,15 +147,14 @@ class ZCashShieldSyncService {
                        std::string last_block_hash,
                        base::expected<OrchardBlockScanner::Result,
                                       OrchardBlockScanner::ErrorCode> result);
-  void UpdateNotes(const std::vector<OrchardNote>& found_notes,
-                   const std::vector<OrchardNoteSpend>& notes_to_delete,
+  void UpdateNotes(OrchardBlockScanner::Result result,
                    uint32_t latest_scanned_block,
                    std::string latest_scanned_block_hash);
   void UpdateNotesComplete(uint32_t new_latest_scanned_block,
                            std::optional<ZCashOrchardStorage::Error> error);
 
   ZCashRpc& zcash_rpc();
-  base::SequenceBound<ZCashOrchardStorage>& orchard_storage();
+  base::SequenceBound<ZCashOrchardSyncState>& sync_state();
 
   uint32_t GetSpendableBalance();
   std::optional<Error> error() { return error_; }

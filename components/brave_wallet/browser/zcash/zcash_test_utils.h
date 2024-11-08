@@ -16,11 +16,11 @@ namespace brave_wallet {
 std::array<uint8_t, kOrchardNullifierSize> GenerateMockNullifier(
     const mojom::AccountIdPtr& account_id,
     uint8_t seed);
-
 OrchardNoteSpend GenerateMockNoteSpend(const mojom::AccountIdPtr& account_id,
                                        uint32_t block_id,
                                        uint8_t seed);
-
+OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
+                                       uint8_t seed);
 OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
                                     uint32_t block_id,
                                     uint8_t seed);

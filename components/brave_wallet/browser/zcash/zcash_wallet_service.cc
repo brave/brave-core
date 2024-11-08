@@ -64,7 +64,7 @@ ZCashWalletService::ZCashWalletService(
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
 #if BUILDFLAG(ENABLE_ORCHARD)
-  background_orchard_storage_.emplace(
+  sync_state_.emplace(
       base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
       zcash_data_path_.AppendASCII(kOrchardDatabaseName));
 #endif
@@ -81,7 +81,7 @@ ZCashWalletService::ZCashWalletService(base::FilePath zcash_data_path,
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
 #if BUILDFLAG(ENABLE_ORCHARD)
-  background_orchard_storage_.emplace(
+  sync_state_.emplace(
       base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
       zcash_data_path_.AppendASCII(kOrchardDatabaseName));
 #endif
@@ -755,9 +755,8 @@ KeyringService& ZCashWalletService::keyring_service() {
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-base::SequenceBound<ZCashOrchardStorage>&
-ZCashWalletService::orchard_storage() {
-  return background_orchard_storage_;
+base::SequenceBound<ZCashOrchardSyncState>& ZCashWalletService::sync_state() {
+  return sync_state_;
 }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
@@ -780,7 +779,7 @@ void ZCashWalletService::Reset() {
   weak_ptr_factory_.InvalidateWeakPtrs();
 #if BUILDFLAG(ENABLE_ORCHARD)
   shield_sync_services_.clear();
-  background_orchard_storage_.AsyncCall(&ZCashOrchardStorage::ResetDatabase);
+  sync_state_.AsyncCall(&ZCashOrchardSyncState::ResetDatabase);
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 }
 
