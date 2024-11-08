@@ -22,8 +22,7 @@ void ResetWithWebViewConfiguration(WKWebViewConfiguration* configuration) {
   @try {
     [configuration setValue:@YES forKey:@"longPressActionsEnabled"];
   } @catch (NSException* exception) {
-    NOTREACHED_IN_MIGRATION()
-        << "Error setting value for longPressActionsEnabled";
+    DCHECK(false) << "Error setting value for longPressActionsEnabled";
   }
 
   // Restore Apple's safe browsing implementation
