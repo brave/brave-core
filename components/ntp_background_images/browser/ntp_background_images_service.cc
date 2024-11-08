@@ -71,8 +71,10 @@ std::string HandleComponentData(const base::FilePath& installed_dir) {
   std::string contents;
 
   if (json_path.empty()) {
-    NOTREACHED_IN_MIGRATION()
-        << __func__ << ": Can't find valid manifest file in " << installed_dir;
+    // NTP sponsored component should have photo.json always but anything can
+    // happen outside of browser. Handle it gracefully instead of crash.
+    DVLOG(2) << __func__ << ": Can't find valid manifest file in "
+             << installed_dir;
     return contents;
   }
 
