@@ -260,9 +260,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       base::SysNSStringToUTF8(self.storagePath), *adsClient,
       std::move(cppSysInfo), std::move(cppBuildChannelInfo),
       std::move(cppWalletInfo), base::BindOnce(^(const bool success) {
-        [self periodicallyCheckForAdsResourceUpdates];
-        [self registerAdsResources];
         if (success) {
+          [self registerAdsResources];
+          [self periodicallyCheckForAdsResourceUpdates];
           [self notifyDidInitializeAds];
         }
         completion(success);
@@ -270,6 +270,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)shutdownService:(nullable void (^)())completion {
+  [self stopComponentUpdaterTimer];
+
   if (![self isServiceRunning]) {
     if (completion) {
       completion();
