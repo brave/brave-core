@@ -122,6 +122,10 @@ BASE_FEATURE(kBraveDarkModeBlock,
 BASE_FEATURE(kCosmeticFilteringSyncLoad,
              "CosmeticFilterSyncLoad",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// If the feature flag is on, we show the Block all Cookies toggle
+BASE_FEATURE(kBlockAllCookiesToggle,
+             "BlockAllCookiesToggle",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables extra TRACE_EVENTs in content filter js. The feature is
 // primary designed for local debugging.
