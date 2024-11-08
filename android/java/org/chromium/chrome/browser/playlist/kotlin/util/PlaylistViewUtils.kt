@@ -20,6 +20,7 @@ import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
 
 import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
 import org.chromium.chrome.browser.playlist.kotlin.extension.allowMoving
 import org.chromium.chrome.browser.playlist.kotlin.interpolator.BraveBounceInterpolator
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener
@@ -78,17 +79,17 @@ object PlaylistViewUtils {
                             PlaylistOptionsModel(
                                 activity.getString(R.string.playlist_add_media),
                                 R.drawable.ic_add_to_media,
-                                PlaylistOptionsEnum.ADD_MEDIA
+                                PlaylistBaseActivity.PlaylistOptionsEnum.ADD_MEDIA
                             ),
                             PlaylistOptionsModel(
                                 activity.getString(R.string.playlist_open_playlist),
                                 R.drawable.ic_open_playlist,
-                                PlaylistOptionsEnum.OPEN_PLAYLIST
+                                PlaylistBaseActivity.PlaylistOptionsEnum.OPEN_PLAYLIST
                             ),
                             PlaylistOptionsModel(
                                 activity.getString(R.string.playlist_open_playlist_settings),
                                 R.drawable.ic_playlist_settings,
-                                PlaylistOptionsEnum.PLAYLIST_SETTINGS
+                                PlaylistBaseActivity.PlaylistOptionsEnum.PLAYLIST_SETTINGS
                             )
                         ),
                         playlistOptionsListener

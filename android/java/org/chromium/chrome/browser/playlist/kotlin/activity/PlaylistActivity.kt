@@ -35,8 +35,8 @@ import org.chromium.base.task.TaskTraits
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.hls_content.HlsService
 import org.chromium.chrome.browser.playlist.hls_content.HlsServiceImpl
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.listener.ItemInteractionListener
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
@@ -484,13 +484,13 @@ class PlaylistActivity :
     // PlaylistOptionsListener callback
     override fun onPlaylistOptionClicked(playlistOptionsModel: PlaylistOptionsModel) {
         when (playlistOptionsModel.optionType) {
-            PlaylistOptionsEnum.EDIT_PLAYLIST -> {
+            PlaylistBaseActivity.PlaylistOptionsEnum.EDIT_PLAYLIST -> {
                 mPlaylistItemAdapter?.setEditMode(true)
                 mPlaylistToolbar.enableEditMode(true)
                 mIvPlaylistOptions.visibility = View.GONE
             }
-            PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS,
-            PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS -> {
+            PlaylistBaseActivity.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS,
+            PlaylistBaseActivity.PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS -> {
                 mPlaylistItemAdapter?.getSelectedItems()?.let {
                     PlaylistUtils.moveOrCopyModel =
                         MoveOrCopyModel(playlistOptionsModel.optionType, mPlaylistId, "", it)
@@ -500,7 +500,7 @@ class PlaylistActivity :
                 mIvPlaylistOptions.visibility = View.VISIBLE
                 MoveOrCopyToPlaylistBottomSheet().show(supportFragmentManager, null)
             }
-            PlaylistOptionsEnum.RENAME_PLAYLIST -> {
+            PlaylistBaseActivity.PlaylistOptionsEnum.RENAME_PLAYLIST -> {
                 val newActivityIntent =
                     Intent(this@PlaylistActivity, NewPlaylistActivity::class.java)
                 newActivityIntent.putExtra(
@@ -510,7 +510,7 @@ class PlaylistActivity :
                 newActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, mPlaylistId)
                 startActivity(newActivityIntent)
             }
-            PlaylistOptionsEnum.DELETE_PLAYLIST -> {
+            PlaylistBaseActivity.PlaylistOptionsEnum.DELETE_PLAYLIST -> {
                 mMediaBrowser?.stop()
                 mPlaylistService?.removePlaylist(mPlaylistId)
                 finish()

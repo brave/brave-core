@@ -18,7 +18,6 @@ import org.chromium.chrome.browser.init.AsyncInitializationActivity
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
@@ -40,6 +39,34 @@ abstract class PlaylistBaseActivity :
     PlaylistItemOptionsListener {
     companion object {
         val TAG: String = "PlaylistBaseActivity"
+    }
+
+    enum class PlaylistOptionsEnum {
+        // Playlist button options
+        ADD_MEDIA,
+        OPEN_PLAYLIST,
+        PLAYLIST_SETTINGS,
+
+        // Playlist options
+        EDIT_PLAYLIST,
+        RENAME_PLAYLIST,
+        DELETE_PLAYLIST,
+
+        // Playlist item options
+        MOVE_PLAYLIST_ITEM,
+        COPY_PLAYLIST_ITEM,
+        DELETE_ITEMS_OFFLINE_DATA,
+        SHARE_PLAYLIST_ITEM,
+        OPEN_IN_NEW_TAB,
+        OPEN_IN_PRIVATE_TAB,
+        DELETE_PLAYLIST_ITEM,
+
+        // Playlist multiple items options
+        MOVE_PLAYLIST_ITEMS,
+        COPY_PLAYLIST_ITEMS,
+
+        // Extra options
+        NEW_PLAYLIST
     }
 
     protected var mPlaylistId = ConstantUtils.DEFAULT_PLAYLIST

@@ -1680,6 +1680,21 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+
+    private void checkPlaylistAction() {
+        if (getIntent() != null
+                && !TextUtils.isEmpty(getIntent().getAction())
+                && getIntent().getAction().equals(ConstantUtils.PLAYLIST_ACTION)) {
+            if (TextUtils.isEmpty(VideoPlaybackService.Companion.getCurrentPlaylistId())) {
+                return;
+            }
+            openPlaylistActivity(
+                    BraveActivity.this,
+                    VideoPlaybackService.Companion.getCurrentPlaylistId(),
+                    true);
+        }
+    }
+
     private void checkForNotificationData() {
         Intent notifIntent = getIntent();
         if (notifIntent != null
