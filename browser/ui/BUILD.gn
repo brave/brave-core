@@ -5,6 +5,7 @@
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
+import("//brave/browser/ui/config.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -57,6 +58,9 @@ source_set("ui") {
     "//brave/components/webcompat/core/common",
     "//chrome/browser/ui:browser_navigator_params_headers",
   ]
+
+  allow_circular_includes_from = brave_ui_allow_circular_includes_from
+  deps += brave_ui_allow_circular_includes_from
 
   public_deps = [ ":ui_public_dependencies" ]
 
@@ -324,13 +328,9 @@ source_set("ui") {
       "whats_new/whats_new_util.h",
     ]
 
-    allow_circular_includes_from =
-        [ "//brave/browser/ui/webui/brave_news_internals" ]
-
     deps += [
       "//base",
       "//brave/browser/profiles:util",
-      "//brave/browser/ui/webui/brave_news_internals",
       "//brave/common",
       "//brave/components/constants",
       "//brave/components/misc_metrics",
