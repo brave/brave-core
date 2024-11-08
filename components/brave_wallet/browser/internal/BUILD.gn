@@ -39,13 +39,29 @@ source_set("hd_key") {
 }
 
 if (enable_orchard) {
+  source_set("test_support") {
+    sources = [
+      "orchard_test_utils.cc",
+      "orchard_test_utils.h",
+    ]
+    deps = [
+      ":orchard_bundle",
+      "//brave/components/brave_wallet/browser/zcash/rust:test_support",
+    ]
+  }
+
   source_set("orchard_bundle") {
     sources = [
       "orchard_block_scanner.cc",
       "orchard_block_scanner.h",
       "orchard_bundle_manager.cc",
       "orchard_bundle_manager.h",
+      "orchard_sync_state.cc",
+      "orchard_sync_state.h",
     ]
-    deps = [ "//brave/components/brave_wallet/browser/zcash/rust" ]
+    deps = [
+      "orchard_storage",
+      "//brave/components/brave_wallet/browser/zcash/rust",
+    ]
   }
 }

@@ -14,7 +14,7 @@
 namespace brave_wallet {
 
 namespace orchard {
-class ExtendedSpendingKey;
+class OrchardExtendedSpendingKey;
 }  // namespace orchard
 
 // Implements Orchard key generation from
@@ -43,10 +43,11 @@ class HDKeyZip32 {
   OrchardFullViewKey GetFullViewKey();
 
  private:
-  explicit HDKeyZip32(std::unique_ptr<orchard::ExtendedSpendingKey> key);
+  explicit HDKeyZip32(std::unique_ptr<orchard::OrchardExtendedSpendingKey> key);
   // Extended spending key is a root key of an account, all other keys can be
   // derived from esk
-  std::unique_ptr<orchard::ExtendedSpendingKey> extended_spending_key_;
+  std::unique_ptr<orchard::OrchardExtendedSpendingKey>
+      orchard_extended_spending_key_;
 };
 
 }  // namespace brave_wallet

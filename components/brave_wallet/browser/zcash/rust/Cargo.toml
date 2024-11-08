@@ -14,6 +14,9 @@ zcash_note_encryption = "0.4"
 zcash_client_backend = { version = "0.12.1", default-features = false }
 shardtree = { version="0.3.2", features=["legacy-api"] }
 
+[dev-dependencies.paste]
+version = "1"
+
 [lib]
 name = "zcash"
 path = "lib.rs"

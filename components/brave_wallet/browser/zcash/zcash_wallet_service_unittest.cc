@@ -36,7 +36,8 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_storage.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #endif
 
 using testing::_;
@@ -141,8 +142,8 @@ class ZCashWalletServiceUnitTest : public testing::Test {
   }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  base::SequenceBound<ZCashOrchardStorage>& orchard_storage() {
-    return zcash_wallet_service_->orchard_storage();
+  base::SequenceBound<OrchardSyncState>& sync_state() {
+    return zcash_wallet_service_->sync_state();
   }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
@@ -326,12 +327,15 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   note.amount = 10u;
 
   auto update_notes_callback = base::BindLambdaForTesting(
-      [](std::optional<ZCashOrchardStorage::Error>) {});
+      [](base::expected<OrchardStorage::Result, OrchardStorage::Error>) {});
 
-  orchard_storage()
-      .AsyncCall(&ZCashOrchardStorage::UpdateNotes)
-      .WithArgs(account_id.Clone(), std::vector<OrchardNote>({note}),
-                std::vector<OrchardNoteSpend>(), 50000, "hash50000")
+  OrchardBlockScanner::Result result = CreateResultForTesting(
+      OrchardTreeState(), std::vector<OrchardCommitment>());
+  result.discovered_notes = std::vector<OrchardNote>({note});
+
+  sync_state()
+      .AsyncCall(&OrchardSyncState::ApplyScanResults)
+      .WithArgs(account_id.Clone(), std::move(result), 50000, "hash50000")
       .Then(std::move(update_notes_callback));
 
   task_environment_.RunUntilIdle();
@@ -411,12 +415,15 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
   note.amount = 10u;
 
   auto update_notes_callback = base::BindLambdaForTesting(
-      [](std::optional<ZCashOrchardStorage::Error>) {});
+      [](base::expected<OrchardStorage::Result, OrchardStorage::Error>) {});
 
-  orchard_storage()
-      .AsyncCall(&ZCashOrchardStorage::UpdateNotes)
-      .WithArgs(account_id.Clone(), std::vector<OrchardNote>({note}),
-                std::vector<OrchardNoteSpend>(), 50000, "hash50000")
+  OrchardBlockScanner::Result result = CreateResultForTesting(
+      OrchardTreeState(), std::vector<OrchardCommitment>());
+  result.discovered_notes = std::vector<OrchardNote>({note});
+
+  sync_state()
+      .AsyncCall(&OrchardSyncState::ApplyScanResults)
+      .WithArgs(account_id.Clone(), std::move(result), 50000, "hash50000")
       .Then(std::move(update_notes_callback));
 
   task_environment_.RunUntilIdle();
