@@ -138,4 +138,23 @@ void ZCashDecoder::ParseCompactBlocks(const std::vector<std::string>& data,
   std::move(callback).Run(std::move(parsed_blocks));
 }
 
+void ZCashDecoder::ParseSubtreeRoots(const std::vector<std::string>& data,
+                                     ParseSubtreeRootsCallback callback) {
+  std::vector<zcash::mojom::SubtreeRootPtr> roots;
+  for (const auto& data_block : data) {
+    ::zcash::SubtreeRoot result;
+    auto serialized_message = ResolveSerializedMessage(data_block);
+    if (!serialized_message ||
+        !result.ParseFromString(serialized_message.value()) ||
+        serialized_message->empty()) {
+      std::move(callback).Run(std::nullopt);
+      return;
+    }
+    roots.push_back(zcash::mojom::SubtreeRoot::New(
+        ToVector(result.roothash()), ToVector(result.completingblockhash()),
+        result.completingblockheight()));
+  }
+  std::move(callback).Run(std::move(roots));
+}
+
 }  // namespace brave_wallet

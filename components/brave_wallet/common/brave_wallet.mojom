@@ -1820,6 +1820,7 @@ struct ZCashBalance {
   uint64 total_balance;
   uint64 transparent_balance;
   uint64 shielded_balance;
+  // Transparent balances
   map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
 };
 
@@ -1856,10 +1857,33 @@ enum ZCashAddressValidationResult {
   NetworkMismatch = 5
 };
 
+struct ZCashOrchardNoteInfo {
+  uint32 block_index;
+  uint32 tree_position;
+  uint32 value;
+};
+
+struct ZCashOrchardCheckpoint {
+  uint32 checkpoint_id;
+  uint32 tree_position;
+};
+
+struct ZCashTreeState {
+  uint32 tree_size;
+  array<ZCashOrchardNoteInfo> notes;
+  array<ZCashOrchardCheckpoint> checkpoints;
+};
+
 struct ZCashShieldSyncStatus {
-  uint64 current_block;
-  uint64 chain_tip;
+  uint32 start_block;
+  uint32 end_block;
+
+  uint32 total_ranges;
+  uint32 scanned_ranges;
+  // uint64 last_checkpoint_position;
+
   uint32 notes_found;
+
   uint64 spendable_balance;
 };
 
@@ -1884,9 +1908,15 @@ interface ZCashWalletService {
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
 
-  MakeAccountShielded(AccountId account_id) => (string? error_message);
-  StartShieldSync(AccountId account_id) => (string? error_message);
+  MakeAccountShielded(AccountId account_id, uint32 account_birthday_block /* 0 if use last available block */) => (string? error_message);
+  StartShieldSync(AccountId account_id, uint32 to /* 0 if latest available block is used */) => (string? error_message);
   StopShieldSync(AccountId account_id) => (string? error_message);
+  ResetSyncState(AccountId account_id) => (string? error_message);
+
+  // Dev-zcash
+  //GetSpenableNotes(AccountId account_id) => (string? error_message);
+  //CalculateWitnessAgainstLastCheckpoint(
+  //  AccountId account_id, uint64 note_tree_position, uint64 checkpoint_id) => (string result, string? error_message);
 };
 
 enum TransactionStatus {

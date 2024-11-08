@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 
+#include <map>
 #include <string>
 
 #include "base/containers/span.h"
@@ -229,9 +230,11 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
   {
     std::vector<uint8_t> data;
     BtcLikeSerializerStream stream(&data);
-    stream.PushBytes(ZCashSerializer::HashPrevouts(zcash_transaction));
-    stream.PushBytes(ZCashSerializer::HashSequences(zcash_transaction));
-    stream.PushBytes(ZCashSerializer::HashOutputs(zcash_transaction));
+    if (!zcash_transaction.transparent_part().IsEmpty()) {
+      stream.PushBytes(ZCashSerializer::HashPrevouts(zcash_transaction));
+      stream.PushBytes(ZCashSerializer::HashSequences(zcash_transaction));
+      stream.PushBytes(ZCashSerializer::HashOutputs(zcash_transaction));
+    }
     transparent_hash = blake2b256(
         data, base::byte_span_from_cstring(kTransparentHashPersonalizer));
   }
@@ -279,14 +282,17 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
   {
     std::vector<uint8_t> data;
     BtcLikeSerializerStream stream(&data);
-    stream.Push8AsLE(zcash_transaction.sighash_type());
-    stream.PushBytes(HashPrevouts(zcash_transaction));
 
-    stream.PushBytes(HashAmounts(zcash_transaction));
-    stream.PushBytes(HashScriptPubKeys(zcash_transaction));
-    stream.PushBytes(HashSequences(zcash_transaction));
-    stream.PushBytes(HashOutputs(zcash_transaction));
-    stream.PushBytes(HashTxIn(input));
+    if (!zcash_transaction.transparent_part().IsEmpty()) {
+      stream.Push8AsLE(zcash_transaction.sighash_type());
+      stream.PushBytes(HashPrevouts(zcash_transaction));
+
+      stream.PushBytes(HashAmounts(zcash_transaction));
+      stream.PushBytes(HashScriptPubKeys(zcash_transaction));
+      stream.PushBytes(HashSequences(zcash_transaction));
+      stream.PushBytes(HashOutputs(zcash_transaction));
+      stream.PushBytes(HashTxIn(input));
+    }
 
     transparent_hash = blake2b256(
         data, base::byte_span_from_cstring(kTransparentHashPersonalizer));

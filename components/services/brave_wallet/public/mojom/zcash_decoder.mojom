@@ -84,5 +84,6 @@ interface ZCashDecoder {
   ParseRawTransaction(string data) => (RawTransaction? tx);
   ParseTreeState(string data) => (TreeState? tree_state);
   ParseCompactBlocks(array<string> data) => (array<CompactBlock>? compact_blocks);
+  ParseSubtreeRoots(array<string> data) => (array<SubtreeRoot>? subtree_roots);
 };
 

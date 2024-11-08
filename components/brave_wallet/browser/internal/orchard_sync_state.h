@@ -58,6 +58,19 @@ class OrchardSyncState {
                    const uint32_t latest_scanned_block,
                    const std::string& latest_scanned_block_hash);
 
+  base::expected<std::optional<uint32_t>, OrchardStorage::Error>
+  GetLatestShardIndex(const mojom::AccountIdPtr& account_id);
+
+  base::expected<std::optional<uint32_t>, OrchardStorage::Error>
+  GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
+                           uint32_t chain_tip_height,
+                           uint32_t min_confirmations);
+
+  base::expected<OrchardStorage::Result, OrchardStorage::Error>
+  UpdateSubtreeRoots(const mojom::AccountIdPtr& account_id,
+                     uint32_t start_index,
+                     const std::vector<zcash::mojom::SubtreeRootPtr>& roots);
+
   // Clears sync data related to the account except it's birthday.
   base::expected<OrchardStorage::Result, OrchardStorage::Error>
   ResetAccountSyncState(const mojom::AccountIdPtr& account_id);

@@ -226,6 +226,8 @@ static_library("browser") {
     "wallet_data_files_installer_delegate.h",
     "zcash/zcash_block_tracker.cc",
     "zcash/zcash_block_tracker.h",
+    "zcash/zcash_complete_transaction_task.cc",
+    "zcash/zcash_complete_transaction_task.h",
     "zcash/zcash_create_transparent_transaction_task.cc",
     "zcash/zcash_create_transparent_transaction_task.h",
     "zcash/zcash_discover_next_unused_zcash_address_task.cc",
@@ -242,8 +244,6 @@ static_library("browser") {
     "zcash/zcash_serializer.h",
     "zcash/zcash_transaction.cc",
     "zcash/zcash_transaction.h",
-    "zcash/zcash_transaction_complete_manager.cc",
-    "zcash/zcash_transaction_complete_manager.h",
     "zcash/zcash_transaction_utils.cc",
     "zcash/zcash_transaction_utils.h",
     "zcash/zcash_tx_manager.cc",
@@ -312,10 +312,20 @@ static_library("browser") {
 
   if (enable_orchard) {
     sources += [
+      "zcash/zcash_blocks_batch_scan_task.cc",
+      "zcash/zcash_blocks_batch_scan_task.h",
       "zcash/zcash_create_shield_transaction_task.cc",
       "zcash/zcash_create_shield_transaction_task.h",
+      "zcash/zcash_create_shielded_transaction_task.cc",
+      "zcash/zcash_create_shielded_transaction_task.h",
+      "zcash/zcash_scan_blocks_task.cc",
+      "zcash/zcash_scan_blocks_task.h",
       "zcash/zcash_shield_sync_service.cc",
       "zcash/zcash_shield_sync_service.h",
+      "zcash/zcash_update_subtree_roots_task.cc",
+      "zcash/zcash_update_subtree_roots_task.h",
+      "zcash/zcash_verify_chain_state_task.cc",
+      "zcash/zcash_verify_chain_state_task.h",
     ]
 
     deps += [

@@ -610,6 +610,7 @@ export function getTransactionBaseValue(tx: TransactionInfo) {
   }
 
   if (isZCashTransaction(tx)) {
+    console.error('xxxzzz amount ' + (tx.txDataUnion.zecTxData?.amount.toString() ?? ''))
     return tx.txDataUnion.zecTxData?.amount.toString() ?? ''
   }
 
@@ -1184,6 +1185,7 @@ export const accountHasInsufficientFundsForTransaction = ({
   // ETHSend
   // SolanaSystemTransfer
   // Other
+  console.error('xxxzzz account native balance ' + accountNativeBalance)
   return (
     accountNativeBalance !== '' &&
     new Amount(getTransactionBaseValue(tx))

@@ -2212,6 +2212,17 @@ std::optional<OrchardFullViewKey> KeyringService::GetOrchardFullViewKey(
 
   return zcash_keyring->GetOrchardFullViewKey(account_id->account_index);
 }
+
+std::optional<OrchardSpendingKey> KeyringService::GetOrchardSpendingKey(
+    const mojom::AccountIdPtr& account_id) {
+  auto* zcash_keyring = GetZCashKeyringById(account_id->keyring_id);
+  if (!zcash_keyring) {
+    return std::nullopt;
+  }
+
+  return zcash_keyring->GetOrchardSpendingKey(account_id->account_index);
+}
+
 #endif
 
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
