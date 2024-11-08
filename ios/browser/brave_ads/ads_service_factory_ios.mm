@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/ads/ads_service_factory_ios.h"
+#include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 
 #include "base/no_destructor.h"
-#include "brave/ios/browser/ads/ads_service_impl_ios.h"
+#include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
