@@ -60,7 +60,6 @@ class AdsServiceImplIOS : public KeyedService {
 
   void MaybeServeInlineContentAd(const std::string& dimensions,
                                  MaybeServeInlineContentAdCallback callback);
-
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
@@ -75,7 +74,6 @@ class AdsServiceImplIOS : public KeyedService {
 
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback);
-
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type,
@@ -89,7 +87,6 @@ class AdsServiceImplIOS : public KeyedService {
 
   void MaybeGetSearchResultAd(const std::string& placement_id,
                               MaybeGetSearchResultAdCallback callback);
-
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
@@ -106,8 +103,8 @@ class AdsServiceImplIOS : public KeyedService {
   void InitializeDatabase(const std::string& storage_path);
   void Cleanup();
 
-  void OnInitialize(InitializeCallback callback, bool success);
-  void OnShutdown(ShutdownCallback callback, bool success);
+  void InitializeAdsCallback(InitializeCallback callback, bool success);
+  void ShutdownAdsCallback(ShutdownCallback callback, bool success);
 
   const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
 
@@ -115,9 +112,9 @@ class AdsServiceImplIOS : public KeyedService {
 
   base::FilePath storage_path_;
 
-  base::SequenceBound<brave_ads::Database> database_;
+  base::SequenceBound<Database> database_;
 
-  std::unique_ptr<brave_ads::Ads> ads_;
+  std::unique_ptr<Ads> ads_;
 
   base::WeakPtrFactory<AdsServiceImplIOS> weak_ptr_factory_{this};
 };

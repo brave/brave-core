@@ -40,7 +40,7 @@ std::unique_ptr<KeyedService> AdsServiceFactoryIOS::BuildServiceInstanceFor(
   ProfileIOS* profile = ProfileIOS::FromBrowserState(context);
   CHECK(profile);
   if (profile->IsOffTheRecord()) {
-    return {};
+    return nullptr;
   }
 
   return std::make_unique<AdsServiceImplIOS>(profile->GetPrefs());
