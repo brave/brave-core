@@ -30,7 +30,7 @@ void PinShortcut(Profile* profile,
   // Mac doesn't support profile specific icon in dock.
   mac::AddIconToDock(std::move(result_callback));
 #elif BUILDFLAG(IS_LINUX)
-  NOTREACHED_IN_MIGRATION() << "Not supported on linux yet.";
+  NOTREACHED() << "Not supported on linux yet.";
 #endif
 }
 
@@ -40,7 +40,7 @@ void IsShortcutPinned(base::OnceCallback<void(bool)> result_callback) {
 #elif BUILDFLAG(IS_MAC)
   mac::IsIconAddedToDock(std::move(result_callback));
 #elif BUILDFLAG(IS_LINUX)
-  NOTREACHED_IN_MIGRATION() << "Not supported on linux yet.";
+  NOTREACHED() << "Not supported on linux yet.";
 #endif
 }
 
