@@ -171,7 +171,7 @@ void SparkleVersionUpdater::UpdateStatus(NSDictionary* dictionary) {
       break;
 
     default:
-      NOTREACHED_IN_MIGRATION();
+      // We are not currently interested in this status.
       return;
   }
 
