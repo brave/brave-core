@@ -98,9 +98,7 @@ void BraveWebAuthFlow::OnAuthFlowFailure(WebAuthFlow::Failure failure) {
           IdentityGetAuthTokenError::State::kRemoteConsentPageLoadFailure);
       break;
     default:
-      NOTREACHED_IN_MIGRATION()
-          << "Unexpected error from web auth flow: " << failure;
-      break;
+      NOTREACHED() << "Unexpected error from web auth flow: " << failure;
   }
   if (web_auth_flow_) {
     web_auth_flow_.release()->DetachDelegateAndDelete();
