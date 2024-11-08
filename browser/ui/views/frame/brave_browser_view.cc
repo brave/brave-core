@@ -394,8 +394,7 @@ tabs::TabHandle BraveBrowserView::GetActiveTabHandle() {
       model->GetIndexOfWebContents(GetActiveWebContents()));
 }
 
-bool BraveBrowserView::IsActiveWebContentsTiled(
-    const SplitViewBrowserData::Tile& tile) {
+bool BraveBrowserView::IsActiveWebContentsTiled(const TabTile& tile) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
 
   auto active_tab_handle = GetActiveTabHandle();
@@ -603,9 +602,9 @@ void BraveBrowserView::ToggleSidebar() {
   browser_->GetFeatures().side_panel_ui()->Toggle();
 }
 
-void BraveBrowserView::ShowBraveVPNBubble() {
+void BraveBrowserView::ShowBraveVPNBubble(bool show_select) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  vpn_panel_controller_.ShowBraveVPNPanel();
+  vpn_panel_controller_.ShowBraveVPNPanel(show_select);
 #endif
 }
 
@@ -779,10 +778,6 @@ WalletButton* BraveBrowserView::GetWalletButton() {
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
 }
 
-void BraveBrowserView::WillShowSidePanel() {
-  sidebar_container_view_->WillShowSidePanel();
-}
-
 void BraveBrowserView::NotifyDialogPositionRequiresUpdate() {
   GetBrowserViewLayout()->NotifyDialogPositionRequiresUpdate();
 }
@@ -835,7 +830,7 @@ void BraveBrowserView::OnAcceleratorsChanged(
   }
 }
 
-void BraveBrowserView::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
+void BraveBrowserView::OnTileTabs(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }
@@ -843,7 +838,7 @@ void BraveBrowserView::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
   UpdateContentsWebViewVisual();
 }
 
-void BraveBrowserView::OnWillBreakTile(const SplitViewBrowserData::Tile& tile) {
+void BraveBrowserView::OnWillBreakTile(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }
@@ -853,8 +848,7 @@ void BraveBrowserView::OnWillBreakTile(const SplitViewBrowserData::Tile& tile) {
                                 weak_ptr_.GetWeakPtr()));
 }
 
-void BraveBrowserView::OnSwapTabsInTile(
-    const SplitViewBrowserData::Tile& tile) {
+void BraveBrowserView::OnSwapTabsInTile(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }

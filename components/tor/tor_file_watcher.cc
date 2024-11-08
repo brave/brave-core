@@ -264,8 +264,7 @@ bool TorFileWatcher::EatControlPort(int& port, base::Time& mtime) {
   std::string text(buf);
 
   // Sanity-check the content.
-  if (!base::StartsWith(text, "PORT=", base::CompareCase::SENSITIVE) ||
-      !base::EndsWith(text, kLineBreak, base::CompareCase::SENSITIVE)) {
+  if (!text.starts_with("PORT=") || !text.ends_with(kLineBreak)) {
     VLOG(0) << "tor: invalid control port: "
             << "`" << text << ";";  // XXX escape
     return false;
@@ -273,7 +272,7 @@ bool TorFileWatcher::EatControlPort(int& port, base::Time& mtime) {
 
   // Verify that it's localhost.
   const char expected[] = "PORT=127.0.0.1:";
-  if (!base::StartsWith(text, expected, base::CompareCase::SENSITIVE)) {
+  if (!text.starts_with(expected)) {
     VLOG(0) << "tor: control port has non-local control address";
     return false;
   }

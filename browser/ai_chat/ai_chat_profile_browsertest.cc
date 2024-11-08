@@ -86,7 +86,7 @@ class AIChatProfileTest : public InProcessBrowserTest,
   }
 
  protected:
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SidebarCheck) {

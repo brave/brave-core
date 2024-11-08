@@ -227,11 +227,11 @@ struct EndpointQueue {
 };
 
 BitcoinRpc::BitcoinRpc(
-    NetworkManager* network_manager,
+    NetworkManager& network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : network_manager_(network_manager),
-      api_request_helper_(new APIRequestHelper(GetNetworkTrafficAnnotationTag(),
-                                               url_loader_factory)) {}
+      api_request_helper_(GetNetworkTrafficAnnotationTag(),
+                          url_loader_factory) {}
 
 BitcoinRpc::~BitcoinRpc() = default;
 
@@ -461,10 +461,10 @@ void BitcoinRpc::PostTransaction(const std::string& chain_id,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   auto conversion_callback = base::BindOnce(&ConvertPlainStringToJsonArray);
-  api_request_helper_->Request(
-      net::HttpRequestHeaders::kPostMethod, request_url, payload, "",
-      std::move(internal_callback), {}, {.auto_retry_on_network_change = true},
-      std::move(conversion_callback));
+  api_request_helper_.Request(net::HttpRequestHeaders::kPostMethod, request_url,
+                              payload, "", std::move(internal_callback), {},
+                              {.auto_retry_on_network_change = true},
+                              std::move(conversion_callback));
 }
 
 void BitcoinRpc::OnPostTransaction(PostTransactionCallback callback,
@@ -537,7 +537,7 @@ void BitcoinRpc::MaybeStartQueuedRequest(const GURL& endpoint_host) {
   endpoint.requests_queue.pop_front();
 
   endpoint.active_requests++;
-  api_request_helper_->Request(
+  api_request_helper_.Request(
       net::HttpRequestHeaders::kGetMethod, request.request_url, "", "",
       base::BindOnce(&BitcoinRpc::OnRequestInternalDone,
                      weak_ptr_factory_.GetWeakPtr(), endpoint_host,
@@ -548,7 +548,7 @@ void BitcoinRpc::MaybeStartQueuedRequest(const GURL& endpoint_host) {
 
 void BitcoinRpc::SetUrlLoaderFactoryForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  api_request_helper_->SetUrlLoaderFactoryForTesting(  // IN-TEST
+  api_request_helper_.SetUrlLoaderFactoryForTesting(  // IN-TEST
       std::move(url_loader_factory));
 }
 

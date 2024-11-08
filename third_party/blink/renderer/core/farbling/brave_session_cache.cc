@@ -13,6 +13,8 @@
 #include <string_view>
 
 #include "base/command_line.h"
+#include "base/debug/alias.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
@@ -224,6 +226,12 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   if (auto* settings_client = GetContentSettingsClientFor(&context, true)) {
     auto shields_settings = settings_client->GetBraveShieldsSettings(
         ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
+    // https://github.com/brave/brave-browser/issues/41724 debug.
+    if (!shields_settings) {
+      base::debug::Alias(settings_client);
+      base::debug::DumpWithoutCrashing();
+      return;
+    }
     farbling_level_ =
         base::FeatureList::IsEnabled(
             brave_shields::features::kBraveShowStrictFingerprintingMode)
@@ -328,11 +336,10 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
   CHECK(h.Sign(seed, key, sizeof key));
   // initial PRNG seed based on session key and passed-in seed string
   uint64_t v = *reinterpret_cast<uint64_t*>(key);
-  UChar* destination;
+  base::span<UChar> destination;
   WTF::String value = WTF::String::CreateUninitialized(length, destination);
-  for (wtf_size_t i = 0; i < length; i++) {
-    destination[i] =
-        kLettersForRandomStrings[v % kLettersForRandomStringsLength];
+  for (auto& c : destination) {
+    c = kLettersForRandomStrings[v % kLettersForRandomStringsLength];
     v = lfsr_next(v);
   }
   return value;
@@ -419,6 +426,12 @@ BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
             GetContentSettingsClientFor(GetSupplementable(), true)) {
       auto shields_settings =
           settings_client->GetBraveShieldsSettings(webcompat_content_settings);
+      // https://github.com/brave/brave-browser/issues/41724 debug.
+      if (!shields_settings) {
+        base::debug::Alias(settings_client);
+        base::debug::DumpWithoutCrashing();
+        return farbling_level_;
+      }
       farbling_levels_.insert(webcompat_content_settings,
                               shields_settings->farbling_level);
       return shields_settings->farbling_level;

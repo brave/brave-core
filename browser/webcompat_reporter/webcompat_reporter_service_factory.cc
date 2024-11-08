@@ -49,7 +49,8 @@ WebcompatReporterServiceFactory::WebcompatReporterServiceFactory()
 
 WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() = default;
 
-KeyedService* WebcompatReporterServiceFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   if (!default_storage_partition) {
@@ -58,7 +59,7 @@ KeyedService* WebcompatReporterServiceFactory::BuildServiceInstanceFor(
 
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess());
-  return new WebcompatReporterService(
+  return std::make_unique<WebcompatReporterService>(
       std::make_unique<WebcompatReporterServiceDelegateImpl>(
           g_browser_process->component_updater(),
           g_brave_browser_process->ad_block_service()),

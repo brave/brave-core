@@ -62,14 +62,14 @@ class BitcoinTxManagerUnitTest : public testing::Test {
 
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
-        keyring_service_.get(), &prefs_, network_manager_.get(),
+        *keyring_service_, *network_manager_,
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
     bitcoin_wallet_service_->SetArrangeTransactionsForTesting(true);
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), bitcoin_wallet_service_.get(), nullptr,
-        keyring_service_.get(), &prefs_, temp_dir_.GetPath(),
+        *keyring_service_, &prefs_, temp_dir_.GetPath(),
         base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 

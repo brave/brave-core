@@ -424,7 +424,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, GetCurrentWallpaperTest) {
   delegate_->image_enabled_ = true;
   background = view_counter_->GetCurrentWallpaper();
   bg_url = background->FindString(kWallpaperImageURLKey);
-  EXPECT_TRUE(base::StartsWith(*bg_url, kCustomWallpaperURL))
+  EXPECT_TRUE(bg_url->starts_with(kCustomWallpaperURL))
       << "actual url " << *bg_url;
 
   // Disable custom image background.

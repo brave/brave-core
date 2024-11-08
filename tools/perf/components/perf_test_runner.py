@@ -14,9 +14,10 @@ from lib.util import scoped_cwd
 
 import components.path_util as path_util
 import components.perf_test_utils as perf_test_utils
-from components.common_options import CommonOptions
 from components.browser_binary_fetcher import BrowserBinary, PrepareBinary
 from components.browser_type import BraveVersion
+from components.common_options import CommonOptions
+from components.field_trials import MaybeInjectSeedToLocalState
 from components.perf_config import (BenchmarkConfig, ParseTarget,
                                     ProfileRebaseType, RunnerConfig)
 
@@ -133,6 +134,11 @@ class RunableConfiguration:
     result = self.RunSingleTest(rebase_runner_config, rebase_benchmark,
                                 rebase_out_dir, True, REBASE_TIMEOUT)
     self.status_line += f'Rebase {(time.time() - start_time):.2f}s '
+
+
+    # Re-inject seed, because it could be updated during the rebase.
+    MaybeInjectSeedToLocalState(self.binary.field_trial_config,
+                                self.binary.profile_dir)
     return result
 
   def RunApkSize(self, out_dir: str):

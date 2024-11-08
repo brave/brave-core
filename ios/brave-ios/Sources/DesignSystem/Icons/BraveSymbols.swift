@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
+import NalaAssets
 import SwiftUI
 import UIKit
 
@@ -14,14 +15,14 @@ extension UIImage {
     braveSystemNamed name: String,
     compatibleWith traitCollection: UITraitCollection? = nil
   ) {
-    self.init(named: name, in: .module, compatibleWith: traitCollection)
+    self.init(named: name, in: .nalaAssets, compatibleWith: traitCollection)
   }
 }
 
 extension Image {
   /// Creates a labeled image from the Design System bundle that you can use as content for controls.
   public init(braveSystemName name: String) {
-    self.init(name, bundle: .module)
+    self.init(name, bundle: .nalaAssets)
   }
 }
 

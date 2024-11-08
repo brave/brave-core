@@ -54,7 +54,7 @@ class SubdivisionUrlRequest final {
   void NotifyWillRetryFetchingSubdivision(base::Time retry_at) const;
   void NotifyDidRetryFetchingSubdivision() const;
 
-  raw_ptr<SubdivisionUrlRequestDelegate> delegate_ = nullptr;
+  raw_ptr<SubdivisionUrlRequestDelegate> delegate_ = nullptr;  // Not owned.
 
   bool is_periodically_fetching_ = false;
 

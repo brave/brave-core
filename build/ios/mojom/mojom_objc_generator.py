@@ -324,14 +324,19 @@ class BaseListValueMojoTypemap(MojoTypemap):
     def IsMojoType(kind):
         return (mojom.IsStructKind(kind) and
                 kind.qualified_name == 'mojo_base.mojom.ListValue')
+
     def ObjCWrappedType(self):
         return "NSArray<MojoBaseValue*>*"
+
     def ExpectedCppType(self):
         return "base::Value"
+
     def DefaultObjCValue(self, default):
         return "@[]"
+
     def ObjCToCpp(self, accessor):
-        return "brave::BaseValueFromNSArray(%s)" % accessor
+        return "brave::BaseValueListFromNSArray(%s)" % accessor
+
     def CppToObjC(self, accessor):
         return "brave::NSArrayFromBaseValue(%s.Clone())" % accessor
 

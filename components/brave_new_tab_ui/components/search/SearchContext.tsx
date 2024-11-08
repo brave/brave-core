@@ -8,7 +8,7 @@ import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemo
 import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js';
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
-import { getDefaultSearchEngine, isSearchEngineEnabled, setDefaultSearchEngine } from './config';
+import { useEngineContext } from './EngineContext';
 
 interface Context {
   open: boolean,
@@ -23,7 +23,7 @@ interface Context {
 
 const Context = React.createContext<Context>({
   open: false,
-  setOpen: () => {},
+  setOpen: () => { },
   query: '',
   setQuery: () => { },
   searchEngine: undefined,
@@ -73,18 +73,19 @@ class SearchPage implements PageInterface {
     for (const listener of this.selectionListeners) listener(selection)
   }
 
-  setInputText(inputText: string) {}
-  setThumbnail(thumbnailUrl: string) {}
+  setInputText(inputText: string) { }
+  setThumbnail(thumbnailUrl: string) { }
 }
 
 export const search = new SearchPage()
 
 export function SearchContext(props: React.PropsWithChildren<{}>) {
+  const { engineConfig, lastSearchEngine, setLastSearchEngine } = useEngineContext()
   const [open, setOpen] = React.useState(false)
   const [searchEngine, setSearchEngineInternal] = React.useState<SearchEngineInfo>()
   const [query, setQuery] = React.useState('')
   const { result: searchEngines = [] } = usePromise(() => searchEnginesPromise, [])
-  const filteredSearchEngines = searchEngines.filter(isSearchEngineEnabled)
+  const filteredSearchEngines = searchEngines.filter(s => engineConfig[s.host])
 
   const setSearchEngine = React.useCallback((engine: SearchEngineInfo | string) => {
     if (typeof engine === 'string') {
@@ -93,7 +94,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
 
     if (!engine) return
 
-    setDefaultSearchEngine(engine)
+    setLastSearchEngine(engine)
     getNTPBrowserAPI().newTabMetrics.reportNTPSearchDefaultEngine(engine.prepopulateId)
     setSearchEngineInternal(engine)
   }, [searchEngines]);
@@ -102,7 +103,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (!searchEngines.length) return
 
-    const match = filteredSearchEngines.find(s => s.host === getDefaultSearchEngine())
+    const match = filteredSearchEngines.find(s => s.host === lastSearchEngine)
       ?? searchEngines[0]
     getNTPBrowserAPI().newTabMetrics.reportNTPSearchDefaultEngine(match.prepopulateId)
     setSearchEngine(match)

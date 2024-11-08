@@ -46,7 +46,7 @@ class AIChatMetricsTest : public InProcessBrowserTest {
  protected:
   base::HistogramTester histogram_tester_;
   std::unique_ptr<TestRenderViewContextMenu> menu_;
-  raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  raw_ptr<AIChatMetrics, DanglingUntriaged> ai_chat_metrics_;
 };
 
 IN_PROC_BROWSER_TEST_F(AIChatMetricsTest, ContextMenuActions) {

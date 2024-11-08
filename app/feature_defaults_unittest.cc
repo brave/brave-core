@@ -10,10 +10,10 @@
 #include "base/logging.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/companion/core/features.h"
+#include "chrome/browser/devtools/features.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
-#include "chrome/common/companion/visual_query/features.h"
 #include "chrome/common/privacy_budget/privacy_budget_features.h"
 #include "components/aggregation_service/features.h"
 #include "components/attribution_reporting/features.h"
@@ -47,6 +47,7 @@
 #include "components/signin/public/base/signin_switches.h"
 #include "components/subresource_filter/core/common/common_features.h"
 #include "components/sync/base/features.h"
+#include "components/user_education/common/user_education_features.h"
 #include "components/webapps/browser/features.h"
 #include "content/common/features.h"
 #include "content/public/common/content_features.h"
@@ -94,7 +95,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kBiddingAndScoringDebugReportingAPI,
       &blink::features::kBrowsingTopics,
-      &blink::features::kClientHintsFormFactors,
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
@@ -123,7 +123,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &commerce::kShoppingList,
       &commerce::kShoppingPDPMetrics,
       &commerce::kRetailCoupons,
-      &companion::visual_query::features::kVisualQuerySuggestions,
       &compose::features::kEnableCompose,
       &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
@@ -134,6 +133,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &companion::features::internal::kSidePanelCompanion2,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
       &extensions_features::kExtensionManifestV2DeprecationWarning,
+      &extensions_features::kExtensionManifestV2Unsupported,
       &extensions_features::kExtensionsManifestV3Only,
       &features::kToolbarPinning,
 #endif
@@ -141,16 +141,20 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kChromeLabs,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,
+#if !BUILDFLAG(IS_ANDROID)
       &features::kDevToolsConsoleInsights,
+#endif  // !BUILDFLAG(IS_ANDROID)
       &features::kDigitalGoodsApi,
       &features::kDIPS,
       &features::kFedCm,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &features::kFewerUpdateConfirmations,
+      &features::kShortcutsNotApps,
 #endif
 #if !BUILDFLAG(IS_ANDROID)
       &features::kHaTSWebUI,
 #endif
+      &features::kHttpsFirstBalancedMode,
       &features::kIdentifiabilityStudyMetaExperiment,
       &features::kIdleDetection,
       &features::kKAnonymityService,
@@ -178,9 +182,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_MAC)
       &features::kUseChromiumUpdater,
       &features::kImmersiveFullscreen,
-#endif
-#if !BUILDFLAG(IS_ANDROID)
-      &features::kWebAppUniversalInstall,
 #endif
       &features::kWebIdentityDigitalCredentials,
       &features::kWebOTP,
@@ -223,10 +224,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &ntp_features::kNtpChromeCartModule,
       &omnibox::kDocumentProviderNoSetting,
       &omnibox::kDocumentProviderNoSyncRequirement,
-      &omnibox::kExpandedStateHeight,
-      &omnibox::kExpandedStateShape,
       &omnibox::kMlUrlScoring,
-      &omnibox::kOmniboxSteadyStateHeight,
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
       &omnibox::kZeroSuggestPrefetching,
@@ -269,6 +267,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif
+      &user_education::features::kWhatsNewVersion2,
       &webapps::features::kWebAppsEnableMLModelForPromotion,
   };
 

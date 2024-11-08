@@ -23,17 +23,12 @@ namespace brave_wallet {
 
 TxManager::TxManager(std::unique_ptr<TxStateManager> tx_state_manager,
                      std::unique_ptr<BlockTracker> block_tracker,
-                     TxService* tx_service,
-                     KeyringService* keyring_service,
-                     PrefService* prefs)
+                     TxService& tx_service,
+                     KeyringService& keyring_service)
     : tx_state_manager_(std::move(tx_state_manager)),
       block_tracker_(std::move(block_tracker)),
       tx_service_(tx_service),
-      keyring_service_(keyring_service),
-      prefs_(prefs) {
-  DCHECK(tx_service_);
-  DCHECK(keyring_service_);
-
+      keyring_service_(keyring_service) {
   tx_state_manager_->AddObserver(this);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());

@@ -159,18 +159,22 @@ export const SendScreen = React.memo((props: Props) => {
 
     const tokenId = query.get('tokenId')
 
+    const isShielded = query.get('isShielded') === 'true'
+
     return userVisibleTokensInfo.find((token) =>
       tokenId
         ? token.chainId === networkFromParams.chainId &&
           token.contractAddress.toLowerCase() ===
             contractOrSymbol.toLowerCase() &&
-          token.tokenId === tokenId
+          token.tokenId === tokenId &&
+          token.isShielded === isShielded
         : (token.chainId === networkFromParams.chainId &&
             token.contractAddress.toLowerCase() ===
               contractOrSymbol.toLowerCase()) ||
           (token.chainId === networkFromParams.chainId &&
             token.contractAddress === '' &&
-            token.symbol.toLowerCase() === contractOrSymbol.toLowerCase())
+            token.symbol.toLowerCase() === contractOrSymbol.toLowerCase()) &&
+          token.isShielded === isShielded
     )
   }, [userVisibleTokensInfo, query, networkFromParams])
 
@@ -413,6 +417,7 @@ export const SendScreen = React.memo((props: Props) => {
 
       case BraveWallet.CoinType.ZEC: {
         await sendZecTransaction({
+          useShieldedPool: tokenFromParams.isShielded,
           network: networkFromParams,
           fromAccount,
           to: toAddress,

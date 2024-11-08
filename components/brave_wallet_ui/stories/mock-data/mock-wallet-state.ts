@@ -55,5 +55,6 @@ export const mockWalletState: WalletState = {
   isWalletLocked: false,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: false,
-  isRefreshingNetworksAndTokens: false
+  isRefreshingNetworksAndTokens: false,
+  isZCashShieldedTransactionsEnabled: false
 }

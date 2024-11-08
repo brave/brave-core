@@ -156,14 +156,15 @@ bool DeAmpBodyHandler::IsTransformer() const {
 void DeAmpBodyHandler::DeAmpBodyHandler::Transform(
     std::string body,
     base::OnceCallback<void(std::string)> on_complete) {
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 void DeAmpBodyHandler::UpdateResponseHead(
     network::mojom::URLResponseHead* response_head) {}
 
 bool DeAmpBodyHandler::MaybeRedirectToCanonicalLink(const std::string& body) {
-  const auto canonical_link = FindCanonicalAmpUrl(body);
+  const auto canonical_link =
+      FindCanonicalAmpUrl(std::string_view(body).substr(0, kMaxBytesToCheck));
   if (!canonical_link.has_value()) {
     VLOG(2) << __func__ << canonical_link.error();
     return false;

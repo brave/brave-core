@@ -4,6 +4,9 @@
 /* Text for toggle which indicating the toggle action is for selecting region in automatic */
 "vpn.automaticServerSelectionToggleTitle" = "Automat";
 
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "Servere disponibile";
+
 /* Button text to buy Brave VPN */
 "vpn.buyButton" = "Cumpără";
 
@@ -24,6 +27,9 @@
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSpeedFast" = "Super viteze de până la 100 Mbps";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld Oraș";
 
 /* Text showing the vpn region is connected */
 "vpn.connectedRegionDescription" = "Conectat";
@@ -107,7 +113,7 @@
 "vpn.freeTrialPeriod" = "perioadă de încercare gratuită de 7 zile";
 
 /* The button text that starts the trial action */
-"vpn.freeTrialPeriodAction" = "Încearcă gratuit 7 zile";
+"vpn.freeTrialPeriodAction" = "încearcă gratuit 7 zile";
 
 /* Disclaimer about in app subscription */
 "vpn.iapDisclaimer" = "Toate abonamentele sunt reînnoite automat însă pot fi anulate înainte de reînnoire.";
@@ -136,11 +142,16 @@
 /* No comment provided by engineer. */
 "vpn.monthlySubTitle" = "Abonament Lunar";
 
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "%ld Orașe";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "%ld Servere";
+
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Expirat";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Te rog să selectezi protocolul de transport preferat. Odată schimbat, credențialele existente VPN vor fi resetate și vei fi reconectat dacă o conexiune VPN este deja stabilită.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -187,6 +198,15 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Restabilește";
+
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "%@ Server";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "Auto-selectează regiunea de server VPN cea mai apropiată de tine pe baza fusului orar. Această opțiune este recomandată pentru a maximiza viteza de internet.";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "%ld Server";
 
 /* VPN Banner Description */
 "vpn.settingHeaderBody" = "Fă upgrade către un VPN pentru a proteja conexiunea și a bloca sistemele invazive de urmărire oriunde te-ai afla.";
@@ -245,6 +265,9 @@
 /* Notification title to tell user that the vpn is turned on even in background */
 "vpn.vpnBackgroundNotificationTitle" = "Firewall + VPN Brave este ON";
 
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "Folosește cel mai bun server disponibil";
+
 /* Text for title of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalTitle" = "Optim";
 
@@ -274,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Folosește un cod de ofertă";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "Regiune VPN schimbată";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Acest lucru va reseta configurația Brave Firewall + VPN și va corecta eventualele erori. Procesul poate dura un minut.";

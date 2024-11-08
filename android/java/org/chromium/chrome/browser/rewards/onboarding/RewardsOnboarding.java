@@ -65,12 +65,10 @@ public class RewardsOnboarding implements BraveRewardsObserver {
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
     private ChromeTabbedActivity mActivity;
-    private int mDeviceWidth;
 
     private static final String SUCCESS = "success";
 
     public RewardsOnboarding(View anchorView, int deviceWidth) {
-        mDeviceWidth = deviceWidth;
         mAnchorView = anchorView;
         mPopupWindow = new PopupWindow(anchorView.getContext());
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -219,7 +217,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         });
 
         mContinueButton.setOnClickListener(
-                (new View.OnClickListener() {
+                new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (!BravePermissionUtils.hasPermission(
@@ -237,7 +235,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
                             mContinueButton.setText("");
                         }
                     }
-                }));
+                });
     }
 
     private void shouldShowContinueProgress(boolean shouldShow) {

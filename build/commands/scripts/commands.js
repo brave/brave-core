@@ -188,15 +188,12 @@ program
 
 program
   .command('pull_l10n')
-  .option('--extension <extension>', 'Scope this command to localize a Brave extension such as greaselion')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
   .option('--debug', `Dumps downloaded content for one language into TransifexCurrent.txt file in the temp directory.`)
   .action(pullL10n)
 
 program
   .command('push_l10n')
-  .option('--extension <extension>', 'Scope this command to localize a Brave extension such as greaselion')
-  .option('--extension_path <extension_path>', 'Local path for extension')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
   .option('--with_translations', 'Push local translations. WARNING: this will overwrite translations in Tansifex.')
   .option('--with_missing_translations', 'Push local translations for strings that do not have translations in Transifex.')
@@ -246,7 +243,7 @@ program
   .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)')
   .option('--run_disabled_tests', 'run disabled tests')
   .option('--manual_android_test_device', 'indicates that Android test device is run manually')
-  .option('--android_test_emulator_name <emulator_name', 'set name of the Android emulator for tests', 'android_30_google_atd_x86')
+  .option('--android_test_emulator_name <emulator_name', 'set name of the Android emulator for tests', 'android_33_google_atd_x64')
   .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
   .option('--offline', 'use offline mode for RBE')
   .arguments('[build_config]')

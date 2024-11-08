@@ -1,0 +1,42 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("creator_detection") {
+  entry_points = [
+    [
+      "github",
+      rebase_path("github.ts"),
+    ],
+    [
+      "reddit",
+      rebase_path("reddit.ts"),
+    ],
+    [
+      "twitch",
+      rebase_path("twitch.ts"),
+    ],
+    [
+      "twitter",
+      rebase_path("twitter.ts"),
+    ],
+    [
+      "vimeo",
+      rebase_path("vimeo.ts"),
+    ],
+    [
+      "youtube",
+      rebase_path("youtube.ts"),
+    ],
+  ]
+  resource_name = "creator_detection"
+}
+
+pack_web_resources("creator_detection_generated") {
+  resource_name = "creator_detection"
+  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
+  deps = [ ":creator_detection" ]
+}

@@ -98,15 +98,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                RequestCallback callback,
                base::Value id);
   // Used for eth_signTypedData
-  // message is for displaying the sign request to users
-  // message_to_sign is the hex representation without 0x for eip712 hash
-  // domain is the domain separator defined in eip712
-  void SignTypedMessage(const std::string& address,
-                        const std::string& message,
-                        base::span<const uint8_t> domain_hash,
-                        base::span<const uint8_t> primary_hash,
-                        mojom::EthSignTypedDataMetaPtr meta,
-                        base::Value::Dict domain,
+  void SignTypedMessage(mojom::EthSignTypedDataPtr eth_sign_typed_data,
                         RequestCallback callback,
                         base::Value id);
   void GetAllowedAccountsInternal(RequestCallback callback,
@@ -171,7 +163,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void Request(base::Value input, RequestCallback callback) override;
   void Enable(EnableCallback callback) override;
   void Send(const std::string& method,
-            base::Value params,
+            base::Value::List params,
             SendCallback callback) override;
   void SendAsync(base::Value input, SendAsyncCallback callback) override;
   void GetChainId(GetChainIdCallback callback) override;
@@ -209,7 +201,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                                          const std::string& error_message);
   void SignMessageInternal(const mojom::AccountIdPtr& account_id,
                            mojom::SignDataUnionPtr sign_data,
-                           std::vector<uint8_t>&& message_to_sign,
+                           std::vector<uint8_t> message_to_sign,
                            RequestCallback callback,
                            base::Value id);
   bool CheckAccountAllowed(const mojom::AccountIdPtr& account_id,
@@ -294,10 +286,11 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   mojo::Remote<mojom::EventsListener> events_listener_;
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<TxService> tx_service_ = nullptr;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<BraveWalletService, DanglingUntriaged> brave_wallet_service_ =
+      nullptr;
+  raw_ptr<JsonRpcService, DanglingUntriaged> json_rpc_service_ = nullptr;
+  raw_ptr<TxService, DanglingUntriaged> tx_service_ = nullptr;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
   base::flat_map<std::string, RequestCallback> chain_callbacks_;
   base::flat_map<std::string, base::Value> chain_ids_;
   base::flat_map<std::string, RequestCallback> add_tx_callbacks_;
@@ -316,7 +309,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   EthBlockTracker eth_block_tracker_;
   EthLogsTracker eth_logs_tracker_;
   bool first_known_accounts_check_ = true;
-  const raw_ptr<PrefService> prefs_ = nullptr;
+  const raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
   bool wallet_onboarding_shown_ = false;
   base::WeakPtrFactory<EthereumProviderImpl> weak_factory_{this};
 };

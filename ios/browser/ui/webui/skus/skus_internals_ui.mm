@@ -46,8 +46,7 @@ web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
     std::size_t resource_map_size,
     int html_resource_id) {
   web::WebUIIOSDataSource* source = web::WebUIIOSDataSource::Create(name);
-  web::WebUIIOSDataSource::Add(ChromeBrowserState::FromWebUIIOS(web_ui),
-                               source);
+  web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
   source->UseStringsJs();
 
   // Add required resources.
@@ -86,12 +85,12 @@ SkusInternalsUI::SkusInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
                               kSkusInternalsGeneratedSize,
                               IDR_SKUS_INTERNALS_HTML);
 
-  ChromeBrowserState* browser_state = ChromeBrowserState::FromWebUIIOS(web_ui);
+  ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
   skus_service_getter_ = base::BindRepeating(
-      [](ChromeBrowserState* browser_state) {
-        return skus::SkusServiceFactory::GetForBrowserState(browser_state);
+      [](ProfileIOS* profile) {
+        return skus::SkusServiceFactory::GetForBrowserState(profile);
       },
-      browser_state);
+      profile);
 
   // Bind Mojom Interface
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
@@ -141,7 +140,7 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
 
   const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
   for (const auto kv : skus_state) {
-    if (!base::StartsWith(kv.first, "skus:")) {
+    if (!kv.first.starts_with("skus:")) {
       continue;
     }
 
@@ -169,7 +168,7 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
       }
 
       if (auto* order_location = order_dict->FindString("location")) {
-        if (!base::StartsWith(*order_location, location)) {
+        if (!order_location->starts_with(location)) {
           continue;
         }
         order_dict_output.Set("location", *order_location);
@@ -219,7 +218,7 @@ std::string SkusInternalsUI::GetSkusStateAsString() const {
 
   for (const auto kv : skus_state) {
     // Only shows "skus:xx" kv in webui.
-    if (!base::StartsWith(kv.first, "skus:")) {
+    if (!kv.first.starts_with("skus:")) {
       continue;
     }
 

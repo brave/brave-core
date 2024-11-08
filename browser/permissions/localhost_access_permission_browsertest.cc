@@ -265,9 +265,9 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<net::EmbeddedTestServer> localhost_server_;
   base::test::ScopedFeatureList feature_list_;
-  raw_ptr<Browser> current_browser_;
+  raw_ptr<Browser, DanglingUntriaged> current_browser_;
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
-  raw_ptr<localhost_permission::LocalhostPermissionComponent>
+  raw_ptr<localhost_permission::LocalhostPermissionComponent, DanglingUntriaged>
       localhost_permission_component_;
 
  private:

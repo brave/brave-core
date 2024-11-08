@@ -20,7 +20,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
@@ -180,8 +179,8 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(base::CopyFile(test_path, profile_path));
   }
 
-  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
-  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<RewardsServiceImpl, DanglingUntriaged> rewards_service_ = nullptr;
+  raw_ptr<Profile, DanglingUntriaged> profile_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
 };
@@ -996,18 +995,6 @@ IN_PROC_BROWSER_TEST_P_(V13, Paths) {
   ASSERT_TRUE(encrypted_wallet);
   profile_->GetPrefs()->SetString(
       "brave.rewards.wallets." + std::get<0>(GetParam()), *encrypted_wallet);
-
-  test_util::StartProcess(rewards_service_);
-
-  if (wallet_status == mojom::WalletStatus::kConnected) {
-    ASSERT_TRUE(profile_->GetPrefs()->HasPrefPath(
-        brave_ads::prefs::kShouldMigrateVerifiedRewardsUser));
-    ASSERT_TRUE(profile_->GetPrefs()->GetBoolean(
-        brave_ads::prefs::kShouldMigrateVerifiedRewardsUser));
-  } else {
-    ASSERT_FALSE(profile_->GetPrefs()->HasPrefPath(
-        brave_ads::prefs::kShouldMigrateVerifiedRewardsUser));
-  }
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V14EmptyWalletType) {

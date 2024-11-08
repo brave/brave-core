@@ -83,7 +83,7 @@ class NetworkManager {
       const std::string& network_id);
 
  private:
-  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
 };
 
 }  // namespace brave_wallet

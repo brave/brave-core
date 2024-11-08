@@ -85,6 +85,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     // Solana
     public boolean isSolanaDappTransaction;
+    private boolean solChangeOfOwnership;
 
     // There are too many fields to init here
     private ParsedTransaction(ParsedTransactionFees parsedTransactionFees) {
@@ -233,7 +234,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         if (txType == TransactionType.SOLANA_DAPP_SIGN_TRANSACTION
                 || txType == TransactionType.SOLANA_DAPP_SIGN_AND_SEND_TRANSACTION
                 || txType == TransactionType.SOLANA_SWAP
-                || txType == TransactionType.OTHER && solTxData != null) {
+                || (txType == TransactionType.OTHER && solTxData != null)) {
             if (solTxData == null) {
                 parsedTransaction.recipient = "";
                 parsedTransaction.recipientLabel = "";
@@ -243,14 +244,19 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 parsedTransaction.symbol = "";
                 return parsedTransaction;
             }
-            assert (txInfo.fromAddress != null);
-            assert (txInfo.fromAddress.equals(account.address));
+            assert txInfo.fromAddress != null;
+            assert txInfo.fromAddress.equals(account.address);
             BigDecimal lamportTransferredAmount = new BigDecimal(value);
             for (SolanaInstruction solanaInstruction : solTxData.instructions) {
                 SolanaInstructionPresenter presenter =
                         new SolanaInstructionPresenter(solanaInstruction);
                 String lamport = presenter.getLamportAmount();
                 Integer instructionType = presenter.getInstructionType();
+                if (instructionType != null
+                        && (instructionType == SolanaSystemInstruction.ASSIGN_WITH_SEED
+                                || instructionType == SolanaSystemInstruction.ASSIGN)) {
+                    parsedTransaction.solChangeOfOwnership = true;
+                }
                 boolean isInsExists = instructionType != null;
                 if (isInsExists
                         && (instructionType == SolanaSystemInstruction.TRANSFER
@@ -511,9 +517,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
             final double price =
                     Utils.getOrDefault(
                             assetPrices, txNetwork.symbol.toLowerCase(Locale.ENGLISH), 0.0d);
-            for (String k : assetPrices.keySet()) {
-                String v = String.valueOf(assetPrices.get(k));
-            }
             double sendAmount = 0;
             if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER) {
                 sendAmount = Utils.fromWei(value, txNetwork.decimals);
@@ -753,5 +756,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
 
     public double getMinBuyAmount() {
         return this.minBuyAmount;
+    }
+
+    public boolean isSolChangeOfOwnership() {
+        return solChangeOfOwnership;
     }
 }

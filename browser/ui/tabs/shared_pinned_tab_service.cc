@@ -236,7 +236,7 @@ SharedPinnedTabService::GetTabRendererDataForDummyContents(
     }
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 void SharedPinnedTabService::CacheWebContentsIfNeeded(
@@ -312,7 +312,8 @@ void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
   if (!base::Contains(browsers_, browser)) {
     // Browser could be different profile or not a type we're
     // looking for. Let |OnBrowserAdded| decide which to look for.
-    DCHECK(!browser->is_type_normal() || profile_ != browser->profile())
+    DCHECK(!browser->is_type_normal() || profile_ != browser->profile() ||
+           base::Contains(closing_browsers_, browser))
         << "We expect a Browser to be created before set active";
     return;
   }
@@ -507,7 +508,7 @@ void SharedPinnedTabService::OnTabAdded(
     pinned_tab_data_.insert(
         pinned_tab_data_.begin() + contents_with_index.index,
         {.renderer_data = tab_renderer_data,
-         .shared_contents = contents_with_index.contents,
+         .shared_contents = contents_with_index.contents.get(),
          .contents_owner_model = tab_strip_model});
 
     SynchronizeNewPinnedTab(contents_with_index.index);

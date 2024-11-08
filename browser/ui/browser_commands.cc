@@ -84,6 +84,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
@@ -181,8 +182,9 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 }
 
 void ShowBraveVPNBubble(Browser* browser) {
-  // Ask to browser view.
-  static_cast<BraveBrowserWindow*>(browser->window())->ShowBraveVPNBubble();
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  browser->GetFeatures().GetBraveVPNController()->ShowBraveVPNBubble();
+#endif
 }
 
 void ToggleBraveVPNTrayIcon() {
@@ -220,14 +222,15 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
           brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment());
       break;
     default:
-      NOTREACHED_IN_MIGRATION();
+      NOTREACHED() << "This should only be called with one of the above VPN "
+                      "commands. (was "
+                   << command_id << ")";
   }
 
   chrome::AddTabAt(browser, GURL(target_url), -1, true);
 #endif
 }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 void ToggleAIChat(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
   SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
@@ -235,7 +238,6 @@ void ToggleAIChat(Browser* browser) {
                         SidePanelOpenTrigger::kToolbarButton);
 #endif
 }
-#endif
 
 void ShowWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)

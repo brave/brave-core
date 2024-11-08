@@ -16,7 +16,8 @@ class NTPP3AHelper {
  public:
   virtual ~NTPP3AHelper() {}
 
-  virtual void RecordView(const std::string& creative_instance_id) = 0;
+  virtual void RecordView(const std::string& creative_instance_id,
+                          const std::string& campaign_id) = 0;
 
   virtual void RecordClickAndMaybeLand(
       const std::string& creative_instance_id) = 0;

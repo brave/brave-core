@@ -5,7 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util.h"
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
+#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -13,11 +18,223 @@ namespace brave_ads {
 
 class BraveAdsSiteVisitUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnClosedTab) {
+TEST_F(BraveAdsSiteVisitUtilTest, AllowInlineContentAdPageLand) {
+  // Act & Assert
+  EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kInlineContentAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       AllowInlineContentAdPageLandForNonRewardsUserIfOptedInToBraveNews) {
   // Arrange
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  test::DisableBraveRewards();
+
+  // Act & Assert
+  EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kInlineContentAd));
+}
+
+TEST_F(
+    BraveAdsSiteVisitUtilTest,
+    DoNotAllowInlineContentAdPageLandForNonRewardsUserIfOptedOutOfBraveNews) {
+  // Arrange
+  test::DisableBraveRewards();
+  test::OptOutOfBraveNewsAds();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kInlineContentAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, AllowPromotedContentAdPageLand) {
+  // Act & Assert
+  EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kPromotedContentAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       AllowPromotedContentAdPageLandForNonRewardsUserIfOptedInToBraveNews) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  // Act & Assert
+  EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kPromotedContentAd));
+}
+
+TEST_F(
+    BraveAdsSiteVisitUtilTest,
+    DoNotAllowPromotedContentAdPageLandForNonRewardsUserIfOptedOutOfBraveNews) {
+  // Arrange
+  test::DisableBraveRewards();
+  test::OptOutOfBraveNewsAds();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kPromotedContentAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, AllowNewTabPageAdPageLand) {
+  // Act & Assert
+  EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kNewTabPageAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       DoNotAllowNewTabPageAdPageLandIfOptedOutOfNewTabPageAds) {
+  // Arrange
+  test::OptOutOfNewTabPageAds();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kNewTabPageAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       DoNotAllowNewTabPageAdPageLandForNonRewardsUser) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kNewTabPageAd));
+}
+
+TEST_F(
+    BraveAdsSiteVisitUtilTest,
+    DoNotAllowNewTabPageAdPageLandForNonRewardsUserIfShouldAlwaysTriggerNewTabPageAdEvents) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+
+  test::DisableBraveRewards();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kNewTabPageAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, AllowNotificationAdPageLand) {
+  // Act & Assert
+  EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kNotificationAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       DoNotAllowNotificationAdPageLandIfOptedOutOfNotificationAds) {
+  // Arrange
+  test::OptOutOfNotificationAds();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kNotificationAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       DoNotAllowNotificationAdPageLandForNonRewardsUser) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kNotificationAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, AllowSearchResultAdPageLand) {
+  // Act & Assert
+  EXPECT_TRUE(IsAllowedToLandOnPage(mojom::AdType::kSearchResultAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       DoNotAllowSearchResultAdPageLandIfOptedOutOfSearchResultAds) {
+  // Arrange
+  test::OptOutOfSearchResultAds();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kSearchResultAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       DoNotAllowSearchResultAdPageLandForNonRewardsUser) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kSearchResultAd));
+}
+
+TEST_F(
+    BraveAdsSiteVisitUtilTest,
+    DoNotAllowSearchResultAdPageLandForNonRewardsUserIfShouldAlwaysTriggerSearchResultAdEvents) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+
+  test::DisableBraveRewards();
+
+  // Act & Assert
+  EXPECT_FALSE(IsAllowedToLandOnPage(mojom::AdType::kSearchResultAd));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, ShouldResumePageLand) {
+  // Arrange
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
+
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_TRUE(ShouldResumePageLand(/*tab_id=*/1));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, ShouldNotResumePageLandIfTabIsOccluded) {
+  // Arrange
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
+
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
+  SimulateOpeningNewTab(
+      /*tab_id=*/2,
+      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
+      net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_FALSE(ShouldResumePageLand(/*tab_id=*/1));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, ShouldNotResumePageLandIfBrowserIsInactive) {
+  // Arrange
+  NotifyBrowserDidResignActive();
+  NotifyBrowserDidEnterForeground();
+
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_FALSE(ShouldResumePageLand(/*tab_id=*/1));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest,
+       ShouldNotResumePageLandIfBrowserDidEnterBackground) {
+  // Arrange
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterBackground();
+
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_FALSE(ShouldResumePageLand(/*tab_id=*/1));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, DidLandOnPage) {
+  // Arrange
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
+
+  // Act & Assert
+  EXPECT_TRUE(DidLandOnPage(/*tab_id=*/1, GURL("https://brave.com")));
+}
+
+TEST_F(BraveAdsSiteVisitUtilTest, DoNotLandOnPageForClosedTab) {
+  // Arrange
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://brave.com")},
+                        net::HTTP_OK);
 
   NotifyDidCloseTab(/*tab_id=*/1);
 
@@ -25,24 +242,14 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnClosedTab) {
   EXPECT_FALSE(DidLandOnPage(/*tab_id=*/1, GURL("https://brave.com")));
 }
 
-TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnTabIfMismatchingDomainOrHost) {
+TEST_F(BraveAdsSiteVisitUtilTest, DoNotLandOnPageForDomainOrHostMismatch) {
   // Arrange
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://foo.com")},
-      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+  SimulateOpeningNewTab(/*tab_id=*/1,
+                        /*redirect_chain=*/{GURL("https://foo.com")},
+                        net::HTTP_OK);
 
   // Act & Assert
   EXPECT_FALSE(DidLandOnPage(/*tab_id=*/1, GURL("https://brave.com")));
-}
-
-TEST_F(BraveAdsSiteVisitUtilTest, DidLandOnPage) {
-  // Arrange
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
-
-  // Act & Assert
-  EXPECT_TRUE(DidLandOnPage(/*tab_id=*/1, GURL("https://brave.com")));
 }
 
 }  // namespace brave_ads

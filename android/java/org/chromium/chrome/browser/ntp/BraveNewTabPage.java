@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.toolbar.top.Toolbar;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -44,7 +45,10 @@ public class BraveNewTabPage extends NewTabPage {
     // To delete in bytecode, members from parent class will be used instead.
     private BrowserControlsStateProvider mBrowserControlsStateProvider;
     private NewTabPageLayout mNewTabPageLayout;
+
+    @SuppressWarnings("UnusedVariable")
     private FeedSurfaceProvider mFeedSurfaceProvider;
+
     private Supplier<Toolbar> mToolbarSupplier;
     private BottomSheetController mBottomSheetController;
     private ObservableSupplier<Integer> mTabStripHeightSupplier;
@@ -71,7 +75,8 @@ public class BraveNewTabPage extends NewTabPage {
             HomeSurfaceTracker homeSurfaceTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
             ObservableSupplier<Integer> tabStripHeightSupplier,
-            OneshotSupplier<ModuleRegistry> moduleRegistrySupplier) {
+            OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
         super(
                 activity,
                 browserControlsStateProvider,
@@ -94,7 +99,8 @@ public class BraveNewTabPage extends NewTabPage {
                 homeSurfaceTracker,
                 tabContentManagerSupplier,
                 tabStripHeightSupplier,
-                moduleRegistrySupplier);
+                moduleRegistrySupplier,
+                edgeToEdgeControllerSupplier);
 
         mJankTracker = jankTracker;
 
@@ -104,7 +110,8 @@ public class BraveNewTabPage extends NewTabPage {
             ((BraveNewTabPageLayout) mNewTabPageLayout).setTabProvider(activityTabProvider);
         }
 
-        // We have no way to know exactly which service the observer is added to, so try remove on
+        // We have no way to know exactly which service the observer is added to, so try
+        // remove on
         // both
         if (tabModelSelector != null) {
             for (TabModel tabModel : tabModelSelector.getModels()) {
@@ -129,7 +136,8 @@ public class BraveNewTabPage extends NewTabPage {
             SnackbarManager snackbarManager,
             boolean isInNightMode,
             Supplier<ShareDelegate> shareDelegateSupplier,
-            String url) {
+            String url,
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
@@ -160,7 +168,8 @@ public class BraveNewTabPage extends NewTabPage {
                         /* overScrollDisabled= */ false,
                         /* viewportView= */ null,
                         /* actionDelegate= */ null,
-                        mTabStripHeightSupplier);
+                        mTabStripHeightSupplier,
+                        edgeToEdgeControllerSupplier);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }

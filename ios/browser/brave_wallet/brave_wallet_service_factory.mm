@@ -21,9 +21,9 @@ namespace brave_wallet {
 
 class BraveWalletServiceDelegateIos : public BraveWalletServiceDelegate {
  public:
-  explicit BraveWalletServiceDelegateIos(ChromeBrowserState* browser_state) {
-    wallet_base_directory_ = browser_state->GetStatePath();
-    is_private_window_ = browser_state->IsOffTheRecord();
+  explicit BraveWalletServiceDelegateIos(ProfileIOS* profile) {
+    wallet_base_directory_ = profile->GetStatePath();
+    is_private_window_ = profile->IsOffTheRecord();
   }
 
   base::FilePath GetWalletBaseDirectory() override {
@@ -38,9 +38,9 @@ class BraveWalletServiceDelegateIos : public BraveWalletServiceDelegate {
 
 // static
 BraveWalletService* BraveWalletServiceFactory::GetServiceForState(
-    ChromeBrowserState* browser_state) {
+    ProfileIOS* profile) {
   return static_cast<BraveWalletService*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+      GetInstance()->GetServiceForBrowserState(profile, true));
 }
 
 // static
@@ -59,11 +59,11 @@ BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 std::unique_ptr<KeyedService>
 BraveWalletServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
-  auto* browser_state = ChromeBrowserState::FromBrowserState(context);
+  auto* profile = ProfileIOS::FromBrowserState(context);
   std::unique_ptr<BraveWalletService> service(new BraveWalletService(
-      browser_state->GetSharedURLLoaderFactory(),
-      std::make_unique<BraveWalletServiceDelegateIos>(browser_state),
-      browser_state->GetPrefs(), GetApplicationContext()->GetLocalState()));
+      profile->GetSharedURLLoaderFactory(),
+      std::make_unique<BraveWalletServiceDelegateIos>(profile),
+      profile->GetPrefs(), GetApplicationContext()->GetLocalState()));
   return service;
 }
 

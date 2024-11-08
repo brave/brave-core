@@ -9,7 +9,6 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request.h"
@@ -19,16 +18,14 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 
 UserRewards::UserRewards(WalletInfo wallet) : wallet_(std::move(wallet)) {
   CHECK(wallet_.IsValid());
 
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 
   issuers_url_request_.SetDelegate(this);
   refill_confirmation_tokens_.SetDelegate(this);
@@ -36,9 +33,7 @@ UserRewards::UserRewards(WalletInfo wallet) : wallet_(std::move(wallet)) {
 }
 
 UserRewards::~UserRewards() {
-  GetAdsClient()->RemoveObserver(this);
-
-  delegate_ = nullptr;
+  GetAdsClient().RemoveObserver(this);
 }
 
 void UserRewards::FetchIssuers() {
@@ -55,37 +50,8 @@ void UserRewards::MaybeRedeemPaymentTokens() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void UserRewards::MaybeMigrateVerifiedRewardsUser() {
-  if (!ShouldMigrateVerifiedRewardsUser()) {
-    return;
-  }
-
-  BLOG(1, "Migrate verified rewards user");
-
-  ResetTokens();
-
-  ResetIssuers();
-  FetchIssuers();
-
-  SetProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, false);
-
-  NotifyDidMigrateVerifiedRewardsUser();
-}
-
-void UserRewards::NotifyDidMigrateVerifiedRewardsUser() const {
-  if (delegate_) {
-    delegate_->OnDidMigrateVerifiedRewardsUser();
-  }
-}
-
 void UserRewards::OnNotifyDidSolveAdaptiveCaptcha() {
   MaybeRefillConfirmationTokens();
-}
-
-void UserRewards::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == prefs::kShouldMigrateVerifiedRewardsUser) {
-    MaybeMigrateVerifiedRewardsUser();
-  }
 }
 
 void UserRewards::OnDidFetchIssuers(const IssuersInfo& issuers) {
@@ -140,7 +106,7 @@ void UserRewards::OnDidRetryRefillingConfirmationTokens() {
 
 void UserRewards::OnCaptchaRequiredToRefillConfirmationTokens(
     const std::string& captcha_id) {
-  GetAdsClient()->ShowScheduledCaptcha(wallet_.payment_id, captcha_id);
+  GetAdsClient().ShowScheduledCaptcha(wallet_.payment_id, captcha_id);
 }
 
 }  // namespace brave_ads

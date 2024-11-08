@@ -30,13 +30,13 @@
 namespace brave_ads {
 
 Account::Account() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 
   InitializeConfirmations();
 }
 
 Account::~Account() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
 }
 
 void Account::AddObserver(AccountObserver* const observer) {
@@ -227,7 +227,6 @@ void Account::MaybeInitializeUserRewards() {
   // destroyed.
 
   user_rewards_ = std::make_unique<UserRewards>(*wallet_);
-  user_rewards_->SetDelegate(this);
 
   user_rewards_->FetchIssuers();
 
@@ -293,10 +292,6 @@ void Account::OnDidConfirm(const ConfirmationInfo& /*confirmation*/) {
 
 void Account::OnFailedToConfirm(const ConfirmationInfo& /*confirmation*/) {
   MaybeRefillConfirmationTokens();
-}
-
-void Account::OnDidMigrateVerifiedRewardsUser() {
-  InitializeConfirmations();
 }
 
 }  // namespace brave_ads

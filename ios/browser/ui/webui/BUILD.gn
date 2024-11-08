@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 

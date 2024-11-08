@@ -35,10 +35,10 @@ class AssetDiscoveryTask {
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using APIRequestResult = api_request_helper::APIRequestResult;
 
-  AssetDiscoveryTask(APIRequestHelper* api_request_helper,
-                     SimpleHashClient* simple_hash_client,
-                     BraveWalletService* wallet_service,
-                     JsonRpcService* json_rpc_service,
+  AssetDiscoveryTask(APIRequestHelper& api_request_helper,
+                     SimpleHashClient& simple_hash_client,
+                     BraveWalletService& wallet_service,
+                     JsonRpcService& json_rpc_service,
                      PrefService* prefs);
 
   AssetDiscoveryTask(const AssetDiscoveryTask&) = delete;
@@ -141,10 +141,10 @@ class AssetDiscoveryTask {
   static std::optional<SolanaAddress> DecodeMintAddress(
       const std::vector<uint8_t>& data);
 
-  raw_ptr<APIRequestHelper> api_request_helper_;
-  raw_ptr<SimpleHashClient> simple_hash_client_;
-  raw_ptr<BraveWalletService> wallet_service_;
-  raw_ptr<JsonRpcService> json_rpc_service_;
+  raw_ref<APIRequestHelper> api_request_helper_;
+  raw_ref<SimpleHashClient> simple_hash_client_;
+  raw_ref<BraveWalletService> wallet_service_;
+  raw_ref<JsonRpcService> json_rpc_service_;
   raw_ptr<PrefService> prefs_;
   base::WeakPtrFactory<AssetDiscoveryTask> weak_ptr_factory_;
 };

@@ -45,29 +45,27 @@ FaviconLoaderSize const FaviconLoaderSizeDesiredLargest =
 @end
 
 @implementation FaviconLoader
-- (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState {
+- (instancetype)initWithBrowserState:(ProfileIOS*)profile {
   if ((self = [super init])) {
     favicon_loader_ =
         brave_favicon::BraveIOSFaviconLoaderFactory::GetForBrowserState(
-            browserState);
+            profile);
     DCHECK(favicon_loader_);
   }
   return self;
 }
 
 + (instancetype)getForPrivateMode:(bool)privateMode {
-  ChromeBrowserState* browser_state =
-      GetApplicationContext()
-          ->GetProfileManager()
-          ->GetLastUsedProfileDeprecatedDoNotUse();
-  CHECK(browser_state);
+  std::vector<ProfileIOS*> profiles =
+      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+  ProfileIOS* last_used_profile = profiles.at(0);
 
   if (privateMode) {
-    browser_state = browser_state->GetOffTheRecordChromeBrowserState();
-    CHECK(browser_state);
+    last_used_profile = last_used_profile->GetOffTheRecordProfile();
+    CHECK(last_used_profile);
   }
 
-  return [[FaviconLoader alloc] initWithBrowserState:browser_state];
+  return [[FaviconLoader alloc] initWithBrowserState:last_used_profile];
 }
 
 - (void)faviconForPageURLOrHost:(NSURL*)url

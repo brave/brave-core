@@ -29,7 +29,7 @@ class BraveAdsClickedSameAdMultipleTimesReminderUtilTest
     ads_observer_mock_ = test::MockAdsObserver();
   }
 
-  raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;
+  raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;  // Not owned.
 };
 
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest, ShouldRemindUser) {

@@ -16,6 +16,18 @@ import {
 // path of generated mojom files.
 export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
+export {
+  MeldFiatCurrency,
+  MeldFilter,
+  MeldCryptoCurrency,
+  MeldCountry,
+  MeldCryptoQuote,
+  MeldServiceProvider,
+  MeldPaymentMethod,
+  MeldCryptoWidget,
+  CryptoBuySessionData,
+  CryptoWidgetCustomerData
+} from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
 export type NftDropdownOptionId = 'collected' | 'hidden'
 
 export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
@@ -201,6 +213,7 @@ export interface WalletState {
   assetAutoDiscoveryCompleted: boolean
   isAnkrBalancesFeatureEnabled: boolean
   isRefreshingNetworksAndTokens: boolean
+  isZCashShieldedTransactionsEnabled: boolean
 }
 
 export interface PanelState {
@@ -313,7 +326,9 @@ export interface SendBtcTransactionParams extends BaseTransactionParams {
   sendingMaxValue: boolean
 }
 
-export interface SendZecTransactionParams extends BaseTransactionParams {}
+export interface SendZecTransactionParams extends BaseTransactionParams {
+  useShieldedPool: boolean
+}
 
 /**
  * Used to properly store BraveWallet.TransactionInfo in redux store,
@@ -845,6 +860,7 @@ export type AccountModalTypes =
   | 'remove'
   | 'buy'
   | 'explorer'
+  | 'shield'
 
 export interface AccountButtonOptionsObjectType {
   name: string

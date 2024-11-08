@@ -88,294 +88,295 @@ TEST(SwapResponseParserUnitTest, ParseZeroExQuoteResponse) {
   // Case 1: non-null zeroExFee
   std::string json(R"(
     {
-      "price":"1916.27547998814058355",
-      "guaranteedPrice":"1935.438234788021989386",
-      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "data":"0x0",
-      "value":"0",
-      "gas":"719000",
-      "estimatedGas":"719001",
-      "gasPrice":"26000000000",
-      "protocolFee":"0",
-      "minimumProtocolFee":"0",
-      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
-      "buyAmount":"1000000000000000000000",
-      "sellAmount":"1916275479988140583549706",
-      "sources":[],
-      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "sellTokenToEthRate":"1900.44962824532464391",
-      "buyTokenToEthRate":"1",
-      "estimatedPriceImpact": "0.7232",
-      "sources": [
-        {
-          "name": "Uniswap_V2",
-          "proportion": "1"
-        }
-      ],
+      "blockNumber": "20114676",
+      "buyAmount": "100032748",
+      "buyToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "fees": {
+        "integratorFee": null,
         "zeroExFee": {
-          "feeType": "volume",
-          "feeToken": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
-          "feeAmount": "148470027512868522",
-          "billingType": "on-chain"
+          "amount": "0",
+          "token": "0xdeadbeef",
+          "type": "volume"
+        },
+        "gasFee": null
+      },
+      "gas": "288095",
+      "gasPrice": "7062490000",
+      "issues": {
+        "allowance": {
+          "actual": "0",
+          "spender": "0x0000000000001ff3684f28c67538d4d072c22734"
+        },
+        "balance": {
+          "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "actual": "0",
+          "expected": "100000000"
+        },
+        "simulationIncomplete": false,
+        "invalidSourcesPassed": []
+      },
+      "liquidityAvailable": true,
+      "minBuyAmount": "99032421",
+      "route": {
+        "fills": [
+          {
+            "from": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "to": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "source": "SolidlyV3",
+            "proportionBps": "10000"
+          }
+        ],
+        "tokens": [
+          {
+            "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "symbol": "USDC"
+          },
+          {
+            "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "symbol": "USDT"
+          }
+        ]
+      },
+      "sellAmount": "100000000",
+      "sellToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "tokenMetadata": {
+        "buyToken": {
+          "buyTaxBps": "0",
+          "sellTaxBps": "0"
+        },
+        "sellToken": {
+          "buyTaxBps": "0",
+          "sellTaxBps": "0"
         }
-      }
+      },
+      "totalNetworkFee": "2034668056550000",
+      "zid": "0x111111111111111111111111"
     }
   )");
-  mojom::ZeroExQuotePtr quote =
-      zeroex::ParseQuoteResponse(ParseJson(json), false);
+  auto quote =
+      zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId);
   ASSERT_TRUE(quote);
 
-  EXPECT_EQ(quote->price, "1916.27547998814058355");
-  EXPECT_TRUE(quote->guaranteed_price.empty());
-  EXPECT_TRUE(quote->to.empty());
-  EXPECT_TRUE(quote->data.empty());
+  EXPECT_EQ(quote->buy_amount, "100032748");
+  EXPECT_EQ(quote->buy_token, "0xdac17f958d2ee523a2206206994597c13d831ec7");
 
-  EXPECT_EQ(quote->value, "0");
-  EXPECT_EQ(quote->gas, "719000");
-  EXPECT_EQ(quote->estimated_gas, "719001");
-  EXPECT_EQ(quote->gas_price, "26000000000");
-  EXPECT_EQ(quote->protocol_fee, "0");
-  EXPECT_EQ(quote->minimum_protocol_fee, "0");
-  EXPECT_EQ(quote->buy_token_address,
-            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  EXPECT_EQ(quote->sell_token_address,
-            "0x6b175474e89094c44da98b954eedeac495271d0f");
-  EXPECT_EQ(quote->buy_amount, "1000000000000000000000");
-  EXPECT_EQ(quote->sell_amount, "1916275479988140583549706");
-  EXPECT_EQ(quote->allowance_target,
-            "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-  EXPECT_EQ(quote->sell_token_to_eth_rate, "1900.44962824532464391");
-  EXPECT_EQ(quote->buy_token_to_eth_rate, "1");
-  EXPECT_EQ(quote->estimated_price_impact, "0.7232");
-  EXPECT_EQ(quote->sources.size(), 1UL);
-  EXPECT_EQ(quote->sources.at(0)->name, "Uniswap_V2");
-  EXPECT_EQ(quote->sources.at(0)->proportion, "1");
   ASSERT_TRUE(quote->fees->zero_ex_fee);
-  EXPECT_EQ(quote->fees->zero_ex_fee->fee_type, "volume");
-  EXPECT_EQ(quote->fees->zero_ex_fee->fee_token,
-            "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063");
-  EXPECT_EQ(quote->fees->zero_ex_fee->fee_amount, "148470027512868522");
-  EXPECT_EQ(quote->fees->zero_ex_fee->billing_type, "on-chain");
+  EXPECT_EQ(quote->fees->zero_ex_fee->amount, "0");
+  EXPECT_EQ(quote->fees->zero_ex_fee->token, "0xdeadbeef");
+  EXPECT_EQ(quote->fees->zero_ex_fee->type, "volume");
+
+  EXPECT_EQ(quote->gas, "288095");
+  EXPECT_EQ(quote->gas_price, "7062490000");
+  EXPECT_EQ(quote->liquidity_available, true);
+  EXPECT_EQ(quote->min_buy_amount, "99032421");
+
+  ASSERT_EQ(quote->route->fills.size(), 1UL);
+  EXPECT_EQ(quote->route->fills.at(0)->from,
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
+  EXPECT_EQ(quote->route->fills.at(0)->to,
+            "0xdac17f958d2ee523a2206206994597c13d831ec7");
+  EXPECT_EQ(quote->route->fills.at(0)->source, "SolidlyV3");
+  EXPECT_EQ(quote->route->fills.at(0)->proportion_bps, "10000");
+
+  EXPECT_EQ(quote->sell_amount, "100000000");
+  EXPECT_EQ(quote->sell_token, "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
+  EXPECT_EQ(quote->total_network_fee, "2034668056550000");
+
+  EXPECT_EQ(quote->liquidity_available, true);
+  EXPECT_EQ(quote->allowance_target,
+            "0x0000000000001fF3684f28c67538d4D072C22734");
 
   // Case 2: null zeroExFee
   json = R"(
     {
-      "price":"1916.27547998814058355",
-      "guaranteedPrice":"1935.438234788021989386",
-      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "data":"0x0",
-      "value":"0",
-      "gas":"719000",
-      "estimatedGas":"719001",
-      "gasPrice":"26000000000",
-      "protocolFee":"0",
-      "minimumProtocolFee":"0",
-      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
-      "buyAmount":"1000000000000000000000",
-      "sellAmount":"1916275479988140583549706",
-      "sources":[],
-      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "sellTokenToEthRate":"1900.44962824532464391",
-      "buyTokenToEthRate":"1",
-      "estimatedPriceImpact": "0.7232",
-      "sources":[],
+      "blockNumber": "20114676",
+      "buyAmount": "100032748",
+      "buyToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
       "fees": {
-        "zeroExFee": null
-      }
+        "integratorFee": null,
+        "zeroExFee": null,
+        "gasFee": null
+      },
+      "gas": "288095",
+      "gasPrice": "7062490000",
+      "issues": {
+        "allowance": {
+          "actual": "0",
+          "spender": "0x0000000000001ff3684f28c67538d4d072c22734"
+        },
+        "balance": {
+          "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "actual": "0",
+          "expected": "100000000"
+        },
+        "simulationIncomplete": false,
+        "invalidSourcesPassed": []
+      },
+      "liquidityAvailable": true,
+      "minBuyAmount": "99032421",
+      "route": {
+        "fills": [
+          {
+            "from": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "to": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "source": "SolidlyV3",
+            "proportionBps": "10000"
+          }
+        ],
+        "tokens": [
+          {
+            "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "symbol": "USDC"
+          },
+          {
+            "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "symbol": "USDT"
+          }
+        ]
+      },
+      "sellAmount": "100000000",
+      "sellToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "tokenMetadata": {
+        "buyToken": {
+          "buyTaxBps": "0",
+          "sellTaxBps": "0"
+        },
+        "sellToken": {
+          "buyTaxBps": "0",
+          "sellTaxBps": "0"
+        }
+      },
+      "totalNetworkFee": "2034668056550000",
+      "zid": "0x111111111111111111111111"
     }
   )";
-  quote = zeroex::ParseQuoteResponse(ParseJson(json), false);
+  quote = zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId);
   ASSERT_TRUE(quote);
   EXPECT_FALSE(quote->fees->zero_ex_fee);
+  EXPECT_EQ(quote->liquidity_available, true);
+  EXPECT_EQ(quote->allowance_target,
+            "0x0000000000001fF3684f28c67538d4D072C22734");
 
   // Case 3: malformed fees field
   json = R"(
     {
-      "price":"1916.27547998814058355",
-      "guaranteedPrice":"1935.438234788021989386",
-      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "data":"0x0",
-      "value":"0",
-      "gas":"719000",
-      "estimatedGas":"719001",
-      "gasPrice":"26000000000",
-      "protocolFee":"0",
-      "minimumProtocolFee":"0",
-      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
-      "buyAmount":"1000000000000000000000",
-      "sellAmount":"1916275479988140583549706",
-      "sources":[],
-      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "sellTokenToEthRate":"1900.44962824532464391",
-      "buyTokenToEthRate":"1",
-      "estimatedPriceImpact": "0.7232",
-      "sources":[],
-      "fees": null
+      "blockNumber": "20114676",
+      "buyAmount": "100032748",
+      "buyToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "fees": null,
+      "gas": "288095",
+      "gasPrice": "7062490000",
+      "issues": {
+        "allowance": {
+          "actual": "0",
+          "spender": "0x0000000000001ff3684f28c67538d4d072c22734"
+        },
+        "balance": {
+          "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "actual": "0",
+          "expected": "100000000"
+        },
+        "simulationIncomplete": false,
+        "invalidSourcesPassed": []
+      },
+      "liquidityAvailable": true,
+      "minBuyAmount": "99032421",
+      "route": {
+        "fills": [
+          {
+            "from": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "to": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "source": "SolidlyV3",
+            "proportionBps": "10000"
+          }
+        ],
+        "tokens": [
+          {
+            "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "symbol": "USDC"
+          },
+          {
+            "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "symbol": "USDT"
+          }
+        ]
+      },
+      "sellAmount": "100000000",
+      "sellToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "tokenMetadata": {
+        "buyToken": {
+          "buyTaxBps": "0",
+          "sellTaxBps": "0"
+        },
+        "sellToken": {
+          "buyTaxBps": "0",
+          "sellTaxBps": "0"
+        }
+      },
+      "totalNetworkFee": "2034668056550000",
+      "zid": "0x111111111111111111111111"
     }
   )";
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(ParseJson(json), false));
+  EXPECT_FALSE(
+      zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId));
 
-  // Case 4: other invalid cases
-  json = R"({"price": "3"})";
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(ParseJson(json), false));
-  json = R"({"price": 3})";
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(ParseJson(json), false));
+  // Case 4: insufficient liquidity
+  json = R"(
+    {
+      "liquidityAvailable": false,
+    }
+  )";
+  quote = zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId);
+  ASSERT_TRUE(quote);
+  EXPECT_FALSE(quote->liquidity_available);
+  EXPECT_EQ(quote->buy_token, "");
+
+  // Case 5: other invalid cases
+  json = R"({"totalNetworkFee": "2034668056550000"})";
+  EXPECT_FALSE(
+      zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId));
+  json = R"({"totalNetworkFee": 2034668056550000})";
+  EXPECT_FALSE(
+      zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId));
   json = "3";
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(ParseJson(json), false));
+  EXPECT_FALSE(
+      zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId));
   json = "[3]";
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(ParseJson(json), false));
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(base::Value(), false));
+  EXPECT_FALSE(
+      zeroex::ParseQuoteResponse(ParseJson(json), mojom::kMainnetChainId));
+  EXPECT_FALSE(
+      zeroex::ParseQuoteResponse(base::Value(), mojom::kMainnetChainId));
 }
 
 TEST(SwapResponseParserUnitTest, ParseZeroExTransactionResponse) {
-  // Case 1: non-null zeroExFee
+  // Case 1: valid transaction
   std::string json(R"(
     {
-      "price":"1916.27547998814058355",
-      "guaranteedPrice":"1935.438234788021989386",
-      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "data":"0x0",
-      "value":"0",
-      "gas":"719000",
-      "estimatedGas":"719001",
-      "gasPrice":"26000000000",
-      "protocolFee":"0",
-      "minimumProtocolFee":"0",
-      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
-      "buyAmount":"1000000000000000000000",
-      "sellAmount":"1916275479988140583549706",
-      "sources":[],
-      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "sellTokenToEthRate":"1900.44962824532464391",
-      "buyTokenToEthRate":"1",
-      "estimatedPriceImpact": "0.7232",
-      "sources": [
-        {
-          "name": "Uniswap_V2",
-          "proportion": "1"
-        }
-      ],
-      "fees": {
-        "zeroExFee": {
-          "feeType": "volume",
-          "feeToken": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
-          "feeAmount": "148470027512868522",
-          "billingType": "on-chain"
-        }
+      "transaction": {
+        "to": "0x7f6cee965959295cc64d0e6c00d99d6532d8e86b",
+        "data": "0xdeadbeef",
+        "gas": "288079",
+        "gasPrice": "4837860000",
+        "value": "0"
       }
     }
   )");
-  mojom::ZeroExQuotePtr quote =
-      zeroex::ParseQuoteResponse(ParseJson(json), true);
-  ASSERT_TRUE(quote);
+  mojom::ZeroExTransactionPtr transaction =
+      zeroex::ParseTransactionResponse(ParseJson(json));
+  ASSERT_TRUE(transaction);
 
-  EXPECT_EQ(quote->price, "1916.27547998814058355");
-  EXPECT_EQ(quote->guaranteed_price, "1935.438234788021989386");
-  EXPECT_EQ(quote->to, "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-  EXPECT_EQ(quote->data, "0x0");
+  EXPECT_EQ(transaction->to, "0x7f6cee965959295cc64d0e6c00d99d6532d8e86b");
+  EXPECT_EQ(transaction->data, "0xdeadbeef");
+  EXPECT_EQ(transaction->gas, "288079");
+  EXPECT_EQ(transaction->gas_price, "4837860000");
+  EXPECT_EQ(transaction->value, "0");
 
-  EXPECT_EQ(quote->value, "0");
-  EXPECT_EQ(quote->gas, "719000");
-  EXPECT_EQ(quote->estimated_gas, "719001");
-  EXPECT_EQ(quote->gas_price, "26000000000");
-  EXPECT_EQ(quote->protocol_fee, "0");
-  EXPECT_EQ(quote->minimum_protocol_fee, "0");
-  EXPECT_EQ(quote->buy_token_address,
-            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  EXPECT_EQ(quote->sell_token_address,
-            "0x6b175474e89094c44da98b954eedeac495271d0f");
-  EXPECT_EQ(quote->buy_amount, "1000000000000000000000");
-  EXPECT_EQ(quote->sell_amount, "1916275479988140583549706");
-  EXPECT_EQ(quote->allowance_target,
-            "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-  EXPECT_EQ(quote->sell_token_to_eth_rate, "1900.44962824532464391");
-  EXPECT_EQ(quote->buy_token_to_eth_rate, "1");
-  EXPECT_EQ(quote->estimated_price_impact, "0.7232");
-  EXPECT_EQ(quote->sources.size(), 1UL);
-  EXPECT_EQ(quote->sources.at(0)->name, "Uniswap_V2");
-  EXPECT_EQ(quote->sources.at(0)->proportion, "1");
-  ASSERT_TRUE(quote->fees->zero_ex_fee);
-  EXPECT_EQ(quote->fees->zero_ex_fee->fee_type, "volume");
-  EXPECT_EQ(quote->fees->zero_ex_fee->fee_token,
-            "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063");
-  EXPECT_EQ(quote->fees->zero_ex_fee->fee_amount, "148470027512868522");
-  EXPECT_EQ(quote->fees->zero_ex_fee->billing_type, "on-chain");
-
-  // Case 2: null zeroExFee
-  json = R"(
-    {
-      "price":"1916.27547998814058355",
-      "guaranteedPrice":"1935.438234788021989386",
-      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "data":"0x0",
-      "value":"0",
-      "gas":"719000",
-      "estimatedGas":"719001",
-      "gasPrice":"26000000000",
-      "protocolFee":"0",
-      "minimumProtocolFee":"0",
-      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
-      "buyAmount":"1000000000000000000000",
-      "sellAmount":"1916275479988140583549706",
-      "sources":[],
-      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "sellTokenToEthRate":"1900.44962824532464391",
-      "buyTokenToEthRate":"1",
-      "estimatedPriceImpact": "0.7232",
-      "sources":[],
-      "fees": {
-        "zeroExFee": null
-      }
-    }
-  )";
-  quote = zeroex::ParseQuoteResponse(ParseJson(json), true);
-  ASSERT_TRUE(quote);
-  EXPECT_FALSE(quote->fees->zero_ex_fee);
-
-  // Case 3: malformed fees field
-  json = R"(
-    {
-      "price":"1916.27547998814058355",
-      "guaranteedPrice":"1935.438234788021989386",
-      "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "data":"0x0",
-      "value":"0",
-      "gas":"719000",
-      "estimatedGas":"719001",
-      "gasPrice":"26000000000",
-      "protocolFee":"0",
-      "minimumProtocolFee":"0",
-      "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
-      "buyAmount":"1000000000000000000000",
-      "sellAmount":"1916275479988140583549706",
-      "sources":[],
-      "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-      "sellTokenToEthRate":"1900.44962824532464391",
-      "buyTokenToEthRate":"1",
-      "estimatedPriceImpact": "0.7232",
-      "sources":[],
-      "fees": null
-    }
-  )";
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(ParseJson(json), true));
-
-  // Case 4: other invalid cases
-  json = R"({"price": "3"})";
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(ParseJson(json), true));
-  json = R"({"price": 3})";
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(ParseJson(json), true));
+  // Case 2: invalid cases
   json = "3";
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(ParseJson(json), true));
+  EXPECT_FALSE(zeroex::ParseTransactionResponse(ParseJson(json)));
   json = "[3]";
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(ParseJson(json), true));
-  EXPECT_FALSE(zeroex::ParseQuoteResponse(base::Value(), true));
+  EXPECT_FALSE(zeroex::ParseTransactionResponse(ParseJson(json)));
+  EXPECT_FALSE(zeroex::ParseTransactionResponse(base::Value()));
 }
 
 TEST(SwapResponseParserUnitTest, ParseJupiterQuoteResponse) {
@@ -493,52 +494,14 @@ TEST(SwapResponseParserUnitTest, ParseJupiterTransactionResponse) {
 TEST(SwapResponseParserUnitTest, ParseZeroExErrorResponse) {
   {
     std::string json(R"(
-    {
-      "code": "100",
-      "reason": "Validation Failed",
-      "validationErrors": [
-        {
-          "field": "buyAmount",
-          "code": "1004",
-          "reason": "INSUFFICIENT_ASSET_LIQUIDITY"
-        }
-      ]
-    })");
+      {
+        "name": "INPUT_INVALID",
+        "message": "Validation Failed"
+      })");
 
     auto swap_error = zeroex::ParseErrorResponse(ParseJson(json));
-    EXPECT_EQ(swap_error->code, "100");
-    EXPECT_EQ(swap_error->reason, "Validation Failed");
-    EXPECT_EQ(swap_error->validation_errors.size(), 1u);
-    EXPECT_EQ(swap_error->validation_errors.front()->field, "buyAmount");
-    EXPECT_EQ(swap_error->validation_errors.front()->code, "1004");
-    EXPECT_EQ(swap_error->validation_errors.front()->reason,
-              "INSUFFICIENT_ASSET_LIQUIDITY");
-
-    EXPECT_TRUE(swap_error->is_insufficient_liquidity);
-  }
-  {
-    std::string json(R"(
-    {
-      "code": "100",
-      "reason": "Validation Failed",
-      "validationErrors": [
-        {
-          "field": "buyAmount",
-          "code": "1004",
-          "reason": "SOMETHING_ELSE"
-        }
-      ]
-    })");
-
-    auto swap_error = zeroex::ParseErrorResponse(ParseJson(json));
-    EXPECT_EQ(swap_error->code, "100");
-    EXPECT_EQ(swap_error->reason, "Validation Failed");
-    EXPECT_EQ(swap_error->validation_errors.size(), 1u);
-    EXPECT_EQ(swap_error->validation_errors.front()->field, "buyAmount");
-    EXPECT_EQ(swap_error->validation_errors.front()->code, "1004");
-    EXPECT_EQ(swap_error->validation_errors.front()->reason, "SOMETHING_ELSE");
-
-    EXPECT_FALSE(swap_error->is_insufficient_liquidity);
+    EXPECT_EQ(swap_error->name, "INPUT_INVALID");
+    EXPECT_EQ(swap_error->message, "Validation Failed");
   }
 }
 

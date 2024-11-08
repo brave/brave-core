@@ -428,7 +428,7 @@ TEST_F(NetworkManagerUnitTest, GetNetworkURLForKnownChains) {
        NetworkManager::GetAllKnownChains(mojom::CoinType::ETH)) {
     auto network_url =
         network_manager()->GetNetworkURL(chain->chain_id, mojom::CoinType::ETH);
-    EXPECT_EQ(base::EndsWith(network_url.host(), ".brave.com"),
+    EXPECT_EQ(network_url.host().ends_with(".brave.com"),
               known_chains.contains(chain->chain_id));
   }
 }

@@ -78,7 +78,7 @@ IN_PROC_BROWSER_TEST_P(NotificationAdPopupBrowserTest, CheckThemeChanged) {
       platform_util::GetViewForWindow(browser_native_window);
   EXPECT_TRUE(browser_native_view);
 
-  NotificationAdPopupHandler::Show(browser()->profile(), ad,
+  NotificationAdPopupHandler::Show(*browser()->profile(), ad,
                                    browser_native_window, browser_native_view);
 
   NotificationAdPopup* popup =

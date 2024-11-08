@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Expirada";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Selecciona tu protocolo de transporte preferido. Cuando hagas la modificación, tus credenciales de VPN existentes se borrarán y, si hay alguna conexión VPN, esta volverá a establecerse.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Canjear código";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "Región de VPN modificada";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Se restablecerá la configuración del firewall + VPN de Brave y se corregirán todos los errores. El proceso puede tardar un minuto.";

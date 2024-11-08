@@ -118,11 +118,16 @@ public class URIFixup {
       return nil
     }
 
-    if match.type == .urlWhatYouTyped {
+    if [.bookmarkTitle, .historyUrl, .openTab, .urlWhatYouTyped].contains(match.type) {
       return match.destinationURL
     }
 
     if match.type == .searchWhatYouTyped {
+      // Technically we should be returning `destinationURL` here.
+      // But if the user's default search engine is `Google`, then `destinationURL` will be `BraveSearch`!
+      // That's because we don't use Chromium's `SearchEngine` shared in Brave-Core, and we use our own!
+      // If we ever refactor to use the SearchEngine logic from Brave-Core, we can safely return `destinationURL` here,
+      // and get rid of ALL of the above code entirely.
       return nil
     }
 

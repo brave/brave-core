@@ -157,6 +157,9 @@
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "厳格";
 
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "リストを更新しました";
+
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "データを削除";
 
@@ -189,6 +192,12 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "トラッカー & 広告ブロック";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "リストを更新";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "リストを更新中";
 
 /* The option the user can select for the type of https upgrading */
 "UpgradeConnectionsToHTTPS" = "HTTPSに接続をアップグレードする";

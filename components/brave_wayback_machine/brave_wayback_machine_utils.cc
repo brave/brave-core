@@ -22,11 +22,13 @@ bool IsWaybackMachineDisabledFor(const GURL& url) {
   if (net::IsLocalhost(url))
     return true;
 
-  if (base::EndsWith(url.host(), ".local", base::CompareCase::SENSITIVE))
+  if (url.host().ends_with(".local")) {
     return true;
+  }
 
-  if (base::EndsWith(url.host(), ".onion", base::CompareCase::SENSITIVE))
+  if (url.host().ends_with(".onion")) {
     return true;
+  }
 
   // Disable on web.archive.org
   if (url.host() == kWaybackHost)

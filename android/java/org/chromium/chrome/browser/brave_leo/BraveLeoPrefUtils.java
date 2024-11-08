@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.brave_leo;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -117,8 +116,7 @@ public class BraveLeoPrefUtils {
     }
 
     public static boolean isLeoEnabled() {
-        if (!BraveConfig.AI_CHAT_ENABLED
-                || !ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
             return false;
         }
 

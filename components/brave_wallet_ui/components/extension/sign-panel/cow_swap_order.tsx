@@ -61,7 +61,8 @@ const makeUnknownToken = (
   isNft: false,
   name: '',
   coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
-  decimals: 0
+  decimals: 0,
+  isShielded: false
 })
 
 interface Props {

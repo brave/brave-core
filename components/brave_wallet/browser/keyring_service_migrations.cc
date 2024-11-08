@@ -61,18 +61,18 @@ std::optional<uint32_t> ExtractAccountIndex(mojom::KeyringId keyring_id,
 
   auto account_index = std::string_view(path);
   auto root_path = HDKeyring::GetRootPath(keyring_id);
-  if (!base::StartsWith(account_index, root_path)) {
+  if (!account_index.starts_with(root_path)) {
     return std::nullopt;
   }
   account_index.remove_prefix(root_path.size());
 
-  if (!base::StartsWith(account_index, "/")) {
+  if (!account_index.starts_with("/")) {
     return std::nullopt;
   }
   account_index.remove_prefix(1);
 
   if (keyring_id == mojom::KeyringId::kSolana) {
-    if (!base::EndsWith(account_index, "'/0'")) {
+    if (!account_index.ends_with("'/0'")) {
       return std::nullopt;
     }
     account_index.remove_suffix(4);

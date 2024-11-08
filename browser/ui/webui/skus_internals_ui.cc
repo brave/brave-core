@@ -19,7 +19,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/resources/grit/skus_internals_generated_map.h"
@@ -112,9 +111,7 @@ void SkusInternalsUI::GetVpnState(GetVpnStateCallback callback) {
 
 void SkusInternalsUI::GetLeoState(GetLeoStateCallback callback) {
   base::Value::Dict dict;
-#if BUILDFLAG(ENABLE_AI_CHAT)
   dict.Set("Order", GetOrderInfo("leo."));
-#endif
   std::string result;
   base::JSONWriter::Write(dict, &result);
   std::move(callback).Run(result);
@@ -125,7 +122,7 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
   base::Value::Dict dict;
   const auto& skus_state = local_state_->GetDict(skus::prefs::kSkusState);
   for (const auto kv : skus_state) {
-    if (!base::StartsWith(kv.first, "skus:")) {
+    if (!kv.first.starts_with("skus:")) {
       continue;
     }
 
@@ -152,7 +149,7 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
       }
 
       if (auto* order_location = order_dict->FindString("location")) {
-        if (!base::StartsWith(*order_location, location)) {
+        if (!order_location->starts_with(location)) {
           continue;
         }
         order_dict_output.Set("location", *order_location);
@@ -258,7 +255,7 @@ std::string SkusInternalsUI::GetSkusStateAsString() const {
 
   for (const auto kv : skus_state) {
     // Only shows "skus:xx" kv in webui.
-    if (!base::StartsWith(kv.first, "skus:")) {
+    if (!kv.first.starts_with("skus:")) {
       continue;
     }
 

@@ -330,6 +330,10 @@ inline constexpr char16_t kPaymentMethodsURLForGPayWeb[] =
 inline constexpr char kAddressesAndPaymentMethodsLearnMoreURL[] =
     "https://support.brave.com";
 
+// Help URL for Autofill Prediction Improvements.
+inline constexpr char16_t kAutofillPredictionImprovementsLearnMoreURL[] =
+    u"https://support.brave.com";
+
 // "Learn more" URL for the performance intervention notification setting.
 inline constexpr char16_t kPerformanceInterventionLearnMoreUrl[] =
     u"https://support.brave.com";
@@ -418,6 +422,19 @@ inline constexpr char kHistorySearchLearnMorePageURL[] =
 inline constexpr char16_t kHistorySearchSettingURL[] =
     u"chrome://settings/historySearch";
 
+// The URL for the Settings page to enable history search when
+// AiSettingsPageRefresh flag is enabled.
+inline constexpr char16_t kHistorySearchV2SettingURL[] =
+    u"chrome://settings/ai/historySearch";
+
+// The URL for the "Learn more" page for Wallpaper Search.
+inline constexpr char kWallpaperSearchLearnMorePageURL[] =
+    "https://support.brave.com/";
+
+// The URL for the "Learn more" page for Tab Organization.
+inline constexpr char kTabOrganizationLearnMorePageURL[] =
+    "https://support.brave.com/";
+
 // The URL for the "Learn more" link in the enterprise disclaimer for managed
 // profile in the Signin Intercept bubble.
 inline constexpr char kSigninInterceptManagedDisclaimerLearnMoreURL[] =
@@ -455,6 +472,10 @@ inline constexpr char16_t kCwsEnhancedSafeBrowsingLearnMoreURL[] =
 
 // The URL path to online privacy policy.
 inline constexpr char kPrivacyPolicyOnlineURLPath[] =
+    "https://support.brave.com/";
+
+// The URL path to online privacy policy dark mode.
+inline constexpr char kPrivacyPolicyOnlineDarkModeURLPath[] =
     "https://support.brave.com/";
 
 #if BUILDFLAG(IS_ANDROID)

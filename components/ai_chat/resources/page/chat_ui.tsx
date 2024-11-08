@@ -15,12 +15,13 @@ import '$web-common/defaultTrustedTypesPolicy'
 import { loadTimeData } from '$web-common/loadTimeData'
 import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
 import getAPI, * as API from './api'
-import { AIChatContextProvider } from './state/ai_chat_context'
+import { AIChatContextProvider, useAIChat } from './state/ai_chat_context'
 import Main from './components/main'
 import {
   ConversationContextProps,
   ConversationContextProvider
 } from './state/conversation_context'
+import FullScreen from './components/full_page'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
@@ -42,9 +43,11 @@ function App() {
     React.useState(new Date().getTime())
 
   const handleSelectConversationUuid = (id: string | undefined) => {
-    console.log('select conversation', id)
-    setConversationAPI(API.bindConversation(id))
-    setSelectedConversationUuid(id)
+    if (!id || id !== selectedConversationUuid) {
+      console.log('select conversation', id)
+      setConversationAPI(API.bindConversation(id))
+      setSelectedConversationUuid(id)
+    }
   }
 
   // Start off with default conversation and if the target content
@@ -83,19 +86,33 @@ function App() {
 
   return (
     <AIChatContextProvider
-      selectedConversationUuid={selectedConversationUuid}
+      isDefaultConversation={!selectedConversationUuid}
       onNewConversation={handleNewConversation}
       onSelectConversationUuid={handleSelectConversationUuid}
     >
       {conversationAPI && (
         <ConversationContextProvider {...conversationAPI}>
           <BraveCoreThemeProvider>
-            <Main />
+            <Content />
           </BraveCoreThemeProvider>
         </ConversationContextProvider>
       )}
     </AIChatContextProvider>
   )
+}
+
+function Content () {
+  const aiChatContext = useAIChat()
+
+  if (aiChatContext.isStandalone === undefined) {
+    return <div>loading...</div>
+  }
+
+  if (!aiChatContext.isStandalone) {
+    return <Main />
+  }
+
+  return <FullScreen />
 }
 
 function initialize() {

@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "components/permissions/permission_request.h"
+
 #include <optional>
 #include <vector>
 
 #include "base/containers/contains.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/permissions/permission_request.h"
 #include "components/strings/grit/components_strings.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -49,6 +50,9 @@
     break;                                                 \
   case RequestType::kBraveLocalhostAccessPermission:       \
     message_id = IDS_LOCALHOST_ACCESS_PERMISSION_FRAGMENT; \
+    break;                                                 \
+  case RequestType::kBraveOpenAIChat:                      \
+    message_id = IDS_OPEN_AI_CHAT_PERMISSION_FRAGMENT;     \
     break;
 
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID          \
@@ -58,6 +62,9 @@
     break;                                           \
   case RequestType::kBraveLocalhostAccessPermission: \
     message_id = IDS_LOCALHOST_ACCESS_INFOBAR_TEXT;  \
+    break;                                           \
+  case RequestType::kBraveOpenAIChat:                \
+    message_id = IDS_OPEN_AI_CHAT_INFOBAR_TEXT;      \
     break;
 
 namespace {
@@ -154,16 +161,15 @@ PermissionRequest::GetDialogAnnotatedMessageText(
 #endif
 
 bool PermissionRequest::SupportsLifetime() const {
-  const RequestType kExcludedTypes[] = {
-    RequestType::kDiskQuota,
-    RequestType::kMultipleDownloads,
+  const RequestType kExcludedTypes[] = {RequestType::kDiskQuota,
+                                        RequestType::kMultipleDownloads,
 #if BUILDFLAG(IS_ANDROID)
-    RequestType::kProtectedMediaIdentifier,
+                                        RequestType::kProtectedMediaIdentifier,
 #else
     RequestType::kRegisterProtocolHandler,
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_WIDEVINE)
-    RequestType::kWidevine
+                                        RequestType::kWidevine
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
   };
   return !base::Contains(kExcludedTypes, request_type());

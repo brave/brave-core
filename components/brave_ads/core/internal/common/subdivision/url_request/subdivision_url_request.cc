@@ -64,7 +64,7 @@ void SubdivisionUrlRequest::Fetch() {
   BLOG(6, UrlRequestToString(mojom_url_request));
   BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  GetAdsClient()->UrlRequest(
+  GetAdsClient().UrlRequest(
       std::move(mojom_url_request),
       base::BindOnce(&SubdivisionUrlRequest::FetchCallback,
                      weak_factory_.GetWeakPtr()));

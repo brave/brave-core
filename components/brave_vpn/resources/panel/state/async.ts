@@ -70,7 +70,9 @@ handler.on(Actions.purchaseConfirmed.getType(), async (store) => {
         state === ConnectionState.CONNECT_FAILED
           ? ConnectionState.DISCONNECTED
           : state /* Treat connection failure on startup as disconnected */,
-      expired: false
+      expired: false,
+      outOfCredentials: false,
+      stateDescription: ''
     })
   )
 })
@@ -86,7 +88,9 @@ handler.on(Actions.purchaseExpired.getType(), async (store) => {
       currentRegion,
       regions,
       connectionStatus: ConnectionState.DISCONNECTED,
-      expired: true
+      expired: true,
+      outOfCredentials: false,
+      stateDescription: ''
     })
   )
 })

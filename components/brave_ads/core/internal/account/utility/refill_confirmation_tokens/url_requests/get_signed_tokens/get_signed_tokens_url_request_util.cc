@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
@@ -32,7 +31,7 @@ std::optional<std::string> Sign(const cbr::UnblindedToken& unblinded_token,
 }
 
 ConfirmationTokenList BuildConfirmationTokens(
-    const std::vector<cbr::UnblindedToken>& unblinded_tokens,
+    const cbr::UnblindedTokenList& unblinded_tokens,
     const cbr::PublicKey& public_key,
     const WalletInfo& wallet) {
   ConfirmationTokenList confirmation_tokens;
@@ -60,7 +59,7 @@ std::optional<std::string> ParseCaptchaId(const base::Value::Dict& dict) {
 }
 
 void BuildAndAddConfirmationTokens(
-    const std::vector<cbr::UnblindedToken>& unblinded_tokens,
+    const cbr::UnblindedTokenList& unblinded_tokens,
     const cbr::PublicKey& public_key,
     const WalletInfo& wallet) {
   const ConfirmationTokenList confirmation_tokens =

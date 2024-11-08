@@ -18,7 +18,9 @@ public class BravePasswordSettingsBaseClassAdapter extends BraveClassVisitor {
 
         changeSuperName(sPasswordSettingsClassName, sBravePasswordSettingsBaseClassName);
 
-        changeMethodOwner(sPasswordSettingsClassName, "createCheckPasswords",
+        changeMethodOwner(
+                sPasswordSettingsClassName,
+                "createCheckPasswords",
                 sBravePasswordSettingsBaseClassName);
         deleteMethod(sPasswordSettingsClassName, "createCheckPasswords");
     }

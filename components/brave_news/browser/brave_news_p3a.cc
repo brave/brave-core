@@ -120,7 +120,7 @@ void NewsMetrics::RecordTotalActionCount(ActionType action,
                                          uint64_t count_delta) {
   DVLOG(1) << __FUNCTION__ << " action: " << static_cast<int>(action)
            << ", count_delta: " << count_delta;
-  const char* pref_name;
+  const char* pref_name = nullptr;
   switch (action) {
     case ActionType::kCardView:
       pref_name = prefs::kBraveNewsTotalCardViews;
@@ -131,10 +131,8 @@ void NewsMetrics::RecordTotalActionCount(ActionType action,
     case ActionType::kSidebarFilterUsage:
       pref_name = prefs::kBraveNewsTotalSidebarFilterUsages;
       break;
-    default:
-      NOTREACHED_IN_MIGRATION();
-      return;
   }
+  CHECK(pref_name);
 
   WeeklyStorage total_storage(prefs_, pref_name);
 
@@ -164,8 +162,6 @@ void NewsMetrics::RecordTotalActionCount(ActionType action,
       p3a_utils::RecordToHistogramBucket(kSidebarFilterUsageHistogramName,
                                          kSidebarFilterUsageBuckets, total);
       break;
-    default:
-      NOTREACHED_IN_MIGRATION();
   }
 }
 
@@ -204,7 +200,7 @@ void NewsMetrics::RecordTotalSubscribedCount(SubscribeType subscribe_type,
     subscription_counts_[subscribe_type] = *total;
   }
 
-  const char* histogram_name;
+  const char* histogram_name = nullptr;
   switch (subscribe_type) {
     case SubscribeType::kChannels:
       histogram_name = kChannelCountHistogramName;
@@ -212,10 +208,8 @@ void NewsMetrics::RecordTotalSubscribedCount(SubscribeType subscribe_type,
     case SubscribeType::kPublishers:
       histogram_name = kPublisherCountHistogramName;
       break;
-    default:
-      NOTREACHED_IN_MIGRATION();
-      return;
   }
+  CHECK(histogram_name);
 
   if (!IsMonthlyActiveUser()) {
     // Only report for active users in the past month.
@@ -341,8 +335,8 @@ void NewsMetrics::OnPublishersChanged() {
 void NewsMetrics::OnChannelsChanged() {
   DVLOG(1) << __FUNCTION__;
   base::flat_set<std::string> distinct_channels;
-  for (const auto& [locale, channels] :
-       pref_manager_->GetSubscriptions().channels()) {
+  auto channels_map = pref_manager_->GetSubscriptions().channels();
+  for (const auto& [locale, channels] : channels_map) {
     distinct_channels.insert(channels.begin(), channels.end());
   }
   RecordTotalSubscribedCount(SubscribeType::kChannels,

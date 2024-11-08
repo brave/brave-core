@@ -42,8 +42,8 @@ class PrefProvider : public PrefProviderInterface {
       const std::string& pref_path) const override;
 
  private:
-  const raw_ptr<PrefService> profile_prefs_ = nullptr;
-  const raw_ptr<PrefService> local_state_prefs_ = nullptr;
+  const raw_ptr<PrefService> profile_prefs_ = nullptr;      // Not owned.
+  const raw_ptr<PrefService> local_state_prefs_ = nullptr;  // Not owned.
   const base::Value::Dict virtual_prefs_;
 };
 

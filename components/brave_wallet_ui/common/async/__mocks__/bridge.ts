@@ -10,7 +10,12 @@ import { assert } from 'chrome://resources/js/assert.js'
 import type { AnyAction } from 'redux'
 
 // types
-import { BraveWallet, CommonNftMetadata } from '../../../constants/types'
+import {
+  BraveWallet,
+  CommonNftMetadata,
+  MeldFiatCurrency,
+  MeldFilter
+} from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
@@ -135,29 +140,30 @@ export class MockedWalletApiProxy {
     createEmptyTokenBalancesRegistry()
 
   mockZeroExQuote = {
-    price: '1705.399509',
-    guaranteedPrice: '',
-    to: '',
-    data: '',
-    value: '124067000000000000',
-    gas: '280000',
-    estimatedGas: '280000',
-    gasPrice: '2000000000',
-    protocolFee: '0',
-    minimumProtocolFee: '0',
-    sellTokenAddress: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
-    buyTokenAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-    buyAmount: '211599920',
-    sellAmount: '124067000000000000',
-    allowanceTarget: '0x0000000000000000000000000000000000000000',
-    sellTokenToEthRate: '1',
-    buyTokenToEthRate: '1720.180416',
-    estimatedPriceImpact: '0.0782',
-    sources: [],
+    buyAmount: '100032748',
+    buyToken: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+    sellAmount: '100000000',
+    sellToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     fees: {
       zeroExFee: undefined
-    }
-  }
+    },
+    gas: '288095',
+    gasPrice: '7062490000',
+    liquidityAvailable: true,
+    minBuyAmount: '99032421',
+    route: {
+      fills: [
+        {
+          from: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+          to: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+          source: 'SolidlyV3',
+          proportionBps: '10000'
+        }
+      ]
+    },
+    totalNetworkFee: '2034668056550000',
+    allowanceTarget: '0x0000000000001fF3684f28c67538d4D072C22734'
+  } as BraveWallet.ZeroExQuote
 
   mockZeroExTransaction = {
     allowanceTarget: '',
@@ -516,19 +522,15 @@ export class MockedWalletApiProxy {
           }
         }
 
-        const { fromToken, toToken, fromAmount, toAmount } =
-          zeroExTransactionParams
-
         return {
           error: null,
           response: {
             zeroExTransaction: {
-              ...this.mockZeroExQuote,
-              buyTokenAddress: toToken,
-              sellTokenAddress: fromToken,
-              buyAmount: toAmount || '',
-              sellAmount: fromAmount || '',
-              price: '1'
+              to: '0x7f6cee965959295cc64d0e6c00d99d6532d8e86b',
+              data: '0xdeadbeef',
+              gas: '288079',
+              gasPrice: '4837860000',
+              value: '0'
             },
             jupiterTransaction: undefined,
             lifiTransaction: undefined,
@@ -563,6 +565,26 @@ export class MockedWalletApiProxy {
         errorString: ''
       })
     }
+
+  meldIntegrationService: Partial<
+    InstanceType<typeof BraveWallet.MeldIntegrationServiceInterface>
+  > = {
+    getFiatCurrencies: async (
+      filter: MeldFilter
+    ): Promise<{
+      fiatCurrencies: MeldFiatCurrency[] | null
+      error: string[] | null
+    }> => ({
+      fiatCurrencies: [
+        {
+          currencyCode: 'usd',
+          name: 'United States Currency',
+          symbolImageUrl: ''
+        }
+      ],
+      error: null
+    })
+  }
 
   keyringService: Partial<
     InstanceType<typeof BraveWallet.KeyringServiceInterface>
@@ -787,7 +809,8 @@ export class MockedWalletApiProxy {
           contractAddress: contract,
           registry: this.tokenBalancesRegistry,
           tokenId: '',
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          isShielded: false
         }),
         error: 0,
         errorMessage: ''
@@ -814,7 +837,8 @@ export class MockedWalletApiProxy {
           contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId,
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          isShielded: false
         }),
         error: 0,
         errorMessage: ''
@@ -841,7 +865,8 @@ export class MockedWalletApiProxy {
           contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId,
-          coin: BraveWallet.CoinType.ETH
+          coin: BraveWallet.CoinType.ETH,
+          isShielded: false
         }),
         error: 0,
         errorMessage: ''
@@ -876,7 +901,8 @@ export class MockedWalletApiProxy {
         contractAddress: tokenMintAddress,
         registry: this.tokenBalancesRegistry,
         tokenId: '',
-        coin: BraveWallet.CoinType.SOL
+        coin: BraveWallet.CoinType.SOL,
+        isShielded: false
       })
 
       return {
@@ -920,7 +946,8 @@ export class MockedWalletApiProxy {
           coin: BraveWallet.CoinType.SOL,
           contractAddress: token.contractAddress,
           registry: this.tokenBalancesRegistry,
-          tokenId: ''
+          tokenId: '',
+          isShielded: false
         })
 
         return {
@@ -956,7 +983,8 @@ export class MockedWalletApiProxy {
           contractAddress: contract,
           coin: account.accountId.coin,
           chainId,
-          tokenId: '' // ERC20
+          tokenId: '', // ERC20,
+          isShielded: false
         })
 
         if (!balancesByAssetId[assetId]) {
@@ -983,18 +1011,23 @@ export class MockedWalletApiProxy {
       }
 
       const accountUniqueId = account.accountId.uniqueKey
-
       const balances = nftIdentifiers.map((id) => {
         const token =
           this.blockchainTokens.find(
             (t) =>
               getAssetIdKey(t) ===
-              getAssetIdKey({ ...id, coin: account.accountId.coin })
+              getAssetIdKey({
+                ...id,
+                coin: account.accountId.coin,
+                isShielded: false })
           ) ||
           this.userAssets.find(
             (t) =>
               getAssetIdKey(t) ===
-              getAssetIdKey({ ...id, coin: account.accountId.coin })
+              getAssetIdKey({
+                ...id,
+                coin: account.accountId.coin,
+                isShielded: false })
           )
 
         if (!token) {
@@ -1007,7 +1040,8 @@ export class MockedWalletApiProxy {
           contractAddress: id.contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId: id.tokenId,
-          coin
+          coin,
+          isShielded: false
         })
 
         return BigInt(amount)
@@ -1197,7 +1231,8 @@ export class MockedWalletApiProxy {
           tokenId: '',
           logo: '',
           isSpam: false,
-          visible: false
+          visible: false,
+          isShielded: false
         },
         error: 0,
         errorMessage: ''
@@ -1236,7 +1271,8 @@ export class MockedWalletApiProxy {
           contractAddress: token.contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId: token.tokenId,
-          coin: token.coin
+          coin: token.coin,
+          isShielded: token.isShielded
         })
         const priceUsd = unbiasedRandom(0.00000001, 100_000)
         return {
@@ -1288,7 +1324,8 @@ export class MockedWalletApiProxy {
           isWalletCreated: true,
           isWalletLocked: false,
           isAnkrBalancesFeatureEnabled: false,
-          isTransactionSimulationsFeatureEnabled: true
+          isTransactionSimulationsFeatureEnabled: true,
+          isZCashShieldedTransactionsEnabled: false
         }
       }
     }
@@ -1376,7 +1413,7 @@ export class MockedWalletApiProxy {
     this.mockZeroExQuote = newQuote
   }
 
-  setMockedTransactionPayload(newTx: typeof this.mockZeroExQuote) {
+  setMockedTransactionPayload(newTx: typeof this.mockZeroExTransaction) {
     this.mockZeroExTransaction = newTx
   }
 

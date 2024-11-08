@@ -49,25 +49,25 @@ std::u16string GenerateUniqueFolderName(BookmarkModel* model,
   }
 
   // If the given name is unique, use it.
-  if (existing_folder_names.find(folder_name) == existing_folder_names.end())
+  if (existing_folder_names.find(folder_name) == existing_folder_names.end()) {
     return folder_name;
+  }
 
   // Otherwise iterate until we find a unique name.
   for (size_t i = 1; i <= existing_folder_names.size(); ++i) {
     std::u16string name =
         folder_name + u" (" + base::NumberToString16(i) + u")";
-    if (existing_folder_names.find(name) == existing_folder_names.end())
+    if (existing_folder_names.find(name) == existing_folder_names.end()) {
       return name;
+    }
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return folder_name;
+  NOTREACHED();
 }
 
 // Shows the bookmarks toolbar.
-void ShowBookmarkBar(ChromeBrowserState* browser_state) {
-  browser_state->GetPrefs()->SetBoolean(bookmarks::prefs::kShowBookmarkBar,
-                                        true);
+void ShowBookmarkBar(ProfileIOS* profile) {
+  profile->GetPrefs()->SetBoolean(bookmarks::prefs::kShowBookmarkBar, true);
 }
 
 }  // namespace
@@ -78,12 +78,12 @@ void BookmarksImporter::AddBookmarks(
   if (bookmarks.empty())
     return;
 
-  ChromeBrowserState* browser_state =
-      GetApplicationContext()
-          ->GetProfileManager()
-          ->GetLastUsedProfileDeprecatedDoNotUse();
+  std::vector<ProfileIOS*> profiles =
+      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+  ProfileIOS* last_used_profile = profiles.at(0);
+
   bookmarks::BookmarkModel* model =
-      ios::BookmarkModelFactory::GetForBrowserState(browser_state);
+      ios::BookmarkModelFactory::GetForBrowserState(last_used_profile);
   DCHECK(model->loaded());
 
   // If the bookmark bar is currently empty, we should import directly to it.
@@ -179,5 +179,5 @@ void BookmarksImporter::AddBookmarks(
 
   // If the user was previously using a toolbar, we should show the bar.
   if (import_to_top_level && !add_all_to_top_level)
-    ShowBookmarkBar(browser_state);
+    ShowBookmarkBar(last_used_profile);
 }

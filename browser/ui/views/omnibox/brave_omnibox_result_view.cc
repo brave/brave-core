@@ -11,7 +11,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
 #include "brave/browser/ui/views/omnibox/brave_search_conversion_promotion_view.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/omnibox/browser/leo_provider.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/browser_process.h"
@@ -33,10 +33,6 @@
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/view_class_properties.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/omnibox/browser/leo_provider.h"
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 BraveOmniboxResultView::~BraveOmniboxResultView() = default;
 
@@ -60,10 +56,7 @@ void BraveOmniboxResultView::SetMatch(const AutocompleteMatch& match) {
   OmniboxResultView::SetMatch(match);
 
   UpdateForBraveSearchConversion();
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
   UpdateForLeoMatch();
-#endif
 }
 
 void BraveOmniboxResultView::OnSelectionStateChanged() {
@@ -73,23 +66,18 @@ void BraveOmniboxResultView::OnSelectionStateChanged() {
 }
 
 gfx::Image BraveOmniboxResultView::GetIcon() const {
-#if BUILDFLAG(ENABLE_AI_CHAT)
   if (LeoProvider::IsMatchFromLeoProvider(match_)) {
     // As Leo icon has gradient color, we can't use vector icon because it lacks
     // of gradient color.
     return ui::ResourceBundle::GetSharedInstance().GetImageNamed(
         IDR_LEO_FAVICON);
   }
-#endif
   return OmniboxResultView::GetIcon();
 }
 
 void BraveOmniboxResultView::OnThemeChanged() {
   OmniboxResultView::OnThemeChanged();
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
   UpdateForLeoMatch();
-#endif
 }
 
 void BraveOmniboxResultView::OpenMatch() {
@@ -145,7 +133,6 @@ void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
   HandleSelectionStateChangedForPromotionView();
 }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveOmniboxResultView::UpdateForLeoMatch() {
   if (LeoProvider::IsMatchFromLeoProvider(match_)) {
     constexpr int kLeoMatchPadding = 4;
@@ -162,16 +149,13 @@ void BraveOmniboxResultView::UpdateForLeoMatch() {
     SetBorder(nullptr);
   }
 }
-#endif
 
 void BraveOmniboxResultView::OnPaintBackground(gfx::Canvas* canvas) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
   gfx::ScopedCanvas scoped_canvas(canvas);
   if (LeoProvider::IsMatchFromLeoProvider(match_)) {
     // Clip upper padding
     canvas->ClipRect(GetContentsBounds());
   }
-#endif
 
   OmniboxResultView::OnPaintBackground(canvas);
 }

@@ -21,6 +21,7 @@ private class URLTextField: UITextField {
       defaultTextAttributes[.paragraphStyle, default: NSParagraphStyle()] as! NSParagraphStyle
     let style = oldStyle.mutableCopy() as! NSMutableParagraphStyle
     style.lineBreakMode = .byTruncatingHead
+    style.baseWritingDirection = .leftToRight
     defaultTextAttributes[.paragraphStyle] = style
 
     self.addTarget(self, action: #selector(didBeginEditing), for: .editingDidBegin)

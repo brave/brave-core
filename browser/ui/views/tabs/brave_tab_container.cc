@@ -295,9 +295,8 @@ void BraveTabContainer::PaintBoundingBoxForTiles(
   });
 }
 
-void BraveTabContainer::PaintBoundingBoxForTile(
-    gfx::Canvas& canvas,
-    const SplitViewBrowserData::Tile& tile) {
+void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
+                                                const TabTile& tile) {
   if (!GetTabCount()) {
     return;
   }
@@ -404,7 +403,7 @@ void BraveTabContainer::SetTabSlotVisibility() {
   for (Tab* tab : layout_helper_->GetTabs()) {
     if (std::optional<tab_groups::TabGroupId> group = tab->group();
         group && !base::Contains(group_views_, *group)) {
-      tab->set_group(std::nullopt);
+      tab->SetGroup(std::nullopt);
     }
   }
 
@@ -573,11 +572,11 @@ void BraveTabContainer::HandleDragExited() {
   SetDropArrow({});
 }
 
-void BraveTabContainer::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
+void BraveTabContainer::OnTileTabs(const TabTile& tile) {
   SchedulePaint();
 }
 
-void BraveTabContainer::OnDidBreakTile(const SplitViewBrowserData::Tile& tile) {
+void BraveTabContainer::OnDidBreakTile(const TabTile& tile) {
   SchedulePaint();
 }
 

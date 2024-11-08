@@ -36,7 +36,7 @@ class SharedPinnedTabService : public KeyedService,
  public:
   struct PinnedTabData {
     TabRendererData renderer_data;
-    raw_ptr<content::WebContents> shared_contents = nullptr;
+    raw_ptr<content::WebContents, DanglingUntriaged> shared_contents = nullptr;
     raw_ptr<TabStripModel> contents_owner_model = nullptr;
   };
 

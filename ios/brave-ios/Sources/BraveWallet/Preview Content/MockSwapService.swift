@@ -28,26 +28,11 @@ class MockSwapService: BraveWalletSwapService {
     completion(
       .init(
         zeroExTransaction: .init(
-          price: "",
-          guaranteedPrice: "",
           to: "",
           data: "",
-          value: "",
           gas: "",
-          estimatedGas: "",
           gasPrice: "",
-          protocolFee: "",
-          minimumProtocolFee: "",
-          buyTokenAddress: "",
-          sellTokenAddress: "",
-          buyAmount: "",
-          sellAmount: "",
-          allowanceTarget: "",
-          sellTokenToEthRate: "",
-          buyTokenToEthRate: "",
-          estimatedPriceImpact: "",
-          sources: [],
-          fees: .init(zeroExFee: nil)
+          value: ""
         )
       ),
       nil,

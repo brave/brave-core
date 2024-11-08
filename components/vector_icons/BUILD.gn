@@ -49,6 +49,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_folder_exchange.icon",
     "leo_folder.icon",
     "leo_fullscreen_on.icon",
+    "leo_grid04.icon",
     "leo_heart_filled.icon",
     "leo_heart_outline.icon",
     "leo_help_outline.icon",

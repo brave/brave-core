@@ -270,13 +270,11 @@ void P3AService::OnHistogramChanged(const char* histogram_name,
   const bool ok = samples->Iterator()->GetBucketIndex(&bucket);
   if (!ok) {
     LOG(ERROR) << "Only linear histograms are supported at the moment!";
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
   // Special handling of P2A histograms.
-  if (base::StartsWith(histogram_name, "Brave.P2A",
-                       base::CompareCase::SENSITIVE)) {
+  if (std::string_view(histogram_name).starts_with("Brave.P2A")) {
     // We need the bucket count to make proper perturbation.
     // All P2A metrics should be implemented as linear histograms.
     base::SampleVector* vector =

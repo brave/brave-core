@@ -23,7 +23,6 @@ import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,11 +35,8 @@ public class OnboardingPrefManager {
     private static final String PREF_P3A_ONBOARDING = "p3a_onboarding";
     private static final String PREF_CROSS_PROMO_MODAL = "cross_promo_modal";
     private static final String PREF_ONBOARDING_V2 = "onboarding_v2";
-    private static final String PREF_NEXT_ONBOARDING_DATE = "next_onboarding_date";
     private static final String PREF_NEXT_CROSS_PROMO_MODAL_DATE = "next_cross_promo_modal_date";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
-    private static final String PREF_SHOW_DEFAULT_BROWSER_MODAL_AFTER_P3A =
-            "show_default_browser_modal_after_p3a";
     public static final String PREF_BRAVE_STATS = "brave_stats";
     public static final String PREF_BRAVE_STATS_NOTIFICATION = "brave_stats_notification";
     public static final String FROM_NOTIFICATION = "from_notification";
@@ -269,20 +265,17 @@ public class OnboardingPrefManager {
     }
 
     public static Map<String, SearchEngineEnum> searchEngineMap =
-    new HashMap<String, SearchEngineEnum>() {
-        {
-            put(GOOGLE, SearchEngineEnum.GOOGLE);
-            put(BRAVE, SearchEngineEnum.BRAVE);
-            put(DUCKDUCKGO, SearchEngineEnum.DUCKDUCKGO);
-            put(QWANT, SearchEngineEnum.QWANT);
-            put(BING, SearchEngineEnum.BING);
-            put(STARTPAGE, SearchEngineEnum.STARTPAGE);
-            put(YANDEX, SearchEngineEnum.YANDEX);
-            put(ECOSIA, SearchEngineEnum.ECOSIA);
-            put(DAUM, SearchEngineEnum.DAUM);
-            put(NAVER, SearchEngineEnum.NAVER);
-        }
-    };
+            Map.ofEntries(
+                    Map.entry(GOOGLE, SearchEngineEnum.GOOGLE),
+                    Map.entry(BRAVE, SearchEngineEnum.BRAVE),
+                    Map.entry(DUCKDUCKGO, SearchEngineEnum.DUCKDUCKGO),
+                    Map.entry(QWANT, SearchEngineEnum.QWANT),
+                    Map.entry(BING, SearchEngineEnum.BING),
+                    Map.entry(STARTPAGE, SearchEngineEnum.STARTPAGE),
+                    Map.entry(YANDEX, SearchEngineEnum.YANDEX),
+                    Map.entry(ECOSIA, SearchEngineEnum.ECOSIA),
+                    Map.entry(DAUM, SearchEngineEnum.DAUM),
+                    Map.entry(NAVER, SearchEngineEnum.NAVER));
 
     public boolean isFromNotification() {
         return mSharedPreferences.getBoolean(FROM_NOTIFICATION, false);

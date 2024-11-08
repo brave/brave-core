@@ -311,7 +311,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                                         @Override
                                         public void run() {
                                             findPreference(PREF_SERVER_CHANGE_LOCATION)
-                                                    .setEnabled(
+                                                    .setVisible(
                                                             BraveVpnPrefUtils
                                                                     .isSubscriptionPurchase());
                                             findPreference(PREF_SPLIT_TUNNELING)

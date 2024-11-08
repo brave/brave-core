@@ -7,25 +7,18 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_TOKEN_GENERATOR_TEST_UTIL_H_
 
 #include <cstddef>
-#include <vector>
 
-namespace brave_ads {
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 
-namespace cbr {
-class Token;
-}  // namespace cbr
-
-namespace test {
+namespace brave_ads::test {
 
 // Call this function to mock the token generator for testing purposes if code
 // paths call `RefillConfirmationTokens::MaybeRefill`, `Confirmations::Confirm`,
 // `BuildRewardConfirmation`, or `BuildReward`.
 void MockTokenGenerator(size_t count);
 
-std::vector<cbr::Token> BuildTokens(size_t count);
+cbr::TokenList BuildTokens(size_t count);
 
-}  // namespace test
-
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_TOKEN_GENERATOR_TEST_UTIL_H_

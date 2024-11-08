@@ -31,14 +31,21 @@ public class VpnRegionPreference extends Preference {
         super.onBindViewHolder(holder);
 
         TextView regionFlag = (TextView) holder.findViewById(R.id.region_flag);
-        regionFlag.setText(BraveVpnUtils.countryCodeToEmoji(BraveVpnPrefUtils.getRegionIsoCode()));
+        if (!BraveVpnPrefUtils.getRegionIsoCode().isEmpty()) {
+            regionFlag.setText(
+                    BraveVpnUtils.countryCodeToEmoji(BraveVpnPrefUtils.getRegionIsoCode()));
+        }
 
         String serverLocationTitle = BraveVpnPrefUtils.getRegionCountry();
+        String optimalString = "%s - %s";
         String serverLocationSummary =
                 BraveVpnPrefUtils.getRegionPrecision()
                                 .equals(BraveVpnConstants.REGION_PRECISION_COUNTRY)
-                        ? mContext.getString(R.string.optimal_text)
-                        : BraveVpnPrefUtils.getRegionNamePretty();
+                        ? String.format(
+                                optimalString,
+                                mContext.getString(R.string.optimal_text),
+                                BraveVpnPrefUtils.getHostnameDisplay())
+                        : BraveVpnPrefUtils.getHostnameDisplay();
 
         TextView regionTitle = (TextView) holder.findViewById(R.id.region_title);
         regionTitle.setText(serverLocationTitle);

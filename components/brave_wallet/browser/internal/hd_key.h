@@ -13,14 +13,14 @@
 
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
-#include "brave/components/brave_wallet/common/mem_utils.h"
+#include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
 
 inline constexpr size_t kCompactSignatureSize = 64;
 inline constexpr size_t kSecp256k1PubkeySize = 33;
 
-using SecureVector = std::vector<uint8_t, SecureZeroAllocator<uint8_t>>;
+using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 
 enum class ExtendedKeyVersion {
   // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format

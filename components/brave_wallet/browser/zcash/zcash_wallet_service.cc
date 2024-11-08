@@ -10,10 +10,13 @@
 #include <utility>
 
 #include "base/barrier_callback.h"
+#include "base/check_is_test.h"
 #include "base/containers/span.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_discover_next_unused_zcash_address_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_transparent_utxos_context.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_resolve_balance_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -50,25 +53,38 @@ void ZCashWalletService::Bind(
 
 ZCashWalletService::ZCashWalletService(
     base::FilePath zcash_data_path,
-    KeyringService* keyring_service,
-    PrefService* prefs,
+    KeyringService& keyring_service,
     NetworkManager* network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : zcash_data_path_(std::move(zcash_data_path)),
-      keyring_service_(keyring_service) {
-  zcash_rpc_ = std::make_unique<ZCashRpc>(network_manager, url_loader_factory);
+      keyring_service_(keyring_service),
+      zcash_rpc_(
+          std::make_unique<ZCashRpc>(network_manager, url_loader_factory)),
+      complete_manager_(*this) {
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
-  complete_manager_ = std::make_unique<ZCashTransactionCompleteManager>(this);
+#if BUILDFLAG(ENABLE_ORCHARD)
+  background_orchard_storage_.emplace(
+      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
+      zcash_data_path_.AppendASCII(kOrchardDatabaseName));
+#endif
 }
 
-ZCashWalletService::ZCashWalletService(KeyringService* keyring_service,
+ZCashWalletService::ZCashWalletService(base::FilePath zcash_data_path,
+                                       KeyringService& keyring_service,
                                        std::unique_ptr<ZCashRpc> zcash_rpc)
-    : keyring_service_(keyring_service) {
-  zcash_rpc_ = std::move(zcash_rpc);
+    : zcash_data_path_(std::move(zcash_data_path)),
+      keyring_service_(keyring_service),
+      zcash_rpc_(std::move(zcash_rpc)),
+      complete_manager_(*this) {
+  CHECK_IS_TEST();
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
-  complete_manager_ = std::make_unique<ZCashTransactionCompleteManager>(this);
+#if BUILDFLAG(ENABLE_ORCHARD)
+  background_orchard_storage_.emplace(
+      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
+      zcash_data_path_.AppendASCII(kOrchardDatabaseName));
+#endif
 }
 
 ZCashWalletService::~ZCashWalletService() = default;
@@ -76,11 +92,22 @@ ZCashWalletService::~ZCashWalletService() = default;
 void ZCashWalletService::GetBalance(const std::string& chain_id,
                                     mojom::AccountIdPtr account_id,
                                     GetBalanceCallback callback) {
-  RunDiscovery(
-      account_id.Clone(),
-      base::BindOnce(&ZCashWalletService::OnDiscoveryDoneForBalance,
-                     weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
-                     chain_id, std::move(callback)));
+  auto balance_task = std::make_unique<ZCashResolveBalanceTask>(
+      *this, chain_id, std::move(account_id),
+      base::BindOnce(&ZCashWalletService::OnResolveBalanceResult,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  balance_task->ScheduleWorkOnTask();
+  resolve_balance_tasks_.push_back(std::move(balance_task));
+}
+
+void ZCashWalletService::OnResolveBalanceResult(
+    GetBalanceCallback callback,
+    base::expected<mojom::ZCashBalancePtr, std::string> result) {
+  if (result.has_value()) {
+    std::move(callback).Run(std::move(result.value()), std::nullopt);
+  } else {
+    std::move(callback).Run(nullptr, result.error());
+  }
 }
 
 void ZCashWalletService::GetReceiverAddress(
@@ -147,8 +174,7 @@ void ZCashWalletService::StartShieldSync(mojom::AccountIdPtr account_id,
 
     shield_sync_services_[account_id.Clone()] =
         std::make_unique<ZCashShieldSyncService>(
-            zcash_rpc(), account_id, account_birthday, fvk.value(),
-            zcash_data_path_.AppendASCII(kOrchardDatabaseName),
+            this, account_id, account_birthday, fvk.value(),
             weak_ptr_factory_.GetWeakPtr());
 
     shield_sync_services_[account_id.Clone()]->StartSyncing();
@@ -321,7 +347,7 @@ void ZCashWalletService::SignAndPostTransaction(
     const mojom::AccountIdPtr& account_id,
     const ZCashTransaction& zcash_transaction,
     SignAndPostTransactionCallback callback) {
-  complete_manager_->CompleteTransaction(
+  complete_manager_.CompleteTransaction(
       chain_id, zcash_transaction, account_id.Clone(),
       base::BindOnce(&ZCashWalletService::CompleteTransactionDone,
                      weak_ptr_factory_.GetWeakPtr(), chain_id,
@@ -351,7 +377,8 @@ void ZCashWalletService::ValidateZCashAddress(
 #if BUILDFLAG(ENABLE_ORCHARD)
     if (IsZCashShieldedTransactionsEnabled() &&
         ExtractOrchardPart(addr, testnet)) {
-      std::move(callback).Run(mojom::ZCashAddressValidationResult::Success);
+      std::move(callback).Run(
+          mojom::ZCashAddressValidationResult::ValidShielded);
       return;
     }
 #endif
@@ -374,7 +401,8 @@ void ZCashWalletService::ValidateZCashAddress(
     }
   }
 
-  std::move(callback).Run(mojom::ZCashAddressValidationResult::Success);
+  std::move(callback).Run(
+      mojom::ZCashAddressValidationResult::ValidTransparent);
 }
 
 void ZCashWalletService::OnSendTransactionResult(
@@ -483,7 +511,7 @@ void ZCashWalletService::CreateFullyTransparentTransaction(
 
   auto& task = create_transaction_tasks_.emplace_back(
       base::WrapUnique<ZCashCreateTransparentTransactionTask>(
-          new ZCashCreateTransparentTransactionTask(this, chain_id, account_id,
+          new ZCashCreateTransparentTransactionTask(*this, chain_id, account_id,
                                                     final_address, amount,
                                                     std::move(callback))));
   task->ScheduleWorkOnTask();
@@ -508,7 +536,7 @@ void ZCashWalletService::CreateShieldTransaction(
   }
 
   auto shield_funds_task = base::WrapUnique<ZCashCreateShieldTransactionTask>(
-      new ZCashCreateShieldTransactionTask(this, chain_id, account_id,
+      new ZCashCreateShieldTransactionTask(*this, chain_id, account_id,
                                            *receiver_addr, std::move(memo),
                                            amount, std::move(callback)));
   shield_funds_task->ScheduleWorkOnTask();
@@ -551,7 +579,7 @@ void ZCashWalletService::CreateShieldAllTransaction(
 
   auto shield_funds_task = base::WrapUnique<ZCashCreateShieldTransactionTask>(
       new ZCashCreateShieldTransactionTask(
-          this, chain_id, account_id, *internal_addr, std::nullopt,
+          *this, chain_id, account_id, *internal_addr, std::nullopt,
           kZCashFullAmount, std::move(callback)));
   shield_funds_task->ScheduleWorkOnTask();
   create_shield_transaction_tasks_.push_back(std::move(shield_funds_task));
@@ -712,13 +740,25 @@ void ZCashWalletService::CreateTransactionTaskDone(
 }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
-ZCashRpc* ZCashWalletService::zcash_rpc() {
-  return zcash_rpc_.get();
+void ZCashWalletService::ResolveBalanceTaskDone(ZCashResolveBalanceTask* task) {
+  CHECK(resolve_balance_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; }));
 }
 
-KeyringService* ZCashWalletService::keyring_service() {
-  return keyring_service_.get();
+ZCashRpc& ZCashWalletService::zcash_rpc() {
+  return *zcash_rpc_;
 }
+
+KeyringService& ZCashWalletService::keyring_service() {
+  return *keyring_service_;
+}
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+base::SequenceBound<ZCashOrchardStorage>&
+ZCashWalletService::orchard_storage() {
+  return background_orchard_storage_;
+}
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 void ZCashWalletService::Unlocked() {
   auto accounts = keyring_service_->GetAllAccountsSync();
@@ -738,10 +778,8 @@ void ZCashWalletService::Locked() {
 void ZCashWalletService::Reset() {
   weak_ptr_factory_.InvalidateWeakPtrs();
 #if BUILDFLAG(ENABLE_ORCHARD)
-  for (const auto& pair : shield_sync_services_) {
-    pair.second->Reset();
-  }
   shield_sync_services_.clear();
+  background_orchard_storage_.AsyncCall(&ZCashOrchardStorage::ResetDatabase);
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 }
 

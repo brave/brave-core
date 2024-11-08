@@ -63,6 +63,10 @@ void AssociatedContentDelegate::GetStagedEntriesFromContent(
   std::move(callback).Run(std::nullopt);
 }
 
+bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
+  return false;
+}
+
 void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
     const std::string& prompt,
     const std::string& text,
@@ -156,6 +160,7 @@ ConversationHandler::~ConversationHandler() {
   if (associated_content_delegate_) {
     associated_content_delegate_->OnRelatedConversationDestroyed(this);
   }
+  OnConversationDeleted();
 }
 
 void ConversationHandler::AddObserver(Observer* observer) {
@@ -194,6 +199,12 @@ bool ConversationHandler::HasAnyHistory() {
                               [](const mojom::ConversationTurnPtr& turn) {
                                 return !turn->from_brave_search_SERP;
                               });
+}
+
+void ConversationHandler::OnConversationDeleted() {
+  for (auto& client : conversation_ui_handlers_) {
+    client->OnConversationDeleted();
+  }
 }
 
 void ConversationHandler::InitEngine() {
@@ -777,8 +788,8 @@ void ConversationHandler::ClearErrorAndGetFailedMessage(
   DCHECK(!chat_history_.empty());
 
   SetAPIError(mojom::APIError::None);
-  mojom::ConversationTurnPtr turn = std::move(*chat_history_.end());
-  chat_history_.erase(chat_history_.end());
+  mojom::ConversationTurnPtr turn = std::move(chat_history_.back());
+  chat_history_.pop_back();
 
   OnHistoryUpdate();
 
@@ -863,6 +874,7 @@ void ConversationHandler::AddToConversationHistory(
   chat_history_.push_back(std::move(turn));
 
   OnHistoryUpdate();
+  OnConversationEntriesChanged();
 }
 
 void ConversationHandler::PerformAssistantGeneration(
@@ -970,6 +982,12 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     entry->text = event->get_completion_event()->completion;
   }
 
+  if (event->is_conversation_title_event()) {
+    OnConversationTitleChanged(event->get_conversation_title_event()->title);
+    // Don't add this event to history
+    return;
+  }
+
   if (event->is_selected_language_event()) {
     OnSelectedLanguageChanged(
         event->get_selected_language_event()->selected_language);
@@ -978,7 +996,8 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
   }
 
   entry->events->push_back(std::move(event));
-
+  // Update clients for partial entries but not observers, who will get notified
+  // when we know this is a complete entry.
   OnHistoryUpdate();
 }
 
@@ -1028,25 +1047,17 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
   }
 
   const bool can_check_for_staged_conversation =
-      ai_chat_service_->HasUserOptedIn() && IsContentAssociationPossible() &&
-      should_send_page_contents_;
+      IsContentAssociationPossible() && should_send_page_contents_;
   if (!can_check_for_staged_conversation) {
     // Clear any staged conversation entries since user might have unassociated
     // content with this conversation
-    if (chat_history_.empty()) {
-      return;
-    }
-
-    const auto& last_turn = chat_history_.back();
-    if (last_turn->from_brave_search_SERP) {
-      chat_history_.clear();  // Clear the staged entries.
+    size_t num_entries = chat_history_.size();
+    std::erase_if(chat_history_, [](const mojom::ConversationTurnPtr& turn) {
+      return turn->from_brave_search_SERP;
+    });
+    if (num_entries != chat_history_.size()) {
       OnHistoryUpdate();
     }
-    return;
-  }
-
-  // Can only have staged entries at the start of a conversation.
-  if (!chat_history_.empty()) {
     return;
   }
 
@@ -1058,10 +1069,15 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
 void ConversationHandler::OnGetStagedEntriesFromContent(
     const std::optional<std::vector<SearchQuerySummary>>& entries) {
   // Check if all requirements are still met.
-  if (!entries || !chat_history_.empty() || !IsContentAssociationPossible() ||
-      !should_send_page_contents_ || !ai_chat_service_->HasUserOptedIn()) {
+  if (is_request_in_progress_ || !entries || !IsContentAssociationPossible() ||
+      !should_send_page_contents_) {
     return;
   }
+
+  // Clear previous staged entries.
+  std::erase_if(chat_history_, [](const mojom::ConversationTurnPtr& turn) {
+    return turn->from_brave_search_SERP;
+  });
 
   // Add the query & summary pairs to the conversation history and call
   // OnHistoryUpdate to update UI.
@@ -1146,17 +1162,36 @@ void ConversationHandler::OnEngineCompletionComplete(
   is_request_in_progress_ = false;
 
   if (result.has_value()) {
+    DVLOG(2) << __func__ << ": With value";
     // Handle success, which might mean do nothing much since all
     // data was passed in the streaming "received" callback.
     if (!result->empty()) {
       UpdateOrCreateLastAssistantEntry(
           mojom::ConversationEntryEvent::NewCompletionEvent(
               mojom::CompletionEvent::New(*result)));
+      OnConversationEntriesChanged();
+    } else {
+      auto& last_entry = chat_history_.back();
+      if (last_entry->character_type != mojom::CharacterType::ASSISTANT) {
+        SetAPIError(mojom::APIError::ConnectionIssue);
+      }
     }
     MaybePopPendingRequests();
   } else {
     // handle failure
-    SetAPIError(std::move(result.error()));
+    if (result.error() != mojom::APIError::None) {
+      DVLOG(2) << __func__ << ": With error";
+      SetAPIError(std::move(result.error()));
+    } else {
+      DVLOG(2) << __func__ << ": With no error";
+      // No error but check if no content was received
+      auto& last_entry = chat_history_.back();
+      if (last_entry->character_type != mojom::CharacterType::ASSISTANT) {
+        SetAPIError(mojom::APIError::ConnectionIssue);
+      } else {
+        SetAPIError(mojom::APIError::None);
+      }
+    }
   }
 
   OnAPIRequestInProgressChanged();
@@ -1229,7 +1264,10 @@ void ConversationHandler::OnHistoryUpdate() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnConversationHistoryUpdate();
   }
+  OnConversationEntriesChanged();
+}
 
+void ConversationHandler::OnConversationEntriesChanged() {
   for (auto& observer : observers_) {
     // TODO(petemill): only tell observers about complete turns. This is
     // expensive to do for every event generated by in-progress turns,
@@ -1302,6 +1340,12 @@ void ConversationHandler::OnClientConnectionChanged() {
            << " UI HANDLERS";
   for (auto& observer : observers_) {
     observer.OnClientConnectionChanged(this);
+  }
+}
+
+void ConversationHandler::OnConversationTitleChanged(std::string title) {
+  for (auto& observer : observers_) {
+    observer.OnConversationTitleChanged(this, title);
   }
 }
 

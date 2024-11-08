@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 
 #include "brave/components/brave_ads/browser/ads_service_callback.h"
@@ -37,7 +36,7 @@ class ADS_EXPORT Ads {
 
   virtual ~Ads() = default;
 
-  static Ads* CreateInstance(AdsClient* ads_client);
+  static std::unique_ptr<Ads> CreateInstance(AdsClient& ads_client);
 
   virtual void AddObserver(
       std::unique_ptr<AdsObserverInterface> ads_observer) = 0;

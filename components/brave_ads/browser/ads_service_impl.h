@@ -140,8 +140,10 @@ class AdsServiceImpl final : public AdsService,
 
   void NotifyAdsServiceInitialized() const;
 
-  void ShutdownAndClearData();
-  void ShutdownAndClearDataCallback(bool success);
+  void ShutdownClearDataAndMaybeRestart();
+  void ShutdownClearDataAndMaybeRestartCallback(bool success);
+
+  void OnExternalWalletConnectedCallback(bool success);
 
   void SetSysInfo();
   void SetBuildChannel();
@@ -451,9 +453,9 @@ class AdsServiceImpl final : public AdsService,
 
   SimpleURLLoaderList url_loaders_;
 
-  const raw_ptr<PrefService> prefs_ = nullptr;  // NOT OWNED
+  const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
 
-  const raw_ptr<PrefService> local_state_ = nullptr;  // NOT OWNED
+  const raw_ptr<PrefService> local_state_ = nullptr;  // Not owned.
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_ = nullptr;
 
@@ -464,7 +466,7 @@ class AdsServiceImpl final : public AdsService,
       resource_component_observation_{this};
 
   const raw_ptr<history::HistoryService> history_service_ =
-      nullptr;  // NOT OWNED
+      nullptr;  // Not owned.
 
   const std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
 

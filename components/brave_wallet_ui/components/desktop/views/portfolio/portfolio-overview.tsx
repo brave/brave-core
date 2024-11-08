@@ -643,6 +643,8 @@ export const PortfolioOverview = () => {
         >
           <ActivityWrapper
             fullWidth={true}
+            fullHeight={true}
+            justifyContent='flex-start'
             padding='0px 16px'
           >
             <TransactionsScreen />

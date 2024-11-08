@@ -13,8 +13,8 @@
 
 namespace brave_ads {
 
-bool IsAllowedToDeposit(mojom::AdType mojom_ad_type,
-                        mojom::ConfirmationType mojom_confirmation_type) {
+bool IsAllowedToDeposit(const mojom::AdType mojom_ad_type,
+                        const mojom::ConfirmationType mojom_confirmation_type) {
   if (UserHasJoinedBraveRewards()) {
     // Always allow deposits for Rewards users.
     return true;
@@ -53,8 +53,8 @@ bool IsAllowedToDeposit(mojom::AdType mojom_ad_type,
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::AdType: "
-                        << base::to_underlying(mojom_ad_type);
+  NOTREACHED() << "Unexpected value for mojom::AdType: "
+               << base::to_underlying(mojom_ad_type);
 }
 
 }  // namespace brave_ads

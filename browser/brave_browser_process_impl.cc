@@ -61,10 +61,6 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(ENABLE_GREASELION)
-#include "brave/components/greaselion/browser/greaselion_download_service.h"
-#endif
-
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
@@ -181,6 +177,7 @@ void BraveBrowserProcessImpl::Init() {
 
 #if !BUILDFLAG(IS_ANDROID)
 void BraveBrowserProcessImpl::StartTearDown() {
+  brave_stats_helper_.reset();
   brave_stats_updater_.reset();
   brave_referrals_service_.reset();
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
@@ -236,9 +233,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
         local_data_files_service());
   }
 
-#if BUILDFLAG(ENABLE_GREASELION)
-  greaselion_download_service();
-#endif
   debounce_component_installer();
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr_component_installer();
@@ -308,17 +302,6 @@ BraveBrowserProcessImpl::localhost_permission_component() {
   }
   return localhost_permission_component_.get();
 }
-
-#if BUILDFLAG(ENABLE_GREASELION)
-greaselion::GreaselionDownloadService*
-BraveBrowserProcessImpl::greaselion_download_service() {
-  if (!greaselion_download_service_) {
-    greaselion_download_service_ = greaselion::GreaselionDownloadServiceFactory(
-        local_data_files_service());
-  }
-  return greaselion_download_service_.get();
-}
-#endif
 
 debounce::DebounceComponentInstaller*
 BraveBrowserProcessImpl::debounce_component_installer() {
@@ -455,7 +438,8 @@ brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
 
 brave_ads::BraveStatsHelper* BraveBrowserProcessImpl::ads_brave_stats_helper() {
   if (!brave_stats_helper_) {
-    brave_stats_helper_ = std::make_unique<brave_ads::BraveStatsHelper>();
+    brave_stats_helper_ = std::make_unique<brave_ads::BraveStatsHelper>(
+        local_state(), profile_manager());
   }
   return brave_stats_helper_.get();
 }

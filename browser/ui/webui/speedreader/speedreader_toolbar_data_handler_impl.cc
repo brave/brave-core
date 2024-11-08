@@ -15,7 +15,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/speedreader/tts_player.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -25,13 +25,9 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "ui/color/color_provider.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
-#endif
 
 namespace {
 class TtsPlayerDelegate : public speedreader::TtsPlayer::Delegate {
@@ -147,7 +143,6 @@ void SpeedreaderToolbarDataHandlerImpl::ViewOriginal() {
 }
 
 void SpeedreaderToolbarDataHandlerImpl::AiChat() {
-#if BUILDFLAG(ENABLE_AI_CHAT)
   if (!browser_ || !ai_chat::IsAIChatEnabled(browser_->profile()->GetPrefs()) ||
       !browser_->profile()->IsRegularProfile()) {
     return;
@@ -163,7 +158,6 @@ void SpeedreaderToolbarDataHandlerImpl::AiChat() {
   } else {
     side_panel->Show(SidePanelEntryId::kChatUI);
   }
-#endif
 }
 
 void SpeedreaderToolbarDataHandlerImpl::GetPlaybackState(

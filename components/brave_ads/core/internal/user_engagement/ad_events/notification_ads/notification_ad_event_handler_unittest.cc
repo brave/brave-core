@@ -7,9 +7,8 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_handler_delegate_mock.h"
@@ -19,18 +18,6 @@
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
-
-namespace {
-
-NotificationAdInfo BuildAndSaveAd() {
-  const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
-  NotificationAdInfo ad = BuildNotificationAd(creative_ad);
-  NotificationAdManager::GetInstance().Add(ad);
-  return ad;
-}
-
-}  // namespace
 
 class BraveAdsNotificationAdEventHandlerTest : public test::TestBase {
  protected:
@@ -56,7 +43,8 @@ class BraveAdsNotificationAdEventHandlerTest : public test::TestBase {
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveAd();
+  const NotificationAdInfo ad =
+      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdServedEvent(ad));
@@ -67,7 +55,8 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveAd();
+  const NotificationAdInfo ad =
+      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdViewedEvent(ad));
@@ -78,7 +67,8 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveAd();
+  const NotificationAdInfo ad =
+      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdClickedEvent(ad));
@@ -89,7 +79,8 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveAd();
+  const NotificationAdInfo ad =
+      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdDismissedEvent(ad));
@@ -100,7 +91,8 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
 
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveAd();
+  const NotificationAdInfo ad =
+      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdTimedOutEvent(ad));
@@ -112,7 +104,8 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
 TEST_F(BraveAdsNotificationAdEventHandlerTest,
        DoNotFireEventIfMissingPlacementId) {
   // Arrange
-  const NotificationAdInfo ad = BuildAndSaveAd();
+  const NotificationAdInfo ad =
+      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_,

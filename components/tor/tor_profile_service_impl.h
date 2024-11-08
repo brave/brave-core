@@ -66,11 +66,6 @@ class TorProfileServiceImpl
  private:
   void LaunchTor();
 
-  base::FilePath GetTorExecutablePath() const;
-  base::FilePath GetTorrcPath() const;
-  base::FilePath GetTorDataPath() const;
-  base::FilePath GetTorWatchPath() const;
-
   // BraveTorClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
 
@@ -87,7 +82,7 @@ class TorProfileServiceImpl
   raw_ptr<BraveTorPluggableTransportUpdater> tor_pluggable_transport_updater_ =
       nullptr;
   raw_ptr<TorLauncherFactory> tor_launcher_factory_ = nullptr;  // Singleton
-  raw_ptr<net::ProxyConfigServiceTor> proxy_config_service_ =
+  raw_ptr<net::ProxyConfigServiceTor, DanglingUntriaged> proxy_config_service_ =
       nullptr;  // NOT OWNED
   PrefChangeRegistrar pref_change_registrar_;
   std::unique_ptr<class BuiltinBridgesRequest> builtin_bridges_request_;

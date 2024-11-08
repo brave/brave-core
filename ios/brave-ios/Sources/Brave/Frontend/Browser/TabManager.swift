@@ -405,6 +405,10 @@ class TabManager: NSObject {
       if previousTab.displayFavicon == nil {
         adsRewardsLog.warning("No favicon found in \(previousTab) to report to rewards panel")
       }
+      rewards?.maybeNotifyTabDidChange(
+        tab: previousTab,
+        isSelected: false
+      )
       rewards?.reportTabUpdated(
         tab: previousTab,
         isSelected: false,
@@ -414,6 +418,10 @@ class TabManager: NSObject {
       if newSelectedTab.displayFavicon == nil && !newTabUrl.isLocal {
         adsRewardsLog.warning("No favicon found in \(newSelectedTab) to report to rewards panel")
       }
+      rewards?.maybeNotifyTabDidChange(
+        tab: newSelectedTab,
+        isSelected: true
+      )
       rewards?.reportTabUpdated(
         tab: newSelectedTab,
         isSelected: true,
@@ -843,6 +851,10 @@ class TabManager: NSObject {
     // Remove all unwanted tabs
     for tab in allTabs {
       guard tab.url?.baseDomain == etldP1 else { continue }
+      // The Tab's WebView is not deinitialized immediately, so it's possible the
+      // WebView still stores data after we shred but before the WebView is deinitialized.
+      // Delete the web view to prevent data being stored after data is Shred.
+      tab.deleteWebView()
       removeTab(tab)
     }
 
@@ -918,6 +930,8 @@ class TabManager: NSObject {
       }
       historyAPI.removeHistory(for: nodes)
     }
+
+    RecentlyClosed.remove(baseDomains: baseDomains)
 
     for url in urls {
       await FaviconFetcher.deleteCache(for: url)
@@ -1433,7 +1447,7 @@ class TabManager: NSObject {
     }
   }
 
-  /// Function to add all the tabs to recently closed before the list is removef entirely by Close All Tabs
+  /// Function to add all the tabs to recently closed before the list is removed entirely by Close All Tabs
   func addAllTabsToRecentlyClosed(isActiveTabIncluded: Bool) {
     var allRecentlyClosed: [SavedRecentlyClosed] = []
 
@@ -1655,15 +1669,32 @@ extension WKWebsiteDataStore {
 
   @MainActor fileprivate func deleteDataRecords(forDomains domains: Set<String>) async {
     let records = await dataRecords(
-      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypesIncludingPrivate()
     )
     let websiteRecords = records.filter { record in
       domains.contains(record.displayName)
     }
 
     await removeData(
-      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypesIncludingPrivate(),
       for: websiteRecords
     )
+  }
+
+  /// This includes all public types from `WKWebsiteDataStore.allWebsiteDataTypes` as well as private data types.
+  public static func allWebsiteDataTypesIncludingPrivate() -> Set<String> {
+    // https://github.com/WebKit/WebKit/blob/b66e4895df40202b14bb20fb47444c3e0a3c164e/Source/WebKit/UIProcess/API/Cocoa/WKWebsiteDataRecordPrivate.h
+    var types = WKWebsiteDataStore.allWebsiteDataTypes()
+    types.insert("_WKWebsiteDataTypeHSTSCache")
+    types.insert("_WKWebsiteDataTypeResourceLoadStatistics")
+    types.insert("_WKWebsiteDataTypeCredentials")
+    types.insert("_WKWebsiteDataTypeAdClickAttributions")
+    types.insert("_WKWebsiteDataTypePrivateClickMeasurements")
+    types.insert("_WKWebsiteDataTypeAlternativeServices")
+    if #unavailable(iOS 17) {
+      types.insert("_WKWebsiteDataTypeMediaKeys")
+      types.insert("_WKWebsiteDataTypeSearchFieldRecentSearches")
+    }
+    return types
   }
 }

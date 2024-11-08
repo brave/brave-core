@@ -9,7 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -56,10 +56,6 @@
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "media/base/key_system_info.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
-#endif
-
-#if BUILDFLAG(ENABLE_AI_CHAT) && BUILDFLAG(IS_ANDROID)
-#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 namespace {
@@ -160,16 +156,13 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature) &&
-      !chrome::IsIncognitoProcess()) {
+      !IsIncognitoProcess()) {
     new skus::SkusRenderFrameObserver(render_frame);
   }
 
 #if BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNFeatureEnabled()
-#if BUILDFLAG(ENABLE_AI_CHAT)
-      || ai_chat::features::IsAIChatHistoryEnabled()
-#endif
-  ) {
+  if (brave_vpn::IsBraveVPNFeatureEnabled() ||
+      ai_chat::features::IsAIChatHistoryEnabled()) {
     new brave_subscription::SubscriptionRenderFrameObserver(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
@@ -184,7 +177,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-      !chrome::IsIncognitoProcess()) {
+      !IsIncognitoProcess()) {
     new playlist::PlaylistRenderFrameObserver(
         render_frame, base::BindRepeating([] {
           return BraveRenderThreadObserver::GetDynamicParams().playlist_enabled;

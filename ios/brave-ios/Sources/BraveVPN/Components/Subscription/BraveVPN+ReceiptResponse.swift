@@ -8,6 +8,19 @@ import Preferences
 
 extension BraveVPN {
 
+  public enum BraveVPNError: Error {
+    case noReceipt
+    case noReceiptData
+    case noReceiptStatus
+    case noReceiptExpiryDate
+    case noReceiptGraceExpiryDate
+    case noReceiptIsInTrialPeriod
+    case noReceiptAutoRenewEnabled
+    case noReceiptExpiryIntent
+    case noReceiptExpiryIntentUnknown
+    case noResponse
+  }
+
   public struct ReceiptResponse {
     public enum Status: Int {
       case active, expired, retryPeriod
@@ -35,12 +48,12 @@ extension BraveVPN {
   }
 
   /// Connects to Guardian's server to validate locally stored receipt.
-  /// Returns ReceiptResponse whoich hold information about status of receipt expiration etc
-  public static func validateReceiptData() async -> ReceiptResponse? {
+  /// Returns ReceiptResponse which hold information about status of receipt expiration etc
+  public static func validateReceiptData() async throws -> ReceiptResponse? {
     guard let receipt = await loadReceipt(),
       let bundleId = Bundle.main.bundleIdentifier
     else {
-      return nil
+      throw BraveVPNError.noReceipt
     }
 
     if Preferences.VPN.skusCredential.value != nil {
@@ -49,7 +62,7 @@ extension BraveVPN {
       return nil
     }
 
-    return await withCheckedContinuation { continuation in
+    return try await withCheckedThrowingContinuation { continuation in
       housekeepingApi.verifyReceiptData(receipt, bundleId: bundleId) { response, error in
         if let error = error {
           // Error while fetching receipt response, the variations of error can be listed
@@ -57,13 +70,13 @@ extension BraveVPN {
           // Failed to retrieve receipt data from server
           // Failed to decode JSON response data
           logAndStoreError("Call for receipt verification failed: \(error.localizedDescription)")
-          continuation.resume(returning: nil)
+          continuation.resume(throwing: error)
           return
         }
 
         guard let response = response else {
           logAndStoreError("Receipt verification response is empty")
-          continuation.resume(returning: nil)
+          continuation.resume(throwing: BraveVPNError.noResponse)
           return
         }
 

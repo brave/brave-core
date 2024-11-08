@@ -39,7 +39,7 @@ See [command_line_switch_test_util.h](command_line_switch_test_util.h).
 
 ## Mocking Prefs
 
-Preferences **MUST** be registered in [pref_registry_test_util.cc](./pref_registry_test_util.cc). To set a preference and notify listeners, use `SetProfile*Pref` or `SetLocalState*Pref`. To set a preference without notifying listeners, use `SetProfile*PrefValue` or `SetLocalState*PrefValue`. See [profile_pref_value_test_util.h](./profile_pref_value_test_util.h) and [local_state_pref_value_test_util.h](./local_state_pref_value_test_util.h).
+You can register preferences in [pref_registry_test_util.cc](./pref_registry_test_util.cc) or by using `RegisterProfile*Pref` or `RegisterLocalState*Pref`. To set a preference and notify listeners, use `SetProfile*Pref` or `SetLocalState*Pref`. To set a preference without notifying listeners, use `SetProfile*PrefValue` or `SetLocalState*PrefValue`. See [profile_pref_value_test_util.h](./profile_pref_value_test_util.h) and [local_state_pref_value_test_util.h](./local_state_pref_value_test_util.h).
 
 ## Mocking Files
 

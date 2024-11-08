@@ -1,19 +1,19 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index a1ea0b6a8d246371d1931258bd0d1d9151956091..0afd8bfb914fabb51970c4eb254bf355f710a9fa 100644
+index 9aafc20ca26d84604047661f0a5d0ee56363bec3..8da6a690fd25727e5a048464777c6db8779c3ee1 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -712,6 +712,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   // List pref that stores the positions of the Safety Check module (with
-   // notifications opt-in) within the Magic Stack.
-   registry->RegisterListPref(prefs::kMagicStackSafetyCheckNotificationsShown);
+@@ -778,6 +778,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+ 
+   registry->RegisterIntegerPref(prefs::kAddressBarSettingsNewBadgeShownCount,
+                                 0);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
- void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1053,6 +1054,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterInt64Pref(kNtpShownBookmarksFolder, 3);
- 
-   registry->RegisterDictionaryPref(prefs::kIosPreRestoreAccountInfo);
+ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1126,6 +1127,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterStringPref(
+       send_tab_to_self::prefs::kIOSSendTabToSelfLastReceivedTabURLPref,
+       std::string());
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  

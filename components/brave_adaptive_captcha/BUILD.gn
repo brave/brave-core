@@ -11,6 +11,8 @@ source_set("brave_adaptive_captcha") {
     "get_adaptive_captcha_challenge.cc",
     "get_adaptive_captcha_challenge.h",
     "pref_names.h",
+    "prefs_util.cc",
+    "prefs_util.h",
     "server_util.cc",
     "server_util.h",
   ]

@@ -9,7 +9,6 @@
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
-#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -141,7 +140,8 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<BraveWalletService, DanglingUntriaged> brave_wallet_service_ =
+      nullptr;
   std::vector<std::string> methods_{"signMessage", "signMessageViaSend",
                                     "signMessageViaSend2",
                                     "signMessageViaSendAsync"};
@@ -150,7 +150,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
@@ -343,9 +343,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
       brave_wallet_service_->NotifySignMessageRequestProcessed(
           true, request_index++, nullptr, std::nullopt);
       // port is dynamic
-      EXPECT_TRUE(base::StartsWith(
-          EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
-          "0x", base::CompareCase::SENSITIVE));
+      EXPECT_TRUE(EvalJs(web_contents(), "getSignMessageResult()")
+                      .ExtractString()
+                      .starts_with("0x"));
     }
   }
 }

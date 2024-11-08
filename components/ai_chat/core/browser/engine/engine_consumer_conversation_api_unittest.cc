@@ -436,4 +436,37 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_EarlyReturn) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
+  std::string expected_events = R"([
+    {"role": "user", "type": "pageText", "content": "This is a sample page content."},
+    {"role": "user", "type": "requestSummary", "content": ""}
+  ])";
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        // Match entire structure to ensure the generated JSON is correct
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events).c_str());
+        std::move(callback).Run("");
+      });
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->action_type = mojom::ActionType::SUMMARIZE_PAGE;
+  turn->text =
+      "Summarize the content of this page.";  // This text should be ignored
+  history.push_back(std::move(turn));
+  engine_->GenerateAssistantResponse(
+      false, "This is a sample page content.", history, "", "",
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
 }  // namespace ai_chat

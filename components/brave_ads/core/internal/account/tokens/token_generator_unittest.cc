@@ -18,7 +18,7 @@ TEST(BraveAdsTokenGeneratorTest, Generate) {
   const TokenGenerator token_generator;
 
   // Act
-  const std::vector<cbr::Token> tokens = token_generator.Generate(5);
+  const cbr::TokenList tokens = token_generator.Generate(5);
 
   // Assert
   EXPECT_THAT(tokens, ::testing::SizeIs(5));
@@ -29,7 +29,7 @@ TEST(BraveAdsTokenGeneratorTest, GenerateZero) {
   const TokenGenerator token_generator;
 
   // Act
-  const std::vector<cbr::Token> tokens = token_generator.Generate(0);
+  const cbr::TokenList tokens = token_generator.Generate(0);
 
   // Assert
   EXPECT_THAT(tokens, ::testing::IsEmpty());

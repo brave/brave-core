@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Ajustează setările de blocare reclame pentru acest site";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Auto distrugere";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresiv";
 
@@ -148,11 +151,38 @@
 /* A description of what the forget me toggle does */
 "ForgetMeDescription" = "Șterge modulele cookie și alte date referitoare la site în momentul în care închideți un site";
 
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Uită-mă după ce închid acest site";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Strict";
 
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Listele au fost actualizate";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Distruge date";
+
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Niciodată";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "La închiderea aplicației";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "La închiderea filelor site-ului";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Distruge datele site-ului";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Distrugerea va închide toate filele deschise ale acestui site și va șterge datele asociate. Nu se poate anula.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Distruge datele asociate site-ului?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Distruge datele site-ului acum";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Site-ul nu este sigur";
@@ -162,6 +192,12 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blocarea reclamelor și a urmăritorilor";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Actualizează listele";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Se actualizează listele";
 
 /* The option the user can select for the type of https upgrading */
 "UpgradeConnectionsToHTTPS" = "Actualizează conexiunile la HTTPS";

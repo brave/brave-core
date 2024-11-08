@@ -89,7 +89,7 @@ int ResourceBundleId(const std::string& name) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 std::string URLMethodToRequestType(
@@ -515,7 +515,7 @@ void AdsServiceImpl::NotifyAdsServiceInitialized() const {
   }
 }
 
-void AdsServiceImpl::ShutdownAndClearData() {
+void AdsServiceImpl::ShutdownClearDataAndMaybeRestart() {
   ShutdownAdsService();
 
   VLOG(6) << "Clearing ads data";
@@ -525,11 +525,12 @@ void AdsServiceImpl::ShutdownAndClearData() {
 
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, ads_service_path_),
-      base::BindOnce(&AdsServiceImpl::ShutdownAndClearDataCallback,
+      base::BindOnce(&AdsServiceImpl::ShutdownClearDataAndMaybeRestartCallback,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void AdsServiceImpl::ShutdownAndClearDataCallback(const bool success) {
+void AdsServiceImpl::ShutdownClearDataAndMaybeRestartCallback(
+    const bool success) {
   if (!success) {
     VLOG(0) << "Failed to clear ads data";
   } else {
@@ -1157,7 +1158,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::ClearData() {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
-  ShutdownAndClearData();
+  ShutdownClearDataAndMaybeRestart();
 }
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
@@ -1751,13 +1752,10 @@ void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
     return VLOG(1) << "Ads paused; support intervention required";
   }
 
-  const int snooze_count = prefs_->GetInteger(
-      brave_adaptive_captcha::prefs::kScheduledCaptchaSnoozeCount);
-
   CHECK(ads_tooltips_delegate_);
 
   ads_tooltips_delegate_->ShowCaptchaTooltip(
-      payment_id, captcha_id, snooze_count == 0,
+      payment_id, captcha_id, /*include_cancel_button=*/true,
       base::BindOnce(&AdsServiceImpl::ShowScheduledCaptchaCallback,
                      weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptchaCallback,
@@ -1906,14 +1904,14 @@ void AdsServiceImpl::OnRewardsWalletCreated() {
 }
 
 void AdsServiceImpl::OnExternalWalletConnected() {
-  SetProfilePref(prefs::kShouldMigrateVerifiedRewardsUser, base::Value(true));
-
   ShowReminder(mojom::ReminderType::kExternalWalletConnected);
+
+  ShutdownClearDataAndMaybeRestart();
 }
 
 void AdsServiceImpl::OnCompleteReset(const bool success) {
   if (success) {
-    ShutdownAndClearData();
+    ShutdownClearDataAndMaybeRestart();
   }
 }
 

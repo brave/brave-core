@@ -31,7 +31,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -62,10 +62,6 @@
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
 #include "ui/gfx/geometry/point.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/features.h"
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 using ::testing::Eq;
 using ::testing::Ne;
@@ -193,14 +189,16 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   }
 
   void WaitUntil(base::RepeatingCallback<bool()> condition) {
-    if (condition.Run())
+    if (condition.Run()) {
       return;
+    }
 
     base::RepeatingTimer scheduler;
     scheduler.Start(FROM_HERE, base::Milliseconds(100),
                     base::BindLambdaForTesting([this, &condition] {
-                      if (condition.Run())
+                      if (condition.Run()) {
                         run_loop_->Quit();
+                      }
                     }));
     Run();
   }
@@ -264,11 +262,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     }
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
     if (!ai_chat::features::IsAIChatEnabled()) {
       item_count -= 1;
     }
-#endif
+
     return item_count;
   }
 
@@ -286,7 +283,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return std::distance(items.cbegin(), iter);
   }
 
-  raw_ptr<views::View> item_added_bubble_anchor_ = nullptr;
+  raw_ptr<views::View, DanglingUntriaged> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
 };
@@ -916,9 +913,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   }));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
-  WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
-  }));
+
+  // After loading another url, customize panel is deregistered and closed.
+  EXPECT_FALSE(panel_ui->GetCurrentEntryId());
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
@@ -1015,13 +1012,11 @@ class SidebarBrowserTestWithkSidebarShowAlwaysOnStable
 
 IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
                        SidebarShowAlwaysTest) {
-
   auto* sidebar_service =
       SidebarServiceFactory::GetForProfile(browser()->profile());
   EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
             sidebar_service->GetSidebarShowOption());
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   observation_.Observe(model());
 
   // Check one shot Leo panel is opened or not based on test parameter.
@@ -1072,7 +1067,6 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   observation_.Reset();
-#endif
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -1119,7 +1113,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
   sidebar_service->RemoveItemAt(0);
 }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 class SidebarBrowserTestWithAIChat : public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithAIChat() {
@@ -1242,6 +1235,21 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
+
+  // Check tab specific panel item is still activated after moving to another
+  // browser.
+  tab_model()->ActivateTabAt(1);
+  EXPECT_EQ(model()->active_index(), tab_specific_item_index);
+
+  auto* browser2 = CreateBrowser(browser()->profile());
+  auto* browser2_model =
+      static_cast<BraveBrowser*>(browser2)->sidebar_controller()->model();
+  auto* browser2_tab_model = browser2->tab_strip_model();
+
+  auto detached_tab = tab_model()->DetachTabAtForInsertion(1);
+  browser2_tab_model->AppendTab(std::move(detached_tab), /* foreground */ true);
+  EXPECT_EQ(browser2_model->active_index(),
+            browser2_model->GetIndexOf(SidebarItem::BuiltInItemType::kChatUI));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
@@ -1283,7 +1291,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   tab_model()->ActivateTabAt(2);
   EXPECT_EQ(model()->active_index(), new_global_item_index);
 }
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   // Sidebar is on right by default

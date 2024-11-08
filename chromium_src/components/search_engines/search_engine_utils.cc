@@ -24,8 +24,8 @@ SearchEngineType GetEngineType(const GURL& url) {
       if (SameDomain(url, GURL(engine->search_url))) {
         return engine->type;
       }
-      for (size_t j = 0; j < engine->alternate_urls_size; ++j) {
-        if (SameDomain(url, UNSAFE_TODO(GURL(engine->alternate_urls[j])))) {
+      for (const auto* alternate_url : engine->alternate_urls) {
+        if (SameDomain(url, GURL(alternate_url))) {
           return engine->type;
         }
       }

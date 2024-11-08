@@ -89,7 +89,7 @@ struct PopulateNewPlaylistView: View {
           .containerShape(.rect(cornerRadius: 10, style: .continuous))
       }
       .padding()
-      .tint(Color.white)
+      .tint(Color(braveSystemName: .schemesOnPrimary))
       .background(
         LinearGradient(
           stops: [

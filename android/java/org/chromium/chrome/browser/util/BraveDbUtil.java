@@ -66,7 +66,6 @@ public class BraveDbUtil {
     }
 
     public void ImportRewardsDb(Dialog dlg, String fileToImport) {
-        Context context = ContextUtils.getApplicationContext();
         mRewardsDst = importDestinationPath();
 
         mRewardsSrc = fileToImport.isEmpty()
@@ -85,9 +84,9 @@ public class BraveDbUtil {
 
         if (isImport) {
             File file = new File(mRewardsDst);
-            boolean file_deleted = file.delete();
+            boolean unused_file_deleted = file.delete();
             File file_journal = new File(mRewardsDst + "-journal");
-            boolean file_journal_deleted = file_journal.delete();
+            boolean unused_file_journal_deleted = file_journal.delete();
         }
 
         String erroMsg = "";
@@ -108,10 +107,11 @@ public class BraveDbUtil {
         }
 
         // Update UI
-        final String msg = (!TextUtils.isEmpty(erroMsg)) ? erroMsg
-                : "Database successfully " + (isImport ? "imported" : "exported");
-        if (dlg != null)
-            dlg.dismiss();
+        final String msg =
+                !TextUtils.isEmpty(erroMsg)
+                        ? erroMsg
+                        : "Database successfully " + (isImport ? "imported" : "exported");
+        if (dlg != null) dlg.dismiss();
         Context context = ContextUtils.getApplicationContext();
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
         if (isImport) {

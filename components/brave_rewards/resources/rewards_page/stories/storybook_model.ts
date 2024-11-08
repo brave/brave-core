@@ -6,7 +6,7 @@
 import { createStateManager } from '../../shared/lib/state_manager'
 import { createLocaleContextForTesting } from '../../shared/lib/locale_context'
 import { AppModel, AppState, defaultState, defaultModel } from '../lib/app_model'
-import { localeStrings } from '../lib/locale_strings'
+import { localeStrings } from './storybook_strings'
 import { optional } from '../../shared/lib/optional'
 
 function delay(ms: number) {

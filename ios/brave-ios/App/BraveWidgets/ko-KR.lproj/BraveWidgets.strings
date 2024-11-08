@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "'QR 코드 스캔'을 찾고 계신가요?";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "'레오 AI'를 찾고 계신가요?";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "'기록'을 찾고 계신가요?";
 
 /* (No Comment) */
@@ -72,6 +75,39 @@
 
 /* (No Comment) */
 "EUS9FL" = "위젯 바로가기";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "'새 탭'을 찾고 계신가요?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "'북마크'를 찾고 계신가요?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "'Brave 재생목록'을 찾고 계신가요?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "'Brave 월렛'을 찾고 계신가요?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "'다운로드'를 찾고 계신가요?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "'QR 코드 스캔'을 찾고 계신가요?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "'레오 AI'를 찾고 계신가요?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "'기록'을 찾고 계신가요?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "'새 비공개 탭'을 찾고 계신가요?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "'Brave News'를 찾고 계신가요?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "'검색'을 찾고 계신가요?";
 
 /* (No Comment) */
 "FGO5qW" = "Brave 재생목록";
@@ -110,6 +146,9 @@
 "L1fziM-qKrzyX" = "'QR 코드 스캔'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "'레오 AI'와 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "'기록'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
@@ -120,6 +159,9 @@
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "'검색'과 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
 
 /* (No Comment) */
 "nthxSL" = "다운로드";
@@ -147,6 +189,9 @@
 
 /* (No Comment) */
 "r2EI05-qKrzyX" = "'QR 코드 스캔'을 찾고 계신가요?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "'레오 AI'를 찾고 계신가요?";
 
 /* (No Comment) */
 "r2EI05-VBH4G6" = "'기록'을 찾고 계신가요?";
@@ -188,6 +233,9 @@
 "tNCrcE-qKrzyX" = "'QR 코드 스캔'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "'레오 AI'와 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "'기록'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
@@ -221,6 +269,9 @@
 "TxuMja-qKrzyX" = "'QR 코드 스캔'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
+"TxuMja-U0eRbw" = "'레오 AI'와 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
 "TxuMja-VBH4G6" = "'기록'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
@@ -234,6 +285,9 @@
 
 /* (No Comment) */
 "tYwiRd" = "예상 절약 시간";
+
+/* (No Comment) */
+"U0eRbw" = "레오 AI";
 
 /* (No Comment) */
 "VBH4G6" = "기록";
@@ -275,6 +329,9 @@
 "YQiQuz-qKrzyX" = "'QR 코드 스캔'을 찾고 계신가요?";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "'레오 AI'를 찾고 계신가요?";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "'기록'을 찾고 계신가요?";
 
 /* (No Comment) */
@@ -285,6 +342,39 @@
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "'검색'을 찾고 계신가요?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "'새 탭'과 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "'북마크'와 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "'Brave 재생목록'과 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "'Brave 월렛'과 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "'다운로드'와 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "'QR 코드 스캔'과 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "'레오 AI'와 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "'기록'과 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"z517nu-vs094F" = "'새 비공개 탭'과 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "'Brave News'와 일치하는 옵션이 ${count}개 있습니다.";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "'검색'과 일치하는 옵션이 ${count}개 있습니다.";
 
 /* (No Comment) */
 "ziTvSZ" = "바로가기 위젯 구성";

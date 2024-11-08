@@ -5,14 +5,11 @@
 
 package org.chromium.chrome.browser;
 
-import android.content.Context;
-
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
 import org.chromium.base.Callback;
-import org.chromium.base.ContextUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -20,9 +17,6 @@ import java.time.ZoneOffset;
 @JNINamespace("chrome::android")
 public class BraveSyncWorker {
     private static final String TAG = "SYNC";
-
-    private Context mContext;
-    private String mDebug = "true";
 
     private long mNativeBraveSyncWorker;
 
@@ -49,6 +43,11 @@ public class BraveSyncWorker {
         }
     }
 
+    /**
+     * A finalizer is required to ensure that the native object associated with this descriptor gets
+     * torn down, otherwise there would be a memory leak.
+     */
+    @SuppressWarnings("Finalize")
     @Override
     protected void finalize() {
         destroy();
@@ -62,7 +61,6 @@ public class BraveSyncWorker {
     }
 
     public BraveSyncWorker() {
-        mContext = ContextUtils.getApplicationContext();
         init();
     }
 

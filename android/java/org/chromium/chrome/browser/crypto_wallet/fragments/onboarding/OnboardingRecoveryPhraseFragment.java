@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,6 +138,9 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
             keyringService.getWalletMnemonic(
                     mOnboardingViewModel.getPassword(),
                     result -> {
+                        if (TextUtils.isEmpty(result)) {
+                            return;
+                        }
                         mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);
                         mRecoveryPhraseAdapter.setRecoveryPhraseList(mRecoveryPhrases);
                         mRecoveryPhraseRecyclerView.setAdapter(mRecoveryPhraseAdapter);

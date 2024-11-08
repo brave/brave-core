@@ -128,7 +128,6 @@ SidebarContainerView::SidebarContainerView(
 
   SetNotifyEnterExitOnChild(true);
   side_panel_ = AddChildView(std::move(side_panel));
-  side_panel_view_state_observation_.Observe(side_panel_coordinator_);
 }
 
 SidebarContainerView::~SidebarContainerView() = default;
@@ -164,9 +163,9 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
   sidebar_control_view_->SetSidebarOnLeft(sidebar_on_left_);
 
   DCHECK(side_panel_);
-  side_panel_->SetHorizontalAlignment(sidebar_on_left
-                                          ? BraveSidePanel::kAlignLeft
-                                          : BraveSidePanel::kAlignRight);
+  side_panel_->SetHorizontalAlignment(
+      sidebar_on_left ? BraveSidePanel::HorizontalAlignment::kLeft
+                      : BraveSidePanel::HorizontalAlignment::kRight);
 
   GetEventDetectWidget()->SetSidebarOnLeft(sidebar_on_left_);
 }
@@ -187,7 +186,7 @@ void SidebarContainerView::WillShowSidePanel() {
 
   auto* global_registry = side_panel_coordinator_->GetWindowRegistry();
   for (const auto& entry : global_registry->entries()) {
-    StartObservingForEntry(entry.get());
+    AddSidePanelEntryObservation(entry.get());
   }
 }
 
@@ -769,8 +768,8 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
 }
 
 void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
-  // Make sure item is deselected
   DVLOG(1) << "Panel hidden: " << SidePanelEntryIdToString(entry->key().id());
+
   auto* controller = GetBraveBrowser()->sidebar_controller();
 
   // Handling if |entry| is managed one.
@@ -802,26 +801,22 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   }
 }
 
-void SidebarContainerView::OnEntryWillHide(SidePanelEntry* entry,
-                                           SidePanelEntryHideReason reason) {
-  DVLOG(1) << "Panel will hide: "
-           << SidePanelEntryIdToString(entry->key().id());
-
-  // If |reason| is panel closing, we could deregister. And it'll be
-  // re-registered when panel is shown if that entry is still live in tab's
-  // registry.
-  // We only stop observing when |entry|'s panel is hidden by closing.
-  // If it's hidden by replacing with other panel, we shoudl not stop
-  // to know the timing that it's shown again.
-  if (reason == SidePanelEntryHideReason::kSidePanelClosed) {
-    StopObservingForEntry(entry);
-  }
-}
-
 void SidebarContainerView::OnTabWillBeRemoved(content::WebContents* contents,
                                               int index) {
   // At this time, we can stop observing as TabFeatures is available.
-  StopObservingContextualSidePanelEntry(contents);
+  auto* tab = tabs::TabInterface::GetFromContents(contents);
+  if (!tab->GetTabFeatures()) {
+    return;
+  }
+
+  auto* registry = tab->GetTabFeatures()->side_panel_registry();
+  if (!registry) {
+    return;
+  }
+
+  for (const auto& entry : registry->entries()) {
+    RemoveSidePanelEntryObservation(entry.get());
+  }
 }
 
 void SidebarContainerView::UpdateActiveItemState() {
@@ -833,15 +828,6 @@ void SidebarContainerView::UpdateActiveItemState() {
     current_type = sidebar::BuiltInItemTypeFromSidePanelId(*entry_id);
   }
   controller->UpdateActiveItemState(current_type);
-}
-
-void SidebarContainerView::OnSidePanelDidClose() {
-  // As contextual registry is owned by TabFeatures,
-  // that registry is destroyed before coordinator notifies OnEntryHidden() when
-  // tab is closed. In this case, we should update sidebar ui(active item state)
-  // with this notification. If not, sidebar ui's active item state is not
-  // changed.
-  UpdateActiveItemState();
 }
 
 void SidebarContainerView::OnTabStripModelChanged(
@@ -878,23 +864,6 @@ void SidebarContainerView::OnTabStripModelChanged(
   }
 }
 
-void SidebarContainerView::StopObservingContextualSidePanelEntry(
-    content::WebContents* contents) {
-  auto* tab = tabs::TabInterface::GetFromContents(contents);
-  if (!tab->GetTabFeatures()) {
-    return;
-  }
-
-  auto* registry = tab->GetTabFeatures()->side_panel_registry();
-  if (!registry) {
-    return;
-  }
-
-  for (const auto& entry : registry->entries()) {
-    StopObservingForEntry(entry.get());
-  }
-}
-
 void SidebarContainerView::StartObservingContextualSidePanelEntry(
     content::WebContents* contents) {
   auto* tab = tabs::TabInterface::GetFromContents(contents);
@@ -907,8 +876,9 @@ void SidebarContainerView::StartObservingContextualSidePanelEntry(
     return;
   }
 
+  // Adding observations for the side panel entries from tab not seen before.
   for (const auto& entry : registry->entries()) {
-    StartObservingForEntry(entry.get());
+    AddSidePanelEntryObservation(entry.get());
   }
 
   SharedPinnedTabService* shared_pinned_tab_service =
@@ -930,24 +900,29 @@ void SidebarContainerView::StartObservingContextualSidePanelEntry(
   }
 }
 
-void SidebarContainerView::StartObservingForEntry(SidePanelEntry* entry) {
-  if (!panel_entry_observations_.IsObservingSource(entry)) {
-    DVLOG(1) << "Observing panel entry: "
-             << SidePanelEntryIdToString(entry->key().id());
-    panel_entry_observations_.AddObservation(entry);
-  }
-}
-
-void SidebarContainerView::StopObservingForEntry(SidePanelEntry* entry) {
-  if (panel_entry_observations_.IsObservingSource(entry)) {
-    DVLOG(1) << "Removing panel entry observation: "
-             << SidePanelEntryIdToString(entry->key().id());
-    panel_entry_observations_.RemoveObservation(entry);
-  }
-}
-
 BraveBrowser* SidebarContainerView::GetBraveBrowser() const {
   return static_cast<BraveBrowser*>(browser_.get());
+}
+
+void SidebarContainerView::AddSidePanelEntryObservation(SidePanelEntry* entry) {
+  if (entry->IsBeingObservedBy(this)) {
+    return;
+  }
+
+  DVLOG(1) << "Start observation: "
+           << SidePanelEntryIdToString(entry->key().id());
+  entry->AddObserver(this);
+}
+
+void SidebarContainerView::RemoveSidePanelEntryObservation(
+    SidePanelEntry* entry) {
+  if (!entry->IsBeingObservedBy(this)) {
+    return;
+  }
+
+  DVLOG(1) << "Stop observation: "
+           << SidePanelEntryIdToString(entry->key().id());
+  entry->RemoveObserver(this);
 }
 
 BEGIN_METADATA(SidebarContainerView)

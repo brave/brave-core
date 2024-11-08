@@ -13,12 +13,11 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-
-class PrefService;
 
 namespace base {
 class Value;
@@ -32,9 +31,8 @@ class TxStorageDelegate;
 
 class TxStateManager {
  public:
-  TxStateManager(PrefService* prefs,
-                 TxStorageDelegate* delegate,
-                 AccountResolverDelegate* account_resolver_delegate);
+  TxStateManager(TxStorageDelegate& delegate,
+                 AccountResolverDelegate& account_resolver_delegate);
   virtual ~TxStateManager();
   TxStateManager(const TxStateManager&) = delete;
 
@@ -68,8 +66,6 @@ class TxStateManager {
   // For derived classes to call to fill TxMeta properties.
   bool ValueToBaseTxMeta(const base::Value::Dict& value, TxMeta* tx_meta);
 
-  raw_ptr<PrefService> prefs_ = nullptr;
-
  private:
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, ConvertFromAddress);
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, TxOperations);
@@ -88,8 +84,8 @@ class TxStateManager {
       const base::Value::Dict& value) = 0;
 
   bool no_retire_for_testing_ = false;
-  raw_ptr<TxStorageDelegate> delegate_ = nullptr;
-  raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
+  const raw_ref<TxStorageDelegate> delegate_;
+  const raw_ref<AccountResolverDelegate> account_resolver_delegate_;
   base::ObserverList<Observer> observers_;
   base::WeakPtrFactory<TxStateManager> weak_factory_;
 };

@@ -26,7 +26,7 @@ class ZCashTransactionCompleteManager {
   using CompleteTransactionCallback =
       base::OnceCallback<void(base::expected<ZCashTransaction, std::string>)>;
   explicit ZCashTransactionCompleteManager(
-      ZCashWalletService* zcash_wallet_service);
+      ZCashWalletService& zcash_wallet_service);
   ~ZCashTransactionCompleteManager();
   void CompleteTransaction(const std::string& chain_id,
                            const ZCashTransaction& transaction,
@@ -62,7 +62,7 @@ class ZCashTransactionCompleteManager {
       std::unique_ptr<OrchardBundleManager> orchard_bundle_manager);
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
-  raw_ptr<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
+  raw_ref<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
   base::WeakPtrFactory<ZCashTransactionCompleteManager> weak_ptr_factory_{this};
 };
 

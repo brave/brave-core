@@ -23,9 +23,9 @@ class CatalogObserverMock : public CatalogObserver {
 
   ~CatalogObserverMock() override;
 
-  MOCK_METHOD(void, OnDidUpdateCatalog, (const CatalogInfo& catalog));
+  MOCK_METHOD(void, OnDidFetchCatalog, (const CatalogInfo& catalog));
 
-  MOCK_METHOD(void, OnFailedToUpdateCatalog, ());
+  MOCK_METHOD(void, OnFailedToFetchCatalog, ());
 };
 
 }  // namespace brave_ads

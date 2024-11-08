@@ -15,7 +15,6 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -169,9 +168,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_TOR)
       IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
-#if BUILDFLAG(ENABLE_AI_CHAT)
       IDC_TOGGLE_AI_CHAT,
-#endif
       IDC_SHOW_BRAVE_WALLET,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       IDC_SHOW_BRAVE_VPN_PANEL,
@@ -211,7 +208,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 
   std::vector<int> more_tools_in_order = {
       IDC_ADD_NEW_PROFILE, IDC_OPEN_GUEST_PROFILE, IDC_SHOW_BRAVE_SYNC,
-      IDC_DEV_TOOLS,       IDC_TASK_MANAGER,
+      IDC_SHOW_APPS_PAGE,  IDC_DEV_TOOLS,          IDC_TASK_MANAGER,
   };
 
   if (!syncer::IsSyncAllowedByFlag()) {
@@ -262,6 +259,12 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
                                       commands_disabled_for_private_profile);
   CheckHelpCommandsAreInOrderInMenuModel(private_browser,
                                          help_commands_in_order);
+
+  // SHOW_APPS_PAGE isn't available in incognito
+  more_tools_in_order.erase(
+      std::remove(more_tools_in_order.begin(), more_tools_in_order.end(),
+                  IDC_SHOW_APPS_PAGE),
+      more_tools_in_order.end());
   CheckMoreToolsCommandsAreInOrderInMenuModel(private_browser,
                                               more_tools_in_order);
 
@@ -292,9 +295,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_TOR)
       IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
-#if BUILDFLAG(ENABLE_AI_CHAT)
       IDC_TOGGLE_AI_CHAT,
-#endif
       IDC_SHOW_BRAVE_WALLET,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       IDC_SHOW_BRAVE_VPN_PANEL,
@@ -350,9 +351,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
   };
   std::vector<int> commands_disabled_for_tor_profile = {
       IDC_RECENT_TABS_MENU,
-#if BUILDFLAG(ENABLE_AI_CHAT)
       IDC_TOGGLE_AI_CHAT,
-#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
@@ -400,14 +399,12 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, BraveVPNMenuTest) {
 void CheckMenuIcons(ui::MenuModel* menu,
                     int submenu_depth,
                     std::u16string path = u"") {
-  constexpr int kIconlessCommands[] = {
-      // Header, with no icon
-      RecentTabsSubMenuModel::kDisabledRecentlyClosedHeaderCommandId};
   for (size_t i = 0; i < menu->GetItemCount(); ++i) {
     auto command_id = menu->GetCommandIdAt(i);
     // Skip separators, headers, & commands which deliberately have no icons
     if (command_id == -1 || command_id == -2 ||
-        base::Contains(kIconlessCommands, command_id)) {
+        command_id == RecentTabsSubMenuModel::
+                          GetDisabledRecentlyClosedHeaderCommandId()) {
       continue;
     }
 

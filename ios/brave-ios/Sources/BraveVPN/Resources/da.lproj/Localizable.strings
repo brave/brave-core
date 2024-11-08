@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Udløbet";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Vælg din foretrukne transportprotokol. Når du har ændret den, vil dine eksisterende VPN-legitimationsoplysninger blive ryddet, og du vil blive oprettet igen, hvis en VPN-forbindelse er etableret i øjeblikket.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Indløs kode";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "VPN-region ændret";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Dette vil nulstille konfigurationen af din Brave Firewall + VPN og rette eventuelle fejl. Denne proces kan tage et minut.";

@@ -109,7 +109,7 @@ class BookmarkFaviconFetcher : public base::SupportsUserData::Data {
   typedef std::map<std::string, scoped_refptr<base::RefCountedMemory>>
       URLFaviconMap;
 
-  BookmarkFaviconFetcher(ChromeBrowserState* browser_state,
+  BookmarkFaviconFetcher(ProfileIOS* profile,
                          const base::FilePath& path,
                          BookmarksExportObserver* observer);
   BookmarkFaviconFetcher(const BookmarkFaviconFetcher&) = delete;
@@ -137,7 +137,7 @@ class BookmarkFaviconFetcher : public base::SupportsUserData::Data {
       const favicon_base::FaviconRawBitmapResult& bitmap_result);
 
   // The Profile object used for accessing FaviconService, bookmarks model.
-  raw_ptr<ChromeBrowserState> browser_state_;
+  raw_ptr<ProfileIOS> profile_;
 
   // All URLs that are extracted from bookmarks. Used to fetch favicons
   // for each of them. After favicon is fetched top url is removed from list.
@@ -302,7 +302,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         break;
 
       default:
-        NOTREACHED_IN_MIGRATION();
+        NOTREACHED();
     }
 
     return Write(utf8_string);
@@ -327,20 +327,14 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     const std::string* date_added_string =
         value.FindString(BookmarkCodec::kDateAddedKey);
     const std::string* type_string = value.FindString(BookmarkCodec::kTypeKey);
-    if (!title_ptr || !date_added_string || !type_string ||
-        (*type_string != BookmarkCodec::kTypeURL &&
-         *type_string != BookmarkCodec::kTypeFolder)) {
-      NOTREACHED_IN_MIGRATION();
-      return false;
-    }
+    CHECK(title_ptr && date_added_string && type_string &&
+          (*type_string == BookmarkCodec::kTypeURL ||
+           *type_string == BookmarkCodec::kTypeFolder));
 
     std::string title = *title_ptr;
     if (*type_string == BookmarkCodec::kTypeURL) {
       const std::string* url_string = value.FindString(BookmarkCodec::kURLKey);
-      if (!url_string) {
-        NOTREACHED_IN_MIGRATION();
-        return false;
-      }
+      CHECK(url_string);
 
       std::string favicon_string;
       auto itr = favicons_map_->find(*url_string);
@@ -368,10 +362,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         value.FindString(BookmarkCodec::kDateModifiedKey);
     const base::Value::List* child_values =
         value.FindList(BookmarkCodec::kChildrenKey);
-    if (!last_modified_date || !child_values) {
-      NOTREACHED_IN_MIGRATION();
-      return false;
-    }
+    CHECK(last_modified_date && child_values);
     if (folder_type != BookmarkNode::OTHER_NODE &&
         folder_type != BookmarkNode::MOBILE) {
       // The other/mobile folder name are not written out. This gives the effect
@@ -398,10 +389,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
 
     // Write the children.
     for (const base::Value& child_value : *child_values) {
-      if (!child_value.is_dict()) {
-        NOTREACHED_IN_MIGRATION();
-        return false;
-      }
+      CHECK(child_value.is_dict());
       if (!WriteNode(child_value.GetDict(), BookmarkNode::FOLDER)) {
         return false;
       }
@@ -459,18 +447,18 @@ class BookmarkWriter {
 }  // namespace
 
 BookmarkFaviconFetcher::BookmarkFaviconFetcher(
-    ChromeBrowserState* browser_state,
+    ProfileIOS* profile,
     const base::FilePath& path,
     BookmarksExportObserver* observer)
-    : browser_state_(browser_state), path_(path), observer_(observer) {
-  DCHECK(!browser_state->IsOffTheRecord());
+    : profile_(profile), path_(path), observer_(observer) {
+  DCHECK(!profile->IsOffTheRecord());
   favicons_map_.reset(new URLFaviconMap());
 }
 
 void BookmarkFaviconFetcher::ExportBookmarks() {
   // bookmark_bar, mobile and other are children of the root node.
-  ExtractUrls(ios::BookmarkModelFactory::GetForBrowserState(browser_state_)
-                  ->root_node());
+  ExtractUrls(
+      ios::BookmarkModelFactory::GetForBrowserState(profile_)->root_node());
   if (!bookmark_urls_.empty()) {
     FetchNextFavicon();
   } else {
@@ -498,7 +486,7 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
   // for the duration of the write), as such we make a copy of the
   // BookmarkModel using BookmarkCodec then write from that.
   bookmarks::BookmarkModel* bookmark_model =
-      ios::BookmarkModelFactory::GetForBrowserState(browser_state_);
+      ios::BookmarkModelFactory::GetForBrowserState(profile_);
   BookmarkCodec codec;
   base::ThreadPool::PostTask(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
@@ -506,7 +494,7 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
           &Writer::DoWrite,
           base::MakeRefCounted<Writer>(bookmark_model, path_,
                                        favicons_map_.release(), observer_)));
-  browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);
+  profile_->RemoveUserData(kBookmarkFaviconFetcherKey);
   // |this| is deleted!
 }
 
@@ -521,7 +509,7 @@ bool BookmarkFaviconFetcher::FetchNextFavicon() {
     if (favicons_map_->end() == iter) {
       favicon::FaviconService* favicon_service =
           ios::FaviconServiceFactory::GetForBrowserState(
-              browser_state_, ServiceAccessType::EXPLICIT_ACCESS);
+              profile_, ServiceAccessType::EXPLICIT_ACCESS);
       favicon_service->GetRawFaviconForPageURL(
           GURL(url), {favicon_base::IconType::kFavicon}, gfx::kFaviconSize,
           /*fallback_to_host=*/false,
@@ -576,17 +564,18 @@ void BookmarkWriter::ExecuteWriter() {
 
 namespace bookmark_html_writer {
 
-void WriteBookmarks(ChromeBrowserState* browser_state,
+void WriteBookmarks(ProfileIOS* profile,
                     const base::FilePath& path,
                     BookmarksExportObserver* observer) {
   // We allow only one concurrent bookmark export operation per profile.
-  if (browser_state->GetUserData(kBookmarkFaviconFetcherKey))
+  if (profile->GetUserData(kBookmarkFaviconFetcherKey)) {
     return;
+  }
 
   auto fetcher =
-      std::make_unique<BookmarkFaviconFetcher>(browser_state, path, observer);
+      std::make_unique<BookmarkFaviconFetcher>(profile, path, observer);
   auto* fetcher_ptr = fetcher.get();
-  browser_state->SetUserData(kBookmarkFaviconFetcherKey, std::move(fetcher));
+  profile->SetUserData(kBookmarkFaviconFetcherKey, std::move(fetcher));
   fetcher_ptr->ExportBookmarks();
 }
 

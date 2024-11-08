@@ -29,7 +29,8 @@ class WalletUserAssetTests: CoreDataTestCase {
     tokenId: "",
     coingeckoId: "",
     chainId: "0x1",
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
   let asset2 = BraveWallet.BlockchainToken(
     contractAddress: "0x123",
@@ -48,7 +49,8 @@ class WalletUserAssetTests: CoreDataTestCase {
     tokenId: "",
     coingeckoId: "",
     chainId: "0x1",
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
   let asset3 = BraveWallet.BlockchainToken(
     contractAddress: "0x123",
@@ -67,7 +69,8 @@ class WalletUserAssetTests: CoreDataTestCase {
     tokenId: "",
     coingeckoId: "",
     chainId: "0x1",
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
 
   let fetchRequest = NSFetchRequest<WalletUserAsset>(entityName: "WalletUserAsset")

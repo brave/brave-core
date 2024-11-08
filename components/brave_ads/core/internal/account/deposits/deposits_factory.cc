@@ -48,8 +48,8 @@ std::unique_ptr<DepositInterface> DepositsFactory::Build(
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::ConfirmationType: "
-                        << base::to_underlying(mojom_confirmation_type);
+  NOTREACHED() << "Unexpected value for mojom::ConfirmationType: "
+               << base::to_underlying(mojom_confirmation_type);
 }
 
 }  // namespace brave_ads

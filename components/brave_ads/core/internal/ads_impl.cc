@@ -25,8 +25,6 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
@@ -41,7 +39,7 @@ void FailedToInitialize(InitializeCallback callback) {
 
 }  // namespace
 
-AdsImpl::AdsImpl(AdsClient* const ads_client,
+AdsImpl::AdsImpl(AdsClient& ads_client,
                  std::unique_ptr<TokenGeneratorInterface> token_generator)
     : global_state_(ads_client, std::move(token_generator)),
       database_maintenance_(std::make_unique<database::Maintenance>()) {}
@@ -388,7 +386,7 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
                            mojom_wallet->recovery_seed_base64);
   }
 
-  GetAdsClient()->NotifyPendingObservers();
+  GetAdsClient().NotifyPendingObservers();
 
   task_queue_.FlushAndStopQueueing();
 

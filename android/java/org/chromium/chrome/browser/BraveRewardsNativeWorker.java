@@ -47,9 +47,6 @@ public class BraveRewardsNativeWorker {
     public static final int BAT_NOT_ALLOWED = 25;
     public static final int SAFETYNET_ATTESTATION_FAILED = 27;
 
-    private static final int REWARDS_UNKNOWN = 0;
-    private static final int REWARDS_DISABLED = 1;
-    private static final int REWARDS_ENABLED = 2;
     private String mFrontTabUrl;
     private static final Handler sHandler = new Handler();
 
@@ -81,6 +78,11 @@ public class BraveRewardsNativeWorker {
       }
     }
 
+    /**
+     * A finalizer is required to ensure that the native object associated with this descriptor gets
+     * torn down, otherwise there would be a memory leak.
+     */
+    @SuppressWarnings("Finalize")
     @Override
     protected void finalize() {
         destroy();

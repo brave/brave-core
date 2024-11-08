@@ -105,6 +105,13 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsGoogleSignInAllowExceptions",
        IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS},
 
+      {"siteSettingsBraveOpenAIChat",
+       IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT},
+      {"siteSettingsBraveOpenAIChatAsk",
+       IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_ASK},
+      {"siteSettingsBraveOpenAIChatBlock",
+       IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_BLOCK},
+
       {"siteSettingsLocalhostAccess",
        IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS},
       {"siteSettingsCategoryLocalhostAccess",

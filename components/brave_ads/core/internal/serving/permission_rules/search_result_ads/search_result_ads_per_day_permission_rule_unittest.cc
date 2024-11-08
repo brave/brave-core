@@ -8,10 +8,10 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
+#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
-#include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

@@ -16,7 +16,7 @@ void Log(const char* const file,
          const int verbose_level,
          const std::string& message) {
   if (GlobalState::HasInstance()) {
-    GetAdsClient()->Log(file, line, verbose_level, message);
+    GetAdsClient().Log(file, line, verbose_level, message);
   }
 }
 

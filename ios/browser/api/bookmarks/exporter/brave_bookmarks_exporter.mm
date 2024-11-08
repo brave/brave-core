@@ -56,15 +56,20 @@ BraveBookmarksExportObserver::BraveBookmarksExportObserver(
 void BraveBookmarksExportObserver::OnExportFinished(Result result) {
   switch (result) {
     case Result::kSuccess:
-      return _on_export_finished(BraveBookmarksExporterStateCompleted);
+      _on_export_finished(BraveBookmarksExporterStateCompleted);
+      break;
     case Result::kCouldNotCreateFile:
-      return _on_export_finished(BraveBookmarksExporterStateErrorCreatingFile);
+      _on_export_finished(BraveBookmarksExporterStateErrorCreatingFile);
+      break;
     case Result::kCouldNotWriteHeader:
-      return _on_export_finished(BraveBookmarksExporterStateErrorWritingHeader);
+      _on_export_finished(BraveBookmarksExporterStateErrorWritingHeader);
+      break;
     case Result::kCouldNotWriteNodes:
-      return _on_export_finished(BraveBookmarksExporterStateErrorWritingNodes);
+      _on_export_finished(BraveBookmarksExporterStateErrorWritingNodes);
+      break;
     default:
-      NOTREACHED_IN_MIGRATION();
+      delete this;
+      NOTREACHED();
   }
   delete this;
 }
@@ -83,7 +88,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 - (instancetype)init {
   if ((self = [super init])) {
     // This work must be done on the UI thread because it currently relies on
-    // fetching information from ChromeBrowserState which is main-thread bound
+    // fetching information from ProfileIOS which is main-thread bound
     export_thread_ = web::GetUIThreadTaskRunner({});
   }
   return self;
@@ -109,14 +114,12 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
         listener(BraveBookmarksExporterStateStarted);
 
-        ChromeBrowserState* chromeBrowserState =
-            GetApplicationContext()
-                ->GetProfileManager()
-                ->GetLastUsedProfileDeprecatedDoNotUse();
-        DCHECK(chromeBrowserState);
+        std::vector<ProfileIOS*> profiles =
+            GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+        ProfileIOS* last_used_profile = profiles.at(0);
 
         bookmark_html_writer::WriteBookmarks(
-            chromeBrowserState, destination_file_path,
+            last_used_profile, destination_file_path,
             new BraveBookmarksExportObserver(listener));
       };
 

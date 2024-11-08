@@ -413,7 +413,7 @@ bool SIWEMessageParser::ParseOptionalResources(
   StringTokenizer tokenizer(urls_str, "\n");
   std::vector<GURL> urls;
   while (tokenizer.GetNext()) {
-    if (!base::StartsWith(tokenizer.token(), kResourcesSeperator)) {
+    if (!tokenizer.token().starts_with(kResourcesSeperator)) {
       return false;
     }
     auto url_str = tokenizer.token().substr(strlen(kResourcesSeperator));

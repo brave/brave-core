@@ -15,6 +15,7 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
@@ -146,8 +147,9 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
 #endif
   // Ignore connection state change request for non purchased user.
   // This can be happened when user controls vpn via os settings.
-  if (!is_purchased_user())
+  if (!is_purchased_user()) {
     return;
+  }
 
   if (state == ConnectionState::CONNECTED) {
     // If user connected vpn from the system and launched the browser
@@ -166,8 +168,9 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
     RecordP3A(true);
   }
 
-  for (const auto& obs : observers_)
+  for (const auto& obs : observers_) {
     obs->OnConnectionStateChanged(state);
+  }
 }
 
 void BraveVpnService::OnRegionDataReady(bool success) {
@@ -356,6 +359,36 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     return;
   }
 
+  // If expiry is in the future, the person ran out of credentials.
+  // This should only happen if communication bewteen client and VPN provider
+  // is lost after the credential is redeemed (multiple times).
+  //
+  // It's safe to check this first because kBraveVPNLastCredentialExpiry is only
+  // set after getting a valid credential. If the session is expired, this value
+  // might be set but would be in the past.
+  const auto last_credential_expiry =
+      local_prefs_->GetTime(prefs::kBraveVPNLastCredentialExpiry);
+  if (!last_credential_expiry.is_null() &&
+      last_credential_expiry > base::Time::Now()) {
+    std::string expiry_message;
+    base::TimeDelta delta = (last_credential_expiry - base::Time::Now());
+    if (delta.InHours() == 0) {
+      expiry_message = base::StringPrintf(
+          "Out of credentials; check again in %d minutes.", delta.InMinutes());
+    } else {
+      int delta_hours = delta.InHours();
+      base::TimeDelta delta_minutes = (delta - base::Hours(delta_hours));
+      expiry_message = base::StringPrintf(
+          "Out of credentials; check again in %d hours %d minutes.",
+          delta_hours, delta_minutes.InMinutes());
+    }
+    VLOG(2) << __func__ << " : " << expiry_message;
+    SetPurchasedState(env, PurchasedState::OUT_OF_CREDENTIALS,
+                      l10n_util::GetStringUTF8(
+                          IDS_BRAVE_VPN_MAIN_PANEL_OUT_OF_CREDENTIALS_CONTENT));
+    return;
+  }
+
   const auto session_expired_time =
       local_prefs_->GetTime(prefs::kBraveVPNSessionExpiredDate);
   // If it's not cached, it means this session expiration is first time since
@@ -383,6 +416,8 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     return;
   }
 
+  // Expiry is in the past - they ran out of credentials completely.
+  // They'll need to login to account.brave.com again.
   SetPurchasedState(env, PurchasedState::SESSION_EXPIRED);
 }
 
@@ -716,28 +751,27 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
       return;
     }
 
-    // If we get here, we've already tried two credentials (the retry failed).
+    // We can set the state as FAILED and do not attempt to get another
+    // credential. The cached credential will eventually expire and user will
+    // fetch a new one.
+    //
+    // There could be two reasons for this.
+
+    // 1. We've already tried two credentials (the retry failed).
     if (token_no_longer_valid && IsRetriedSkusCredential(local_prefs_)) {
       VLOG(2) << __func__
               << " : Got TokenNoLongerValid again with retried skus credential";
+      SetPurchasedState(
+          GetCurrentEnvironment(), PurchasedState::FAILED,
+          l10n_util::GetStringUTF8(IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID));
+      return;
     }
 
-    // When this path is reached:
-    // - The cached credential is considered good but vendor side has an error.
-    //   That could be a network outage or a server side error on vendor side.
-    // OR
-    // - The cached credential is consumed and we've now tried two different
-    //   credentials.
-    //
-    // We set the state as FAILED and do not attempt to get another credential.
-    // Cached credential will eventually expire and user will fetch a new one.
-    //
-    // This logic can be updated if we issue more than two credentials per day.
-    auto message_id = token_no_longer_valid
-                          ? IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID
-                          : IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED;
+    // 2. The cached credential is considered good but vendor side has an error.
+    // That could be a network outage or a server side error on vendor side.
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::FAILED,
-                      l10n_util::GetStringUTF8(message_id));
+                      l10n_util::GetStringUTF8(
+                          IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED));
 #endif
     return;
   }
@@ -766,12 +800,14 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
 }
 
 void BraveVpnService::ScheduleSubscriberCredentialRefresh() {
-  if (subs_cred_refresh_timer_.IsRunning())
+  if (subs_cred_refresh_timer_.IsRunning()) {
     subs_cred_refresh_timer_.Stop();
+  }
 
   const auto expiration_time = GetExpirationTime(local_prefs_);
-  if (!expiration_time)
+  if (!expiration_time) {
     return;
+  }
 
   auto expiration_time_delta = *expiration_time - base::Time::Now();
   VLOG(2) << "Schedule subscriber credential fetching after "
@@ -863,8 +899,9 @@ void BraveVpnService::SetPurchasedState(
   VLOG(2) << __func__ << " : " << state;
   purchased_state_ = mojom::PurchasedInfo(state, description);
 
-  for (const auto& obs : observers_)
+  for (const auto& obs : observers_) {
     obs->OnPurchasedStateChanged(state, description);
+  }
 
 #if !BUILDFLAG(IS_ANDROID)
   if (state == PurchasedState::PURCHASED) {

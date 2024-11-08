@@ -15,6 +15,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/uploader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -49,13 +50,12 @@ void RecordSentAnswersCount(uint64_t answers_count) {
 }
 
 bool IsMetricP2A(const std::string& histogram_name) {
-  return base::StartsWith(histogram_name, "Brave.P2A",
-                          base::CompareCase::SENSITIVE);
+  return histogram_name.starts_with("Brave.P2A");
 }
 
 bool IsMetricCreative(const std::string& histogram_name) {
-  return base::StartsWith(histogram_name, kCreativeMetricPrefix,
-                          base::CompareCase::SENSITIVE);
+  return histogram_name.starts_with(kCreativeMetricPrefix) ||
+         histogram_name.starts_with(kCampaignMetricPrefix);
 }
 
 }  // namespace
@@ -219,18 +219,15 @@ const std::string& MetricLogStore::staged_log_key() const {
 }
 
 const std::string& MetricLogStore::staged_log_hash() const {
-  NOTREACHED_IN_MIGRATION();
-  return staged_log_hash_;
+  NOTREACHED();
 }
 
 const std::string& MetricLogStore::staged_log_signature() const {
-  NOTREACHED_IN_MIGRATION();
-  return staged_log_signature_;
+  NOTREACHED();
 }
 
 std::optional<uint64_t> MetricLogStore::staged_log_user_id() const {
-  NOTREACHED_IN_MIGRATION();
-  return std::nullopt;
+  NOTREACHED();
 }
 
 void MetricLogStore::StageNextLog() {
@@ -277,7 +274,7 @@ void MetricLogStore::DiscardStagedLog(std::string_view reason) {
 void MetricLogStore::MarkStagedLogAsSent() {}
 
 void MetricLogStore::TrimAndPersistUnsentLogs(bool overwrite_in_memory_store) {
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 void MetricLogStore::LoadPersistedUnsentLogs() {

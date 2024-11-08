@@ -175,8 +175,9 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
   const raw_ptr<Browser> browser_;
   const raw_ptr<views::View> anchor_view_;
   std::unique_ptr<WalletBubbleFocusObserver> brave_observer_;
-  raw_ptr<WebUIBubbleDialogView> bubble_view_ = nullptr;
-  raw_ptr<content::WebContents> web_ui_contents_for_testing_ = nullptr;
+  raw_ptr<WebUIBubbleDialogView, DanglingUntriaged> bubble_view_ = nullptr;
+  raw_ptr<content::WebContents, DanglingUntriaged>
+      web_ui_contents_for_testing_ = nullptr;
   base::WeakPtrFactory<WalletWebUIBubbleManager> weak_factory_{this};
 };
 

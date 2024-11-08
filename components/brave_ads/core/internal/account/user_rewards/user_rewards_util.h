@@ -10,8 +10,6 @@ namespace brave_ads {
 
 struct IssuersInfo;
 
-bool ShouldMigrateVerifiedRewardsUser();
-
 void UpdateIssuers(const IssuersInfo& issuers);
 
 }  // namespace brave_ads

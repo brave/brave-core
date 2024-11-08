@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Pas instellingen van advertentieblokkering aan voor deze site";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automatische versnippering";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agressief";
 
@@ -148,11 +151,38 @@
 /* A description of what the forget me toggle does */
 "ForgetMeDescription" = "Verwijdert cookies en andere sitegegevens wanneer u een site afsluit";
 
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Vergeet me als ik deze site sluit";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Streng";
 
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Lijsten bijgewerkt";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Versnipper gegevens";
+
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Nooit";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "App gesloten";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Tabbladen van site gesloten";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Versnipper sitegegevens";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Door de versnippering worden alle tabbladen van deze site gesloten en worden alle sitegegevens verwijderd. Deze actie kun je niet ongedaan maken.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Sitegegevens versnipperen?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Versnipper sitegegevens nu";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Site is niet veilig";
@@ -162,6 +192,12 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blokkeer trackers en advertenties";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Werk lijsten bij";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Lijsten bijwerken";
 
 /* The option the user can select for the type of https upgrading */
 "UpgradeConnectionsToHTTPS" = "Upgrade verbindingen naar HTTPS";

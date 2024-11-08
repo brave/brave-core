@@ -151,8 +151,7 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Platnost vypršela";
 
-/* Description of vpn tunnel protocol
-   The alert title showing vpn region is changed */
+/* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Vyberte prosím váš preferovaný transportní protokol. Po přepnutí budou vaše stávající přihlašovací údaje VPN vymazány a budete znovu připojeni, pokud je momentálně navázáno připojení VPN.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
@@ -298,6 +297,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Uplatnit kód";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "Oblast VPN se změnila";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Tímto resetujete konfiguraci Firewall + VPN od Brave a opravíte všechny chyby. Tento proces může trvat minutu.";

@@ -23,7 +23,7 @@ void RecordP2AAdOpportunity(const mojom::AdType mojom_ad_type,
   const SegmentList top_segments =
       GetTopSegments(segments, kTopSegmentsMaxCount, /*parent_only=*/false);
 
-  GetAdsClient()->RecordP2AEvents(
+  GetAdsClient().RecordP2AEvents(
       BuildP2AAdOpportunityEvents(mojom_ad_type, top_segments));
 }
 

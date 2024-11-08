@@ -39,5 +39,10 @@ export const AccountButtonOptions: AccountButtonOptionsObjectType[] = [
     id: 'remove',
     name: 'braveWalletAccountsRemove',
     icon: 'trash'
+  },
+  {
+    id: 'shield',
+    name: 'braveWalletSwitchToShieldedAccount',
+    icon: 'shield-done'
   }
 ]

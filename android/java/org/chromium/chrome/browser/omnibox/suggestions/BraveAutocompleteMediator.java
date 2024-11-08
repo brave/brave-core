@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.Supplier;
-import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -43,7 +42,6 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
     private static final String LEO_START_WORD_UPPER_CASE = "LEO";
 
-    private Context mContext;
     private AutocompleteDelegate mDelegate;
     private Supplier<Tab> mActivityTabSupplier;
 
@@ -95,7 +93,6 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                 windowAndroid,
                 deferredIMEWindowInsetApplicationCallback);
 
-        mContext = context;
         mDelegate = delegate;
         mActivityTabSupplier = activityTabSupplier;
     }
@@ -121,10 +118,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
         if (mDropdownViewInfoListBuilder instanceof BraveDropdownItemViewInfoListBuilder) {
             ((BraveDropdownItemViewInfoListBuilder) mDropdownViewInfoListBuilder)
                     .setAutocompleteDelegate(mDelegate);
-            if (BraveConfig.AI_CHAT_ENABLED) {
-                ((BraveDropdownItemViewInfoListBuilder) mDropdownViewInfoListBuilder)
-                        .setLeoAutocompleteDelegate(this);
-            }
+            ((BraveDropdownItemViewInfoListBuilder) mDropdownViewInfoListBuilder)
+                    .setLeoAutocompleteDelegate(this);
         }
         super.initDefaultProcessors();
     }

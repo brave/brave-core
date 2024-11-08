@@ -247,8 +247,7 @@ TabTiledState BraveTabStrip::GetTiledStateForTab(int index) const {
   return IsFirstTabInTile(tab) ? TabTiledState::kFirst : TabTiledState::kSecond;
 }
 
-std::optional<SplitViewBrowserData::Tile> BraveTabStrip::GetTileForTab(
-    const Tab* tab) const {
+std::optional<TabTile> BraveTabStrip::GetTileForTab(const Tab* tab) const {
   auto* browser = GetBrowser();
   auto* data = SplitViewBrowserData::FromBrowser(browser);
   if (!data) {
@@ -328,7 +327,7 @@ void BraveTabStrip::UpdateTabContainer() {
       auto* tab = original_container->GetTabAtModelIndex(i);
       // At this point, we don't have group views in the container. So before
       // restoring groups, clears group for tabs.
-      tab->set_group(std::nullopt);
+      tab->SetGroup(std::nullopt);
       tab_container_->AddTab(
           tab->parent()->RemoveChildViewT(tab), i,
           tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned);

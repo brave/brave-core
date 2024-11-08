@@ -26,9 +26,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static int TYPE_FILTER_HEADER = 1;
-    private static int TYPE_CUSTOM_FILTER_LIST = 2;
-    private static int TYPE_FILTER_LIST = 3;
+    private static final int TYPE_FILTER_HEADER = 1;
+    private static final int TYPE_CUSTOM_FILTER_LIST = 2;
+    private static final int TYPE_FILTER_LIST = 3;
 
     private static final int ONE_ITEM_SPACE = 1;
     private static final int TWO_ITEMS_SPACE = 2;
@@ -254,9 +254,14 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public void setFilterLists(Value filterLists[]) {
         mFilterLists = filterLists;
-        notifyItemRangeInserted(
-                mSubscriptionFilterLists.size() + THREE_ITEMS_SPACE,
-                mFilterLists.length + ONE_ITEM_SPACE);
+        // mSubscriptionFilterLists could be null if setSubscriptionFilterLists
+        // hasn't been called yet. notifyItemRangeInserted is called inside
+        // setSubscriptionFilterLists, so we are good to skip it in that place
+        if (mSubscriptionFilterLists != null) {
+            notifyItemRangeInserted(
+                    mSubscriptionFilterLists.size() + THREE_ITEMS_SPACE,
+                    mFilterLists.length + ONE_ITEM_SPACE);
+        }
     }
 
     public static class FilterListHeaderViewHolder extends RecyclerView.ViewHolder {

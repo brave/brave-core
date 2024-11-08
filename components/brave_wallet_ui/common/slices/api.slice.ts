@@ -49,6 +49,8 @@ import { swapEndpoints } from './endpoints/swap.endpoints'
 import { encryptionEndpoints } from './endpoints/encryption.endpoints'
 import { signingEndpoints } from './endpoints/signing.endpoints'
 import { dappRadarEndpoints } from './endpoints/dapp_radar.endpoints'
+import { meldIntegrationEndpoints } from './endpoints/meld_integration.endpoints'
+import { zcashEndpoints } from './endpoints/zcash.endpoints'
 
 export function createWalletApi() {
   // base to add endpoints to
@@ -157,6 +159,10 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: signingEndpoints })
       // dApp Radar Endpoints
       .injectEndpoints({ endpoints: dappRadarEndpoints })
+      // meld integration endpoints
+      .injectEndpoints({ endpoints: meldIntegrationEndpoints })
+      // zcash endpoints
+      .injectEndpoints({ endpoints: zcashEndpoints })
   )
 }
 
@@ -253,6 +259,7 @@ export const {
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
   useGetWalletsToImportQuery,
+  useGetZCashAccountInfoQuery,
   useHideNetworksMutation,
   useImportAccountFromJsonMutation,
   useImportAccountMutation,
@@ -290,7 +297,9 @@ export const {
   useLazyGetTokensRegistryQuery,
   useLazyGetTransactionsQuery,
   useLazyGetUserTokensRegistryQuery,
+  useLazyGetZCashAccountInfoQuery,
   useLockWalletMutation,
+  useMakeAccountShieldedMutation,
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
@@ -339,7 +348,14 @@ export const {
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
-  useValidateUnifiedAddressQuery
+  useValidateUnifiedAddressQuery,
+  useGetMeldFiatCurrenciesQuery,
+  useGetMeldCryptoCurrenciesQuery,
+  useGetMeldCountriesQuery,
+  useGetMeldServiceProvidersQuery,
+  useGetMeldPaymentMethodsQuery,
+  useGenerateMeldCryptoQuotesMutation,
+  useCreateMeldBuyWidgetMutation
 } = walletApi
 
 // Derived Data Queries

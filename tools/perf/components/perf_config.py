@@ -12,6 +12,7 @@ import re
 from typing import List, Optional, Dict, Tuple
 from enum import Enum
 
+from components.field_trials import FieldTrialsMode, ParseFieldTrialsMode
 from components.browser_type import BrowserType, ParseBrowserType
 from components.version import BraveVersion
 
@@ -37,6 +38,7 @@ class RunnerConfig:
   location: Optional[str] = None
   label: Optional[str] = None
   profile = 'clean'
+  field_trials: Optional[FieldTrialsMode] = None
   extra_browser_args: List[str] = []
   extra_benchmark_args: List[str] = []
   browser_type: BrowserType
@@ -54,6 +56,9 @@ class RunnerConfig:
         continue
       if key == 'browser-type':
         self.browser_type = ParseBrowserType(json[key])
+        continue
+      if key == 'field-trials':
+        self.field_trials = ParseFieldTrialsMode(json[key])
         continue
       if key == 'profile-rebase':
         self.profile_rebase = _ParseProfileRebaseType(json[key])

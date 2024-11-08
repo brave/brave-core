@@ -61,7 +61,8 @@ int BraveIOSWebFaviconDriver::DownloadImage(const GURL& url,
 void BraveIOSWebFaviconDriver::DownloadManifest(
     const GURL& url,
     ManifestDownloadCallback callback) {
-  NOTREACHED_IN_MIGRATION();
+  // We don't support downloading manifests
+  NOTREACHED();
 }
 
 bool BraveIOSWebFaviconDriver::IsOffTheRecord() {

@@ -208,7 +208,7 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundLight};
-  mixer[kColorTabStrokeFrameActive] = {SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
+  mixer[kColorTabStrokeFrameActive] = {ui::kColorRefNeutral80};
   mixer[kColorTabStrokeFrameInactive] = {kColorTabStrokeFrameActive};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
@@ -248,7 +248,7 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
   mixer[kColorNewTabPageBackground] = {kBraveNewTabBackgroundDark};
-  mixer[kColorTabStrokeFrameActive] = {kColorToolbar};
+  mixer[kColorTabStrokeFrameActive] = {ui::kColorRefNeutral25};
   mixer[kColorTabStrokeFrameInactive] = {kColorToolbar};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
@@ -706,7 +706,7 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
 
   AddOmniboxHoverSelect(mixer);
 
-  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
+  mixer[kColorOmniboxIconBackground] = {SK_ColorTRANSPARENT};
 }
 
 void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
@@ -718,11 +718,11 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsUrl] = {nala::kColorTextInteractive};
   // We use a shadow for the Omnibox hover effect, rather than a color change.
   mixer[kColorLocationBarBackgroundHovered] = {kColorLocationBarBackground};
-  mixer[kColorPageInfoIconHover] = {
+  mixer[kColorOmniboxIconHover] = {
       ui::SetAlpha(kColorOmniboxText, std::ceil(0.10f * 255.0f))};
 
   // We don't use bg color for location icon view.
-  mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
+  mixer[kColorOmniboxIconBackground] = {SK_ColorTRANSPARENT};
 }
 
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
@@ -737,8 +737,6 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabBackgroundActiveFrameActive] = {kColorToolbar};
   mixer[kColorTabBackgroundActiveFrameInactive] = {
       kColorTabBackgroundActiveFrameActive};
-  mixer[kColorTabBackgroundInactiveHoverFrameActive] = {
-      nala::kColorDesktopbrowserTabbarHoverTabBackground};
   mixer[kColorTabDividerFrameActive] =
       ui::AlphaBlend({nala::kColorDividerStrong},
                      {kColorTabBackgroundInactiveFrameActive}, 0.75 * 0xff);

@@ -9,7 +9,9 @@
 #include <memory>
 #include <optional>
 
-#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"  // IWYU pragma: export
+#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
+
+class BraveBrowserView;
 
 class BraveSidePanelCoordinator : public SidePanelCoordinator {
  public:
@@ -43,6 +45,7 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
   // entry exists.
   std::optional<SidePanelEntry::Key> GetLastActiveEntryKey() const;
   void UpdateToolbarButtonHighlight(bool side_panel_visible);
+  BraveBrowserView* GetBraveBrowserView();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_COORDINATOR_H_

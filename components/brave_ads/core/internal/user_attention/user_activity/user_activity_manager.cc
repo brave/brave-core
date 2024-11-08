@@ -46,13 +46,13 @@ void LogEvent(const UserActivityEventType event_type) {
 }  // namespace
 
 UserActivityManager::UserActivityManager() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
   BrowserManager::GetInstance().AddObserver(this);
   TabManager::GetInstance().AddObserver(this);
 }
 
 UserActivityManager::~UserActivityManager() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
   BrowserManager::GetInstance().RemoveObserver(this);
   TabManager::GetInstance().RemoveObserver(this);
 }
@@ -155,16 +155,16 @@ void UserActivityManager::OnBrowserDidEnterBackground() {
   RecordEvent(UserActivityEventType::kBrowserDidEnterBackground);
 }
 
+void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {
+  RecordEvent(UserActivityEventType::kOpenedNewTab);
+}
+
 void UserActivityManager::OnTabDidChangeFocus(const int32_t /*tab_id*/) {
   RecordEvent(UserActivityEventType::kTabChangedFocus);
 }
 
 void UserActivityManager::OnTabDidChange(const TabInfo& /*tab*/) {
-  RecordEvent(UserActivityEventType::kTabUpdated);
-}
-
-void UserActivityManager::OnDidOpenNewTab(const TabInfo& /*tab*/) {
-  RecordEvent(UserActivityEventType::kOpenedNewTab);
+  RecordEvent(UserActivityEventType::kTabDidChange);
 }
 
 void UserActivityManager::OnDidCloseTab(const int32_t /*tab_id*/) {

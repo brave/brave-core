@@ -76,12 +76,13 @@ class BraveBrowserView : public BrowserView,
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
+
+  void ShowBraveVPNBubble(bool show_select = false);
   void CreateWalletBubble();
   void CreateApproveWalletBubble();
   void CloseWalletBubble();
   WalletButton* GetWalletButton();
   views::View* GetWalletButtonAnchorView();
-  void WillShowSidePanel();
 
   // Triggers layout of web modal dialogs
   void NotifyDialogPositionRequiresUpdate();
@@ -129,12 +130,16 @@ class BraveBrowserView : public BrowserView,
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
 
   // SplitViewBrowserDataObserver:
-  void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
-  void OnWillBreakTile(const SplitViewBrowserData::Tile& tile) override;
-  void OnSwapTabsInTile(const SplitViewBrowserData::Tile& tile) override;
+  void OnTileTabs(const TabTile& tile) override;
+  void OnWillBreakTile(const TabTile& tile) override;
+  void OnSwapTabsInTile(const TabTile& tile) override;
 
   views::WebView* secondary_contents_web_view() {
     return secondary_contents_web_view_.get();
+  }
+
+  SidebarContainerView* sidebar_container_view() {
+    return sidebar_container_view_;
   }
 
  private:
@@ -163,7 +168,6 @@ class BraveBrowserView : public BrowserView,
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
-  void ShowBraveVPNBubble() override;
   views::CloseRequestResult OnWindowCloseRequested() override;
   void ConfirmBrowserCloseWithPendingDownloads(
       int download_count,
@@ -198,7 +202,7 @@ class BraveBrowserView : public BrowserView,
   void UpdateSideBarHorizontalAlignment();
 
   tabs::TabHandle GetActiveTabHandle();
-  bool IsActiveWebContentsTiled(const SplitViewBrowserData::Tile& tile);
+  bool IsActiveWebContentsTiled(const TabTile& tile);
   void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
                                 content::WebContents* new_contents);
   void UpdateContentsWebViewVisual();
@@ -213,7 +217,7 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<views::View> sidebar_separator_view_ = nullptr;
   raw_ptr<views::View> contents_background_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
-  raw_ptr<VerticalTabStripWidgetDelegateView>
+  raw_ptr<VerticalTabStripWidgetDelegateView, DanglingUntriaged>
       vertical_tab_strip_widget_delegate_view_ = nullptr;
 
 #if defined(USE_AURA)

@@ -593,10 +593,10 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_for_files_;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
-  raw_ptr<NetworkManager> network_manager_ = nullptr;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
-  raw_ptr<TxService> tx_service_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+  raw_ptr<NetworkManager, DanglingUntriaged> network_manager_ = nullptr;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
+  raw_ptr<TxService, DanglingUntriaged> tx_service_ = nullptr;
+  raw_ptr<JsonRpcService, DanglingUntriaged> json_rpc_service_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,

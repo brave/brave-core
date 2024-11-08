@@ -353,7 +353,7 @@ void CreativeInlineContentAds::GetForCreativeInstanceId(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
                      std::move(callback)));
@@ -425,7 +425,7 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
 
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&GetForSegmentsAndDimensionsCallback, segments,
                      std::move(callback)));
@@ -486,7 +486,7 @@ void CreativeInlineContentAds::GetForDimensions(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&GetForDimensionsCallback, std::move(callback)));
 }
@@ -539,7 +539,7 @@ void CreativeInlineContentAds::GetForActiveCampaigns(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&GetAllCallback, std::move(callback)));
 }

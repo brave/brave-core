@@ -509,6 +509,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_INDEX_OTHER_SEARCH_ENGINES_TEXT" desc="Text for the settings related to index other search engines">
         Automatically indexes websites that follow the OpenSearch spec.
       </message>
+      <message name="IDS_QUICK_SEARCH_ENGINES" desc="Title for quick search engines option">
+        Quick search engines
+      </message>
+      <message name="IDS_QUICK_SEARCH_ENGINES_WITH_HYPHEN" desc="Title for quick search engines with hyphen">
+        Quick-Search Engines
+      </message>
+      <message name="IDS_SHOW_QUICK_SEARCH_BAR" desc="Title for show quick search bar switch">
+        Show quick search bar
+      </message>
+      <message name="IDS_CURRENTLY_USED_SEARCH_ENGINES" desc="Description text for quick-search engines">
+        Currently used search engines
+      </message>
+      <message name="IDS_LONG_PRESS_TO_CHANGE_ORDER" desc="Text for changing the order of quick-search engines">
+        Long press to change the order
+      </message>
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
       </message>
@@ -880,6 +895,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_ONBOARDING_SET_DEFAULT" desc="Text for set default onboarding">
         With Brave as default, every link you tap opens with Brave's privacy protections.
+      </message>
+      <message name="IDS_ONBOARDING_SEARCH_WIDGET_TITLE" desc="Title for the search widget onboarding screen">
+        Add the search widget
+      </message>
+      <message name="IDS_ONBOARDING_SEARCH_WIDGET_TEXT" desc="Prompt the user to add the search widget to their home screen">
+        Have Brave at your fingertips to explore the web faster.
+      </message>
+      <message name="IDS_ONBOARDING_SEARCH_WIDGET_BUTTON" desc="Call to action for the search widget onboarding screen">
+        Add to home screen
       </message>
       <message name="IDS_PRIVACY_ONBOARDING_INDIA" desc="Text for privacy onboarding for india">
         Block ads. Save data. Every single day.
@@ -2198,6 +2222,12 @@ Are you sure you want to do this?
     <message name="IDS_ACCOUNT_NAME" desc="Brave wallet accounts text">
       Account Name
     </message>
+    <message name="IDS_WALLET_CHANGE_OWNERSHIP_WARNING" desc="Brave Wallet warning title displayed when requesting a change of ownership">
+      Account ownership change requested
+    </message>
+    <message name="IDS_WALLET_CHANGE_OWNERSHIP_DESCRIPTION" desc="Brave Wallet warning description displayed when requesting a change of ownership">
+      This transaction will reassign ownership of the account to a new program. This action is irreversible and may result in loss of funds.
+    </message>
     <message name="IDS_ACCOUNT_NAME_TEXT" desc="Brave wallet accounts text">
       You can create a secondary account by importing your private key.
     </message>
@@ -2327,14 +2357,17 @@ Are you sure you want to do this?
     <message name="IDS_RENEWS_MONTHLY" desc="Brave VPN plan text">
       Renews monthly
     </message>
+    <message name="IDS_RENEWS_ANNUALLY" desc="Brave VPN plan annually renewal text">
+      Renews annually
+    </message>
     <message name="IDS_MONTHLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="MONTHLY_AMOUNT">%1$s</ph> /month
     </message>
     <message name="IDS_ONE_YEAR" desc="Brave VPN plan text">
       One Year
     </message>
-    <message name="IDS_RENEW_MONTHLY_SAVE" desc="Brave VPN plan text">
-      Renews annually (<ph name="DISCOUNT_TEXT_START">&lt;discount_text&gt;</ph>save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%<ph name="DISCOUNT_TEXT_END">&lt;/discount_text&gt;</ph>)
+    <message name="IDS_RENEW_YEARLY_SAVE" desc="Brave VPN plan text">
+      (<ph name="DISCOUNT_TEXT_START">&lt;discount_text&gt;</ph>save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%<ph name="DISCOUNT_TEXT_END">&lt;/discount_text&gt;</ph>)
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="YEARLY_AMOUNT">%1$s</ph> /year
@@ -2557,7 +2590,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ADVANCED_SETTINGS_NONCE_HINT" desc="Brave crypto wallet advance setting custom nonce hint">
       Enter custom nonce value
     </message>
-    <message name="IDS_BRAVE_WALLET_ADVANCED_SETTINGS_SAVE" desc="Brave crypto wallet advance setting save/set nonce value action button">
+    <message name="IDS_ACTION_SAVE" desc="Text for save action">
       Save
     </message>
     <message name="IDS_BRAVE_WALLET_TX_PROPOGATION_WARNING" desc="Trnsaction warning regarding low gas or invalid nonce etc.">
@@ -4065,6 +4098,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_SHOW_UNDO_WHEN_TABS_CLOSED" desc="Menu item to show undo button when tabs are closed">
       Show undo button when tabs are closed
+    </message>
+    <message name="IDS_BRAVE_EXIT_CONFIRMATION" desc="A confirmation shown on Exit Brave">
+      Are you sure you want to exit Brave?
     </message>
   </messages>
   </release>

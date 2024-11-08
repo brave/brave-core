@@ -26,24 +26,19 @@
 namespace brave_wallet {
 
 ZCashTxManager::ZCashTxManager(
-    TxService* tx_service,
-    ZCashWalletService* zcash_wallet_service,
-    KeyringService* keyring_service,
-    PrefService* prefs,
-    TxStorageDelegate* delegate,
-    AccountResolverDelegate* account_resolver_delegate)
+    TxService& tx_service,
+    ZCashWalletService& zcash_wallet_service,
+    KeyringService& keyring_service,
+    TxStorageDelegate& delegate,
+    AccountResolverDelegate& account_resolver_delegate)
     : TxManager(
-          std::make_unique<ZCashTxStateManager>(prefs,
-                                                delegate,
+          std::make_unique<ZCashTxStateManager>(delegate,
                                                 account_resolver_delegate),
-          std::make_unique<ZCashBlockTracker>(
-              zcash_wallet_service->zcash_rpc()),
+          std::make_unique<ZCashBlockTracker>(zcash_wallet_service.zcash_rpc()),
           tx_service,
-          keyring_service,
-          prefs),
-      zcash_wallet_service_(zcash_wallet_service),
-      zcash_rpc_(zcash_wallet_service->zcash_rpc()) {
-  block_tracker_observation_.Observe(GetZCashBlockTracker());
+          keyring_service),
+      zcash_wallet_service_(zcash_wallet_service) {
+  block_tracker_observation_.Observe(&GetZCashBlockTracker());
 }
 
 ZCashTxManager::~ZCashTxManager() = default;
@@ -61,6 +56,10 @@ void ZCashTxManager::AddUnapprovedTransaction(
     AddUnapprovedTransactionCallback callback) {
   const auto& zec_tx_data = tx_data_union->get_zec_tx_data();
 
+  if (zec_tx_data->use_shielded_pool) {
+    std::move(callback).Run(false, "", "");
+    return;
+  }
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     bool has_orchard_part =
@@ -107,7 +106,7 @@ void ZCashTxManager::ContinueAddUnapprovedTransaction(
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
   meta.set_chain_id(chain_id);
-  if (!tx_state_manager_->AddOrUpdateTx(meta)) {
+  if (!tx_state_manager().AddOrUpdateTx(meta)) {
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
@@ -118,7 +117,7 @@ void ZCashTxManager::ContinueAddUnapprovedTransaction(
 void ZCashTxManager::ApproveTransaction(const std::string& tx_meta_id,
                                         ApproveTransactionCallback callback) {
   std::unique_ptr<ZCashTxMeta> meta =
-      GetZCashTxStateManager()->GetZCashTx(tx_meta_id);
+      GetZCashTxStateManager().GetZCashTx(tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -131,12 +130,12 @@ void ZCashTxManager::ApproveTransaction(const std::string& tx_meta_id,
 
   // Only one transaction per account is allowed at one moment.
   if (!GetZCashTxStateManager()
-           ->GetTransactionsByStatus(meta->chain_id(),
-                                     mojom::TransactionStatus::Submitted,
-                                     meta->from())
+           .GetTransactionsByStatus(meta->chain_id(),
+                                    mojom::TransactionStatus::Submitted,
+                                    meta->from())
            .empty()) {
     meta->set_status(mojom::TransactionStatus::Error);
-    tx_state_manager_->AddOrUpdateTx(*meta);
+    tx_state_manager().AddOrUpdateTx(*meta);
 
     std::move(callback).Run(
         false,
@@ -148,7 +147,7 @@ void ZCashTxManager::ApproveTransaction(const std::string& tx_meta_id,
   }
 
   meta->set_status(mojom::TransactionStatus::Approved);
-  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+  if (!tx_state_manager().AddOrUpdateTx(*meta)) {
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewZcashProviderError(
@@ -171,7 +170,7 @@ void ZCashTxManager::ContinueApproveTransaction(
     ZCashTransaction transaction,
     std::string error) {
   std::unique_ptr<ZCashTxMeta> meta =
-      GetZCashTxStateManager()->GetZCashTx(tx_meta_id);
+      GetZCashTxStateManager().GetZCashTx(tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -192,7 +191,7 @@ void ZCashTxManager::ContinueApproveTransaction(
     meta->set_status(mojom::TransactionStatus::Error);
   }
 
-  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+  if (!tx_state_manager().AddOrUpdateTx(*meta)) {
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewZcashProviderError(
@@ -224,12 +223,12 @@ void ZCashTxManager::RetryTransaction(const std::string& tx_meta_id,
   NOTIMPLEMENTED() << "Zcash transaction retry is not supported";
 }
 
-ZCashTxStateManager* ZCashTxManager::GetZCashTxStateManager() {
-  return static_cast<ZCashTxStateManager*>(tx_state_manager_.get());
+ZCashTxStateManager& ZCashTxManager::GetZCashTxStateManager() {
+  return static_cast<ZCashTxStateManager&>(tx_state_manager());
 }
 
-ZCashBlockTracker* ZCashTxManager::GetZCashBlockTracker() {
-  return static_cast<ZCashBlockTracker*>(block_tracker_.get());
+ZCashBlockTracker& ZCashTxManager::GetZCashBlockTracker() {
+  return static_cast<ZCashBlockTracker&>(block_tracker());
 }
 
 mojom::CoinType ZCashTxManager::GetCoinType() const {
@@ -238,7 +237,7 @@ mojom::CoinType ZCashTxManager::GetCoinType() const {
 
 void ZCashTxManager::UpdatePendingTransactions(
     const std::optional<std::string>& chain_id) {
-  auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
+  auto pending_transactions = tx_state_manager().GetTransactionsByStatus(
       chain_id, mojom::TransactionStatus::Submitted, std::nullopt);
   std::set<std::string> pending_chain_ids;
   for (const auto& pending_transaction : pending_transactions) {
@@ -259,7 +258,7 @@ void ZCashTxManager::OnGetTransactionStatus(
     return;
   }
   std::unique_ptr<ZCashTxMeta> meta =
-      GetZCashTxStateManager()->GetZCashTx(tx_meta_id);
+      GetZCashTxStateManager().GetZCashTx(tx_meta_id);
   if (!meta) {
     return;
   }
@@ -268,7 +267,7 @@ void ZCashTxManager::OnGetTransactionStatus(
     mojom::TransactionStatus status = mojom::TransactionStatus::Confirmed;
     meta->set_status(status);
     meta->set_confirmed_time(base::Time::Now());
-    tx_state_manager_->AddOrUpdateTx(*meta);
+    tx_state_manager().AddOrUpdateTx(*meta);
   }
 }
 

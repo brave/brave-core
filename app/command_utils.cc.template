@@ -82,7 +82,7 @@ std::string GetCommandName(int command_id) {
     //    remove the '&'. For example "Install &PWA".
     // 2. The & is in brackets, and defines a shortcut key not in the string, in
     //    which case we remove the whole match. For example "Install (&K)PWA".
-    auto remove = base::StartsWith(match, "(") ? match : "&";
+    auto remove = match.starts_with("(") ? match : "&";
     base::ReplaceFirstSubstringAfterOffset(&translation, 0, remove, "");
   }
   return translation;

@@ -89,6 +89,9 @@ class ConversationHandler : public mojom::ConversationHandler,
     // use it to fetch search query and summary from Brave search chatllm
     // endpoint.
     virtual void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
+    // Signifies whether the content has permission to open a conversation's UI
+    // within the browser.
+    virtual bool HasOpenAIChatPermission() const;
 
     void GetTopSimilarityWithPromptTilContextLimit(
         const std::string& prompt,
@@ -134,6 +137,8 @@ class ConversationHandler : public mojom::ConversationHandler,
 
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
+    virtual void OnConversationTitleChanged(ConversationHandler* handler,
+                                            std::string title) {}
     virtual void OnSelectedLanguageChanged(
         ConversationHandler* handler,
         const std::string& selected_language) {}
@@ -160,6 +165,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   bool IsAnyClientConnected();
   bool HasAnyHistory();
+  void OnConversationDeleted();
 
   // Called when the associated content is destroyed or navigated away. If
   // it's a navigation, the AssociatedContentDelegate will set itself to a new
@@ -220,6 +226,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
 
+  // Some associated content may provide some conversation that the user wants
+  // to continue, e.g. Brave Search.
+  void MaybeFetchOrClearContentStagedConversation();
+
   base::WeakPtr<ConversationHandler> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
@@ -241,6 +251,10 @@ class ConversationHandler : public mojom::ConversationHandler,
     return associated_content_delegate_.get();
   }
 
+  void SetRequestInProgressForTesting(bool in_progress) {
+    is_request_in_progress_ = in_progress;
+  }
+
  protected:
   // ModelService::Observer
   void OnModelListUpdated() override;
@@ -258,6 +272,10 @@ class ConversationHandler : public mojom::ConversationHandler,
                            UpdateOrCreateLastAssistantEntry_NotDelta);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           OnGetStagedEntriesFromContent);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           OnGetStagedEntriesFromContent_FailedChecks);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, SelectedLanguage);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LocalModelsUpdater);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
@@ -282,9 +300,6 @@ class ConversationHandler : public mojom::ConversationHandler,
                                  bool is_video,
                                  std::string invalidation_token);
 
-  // Some associated content may provide some conversation that the user wants
-  // to continue, e.g. Brave Search.
-  void MaybeFetchOrClearContentStagedConversation();
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 
@@ -313,7 +328,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnHistoryUpdate();
   void OnSuggestedQuestionsChanged();
   void OnAssociatedContentInfoChanged();
+  void OnConversationEntriesChanged();
   void OnClientConnectionChanged();
+  void OnConversationTitleChanged(std::string title);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnSelectedLanguageChanged(const std::string& selected_language);
   void OnAssociatedContentFaviconImageDataChanged();
@@ -365,10 +382,10 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // Data store UUID for conversation
   raw_ptr<const mojom::Conversation> metadata_;
-  raw_ptr<AIChatService> ai_chat_service_;
+  raw_ptr<AIChatService, DanglingUntriaged> ai_chat_service_;
   raw_ptr<ModelService> model_service_;
-  raw_ptr<AIChatCredentialManager> credential_manager_;
-  raw_ptr<AIChatFeedbackAPI> feedback_api_;
+  raw_ptr<AIChatCredentialManager, DanglingUntriaged> credential_manager_;
+  raw_ptr<AIChatFeedbackAPI, DanglingUntriaged> feedback_api_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   base::ScopedObservation<ModelService, ModelService::Observer>

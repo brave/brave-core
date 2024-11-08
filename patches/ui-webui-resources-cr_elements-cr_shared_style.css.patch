@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/cr_shared_style.css b/ui/webui/resources/cr_elements/cr_shared_style.css
-index eefaf6d369fb2a268045cfd33973a8cced5f56cb..97e8dddd89de1d7340f306931692e377977b8951 100644
+index f1b712b919235c97f138137fd0a140b49c793606..6316dfbe43467c0da4b0df5636f2889f9e2d9b9f 100644
 --- a/ui/webui/resources/cr_elements/cr_shared_style.css
 +++ b/ui/webui/resources/cr_elements/cr_shared_style.css
 @@ -8,7 +8,8 @@
@@ -11,4 +11,4 @@ index eefaf6d369fb2a268045cfd33973a8cced5f56cb..97e8dddd89de1d7340f306931692e377
 + * #include=cr-hidden-style br-shared-style cr-icons
   * #css_wrapper_metadata_end */
  
- [actionable] {
+ /* Purposefully empty since this style is generated at build time from the

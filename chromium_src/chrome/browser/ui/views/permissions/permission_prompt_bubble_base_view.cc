@@ -81,7 +81,7 @@ class DontAskAgainCheckbox : public views::Checkbox {
  private:
   void ButtonPressed();
 
-  raw_ptr<WidevinePermissionRequest> request_ = nullptr;
+  raw_ptr<WidevinePermissionRequest, DanglingUntriaged> request_ = nullptr;
 };
 
 BEGIN_METADATA(DontAskAgainCheckbox)
@@ -191,7 +191,8 @@ class PermissionLifetimeCombobox : public views::Combobox,
   }
 
   const raw_ref<views::BubbleDialogDelegateView> dialog_delegate_view_;
-  const raw_ref<permissions::PermissionPrompt::Delegate> delegate_;
+  const raw_ref<permissions::PermissionPrompt::Delegate, DanglingUntriaged>
+      delegate_;
   std::vector<permissions::PermissionLifetimeOption> lifetime_options_;
 };
 

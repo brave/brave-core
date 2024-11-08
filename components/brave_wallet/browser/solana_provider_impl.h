@@ -14,6 +14,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
@@ -168,10 +169,11 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   const raw_ref<HostContentSettingsMap> host_content_settings_map_;
   bool account_creation_shown_ = false;
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
-  raw_ptr<TxService> tx_service_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
+  raw_ptr<BraveWalletService, DanglingUntriaged> brave_wallet_service_ =
+      nullptr;
+  raw_ptr<KeyringService, DanglingUntriaged> keyring_service_ = nullptr;
+  raw_ptr<TxService, DanglingUntriaged> tx_service_ = nullptr;
+  raw_ptr<JsonRpcService, DanglingUntriaged> json_rpc_service_ = nullptr;
   mojo::Receiver<mojom::KeyringServiceObserver> keyring_observer_receiver_{
       this};
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
