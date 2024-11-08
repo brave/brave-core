@@ -230,8 +230,7 @@ std::string GetManageUrl(const std::string& env) {
   if (env == skus::kEnvDevelopment)
     return brave_vpn::kManageUrlDev;
 
-  NOTREACHED_IN_MIGRATION();
-  return brave_vpn::kManageUrlProd;
+  NOTREACHED() << "All env handled above.";
 }
 
 // On desktop, the environment is tied to SKUs because you would purchase it
