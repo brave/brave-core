@@ -77,8 +77,7 @@ SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs,
                             .SetEnabledColorId(kColorBraveSplitViewUrl))
               .AddChild(views::Builder<views::Label>()
                             .CopyAddressTo(&url_)
-                            .SetEnabledColorId(kColorBraveSplitViewUrl)
-                            .SetElideBehavior(gfx::ElideBehavior::ELIDE_HEAD)))
+                            .SetEnabledColorId(kColorBraveSplitViewUrl)))
       .BuildChildren();
 
   for (auto url_part : {https_with_strike_, scheme_separator_, url_}) {
