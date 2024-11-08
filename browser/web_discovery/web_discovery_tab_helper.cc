@@ -84,8 +84,6 @@ void WebDiscoveryTabHelper::ShowInfoBar(PrefService* prefs) {
   infobars::ContentInfoBarManager::FromWebContents(web_contents())
       ->AddInfoBar(CreateWebDiscoveryInfoBar(
           std::make_unique<WebDiscoveryInfoBarDelegate>(prefs)));
-#else
-  NOTREACHED_IN_MIGRATION() << "We don't support WDP infobar";
 #endif
 }
 
