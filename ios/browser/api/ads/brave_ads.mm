@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <optional>
+#include <utility>
 
 #include "base/check.h"
 #include "base/containers/flat_map.h"
@@ -33,10 +34,8 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/user_engagement/ad_events/ad_event_cache.h"
@@ -54,13 +53,14 @@
 #import "brave/ios/browser/api/ads/inline_content_ad_ios.h"
 #import "brave/ios/browser/api/ads/notification_ad_ios.h"
 #import "brave/ios/browser/api/common/common_operations.h"
+#include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
+#include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "net/base/apple/url_conversions.h"
-#include "sql/database.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -83,9 +83,7 @@
 
 namespace {
 
-constexpr char kClearDataHistogramName[] = "Brave.Ads.ClearData";
 constexpr int kComponentUpdaterManifestSchemaVersion = 1;
-constexpr char kAdsDatabaseFilename[] = "Ads.db";
 constexpr NSString* kComponentUpdaterMetadataPrefKey =
     @"BraveAdsComponentUpdaterMetadata";
 constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
@@ -105,10 +103,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 @interface BraveAds () <AdsClientBridge> {
   std::unique_ptr<AdsClientIOS> adsClient;
   std::unique_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
-  std::unique_ptr<brave_ads::Ads> ads;
   std::unique_ptr<brave_ads::AdEventCache> adEventCache;
-  scoped_refptr<base::SequencedTaskRunner> databaseQueue;
-  base::SequenceBound<brave_ads::Database> adsDatabase;
+  raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
 }
@@ -149,10 +145,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
     [self initObservers];
 
-    databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
-        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
-
     adEventCache = std::make_unique<brave_ads::AdEventCache>();
 
     adsClient = std::make_unique<AdsClientIOS>(self);
@@ -168,17 +160,12 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   [self stopNetworkMonitor];
 
-  [self cleanupAds];
-
   [self deallocAdsClientNotifier];
   [self deallocAdsClient];
 
   [self deallocAdEventCache];
-}
 
-- (void)cleanupAds {
-  ads.reset();
-  adsDatabase.Reset();
+  [self cleanupAdsService];
 }
 
 - (void)deallocAdsClientNotifier {
@@ -193,6 +180,10 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   adEventCache.reset();
 }
 
+- (void)cleanupAdsService {
+  adsService = nil;
+}
+
 #pragma mark -
 
 + (BOOL)isSupportedRegion {
@@ -200,7 +191,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (BOOL)isServiceRunning {
-  return ads != nil && adsClientNotifier != nil;
+  return adsClientNotifier != nil && adsService != nil &&
+         adsService->IsRunning();
 }
 
 + (BOOL)shouldAlwaysRunService {
@@ -252,52 +244,50 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     return completion(/*success=*/false);
   }
 
-  [self initDatabase];
-
-  ads = brave_ads::Ads::CreateInstance(*adsClient);
-
   auto cppSysInfo =
       sysInfo ? sysInfo.cppObjPtr : brave_ads::mojom::SysInfo::New();
-  ads->SetSysInfo(std::move(cppSysInfo));
   auto cppBuildChannelInfo = buildChannelInfo
                                  ? buildChannelInfo.cppObjPtr
                                  : brave_ads::mojom::BuildChannelInfo::New();
-  ads->SetBuildChannel(std::move(cppBuildChannelInfo));
-  ads->SetFlags(brave_ads::BuildFlags());
-
   auto cppWalletInfo =
       walletInfo ? walletInfo.cppObjPtr : brave_ads::mojom::WalletInfoPtr();
-  ads->Initialize(std::move(cppWalletInfo),
-                  base::BindOnce(^(const bool success) {
-                    [self periodicallyCheckForAdsResourceUpdates];
-                    [self registerAdsResources];
-                    if (success) {
-                      [self notifyDidInitializeAds];
-                    }
-                    completion(success);
-                    if (!success) {
-                      [self cleanupAds];
-                    }
-                  }));
+
+  // This will always be the regular profile (not private/OTR).
+  ProfileIOS* profile = [self getLastUsedProfile];
+  adsService = brave_ads::AdsServiceFactoryIOS::GetForBrowserState(profile);
+  CHECK(adsService);
+
+  adsService->InitializeAds(
+      base::SysNSStringToUTF8(self.storagePath), *adsClient,
+      std::move(cppSysInfo), std::move(cppBuildChannelInfo),
+      std::move(cppWalletInfo), base::BindOnce(^(const bool success) {
+        if (success) {
+          [self registerAdsResources];
+          [self periodicallyCheckForAdsResourceUpdates];
+          [self notifyDidInitializeAds];
+        }
+        completion(success);
+      }));
 }
 
 - (void)shutdownService:(nullable void (^)())completion {
-  if ([self isServiceRunning]) {
-    dispatch_group_notify(
-        self.componentUpdaterPrefsWriteGroup, dispatch_get_main_queue(), ^{
-          self->ads->Shutdown(base::BindOnce(^(bool) {
-            [self cleanupAds];
-
-            if (completion) {
-              completion();
-            }
-          }));
-        });
-  } else {
+  if (![self isServiceRunning]) {
     if (completion) {
       completion();
     }
+    return;
   }
+
+  [self stopComponentUpdaterTimer];
+
+  dispatch_group_notify(self.componentUpdaterPrefsWriteGroup,
+                        dispatch_get_main_queue(), ^{
+                          self->adsService->ShutdownAds(base::BindOnce(^(bool) {
+                            if (completion) {
+                              completion();
+                            }
+                          }));
+                        });
 }
 
 #pragma mark - Observers
@@ -330,20 +320,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   // Notify browser's active state changed.
   [self notifyBrowserDidResignActive];
   [self notifyBrowserDidEnterBackground];
-}
-
-#pragma mark - Database
-
-- (NSString*)adsDatabasePath {
-  return [self.storagePath
-      stringByAppendingPathComponent:base::SysUTF8ToNSString(
-                                         kAdsDatabaseFilename)];
-}
-
-- (void)initDatabase {
-  const auto dbPath = base::SysNSStringToUTF8([self adsDatabasePath]);
-  adsDatabase = base::SequenceBound<brave_ads::Database>(
-      databaseQueue, base::FilePath(dbPath));
 }
 
 #pragma mark - Network
@@ -384,12 +360,19 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   return urls;
 }
 
+#pragma mark - Profile
+
+- (ProfileIOS*)getLastUsedProfile {
+  std::vector<ProfileIOS*> profiles =
+      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
+  CHECK(!profiles.empty());
+  return profiles.front();
+}
+
 #pragma mark - Profile prefs
 
 - (void)initProfilePrefService {
-  std::vector<ProfileIOS*> profiles =
-      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
-  ProfileIOS* last_used_profile = profiles.at(0);
+  ProfileIOS* last_used_profile = [self getLastUsedProfile];
 
   _profilePrefService = last_used_profile->GetPrefs();
   CHECK(_profilePrefService);
@@ -569,7 +552,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)stopComponentUpdaterTimer {
-  [self.componentUpdaterTimer invalidate];
+  if (self.componentUpdaterTimer != nil) {
+    [self.componentUpdaterTimer invalidate];
+  }
   self.componentUpdaterTimer = nil;
 }
 
@@ -1431,17 +1416,17 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)runDBTransaction:
             (brave_ads::mojom::DBTransactionInfoPtr)mojom_db_transaction
                 callback:(brave_ads::RunDBTransactionCallback)completion {
-  __weak BraveAds* weakSelf = self;
-  adsDatabase.AsyncCall(&brave_ads::Database::RunDBTransaction)
-      .WithArgs(std::move(mojom_db_transaction))
-      .Then(base::BindOnce(
+  if (![self isServiceRunning]) {
+    return std::move(completion)
+        .Run(brave_ads::mojom::DBTransactionResultInfo::New());
+  }
+
+  adsService->RunDBTransaction(
+      std::move(mojom_db_transaction),
+      base::BindOnce(
           ^(brave_ads::RunDBTransactionCallback callback,
             brave_ads::mojom::DBTransactionResultInfoPtr
                 mojom_db_transaction_result) {
-            const auto strongSelf = weakSelf;
-            if (!strongSelf || ![strongSelf isServiceRunning]) {
-              return;
-            }
             std::move(callback).Run(std::move(mojom_db_transaction_result));
           },
           std::move(completion)));
@@ -1525,14 +1510,15 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                                          double estimatedEarnings,
                                          NSDate* nextPaymentDate))completion {
   if (![self isServiceRunning]) {
-    return;
+    return completion(/*adsReceived=*/0, /*estimatedEarnings=*/0,
+                      /*nextPaymentDate=*/nil);
   }
 
-  ads->GetStatementOfAccounts(
+  adsService->GetStatementOfAccounts(
       base::BindOnce(^(brave_ads::mojom::StatementInfoPtr mojom_statement) {
         if (!mojom_statement) {
-          completion(0, 0, nil);
-          return;
+          return completion(/*adsReceived=*/0, /*estimatedEarnings=*/0,
+                            /*nextPaymentDate=*/nil);
         }
 
         NSDate* nextPaymentDate = nil;
@@ -1550,17 +1536,17 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                        completion:(void (^)(NSString* dimensions,
                                             InlineContentAdIOS*))completion {
   if (![self isServiceRunning]) {
-    return;
+    return completion(/*dimensions=*/@"", /*inlineContentAd=*/nil);
   }
 
-  ads->MaybeServeInlineContentAd(
+  adsService->MaybeServeInlineContentAd(
       base::SysNSStringToUTF8(dimensionsArg),
       base::BindOnce(
           ^(const std::string& dimensions,
             const std::optional<brave_ads::InlineContentAdInfo>& ad) {
             if (!ad) {
-              completion(base::SysUTF8ToNSString(dimensions), nil);
-              return;
+              return completion(base::SysUTF8ToNSString(dimensions),
+                                /*inlineContentAd=*/nil);
             }
 
             const auto inline_content_ad =
@@ -1574,10 +1560,10 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                           eventType:(BraveAdsInlineContentAdEventType)eventType
                          completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
-    return;
+    return completion(/*success=*/false);
   }
 
-  ads->TriggerInlineContentAdEvent(
+  adsService->TriggerInlineContentAdEvent(
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<brave_ads::mojom::InlineContentAdEventType>(eventType),
@@ -1592,10 +1578,10 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                        eventType:(BraveAdsNewTabPageAdEventType)eventType
                       completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
-    return;
+    return completion(/*success=*/false);
   }
 
-  ads->TriggerNewTabPageAdEvent(
+  adsService->TriggerNewTabPageAdEvent(
       base::SysNSStringToUTF8(wallpaperId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType),
@@ -1605,16 +1591,14 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)maybeGetNotificationAd:(NSString*)identifier
                     completion:(void (^)(NotificationAdIOS*))completion {
   if (![self isServiceRunning]) {
-    completion(nil);
-    return;
+    return completion(/*notificationAd=*/nil);
   }
 
-  ads->MaybeGetNotificationAd(
+  adsService->MaybeGetNotificationAd(
       base::SysNSStringToUTF8(identifier),
       base::BindOnce(^(const std::optional<brave_ads::NotificationAdInfo>& ad) {
         if (!ad) {
-          completion(nil);
-          return;
+          return completion(/*notificationAd=*/nil);
         }
 
         const auto notification_ad =
@@ -1627,10 +1611,10 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                          eventType:(BraveAdsNotificationAdEventType)eventType
                         completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
-    return;
+    return completion(/*success=*/false);
   }
 
-  ads->TriggerNotificationAdEvent(
+  adsService->TriggerNotificationAdEvent(
       base::SysNSStringToUTF8(placementId),
       static_cast<brave_ads::mojom::NotificationAdEventType>(eventType),
       base::BindOnce(completion));
@@ -1642,10 +1626,10 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                                 (BraveAdsPromotedContentAdEventType)eventType
                            completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
-    return;
+    return completion(/*success=*/false);
   }
 
-  ads->TriggerPromotedContentAdEvent(
+  adsService->TriggerPromotedContentAdEvent(
       base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType),
@@ -1655,25 +1639,23 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)triggerSearchResultAdClickedEvent:(NSString*)placementId
                                completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
-    completion(/*success=*/false);
-    return;
+    return completion(/*success=*/false);
   }
 
   const auto __weak weakSelf = self;
-  ads->MaybeGetSearchResultAd(
+  adsService->MaybeGetSearchResultAd(
       base::SysNSStringToUTF8(placementId),
       base::BindOnce(^(brave_ads::mojom::CreativeSearchResultAdInfoPtr ad) {
         if (!ad) {
-          completion(/*success=*/false);
-          return;
+          return completion(/*success=*/false);
         }
 
         const auto strongSelf = weakSelf;
-        if (!strongSelf) {
-          completion(/*success=*/false);
-          return;
+        if (!strongSelf || ![strongSelf isServiceRunning]) {
+          return completion(/*success=*/false);
         }
-        strongSelf->ads->TriggerSearchResultAdEvent(
+
+        strongSelf->adsService->TriggerSearchResultAdEvent(
             std::move(ad), brave_ads::mojom::SearchResultAdEventType::kClicked,
             base::BindOnce(completion));
       }));
@@ -1684,11 +1666,10 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                          eventType:(BraveAdsSearchResultAdEventType)eventType
                         completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning] || !searchResultAd) {
-    completion(/*success=*/false);
-    return;
+    return completion(/*success=*/false);
   }
 
-  ads->TriggerSearchResultAdEvent(
+  adsService->TriggerSearchResultAdEvent(
       searchResultAd.cppObjPtr,
       static_cast<brave_ads::mojom::SearchResultAdEventType>(eventType),
       base::BindOnce(completion));
@@ -1697,36 +1678,20 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType
                           completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
-    return;
+    return completion(/*success=*/false);
   }
 
-  ads->PurgeOrphanedAdEventsForType(
+  adsService->PurgeOrphanedAdEventsForType(
       static_cast<brave_ads::mojom::AdType>(adType),
       base::BindOnce(completion));
 }
 
 - (void)clearData:(void (^)())completion {
-  // Ensure the Brave Ads service is stopped before clearing data.
-  CHECK(![self isServiceRunning]);
+  if (adsService == nil) {
+    return completion();
+  }
 
-  UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
-  self.profilePrefService->ClearPrefsWithPrefixSilently("brave.brave_ads");
-
-  base::FilePath storage_path(base::SysNSStringToUTF8(self.storagePath));
-  base::ThreadPool::PostTaskAndReply(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(
-          [](base::FilePath storage_path) {
-            sql::Database::Delete(storage_path.Append(kAdsDatabaseFilename));
-
-            base::DeleteFile(
-                storage_path.Append(brave_ads::kClientJsonFilename));
-
-            base::DeleteFile(
-                storage_path.Append(brave_ads::kConfirmationsJsonFilename));
-          },
-          std::move(storage_path)),
-      base::BindOnce(completion));
+  adsService->ClearData(base::BindOnce(completion));
 }
 
 #pragma mark - Ads client notifier
