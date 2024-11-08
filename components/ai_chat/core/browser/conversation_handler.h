@@ -205,6 +205,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                           const std::string& new_text) override;
   void SubmitSummarizationRequest() override;
   std::vector<std::string> GetSuggestedQuestionsForTest();
+  void SetSuggestedQuestionForTest(std::string title, std::string prompt);
   void GenerateQuestions() override;
   void GetAssociatedContentInfo(
       GetAssociatedContentInfoCallback callback) override;

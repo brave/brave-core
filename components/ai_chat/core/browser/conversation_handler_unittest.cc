@@ -355,7 +355,7 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
                         testing::ElementsAre(l10n_util::GetStringUTF8(
                             IDS_CHAT_UI_SUMMARIZE_PAGE)));
           } else {
-            EXPECT_TRUE(state->suggested_questions.empty());
+            EXPECT_EQ(4u, state->suggested_questions.size());
           }
           EXPECT_EQ(state->suggestion_status,
                     should_send_content
@@ -1308,6 +1308,36 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, GenerateQuestions) {
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       GeneratesQuestionsByDefault) {
+  EXPECT_EQ(4u, conversation_handler_->GetSuggestedQuestionsForTest().size());
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       SelectingDefaultQuestionSendsPrompt) {
+  conversation_handler_->SetSuggestedQuestionForTest("the thing",
+                                                     "do the thing!");
+  auto suggestions = conversation_handler_->GetSuggestedQuestionsForTest();
+  EXPECT_EQ(1u, suggestions.size());
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // The prompt should be submitted to the engine, not the title.
+  EXPECT_CALL(*engine,
+              GenerateAssistantResponse(false, StrEq(""), _, "do the thing!",
+                                        StrEq(""), _, _));
+
+  testing::Sequence s;
+  conversation_handler_->SubmitHumanConversationEntry("the thing");
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(engine);
+
+  // Suggestion should be removed
+  EXPECT_EQ(0u, conversation_handler_->GetSuggestedQuestionsForTest().size());
 }
 
 TEST_F(ConversationHandlerUnitTest, SelectedLanguage) {

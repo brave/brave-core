@@ -703,6 +703,12 @@ std::vector<std::string> ConversationHandler::GetSuggestedQuestionsForTest() {
   return suggestions;
 }
 
+void ConversationHandler::SetSuggestedQuestionForTest(std::string title,
+                                                      std::string prompt) {
+  suggestions_.clear();
+  suggestions_.emplace_back(title, prompt);
+}
+
 void ConversationHandler::GenerateQuestions() {
   DVLOG(1) << __func__;
   // This function should not be presented in the UI if the user has not
