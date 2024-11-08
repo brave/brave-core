@@ -65,14 +65,14 @@ void AdsServiceImplIOS::InitializeAds(
 
   ads_->Initialize(
       std::move(mojom_wallet),
-      base::BindOnce(&AdsServiceImplIOS::OnInitialize,
+      base::BindOnce(&AdsServiceImplIOS::InitializeAdsCallback,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImplIOS::ShutdownAds(ShutdownCallback callback) {
   CHECK(IsRunning());
 
-  ads_->Shutdown(base::BindOnce(&AdsServiceImplIOS::OnShutdown,
+  ads_->Shutdown(base::BindOnce(&AdsServiceImplIOS::ShutdownAdsCallback,
                                 weak_ptr_factory_.GetWeakPtr(),
                                 std::move(callback)));
 }
@@ -203,7 +203,8 @@ void AdsServiceImplIOS::PurgeOrphanedAdEventsForType(
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsServiceImplIOS::Shutdown() {
-  Cleanup();
+  ads_.reset();
+  database_.Reset();
 }
 
 void AdsServiceImplIOS::InitializeDatabase(const std::string& storage_path) {
@@ -214,22 +215,18 @@ void AdsServiceImplIOS::InitializeDatabase(const std::string& storage_path) {
       base::FilePath(storage_path_.Append(kAdsDatabaseFilename)));
 }
 
-void AdsServiceImplIOS::Cleanup() {
-  ads_.reset();
-  database_.Reset();
-}
-
-void AdsServiceImplIOS::OnInitialize(InitializeCallback callback,
-                                     const bool success) {
+void AdsServiceImplIOS::InitializeAdsCallback(InitializeCallback callback,
+                                              const bool success) {
   if (!success) {
-    Cleanup();
+    Shutdown();
   }
+
   std::move(callback).Run(success);
 }
 
-void AdsServiceImplIOS::OnShutdown(ShutdownCallback callback,
-                                   const bool success) {
-  Cleanup();
+void AdsServiceImplIOS::ShutdownAdsCallback(ShutdownCallback callback,
+                                            const bool success) {
+  Shutdown();
 
   std::move(callback).Run(success);
 }

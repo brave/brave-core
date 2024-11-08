@@ -34,7 +34,6 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
@@ -364,7 +363,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   std::vector<ProfileIOS*> profiles =
       GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
   CHECK(!profiles.empty());
-  return profiles.at(0);
+  return profiles.front();
 }
 
 #pragma mark - Profile prefs
@@ -1506,13 +1505,15 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                                          double estimatedEarnings,
                                          NSDate* nextPaymentDate))completion {
   if (![self isServiceRunning]) {
-    return completion(0, 0, nil);
+    return completion(/*adsReceived=*/0, /*estimatedEarnings=*/0,
+                      /*nextPaymentDate=*/nil);
   }
 
   adsService->GetStatementOfAccounts(
       base::BindOnce(^(brave_ads::mojom::StatementInfoPtr mojom_statement) {
         if (!mojom_statement) {
-          return completion(0, 0, nil);
+          return completion(/*adsReceived=*/0, /*estimatedEarnings=*/0,
+                            /*nextPaymentDate=*/nil);
         }
 
         NSDate* nextPaymentDate = nil;
@@ -1530,7 +1531,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                        completion:(void (^)(NSString* dimensions,
                                             InlineContentAdIOS*))completion {
   if (![self isServiceRunning]) {
-    return completion(@"", nil);
+    return completion(/*dimensions=*/@"", /*inlineContentAd=*/nil);
   }
 
   adsService->MaybeServeInlineContentAd(
@@ -1539,8 +1540,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
           ^(const std::string& dimensions,
             const std::optional<brave_ads::InlineContentAdInfo>& ad) {
             if (!ad) {
-              completion(base::SysUTF8ToNSString(dimensions), nil);
-              return;
+              return completion(base::SysUTF8ToNSString(dimensions),
+                                /*inlineContentAd=*/nil);
             }
 
             const auto inline_content_ad =
@@ -1585,15 +1586,14 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)maybeGetNotificationAd:(NSString*)identifier
                     completion:(void (^)(NotificationAdIOS*))completion {
   if (![self isServiceRunning]) {
-    return completion(nil);
+    return completion(/*notificationAd=*/nil);
   }
 
   adsService->MaybeGetNotificationAd(
       base::SysNSStringToUTF8(identifier),
       base::BindOnce(^(const std::optional<brave_ads::NotificationAdInfo>& ad) {
         if (!ad) {
-          completion(nil);
-          return;
+          return completion(/*notificationAd=*/nil);
         }
 
         const auto notification_ad =
@@ -1661,8 +1661,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                          eventType:(BraveAdsSearchResultAdEventType)eventType
                         completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning] || !searchResultAd) {
-    completion(/*success=*/false);
-    return;
+    return completion(/*success=*/false);
   }
 
   adsService->TriggerSearchResultAdEvent(

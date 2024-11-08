@@ -24,6 +24,7 @@ namespace brave {
 void EnsureProfileKeyedServiceFactoriesBuilt() {
   ai_chat::ModelServiceFactory::GetInstance();
   ai_chat::AIChatServiceFactory::GetInstance();
+  brave_ads::AdsServiceFactoryIOS::GetInstance();
   brave_favicon::BraveIOSFaviconLoaderFactory::GetInstance();
   brave_wallet::AssetRatioServiceFactory::GetInstance();
   brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();
@@ -34,7 +35,6 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   brave::URLSanitizerServiceFactory::GetInstance();
   debounce::DebounceServiceFactory::GetInstance();
   webcompat_reporter::WebcompatReporterServiceFactory::GetInstance();
-  brave_ads::AdsServiceFactoryIOS::GetInstance();
 }
 
 }  // namespace brave
