@@ -47,14 +47,14 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "brave/ios/browser/ads/ads_service_factory_ios.h"
-#include "brave/ios/browser/ads/ads_service_impl_ios.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 #import "brave/ios/browser/api/ads/ads_client_ios.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/ads/inline_content_ad_ios.h"
 #import "brave/ios/browser/api/ads/notification_ad_ios.h"
 #import "brave/ios/browser/api/common/common_operations.h"
+#include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
+#include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -252,6 +252,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   auto cppWalletInfo =
       walletInfo ? walletInfo.cppObjPtr : brave_ads::mojom::WalletInfoPtr();
 
+  // This will always be the regular profile (not private/OTR).
   ProfileIOS* profile = [self getLastUsedProfile];
   adsService = brave_ads::AdsServiceFactoryIOS::GetForBrowserState(profile);
   CHECK(adsService);
@@ -270,14 +271,14 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)shutdownService:(nullable void (^)())completion {
-  [self stopComponentUpdaterTimer];
-
   if (![self isServiceRunning]) {
     if (completion) {
       completion();
     }
     return;
   }
+
+  [self stopComponentUpdaterTimer];
 
   dispatch_group_notify(self.componentUpdaterPrefsWriteGroup,
                         dispatch_get_main_queue(), ^{
@@ -551,7 +552,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)stopComponentUpdaterTimer {
-  [self.componentUpdaterTimer invalidate];
+  if (self.componentUpdaterTimer != nil) {
+    [self.componentUpdaterTimer invalidate];
+  }
   self.componentUpdaterTimer = nil;
 }
 

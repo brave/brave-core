@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_ADS_ADS_SERVICE_FACTORY_IOS_H_
-#define BRAVE_IOS_BROWSER_ADS_ADS_SERVICE_FACTORY_IOS_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_ADS_ADS_SERVICE_FACTORY_IOS_H_
+#define BRAVE_IOS_BROWSER_BRAVE_ADS_ADS_SERVICE_FACTORY_IOS_H_
 
 #include <memory>
 
@@ -51,4 +51,4 @@ class AdsServiceFactoryIOS : public BrowserStateKeyedServiceFactory {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_IOS_BROWSER_ADS_ADS_SERVICE_FACTORY_IOS_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_ADS_ADS_SERVICE_FACTORY_IOS_H_
