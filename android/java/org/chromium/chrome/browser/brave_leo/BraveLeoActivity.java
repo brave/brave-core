@@ -21,13 +21,17 @@ import androidx.browser.customtabs.CustomTabsIntent;
 
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
+import org.chromium.chrome.browser.browserservices.intents.WebappConstants;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
 import org.chromium.ui.util.ColorUtils;
 
 /** Brave's Activity for AI Chat */
 public class BraveLeoActivity extends CustomTabActivity {
+    public static final String INTENT_EXTRA_OPEN_LEO = "brave.leo.OpenLeo";
+
     @Override
     public boolean supportsAppMenu() {
         return false;
@@ -106,5 +110,27 @@ public class BraveLeoActivity extends CustomTabActivity {
                         getBaseChromeLayout(),
                         getEdgeToEdgeStateProvider());
         return mBaseCustomTabRootUiCoordinator;
+    }
+
+    @Override
+    public void performPreInflationStartup() {
+        Intent intent = getIntent();
+        // If this is not a share intent, we can proceed with the normal startup.
+        if (intent == null || !Intent.ACTION_SEND.equals(intent.getAction())) {
+            super.performPreInflationStartup();
+            return;
+        }
+
+        // Here we process share intent.
+        intent.putExtra(INTENT_EXTRA_OPEN_LEO, true);
+        // To not open a new tab when share from the url bar.
+        intent.putExtra(WebappConstants.REUSE_URL_MATCHING_TAB_ELSE_NEW_TAB, true);
+        intent.setFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        | Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        IntentHandler.startChromeLauncherActivityForTrustedIntent(intent);
+        finishAndRemoveTask();
     }
 }

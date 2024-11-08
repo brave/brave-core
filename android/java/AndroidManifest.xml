@@ -153,7 +153,15 @@
     android:name="org.chromium.chrome.browser.brave_leo.BraveLeoActivity"
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize|uiMode|navigation"
     android:theme="@style/Theme.Chromium.Activity.FakeTranslucent"
-    android:exported="false"/>
+    android:label="@string/menu_brave_leo"
+    android:exported="true">
+    <!-- URL share intent support. -->
+    <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="text/plain"/>
+    </intent-filter>
+</activity>
 
 <activity
     android:name="org.chromium.chrome.browser.brave_leo.BraveLeoPlansActivity"

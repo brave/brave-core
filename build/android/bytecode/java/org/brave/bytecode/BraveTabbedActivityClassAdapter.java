@@ -51,9 +51,9 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
 
         deleteMethod(sChromeTabbedActivityClassName, "supportsDynamicColors");
 
-        makePublicMethod(sChromeTabbedActivityClassName, "maybeHandleUrlIntent");
         changeMethodOwner(
                 sChromeTabbedActivityClassName, "maybeHandleUrlIntent", sBraveActivityClassName);
+
         makeProtectedField(sChromeTabbedActivityClassName, "mLayoutManager");
         makeProtectedField(sChromeTabbedActivityClassName, "mMultiInstanceManager");
     }

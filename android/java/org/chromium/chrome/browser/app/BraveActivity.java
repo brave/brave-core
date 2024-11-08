@@ -2451,13 +2451,22 @@ public abstract class BraveActivity extends ChromeActivity
             }
         }
         // Call ChromeTabbedActivity's version.
-        return (boolean)
-                BraveReflectionUtil.invokeMethod(
-                        ChromeTabbedActivity.class,
-                        this,
-                        "maybeHandleUrlIntent",
-                        Intent.class,
-                        intent);
+        boolean maybeHandleUrlIntentResult =
+                (boolean)
+                        BraveReflectionUtil.invokeMethod(
+                                ChromeTabbedActivity.class,
+                                this,
+                                "maybeHandleUrlIntent",
+                                Intent.class,
+                                intent);
+        if (Intent.ACTION_SEND.equals(appLinkAction)
+                && IntentUtils.safeGetBooleanExtra(
+                        intent, BraveLeoActivity.INTENT_EXTRA_OPEN_LEO, false)
+                && maybeHandleUrlIntentResult) {
+            openBraveLeo();
+        }
+
+        return maybeHandleUrlIntentResult;
     }
 
     public RootUiCoordinator getRootUiCoordinator() {
