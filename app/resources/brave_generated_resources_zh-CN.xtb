@@ -112,6 +112,7 @@
 <translation id="8722651357687610395">将 Brave 设置为默认</translation>
 <translation id="2370739752330685659">回头再说</translation>
 <translation id="5100490448228945668">解除 Brave 搜索转换功能，按回车键删除此建议</translation>
+<translation id="6213208892248046484">切换至 Brave 搜索</translation>
 <translation id="9194637241566114638">发送匿名的使用数据以协助改善<ph name="SEARCH_NAME"/>。<ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave 搜索</translation>
 <translation id="8184318863960255706">更多信息</translation>
@@ -500,6 +501,9 @@
 <translation id="7181706637590665047">不允许访问本地主机资源</translation>
 <translation id="1336116824874668514">不允许访问本地主机资源</translation>
 <translation id="1485435696620658073">允许访问本地主机资源</translation>
+<translation id="5794692721727586076">Leo AI 聊天室</translation>
+<translation id="8115153008662981040">网站可询问能否打开 Leo AI 聊天室</translation>
+<translation id="1145070115730668595">不允许网站打开 Leo AI 聊天</translation>
 <translation id="6414370348346025511">标准保护已启用。</translation>
 <translation id="5565355416171743213">开始使用同步</translation>
 <translation id="4332558599726753990">同步设置</translation>
@@ -572,7 +576,7 @@
 <translation id="3128251601544028053">当您在地址栏或搜索框中输入时，Brave 会将你输入的内容发送到你的默认搜索引擎，以获得更好的建议。私密窗口无法使用。</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
-<translation id="842628013524824194">一般窗口 - 地址栏中使用的搜索引擎</translation>
+<translation id="9195748375338942941">一般窗口 - 地址栏中使用的搜索引擎。</translation>
 <translation id="5324939009884545145">隐私窗口 - 地址栏中使用的搜索引擎</translation>
 <translation id="6864914031231797928">允许 Google 登录以获取扩展程序</translation>
 <translation id="7878791177459550035">媒体路由器在浏览器中启用投射功能。</translation>

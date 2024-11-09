@@ -113,6 +113,7 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8722651357687610395">Nustatyti „Brave“ kaip numatytąją</translation>
 <translation id="2370739752330685659">Gal vėliau</translation>
 <translation id="5100490448228945668">Atmesti „Brave“ paieškos konversiją; paspauskite „Enter“, kad šis pasiūlymas būtų pašalintas</translation>
+<translation id="6213208892248046484">Perjungti į „Brave“ Paiešką</translation>
 <translation id="9194637241566114638">Padėkite tobulinti <ph name="SEARCH_NAME"/> siųsdami anoniminius naudojimo duomenis  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">„Brave“ paieška</translation>
 <translation id="8184318863960255706">Daugiau informacijos</translation>
@@ -501,6 +502,9 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="7181706637590665047">Nesuteikti prieigos prie vietinio serverio išteklių</translation>
 <translation id="1336116824874668514">Nesuteikta prieiga prie vietinio serverio išteklių</translation>
 <translation id="1485435696620658073">Suteikta prieiga prie vietinio serverio išteklių</translation>
+<translation id="5794692721727586076">„Leo“ DI pokalbis</translation>
+<translation id="8115153008662981040">Interneto svetainės gali paprašyti atverti „Leo“ DI pokalbį</translation>
+<translation id="1145070115730668595">Neleisti interneto svetainei atverti „Leo“ DI pokalbio</translation>
 <translation id="6414370348346025511">Įjungta standartinė apsauga.</translation>
 <translation id="5565355416171743213">Pradėti naudotis sinchronizavimu</translation>
 <translation id="4332558599726753990">Sinchronizavimo konfigūravimas</translation>
@@ -573,7 +577,7 @@ vėl naudoti sinchronizavimą, turėsite susikurti naują paskyrą ir pridėti �
 <translation id="3128251601544028053">Užklausa, kurią įvedate adreso juostoje arba paieškos lauke, įrašytą informaciją „Brave“ perduoda numatytajai paieškos sistemai, kad gautų geresnių pasiūlymų. Ši funkcija išjungta naršant privačiuoju režimu.</translation>
 <translation id="6285118765755298263">Indeksuoti kitus ieškos modulius</translation>
 <translation id="919715748352669592">Automatiškai indeksuoja svetaines, kurios atitinka „OpenSearch“ specifikaciją.</translation>
-<translation id="842628013524824194">Įprastinis langas – paieškos sistema naudojama adreso juostoje</translation>
+<translation id="9195748375338942941">Įprastinis langas – paieškos sistema naudojama adreso juostoje.</translation>
 <translation id="5324939009884545145">Privatus langas – paieškos sistema naudojama adreso juostoje</translation>
 <translation id="6864914031231797928">Leisti „Google“ prisijungti prie plėtinių</translation>
 <translation id="7878791177459550035">Medijos maršrutizatorius naršyklėje įgalina perdavimo funkciją.</translation>

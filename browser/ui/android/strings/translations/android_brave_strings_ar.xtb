@@ -234,6 +234,9 @@
 <translation id="7207456302801184289">‏مرحبًا بك في Brave</translation>
 <translation id="4117451092682672487">الخصوصية. أصبحت أبسط.</translation>
 <translation id="7909375417585209817">باستخدام Brave كافتراضي، يفتح كل رابط تنقر عليه بحماية خصوصية Brave.</translation>
+<translation id="3737878115109582442">أضِف ميزة البحث في واجهة المستخدم</translation>
+<translation id="6199413390010319240">اجعل Brave في متناول يدك لتستكشف الويب بسرعة أكبر.</translation>
+<translation id="4338600611020922010">أضِف إلى الشاشة الرئيسية</translation>
 <translation id="7370959926683925817">حظر الإعلانات. حفظ البيانات. كل يوم.</translation>
 <translation id="7281027579943912834">باستخدام Brave كافتراضي، يحصل كل رابط تنقر عليه على حماية حظر الإعلانات من Brave. وكذلك كل صفحة وفيديو وبث.</translation>
 <translation id="5148943178722443958">ساعد في تحسين Brave.</translation>
@@ -480,7 +483,11 @@
 <translation id="9055546041146396417">إذا كان هذا الموقع يبدو معطلاً فجرّب إيقاف تشغيل Shields.</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="8510478288840333677">إخطار مطوري Brave بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:</translation>
-<translation id="5429200298326665264">ملاحظة: سيتم إرسال عنوان هذا الموقع مع رقم إصدار Brave الخاص بك وعنوان IP الخاص بك (والذي لن يتم تخزينه).</translation>
+<translation id="1653405824851871276">نشكرك على تقديم المساعدة في أن يصبح Brave أفضل للجميع. لن يحتوي هذا التقرير إلا على المعلومات اللازمة لنا لإصلاح هذا الموقع. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">اعرف المزيد.</translation>
+<translation id="8740275226259417070">هذه صفحة خطأ. ولا يمكن الإبلاغ عنها باعتبارها موقعًا مُعطلًا.</translation>
+<translation id="721949491455392748">تضمين لقطة شاشة للصفحة الحالية</translation>
+<translation id="8459191579769999214">عرض لقطة شاشة</translation>
 <translation id="5299848999918506028">شكراً لك!</translation>
 <translation id="76550953340008122">شكراً لإخطارك مطوري Brave بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!</translation>
 <translation id="650318023204990401">الضوابط المتقدمة</translation>
@@ -659,6 +666,8 @@
 <translation id="6284218950354553099">الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave</translation>
 <translation id="2181060149810222381">تتيح أداة البينج الخاصة هذه لمتصفح Brave تقدير المستخدمين النشطين.</translation>
 <translation id="6725413948756358325">اسم الحساب</translation>
+<translation id="3240773103344793224">تم طلب تغيير ملكية الحساب</translation>
+<translation id="8041423758956015568">ستعيد المعاملة تعيين ملكية الحساب إلى برنامج جديد. ولا يمكن الرجوع في هذا الإجراء وقد يؤدي إلى خسارة الأموال.</translation>
 <translation id="6062431965141524986">يمكنك إنشاء حساب ثانوي باستيراد مفتاحك الخاص.</translation>
 <translation id="3952797765659730604">أدخل أو الصق أو استورد ملف سلسلة المفتاح الخاص أو JSON.</translation>
 <translation id="569068482611873351">استيراد...</translation>
@@ -725,7 +734,6 @@
 <translation id="5747552184818312860">تاريخ انتهاء الصلاحية</translation>
 <translation id="1656814355341174523">إدارة الاشتراك</translation>
 <translation id="1919008675977575793">الخادم</translation>
-<translation id="4812684235631257312">مضيف</translation>
 <translation id="5646376287012673985">الموقع الجغرافي</translation>
 <translation id="8375573361134671513">إعادة التكوين</translation>
 <translation id="850405162932416400">دعم VPN</translation>
@@ -752,6 +760,8 @@
 <translation id="5431902940483264007">أمثل</translation>
 <translation id="6527596624419285047">استخدام أفضل خادم متاح</translation>
 <translation id="6789157560111825412">الخوادم المتاحة</translation>
+<translation id="5823953367746119927">منطقة الخادم</translation>
+<translation id="6991535320595227154">خادم <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">تحديد المشكلة</translation>
 <translation id="6687228121145903051">لا يمكن الاتصال بـ VPN (خطأ آخر)</translation>
 <translation id="9184988385244077767">لا يوجد إنترنت عند الاتصال</translation>
@@ -1076,8 +1086,6 @@
 <translation id="622372328961630111">أضف الرموز المميزة غير القابلة للاستبدال (NFT) التي تمتلكها بشكل تلقائي إلى المحفظة باستخدام واجهات برمجة التطبيقات التابعة لجهات خارجية. <ph name="BEGIN_LINK_1"/>تعرّف على المزيد.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">حساب جدول البحث عن العنوان:</translation>
 <translation id="7659483790930268440">فهرس جدول البحث عن العنوان:</translation>
-<translation id="4932733599132424254">التاريخ</translation>
-<translation id="346505172740911461">سعر السوق</translation>
 <translation id="5494920125229734069">تحديد الكل</translation>
 <translation id="6129027151000961048">ليو</translation>
 <translation id="8613144770663526433">تسجيل الدخول إلى Brave Wallet</translation>
@@ -1092,6 +1100,8 @@
 <translation id="6165101586663336913">ستتطلب إعادة تعيين مساعد Leo الاشتراك في استخدام Leo في المستقبل وستؤدي أيضًا إلى حذف سجل الدردشة الخاص بك. سيؤدي حذف سجل الدردشة إلى حذف جميع محادثاتك السابقة مع Leo. لا يمكن التراجع عن هذا الإجراء.</translation>
 <translation id="3692772534525889713">اربط مشترياتك من Play Store بحسابك في Brave لاستخدام Brave Leo على الأجهزة الأخرى.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">سنة واحدة</translation>
+<translation id="2985392169397572983">أفضل قيمة</translation>
 <translation id="1166682575529520472">شهريًا</translation>
 <translation id="451189393813405346">اسأل Leo</translation>
 <translation id="7322560193401221004">تذكر مكان تشغيل الملف</translation>
@@ -1160,7 +1170,7 @@
 <translation id="2389665228467129817">الدردشة لفترة أطول</translation>
 <translation id="4314705522985583059">احصل على حدود أسعار أعلى للمحادثات الأطول.</translation>
 <translation id="6365289557497555234">تجدد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها في أي وقت قبل التجديد.</translation>
-<translation id="6637015365469044269">التحديث الآن</translation>
+<translation id="5543505256451301851">المحاولة مجانًا لمدة 7 أيام</translation>
 <translation id="614530507403667291">النموذج التلقائي للمحادثات الجديدة</translation>
 <translation id="4071849832011229600">النموذج الافتراضي</translation>
 <translation id="4185473179105062442">استقبل BAT مباشرة على عنوان تشفير ذاتي الحماية</translation>

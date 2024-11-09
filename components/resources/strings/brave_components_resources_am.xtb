@@ -162,8 +162,6 @@
 <translation id="8510478288840333677">ይህ ገጽ ከጋሻዎች ጋር በትክክል እንደማይሰራ የ Brave አዘጋጆች እንዲያውቁት ያድርጉ፡</translation>
 <translation id="3110968385867124099">ይህ ገጽ ሪፖርት ሊደረግ አይችልም ምክንያቱም በHTTP/HTTPS ስላልተገለገለ ነው።</translation>
 <translation id="7907023135990310743">ይህ ገጽ አካባቢያዊ የድር ገጽ ነው እና ሪፖርት ለማድረግ ብቁ አይደለም።</translation>
-<translation id="3645455863322075098">ይህ ገጽ የስህተት ገጽ ነው እና ሪፖርት ለማድረግ ብቁ አይደለም።</translation>
-<translation id="105644511106871142">Brave ለሁሉም የተሻለ እንዲሆን ላደረጉት እገዛ እናመሰግናለን። ይህ ሪፖርት ይህንን ጣቢያ ለማስተካከል ለእኛ አስፈላጊ የሆኑ መረጃዎችን ብቻ ይልካል።</translation>
 <translation id="6476216365964140603">ተጨማሪ ዝርዝሮች (አማራጭ)</translation>
 <translation id="6145852496180774737">በሚከተለው ያግኙኝ፡ (አማራጭ)</translation>
 <translation id="7616645803364270729">ኢሜይል፣ ትዊተር፣ ወዘተ.</translation>
@@ -618,6 +616,11 @@
 <translation id="7924320838799747606">ቀሪ ሂሳብዎ</translation>
 <translation id="2870560284913253234">ጣቢያ</translation>
 <translation id="7751260505918304024">ሁሉንም አሳይ</translation>
+<translation id="4114667046481794032">የመዋጮ መጠን</translation>
+<translation id="7550470870580166294">በቂ ያልሆነ ተቀማጭ</translation>
+<translation id="1166682575529520472">በየወሩ</translation>
+<translation id="7138678301420049075">ሌላ</translation>
+<translation id="4174337572777167894">የWeb Discovery ፕሮጄክት</translation>
 <translation id="7090992647511817643">መለያ</translation>
 <translation id="4822132585477111396">የሰንሰለት መታወቂያ</translation>
 <translation id="3269475789479462358">ጎራ</translation>
@@ -1125,9 +1128,7 @@
 <translation id="5722321409991816187">አይፈለጌ መልዕክት NFTዎችን አሳይ</translation>
 <translation id="7662492121143629144">ሁሉም መለያዎች</translation>
 <translation id="6954150712710630841">ግብይት ገብቷል</translation>
-<translation id="905855245798176174">ግብይቱ በተሳካ ሁኔታ ወደ አውታረ መረቡ ተልኳል እና ማረጋገጫ ይጠብቃል።</translation>
 <translation id="619697073289995370">ግብይት ተፈርሟል</translation>
-<translation id="7493732383203109611">ግብይቱ ተፈርሟል እና በDApp በኩል ባለው አውታረመረብ ይላካል</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> ወደ የኪስ ቦርሳዎ ተመልሷል</translation>
 <translation id="4577432071459867390">ግብይት አልተሳካም</translation>
 <translation id="4359235192593147041">በትልቅ የዋጋ እንቅስቃሴ ምክንያት ግብይቱ አልተሳካም። በትልቅ የዋጋ እንቅስቃሴ ላይ ስኬታማ ለመሆን የድጎማ መቻቻልን ይጨምሩ።</translation>
@@ -1467,7 +1468,6 @@
 <translation id="1472675084647422956">ተጨማሪ አሳይ</translation>
 <translation id="4522570452068850558">ዝርዝሮች</translation>
 <translation id="7144878232160441200">እንደገና ሞክር</translation>
-<translation id="7138678301420049075">ሌላ</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
 <translation id="3745016858329272300">አጠቃላይ መረጃ</translation>
 <translation id="4045404575593562245">በ ቶር ቁጥጥር ያሉ ክስተቶች</translation>
@@ -1541,7 +1541,6 @@
 <translation id="7056969230130642253">ቡዙ ነገር ላይ ነዎት</translation>
 <translation id="7292242212818928219">አዲስ ይዘት ይገኛል። እንደገና ይጫን?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">ፈጣን ትዕዛዞች</translation>
 <translation id="7481312909269577407">ወደ ፊት</translation>
 <translation id="1272079795634619415">አቁም</translation>
 <translation id="302781076327338683">የሚያልፍ መሸጎጫ እንደገና ያስጀምሩ</translation>
@@ -1690,6 +1689,7 @@
 <translation id="1344005710343072293">ይህ ጥምረት ለ 1<ph name="COMMAND"/>ጥቅም  እየዋለ ነው። ይህን ማስቀመጥ ያንን አቋራጭ ይሽራል።</translation>
 <translation id="831931573200952705">ይህ ጥምረት ለ <ph name="COMMAND"/> ጥቅም ላይ እየዋለ ነው እና መቀየር አይቻልም።</translation>
 <translation id="3537006124004887164">ይህ ጥምረት ለ <ph name="COMMAND"/> ጥቅም ላይ እየዋለ ነው እና መቀየር አይቻልም። በስርዓት ቅንብሮች ውስጥ በ `App Shortcuts` በኩል ለመቀየር ይሞክሩ።</translation>
+<translation id="4144468798716165316">ፈጣን ትዕዛዞች</translation>
 <translation id="8591883849678260674">ዋናውን ይመልከቱ</translation>
 <translation id="1969654232209826429">ደቂቃ ለማንበብ</translation>
 <translation id="4101707289420716287">የፍጥነት አንባቢን ያጥፉ</translation>
@@ -1741,7 +1741,6 @@
 <translation id="1691256669639196606">የደንበኝነት ምዝገባን ያስተዳድሩ</translation>
 <translation id="2304783958703511257">የላቁ ቅንብሮች</translation>
 <translation id="3037594989275592390">የቋንቋ ሞዴሎች</translation>
-<translation id="6637015365469044269">አሁን አሻሽል</translation>
 <translation id="849535826888024304">የምላሽ ደረጃ ገደብ ላይ ደርሷል</translation>
 <translation id="4173478269537830374">የተለያዩ የ AI ሞዴሎችን ያስሱ</translation>
 <translation id="3245401959451976966">የእርስዎን የፈጠራ አቅምን ይክፈቱ</translation>
@@ -1749,7 +1748,7 @@
 <translation id="2389665228467129817">ረዘም ላለ ጊዜ ይወያዩ</translation>
 <translation id="5151923271944811339">ወደ ነፃው ሞዴል ቀይር</translation>
 <translation id="5474757891469990756">የLeo ሙሉ ሃይል በPremium ያስከፍቱ፡</translation>
-<translation id="5552332211527367850">የተለያየ ችሎታ ያላቸው ኃይለኛ ሞዴሎችን አስቀድሞ ማግኘት</translation>
+<translation id="3453542753968940696">የተለያየ ችሎታ ያላቸው ኃይለኛ ሞዴሎችን አስቀድሞ ማግኘት</translation>
 <translation id="5031778211368112461">ለፈጠራ ስራዎች እና ለይዘት ማመንጨት የተሻሉ ሞዴሎችን ያግኙ።</translation>
 <translation id="298783097210745222">ይበልጥ ግልጽ ለሆኑ ንግግሮች የበለጠ ትክክለኛ መልሶችን ያግኙ።</translation>
 <translation id="4314705522985583059">ረዘም ላለ ንግግሮች ከፍ ያለ የዋጋ ገደቦችን ያግኙ።</translation>
