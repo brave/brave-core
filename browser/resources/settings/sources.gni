@@ -61,6 +61,7 @@ brave_settings_web_component_files = [
 ]
 
 brave_settings_non_web_component_files = [
+  "email_aliases_page/email_aliases_page.ts",
   "brave_appearance_page/brave_appearance_browser_proxy.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
