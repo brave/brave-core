@@ -20,7 +20,8 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                             'red' : ''}">
             Email address
           </div>
-          <div class="brave-alias-error dropdown ${this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias ? 'visible' : ''}"
+          <div class="dropdown ${this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias ? 'visible' : ''}"
+               id="brave-alias-dropdown"
                slot="errors">
             <leo-icon name="warning-triangle-filled"></leo-icon>
             <div>You can't use @bravealias.com addresses for creating Brave accounts. Please try again with a different domain.</div>
@@ -39,11 +40,12 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
           </leo-icon>
-          <div slot="errors" class="password-strength-indicator dropdown ${this.percent !== 0 ? 'visible' : ''} ${this.getCategory()}">
+          <div slot="errors" class="dropdown ${this.percent !== 0 ? 'visible' : ''} ${this.getCategory()}"
+                             id="password-dropdown">
             <leo-tooltip mode="default"
                          mouseleaveTimeout="0"
                          placement="bottom">
-              <div class="lofasz">
+              <div class="password-strength-indicator">
                 <div class="password-strength-bar">
                   <div class="password-strength"
                        style="--password-strength: ${this.percent}">
@@ -64,9 +66,9 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
               </div>
               <div slot="content">
                 Passwords should have:
-                ${this.regexps.map(([_, satisfied, text]) => html`
-                  <div class="password-requirement ${satisfied ? 'requirement-met' : ''}">
-                    <leo-icon name=${satisfied ? 'check-circle-outline' : 'close-circle'}></leo-icon>
+                ${this.regexps.map(([_, requirement_met, text]) => html`
+                  <div class="password-requirement ${requirement_met ? 'requirement-met' : ''}">
+                    <leo-icon name=${requirement_met ? 'check-circle-outline' : 'close-circle'}></leo-icon>
                     ${text}
                   </div>`
                 )}
@@ -87,7 +89,8 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
           </leo-icon>
-          <div class="password-confirmation-result dropdown ${this.passwordConfirmation.length !== 0 ? 'visible' : ''}"
+          <div class="dropdown ${this.passwordConfirmation.length !== 0 ? 'visible' : ''}"
+               id="password-confirmation-dropdown"
                slot="errors">
             <leo-icon name=${this.getIconName()}></leo-icon>
             <div>${`Passwords ${this.icon === 'check-circle-filled' ? '' : 'don\'t'} match`}</div>
