@@ -33,7 +33,8 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   private var urlObserver: NSObjectProtocol?
   fileprivate var currentLanguageInfo = BraveTranslateLanguageInfo()
   private static var elementScriptTask: Task<String, Error> = downloadElementScript()
-  private var translationTask: Future<Void, Error>?
+  private var translationTask: (() async throws -> Void)?
+  private var canShowToast = false
 
   struct RequestMessage: Codable {
     let method: String
@@ -54,8 +55,8 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
           guard let self = self else { return }
 
           self.translationSession = session
-          if let task = self.translationTask {
-            try? await task.value
+          if let translationTask = self.translationTask, session != nil {
+            try? await translationTask()
             self.translationTask = nil
           }
         },
@@ -71,6 +72,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
         if self.url != url {
           self.url = url
           self.isTranslationReady = false
+          self.canShowToast = false
           self.delegate?.updateTranslateURLBar(tab: self.tab, state: .unavailable)
         }
       }
@@ -149,10 +151,11 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
           )
 
           let translationSession = self.translationSession ?? BraveTranslateSession()
+          let isTranslationRequest = BraveTranslateSession.isPhraseTranslationRequest(message)
 
           // The message is for HTML or CSS request
           if self.translationSession == nil
-            && BraveTranslateSession.isPhraseTranslationRequest(message)
+            && isTranslationRequest
           {
             throw BraveTranslateError.otherError
           }
@@ -176,6 +179,15 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
             ],
             nil
           )
+
+          if isTranslationRequest && canShowToast {
+            canShowToast = false
+
+            Task { @MainActor in
+              self.delegate?.updateTranslateURLBar(tab: self.tab, state: .active)
+              self.delegate?.presentToast(tab: self.tab, languageInfo: currentLanguageInfo)
+            }
+          }
         } catch {
           Logger.module.error("Brave Translate Error: \(error)")
           replyHandler(nil, "Translation Error")
@@ -231,8 +243,10 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
   @MainActor
   @discardableResult
-  func executeChromiumFunction(_ functionName: String, args: [Any] = []) async -> Any? {
-    guard let webView = tab?.webView else { return nil }
+  func executeChromiumFunction(_ functionName: String, args: [Any] = []) async throws -> Any {
+    guard let webView = tab?.webView else {
+      throw BraveTranslateError.otherError
+    }
 
     let (result, error) = await webView.evaluateSafeJavaScript(
       functionName: "window.__gCrWeb.\(functionName)",
@@ -243,7 +257,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
     if let error = error {
       Logger.module.error("Unable to execute page function \(functionName) error: \(error)")
-      return nil
+      throw error
     }
 
     return result
@@ -255,7 +269,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
   @MainActor
   func guessLanguage() async -> Locale.Language? {
-    await executeChromiumFunction("languageDetection.detectLanguage")
+    try? await executeChromiumFunction("languageDetection.detectLanguage")
 
     // Language was identified by the Translate Script
     if let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
@@ -292,58 +306,46 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   }
 
   func startTranslation(canShowToast: Bool) {
+    // Translation already in progress
+    if tab?.translationState == .pending {
+      return
+    }
+
     // This is necessary because if the session hasn't be initialized yet (since it's asynchronous in Apple's API),
     // then translation would not be possible. So we need to store this request for now, and when the session is ready
     // then we execute the translation. If the session is already available, we execute immediately.
-    self.translationTask = Future<Void, Error> { promise in
-      Task { @MainActor [weak self] in
-        guard let self = self,
-          let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
-          let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier,
-          currentLanguage != pageLanguage
-        else {
-          promise(.failure(BraveTranslateError.invalidLanguage))
-          return
-        }
-
-        do {
-          try Task.checkCancellation()
-        } catch {
-          promise(.failure(error))
-          return
-        }
-
-        // Normalize Chinese if necessary to Chinese (Simplified). zh-TW = Traditional
-        // We don't current use the components/language/ios/browser/language_detection_java_script_feature.mm
-        // Supported List of Languages is from: components/translate/core/browser/translate_language_list.cc
-        // So we have to do this for now.
-        await executeChromiumFunction(
-          "translate.startTranslation",
-          args: [
-            pageLanguage == "zh" ? "zh-CN" : pageLanguage,
-            currentLanguage == "zh" ? "zh-CN" : currentLanguage,
-          ]
-        )
-
-        do {
-          try Task.checkCancellation()
-        } catch {
-          promise(.failure(error))
-          return
-        }
-
-        if canShowToast {
-          self.delegate?.updateTranslateURLBar(tab: self.tab, state: .active)
-          self.delegate?.presentToast(tab: self.tab, languageInfo: currentLanguageInfo)
-        }
-
-        promise(.success(Void()))
+    self.translationTask = { @MainActor [weak self] in
+      guard let self,
+        let currentLanguage = currentLanguageInfo.currentLanguage.languageCode?.identifier,
+        let pageLanguage = currentLanguageInfo.pageLanguage?.languageCode?.identifier,
+        currentLanguage != pageLanguage
+      else {
+        throw BraveTranslateError.invalidLanguage
       }
+
+      try Task.checkCancellation()
+
+      // Normalize Chinese if necessary to Chinese (Simplified). zh-TW = Traditional
+      // We don't current use the components/language/ios/browser/language_detection_java_script_feature.mm
+      // Supported List of Languages is from: components/translate/core/browser/translate_language_list.cc
+      // So we have to do this for now.
+      try await executeChromiumFunction(
+        "translate.startTranslation",
+        args: [
+          pageLanguage == "zh" ? "zh-CN" : pageLanguage,
+          currentLanguage == "zh" ? "zh-CN" : currentLanguage,
+        ]
+      )
+
+      try Task.checkCancellation()
+
+      self.canShowToast = canShowToast
+      self.delegate?.updateTranslateURLBar(tab: self.tab, state: .pending)
     }
 
     if translationSession != nil {
       Task { @MainActor in
-        try? await translationTask?.value
+        try? await translationTask?()
         translationTask = nil
       }
     }
@@ -358,7 +360,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
         return
       }
 
-      await executeChromiumFunction("translate.revertTranslation")
+      try? await executeChromiumFunction("translate.revertTranslation")
       self.delegate?.updateTranslateURLBar(tab: self.tab, state: .available)
     }
   }
@@ -625,7 +627,7 @@ private class BraveTranslateSessionApple: BraveTranslateSession {
 #endif
 
 private struct BraveTranslateContainerView: View {
-  var onTranslationSessionUpdated: ((BraveTranslateSession) async -> Void)?
+  var onTranslationSessionUpdated: ((BraveTranslateSession?) async -> Void)?
 
   @ObservedObject
   var languageInfo: BraveTranslateLanguageInfo
@@ -639,7 +641,13 @@ private struct BraveTranslateContainerView: View {
             .translationTask(
               .init(source: languageInfo.pageLanguage, target: languageInfo.currentLanguage),
               action: { session in
-                await onTranslationSessionUpdated?(BraveTranslateSessionApple(session: session))
+                do {
+                  try await session.prepareTranslation()
+                  await onTranslationSessionUpdated?(BraveTranslateSessionApple(session: session))
+                } catch {
+                  Logger.module.error("Session Unavailable: \(error)")
+                  await onTranslationSessionUpdated?(nil)
+                }
               }
             )
           #else

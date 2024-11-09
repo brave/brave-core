@@ -171,6 +171,7 @@ nala_icons = [
   "leo.product.private-window.svg",
   "leo.product.speedreader.svg",
   "leo.product.sync.svg",
+  "leo.product.translate.svg",
   "leo.product.vpn.svg",
   "leo.qr.code.svg",
   "leo.radio.unchecked.svg",

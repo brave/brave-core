@@ -88,11 +88,14 @@ class TranslateURLBarButton: UIButton {
     set(state) {
       _translateState = state
       switch _translateState {
+      case .unavailable:
+        self.isEnabled = false
+        self.isSelected = false
       case .available:
         self.isEnabled = true
         self.isSelected = false
-      case .unavailable:
-        self.isEnabled = false
+      case .pending:
+        self.isEnabled = true
         self.isSelected = false
       case .active:
         self.isEnabled = true
@@ -123,8 +126,16 @@ class TranslateURLBarButton: UIButton {
   }
 
   enum TranslateState {
-    case available
+    // Page cannot be translated
     case unavailable
+
+    // Translation is available, the page hasn't been translated yet
+    case available
+
+    // Translation is in progress
+    case pending
+
+    // Translation complete or partially complete
     case active
   }
 }
