@@ -193,6 +193,7 @@ brave_chrome_browser_deps = [
   "//brave/components/debounce/content/browser",
   "//brave/components/decentralized_dns/content",
   "//brave/components/decentralized_dns/core",
+  "//brave/components/email_aliases/browser",
   "//brave/components/google_sign_in_permission",
   "//brave/components/https_upgrade_exceptions/browser",
   "//brave/components/ipfs",
