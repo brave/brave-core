@@ -62,12 +62,10 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
        DoNotConvertBinaryValueTypeToString) {
   // Arrange
-  const base::span<const uint8_t> binary({0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C,
-                                          0x20, 0x57, 0x6F, 0x72, 0x6C, 0x64,
-                                          0x21});
-
   // Act & Assert
-  EXPECT_FALSE(ToString(base::Value(binary)));
+  EXPECT_FALSE(ToString(base::Value(
+      base::span<const uint8_t>({0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x57,
+                                 0x6F, 0x72, 0x6C, 0x64, 0x21}))));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetVirtualPrefValue) {
