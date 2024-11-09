@@ -12,6 +12,7 @@
 #include "base/feature_list.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
@@ -19,6 +20,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/email_aliases_bubble_view.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -429,6 +431,8 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
       return CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr());
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
+    case IDC_NEW_EMAIL_ALIAS:
+      return true;
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -500,6 +504,13 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
           source_web_contents_);
+      break;
+    case IDC_NEW_EMAIL_ALIAS:
+      if (params_.form_control_type.value() ==
+              blink::mojom::FormControlType::kInputEmail ||
+          params_.is_content_editable_for_autofill) {
+        EmailAliasesBubbleView::Show(GetBrowser(), params_.field_renderer_id);
+      }
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
@@ -734,6 +745,14 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
       menu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
                                       IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
     }
+  }
+
+  if (base::FeatureList::IsEnabled(features::kBraveEmailAliases) &&
+      params_.form_control_type &&
+      params_.form_control_type.value() ==
+          blink::mojom::FormControlType::kInputEmail) {
+    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
+    menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS, IDS_NEW_EMAIL_ALIAS);
   }
 }
 

@@ -78,6 +78,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
 
           // The `Passwords and autofill` submenu
           {IDC_SHOW_PASSWORD_MANAGER, kLeoKeyIcon},
+          {IDC_SHOW_EMAIL_ALIASES, kLeoEmailShieldIcon},
           {IDC_SHOW_PAYMENT_METHODS, kLeoCreditCardIcon},
           {IDC_SHOW_ADDRESSES, kLeoLocationOnIcon},
 

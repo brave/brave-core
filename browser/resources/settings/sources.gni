@@ -134,6 +134,9 @@ brave_settings_non_web_component_files = [
   "getting_started_page/brave_account_row.ts",
   "getting_started_page/brave_account_sign_in_dialog.html.ts",
   "getting_started_page/brave_account_sign_in_dialog.ts",
+  "email_aliases_page/email_aliases_page.ts",
+  "email_aliases_page/remote_mapping_service.ts",
+  "email_aliases_page/types.ts",
   "shortcuts_page/shortcuts_page.ts",
 ]
 

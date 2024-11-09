@@ -23,6 +23,7 @@ BASE_DECLARE_FEATURE(kBraveDayZeroExperiment);
 #if BUILDFLAG(IS_ANDROID)
 BASE_DECLARE_FEATURE(kNewAndroidOnboarding);
 #endif  // BUILDFLAG(IS_ANDROID)
+BASE_DECLARE_FEATURE(kBraveEmailAliases);
 
 extern const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant;
 

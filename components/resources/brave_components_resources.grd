@@ -54,7 +54,7 @@
         <include name="IDR_BRAVE_WALLET_LEDGER_BRIDGE_HTML" file="../brave_wallet_ui/ledger/ledger.html" type="BINDATA" />
         <include name="IDR_BRAVE_WALLET_TREZOR_BRIDGE_HTML" file="../brave_wallet_ui/trezor/trezor.html" type="BINDATA" />
       </if>
-
+     
       <!-- WebUI swap, send, and deposit page resources for Android -->
       <if expr="is_android">
         <include name="IDR_BRAVE_WALLET_SWAP_PAGE_HTML" file="../brave_wallet_ui/page/screens/swap/android/swap.html" type="BINDATA" />
@@ -109,6 +109,7 @@
       <if expr="is_android">
         <part file="../new_tab_takeover/new_tab_takeover_resources.grdp" />
       </if>
+      <part file="../email_aliases/browser/resources/email_aliases.grdp" />
     </includes>
   </release>
 </grit>
