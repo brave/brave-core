@@ -22,7 +22,9 @@ class SplitViewBrowserDataBrowserTest : public InProcessBrowserTest {
       : feature_list_(tabs::features::kBraveSplitView) {}
   ~SplitViewBrowserDataBrowserTest() override = default;
 
-  SplitViewBrowserData& data() { return *data_; }
+  SplitViewBrowserData& data() {
+    return *SplitViewBrowserData::FromBrowser(browser());
+  }
 
   tabs::TabModel* CreateTabModel() {
     content::WebContents::CreateParams params(browser()->profile());
@@ -36,15 +38,8 @@ class SplitViewBrowserDataBrowserTest : public InProcessBrowserTest {
     return result;
   }
 
-  // InProcessBrowserTest:
-  void SetUpOnMainThread() override {
-    CHECK(browser());
-    data_.reset(new SplitViewBrowserData(browser()));
-  }
-
  private:
   base::test::ScopedFeatureList feature_list_;
-  std::unique_ptr<SplitViewBrowserData> data_;
 };
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, TileTabs_AddsTile) {
