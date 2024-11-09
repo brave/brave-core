@@ -1,0 +1,21 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("email_aliases_bubble") {
+  entry_points = [ [
+        "email_aliases_bubble",
+        rebase_path("email_aliases_bubble.ts"),
+      ] ]
+
+  resource_name = "email_aliases_bubble"
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "email_aliases_bubble"
+  output_dir = "$root_gen_dir/brave/components/email_aliases/browser/resources"
+  deps = [ ":email_aliases_bubble" ]
+}

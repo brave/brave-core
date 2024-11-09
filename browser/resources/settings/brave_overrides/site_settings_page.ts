@@ -175,6 +175,20 @@ RegisterPolymerComponentReplacement(
               }
               lists_.permissionsAdvanced.splice(currentIndex, 0, solanaItem)
             }
+            const isEmailAliasesEnabled = loadTimeData.getBoolean('isEmailAliasesFeatureEnabled')
+            if (isEmailAliasesEnabled) {
+              currentIndex++
+              const emailAliasesItem = {
+                route: routes.EMAIL_ALIASES,
+                id: 'braveEmailAliases',
+                label: 'siteSettingsEmailAliases',
+                icon: 'product-email-aliases',
+                enabledLabel: 'siteSettingsEmailAliasesAsk',
+                disabledLabel: 'siteSettingsEmailAliasesBlock'
+              }
+              lists_.permissionsAdvanced.splice(currentIndex, 0,
+                emailAliasesItem)
+            }
           }
         }
         lists_.shieldsBasic = [
