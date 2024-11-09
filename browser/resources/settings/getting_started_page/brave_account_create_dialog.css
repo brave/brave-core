@@ -26,30 +26,34 @@ leo-input:not(:focus):has(> .red) {
 }
 
 .dropdown {
-  --leo-icon-size: 16px;
-  align-items: flex-start;
-  display: flex;
-  font: var(--leo-font-small-regular);
-  gap: 4px;
   height: var(--height);
   margin: calc(-1 * var(--height)) 4px 0px 4px;
   position: relative;
-  transition: all 750ms, z-index 0ms;
+  transition: all 750ms;
   z-index: -1;
 }
 
 .dropdown.visible {
-  margin: 4px 4px 0px 4px;
-  transition: all 750ms, z-index 0ms 750ms;
-  z-index: 1;
+  margin-top: 4px;
 }
 
 .brave-alias-error {
   --height: 36px;
+  --leo-icon-size: 16px;
+  display: flex;
+  font: var(--leo-font-small-regular);
+  gap: 4px;
 }
 
 .password-strength-indicator {
   --height: 18px;
+  display: flex;
+  transition: all 750ms, z-index 0ms;
+}
+
+.password-strength-indicator.visible {
+  transition: all 750ms, z-index 0ms 750ms;
+  z-index: 1;
 }
 
 .password-strength-indicator.weak {
@@ -75,17 +79,6 @@ leo-tooltip {
 leo-tooltip > [slot=content] {
   padding: var(--leo-spacing-l);
   /* width: calc(var(--cr-dialog-width) - 2 * var(--leo-spacing-2xl) - 2 * var(--leo-spacing-l)); */
-}
-
-.password-requirement {
-  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
-  align-items: center;
-  display: flex;
-  gap: 8px;
-}
-
-.password-requirement.requirement-met {
-  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
 }
 
 .lofasz {
@@ -116,8 +109,23 @@ leo-tooltip > [slot=content] {
   transition: 750ms;
 }
 
+.password-requirement {
+  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.password-requirement.requirement-met {
+  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+}
+
 .password-confirmation-result {
   --height: 18px;
+  --leo-icon-size: 16px;
+  display: flex;
+  font: var(--leo-font-small-regular);
+  gap: 4px;
 }
 
 leo-icon[name=check-circle-filled] {
