@@ -152,7 +152,6 @@ import org.chromium.components.commerce.core.ShoppingService;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
-import org.chromium.components.externalauth.ExternalAuthUtils;
 import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
@@ -1656,7 +1655,6 @@ public class BytecodeTest {
                         TabContextMenuItemDelegate.class,
                         Supplier.class,
                         int.class,
-                        ExternalAuthUtils.class,
                         Context.class,
                         ContextMenuParams.class,
                         ContextMenuNativeDelegate.class));
