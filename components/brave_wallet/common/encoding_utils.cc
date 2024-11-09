@@ -38,10 +38,6 @@ std::optional<std::vector<uint8_t>> Base58Decode(const std::string& str,
   return {};
 }
 
-std::string Base58Encode(const std::vector<uint8_t>& bytes) {
-  return EncodeBase58(bytes);
-}
-
 std::string Base58Encode(base::span<const uint8_t> bytes) {
   return EncodeBase58(bytes);
 }

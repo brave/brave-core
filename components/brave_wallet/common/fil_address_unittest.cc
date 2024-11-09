@@ -283,7 +283,7 @@ TEST(FilAddressUnitTest, GetBytes) {
         "4t"
         "pa4mvigcrayh4a");
     EXPECT_EQ(
-        ToHex(base::make_span(fil_address.GetBytes())),
+        ToHex(fil_address.GetBytes()),
         base::ToLowerASCII("0x03B5774F3D8546D3E797653A5423EFFA7AB06D4CD3587"
                            "697D3647798D9FE739167EBEAF1EF"
                            "053F957A7678EE4DE0E32A83"));
