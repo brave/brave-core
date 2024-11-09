@@ -51,7 +51,7 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   protected onCreatePasswordInput(detail: { value: string }) {
     this.password = detail.value
     this.percent = this.regexps.filter(
-      regexp => regexp.test(this.password)
+      regexp => regexp[1] = regexp[0].test(this.password)
     ).length / this.regexps.length * 100
   }
 
@@ -92,7 +92,13 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   protected passwordConfirmation: string = ''
   protected icon: string = 'warning-triangle-filled'
 
-  protected regexps = [ /^.{5,}$/, /[a-z]/, /[A-Z]/, /[0-9]/, /[^a-zA-Z0-9]/ ]
+  protected regexps: Array<[RegExp, boolean, string]> = [
+    [/^.{5,}$/, false, 'At least 5 characters'],
+    [/[a-z]/, false, 'At least 1 lowercase letter'],
+    [/[A-Z]/, false, 'At least 1 uppercase letter'],
+    [/[0-9]/, false, 'At least 1 number'],
+    [/[^a-zA-Z0-9]/, false, 'At least 1 special character']
+  ]
   protected percent: number = 0
 }
 

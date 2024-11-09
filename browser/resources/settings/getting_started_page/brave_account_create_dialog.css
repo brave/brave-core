@@ -41,7 +41,7 @@ leo-input:not(:focus):has(> .red) {
 .dropdown.visible {
   margin: 4px 4px 0px 4px;
   transition: all 750ms, z-index 0ms 750ms;
-  z-index: 0;
+  z-index: 1;
 }
 
 .brave-alias-error {
@@ -49,10 +49,7 @@ leo-input:not(:focus):has(> .red) {
 }
 
 .password-strength-indicator {
-  --height: 16px;
-  align-items: center;
-  gap: unset;
-  justify-content: space-between;
+  --height: 18px;
 }
 
 .password-strength-indicator.weak {
@@ -68,6 +65,33 @@ leo-input:not(:focus):has(> .red) {
 .password-strength-indicator.strong {
   --primary-color: var(--leo-color-systemfeedback-success-icon);
   --secondary-color: var(--leo-color-systemfeedback-success-background);
+}
+
+leo-tooltip {
+  --leo-tooltip-padding: 0px;
+  width: 100%;
+}
+
+leo-tooltip > [slot=content] {
+  padding: var(--leo-spacing-l);
+  /* width: calc(var(--cr-dialog-width) - 2 * var(--leo-spacing-2xl) - 2 * var(--leo-spacing-l)); */
+}
+
+.password-requirement {
+  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.password-requirement.requirement-met {
+  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+}
+
+.lofasz {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .password-strength-bar {

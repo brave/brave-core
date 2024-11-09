@@ -39,28 +39,39 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
           </leo-icon>
-          <div class="password-strength-indicator dropdown ${this.percent !== 0 ? 'visible' : ''} ${this.getCategory()}"
-               slot="errors">
-            <leo-tooltip mode="default">
-              <div class="password-strength-bar">
-                <div class="password-strength"
-                     style="--password-strength: ${this.percent}">
+          <div slot="errors" class="password-strength-indicator dropdown ${this.percent !== 0 ? 'visible' : ''} ${this.getCategory()}">
+            <leo-tooltip mode="default"
+                         mouseleaveTimeout="0"
+                         placement="bottom">
+              <div class="lofasz">
+                <div class="password-strength-bar">
+                  <div class="password-strength"
+                       style="--password-strength: ${this.percent}">
+                  </div>
+                </div>
+                <div class="password-strength-category">
+                  ${(() => {
+                    switch(this.getCategory()) {
+                      case 'weak':
+                        return 'Weak'
+                      case 'medium':
+                        return 'Medium'
+                      case 'strong':
+                        return 'Strong'
+                    }
+                  })()}
                 </div>
               </div>
-              <div slot="content">Tooltip</div>
+              <div slot="content">
+                Passwords should have:
+                ${this.regexps.map(([_, satisfied, text]) => html`
+                  <div class="password-requirement ${satisfied ? 'requirement-met' : ''}">
+                    <leo-icon name=${satisfied ? 'check-circle-outline' : 'close-circle'}></leo-icon>
+                    ${text}
+                  </div>`
+                )}
+              </div>
             </leo-tooltip>
-            <div class="password-strength-category">
-              ${(() => {
-                switch(this.getCategory()) {
-                  case 'weak':
-                    return 'Weak'
-                  case 'medium':
-                    return 'Medium'
-                  case 'strong':
-                    return 'Strong'
-                }
-              })()}
-            </div>
           </div>
         </leo-input>
         <leo-input placeholder="Confirm your password"
@@ -90,6 +101,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
       </div>
       <div slot="buttons">
         <leo-button ?isDisabled=${!this.isEmailAddressValid
+                               || this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias
                                || !this.isAccountNameValid
                                || this.percent !== 100
                                || this.passwordConfirmation !== this.password
