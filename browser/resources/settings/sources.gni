@@ -121,6 +121,7 @@ brave_settings_ts_files = [
   "brave_web3_domains_page/brave_web3_domains_browser_proxy.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
+  "email_aliases_page/email_aliases_page.ts",
   "getting_started_page/brave_account_browser_proxy.ts",
   "getting_started_page/brave_account_common.ts",
   "getting_started_page/brave_account_create_dialog.html.ts",
