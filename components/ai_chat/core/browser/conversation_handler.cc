@@ -50,7 +50,7 @@ using ai_chat::mojom::ConversationTurn;
 using AssociatedContentDelegate =
     ConversationHandler::AssociatedContentDelegate;
 
-constexpr size_t kDefaultNonContextualSuggestionsCount = 4;
+constexpr size_t kDefaultSuggestionsCount = 4;
 
 }  // namespace
 
@@ -1061,7 +1061,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     // We don't have an external list of all the available suggestions, so we
     // generate all of them  and remove random ones until we have the required
     // number and then shuffle the result.
-    while (suggestions_.size() > kDefaultNonContextualSuggestionsCount) {
+    while (suggestions_.size() > kDefaultSuggestionsCount) {
       auto remove_at = base::RandInt(0, suggestions_.size() - 1);
       suggestions_.erase(suggestions_.begin() + remove_at);
     }
