@@ -92,6 +92,7 @@ class VerticalTabStripRegionView : public views::View,
   }
 
   void ResetExpandedWidth();
+  bool IsMenuShowing() const;
 
   // views::View:
   gfx::Size CalculatePreferredSize(
