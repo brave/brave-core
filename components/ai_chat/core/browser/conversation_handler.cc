@@ -173,7 +173,7 @@ ConversationHandler::ConversationHandler(
   models_observer_.Observe(model_service_.get());
   // TODO(petemill): differ based on premium status, if different
   ChangeModel(model_service->GetDefaultModelKey());
-  GenerateDefaultSuggestions();
+  MaybeSeedOrClearSuggestions();
 }
 
 ConversationHandler::~ConversationHandler() {
@@ -779,27 +779,6 @@ void ConversationHandler::DisassociateContentDelegate() {
   }
 }
 
-void ConversationHandler::GenerateDefaultSuggestions() {
-  suggestions_.emplace_back(STARTER_PROMPT(MEMO));
-  suggestions_.emplace_back(STARTER_PROMPT(INTERVIEW));
-  suggestions_.emplace_back(STARTER_PROMPT(STUDY_PLAN));
-  suggestions_.emplace_back(STARTER_PROMPT(PROJECT_TIMELINE));
-  suggestions_.emplace_back(STARTER_PROMPT(MARKETING_STRATEGY));
-  suggestions_.emplace_back(STARTER_PROMPT(PRESENTATION_OUTLINE));
-  suggestions_.emplace_back(STARTER_PROMPT(BRAINSTORM));
-  suggestions_.emplace_back(STARTER_PROMPT(PROFESSIONAL_EMAIL));
-  suggestions_.emplace_back(STARTER_PROMPT(BUSINESS_PROPOSAL));
-
-  // We don't have an external list of all the available suggestions, so we
-  // generate all of them  and remove random ones until we have the required
-  // number and then shuffle the result.
-  while (suggestions_.size() > kDefaultNonContextualSuggestionsCount) {
-    auto remove_at = base::RandInt(0, suggestions_.size() - 1);
-    suggestions_.erase(suggestions_.begin() + remove_at);
-  }
-  base::RandomShuffle(suggestions_.begin(), suggestions_.end());
-}
-
 void ConversationHandler::GetAssociatedContentInfo(
     GetAssociatedContentInfoCallback callback) {
   BuildAssociatedContentInfo();
@@ -1066,9 +1045,27 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
   const bool is_page_associated =
       IsContentAssociationPossible() && should_send_page_contents_;
 
-  if (!is_page_associated && !suggestions_.empty()) {
+  if (!is_page_associated) {
     suggestions_.clear();
     suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
+    suggestions_.emplace_back(STARTER_PROMPT(MEMO));
+    suggestions_.emplace_back(STARTER_PROMPT(INTERVIEW));
+    suggestions_.emplace_back(STARTER_PROMPT(STUDY_PLAN));
+    suggestions_.emplace_back(STARTER_PROMPT(PROJECT_TIMELINE));
+    suggestions_.emplace_back(STARTER_PROMPT(MARKETING_STRATEGY));
+    suggestions_.emplace_back(STARTER_PROMPT(PRESENTATION_OUTLINE));
+    suggestions_.emplace_back(STARTER_PROMPT(BRAINSTORM));
+    suggestions_.emplace_back(STARTER_PROMPT(PROFESSIONAL_EMAIL));
+    suggestions_.emplace_back(STARTER_PROMPT(BUSINESS_PROPOSAL));
+
+    // We don't have an external list of all the available suggestions, so we
+    // generate all of them  and remove random ones until we have the required
+    // number and then shuffle the result.
+    while (suggestions_.size() > kDefaultNonContextualSuggestionsCount) {
+      auto remove_at = base::RandInt(0, suggestions_.size() - 1);
+      suggestions_.erase(suggestions_.begin() + remove_at);
+    }
+    base::RandomShuffle(suggestions_.begin(), suggestions_.end());
     OnSuggestedQuestionsChanged();
     return;
   }

@@ -314,7 +314,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void PerformQuestionGeneration(std::string page_content,
                                  bool is_video,
                                  std::string invalidation_token);
-  void GenerateDefaultSuggestions();
 
   // Disassociate with the current associated content. Use this instead of
   // settings associated_content_delegegate_ to nullptr to ensure that we
