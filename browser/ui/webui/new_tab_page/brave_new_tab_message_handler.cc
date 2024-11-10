@@ -23,6 +23,7 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -86,6 +87,9 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  pref_data.Set("showBraveVPN", prefs->GetBoolean(kNewTabPageShowBraveVPN));
+#endif
   pref_data.Set(
       "showSearchBox",
       prefs->GetBoolean(brave_search_conversion::prefs::kShowNTPSearchBox));
@@ -329,6 +333,12 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       kNewTabPageShowBraveTalk,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  pref_change_registrar_.Add(
+      kNewTabPageShowBraveVPN,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+#endif
   pref_change_registrar_.Add(
       kNewTabPageHideAllWidgets,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
@@ -452,6 +462,10 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settings_key = kNewTabPageHideAllWidgets;
   } else if (settings_key_input == "showBraveTalk") {
     settings_key = kNewTabPageShowBraveTalk;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  } else if (settings_key_input == "showBraveVPN") {
+    settings_key = kNewTabPageShowBraveVPN;
+#endif
   } else if (settings_key_input == "showSearchBox") {
     settings_key = brave_search_conversion::prefs::kShowNTPSearchBox;
   } else if (settings_key_input == "promptEnableSearchSuggestions") {
