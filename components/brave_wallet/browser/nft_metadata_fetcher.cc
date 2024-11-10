@@ -183,7 +183,7 @@ void NftMetadataFetcher::FetchMetadata(
     }
 
     // Sanitize JSON
-    api_request_helper::SanitizeAndParseJson(
+    api_request_helper::ParseJsonNonBlocking(
         std::move(metadata_json),
         base::BindOnce(&NftMetadataFetcher::OnSanitizeTokenMetadata,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));

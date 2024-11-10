@@ -274,7 +274,7 @@ class APIRequestHelper {
   base::WeakPtrFactory<APIRequestHelper> weak_ptr_factory_{this};
 };
 
-void SanitizeAndParseJson(std::string json,
+void ParseJsonNonBlocking(std::string json,
                           base::OnceCallback<void(ValueOrError)> callback);
 
 }  // namespace api_request_helper
