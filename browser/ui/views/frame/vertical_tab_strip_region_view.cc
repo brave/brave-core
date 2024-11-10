@@ -1414,12 +1414,16 @@ views::LabelButton& VerticalTabStripRegionView::GetToggleButtonForTesting() {
   return *header_view_->toggle_button();
 }
 
+bool VerticalTabStripRegionView::IsMenuShowing() const {
+  return menu_runner_ && menu_runner_->IsRunning();
+}
+
 // Show context menu in unobscured area.
 void VerticalTabStripRegionView::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& p,
     ui::MenuSourceType source_type) {
-  if (menu_runner_ && menu_runner_->IsRunning()) {
+  if (IsMenuShowing()) {
     return;
   }
 

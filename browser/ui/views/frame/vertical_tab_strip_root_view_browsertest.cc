@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/views/frame/vertical_tab_strip_root_view.h"
+
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tab_strip_root_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
@@ -14,11 +15,11 @@
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/dragdrop/drag_drop_types.h"
 #include "ui/base/dragdrop/drop_target_event.h"
 #include "ui/base/dragdrop/mojom/drag_drop_types.mojom.h"
 #include "ui/base/dragdrop/os_exchange_data.h"
-#include "ui/compositor/layer_tree_owner.h"
 
 class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
  public:
@@ -150,4 +151,21 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest, DragOnCurrentTab) {
                   ->GetWebContentsAt(0)
                   ->GetURL()
                   .EqualsIgnoringRef(url));
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
+                       ContextMenuInUnobscuredRegion) {
+  ToggleVerticalTabStrip();
+
+  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+
+  auto* vtab_strip_root_view =
+      vtab_tab_strip_widget_delegate_view()->vertical_tab_strip_region_view();
+
+  EXPECT_FALSE(vtab_strip_root_view->IsMenuShowing());
+
+  vtab_strip_root_view->ShowContextMenuForView(
+      vtab_strip_root_view, gfx::Point(), ui::MENU_SOURCE_MOUSE);
+
+  EXPECT_TRUE(vtab_strip_root_view->IsMenuShowing());
 }
