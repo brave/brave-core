@@ -36,6 +36,7 @@ export class SettingsBraveAccountRow extends CrLitElement {
   static override get properties() {
     return {
       dialogType: { type: DialogType },
+      signedIn: { type: Boolean },
     }
   }
 
@@ -54,6 +55,7 @@ export class SettingsBraveAccountRow extends CrLitElement {
   }
 
   protected dialogType: DialogType = DialogType.NONE
+  protected signedIn: boolean = false
 }
 
 declare global {

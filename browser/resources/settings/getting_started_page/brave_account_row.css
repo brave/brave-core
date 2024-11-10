@@ -38,9 +38,17 @@
   font: var(--leo-font-default-semibold);
 }
 
+.text-top.signed-in {
+  font: var(--leo-font-large-semibold);
+}
+
 .text-bottom {
   color: var(--leo-color-text-secondary);
   font: var(--leo-font-small-regular);
+}
+
+.text-bottom.signed-in {
+  font: var(--leo-font-default-regular);
 }
 
 leo-button {

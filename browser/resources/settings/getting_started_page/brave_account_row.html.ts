@@ -18,12 +18,17 @@ export function getHtml(this: SettingsBraveAccountRow) {
         </leo-icon>
       </div>
       <div class="texts">
-        <div class="text-top">Sign in or create a Brave account</div>
-        <div class="text-bottom">$i18n{braveSyncBraveAccountDesc}</div>
+        <div class="text-top ${this.signedIn ? 'signed-in' : ''}">
+          ${this.signedIn ? 'Szilard Szaloki' : 'Sign in or create a Brave account'}
+        </div>
+        <div class="text-bottom ${this.signedIn ? 'signed-in' : ''}">
+          ${this.signedIn ? 'szilardszaloki@gmail.com' : '$i18n{braveSyncBraveAccountDesc}'}
+        </div>
       </div>
-      <leo-button size="small"
-                  @click=${() => this.dialogType = DialogType.ENTRY}>
-        Get started
+      <leo-button kind=${this.signedIn ? 'outline' : 'filled'}
+                  size="small"
+                  @click=${this.signedIn ? () => this.signedIn = false : () => this.dialogType = DialogType.ENTRY}>
+        ${this.signedIn ? 'Manage account' : 'Get started'}
       </leo-button>
     </div>
     ${(() => {
@@ -51,7 +56,8 @@ export function getHtml(this: SettingsBraveAccountRow) {
             <settings-brave-account-sign-in-dialog
               @back-button-clicked=${this.onBackButtonClicked}
               @close=${() => this.dialogType = DialogType.NONE}
-              @forgot-password-button-clicked=${() => this.dialogType = DialogType.FORGOT_PASSWORD}>
+              @forgot-password-button-clicked=${() => this.dialogType = DialogType.FORGOT_PASSWORD}
+              @sign-in-button-clicked=${() => {this.dialogType = DialogType.NONE; this.signedIn = true}}>
             </settings-brave-account-sign-in-dialog>
           `
         case DialogType.FORGOT_PASSWORD:
