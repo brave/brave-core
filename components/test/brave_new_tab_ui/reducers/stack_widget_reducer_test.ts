@@ -76,7 +76,7 @@ describe('stackWidgetReducer', () => {
       const expectedState = {
         ...storage.defaultState,
         showBraveTalk: true,
-        widgetStackOrder: ['rewards', 'braveTalk']
+        widgetStackOrder: ['rewards', 'braveVPN', 'braveTalk']
       }
       const assertion = handleWidgetPrefsChange(newState, oldState)
       expect(assertion).toEqual(expectedState)
