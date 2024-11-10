@@ -10,6 +10,7 @@
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -411,6 +412,26 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"rewardsVBATNoticeTitle1", IDS_REWARDS_VBAT_NOTICE_TITLE1},
 
                {"loading", IDS_BRAVE_REWARDS_LOADING_LABEL},
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN) & !BUILDFLAG(IS_ANDROID)
+               // Brave VPN Widget
+               {"braveVpnWidgetTitle", IDS_BRAVE_VPN_WIDGET_TITLE},
+               {"braveVpnWidgetSettingTitle", IDS_BRAVE_VPN_WIDGET_TITLE},
+               {"braveVpnWidgetSettingDesc", IDS_BRAVE_VPN_WIDGET_SETTING_DESC},
+               {"braveVpnFeature1", IDS_BRAVE_VPN_FEATURE_1},
+               {"braveVpnFeature2", IDS_BRAVE_VPN_FEATURE_2},
+               {"braveVpnWidgetFeature3", IDS_BRAVE_VPN_WIDGET_FEATURE_3},
+               {"braveVpnConnected", IDS_BRAVE_VPN_CONNECTED},
+               {"braveVpnConnecting", IDS_BRAVE_VPN_CONNECTING},
+               {"braveVpnDisconnected", IDS_BRAVE_VPN_DISCONNECTED},
+               {"braveVpnDisconnecting", IDS_BRAVE_VPN_DISCONNECTING},
+               {"braveVpnPoweredBy", IDS_BRAVE_VPN_POWERED_BY},
+               {"braveVpnOptimal",
+                IDS_BRAVE_VPN_SERVER_SELECTION_OPTIMAL_LABEL},
+               {"braveVpnChangeRegion", IDS_BRAVE_VPN_WIDGET_CHANGE_LABEL},
+               {"braveVpnCTA", IDS_BRAVE_VPN_WIDGET_CTA},
+               {"braveVpnFreeTrial", IDS_BRAVE_VPN_WIDGET_FREE_TRIAL},
+#endif
 
                // Brave Talk  Widget
                {"braveTalkWidgetTitle", IDS_BRAVE_TALK_WIDGET_TITLE},

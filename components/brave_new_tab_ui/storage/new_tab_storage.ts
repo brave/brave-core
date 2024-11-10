@@ -27,6 +27,7 @@ export const defaultState: NewTab.State = {
   customLinksNum: 0,
   showRewards: false,
   showBraveTalk: false,
+  showBraveVPN: false,
   showSearchBox: true,
   promptEnableSearchSuggestions: true,
   searchSuggestionsEnabled: false,
@@ -85,7 +86,7 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['rewards'],
+  widgetStackOrder: ['rewards', 'braveVPN'],
   customImageBackgrounds: []
 }
 
