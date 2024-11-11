@@ -11,7 +11,6 @@ import * as braveVPNActions from '../actions/brave_vpn_actions'
 
 export const enum types {
   NEW_TAB_STATS_UPDATED = '@@newtab/NEW_TAB_STATS_UPDATED',
-  NEW_TAB_PRIVATE_TAB_DATA_UPDATED = '@@newtab/NEW_TAB_PRIVATE_TAB_DATA_UPDATED',
   NEW_TAB_TOR_TAB_DATA_UPDATED = '@@newtab/NEW_TAB_TOR_TAB_DATA_UPDATED',
   NEW_TAB_ADS_DATA_UPDATED = '@@newtab/NEW_TAB_ADS_DATA_UPDATED',
   NEW_TAB_PREFERENCES_UPDATED = '@@newtab/NEW_TAB_PREFERENCES_UPDATED',

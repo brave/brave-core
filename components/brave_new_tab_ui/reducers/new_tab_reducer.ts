@@ -8,7 +8,6 @@ import { Reducer } from 'redux'
 // Constants
 import { types, DismissBrandedWallpaperNotificationPayload } from '../constants/new_tab_types'
 import { Stats } from '../api/stats'
-import { PrivateTabData } from '../api/privateTabData'
 
 // API
 import * as backgroundAPI from '../api/background'
@@ -42,7 +41,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         initialDataLoaded: true,
         ...initialDataPayload.preferences,
         stats: initialDataPayload.stats,
-        ...initialDataPayload.privateTabData,
         braveRewardsSupported: initialDataPayload.braveRewardsSupported,
         braveTalkSupported: initialDataPayload.braveTalkSupported,
         searchPromotionEnabled: initialDataPayload.searchPromotionEnabled,
@@ -161,15 +159,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state = {
         ...state,
         customImageBackgrounds: customBackgrounds.map(background => ({ type: 'image', wallpaperImageUrl: background.url.url }))
-      }
-      break
-
-    case types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED:
-      const privateTabData = payload as PrivateTabData
-      state = {
-        ...state,
-        useAlternativePrivateSearchEngine: privateTabData.useAlternativePrivateSearchEngine,
-        showAlternativePrivateSearchEngineToggle: privateTabData.showAlternativePrivateSearchEngineToggle
       }
       break
 

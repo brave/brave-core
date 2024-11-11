@@ -18,7 +18,6 @@
 #include "chrome/browser/search_engine_choice/search_engine_choice_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/pref_names.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_data.h"
@@ -41,56 +40,6 @@ void SetBraveAsDefaultPrivateSearchProvider(Profile* profile) {
                    data->sync_guid);
   prefs->SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
                  TemplateURLDataToDictionary(*data));
-}
-
-void RegisterSearchEngineProviderPrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(kUseAlternativePrivateSearchEngineProvider,
-                                false);
-  registry->RegisterBooleanPref(
-      kShowAlternativePrivateSearchEngineProviderToggle, false);
-}
-
-void MigrateSearchEngineProviderPrefs(PrefService* prefs) {
-  const bool need_migrate =
-      prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle) &&
-      prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider);
-
-  if (!need_migrate) {
-    // Clear and early return when doesn't need migration.
-    prefs->ClearPref(kShowAlternativePrivateSearchEngineProviderToggle);
-    prefs->ClearPref(kUseAlternativePrivateSearchEngineProvider);
-    return;
-  }
-
-  // If the user has been using DDG in private profile, set DDG as a initial
-  // provider.
-  static constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
-      alt_search_providers[] = {
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
-          TemplateURLPrepopulateData::
-              PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE};
-
-  std::unique_ptr<TemplateURLData> data;
-  for (const auto& id : alt_search_providers) {
-    data =
-        TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, nullptr, id);
-    if (data)
-      break;
-  }
-
-  // There should ALWAYS be one entry
-  DCHECK(data);
-  prefs->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
-                   data->sync_guid);
-  prefs->SetDict(prefs::kSyncedDefaultPrivateSearchProviderData,
-                 TemplateURLDataToDictionary(*data.get()));
-
-  // From now on, user will not see DDG toggle button and can control search
-  // provider for private window via settings.
-  prefs->ClearPref(kShowAlternativePrivateSearchEngineProviderToggle);
-  prefs->ClearPref(kUseAlternativePrivateSearchEngineProvider);
 }
 
 void UpdateDefaultPrivateSearchProviderData(Profile* profile) {

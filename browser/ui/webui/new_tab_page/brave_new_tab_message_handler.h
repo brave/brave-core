@@ -55,11 +55,8 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
 
   void HandleGetPreferences(const base::Value::List& args);
   void HandleGetStats(const base::Value::List& args);
-  void HandleGetPrivateProperties(const base::Value::List& args);
   void HandleGetNewTabAdsData(const base::Value::List& args);
   void HandleSaveNewTabPagePref(const base::Value::List& args);
-  void HandleToggleAlternativeSearchEngineProvider(
-      const base::Value::List& args);
   void HandleRegisterNewTabPageView(const base::Value::List& args);
   void HandleBrandedWallpaperLogoClicked(const base::Value::List& args);
   void HandleGetWallpaperData(const base::Value::List& args);
@@ -67,7 +64,6 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
 
   void OnStatsChanged();
   void OnPreferencesChanged();
-  void OnPrivatePropertiesChanged();
 
   base::Value::Dict GetAdsDataDictionary() const;
 

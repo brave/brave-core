@@ -9,18 +9,9 @@
 class Profile;
 class PrefService;
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}  // namespace user_prefs
-
 namespace brave {
 
 void SetBraveAsDefaultPrivateSearchProvider(Profile* profile);
-
-// For prefs migration.
-void RegisterSearchEngineProviderPrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry);
-void MigrateSearchEngineProviderPrefs(PrefService* prefs);
 
 // Initialize default provider for private profile.
 void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile* profile);

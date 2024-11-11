@@ -10,7 +10,6 @@
 #include "brave/browser/profile_resetter/brave_profile_resetter.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -90,55 +89,7 @@ std::string GetBraveSearchProviderSyncGUID(Profile* profile) {
   return data->sync_guid;
 }
 
-bool PrepopulatedDataHasDDG(Profile* profile) {
-  static constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
-      alt_search_providers[] = {
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
-          TemplateURLPrepopulateData::
-              PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE};
-
-  CHECK(profile);
-  search_engines::SearchEngineChoiceService* search_engine_choice_service =
-      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(profile);
-
-  for (const auto& id : alt_search_providers) {
-    if (TemplateURLPrepopulateData::GetPrepopulatedEngine(
-            profile->GetPrefs(), search_engine_choice_service, id)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 }  // namespace
-
-// Set alternative search provider prefs and check it's cleared on next
-// launching.
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
-                       PRE_PrivateSearchProviderMigrationTest) {
-  auto* prefs = browser()->profile()->GetPrefs();
-  // Set "US" to make prepopluated data include DDG because this migration test
-  // is for checking alternative search provider(DDG) is set to private search
-  // provider properly.
-  prefs->SetInteger(country_codes::kCountryIDAtInstall, 'U' << 8 | 'S');
-
-  ASSERT_TRUE(PrepopulatedDataHasDDG(browser()->profile()));
-  prefs->SetBoolean(kShowAlternativePrivateSearchEngineProviderToggle, true);
-  prefs->SetBoolean(kUseAlternativePrivateSearchEngineProvider, true);
-}
-
-IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
-                       PrivateSearchProviderMigrationTest) {
-  auto* prefs = browser()->profile()->GetPrefs();
-  prefs->SetInteger(country_codes::kCountryIDAtInstall, 'U' << 8 | 'S');
-  ASSERT_TRUE(PrepopulatedDataHasDDG(browser()->profile()));
-
-  EXPECT_FALSE(
-      prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle));
-  EXPECT_FALSE(prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider));
-}
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_InvalidPrivateSearchProviderRestoreTest) {

@@ -23,9 +23,6 @@ describe('newTabReducer', () => {
   describe('NEW_TAB_STATS_UPDATED', () => {
     // TODO
   })
-  describe('NEW_TAB_PRIVATE_TAB_DATA_UPDATED', () => {
-    // TODO
-  })
   describe('NEW_TAB_DISMISS_BRANDED_WALLPAPER_NOTIFICATION', () => {
     // TODO
   })

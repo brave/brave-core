@@ -9,7 +9,6 @@ import { action } from 'typesafe-actions'
 // Constants
 import { types } from '../constants/new_tab_types'
 import { Stats } from '../api/stats'
-import { PrivateTabData } from '../api/privateTabData'
 import { NewTabAdsData } from '../api/newTabAdsData'
 import { InitialData } from '../api/initialData'
 import { Background, CustomBackground } from '../api/background'
@@ -20,9 +19,6 @@ export const statsUpdated = (stats: Stats) =>
   })
 
 export const init = createAction<void>('page init')
-
-export const privateTabDataUpdated = (data: PrivateTabData) =>
-  action(types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED, data)
 
 export const newTabAdsDataUpdated = (data: NewTabAdsData) =>
   action(types.NEW_TAB_ADS_DATA_UPDATED, data)
