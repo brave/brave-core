@@ -113,6 +113,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8722651357687610395">Nastavit Brave jako výchozí</translation>
 <translation id="2370739752330685659">Možná později</translation>
 <translation id="5100490448228945668">Odmítněte konverzi hledání Brave, odstraňte tento návrh stisknutím klávesy Enter</translation>
+<translation id="6213208892248046484">Přejít na vyhledávání Brave</translation>
 <translation id="9194637241566114638">Pomozte zlepšit <ph name="SEARCH_NAME"/> odesíláním anonymních údajů o použití.  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Vyhledávání Brave</translation>
 <translation id="8184318863960255706">Další informace</translation>
@@ -501,6 +502,9 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7181706637590665047">Nepovolit přístup k prostředkům localhost</translation>
 <translation id="1336116824874668514">Přístup k prostředkům localhost není povolen</translation>
 <translation id="1485435696620658073">Přístup k prostředkům localhost je povolen</translation>
+<translation id="5794692721727586076">Chat Leo AI</translation>
+<translation id="8115153008662981040">Weby mohou požádat o otevření chatu Leo AI</translation>
+<translation id="1145070115730668595">Nepovolovat webům otevírat chat Leo AI</translation>
 <translation id="6414370348346025511">Je zapnutá standardní ochrana.</translation>
 <translation id="5565355416171743213">Začít používat synchronizaci</translation>
 <translation id="4332558599726753990">Nastavení synchronizace</translation>
@@ -573,7 +577,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3128251601544028053">Když píšete do adresního řádku nebo vyhledávacího pole, odesílá Brave to, co píšete, do vašeho výchozího vyhledávače, abyste získali lepší návrhy. V soukromých oknech to není dostupné.</translation>
 <translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
-<translation id="842628013524824194">Normální okno – vyhledávač používaný v adresním řádku</translation>
+<translation id="9195748375338942941">Normální okno – vyhledávač používaný v adresním řádku.</translation>
 <translation id="5324939009884545145">Soukromé okno – vyhledávač používaný v adresním řádku</translation>
 <translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Google</translation>
 <translation id="7878791177459550035">Směrovač médií umožňuje funkci odesílání v prohlížeči.</translation>

@@ -113,6 +113,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8722651357687610395">Ställ in Brave som ordinarie.</translation>
 <translation id="2370739752330685659">Kanske senare</translation>
 <translation id="5100490448228945668">Avvisa Brave-sökkonvertering, tryck på Retur för att ta bort detta förslag</translation>
+<translation id="6213208892248046484">Byt till Brave Sök</translation>
 <translation id="9194637241566114638">Hjälp till att förbättra <ph name="SEARCH_NAME"/> genom att skicka anonyma användningsdata.  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Search</translation>
 <translation id="8184318863960255706">Mer info</translation>
@@ -501,6 +502,9 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7181706637590665047">Tillåt inte åtkomst till localhost-resurser</translation>
 <translation id="1336116824874668514">Inte tillåten att komma åt localhost-resurser</translation>
 <translation id="1485435696620658073">Tillåten att komma åt localhost-resurser</translation>
+<translation id="5794692721727586076">Leo AI-chatt</translation>
+<translation id="8115153008662981040">Webbplatser kan be att få öppna Leo AI-chatt</translation>
+<translation id="1145070115730668595">Tillåt inte webbplats att öppna Leo AI-chatt</translation>
 <translation id="6414370348346025511">Standardskyddet är på.</translation>
 <translation id="5565355416171743213">Börja synka</translation>
 <translation id="4332558599726753990">Synkinställning</translation>
@@ -573,7 +577,7 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="3128251601544028053">När du skriver i adressfältet eller sökrutan skickar Brave det du skriver till din standardsökmotor för att få bättre förslag. Detta är inte tillgängligt i privata fönster.</translation>
 <translation id="6285118765755298263">Indexera andra sökmotorer</translation>
 <translation id="919715748352669592">Indexerar automatiskt webbplatser som följer OpenSearch-specifikationerna.</translation>
-<translation id="842628013524824194">Normalt fönster – sökmotorn som används i adressfältet</translation>
+<translation id="9195748375338942941">Normalt fönster – sökmotorn som används i adressfältet.</translation>
 <translation id="5324939009884545145">Privat fönster – sökmotorn som används i adressfältet</translation>
 <translation id="6864914031231797928">Tillåt Google-inloggning för tillägg</translation>
 <translation id="7878791177459550035">Mediarouter aktiverar cast-funktion i webbläsaren.</translation>
