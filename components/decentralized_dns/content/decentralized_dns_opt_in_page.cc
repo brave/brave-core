@@ -58,13 +58,13 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
     case security_interstitials::CMD_DONT_PROCEED:
       static_cast<DecentralizedDnsInterstitialControllerClient*>(controller())
           ->DontProceed();
-      break;
+      return;
     case security_interstitials::CMD_PROCEED:
       controller()->Proceed();
-      break;
-    default:
-      NOTREACHED_IN_MIGRATION() << "Unsupported command: " << command;
+      return;
   }
+
+  NOTREACHED() << "Unsupported command: " << command;
 }
 
 void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
@@ -130,7 +130,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
                                IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH),
                            {sol_domain, sns_wiki_link}, nullptr));
   } else {
-    NOTREACHED_IN_MIGRATION();
+    NOTREACHED();
   }
 
   if (IsSnsTLD(request_url_.host_piece())) {
