@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Víta vás prehliadač Brave</translation>
 <translation id="4117451092682672487">Jednoduchý spôsob ochrany vášho súkromia.</translation>
 <translation id="7909375417585209817">S Brave ako predvoleným prehliadačom sa každý odkaz, na ktorý ťuknete, otvorí s ochranou osobných údajov Brave.</translation>
+<translation id="3737878115109582442">Pridajte vyhľadávaciu miniaplikáciu</translation>
+<translation id="6199413390010319240">Majte Brave na dosah ruky a objavujte web rýchlejšie.</translation>
+<translation id="4338600611020922010">Pridajte na plochu</translation>
 <translation id="7370959926683925817">Blokovať reklamy. Uložiť dáta. Každý jeden deň.</translation>
 <translation id="7281027579943912834">Keď je Brave predvolený, každý odkaz, na ktorý klepnete, získa ochranu proti blokovaniu reklám Brave. Každá stránka, video a stream.</translation>
 <translation id="5148943178722443958">Pomôžte zlepšiť prehliadač Brave.</translation>
@@ -483,7 +486,11 @@ Naozaj chcete pokračovať?</translation>
 <translation id="9055546041146396417">Ak sa táto stránka javí ako poškodená, skúste štíty nadol.</translation>
 <translation id="1209739344687072997">Nahlásiť nefunkčnú stránku</translation>
 <translation id="8510478288840333677">Oznámte vývojárom Brave, ak táto stránka nefunguje správne so Štítmi:</translation>
-<translation id="5429200298326665264">Poznámka: Táto adresa stránky sa odošle s vaším číslom verzie Brave a vašou IP adresou (neuloží sa).</translation>
+<translation id="1653405824851871276">Ďakujeme, že pomáhate zlepšovať prehliadač Brave pre všetkých. Táto správa bude obsahovať len informácie, ktoré potrebujeme na opravu tejto lokality. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Dozvedieť sa viac.</translation>
+<translation id="8740275226259417070">Toto je chybová stránka. Nemôžno ju nahlásiť ako nefunkčnú lokalitu.</translation>
+<translation id="721949491455392748">Pridať snímku obrazovky aktuálnej stránky</translation>
+<translation id="8459191579769999214">Zobraziť snímku obrazovky</translation>
 <translation id="5299848999918506028">Ďakujeme!</translation>
 <translation id="76550953340008122">Ďakujeme, že ste vývojárom Brave oznámili, že na tejto stránke je niečo chybné. Urobíme všetko pre to, aby sme to napravili!</translation>
 <translation id="650318023204990401">Pokročilé ovládanie</translation>
@@ -662,6 +669,8 @@ Naozaj chcete pokračovať?</translation>
 <translation id="6284218950354553099">Automaticky odoslať správu o dennom využívaní službe Brave</translation>
 <translation id="2181060149810222381">Tento súkromný ping umožňuje spoločnosti Brave odhadnúť počet aktívnych používateľov.</translation>
 <translation id="6725413948756358325">Název účtu</translation>
+<translation id="3240773103344793224">Bola podaná žiadosť o zmenu vlastníctva účtu</translation>
+<translation id="8041423758956015568">Touto transakciou sa vlastníctvo účtu opätovne pridelí novému programu. Táto akcia je nezvratná a môže viesť k strate finančných prostriedkov.</translation>
 <translation id="6062431965141524986">Sekundárny účet možno vytvoriť importovaním vášho súkromného kľúča.</translation>
 <translation id="3952797765659730604">Zadajte, vložte alebo naimportujte súbor s reťazcom súkromného kľúča alebo JSON.</translation>
 <translation id="569068482611873351">Import...</translation>
@@ -728,7 +737,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="5747552184818312860">Koniec platnosti</translation>
 <translation id="1656814355341174523">Spravovať predplatné</translation>
 <translation id="1919008675977575793">Server</translation>
-<translation id="4812684235631257312">Hostiteľ</translation>
 <translation id="5646376287012673985">Poloha</translation>
 <translation id="8375573361134671513">Obnoviť konfiguráciu</translation>
 <translation id="850405162932416400">Podpora VPN</translation>
@@ -755,6 +763,8 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="5431902940483264007">Optimálne</translation>
 <translation id="6527596624419285047">Použiť najlepší dostupný server</translation>
 <translation id="6789157560111825412">Dostupné servery</translation>
+<translation id="5823953367746119927">Oblasť servera</translation>
+<translation id="6991535320595227154">Server <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Zvoliť problém</translation>
 <translation id="6687228121145903051">Nedá sa pripojiť k VPN (iná chyba)</translation>
 <translation id="9184988385244077767">Pri pripojení nebol žiadny internet</translation>
@@ -1079,8 +1089,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="622372328961630111">Automaticky pridávajte NFT, ktoré vlastníte, do peňaženky pomocou rozhraní API tretích strán. <ph name="BEGIN_LINK_1"/>Ďalšie informácie.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Účet vyhľadávacej tabuľky adries:</translation>
 <translation id="7659483790930268440">Index vyhľadávacej tabuľky adries:</translation>
-<translation id="4932733599132424254">Dátum</translation>
-<translation id="346505172740911461">Trhová cena</translation>
 <translation id="5494920125229734069">Vybrať všetko</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Prihláste sa pomocou peňaženky Brave</translation>
@@ -1095,6 +1103,8 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="6165101586663336913">Reštart asistenta Leo bude vyžadovať, aby ste sa v budúcnosti prihlásili na používanie Leo a tiež vymaže vašu históriu chatu. Vymazaním histórie chatu sa vymažú všetky vaše predchádzajúce konverzácie s asistentom Leo. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="3692772534525889713">Prepojte nákup v Obchode Play so svojím účtom Brave a používajte Brave Leo na iných zariadeniach.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Jeden rok</translation>
+<translation id="2985392169397572983">NAJLEPŠIA HODNOTA</translation>
 <translation id="1166682575529520472">Mesačne</translation>
 <translation id="451189393813405346">Opýtajte sa Lea</translation>
 <translation id="7322560193401221004">Zapamätať si pozíciu prehrávania súboru</translation>
@@ -1163,7 +1173,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="2389665228467129817">Chatujte dlhšie</translation>
 <translation id="4314705522985583059">Získajte vyššie limity sadzieb za dlhšie rozhovory.</translation>
 <translation id="6365289557497555234">Všetky typy predplatného sa automaticky obnovujú, ale je možné ich kedykoľvek pred obnovením zrušiť.</translation>
-<translation id="6637015365469044269">Aktualizujte teraz</translation>
+<translation id="5543505256451301851">Vyskúšajte 7  dní zdarma</translation>
 <translation id="614530507403667291">Predvolený model pre nové konverzácie</translation>
 <translation id="4071849832011229600">Predvolený model</translation>
 <translation id="4185473179105062442">Získajte BAT priamo na Vašu krypto adresu s vlastnou úschovou</translation>

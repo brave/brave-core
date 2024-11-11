@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Välkommen till Brave</translation>
 <translation id="4117451092682672487">Sekretess har gjorts enkelt.</translation>
 <translation id="7909375417585209817">Om du gör Brave till standard öppnas alla länkar som du trycker på med Braves sekretesskydd.</translation>
+<translation id="3737878115109582442">Lägg till sökwidget</translation>
+<translation id="6199413390010319240">Med Brave till hands kan du utforska webben snabbare.</translation>
+<translation id="4338600611020922010">Lägg till på startskärmen</translation>
 <translation id="7370959926683925817">Blockera annonser. Spara data. Varje dag.</translation>
 <translation id="7281027579943912834">Med Brave som standard får varje länk du trycker på Braves annonsblocksskydd. Varje sida, video och stream.</translation>
 <translation id="5148943178722443958">Hjälp till att göra Brave bättre.</translation>
@@ -483,7 +486,11 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="9055546041146396417">Prova att ha Shields nere om det verkar vara fel på sajten.</translation>
 <translation id="1209739344687072997">Rapportera en trasig webbplats</translation>
 <translation id="8510478288840333677">Låt Braves utvecklare veta att denna webbplats inte fungerar korrekt med Shields:</translation>
-<translation id="5429200298326665264">Obs: Sajtens adress kommer att skickas in tillsammans med ditt versionsnummer av Brave och din IP-adress (som ej sparas).</translation>
+<translation id="1653405824851871276">Tack för att du hjälper till att göra Brave bättre för alla. Denna rapport kommer endast att innehålla information som är nödvändig för att vi ska kunna åtgärda webbplatsen. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Lär dig mer.</translation>
+<translation id="8740275226259417070">Detta är en felsida. Den kan inte rapporteras som en ej fungerande webbplats.</translation>
+<translation id="721949491455392748">Inkludera skärmdump av den aktuella sidan</translation>
+<translation id="8459191579769999214">Visa skärmdump</translation>
 <translation id="5299848999918506028">Tack!</translation>
 <translation id="76550953340008122">Tack för att du lät Braves utvecklare veta att något är fel på denna webbplats. Vi ska göra vårt bästa för att fixa det!</translation>
 <translation id="650318023204990401">Avancerade kontroller</translation>
@@ -662,6 +669,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="6284218950354553099">Skicka daglig användningsping till Brave automatiskt</translation>
 <translation id="2181060149810222381">Den här privata pingen låter Brave uppskatta antalet aktiva användare</translation>
 <translation id="6725413948756358325">Kontonamn</translation>
+<translation id="3240773103344793224">Begäran om ändring av kontoinnehav</translation>
+<translation id="8041423758956015568">Denna transaktion kommer att omfördela äganderätten till kontot till ett nytt program. Denna åtgärd är oåterkallelig och kan leda till förlust av medel.</translation>
 <translation id="6062431965141524986">Du kan skapa ett sekundärt konto genom att importera din privata nyckel.</translation>
 <translation id="3952797765659730604">Ange, klistra in eller importera den privata nyckelsträngfilen eller JSON.</translation>
 <translation id="569068482611873351">Importera ...</translation>
@@ -728,7 +737,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="5747552184818312860">Upphör att gälla</translation>
 <translation id="1656814355341174523">Hantera prenumeration</translation>
 <translation id="1919008675977575793">Server</translation>
-<translation id="4812684235631257312">Värd</translation>
 <translation id="5646376287012673985">Plats</translation>
 <translation id="8375573361134671513">Återställ konfiguration</translation>
 <translation id="850405162932416400">VPN Support</translation>
@@ -755,6 +763,8 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="5431902940483264007">Optimal</translation>
 <translation id="6527596624419285047">Använd den bästa tillgängliga servern</translation>
 <translation id="6789157560111825412">Tillgängliga servrar</translation>
+<translation id="5823953367746119927">Serverregion</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/> server</translation>
 <translation id="4397083831618200686">Välj problem</translation>
 <translation id="6687228121145903051">Kan inte ansluta till VPN (annat fel)</translation>
 <translation id="9184988385244077767">Inget internet när det är anslutet</translation>
@@ -1079,8 +1089,6 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="622372328961630111">Lägg automatiskt till NFT:er du äger i plånboken med hjälp av tredjeparts-API:er. <ph name="BEGIN_LINK_1"/>Läs mer.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Konto för adressökningstabell:</translation>
 <translation id="7659483790930268440">Index för adressökningstabell:</translation>
-<translation id="4932733599132424254">Datum</translation>
-<translation id="346505172740911461">Marknadspris</translation>
 <translation id="5494920125229734069">Markera alla</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Logga in med Brave Wallet</translation>
@@ -1095,6 +1103,8 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6165101586663336913">För att återställa Leo-assistenten måste du välja att använda Leo i framtiden och det kommer också att rensa din chatthistorik. När din chatthistorik rensas raderas alla dina tidigare konversationer med Leo. Det går inte att ångra den här åtgärden.</translation>
 <translation id="3692772534525889713">Länka Play Butik-köp till ditt Brave-konto för att använda Brave Leo på andra enheter.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Ett år</translation>
+<translation id="2985392169397572983">BÄSTA VÄRDE</translation>
 <translation id="1166682575529520472">Månatligen</translation>
 <translation id="451189393813405346">Fråga Leo</translation>
 <translation id="7322560193401221004">Kom ihåg filens uppspelningsposition</translation>
@@ -1163,7 +1173,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="2389665228467129817">Chatta längre</translation>
 <translation id="4314705522985583059">Få högre gränser för längre konversationer.</translation>
 <translation id="6365289557497555234">Alla prenumerationer förnyas automatiskt men kan avbrytas när som helst innan förnyelsen.</translation>
-<translation id="6637015365469044269">Uppgradera nu</translation>
+<translation id="5543505256451301851">Prova gratis i 7 dagar</translation>
 <translation id="614530507403667291">Standardmodell för nya konversationer</translation>
 <translation id="4071849832011229600">Standardmodell</translation>
 <translation id="4185473179105062442">Ta emot BAT direkt till en kryptoadress för självförvaring.</translation>

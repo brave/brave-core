@@ -163,8 +163,6 @@
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
 <translation id="3110968385867124099">Deze pagina kan niet worden gerapporteerd omdat deze niet wordt aangeboden via HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Deze pagina is een lokale webpagina en kan niet worden gerapporteerd.</translation>
-<translation id="3645455863322075098">Deze pagina is een foutpagina en kan niet worden gerapporteerd.</translation>
-<translation id="105644511106871142">Bedankt voor uw hulp om Brave voor iedereen te verbeteren. In dit rapport wordt alleen informatie naar ons verzonden die nodig is om deze site te herstellen.</translation>
 <translation id="6476216365964140603">Aanvullende gegevens (optioneel)</translation>
 <translation id="6145852496180774737">Neem contact met me op via: (optioneel)</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
@@ -625,6 +623,11 @@
 <translation id="7924320838799747606">Je overzicht</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="7751260505918304024">Alles weergeven</translation>
+<translation id="4114667046481794032">Bijdragebedrag</translation>
+<translation id="7550470870580166294">Onvoldoende saldo</translation>
+<translation id="1166682575529520472">Maandelijks</translation>
+<translation id="7138678301420049075">Overige</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">account</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">domein</translation>
@@ -1167,10 +1170,9 @@
 <translation id="5722321409991816187">Spam-NFT's weergeven</translation>
 <translation id="2588752742385122166">Portfolio-instellingen</translation>
 <translation id="7662492121143629144">Alle accounts</translation>
+<translation id="8845001906332463065">Hulp vragen</translation>
 <translation id="6954150712710630841">Transactie ingediend</translation>
-<translation id="905855245798176174">De transactie is succesvol naar het netwerk verzonden en wacht op bevestiging</translation>
 <translation id="619697073289995370">Transactie ondertekend</translation>
-<translation id="7493732383203109611">De transactie is ondertekend en wordt verzonden naar het netwerk met de DApp</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> is teruggestort in uw wallet</translation>
 <translation id="4577432071459867390">Transactie mislukt</translation>
 <translation id="4359235192593147041">Transactie is mislukt vanwege een aanzienlijke prijsfluctuatie. Verhoog de risicotolerantie om transacties bij aanzienlijke prijsfluctuaties te laten slagen.</translation>
@@ -1534,7 +1536,6 @@
 <translation id="1472675084647422956">Meer weergeven</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="7144878232160441200">Opnieuw proberen</translation>
-<translation id="7138678301420049075">Overige</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -1612,7 +1613,6 @@
 <translation id="7056969230130642253">U bent helemaal bij!</translation>
 <translation id="7292242212818928219">Er is nieuwe content beschikbaar. Vernieuwen?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Snelle opdrachten</translation>
 <translation id="7481312909269577407">Vooruit</translation>
 <translation id="1272079795634619415">Stop</translation>
 <translation id="302781076327338683">Opnieuw laden en cache omzeilen</translation>
@@ -1765,6 +1765,7 @@
 <translation id="712598284361781729">Nieuwe gesplitste weergave</translation>
 <translation id="1130188644637295274">Openen in gesplitste weergave</translation>
 <translation id="6459036216700972269">Tabbladen niet langer splitsen</translation>
+<translation id="4144468798716165316">Snelle opdrachten</translation>
 <translation id="3617523374417810198">Nieuwe gesplitste weergave</translation>
 <translation id="8571323456914890254">Openen in gesplitste weergave</translation>
 <translation id="5329136173514538969">Tabbladen niet langer splitsen</translation>
@@ -1823,7 +1824,6 @@
 <translation id="1691256669639196606">Abonnement beheren</translation>
 <translation id="2304783958703511257">Geavanceerde instellingen</translation>
 <translation id="3037594989275592390">Taalmodellen</translation>
-<translation id="6637015365469044269">Nu upgraden</translation>
 <translation id="5543505256451301851">Probeer 7 dagen gratis</translation>
 <translation id="849535826888024304">Limiet voor aantal antwoorden is bereikt</translation>
 <translation id="4173478269537830374">Verken verschillende AI-modellen</translation>
@@ -1833,7 +1833,7 @@
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /maand</translation>
 <translation id="5151923271944811339">Naar gratis model gaan</translation>
 <translation id="5474757891469990756">Benut de volledige capaciteit van Leo met Premium:</translation>
-<translation id="5552332211527367850">Als eerste toegang tot krachtige modellen met verschillende vaardigheden</translation>
+<translation id="3453542753968940696">Als eerste toegang tot krachtige modellen met verschillende vaardigheden.</translation>
 <translation id="5031778211368112461">Krijg toegang tot modellen die beter geschikt zijn voor creatieve taken en het genereren van content.</translation>
 <translation id="298783097210745222">Krijg nauwkeurige antwoorden voor meer genuanceerde gesprekken.</translation>
 <translation id="4314705522985583059">Krijg hogere responslimieten voor langere gesprekken.</translation>

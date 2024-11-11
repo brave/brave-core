@@ -172,8 +172,8 @@
 <translation id="8510478288840333677">चलिए Brave के डेवलपर्स को बताएँ कि यह साइट संरक्षण साथ ठीक से काम नहीं करती है:</translation>
 <translation id="3110968385867124099">इस पेज की रिपोर्ट नहीं की जा सकती क्योंकि इसे HTTP/HTTPS पर सर्व नहीं किया गया था.</translation>
 <translation id="7907023135990310743">यह पेज एक लोकल पेज है और रिपोर्टिंग के लिए योग्य नहीं है.</translation>
-<translation id="3645455863322075098">यह पेज एक एरर पेज है और रिपोर्टिंग के योग्य नहीं है.</translation>
-<translation id="105644511106871142">Brave को सभी के लिए बेहतर बनाने में मदद करने के लिए धन्यवाद. यह रिपोर्ट हमें इस साइट को ठीक करने के लिए केवल ज़रूरी जानकारी भेजेगी.</translation>
+<translation id="8740275226259417070">यह एक एरर पेज है. इसे टूटी हुई साइट के तौर पर रिपोर्ट नहीं किया जा सकता.</translation>
+<translation id="6806248680442980382">Brave को सभी के लिए बेहतर बनाने में मदद करने के लिए धन्यवाद.  इस रिपोर्ट में, हमें इस साइट को ठीक करने के लिए बस जो ज़रूरी जानकारी होगी वही शामिल होगी.</translation>
 <translation id="6476216365964140603">अधिक जानकारी (वैकल्पिक)</translation>
 <translation id="6145852496180774737">मुझसे संपर्क करें: (वैकल्पिक)</translation>
 <translation id="7616645803364270729">ईमेल, Twitter, वगैरह.</translation>
@@ -462,6 +462,8 @@
 <translation id="6318437367327684789">हमेशा के लिए</translation>
 <translation id="8797999629784150206">आप अपना <ph name="SITE_PERMISSIONS"/> at any time. <ph name="LEARN_MORE"/> बदल सकते हैं</translation>
 <translation id="581582843259146919">साइट की अनुमति</translation>
+<translation id="7222371875290545057">क्या Leo AI बातचीत को Brave में खोलने की अनुमति दें?</translation>
+<translation id="1518915449477235311">क्या <ph name="URL"/>को Brave में Leo AI बातचीत को खोलने की अनुमति दें?</translation>
 <translation id="4355784577209159847">लेगसी Google साइन-इन के लिए थर्ड पार्टी कुकीज़ के इस्तेमाल की इजाज़त दें</translation>
 <translation id="5770656036486891920"><ph name="URL"/>, लीगेसी Google साइन-इन के लिए तीसरे-पक्ष की कुकी का इस्तेमाल करना चाहता है</translation>
 <translation id="6053826678715267477">लोकलहोस्ट संसाधनों का ऐक्सेस दें</translation>
@@ -695,6 +697,26 @@
 <translation id="957921474773060718">अगला योगदान</translation>
 <translation id="351973834053818251">दोहराया जाने वाला आर्थिक योगदान</translation>
 <translation id="7751260505918304024">सभी दिखाएं</translation>
+<translation id="2894334939992402676">कंट्रीब्यूशन के तरीकों के बारे में और जानें.</translation>
+<translation id="4114667046481794032">योगदान की राशि</translation>
+<translation id="2628057126110572782">यह क्रिएटर इस समय केवल यहाँ दिए गए तरीकों से कंट्रीब्यूशन स्वीकार करता है:</translation>
+<translation id="7396847690567283204">Rewards बैलेंस</translation>
+<translation id="3253225298092156258">मौजूद नहीं है</translation>
+<translation id="8028314716653189513">Brave Software में कंट्रीब्यूट करने के लिए आप जिस तरीके का इस्तेमाल करना चाहते हैं, उसे चुनें:</translation>
+<translation id="4094286757932277327">कस्टोडियल वॉलेट</translation>
+<translation id="1511998469385905184">आप बाद में फिर से कोशिश कर सकते हैं.</translation>
+<translation id="7550470870580166294">अपर्याप्त धन</translation>
+<translation id="7020972866926315918">ऐसा लगता है कि आप Brave रिवॉर्ड के लिए <ph name="PROVIDER"/> से लॉग आउट हो गए हैं. जारी रखने के लिए फिर से लॉग इन करें.</translation>
+<translation id="1166682575529520472">मासिक</translation>
+<translation id="7138678301420049075">अन्य</translation>
+<translation id="2134931506717037391"><ph name="AMOUNT"/> BAT भेजें</translation>
+<translation id="4791565605790056151">कंट्रीब्यूशन भेजा जा रहा है</translation>
+<translation id="8251969358165471584">Web3 वॉलेट</translation>
+<translation id="7160424977552599351">Use your Web3 वॉलेट</translation>
+<translation id="6369571967625114920">Brave प्राइवेट विज्ञापन अभी आपके क्षेत्र में उपलब्ध नहीं हैं.</translation>
+<translation id="5309155375926073606">हाँ, मैं Brave Search में कंट्रीब्यूट करना और <ph name="LINK_BEGIN"/> वेब डिस्कवरी प्रोजेक्ट<ph name="LINK_END"/> में शामिल होना चाहता/चाहती हूँ.</translation>
+<translation id="7285849890826812669">वेब डिस्कवरी प्रोजेक्ट के साथ Brave Search को बेहतर बनाने के लिए कुछ अज्ञात सर्च और ब्राउज़िंग डेटा कंट्रीब्यूट करें. यह पूरी तरह से ओपन-सोर्स है.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">अकाउंट</translation>
 <translation id="4822132585477111396">चेन आई.डी.</translation>
 <translation id="3269475789479462358">डोमेन</translation>
@@ -797,7 +819,6 @@
 <translation id="6517332033658428773">स्वैप रिव्यू करें</translation>
 <translation id="8692596799753687794">कोटेशन प्रोवाइडर चुनें</translation>
 <translation id="463712644600982655">हर एग्रीगेटर अपने API से लिक्विडिटी का इस्तेमाल करके कोटेशन प्रदान करता है. वे अलग-अलग एक्सचेंजों से मूल्य जानकारी इकठ्ठा करते हैं और इस डेटा के आधार पर कीमतें प्रदान करते हैं.</translation>
-<translation id="3253225298092156258">मौजूद नहीं है</translation>
 <translation id="473775607612524610">अपडेट करें</translation>
 <translation id="4389658703251593158">यह जोड़ी <ph name="PROVIDER_NAME"/> ज़रिए सपोर्टेड नहीं है</translation>
 <translation id="1176173785350238153">प्रोवाइडर बदलें</translation>
@@ -1057,6 +1078,8 @@
 <translation id="793994607260936590">पहला</translation>
 <translation id="4709524402122994378">अंतरण</translation>
 <translation id="4591079278963448049">इससे जुड़ा टोकन अकाउंट अभी मौजूद नहीं है. इसे बनाने और इसमें फ़ंड डालने के लिए थोड़े से SOL खर्च करने होंगे.</translation>
+<translation id="3240773103344793224">अकाउंट ओनरशिप में बदलाव का अनुरोध किया गया</translation>
+<translation id="8041423758956015568">यह ट्रांज़ैक्शन अकाउंट के ओनरशिप को एक नए प्रोग्राम में दोबारा असाइन करेगा. यह पहले जैसा नहीं किया जा सकता है और इससे फ़ंड में कमी भी सो सकती है.</translation>
 <translation id="1426320910664514906">गैस की सीमा\n</translation>
 <translation id="1229774280326250926">गैस प्रीमियम</translation>
 <translation id="148169246131967347">गैस फ़ी कैप</translation>
@@ -1278,10 +1301,25 @@
 <translation id="5722321409991816187">स्पैम NFT दिखाएँ</translation>
 <translation id="2588752742385122166">पोर्टफ़ोलियो सेटिंग</translation>
 <translation id="7662492121143629144">सभी अकाउंट</translation>
+<translation id="8845001906332463065">मदद पाएँ</translation>
+<translation id="6248202915200795128">उम्मीद से ज्यादा समय लग रहा है?</translation>
+<translation id="5417904796609871601">एक्टिविटी में देखें</translation>
+<translation id="8915839655070878476">आप इस विंडो को सुरक्षित रूप से बंद कर सकते हैं.</translation>
+<translation id="7020017785602386950"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> को <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> पर भेजा जा रहा है</translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> अकाउंट को <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> पर भेज दिया गया है</translation>
+<translation id="3068919369514041269"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>पर <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> को <ph name="NETWORK"/> में स्वैप किया जा रहा है</translation>
+<translation id="312867981877298982"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> की राशि आपके अकाउंट <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> में जोड़ दी गई है</translation>
+<translation id="2653273412609139189"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> को <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> के साथ ब्रिज कर रहे हैं</translation>
+<translation id="1795341197087004042"><ph name="SEND_SWAP_OR_BRIDGE"/>नहीं हो पाएगा</translation>
+<translation id="6990756606864308319"><ph name="SEND_SWAP_OR_BRIDGE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> पर <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/> करने की कोशिश करने में एरर आई.</translation>
+<translation id="6449575669814542383"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>को इसमें <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/> अप्रूव किया जा रहा है</translation>
+<translation id="8036159955043245753">आपके मौजूदा ट्रांस्जैक्शन को कैंसल करने के लिए एक नया ट्रांस्जैक्शन बनाया जाएगा.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} और ट्रांस्जैक्शन पेंडिंग हैं.}
+      other {{PENDING_TRANSACTIONS} और ट्रांस्जैक्शन पेंडिंग हैं.}
+    }</translation>
 <translation id="6954150712710630841">ट्रांज़ैक्शन सबमिट हो गया है</translation>
-<translation id="905855245798176174">लेनदेन नेटवर्क पर भेज दिया गया है और कन्फ़र्मेशन का इंतज़ार किया जा रहा है.</translation>
 <translation id="619697073289995370">लेन-देन साइन हो गया है</translation>
-<translation id="7493732383203109611">लेन-देन साइन हो गया है और DApp के द्वारा नेटवर्क को भेज दिया जाएगा</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> को वापस आपके वॉलेट में भेज दिया गया था</translation>
 <translation id="4577432071459867390">लेनदेन नहीं हो सका</translation>
 <translation id="4359235192593147041">कीमत में बड़े बदलाव की वजह से लेनदेन नहीं हो पाया. कीमत में बड़े बदलाव के साथ लेनदेन करने के लिए स्लिपेज सीमा बढ़ाएँ.</translation>
@@ -1712,7 +1750,6 @@
 <translation id="1958146856582208323">टोकन ट्रांसफ़र</translation>
 <translation id="3550219298671597013">NFT ट्रांसफ़र</translation>
 <translation id="8043066678623588950">FIL फ़ॉरवर्ड करें</translation>
-<translation id="7138678301420049075">अन्य</translation>
 <translation id="8703556909820882288">कम्प्रेस्ड NFT ट्रांसफ़र</translation>
 <translation id="2713141960460256091">DApp ट्रांज़ैक्शन साइन करें और भेजें</translation>
 <translation id="6387730345715997739">DApp ट्रांज़ैक्शन  के लिए साइन करें</translation>
@@ -1794,7 +1831,6 @@
 <translation id="7056969230130642253">आपने सब देख लिया है</translation>
 <translation id="7292242212818928219">नया कॉन्टेंट उपलब्ध है। क्या रीलोड करना है?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">क्विक कमांड</translation>
 <translation id="7481312909269577407">आगे जाएं</translation>
 <translation id="1272079795634619415">रोकें</translation>
 <translation id="302781076327338683">कैशे को नज़रअंदाज़ करके फिर से लोड करें</translation>
@@ -1947,10 +1983,12 @@
 <translation id="1344005710343072293">इस मेल को पहले से <ph name="COMMAND"/> में इस्तेमाल किया जा रहा है. इसे सेव करने से पहले से बना हुआ शॉर्टकट हट जाएगा.</translation>
 <translation id="831931573200952705">इस मेल को पहले से <ph name="COMMAND"/> में इस्तेमाल किया जा रहा है और इसे बदला नहीं जा सकता.</translation>
 <translation id="3537006124004887164">इस मेल को पहले से<ph name="COMMAND"/> में इस्तेमाल किया जा रहा है और इसे बदला नहीं जा सकता. सिस्टम सेटिंग्स में `ऐप शॉर्टकट` के ज़रिए इसमें बदलाव करने की कोशिश करें.</translation>
+<translation id="8536713137312218707">क्विक कमांड</translation>
 <translation id="712598284361781729">नया स्प्लिट व्यू</translation>
 <translation id="1130188644637295274">स्प्लिट व्यू में खोलें</translation>
 <translation id="6459036216700972269">टैब को अलग करें</translation>
 <translation id="4235382917338421035">टैब की जगह स्वैप करें</translation>
+<translation id="4144468798716165316">क्विक कमांड</translation>
 <translation id="3617523374417810198">नया स्प्लिट व्यू</translation>
 <translation id="8571323456914890254">स्प्लिट व्यू में खोलें</translation>
 <translation id="5329136173514538969">टैब को अलग करें</translation>
@@ -2013,7 +2051,6 @@
 <translation id="1691256669639196606">सदस्यता मैनेज करें</translation>
 <translation id="2304783958703511257">एडवांस सेटिंग</translation>
 <translation id="3037594989275592390">लैंग्वेज मॉडल</translation>
-<translation id="6637015365469044269">अभी अपग्रेड करें</translation>
 <translation id="5543505256451301851">7 दिन फ़्री में आज़माएँ</translation>
 <translation id="849535826888024304">जवाब मिलने की सीमा खत्म हुई</translation>
 <translation id="2252128900328632803">आप लियो के लिए रेट की सीमा पूरी कर चुके हैं. ज़्यादा रिस्पॉन्स पाने के लिए प्रीमियम सब्सक्राइब करें या बाद में फिर से कोशिश करें.</translation>
@@ -2024,7 +2061,7 @@
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD $/महीना</translation>
 <translation id="5151923271944811339">फ़्री मॉडल पर स्विच करें</translation>
 <translation id="5474757891469990756">प्रीमियम के साथ Leo की पूरी ताकत दिखाएँ:</translation>
-<translation id="5552332211527367850">विभिन्न कौशल वाले ताकतवर मॉडलों तक प्राथमिकता वाली एक्सेस</translation>
+<translation id="3453542753968940696">विभिन्न कौशल वाले ताकतवर मॉडलों तक प्राथमिकता वाली एक्सेस।</translation>
 <translation id="5031778211368112461">एक्सेस मॉडल रचनात्मक कार्यों और कंटेंट जेनरेट करने के लिए बेहतर तरीके से अनुकूलित हैं।</translation>
 <translation id="298783097210745222">छोटी मगर अहम बातचीतों के लिए अधिक सटीक जवाब पाएं।</translation>
 <translation id="4314705522985583059">लंबी बातचीत के लिए उच्च दर सीमा पाएं।</translation>
@@ -2053,6 +2090,7 @@
 <translation id="8712637175834984815">समझ लिया</translation>
 <translation id="1093419424466417703">लियो के लिए पेज बहुत लंबा है. हो सकता है बातचीत से कुछ संदर्भ पूरी तरह से ना हों. लियो पेज के <ph name="PERCENTAGE"/> कंटेंट को पढ़ सकता है.</translation>
 <translation id="2186990448773134544">इस पेज पर लियो के लिए बहुत ज़्यादा कंटेंट था, इसलिए यहाँ से संबंधित कंटेंट को एक्सट्रैक्ट करके उसमें सुधार किया गया है.</translation>
+<translation id="5140068729857132378">वेब की सबसे सही जानकारी का हिस्सा ढूंढा जा रहा है…</translation>
 <translation id="4370698775470316661">यह बातचीत बहुत लंबी है, इसलिए इसे जारी नहीं रखा जा सकता है. ऐसे कुछ अन्य मॉडल हो सकते हैं, जिनके साथ लियो लंबी बातचीत के दौरान भी सटीकता बनाए रख सके.</translation>
 <translation id="5719170755629028558">Brave Search के साथ अपने जवाब को बेहतर बनाएं...</translation>
 <translation id="5794962229997281366"><ph name="SEARCH_TERMS"/>के लिए बेहतर जवाब सर्च करता है.</translation>

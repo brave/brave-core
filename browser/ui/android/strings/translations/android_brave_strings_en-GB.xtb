@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="4117451092682672487">Privacy. Made simple.</translation>
 <translation id="7909375417585209817">With Brave as default, every link you tap opens with Brave's privacy protections.</translation>
+<translation id="3737878115109582442">Add the search widget</translation>
+<translation id="6199413390010319240">Have Brave at your fingertips to explore the web faster.</translation>
+<translation id="4338600611020922010">Add to home screen</translation>
 <translation id="7370959926683925817">Block ads. Save data. Every single day.</translation>
 <translation id="7281027579943912834">With Brave as default, every link you tap gets Brave's ad-block protection. Every page, video, and stream.</translation>
 <translation id="5148943178722443958">Help make Brave better.</translation>
@@ -483,7 +486,11 @@ Are you sure you want to do this?</translation>
 <translation id="9055546041146396417">If this site appears broken, try Shields down.</translation>
 <translation id="1209739344687072997">Report a broken site</translation>
 <translation id="8510478288840333677">Let Brave's developers know that this site doesn't work properly with Shields:</translation>
-<translation id="5429200298326665264">Note: this site address will be submitted with your Brave version number and your IP address (which will not be stored).</translation>
+<translation id="1653405824851871276">Thank you for helping make Brave better for all. This report will only contain information necessary for us to fix this site. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Learn more.</translation>
+<translation id="8740275226259417070">This is an error page. It cannot be reported as a broken site.</translation>
+<translation id="721949491455392748">Include screenshot of the current page</translation>
+<translation id="8459191579769999214">View screenshot</translation>
 <translation id="5299848999918506028">Thank you!</translation>
 <translation id="76550953340008122">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</translation>
 <translation id="650318023204990401">Advanced controls</translation>
@@ -662,6 +669,8 @@ Are you sure you want to do this?</translation>
 <translation id="6284218950354553099">Automatically send daily usage ping to Brave</translation>
 <translation id="2181060149810222381">This private ping lets Brave estimate active users.</translation>
 <translation id="6725413948756358325">Account Name</translation>
+<translation id="3240773103344793224">Account ownership change requested</translation>
+<translation id="8041423758956015568">This transaction will reassign ownership of the account to a new program. This action is irreversible and may result in loss of funds.</translation>
 <translation id="6062431965141524986">You can create a secondary account by importing your private key.</translation>
 <translation id="3952797765659730604">Enter, paste, or import your private key string file or JSON.</translation>
 <translation id="569068482611873351">Import...</translation>
@@ -728,7 +737,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5747552184818312860">Expires</translation>
 <translation id="1656814355341174523">Manage subscription</translation>
 <translation id="1919008675977575793">Server</translation>
-<translation id="4812684235631257312">Host</translation>
 <translation id="5646376287012673985">Location</translation>
 <translation id="8375573361134671513">Reset configuration</translation>
 <translation id="850405162932416400">VPN support</translation>
@@ -755,6 +763,8 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5431902940483264007">Optimal</translation>
 <translation id="6527596624419285047">Use the best server available</translation>
 <translation id="6789157560111825412">Available servers</translation>
+<translation id="5823953367746119927">Server region</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/> server</translation>
 <translation id="4397083831618200686">Select issue</translation>
 <translation id="6687228121145903051">Cannot connect to the VPN (Other error)</translation>
 <translation id="9184988385244077767">No Internet when connected</translation>
@@ -1079,8 +1089,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="622372328961630111">Automatically add NFTs you own to the Wallet using third party APIs. <ph name="BEGIN_LINK_1"/>Learn more.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Address look-up table account:</translation>
 <translation id="7659483790930268440">Address look-up table index:</translation>
-<translation id="4932733599132424254">Date</translation>
-<translation id="346505172740911461">Market price</translation>
 <translation id="5494920125229734069">Select all</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Sign in with Brave Wallet</translation>
@@ -1095,6 +1103,8 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6165101586663336913">Resetting the Leo assistant will require you to opt-in to use Leo in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Leo. This action cannot be undone.</translation>
 <translation id="3692772534525889713">Link your Play Store purchase to your Brave account to use Brave Leo on other devices.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">One year</translation>
+<translation id="2985392169397572983">BEST VALUE</translation>
 <translation id="1166682575529520472">Monthly</translation>
 <translation id="451189393813405346">Ask Leo</translation>
 <translation id="7322560193401221004">Remember file playback position</translation>
@@ -1163,7 +1173,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2389665228467129817">Chat for longer</translation>
 <translation id="4314705522985583059">Get higher rate limits for longer conversations.</translation>
 <translation id="6365289557497555234">All subscriptions are auto-renewed but can be\ncancelled at any time before renewal.</translation>
-<translation id="6637015365469044269">Upgrade now</translation>
+<translation id="5543505256451301851">Try 7 days free</translation>
 <translation id="614530507403667291">Default model for new conversations</translation>
 <translation id="4071849832011229600">Default model</translation>
 <translation id="4185473179105062442">Receive BATs directly to a self-custody crypto address</translation>

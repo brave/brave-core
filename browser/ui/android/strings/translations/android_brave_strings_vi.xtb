@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="4117451092682672487">Bảo mật. Đơn giản.</translation>
 <translation id="7909375417585209817">Với việc đặt Brave làm mặc định, mọi liên kết bạn chạm vào sẽ mở ra với các biện pháp bảo vệ quyền riêng tư của Brave.</translation>
+<translation id="3737878115109582442">Thêm tiện ích tìm kiếm</translation>
+<translation id="6199413390010319240">Hãy đặt Brave trong tầm tay để khám phá web nhanh hơn.</translation>
+<translation id="4338600611020922010">Thêm vào Màn hình chính</translation>
 <translation id="7370959926683925817">Chặn quảng cáo. Lưu dữ liệu. Mỗi ngày.</translation>
 <translation id="7281027579943912834">Với Brave làm mặc định, mọi liên kết bạn nhấn vào đều được bảo vệ chặn quảng cáo của Brave. Mọi trang, video và luồng.</translation>
 <translation id="5148943178722443958">Giúp cải thiện Brave.</translation>
@@ -483,7 +486,11 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="9055546041146396417">Nếu trang web này bị hỏng, hãy thử tắt Khiên.</translation>
 <translation id="1209739344687072997">Báo cáo trang web bị hỏng</translation>
 <translation id="8510478288840333677">Hãy thông báo cho các nhà phát triển của Brave biết trang web này không hoạt động đúng cách với Shields:</translation>
-<translation id="5429200298326665264">Lưu ý: Địa chỉ trang web này sẽ được gửi cùng với số phiên bản Brave và địa chỉ IP của bạn (sẽ không được lưu trữ).</translation>
+<translation id="1653405824851871276">Cảm ơn bạn đã giúp Brave tốt hơn cho tất cả mọi người. Báo cáo này sẽ chỉ chứa thông tin cần thiết để chúng tôi sửa trang web này. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Learn more.</translation>
+<translation id="8740275226259417070">Đây là trang lỗi. Không thể báo cáo đây là trang web bị lỗi.</translation>
+<translation id="721949491455392748">Bao gồm ảnh chụp màn hình của trang hiện tại</translation>
+<translation id="8459191579769999214">Xem ảnh chụp màn hình</translation>
 <translation id="5299848999918506028">Cảm ơn bạn!</translation>
 <translation id="76550953340008122">Cảm ơn bạn đã thông báo cho các nhà phát triển của Brave biết rằng đã xảy ra sự cố với trang web này. Chúng tôi sẽ cố gắng hết sức để khắc phục sự cố này!</translation>
 <translation id="650318023204990401">Kiểm soát nâng cao</translation>
@@ -662,6 +669,8 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="6284218950354553099">Tự động gửi ping sử dụng hàng ngày đến Brave</translation>
 <translation id="2181060149810222381">Ping riêng tư này cho phép Brave ước tính người dùng đang hoạt động.</translation>
 <translation id="6725413948756358325">Tên tài khoản</translation>
+<translation id="3240773103344793224">Đã yêu cầu thay đổi quyền sở hữu tài khoản</translation>
+<translation id="8041423758956015568">Giao dịch này sẽ chuyển nhượng lại quyền sở hữu tài khoản cho một chương trình mới. Hành động này là không thể đảo ngược và có thể dẫn đến mất tiền.</translation>
 <translation id="6062431965141524986">Bạn có thể tạo tài khoản phụ bằng cách nhập khóa cá nhân của mình.</translation>
 <translation id="3952797765659730604">Nhập, dán hoặc nhập khẩu tệp chuỗi khóa cá nhân hoặc JSON của bạn.</translation>
 <translation id="569068482611873351">Nhập khẩu...</translation>
@@ -728,7 +737,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="5747552184818312860">Hết hạn</translation>
 <translation id="1656814355341174523">Quản lý đăng ký</translation>
 <translation id="1919008675977575793">Máy chủ</translation>
-<translation id="4812684235631257312">Máy chủ lưu trữ</translation>
 <translation id="5646376287012673985">Vị trí</translation>
 <translation id="8375573361134671513">Đặt lại cấu hình</translation>
 <translation id="850405162932416400">Hỗ trợ VPN</translation>
@@ -755,6 +763,8 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="5431902940483264007">Tối ưu</translation>
 <translation id="6527596624419285047">Sử dụng máy chủ tốt nhất hiện có</translation>
 <translation id="6789157560111825412">Máy chủ khả dụng</translation>
+<translation id="5823953367746119927">Khu vực máy chủ</translation>
+<translation id="6991535320595227154">Máy chủ <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Chọn lỗi</translation>
 <translation id="6687228121145903051">Không thể kết nối với VPN (Lỗi khác)</translation>
 <translation id="9184988385244077767">Không có internet khi kết nối</translation>
@@ -1079,8 +1089,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="622372328961630111">Tự động thêm NFT mà bạn sở hữu vào Ví bằng API của bên thứ ba. <ph name="BEGIN_LINK_1"/>Tìm hiểu thêm.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Tài khoản bảng tra cứu địa chỉ:</translation>
 <translation id="7659483790930268440">Chỉ mục bảng tra cứu địa chỉ:</translation>
-<translation id="4932733599132424254">Ngày</translation>
-<translation id="346505172740911461">Giá thị trường</translation>
 <translation id="5494920125229734069">Chọn tất cả</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Đăng nhập bằng Ví Brave</translation>
@@ -1095,6 +1103,8 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="6165101586663336913">Việc thiết lập lại trợ lý Leo sẽ yêu cầu bạn chọn tham gia sử dụng Brave Leo trong tương lai và cũng sẽ xóa lịch sử trò chuyện của bạn. Xóa lịch sử trò chuyện của bạn sẽ xóa tất cả các cuộc trò chuyện trước đó của bạn với Brave Leo. Hành động này không thể được hoàn tác.</translation>
 <translation id="3692772534525889713">Liên kết giao dịch mua trên Cửa hàng Play với tài khoản Brave của bạn để sử dụng Brave Leo trên các thiết bị khác.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Một năm</translation>
+<translation id="2985392169397572983">GIÁ TRỊ TỐT NHẤT</translation>
 <translation id="1166682575529520472">Hàng tháng</translation>
 <translation id="451189393813405346">Hỏi Leo</translation>
 <translation id="7322560193401221004">Ghi nhớ vị trí phát lại tập tin</translation>
@@ -1163,7 +1173,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="2389665228467129817">Trò chuyện lâu hơn</translation>
 <translation id="4314705522985583059">Nhận giới hạn tốc độ cao hơn cho các cuộc trò chuyện dài hơn.</translation>
 <translation id="6365289557497555234">Tất cả đăng ký đều được tự động gia hạn nhưng có thể\nbị hủy bất kỳ lúc nào trước khi gia hạn.</translation>
-<translation id="6637015365469044269">Nâng cấp ngay</translation>
+<translation id="5543505256451301851">Dùng thử 7 ngày miễn phí</translation>
 <translation id="614530507403667291">Mô hình mặc định cho các cuộc trò chuyện mới</translation>
 <translation id="4071849832011229600">Mô hình mặc định</translation>
 <translation id="4185473179105062442">Nhận BAT trực tiếp đến địa chỉ tiền điện tử tự lưu ký</translation>
