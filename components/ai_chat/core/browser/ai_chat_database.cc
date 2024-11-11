@@ -12,7 +12,6 @@
 
 #include "base/check.h"
 #include "base/strings/string_split.h"
-#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "sql/init_status.h"
@@ -96,65 +95,79 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
   if (!LazyInit()) {
     return {};
   }
-
+  // All conversation metadata, associated content and most
+  // and most recent entry date. 1 row for each associated content.
   static const std::string kQuery =
-      "SELECT conversation.uuid, conversation.title,"
-      " MAX(conversation_entry.date) AS date"
+      "SELECT conversation.uuid, conversation.title, last_activity_date.date,"
+      "  associated_content.id, associated_content.title,"
+      "  associated_content.url, associated_content.content_type,"
+      "  associated_content.content_used_percentage,"
+      "  associated_content.is_content_refined"
       " FROM conversation"
-      " LEFT JOIN conversation_entry"
-      " ON conversation_entry.conversation_uuid = conversation.uuid"
-      " GROUP BY conversation.uuid"
-      " ORDER BY date DESC";
+      " LEFT JOIN associated_content"
+      " ON conversation.uuid = associated_content.conversation_uuid"
+      " LEFT JOIN ("
+      "  SELECT conversation_entry.date AS date, "
+      "  conversation_entry.conversation_uuid AS conversation_uuid "
+      "  FROM conversation_entry"
+      "  GROUP BY conversation_entry.conversation_uuid"
+      "  ORDER BY conversation_entry.date desc) "
+      " AS last_activity_date"
+      " ON last_activity_date.conversation_uuid = conversation.uuid"
+      " ORDER BY conversation.uuid ASC";
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
 
   std::vector<mojom::ConversationPtr> conversation_list;
+  // This/last row's conversation
+  mojom::ConversationPtr conversation;
 
   while (statement.Step()) {
     DVLOG(1) << __func__ << " got a result";
-    mojom::ConversationPtr conversation = mojom::Conversation::New();
-    conversation->uuid = statement.ColumnString(0);
+    std::string uuid = statement.ColumnString(0);
+    if (conversation) {
+      if (conversation->uuid == uuid) {
+        // TODO(petemill): Support multiple associated content
+        continue;
+      } else {
+        conversation_list.emplace_back(std::move(conversation));
+      }
+    }
+    conversation = mojom::Conversation::New();
+    conversation->uuid = uuid;
     conversation->title =
         DecryptOptionalColumnToString(statement, 1).value_or("");
     conversation->updated_time = statement.ColumnTime(2);
     conversation->has_content = true;
 
-    static const std::string kAssociatedContentQuery =
-        "SELECT id, title, url, content_type, content_used_percentage,"
-        " is_content_refined"
-        " FROM associated_content"
-        " WHERE conversation_uuid=?";
-    sql::Statement associated_content_statement(
-        GetDB().GetCachedStatement(SQL_FROM_HERE, kAssociatedContentQuery));
-    CHECK(associated_content_statement.is_valid());
-    associated_content_statement.BindString(0, conversation->uuid);
-
     conversation->associated_content = mojom::SiteInfo::New();
+
     // Only accepts a single row, for now
-    if (associated_content_statement.Step()) {
+    if (statement.GetColumnType(3) != sql::ColumnType::kNull) {
       DVLOG(1) << __func__ << " got associated content";
 
-      conversation->associated_content->id =
-          associated_content_statement.ColumnInt64(0);
+      conversation->associated_content->id = statement.ColumnInt64(3);
       conversation->associated_content->title =
-          DecryptOptionalColumnToString(associated_content_statement, 1);
-      auto url_raw =
-          DecryptOptionalColumnToString(associated_content_statement, 2);
+          DecryptOptionalColumnToString(statement, 4);
+      auto url_raw = DecryptOptionalColumnToString(statement, 5);
       if (url_raw.has_value()) {
         conversation->associated_content->url = GURL(url_raw.value());
       }
       conversation->associated_content->content_type =
-          static_cast<mojom::ContentType>(
-              associated_content_statement.ColumnInt(3));
+          static_cast<mojom::ContentType>(statement.ColumnInt(6));
       conversation->associated_content->content_used_percentage =
-          associated_content_statement.ColumnInt(4);
+          statement.ColumnInt(7);
       conversation->associated_content->is_content_refined =
-          associated_content_statement.ColumnBool(5);
+          statement.ColumnBool(8);
       conversation->associated_content->is_content_association_possible = true;
     } else {
       conversation->associated_content->is_content_association_possible = false;
     }
 
+    conversation_list.emplace_back(std::move(conversation));
+  }
+  // Final row's conversation
+  if (conversation) {
     conversation_list.emplace_back(std::move(conversation));
   }
 

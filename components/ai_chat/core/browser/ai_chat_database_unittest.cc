@@ -114,6 +114,8 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
 
   // Do this for both associated content and non-associated content
   for (bool has_content : {true, false}) {
+    SCOPED_TRACE(testing::Message() << (has_content ? "With" : "Without")
+                                    << " associated content");
     std::string uuid = has_content ? "first" : "second";
     // Create the conversation metadata which gets persisted
     // when the first entry is asked to be persisted.
