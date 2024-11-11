@@ -124,8 +124,6 @@ std::string GetTargetMajorVersionParamName() {
       return "target_major_version_nightly";
     case Channel::UNKNOWN:
       return "target_major_version_unknown";
-    default:
-      break;
   }
   NOTREACHED() << "All channels are handled above";
 }
