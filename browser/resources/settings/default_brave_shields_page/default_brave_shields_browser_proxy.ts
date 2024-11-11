@@ -85,7 +85,7 @@ export interface DefaultBraveShieldsBrowserProxy {
   /**
    * @return {!Promise<boolean>}
    */
-  getHideBlockAllCookieTogle(): Promise<boolean>  
+  getHideBlockAllCookieTogle(): Promise<boolean>
 }
 
 export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsBrowserProxy {

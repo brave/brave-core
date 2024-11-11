@@ -14,7 +14,6 @@ import androidx.preference.PreferenceCategory;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.brave_shields.mojom.FilterListAndroidHandler;
 import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
@@ -232,7 +231,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
-Log.i("WEBCOMPAT", "rootKey:" + rootKey + " feature:" + ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE));
         // override title
         getActivity().setTitle(R.string.brave_shields_and_privacy);
 
@@ -417,7 +415,6 @@ Log.i("WEBCOMPAT", "rootKey:" + rootKey + " feature:" + ChromeFeatureList.isEnab
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         super.onPreferenceChange(preference, newValue);
-        Log.i("WEBCOMPAT", "onPreferenceChange");
         String key = preference.getKey();
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
@@ -510,7 +507,10 @@ Log.i("WEBCOMPAT", "rootKey:" + rootKey + " feature:" + ChromeFeatureList.isEnab
         } else if (PREF_SHIELDS_SAVE_CONTACT_INFO.equals(key)) {
             mWebcompatReporterHandler.setContactInfoSaveFlag((boolean) newValue);
         } else if (PREF_BLOCK_CROSS_SITE_COOKIES.equals(key)) {
-            mBlockCrosssiteCookies.setVisibleEntry(0, ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE) || (int)newValue == STRICT);
+            mBlockCrosssiteCookies.setVisibleEntry(
+                    0,
+                    ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE)
+                            || (int) newValue == STRICT);
             switch ((int) newValue) {
                 case STRICT:
                     BraveShieldsContentSettings.setCookiesPref(
@@ -638,8 +638,9 @@ Log.i("WEBCOMPAT", "rootKey:" + rootKey + " feature:" + ChromeFeatureList.isEnab
             mAdsTrakersBlockPref.setSummary(
                     getActivity().getResources().getString(R.string.block_trackers_ads_option_3));
         }
-        Log.i("WEBCOMPAT", "UpdateBravePreferences");
-       // mBlockCrosssiteCookies.setVisibleEntry(0, ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE) || cookiesBlockPref == STRICT);
+        // mBlockCrosssiteCookies.setVisibleEntry(0,
+        // ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE) ||
+        // cookiesBlockPref == STRICT);
         if (cookiesBlockPref == STRICT) {
             mBlockCrosssiteCookies.setCheckedIndex(0);
             mBlockCrosssiteCookies.setSummary(

@@ -10,13 +10,14 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import androidx.preference.DialogPreference;
+
 import org.chromium.chrome.R;
 
 public class BraveDialogPreference extends DialogPreference {
     public static final class DialogEntry {
         private boolean mIsVisible;
         private CharSequence mEntyText;
-        
+
         public DialogEntry(CharSequence entryText) {
             mEntyText = entryText;
             mIsVisible = true;
