@@ -1,0 +1,9 @@
+Name: multihash-codetable
+URL: https://crates.io/crates/multihash-codetable
+Description: Default multihash code-table with cryptographically secure hash implementations
+Version: 0.1.4
+Security Critical: yes
+Shipped: yes
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/multihash-codetable-0.1.4/LICENSE
+Revision: 4c0ef5268355308d7f083482dad1c81318db4f6b

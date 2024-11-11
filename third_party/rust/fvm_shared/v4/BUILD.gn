@@ -1,0 +1,91 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "fvm_shared"
+  epoch = "4"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/address/errors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/address/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/address/network.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/address/payload.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/address/protocol.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/bigint/bigint_ser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/bigint/biguint_ser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/bigint/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/chainid/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/clock/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/clock/quantize.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/commcid/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/consensus/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/crypto/hash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/crypto/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/crypto/signature.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/deal/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/econ/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/error/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/event/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/math.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/message.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/piece/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/piece/zero.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/randomness/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/receipt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/reward.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/sector/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/sector/post.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/sector/registered_proof.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/sector/seal.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/smooth/alpha_beta_filter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/smooth/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/smooth/smooth_func.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/state/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/sys/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/sys/out.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/upgrade/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/fvm_shared-4.5.1/src/version/mod.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "4.5.1"
+  cargo_pkg_authors =
+      "ChainSafe Systems <info@chainsafe.io>, Protocol Labs, Filecoin Core Devs"
+  cargo_pkg_name = "fvm_shared"
+  cargo_pkg_description = "Filecoin Virtual Machine shared types and functions"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/anyhow/v1:lib",
+    "//brave/third_party/rust/bitflags/v2:lib",
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/cid/v0_11:lib",
+    "//brave/third_party/rust/data_encoding/v2:lib",
+    "//brave/third_party/rust/data_encoding_macro/v0_1:lib",
+    "//brave/third_party/rust/fvm_ipld_encoding/v0_5:lib",
+    "//brave/third_party/rust/lazy_static/v1:lib",
+    "//brave/third_party/rust/num_bigint/v0_4:lib",
+    "//brave/third_party/rust/num_derive/v0_4:lib",
+    "//brave/third_party/rust/num_integer/v0_1:lib",
+    "//brave/third_party/rust/num_traits/v0_2:lib",
+    "//brave/third_party/rust/serde/v1:lib",
+    "//brave/third_party/rust/serde_tuple/v0_5:lib",
+    "//brave/third_party/rust/thiserror/v1:lib",
+    "//brave/third_party/rust/unsigned_varint/v0_8:lib",
+  ]
+}
