@@ -133,7 +133,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
-  "//brave/browser/search",
   "//brave/browser/skus",
   "//brave/browser/sync",
   "//brave/browser/themes",
