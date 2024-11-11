@@ -15,9 +15,9 @@
 
 namespace brave_wallet {
 
-constexpr uint8_t kBitcoinSigHashAll = 1;
-constexpr uint32_t kBitcoinReceiveIndex = 0;
-constexpr uint32_t kBitcoinChangeIndex = 1;
+inline constexpr uint8_t kBitcoinSigHashAll = 1;
+inline constexpr uint32_t kBitcoinReceiveIndex = 0;
+inline constexpr uint32_t kBitcoinChangeIndex = 1;
 
 enum BitcoinAddressType {
   kPubkeyHash,

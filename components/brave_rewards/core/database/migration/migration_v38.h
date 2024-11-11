@@ -11,7 +11,7 @@ namespace brave_rewards::internal::database::migration {
 // Migration 38 adds a date/time column to the monthly contribution table in
 // order to trigger contributions based on the date/time that the monthly
 // contribution was set, rather than a "master" next contribution time.
-constexpr char v38[] = R"sql(
+inline constexpr char v38[] = R"sql(
   ALTER TABLE recurring_donation ADD COLUMN next_contribution_at TIMESTAMP;
 )sql";
 

@@ -18,10 +18,11 @@ namespace brave_wallet {
 
 namespace mojom {
 // TODO(apaymyshev): Remove these aliases eventually.
-constexpr KeyringId kDefaultKeyringId = KeyringId::kDefault;
-constexpr KeyringId kSolanaKeyringId = KeyringId::kSolana;
-constexpr KeyringId kFilecoinKeyringId = KeyringId::kFilecoin;
-constexpr KeyringId kFilecoinTestnetKeyringId = KeyringId::kFilecoinTestnet;
+inline constexpr KeyringId kDefaultKeyringId = KeyringId::kDefault;
+inline constexpr KeyringId kSolanaKeyringId = KeyringId::kSolana;
+inline constexpr KeyringId kFilecoinKeyringId = KeyringId::kFilecoin;
+inline constexpr KeyringId kFilecoinTestnetKeyringId =
+    KeyringId::kFilecoinTestnet;
 }  // namespace mojom
 
 using uint256_t = unsigned _BitInt(256);
@@ -31,16 +32,16 @@ using uint128_t = unsigned _BitInt(128);
 using int128_t = _BitInt(128);
 
 // 2^255 - 1
-constexpr int256_t kMax256BitInt = std::numeric_limits<int256_t>::max();
+inline constexpr int256_t kMax256BitInt = std::numeric_limits<int256_t>::max();
 // -(2^255 -1)
-constexpr int256_t kMin256BitInt = std::numeric_limits<int256_t>::min();
+inline constexpr int256_t kMin256BitInt = std::numeric_limits<int256_t>::min();
 
 // 2^127 - 1
-constexpr int128_t kMax128BitInt = std::numeric_limits<int128_t>::max();
+inline constexpr int128_t kMax128BitInt = std::numeric_limits<int128_t>::max();
 // -(2^127 -1)
-constexpr int128_t kMin128BitInt = std::numeric_limits<int128_t>::min();
+inline constexpr int128_t kMin128BitInt = std::numeric_limits<int128_t>::min();
 
-constexpr uint64_t kMaxSafeIntegerUint64 = 9007199254740991;  // 2^53-1
+inline constexpr uint64_t kMaxSafeIntegerUint64 = 9007199254740991;  // 2^53-1
 
 // Determines the min/max value for Solidity types such as uint56
 // uintN where 0 < N <= 256; N % 8 == 0
