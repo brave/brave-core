@@ -1031,8 +1031,7 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
   }
 
   const bool can_check_for_staged_conversation =
-      ai_chat_service_->HasUserOptedIn() && IsContentAssociationPossible() &&
-      should_send_page_contents_;
+      IsContentAssociationPossible() && should_send_page_contents_;
   if (!can_check_for_staged_conversation) {
     // Clear any staged conversation entries since user might have unassociated
     // content with this conversation
@@ -1055,7 +1054,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
     const std::optional<std::vector<SearchQuerySummary>>& entries) {
   // Check if all requirements are still met.
   if (is_request_in_progress_ || !entries || !IsContentAssociationPossible() ||
-      !should_send_page_contents_ || !ai_chat_service_->HasUserOptedIn()) {
+      !should_send_page_contents_) {
     return;
   }
 
