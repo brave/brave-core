@@ -140,8 +140,6 @@ declare namespace NewTab {
     searchPromotionEnabled: boolean
     featureCustomBackgroundEnabled: boolean
     isIncognito: boolean
-    useAlternativePrivateSearchEngine: boolean
-    showAlternativePrivateSearchEngineToggle: boolean
     torCircuitEstablished: boolean,
     torInitProgress: string,
     isTor: boolean

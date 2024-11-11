@@ -18,7 +18,6 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/search_engines/pref_names.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -102,17 +101,6 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set("searchSuggestionsEnabled",
                 prefs->GetBoolean(prefs::kSearchSuggestEnabled));
   return pref_data;
-}
-
-base::Value::Dict GetPrivatePropertiesDictionary(PrefService* prefs) {
-  base::Value::Dict private_data;
-  private_data.Set(
-      "useAlternativePrivateSearchEngine",
-      prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider));
-  private_data.Set(
-      "showAlternativePrivateSearchEngineToggle",
-      prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle));
-  return private_data;
 }
 
 // TODO(petemill): Move p3a to own NTP component so it can
@@ -204,18 +192,8 @@ void BraveNewTabMessageHandler::RegisterMessages() {
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetStats,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "getNewTabPagePrivateProperties",
-      base::BindRepeating(
-          &BraveNewTabMessageHandler::HandleGetPrivateProperties,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "getNewTabAdsData",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetNewTabAdsData,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "toggleAlternativePrivateSearchEngine",
-      base::BindRepeating(&BraveNewTabMessageHandler::
-                              HandleToggleAlternativeSearchEngineProvider,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "saveNewTabPagePref",
@@ -266,15 +244,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       kFingerprintingBlocked,
       base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
                           base::Unretained(this)));
-
-  if (IsPrivateNewTab(profile_)) {
-    // Private New Tab Page preferences
-    pref_change_registrar_.Add(
-        kUseAlternativePrivateSearchEngineProvider,
-        base::BindRepeating(
-            &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
-            base::Unretained(this)));
-  }
   // News
   pref_change_registrar_.Add(
       brave_news::prefs::kBraveNewsOptedIn,
@@ -372,28 +341,11 @@ void BraveNewTabMessageHandler::HandleGetStats(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], data);
 }
 
-void BraveNewTabMessageHandler::HandleGetPrivateProperties(
-    const base::Value::List& args) {
-  AllowJavascript();
-  PrefService* prefs = profile_->GetPrefs();
-  auto data = GetPrivatePropertiesDictionary(prefs);
-  ResolveJavascriptCallback(args[0], data);
-}
-
 void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
     const base::Value::List& args) {
   AllowJavascript();
 
   ResolveJavascriptCallback(args[0], GetAdsDataDictionary());
-}
-
-void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
-    const base::Value::List& args) {
-  // Alternative search related code will not be used.
-  // Cleanup "toggleAlternativePrivateSearchEngine" message handler when it's
-  // deleted from NTP Webui.
-  // https://github.com/brave/brave-browser/issues/23493
-  NOTREACHED();
 }
 
 void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
@@ -586,12 +538,6 @@ void BraveNewTabMessageHandler::HandleCustomizeClicked(
   p3a::RecordValueIfGreater<NTPCustomizeUsage>(
       NTPCustomizeUsage::kOpened, kCustomizeUsageHistogramName,
       kNTPCustomizeUsageStatus, g_browser_process->local_state());
-}
-
-void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {
-  PrefService* prefs = profile_->GetPrefs();
-  auto data = GetPrivatePropertiesDictionary(prefs);
-  FireWebUIListener("private-tab-data-updated", data);
 }
 
 void BraveNewTabMessageHandler::OnStatsChanged() {

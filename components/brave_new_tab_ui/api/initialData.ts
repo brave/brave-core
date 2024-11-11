@@ -5,7 +5,6 @@
 
 import * as preferencesAPI from './preferences'
 import * as statsAPI from './stats'
-import * as privateTabDataAPI from './privateTabData'
 import * as wallpaper from './wallpaper'
 import * as newTabAdsDataAPI from './newTabAdsData'
 import getNTPBrowserAPI from './background'
@@ -15,7 +14,6 @@ import { loadTimeData } from '$web-common/loadTimeData'
 export type InitialData = {
   preferences: NewTab.Preferences
   stats: statsAPI.Stats
-  privateTabData: privateTabDataAPI.PrivateTabData
   wallpaperData?: NewTab.Wallpaper
   braveBackgrounds: NewTab.BraveBackground[]
   customImageBackgrounds: NewTab.ImageBackground[]
@@ -53,7 +51,6 @@ export async function getInitialData (): Promise<InitialData> {
     const [
       preferences,
       stats,
-      privateTabData,
       wallpaperData,
       braveRewardsSupported,
       braveTalkSupported,
@@ -64,7 +61,6 @@ export async function getInitialData (): Promise<InitialData> {
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
-      privateTabDataAPI.getPrivateTabData(),
       !isIncognito ? wallpaper.getWallpaper() : Promise.resolve(undefined),
       new Promise((resolve) => {
         chrome.braveRewards.isSupported((supported: boolean) => {
@@ -102,7 +98,6 @@ export async function getInitialData (): Promise<InitialData> {
     return {
       preferences,
       stats,
-      privateTabData,
       wallpaperData,
       braveBackgrounds,
       customImageBackgrounds,
