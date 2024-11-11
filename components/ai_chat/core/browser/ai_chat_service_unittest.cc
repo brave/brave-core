@@ -570,8 +570,8 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
 
   // Re-enable storage preference
   prefs_.SetBoolean(prefs::kStorageEnabled, true);
-  // Conversations are still in persistant storage
-  ExpectVisibleConversationsSize(FROM_HERE, 3);
+  // Conversations are no longer in persistant storage
+  ExpectVisibleConversationsSize(FROM_HERE, 0);
 }
 
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {

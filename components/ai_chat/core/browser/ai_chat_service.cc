@@ -290,14 +290,23 @@ void AIChatService::ClearAllHistory() {
 }
 
 void AIChatService::MaybeInitStorage() {
-  if (IsAIChatHistoryEnabled() && !ai_chat_db_) {
-    DVLOG(0) << "Initializing OS Crypt Async";
-    encryptor_ready_subscription_ = os_crypt_async_->GetInstance(base::BindOnce(
-        &AIChatService::OnOsCryptAsyncReady, weak_ptr_factory_.GetWeakPtr()));
-    // Don't init DB until oscrypt is ready - we don't want to use the DB
-    // if we can't use encryption.
+  if (IsAIChatHistoryEnabled()) {
+    if (!ai_chat_db_) {
+      DVLOG(0) << "Initializing OS Crypt Async";
+      encryptor_ready_subscription_ = os_crypt_async_->GetInstance(
+          base::BindOnce(&AIChatService::OnOsCryptAsyncReady,
+                         weak_ptr_factory_.GetWeakPtr()));
+      // Don't init DB until oscrypt is ready - we don't want to use the DB
+      // if we can't use encryption.
+    }
   } else {
-    ai_chat_db_.Reset();
+    // Delete all stored data from database
+    if (ai_chat_db_) {
+      base::SequenceBound<AIChatDatabase> ai_chat_db = std::move(ai_chat_db_);
+      ai_chat_db.AsyncCall(&AIChatDatabase::DeleteAllData)
+          .Then(base::BindOnce(&AIChatService::OnDataDeletedForDisabledStorage,
+                               weak_ptr_factory_.GetWeakPtr()));
+    }
     has_loaded_conversations_from_storage_ = false;
     // Remove any conversations from in-memory that aren't connected to UI.
     // Iterate in reverse and call MaybeEraseConversation to avoid iterator
@@ -332,6 +341,15 @@ void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor,
   ai_chat_db_ = base::SequenceBound<AIChatDatabase>(
       GetDBTaskRunner(), profile_path_.Append(kDBFileName),
       std::move(encryptor));
+}
+
+void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
+  // Re-check the preference since it could have been re-enabled
+  // whilst the database operation was in progress. If so, we can re-use
+  // the same database instance (post data deletion).
+  if (!IsAIChatHistoryEnabled()) {
+    ai_chat_db_.Reset();
+  }
 }
 
 void AIChatService::LoadConversationsLazy(ConversationMapCallback callback) {
