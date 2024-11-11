@@ -177,7 +177,7 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
         for (BraveDialogPreference.DialogEntry entry : mDialogEntries) {
             RadioButton radioButton = new RadioButton(getContext());
             radioButton.setLayoutParams(setParams());
-            radioButton.setTextSize(15);
+            radioButton.setTextAppearance(R.style.BraveShieldsBlockCookieModeText);
             radioButton.setText(entry.getEntryText());
             radioButton.setVisibility(entry.isVisible() ? View.VISIBLE : View.GONE);
             radioButton.setId(index);
