@@ -155,7 +155,7 @@ extension BrowserViewController {
       }
 
       // Add Brave-Leo options only in normal browsing
-      if !privateBrowsingManager.isPrivateBrowsing {
+      if !privateBrowsingManager.isPrivateBrowsing && FeatureList.kAIChat.enabled {
         MenuItemFactory.button(for: .leo) { [unowned self] in
           self.popToBVC()
           self.openBraveLeo()
