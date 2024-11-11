@@ -177,6 +177,9 @@
   <message name="IDS_CHAT_UI_DISLIKE_ANSWER_BUTTON_LABEL" desc="Button label to dislike an answer">
     Dislike answer
   </message>
+  <message name="IDS_CHAT_UI_LIKE_DISLIKE_ANSWER_BUTTON_TITLE" desc="Button title for like and dislike menu items">
+    Sends rating, conversation, model, language, version, and premium status
+  </message>
   <message name="IDS_CHAT_UI_PROVIDE_FEEDBACK_TITLE" desc="Title for feedback provision section">
     Provide Brave AI Feedback
   </message>
