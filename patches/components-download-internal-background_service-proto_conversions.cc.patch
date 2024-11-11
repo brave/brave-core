@@ -1,20 +1,20 @@
 diff --git a/components/download/internal/background_service/proto_conversions.cc b/components/download/internal/background_service/proto_conversions.cc
-index b27e7b9908ee381d1ca19006e6646deafb10cd5f..450f3df4d7b6e3c4c7e43daedfe5d2461f793e0e 100644
+index d7076f9a09f0b5aa558114520daf0eb2c3ef5d64..4db78f41eac6ff5bd6795afbc8df4cf639b73b00 100644
 --- a/components/download/internal/background_service/proto_conversions.cc
 +++ b/components/download/internal/background_service/proto_conversions.cc
-@@ -79,6 +79,7 @@ protodb::DownloadClient ProtoConversions::DownloadClientToProto(
+@@ -77,6 +77,7 @@ protodb::DownloadClient ProtoConversions::DownloadClientToProto(
        return protodb::DownloadClient::BRUSCHETTA;
      case DownloadClient::BOUNDARY:
        return protodb::DownloadClient::BOUNDARY;
 +    BRAVE_DOWNLOAD_CLIENT_TO_PROTO
    }
  
-   NOTREACHED_IN_MIGRATION();
-@@ -112,6 +113,7 @@ DownloadClient ProtoConversions::DownloadClientFromProto(
+   NOTREACHED();
+@@ -109,6 +110,7 @@ DownloadClient ProtoConversions::DownloadClientFromProto(
        return DownloadClient::BRUSCHETTA;
      case protodb::DownloadClient::BOUNDARY:
        return DownloadClient::BOUNDARY;
 +    BRAVE_DOWNLOAD_CLIENT_FROM_PROTO
    }
  
-   NOTREACHED_IN_MIGRATION();
+   NOTREACHED();
