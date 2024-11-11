@@ -271,6 +271,9 @@ def get_original_grd(src_root, grd_file_path):
     if grd_file_name == 'android_webapps_strings.grd':
         return os.path.join(src_root, 'components', 'webapps', 'browser',
                             'android', 'android_webapps_strings.grd')
+    if grd_file_name == 'browser_ui_strings.grd':
+        return os.path.join(src_root, 'components', 'browser_ui', 'strings',
+                            'android', 'browser_ui_strings.grd')
     return None
 
 

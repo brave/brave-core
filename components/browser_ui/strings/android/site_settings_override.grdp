@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+  <message name="IDS_THIRD_PARTY_COOKIES_LINK_ROW_SUB_LABEL_DISABLED_INCOGNITO" desc="2 of 3 possible states for the Third-party cookies setting. This text appears beneath the 'Third-party cookies' button label.">
+    Third-party cookies are blocked in Private mode
+  </message>
+  <message name="IDS_ANTI_ABUSE_DESCRIPTION" desc="A setting that, if turned on, will enable anti-abuse functionality.">
+    Sites you visit can verify that you're a real profile and not a bot
+  </message>
+
+  <message name="IDS_ANTI_ABUSE_WHEN_ON_SECTION_TWO" desc="Summary text explaining how the anti-abuse features work.">
+    As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
+  </message>
+
+  <message name="IDS_ANTI_ABUSE_WHEN_ON_SECTION_THREE" desc="Summary text explaining that browsing could be helped by the anti-abuse features.">
+    Browsing is faster because a site is less likely to ask you to verify you're a real profile
+  </message>
+
+  <message name="IDS_WEBSITE_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_RADIO_LABEL" desc="2 of 3 options the user has to configure cookies. See the cookies page for context: chrome://settings/cookies. For more about Private mode, see https://support.google.com/chrome?p=private.">
+    Block third-party cookies in Private mode
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_RADIO_SUB_LABEL" desc="This string appears as a sub label beneath the 'Block third-party cookies in Private mode' label. It summarizes the result of choosing this option. A site you visit may rely on cookies for certain functionality, such as remembering your language preferences or maintaining a shopping cart. If the user chooses this option, some sites they visit may not work as designed.">
+    Features on some sites may not work in Private mode
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_SUBPAGE_INCOGNITO_BULLET_TWO" desc="Description for the second bullet of cookie settings subpage.">
+    While in Private, sites can't use your cookies to see your browsing activity across sites, even related sites. Your browsing activity isn't used for things like personalizing ads. Features on some sites may not work.
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_INCOGNITO_SUBTITLE" desc="Text used as subtitle for the block third-party cookies subpage in Private option in settings">
+    Block third-party cookies in Private:
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_RWS_TOGGLE_DESCRIPTION" desc="Related Website Sets toggle description in the cookie site settings subpage.">
+     A company can define a group of sites that can use cookies to share your activity in the group. This is off in Private.
+  </message>
+  </grit-part>
