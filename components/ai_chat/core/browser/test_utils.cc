@@ -80,6 +80,7 @@ void ExpectAssociatedContentEquals(base::Location location,
     EXPECT_EQ(a, b);  // Both should be null or neither
     return;
   }
+  EXPECT_EQ(a->uuid, b->uuid);
   EXPECT_EQ(a->title, b->title);
   EXPECT_EQ(a->url, b->url);
   EXPECT_EQ(a->content_type, b->content_type);

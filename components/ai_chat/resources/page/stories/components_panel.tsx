@@ -66,11 +66,11 @@ function getPageContentRefineEvent(): mojom.ConversationEntryEvent {
 }
 
 const associatedContentNone: mojom.SiteInfo =  {
+  uuid: undefined,
   contentType: mojom.ContentType.PageContent,
   isContentAssociationPossible: false,
   contentUsedPercentage: 0,
   isContentRefined: false,
-  id: undefined,
   title: undefined,
   hostname: undefined,
   url: undefined,
@@ -375,7 +375,7 @@ const SAMPLE_QUESTIONS = [
 ]
 
 const SITE_INFO: mojom.SiteInfo = {
-  id: undefined,
+  uuid: undefined,
   contentType: mojom.ContentType.PageContent,
   title: 'Tiny Tweaks to Neurons Can Rewire Animal Motion',
   contentUsedPercentage: 40,

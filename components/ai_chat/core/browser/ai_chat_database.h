@@ -26,10 +26,6 @@ namespace ai_chat {
 // All data should be stored encrypted.
 class AIChatDatabase {
  public:
-  struct AddConversationResult {
-    int32_t associated_content_id = -1;
-  };
-
   AIChatDatabase(const base::FilePath& db_file_path,
                  os_crypt_async::Encryptor encryptor);
   AIChatDatabase(const AIChatDatabase&) = delete;
@@ -45,14 +41,14 @@ class AIChatDatabase {
       std::string_view conversation_uuid);
 
   // Returns new ID for the provided entry and any provided associated content
-  AddConversationResult AddConversation(mojom::ConversationPtr conversation,
-                                        std::optional<std::string> contents,
-                                        mojom::ConversationTurnPtr first_entry);
+  bool AddConversation(mojom::ConversationPtr conversation,
+                       std::optional<std::string> contents,
+                       mojom::ConversationTurnPtr first_entry);
 
   // Update any properties of associated content metadata or full-text content
-  int32_t AddOrUpdateAssociatedContent(std::string_view conversation_uuid,
-                                       mojom::SiteInfoPtr associated_content,
-                                       std::optional<std::string> content);
+  bool AddOrUpdateAssociatedContent(std::string_view conversation_uuid,
+                                    mojom::SiteInfoPtr associated_content,
+                                    std::optional<std::string> content);
 
   // Adds a new conversation entry to the conversation with the provided UUID
   bool AddConversationEntry(
@@ -98,11 +94,7 @@ class AIChatDatabase {
                             int index,
                             const std::string& value);
 
-  bool CreateConversationTable();
-  bool CreateAssociatedContentTable();
-  bool CreateConversationEntryTable();
-  bool CreateConversationEntryTextTable();
-  bool CreateSearchQueriesTable();
+  bool CreateSchema();
 
   // The directory storing the database.
   const base::FilePath db_file_path_;

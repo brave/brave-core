@@ -125,7 +125,10 @@ void AIChatService::Bind(mojo::PendingReceiver<mojom::Service> receiver) {
 void AIChatService::Shutdown() {
   // Disconnect remotes
   receivers_.ClearWithReason(0, "Shutting down");
-  db_task_runner_.reset();
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  if (ai_chat_db_) {
+    ai_chat_db_.Reset();
+  }
 }
 
 ConversationHandler* AIChatService::CreateConversation() {
@@ -133,12 +136,11 @@ ConversationHandler* AIChatService::CreateConversation() {
   std::string conversation_uuid = uuid.AsLowercaseString();
   // Create the conversation metadata
   {
-    mojom::SiteInfoPtr non_content = mojom::SiteInfo::New(
-        std::nullopt, mojom::ContentType::PageContent, std::nullopt,
-        std::nullopt, std::nullopt, 0, false, false);
-    mojom::ConversationPtr conversation =
-        mojom::Conversation::New(conversation_uuid, "", base::Time::Now(),
-                                 false, std::move(non_content));
+    mojom::ConversationPtr conversation = mojom::Conversation::New(
+        conversation_uuid, "", base::Time::Now(), false,
+        mojom::SiteInfo::New(base::Uuid::GenerateRandomV4().AsLowercaseString(),
+                             mojom::ContentType::PageContent, std::nullopt,
+                             std::nullopt, std::nullopt, 0, false, false));
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -195,8 +197,11 @@ void AIChatService::GetConversation(
       [](base::WeakPtr<AIChatService> instance, std::string conversation_uuid,
          base::OnceCallback<void(ConversationHandler*)> callback,
          ConversationMap& conversations) {
-        mojom::ConversationPtr& metadata =
-            conversations.at(conversation_uuid.data());
+        if (!conversations.contains(conversation_uuid)) {
+          std::move(callback).Run(nullptr);
+          return;
+        }
+        mojom::ConversationPtr& metadata = conversations.at(conversation_uuid);
         // Get archive content and conversation entries
         instance->ai_chat_db_.AsyncCall(&AIChatDatabase::GetConversationData)
             .WithArgs(metadata->uuid)
@@ -215,14 +220,18 @@ void AIChatService::OnConversationDataReceived(
   DVLOG(4) << __func__ << " for " << conversation_uuid
            << " with data: " << data->entries.size() << " entries and "
            << data->associated_content.size() << " contents";
+  if (!conversations_.contains(conversation_uuid)) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
   mojom::Conversation* conversation =
-      conversations_.at(conversation_uuid.data()).get();
+      conversations_.at(conversation_uuid).get();
   std::unique_ptr<ConversationHandler> conversation_handler =
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
           feedback_api_.get(), url_loader_factory_, std::move(data));
   conversation_observations_.AddObservation(conversation_handler.get());
-  conversation_handlers_.insert_or_assign(conversation_uuid.data(),
+  conversation_handlers_.insert_or_assign(conversation_uuid,
                                           std::move(conversation_handler));
   std::move(callback).Run(GetConversation(conversation_uuid));
 }
@@ -277,12 +286,7 @@ void AIChatService::ClearAllHistory() {
 
   // Delete database data
   if (ai_chat_db_) {
-    ai_chat_db_.AsyncCall(&AIChatDatabase::DeleteAllData)
-        .Then(base::BindOnce([](bool success) {
-          if (!success) {
-            LOG(ERROR) << "Failed to delete all AIChatService database data";
-          }
-        }));
+    ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteAllData));
   }
   if (ai_chat_metrics_ != nullptr) {
     ai_chat_metrics_->RecordReset();
@@ -339,8 +343,11 @@ void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor,
     return;
   }
   ai_chat_db_ = base::SequenceBound<AIChatDatabase>(
-      GetDBTaskRunner(), profile_path_.Append(kDBFileName),
-      std::move(encryptor));
+      base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::WithBaseSyncPrimitives(),
+           base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN}),
+      profile_path_.Append(kDBFileName), std::move(encryptor));
 }
 
 void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
@@ -475,19 +482,9 @@ void AIChatService::DeleteConversation(const std::string& id) {
   OnConversationListChanged();
   // Update database
   if (ai_chat_db_) {
-    ai_chat_db_.AsyncCall(&AIChatDatabase::DeleteConversation)
-        .WithArgs(id)
-        .Then(base::BindOnce(
-            [](std::string conversation_uuid, bool success) {
-              if (!success) {
-                LOG(ERROR) << "Failed to delete conversation from database "
-                           << conversation_uuid;
-              } else {
-                DVLOG(1) << "Deleted conversation from database: "
-                         << conversation_uuid;
-              }
-            },
-            std::move(id)));
+    ai_chat_db_
+        .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversation))
+        .WithArgs(id);
   }
 }
 
@@ -563,17 +560,6 @@ bool AIChatService::IsAIChatHistoryEnabled() {
           profile_prefs_->GetBoolean(prefs::kStorageEnabled));
 }
 
-base::SequencedTaskRunner* AIChatService::GetDBTaskRunner() {
-  if (!db_task_runner_) {
-    db_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
-        {base::MayBlock(), base::WithBaseSyncPrimitives(),
-         base::TaskPriority::BEST_EFFORT,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
-  }
-
-  return db_task_runner_.get();
-}
-
 void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
                                                bool in_progress) {
   // We don't unload a conversation if it has a request in progress, so check
@@ -610,22 +596,14 @@ void AIChatService::HandleFirstEntry(
   DVLOG(1) << __func__ << " Conversation " << conversation->uuid
            << " being persisted for first time.";
   CHECK(entry->uuid.has_value());
+  CHECK(conversation->associated_content->uuid.has_value());
   // We can persist the conversation metadata for the first time as well as the
   // entry.
-  auto on_conversation_added = base::BindOnce(
-      [](mojom::Conversation* metadata,
-         AIChatDatabase::AddConversationResult db_result) {
-        if (metadata && db_result.associated_content_id != -1) {
-          metadata->associated_content->id = db_result.associated_content_id;
-        }
-      },
-      conversation.get());
   if (ai_chat_db_) {
-    ai_chat_db_.AsyncCall(&AIChatDatabase::AddConversation)
+    ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversation))
         .WithArgs(conversation->Clone(),
                   std::optional<std::string>(associated_content_value),
-                  entry->Clone())
-        .Then(std::move(on_conversation_added));
+                  entry->Clone());
   }
   // Record metrics
   if (ai_chat_metrics_ != nullptr) {
@@ -647,30 +625,19 @@ void AIChatService::HandleNewEntry(
 
   // Persist the new entry and update the associated content data, if present
   if (ai_chat_db_) {
-    auto on_entry_added = base::BindOnce([](bool success) {
-      if (!success) {
-        DVLOG(0) << "Failed to add conversation entry";
-      }
-    });
-    ai_chat_db_.AsyncCall(&AIChatDatabase::AddConversationEntry)
-        .WithArgs(handler->get_conversation_uuid(), entry.Clone(), std::nullopt)
-        .Then(std::move(on_entry_added));
+    ai_chat_db_
+        .AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversationEntry))
+        .WithArgs(handler->get_conversation_uuid(), entry.Clone(),
+                  std::nullopt);
 
     if (associated_content_value.has_value() &&
         conversation->associated_content->is_content_association_possible) {
-      auto on_content_updated = base::BindOnce(
-          [](mojom::Conversation* metadata, int32_t content_id) {
-            if (metadata && content_id != -1) {
-              metadata->associated_content->id = content_id;
-            }
-          },
-          conversation.get());
-
-      ai_chat_db_.AsyncCall(&AIChatDatabase::AddOrUpdateAssociatedContent)
+      ai_chat_db_
+          .AsyncCall(
+              base::IgnoreResult(&AIChatDatabase::AddOrUpdateAssociatedContent))
           .WithArgs(conversation->uuid,
                     conversation->associated_content->Clone(),
-                    std::optional<std::string>(associated_content_value))
-          .Then(std::move(on_content_updated));
+                    std::optional<std::string>(associated_content_value));
     }
   }
 
@@ -685,13 +652,9 @@ void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
                                                std::string entry_uuid) {
   // Persist the removal
   if (ai_chat_db_) {
-    ai_chat_db_.AsyncCall(&AIChatDatabase::DeleteConversationEntry)
-        .WithArgs(entry_uuid)
-        .Then(base::BindOnce([](bool success) {
-          if (!success) {
-            DVLOG(0) << "Failed to delete conversation entry";
-          }
-        }));
+    ai_chat_db_
+        .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversationEntry))
+        .WithArgs(entry_uuid);
   }
 }
 
@@ -712,13 +675,9 @@ void AIChatService::OnConversationTitleChanged(ConversationHandler* handler,
 
   // Persist the change
   if (ai_chat_db_) {
-    ai_chat_db_.AsyncCall(&AIChatDatabase::UpdateConversationTitle)
-        .WithArgs(handler->get_conversation_uuid(), std::move(title))
-        .Then(base::BindOnce([](bool success) {
-          if (!success) {
-            DVLOG(0) << "Failed to update conversation title";
-          }
-        }));
+    ai_chat_db_
+        .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateConversationTitle))
+        .WithArgs(handler->get_conversation_uuid(), std::move(title));
   }
 }
 

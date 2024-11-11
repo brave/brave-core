@@ -117,6 +117,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     SCOPED_TRACE(testing::Message() << (has_content ? "With" : "Without")
                                     << " associated content");
     std::string uuid = has_content ? "first" : "second";
+    std::string content_uuid = "content";
     // Create the conversation metadata which gets persisted
     // when the first entry is asked to be persisted.
     // Put an incorrect time value to show that the time from the
@@ -127,7 +128,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     mojom::SiteInfoPtr associated_content =
         has_content
             ? mojom::SiteInfo::New(
-                  std::nullopt, mojom::ContentType::PageContent, "page title",
+                  content_uuid, mojom::ContentType::PageContent, "page title",
                   page_url.host(), page_url, 62, true, true)
             : mojom::SiteInfo::New(
                   std::nullopt, mojom::ContentType::PageContent, std::nullopt,
@@ -139,17 +140,10 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     // Persist the first entry (and get the response ready)
     auto history = CreateSampleChatHistory(1u);
 
-    auto ids = db_->AddConversation(
+    EXPECT_TRUE(db_->AddConversation(
         metadata->Clone(),
         has_content ? std::make_optional(expected_contents) : std::nullopt,
-        history[0]->Clone());
-
-    // Verify database thinks it was successful
-    if (has_content) {
-      EXPECT_NE(ids.associated_content_id, -1);
-    } else {
-      EXPECT_EQ(ids.associated_content_id, -1);
-    }
+        history[0]->Clone()));
 
     // Test getting the conversation metadata
     std::vector<mojom::ConversationPtr> conversations =
@@ -167,8 +161,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     ExpectConversationHistoryEquals(FROM_HERE, result->entries, history);
     EXPECT_EQ(result->associated_content.size(), has_content ? 1u : 0u);
     if (has_content) {
-      EXPECT_EQ(result->associated_content[0]->content_id,
-                ids.associated_content_id);
+      EXPECT_EQ(result->associated_content[0]->content_uuid, content_uuid);
       EXPECT_EQ(result->associated_content[0]->content, expected_contents);
     }
 
@@ -270,7 +263,8 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
     // Persist the first entry (and get the response ready)
     auto history = CreateSampleChatHistory(1u);
 
-    db_->AddConversation(metadata->Clone(), std::nullopt, history[0]->Clone());
+    EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
+                                     history[0]->Clone()));
 
     // Verify initial title
     std::vector<mojom::ConversationPtr> conversations =
@@ -290,29 +284,25 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
 
 TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   std::string uuid = "for_associated_content";
+  std::string content_uuid = "content_uuid";
   GURL page_url = GURL("https://example.com/page");
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       uuid, "title", base::Time::Now() - base::Hours(2), true,
-      mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
+      mojom::SiteInfo::New(content_uuid, mojom::ContentType::PageContent,
                            "page title", page_url.host(), page_url, 62, true,
                            true));
 
   auto history = CreateSampleChatHistory(1u);
 
   std::string expected_contents = "First contents";
-  AIChatDatabase::AddConversationResult ids = db_->AddConversation(
-      metadata->Clone(), std::make_optional(expected_contents),
-      history[0]->Clone());
-
-  EXPECT_GT(ids.associated_content_id, -1);
-
-  metadata->associated_content->id = ids.associated_content_id;
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(),
+                                   std::make_optional(expected_contents),
+                                   history[0]->Clone()));
 
   // Verify data is persisted
   mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
   EXPECT_EQ(result->associated_content.size(), 1u);
-  EXPECT_EQ(result->associated_content[0]->content_id,
-            ids.associated_content_id);
+  EXPECT_EQ(result->associated_content[0]->content_uuid, content_uuid);
   EXPECT_EQ(result->associated_content[0]->content, expected_contents);
   auto conversations = db_->GetAllConversations();
   EXPECT_EQ(conversations.size(), 1u);
@@ -322,13 +312,14 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   expected_contents = "Second contents";
   metadata->associated_content->content_used_percentage = 50;
   metadata->associated_content->is_content_refined = false;
-  db_->AddOrUpdateAssociatedContent(uuid, metadata->associated_content->Clone(),
-                                    std::make_optional(expected_contents));
+  EXPECT_TRUE(db_->AddOrUpdateAssociatedContent(
+      uuid, metadata->associated_content->Clone(),
+      std::make_optional(expected_contents)));
   // Verify data is changed
   result = db_->GetConversationData(uuid);
   EXPECT_EQ(result->associated_content.size(), 1u);
-  EXPECT_EQ(result->associated_content[0]->content_id,
-            metadata->associated_content->id.value());
+  EXPECT_EQ(result->associated_content[0]->content_uuid,
+            metadata->associated_content->uuid.value());
   EXPECT_EQ(result->associated_content[0]->content, expected_contents);
   conversations = db_->GetAllConversations();
   EXPECT_EQ(conversations.size(), 1u);

@@ -81,7 +81,7 @@ enum ContentType {
 // part of a detail property (which would have different structure possibilities
 // depending on content type.
 struct SiteInfo {
-  int32? id;
+  string? uuid;
   ContentType content_type;
   // Web page specific fields, if available and allowed
   string? title;
@@ -113,7 +113,7 @@ struct Conversation {
 };
 
 struct ContentArchive {
-  int32 content_id;
+  string content_uuid;
   string content;
 };
 

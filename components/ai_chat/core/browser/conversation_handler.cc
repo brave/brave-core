@@ -221,9 +221,9 @@ ConversationHandler::ConversationHandler(
     mojom::ConversationArchivePtr conversation_data =
         std::move(initial_state.value());
     if (!conversation_data->associated_content.empty()) {
-      CHECK(metadata_->associated_content->id.has_value());
-      CHECK_EQ(conversation_data->associated_content[0]->content_id,
-               metadata_->associated_content->id.value());
+      CHECK(metadata_->associated_content->uuid.has_value());
+      CHECK_EQ(conversation_data->associated_content[0]->content_uuid,
+               metadata_->associated_content->uuid.value());
       bool is_video = (metadata_->associated_content->content_type ==
                        mojom::ContentType::VideoTranscript);
       SetArchiveContent(conversation_data->associated_content[0]->content,

@@ -76,9 +76,7 @@ sql::InitStatus AIChatDatabase::InitInternal() {
     return sql::InitStatus::INIT_TOO_NEW;
   }
 
-  if (!CreateConversationTable() || !CreateAssociatedContentTable() ||
-      !CreateConversationEntryTable() || !CreateConversationEntryTextTable() ||
-      !CreateSearchQueriesTable()) {
+  if (!CreateSchema()) {
     DVLOG(0) << "Failure to create tables";
     return sql::InitStatus::INIT_FAILURE;
   }
@@ -97,9 +95,9 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
   }
   // All conversation metadata, associated content and most
   // and most recent entry date. 1 row for each associated content.
-  static const std::string kQuery =
+  static constexpr char kQuery[] =
       "SELECT conversation.uuid, conversation.title, last_activity_date.date,"
-      "  associated_content.id, associated_content.title,"
+      "  associated_content.uuid, associated_content.title,"
       "  associated_content.url, associated_content.content_type,"
       "  associated_content.content_used_percentage,"
       "  associated_content.is_content_refined"
@@ -142,11 +140,10 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
 
     conversation->associated_content = mojom::SiteInfo::New();
 
-    // Only accepts a single row, for now
     if (statement.GetColumnType(3) != sql::ColumnType::kNull) {
       DVLOG(1) << __func__ << " got associated content";
 
-      conversation->associated_content->id = statement.ColumnInt64(3);
+      conversation->associated_content->uuid = statement.ColumnString(3);
       conversation->associated_content->title =
           DecryptOptionalColumnToString(statement, 4);
       auto url_raw = DecryptOptionalColumnToString(statement, 5);
@@ -188,7 +185,7 @@ mojom::ConversationArchivePtr AIChatDatabase::GetConversationData(
 
 std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     std::string_view conversation_uuid) {
-  static const std::string kEntriesQuery =
+  static constexpr char kEntriesQuery[] =
       "SELECT uuid, date, entry_text, character_type, editing_entry_uuid, "
       "action_type, selected_text"
       " FROM conversation_entry"
@@ -312,12 +309,12 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
 std::vector<mojom::ContentArchivePtr>
 AIChatDatabase::GetArchiveContentsForConversation(
     std::string_view conversation_uuid) {
-  static const std::string kQuery =
-      "SELECT id, last_contents"
+  static constexpr char kQuery[] =
+      "SELECT uuid, last_contents"
       " FROM associated_content"
       " WHERE conversation_uuid=?"
       " AND last_contents IS NOT NULL"
-      " ORDER BY id ASC";
+      " ORDER BY uuid ASC";
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());
   statement.BindString(0, conversation_uuid);
@@ -326,31 +323,30 @@ AIChatDatabase::GetArchiveContentsForConversation(
   // associated contents.
   if (statement.Step()) {
     auto content = mojom::ContentArchive::New(
-        statement.ColumnInt(0), DecryptColumnToString(statement, 1));
+        statement.ColumnString(0), DecryptColumnToString(statement, 1));
     archive_contents.emplace_back(std::move(content));
   }
   return archive_contents;
 }
 
-AIChatDatabase::AddConversationResult AIChatDatabase::AddConversation(
-    mojom::ConversationPtr conversation,
-    std::optional<std::string> contents,
-    mojom::ConversationTurnPtr first_entry) {
+bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
+                                     std::optional<std::string> contents,
+                                     mojom::ConversationTurnPtr first_entry) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(!conversation->uuid.empty());
   CHECK(first_entry);
   if (!LazyInit()) {
-    return AddConversationResult{};
+    return false;
   }
 
   sql::Transaction transaction(&GetDB());
   CHECK(GetDB().is_open());
   if (!transaction.Begin()) {
     DVLOG(0) << "Transaction cannot begin";
-    return AddConversationResult{};
+    return false;
   }
 
-  static const std::string kInsertConversationQuery =
+  static constexpr char kInsertConversationQuery[] =
       "INSERT INTO conversation(uuid, title) "
       "VALUES(?, ?)";
   sql::Statement statement(
@@ -363,62 +359,69 @@ AIChatDatabase::AddConversationResult AIChatDatabase::AddConversation(
     statement.BindNull(1);
   } else {
     if (!BindAndEncryptString(statement, 1, conversation->title)) {
-      return AddConversationResult{};
+      return false;
     }
   }
 
   if (!statement.Run()) {
     DVLOG(0) << "Failed to execute 'conversation' insert statement: "
              << db_.GetErrorMessage();
-    return AddConversationResult{};
+    return false;
   }
-
-  AddConversationResult result;
 
   if (conversation->associated_content->is_content_association_possible) {
     DVLOG(2) << "Adding associated content for conversation "
              << conversation->uuid << " with url "
              << conversation->associated_content->url->spec();
-    result.associated_content_id = AddOrUpdateAssociatedContent(
-        conversation->uuid, std::move(conversation->associated_content),
-        contents);
-    if (result.associated_content_id == -1) {
-      return result;
+    if (!AddOrUpdateAssociatedContent(
+            conversation->uuid, std::move(conversation->associated_content),
+            contents)) {
+      return false;
     }
   }
 
   if (!AddConversationEntry(conversation->uuid, std::move(first_entry))) {
-    return AddConversationResult{};
+    return false;
   }
 
   if (!transaction.Commit()) {
     DVLOG(0) << "Transaction commit failed with reason: "
              << db_.GetErrorMessage();
-    return AddConversationResult{};
+    return false;
   }
 
-  return result;
+  return true;
 }
 
-int32_t AIChatDatabase::AddOrUpdateAssociatedContent(
+bool AIChatDatabase::AddOrUpdateAssociatedContent(
     std::string_view conversation_uuid,
     mojom::SiteInfoPtr associated_content,
     std::optional<std::string> contents) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
-    return INT32_C(-1);
+    return false;
   }
 
   // TODO(petemill): handle multiple associated content per conversation
   CHECK(!conversation_uuid.empty());
+  CHECK(associated_content->uuid.has_value());
+
+  // Check if we already have persisted this content
+  static constexpr char kSelectExistingAssociatedContentId[] =
+      "SELECT uuid FROM associated_content WHERE conversation_uuid=?"
+      " AND uuid=?";
+  sql::Statement select_statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE, kSelectExistingAssociatedContentId));
+  CHECK(select_statement.is_valid());
+  select_statement.BindString(0, conversation_uuid);
+  select_statement.BindString(1, associated_content->uuid.value());
 
   sql::Statement statement;
-  int index;
-  if (associated_content->id.value_or(-1) != -1) {
+  if (select_statement.Step()) {
     DVLOG(4) << "Updating associated content for conversation "
              << conversation_uuid << " with id "
-             << associated_content->id.value();
-    static const std::string kUpdateAssociatedContentQuery =
+             << associated_content->uuid.value();
+    static constexpr char kUpdateAssociatedContentQuery[] =
         "UPDATE associated_content"
         " SET title = ?,"
         " url = ?,"
@@ -426,23 +429,20 @@ int32_t AIChatDatabase::AddOrUpdateAssociatedContent(
         " last_contents = ?,"
         " content_used_percentage = ?,"
         " is_content_refined = ?"
-        " WHERE id=?";
+        " WHERE uuid=? and conversation_uuid=?";
     statement.Assign(GetDB().GetUniqueStatement(kUpdateAssociatedContentQuery));
-    statement.BindInt(6, associated_content->id.value());
-    index = 0;
   } else {
     DVLOG(4) << "Inserting associated content for conversation "
              << conversation_uuid;
-    static const std::string kInsertAssociatedContentQuery =
-        "INSERT INTO associated_content(conversation_uuid, title, url,"
+    static constexpr char kInsertAssociatedContentQuery[] =
+        "INSERT INTO associated_content(title, url,"
         " content_type, last_contents, content_used_percentage,"
-        " is_content_refined)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?) ";
+        " is_content_refined, uuid, conversation_uuid)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?) ";
     statement.Assign(GetDB().GetUniqueStatement(kInsertAssociatedContentQuery));
-    statement.BindString(0, conversation_uuid);
-    index = 1;
   }
   CHECK(statement.is_valid());
+  int index = 0;
   BindAndEncryptOptionalString(statement, index, associated_content->title);
   index++;
   BindAndEncryptOptionalString(statement, index,
@@ -456,18 +456,19 @@ int32_t AIChatDatabase::AddOrUpdateAssociatedContent(
   statement.BindInt(index, associated_content->content_used_percentage);
   index++;
   statement.BindBool(index, associated_content->is_content_refined);
+  index++;
+  statement.BindString(index, associated_content->uuid.value());
+  index++;
+  statement.BindString(index, conversation_uuid);
 
   if (!statement.Run()) {
     DVLOG(0)
         << "Failed to execute 'associated_content' insert or update statement: "
         << db_.GetErrorMessage();
-    return INT32_C(-1);
+    return false;
   }
 
-  if (!associated_content->id.has_value()) {
-    return GetDB().GetLastInsertRowId();
-  }
-  return associated_content->id.value();
+  return true;
 }
 
 bool AIChatDatabase::AddConversationEntry(
@@ -482,7 +483,7 @@ bool AIChatDatabase::AddConversationEntry(
   }
 
   // Verify the conversation exists
-  static const std::string kGetConversationIdQuery =
+  static constexpr char kGetConversationIdQuery[] =
       "SELECT uuid FROM conversation WHERE uuid=?";
   sql::Statement get_conversation_id_statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE, kGetConversationIdQuery));
@@ -503,7 +504,7 @@ bool AIChatDatabase::AddConversationEntry(
   sql::Statement insert_conversation_entry_statement;
 
   if (editing_id.has_value()) {
-    static const std::string kInsertEditingConversationEntryQuery =
+    static constexpr char kInsertEditingConversationEntryQuery[] =
         "INSERT INTO conversation_entry(editing_entry_uuid, uuid,"
         " conversation_uuid, date, entry_text,"
         " character_type, action_type, selected_text)"
@@ -511,7 +512,7 @@ bool AIChatDatabase::AddConversationEntry(
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertEditingConversationEntryQuery));
   } else {
-    static const std::string kInsertConversationEntryQuery =
+    static constexpr char kInsertConversationEntryQuery[] =
         "INSERT INTO conversation_entry(uuid, conversation_uuid, date,"
         " entry_text, character_type, action_type, selected_text)"
         " VALUES(?, ?, ?, ?, ?, ?, ?)";
@@ -615,7 +616,7 @@ bool AIChatDatabase::UpdateConversationTitle(std::string conversation_uuid,
     return false;
   }
 
-  static const std::string kUpdateConversationTitleQuery =
+  static constexpr char kUpdateConversationTitleQuery[] =
       "UPDATE conversation SET title=? WHERE uuid=?";
   sql::Statement statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateConversationTitleQuery));
@@ -642,7 +643,7 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
   }
 
   // Delete all conversation entries
-  static const std::string kSelectConversationEntryQuery =
+  static constexpr char kSelectConversationEntryQuery[] =
       "SELECT uuid FROM conversation_entry WHERE conversation_uuid=?";
   sql::Statement select_conversation_entry_statement(
       GetDB().GetUniqueStatement(kSelectConversationEntryQuery));
@@ -653,7 +654,7 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
   while (select_conversation_entry_statement.Step()) {
     std::string conversation_entry_uuid =
         select_conversation_entry_statement.ColumnString(0);
-    static const std::string kDeleteCompletionEventQuery =
+    static constexpr char kDeleteCompletionEventQuery[] =
         "DELETE FROM conversation_entry_event_completion"
         " WHERE conversation_entry_uuid=?";
     sql::Statement delete_completion_event_statement(
@@ -664,7 +665,7 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
       return false;
     }
 
-    static const std::string kDeleteSearchQueriesEventQuery =
+    static constexpr char kDeleteSearchQueriesEventQuery[] =
         "DELETE FROM conversation_entry_event_search_queries "
         " WHERE conversation_entry_uuid=?";
     sql::Statement delete_queries_event_statement(
@@ -675,7 +676,7 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
       return false;
     }
 
-    static const std::string kDeleteEntryQuery =
+    static constexpr char kDeleteEntryQuery[] =
         "DELETE FROM conversation_entry WHERE uuid=?";
     sql::Statement delete_conversation_entry_statement(
         GetDB().GetUniqueStatement(kDeleteEntryQuery));
@@ -687,7 +688,7 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
   }
 
   // Delete the conversation metadata
-  static const std::string kDeleteAssociatedContentQuery =
+  static constexpr char kDeleteAssociatedContentQuery[] =
       "DELETE FROM associated_content WHERE conversation_uuid=?";
   sql::Statement delete_associated_content_statement(
       GetDB().GetUniqueStatement(kDeleteAssociatedContentQuery));
@@ -697,7 +698,7 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
     return false;
   }
 
-  static const std::string kDeleteConversationQuery =
+  static constexpr char kDeleteConversationQuery[] =
       "DELETE FROM conversation WHERE uuid=?";
   sql::Statement delete_conversation_statement(
       GetDB().GetUniqueStatement(kDeleteConversationQuery));
@@ -745,7 +746,7 @@ bool AIChatDatabase::DeleteConversationEntry(
 
   // Delete from conversation_entry_event_search_queries
   {
-    static const std::string kQuery =
+    static constexpr char kQuery[] =
         "DELETE FROM conversation_entry_event_search_queries WHERE "
         "conversation_entry_uuid=?";
     sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
@@ -762,7 +763,7 @@ bool AIChatDatabase::DeleteConversationEntry(
 
   // Delete edits
   {
-    static const std::string kQuery =
+    static constexpr char kQuery[] =
         "DELETE FROM conversation_entry WHERE editing_entry_uuid = ?";
     sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
     CHECK(delete_statement.is_valid());
@@ -777,7 +778,7 @@ bool AIChatDatabase::DeleteConversationEntry(
 
   // Delete from conversation_entry
   {
-    static const std::string kQuery =
+    static constexpr char kQuery[] =
         "DELETE FROM conversation_entry WHERE uuid=?";
     sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
     CHECK(delete_statement.is_valid());
@@ -803,25 +804,22 @@ bool AIChatDatabase::DeleteAllData() {
     return false;
   }
 
-  static const std::string kDropConversationTableQuery =
+  static constexpr char kDropConversationTableQuery[] =
       "DROP TABLE conversation";
-  static const std::string kDropAssociatedContentTableQuery =
+  static constexpr char kDropAssociatedContentTableQuery[] =
       "DROP TABLE associated_content";
-  static const std::string kDropConversationEntryTableQuery =
+  static constexpr char kDropConversationEntryTableQuery[] =
       "DROP TABLE conversation_entry";
-  static const std::string kDropCompletionEventTableQuery =
+  static constexpr char kDropCompletionEventTableQuery[] =
       "DROP TABLE conversation_entry_event_completion";
-  static const std::string kDropSearchQueriesEventTableQuery =
+  static constexpr char kDropSearchQueriesEventTableQuery[] =
       "DROP TABLE conversation_entry_event_search_queries";
 
   return GetDB().Execute(kDropConversationTableQuery) &&
          GetDB().Execute(kDropAssociatedContentTableQuery) &&
          GetDB().Execute(kDropConversationEntryTableQuery) &&
          GetDB().Execute(kDropCompletionEventTableQuery) &&
-         GetDB().Execute(kDropSearchQueriesEventTableQuery) &&
-         CreateConversationTable() && CreateAssociatedContentTable() &&
-         CreateConversationEntryTable() && CreateConversationEntryTextTable() &&
-         CreateSearchQueriesTable();
+         GetDB().Execute(kDropSearchQueriesEventTableQuery) && CreateSchema();
 }
 
 sql::Database& AIChatDatabase::GetDB() {
@@ -844,9 +842,8 @@ std::optional<std::string> AIChatDatabase::DecryptOptionalColumnToString(
     sql::Statement& statement,
     int index) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto column_type = statement.GetColumnType(index);
   // Don't allow non-BLOB types
-  if (column_type != sql::ColumnType::kBlob) {
+  if (statement.GetColumnType(index) != sql::ColumnType::kBlob) {
     return std::nullopt;
   }
   auto decrypted_value = encryptor_.DecryptData(statement.ColumnBlob(index));
@@ -854,7 +851,7 @@ std::optional<std::string> AIChatDatabase::DecryptOptionalColumnToString(
     DVLOG(0) << "Failed to decrypt value";
     return std::nullopt;
   }
-  return std::make_optional(*decrypted_value);
+  return *decrypted_value;
 }
 
 void AIChatDatabase::BindAndEncryptOptionalString(
@@ -888,21 +885,21 @@ bool AIChatDatabase::BindAndEncryptString(sql::Statement& statement,
   return true;
 }
 
-bool AIChatDatabase::CreateConversationTable() {
-  static const std::string kCreateConversationTableQuery =
+bool AIChatDatabase::CreateSchema() {
+  static constexpr char kCreateConversationTableQuery[] =
       "CREATE TABLE IF NOT EXISTS conversation("
       "uuid TEXT PRIMARY KEY NOT NULL,"
       "title BLOB)";
   CHECK(GetDB().IsSQLValid(kCreateConversationTableQuery));
-  return GetDB().Execute(kCreateConversationTableQuery);
-}
+  if (!GetDB().Execute(kCreateConversationTableQuery)) {
+    return false;
+  }
 
-// AssociatedContent is 1:many with Conversation for future-proofing when
-// we support multiple associated contents per conversation.
-bool AIChatDatabase::CreateAssociatedContentTable() {
-  static const std::string kCreateAssociatedContentTableQuery =
+  // AssociatedContent is 1:many with Conversation for future-proofing when
+  // we support multiple associated contents per conversation.
+  static constexpr char kCreateAssociatedContentTableQuery[] =
       "CREATE TABLE IF NOT EXISTS associated_content("
-      "id INTEGER PRIMARY KEY NOT NULL,"
+      "uuid TEXT PRIMARY KEY NOT NULL,"
       "conversation_uuid TEXT NOT NULL,"
       // Encrypted title string
       "title BLOB NOT NULL,"
@@ -920,12 +917,12 @@ bool AIChatDatabase::CreateAssociatedContentTable() {
       "content_used_percentage INTEGER NOT NULL,"
       "is_content_refined INTEGER NOT NULL)";
   CHECK(GetDB().IsSQLValid(kCreateAssociatedContentTableQuery));
-  return GetDB().Execute(kCreateAssociatedContentTableQuery);
-}
+  if (!GetDB().Execute(kCreateAssociatedContentTableQuery)) {
+    return false;
+  }
 
-// AKA ConversationTurn in mojom
-bool AIChatDatabase::CreateConversationEntryTable() {
-  static const std::string kCreateConversationEntryTableQuery =
+  // AKA ConversationTurn in mojom
+  static constexpr char kCreateConversationEntryTableQuery[] =
       "CREATE TABLE IF NOT EXISTS conversation_entry("
       "uuid TEXT PRIMARY KEY NOT NULL,"
       "conversation_uuid STRING NOT NULL,"
@@ -945,11 +942,11 @@ bool AIChatDatabase::CreateConversationEntryTable() {
   // TODO(petemill): Store a model name with each entry to know when
   // a model was changed for a conversation, or for forking-by-model features.
   CHECK(GetDB().IsSQLValid(kCreateConversationEntryTableQuery));
-  return GetDB().Execute(kCreateConversationEntryTableQuery);
-}
+  if (!GetDB().Execute(kCreateConversationEntryTableQuery)) {
+    return false;
+  }
 
-bool AIChatDatabase::CreateConversationEntryTextTable() {
-  static const std::string kCreateConversationEntryTextTableQuery =
+  static constexpr char kCreateConversationEntryTextTableQuery[] =
       "CREATE TABLE IF NOT EXISTS conversation_entry_event_completion("
       "conversation_entry_uuid INTEGER NOT NULL,"
       "event_order INTEGER NOT NULL,"
@@ -958,11 +955,11 @@ bool AIChatDatabase::CreateConversationEntryTextTable() {
       "PRIMARY KEY(conversation_entry_uuid, event_order)"
       ")";
   CHECK(GetDB().IsSQLValid(kCreateConversationEntryTextTableQuery));
-  return GetDB().Execute(kCreateConversationEntryTextTableQuery);
-}
+  if (!GetDB().Execute(kCreateConversationEntryTextTableQuery)) {
+    return false;
+  }
 
-bool AIChatDatabase::CreateSearchQueriesTable() {
-  static const std::string kCreateSearchQueriesTableQuery =
+  static constexpr char kCreateSearchQueriesTableQuery[] =
       "CREATE TABLE IF NOT EXISTS conversation_entry_event_search_queries("
       "conversation_entry_uuid INTEGER NOT NULL,"
       "event_order INTEGER NOT NULL,"
@@ -971,6 +968,11 @@ bool AIChatDatabase::CreateSearchQueriesTable() {
       "PRIMARY KEY(conversation_entry_uuid, event_order)"
       ")";
   CHECK(GetDB().IsSQLValid(kCreateSearchQueriesTableQuery));
-  return GetDB().Execute(kCreateSearchQueriesTableQuery);
+  if (!GetDB().Execute(kCreateSearchQueriesTableQuery)) {
+    return false;
+  }
+
+  return true;
 }
+
 }  // namespace ai_chat
