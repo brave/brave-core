@@ -13,7 +13,8 @@ constexpr DataType GetBraveDataTypeValue(const int index) {
   return DataType(1) << (63 - index);
 }
 
-constexpr DataType DATA_TYPE_BRAVE_LEO_HISTORY = GetBraveDataTypeValue(0);
+inline constexpr DataType DATA_TYPE_BRAVE_LEO_HISTORY =
+    GetBraveDataTypeValue(0);
 
 }  // namespace chrome_browsing_data_remover
 

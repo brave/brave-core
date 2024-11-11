@@ -36,7 +36,7 @@ enum class TabCountType {
   kPinned,
 };
 
-const TabCountType kAllTabCountTypes[] = {
+inline constexpr TabCountType kAllTabCountTypes[] = {
     TabCountType::kOpen, TabCountType::kGroup, TabCountType::kPinned};
 
 class VerticalTabBrowserMetrics : public TabStripModelObserver {

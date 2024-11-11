@@ -51,7 +51,7 @@ inline constexpr char kCredential[] = "api/v1.3/device/";
 inline constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 inline constexpr char kCreateSubscriberCredentialV12[] =
     "api/v1.2/subscriber-credential/create";
-constexpr int kP3AIntervalHours = 24;
+inline constexpr int kP3AIntervalHours = 24;
 
 inline constexpr char kSubscriberCredentialKey[] = "credential";
 inline constexpr char kSkusCredentialKey[] = "skus_credential";

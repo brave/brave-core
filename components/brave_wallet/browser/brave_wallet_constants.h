@@ -17,15 +17,15 @@ namespace brave_wallet {
 
 inline constexpr char kBraveServicesKeyHeader[] = "x-brave-key";
 
-constexpr uint256_t kDefaultSendEthGasLimit = 21000;
-constexpr uint256_t kDefaultERC20TransferGasLimit = 300000;
-constexpr uint256_t kDefaultERC721TransferGasLimit = 800000;
-constexpr uint256_t kDefaultERC20ApproveGasLimit = 300000;
+inline constexpr uint256_t kDefaultSendEthGasLimit = 21000;
+inline constexpr uint256_t kDefaultERC20TransferGasLimit = 300000;
+inline constexpr uint256_t kDefaultERC721TransferGasLimit = 800000;
+inline constexpr uint256_t kDefaultERC20ApproveGasLimit = 300000;
 
-constexpr int32_t kAutoLockMinutesMin = 1;
-constexpr int32_t kAutoLockMinutesMax = 10080;
+inline constexpr int32_t kAutoLockMinutesMin = 1;
+inline constexpr int32_t kAutoLockMinutesMax = 10080;
 
-constexpr int32_t kAssetDiscoveryMinutesPerRequest = 1;
+inline constexpr int32_t kAssetDiscoveryMinutesPerRequest = 1;
 
 inline constexpr char kWalletBaseDirectory[] = "BraveWallet";
 inline constexpr char kImageSourceHost[] = "erc-token-images";
@@ -1667,9 +1667,9 @@ inline constexpr char kNativeEVMAssetContractAddress[] =
 // Squid constants
 inline constexpr char kSquidBaseAPIURL[] = "https://squid.wallet.brave.com";
 
-constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
-constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;
-constexpr int64_t kSolanaBlockTrackerTimeInSeconds = 2;
+inline constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
+inline constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;
+inline constexpr int64_t kSolanaBlockTrackerTimeInSeconds = 2;
 
 // Ankr constants
 inline constexpr char kAnkrAdvancedAPIBaseURL[] =

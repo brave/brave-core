@@ -21,7 +21,7 @@
 
 namespace brave_news {
 
-constexpr std::size_t kMaxArticlesPerDirectFeedSource = 100;
+inline constexpr std::size_t kMaxArticlesPerDirectFeedSource = 100;
 
 struct FeedData;
 

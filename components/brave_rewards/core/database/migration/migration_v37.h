@@ -8,7 +8,7 @@
 
 namespace brave_rewards::internal::database::migration {
 
-constexpr char v37[] =
+inline constexpr char v37[] =
     R"(
      CREATE TABLE external_transactions (
        transaction_id TEXT NOT NULL CHECK(transaction_id <> ''),

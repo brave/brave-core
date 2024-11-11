@@ -22,7 +22,7 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList();
 extern const base::fixed_flat_set<std::string_view, 1>
     kPrintPreviewRetrievalHosts;
 
-constexpr uint8_t kMaxPreviewPages = 20;
+inline constexpr uint8_t kMaxPreviewPages = 20;
 extern const char kLeoModelSupportUrl[];
 
 // Upon registering a custom model, users have the ability to explicitly
@@ -31,10 +31,10 @@ extern const char kLeoModelSupportUrl[];
 // chars per token. When no context size has been provided, we will default to a
 // conservative 4k tokens based on common models like Phi 3 Mini and Llama 2
 // (both have 4k token context limits).
-constexpr size_t kDefaultCharsPerToken = 4;
-constexpr float kMaxContentLengthThreshold = 0.6f;
-constexpr size_t kReservedTokensForPrompt = 300;
-constexpr size_t kReservedTokensForMaxNewTokens = 400;
+inline constexpr size_t kDefaultCharsPerToken = 4;
+inline constexpr float kMaxContentLengthThreshold = 0.6f;
+inline constexpr size_t kReservedTokensForPrompt = 300;
+inline constexpr size_t kReservedTokensForMaxNewTokens = 400;
 
 }  // namespace ai_chat
 

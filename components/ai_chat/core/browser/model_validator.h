@@ -17,10 +17,10 @@ namespace ai_chat {
 
 // The declared context size needs to be large enough to accommodate expected
 // reserves (i.e., prompt tokens and max new tokens)
-constexpr size_t kMinCustomModelContextSize =
+inline constexpr size_t kMinCustomModelContextSize =
     kReservedTokensForMaxNewTokens + kReservedTokensForPrompt;
-constexpr size_t kMaxCustomModelContextSize = 2'000'000;
-constexpr size_t kDefaultCustomModelContextSize = 4000;
+inline constexpr size_t kMaxCustomModelContextSize = 2'000'000;
+inline constexpr size_t kDefaultCustomModelContextSize = 4000;
 
 enum class ModelValidationResult {
   kSuccess,

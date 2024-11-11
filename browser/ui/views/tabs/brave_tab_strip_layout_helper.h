@@ -27,10 +27,10 @@ struct TabLayoutConstants;
 
 namespace tabs {
 
-constexpr int kVerticalTabHeight = 32;
-constexpr int kVerticalTabMinWidth = kVerticalTabHeight;
-constexpr int kVerticalTabsSpacing = 4;
-constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
+inline constexpr int kVerticalTabHeight = 32;
+inline constexpr int kVerticalTabMinWidth = kVerticalTabHeight;
+inline constexpr int kVerticalTabsSpacing = 4;
+inline constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
 
 int GetTabCornerRadius(const Tab& tab);
 

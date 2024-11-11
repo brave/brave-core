@@ -30,7 +30,7 @@ class AutofillMetrics;
 class LanguageMetrics;
 class PageMetrics;
 
-constexpr char kSearchSuggestEnabledHistogramName[] =
+inline constexpr char kSearchSuggestEnabledHistogramName[] =
     "Brave.Search.SearchSuggest";
 
 class ProfileMiscMetricsService : public KeyedService {
