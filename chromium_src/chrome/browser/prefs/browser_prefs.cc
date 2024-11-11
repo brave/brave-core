@@ -40,7 +40,6 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #endif
 
@@ -99,9 +98,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 #if !BUILDFLAG(IS_ANDROID)
   // Added 9/2020
   new_tab_page::MigrateNewTabPagePrefs(profile_prefs);
-
-  // Added 06/2022
-  brave::MigrateSearchEngineProviderPrefs(profile_prefs);
 
   // Added 10/2022
   profile_prefs->ClearPref(kDefaultBrowserLaunchingCount);

@@ -7,7 +7,6 @@ import getActions from './api/getActions'
 import * as preferencesAPI from './api/preferences'
 import * as statsAPI from './api/stats'
 import * as topSitesAPI from './api/topSites'
-import * as privateTabDataAPI from './api/privateTabData'
 import * as newTabAdsDataAPI from './api/newTabAdsData'
 import getNTPBrowserAPI, { Background, CustomBackground } from './api/background'
 import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
@@ -20,10 +19,6 @@ async function updatePreferences (prefData: NewTab.Preferences) {
 
 async function updateStats (statsData: statsAPI.Stats) {
   getActions().statsUpdated(statsData)
-}
-
-async function updatePrivateTabData (data: privateTabDataAPI.PrivateTabData) {
-  getActions().privateTabDataUpdated(data)
 }
 
 async function updateNewTabAdsData (data: newTabAdsDataAPI.NewTabAdsData) {
@@ -65,7 +60,6 @@ export function wireApiEventsToStore () {
     statsAPI.addChangeListener(updateStats)
     preferencesAPI.addChangeListener(updatePreferences)
     preferencesAPI.addChangeListener(onRewardsToggled)
-    privateTabDataAPI.addChangeListener(updatePrivateTabData)
     newTabAdsDataAPI.addChangeListener(updateNewTabAdsData)
     backgroundData.updateImages(initialData.braveBackgrounds)
 

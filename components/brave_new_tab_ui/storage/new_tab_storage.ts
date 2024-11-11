@@ -43,8 +43,6 @@ export const defaultState: NewTab.State = {
   braveTalkSupported: false,
   bitcoinDotComSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
-  useAlternativePrivateSearchEngine: false,
-  showAlternativePrivateSearchEngineToggle: false,
   torCircuitEstablished: false,
   torInitProgress: '',
   isTor: false,

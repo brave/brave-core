@@ -108,7 +108,6 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
 #include "chrome/browser/ui/webui/bookmarks/bookmark_prefs.h"
@@ -138,9 +137,6 @@ void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   new_tab_page::RegisterNewTabPagePrefsForMigration(registry);
-
-  // Added 06/2022
-  brave::RegisterSearchEngineProviderPrefsForMigration(registry);
 
   // Added 10/2022
   registry->RegisterIntegerPref(kDefaultBrowserLaunchingCount, 0);
