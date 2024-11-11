@@ -357,7 +357,9 @@ extension BrowserViewController {
           }
 
           // Add Brave-Leo options only in normal browsing
-          if !browserViewController.tabManager.privateBrowsingManager.isPrivateBrowsing {
+          if !browserViewController.tabManager.privateBrowsingManager.isPrivateBrowsing
+            && FeatureList.kAIChat.enabled
+          {
             MenuItemButton(
               icon: Image(braveSystemName: "leo.product.brave-leo"),
               title: Strings.leoMenuItem
