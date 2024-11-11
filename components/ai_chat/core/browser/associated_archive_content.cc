@@ -5,9 +5,16 @@
 
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 
+#include <ios>
+#include <ostream>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 
+#include "base/functional/callback.h"
+#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
+#include "base/strings/utf_ostream_operators.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 
 namespace ai_chat {

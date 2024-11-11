@@ -6,10 +6,15 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONSTANTS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONSTANTS_H_
 
+#include <stddef.h>
+
+#include <cstdint>
 #include <limits>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/span.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"

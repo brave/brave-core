@@ -5,16 +5,32 @@
 
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 
+#include <array>
 #include <cstdint>
+#include <functional>
+#include <ios>
 #include <memory>
+#include <optional>
+#include <ostream>
 #include <string>
-#include <utility>
+#include <string_view>
+#include <type_traits>
+#include <vector>
 
+#include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
+#include "base/location.h"
+#include "base/logging.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/ranges/algorithm.h"
+#include "base/numerics/clamped_math.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_ostream_operators.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
@@ -28,15 +44,28 @@
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/permission_controller.h"
-#include "content/public/browser/permission_request_description.h"
 #include "content/public/browser/permission_result.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/scoped_accessibility_mode.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "pdf/buildflags.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
+#include "third_party/blink/public/mojom/permissions/permission_status.mojom-shared.h"
+#include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/accessibility/ax_mode.h"
+#include "ui/accessibility/ax_node_data.h"
+#include "ui/accessibility/ax_tree_update.h"
 #include "ui/accessibility/ax_updates_and_events.h"
 #include "ui/base/l10n/l10n_util.h"
+
+namespace favicon {
+class FaviconDriver;
+}  // namespace favicon
+namespace gfx {
+class Image;
+}  // namespace gfx
 
 namespace ai_chat {
 

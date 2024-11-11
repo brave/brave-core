@@ -6,11 +6,13 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_RENDERER_YT_UTIL_H_
 #define BRAVE_COMPONENTS_AI_CHAT_RENDERER_YT_UTIL_H_
 
+#include <functional>
 #include <optional>
 #include <string>
 #include <string_view>
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/flat_tree.h"
 #include "base/values.h"
 
 namespace ai_chat {
