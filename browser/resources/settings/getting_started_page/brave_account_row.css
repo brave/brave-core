@@ -27,8 +27,17 @@
   width: 38px;
 }
 
+.szilard {
+  background-image: url('../images/szilard.png');
+  background-size: cover;
+  border-radius: 50%;
+  height: 38px;
+  width: 38px;
+}
+
 .texts {
   display: flex;
+  flex: auto;
   flex-direction: column;
   padding: var(--leo-spacing-l) 0px;
 }

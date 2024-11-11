@@ -65,7 +65,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                 </div>
               </div>
               <div slot="content">
-                Passwords should have:
+                Passwords should have at least:
                 ${this.regexps.map(([_, requirement_met, text]) => html`
                   <div class="password-requirement ${requirement_met ? 'requirement-met' : ''}">
                     <leo-icon name=${requirement_met ? 'check-circle-outline' : 'close-circle'}></leo-icon>
@@ -108,7 +108,8 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                                || !this.isAccountNameValid
                                || this.percent !== 100
                                || this.passwordConfirmation !== this.password
-                               || !this.isChecked}>
+                               || !this.isChecked}
+                    @click=${() => this.fire('create-account-button-clicked')}>
           Create account
         </leo-button>
       </div>

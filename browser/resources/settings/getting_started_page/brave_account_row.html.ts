@@ -14,8 +14,10 @@ export function getHtml(this: SettingsBraveAccountRow) {
   return html`<!--_html_template_start_-->
     <div class="row">
       <div class="circle">
-        <leo-icon name="social-brave-release-favicon-fullheight-color">
-        </leo-icon>
+        ${this.signedIn
+          ? html`<div class="szilard"></div>`
+          : html`<leo-icon name="social-brave-release-favicon-fullheight-color" />`
+        }
       </div>
       <div class="texts">
         <div class="text-top ${this.signedIn ? 'signed-in' : ''}">
@@ -48,7 +50,8 @@ export function getHtml(this: SettingsBraveAccountRow) {
           return html`
             <settings-brave-account-create-dialog
               @back-button-clicked=${this.onBackButtonClicked}
-              @close=${() => this.dialogType = DialogType.NONE}>
+              @close=${() => this.dialogType = DialogType.NONE}
+              @create-account-button-clicked=${() => this.dialogType = DialogType.NONE}>
             </settings-brave-account-create-dialog>
           `
         case DialogType.SIGN_IN:

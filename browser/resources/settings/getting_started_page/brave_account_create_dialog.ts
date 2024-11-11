@@ -93,11 +93,11 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   protected icon: string = 'warning-triangle-filled'
 
   protected regexps: Array<[RegExp, boolean, string]> = [
-    [/^.{5,}$/, false, 'At least 5 characters'],
-    [/[a-z]/, false, 'At least 1 lowercase letter'],
-    [/[A-Z]/, false, 'At least 1 uppercase letter'],
-    [/[0-9]/, false, 'At least 1 number'],
-    [/[^a-zA-Z0-9]/, false, 'At least 1 special character']
+    [/[a-z]/, false, '1 lowercase letter'],
+    [/[A-Z]/, false, '1 uppercase letter'],
+    [/[0-9]/, false, '1 number'],
+    [/[^a-zA-Z0-9]/, false, '1 special character'],
+    [/^.{5,}$/, false, '5 characters']
   ]
   protected percent: number = 0
 }
