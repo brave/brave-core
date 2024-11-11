@@ -410,6 +410,9 @@
   <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_NEVER">
     Hide bookmark bar
   </message>
+  <message name="IDS_IDC_EXPORT_ALL_BOOKMARKS">
+    Export all bookmarks
+  </message>
   <message name="IDS_IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY">
     Toggle All bookmarks button visibility
   </message>

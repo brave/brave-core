@@ -14,6 +14,9 @@
 
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
+#include "base/i18n/file_util_icu.h"
+#include "base/i18n/time_formatting.h"
+#include "base/path_service.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
@@ -35,6 +38,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -54,12 +58,16 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/common/channel_info.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/shell_dialogs/select_file_policy.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 #include "url/origin.h"
 
 #if defined(TOOLKIT_VIEWS)
@@ -137,6 +145,67 @@ std::vector<int> GetSelectedIndices(Browser* browser) {
 }
 
 }  // namespace
+
+/**
+ * @note This function creates a default filename like
+ * "bookmarks_10_31_24.html", for example, if the date was October 31, 2024.
+ *
+ * @note This function mimics the behavior of a function with the same name in
+ * the Chromium source code.
+ *
+ * @see
+ * https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc;l=205-222?q=IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME
+ */
+base::FilePath GetDefaultFilepathForBookmarkExport() {
+  std::string bookmarks_MM_DD_YY = l10n_util::GetStringFUTF8(
+      IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME,
+      base::TimeFormatShortDateNumeric(base::Time::Now()));
+
+  base::FilePath path = base::FilePath::FromUTF8Unsafe(bookmarks_MM_DD_YY);
+  base::FilePath::StringType path_str = path.value();
+  base::i18n::ReplaceIllegalCharactersInPath(&path_str, '_');
+  base::FilePath default_path;
+  base::PathService::Get(chrome::DIR_USER_DOCUMENTS, &default_path);
+  return default_path.Append(base::FilePath(path_str));
+}
+
+/**
+ * @class BookmarksExportListener
+ * @brief A listener class for handling bookmark export file selection.
+ *
+ * This class is responsible for showing a file dialog to the user for selecting
+ * the location to save exported bookmarks.
+ *
+ * @note The lifetime of this class is tied to the FileSelected dialog. It will
+ * be automatically deleted when the dialog is closed, a file is selected, or
+ * the dialog is cancelled.
+ */
+class BookmarksExportListener : public ui::SelectFileDialog::Listener {
+ public:
+  explicit BookmarksExportListener(Profile* profile)
+      : profile_(profile),
+        file_selector_(ui::SelectFileDialog::Create(this, nullptr)) {}
+  void FileSelected(const ui::SelectedFileInfo& file, int index) override {
+    bookmark_html_writer::WriteBookmarks(profile_, file.file_path, nullptr);
+    delete this;
+  }
+  void ShowFileDialog(Browser* browser) {
+    ui::SelectFileDialog::FileTypeInfo file_types;
+
+    // Only show HTML files in the file dialog.
+    file_types.extensions.push_back({FILE_PATH_LITERAL("html")});
+    file_selector_->SelectFile(
+        ui::SelectFileDialog::SELECT_SAVEAS_FILE,
+        l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_MENU_EXPORT),
+        GetDefaultFilepathForBookmarkExport(), &file_types, 1,
+        FILE_PATH_LITERAL("html"), browser->window()->GetNativeWindow(),
+        nullptr);
+  }
+
+ private:
+  raw_ptr<Profile> profile_;
+  scoped_refptr<ui::SelectFileDialog> file_selector_;
+};
 
 void NewOffTheRecordWindowTor(Browser* browser) {
   CHECK(browser);
@@ -898,6 +967,10 @@ void ScrollTabToTop(Browser* browser) {
 void ScrollTabToBottom(Browser* browser) {
   auto* contents = browser->tab_strip_model()->GetActiveWebContents();
   contents->ScrollToBottomOfDocument();
+}
+
+void ExportAllBookmarks(Browser* browser) {
+  (new BookmarksExportListener(browser->profile()))->ShowFileDialog(browser);
 }
 
 void ToggleAllBookmarksButtonVisibility(Browser* browser) {
