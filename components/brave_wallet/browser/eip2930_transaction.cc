@@ -179,7 +179,7 @@ std::vector<uint8_t> Eip2930Transaction::GetMessageToSign(uint256_t chain_id,
 
   const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
   result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
-  return hash ? KeccakHash(result) : result;
+  return hash ? KeccakHashToVector(result) : result;
 }
 
 std::string Eip2930Transaction::GetSignedTransaction() const {

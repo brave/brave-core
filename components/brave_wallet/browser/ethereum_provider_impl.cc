@@ -684,9 +684,10 @@ void EthereumProviderImpl::SignTypedMessage(
   mojom::SignDataUnionPtr sign_data =
       mojom::SignDataUnion::NewEthSignTypedData(std::move(eth_sign_typed_data));
 
-  SignMessageInternal(account_id, std::move(sign_data),
-                      std::move(message_to_sign), std::move(callback),
-                      std::move(id));
+  SignMessageInternal(
+      account_id, std::move(sign_data),
+      std::vector<uint8_t>(message_to_sign.begin(), message_to_sign.end()),
+      std::move(callback), std::move(id));
 }
 
 void EthereumProviderImpl::SignMessageInternal(

@@ -25,6 +25,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
@@ -78,8 +79,7 @@ bool UTCPasswordVerification(const std::string& derived_key,
   mac_verification_input.insert(mac_verification_input.end(),
                                 ciphertext.begin(), ciphertext.end());
   // verify password
-  std::vector<uint8_t> mac_verification(KeccakHash(mac_verification_input));
-  if (base::ToLowerASCII(base::HexEncode(mac_verification)) != mac) {
+  if (HexEncodeLower(KeccakHash(mac_verification_input)) != mac) {
     VLOG(0) << __func__ << ": password does not match";
     return false;
   }
@@ -397,7 +397,8 @@ void HDKey::SetPrivateKey(base::span<const uint8_t> value) {
   }
   private_key_.assign(value.begin(), value.end());
   GeneratePublicKey();
-  identifier_ = Hash160(public_key_);
+  auto pubkey_hash = Hash160(public_key_);
+  identifier_.assign(pubkey_hash.begin(), pubkey_hash.end());
 
   const uint8_t* ptr = identifier_.data();
   fingerprint_ = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;
@@ -426,7 +427,8 @@ void HDKey::SetPublicKey(
     return;
   }
   public_key_.assign(value.begin(), value.end());
-  identifier_ = Hash160(public_key_);
+  auto pubkey_hash = Hash160(public_key_);
+  identifier_.assign(pubkey_hash.begin(), pubkey_hash.end());
 
   const uint8_t* ptr = identifier_.data();
   fingerprint_ = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;

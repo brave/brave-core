@@ -528,12 +528,14 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     result->meta = nullptr;
   }
 
-  result->domain_hash = domain_hash->first;
+  result->domain_hash.assign(domain_hash->first.begin(),
+                             domain_hash->first.end());
   if (!base::JSONWriter::Write(domain_hash->second, &result->domain_json)) {
     return nullptr;
   }
 
-  result->primary_hash = primary_hash->first;
+  result->primary_hash.assign(primary_hash->first.begin(),
+                              primary_hash->first.end());
   if (!base::JSONWriter::Write(primary_hash->second, &result->message_json)) {
     return nullptr;
   }

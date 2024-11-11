@@ -189,7 +189,7 @@ std::vector<uint8_t> EthTransaction::GetMessageToSign(uint256_t chain_id,
 
   const std::string message = RLPEncode(base::Value(std::move(list)));
   auto result = std::vector<uint8_t>(message.begin(), message.end());
-  return hash ? KeccakHash(result) : result;
+  return hash ? KeccakHashToVector(result) : result;
 }
 
 std::string EthTransaction::GetSignedTransaction() const {
@@ -202,7 +202,7 @@ std::string EthTransaction::GetTransactionHash() const {
   DCHECK(IsSigned());
   DCHECK(nonce_);
 
-  return KeccakHash(RLPEncode(Serialize()));
+  return ToHex(KeccakHash(base::as_byte_span(RLPEncode(Serialize()))));
 }
 
 bool EthTransaction::ProcessVRS(const std::vector<uint8_t>& v,
