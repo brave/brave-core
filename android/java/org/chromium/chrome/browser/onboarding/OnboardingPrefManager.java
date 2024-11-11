@@ -57,6 +57,8 @@ public class OnboardingPrefManager {
 
     private static final String PREF_APP_LAUNCH_COUNT = "APP_LAUNCH_COUNT";
 
+    public static final String CURRENT_ONBOARDING_PAGE = "current_onboarding_page";
+
     private static OnboardingPrefManager sInstance;
 
     private final SharedPreferences mSharedPreferences;

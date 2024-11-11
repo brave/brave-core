@@ -74,7 +74,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private boolean mInvokePostWorkAtInitializeViews;
     private boolean mIsTablet;
     private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
-    private int mCurrentStep = -1;
 
     private View mVLeafAlignTop;
     private View mVLeafAlignBottom;
@@ -210,9 +209,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mBtnPositive != null) {
             mBtnPositive.setOnClickListener(
                     view -> {
-                        if (mCurrentStep == 1 && !isDefaultBrowser()) {
+                        int currentStep = ChromeSharedPreferences.getInstance().readInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, -1);
+                        if (currentStep == 1 && !isDefaultBrowser()) {
                             setDefaultBrowserAndProceedToNextStep();
-                        } else if (shouldOfferSearchWidget() && mCurrentStep == 2) {
+                        } else if (shouldOfferSearchWidget() && currentStep == 2) {
                             BraveSearchWidgetUtils.requestPinAppWidget();
                             nextOnboardingStep();
                         } else {
@@ -224,7 +224,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mBtnNegative != null) {
             mBtnNegative.setOnClickListener(
                     view -> {
-                        if (mCurrentStep == getAnalyticsConsentPageStep()) {
+                        int currentStep = ChromeSharedPreferences.getInstance().readInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, -1);
+                        if (currentStep == getAnalyticsConsentPageStep()) {
                             CustomTabActivity.showInfoPage(this, P3A_URL);
                         } else {
                             nextOnboardingStep();
@@ -264,18 +265,23 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private void nextOnboardingStep() {
         if (isActivityFinishingOrDestroyed()) return;
 
-        mCurrentStep++;
-        if (mCurrentStep == 0) {
+        ChromeSharedPreferences.getInstance()
+                    .writeInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, ChromeSharedPreferences.getInstance()
+                    .readInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, -1) + 1);
+
+        int currentStep = ChromeSharedPreferences.getInstance()
+                    .readInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, -1);
+        if (currentStep == 0) {
             showIntroPage();
-        } else if (mCurrentStep == 1) {
+        } else if (currentStep == 1) {
             if (shouldForceDefaultBrowserPrompt()) {
                 setDefaultBrowserAndProceedToNextStep();
             } else {
                 showBrowserSelectionPage();
             }
-        } else if (shouldOfferSearchWidget() && mCurrentStep == 2) {
+        } else if (shouldOfferSearchWidget() && currentStep == 2) {
             showSearchWidgetPage();
-        } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
+        } else if (currentStep == getAnalyticsConsentPageStep()) {
             showAnalyticsConsentPage();
         } else {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
