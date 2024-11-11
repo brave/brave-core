@@ -96,7 +96,7 @@ export default function FullScreen() {
             kind='plain-faint'
             onClick={toggleAside}
             >
-            <Icon name={isNavigationCollapsed ? 'sidepanel-retract' : 'sidepanel-open'} />
+            <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'edit-box' : 'sidepanel-open'} />
             </Button>
           {!isNavigationRendered && (
             <>
