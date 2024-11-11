@@ -1,30 +1,29 @@
-Total size 136192K
+Total size 135819K
 
-GROUP Adblock [8660K total]
-   136K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.240 [adcocjohghhfpidemphmcmlmhnfgikei]
-    54K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.9378 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1399K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.10305 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+GROUP Adblock [8616K total]
+   136K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.243 [adcocjohghhfpidemphmcmlmhnfgikei]
+    54K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.9521 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1402K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.10452 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
    145K Brave Ad Block Updater (Regional Catalog) 1.0.67 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5737K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.8747 [iodkpdagapdfkphljnddpjlldadblomo]
-     6K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.40 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
-  1181K Brave Ad Block Updater (Resources) 1.0.101 [mfddibmblmbccpadfndgakiopmmhebop]
+  5695K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.8880 [iodkpdagapdfkphljnddpjlldadblomo]
+  1182K Brave Ad Block Updater (Resources) 1.0.102 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22973K total]
-    70K Brave Ads Resources 1.0.104 [iblokdlgekdjophgeonmanpnjihcjkjj]
+    70K Brave Ads Resources 1.0.105 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13802K total]
+GROUP Ntp [13350K total]
  12360K Brave NTP background images 1.0.15 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-  1441K Brave NTP sponsored images 1.0.1776 [gccbbckogglekeggclmmekihdgdpdgoe]
+   990K Brave NTP sponsored images 1.0.1784 [gccbbckogglekeggclmmekihdgdpdgoe]
 
 GROUP Other [167K total]
-   167K Brave Local Data Files Updater 1.0.953 [afalakplffnnnlkncjhbmahjfjhmlkal]
+   167K Brave Local Data Files Updater 1.0.959 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [80333K total]
+GROUP large_files [80365K total]
   3262K Default\Local Extension Settings\mnojpmjdmbbfmejpflffifhffcmidifd\000003.log
   1022K Default\Local Storage\leveldb\000003.ldb
   1010K Default\Session Storage\000003.ldb
- 44192K Default\publisher_info_db
+ 44224K Default\publisher_info_db
   1945K Safe Browsing\ChromeExtMalware.store.32_13357744536199942
   1011K Safe Browsing\UrlMalBin.store.4_13357744536174233
  27889K Safe Browsing\UrlSoceng.store.4_13357744535888997
