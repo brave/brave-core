@@ -146,7 +146,7 @@ bool Transit(State& state, const State& desired) {
     }
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 }  // namespace DistillStates
