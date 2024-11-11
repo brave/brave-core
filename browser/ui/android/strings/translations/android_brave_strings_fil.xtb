@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Welcome sa Brave</translation>
 <translation id="4117451092682672487">Privacy. Pinasimple.</translation>
 <translation id="7909375417585209817">Kapag default ang Brave, bubukas ang bawat link na ita-tap mo nang may mga proteksyon sa privacy ng Brave.</translation>
+<translation id="3737878115109582442">Idagdag ang widget sa paghahanap</translation>
+<translation id="6199413390010319240">Magkaroon ng Brave para mas mabilis na i-explore ang web.</translation>
+<translation id="4338600611020922010">Idagdag sa home screen</translation>
 <translation id="7370959926683925817">Mag-block ng mga ad. Makatipid sa data. Araw araw.</translation>
 <translation id="7281027579943912834">Kapag default ang Brave, ang bawat link na ita-tap mo ay magkakaroon ng proteksyon sa pag-block ng ad ng Brave. Bawat page, video, at stream.</translation>
 <translation id="5148943178722443958">Tumulong na pagandahin ang Brave.</translation>
@@ -483,7 +486,11 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="9055546041146396417">Kung mukhang sira ang site na ito, subukan nang hindi naka-on ang Shields.</translation>
 <translation id="1209739344687072997">Mag-ulat ng sirang site</translation>
 <translation id="8510478288840333677">Ipaalam sa mga developer ng Brave na hindi gumagana nang maayos sa Shields ang site na ito:</translation>
-<translation id="5429200298326665264">Paalala: Isusumite ang address ng site na ito kasama ng numero ng bersyon ng iyong Brave at ng IP address (na hindi iso-store).</translation>
+<translation id="1653405824851871276">Salamat sa pagtulong na mas pagandahin ang Brave para sa lahat. Ang impormasyon lang na kailangan namin para ayusin ng site na ito ang makikita sa report na ito. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Matuto pa.</translation>
+<translation id="8740275226259417070">Isa itong page ng error. Hindi ito mare-report bilang sirang site.</translation>
+<translation id="721949491455392748">Magsama ng screenshot ng kasalukuyang page</translation>
+<translation id="8459191579769999214">Tingnan ang screenshot</translation>
 <translation id="5299848999918506028">Salamat!</translation>
 <translation id="76550953340008122">Salamat sa pagbibigay-alam sa mga developer ng Brave na may problema sa site na ito. Gagawin namin ang buong makakaya namin para ayusin ito!</translation>
 <translation id="650318023204990401">Mga advanced na kontrol</translation>
@@ -662,6 +669,8 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6284218950354553099">Awtomatikong ipadala sa Brave ang ping ng araw-araw na paggamit</translation>
 <translation id="2181060149810222381">Ang pribadong ping na ito ang nagbibigay ng kakayahan sa Brave na tantiyahin ang mga aktibong user.</translation>
 <translation id="6725413948756358325">Pangalan ng Account</translation>
+<translation id="3240773103344793224">Hiniling ang pagpapalit ng pagmamay-ari sa account</translation>
+<translation id="8041423758956015568">Ire-reassign ng transaksyong ito ang pagmamay-ari sa account sa isang bagong program. Hindi mababawi ang pagkilos na ito at posible itong magresulta sa pagkawala ng mga pondo.</translation>
 <translation id="6062431965141524986">Makakagawa ka ng pangalawang account sa pamamagitan ng pag-import ng iyong pribadong key.</translation>
 <translation id="3952797765659730604">Ilagay, i-paste, o i-import ang iyong pribadong key string file o JSON.</translation>
 <translation id="569068482611873351">I-import...</translation>
@@ -728,7 +737,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="5747552184818312860">Mag-e-expire sa</translation>
 <translation id="1656814355341174523">Pamahalaan ang Subscription</translation>
 <translation id="1919008675977575793">Server</translation>
-<translation id="4812684235631257312">Host</translation>
 <translation id="5646376287012673985">Lokasyon</translation>
 <translation id="8375573361134671513">I-reset ang Configuration</translation>
 <translation id="850405162932416400">Suporta sa VPN</translation>
@@ -755,6 +763,8 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="5431902940483264007">Optimal</translation>
 <translation id="6527596624419285047">Gamitin ang pinakamagandang server na magagamit</translation>
 <translation id="6789157560111825412">Magagamit na mga Server</translation>
+<translation id="5823953367746119927">Rehiyon ng server</translation>
+<translation id="6991535320595227154">Server ng <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Pumili ng Isyu</translation>
 <translation id="6687228121145903051">Hindi makakonekta sa VPN (Iba pang error)</translation>
 <translation id="9184988385244077767">Walang internet kapag nakakonekta</translation>
@@ -1079,8 +1089,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="622372328961630111">Awtomatikong magdagdag sa Wallet ng mga NFT na pagmamay-ari mo gamit ang mga third-party na API. <ph name="BEGIN_LINK_1"/>Matuto pa.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Account ng Table ng Address Lookup:</translation>
 <translation id="7659483790930268440">Index ng Table ng Address Lookup:</translation>
-<translation id="4932733599132424254">Petsa</translation>
-<translation id="346505172740911461">Presyo sa Market</translation>
 <translation id="5494920125229734069">Piliin ang lahat</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Mag-sign in gamit ang Brave Wallet</translation>
@@ -1095,6 +1103,8 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6165101586663336913">Kakailangan mong mag-opt-in para sa pag-reset ng Leo assistant para magamit si Leo sa hinaharap at iki-clear rin nito ang chat history mo. Ide-delete ng pag-clear ng chat history ang lahat ng nakaraan mong pag-uusap gamit si Leo. Hindi na maaaring bawiin ang pagkilos na ito.</translation>
 <translation id="3692772534525889713">I-link ang binili mo sa Play Store sa iyong Brave account para magamit ang Brave Leo sa iba pang device.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Isang taon</translation>
+<translation id="2985392169397572983">PINAKASULIT</translation>
 <translation id="1166682575529520472">Buwanan</translation>
 <translation id="451189393813405346">Tanungin si Leo</translation>
 <translation id="7322560193401221004">Tandaan ang posisyon ng pag-playback ng file</translation>
@@ -1163,7 +1173,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="2389665228467129817">Makipag-chat nang mas matagal</translation>
 <translation id="4314705522985583059">Makakuha ng mas matataas na limitasyon sa rate para sa mas mahahabang pag-uusap.</translation>
 <translation id="6365289557497555234">Awtomatikong nire-renew ang lahat ng subscription pero puwedeng kanselahin anumang oras bago ang pag-renew.</translation>
-<translation id="6637015365469044269">Mag-upgrade ngayon</translation>
+<translation id="5543505256451301851">Subukan nang 7 araw nang libre</translation>
 <translation id="614530507403667291">Default na model para sa mga bagong pag-uusap</translation>
 <translation id="4071849832011229600">Default na model</translation>
 <translation id="4185473179105062442">Direktang makatanggap ng BAT sa isang crypto address na may sariling pag-iingat</translation>

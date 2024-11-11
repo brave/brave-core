@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Вітаємо у Brave!</translation>
 <translation id="4117451092682672487">Приватність – це просто.</translation>
 <translation id="7909375417585209817">Якщо Brave – типовий браузер, – кожне посилання відкривається з використанням вбудованих засобів захисту приватності.</translation>
+<translation id="3737878115109582442">Додавання віджету пошуку</translation>
+<translation id="6199413390010319240">Отримайте постійний доступ до Brave, щоб швидше виконувати пошук в Інтернеті.</translation>
+<translation id="4338600611020922010">Додати на головний екран</translation>
 <translation id="7370959926683925817">Блокуйте рекламу й заощаджуйте дані щодня.</translation>
 <translation id="7281027579943912834">Якщо Brave – типовий браузер, – кожне посилання відкривається з використанням вбудованих засобів захисту і блокування реклами. Це стосується кожної сторінки, відео і трансляції.</translation>
 <translation id="5148943178722443958">Допоможіть поліпшити Brave.</translation>
@@ -242,28 +245,28 @@
 <translation id="5329830149661250028">Оцініть переваги Brave: без реклами, без стеження, швидше завантаження сторінок.</translation>
 <translation id="3941792073703079607">Відчуйте переваги Brave. Блокуйте рекламу, заощаджуйте дані, транслюйте швидше.</translation>
 <translation id="3545804467215833536">Торкніться, щоб переглянути щити Brave</translation>
-<translation id="1724327820822194498">Перегляньте всю зайву інформацію, яку блокує Brave, на кожній сторінці за допомогою щитів.</translation>
+<translation id="1724327820822194498">Перегляньте всю зайву інформацію, яку блокує Brave на кожній сторінці за допомогою щитів.</translation>
 <translation id="5386259141409498372">Заблоковано <ph name="BIG_TECH"/>, а також інше стеження й рекламу <ph name="TRACKER"/></translation>
 <translation id="7256200875155794202">Заблоковано <ph name="BIG_TECH"/>, а також інше стеження й рекламу</translation>
 <translation id="3092683655478890840">Заблоковано стеження і рекламу: <ph name="TRACKER_COUNT"/></translation>
 <translation id="8281886186245836920">Пропустити</translation>
-<translation id="1377600615067678409">Поки пропустити</translation>
+<translation id="1377600615067678409">Наразі пропустити</translation>
 <translation id="6165508094623778733">Докладніше</translation>
-<translation id="986879628471635371">Інтегрування виявлення та вирішення проблем</translation>
-<translation id="5808759341041733958">Виберіть усталений пошуковик</translation>
-<translation id="1331593888918588693">Ви можете змінити свій вибір у будь-який час у налаштуваннях додатка.</translation>
-<translation id="5806601733251372221">Brave Shields</translation>
+<translation id="986879628471635371">Знайомство з усуненням проблем</translation>
+<translation id="5808759341041733958">Вибір типової пошукової системи</translation>
+<translation id="1331593888918588693">Ви можете будь-коли змінити свій вибір у налаштуваннях застосунку.</translation>
+<translation id="5806601733251372221">Щити Brave</translation>
 <translation id="8537217141725709400">Заробляйте <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Винагороди Brave</translation>
-<translation id="5870330605209713397">переглядаючи оголошення, що не порушують конфіденційності, і автоматично підтримуйте свої улюблені сайти та творців.</translation>
-<translation id="5302488867897327287">Натиснувши "Почати користуватися Brave Rewards", ви приймаєте</translation>
+<translation id="5870330605209713397">переглядаючи рекламу, що не порушує приватність, і підтримуйте улюблені сайти й авторів.</translation>
+<translation id="5302488867897327287">Натиснувши «Використовувати Винагороди Brave», ви приймаєте</translation>
 <translation id="4281844954008187215">Умови надання послуг</translation>
 <translation id="6871397658902960384">Розпочати користування</translation>
 <translation id="454386012157232640">Я не бачу реклами</translation>
 <translation id="1448877943847791441">Brave покаже вашу першу рекламу за</translation>
 <translation id="4410793187232041318">Тепер ви зароблятимете токени від оголошень Brave.</translation>
 <translation id="6511854390690723657">Це ваша перша реклама Brave. Натисніть, щоб дізнатись більше.</translation>
-<translation id="2070991379950719711">Почати користуватися Brave Rewards</translation>
+<translation id="2070991379950719711">Використовувати Винагороди Brave</translation>
 <translation id="48520986898237073">Перейти до гаманця</translation>
 <translation id="6213254277250932867">Я маю фразу для відновлення з 12 слів</translation>
 <translation id="4225265925807365011">Я маю фразу для відновлення з 24 слів</translation>
@@ -483,7 +486,11 @@
 <translation id="9055546041146396417">Якщо цей сайт здається нефункціонуючим, спробуйте відключити Екрани.</translation>
 <translation id="1209739344687072997">Повідомити про зламаний сайт</translation>
 <translation id="8510478288840333677">Повідомте розробникам Brave, що цей сайт погано працює із Щитами:</translation>
-<translation id="5429200298326665264">Примітка: Адреса цього сайту буде відправлена разом з номером вашої версії Brave та вашою IP-адресою (яка не зберігатиметься).</translation>
+<translation id="1653405824851871276">Дякуємо, що допомагаєте вдосконалювати Brave. Цей звіт міститиме лише інформацію, необхідну для виправлення проблем із цим сайтом. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Дізнатись більше.</translation>
+<translation id="8740275226259417070">Це сторінка помилки. Про неї не можна повідомити як про несправний сайт.</translation>
+<translation id="721949491455392748">Додати знімок екрана поточної сторінки</translation>
+<translation id="8459191579769999214">Переглянути знімок екрана</translation>
 <translation id="5299848999918506028">Дякуємо!</translation>
 <translation id="76550953340008122">Дякуємо за повідомлення розробникам Brave щодо проблеми із цим сайтом. Ми постараємося її виправити!</translation>
 <translation id="650318023204990401">Розширені налаштування</translation>
@@ -541,9 +548,9 @@
 <translation id="2956070106555335453">Звід</translation>
 <translation id="7465614181960492526">Заробляйте токени та допомагайте іншим</translation>
 <translation id="2731539192954672606">Заробляйте токени, переглядаючи рекламні оголошення, що не порушують вашу конфіденційність, та автоматично підтримуйте улюблені сайти та творців контенту.</translation>
-<translation id="631124996535890460">Продовжуючи, ви приймаєте <ph name="TERMS_OF_SERVICE"/> та <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="631124996535890460">Продовжуючи, ви приймаєте <ph name="TERMS_OF_SERVICE"/> і <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Політика конфіденційності</translation>
-<translation id="8363792084628930008">Увімкнувши опцію винагород, ви погоджуєтеся з <ph name="TERMS_OF_SERVICE"/> і <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="8363792084628930008">Активуючи «Винагороди», ви приймаєте <ph name="TERMS_OF_SERVICE"/> і <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Давайте коротко розглянемо</translation>
 <translation id="7930505144430343145">Ласкаво просимо до Brave Rewards!</translation>
 <translation id="3477340970981564961">На відміну від звичайних рекламних оголошень, приватна реклама Brave не порушує конфіденційність вашої особистої інформації та винагороджує токенами, якими можна підтримувати творців контенту.</translation>
@@ -580,7 +587,7 @@
 <translation id="177282784098234156">Приватний, незалежний, орієнтований на користувача</translation>
 <translation id="1410130669636877548">Під час пошуку в мережі деякі пошуковики захищають вашу конфіденційність краще за інші.</translation>
 <translation id="3479552764303398839">Не зараз</translation>
-<translation id="7138272885617540195">Дозволити відкривати посилання з додатків за межами Brave</translation>
+<translation id="7138272885617540195">Дозволити відкривати посилання із застосунків за межами Brave</translation>
 <translation id="4954512758656527938">Типовий гаманець Ethereum</translation>
 <translation id="7701023802820268122">Типовий гаманець Solana</translation>
 <translation id="7701040980221191251">Немає</translation>
@@ -662,6 +669,8 @@
 <translation id="6284218950354553099">Автоматично надсилайте щоденний пінг використання в Brave</translation>
 <translation id="2181060149810222381">Це приватне повідомлення дає можливість Brave оцінити активних користувачів.</translation>
 <translation id="6725413948756358325">Назва облікового запису</translation>
+<translation id="3240773103344793224">Запит на зміну власника облікового запису надіслано</translation>
+<translation id="8041423758956015568">Ця транзакція передасть право власності на обліковий запис новій програмі. Ця дія є незворотною та може призвести до втрати коштів.</translation>
 <translation id="6062431965141524986">Ви можете створити додатковий акаунт, імпортувавши свій закритий ключ.</translation>
 <translation id="3952797765659730604">Уведіть, вставте або імпортуйте файл рядку закритого ключа або JSON.</translation>
 <translation id="569068482611873351">Імпорт…</translation>
@@ -728,15 +737,14 @@
 <translation id="5747552184818312860">Діє до</translation>
 <translation id="1656814355341174523">Керування підпискою</translation>
 <translation id="1919008675977575793">Сервер</translation>
-<translation id="4812684235631257312">Хост</translation>
 <translation id="5646376287012673985">Місцезнаходження</translation>
 <translation id="8375573361134671513">Скинути конфігурацію</translation>
 <translation id="850405162932416400">Підтримка VPN</translation>
 <translation id="6772117549627334582">Не вдалось отримати розташування сервера. Спробуйте ще раз.</translation>
 <translation id="5863914199331127413">Ім’я хосту VPN</translation>
 <translation id="5499653136178260315">Тип підписки</translation>
-<translation id="4741058112780154119">Версія додатка</translation>
-<translation id="7286066816862208787">Квитанція з додатка</translation>
+<translation id="4741058112780154119">Версія застосунку</translation>
+<translation id="7286066816862208787">Квитанція із застосунку</translation>
 <translation id="2552966063069741410">Часовий пояс</translation>
 <translation id="4395361077929528480">Тип мережі</translation>
 <translation id="755448900483975096">Оператор мобільного зв’язку</translation>
@@ -755,6 +763,8 @@
 <translation id="5431902940483264007">Оптимально</translation>
 <translation id="6527596624419285047">Використовувати найкращий доступний сервер</translation>
 <translation id="6789157560111825412">Доступні сервери</translation>
+<translation id="5823953367746119927">Регіон сервера</translation>
+<translation id="6991535320595227154">Сервер <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Вибрати проблему</translation>
 <translation id="6687228121145903051">Не вдається під’єднатися до VPN (інша помилка)</translation>
 <translation id="9184988385244077767">Немає доступу до Інтернету під час під’єднання</translation>
@@ -932,7 +942,7 @@
 <translation id="3367162038532116157">\n\nІм’я хосту VPN\n <ph name="VALUE"/></translation>
 <translation id="6173438324126027458">\n\nТип підписки\n <ph name="VALUE"/></translation>
 <translation id="1478875290576741766">\n\nТокен у Play Store\n <ph name="VALUE"/></translation>
-<translation id="1403057798797848522">\n\nВерсія додатку\n <ph name="VALUE"/></translation>
+<translation id="1403057798797848522">\n\nВерсія застосунку\n <ph name="VALUE"/></translation>
 <translation id="2282835936933247509">\n\nЧасовий пояс\n</translation>
 <translation id="8107843365677337047">\n\nТип мережі\n</translation>
 <translation id="5334952096674914470">\n\nОператор мобільного зв’язку\n</translation>
@@ -943,11 +953,11 @@
 <translation id="4541295941776129088">Зберегти актив FIL</translation>
 <translation id="6575120282593094155">У вас ще немає облікового запису <ph name="ACCOUNT_TYPE"/>. Створити зараз?</translation>
 <translation id="4250680216510889253">ні</translation>
-<translation id="1599766910146472906">Виключені додатки</translation>
-<translation id="8463269357637177759">Дозволені звичайні додатки</translation>
-<translation id="4554726425645556940">Дозволені системні додатки</translation>
-<translation id="9023148942866814328">Показати системні додатки</translation>
-<translation id="5472400694702418949">Укажіть додатки, які потрібно виключити з трафіку VPN.</translation>
+<translation id="1599766910146472906">Виключені застосунки</translation>
+<translation id="8463269357637177759">Дозволені звичайні застосунки</translation>
+<translation id="4554726425645556940">Дозволені системні застосунки</translation>
+<translation id="9023148942866814328">Показати системні застосунки</translation>
+<translation id="5472400694702418949">Укажіть застосунки, які потрібно виключити з трафіку VPN.</translation>
 <translation id="7002577172732106572">Розділене тунелювання</translation>
 <translation id="8181161042860463420">Пов’язаний обліковий запис токена ще не існує. На його створення та фінансування буде витрачено невелику суму SOL. <ph name="CLICK_START"/>Докладніше<ph name="CLICK_END"/></translation>
 <translation id="168154537623654021">Оновлення профілю VPN…</translation>
@@ -1079,8 +1089,6 @@
 <translation id="622372328961630111">Автоматично додавайте NFT, якими ви володієте, до гаманця за допомогою сторонніх API. <ph name="BEGIN_LINK_1"/>Докладніше.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Обліковий запис таблиці пошуку адрес:</translation>
 <translation id="7659483790930268440">Індекс таблиці пошуку адрес:</translation>
-<translation id="4932733599132424254">Дата</translation>
-<translation id="346505172740911461">Ринкова ціна</translation>
 <translation id="5494920125229734069">Вибрати все</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Увійти до гаманця Brave</translation>
@@ -1095,6 +1103,8 @@
 <translation id="6165101586663336913">Скинувши параметри помічника Leo, вам потрібно буде ще раз погодитися з умовами використання Leo в майбутньому. Історію також буде очищено. Очищення історії чату призведе до видалення попередніх розмов із Leo. Цю дію неможливо скасувати.</translation>
 <translation id="3692772534525889713">Зв’яжіть покупку в Play Store з вашим обліковим записом Brave, щоб користуватися Brave Leo і на інших пристроях.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Річна</translation>
+<translation id="2985392169397572983">НАЙКРАЩЕ ЗНАЧЕННЯ</translation>
 <translation id="1166682575529520472">Щомісяця</translation>
 <translation id="451189393813405346">Запитайте Leo</translation>
 <translation id="7322560193401221004">Запам’ятати положення під час відтворення файлів</translation>
@@ -1163,7 +1173,7 @@
 <translation id="2389665228467129817">Спілкуйтеся в чаті довше</translation>
 <translation id="4314705522985583059">Отримайте більшу частоту відповідей для довших розмов.</translation>
 <translation id="6365289557497555234">Усі передплати поновлюються автоматично,\nале їх можна будь-коли скасувати до наступного поновлення.</translation>
-<translation id="6637015365469044269">Передплатити зараз</translation>
+<translation id="5543505256451301851">Випробувати 7 днів безкоштовно</translation>
 <translation id="614530507403667291">Типова модель для нових розмов</translation>
 <translation id="4071849832011229600">Типова модель</translation>
 <translation id="4185473179105062442">Отримуйте BAT безпосередньо на адресу некастодіального гаманця</translation>
@@ -1199,9 +1209,9 @@
 <translation id="5233247193491045452">поштовий індекс</translation>
 <translation id="3300502432153878901">zip-код</translation>
 <translation id="4130750466177569591">Приймаю</translation>
-<translation id="3251885322612056119">Оновлені Умови використання</translation>
-<translation id="4049035689681585146">Ми внесли зміни в Умови використання для Винагород Brave. Це зроблено для уточнення умов і охоплення нових функцій. Якщо ви продовжите використання Винагород Brave, це означатиме, що ви приймаєте оновлені Умови використання. Якщо ви не приймаєте умови, можете <ph name="RESET_START"/>скинути налаштування<ph name="RESET_END"/> Винагород Brave, що призведе до деактивації функції.</translation>
-<translation id="2165953574528546737">Переглянути <ph name="TOS_START"/>Умови використання Винагород Brave<ph name="TOS_END"/></translation>
+<translation id="3251885322612056119">Оновлені умови надання послуг</translation>
+<translation id="4049035689681585146">Ми внесли зміни в Умови надання послуг для Винагород Brave. Це зроблено для уточнення й охоплення нових функцій. Якщо ви продовжите використання Винагород Brave, це означатиме, що ви погоджуєтеся з оновленими Умовами надання послуг. Якщо ви не погоджуєтеся, можете <ph name="RESET_START"/>скинути налаштування<ph name="RESET_END"/> Винагород Brave, що призведе до деактивації функції.</translation>
+<translation id="2165953574528546737">Переглянути <ph name="TOS_START"/>Умови надання послуг Винагород Brave<ph name="TOS_END"/></translation>
 <translation id="1381108437654541567">Активувати декілька вікон</translation>
 <translation id="6167344249617630304">Відкривайте до 5 вікон одночасно й перетягуйте вкладки з одного вікна в інше</translation>
 <translation id="1063948063403254568">Виявлено декілька вікон</translation>

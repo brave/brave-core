@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
 <translation id="3110968385867124099">HTTP/HTTPS를 통해 서비스되지 않는 서비스이기 때문에 신고할 수 없습니다.</translation>
 <translation id="7907023135990310743">이 페이지는 로컬 웹페이지이기 때문에 보고할 수 없습니다.</translation>
-<translation id="3645455863322075098">이 페이지는 오류 페이지이기 때문에 보고할 수 없습니다.</translation>
-<translation id="105644511106871142">모두를 위해 Brave 개선에 도움을 주셔서 감사합니다. 이 신고는 사이트 문제 해결에 필요한 정보만 전송합니다.</translation>
+<translation id="8740275226259417070">오류 페이지입니다. 깨진 사이트라고 신고할 수 없습니다.</translation>
+<translation id="6806248680442980382">모두를 위해 Brave 개선에 도움을 주셔서 감사합니다. 이 신고는 사이트 문제 해결에 필요한 정보만 포함합니다.</translation>
 <translation id="6476216365964140603">추가 세부정보(선택사항)</translation>
 <translation id="6145852496180774737">연락 방법:(선택사항)</translation>
 <translation id="7616645803364270729">이메일, Twitter 등</translation>
@@ -461,6 +461,8 @@
 <translation id="6318437367327684789">영구적</translation>
 <translation id="8797999629784150206">언제든 <ph name="SITE_PERMISSIONS"/>을 변경할 수 있습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">사이트 권한</translation>
+<translation id="7222371875290545057">레오 AI 대화를 Brave에서 열 수 있게 허용하시겠습니까?</translation>
+<translation id="1518915449477235311"><ph name="URL"/>이 레오 AI 대화를 Brave에서 열 수 있게 허용하시겠습니까?</translation>
 <translation id="4355784577209159847">기존 Google 로그인에 타사 쿠키 사용 허용</translation>
 <translation id="5770656036486891920">레거시 Google 로그인을 위해 <ph name="URL"/>에서 제3자 쿠키를 사용하려고 합니다.</translation>
 <translation id="6053826678715267477">Localhost 리소스 액세스 허용</translation>
@@ -693,6 +695,26 @@
 <translation id="957921474773060718">다음 후원:</translation>
 <translation id="351973834053818251">정기 후원</translation>
 <translation id="7751260505918304024">전체 보기</translation>
+<translation id="2894334939992402676">후원 방법 자세히 알아보기</translation>
+<translation id="4114667046481794032">기부 금액</translation>
+<translation id="2628057126110572782">이 제작자는 현재 다음 방법으로만 후원금을 받고 있습니다.</translation>
+<translation id="7396847690567283204">Rewards 잔액</translation>
+<translation id="3253225298092156258">사용할 수 없음</translation>
+<translation id="8028314716653189513">Brave Software를 후원하는 데 사용하고 싶은 방법을 선택하세요.</translation>
+<translation id="4094286757932277327">보호관리 월렛</translation>
+<translation id="1511998469385905184">나중에 다시 시도하세요.</translation>
+<translation id="7550470870580166294">부족한 자금</translation>
+<translation id="7020972866926315918"><ph name="PROVIDER"/>에서 로그아웃하여 Brave Rewards 연결이 끊겼습니다. 계속하려면 다시 로그인하세요.</translation>
+<translation id="1166682575529520472">월간</translation>
+<translation id="7138678301420049075">기타</translation>
+<translation id="2134931506717037391"><ph name="AMOUNT"/> BAT 보내기</translation>
+<translation id="4791565605790056151">후원 보내는 중</translation>
+<translation id="8251969358165471584">Web3 월렛</translation>
+<translation id="7160424977552599351">Web3 월렛 사용</translation>
+<translation id="6369571967625114920">현재 지역에서는 아직 Brave Private Ads를 사용할 수 없습니다.</translation>
+<translation id="5309155375926073606">예. Brave 검색에 기여하고 <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>에 참여하고 싶습니다.</translation>
+<translation id="7285849890826812669">Web Discovery Project로 일부 익명 검색 및 인터넷 사용 기록을 Brave 검색 개선에 기여해주세요. 완전한 오픈 소스입니다.</translation>
+<translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
 <translation id="7090992647511817643">계정</translation>
 <translation id="4822132585477111396">체인 ID</translation>
 <translation id="3269475789479462358">도메인</translation>
@@ -795,7 +817,6 @@
 <translation id="6517332033658428773">스왑 검토</translation>
 <translation id="8692596799753687794">견적 제공자 선택</translation>
 <translation id="463712644600982655">각 애그리게이터는 각자의 API에서 얻은 유동성을 사용하여 견적을 제공합니다. 다양한 거래소에서 가격 정보를 수집해 이 데이터를 기반으로 가격을 제공합니다.</translation>
-<translation id="3253225298092156258">사용할 수 없음</translation>
 <translation id="473775607612524610">업데이트</translation>
 <translation id="4389658703251593158">이 페어는 <ph name="PROVIDER_NAME"/>에 지원되지 않음</translation>
 <translation id="1176173785350238153">제공자 변경</translation>
@@ -1055,6 +1076,8 @@
 <translation id="793994607260936590">처음</translation>
 <translation id="4709524402122994378">트랜잭션</translation>
 <translation id="4591079278963448049">아직 연결된 토큰 계정이 존재하지 않습니다. 계정을 만들고 자금을 입금하는 데 소액의 SOL가 지출됩니다.</translation>
+<translation id="3240773103344793224">계정 소유자 변경 요청됨</translation>
+<translation id="8041423758956015568">이 트랜잭션은 계정이 소유권을 새 프로그램으로 재할당합니다. 이 액션은 번복할 수 없으며, 자금을 잃게 될 수 있습니다.</translation>
 <translation id="1426320910664514906">가스 한도</translation>
 <translation id="1229774280326250926">가스 프리미엄</translation>
 <translation id="148169246131967347">가스비 한도</translation>
@@ -1276,10 +1299,25 @@
 <translation id="5722321409991816187">스팸 NFT 표시</translation>
 <translation id="2588752742385122166">포트폴리오 설정</translation>
 <translation id="7662492121143629144">모든 계정</translation>
+<translation id="8845001906332463065">도움 받기</translation>
+<translation id="6248202915200795128">예상보다 오래 걸립니까?</translation>
+<translation id="5417904796609871601">활동에서 보기</translation>
+<translation id="8915839655070878476">이 창을 안전하게 닫을 수 있습니다.</translation>
+<translation id="7020017785602386950"><ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/>(으)로 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 보내는 중</translation>
+<translation id="4003625688926111212"><ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/>(으)로 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 보냄</translation>
+<translation id="3068919369514041269"><ph name="NETWORK"/>에서 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>을(를) <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/>(으)로 스왑 중</translation>
+<translation id="312867981877298982"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>의 금액이 귀하의 계정 <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/>에 추가됨</translation>
+<translation id="2653273412609139189"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>을(를) <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/>(으)로 브릿징 중</translation>
+<translation id="1795341197087004042"><ph name="SEND_SWAP_OR_BRIDGE"/>할 수 없음</translation>
+<translation id="6990756606864308319"><ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/>(으)로 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> <ph name="SEND_SWAP_OR_BRIDGE"/> 시도 중 오류 발생</translation>
+<translation id="6449575669814542383"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/>의 <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/> 승인 중</translation>
+<translation id="8036159955043245753">새 트랜잭션이 생성되어 기존 트랜잭션이 취소됩니다.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {보류 중인 트랜잭션 {PENDING_TRANSACTIONS}개 더 있음.}
+      other {보류 중인 트랜잭션 {PENDING_TRANSACTIONS}개 더 있음.}
+    }</translation>
 <translation id="6954150712710630841">트랜잭션 제출됨</translation>
-<translation id="905855245798176174">트랜잭션이 네트워크로 전송되어 확인을 기다리고 있습니다.</translation>
 <translation id="619697073289995370">트랜잭션 서명됨</translation>
-<translation id="7493732383203109611">트랜잭션이 서명되어 DApp으로 네트워크에 전송됩니다.</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/>, 월렛으로 반송됨</translation>
 <translation id="4577432071459867390">트랜잭션 실패</translation>
 <translation id="4359235192593147041">가격 변동폭이 커서 트랜잭션이 실패했습니다. 가격 변동폭이 커도 성공하려면 슬리피지 허용 오차를 늘리세요.</translation>
@@ -1710,7 +1748,6 @@
 <translation id="1958146856582208323">토큰 전송</translation>
 <translation id="3550219298671597013">NFT 전송</translation>
 <translation id="8043066678623588950">FIL 포워딩</translation>
-<translation id="7138678301420049075">기타</translation>
 <translation id="8703556909820882288">압축된 NFT 전송</translation>
 <translation id="2713141960460256091">DApp 트랜잭션 서명하고 보내기</translation>
 <translation id="6387730345715997739">DApp 트랜잭션 서명</translation>
@@ -1792,7 +1829,6 @@
 <translation id="7056969230130642253">다 읽으셨습니다</translation>
 <translation id="7292242212818928219">새 콘텐츠가 있습니다. 새로 고칠까요?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">빠른 명령</translation>
 <translation id="7481312909269577407">앞으로</translation>
 <translation id="1272079795634619415">중지</translation>
 <translation id="302781076327338683">캐시를 건너뛰고 새로고침</translation>
@@ -1945,10 +1981,12 @@
 <translation id="1344005710343072293">이 조합은 <ph name="COMMAND"/>에 사용되고 있습니다. 저장하면 기존 바로가기를 덮어 씁니다.</translation>
 <translation id="831931573200952705">이 조합은 <ph name="COMMAND"/>에 사용되고 있어 수정할 수 없습니다.</translation>
 <translation id="3537006124004887164">이 조합은 <ph name="COMMAND"/>에 사용되고 있어 수정할 수 없습니다. 수정하려면 시스템 설정의 '앱 바로가기'를 통해야 합니다.</translation>
+<translation id="8536713137312218707">빠른 명령</translation>
 <translation id="712598284361781729">새 분할 보기</translation>
 <translation id="1130188644637295274">분할 보기에서 열기</translation>
 <translation id="6459036216700972269">탭 분할 해제</translation>
 <translation id="4235382917338421035">탭 위치 스왑</translation>
+<translation id="4144468798716165316">빠른 명령</translation>
 <translation id="3617523374417810198">새 분할 보기</translation>
 <translation id="8571323456914890254">분할 보기에서 열기</translation>
 <translation id="5329136173514538969">탭 분할 해제</translation>
@@ -2011,7 +2049,6 @@
 <translation id="1691256669639196606">구독 관리</translation>
 <translation id="2304783958703511257">고급 설정</translation>
 <translation id="3037594989275592390">언어 모델</translation>
-<translation id="6637015365469044269">지금 업그레이드</translation>
 <translation id="5543505256451301851">7일 무료 이용</translation>
 <translation id="849535826888024304">시간당 답변 한도 도달</translation>
 <translation id="2252128900328632803">레오 답변 한도에 도달했습니다. 프리미엄에 가입하여 시간당 답변 한도를 높이거나 잠시 후 다시 시도하세요.</translation>
@@ -2022,7 +2059,7 @@
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /월</translation>
 <translation id="5151923271944811339">무료 모델로 전환</translation>
 <translation id="5474757891469990756">레오의 능력이 온전히 발휘되는 프리미엄:</translation>
-<translation id="5552332211527367850">여러 스킬을 갖춘 강력한 모델에 우선 액세스.</translation>
+<translation id="3453542753968940696">여러 스킬을 갖춘 강력한 모델에 우선 액세스.</translation>
 <translation id="5031778211368112461">창의적인 작업 및 콘텐츠 제작에 적합한 더 나은 모델에 액세스.</translation>
 <translation id="298783097210745222">미묘한 대화 맥락을 이해하고 더 정확하게 답변.</translation>
 <translation id="4314705522985583059">매우 긴 대화에도 훨씬 높은 응답률.</translation>
@@ -2051,6 +2088,7 @@
 <translation id="8712637175834984815">확인</translation>
 <translation id="1093419424466417703">페이지가 레오에게 너무 깁니다. 일부 맥락이 대화에서 누락될 수 있습니다. 레오가 페이지 콘텐츠의 <ph name="PERCENTAGE"/>를 읽을 수 있었습니다.</translation>
 <translation id="2186990448773134544">페이지가 레오에겐 너무 길어 가장 관련성 있는 정보만 추출하여 페이지 콘텐츠를 정제했습니다.</translation>
+<translation id="5140068729857132378">웹페이지에서 관련된 부분 찾는 중...</translation>
 <translation id="4370698775470316661">대화가 너무 길어 계속할 수 없습니다. 레오가 긴 대화에서도 정확성을 유지할 수 있게 해주는 다른 모델을 사용하실 수 있습니다.</translation>
 <translation id="5719170755629028558">Brave 검색으로 답변 수준 높이기...</translation>
 <translation id="5794962229997281366"><ph name="SEARCH_TERMS"/>에 대한 더 나은 답변 검색.</translation>

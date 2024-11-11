@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">Javite razvojnim inženjerima preglednika Brave da ovo mjesto ne radi ispravno prilikom korištenja značajke Štitovi:</translation>
 <translation id="3110968385867124099">Tu stranicu nije moguće prijaviti jer nije pružena putem protokola HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Ta je stranica lokalna mrežna stranica i nije prihvatljiva za prijavljivanje.</translation>
-<translation id="3645455863322075098">Ta je stranica stranica s pogreškom i nije prihvatljiva za prijavljivanje.</translation>
-<translation id="105644511106871142">Hvala vam što pomažete u stvaranju preglednika Brave koji je bolji za sve. Ovim se izvješćem šalju samo informacije koje su nam potrebne da bismo popravili mrežno mjesto.</translation>
+<translation id="8740275226259417070">Ta je stranica stranica s pogreškom. Ne može se prijaviti kao neispravno mrežno mjesto.</translation>
+<translation id="6806248680442980382">Hvala vam što pomažete u stvaranju preglednika Brave koji je bolji za sve. U ovom se izvješću navode samo informacije koje su nam potrebne da bismo popravili mrežno mjesto.</translation>
 <translation id="6476216365964140603">Dodatne pojedinosti (mogućnosti)</translation>
 <translation id="6145852496180774737">Kontakt: (dodatno)</translation>
 <translation id="7616645803364270729">E-pošta, Twitter itd.</translation>
@@ -461,6 +461,8 @@
 <translation id="6318437367327684789">zauvijek</translation>
 <translation id="8797999629784150206">Možete promijeniti <ph name="SITE_PERMISSIONS"/> u bilo kojem trenutku. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">dopuštenje za mrežno mjesto</translation>
+<translation id="7222371875290545057">Želite li dopustiti otvaranje razgovora pomoćnika Leo potpomognutog umjetnom inteligencijom (AI) u pregledniku Brave?</translation>
+<translation id="1518915449477235311">Želite li dopustiti web-lokaciji <ph name="URL"/> otvaranje pomoćnika Leo potpomognutog umjetnom inteligencijom (AI)?</translation>
 <translation id="4355784577209159847">Dozvoli upotrebu kolačića treće strane za starije izdanje prijave putem platforme Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> želi upotrebljavati kolačiće treće strane za starije prijave putem platforme Google</translation>
 <translation id="6053826678715267477">Dopusti pristup resursima localhosta</translation>
@@ -695,6 +697,26 @@
 <translation id="957921474773060718">Sljedeći doprinos:</translation>
 <translation id="351973834053818251">Ponavljajući doprinosi</translation>
 <translation id="7751260505918304024">Prikaži sve</translation>
+<translation id="2894334939992402676">Saznajte više o metodama doprinosa</translation>
+<translation id="4114667046481794032">Iznos doprinosa</translation>
+<translation id="2628057126110572782">Ovaj stvaratelj trenutačno prihvaća samo doprinose putem sljedećih metoda:</translation>
+<translation id="7396847690567283204">Raspoloživa sredstva Nagrada</translation>
+<translation id="3253225298092156258">Nije dostupno</translation>
+<translation id="8028314716653189513">Odaberite metodu koju želite upotrijebiti za doprinos društvu Brave Software:</translation>
+<translation id="4094286757932277327">Skrbnički novčanik</translation>
+<translation id="1511998469385905184">Možete pokušati ponovno kasnije.</translation>
+<translation id="7550470870580166294">Nedovoljna sredstva</translation>
+<translation id="7020972866926315918">Čini se da ste odjavljeni iz značajke <ph name="PROVIDER"/> za Nagrade Brave. Ponovno se prijavite za nastavak.</translation>
+<translation id="1166682575529520472">Mjesečno</translation>
+<translation id="7138678301420049075">Ostalo</translation>
+<translation id="2134931506717037391">Pošalji <ph name="AMOUNT"/> BAT</translation>
+<translation id="4791565605790056151">Slanje doprinosa</translation>
+<translation id="8251969358165471584">Novčanik Web3</translation>
+<translation id="7160424977552599351">Upotrijebite novčanik Web3</translation>
+<translation id="6369571967625114920">Privatni oglasi Brave nisu još dostupni u vašoj regiji.</translation>
+<translation id="5309155375926073606">Da, želim pridonijeti Brave pretraživanju i sudjelovati u projektu <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">Pridonesite podatke anonimnih pretraživanja i pregledavanja radi poboljšanja Brave pretraživanja projektom Web Discovery Project. Projekt je potpuno otvorenog koda.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">račun</translation>
 <translation id="4822132585477111396">Identifikacijska oznaka bloka</translation>
 <translation id="3269475789479462358">domena</translation>
@@ -797,7 +819,6 @@
 <translation id="6517332033658428773">Pregledajte zamjenu</translation>
 <translation id="8692596799753687794">Odaberite pružatelja kvote</translation>
 <translation id="463712644600982655">Svaki sakupljač pruža kvote na osnovi likvidnosti iz ovog API-ja. Prikupljaju informacije o cijenama s različitih burzi i nude cijene na temelju tih podataka.</translation>
-<translation id="3253225298092156258">Nije dostupno</translation>
 <translation id="473775607612524610">Ažuriraj</translation>
 <translation id="4389658703251593158"><ph name="PROVIDER_NAME"/> ne podržava taj par</translation>
 <translation id="1176173785350238153">Promijenite pružatelja</translation>
@@ -1057,6 +1078,8 @@
 <translation id="793994607260936590">prva</translation>
 <translation id="4709524402122994378">transakcije</translation>
 <translation id="4591079278963448049">Povezani račun tokena još ne postoji. Troši se manja količina SOL-a za njegovo stvaranje i financiranje.</translation>
+<translation id="3240773103344793224">Zatražena je promjena vlasništva računa</translation>
+<translation id="8041423758956015568">Ovom će se transakcijom preraspodijeliti vlasništvo računa na novi program. Ta radnja ne može se poništiti i može dovesti do gubitka sredstava.</translation>
 <translation id="1426320910664514906">Ograničenje goriva</translation>
 <translation id="1229774280326250926">Prioritetna naknada</translation>
 <translation id="148169246131967347">Maksimalni iznos naknade po jedinici</translation>
@@ -1278,10 +1301,25 @@
 <translation id="5722321409991816187">Prikaži neželjene NFT-ove</translation>
 <translation id="2588752742385122166">Postavke portfelja</translation>
 <translation id="7662492121143629144">Svi računi</translation>
+<translation id="8845001906332463065">Potražite pomoć</translation>
+<translation id="6248202915200795128">Traje dulje od očekivanog?</translation>
+<translation id="5417904796609871601">Prikaži u aktivnosti</translation>
+<translation id="8915839655070878476">Možete sigurno odbaciti ovaj prozor.</translation>
+<translation id="7020017785602386950">Slanje <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> na <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> poslano je na račun <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269">Zamjena <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> na <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> na <ph name="NETWORK"/></translation>
+<translation id="312867981877298982">Iznos od <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> dodan je na račun <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189">Premošćivanje<ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> na <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042">Nije moguće <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
+<translation id="6990756606864308319">Došlo je do pogreške prilikom pokušaja <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> na <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
+<translation id="6449575669814542383">Odobravanje <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> na <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">Stvorit će se nova transakcija kako bi se poništila vaša postojeća transakcija.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} transakcije/a na čekanju.}
+      other {{PENDING_TRANSACTIONS} transakcije/a na čekanju.}
+    }</translation>
 <translation id="6954150712710630841">Transakcija poslana</translation>
-<translation id="905855245798176174">Transakcija je uspješno poslana mreži i čeka se potvrda.</translation>
 <translation id="619697073289995370">Transakcija potpisana</translation>
-<translation id="7493732383203109611">Transakcija je potpisana i DApp će je poslati na mrežu</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> vraćeno je u vaš novčanik</translation>
 <translation id="4577432071459867390">Transakcija neuspješna</translation>
 <translation id="4359235192593147041">Transakcija nije uspjela zbog velikog kretanja cijena. Povećajte toleranciju prekoračenja za uspjeh pri većem kretanju cijena.</translation>
@@ -1712,7 +1750,6 @@
 <translation id="1958146856582208323">Prijenos tokena</translation>
 <translation id="3550219298671597013">Prijenos NFT</translation>
 <translation id="8043066678623588950">Premjesti FIL naprijed</translation>
-<translation id="7138678301420049075">Ostalo</translation>
 <translation id="8703556909820882288">Komprimirani prijenos NFT</translation>
 <translation id="2713141960460256091">Potpišite i pošaljite transakciju DApp</translation>
 <translation id="6387730345715997739">Potpišite transakciju DApp</translation>
@@ -1794,7 +1831,6 @@
 <translation id="7056969230130642253">Sada sve znate</translation>
 <translation id="7292242212818928219">Dostupan je novi sadržaj. Ponovno učitati?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Brze naredbe</translation>
 <translation id="7481312909269577407">Naprijed</translation>
 <translation id="1272079795634619415">Zaustavi</translation>
 <translation id="302781076327338683">Ponovo učitajte predmemoriju za premošćivanje</translation>
@@ -1947,10 +1983,12 @@
 <translation id="1344005710343072293">Taj se kombinacija upotrebljava za <ph name="COMMAND"/>. Spremanjem se poništava ta prečica.</translation>
 <translation id="831931573200952705">Ta se kombinacija upotrebljava za <ph name="COMMAND"/> i nije ju moguće mijenjati.</translation>
 <translation id="3537006124004887164">Ta se kombinacija upotrebljava za <ph name="COMMAND"/> i nije ju moguće izmijeniti. Pokušajte je izmijeniti u Postavkama sustava u „Kraticama aplikacije”.</translation>
+<translation id="8536713137312218707">Brze naredbe</translation>
 <translation id="712598284361781729">Novi podijeljeni prikaz</translation>
 <translation id="1130188644637295274">Otvori u podijeljenom prikazu</translation>
 <translation id="6459036216700972269">Poništi podjelu kartica</translation>
 <translation id="4235382917338421035">Zamjena položaja kartica</translation>
+<translation id="4144468798716165316">Brze naredbe</translation>
 <translation id="3617523374417810198">Novi podijeljeni prikaz</translation>
 <translation id="8571323456914890254">Otvori u podijeljenom prikazu</translation>
 <translation id="5329136173514538969">Poništi podjelu kartica</translation>
@@ -2013,7 +2051,6 @@
 <translation id="1691256669639196606">Upravljaj pretplatom</translation>
 <translation id="2304783958703511257">Napredne postavke</translation>
 <translation id="3037594989275592390">Jezični modeli</translation>
-<translation id="6637015365469044269">Nadogradi sada</translation>
 <translation id="5543505256451301851">Besplatno isprobaj sedam dana</translation>
 <translation id="849535826888024304">Dosegnuto ograničenje stope odogovora</translation>
 <translation id="2252128900328632803">Dosegli ste ograničenje stope za alat Leo. Otključajte višu stopu odgovora pretplatom na Premium ili pokušajte ponovno uskoro.</translation>
@@ -2024,7 +2061,7 @@
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD mjesečno</translation>
 <translation id="5151923271944811339">Prebacite se na besplatni model</translation>
 <translation id="5474757891469990756">Oslobodite sve Leove moći uz Premium:</translation>
-<translation id="5552332211527367850">Prioritetni pristup moćnim modelima s različitim vještinama</translation>
+<translation id="3453542753968940696">Prioritetni pristup moćnim modelima s različitim vještinama.</translation>
 <translation id="5031778211368112461">Pristupite modelima prikladnijima za kreativne zadatke i generiranje sadržaja.</translation>
 <translation id="298783097210745222">Dobijte točnije odgovore za raznovrsne razgovore.</translation>
 <translation id="4314705522985583059">Dobijte veće stope za duže razgovore.</translation>
@@ -2053,6 +2090,7 @@
 <translation id="8712637175834984815">Shvaćam</translation>
 <translation id="1093419424466417703">Stranica je preduga za pomoćnika Lea. Možda nedostaje konteksta u razgovoru. Pomoćnik Leo uspio je pročitati <ph name="PERCENTAGE"/> sadržaja stranice.</translation>
 <translation id="2186990448773134544">Sadržaj stranice pročišćen je izvlačenjem najrelevantnijih informacija sa stranice jer je za značajku Leo bila preduga.</translation>
+<translation id="5140068729857132378">Pronalazimo relevantne dijelove mrežne stranice...</translation>
 <translation id="4370698775470316661">Ovaj je razgovor predug i ne može se nastaviti. Možda su dostupni drugi modeli s kojima pomoćnik Leo može održavati točnost tijekom dužih razgovora.</translation>
 <translation id="5719170755629028558">Poboljšavamo vaš odgovor pretraživanjem Brave…</translation>
 <translation id="5794962229997281366">Poboljšano pretraživanje odgovora za <ph name="SEARCH_TERMS"/>.</translation>

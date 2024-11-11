@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
 <translation id="4117451092682672487">輕鬆捍衛個人隱私。</translation>
 <translation id="7909375417585209817">只要將 Brave 設為預設瀏覽器，您輕觸的每個連結都會在 Brave 的隱私保護功能下開啟。</translation>
+<translation id="3737878115109582442">新增搜尋小工具</translation>
+<translation id="6199413390010319240">隨時使用 Brave，輕鬆加速您的網路探索。</translation>
+<translation id="4338600611020922010">新增至主畫面</translation>
 <translation id="7370959926683925817">封鎖廣告，節省數據，全年無休。</translation>
 <translation id="7281027579943912834">將 Brave 設為預設瀏覽器，您點按的每個連結都會受到 Brave 的廣告封鎖保護。所有頁面、影片和串流都能受益。</translation>
 <translation id="5148943178722443958">協助提升 Brave 品質。</translation>
@@ -483,7 +486,11 @@
 <translation id="9055546041146396417">如果此網站顯示為損壞，請試試 Shields down</translation>
 <translation id="1209739344687072997">回報壞掉的網站</translation>
 <translation id="8510478288840333677">讓 Brave 開發者知道此網站無法與 Shields 一起運作：</translation>
-<translation id="5429200298326665264">附註：此網址將與您的 Brave 版本號碼和您的 IP 位址（不會被貯存）一起被提交。</translation>
+<translation id="1653405824851871276">感謝您協助 Brave 改善服務。此報告只會包含我們修復此網站所需的資訊。<ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">深入瞭解。</translation>
+<translation id="8740275226259417070">此為錯誤頁面。無法將其回報為錯誤網站。</translation>
+<translation id="721949491455392748">附上目前頁面的螢幕截圖</translation>
+<translation id="8459191579769999214">檢視螢幕截圖</translation>
 <translation id="5299848999918506028">感謝！</translation>
 <translation id="76550953340008122">感謝讓 Brave 開發者知道此網站會壞掉。我們將會盡力修復它。</translation>
 <translation id="650318023204990401">進階控制</translation>
@@ -662,6 +669,8 @@
 <translation id="6284218950354553099">自動傳送每日使用 ping 到 Brave</translation>
 <translation id="2181060149810222381">這種私人的 ping 讓 Brave 可以估計活躍使用者。</translation>
 <translation id="6725413948756358325">帳戶名稱</translation>
+<translation id="3240773103344793224">已要求帳戶所有權變更</translation>
+<translation id="8041423758956015568">此交易將會把帳戶的所有權重新指派給新程式。此操作無法逆轉，並可能導致資金損失。</translation>
 <translation id="6062431965141524986">您可以透過匯入私鑰來建立次要帳號。</translation>
 <translation id="3952797765659730604">輸入、貼上或匯入您的私鑰字串檔案或 JSON。</translation>
 <translation id="569068482611873351">匯入……</translation>
@@ -728,7 +737,6 @@
 <translation id="5747552184818312860">有效期限</translation>
 <translation id="1656814355341174523">管理訂閱</translation>
 <translation id="1919008675977575793">伺服器</translation>
-<translation id="4812684235631257312">主機</translation>
 <translation id="5646376287012673985">位置</translation>
 <translation id="8375573361134671513">重設設定</translation>
 <translation id="850405162932416400">VPN 支援</translation>
@@ -755,6 +763,8 @@
 <translation id="5431902940483264007">最佳</translation>
 <translation id="6527596624419285047">使用最佳的可用伺服器</translation>
 <translation id="6789157560111825412">可用的伺服器</translation>
+<translation id="5823953367746119927">伺服器地區</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/> 伺服器</translation>
 <translation id="4397083831618200686">請選取問題</translation>
 <translation id="6687228121145903051">無法連線至 VPN（其他錯誤）</translation>
 <translation id="9184988385244077767">連線時無網際網路</translation>
@@ -1079,8 +1089,6 @@
 <translation id="622372328961630111">使用第三方 API 將您擁有的 NFT 自動新增至錢包。<ph name="BEGIN_LINK_1"/>深入瞭解。<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">位址查詢表格帳戶：</translation>
 <translation id="7659483790930268440">位址查詢表格索引：</translation>
-<translation id="4932733599132424254">日期</translation>
-<translation id="346505172740911461">市場價格</translation>
 <translation id="5494920125229734069">全選</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">用 Brave 錢包登入</translation>
@@ -1095,6 +1103,8 @@
 <translation id="6165101586663336913">如果重設 Leo 助理，日後必須重新選擇加入才能再次使用，您的聊天記錄也會一併清除。清除聊天記錄會刪除您先前與 Leo 的對話。此動作無法復原。</translation>
 <translation id="3692772534525889713">將 Play 商店的購買項目與您的 Brave 帳戶建立連結，即可在其他裝置上使用 Brave Leo。</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">1 年</translation>
+<translation id="2985392169397572983">最佳價值</translation>
 <translation id="1166682575529520472">每月</translation>
 <translation id="451189393813405346">詢問 Leo</translation>
 <translation id="7322560193401221004">記住檔案播放位置</translation>
@@ -1163,7 +1173,7 @@
 <translation id="2389665228467129817">延長聊天時間</translation>
 <translation id="4314705522985583059">提高回應率上限，拉長對話。</translation>
 <translation id="6365289557497555234">所有訂閱方案都會自動續訂，\n不過您可以在續訂前隨時取消訂閱。</translation>
-<translation id="6637015365469044269">立即升級</translation>
+<translation id="5543505256451301851">免費試用 7 天</translation>
 <translation id="614530507403667291">新對話的預設模式</translation>
 <translation id="4071849832011229600">預設模型</translation>
 <translation id="4185473179105062442">在自行保管的加密位址直接收取 BAT</translation>

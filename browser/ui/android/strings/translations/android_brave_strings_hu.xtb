@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">A Brave üdvözli Önt!</translation>
 <translation id="4117451092682672487">Adatvédelem. Egyszerűen.</translation>
 <translation id="7909375417585209817">A Brave alapértelmezett böngészőként történő beállításával minden hivatkozás, amelyre rákoppint a Brave adatvédelmi beállításaival fog megnyílni.</translation>
+<translation id="3737878115109582442">Kereső widget hozzáadása</translation>
+<translation id="6199413390010319240">A Brave segítségével gyorsabban felfedezheti az internetet.</translation>
+<translation id="4338600611020922010">Hozzáadás a kezdőképernyőhöz</translation>
 <translation id="7370959926683925817">Blokkolja a hirdetéseket, és csökkentse az adatforgalmat, minden egyes nap.</translation>
 <translation id="7281027579943912834">Ha a Brave-et használja alapértelmezett böngészőként, a Brave hirdetésblokkoló védelme minden megnyitott hivatkozásra kiterjed – minden weblapra, videóra és adatfolyamra.</translation>
 <translation id="5148943178722443958">Segítsen a Brave továbbfejlesztésében.</translation>
@@ -483,7 +486,11 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="9055546041146396417">Ha ez az oldal nem működik, próbáld meg a Shields nélkül.</translation>
 <translation id="1209739344687072997">Nem működő oldal jelentése</translation>
 <translation id="8510478288840333677">Hívja fel a Brave fejlesztőinek figyelmét arra, hogy ez az oldal nem működik megfelelően a Shieldsel:</translation>
-<translation id="5429200298326665264">Megjegyzés: Ez a weboldalcím a Brave verziód számával és IP-címeddel együtt be lesz küldve (és nem kerül tárolásra).</translation>
+<translation id="1653405824851871276">Köszönjük, hogy segít a Brave továbbfejlesztésében. Ebben a jelentésben csak az oldal javításához számunkra szükséges információk szerepelnek. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Bővebb információk.</translation>
+<translation id="8740275226259417070">Ez egy hibaoldal. Nem jelenthető nem működő oldalként.</translation>
+<translation id="721949491455392748">Tartalmazza az aktuális oldal képernyőképét</translation>
+<translation id="8459191579769999214">Képernyőkép megtekintése</translation>
 <translation id="5299848999918506028">Köszönjük!</translation>
 <translation id="76550953340008122">Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!</translation>
 <translation id="650318023204990401">Speciális vezérlők</translation>
@@ -662,6 +669,8 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="6284218950354553099">Napi használatról szóló jelzések automatikus küldése a Brave-be</translation>
 <translation id="2181060149810222381">Ez a privát értesítés lehetővé teszi a Brave számára, hogy megbecsülje az aktív felhasználók számát.</translation>
 <translation id="6725413948756358325">Fióknév</translation>
+<translation id="3240773103344793224">Fiók tulajdonjogának módosítása kérelmezve</translation>
+<translation id="8041423758956015568">Ez a tranzakció átruházza a fiók tulajdonjogát egy új programra. Ez a művelet nem visszafordítható, és pénzösszegek elvesztését eredményezheti.</translation>
 <translation id="6062431965141524986">Létrehozhat egy másodlagos számlát privát kulcsának importálásával.</translation>
 <translation id="3952797765659730604">Adja meg, másolja be vagy importálja a privát kulcsfájlját vagy JSON-ját.</translation>
 <translation id="569068482611873351">Importálás...</translation>
@@ -728,7 +737,6 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="5747552184818312860">Lejár</translation>
 <translation id="1656814355341174523">Előfizetés kezelése</translation>
 <translation id="1919008675977575793">Szerver</translation>
-<translation id="4812684235631257312">Kiszolgáló</translation>
 <translation id="5646376287012673985">Tartózkodási hely</translation>
 <translation id="8375573361134671513">Konfiguráció visszaállítása</translation>
 <translation id="850405162932416400">VPN támogatás</translation>
@@ -755,6 +763,8 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="5431902940483264007">Optimális</translation>
 <translation id="6527596624419285047">Az elérhető legjobb szerver használata</translation>
 <translation id="6789157560111825412">Rendelkezésre álló szerverek</translation>
+<translation id="5823953367746119927">Szerverrégió</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/> szerver</translation>
 <translation id="4397083831618200686">Probléma kiválasztása</translation>
 <translation id="6687228121145903051">Nem tudok a VPN-hez csatlakozni (Egyéb hiba)</translation>
 <translation id="9184988385244077767">A kapcsolódás után nincs internet</translation>
@@ -1079,8 +1089,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="622372328961630111">Az Ön által birtokolt NFT-k automatikus hozzáadása a Pénztárcához, harmadik féltől származó API-k segítségével. <ph name="BEGIN_LINK_1"/>További tudnivalók.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Címkeresési tábla – fiók:</translation>
 <translation id="7659483790930268440">Címkeresési tábla – index:</translation>
-<translation id="4932733599132424254">Dátum</translation>
-<translation id="346505172740911461">Piaci ár</translation>
 <translation id="5494920125229734069">Összes kiválasztása</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Bejelentkezés a Brave pénztárcával</translation>
@@ -1095,6 +1103,8 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="6165101586663336913">A Leo asszisztens-visszaállításához a jövőre nézve engedélyeznie kell a Leo használatát, és ez a művelet törli a csevegési előzményeket is. A csevegési előzmények törlésével törli a Leóval folytatott összes korábbi beszélgetését. Ezt a művelet nem vonható vissza.</translation>
 <translation id="3692772534525889713">Kapcsolja össze a Play Áruházban lebonyolított vásárlásait a Brave-fiókjával, ha használni szeretné a Brave Leót más eszközökön is.</translation>
 <translation id="73236265316873967">Leo Prémium</translation>
+<translation id="1028627582482425924">Egy év</translation>
+<translation id="2985392169397572983">LEGJOBB ÉRTÉK</translation>
 <translation id="1166682575529520472">Havonta</translation>
 <translation id="451189393813405346">A Leo megkérdezése</translation>
 <translation id="7322560193401221004">Jegyezze meg a fájl visszajátszási pozícióját</translation>
@@ -1163,7 +1173,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="2389665228467129817">Csevegjen hosszabb ideig</translation>
 <translation id="4314705522985583059">Tegyen szert magasabb határértékekre a hosszabb beszélgetések érdekében.</translation>
 <translation id="6365289557497555234">Minden előfizetés automatikusan megújul, de ezeket bármikor\nlemondhatja a megújulás előtt.</translation>
-<translation id="6637015365469044269">Fejlesztés most</translation>
+<translation id="5543505256451301851">Ingyenes kipróbálás 7 napig</translation>
 <translation id="614530507403667291">Alapértelmezett modell az új beszélgetésekhez</translation>
 <translation id="4071849832011229600">Alapértelmezett modell</translation>
 <translation id="4185473179105062442">Kapjon BAT-ot közvetlenül az önfelügyeletes crypto-címére</translation>

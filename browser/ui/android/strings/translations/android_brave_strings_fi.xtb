@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Tervetuloa Braveiin</translation>
 <translation id="4117451092682672487">Yksinkertainen tietosuoja.</translation>
 <translation id="7909375417585209817">Kun Brave on käytössä oletuksena, jokainen napsauttamasi linkki avautuu Braven tietosuoja-asetusten suojaamana.</translation>
+<translation id="3737878115109582442">Lisää hakupienoisohjelma</translation>
+<translation id="6199413390010319240">Voit tutustua verkkoon nopeammin käyttämällä Bravea.</translation>
+<translation id="4338600611020922010">Lisää aloitusnäyttöön</translation>
 <translation id="7370959926683925817">Estä mainokset. Tallenna tiedot. Joka ikinen päivä.</translation>
 <translation id="7281027579943912834">Kun Brave on oletusselain, jokaisen napsauttamasi linkin kohdalla käytetään Brave-mainosestosuojausta. Jokaisen sivun, videon ja suoratoistoistunton kohdalla.</translation>
 <translation id="5148943178722443958">Auta parantamaan Bravea.</translation>
@@ -483,7 +486,11 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="9055546041146396417">Kokeile käyttöä ilman Shieldsiä, jos sivusto vaikuttaa olevan rikkinäinen.</translation>
 <translation id="1209739344687072997">Ilmoita toimimattomasta sivustosta</translation>
 <translation id="8510478288840333677">Tuo Braven kehittäjien tietoon, ettei tämä sivusto toimi kunnolla kilpien kanssa:</translation>
-<translation id="5429200298326665264">Huomio: tämä sivu lähetetään Braven versionumerolla ja IP-osoitteellasi (jota ei tallenneta).</translation>
+<translation id="1653405824851871276">Kiitos Braven parantamisesta. Tämä ilmoitus sisältää vain sellaista tietoa, jota vaaditaan sivuston korjaamiseen. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Lue lisää.</translation>
+<translation id="8740275226259417070">Tämä on virhesivu. Sitä ei voi ilmoittaa toimimattomaksi sivustoksi.</translation>
+<translation id="721949491455392748">Sisällytä kuvakaappaus nykyisestä sivusta</translation>
+<translation id="8459191579769999214">Näytä kuvakaappaus</translation>
 <translation id="5299848999918506028">Kiitos!</translation>
 <translation id="76550953340008122">Toit Braven kehittäjien tietoon, että tällä sivustolla on jotakin vialla. Kiitos siitä! Teemme parhaamme korjataksemme asian.</translation>
 <translation id="650318023204990401">Edistyneet kontrollit</translation>
@@ -662,6 +669,8 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="6284218950354553099">Lähetä automaattisesti päivittäinen käyttöping Bravelle</translation>
 <translation id="2181060149810222381">Tämä yksityinen ping antaa Braven arvioida aktiivisia käyttäjiä.</translation>
 <translation id="6725413948756358325">Tilin nimi</translation>
+<translation id="3240773103344793224">Tilin omistajuuden muutosta pyydetty</translation>
+<translation id="8041423758956015568">Tämä maksutapahtuma osoittaa tilin omistajuuden uudelleen uuteen ohjelmaan. Tätä toimintoa ei voi kumota, ja se voi johtaa varojen menetykseen.</translation>
 <translation id="6062431965141524986">Voit luoda toissijaisen tilin tuomalla yksityisen avaimesi.</translation>
 <translation id="3952797765659730604">Syötä, liitä tai tuo yksityisen avaimesi merkkijonotiedosto tai JSON.</translation>
 <translation id="569068482611873351">Tuo...</translation>
@@ -728,7 +737,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="5747552184818312860">Vanhenee</translation>
 <translation id="1656814355341174523">Hallitse tilausta</translation>
 <translation id="1919008675977575793">Palvelin</translation>
-<translation id="4812684235631257312">Isäntä</translation>
 <translation id="5646376287012673985">Sijainti</translation>
 <translation id="8375573361134671513">Nollaa määritykset</translation>
 <translation id="850405162932416400">VPN-tuki</translation>
@@ -755,6 +763,8 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="5431902940483264007">Optimaalinen</translation>
 <translation id="6527596624419285047">Käytä parasta käytettävissä olevaa palvelinta</translation>
 <translation id="6789157560111825412">Käytettävissä olevat palvelimet</translation>
+<translation id="5823953367746119927">Palvelimen alue</translation>
+<translation id="6991535320595227154">Alueen <ph name="REGION_NAME"/> palvelin</translation>
 <translation id="4397083831618200686">Valitse ongelma</translation>
 <translation id="6687228121145903051">VPN:ään ei saada yhteyttä (muu virhe)</translation>
 <translation id="9184988385244077767">Ei Internet-yhteyttä yhdistämisen jälkeen</translation>
@@ -1079,8 +1089,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="622372328961630111">Lisää automaattisesti omistamiasi NFT:itä lompakkoon kolmansien osapuolten APIen kautta. <ph name="BEGIN_LINK_1"/>Lue lisää.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Osoitehakutaulukon tili:</translation>
 <translation id="7659483790930268440">Osoitehakutaulukon indeksi:</translation>
-<translation id="4932733599132424254">Päivämäärä</translation>
-<translation id="346505172740911461">Markkinahinta</translation>
 <translation id="5494920125229734069">Valitse kaikki</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Kirjaudu sisään Brave-lompakon kautta</translation>
@@ -1095,6 +1103,8 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6165101586663336913">Leo-assistentin nollaus edellyttää, että otat Leon käyttöön tulevaisuudessa, ja se tyhjentää myös chat-historiasi. Chat-historian tyhjentäminen poistaa kaikki aiemmat keskustelusi Leon kanssa. Tätä toimintoa ei voi perua.</translation>
 <translation id="3692772534525889713">Linkitä Play Store -ostoksesi Brave-tiliisi, jotta voisit käyttää Brave Leoa muilla laitteilla.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Yksi vuosi</translation>
+<translation id="2985392169397572983">PARAS ARVO</translation>
 <translation id="1166682575529520472">Kuukausittainen</translation>
 <translation id="451189393813405346">Kysy Leolta</translation>
 <translation id="7322560193401221004">Muista tiedoston toistopaikka</translation>
@@ -1163,7 +1173,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2389665228467129817">Juttele tavallista pidempään</translation>
 <translation id="4314705522985583059">Nosta määrärajoja tavallista pidenpiä keskusteluja varten.</translation>
 <translation id="6365289557497555234">Kaikki tilaukset uusiutuvat automaattisesti, mutta ne ovat\nperuttavissa milloin tahansa tätä ennen.</translation>
-<translation id="6637015365469044269">Päivitä nyt</translation>
+<translation id="5543505256451301851">Kokeile 7 päivän ajan ilmaiseksi</translation>
 <translation id="614530507403667291">Uusien keskustelujen oletusmalli</translation>
 <translation id="4071849832011229600">Oletusmalli</translation>
 <translation id="4185473179105062442">Vastaanota BAT suoraan oman säilön krypto-osoitteeseen.</translation>

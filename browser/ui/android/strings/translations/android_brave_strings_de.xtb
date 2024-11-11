@@ -483,7 +483,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="9055546041146396417">Falls diese Site nicht zu funktionieren scheint, versuchen Sie es, wenn Schutz aus ist.</translation>
 <translation id="1209739344687072997">Melden Sie eine fehlerhafte Website</translation>
 <translation id="8510478288840333677">Informieren Sie Braves Entwickler darüber, dass diese Website in Kombination mit Schutz nicht richtig funktioniert:</translation>
-<translation id="5429200298326665264">Hinweis: Die Adresse dieser Site wird mit Ihrer Brave-Versionsnummer und Ihrer IP-Adresse (die nicht gespeichert wird) übermittelt.</translation>
+<translation id="8759753423332885148">Mehr hierzu.</translation>
+<translation id="721949491455392748">Screenshot der aktuellen Seite einbeziehen</translation>
+<translation id="8459191579769999214">Screenshot anzeigen</translation>
 <translation id="5299848999918506028">Vielen Dank!</translation>
 <translation id="76550953340008122">Vielen Dank, dass Sie Braves Entwickler darüber informiert haben, dass auf dieser Website ein Fehler auftritt. Wir werden unser Bestes tun, um ihn zu beheben!</translation>
 <translation id="650318023204990401">Fortgeschrittene Steuerung</translation>
@@ -728,7 +730,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5747552184818312860">Ablaufdatum</translation>
 <translation id="1656814355341174523">Abonnement verwalten</translation>
 <translation id="1919008675977575793">Server</translation>
-<translation id="4812684235631257312">Host</translation>
 <translation id="5646376287012673985">Ort</translation>
 <translation id="8375573361134671513">Konfiguration zurücksetzen</translation>
 <translation id="850405162932416400">VPN-Support</translation>
@@ -1079,8 +1080,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="622372328961630111">Fügen Sie über Drittanbieter-APIs automatisch Ihre eigenen NFTs zur Wallet hinzu. <ph name="BEGIN_LINK_1"/>Erfahren Sie mehr.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Konto der Adresssuch-Tabelle:</translation>
 <translation id="7659483790930268440">Index der Adresssuch-Tabelle:</translation>
-<translation id="4932733599132424254">Datum</translation>
-<translation id="346505172740911461">Marktpreis</translation>
 <translation id="5494920125229734069">Alle auswählen</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Mit Brave Wallet anmelden</translation>
@@ -1095,6 +1094,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6165101586663336913">Wenn Sie den Leo-Assistenten zurücksetzen, müssen Sie sich in Zukunft erneut bereiterklären, Leo zu nutzen. Außerdem wird Ihr Chatverlauf gelöscht. Wenn Sie Ihren Chatverlauf löschen, werden alle bisherigen Unterhaltungen mit Leo entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden.</translation>
 <translation id="3692772534525889713">Verknüpfen Sie Ihren Play Store-Kauf mit Ihrem Brave-Konto, um Brave Leo auf anderen Geräten verwenden zu können.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Ein Jahr</translation>
 <translation id="1166682575529520472">Monatlich</translation>
 <translation id="451189393813405346">Leo fragen</translation>
 <translation id="7322560193401221004">Wiedergabeposition merken</translation>
@@ -1163,7 +1163,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2389665228467129817">Chatten Sie länger</translation>
 <translation id="4314705522985583059">Holen Sie sich höhere Antwortquoten für längere Gespräche.</translation>
 <translation id="6365289557497555234">Alle Abonnements werden automatisch verlängert, können\naber jederzeit vor der Erneuerung gekündigt werden.</translation>
-<translation id="6637015365469044269">Jetzt Upgrade durchführen</translation>
+<translation id="5543505256451301851">7 Tage lang kostenlos ausprobieren</translation>
 <translation id="614530507403667291">Standardmodell für neue Unterhaltungen</translation>
 <translation id="4071849832011229600">Standardmodell</translation>
 <translation id="4185473179105062442">Erhalten Sie BAT direkt an eine Selbstverwahrungs-Kryptoadresse</translation>

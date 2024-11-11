@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Brave에 오신걸 환영합니다</translation>
 <translation id="4117451092682672487">프라이버시. 더욱 간편하게.</translation>
 <translation id="7909375417585209817">Brave를 기본 브라우저로 설정하면 탭하는 모든 링크가 프라이버시를 보호하는 Brave로 열립니다.</translation>
+<translation id="3737878115109582442">검색 위젯 추가</translation>
+<translation id="6199413390010319240">Brave를 이용하기 편한 곳에 두어 더 빠르게 웹을 탐색하세요.</translation>
+<translation id="4338600611020922010">홈 화면에 추가</translation>
 <translation id="7370959926683925817">광고 차단. 데이터 절약. 언제나.</translation>
 <translation id="7281027579943912834">Brave를 기본 브라우저로 설정하면 탭하는 모든 링크에서 Brave의 광고 차단으로 보호. 어떤 페이지, 비디오, 스트림에서도.</translation>
 <translation id="5148943178722443958">Brave 개선에 참여.</translation>
@@ -483,7 +486,11 @@
 <translation id="9055546041146396417">이 사이트가 손상된 것 같으면 실드 다운을 시도합니다.</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
-<translation id="5429200298326665264">참고: 이 사이트 주소는 Brave 버전 번호와 IP 주소(저장되지 않음)와 함께 제출됩니다.</translation>
+<translation id="1653405824851871276">모두를 위해 Brave 개선에 도움을 주셔서 감사합니다. 이 신고는 사이트 문제 해결에 필요한 정보만 포함합니다. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">더 알아보기.</translation>
+<translation id="8740275226259417070">오류 페이지입니다. 깨진 사이트라고 신고할 수 없습니다.</translation>
+<translation id="721949491455392748">현재 페이지의 스크린샷 포함</translation>
+<translation id="8459191579769999214">스크린샷 보기</translation>
 <translation id="5299848999918506028">감사합니다!</translation>
 <translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
 <translation id="650318023204990401">고급 컨트롤</translation>
@@ -662,6 +669,8 @@
 <translation id="6284218950354553099">일일 사용 Ping을 Brave에 자동으로 보내기</translation>
 <translation id="2181060149810222381">이 비공개 Ping으로 Brave가 활성 사용자 수를 추산합니다.</translation>
 <translation id="6725413948756358325">계정 이름</translation>
+<translation id="3240773103344793224">계정 소유자 변경 요청됨</translation>
+<translation id="8041423758956015568">이 트랜잭션은 계정이 소유권을 새 프로그램으로 재할당합니다. 이 액션은 번복할 수 없으며, 자금을 잃게 될 수 있습니다.</translation>
 <translation id="6062431965141524986">비공개 키를 가져와 보조 계정을 만들 수 있습니다.</translation>
 <translation id="3952797765659730604">비공개 키 문자열 파일 또는 JSON을 입력하거나 붙여넣거나 가져오세요.</translation>
 <translation id="569068482611873351">가져오기...</translation>
@@ -728,7 +737,6 @@
 <translation id="5747552184818312860">만료</translation>
 <translation id="1656814355341174523">구독 관리</translation>
 <translation id="1919008675977575793">서버</translation>
-<translation id="4812684235631257312">호스트</translation>
 <translation id="5646376287012673985">위치</translation>
 <translation id="8375573361134671513">구성 초기화</translation>
 <translation id="850405162932416400">VPN 지원</translation>
@@ -755,6 +763,8 @@
 <translation id="5431902940483264007">최적</translation>
 <translation id="6527596624419285047">가능한 최적의 서버 사용</translation>
 <translation id="6789157560111825412">가능한 서버</translation>
+<translation id="5823953367746119927">서버 리전</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/> 서버</translation>
 <translation id="4397083831618200686">문제 선택</translation>
 <translation id="6687228121145903051">VPN으로 연결할 수 없음(기타 오류)</translation>
 <translation id="9184988385244077767">연결 시 인터넷에 연결되지 않음</translation>
@@ -1079,8 +1089,6 @@
 <translation id="622372328961630111">보유한 NFT를 제3자 API를 사용하여 자동으로 월렛에 추가합니다. <ph name="BEGIN_LINK_1"/>자세히 알아보세요.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">주소 조회 테이블 계정:</translation>
 <translation id="7659483790930268440">주소 조회 테이블 색인:</translation>
-<translation id="4932733599132424254">날짜</translation>
-<translation id="346505172740911461">시장 가격</translation>
 <translation id="5494920125229734069">모두 선택</translation>
 <translation id="6129027151000961048">레오</translation>
 <translation id="8613144770663526433">Brave 월렛으로 로그인</translation>
@@ -1095,6 +1103,8 @@
 <translation id="6165101586663336913">레오 어시스턴트를 초기화하면 나중에 Brave 레오 사용에 다시 동의해야 하며 채팅 기록이 지워집니다. 채팅 내역이 지워지면 Brave 레오와 나눴던 모든 대화가 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>
 <translation id="3692772534525889713">다른 기기에서도 Brave 레오를 사용하려면 Play 스토어 구매 항목을 Brave 계정에 연결하세요.</translation>
 <translation id="73236265316873967">레오 프리미엄</translation>
+<translation id="1028627582482425924">1년</translation>
+<translation id="2985392169397572983">최고 가성비</translation>
 <translation id="1166682575529520472">월간</translation>
 <translation id="451189393813405346">레오에게 묻기</translation>
 <translation id="7322560193401221004">파일 재생 위치 기억</translation>
@@ -1163,7 +1173,7 @@
 <translation id="2389665228467129817">더 길게 채팅</translation>
 <translation id="4314705522985583059">매우 긴 대화에도 훨씬 높은 응답률.</translation>
 <translation id="6365289557497555234">모든 구독은 자동 갱신되지만, 갱신 전\n언제든지 취소할 수 있습니다.</translation>
-<translation id="6637015365469044269">지금 업그레이드</translation>
+<translation id="5543505256451301851">7일 무료 이용</translation>
 <translation id="614530507403667291">새 대화의 기본 모델</translation>
 <translation id="4071849832011229600">기본 모델</translation>
 <translation id="4185473179105062442">자체 보호관리 암호화폐 주소로 BAT 직접 받기</translation>

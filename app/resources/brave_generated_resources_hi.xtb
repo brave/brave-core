@@ -114,6 +114,7 @@
 <translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="2370739752330685659">शायद बाद में</translation>
 <translation id="5100490448228945668">Brave सर्च में होने वाले कन्वर्ज़न को नामंज़ूर करें, इस सुझाव को हटाने के लिए एन्टर दबाएँ</translation>
+<translation id="6213208892248046484">Brave सर्च पर स्विच करें</translation>
 <translation id="9194637241566114638">इस्तेमाल से जुड़े गुमनाम डेटा को भेज कर <ph name="SEARCH_NAME"/> को बेहतर बनाने में मदद करें. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave सर्च</translation>
 <translation id="8184318863960255706">अधिक जानकारी</translation>
@@ -535,6 +536,9 @@ Binance
 <translation id="7181706637590665047">लोकलहोस्ट के संसाधनों का ऐक्सेस न दें</translation>
 <translation id="1336116824874668514">लोकलहोस्ट के संसाधनों के ऐक्सेस की इजाज़त नहीं है</translation>
 <translation id="1485435696620658073">लोकलहोस्ट के संसाधनों के ऐक्सेस की इजाज़त है</translation>
+<translation id="5794692721727586076">Leo AI चैट</translation>
+<translation id="8115153008662981040">साइट्स Leo AI चैट खोलने का अनुरोध कर सकती हैं</translation>
+<translation id="1145070115730668595">साइट को Leo AI चैट खोलने की अनुमति न दें</translation>
 <translation id="6414370348346025511">सामान्य सुरक्षा शरू है।</translation>
 <translation id="5565355416171743213">सिंक का उपयोग करना शुरू करें</translation>
 <translation id="4332558599726753990">सिंक सेटअप</translation>
@@ -607,7 +611,7 @@ Binance
 <translation id="3128251601544028053">जब आप एड्रेस बार या सर्च बॉक्स में टाइप करते हैं, तो बेहतर सुझाव पाने के लिए, आप जो कुछ टाइप करते हैं Brave उसे आपके डिफ़ॉल्ट सर्च इंजन पर भेजता है. यह प्राइवेट विंडोज़ में उपलब्ध नहीं है.</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
-<translation id="842628013524824194">सामान्य विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन</translation>
+<translation id="9195748375338942941">सामान्य विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन.</translation>
 <translation id="5324939009884545145">प्राइवेट विंडो - एड्रेस बार में इस्तेमाल किया गया सर्च इंजन</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
 <translation id="7878791177459550035">मीडिया राउटर ब्राउज़र में कास्ट फीचर इनेबल करता है.</translation>

@@ -112,6 +112,7 @@
 <translation id="8722651357687610395">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="2370739752330685659">Varbūt vēlāk</translation>
 <translation id="5100490448228945668">Noraidīt Brave meklēšanas konvertāciju; nospiediet Ievadīt, lai noņemtu šo ieteikumu</translation>
+<translation id="6213208892248046484">Pārslēgt uz Brave meklēšanu</translation>
 <translation id="9194637241566114638">Palīdziet uzlabot <ph name="SEARCH_NAME"/>, sūtot anonīmus lietojuma datus.  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave meklēšana</translation>
 <translation id="8184318863960255706">Plašāka informācija</translation>
@@ -500,6 +501,9 @@
 <translation id="7181706637590665047">Neļaut piekļuvi vietējā resursdatora resursiem</translation>
 <translation id="1336116824874668514">Nav atļauts piekļūt vietējā resursdatora resursiem</translation>
 <translation id="1485435696620658073">Atļauts piekļūt vietējā resursdatora resursiem</translation>
+<translation id="5794692721727586076">Leo MI tērzēšana</translation>
+<translation id="8115153008662981040">Vietnes var lūgt atvērt Leo MI tērzētavu</translation>
+<translation id="1145070115730668595">Neļaut vietnei atvērt Leo MI tērzētavu</translation>
 <translation id="6414370348346025511">Ieslēgta standarta aizsardzība.</translation>
 <translation id="5565355416171743213">Sākt lietot sinhronizāciju</translation>
 <translation id="4332558599726753990">Sinhronizācijas iestatīšana</translation>
@@ -572,7 +576,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="3128251601544028053">Kad rakstāt adrešu joslā vai meklēšanas logā, Brave nosūta jūsu rakstīto informāciju noklusējuma meklētājprogrammatūrai, lai saņemtu labākus ieteikumus. Tas nav pieejams inkognito logos.</translation>
 <translation id="6285118765755298263">Indeksēt citas meklētājprogrammas</translation>
 <translation id="919715748352669592">Automātiski indeksē tīmekļa vietnes, kas atbilst OpenSearch specifikācijām.</translation>
-<translation id="842628013524824194">Parastais logs - adrešu joslā izmantotā meklētājprogramma</translation>
+<translation id="9195748375338942941">Parastais logs - adrešu joslā izmantotā meklētājprogramma.</translation>
 <translation id="5324939009884545145">Privātais logs - adrešu joslā izmantotā meklētājprogramma</translation>
 <translation id="6864914031231797928">Atļaut Google pieteikšanos paplašinājumiem</translation>
 <translation id="7878791177459550035">Multivides maršrutētājs pārlūkā nodrošina apraides funkciju.</translation>

@@ -466,7 +466,9 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="9055546041146396417">Als deze site niet lijkt te werken, probeer dan Shields uit te zetten.</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
-<translation id="5429200298326665264">Opmerking: Dit webadres wordt ingediend met je Brave versienummer en je IP-adres (dat niet wordt opgeslagen).</translation>
+<translation id="8759753423332885148">Learn more.</translation>
+<translation id="721949491455392748">Voeg een schermafbeelding van de huidige pagina toe</translation>
+<translation id="8459191579769999214">Schermafbeelding bekijken</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
 <translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
 <translation id="650318023204990401">Geavanceerde instellingen</translation>
@@ -693,7 +695,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5747552184818312860">Verloopt</translation>
 <translation id="1656814355341174523">Abonnement beheren</translation>
 <translation id="1919008675977575793">Server</translation>
-<translation id="4812684235631257312">Host</translation>
 <translation id="5646376287012673985">Locatie</translation>
 <translation id="8375573361134671513">Configuratie resetten</translation>
 <translation id="850405162932416400">VPN-ondersteuning</translation>
@@ -1026,8 +1027,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="622372328961630111">Voeg automatisch NFT's die u bezit toe aan de wallet met behulp van API's van derden. <ph name="BEGIN_LINK_1"/>Meer informatie.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Account van adresopzoektabel:</translation>
 <translation id="7659483790930268440">Index van adresopzoektabel:</translation>
-<translation id="4932733599132424254">Datum</translation>
-<translation id="346505172740911461">Marktprijs</translation>
 <translation id="5494920125229734069">Alles selecteren</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Inloggen bij Brave Wallet</translation>
@@ -1042,6 +1041,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6165101586663336913">Als u Leo (assistent) opnieuw instelt, moet u zich in de toekomst aanmelden om Leo te kunnen gebruiken. Ook wordt uw chatgeschiedenis gewist. Als u uw chatgeschiedenis wist, worden al uw eerdere gesprekken met Leo verwijderd. Deze actie kan niet ongedaan worden gemaakt.</translation>
 <translation id="3692772534525889713">Koppel uw Play Store-aankoop aan uw Brave-account om Brave Leo op andere apparaten te gebruiken.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Eén jaar</translation>
 <translation id="1166682575529520472">Maandelijks</translation>
 <translation id="451189393813405346">Vraag het Leo</translation>
 <translation id="7322560193401221004">Afspeelpositie van bestand onthouden</translation>
@@ -1110,7 +1110,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2389665228467129817">Chat langer</translation>
 <translation id="4314705522985583059">Krijg hogere responslimieten voor langere gesprekken.</translation>
 <translation id="6365289557497555234">Alle abonnementen worden automatisch verlengd, maar\nkunnen voor de verlengdatum op elk gewenst moment worden opgezegd.</translation>
-<translation id="6637015365469044269">Nu upgraden</translation>
+<translation id="5543505256451301851">Probeer 7 dagen gratis</translation>
 <translation id="614530507403667291">Standaardmodel voor nieuwe gesprekken</translation>
 <translation id="4071849832011229600">Standaardmodel</translation>
 <translation id="4185473179105062442">BAT rechtstreeks ontvangen op een cryptoadres in eigen beheer</translation>

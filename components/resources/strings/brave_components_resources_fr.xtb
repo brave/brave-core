@@ -171,8 +171,7 @@
 <translation id="8510478288840333677">Faites savoir aux développeurs de Brave que ce site ne fonctionne pas correctement avec les boucliers :</translation>
 <translation id="3110968385867124099">Impossible de signaler cette page, car elle n'était pas diffusée via HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Cette page est une page Web locale et n'est pas admissible au rapport.</translation>
-<translation id="3645455863322075098">Cette page est une page d'erreur et n'est pas admissible au rapport.</translation>
-<translation id="105644511106871142">Merci de nous aider à améliorer Brave pour tous. Ce rapport enverra uniquement les informations qui nous sont nécessaires pour réparer ce site.</translation>
+<translation id="6806248680442980382">Merci de nous aider à améliorer Brave. Ce rapport contiendra uniquement les renseignements dont nous avons besoin pour résoudre le problème.</translation>
 <translation id="6476216365964140603">Plus de détails (facultatif)</translation>
 <translation id="6145852496180774737">Contactez-moi : (facultatif)</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
@@ -693,6 +692,12 @@
 <translation id="957921474773060718">Prochaine contribution :</translation>
 <translation id="351973834053818251">Contributions récurrentes</translation>
 <translation id="7751260505918304024">Tout afficher</translation>
+<translation id="4114667046481794032">Montant de la contribution</translation>
+<translation id="3253225298092156258">Non disponible</translation>
+<translation id="7550470870580166294">Fonds insuffisants</translation>
+<translation id="1166682575529520472">Mensuel</translation>
+<translation id="7138678301420049075">Autre</translation>
+<translation id="4174337572777167894">Projet de découverte web</translation>
 <translation id="7090992647511817643">compte</translation>
 <translation id="4822132585477111396">ID de chaîne</translation>
 <translation id="3269475789479462358">domaine</translation>
@@ -795,7 +800,6 @@
 <translation id="6517332033658428773">Examiner l'échange</translation>
 <translation id="8692596799753687794">Choisir le fournisseur d'estimation</translation>
 <translation id="463712644600982655">Chaque agrégateur fournit des estimations en utilisant les liquidités de son API. Ils recueillent des informations sur les prix auprès de divers échanges et proposent des prix sur la base de ces données.</translation>
-<translation id="3253225298092156258">Non disponible</translation>
 <translation id="473775607612524610">Mettre à jour</translation>
 <translation id="4389658703251593158">Cette paire n'est pas prise en charge par <ph name="PROVIDER_NAME"/></translation>
 <translation id="1176173785350238153">Changer de fournisseur</translation>
@@ -1276,10 +1280,9 @@
 <translation id="5722321409991816187">Afficher les NFT indésirables</translation>
 <translation id="2588752742385122166">Paramètres du portefeuille</translation>
 <translation id="7662492121143629144">Tous les comptes</translation>
+<translation id="8845001906332463065">Besoin d'aide ?</translation>
 <translation id="6954150712710630841">Transaction soumise</translation>
-<translation id="905855245798176174">La transaction a bien été envoyée au réseau et est en attente de confirmation.</translation>
 <translation id="619697073289995370">Transaction signée</translation>
-<translation id="7493732383203109611">La transaction a été signée et sera envoyée au réseau par le DApp</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> a été rendu à votre portefeuille</translation>
 <translation id="4577432071459867390">Échec de la transaction</translation>
 <translation id="4359235192593147041">La transaction a échoué en raison d'une importante évolution du prix. Augmentez la tolérance au glissement pour effectuer une transaction avec une plus grande évolution du prix.</translation>
@@ -1710,7 +1713,6 @@
 <translation id="1958146856582208323">Transfert de jetons</translation>
 <translation id="3550219298671597013">Transfert de NFT</translation>
 <translation id="8043066678623588950">Transfert de FIL</translation>
-<translation id="7138678301420049075">Autre</translation>
 <translation id="8703556909820882288">Transfert de NFT compressé</translation>
 <translation id="2713141960460256091">Signer et envoyer une transaction DApp</translation>
 <translation id="6387730345715997739">Signer une transaction DApp</translation>
@@ -1792,7 +1794,6 @@
 <translation id="7056969230130642253">Vous avez tout vu</translation>
 <translation id="7292242212818928219">Nouveau contenu disponible. Recharger ?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Commandes rapides</translation>
 <translation id="7481312909269577407">Avancer</translation>
 <translation id="1272079795634619415">Arrêter</translation>
 <translation id="302781076327338683">Recharger le cache de contournement</translation>
@@ -1949,6 +1950,7 @@
 <translation id="1130188644637295274">Ouvrir en mode Vue partagée</translation>
 <translation id="6459036216700972269">Annuler la vue partagée des onglets</translation>
 <translation id="4235382917338421035">Changer la position de l'onglet</translation>
+<translation id="4144468798716165316">Commandes rapides</translation>
 <translation id="3617523374417810198">Nouvelle vue partagée</translation>
 <translation id="8571323456914890254">Ouvrir en mode Vue partagée</translation>
 <translation id="5329136173514538969">Annuler la vue partagée des onglets</translation>
@@ -2011,7 +2013,6 @@
 <translation id="1691256669639196606">Gérer l'abonnement</translation>
 <translation id="2304783958703511257">Paramètres avancés</translation>
 <translation id="3037594989275592390">Modèles de langue</translation>
-<translation id="6637015365469044269">Mettre à niveau maintenant</translation>
 <translation id="5543505256451301851">Essayer gratuitement pendant 7 jours</translation>
 <translation id="849535826888024304">Limite du taux de réponse atteinte</translation>
 <translation id="2252128900328632803">Vous avez atteint la limite de taux pour Leo. Déverrouillez un taux de réponse plus élevé en vous inscrivant à Premium ou réessayez bientôt.</translation>
@@ -2022,7 +2023,7 @@
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/mois</translation>
 <translation id="5151923271944811339">Passer au modèle gratuit</translation>
 <translation id="5474757891469990756">Déchaînez les pleins pouvoirs de Leo avec Premium :</translation>
-<translation id="5552332211527367850">Accès prioritaire à des modèles puissants avec différentes compétences</translation>
+<translation id="3453542753968940696">Accès prioritaire à des modèles puissants avec différentes compétences.</translation>
 <translation id="5031778211368112461">Accédez à des modèles mieux adaptés aux tâches créatives et à la génération de contenu.</translation>
 <translation id="298783097210745222">Obtenez des réponses plus précises pour des conversations plus nuancées.</translation>
 <translation id="4314705522985583059">Obtenez des limites de taux plus élevées pour des conversations plus longues.</translation>

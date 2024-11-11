@@ -113,6 +113,7 @@
 <translation id="8722651357687610395">將 Brave 設為預設值</translation>
 <translation id="2370739752330685659">稍後再說</translation>
 <translation id="5100490448228945668">關閉 Brave 搜尋轉換功能，按 Enter 鍵即可移除此建議</translation>
+<translation id="6213208892248046484">切換至 Brave 搜尋</translation>
 <translation id="9194637241566114638">匿名傳送使用情況的相關資料，協助改善 <ph name="SEARCH_NAME"/>。<ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave 搜尋</translation>
 <translation id="8184318863960255706">更多資訊</translation>
@@ -501,6 +502,9 @@
 <translation id="7181706637590665047">禁止存取本地主機資源</translation>
 <translation id="1336116824874668514">未允許存取本地主機資源</translation>
 <translation id="1485435696620658073">已允許存取本地主機資源</translation>
+<translation id="5794692721727586076">Leo AI 人工智慧聊天</translation>
+<translation id="8115153008662981040">網站可以要求開啟 Leo 人工智慧聊天</translation>
+<translation id="1145070115730668595">不允許網站開啟 Leo 人工智慧聊天</translation>
 <translation id="6414370348346025511">標準防護已開啟。</translation>
 <translation id="5565355416171743213">開始使用同步</translation>
 <translation id="4332558599726753990">同步設定</translation>
@@ -574,7 +578,7 @@
 <translation id="3128251601544028053">您在網址列或搜尋方塊輸入內容時，Brave 會將您輸入的內容傳送至您的預設搜尋引擎，以取得更好的建議。私密瀏覽視窗不支援此功能。</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
-<translation id="842628013524824194">一般視窗 - 在網址列使用搜尋引擎</translation>
+<translation id="9195748375338942941">一般視窗 - 在網址列使用搜尋引擎。</translation>
 <translation id="5324939009884545145">隱私視窗 - 在網址列使用搜尋引擎</translation>
 <translation id="6864914031231797928">允許延伸套件登入 Google</translation>
 <translation id="7878791177459550035">媒體路由器可在瀏覽器中啟用投影功能。</translation>

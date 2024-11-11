@@ -479,7 +479,9 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="9055546041146396417">Dacă site-ul pare nefuncțional, încercați să dezactivați Shields.</translation>
 <translation id="1209739344687072997">Raportați un site nefuncțional</translation>
 <translation id="8510478288840333677">Anunțați-i pe dezvoltatorii Brave că acest site nu funcționează corect cu Scuturi:</translation>
-<translation id="5429200298326665264">Notă: Această adresă de site va fi remisă împreună cu numărul dvs. de versiune Brave și adresa IP (care nu vor fi stocate).</translation>
+<translation id="8759753423332885148">Aflați mai multe.</translation>
+<translation id="721949491455392748">Includeți captura de ecran a paginii actuale</translation>
+<translation id="8459191579769999214">Vizualizați captura de ecran</translation>
 <translation id="5299848999918506028">Mulțumim!</translation>
 <translation id="76550953340008122">Vă mulțumim că i-ați anunțat pe dezvoltatorii Brave că ceva nu este în regulă cu acest site. Vom face tot ce ne stă în putință ca să rezolvăm problema!</translation>
 <translation id="650318023204990401">Controale avansate</translation>
@@ -651,6 +653,8 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6284218950354553099">Trimiteți automat la Brave un ping privind utilizarea zilnică</translation>
 <translation id="2181060149810222381">Prin acest ping confidențial, Brave poate estima numărul de utilizatori activi.</translation>
 <translation id="6725413948756358325">Numele contului</translation>
+<translation id="3240773103344793224">A fost solicitată schimbarea proprietății contului</translation>
+<translation id="8041423758956015568">Această tranzacție va transfera proprietatea contului către un nou program. Acțiunea este ireversibilă și poate duce la pierderea fondurilor.</translation>
 <translation id="6062431965141524986">Puteți crea un cont secundar prin importarea cheii dvs. private.</translation>
 <translation id="3952797765659730604">Introduceți, lipiți sau importați fișierul cu cheia privată sau în format JSON.</translation>
 <translation id="569068482611873351">Importați...</translation>
@@ -708,7 +712,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5747552184818312860">Expiră</translation>
 <translation id="1656814355341174523">Gestionați abonamentul</translation>
 <translation id="1919008675977575793">Server</translation>
-<translation id="4812684235631257312">Gazdă</translation>
 <translation id="5646376287012673985">Locație</translation>
 <translation id="8375573361134671513">Resetați configurația</translation>
 <translation id="850405162932416400">Asistență VPN</translation>
@@ -1050,8 +1053,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="622372328961630111">Adăugați automat NFT-uri pe care le dețineți în Portofel folosind API-uri de la terțe părți. <ph name="BEGIN_LINK_1"/>Aflați mai multe.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Contul tabelului de căutare a adreselor:</translation>
 <translation id="7659483790930268440">Indexul tabelului de căutare a adreselor:</translation>
-<translation id="4932733599132424254">Data</translation>
-<translation id="346505172740911461">Prețul pieței</translation>
 <translation id="5494920125229734069">Selectează-le pe toate</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Conectați-vă cu Brave Wallet</translation>
@@ -1066,6 +1067,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6165101586663336913">Resetarea asistentului Leo necesită acceptarea folosirii Leo în viitor și va șterge istoricul de chat. Prin ștergerea istoricului de chat se vor șterge toate conversațiile anterioare cu Leo. Această acțiune nu poate fi anulată.</translation>
 <translation id="3692772534525889713">Conectați achiziția din Play Store la contul dumneavoastră Brave pentru a utiliza Brave Leo și pe alte dispozitive.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Un an</translation>
 <translation id="1166682575529520472">Lunar</translation>
 <translation id="451189393813405346">Întrebați-l pe Leo</translation>
 <translation id="7322560193401221004">Rețineți poziția de redare a fișierului</translation>
@@ -1134,7 +1136,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2389665228467129817">Prelungiți conversațiile</translation>
 <translation id="4314705522985583059">Atingeți limite de nivel mai înalt pentru conversațiile lungi.</translation>
 <translation id="6365289557497555234">Toate abonamentele se reînnoiesc automat, dar pot fi anulate în orice moment înainte de data scadentă a reînnoirii.</translation>
-<translation id="6637015365469044269">Faceți upgrade acum</translation>
+<translation id="5543505256451301851">Încercați gratuit pentru 7 zile</translation>
 <translation id="614530507403667291">Model implicit pentru conversații noi</translation>
 <translation id="4071849832011229600">Modul implicit</translation>
 <translation id="4185473179105062442">Primiți BAT direct la o adresă cripto în custodie proprie</translation>

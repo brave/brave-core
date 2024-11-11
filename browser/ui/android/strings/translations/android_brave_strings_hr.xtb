@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Dobro došli u Brave</translation>
 <translation id="4117451092682672487">Pojednostavljena zaštita privatnosti.</translation>
 <translation id="7909375417585209817">Kad je Brave postavljen kao zadani preglednik, svaka veza koju dodirnete otvara se uz zaštite privatnosti preglednika Brave.</translation>
+<translation id="3737878115109582442">Dodavanje miniaplikacije za pretraživanje</translation>
+<translation id="6199413390010319240">Imajte Brave na dohvat ruke za brže mrežno istraživanje.</translation>
+<translation id="4338600611020922010">Dodaj na početni zaslon</translation>
 <translation id="7370959926683925817">Blokirajte oglase. Uštedite podatke. Svaki dan.</translation>
 <translation id="7281027579943912834">Kad je Brave zadani preglednik, svaka poveznica koju dodirnete dobiva zaštitu od blokiranja oglasa preglednika Brave. Svaka stranica, videozapis i strujanje.</translation>
 <translation id="5148943178722443958">Pomognite poboljšati Brave.</translation>
@@ -483,7 +486,11 @@ Sigurno želite to napraviti?</translation>
 <translation id="9055546041146396417">Ako se mrežno mjesto čini neispravno, pokušajte isključiti štitove.</translation>
 <translation id="1209739344687072997">Prijavi nevaljano mrežno mjesto</translation>
 <translation id="8510478288840333677">Javite razvojnim inženjerima preglednika Brave da ovo mrežno mjesto ne radi ispravno pri uporabi značajke Štitovi:</translation>
-<translation id="5429200298326665264">Napomena: adresa se ovog mjesta šalje zajedno s vašim brojem inačice preglednika Brave i vašom adresom IP (koja se ne pohranjuje).</translation>
+<translation id="1653405824851871276">Hvala vam što pomažete u stvaranju preglednika Brave koji je bolji za sve. U ovom se izvješću navode samo informacije koje su nam potrebne da bismo popravili mrežno mjesto. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Saznaj više.</translation>
+<translation id="8740275226259417070">Ta je stranica stranica s pogreškom. Ne može se prijaviti kao neispravno mrežno mjesto.</translation>
+<translation id="721949491455392748">Uvrstite snimku zaslona trenutne mrežne stranice</translation>
+<translation id="8459191579769999214">Prikažite snimku zaslona</translation>
 <translation id="5299848999918506028">Hvala vam!</translation>
 <translation id="76550953340008122">Hvala vam što se javili razvojnim inženjerima preglednika Brave da nešto nije u redu s ovim mjestom. Činimo sve da uklonimo navedeni problem!</translation>
 <translation id="650318023204990401">Napredne kontrole</translation>
@@ -664,6 +671,8 @@ Račun
 <translation id="6284218950354553099">Automatski šalji ping dnevne uporabe Braveu</translation>
 <translation id="2181060149810222381">Ovim privatnim pingom u pregledniku Brave omogućava se procjenjivanje broja aktivnih korisnika.</translation>
 <translation id="6725413948756358325">Naziv računa</translation>
+<translation id="3240773103344793224">Zatražena je promjena vlasništva računa</translation>
+<translation id="8041423758956015568">Ovom će se transakcijom preraspodijeliti vlasništvo računa na novi program. Ta radnja ne može se poništiti i može dovesti do gubitka sredstava.</translation>
 <translation id="6062431965141524986">Možete napraviti sekundarni račun uvoženjem svog privatnog ključa.</translation>
 <translation id="3952797765659730604">Upišite, zalijepite ili uvezite datoteku niza ili datoteku JSON svog privatnog ključa.</translation>
 <translation id="569068482611873351">Uvoz...</translation>
@@ -730,7 +739,6 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="5747552184818312860">Istječe</translation>
 <translation id="1656814355341174523">Upravljaj pretplatom</translation>
 <translation id="1919008675977575793">Poslužitelj</translation>
-<translation id="4812684235631257312">Domaćin</translation>
 <translation id="5646376287012673985">Lokacija</translation>
 <translation id="8375573361134671513">Ponovno postavi konfiguraciju</translation>
 <translation id="850405162932416400">Podrška za mrežu VPN</translation>
@@ -757,6 +765,8 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="5431902940483264007">Optimalno</translation>
 <translation id="6527596624419285047">Upotrijebite najbolji dostupni poslužitelj</translation>
 <translation id="6789157560111825412">Dostupnih poslužitelja</translation>
+<translation id="5823953367746119927">Regija poslužitelja</translation>
+<translation id="6991535320595227154">Poslužitelj u regiji <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Odaberi problem</translation>
 <translation id="6687228121145903051">Nemogućnost povezivanja s mrežom VPN (druga pogreška)</translation>
 <translation id="9184988385244077767">Nema Interneta nakon povezivanja</translation>
@@ -1084,8 +1094,6 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="622372328961630111">Automatski dodajte NFT-ove koje posjedujete u novčanik putem API-ja treće strane. <ph name="BEGIN_LINK_1"/>Saznajte više.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Račun tablice za traženje adrese:</translation>
 <translation id="7659483790930268440">Indeks tablice za traženje adrese:</translation>
-<translation id="4932733599132424254">Datum</translation>
-<translation id="346505172740911461">Tržišna cijena</translation>
 <translation id="5494920125229734069">Odaberi sve</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Prijava Novčanikom Brave</translation>
@@ -1100,6 +1108,8 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="6165101586663336913">Za ponovno postavljanje pomoćnika Leo morate pristati na upotrebu pomoćnika Leo u budućnosti. On čisti i vašu povijest čavrljanja. Čišćenjem povijesti čavrljanja brišu se svi vaši prethodni razgovori s pomoćnikom Leo. Ta se radnja ne može poništiti.</translation>
 <translation id="3692772534525889713">Povežite svoju kupnju u Trgovini Play sa svojim Brave računom kako biste upotrijebili Brave Leo na drugim uređajima.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Jedna godina</translation>
+<translation id="2985392169397572983">NAJBOLJA VRIJEDNOST</translation>
 <translation id="1166682575529520472">Mjesečno</translation>
 <translation id="451189393813405346">Pitaj pomoćnika Leo</translation>
 <translation id="7322560193401221004">Zapamti položaj reprodukcije datoteke</translation>
@@ -1168,7 +1178,7 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="2389665228467129817">Čavrljajte duže</translation>
 <translation id="4314705522985583059">Dobijte veće stope za duže razgovore.</translation>
 <translation id="6365289557497555234">Sve se pretplate automatski obnavljaju, ali se mogu\notkazati u bilo kojem trenutku prije obnove.</translation>
-<translation id="6637015365469044269">Nadogradi sada</translation>
+<translation id="5543505256451301851">Besplatno isprobaj sedam dana</translation>
 <translation id="614530507403667291">Zadani model za nove razgovore</translation>
 <translation id="4071849832011229600">Zadani model</translation>
 <translation id="4185473179105062442">Izravno primite BAT na neskrbničku kripto adresu</translation>

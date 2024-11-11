@@ -113,6 +113,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8722651357687610395">Sett Brave som standard</translation>
 <translation id="2370739752330685659">Kanskje senere</translation>
 <translation id="5100490448228945668">Avslå konvertering til Brave-søk, trykk på Enter for å fjerne dette forslaget</translation>
+<translation id="6213208892248046484">Bytt til Brave Search</translation>
 <translation id="9194637241566114638">Bidra til å forbedre <ph name="SEARCH_NAME"/> ved å sende inn anonyme bruksdata. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Search</translation>
 <translation id="8184318863960255706">Mer informasjon</translation>
@@ -501,6 +502,9 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7181706637590665047">Ikke gi tilgang til localhost-ressurser</translation>
 <translation id="1336116824874668514">Ikke tillatelse til å få tilgang til localhost-ressurser</translation>
 <translation id="1485435696620658073">Har tillatelse til å få tilgang til localhost-ressurser</translation>
+<translation id="5794692721727586076">Leo AI-chat</translation>
+<translation id="8115153008662981040">Nettsteder kan be om å få åpne Leo AI-chatten</translation>
+<translation id="1145070115730668595">Ikke la nettstedet åpne Leo AI-chatten</translation>
 <translation id="6414370348346025511">Standardbeskyttelse er på.</translation>
 <translation id="5565355416171743213">Begynn å bruke synk</translation>
 <translation id="4332558599726753990">Synkroniseringsoppsett</translation>
@@ -573,7 +577,7 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="3128251601544028053">Når du skriver i adressefeltet eller søkefeltet, sender Brave det du skriver til din standard søkemotor for å få bedre forslag. Dette er ikke tilgjengelig i private vinduer.</translation>
 <translation id="6285118765755298263">Indekser andre søkemotorer</translation>
 <translation id="919715748352669592">Indekserer automatisk nettsider som er i tråd med OpenSearch-spesifikasjonene.</translation>
-<translation id="842628013524824194">Normalt vindu – Søkemotor brukt i adressefeltet</translation>
+<translation id="9195748375338942941">Normalt vindu – Søkemotor brukt i adressefeltet.</translation>
 <translation id="5324939009884545145">Privat vindu – Søkemotor brukt i adressefeltet</translation>
 <translation id="6864914031231797928">Tillat Google-pålogging for utvidelser</translation>
 <translation id="7878791177459550035">Mediaruteren slår på cast-funksjonen i nettleseren.</translation>

@@ -235,6 +235,9 @@
 <translation id="7207456302801184289">‏به Brave خوش آمدید</translation>
 <translation id="4117451092682672487">حریم خصوصی. ساده شده است.</translation>
 <translation id="7909375417585209817">با استفاده از Brave به‌عنوان مرورگر پیش‌فرض، همه پیوندهایی که روی آن‌ها ضربه می‌زنید با محافظت‌های حریم خصوصی Brave باز می‌شوند.</translation>
+<translation id="3737878115109582442">افزودن ابزارک جستجو</translation>
+<translation id="6199413390010319240">برای کاوش سریع‌تر وب، Brave را در دسترس داشته باشید.</translation>
+<translation id="4338600611020922010">افزودن به صفحه اصلی</translation>
 <translation id="7370959926683925817">مسدود کردن تبلیغات. ذخیره داده ها. هر روز</translation>
 <translation id="7281027579943912834">با Brave به‌عنوان پیش‌فرض، هر پیوندی که روی آن ضربه می‌زنید از محافظت از بلوک آگهی Brave برخوردار می‌شود. هر صفحه، ویدیو، و جریان.</translation>
 <translation id="5148943178722443958">به بهبود Brave کمک کنید.</translation>
@@ -485,7 +488,11 @@
 <translation id="9055546041146396417">اگر این سایت خراب به نظر می‌رسد، سپر ایمنی را غیرفعال کنید.</translation>
 <translation id="1209739344687072997">گزارش خرابی سایت</translation>
 <translation id="8510478288840333677">به توسعه‌دهندگان Brave اطلاع دهید که «سپرهای ایمنی» در این سایت به‌خوبی کار نمی‌کند.</translation>
-<translation id="5429200298326665264">توجه: نشانی این سایت به‌همراه شماره نسخه Brave شما و نشانی IP شما (که ذخیره نخواهد شد) ارسال می‌شود.</translation>
+<translation id="1653405824851871276">از شما بابت کمک به بهبود Brave برای همه، سپاسگزاریم. این گزارش فقط حاوی اطلاعات لازم برای تعمیر این سایت است. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">بیشتر بدانید.</translation>
+<translation id="8740275226259417070">این صفحه خطا است. نمی‌توان آن را به‌عنوان سایت خراب گزارش کرد.</translation>
+<translation id="721949491455392748">شامل کردن عکس صفحه از صفحه فعلی</translation>
+<translation id="8459191579769999214">مشاهده عکس صفحه</translation>
 <translation id="5299848999918506028">متشکریم!</translation>
 <translation id="76550953340008122">متشکریم که وجود مشکل در این سایت را به توسعه‌دهندگان Brave اطلاع دادید. تمام تلاشمان را برای رفع مشکل آن به کار می‌گیریم.</translation>
 <translation id="650318023204990401">کنترل‌های پیشرفته</translation>
@@ -664,6 +671,8 @@
 <translation id="6284218950354553099">ارسال خودکار پینگ مصرف روزانه به Brave</translation>
 <translation id="2181060149810222381">این پینگ خصوصی به Brave اجازه می‌دهد تا کاربران فعال را تخمین بزند.</translation>
 <translation id="6725413948756358325">نام حساب</translation>
+<translation id="3240773103344793224">تغییر مالکیت حساب درخواست شد</translation>
+<translation id="8041423758956015568">این تراکنش مالکیت حساب را به برنامه‌ای جدید اختصاص می‌دهد. این اقدام غیرقابل بازگشت است و ممکن است منجر به از دست دادن وجوه شود.</translation>
 <translation id="6062431965141524986">با وارد کردن کلید خصوصی خود می‌توانید یک حساب ثانویه ایجاد کنید.</translation>
 <translation id="3952797765659730604">فایل رشته کلید خصوصی یا JSON خود را درج، جای‌گذاری یا وارد کنید.</translation>
 <translation id="569068482611873351">وارد کردن…</translation>
@@ -730,7 +739,6 @@
 <translation id="5747552184818312860">تاریخ انقضا</translation>
 <translation id="1656814355341174523">مدیریت اشتراک</translation>
 <translation id="1919008675977575793">سرور</translation>
-<translation id="4812684235631257312">میزبان</translation>
 <translation id="5646376287012673985">مکان</translation>
 <translation id="8375573361134671513">بازنشانی پیکربندی</translation>
 <translation id="850405162932416400">پشتیبانی VPN</translation>
@@ -757,6 +765,8 @@
 <translation id="5431902940483264007">بهینه</translation>
 <translation id="6527596624419285047">استفاده از بهترین سرور موجود</translation>
 <translation id="6789157560111825412">سرورهای موجود</translation>
+<translation id="5823953367746119927">منطقه سرور</translation>
+<translation id="6991535320595227154">سرور <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">انتخاب مشکل</translation>
 <translation id="6687228121145903051">اتصال به VPN امکان‌پذیر نیست (خطای دیگر)</translation>
 <translation id="9184988385244077767">هنگام اتصال اینترنت وجود ندارد</translation>
@@ -1081,8 +1091,6 @@
 <translation id="622372328961630111">با استفاده از APIهای شخص ثالث، NFTهای متعلق به شما به‌طور خودکار به کیف پول اضافه می‌شود.<ph name="BEGIN_LINK_1"/>بیشتر بدانید.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">حساب جدول جستجوی نشانی:</translation>
 <translation id="7659483790930268440">شاخص جدول جستجوی نشانی:</translation>
-<translation id="4932733599132424254">تاریخ</translation>
-<translation id="346505172740911461">قیمت بازار</translation>
 <translation id="5494920125229734069">انتخاب همه</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">ورورد از طریق کیف پول Brave</translation>
@@ -1097,6 +1105,8 @@
 <translation id="6165101586663336913">بازنشانی دستیار Leo از شما می‌خواهد که در آینده استفاده از Leo را انتخاب کنید و همچنین سابقه گپ شما را پاک می‌کند. پاک کردن سابقه گپ شما، تمام مکالمات قبلی شما با Leo را حذف می‌کند. این عمل قابل لغو نیست.</translation>
 <translation id="3692772534525889713">برای استفاده از Brave Leo در دستگاه‌های دیگر، خرید Play Store خود را به حساب Brave پیوند دهید.</translation>
 <translation id="73236265316873967">نسخه پرمیوم Leo</translation>
+<translation id="1028627582482425924">یک سال</translation>
+<translation id="2985392169397572983">بهترین مقدار</translation>
 <translation id="1166682575529520472">ماهانه</translation>
 <translation id="451189393813405346">از Leo بپرسید</translation>
 <translation id="7322560193401221004">موقعیت پخش فایل به خاطر سپرده شود</translation>
@@ -1165,7 +1175,7 @@
 <translation id="2389665228467129817">برای مدت طولانی‌تری چت کنید</translation>
 <translation id="4314705522985583059">برای مکالمات طولانی‌تر، محدودیت کمتری داشته باشید.</translation>
 <translation id="6365289557497555234">همه اشتراک‌ها به‌طور خودکار تمدید می‌شوند، اما در هر زمان قبل از تمدید، می‌توان آنها را لغو کرد.</translation>
-<translation id="6637015365469044269">هم‌اکنون ارتقا دهید</translation>
+<translation id="5543505256451301851">۷ روز رایگان امتحان کنید</translation>
 <translation id="614530507403667291">مدل پیش‌فرض برای مکالمات جدید</translation>
 <translation id="4071849832011229600">مدل پیش‌فرض</translation>
 <translation id="4185473179105062442">توکن توجه اولیه را مستقیماً در یک آدرس رمزارز خودامانی دریافت کنید</translation>

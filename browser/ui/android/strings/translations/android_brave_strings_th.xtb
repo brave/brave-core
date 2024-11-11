@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">ยินดีต้อนรับสู่ Brave</translation>
 <translation id="4117451092682672487">ปกป้องความเป็นส่วนตัวง่ายๆ</translation>
 <translation id="7909375417585209817">เมื่อ Brave เป็นค่าเริ่มต้น ทุกลิงก์ที่คุณคลิกจะเปิดด้วยการป้องกันความเป็นส่วนตัวของ Brave</translation>
+<translation id="3737878115109582442">เพิ่มวิดเจ็ตการค้นหา</translation>
+<translation id="6199413390010319240">ให้ Brave อยู่ใกล้เพียงปลายนิ้วเพื่อท่องเว็บได้อย่างรวดเร็วกว่าเดิม</translation>
+<translation id="4338600611020922010">เพิ่มลงในหน้าจอหลัก</translation>
 <translation id="7370959926683925817">บล็อกโฆษณาและบันทึกข้อมูลทุกวัน</translation>
 <translation id="7281027579943912834">ด้วยการตั้ง Brave เป็นค่าเริ่มต้น ทุกลิงก์ที่คุณคลิกจะได้รับการป้องกันด้วย ad-block ของ Brave ในทุกหน้าเพจ วิดีโอ และสตรีม</translation>
 <translation id="5148943178722443958">ช่วยปรับปรุง Brave ให้ดีขึ้น</translation>
@@ -483,7 +486,11 @@
 <translation id="9055546041146396417">หากเว็บดูเหมือนมีปัญหา ลองปิด Shields ดู</translation>
 <translation id="1209739344687072997">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="8510478288840333677">แจ้งให้ผู้พัฒนา Brave ทราบว่าเว็บไซต์นี้ทำงานไม่ถูกต้องเมื่อเปิดระบบปกป้อง:</translation>
-<translation id="5429200298326665264">หมายเหตุ: ที่อยู่เว็บนี้จะถูกส่งไปพร้อมกับหมายเลขเวอร์ชั่น Brave และที่อยู่ IP ของคุณ(ซึ่งจะไม่ถูกเก็บ)</translation>
+<translation id="1653405824851871276">ขอบคุณที่ช่วยทำให้ Brave มีประสิทธิภาพมากขึ้นสำหรับทุกคน โดยรายงานนี้จะมีข้อมูลที่จำเป็นสำหรับเราในการแก้ไขเว็บไซต์นี้เท่านั้น <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">เรียนรู้เพิ่มเติม</translation>
+<translation id="8740275226259417070">หน้านี้คือหน้าข้อผิดพลาด ซึ่งจะไม่สามารถรายงานหน้านี้ว่าเป็นเว็บไซต์เสียหายได้</translation>
+<translation id="721949491455392748">รวมภาพหน้าจอของหน้าปัจจุบัน</translation>
+<translation id="8459191579769999214">ดูภาพหน้าจอ</translation>
 <translation id="5299848999918506028">ขอบคุณค่ะ</translation>
 <translation id="76550953340008122">ขอบคุณที่แจ้งให้ผู้พัฒนา Brave ทราบว่ามีข้อผิดพลาดในเว็บไซต์นี้ เราจะพยายามแก้ไขปัญหานี้อย่างเต็มที่</translation>
 <translation id="650318023204990401">การควบคุมขั้นสูง</translation>
@@ -662,6 +669,8 @@
 <translation id="6284218950354553099">ส่งปิงการใช้งานรายวันไปยัง Brave โดยอัตโนมัติ</translation>
 <translation id="2181060149810222381">ปิงส่วนตัวนี้จะช่วยให้ Brave ประเมินผู้ใช้ที่ใช้งานอยู่ได้</translation>
 <translation id="6725413948756358325">ชื่อบัญชี</translation>
+<translation id="3240773103344793224">มีคำขอทำการเปลี่ยนแปลงความเป็นเจ้าของบัญชี</translation>
+<translation id="8041423758956015568">ธุรกรรมนี้จะโอนสิทธิ์การเป็นเจ้าของบัญชีไปยังโปรแกรมใหม่ ซึ่งการกระทำนี้ไม่สามารถย้อนกลับได้และอาจส่งผลให้เกิดการสูญเสียยอดเงิน</translation>
 <translation id="6062431965141524986">คุณสามารถสร้างบัญชีสำรองได้โดยการนำเข้าคีย์ส่วนตัวของคุณ</translation>
 <translation id="3952797765659730604">ป้อน วาง หรือนำเข้าไฟล์สตริงคีย์ส่วนตัวหรือ JSON</translation>
 <translation id="569068482611873351">นำเข้า...</translation>
@@ -728,7 +737,6 @@
 <translation id="5747552184818312860">หมดอายุ</translation>
 <translation id="1656814355341174523">จัดการการสมัครสมาชิก</translation>
 <translation id="1919008675977575793">เซิร์ฟเวอร์</translation>
-<translation id="4812684235631257312">โฮสต์</translation>
 <translation id="5646376287012673985">ตำแหน่ง</translation>
 <translation id="8375573361134671513">รีเซ็ตการกำหนดค่า</translation>
 <translation id="850405162932416400">การสนับสนุนเกี่ยวกับ VPN</translation>
@@ -755,6 +763,8 @@
 <translation id="5431902940483264007">เหมาะสม</translation>
 <translation id="6527596624419285047">ใช้เซิร์ฟเวอร์ที่ดีที่สุด</translation>
 <translation id="6789157560111825412">เซิร์ฟเวอร์ที่พร้อมใช้งาน</translation>
+<translation id="5823953367746119927">ภูมิภาคของเซิร์ฟเวอร์</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/> เซิร์ฟเวอร์</translation>
 <translation id="4397083831618200686">เลือกปัญหา</translation>
 <translation id="6687228121145903051">ไม่สามารถเชื่อมต่อ VPN (ข้อผิดพลาดอื่นๆ)</translation>
 <translation id="9184988385244077767">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</translation>
@@ -1079,8 +1089,6 @@
 <translation id="622372328961630111">เพิ่ม NFT ที่คุณเป็นเจ้าของไปยังกระเป๋าเงินโดยอัตโนมัติโดยใช้ API บุคคลที่สาม <ph name="BEGIN_LINK_1"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">บัญชีตารางค้นหาที่อยู่:</translation>
 <translation id="7659483790930268440">ดัชนีตารางค้นหาที่อยู่:</translation>
-<translation id="4932733599132424254">วันที่</translation>
-<translation id="346505172740911461">ราคาตลาด</translation>
 <translation id="5494920125229734069">เลือกทั้งหมด</translation>
 <translation id="6129027151000961048">ลีโอ</translation>
 <translation id="8613144770663526433">ลงชื่อเข้าใช้ด้วย Brave Wallet</translation>
@@ -1095,6 +1103,8 @@
 <translation id="6165101586663336913">การรีเซ็ตผู้ช่วย Leo จะทำให้คุณต้องเลือกใช้งาน Leo และจะเป็นการล้างประวัติการแชทของคุณอีกด้วย การล้างประวัติการแชทของคุณจะลบบทสนทนากับ Leo ทั้งหมดก่อนหน้านี้ การกระทำนี้ไม่สามารถถูกยกเลิกได้</translation>
 <translation id="3692772534525889713">ลิงก์การซื้อใน Play Store กับบัญชี Brave เพื่อใช้ Brave Leo บนอุปกรณ์อื่นๆ</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">หนึ่งปี</translation>
+<translation id="2985392169397572983">คุ้มค่าที่สุด</translation>
 <translation id="1166682575529520472">รายเดือน</translation>
 <translation id="451189393813405346">ถาม Leo</translation>
 <translation id="7322560193401221004">จำตำแหน่งที่เล่นไฟล์</translation>
@@ -1163,7 +1173,7 @@
 <translation id="2389665228467129817">แชทได้นานขึ้น</translation>
 <translation id="4314705522985583059">รับขีดจำกัดอัตราที่สูงขึ้นเพื่อการสนทนาที่ยาวนานขึ้น</translation>
 <translation id="6365289557497555234">การสมัครสมาชิกทั้งหมดจะได้รับการต่ออายุโดยอัตโนมัติ แต่สามารถ\nยกเลิกได้ทุกเมื่อก่อนต่ออายุ</translation>
-<translation id="6637015365469044269">อัปเกรดตอนนี้</translation>
+<translation id="5543505256451301851">ทดลองใช้ฟรี 7 วัน</translation>
 <translation id="614530507403667291">โมเดลเริ่มต้นสำหรับการสนทนาใหม่</translation>
 <translation id="4071849832011229600">โมเดลเริ่มต้น</translation>
 <translation id="4185473179105062442">รับ BAT โดยตรงไปยังที่อยู่คริปโตแบบควบคุมได้เอง</translation>

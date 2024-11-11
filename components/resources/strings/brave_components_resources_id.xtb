@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">Beri tahu pengembang Brave bahwa situs ini tidak berfungsi dengan baik saat Perisai aktif:</translation>
 <translation id="3110968385867124099">Halaman ini tidak dapat dilaporkan karena tidak dilayani di HTTP/HTPPS.</translation>
 <translation id="7907023135990310743">Halaman ini adalah halaman web lokal dan tidak memenuhi syarat untuk pelaporan.</translation>
-<translation id="3645455863322075098">Halaman ini adalah halaman kesalahan dan tidak memenuhi syarat untuk pelaporan.</translation>
-<translation id="105644511106871142">Terima kasih untuk bantuan Anda dalam meningkatkan Brave untuk semua. Laporan ini hanya akan mengirimkan informasi yang kami perlukan untuk memperbaiki situs ini.</translation>
+<translation id="8740275226259417070">Ini adalah halaman kesalahan. Ini tidak dapat dilaporkan sebagai situs yang rusak.</translation>
+<translation id="6806248680442980382">Terima kasih telah membantu menjadikan Brave lebih baik untuk semua. Laporan ini hanya akan berisi informasi yang diperlukan bagi kami untuk memperbaiki situs ini.</translation>
 <translation id="6476216365964140603">Detail tambahan (opsional)</translation>
 <translation id="6145852496180774737">Hubungi saya di: (opsional)</translation>
 <translation id="7616645803364270729">Surel, Twitter, dsb.</translation>
@@ -461,6 +461,8 @@
 <translation id="6318437367327684789">selamanya</translation>
 <translation id="8797999629784150206">Anda dapat mengubah <ph name="SITE_PERMISSIONS"/> Anda kapan saja. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">izin situs</translation>
+<translation id="7222371875290545057">Izinkan membuka percakapan AI Leo di Brave?</translation>
+<translation id="1518915449477235311">Izinkan <ph name="URL"/> untuk membuka percakapan AI Leo di Brave?</translation>
 <translation id="4355784577209159847">Mengizinkan kuki pihak ketiga untuk Masuk Google lama</translation>
 <translation id="5770656036486891920"><ph name="URL"/> ingin menggunakan kuki pihak ketiga untuk Masuk ke Google lama</translation>
 <translation id="6053826678715267477">Izinkan akses ke sumber daya localhost</translation>
@@ -693,6 +695,26 @@
 <translation id="957921474773060718">Kontribusi berikutnya:</translation>
 <translation id="351973834053818251">Kontribusi Berulang</translation>
 <translation id="7751260505918304024">Tampilkan semua</translation>
+<translation id="2894334939992402676">Pelajari lebih lanjut tentang metode kontribusi</translation>
+<translation id="4114667046481794032">Jumlah kontribusi</translation>
+<translation id="2628057126110572782">Kreator ini saat ini hanya menerima kontribusi melalui metode berikut:</translation>
+<translation id="7396847690567283204">Saldo Imbalan</translation>
+<translation id="3253225298092156258">Tidak tersedia</translation>
+<translation id="8028314716653189513">Pilih metode yang ingin Anda gunakan untuk berkontribusi untuk Brave Software:</translation>
+<translation id="4094286757932277327">Dompet kustodian</translation>
+<translation id="1511998469385905184">Anda dapat mencoba lagi nanti.</translation>
+<translation id="7550470870580166294">Saldo Tak Mencukupi</translation>
+<translation id="7020972866926315918">Sepertinya Anda sudah keluar dari <ph name="PROVIDER"/> untuk Imbalan Brave. Masuk lagi untuk melanjutkan.</translation>
+<translation id="1166682575529520472">Bulanan</translation>
+<translation id="7138678301420049075">Lainnya</translation>
+<translation id="2134931506717037391">Kirim <ph name="AMOUNT"/> BAT</translation>
+<translation id="4791565605790056151">Mengirim kontribusi</translation>
+<translation id="8251969358165471584">Dompet Web3</translation>
+<translation id="7160424977552599351">Gunakan dompet Web3 Anda</translation>
+<translation id="6369571967625114920">Iklan Privat Brave belum tersedia di wilayah Anda.</translation>
+<translation id="5309155375926073606">Ya, saya juga ingin berkontribusi pada Pencarian Brave dan ikut serta dalam <ph name="LINK_BEGIN"/>Proyek Penemuan Web<ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">Kontribusikan beberapa data pencarian dan penelusuran anonim untuk memperbaiki Pencarian Brave dengan Proyek Penemuan Web. Proyek. Ini sepenuhnya bersumber terbuka.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">akun</translation>
 <translation id="4822132585477111396">ID Rantai</translation>
 <translation id="3269475789479462358">domain</translation>
@@ -795,7 +817,6 @@
 <translation id="6517332033658428773">Meninjau pertukaran</translation>
 <translation id="8692596799753687794">Memilih penyedia penawaran</translation>
 <translation id="463712644600982655">Setiap agragator memberikan penawaran dengan menggunakan likuiditas dari API mereka. Mereka mengumpulkan informasi harga dari beragam bursa dan menawarkan harga berdasarkan data ini.</translation>
-<translation id="3253225298092156258">Tidak tersedia</translation>
 <translation id="473775607612524610">Perbarui</translation>
 <translation id="4389658703251593158">Pasangan ini tidak didukung oleh <ph name="PROVIDER_NAME"/></translation>
 <translation id="1176173785350238153">Ubah penyedia</translation>
@@ -1055,6 +1076,8 @@
 <translation id="793994607260936590">pertama</translation>
 <translation id="4709524402122994378">transaksi</translation>
 <translation id="4591079278963448049">Akun token terkait belum tersedia. SOL dalam jumlah kecil akan digunakan untuk membuat dan mendanainya.</translation>
+<translation id="3240773103344793224">Perubahan kepemilikan akun diminta</translation>
+<translation id="8041423758956015568">Transaksi ini akan mengalihkan kepemilikan akun ke program baru. Tindakan ini tidak dapat dibatalkan dan dapat mengakibatkan hilangnya dana.</translation>
 <translation id="1426320910664514906">Batas Gas</translation>
 <translation id="1229774280326250926">Premi Bensin</translation>
 <translation id="148169246131967347">Batas Biaya Bensin</translation>
@@ -1276,10 +1299,25 @@
 <translation id="5722321409991816187">Tampilkan NFT spam</translation>
 <translation id="2588752742385122166">Pengaturan portofolio</translation>
 <translation id="7662492121143629144">Semua akun</translation>
+<translation id="8845001906332463065">Dapatkan bantuan</translation>
+<translation id="6248202915200795128">Perlu waktu lebih lama dari yang diperkirakan?</translation>
+<translation id="5417904796609871601">Lihat di aktivitas</translation>
+<translation id="8915839655070878476">Anda dapat menutup jendela ini dengan aman.</translation>
+<translation id="7020017785602386950">Mengirim <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/> <ph name="AMOUNT_AFTER"/> ke <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> telah dikirim ke akun <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269">Menukar <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/> <ph name="AMOUNT_AFTER"/> ke <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/> <ph name="ACCOUNT_AFTER"/> pada <ph name="NETWORK"/></translation>
+<translation id="312867981877298982">Jumlah <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/> <ph name="AMOUNT_AFTER"/> telah ditambahkan ke akun Anda <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189">Menjembatani <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/> <ph name="AMOUNT_AFTER"/> ke <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042">Tidak dapat <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
+<translation id="6990756606864308319">Terjadi kesalahan saat mencoba <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/> <ph name="AMOUNT"/> <ph name="AMOUNT_AFTER"/> ke <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
+<translation id="6449575669814542383">Menyetujui <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/> <ph name="AMOUNT_AFTER"/> untuk <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">Transaksi baru akan dibuat untuk membatalkan transaksi Anda yang sudah ada.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} lebih banyak transaksi yang tertunda.}
+      other {{PENDING_TRANSACTIONS} lebih banyak transaksi yang tertunda.}
+    }</translation>
 <translation id="6954150712710630841">Transaksi dikumpulkan</translation>
-<translation id="905855245798176174">Transaksi telah berhasil dikirimkan ke jaringan dan sedang menunggu konfirmasi.</translation>
 <translation id="619697073289995370">Transaksi telah ditandatangani</translation>
-<translation id="7493732383203109611">Transaksi telah ditandatangani dan akan dikirimkan ke jaringan oleh DApp</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> dikembalikan ke dompet Anda</translation>
 <translation id="4577432071459867390">Transaksi telah gagal</translation>
 <translation id="4359235192593147041">Transaksi telah gagal karena pergerakan harga yang besar. Tingkatkan toleransi selisih agar pergerakan harga lebih besar dapat berhasil.</translation>
@@ -1710,7 +1748,6 @@
 <translation id="1958146856582208323">Transfer token</translation>
 <translation id="3550219298671597013">Transfer NFT</translation>
 <translation id="8043066678623588950">Teruskan FIL</translation>
-<translation id="7138678301420049075">Lainnya</translation>
 <translation id="8703556909820882288">Transfer NFT Terkompresi</translation>
 <translation id="2713141960460256091">Menandatangani dan Mengirim transaksi DApp</translation>
 <translation id="6387730345715997739">Menandatangani Transaksi DApp</translation>
@@ -1792,7 +1829,6 @@
 <translation id="7056969230130642253">Anda telah mencapai akhir umpan!</translation>
 <translation id="7292242212818928219">Konten baru tersedia. Muat ulang?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Perintah cepat</translation>
 <translation id="7481312909269577407">Maju</translation>
 <translation id="1272079795634619415">Berhenti</translation>
 <translation id="302781076327338683">Muat ulang lewati cache</translation>
@@ -1945,10 +1981,12 @@
 <translation id="1344005710343072293">Kombinasi ini digunakan untuk <ph name="COMMAND"/>. Menyimpannya akan menghapus jalan pintas yang sudah ada.</translation>
 <translation id="831931573200952705">Kombinasi ini digunakan untuk <ph name="COMMAND"/> dan tidak dapat dimodifikasi.</translation>
 <translation id="3537006124004887164">Kombinasi ini digunakan untuk <ph name="COMMAND"/> dan tidak dapat dimodifikasi. Cobalah untuk memodifikasi melalui 'Jalan Pintas Aplikasi' di Pengaturan Sistem.</translation>
+<translation id="8536713137312218707">Perintah Cepat</translation>
 <translation id="712598284361781729">Tampilan Terpisah Baru</translation>
 <translation id="1130188644637295274">Buka dalam Tampilan Terpisah</translation>
 <translation id="6459036216700972269">Jangan Pisahkan Tab</translation>
 <translation id="4235382917338421035">Tukar Posisi Tab</translation>
+<translation id="4144468798716165316">Perintah cepat</translation>
 <translation id="3617523374417810198">Tampilan terpisah baru</translation>
 <translation id="8571323456914890254">Buka dalam tampilan terpisah</translation>
 <translation id="5329136173514538969">Jangan pisahkan tab</translation>
@@ -2011,7 +2049,6 @@
 <translation id="1691256669639196606">Kelola paket langganan</translation>
 <translation id="2304783958703511257">Pengaturan Lanjutan</translation>
 <translation id="3037594989275592390">Model bahasa</translation>
-<translation id="6637015365469044269">Tingkatkan sekarang</translation>
 <translation id="5543505256451301851">Cobalah gratis selama 7 hari</translation>
 <translation id="849535826888024304">Batas tingkat respons telah tercapai</translation>
 <translation id="2252128900328632803">Anda telah mencapai batas tingkat untuk Leo. Buka tingkat respons yang lebih tinggi dengan berlangganan Premium, atau coba lagi segera.</translation>
@@ -2022,7 +2059,7 @@
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /bulan</translation>
 <translation id="5151923271944811339">Beralih ke model gratis</translation>
 <translation id="5474757891469990756">Lepaskan kekuatan penuh Leo dengan paket Premium:</translation>
-<translation id="5552332211527367850">Akses prioritas ke model penuh kekuatan dengan keterampilan berbeda</translation>
+<translation id="3453542753968940696">Akses prioritas ke model penuh kekuatan dengan keterampilan berbeda.</translation>
 <translation id="5031778211368112461">Model akses yang lebih sesuai untuk tugas dan pembuatan konten kreatif.</translation>
 <translation id="298783097210745222">Dapatkan jawaban yang lebih akurat untuk percakapan yang lebih bernuansa.</translation>
 <translation id="4314705522985583059">Dapatkan batas tingkat yang lebih tinggi untuk percakapan yang lebih lama.</translation>
@@ -2051,6 +2088,7 @@
 <translation id="8712637175834984815">Mengerti</translation>
 <translation id="1093419424466417703">Halaman ini terlalu panjang untuk Leo. Sebagian konteksnya mungkin hilang dari percakapan. Leo mampu membaca <ph name="PERCENTAGE"/> dari isi halaman.</translation>
 <translation id="2186990448773134544">Konten halaman telah disempurnakan dengan mengekstraksi informasi yang paling relevan dari halaman tersebut karena terlalu panjang untuk Leo.</translation>
+<translation id="5140068729857132378">Menemukan bagian yang relevan dari halaman web...</translation>
 <translation id="4370698775470316661">Percakapan ini terlalu panjang dan tidak dapat dilanjutkan. Mungkin ada model lain yang tersedia yang memungkinkan Leo untuk menjaga akurasi percakapan yang lebih panjang.</translation>
 <translation id="5719170755629028558">Meningkatkan kualitas jawaban Anda dengan Pencarian Brave...</translation>
 <translation id="5794962229997281366">Jawaban yang lebih ditingkatkan untuk <ph name="SEARCH_TERMS"/>.</translation>

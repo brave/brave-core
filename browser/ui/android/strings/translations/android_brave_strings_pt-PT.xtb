@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Bem-vindo ao Brave</translation>
 <translation id="4117451092682672487">Privacidade simplificada.</translation>
 <translation id="7909375417585209817">Com o Brave predefinido, todos os links em que tocar abrem com as proteções de privacidade do Brave.</translation>
+<translation id="3737878115109582442">Adicione o widget de pesquisa</translation>
+<translation id="6199413390010319240">Tenha o Brave na ponta dos dedos para explorar a Web mais rapidamente.</translation>
+<translation id="4338600611020922010">Adicione ao ecrã principal</translation>
 <translation id="7370959926683925817">Bloqueie anúncios e poupe dados. Todos os dias.</translation>
 <translation id="7281027579943912834">Com o Brave como predefinição, cada ligação em que tocar receberá a proteção do bloqueio de anúncios do Brave. Todas as páginas, vídeos e transmissões.</translation>
 <translation id="5148943178722443958">Ajude a melhorar o Brave.</translation>
@@ -483,7 +486,11 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="9055546041146396417">Se um ''site'' não abrir, tente desativar as «Proteções»</translation>
 <translation id="1209739344687072997">Informar sobre um site danificado</translation>
 <translation id="8510478288840333677">Permita que os programadores do Brave saibam que o ''site'' não funciona corretamente com as «Proteções»</translation>
-<translation id="5429200298326665264">Nota: O endereço deste site será enviado com o número da sua versão Brave e o seu endereço IP (o qual não será armazenado).</translation>
+<translation id="1653405824851871276">Agradecemos a sua contribuição para melhorar o Brave para todos. Este relatório apenas irá conter as informações necessárias para corrigir o site. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Obtenha mais informações.</translation>
+<translation id="8740275226259417070">Trata-se de uma página de erro, pelo que não pode ser comunicada como um site danificado.</translation>
+<translation id="721949491455392748">Incluir captura de ecrã da página atual</translation>
+<translation id="8459191579769999214">Ver captura de ecrã</translation>
 <translation id="5299848999918506028">Obrigado!</translation>
 <translation id="76550953340008122">Obrigado por comunicar aos desenvolvedores da Brave que há algo de errado com o site. Daremos o nosso melhor para o consertar.</translation>
 <translation id="650318023204990401">Controlos avançados</translation>
@@ -662,6 +669,8 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="6284218950354553099">Enviar automaticamente ping de utilização diária para a Brave</translation>
 <translation id="2181060149810222381">Este ping privado permite à Brave estimar os utilizadores ativos.</translation>
 <translation id="6725413948756358325">Nome da conta</translation>
+<translation id="3240773103344793224">Alteração da titularidade da conta solicitada</translation>
+<translation id="8041423758956015568">Esta transação irá reatribuir a titularidade da conta a um novo programa. Esta ação é irreversível e pode resultar na perda de fundos.</translation>
 <translation id="6062431965141524986">Pode criar uma conta secundária ao importar a sua chave privada.</translation>
 <translation id="3952797765659730604">Introduza, cole ou importe o seu ficheiro de cadeia de chave privada ou JSON.</translation>
 <translation id="569068482611873351">Importar...</translation>
@@ -728,7 +737,6 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="5747552184818312860">Expira</translation>
 <translation id="1656814355341174523">Gerir assinatura</translation>
 <translation id="1919008675977575793">Servidor</translation>
-<translation id="4812684235631257312">Anfitrião</translation>
 <translation id="5646376287012673985">Local</translation>
 <translation id="8375573361134671513">Repor configuração</translation>
 <translation id="850405162932416400">Apoio VPN</translation>
@@ -755,6 +763,8 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="5431902940483264007">Ideal</translation>
 <translation id="6527596624419285047">Use o melhor servidor disponível</translation>
 <translation id="6789157560111825412">Servidores disponíveis</translation>
+<translation id="5823953367746119927">Região do servidor</translation>
+<translation id="6991535320595227154">Servidor de <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Selecionar problema</translation>
 <translation id="6687228121145903051">Não é possível ligar ao VPN (outro erro)</translation>
 <translation id="9184988385244077767">Sem ligação à Internet quando ligado</translation>
@@ -1079,8 +1089,6 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="622372328961630111">Adicione NFT automaticamente à Carteira utilizando APIs de terceiros. <ph name="BEGIN_LINK_1"/>Saiba mais.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Conta da tabela de pesquisa de endereços:</translation>
 <translation id="7659483790930268440">Índice da tabela de pesquisa de endereço:</translation>
-<translation id="4932733599132424254">Data</translation>
-<translation id="346505172740911461">Preço de mercado</translation>
 <translation id="5494920125229734069">Selecionar tudo</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Iniciar sessão com a Carteira Brave</translation>
@@ -1095,6 +1103,8 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="6165101586663336913">A reposição do assistente Leo irá requerer que opte por utilizar o Leo no futuro. Também irá limpar o histórico de chat. A limpeza do histórico de chat irá eliminar todas as conversas anteriores com o Leo. Não é possível anular esta ação.</translation>
 <translation id="3692772534525889713">Associe a compra na Play Store à sua conta Brave para utilizar o Brave Leo noutros dispositivos.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Um ano</translation>
+<translation id="2985392169397572983">MELHOR PREÇO</translation>
 <translation id="1166682575529520472">Mensalmente</translation>
 <translation id="451189393813405346">Perguntar ao Leo</translation>
 <translation id="7322560193401221004">Memorizar a posição de reprodução do ficheiro</translation>
@@ -1163,7 +1173,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="2389665228467129817">Converse mais tempo</translation>
 <translation id="4314705522985583059">Obtenha limites de taxa mais elevados para conversas mais longas.</translation>
 <translation id="6365289557497555234">Todas as assinaturas são renovadas automaticamente, mas é possível\ncancelá-las em qualquer momento antes da renovação.</translation>
-<translation id="6637015365469044269">Fazer upgrade agora</translation>
+<translation id="5543505256451301851">Experimentar 7 dias grátis</translation>
 <translation id="614530507403667291">Modelo predefinido para novas conversas</translation>
 <translation id="4071849832011229600">Modelo predefinido</translation>
 <translation id="4185473179105062442">Receba BAT diretamente num endereço cripto de autocustódia</translation>

@@ -171,8 +171,6 @@
 <translation id="8510478288840333677">Informieren Sie Braves Entwickler darüber, dass diese Website in Kombination mit Schutz nicht richtig funktioniert:</translation>
 <translation id="3110968385867124099">Diese Seite kann nicht gemeldet werden, weil sie nicht über HTTP/HTTPS bereitgestellt wurde.</translation>
 <translation id="7907023135990310743">Diese Seite ist eine lokale Webseite und kann nicht gemeldet werden</translation>
-<translation id="3645455863322075098">Diese Seite ist eine Fehlerseite und kann nicht gemeldet werden</translation>
-<translation id="105644511106871142">Vielen Dank, dass Sie dazu beitragen, Brave für alle besser zu machen. Diese Meldung übermittelt nur Informationen, die wir benötigen, um diese Seite zu reparieren.</translation>
 <translation id="6476216365964140603">Zusätzliche Details (optional)</translation>
 <translation id="6145852496180774737">Kontaktieren Sie mich unter: (optional)</translation>
 <translation id="7616645803364270729">E-Mail, Twitter usw.</translation>
@@ -693,6 +691,12 @@
 <translation id="957921474773060718">Nächster Beitrag:</translation>
 <translation id="351973834053818251">Wiederkehrende Beiträge</translation>
 <translation id="7751260505918304024">Alle anzeigen</translation>
+<translation id="4114667046481794032">Beitragshöhe</translation>
+<translation id="3253225298092156258">Nicht verfügbar</translation>
+<translation id="7550470870580166294">Unzureichendes Guthaben</translation>
+<translation id="1166682575529520472">Monatlich</translation>
+<translation id="7138678301420049075">Sonstiges</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">Konto</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">Domain</translation>
@@ -795,7 +799,6 @@
 <translation id="6517332033658428773">Tausch überprüfen</translation>
 <translation id="8692596799753687794">Angebotsanbieter wählen</translation>
 <translation id="463712644600982655">Alle Aggregatoren machen Angebote mithilfe der Liquidität aus Ihrer API. Sie sammeln Preisdaten von verschiedenen Börsen und bieten Preise basierend auf diesen Daten an.</translation>
-<translation id="3253225298092156258">Nicht verfügbar</translation>
 <translation id="473775607612524610">Aktualisieren</translation>
 <translation id="4389658703251593158">Dieses Paar wird von <ph name="PROVIDER_NAME"/> nicht unterstützt</translation>
 <translation id="1176173785350238153">Anbieter wechseln</translation>
@@ -1276,10 +1279,9 @@
 <translation id="5722321409991816187">Spam-NFTs anzeigen</translation>
 <translation id="2588752742385122166">Portfolio-Einstellungen</translation>
 <translation id="7662492121143629144">Alle Konten</translation>
+<translation id="8845001906332463065">Hilfe anfordern</translation>
 <translation id="6954150712710630841">Transaktion abgesendet</translation>
-<translation id="905855245798176174">Die Transaktion wurde erfolgreich an das Netzwerk gesendet und muss nun bestätigt werden.</translation>
 <translation id="619697073289995370">Transaktion signiert</translation>
-<translation id="7493732383203109611">Die Transaktion wurde signiert und wird von der DApp an das Netzwerk gesendet</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> wurde an Ihre Wallet zurückgesendet</translation>
 <translation id="4577432071459867390">Transaktion fehlgeschlagen</translation>
 <translation id="4359235192593147041">Die Transaktion ist aufgrund einer großen Preisänderung fehlgeschlagen. Erhöhen Sie die Abweichungstoleranz, um eine größere Preisänderung zuzulassen.</translation>
@@ -1710,7 +1712,6 @@
 <translation id="1958146856582208323">Tokentransfer</translation>
 <translation id="3550219298671597013">NFT transferieren</translation>
 <translation id="8043066678623588950">FIL weiterleiten</translation>
-<translation id="7138678301420049075">Sonstiges</translation>
 <translation id="8703556909820882288">Komprimierter NFT-Transfer</translation>
 <translation id="2713141960460256091">DApp-Transaktion signieren und abschicken</translation>
 <translation id="6387730345715997739">DApp-Transaktion signieren</translation>
@@ -1792,7 +1793,6 @@
 <translation id="7056969230130642253">Sie sind auf dem Laufenden.</translation>
 <translation id="7292242212818928219">Neue Inhalte verfügbar. Neu laden?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Kurzbefehle</translation>
 <translation id="7481312909269577407">Vorwärts</translation>
 <translation id="1272079795634619415">Stopp</translation>
 <translation id="302781076327338683">Ohne Cache neu laden</translation>
@@ -1949,6 +1949,7 @@
 <translation id="1130188644637295274">In geteilter Ansicht öffnen</translation>
 <translation id="6459036216700972269">Teilung der Tabs aufheben</translation>
 <translation id="4235382917338421035">Tab-Positionen austauschen</translation>
+<translation id="4144468798716165316">Kurzbefehle</translation>
 <translation id="3617523374417810198">Neue geteilte Ansicht</translation>
 <translation id="8571323456914890254">In geteilter Ansicht öffnen</translation>
 <translation id="5329136173514538969">Teilung der Tabs aufheben</translation>
@@ -2011,7 +2012,6 @@
 <translation id="1691256669639196606">Abonnement verwalten</translation>
 <translation id="2304783958703511257">Erweiterte Einstellungen</translation>
 <translation id="3037594989275592390">Sprachmodelle</translation>
-<translation id="6637015365469044269">Jetzt Upgrade durchführen</translation>
 <translation id="5543505256451301851">7 Tage lang kostenlos ausprobieren</translation>
 <translation id="849535826888024304">Maximale Antwortquote erreicht</translation>
 <translation id="2252128900328632803">Sie haben die Antwortquote für Leo erreicht. Schalten Sie eine höhere Antwortquote frei, indem Sie ein Premium-Abonnement abschließen, oder versuchen Sie es bald erneut.</translation>
@@ -2022,7 +2022,7 @@
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/Monat</translation>
 <translation id="5151923271944811339">Zum kostenlosen Modell wechseln</translation>
 <translation id="5474757891469990756">Entfesseln Sie mit Premium die volle Stärke von Leo:</translation>
-<translation id="5552332211527367850">Prioritärer Zugang zu leistungsstarken Modellen mit unterschiedlichen Fähigkeiten</translation>
+<translation id="3453542753968940696">Prioritärer Zugang zu leistungsstarken Modellen mit unterschiedlichen Fähigkeiten.</translation>
 <translation id="5031778211368112461">Erhalten Sie Zugang zu Modellen, die besser für kreative Aufgaben und die Erstellung von Inhalten geeignet sind.</translation>
 <translation id="298783097210745222">Erhalten Sie genauere Antworten für differenziertere Gespräche.</translation>
 <translation id="4314705522985583059">Holen Sie sich höhere Antwortquoten für längere Gespräche.</translation>

@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">讓 Brave 開發者知道此網站無法與 Shields 一起運作：</translation>
 <translation id="3110968385867124099">此頁面不是透過 HTTP/HTTPS 提供，無法回報問題。</translation>
 <translation id="7907023135990310743">此頁面是本機網頁，無法回報問題。</translation>
-<translation id="3645455863322075098">此頁面為錯誤頁面，無法回報問題。</translation>
-<translation id="105644511106871142">感謝您協助 Brave 改善服務。此報告只會傳送我們修復此網站所需的資訊。</translation>
+<translation id="8740275226259417070">此頁面為錯誤頁面，無法將其回報為損壞的網站。</translation>
+<translation id="6806248680442980382">感謝您協助 Brave 改善服務。此報告只會包含我們修復此網站所需的資訊。</translation>
 <translation id="6476216365964140603">其他詳細資訊 (選填)</translation>
 <translation id="6145852496180774737">聯絡方式：(選填)</translation>
 <translation id="7616645803364270729">電子郵件、Twitter 等</translation>
@@ -461,6 +461,8 @@
 <translation id="6318437367327684789">永遠</translation>
 <translation id="8797999629784150206">您可隨時變更您的<ph name="SITE_PERMISSIONS"/>。<ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">網站權限</translation>
+<translation id="7222371875290545057">要允許在 Brave 中開啟 Leo 人工智慧對話嗎？</translation>
+<translation id="1518915449477235311">要允許 <ph name="URL"/> 在 Brave 中開啟 Leo 人工智慧對話嗎？</translation>
 <translation id="4355784577209159847">允許使用第三方 cookie 進行舊版 Google 登入</translation>
 <translation id="5770656036486891920"><ph name="URL"/> 想要使用第三方 Cookie 進行舊版 Google 登入</translation>
 <translation id="6053826678715267477">允許存取本地主機資源</translation>
@@ -693,6 +695,26 @@
 <translation id="957921474773060718">下一次贊助：</translation>
 <translation id="351973834053818251">定期贊助</translation>
 <translation id="7751260505918304024">全部顯示</translation>
+<translation id="2894334939992402676">深入了解贊助方式</translation>
+<translation id="4114667046481794032">捐款金額</translation>
+<translation id="2628057126110572782">此創作者目前僅透過以下方式接受贊助：</translation>
+<translation id="7396847690567283204">獎勵餘額</translation>
+<translation id="3253225298092156258">無法選擇</translation>
+<translation id="8028314716653189513">選擇您希望贊助 Brave Software 的方式：</translation>
+<translation id="4094286757932277327">託管型錢包</translation>
+<translation id="1511998469385905184">您可以稍後重試。</translation>
+<translation id="7550470870580166294">資金不足</translation>
+<translation id="7020972866926315918">您似乎已登出 Brave 獎勵的<ph name="PROVIDER"/>。再次登入以繼續。</translation>
+<translation id="1166682575529520472">每月</translation>
+<translation id="7138678301420049075">其他</translation>
+<translation id="2134931506717037391">發送 <ph name="AMOUNT"/> BAT</translation>
+<translation id="4791565605790056151">正在發送贊助</translation>
+<translation id="8251969358165471584">Web3 錢包</translation>
+<translation id="7160424977552599351">使用您的 Web3 錢包</translation>
+<translation id="6369571967625114920">Brave 的私人廣告目前尚未在您所在地區開放使用。</translation>
+<translation id="5309155375926073606">是，我希望贊助 Brave 搜尋並選擇加入<ph name="LINK_BEGIN"/>Web 探索專案<ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">加入 Web 探索專案，貢獻您的匿名搜尋與瀏覽資料以幫助改善 Brave 搜尋。這是完全開放原始碼的。</translation>
+<translation id="4174337572777167894">Web 發現專案</translation>
 <translation id="7090992647511817643">帳戶</translation>
 <translation id="4822132585477111396">鏈 ID</translation>
 <translation id="3269475789479462358">網域</translation>
@@ -795,7 +817,6 @@
 <translation id="6517332033658428773">審查交換</translation>
 <translation id="8692596799753687794">選擇報價提供者</translation>
 <translation id="463712644600982655">每個聚合器會使用其 API 的流動性來提供報價。聚合器會收集多個交易所的價格資訊，並根據這項資料提供價格。</translation>
-<translation id="3253225298092156258">無法選擇</translation>
 <translation id="473775607612524610">更新</translation>
 <translation id="4389658703251593158"><ph name="PROVIDER_NAME"/> 不支援這個交易對</translation>
 <translation id="1176173785350238153">變更提供者</translation>
@@ -1055,6 +1076,8 @@
 <translation id="793994607260936590">第一</translation>
 <translation id="4709524402122994378">交易紀錄</translation>
 <translation id="4591079278963448049">尚未與任何代幣帳戶建立關聯。您需使用小額 SOL 建立帳戶及存入資金。</translation>
+<translation id="3240773103344793224">已要求帳戶所有權變更</translation>
+<translation id="8041423758956015568">此交易將把帳戶的所有權重新指派給新程式。此操作無法逆轉，並可能導致資金損失。</translation>
 <translation id="1426320910664514906">Gas 上限</translation>
 <translation id="1229774280326250926">礦工小費</translation>
 <translation id="148169246131967347">礦工費上限</translation>
@@ -1276,10 +1299,25 @@
 <translation id="5722321409991816187">顯示垃圾郵件 NFT</translation>
 <translation id="2588752742385122166">投資組合設定</translation>
 <translation id="7662492121143629144">所有帳戶</translation>
+<translation id="8845001906332463065">取得幫助</translation>
+<translation id="6248202915200795128">花的時間比預期久嗎？</translation>
+<translation id="5417904796609871601">在活動中檢視</translation>
+<translation id="8915839655070878476">您可以安全地略過此視窗訊息</translation>
+<translation id="7020017785602386950">正在傳送 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 至 <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 已傳送至帳戶<ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269">在 <ph name="NETWORK"/> 上將 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 交換為 <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="312867981877298982">金額 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 已加入您的帳戶 <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189">正在橋接 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 至 <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042">無法 <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
+<translation id="6990756606864308319">嘗試 <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 至 <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/> 時發生錯誤</translation>
+<translation id="6449575669814542383">正在核准 <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> 至 <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">將建立一個新交易以取消您的現有交易。</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} 個待處理的交易。}
+      other {{PENDING_TRANSACTIONS} 個待處理的交易。}
+    }</translation>
 <translation id="6954150712710630841">交易已提交</translation>
-<translation id="905855245798176174">交易已成功發送至網路，等待確認。</translation>
 <translation id="619697073289995370">已簽署的交易</translation>
-<translation id="7493732383203109611">交易已完成簽署，將由 DApp 傳送到網路</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> 回傳至您的錢包</translation>
 <translation id="4577432071459867390">交易已失敗</translation>
 <translation id="4359235192593147041">交易因價格波動大而失敗。增加滑點忍耐度，以在更大價格波動下取得成功。</translation>
@@ -1710,7 +1748,6 @@
 <translation id="1958146856582208323">代幣轉帳</translation>
 <translation id="3550219298671597013">轉移 NFT</translation>
 <translation id="8043066678623588950">轉傳 FIL</translation>
-<translation id="7138678301420049075">其他</translation>
 <translation id="8703556909820882288">壓縮 NFT 轉移</translation>
 <translation id="2713141960460256091">簽署並傳送 DApp 交易</translation>
 <translation id="6387730345715997739">簽署 DApp 交易</translation>
@@ -1792,7 +1829,6 @@
 <translation id="7056969230130642253">您已全部更新</translation>
 <translation id="7292242212818928219">有新的內容，要重新載入嗎？</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">快速指令</translation>
 <translation id="7481312909269577407">往前</translation>
 <translation id="1272079795634619415">停止</translation>
 <translation id="302781076327338683">重新載入略過快取</translation>
@@ -1945,10 +1981,12 @@
 <translation id="1344005710343072293">此組合目前用於<ph name="COMMAND"/>。儲存將覆寫該快速鍵。</translation>
 <translation id="831931573200952705">此組合目前用於<ph name="COMMAND"/> 並且無法變更。</translation>
 <translation id="3537006124004887164">此組合用於<ph name="COMMAND"/> 並且無法變更。請嘗試由系統設定中的「應用程式捷徑」變更。</translation>
+<translation id="8536713137312218707">快速指令</translation>
 <translation id="712598284361781729">新增分割檢視</translation>
 <translation id="1130188644637295274">以分割檢視開啟</translation>
 <translation id="6459036216700972269">取消切割分頁</translation>
 <translation id="4235382917338421035">交換分頁位置</translation>
+<translation id="4144468798716165316">快速指令</translation>
 <translation id="3617523374417810198">新增分割檢視</translation>
 <translation id="8571323456914890254">以分割檢視開啟</translation>
 <translation id="5329136173514538969">取消切割分頁</translation>
@@ -2011,7 +2049,6 @@
 <translation id="1691256669639196606">管理訂閱</translation>
 <translation id="2304783958703511257">進階設定</translation>
 <translation id="3037594989275592390">語言模型</translation>
-<translation id="6637015365469044269">立即升級</translation>
 <translation id="5543505256451301851">免費試用 7 天</translation>
 <translation id="849535826888024304">已達到回應率上限</translation>
 <translation id="2252128900328632803">您已達到 Leo 的速率限制。訂閱 Premium 以解鎖更高的回應率，或稍後重試。</translation>
@@ -2022,7 +2059,7 @@
 <translation id="8556044455877152001">美金 $ <ph name="PRICE_VALUE"/> /月</translation>
 <translation id="5151923271944811339">切換至免費模型</translation>
 <translation id="5474757891469990756">透過 Premium 徹底釋放 Leo 強大效能：</translation>
-<translation id="5552332211527367850">搶先使用具備不同技能的強大模型</translation>
+<translation id="3453542753968940696">搶先使用具備不同技能的強大模型。</translation>
 <translation id="5031778211368112461">使用更適合執行創意工作和生產內容的模型。</translation>
 <translation id="298783097210745222">獲得更準確的答案，展開更細膩的對話。</translation>
 <translation id="4314705522985583059">提高回應率上限，拉長對話。</translation>
@@ -2051,6 +2088,7 @@
 <translation id="8712637175834984815">我瞭解了</translation>
 <translation id="1093419424466417703">對 Leo 而言，此頁面過於冗長。對話可能遺漏某些內容。因此 Leo 無法讀取該頁面內容的 <ph name="PERCENTAGE"/> 。</translation>
 <translation id="2186990448773134544">由於頁面對 Leo 來說過長，因此已從中擷取最相關的資訊，以精簡頁面內容。</translation>
+<translation id="5140068729857132378">正在尋找網頁的相關部分...…</translation>
 <translation id="4370698775470316661">此對話太長，無法繼續。 Leo 可能還可以使用其他模型，以維持更長時間對話的準確性。</translation>
 <translation id="5719170755629028558">正在改善您在 Brave Search 的搜尋結果…</translation>
 <translation id="5794962229997281366">已改善「<ph name="SEARCH_TERMS"/>」的搜尋結果。</translation>

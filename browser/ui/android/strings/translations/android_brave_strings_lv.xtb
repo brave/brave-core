@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Laipni lūdzam pārlūkā Brave!</translation>
 <translation id="4117451092682672487">Privātums. Vienkārši.</translation>
 <translation id="7909375417585209817">Ja Brave būs noklusējuma pārlūks, visas saites, kam pieskaraties, tiks atvērtas ar Brave privātuma aizsardzību.</translation>
+<translation id="3737878115109582442">Pievienojiet meklēšanas logrīku</translation>
+<translation id="6199413390010319240">Turiet Brave gatavībā, lai pārlūkotu tīmekli ātrāk.</translation>
+<translation id="4338600611020922010">Pievienot sākuma ekrānam</translation>
 <translation id="7370959926683925817">Bloķēt reklāmas. Saglabājiet datus. Katru dienu.</translation>
 <translation id="7281027579943912834">Izmantojot Brave kā noklusējuma pārlūku, katrai saitei, ko atverat, tiek nodrošināta Brave reklāmu bloķēšanas aizsardzība. Katra lapa, videoklips un straumēšana.</translation>
 <translation id="5148943178722443958">Palīdziet uzlabot Brave.</translation>
@@ -483,7 +486,11 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="9055546041146396417">Ja šķiet, ka vietne nedarbojas, pamēģiniet izslēgt aizsargus.</translation>
 <translation id="1209739344687072997">Ziņot par bojātu vietni</translation>
 <translation id="8510478288840333677">Paziņojiet Brave izstrādātājiem, kad šī vietne ar aizsargiem nedarbojas pareizi:</translation>
-<translation id="5429200298326665264">Piezīme. Šīs vietnes adrese tiks iesniegta kopā ar jūsu Brave versijas numuru un IP adresi (kas netiks saglabāta).</translation>
+<translation id="1653405824851871276">Paldies, ka palīdzat padarīt Brave labāku. Šajā ziņojumā būs tikai tā informācija, kas nepieciešama, lai mēs šo vietni salabotu.<ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Uzzināt vairāk.</translation>
+<translation id="8740275226259417070">Šī ir kļūdas lapa. To nevar norādīt bojātas vietnes ziņojumā.</translation>
+<translation id="721949491455392748">Iekļaut pašreizējās lapas ekrānuzņēmumu</translation>
+<translation id="8459191579769999214">Aplūkot ekrānuzņēmumu</translation>
 <translation id="5299848999918506028">Paldies!</translation>
 <translation id="76550953340008122">Paldies, ka paziņojāt Brave izstrādātājiem par problēmām ar šo vietni. Pacentīsimies to salabot!</translation>
 <translation id="650318023204990401">Papildu vadīklas</translation>
@@ -663,6 +670,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="6284218950354553099">Automātiski nosūtīt dienas lietošanas ehotestu Brave</translation>
 <translation id="2181060149810222381">Šis privātais ehotests ļauj Brave aprēķināt aktīvos lietotājus.</translation>
 <translation id="6725413948756358325">Konta nosaukums</translation>
+<translation id="3240773103344793224">Pieprasīta konta īpašnieka maiņa</translation>
+<translation id="8041423758956015568">Ar šo darījumu konta īpašumtiesības tiks piešķirtas jaunai programmai. Šī darbība ir neatgriežama un var radīt līdzekļu zaudēšanu.</translation>
 <translation id="6062431965141524986">Varat izveidot sekundāro kontu, importējot privāto atslēgu.</translation>
 <translation id="3952797765659730604">Ievadiet, ielīmējiet vai importējiet privātās atslēgas virknes failu vai JSON.</translation>
 <translation id="569068482611873351">Notiek importēšana...</translation>
@@ -729,7 +738,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="5747552184818312860">Termiņš</translation>
 <translation id="1656814355341174523">Pārvaldīt abonementu</translation>
 <translation id="1919008675977575793">Serveris</translation>
-<translation id="4812684235631257312">Resursdators</translation>
 <translation id="5646376287012673985">Atrašanās vieta</translation>
 <translation id="8375573361134671513">Atiestatīt konfigurāciju</translation>
 <translation id="850405162932416400">VPN atbalsts.</translation>
@@ -756,6 +764,8 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="5431902940483264007">Optimāls</translation>
 <translation id="6527596624419285047">Izmantot labāko pieejamo serveri</translation>
 <translation id="6789157560111825412">Pieejamie serveri</translation>
+<translation id="5823953367746119927">Servera reģions</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/> serveris</translation>
 <translation id="4397083831618200686">Atlasīt problēmu</translation>
 <translation id="6687228121145903051">Nevar izveidot savienojumu ar VPN (cita kļūda).</translation>
 <translation id="9184988385244077767">Nav interneta, kad ir izveidots savienojums.</translation>
@@ -1080,8 +1090,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="622372328961630111">Automātiski pievienot jums piederošos NFT makam, izmantojot trešo personu API. <ph name="BEGIN_LINK_1"/>Uzzināt vairāk.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Adreses meklēšanas tabulas konts:</translation>
 <translation id="7659483790930268440">Adreses meklēšanas tabulas rādītājs:</translation>
-<translation id="4932733599132424254">Datums</translation>
-<translation id="346505172740911461">Tirgus cena</translation>
 <translation id="5494920125229734069">Atlasīt visu</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Pierakstīties ar Brave maku</translation>
@@ -1096,6 +1104,8 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="6165101586663336913">Lai atiestatītu asistentu Leo, jums jāpiekrīt turpmāk izmantot Leo, un tiks notīrīta jūsu tērzēšanas vēsture. Notīrot tērzēšanas vēsturi, tiks izdzēstas visas jūsu iepriekšējās sarunas ar Leo. Šo darbību nevar atsaukt.</translation>
 <translation id="3692772534525889713">Saistiet savu Play Store pirkumu ar savu Brave kontu, lai izmantotu Brave Leo citās ierīcēs.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Viens gads</translation>
+<translation id="2985392169397572983">LABĀKĀ VĒRTĪBA</translation>
 <translation id="1166682575529520472">Ikmēneša</translation>
 <translation id="451189393813405346">Jautāt Leo</translation>
 <translation id="7322560193401221004">Atcerēties faila atskaņošanas pozīciju</translation>
@@ -1164,7 +1174,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="2389665228467129817">Tērzējiet ilgāk</translation>
 <translation id="4314705522985583059">Iegūstiet augstākus likmes ierobežojumus ilgākām sarunām.</translation>
 <translation id="6365289557497555234">Visi abonementi tiek automātiski atjaunināti, bet tos jebkurā laikā pirms atjaunošanas var atcelt.</translation>
-<translation id="6637015365469044269">Atjaunināt tagad</translation>
+<translation id="5543505256451301851">Izmēģiniet 7 dienas bez maksas</translation>
 <translation id="614530507403667291">Nosklusējuma modelis jaunām sarunām</translation>
 <translation id="4071849832011229600">Noklusējuma modelis</translation>
 <translation id="4185473179105062442">Saņemiet BAT tieši uz pašaizbildnības kriptovalūtas adresi</translation>

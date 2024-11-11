@@ -113,6 +113,7 @@
 <translation id="8722651357687610395">Braveをデフォルトに設定</translation>
 <translation id="2370739752330685659">あとで</translation>
 <translation id="5100490448228945668">Brave 検索への切り替えを無効にします。[Enter] キーを押してこの提案を消します。</translation>
+<translation id="6213208892248046484">Brave検索に切り替え</translation>
 <translation id="9194637241566114638"><ph name="SEARCH_NAME"/>を改善するために、匿名の使用データを送信してください。 <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Search</translation>
 <translation id="8184318863960255706">詳細</translation>
@@ -501,6 +502,9 @@
 <translation id="7181706637590665047">Localhostのリソースへのアクセスを許可しない</translation>
 <translation id="1336116824874668514">Localhostのリソースへのアクセス: 不可</translation>
 <translation id="1485435696620658073">Localhostのリソースへのアクセス: 可</translation>
+<translation id="5794692721727586076">Leo AIチャット</translation>
+<translation id="8115153008662981040">Leo AIチャットを開くかどうかの確認をサイトに許可する</translation>
+<translation id="1145070115730668595">サイト上でのLeo AIチャットの使用を許可しない</translation>
 <translation id="6414370348346025511">標準保護がオンになっています。</translation>
 <translation id="5565355416171743213">同期機能を利用開始</translation>
 <translation id="4332558599726753990">同期設定</translation>
@@ -573,7 +577,7 @@
 <translation id="3128251601544028053">アドレスバーや検索ボックスに文字を入力すると、Braveは入力した文字をデフォルトの検索エンジンに送信し、より良い候補を取得します。これはプライベートウィンドウでは利用できません。</translation>
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
-<translation id="842628013524824194">標準ウィンドウ - アドレスバーで使用される検索エンジン</translation>
+<translation id="9195748375338942941">標準ウィンドウ - アドレスバーで使用される検索エンジン。</translation>
 <translation id="5324939009884545145">プライベートウィンドウ - アドレスバーで使用される検索エンジン</translation>
 <translation id="6864914031231797928">拡張機能のGoogleログインを許可する</translation>
 <translation id="7878791177459550035">メディアルーターは、ブラウザのキャスト機能を有効にします。</translation>

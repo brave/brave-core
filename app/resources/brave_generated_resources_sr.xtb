@@ -113,6 +113,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8722651357687610395">Postavite Brave kao podrazumevani</translation>
 <translation id="2370739752330685659">Možda kasnije</translation>
 <translation id="5100490448228945668">Odbacite konverziju Brave pretrage, pritisnite enter da biste uklonili ovaj predlog</translation>
+<translation id="6213208892248046484">Prebaci na Brave pretragu</translation>
 <translation id="9194637241566114638">Pomozite nam da poboljšamo <ph name="SEARCH_NAME"/> tako što ćete nam anonimno poslati podatke o korišćenju.  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave pretraga</translation>
 <translation id="8184318863960255706">Више информација</translation>
@@ -501,6 +502,9 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7181706637590665047">Nemojte dozvoliti pristup localhost resursima</translation>
 <translation id="1336116824874668514">Nije dozvoljen pristup localhost resursima</translation>
 <translation id="1485435696620658073">Dozvoljen pristup localhost resursima</translation>
+<translation id="5794692721727586076">Leo AI ćaskanje</translation>
+<translation id="8115153008662981040">Sajtovi mogu da traže da otvore Leo AI ćaskanje</translation>
+<translation id="1145070115730668595">Ne dozvoljavaj sajtu da otvori Leo AI ćaskanje</translation>
 <translation id="6414370348346025511">Uključena je standardna zaštita.</translation>
 <translation id="5565355416171743213">Počni korišćenje sinhronizacije</translation>
 <translation id="4332558599726753990">Konfigurisanje sinhronizacije</translation>
@@ -573,7 +577,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="3128251601544028053">Када куцате у поље за адресу или у оквир за претрагу, Brave шаље оно што уносите вашем подразумеваном алату за претрагу да би се добили бољи предлози. То није доступно у приватним прозорима.</translation>
 <translation id="6285118765755298263">Indeksirajte ostale pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji slede OpenSearch specifikacije.</translation>
-<translation id="842628013524824194">Normalan prozor - pretraživač se koristi u traci za adrese</translation>
+<translation id="9195748375338942941">Normalan prozor - pretraživač se koristi u traci za adrese.</translation>
 <translation id="5324939009884545145">Privatni prozor - pretraživač se koristi u traci za adrese</translation>
 <translation id="6864914031231797928">Dozvolite Google prijavu za proširenja</translation>
 <translation id="7878791177459550035">Medijski ruter omogućuje korišćenje funkcije preslikavanja ekrana u pretraživaču.</translation>

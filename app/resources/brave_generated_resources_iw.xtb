@@ -113,6 +113,7 @@
 <translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
 <translation id="2370739752330685659">אולי מאוחר יותר</translation>
 <translation id="5100490448228945668">בטל את המרת חיפוש Brave, לחץ על Enter כדי להסיר הצעה זו</translation>
+<translation id="6213208892248046484">עבור לחיפוש Brave</translation>
 <translation id="9194637241566114638">עזרו לשפר את <ph name="SEARCH_NAME"/> על-ידי שליחת נתוני שימוש אנונימיים. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">חיפוש Brave</translation>
 <translation id="8184318863960255706">מידע נוסף</translation>
@@ -500,6 +501,9 @@
 <translation id="7181706637590665047">אל תאפשר גישה למשאבי localhost</translation>
 <translation id="1336116824874668514">לא מורשה לגשת למשאבי localhost</translation>
 <translation id="1485435696620658073">מורשה לגשת למשאבי localhost</translation>
+<translation id="5794692721727586076">צ'אט עם Leo AI</translation>
+<translation id="8115153008662981040">אתרים יכולים לבקש לפתוח את הצ'אט עם Leo AI</translation>
+<translation id="1145070115730668595">אל תאפשר לאתר לפתוח את הצ'אט עם Leo AI</translation>
 <translation id="6414370348346025511">ההגנה הסטנדרטית מופעלת.</translation>
 <translation id="5565355416171743213">התחל להשתמש בסנכרון</translation>
 <translation id="4332558599726753990">הגדרות סנכרון</translation>
@@ -571,7 +575,7 @@
 <translation id="3128251601544028053">כשאתה מקליד בשורת הכתובות או בתיבת החיפוש, Brave שולח את הטקסט שאתה מקליד אל ברירת המחדל של מנוע החיפוש שלך על מנת לקבל הצעות טובות יותר. תכונה זאת לא זמינה בחלונות פרטיים.</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
-<translation id="842628013524824194">חלון רגיל - מנוע החיפוש יוצג בשורת הכתובת</translation>
+<translation id="9195748375338942941">חלון רגיל - מנוע החיפוש יוצג בשורת הכתובת.</translation>
 <translation id="5324939009884545145">חלון גלישה פרטית - מנוע החיפוש יוצג בשורת הכתובת</translation>
 <translation id="6864914031231797928">אפשר התחברות באמצעות Google להרחבות</translation>
 <translation id="7878791177459550035">נתב מדיה הופך את תכונת ההעברה לזמינה בדפדפן.</translation>

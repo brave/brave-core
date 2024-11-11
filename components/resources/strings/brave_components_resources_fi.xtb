@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">Tuo Braven kehittäjien tietoon, ettei tämä sivusto toimi kunnolla kilpien kanssa:</translation>
 <translation id="3110968385867124099">Tästä sivusta ei voida ilmoittaa, koska sitä ei toimitettu HTTP:n/HTTPS:n kautta.</translation>
 <translation id="7907023135990310743">Tämä sivu on paikallinen verkkosivu, joten se ei kelpaa ilmoittamiseen.</translation>
-<translation id="3645455863322075098">Tämä sivu on virhesivu, joten se ei kelpaa ilmoittamiseen.</translation>
-<translation id="105644511106871142">Kiitos Braven parantamisesta. Tähän ilmoituksee sisällytetään vain sellaista tietoa, jota vaaditaan sivuston korjaamiseen.</translation>
+<translation id="8740275226259417070">Tämä on virhesivu. Sitä ei voi ilmoittaa toimimattomaksi sivustoksi.</translation>
+<translation id="6806248680442980382">Kiitos Braven parantamisesta. Tämä ilmoitus sisältää vain sellaista tietoa, jota vaaditaan sivuston korjaamiseen.</translation>
 <translation id="6476216365964140603">Lisätiedot (valinnainen)</translation>
 <translation id="6145852496180774737">Ota minuun yhteyttä paikassa: (valinnainen)</translation>
 <translation id="7616645803364270729">Sähköposti, Twitter jne.</translation>
@@ -461,6 +461,8 @@
 <translation id="6318437367327684789">ikuisesti</translation>
 <translation id="8797999629784150206">Voit vaihtaa <ph name="SITE_PERMISSIONS"/> milloin tahansa. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">sivuston valtuudet</translation>
+<translation id="7222371875290545057">Sallitaanko Leo-tekoälyavustajan keskustelujen avaaminen Bravessa?</translation>
+<translation id="1518915449477235311">Saako <ph name="URL"/> avata Leo-tekoälyavustajan keskusteluja Bravessa?</translation>
 <translation id="4355784577209159847">Salli kolmannen osapuolen evästeiden käyttö vanhaan Google-sisäänkirjautumiseen</translation>
 <translation id="5770656036486891920"><ph name="URL"/> haluaa käyttää kolmannen osapuolen evästeitä vanhaan Google-sisäänkirjautumiseen</translation>
 <translation id="6053826678715267477">Salli pääsy localhostin resursseihin</translation>
@@ -693,6 +695,26 @@
 <translation id="957921474773060718">Seuraava lahjoitus:</translation>
 <translation id="351973834053818251">Toistuvat lahjoitukset</translation>
 <translation id="7751260505918304024">Näytä kaikki</translation>
+<translation id="2894334939992402676">Lue lisää lahjoitustavoista</translation>
+<translation id="4114667046481794032">Avustusmäärä</translation>
+<translation id="2628057126110572782">Tämä sisällöntuottaja hyväksyy lahjoituksia vain seuraavilla tavoilla:</translation>
+<translation id="7396847690567283204">Palkintosaldo</translation>
+<translation id="3253225298092156258">Ei saatavilla</translation>
+<translation id="8028314716653189513">Valitse tapa, jolla haluat osallistua Brave Softwaren toimintaan:</translation>
+<translation id="4094286757932277327">Säilytyslompakko</translation>
+<translation id="1511998469385905184">Voit yrittää myöhemmin uudelleen.</translation>
+<translation id="7550470870580166294">Ei tarpeeksi varoja</translation>
+<translation id="7020972866926315918">Näyttää siltä, että olet kirjautunut ulos palvelusta <ph name="PROVIDER"/> Brave-palkintojen kohdalla. Jatka kirjautumalla uudelleen sisään.</translation>
+<translation id="1166682575529520472">Kuukausittainen</translation>
+<translation id="7138678301420049075">Muu</translation>
+<translation id="2134931506717037391">Lähetä <ph name="AMOUNT"/> BAT</translation>
+<translation id="4791565605790056151">Lahjoitusta lähetetään</translation>
+<translation id="8251969358165471584">Web3-lompakko</translation>
+<translation id="7160424977552599351">Käytä omaa Web3-lompakkoa</translation>
+<translation id="6369571967625114920">Yksityiset Brave-mainokset eivät ole saatavilla alueellasi.</translation>
+<translation id="5309155375926073606">Kyllä, haluan osallistua Brave-hakuun ja <ph name="LINK_BEGIN"/>Web Discovery Projectiin<ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">Osallistu Web Discovery Projectiin antamalla haku- &amp; ja selaustietoja Brave-hakun parantamiseksi. Se perustuu täysin avoimeen lähdekoodiin.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">tili</translation>
 <translation id="4822132585477111396">Ketjun tunnus</translation>
 <translation id="3269475789479462358">verkkotunnus</translation>
@@ -795,7 +817,6 @@
 <translation id="6517332033658428773">Tarkista vaihto</translation>
 <translation id="8692596799753687794">Valitse hintatarjouksen tarjoaja</translation>
 <translation id="463712644600982655">Kukin aggregaattori antaa hintatarjouksia käyttämällä API:nsa likviditeettiä. Ne keräävät tietoa monista vaihdoista ja tarjoavat näihin tietoihin perustuvan hinnan.</translation>
-<translation id="3253225298092156258">Ei saatavilla</translation>
 <translation id="473775607612524610">Päivitä</translation>
 <translation id="4389658703251593158"><ph name="PROVIDER_NAME"/> ei tue tätä paria.</translation>
 <translation id="1176173785350238153">Vaihda palveluntarjoajaa</translation>
@@ -1055,6 +1076,8 @@
 <translation id="793994607260936590">ensimmäinen</translation>
 <translation id="4709524402122994378">tapahtumat</translation>
 <translation id="4591079278963448049">Liittyvää token-tiliä ei vielä ole olemassa. Pieni määrä SOLia käytetään sen luomiseen ja rahoittamiseen.</translation>
+<translation id="3240773103344793224">Tilin omistajuuden muutosta pyydetty</translation>
+<translation id="8041423758956015568">Tämä maksutapahtuma osoittaa tilin omistajuuden uudelleen uuteen ohjelmaan. Tätä toimintoa ei voi kumota, ja se voi johtaa varojen menetykseen.</translation>
 <translation id="1426320910664514906">Gas-raja</translation>
 <translation id="1229774280326250926">Gas-maksun premium</translation>
 <translation id="148169246131967347">Gas-maksun maksukatto</translation>
@@ -1276,10 +1299,25 @@
 <translation id="5722321409991816187">Näytä roskapostin NFT:t</translation>
 <translation id="2588752742385122166">Portfolion asetukset</translation>
 <translation id="7662492121143629144">Kaikki tilit</translation>
+<translation id="8845001906332463065">Pyydä apua</translation>
+<translation id="6248202915200795128">Kestääkö suoritus odotettua pidempään?</translation>
+<translation id="5417904796609871601">Näytä tapahtumissa</translation>
+<translation id="8915839655070878476">Voit huoletta sulkea tämän ikkunan.</translation>
+<translation id="7020017785602386950">Lähetetään <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> kohteeseen <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> on lähetetty tilille <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269">Vaihdetaan <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> kohteeksi <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> verkossa <ph name="NETWORK"/></translation>
+<translation id="312867981877298982">Summa <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> on lisätty tilillesi <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189">Muodostetaan siltaa <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> verkkoon <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042"><ph name="SEND_SWAP_OR_BRIDGE"/> ei onnistu</translation>
+<translation id="6990756606864308319">Toiminnon <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> suorittamisen aikana kohteeksi <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/> tapahtui virhe</translation>
+<translation id="6449575669814542383">Hyväksytään <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> kohteeksi <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">Uusi maksutapahtuma luodaan olemassa olevan maksutapahtuman peruuttamiseksi.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} maksutapahtuma lisää odottaa.}
+      other {{PENDING_TRANSACTIONS} maksutapahtumaa lisää odottaa.}
+    }</translation>
 <translation id="6954150712710630841">Maksutapahtuma lähetetty</translation>
-<translation id="905855245798176174">Maksutapahtuman lähetys verkkoon onnistui ja se odottaa vahvistusta.</translation>
 <translation id="619697073289995370">Maksutapahtuma allekirjoitettu</translation>
-<translation id="7493732383203109611">Maksutapahtuma on allekirjoitettu ja lähetetään verkkoon DAppin toimesta</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> palautettiin lompakkoosi</translation>
 <translation id="4577432071459867390">Maksutapahtuma epäonnistui</translation>
 <translation id="4359235192593147041">Maksutapahtuma epäonnistui suuren hintamuutoksen vuoksi. Lisää myöhästymistoleranssia menestyäksesi suuremmassa hintamuutoksissa.</translation>
@@ -1710,7 +1748,6 @@
 <translation id="1958146856582208323">Tokenien siirto</translation>
 <translation id="3550219298671597013">NFT-siirto</translation>
 <translation id="8043066678623588950">FIL-välitys</translation>
-<translation id="7138678301420049075">Muu</translation>
 <translation id="8703556909820882288">Pakattu NFT-siirto</translation>
 <translation id="2713141960460256091">Allekirjoita ja lähetä DApp-maksutapahtuma</translation>
 <translation id="6387730345715997739">Allekirjoita DApp-maksutapahtuma</translation>
@@ -1792,7 +1829,6 @@
 <translation id="7056969230130642253">Teidät kaikki on saatu kiinni</translation>
 <translation id="7292242212818928219">Uutta sisältöä saatavilla. Lataa uudelleen?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Pikakomennot</translation>
 <translation id="7481312909269577407">Seuraava</translation>
 <translation id="1272079795634619415">Pysäytä</translation>
 <translation id="302781076327338683">Lataa uudelleen ohittamalla välimuisti</translation>
@@ -1945,10 +1981,12 @@
 <translation id="1344005710343072293">Tätä yhdistelmää käytetään komentoon <ph name="COMMAND"/>. Tallentaminen ohittaa tämän pikakuvakkeen.</translation>
 <translation id="831931573200952705">Tätä yhdistelmää käytetään komentoon <ph name="COMMAND"/>, eikä sitä voi muokata .</translation>
 <translation id="3537006124004887164">Tätä yhdistelmää käytetään komentoon<ph name="COMMAND"/>, eikä sitä voi muokata. Yritä muokata sitä Järjestelmäasetusten Sovelluksen pikakuvakkeiden kautta.</translation>
+<translation id="8536713137312218707">Pikakomennot</translation>
 <translation id="712598284361781729">Uusi jaettu näkymä</translation>
 <translation id="1130188644637295274">Avaa jaetussa näkymässä</translation>
 <translation id="6459036216700972269">Jakamattomat välilehdet</translation>
 <translation id="4235382917338421035">Vaihda välilehtien paikkoja</translation>
+<translation id="4144468798716165316">Pikakomennot</translation>
 <translation id="3617523374417810198">Uusi jaettu näkymä</translation>
 <translation id="8571323456914890254">Avaa jaetussa näkymässä</translation>
 <translation id="5329136173514538969">Jakamattomat välilehdet</translation>
@@ -2011,7 +2049,6 @@
 <translation id="1691256669639196606">Hallitse tilausta</translation>
 <translation id="2304783958703511257">Lisäasetukset</translation>
 <translation id="3037594989275592390">Kielimallit</translation>
-<translation id="6637015365469044269">Päivitä nyt</translation>
 <translation id="5543505256451301851">Kokeile 7 päivän ajan ilmaiseksi</translation>
 <translation id="849535826888024304">Vastausasteen raja saavutettu</translation>
 <translation id="2252128900328632803">Olet saavuttanut Leon määrärajan. Avaa korkeampi vastausaste tilaamalla Premium tai yritä kohta uudelleen.</translation>
@@ -2022,7 +2059,7 @@
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /kuukaudessa</translation>
 <translation id="5151923271944811339">Vaihda ilmaiseen malliin</translation>
 <translation id="5474757891469990756">Päästä Leon täydet voimat valloilleen Premiumin avulla:</translation>
-<translation id="5552332211527367850">Enisijainen pääsy tehokkaisiin malleihin, joilla on erilaisilla taitoja</translation>
+<translation id="3453542753968940696">Ensisijainen pääsy tehokkaisiin malleihin, joilla on erilaisia taitoja.</translation>
 <translation id="5031778211368112461">Pääset käsiksi malleihin, jotka sopivat paremmin luoviin tehtäviin ja sisällöntuotantoon.</translation>
 <translation id="298783097210745222">Saat tavanomaista tarkempia vastauksia vivahteikkaisiin keskusteluihin.</translation>
 <translation id="4314705522985583059">Määrärajasi nousevat tavanomaisesta pitkiä keskusteluja silmällä pitäen.</translation>
@@ -2051,6 +2088,7 @@
 <translation id="8712637175834984815">Ymmärretty</translation>
 <translation id="1093419424466417703">Sivu on liian pitkä Leolle. Keskustelusta saattaa puuttua jokin asiayhteys. Leo pystyi lukemaan <ph name="PERCENTAGE"/> sivun sisällöstä.</translation>
 <translation id="2186990448773134544">Sivun sisältöä on parannettu poimimalla sivulta tärkeimmät tiedot, koska se oli liian pitkä Leolle.</translation>
+<translation id="5140068729857132378">Haetaan verkkosivun asianmukaisia osia...</translation>
 <translation id="4370698775470316661">Tämä keskustelu on liian pitkä, eikä se voi jatkua. Saatavilla voi olla muita malleja, joiden avulla Leo pystyy säilyttämään tarkkuuden pidempiä keskusteluja varten.</translation>
 <translation id="5719170755629028558">Vastauksia parannetaan Brave-haulla…</translation>
 <translation id="5794962229997281366">Haun <ph name="SEARCH_TERMS"/> paranneltu vastaus.</translation>

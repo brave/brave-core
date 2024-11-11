@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">ಶೀಲ್ಡ್ ನೊಂದಿಗೆ ಈ ಸೈಟ್ ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುವುದಿಲ್ಲ ಎಂದು Brave ನ ಡೆವಲಪರ್ಗಳಿಗೆ ತಿಳಿಸಿ:</translation>
 <translation id="3110968385867124099">ಈ ಪುಟವನ್ನು HTTP/HTTPS ಮೂಲಕ ನೀಡದೇ ಇರುವ ಕಾರಣದಿಂದ ಅದನ್ನು ವರದಿ ಮಾಡಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="7907023135990310743">ಈ ಪುಟವು ಸ್ಥಳೀಯ ವೆಬ್ ಪುಟವಾಗಿದೆ ಮತ್ತು ಅದು ವರದಿ ಮಾಡುವಿಕೆಗಾಗಿ ಅರ್ಹವಾಗಿಲ್ಲ.</translation>
-<translation id="3645455863322075098">ಈ ಪುಟವು ದೋಷ ಪುಟವಾಗಿದೆ ಮತ್ತು ಅದು ವರದಿ ಮಾಡುವಿಕೆಗಾಗಿ ಅರ್ಹವಾಗಿಲ್ಲ.</translation>
-<translation id="105644511106871142">ಎಲ್ಲರಿಗೂ Brave ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯ ಮಾಡಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು. ಈ ವರದಿಯು ಈ ಸೈಟ್ ಅನ್ನು ಸರಿಪಡಿಸಲು ನಮಗೆ ಅಗತ್ಯವಾಗಿರುವ ಮಾಹಿತಿಯನ್ನು ಮಾತ್ರ ಕಳುಹಿಸುತ್ತದೆ.</translation>
+<translation id="8740275226259417070">ಇದು ದೋಷ ಪುಟವಾಗಿದೆ. ಇದನ್ನು ಮುರಿದ ಸೈಟ್ ಎಂದು ವರದಿ ಮಾಡಲಾಗದು.</translation>
+<translation id="6806248680442980382">ಎಲ್ಲರಿಗೂ Brave ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ಸಹಾಯ ಮಾಡಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು. ಈ ವರದಿಯು ಈ ಸೈಟ್ ಅನ್ನು ಸರಿಪಡಿಸಲು ನಮಗೆ ಅಗತ್ಯವಾಗಿರುವ ಮಾಹಿತಿಯನ್ನು ಮಾತ್ರ ಒಳಗೊಂಡಿರುತ್ತದೆ.</translation>
 <translation id="6476216365964140603">ಹೆಚ್ಚುವರಿ ವಿವರಗಳು (ಐಚ್ಛಿಕ)</translation>
 <translation id="6145852496180774737">ಇಲ್ಲಿ ನನ್ನೊಂದಿಗೆ ಸಂಪರ್ಕಗೊಳ್ಳಿ: (ಐಚ್ಛಿಕ)</translation>
 <translation id="7616645803364270729">ಇಮೇಲ್, Twitter, ಇತ್ಯಾದಿ.</translation>
@@ -461,6 +461,8 @@
 <translation id="6318437367327684789">ಎಂದಿಗೂ</translation>
 <translation id="8797999629784150206">ನೀವು ಯಾವುದೇ ಸಮಯದಲ್ಲಿ <ph name="SITE_PERMISSIONS"/> ಬದಲಿಸಬಹುದು. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">ಸೈಟ್ ಅನುಮತಿ</translation>
+<translation id="7222371875290545057">Brave ನಲ್ಲಿ Leo AI ಸಂವಾದಗಳನ್ನು ತೆರೆಯಲು ಅನುಮತಿಸುವುದೇ?</translation>
+<translation id="1518915449477235311">Brave ನಲ್ಲಿ Leo AI ಸಂವಾದಗಳನ್ನು ತೆರೆಯಲು <ph name="URL"/> ಗೆ ಅನುಮತಿಸುವುದೇ?</translation>
 <translation id="4355784577209159847">ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್‌ಗೆ ತೃತೀಯ ಪಕ್ಷದ ಕುಕೀಗಳ ಬಳಕೆಯನ್ನು ಅನುಮತಿಸಿ</translation>
 <translation id="5770656036486891920">ಪಾರಂಪರಿಕ Google ಸೈನ್-ಇನ್‌ಗಾಗಿ ಮೂರನೇ-ಪಾರ್ಟಿ ಕುಕಿಗಳನ್ನು ಬಳಸಲು <ph name="URL"/> ಬಯಸುತ್ತದೆ</translation>
 <translation id="6053826678715267477">ಸ್ಥಳೀಯಹೋಸ್ಟ್ ಸಂಪನ್ಮೂಲಗಳಿಗೆ ಆಕ್ಸೆಸ್ ಅನುಮತಿಸಿ</translation>
@@ -693,6 +695,26 @@
 <translation id="957921474773060718">ಮುಂದಿನ ಕೊಡುಗೆ:</translation>
 <translation id="351973834053818251">ಮರುಕಳಿಸುವ ಕೊಡುಗೆಗಳು</translation>
 <translation id="7751260505918304024">ಎಲ್ಲ ತೋರಿಸು</translation>
+<translation id="2894334939992402676">ಕೊಡುಗೆ ವಿಧಾನಗಳ ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಿರಿ</translation>
+<translation id="4114667046481794032">ಕೊಡುಗೆಯ ಮೊತ್ತ</translation>
+<translation id="2628057126110572782">ಈ ಮುಂದಿನ ವಿಧಾನಗಳ ಮೂಲಕ ಮಾತ್ರ ಕೊಡುಗೆಗಳನ್ನು ಈ ಕ್ರಿಯೇಟರ್‌ ಒಪ್ಪಿಕೊಳ್ಳುತ್ತಾರೆ:</translation>
+<translation id="7396847690567283204">ರಿವಾರ್ಡ್‌ಗಳ ಬ್ಯಾಲೆನ್ಸ್</translation>
+<translation id="3253225298092156258">ಯಾವುದೂ ಲಭ್ಯವಿಲ್ಲ</translation>
+<translation id="8028314716653189513">Brave ಸಾಫ್ಟ್‌ವೇರ್‌ಗೆ ಕೊಡುಗೆ ನೀಡಲು ನೀವು ಬಳಸಲು ಬಯಸುವ ವಿಧಾನವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ:</translation>
+<translation id="4094286757932277327">ಕಸ್ಟೋಡಿಯಲ್ ವಾಲೆಟ್</translation>
+<translation id="1511998469385905184">ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ನೀವು ಪ್ರಯತ್ನಿಸಬಹುದು.</translation>
+<translation id="7550470870580166294">ಫಂಡ್‌ಗಳು ಸಾಕಷ್ಟಿಲ್ಲ</translation>
+<translation id="7020972866926315918">Brave ರಿವಾರ್ಡ್ಸ್‌ಗಾಗಿ ನೀವು <ph name="PROVIDER"/> ನಿಂದ ಲಾಗ್ ಔಟ್ ಮಾಡಿರುವಂತೆ ಕಂಡುಬರುತ್ತಿದೆ. ಮುಂದುವರಿಯಲು ಪುನಃ ಲಾಗಿನ್ ಮಾಡಿ.</translation>
+<translation id="1166682575529520472">ಮಾಸಿಕ</translation>
+<translation id="7138678301420049075">ಇತರೆ</translation>
+<translation id="2134931506717037391"><ph name="AMOUNT"/> BAT ಕಳುಹಿಸಿ</translation>
+<translation id="4791565605790056151">ಕೊಡುಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ</translation>
+<translation id="8251969358165471584">Web3 ವ್ಯಾಲೆಟ್</translation>
+<translation id="7160424977552599351">ನಿಮ್ಮ Web3 ವ್ಯಾಲೆಟ್ ಬಳಸಿ</translation>
+<translation id="6369571967625114920">ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಇನ್ನೂ Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ಲಭ್ಯವಿಲ್ಲ.</translation>
+<translation id="5309155375926073606">ಹೌದು, Brave ಸರ್ಚ್‌ಗೆ ಕೊಡುಗೆ ನೀಡಲು ಮತ್ತು <ph name="LINK_BEGIN"/>ವೆಬ್ ಡಿಸ್ಕವರಿ ಪ್ರಾಜೆಕ್ಟ್‌ಗೆ<ph name="LINK_END"/> ಸೇರಲು ಕೂಡಾ ನಾನು ಬಯಸುತ್ತೇನೆ.</translation>
+<translation id="7285849890826812669">ವೆಬ್ ಡಿಸ್ಕವರಿ ಪ್ರಾಜೆಕ್ಟ್ನೊಂದಿಗೆ Brave ಅನ್ನು ಸಂಸ್ಕರಿಸಲು&amp;ಕೆಲವು ಅನಾಮಿಕ ಹುಡುಕಾಟ ಮತ್ತು ಬ್ರೌಸಿಂಗ್ ಡೇಟಾ ಕೊಡುಗೆ ನೀಡಿ. ಇದು ಸಂಪೂರ್ಣವಾಗಿ ಮುಕ್ತ ಮೂಲವಾಗಿದೆ.</translation>
+<translation id="4174337572777167894">ವೆಬ್ ಅನ್ವೇಷಣೆ ಪ್ರಾಜೆಕ್ಟ್</translation>
 <translation id="7090992647511817643">ಖಾತೆ</translation>
 <translation id="4822132585477111396">ಚೈನ್ ID</translation>
 <translation id="3269475789479462358">ಡೊಮೇನ್</translation>
@@ -795,7 +817,6 @@
 <translation id="6517332033658428773">ರಿವ್ಯೂ ವಿನಿಮಯ</translation>
 <translation id="8692596799753687794">ಕೋಟ್‌ ಒದಗಿಸುವವರನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="463712644600982655">ಪ್ರತಿ ಅಗ್ರಿಗೇಟರ್ ಅದರ API ನಿಂದ ಲಿಕ್ವಿಡಿಟಿ ಬಳಸಿಕೊಂಡು ಉಲ್ಲೇಖಗಳನ್ನು ಒದಗಿಸುತ್ತದೆ. ಅವರು ವಿವಿಧ ವಿನಿಮಯ ಕೇಂದ್ರಗಳಿಂದ ಬೆಲೆ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸುತ್ತಾರೆ ಮತ್ತು ಈ ಡೇಟಾವನ್ನು ಆಧರಿಸಿ ಬೆಲೆಗಳನ್ನು ನೀಡುತ್ತಾರೆ.</translation>
-<translation id="3253225298092156258">ಯಾವುದೂ ಲಭ್ಯವಿಲ್ಲ</translation>
 <translation id="473775607612524610">ಅಪ್‌ಡೇಟ್‌‌</translation>
 <translation id="4389658703251593158">ಈ ಜೋಡಿಯನ್ನು <ph name="PROVIDER_NAME"/>ಬೆಂಬಲಿಸುವುದಿಲ್ಲ</translation>
 <translation id="1176173785350238153">ಪೂರೈಕೆದಾರರನ್ನು ಬದಲಾಯಿಸಿ</translation>
@@ -1055,6 +1076,8 @@
 <translation id="793994607260936590">ಮೊದಲ</translation>
 <translation id="4709524402122994378">ವಹಿವಾಟುಗಳು</translation>
 <translation id="4591079278963448049">ಸಂಬಂಧಿತ ಟೋಕನ್ ಖಾತೆಯು ಇನ್ನೂ ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ. ಸಣ್ಣ ಪ್ರಮಾಣದ SOL ಅನ್ನು ರಚಿಸಲು ಮತ್ತು ಅದನ್ನು ಧನಸಹಾಯ ಮಾಡಲು ಖರ್ಚು ಮಾಡಲಾಗುತ್ತದೆ.</translation>
+<translation id="3240773103344793224">ಖಾತೆ ಮಾಲೀಕತ್ವ ಬದಲಾವಣೆ ವಿನಂತಿ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="8041423758956015568">ಹೊಸ ಕಾರ್ಯಕ್ರಮಕ್ಕೆ ಖಾತೆಯ ಮಾಲೀಕತ್ವವನ್ನು ಈ ವಹಿವಾಟು ಮರುನಿಯೋಜನೆ ಮಾಡುತ್ತದೆ. ಈ ಕ್ರಮವನ್ನು ಮರಳಿಸಲಾಗುವುದಿಲ್ಲ ಮತ್ತು ಫಂಡ್‌ಗಳ ನಷ್ಟಕ್ಕೆ ಕಾರಣವಾಗಬಹುದು.</translation>
 <translation id="1426320910664514906">ಗ್ಯಾಸ್ ಮೀತಿ</translation>
 <translation id="1229774280326250926">ಗ್ಯಾಸ್ ಪ್ರೀಮಿಯಂ</translation>
 <translation id="148169246131967347">ಗ್ಯಾಸ್ ಫೀ ಕ್ಯಾಪ್</translation>
@@ -1276,10 +1299,25 @@
 <translation id="5722321409991816187">ಸ್ಪ್ಯಾಮ್ NFT ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="2588752742385122166">ಪೋರ್ಟ್‌ಫೋಲಿಯೋ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="7662492121143629144">ಎಲ್ಲ ಖಾತೆಗಳು</translation>
+<translation id="8845001906332463065">ಸಹಾಯವನ್ನು ಪಡೆಯಿರಿ</translation>
+<translation id="6248202915200795128">ನಿರೀಕ್ಷೆಗಿಂತ ಹೆಚ್ಚು ಸಮಯವನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆಯೇ?</translation>
+<translation id="5417904796609871601">ಚಟುವಟಿಕೆಯಲ್ಲಿ ನೋಡಿ</translation>
+<translation id="8915839655070878476">ಈ ವಿಂಡೋ ಅನ್ನು ನೀವು ಸುರಕ್ಷಿತವಾಗಿ ವಜಾಗೊಳಿಸಬಹುದು.</translation>
+<translation id="7020017785602386950"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಅನ್ನು <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ</translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಅನ್ನು <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> ಖಾತೆಗೆ ಕಳುಹಿಸಲಾಗಿದೆ</translation>
+<translation id="3068919369514041269"><ph name="NETWORK"/> ನಲ್ಲಿ <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಇಂದ <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> ಗೆ ಸ್ವ್ಯಾಪ್ ಮಾಡಲಾಗುತ್ತಿದೆ</translation>
+<translation id="312867981877298982"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಮೊತ್ತವನ್ನು ನಿಮ್ಮ ಖಾತೆ <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> ಗೆ ಸೇರಿಸಲಾಗಿದೆ</translation>
+<translation id="2653273412609139189"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಇಂದ <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> ಗೆ ಬ್ರಿಡ್ಜ್‌ ಮಾಡಲಾಗುತ್ತಿದೆ</translation>
+<translation id="1795341197087004042"><ph name="SEND_SWAP_OR_BRIDGE"/> ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</translation>
+<translation id="6990756606864308319"><ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಇಂದ <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/> ಗೆ ಪ್ರಯತ್ನಿಸುವಲ್ಲಿ ಒಂದು ದೋಷವಿದೆ</translation>
+<translation id="6449575669814542383"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಇಂದ <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/> ಗೆ ಅನುಮೋದಿಸಲಾಗುತ್ತಿದೆ</translation>
+<translation id="8036159955043245753">ನಿಮ್ಮ ಪ್ರಸ್ತುತ ವಹಿವಾಟನ್ನು ರದ್ದುಗೊಳಿಸಲು ಹೊಸ ವಹಿವಾಟನ್ನು ರಚಿಸಲಾಗುತ್ತದೆ.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {ಇನ್ನೂ {PENDING_TRANSACTIONS} ವಹಿವಾಟು ಬಾಕಿ ಇದೆ.}
+      other {ಇನ್ನೂ {PENDING_TRANSACTIONS} ವಹಿವಾಟುಗಳು ಬಾಕಿ ಇವೆ.}
+    }</translation>
 <translation id="6954150712710630841">ವಹಿವಾಟು ಸಲ್ಲಿಸಲಾಗಿದೆ</translation>
-<translation id="905855245798176174">ವಹಿವಾಟನ್ನು ನೆಟ್ಟ್‍ವರ್ಕ್‍‍ಗೆ ಯಶಸ್ವಿಯಾಗಿ ಕಳುಹಿಸಲಾಗಿದೆ ಮತ್ತು ಖಚಿತಪಡಿಸುವಿಕೆಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ.</translation>
 <translation id="619697073289995370">ವಹಿವಾಟಿಗೆ ಸಹಿ ಮಾಡಲಾಗಿದೆ</translation>
-<translation id="7493732383203109611">ವಹಿವಾಟಿಗೆ ಸಹಿ ಮಾಡಲಾಗಿದೆ ಮತ್ತು ಅದನ್ನು DApp ಮೂಲಕ ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‍ಗೆ ಹಿಂದಿರುಗಿಸಲಾಗಿದೆ</translation>
 <translation id="4577432071459867390">ವಹಿವಾಟು ವಿಫಲವಾಗಿದೆ</translation>
 <translation id="4359235192593147041">ಬೆಲೆಯ ಹೆಚ್ಚಿನ ಚಲನೆಯಿಂದಾಗಿ ವಹಿವಾಟು ವಿಫಲವಾಗಿದೆ. ಬೆಲೆಯ ಹೆಚ್ಚಿನ ಚಲನೆಯಲ್ಲಿ ಯಶಸ್ಸು ಸಾಧಿಸಲು ಸ್ಲಿಪ್ಪೇಜ್ ಟಾಲರೆನ್ಸ್ ಅನ್ನು ಹೆಚ್ಚಿಸಿ.</translation>
@@ -1710,7 +1748,6 @@
 <translation id="1958146856582208323">ಟೋಕನ್ ವರ್ಗಾವಣೆ</translation>
 <translation id="3550219298671597013">NFT ವರ್ಗಾವಣೆ ಮಾಡಿ</translation>
 <translation id="8043066678623588950">FIL ಫಾರ್ವರ್ಡ್ ಮಾಡಿ</translation>
-<translation id="7138678301420049075">ಇತರೆ</translation>
 <translation id="8703556909820882288">NFT ವರ್ಗಾವಣೆ ಕಂಪ್ರೆಸ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="2713141960460256091">ಸಹಿ ಮಾಡಿ ಮತ್ತು DApp ವಹಿವಾಟು ಕಳುಹಿಸಿ</translation>
 <translation id="6387730345715997739">DApp ವಹಿವಾಟಿಗೆ ಸಹಿ ಮಾಡಿ</translation>
@@ -1792,7 +1829,6 @@
 <translation id="7056969230130642253">ನೀವೆಲ್ಲ ಸಿಲುಕಿಕೊಂಡಿದ್ದೀರಿ</translation>
 <translation id="7292242212818928219">ಹೊಸ ವಿಷಯ ಲಭ್ಯವಿದೆ. ಮರುಲೋಡ್ ಮಾಡುವುದೇ?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">ತ್ವರಿತ ಕಮ್ಯಾಂಡ್‌ಗಳು</translation>
 <translation id="7481312909269577407">ಫಾರ್ವರ್ಡ್</translation>
 <translation id="1272079795634619415">ನಿಲ್ಲಿಸಿ</translation>
 <translation id="302781076327338683">ರೀಲೋಡ್ ಬೈಪಾಸಿಂಗ್ ಕ್ಯಾಶ್</translation>
@@ -1945,10 +1981,12 @@
 <translation id="1344005710343072293">ಈ ಸಂಯೋಜನೆಯನ್ನು <ph name="COMMAND"/> ಗಾಗಿ ಬಳಸಲಾಗುತ್ತಿದೆ. ಸೇವ್ ಮಾಡುವುದರಿಂದ ಆ ಶಾರ್ಟ್‌ಕಟ್ ಅನ್ನು ಓವರ್‌ರೈಡ್ ಮಾಡುತ್ತದೆ.</translation>
 <translation id="831931573200952705">ಈ ಸಂಯೋಜನೆಯನ್ನು <ph name="COMMAND"/> ಗಾಗಿ ಬಳಸಲಾಗುತ್ತಿದೆ ಮತ್ತು ಅದನ್ನು ಮಾರ್ಪಡಿಸಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="3537006124004887164">ಈ ಸಂಯೋಜನೆಯನ್ನು <ph name="COMMAND"/> ಗಾಗಿ ಬಳಸಲಾಗುತ್ತಿದೆ ಮತ್ತು ಅದನ್ನು ಮಾರ್ಪಡಿಸಲಾಗುವುದಿಲ್ಲ. ಸಿಸ್ಟಂ ಸೆಟ್ಟಿಂಗ್ ಗಳಲ್ಲಿ `ಆಪ್ ಶಾರ್ಟ್ ಕಟ್ ಗಳು` ಮೂಲಕ ಅದನ್ನು ಮಾರ್ಪಡಿಸಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="8536713137312218707">ತ್ವರಿತ ಕಮಾಂಡ್‌ಗಳು</translation>
 <translation id="712598284361781729">ಹೊಸ ಸ್ಲ್ಲಿಟ್ ವೀಕ್ಷಣೆ</translation>
 <translation id="1130188644637295274">ಸ್ಲ್ಲಿಟ್ ವೀಕ್ಷಣೆಯಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="6459036216700972269">ವಿಭಜಿಸದಿರುವ ಟ್ಯಾಬ್‌ಗಳು</translation>
 <translation id="4235382917338421035">ಟ್ಯಾಬ್ ಸ್ಥಾನಗಳನ್ನು ಸ್ವ್ಯಾಪ್ ಮಾಡಿ</translation>
+<translation id="4144468798716165316">ತ್ವರಿತ ಕಮ್ಯಾಂಡ್‌ಗಳು</translation>
 <translation id="3617523374417810198">ಹೊಸ ಸ್ಲ್ಲಿಟ್ ವೀಕ್ಷಣೆ</translation>
 <translation id="8571323456914890254">ಸ್ಲ್ಲಿಟ್ ವೀಕ್ಷಣೆಯಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="5329136173514538969">ವಿಭಜಿಸದಿರುವ ಟ್ಯಾಬ್‌ಗಳು</translation>
@@ -2011,7 +2049,6 @@
 <translation id="1691256669639196606">ಚಂದಾದಾರಿಕೆ ನಿರ್ವಹಿಸಿ</translation>
 <translation id="2304783958703511257">ಸುಧಾರಿತ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="3037594989275592390">ಭಾಷಾ ಮಾಡೆಲ್‌ಗಳು</translation>
-<translation id="6637015365469044269">ಈಗಲೇ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ</translation>
 <translation id="5543505256451301851">7 ದಿನಗಳ ತನಕ ಉಚಿತವಾಗಿ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="849535826888024304">ಪ್ರತಿಕ್ರಿಯೆ ದರದ ಮಿತಿ ತಲುಪಿದೆ</translation>
 <translation id="2252128900328632803">ನೀವು ಲಿಯೋಗಾಗಿನ ಮಿತಿಯನ್ನು ತಲುಪಿದ್ದೀರಿ. ಪ್ರೀಮಿಯಂಗೆ ಚಂದಾದಾರರಾಗುವ ಮೂಲಕ ಅಧಿಕ ಪ್ರತಿಕ್ರಿಯೆ ದರವನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ ಅಥವಾ ಶೀಘ್ರವೇ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -2022,7 +2059,7 @@
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /ತಿಂಗಳಿಗೆ</translation>
 <translation id="5151923271944811339">ಉಚಿತ ಮಾಡೆಲ್‌ಗೆ ಬದಲಿಸಿ</translation>
 <translation id="5474757891469990756">ಪ್ರೀಮಿಯಂ ಮೂಲಕ Leo ನ ಸಂಪೂರ್ಣ ಸಾಮರ್ಥ್ಯಗಳನ್ನು ಕಂಡುಕೊಳ್ಳಿ:</translation>
-<translation id="5552332211527367850">ವಿಭಿನ್ನ ಕೌಶಲ್ಯಗಳನ್ನು ಹೊಂದಿರುವ ಶಕ್ತಿಶಾಲಿ ಮಾಡೆಲ್‌ಗಳಿಗೆ ಆದ್ಯತೆಯ ಆ್ಯಕ್ಸೆಸ್</translation>
+<translation id="3453542753968940696">ವಿಭಿನ್ನ ಕೌಶಲ್ಯಗಳನ್ನು ಹೊಂದಿರುವ ಶಕ್ತಿಶಾಲಿ ಮಾಡೆಲ್‌ಗಳಿಗೆ ಆದ್ಯತೆಯ ಆ್ಯಕ್ಸೆಸ್.</translation>
 <translation id="5031778211368112461">ಆಕ್ಸೆಸ್ ಮಾಡೆಲ್‌ಗಳು ಸೃಜನಶೀಲ ಕಾರ್ಯಗಳು ಮತ್ತು ವಿಷಯ ರಚನೆಗೆ ಹೆಚ್ಚು ಸೂಕ್ತವಾಗಿವೆ.</translation>
 <translation id="298783097210745222">ಹೆಚ್ಚು ಸೂಕ್ಷ್ಮವಾದ ಸಂಭಾಷಣೆಗಳಿಗೆ ಹೆಚ್ಚು ನಿಖರವಾದ ಉತ್ತರಗಳನ್ನು ಪಡೆಯಿರಿ.</translation>
 <translation id="4314705522985583059">ದೀರ್ಘವಾದ ಸಂಭಾಷಣೆಗಳಿಗಾಗಿ ಅಧಿಕ ದರ ಮಿತಿಗಳನ್ನು ಪಡೆಯಿರಿ.</translation>
@@ -2051,6 +2088,7 @@
 <translation id="8712637175834984815">ಅರ್ಥವಾಯಿತು</translation>
 <translation id="1093419424466417703">ಪುಟವು Leo ಗಾಗಿ ತೀರಾ ಉದ್ದವಾಗಿದೆ. ಕೆಲವು ಸಂದರ್ಭವು ಸಂಭಾಷಣೆಯಿಂದ ಕಾಣೆಯಾಗಿರಬಹುದು. ಪುಟದ <ph name="PERCENTAGE"/> ರಷ್ಟು ವಿಷಯಗಳನ್ನು ಓದಲು Leo ಗೆ ಸಾಧ್ಯವಾಗಿದೆ.</translation>
 <translation id="2186990448773134544">Leo ಗೆ ತುಂಬ ಉದ್ದವಾಗಿದ್ದ ಕಾರಣ, ಪುಟದಿಂದ ಹೆಚ್ಚು ಸೂಕ್ತವಾದ ಮಾಹಿತಿಯನ್ನು ಹೊರತೆಗೆಯುವ ಮೂಲಕ ಪುಟದ ವಿಷಯವನ್ನು ಪರಿಷ್ಕರಿಸಲಾಗಿದೆ.</translation>
+<translation id="5140068729857132378">ವೆಬ್ ಪುಟದ ಸೂಕ್ತ ಭಾಗಗಳನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ...</translation>
 <translation id="4370698775470316661">ಈ ಸಂಭಾಷಣೆಯು ಬಹಳ ದೀರ್ಘವಾಗಿದೆ ಮತ್ತು ಮುಂದುವರೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ. ದೀರ್ಘ ಸಂಭಾಷಣೆಗಳಿಗಾಗಿ ನಿಖರತೆಯನ್ನು ಕಾಪಾಡಿಕೊಳ್ಳಲು Leo ಸಮರ್ಥವಾಗಿರುವ ಇತರ ಮಾಡೆಲ್‌ಗಳು ಲಭ್ಯವಿರಬಹುದು.</translation>
 <translation id="5719170755629028558">Brave ಹುಡುಕಾಟ ಮೂಲಕ ನಿಮ್ಮ ಉತ್ತರವನ್ನು ಸುಧಾರಿಸಲಾಗುತ್ತಿದೆ…</translation>
 <translation id="5794962229997281366"><ph name="SEARCH_TERMS"/> ಗಾಗಿ ಸುಧಾರಿತ ಉತ್ತರ ಹುಡುಕಾಟ.</translation>

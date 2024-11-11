@@ -114,6 +114,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="2370739752330685659">Quizais máis tarde</translation>
 <translation id="5100490448228945668">"&gt;
           Rexeitar o cambio a Busca de Brave; preme Intro para eliminar esta suxestión</translation>
+<translation id="6213208892248046484">Cambiar a Busca de Brave</translation>
 <translation id="9194637241566114638">Envía datos de uso anónimos para axudarnos a mellorar <ph name="SEARCH_NAME"/>. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Busca de Brave</translation>
 <translation id="8184318863960255706">Máis información</translation>
@@ -502,6 +503,9 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="7181706637590665047">Non permitir acceso a recursos de localhost</translation>
 <translation id="1336116824874668514">Non se permite acceder a recursos de localhost</translation>
 <translation id="1485435696620658073">Con permiso para acceder a recursos de localhost</translation>
+<translation id="5794692721727586076">Chat de IA de Leo</translation>
+<translation id="8115153008662981040">Os sitios poden pedir permiso para abrir o chat de IA de Leo</translation>
+<translation id="1145070115730668595">Non permitir que o sitio abra o chat de IA de Leo</translation>
 <translation id="6414370348346025511">A protección estándar está activada.</translation>
 <translation id="5565355416171743213">Comezar a usar sincronización</translation>
 <translation id="4332558599726753990">Configurar Sincronización</translation>
@@ -574,7 +578,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="3128251601544028053">Cando escribes na barra de enderezos ou na caixa de busca, Brave envía o que escribes ao teu motor de busca predeterminado para obter mellores suxestións. Isto non está dispoñible nas ventás privadas.</translation>
 <translation id="6285118765755298263">Indexar outros motores de busca</translation>
 <translation id="919715748352669592">Indexa automaticamente os sitios web que seguen a especificación OpenSearch.</translation>
-<translation id="842628013524824194">Ventá normal: motor de busca usado na barra de enderezos</translation>
+<translation id="9195748375338942941">Ventá normal: motor de busca usado na barra de enderezos.</translation>
 <translation id="5324939009884545145">Ventá en modo incógnito: motor de busca usado na barra de enderezos</translation>
 <translation id="6864914031231797928">Permitir o inicio de sesión de Google nas extensións</translation>
 <translation id="7878791177459550035">O router multimedia permite facer transmisións no navegador.</translation>

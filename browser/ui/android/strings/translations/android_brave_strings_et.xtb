@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Tere tulemast Brave'i</translation>
 <translation id="4117451092682672487">Privaatsus on nüüd lihtne.</translation>
 <translation id="7909375417585209817">Kui kasutate vaikimisi Brave'i, kasutatakse iga puudutatud lingi avamisel Brave'i privaatsuskaitseid.</translation>
+<translation id="3737878115109582442">Otsinguvidina lisamine</translation>
+<translation id="6199413390010319240">Hoidke Brave käepärast, et kiiremini veebi avastada.</translation>
+<translation id="4338600611020922010">Lisa avakuvale</translation>
 <translation id="7370959926683925817">Reklaamid blokeeritakse. Andmed salvestatakse. Päevast päeva.</translation>
 <translation id="7281027579943912834">Kui kasutate vaikimisi Brave'i, saab iga puudutatud link Brave'i reklaamikaitse. Igal lehel, igas videos ja voogesituses.</translation>
 <translation id="5148943178722443958">Aidake Brave'i paremaks muuta.</translation>
@@ -484,7 +487,11 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="9055546041146396417">Paistab, et leht ei toimi. Proovige kaitse keelata.</translation>
 <translation id="1209739344687072997">Teata mittetoimivast veebisaidist</translation>
 <translation id="8510478288840333677">Andke Brave’i arendajatele teada, et see veebisait ei toimi kaitsega õigesti:</translation>
-<translation id="5429200298326665264">Märkus. Selle veebisaidi aadress esitatakse koos Brave’i versiooninumbri ja IP-aadressiga (mida ei salvestata).</translation>
+<translation id="1653405824851871276">Aitäh, et aitate teha Brave'i kõigi jaoks paremaks. See teade sisaldab üksnes veebisaidi parandamiseks vajalikku teavet. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Lisateave.</translation>
+<translation id="8740275226259417070">See on tõrkeleht. Sellest ei saa katkise veebisaidina teada anda.</translation>
+<translation id="721949491455392748">Lisa aktiivse lehe kuvatõmmis</translation>
+<translation id="8459191579769999214">Kuva kuvatõmmis</translation>
 <translation id="5299848999918506028">Täname!</translation>
 <translation id="76550953340008122">Täname, et andsite Brave’i arendajatele teada, et selle veebisaidiga on midagi valesti. Anname endast parima, et see korda teha!</translation>
 <translation id="650318023204990401">Täiustatud kontroll</translation>
@@ -663,6 +670,8 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="6284218950354553099">Igapäevase kasutuse pingi automaatne saatmine Brave'ile</translation>
 <translation id="2181060149810222381">See privaatne ping võimaldab Brave'il hinnata aktiivsete kasutajate arvu.</translation>
 <translation id="6725413948756358325">Konto nimi</translation>
+<translation id="3240773103344793224">Taotleti konto omandiõiguse muutmist</translation>
+<translation id="8041423758956015568">See tehing määrab konto omanikuks uue programmi. Seda toimingut ei saa ennistada ja sellega võib kaasneda rahaliste vahendite kaotus.</translation>
 <translation id="6062431965141524986">Teisese konto saate luua oma privaatvõtit importides.</translation>
 <translation id="3952797765659730604">Sisestage, kleepige või importige oma privaatvõtme stringi fail või JSON.</translation>
 <translation id="569068482611873351">Importimine...</translation>
@@ -729,7 +738,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="5747552184818312860">Aegub</translation>
 <translation id="1656814355341174523">Halda tellimust</translation>
 <translation id="1919008675977575793">Server</translation>
-<translation id="4812684235631257312">Host</translation>
 <translation id="5646376287012673985">Asukoht</translation>
 <translation id="8375573361134671513">Lähtesta konfiguratsioon</translation>
 <translation id="850405162932416400">VPN-i tugi</translation>
@@ -756,6 +764,8 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="5431902940483264007">Optimaalne</translation>
 <translation id="6527596624419285047">Kasutage parimat saadaolevat serverit</translation>
 <translation id="6789157560111825412">Saadaolevad serverid</translation>
+<translation id="5823953367746119927">Serveri piirkond</translation>
+<translation id="6991535320595227154">Server piirkonnas<ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Valige probleem</translation>
 <translation id="6687228121145903051">VPN-iga ei saa ühendust luua (muu tõrge)</translation>
 <translation id="9184988385244077767">Pärast ühendamist pole internetti</translation>
@@ -1080,8 +1090,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="622372328961630111">Lisage oma NFT-d automaatselt rahakotti, kasutades kolmanda osapoole API-sid. <ph name="BEGIN_LINK_1"/>Lisateave.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Aadresside teatmetabeli konto:</translation>
 <translation id="7659483790930268440">Aadresside teatmetabeli indeks:</translation>
-<translation id="4932733599132424254">Kuupäev</translation>
-<translation id="346505172740911461">Turuhind</translation>
 <translation id="5494920125229734069">Vali kõik</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Logi sisse Brave’i rahakotiga</translation>
@@ -1096,6 +1104,8 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="6165101586663336913">Kui soovite Leo lähtestada, peate nõustuma Brave’i Leo kasutamisega tulevikus ja selle käigus tühjendatakse ka teie vestluseajalugu. See tähendab, et kõik Leoga peetud eelmised vestlused kustutatakse. Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="3692772534525889713">Ühendage oma Play Store'i ost oma Brave'i kontoga, et kasutada Brave'i Leod teistes seadmetes.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Üks aasta</translation>
+<translation id="2985392169397572983">PARIM HINNA JA KVALITEEDI SUHE</translation>
 <translation id="1166682575529520472">Iga kuu</translation>
 <translation id="451189393813405346">Küsi Leolt</translation>
 <translation id="7322560193401221004">Jäta faili taasesituse asukoht meelde</translation>
@@ -1164,7 +1174,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="2389665228467129817">Pikem vestlus</translation>
 <translation id="4314705522985583059">Saate pikemateks vestlusteks suuremad hinna ülempiirid.</translation>
 <translation id="6365289557497555234">Kõik tellimused uuendatakse automaatselt, \nkuid enne uuendamist saab need igal ajal tühistada.</translation>
-<translation id="6637015365469044269">Täienda kohe</translation>
+<translation id="5543505256451301851">Proovige 7 päeva tasuta</translation>
 <translation id="614530507403667291">Uute vestluste vaikemudel</translation>
 <translation id="4071849832011229600">Vaikemudel</translation>
 <translation id="4185473179105062442">BAT-i saamine otse omavaldusega krüptoaadressile</translation>

@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">إخطار مطوري Brave بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:</translation>
 <translation id="3110968385867124099">يتعذر الإبلاغ عن هذه الصفحة لأنه لم يتم عرضها عبر HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">هذه الصفحة هي صفحة ويب محلية وليست مؤهلة لإعداد التقارير.</translation>
-<translation id="3645455863322075098">هذه الصفحة صفحة خطأ وليست مؤهلة لإعداد التقارير.</translation>
-<translation id="105644511106871142">نشكرك على تقديم المساعدة في أن يصبح Brave أفضل للجميع. لن يرسل هذا التقرير سوى المعلومات اللازمة لنا لإصلاح هذا الموقع.</translation>
+<translation id="8740275226259417070">هذه صفحة خطأ. ولا يمكن الإبلاغ عنها باعتبارها موقعًا مُعطلًا.</translation>
+<translation id="6806248680442980382">نشكرك على تقديم المساعدة في أن يصبح Brave أفضل للجميع. لن يحتوي هذا التقرير إلا على المعلومات اللازمة لنا لإصلاح هذا الموقع.</translation>
 <translation id="6476216365964140603">التفاصيل الإضافية (اختياري):</translation>
 <translation id="6145852496180774737">تواصل معي على: (اختياري)</translation>
 <translation id="7616645803364270729">البريد الإلكتروني، تويتر، إلخ.</translation>
@@ -461,6 +461,8 @@
 <translation id="6318437367327684789">للأبد</translation>
 <translation id="8797999629784150206">يمكنك تغيير <ph name="SITE_PERMISSIONS"/> في أي وقت. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">إذن الموقع</translation>
+<translation id="7222371875290545057">هل تريد السماح بفتح محادثات Leo AI في متصفح Brave؟</translation>
+<translation id="1518915449477235311">هل تريد السماح لـ <ph name="URL"/> بفتح محادثات Leo AI في متصفح Brave؟</translation>
 <translation id="4355784577209159847">السماح باستخدام ملفات تعريف الارتباط للجهات الخارجية لتسجيل الدخول القديم إلى Google</translation>
 <translation id="5770656036486891920">تريد <ph name="URL"/> استخدام ملفات تعريف ارتباط الجهات الخارجية لتسجيل الدخول القديم إلى Google</translation>
 <translation id="6053826678715267477">السماح بالوصول إلى موارد Localhost</translation>
@@ -693,6 +695,26 @@
 <translation id="957921474773060718">المساهمة التالية:</translation>
 <translation id="351973834053818251">المساهمة المتكررة</translation>
 <translation id="7751260505918304024">عرض الكل</translation>
+<translation id="2894334939992402676">تعرّف أكثر على طرق المشاركة</translation>
+<translation id="4114667046481794032">مقدار المساهمة</translation>
+<translation id="2628057126110572782">لا يقبل هذا المنشئ للمحتوى المشاركات إلا عبر الطرق التالية:</translation>
+<translation id="7396847690567283204">رصيد المكافآت</translation>
+<translation id="3253225298092156258">غير متوفر</translation>
+<translation id="8028314716653189513">اختر الطريقة التي تريد استخدامها للمشاركة في برنامج Brave:</translation>
+<translation id="4094286757932277327">المحفظة الاحتجازية</translation>
+<translation id="1511998469385905184">يمكنك المحاولة مرة أخرى لاحقًا.</translation>
+<translation id="7550470870580166294">الرصيد لا يكفي</translation>
+<translation id="7020972866926315918">يبدو أنك سجلت الخروج من <ph name="PROVIDER"/> الخاص بـ Brave Rewards. ولذا، سجِّل الدخول مرة أخرى للمتابعة.</translation>
+<translation id="1166682575529520472">شهريًا</translation>
+<translation id="7138678301420049075">غير ذلك</translation>
+<translation id="2134931506717037391">أرسِل BAT إلى <ph name="AMOUNT"/></translation>
+<translation id="4791565605790056151">إرسال مشاركة</translation>
+<translation id="8251969358165471584">محفظة Web3</translation>
+<translation id="7160424977552599351">استخدم محفظة Web3 لديك</translation>
+<translation id="6369571967625114920">لم تتوفر ميزة الإعلانات الخاصة على Brave في منطقتك بعد.</translation>
+<translation id="5309155375926073606">نعم، أود أيضًا أن أشارك في Brave Search وأن أشترك في <ph name="LINK_BEGIN"/> مشروع اكتشاف الويب <ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">شارك ببعض بيانات البحث والتصفح دون الكشف عن هويتك لتحسين مستوى ميزة البحث في Brave Search من خلال مشروع اكتشاف الويب، فهو مفتوح المصدر بالكامل.</translation>
+<translation id="4174337572777167894">مشروع اكتشاف الويب</translation>
 <translation id="7090992647511817643">الحساب</translation>
 <translation id="4822132585477111396">معرّف السلسلة</translation>
 <translation id="3269475789479462358">النطاق</translation>
@@ -795,7 +817,6 @@
 <translation id="6517332033658428773">مراجعة التبديل</translation>
 <translation id="8692596799753687794">اختر مزود عرض الأسعار</translation>
 <translation id="463712644600982655">يُقدِّم كل مُجمِّع أسعارًا باستخدام السيولة من واجهة برمجة التطبيقات (API) الخاصة به. وهم يجمعون معلومات الأسعار من البورصات المختلفة ويُقدِّمون الأسعار بناءً على هذه البيانات.</translation>
-<translation id="3253225298092156258">غير متوفر</translation>
 <translation id="473775607612524610">تحديث</translation>
 <translation id="4389658703251593158">هذا الإقران غير مدعوم بواسطة <ph name="PROVIDER_NAME"/></translation>
 <translation id="1176173785350238153">تغيير مزود الخدمة</translation>
@@ -1055,6 +1076,8 @@
 <translation id="793994607260936590">أولا</translation>
 <translation id="4709524402122994378">المعاملات</translation>
 <translation id="4591079278963448049">حساب الرمز المرتبط غير موجود حتى الآن. سينفق مبلغ صغير من SOL لإنشائه وتمويله.</translation>
+<translation id="3240773103344793224">تم طلب تغيير ملكية الحساب</translation>
+<translation id="8041423758956015568">ستعيد هذه المعاملة تعيين ملكية الحساب إلى برنامج جديد. ولا يمكن الرجوع في هذا الإجراء وقد يؤدي إلى خسارة الأموال.</translation>
 <translation id="1426320910664514906">الحد الأقصى لوحدات جاس</translation>
 <translation id="1229774280326250926">قيمة أقساط الغاز</translation>
 <translation id="148169246131967347">الحد الأقصى لرسوم الغاز</translation>
@@ -1277,10 +1300,25 @@
 <translation id="5722321409991816187">إظهار الرموز المميزة غير القابلة للاستبدال (NFT) في البريد العشوائي</translation>
 <translation id="2588752742385122166">إعدادات المحفظة</translation>
 <translation id="7662492121143629144">كل الحسابات</translation>
+<translation id="8845001906332463065">احصل على المساعدة</translation>
+<translation id="6248202915200795128">هل تستغرق وقتًا أطول من المتوقع؟</translation>
+<translation id="5417904796609871601">العرض في الأنشطة</translation>
+<translation id="8915839655070878476">يمكنك غلق هذه النافذة بأمان.</translation>
+<translation id="7020017785602386950">إرسال <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> إلى <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212">تم إرسال <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> إلى حساب <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269">مقايضة <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> إلى <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> على<ph name="NETWORK"/></translation>
+<translation id="312867981877298982">تمت إضافة مبلغ <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> إلى حسابك <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189">ربط <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> بـ <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042">لم نتمكن من <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
+<translation id="6990756606864308319">كان يوجد خطأ يحاول أن <ph name="SEND_SWAP_OR_BRIDGE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> إلى <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
+<translation id="6449575669814542383">الموافقة على <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> من أجل <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">سننشئ معاملة جديدة لإلغاء معاملتك الحالية.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} معاملة واحدة أخرى قيد الانتظار.}
+      other {{PENDING_TRANSACTIONS} معاملات أخرى قيد الانتظار.}
+    }</translation>
 <translation id="6954150712710630841">تم إرسال المعاملة</translation>
-<translation id="905855245798176174">تم إرسال المعاملة إلى الشبكة بنجاح وفي انتظار التأكيد.</translation>
 <translation id="619697073289995370">تم توقيع المعاملات</translation>
-<translation id="7493732383203109611">تم توقيع المعاملات وسيتم إرسالها إلى الشبكة من خلال DApp</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> تم إرجاعها إلى محفظتك</translation>
 <translation id="4577432071459867390">فشلت المعاملة</translation>
 <translation id="4359235192593147041">فشلت المعاملة بسبب حركة التسعير الهائلة. ارتفاع تحمل الانزلاق للنجاح في حركة تسعير أكبر حجمًا.</translation>
@@ -1711,7 +1749,6 @@
 <translation id="1958146856582208323">تحويل الرمز المميز</translation>
 <translation id="3550219298671597013">تحويل NFT</translation>
 <translation id="8043066678623588950">FIL نحو الأمام</translation>
-<translation id="7138678301420049075">غير ذلك</translation>
 <translation id="8703556909820882288">تحويل NFT المضغوط</translation>
 <translation id="2713141960460256091">توقيع وإرسال معاملة DApp</translation>
 <translation id="6387730345715997739">توقيع معاملة DApp</translation>
@@ -1793,7 +1830,6 @@
 <translation id="7056969230130642253">أنت متابع لأحدث المستجدات</translation>
 <translation id="7292242212818928219">ثمَّة محتوى جديد متاح. هل تريد إعادة التحميل؟</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">الأوامر السريعة</translation>
 <translation id="7481312909269577407">إلى الأمام</translation>
 <translation id="1272079795634619415">إيقاف</translation>
 <translation id="302781076327338683">إعادة تحميل تجاوز ذاكرة التخزين المؤقت</translation>
@@ -1946,10 +1982,12 @@
 <translation id="1344005710343072293">يُستخدم هذا التكوين لصالح <ph name="COMMAND"/>. سيؤدي الحفظ إلى تجاوز هذا الاختصار.</translation>
 <translation id="831931573200952705">تُستخدم هذه التركيبة لأمر <ph name="COMMAND"/> ولا يمكن تعديلها.</translation>
 <translation id="3537006124004887164">تُستخدم هذه التركيبة لأمر <ph name="COMMAND"/> ولا يمكن تعديلها. جرّب تعديلها من خلال "اختصارات التطبيقات" الموجودة بإعدادات النظام.</translation>
+<translation id="8536713137312218707">ميزة الأوامر السريعة</translation>
 <translation id="712598284361781729">عرض في مقسم جديد</translation>
 <translation id="1130188644637295274">فتح في عرض مقسم</translation>
 <translation id="6459036216700972269">علامات تبويب غير منفصلة</translation>
 <translation id="4235382917338421035">تبديل مواضع علامات التبويب</translation>
+<translation id="4144468798716165316">الأوامر السريعة</translation>
 <translation id="3617523374417810198">عرض في مقسم جديد</translation>
 <translation id="8571323456914890254">فتح في عرض مقسم</translation>
 <translation id="5329136173514538969">علامات تبويب غير منفصلة</translation>
@@ -2012,7 +2050,6 @@
 <translation id="1691256669639196606">إدارة الاشتراك</translation>
 <translation id="2304783958703511257">الإعدادات المتقدمة</translation>
 <translation id="3037594989275592390">نماذج اللغة</translation>
-<translation id="6637015365469044269">تحديث الآن</translation>
 <translation id="5543505256451301851">المحاولة مجانًا لمدة 7 أيام</translation>
 <translation id="849535826888024304">تم بلوغ الحد الأقصى من معدل الاستجابة</translation>
 <translation id="2252128900328632803">لقد وصلت إلى الحد الأقصى لسعر  Leo. احصل على معدل استجابة أعلى من خلال الاشتراك في Premium، أو حاول مرة أخرى قريبًا.</translation>
@@ -2023,7 +2060,7 @@
 <translation id="8556044455877152001">دولار أمريكي<ph name="PRICE_VALUE"/>/الشهر</translation>
 <translation id="5151923271944811339">التبديل إلى النموذج المجاني</translation>
 <translation id="5474757891469990756">أطلق قوى Leo الكاملة مع Premium:</translation>
-<translation id="5552332211527367850">أولوية الوصول إلى النماذج القوية ذات المهارات المختلفة</translation>
+<translation id="3453542753968940696">أولوية الوصول إلى النماذج القوية ذات المهارات المختلفة.</translation>
 <translation id="5031778211368112461">الوصول إلى النماذج الأكثر ملاءمةً للمهام الإبداعية وإنشاء المحتوى.</translation>
 <translation id="298783097210745222">احصل على إجابات أكثر دقة لمحادثات أكثر دقة.</translation>
 <translation id="4314705522985583059">احصل على حدود أسعار أعلى للمحادثات الأطول.</translation>
@@ -2052,6 +2089,7 @@
 <translation id="8712637175834984815">تم</translation>
 <translation id="1093419424466417703">تعد الصفحة طويلة للغاية بالنسبة لـ Leo، لذا فقد يفقد بعض السياق من المحادثة، إذ تمكن Leo من قراءة نسبة <ph name="PERCENTAGE"/> فقط من محتويات الصفحة.</translation>
 <translation id="2186990448773134544">لقد تم تحسين محتوى الصفحة من خلال استخراج المعلومات الأكثر صلة من الصفحة لأنها كانت طويلة للغاية بالنسبة إلى Leo.</translation>
+<translation id="5140068729857132378">جارِ العثور على الأجزاء المتصلة بصفحة الويب...</translation>
 <translation id="4370698775470316661">هذه المحادثة طويلة جدًا ولا يمكن أن تستمر.  قد تكون هناك نماذج أخرى متوفرة يستطيع Leo من خلالها الحفاظ على الدقة المطلوبة لإجراء محادثات أطول.</translation>
 <translation id="5719170755629028558">تحسين إجابتك بواسطة بحث Brave...</translation>
 <translation id="5794962229997281366">بحث مُحسن عن الإجابات لـ <ph name="SEARCH_TERMS"/>.</translation>
