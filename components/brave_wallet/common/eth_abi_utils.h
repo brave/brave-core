@@ -17,8 +17,8 @@
 #include "brave/components/brave_wallet/common/eth_address.h"
 
 namespace brave_wallet::eth_abi {
-constexpr size_t kRowLength = 32;
-constexpr size_t kSelectorLength = 4;
+inline constexpr size_t kRowLength = 32;
+inline constexpr size_t kSelectorLength = 4;
 
 using Span = base::span<const uint8_t>;
 using Span4 = base::span<const uint8_t, kSelectorLength>;

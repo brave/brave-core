@@ -10,7 +10,7 @@ namespace brave_rewards::internal::database::migration {
 
 // Migration 39 adds a `web3_url` field to the publisher banner table in order
 // to support P2P creator contributions.
-constexpr char v39[] = R"sql(
+inline constexpr char v39[] = R"sql(
   ALTER TABLE server_publisher_banner ADD COLUMN web3_url TEXT;
 )sql";
 

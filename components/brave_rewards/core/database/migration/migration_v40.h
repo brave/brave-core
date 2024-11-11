@@ -9,7 +9,7 @@
 namespace brave_rewards::internal::database::migration {
 
 // Migration 40 removes the pending contributions table.
-constexpr char v40[] = R"sql(
+inline constexpr char v40[] = R"sql(
   DROP TABLE IF EXISTS pending_contribution;
   DROP TABLE IF EXISTS processed_publisher;
 )sql";
