@@ -155,10 +155,9 @@ std::string ControlTypeToString(ControlType type) {
       return "block_third_party";
     case ControlType::DEFAULT:
       return "default";
-    default:
-      NOTREACHED_IN_MIGRATION();
-      return "invalid";
   }
+  NOTREACHED_NORETURN() << "Unexpected value for ControlType: "
+                        << base::to_underlying(type);
 }
 
 ControlType ControlTypeFromString(const std::string& string) {
@@ -170,10 +169,8 @@ ControlType ControlTypeFromString(const std::string& string) {
     return ControlType::BLOCK_THIRD_PARTY;
   } else if (string == "default") {
     return ControlType::DEFAULT;
-  } else {
-    NOTREACHED_IN_MIGRATION();
-    return ControlType::DEFAULT;
   }
+  NOTREACHED_NORETURN();
 }
 
 void SetBraveShieldsEnabled(HostContentSettingsMap* map,
@@ -495,8 +492,8 @@ void SetCookieControlType(HostContentSettingsMap* map,
             static_cast<int>(
                 content_settings::CookieControlsMode::kBlockThirdParty));
         break;
-      default:
-        NOTREACHED_IN_MIGRATION() << "Invalid ControlType for cookies";
+      case ControlType::DEFAULT:
+        NOTREACHED_NORETURN() << "Invalid ControlType for cookies";
     }
     return;
   }
@@ -531,7 +528,7 @@ void SetCookieControlType(HostContentSettingsMap* map,
                                        : CONTENT_SETTING_BLOCK);
       break;
     case ControlType::DEFAULT:
-      NOTREACHED_IN_MIGRATION() << "Invalid ControlType for cookies";
+      NOTREACHED() << "Invalid ControlType for cookies";
   }
 }
 
@@ -908,7 +905,7 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
     case ControlType::BLOCK:
       return brave_shields::mojom::FarblingLevel::MAXIMUM;
     case ControlType::BLOCK_THIRD_PARTY:
-      NOTREACHED();
+      NOTREACHED_NORETURN();
     case ControlType::DEFAULT:
       return brave_shields::mojom::FarblingLevel::BALANCED;
   }
