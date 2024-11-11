@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import styles from './style.module.scss'
+import { getLocale } from '@brave/brave-ui'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -59,7 +60,7 @@ function Block(props: CodeBlockProps) {
           <div slot="icon-before">
             <Icon className={styles.icon} name={hasCopied ? 'check-circle-outline' : 'copy'} />
           </div>
-          <div>Copy code</div>
+          <div>{getLocale('copyButtonLabel')}</div>
         </Button>
       </div>
       <SyntaxHighlighter
