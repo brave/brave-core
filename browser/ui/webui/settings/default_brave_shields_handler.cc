@@ -111,8 +111,9 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getHideBlockAllCookieTogle",
-      base::BindRepeating(&DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag,
-                          base::Unretained(this)));
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag,
+          base::Unretained(this)));
 
   content_settings_observation_.Observe(
       HostContentSettingsMapFactory::GetForProfile(profile_));
@@ -229,12 +230,13 @@ void DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag(
       HostContentSettingsMapFactory::GetForProfile(profile_),
       CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
 
-    const bool block_all_cookies_feature_enabled = base::FeatureList::IsEnabled(
-          brave_shields::features::kBlockAllCookiesToggle);
+  const bool block_all_cookies_feature_enabled = base::FeatureList::IsEnabled(
+      brave_shields::features::kBlockAllCookiesToggle);
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0].Clone(),
-                            base::Value(setting != ControlType::BLOCK && !block_all_cookies_feature_enabled));
+                            base::Value(setting != ControlType::BLOCK &&
+                                        !block_all_cookies_feature_enabled));
 }
 
 void DefaultBraveShieldsHandler::SetCookieControlType(

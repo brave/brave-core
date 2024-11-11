@@ -99,6 +99,13 @@
           FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
       },                                                                       \
       {                                                                        \
+          "block-all-cookies-toggle",                                          \
+          "If the feature flag is on, we show the Block all Cookies toggle",   \
+          "If the feature flag is on, we show the Block all Cookies toggle",   \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBlockAllCookiesToggle), \
+      },                                                                       \
+      {                                                                        \
           "https-only-mode",                                                   \
           "Enable HTTPS By Default Strict Mode",                               \
           "Connect to all websites using HTTPS and display an intersitital "   \

@@ -661,8 +661,7 @@
           "If the feature flag is on, we show the Block all Cookies toggle",   \
           "If the feature flag is on, we show the Block all Cookies toggle",   \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_shields::features::kBlockAllCookiesToggle),                \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBlockAllCookiesToggle), \
       },                                                                       \
       {                                                                        \
           "brave-super-referral",                                              \
