@@ -171,8 +171,8 @@ void SparkleVersionUpdater::UpdateStatus(NSDictionary* dictionary) {
       break;
 
     default:
-      // We are not currently interested in this status.
-      return;
+      // SparkleGlue only posts the above values.
+      NOTREACHED();
   }
 
   // If there are any detailed error messages being passed along by Keystone,
