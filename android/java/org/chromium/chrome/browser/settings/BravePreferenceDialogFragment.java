@@ -23,11 +23,12 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.base.Log;
 
 public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompat {
     public static final String TAG = "BravePreferenceDialogFragment";
     private RadioGroup mRadioGroup;
-    private CharSequence[] mDialogEntries;
+    private BraveDialogPreference.DialogEntry[] mDialogEntries;
     private BraveDialogPreference dialogPreference;
     private Preference.OnPreferenceChangeListener onPreferenceChangeListener;
     private int newValue;
@@ -172,14 +173,16 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
         subTitle.refreshDrawableState();
         mRadioGroup = view.findViewById(R.id.options);
         mDialogEntries = dialogPreference.getDialogEntries();
-
+Log.i("WEBCOMPAT", "Bind prefs dialog, onBindDialogView(.size:" + mDialogEntries.length);
         int index = 0;
 
-        for (CharSequence entry : mDialogEntries) {
+        for (BraveDialogPreference.DialogEntry entry : mDialogEntries) {
+            Log.i("WEBCOMPAT", "entry: " + entry.getEntryText() + " Visibility:" + entry.isVisible());
             RadioButton radioButton = new RadioButton(getContext());
             radioButton.setLayoutParams(setParams());
             radioButton.setTextSize(15);
-            radioButton.setText(entry);
+            radioButton.setText(entry.getEntryText());
+            radioButton.setVisibility(entry.isVisible() ? View.VISIBLE : View.GONE);
             radioButton.setId(index);
             if (mRadioGroup != null) {
                 mRadioGroup.addView(radioButton);
