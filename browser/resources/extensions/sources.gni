@@ -3,23 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_extensions_web_component_files = [ "brave_item_list_more_items.ts" ]
-
 brave_extensions_non_web_component_files = [
   "brave_overrides/extensions_detail_view.ts",
   "brave_overrides/extensions_toolbar.ts",
   "brave_overrides/index.ts",
   "brave_overrides/side_bar.ts",
+  "brave_item_list_more_items.ts",
+  "brave_item_list_more_items.html.ts",
 ]
+
+brave_extensions_css_files = [ "brave_item_list_more_items.css" ]
 
 brave_extensions_preprocess_extra_deps =
     [ "//brave/browser/resources/extensions:preprocess" ]
 
-brave_extensions_local_ts_files = brave_extensions_web_component_files +
-                                  brave_extensions_non_web_component_files
-
-brave_extensions_local_html_files = []
-foreach(component_file, brave_extensions_web_component_files) {
-  brave_extensions_local_html_files +=
-      [ string_replace(component_file, ".ts", ".html") ]
-}
+brave_extensions_local_ts_files = brave_extensions_non_web_component_files
+brave_extensions_local_html_css_files = brave_extensions_css_files
