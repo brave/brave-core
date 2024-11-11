@@ -462,7 +462,9 @@
 <translation id="9055546041146396417">ይህ ገጽ ተሰብሮ ከሆነ መከላከያዎችን በማውረድ ይሞክሩ።</translation>
 <translation id="1209739344687072997">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="8510478288840333677">ይህ ገጽ ከጋሻዎች ጋር በትክክል እንደማይሰራ የ Brave አዘጋጆች እንዲያውቁት ያድርጉ፡</translation>
-<translation id="5429200298326665264">ማስታወሻ፡ ይህ የድረ ገጽ አድራሻ ከ Brave ስሪት ቁጥርዎ እና ከ  IP አድራሻዎ ጋር ይቀርባል(ተቀማጭ አይደረግም)።</translation>
+<translation id="8759753423332885148">ተጨማሪ ይማሩ</translation>
+<translation id="721949491455392748">የአሁኑን ገጽ ስክሪንሾት ያካትታል</translation>
+<translation id="8459191579769999214">ቅጽበታዊ የገጽ እይታን ተመልከት</translation>
 <translation id="5299848999918506028">እናመሰግናለን!</translation>
 <translation id="76550953340008122">ይህ ጽ የሆነ ችግር ያለበት መሆኑን የ Brave አዘጋጆች እንዲያውቁ በማድረግዎ እናመሰግናለን። ችግሩን ለመፍታት የተቻለንን ጥረት እናደርጋለን!</translation>
 <translation id="650318023204990401">የጎለበቱ ቁጥጥሮች</translation>
@@ -675,7 +677,6 @@
 <translation id="5747552184818312860">ጊዜው አልፎበታል</translation>
 <translation id="1656814355341174523">የደንበኝነት ምዝገባን ያቀናብሩ</translation>
 <translation id="1919008675977575793">አገልጋይ</translation>
-<translation id="4812684235631257312">አስተናጋጅ</translation>
 <translation id="5646376287012673985">አካባቢ</translation>
 <translation id="8375573361134671513">ውቅረት ዳግም አስጀምር</translation>
 <translation id="850405162932416400">የVPN ድጋፍ</translation>
@@ -1008,8 +1009,6 @@
 <translation id="622372328961630111">እርስዎ ያሉዎትን NFTs ወደ ዋሌቱ የሶስተኛ ወገን APIsን በመጠቀም በራስ ሰር ያክሉ። <ph name="BEGIN_LINK_1"/>ተጨማሪ ይወቁ።<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">የመፈለጊያ ሰንጠረዥ ጠቋሚ መለያ፦</translation>
 <translation id="7659483790930268440">የመፈለጊያ ሰንጠረዥ ጠቋሚ አድራሻ፦</translation>
-<translation id="4932733599132424254">ዕለት</translation>
-<translation id="346505172740911461">የገበያ ዋጋ</translation>
 <translation id="5494920125229734069">ሁሉንም ይመርጣል</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">በBrave Wallet ይግቡ</translation>
@@ -1092,7 +1091,6 @@
 <translation id="2389665228467129817">ረዘም ላለ ጊዜ ይወያዩ</translation>
 <translation id="4314705522985583059">ረዘም ላለ ንግግሮች ከፍ ያለ የዋጋ ገደቦችን ያግኙ።</translation>
 <translation id="6365289557497555234">ሁሉም የደንበኝነት ምዝገባዎች በራስ-የታደሱ ናቸው ነገርግን ከመታደሳቸው በፊት በማንኛውም ጊዜ ሊሰረዙ ይችላሉ።</translation>
-<translation id="6637015365469044269">አሁን አሻሽል</translation>
 <translation id="614530507403667291">ነባሪ ሞዴል ለአዳዲስ ውይይቶች</translation>
 <translation id="4071849832011229600">ነባሪ ሞዴል</translation>
 <translation id="4185473179105062442">BATን በቀጥታ በራስ ወደሚተዳደር የ crypto አድራሻ ይቀበሉ</translation>

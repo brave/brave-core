@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">Fes saber als desenvolupadors de Brace que aquesta web no funciona de forma adequada amb els Escuts:</translation>
 <translation id="3110968385867124099">No es pot informar d'aquesta pàgina perquè no s'ha distribuït a través de HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Aquesta pàgina és una pàgina web local i no és elegible per informar.</translation>
-<translation id="3645455863322075098">Aquesta pàgina és una pàgina d'error i no és elegible per informar.</translation>
-<translation id="105644511106871142">Gràcies per ajudar a fer Brave millor per a tothom. Aquest informe només enviarà la informació necessària perquè puguem corregir aquest lloc.</translation>
+<translation id="8740275226259417070">Això és una pàgina d'error. No es pot informar com a lloc trencat.</translation>
+<translation id="6806248680442980382">Gràcies per ajudar a fer Brave millor per a tothom. Aquest informe només contindrà la informació necessària perquè puguem corregir aquest lloc.</translation>
 <translation id="6476216365964140603">Informació addicional (opcional)</translation>
 <translation id="6145852496180774737">Contacta amb mi a través de: (opcional)</translation>
 <translation id="7616645803364270729">Correu electrònic, Twitter, etc.</translation>
@@ -462,6 +462,8 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6318437367327684789">per sempre</translation>
 <translation id="8797999629784150206">Pots canviar <ph name="SITE_PERMISSIONS"/> en qualsevol moment. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">permís del lloc</translation>
+<translation id="7222371875290545057">Voleu permetre obrir converses d'IA Leo a Brave?</translation>
+<translation id="1518915449477235311">Voleu permetre que <ph name="URL"/> obri converses d'IA Leo a Brave?</translation>
 <translation id="4355784577209159847">Permet l'ús de galetes de tercers per a l'inici de sessió de Google anterior</translation>
 <translation id="5770656036486891920"><ph name="URL"/> vol utilitzar galetes de tercers per a l'antic inici de sessió de Google</translation>
 <translation id="6053826678715267477">Permetre l'accés als recursos del host local</translation>
@@ -694,6 +696,26 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="957921474773060718">Propera contribució:</translation>
 <translation id="351973834053818251">Contribucions recurrents</translation>
 <translation id="7751260505918304024">Mostra-ho tot</translation>
+<translation id="2894334939992402676">Més informació sobre els mètodes de contribució</translation>
+<translation id="4114667046481794032">Quantitat de la contribució</translation>
+<translation id="2628057126110572782">Actualment, aquest creador només accepta contribucions a través dels següents mètodes:</translation>
+<translation id="7396847690567283204">Saldo de Recompenses</translation>
+<translation id="3253225298092156258">No disponible</translation>
+<translation id="8028314716653189513">Trieu el mètode que voleu utilitzar per contribuir al Programari de Brave:</translation>
+<translation id="4094286757932277327">Cartera amb custòdia</translation>
+<translation id="1511998469385905184">Podeu tornar-ho a provar més tard.</translation>
+<translation id="7550470870580166294">Fons insuficients</translation>
+<translation id="7020972866926315918">Sembla que heu tancat la sessió de <ph name="PROVIDER"/> per Recompenses de Brave. Torneu a iniciar sessió per continuar.</translation>
+<translation id="1166682575529520472">Mensual</translation>
+<translation id="7138678301420049075">Altres</translation>
+<translation id="2134931506717037391">Enviar <ph name="AMOUNT"/> BAT</translation>
+<translation id="4791565605790056151">Enviant contribució</translation>
+<translation id="8251969358165471584">Cartera Web3</translation>
+<translation id="7160424977552599351">Utilitzeu la cartera Web3</translation>
+<translation id="6369571967625114920">Els Anuncis Privats de Brave encara no estan disponibles a la vostra regió.</translation>
+<translation id="5309155375926073606">Sí, també m'agradaria contribuir al Cercador de Brave y participar al <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">Aporta dades de cerca i navegació anònimes per perfeccionar el cercador de Brave amb Web Discovery Project. És completament de codi obert.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">compte</translation>
 <translation id="4822132585477111396">cadena ID</translation>
 <translation id="3269475789479462358">domini</translation>
@@ -796,7 +818,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6517332033658428773">Revisa l'intercanvi</translation>
 <translation id="8692596799753687794">Tria el proveïdor de cotitzacions</translation>
 <translation id="463712644600982655">Cada agregador proporciona cotitzacions mitjançant l'ús de liquiditat de la seva API. Reuneixen informació del preu de diversos canvis i ofereixen preus en funció d'aquestes dades.</translation>
-<translation id="3253225298092156258">No disponible</translation>
 <translation id="473775607612524610">Actualitza</translation>
 <translation id="4389658703251593158"><ph name="PROVIDER_NAME"/> no admet aquest parell</translation>
 <translation id="1176173785350238153">Canvia el proveïdor</translation>
@@ -1056,6 +1077,8 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="793994607260936590">primer</translation>
 <translation id="4709524402122994378">transaccions</translation>
 <translation id="4591079278963448049">El compte token associat encara no existeix. Es gastarà una petita quantitat de SOL per crear-lo i finançar-lo.</translation>
+<translation id="3240773103344793224">S'ha sol·licitat un canvi de propietat del compte</translation>
+<translation id="8041423758956015568">Aquesta transacció reassignarà la propietat del compte a un programa nou. Aquesta acció és irreversible i pot provocar la pèrdua de fons.</translation>
 <translation id="1426320910664514906">Límit de gas</translation>
 <translation id="1229774280326250926">Gas premium</translation>
 <translation id="148169246131967347">Límit de la tarifa de gas</translation>
@@ -1277,10 +1300,24 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5722321409991816187">Mostra els NFT de correu brossa</translation>
 <translation id="2588752742385122166">Configuracions de la cartera</translation>
 <translation id="7662492121143629144">Tots els comptes</translation>
+<translation id="8845001906332463065">Obtenir ajuda</translation>
+<translation id="6248202915200795128">Està trigant més del que esperaveu?</translation>
+<translation id="5417904796609871601">Visualitzar a l'activitat</translation>
+<translation id="8915839655070878476">Podeu descartar aquesta finestra de forma segura.</translation>
+<translation id="7020017785602386950">Enviant <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> a <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> s'ha enviat al compte <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269">Intercanviant <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> a <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> a <ph name="NETWORK"/></translation>
+<translation id="312867981877298982">La quantitat de <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> s'ha afegit al teu compte <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189">Unint <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> a <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042">No s'ha pogut <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
+<translation id="6990756606864308319">S'ha produït un error en intentar <ph name="SEND_SWAP_OR_BRIDGE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> a <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
+<translation id="6449575669814542383">Aprovant <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> a <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">Es crearà una transacció nova per a cancel·lar la transacció existent.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} transacció més pendent.}      other {{PENDING_TRANSACTIONS} transaccions més pendents.}
+    }</translation>
 <translation id="6954150712710630841">S'ha enviat la transacció</translation>
-<translation id="905855245798176174">La transacció s'ha enviat correctament a la xarxa i està a l'espera de confirmació.</translation>
 <translation id="619697073289995370">Transacció signada</translation>
-<translation id="7493732383203109611">La transacció ha estat signada i la DApp l'enviarà a la xarxa</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> s'ha tornat a la teva cartera</translation>
 <translation id="4577432071459867390">Transacció fallida</translation>
 <translation id="4359235192593147041">La transacció ha fallat a causa d'un gran moviment de preus. Augmenta la tolerància a l'error per tenir èxit a un major moviment de preus.</translation>
@@ -1711,7 +1748,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1958146856582208323">Transferència de token</translation>
 <translation id="3550219298671597013">Transfereix NFT</translation>
 <translation id="8043066678623588950">FIL endavant</translation>
-<translation id="7138678301420049075">Altres</translation>
 <translation id="8703556909820882288">Transferència de NFT comprimida</translation>
 <translation id="2713141960460256091">Signa i envia transacció de DApp</translation>
 <translation id="6387730345715997739">Signa transacció de DApp</translation>
@@ -1793,7 +1829,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7056969230130642253">Ja estàs al dia</translation>
 <translation id="7292242212818928219">Nou contingut disponible. Vols tornar a carregar?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Ordres ràpides</translation>
 <translation id="7481312909269577407">Endavant</translation>
 <translation id="1272079795634619415">Atura</translation>
 <translation id="302781076327338683">Torna a carregar ometent la memòria cau</translation>
@@ -1946,10 +1981,12 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1344005710343072293">Aquesta combinació s'està utilitzant per a <ph name="COMMAND"/>. Si la deses, substituirà la drecera existent.</translation>
 <translation id="831931573200952705">Aquesta combinació s'està utilitzant per a <ph name="COMMAND"/> i no es pot modificar.</translation>
 <translation id="3537006124004887164">Aquesta combinació s'està utilitzant per a <ph name="COMMAND"/> i no es pot modificar. Prova de modificar-la mitjançant les "Dreceres d'aplicació" a la configuració del sistema.</translation>
+<translation id="8536713137312218707">Ordres ràpides</translation>
 <translation id="712598284361781729">Nova vista dividida</translation>
 <translation id="1130188644637295274">Obrir la vista dividida</translation>
 <translation id="6459036216700972269">Elimineu la divisió de pestanyes</translation>
 <translation id="4235382917338421035">Intercanvia la posició de les pestanyes</translation>
+<translation id="4144468798716165316">Ordres ràpides</translation>
 <translation id="3617523374417810198">Nova vista dividida</translation>
 <translation id="8571323456914890254">Obrir la vista dividida</translation>
 <translation id="5329136173514538969">Elimineu la divisió de pestanyes</translation>
@@ -2012,7 +2049,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="1691256669639196606">Gestiona la subscripció</translation>
 <translation id="2304783958703511257">Configuració avançada</translation>
 <translation id="3037594989275592390">Models de llenguatge</translation>
-<translation id="6637015365469044269">Millora ara la subscripció</translation>
 <translation id="5543505256451301851">Prova 7 dies gratis</translation>
 <translation id="849535826888024304">S'ha arribat al límit de la taxa de resposta</translation>
 <translation id="2252128900328632803">Has arribat al límit de la tarifa per Leo. Desbloqueja una taxa de resposta més alta subscrivint-te a Premium, o torna-ho a provar més tard.</translation>
@@ -2023,7 +2059,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/mes</translation>
 <translation id="5151923271944811339">Canvia al model gratuït</translation>
 <translation id="5474757891469990756">Allibera tot el poder de Leo amb Premium:</translation>
-<translation id="5552332211527367850">Accés prioritari a models potents amb diferents habilitats.</translation>
+<translation id="3453542753968940696">Accés prioritari a models potents amb diferents habilitats.</translation>
 <translation id="5031778211368112461">Accedeix a models més adequats per a tasques creatives i generació de continguts.</translation>
 <translation id="298783097210745222">Obtingues respostes més precises per a converses més detallades.</translation>
 <translation id="4314705522985583059">Aconsegueix límits de taxa més alts per a converses més llargues.</translation>
@@ -2052,6 +2088,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="8712637175834984815">D'acord</translation>
 <translation id="1093419424466417703">La pàgina és massa llarga per a Leo. Podria faltar part del context de la conversa. Leo ha pogut llegir el <ph name="PERCENTAGE"/> dels continguts de la pàgina.</translation>
 <translation id="2186990448773134544">El contingut de la pàgina s'ha perfeccionat mitjançant l'extracció de la informació més rellevant de la pàgina perquè era massa llarg per a Leo.</translation>
+<translation id="5140068729857132378">Estem cercant les parts rellevants de la pàgina web...</translation>
 <translation id="4370698775470316661">Aquesta conversa és massa llarga i no pot continuar. Pot ser que hi hagi altres models disponibles amb els quals Leo pugui mantenir la precisió en converses més llargues.</translation>
 <translation id="5719170755629028558">Millora de la teva resposta amb el cercador de Brave…</translation>
 <translation id="5794962229997281366">Millora de la cerca de respostes per a <ph name="SEARCH_TERMS"/>.</translation>

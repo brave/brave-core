@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Selamat Datang ke Brave</translation>
 <translation id="4117451092682672487">Privasi. Dipermudahkan.</translation>
 <translation id="7909375417585209817">Apabila Brave ditetapkan sebagai lalai, setiap pautan yang anda ketik akan dibuka dengan perlindungan privasi Brave.</translation>
+<translation id="3737878115109582442">Tambah widget carian</translation>
+<translation id="6199413390010319240">Gunakan Brave dengan mudah untuk meneroka web dengan lebih pantas.</translation>
+<translation id="4338600611020922010">Tambahkan pada skrin utama</translation>
 <translation id="7370959926683925817">Sekat iklan. Simpan data. Setiap hari.</translation>
 <translation id="7281027579943912834">Dengan Brave sebagai pelayar lalai, setiap pautan yang anda ketik mendapat perlindungan sekatan iklan Brave. Setiap halaman, video dan strim.</translation>
 <translation id="5148943178722443958">Bantu usaha menambah baik Brave.</translation>
@@ -483,7 +486,11 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="9055546041146396417">Sekiranya laman ini nampaknya rosak, cuba Shields.</translation>
 <translation id="1209739344687072997">Laporkan laman yang  terputus-putus</translation>
 <translation id="8510478288840333677">Beritahu pembangun Brave yang laman ini tidak berfungsi dengan baik dengan Shields:</translation>
-<translation id="5429200298326665264">Pemberitahuan: Alamat laman ini akan diserahkan dengan nombor versi Brave anda berserta dengan alamat IP anda (yang tidak akan disimpan).</translation>
+<translation id="1653405824851871276">Terima kasih kerana membantu dalam menambah baik Brave untuk semua pengguna. Laporan ini hanya akan mengandungi maklumat yang diperlukan untuk kami selesaikan isu pada laman ini. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Ketahui lebih lanjut</translation>
+<translation id="8740275226259417070">Ini ialah halaman ralat. Keadaan ini tidak boleh dilaporkan sebagai laman rosak.</translation>
+<translation id="721949491455392748">Sertakan tangkapan skrin halaman semasa</translation>
+<translation id="8459191579769999214">Lihat tangkapan skrin</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih kerana memberitahu pembangun Brave bahawa terdapat sesuatu yang tidak kena dengan laman ini. Kami akan melakukan yang terbaik untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kawalan lanjutan</translation>
@@ -662,6 +669,8 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="6284218950354553099">Hantar ping penggunaan harian secara automatik ke Brave</translation>
 <translation id="2181060149810222381">Ping peribadi ini membolehkan Brave menganggarkan pengguna aktif.</translation>
 <translation id="6725413948756358325">Nama Akaun</translation>
+<translation id="3240773103344793224">Perubahan pemilikan akaun telah diminta</translation>
+<translation id="8041423758956015568">Transaksi ini akan memberikan semula pemilikan akaun kepada program baharu. Tindakan ini tidak boleh dibalikkan dan boleh mengakibatkan kehilangan dana.</translation>
 <translation id="6062431965141524986">Anda boleh mencipta akaun kedua dengan mengimport kunci peribadi anda.</translation>
 <translation id="3952797765659730604">Masukkan, tampal atau import fail rentetan kunci peribadi atau JSON.</translation>
 <translation id="569068482611873351">Import...</translation>
@@ -728,7 +737,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="5747552184818312860">Tamat tempoh</translation>
 <translation id="1656814355341174523">Urus Langganan</translation>
 <translation id="1919008675977575793">Pelayan</translation>
-<translation id="4812684235631257312">Hos</translation>
 <translation id="5646376287012673985">Lokasi</translation>
 <translation id="8375573361134671513">Set Semula Konfigurasi</translation>
 <translation id="850405162932416400">Sokongan VPN</translation>
@@ -755,6 +763,8 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="5431902940483264007">Optimum</translation>
 <translation id="6527596624419285047">Gunakan pelayan tersedia yang terbaik</translation>
 <translation id="6789157560111825412">Pelayan yang Tersedia</translation>
+<translation id="5823953367746119927">Wilayah pelayan</translation>
+<translation id="6991535320595227154">Pelayan <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Pilih Isu</translation>
 <translation id="6687228121145903051">Tidak dapat bersambung ke VPN (Ralat lain)</translation>
 <translation id="9184988385244077767">Tiada internet apabila disambungkan</translation>
@@ -1079,8 +1089,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="622372328961630111">Tambahkan NFT yang anda miliki secara automatik pada dompet menggunakan API pihak ketiga. <ph name="BEGIN_LINK_1"/>Ketahui lebih lanjut.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Akaun Jadual Carian Alamat:</translation>
 <translation id="7659483790930268440">Indeks Jadual Carian Alamat:</translation>
-<translation id="4932733599132424254">Tarikh</translation>
-<translation id="346505172740911461">Harga Pasaran</translation>
 <translation id="5494920125229734069">Pilih semua</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Log masuk dengan Brave Wallet</translation>
@@ -1095,6 +1103,8 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6165101586663336913">Tindakan menetapkan semula pembantu Leo akan memerlukan anda memilih untuk menggunakan Leo pada masa hadapan dan juga akan mengosongkan sejarah sembang anda. Tindakan mengosongkan sejarah sembang anda akan memadamkan semua perbualan anda sebelum ini dengan Leo. Tindakan ini tidak boleh dibuat asal.</translation>
 <translation id="3692772534525889713">Kaitkan pembelian Play Store anda dengan akaun Brave anda untuk menggunakan Brave Leo pada peranti lain.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Satu tahun</translation>
+<translation id="2985392169397572983">NILAI TERBAIK</translation>
 <translation id="1166682575529520472">Bulanan</translation>
 <translation id="451189393813405346">Tanya Leo</translation>
 <translation id="7322560193401221004">Ingat kedudukan main semula fail</translation>
@@ -1163,7 +1173,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2389665228467129817">Sembang lebih lama</translation>
 <translation id="4314705522985583059">Dapatkan had kadar yang lebih tinggi untuk perbualan lebih lama.</translation>
 <translation id="6365289557497555234">Semua langganan dibaharui secara automatik tetapi boleh\ndibatalkan pada bila-bila masa sebelum dibaharui.</translation>
-<translation id="6637015365469044269">Naikkan taraf sekarang</translation>
+<translation id="5543505256451301851">Cuba 7 hari secara percuma</translation>
 <translation id="614530507403667291">Model lalai untuk perbualan baharu</translation>
 <translation id="4071849832011229600">Model lalai</translation>
 <translation id="4185473179105062442">Terima BAT terus ke alamat kripto jagaan diri</translation>

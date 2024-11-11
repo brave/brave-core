@@ -113,6 +113,7 @@
 <translation id="8722651357687610395">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
 <translation id="2370739752330685659">ภายหลัง</translation>
 <translation id="5100490448228945668">เปลี่ยนคอนเวอร์ชันการค้นหา Brave กด Enter เพื่อลบคำแนะนำนี้</translation>
+<translation id="6213208892248046484">เปลี่ยนไปใช้ Brave Search</translation>
 <translation id="9194637241566114638">ช่วยปรับปรุง <ph name="SEARCH_NAME"/> ด้วยการส่งข้อมูลการใช้งานแบบไม่ระบุชื่อ  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Search</translation>
 <translation id="8184318863960255706">ข้อมูลเพิ่มเติม</translation>
@@ -501,6 +502,9 @@
 <translation id="7181706637590665047">อย่าอนุญาตสิทธิ์เข้าถึงทรัพยากร Localhost</translation>
 <translation id="1336116824874668514">ไม่ได้รับอนุญาตให้เข้าถึงทรัพยากร Localhost</translation>
 <translation id="1485435696620658073">ได้รับอนุญาตให้เข้าถึงทรัพยากร Localhost</translation>
+<translation id="5794692721727586076">แชท Leo AI</translation>
+<translation id="8115153008662981040">เว็บไซต์สามารถขออนุญาตเพื่อเปิดแชทของ Leo AI ได้</translation>
+<translation id="1145070115730668595">ไม่อนุญาตให้เว็บไซต์เปิดแชทของ Leo AI ได้</translation>
 <translation id="6414370348346025511">การป้องกันมาตรฐานเปิดทำงาน</translation>
 <translation id="5565355416171743213">เริ่มใช้การซิงค์</translation>
 <translation id="4332558599726753990">ตั้งค่าการซิงค์</translation>
@@ -573,7 +577,7 @@
 <translation id="3128251601544028053">เมื่อคุณพิมพ์ในแถบที่อยู่หรือช่องค้นหา Brave จะส่งข้อมูลที่คุณพิมพ์ไปยังเครื่องมือค้นหาเริ่มต้นเพื่อรับคำแนะนำที่ดีขึ้น ซึ่งการกระทำนี้จะไม่สามารถใช้ได้ในหน้าต่างแบบส่วนตัว</translation>
 <translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
 <translation id="919715748352669592">จัดทำดัชนีเว็บไซต์ที่เป็นไปตามข้อกำหนดของ OpenSearch โดยอัตโนมัติ</translation>
-<translation id="842628013524824194">หน้าต่างทั่วไป - เครื่องมือค้นหาที่ใช้ในแถบที่อยู่</translation>
+<translation id="9195748375338942941">หน้าต่างทั่วไป - เครื่องมือค้นหาที่ใช้ในแถบที่อยู่</translation>
 <translation id="5324939009884545145">หน้าต่างส่วนตัว - เครื่องมือค้นหาที่ใช้ในแถบที่อยู่</translation>
 <translation id="6864914031231797928">อนุญาตการล็อกอินด้วย Google สำหรับส่วนขยาย</translation>
 <translation id="7878791177459550035">เราเตอร์สื่อจะเปิดใช้งานฟีเจอร์การส่งภาพในเบราว์เซอร์</translation>

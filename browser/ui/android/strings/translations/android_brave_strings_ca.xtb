@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Benvingut a Brave</translation>
 <translation id="4117451092682672487">La privacitat. Simplificada.</translation>
 <translation id="7909375417585209817">Si Brave és el teu navegador predeterminat, tots els enllaços en què cliquis s'obriran amb les proteccions de privacitat de Brave.</translation>
+<translation id="3737878115109582442">Afegeiu el giny de cerca</translation>
+<translation id="6199413390010319240">Tingueu Brave al teu abast per explorar el web amb més rapidesa.</translation>
+<translation id="4338600611020922010">Afegeix a pantalla d'inici</translation>
 <translation id="7370959926683925817">Bloqueja anuncis. Guarda les dades. Tots els dies.</translation>
 <translation id="7281027579943912834">Amb Brave per defecte, cada enllaç que toquis té la protecció de bloqueig d'anuncis de Brave. Cada pàgina, vídeo i flux.</translation>
 <translation id="5148943178722443958">Ajuda a millorar Brave.</translation>
@@ -483,7 +486,11 @@ Segur que vols continuar?</translation>
 <translation id="9055546041146396417">Si aquest lloc sembla que estigui trencat, prova de desactivar Escuts.</translation>
 <translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
 <translation id="8510478288840333677">Fes saber als desenvolupadors de Brave que aquesta web no funciona de forma adequada amb Escuts:</translation>
-<translation id="5429200298326665264">Nota: Aquesta adreça del lloc s'enviarà amb el teu número de versió de Brave i la teva adreça IP (que no es guardarà).</translation>
+<translation id="1653405824851871276">Gràcies per ajudar a fer Brave millor per a tothom. Aquest informe només contindrà la informació necessària perquè puguem corregir aquest lloc. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Més informació.</translation>
+<translation id="8740275226259417070">Això és una pàgina d'error. No es pot informar com a lloc trencat.</translation>
+<translation id="721949491455392748">Incloure una captura de pantalla de la pàgina actual</translation>
+<translation id="8459191579769999214">Veure la captura de pantalla</translation>
 <translation id="5299848999918506028">Gràcies!</translation>
 <translation id="76550953340008122">Gràcies per fer saber als desenvolupadors de Brave que hi ha un problema amb aquesta web. Farem tot el que puguem per arreglar-lo!</translation>
 <translation id="650318023204990401">Controls avançats</translation>
@@ -662,6 +669,8 @@ Segur que vols continuar?</translation>
 <translation id="6284218950354553099">Envia automàticament el ping d'ús diari a Brave</translation>
 <translation id="2181060149810222381">Aquest ping privat permet que Brave faci una estimació dels usuaris actius.</translation>
 <translation id="6725413948756358325">Nom del compte</translation>
+<translation id="3240773103344793224">S'ha sol·licitat un canvi de propietat del compte</translation>
+<translation id="8041423758956015568">Aquesta transacció reassignarà la propietat del compte a un programa nou. Aquesta acció és irreversible i pot provocar la pèrdua de fons.</translation>
 <translation id="6062431965141524986">Pots crear un compte secundari important la teva clau privada.</translation>
 <translation id="3952797765659730604">Introdueix, enganxa o importa el teu arxiu de cadena de clau privada o JSON.</translation>
 <translation id="569068482611873351">Importa...</translation>
@@ -728,7 +737,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="5747552184818312860">Data de caducitat</translation>
 <translation id="1656814355341174523">Gestiona la subscripció</translation>
 <translation id="1919008675977575793">Servidor</translation>
-<translation id="4812684235631257312">Amfitrió</translation>
 <translation id="5646376287012673985">Ubicació</translation>
 <translation id="8375573361134671513">Restableix la configuració</translation>
 <translation id="850405162932416400">Suport de VPN</translation>
@@ -755,6 +763,8 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="5431902940483264007">Òptim</translation>
 <translation id="6527596624419285047">Utilitza el millor servidor disponible</translation>
 <translation id="6789157560111825412">Servidors disponibles</translation>
+<translation id="5823953367746119927">Regió del servidor</translation>
+<translation id="6991535320595227154">Servidor <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Selecciona el problema</translation>
 <translation id="6687228121145903051">No s'ha pogut connectar a la VPN (Altres errors)</translation>
 <translation id="9184988385244077767">No hi havia Internet en connectar-se</translation>
@@ -1079,8 +1089,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="622372328961630111">Afegeix automàticament els NFT que tens en propietat a la cartera fent servir les API de tercers. <ph name="BEGIN_LINK_1"/>Més informació.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Compte de la taula de cerca d'adreces:</translation>
 <translation id="7659483790930268440">Índex de la taula de cerca d'adreces:</translation>
-<translation id="4932733599132424254">Data</translation>
-<translation id="346505172740911461">Preu de mercat</translation>
 <translation id="5494920125229734069">Selecciona-ho tot</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Inicia la sessió amb la cartera de Brave</translation>
@@ -1095,6 +1103,8 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="6165101586663336913">Per restablir l'assistent Leo, hauràs d'acceptar la utilització futura de Leo i també esborrar l'historial de xat. Quan esborris l'historial de xat se suprimiran també totes les converses anteriors amb Leo. Aquesta acció no es pot desfer.</translation>
 <translation id="3692772534525889713">Enllaça la compra de la Play Store al teu compte de Brave per utilitzar la Brave Leo en altres dispositius.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Un any</translation>
+<translation id="2985392169397572983">MILLOR VALOR</translation>
 <translation id="1166682575529520472">Mensual</translation>
 <translation id="451189393813405346">Pregunta-ho a Leo</translation>
 <translation id="7322560193401221004">Recorda la posició de reproducció del fitxer</translation>
@@ -1163,7 +1173,7 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="2389665228467129817">Xateja durant més temps</translation>
 <translation id="4314705522985583059">Aconsegueix límits de taxa més alts per a converses més llargues.</translation>
 <translation id="6365289557497555234">Totes les subscripcions es renoven automàticament, però es poden cancel·lar en qualsevol moment abans de la renovació.</translation>
-<translation id="6637015365469044269">Millora ara la subscripció</translation>
+<translation id="5543505256451301851">Prova 7 dies gratis</translation>
 <translation id="614530507403667291">Model predeterminal per a les converses noves</translation>
 <translation id="4071849832011229600">Model predeterminat</translation>
 <translation id="4185473179105062442">Rep BAT directament a una adreça de criptomoneda d'autocustòdia</translation>

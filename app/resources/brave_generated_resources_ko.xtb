@@ -113,6 +113,7 @@
 <translation id="8722651357687610395">Brave를 기본으로 설정</translation>
 <translation id="2370739752330685659">나중에</translation>
 <translation id="5100490448228945668">Brave 검색 전환을 닫고 Enter를 누르면 이 추천 항목을 제거합니다.</translation>
+<translation id="6213208892248046484">Brave 검색으로 전환</translation>
 <translation id="9194637241566114638">익명 사용 데이터를 보내 <ph name="SEARCH_NAME"/> 개선을 돕습니다.  <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave 검색</translation>
 <translation id="8184318863960255706">추가 정보</translation>
@@ -501,6 +502,9 @@
 <translation id="7181706637590665047">Localhost 리소스 액세스 허용 안 함</translation>
 <translation id="1336116824874668514">Localhost 리소스 액세스가 허용되지 않음</translation>
 <translation id="1485435696620658073">Localhost 리소스 액세스가 허용됨</translation>
+<translation id="5794692721727586076">레오 AI 채팅</translation>
+<translation id="8115153008662981040">사이트가 레오 AI 채팅 열기를 요청할 수 있음</translation>
+<translation id="1145070115730668595">사이트의 레오 AI 채팅 열기를 허용 안 함</translation>
 <translation id="6414370348346025511">표준 보호가 켜져 있습니다.</translation>
 <translation id="5565355416171743213">동기화 사용 시작</translation>
 <translation id="4332558599726753990">동기화 설정</translation>
@@ -573,7 +577,7 @@
 <translation id="3128251601544028053">주소창이나 검색창에 입력하면 입력하신 내용을 Brave가 기본 검색 엔진으로 보내 추천 결과를 개선합니다. 비공개 창에서는 사용이 불가합니다.</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
 <translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
-<translation id="842628013524824194">일반 창 - 주소 표시줄에 검색 엔진 사용</translation>
+<translation id="9195748375338942941">일반 창 - 주소 표시줄에 검색 엔진 사용.</translation>
 <translation id="5324939009884545145">비공개 창 - 주소 표시줄에 검색 엔진 사용</translation>
 <translation id="6864914031231797928">확장 프로그램에 대한 Google 로그인 허용</translation>
 <translation id="7878791177459550035">미디어 라우터가 브라우저 내  전송 기능을 활성화합니다.</translation>
