@@ -1637,32 +1637,38 @@ public class BrowserViewController: UIViewController {
 
     guard BraveVPN.vpnState.isPaywallEnabled else { return }
 
-    let vpnPaywallView = BraveVPNPaywallView(openVPNAuthenticationInNewTab: { [weak self] in
-      guard let self = self else { return }
+    let vpnPaywallView = BraveVPNPaywallView(
+      openVPNAuthenticationInNewTab: { [weak self] in
+        guard let self = self else { return }
 
-      self.popToBVC()
+        self.popToBVC()
 
-      self.openURLInNewTab(
-        .brave.braveVPNRefreshCredentials,
-        isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
-        isPrivileged: false
-      )
-    })
-
-    let navigationController = SettingsNavigationController(
-      rootViewController: UIHostingController(rootView: vpnPaywallView)
+        self.openURLInNewTab(
+          .brave.braveVPNRefreshCredentials,
+          isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
+          isPrivileged: false
+        )
+      },
+      installVPNProfile: { [weak self] in
+        guard let self = self else { return }
+        self.dismiss(animated: true) {
+          self.present(BraveVPNInstallViewController(), animated: true)
+        }
+      }
     )
-    navigationController.navigationBar.topItem?.leftBarButtonItem =
-      .init(
-        barButtonSystemItem: .cancel,
-        target: navigationController,
-        action: #selector(navigationController.done)
-      )
-    navigationController.modalPresentationStyle =
-      UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
 
-    DeviceOrientation.shared.changeOrientationToPortraitOnPhone()
-    present(navigationController, animated: true)
+    let vpnPaywallHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView).then {
+      $0.delegate = self
+    }
+    let navigationViewController = UINavigationController(
+      rootViewController: vpnPaywallHostingVC
+    )
+    if UIDevice.current.userInterfaceIdiom == .pad
+      && view.isLandscape
+    {
+      navigationViewController.modalPresentationStyle = .fullScreen
+    }
+    present(navigationViewController, animated: true)
   }
 
   func updateInContentHomePanel(_ url: URL?) {

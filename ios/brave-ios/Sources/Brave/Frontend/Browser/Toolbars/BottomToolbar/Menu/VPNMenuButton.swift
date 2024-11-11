@@ -20,7 +20,7 @@ struct VPNMenuButton: View {
   var description: String?
   /// A closure executed when the parent must display a VPN-specific view controller due to some
   /// user action
-  var displayVPNDestination: (UIViewController) -> Void
+  var displayVPNDestination: (BraveVPNPaywallHostingController) -> Void
   /// A closure executed when VPN is toggled and status is installed. This will be used to set
   /// current activity for user
   var enableInstalledVPN: () -> Void
@@ -28,6 +28,8 @@ struct VPNMenuButton: View {
   var displayAlert: (UIAlertController) -> Void
   /// A closure to open a URL.
   var openURL: (URL) -> Void
+  /// A closure to handle VPN profile installation
+  var installVPNProfile: () -> Void
 
   @State private var isVPNStatusChanging: Bool = BraveVPN.reconnectPending
   @State private var isVPNEnabled = BraveVPN.isConnected
@@ -71,10 +73,12 @@ struct VPNMenuButton: View {
       let vpnPaywallView = BraveVPNPaywallView(
         openVPNAuthenticationInNewTab: {
           openURL(.brave.braveVPNRefreshCredentials)
+        },
+        installVPNProfile: {
+          installVPNProfile()
         }
       )
-      let vpnHostingVC = BraveVPNPaywallHostingViewController(rootView: vpnPaywallView)
-      vpnHostingVC.delegate = self
+      let vpnHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView)
       displayVPNDestination(vpnHostingVC)
     case .purchased:
       isVPNStatusChanging = true
@@ -161,94 +165,5 @@ struct VPNMenuButton: View {
       .padding(.vertical, description != nil ? 5 : 0)
     }
     .foregroundColor(Color(.braveLabel))
-  }
-}
-
-extension VPNMenuButton: BraveVPNPaywallHostingViewControllerDelegate {
-  func deviceOrientationChanged() {
-    let vpnPaywallView = BraveVPNPaywallView(
-      openVPNAuthenticationInNewTab: {
-        openURL(.brave.braveVPNRefreshCredentials)
-      }
-    )
-    let vpnHostingVC = BraveVPNPaywallHostingViewController(rootView: vpnPaywallView)
-    vpnHostingVC.delegate = self
-    displayVPNDestination(vpnHostingVC)
-  }
-}
-
-protocol BraveVPNPaywallHostingViewControllerDelegate {
-  func deviceOrientationChanged()
-}
-
-class BraveVPNPaywallHostingViewController: UIHostingController<BraveVPNPaywallView> {
-
-  var delegate: BraveVPNPaywallHostingViewControllerDelegate?
-
-  @available(*, unavailable)
-  required init(coder: NSCoder) {
-    fatalError()
-  }
-
-  override init(rootView: BraveVPNPaywallView) {
-    super.init(rootView: rootView)
-  }
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    navigationItem.do {
-      let appearance = UINavigationBarAppearance().then {
-        $0.configureWithDefaultBackground()
-        $0.backgroundColor = UIColor(braveSystemName: .primitivePrimary10)
-        $0.titleTextAttributes = [.foregroundColor: UIColor.white]
-        $0.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-      }
-      $0.standardAppearance = appearance
-      $0.scrollEdgeAppearance = appearance
-
-      $0.rightBarButtonItem = UIBarButtonItem(
-        title: Strings.VPN.restorePurchases,
-        style: .plain,
-        target: self,
-        action: #selector(tappedRestore)
-      )
-
-      $0.leftBarButtonItem = UIBarButtonItem(
-        title: Strings.CancelString,
-        style: .plain,
-        target: self,
-        action: #selector(tappedCancel)
-      )
-    }
-
-    navigationController?.navigationBar.tintColor = .white
-
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(deviceOrientationChanged),
-      name: UIDevice.orientationDidChangeNotification,
-      object: nil
-    )
-  }
-
-  // MARK: Actions
-
-  @objc private func tappedRestore() {
-    Task { @MainActor in
-      await rootView.restorePurchase()
-    }
-  }
-
-  @objc private func tappedCancel() {
-    dismiss(animated: true)
-  }
-
-  @objc func deviceOrientationChanged() {
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      dismiss(animated: true) {
-        self.delegate?.deviceOrientationChanged()
-      }
-    }
   }
 }

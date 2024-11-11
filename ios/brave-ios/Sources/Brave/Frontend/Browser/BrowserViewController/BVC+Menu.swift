@@ -24,20 +24,22 @@ extension BrowserViewController {
           == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
         vpnProductInfo: self.vpnProductInfo,
         displayVPNDestination: { [unowned self, unowned menuController] vc in
+          vc.delegate = self
           if UIDevice.current.userInterfaceIdiom == .pad
             && UIDevice.current.orientation.isPortrait
           {
             vc.title = Strings.VPN.vpnName
             menuController.presentInnerMenu(vc)
           } else {
+            let navigationController = UINavigationController(rootViewController: vc)
             if UIDevice.current.userInterfaceIdiom == .pad {
               if UIDevice.current.orientation.isLandscape {
-                vc.modalPresentationStyle = .fullScreen
+                navigationController.modalPresentationStyle = .fullScreen
               }
-              menuController.present(vc, animated: true)
+              menuController.present(navigationController, animated: true)
             } else {
               self.dismiss(animated: true) {
-                self.present(vc, animated: true)
+                self.present(navigationController, animated: true)
               }
             }
           }
@@ -63,6 +65,9 @@ extension BrowserViewController {
             isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
             isPrivileged: false
           )
+        },
+        installVPNProfile: { [unowned self] in
+          self.present(BraveVPNInstallViewController(), animated: true)
         }
       )
 
@@ -98,20 +103,22 @@ extension BrowserViewController {
         vpnProductInfo: self.vpnProductInfo,
         description: Strings.OptionsMenu.braveVPNItemDescription,
         displayVPNDestination: { [unowned self, unowned menuController] vc in
+          vc.delegate = self
           if UIDevice.current.userInterfaceIdiom == .pad
             && UIDevice.current.orientation.isPortrait
           {
             vc.title = Strings.VPN.vpnName
             menuController.presentInnerMenu(vc)
           } else {
+            let navigationController = UINavigationController(rootViewController: vc)
             if UIDevice.current.userInterfaceIdiom == .pad {
               if UIDevice.current.orientation.isLandscape {
-                vc.modalPresentationStyle = .fullScreen
+                navigationController.modalPresentationStyle = .fullScreen
               }
-              menuController.present(vc, animated: true)
+              menuController.present(navigationController, animated: true)
             } else {
               self.dismiss(animated: true) {
-                self.present(vc, animated: true)
+                self.present(navigationController, animated: true)
               }
             }
           }
@@ -128,16 +135,16 @@ extension BrowserViewController {
           self.popToBVC()
           self.present(alert, animated: true)
         },
-        openURL: { [weak self] url in
-          guard let self = self else { return }
-
-          popToBVC()
-
+        openURL: { [unowned self] url in
+          self.popToBVC()
           self.openURLInNewTab(
             url,
             isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
             isPrivileged: false
           )
+        },
+        installVPNProfile: { [unowned menuController] in
+          menuController.pushInnerMenu(BraveVPNInstallViewController())
         }
       )
 

@@ -83,22 +83,37 @@ class BrowserNavigationHelper {
   func openVPNBuyScreen(iapObserver: BraveVPNInAppPurchaseObserver) {
     guard BraveVPN.vpnState.isPaywallEnabled else { return }
 
-    let vpnPaywallView = BraveVPNPaywallView(openVPNAuthenticationInNewTab: { [weak bvc] in
-      guard let bvc = bvc else { return }
+    let vpnPaywallView = BraveVPNPaywallView(
+      openVPNAuthenticationInNewTab: { [weak bvc] in
+        guard let bvc = bvc else { return }
 
-      bvc.popToBVC()
+        bvc.popToBVC()
 
-      bvc.openURLInNewTab(
-        .brave.braveVPNRefreshCredentials,
-        isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
-        isPrivileged: false
-      )
-    })
-
-    open(
-      UIHostingController(rootView: vpnPaywallView),
-      doneButton: DoneButton(style: .done, position: .left)
+        bvc.openURLInNewTab(
+          .brave.braveVPNRefreshCredentials,
+          isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
+          isPrivileged: false
+        )
+      },
+      installVPNProfile: { [weak bvc] in
+        guard let bvc = bvc else { return }
+        bvc.popToBVC()
+        bvc.openInsideSettingsNavigation(with: BraveVPNInstallViewController())
+      }
     )
+
+    let vpnPaywallHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView).then {
+      $0.delegate = bvc
+    }
+    let navigationViewController = UINavigationController(
+      rootViewController: vpnPaywallHostingVC
+    )
+    if UIDevice.current.userInterfaceIdiom == .pad
+      && UIDevice.current.orientation.isLandscape
+    {
+      navigationViewController.modalPresentationStyle = .fullScreen
+    }
+    bvc?.present(navigationViewController, animated: true)
   }
 
   func openShareSheet() {

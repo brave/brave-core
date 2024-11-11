@@ -12,19 +12,14 @@ import StoreKit
 import SwiftUI
 import os.log
 
-enum BraveVPNPaymentStatus {
-  case ongoing
-  case success
-  case failure
-}
-
 public struct BraveVPNPaywallView: View {
   @ObservedObject var iapObserverManager: BraveVPNIAPObserverManager
+
   private let openVPNAuthenticationInNewTab: () -> Void
+  private let installVPNProfile: () -> Void
 
   @State private var selectedTierType: BraveVPNSubscriptionTier = .yearly
   @State private var availableTierTypes: [BraveVPNSubscriptionTier] = [.yearly, .monthly]
-  @State private var paymentStatus: BraveVPNPaymentStatus = .success
   @State private var isShowingPurchaseAlert = false
   @State private var isFreeTrialAvailable = !Preferences.VPN.freeTrialUsed.value
   @State private var iapRestoreTimer: Task<Void, Error>?
@@ -32,129 +27,38 @@ public struct BraveVPNPaywallView: View {
 
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.sizeCategory) private var sizeCategory
+  @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
-  var installVPNProfile: (() -> Void)?
-
-  public init(openVPNAuthenticationInNewTab: @escaping (() -> Void)) {
+  public init(
+    openVPNAuthenticationInNewTab: @escaping (() -> Void),
+    installVPNProfile: @escaping () -> Void
+  ) {
     self.iapObserverManager = BraveVPNIAPObserverManager(iapObserver: BraveVPN.iapObserver)
     self.openVPNAuthenticationInNewTab = openVPNAuthenticationInNewTab
-  }
-
-  private var shouldEmbeddedInNavigationStack: Bool {
-    UIDevice.current.userInterfaceIdiom != .pad || UIDevice.current.orientation.isLandscape
+    self.installVPNProfile = installVPNProfile
   }
 
   public var body: some View {
-    if shouldEmbeddedInNavigationStack {
-      NavigationStack {
-        paywallContentView
-          .navigationTitle(Strings.VPN.vpnName)
-          .navigationBarTitleDisplayMode(.inline)
-          .toolbar {
-            ToolbarItemGroup(placement: .cancellationAction) {
-              Button(
-                action: {
-                  presentationMode.dismiss()
-                },
-                label: {
-                  Text(Strings.close)
-                    .foregroundColor(.white)
-                }
-              )
-            }
-            ToolbarItemGroup(placement: .confirmationAction) {
-              Button(
-                action: {
-                  Task { await restorePurchase() }
-                },
-                label: {
-                  if paymentStatus == .ongoing {
-                    ProgressView()
-                      .tint(Color.white)
-                  } else {
-                    Text(Strings.VPN.restorePurchases)
-                  }
-                }
-              )
-              .foregroundColor(.white)
-              .disabled(paymentStatus == .ongoing)
-              .buttonStyle(.plain)
-            }
-          }
-          .introspectViewController(customize: { vc in
-            vc.navigationItem.do {
-              let appearance = UINavigationBarAppearance().then {
-                $0.configureWithDefaultBackground()
-                $0.backgroundColor = UIColor(braveSystemName: .primitivePrimary10)
-                $0.titleTextAttributes = [.foregroundColor: UIColor.white]
-                $0.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-              }
-              $0.standardAppearance = appearance
-              $0.scrollEdgeAppearance = appearance
-            }
-
-            vc.navigationController?.navigationBar.tintColor = .white
-          })
-      }
-    } else {
-      paywallContentView
-    }
-  }
-
-  @ViewBuilder private var paywallContentView: some View {
     VStack(spacing: 8.0) {
       ScrollView {
         Group {
           if orientation.isLandscape
-            || (orientation == .portraitUpsideDown && UIDevice.current.userInterfaceIdiom == .phone)
+            || (UIDevice.current.userInterfaceIdiom == .phone && orientation == .portraitUpsideDown)
             || sizeCategory.isAccessibilityCategory
           {
-            HStack {
-              VStack(alignment: .leading, spacing: 40) {
-                BraveVPNPremiumUpsellView()
-                BraveVPNPoweredBrandView(isFreeTrialAvailable: isFreeTrialAvailable)
-                Spacer()
-              }
-              VStack(spacing: 8.0) {
-                tierSelection
-                BraveVPNSubscriptionActionView(
-                  refreshCredentials: {
-                    refreshCredential()
-                  },
-                  redeedPromoCode: {
-                    redeemPromoCode()
-                  }
-                )
-              }
-            }
-            .padding(24.0)
+            horizontalContentView
+              .padding(24.0)
           } else {
-            VStack(spacing: 8.0) {
-              BraveVPNPremiumUpsellView()
-                .padding(.top, 24.0)
-                .padding(.bottom, 8.0)
-              separatorView
-                .padding(.horizontal, -16.0)
-              BraveVPNPoweredBrandView(isFreeTrialAvailable: isFreeTrialAvailable)
-                .padding()
-              tierSelection
-              BraveVPNSubscriptionActionView(
-                refreshCredentials: {
-                  refreshCredential()
-                },
-                redeedPromoCode: {
-                  redeemPromoCode()
-                }
-              )
-              .padding(.bottom, 8.0)
-            }
-            .padding(.horizontal, 16)
+            verticalContentView
+              .padding(.horizontal, 16)
           }
         }
       }
       paywallActionView
         .padding(.bottom, 24)
     }
+    .navigationTitle(Strings.VPN.vpnName)
+    .navigationBarTitleDisplayMode(.inline)
     .background(
       Color(braveSystemName: .primitivePrimary10)
         .edgesIgnoringSafeArea(.all)
@@ -168,49 +72,88 @@ public struct BraveVPNPaywallView: View {
         dismissButton: .default(Text(Strings.OKString))
       )
     }
-    .onChange(of: iapObserverManager.isPurchaseSuccessful) { purchaseOrRestoreSuccessful in
-      resetTheRestoreTimerIfNecessary()
+    .onChange(of: iapObserverManager.paymentStatus) { status in
+      if case .failure(let error) = status {
+        resetTheRestoreTimerIfNecessary()
 
-      guard purchaseOrRestoreSuccessful else {
-        paymentStatus = .failure
-        return
-      }
+        if case .transactionError(let err) = error, err?.code == SKError.paymentCancelled {
+          return
+        }
 
-      if iapObserverManager.isReceiptValidationRequired {
-        Task {
-          do {
-            _ = try await BraveVPN.validateReceiptData()
-          } catch {
-            Logger.module.error("Error validating receipt: \(error)")
+        isShowingPurchaseAlert = true
+      } else if case .success(let receiptValidationRequired) = status {
+        resetTheRestoreTimerIfNecessary()
+
+        if receiptValidationRequired {
+          Task {
+            do {
+              _ = try await BraveVPN.validateReceiptData()
+            } catch {
+              Logger.module.error("Error validating receipt: \(error)")
+            }
           }
         }
+
+        presentationMode.dismiss()
+        installVPNProfile()
       }
-
-      paymentStatus = .success
-
-      installVPNProfile?()
-    }
-    .onChange(of: iapObserverManager.isPurchaseFailedError) { error in
-      resetTheRestoreTimerIfNecessary()
-
-      paymentStatus = .failure
-
-      if case .transactionError(let err) = error, err?.code == SKError.paymentCancelled {
-        return
-      }
-
-      isShowingPurchaseAlert = true
     }
     .onReceive(
       NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
     ) { _ in
-      orientation = UIDevice.current.orientation
+      let new = UIDevice.current.orientation
+      if new != .faceUp && new != .faceDown {
+        orientation = new
+      }
     }
     .onAppear {
       orientation = UIDevice.current.orientation
     }
     .onDisappear {
       iapRestoreTimer?.cancel()
+    }
+  }
+
+  private var horizontalContentView: some View {
+    HStack {
+      VStack(alignment: .leading, spacing: 40) {
+        BraveVPNPremiumUpsellView()
+        BraveVPNPoweredBrandView(isFreeTrialAvailable: isFreeTrialAvailable)
+        Spacer()
+      }
+      VStack(spacing: 8.0) {
+        tierSelection
+        BraveVPNSubscriptionActionView(
+          refreshCredentials: {
+            refreshCredential()
+          },
+          redeedPromoCode: {
+            redeemPromoCode()
+          }
+        )
+      }
+    }
+  }
+
+  private var verticalContentView: some View {
+    VStack(spacing: 8.0) {
+      BraveVPNPremiumUpsellView()
+        .padding(.top, 24.0)
+        .padding(.bottom, 8.0)
+      separatorView
+        .padding(.horizontal, -16.0)
+      BraveVPNPoweredBrandView(isFreeTrialAvailable: isFreeTrialAvailable)
+        .padding()
+      tierSelection
+      BraveVPNSubscriptionActionView(
+        refreshCredentials: {
+          refreshCredential()
+        },
+        redeedPromoCode: {
+          redeemPromoCode()
+        }
+      )
+      .padding(.bottom, 8.0)
     }
   }
 
@@ -253,57 +196,48 @@ public struct BraveVPNPaywallView: View {
   private var paywallActionView: some View {
     VStack(spacing: 16) {
       separatorView
-      Button(
-        action: {
-          Task { await purchaseSubscription() }
-        },
-        label: {
-          HStack {
-            if paymentStatus == .ongoing {
-              ProgressView()
-                .tint(Color.white)
-                .padding()
-            } else {
-              Text(
-                isFreeTrialAvailable
-                  ? Strings.VPN.freeTrialPeriodAction.capitalized
-                  : Strings.VPN.activateSubscriptionAction.capitalized
-              )
-              .font(.body.weight(.semibold))
-              .foregroundColor(Color(.white))
+      Button {
+        addPaymentForSubcription(type: selectedTierType)
+      } label: {
+        HStack {
+          if iapObserverManager.paymentStatus == .ongoing {
+            ProgressView()
+              .tint(Color.white)
               .padding()
-              .frame(maxWidth: .infinity)
-            }
-          }
-          .background(
-            LinearGradient(
-              gradient:
-                Gradient(colors: [
-                  Color(UIColor(rgb: 0xFF4000)),
-                  Color(UIColor(rgb: 0xFF1F01)),
-                ]),
-              startPoint: .init(x: 0.26, y: 0.0),
-              endPoint: .init(x: 0.26, y: 1.0)
+          } else {
+            Text(
+              isFreeTrialAvailable
+                ? Strings.VPN.freeTrialPeriodAction.capitalized
+                : Strings.VPN.activateSubscriptionAction.capitalized
             )
-          )
+            .font(.body.weight(.semibold))
+            .foregroundColor(Color(.white))
+            .padding()
+            .frame(maxWidth: .infinity)
+          }
         }
-      )
+        .background(
+          LinearGradient(
+            gradient:
+              Gradient(colors: [
+                Color(UIColor(rgb: 0xFF4000)),
+                Color(UIColor(rgb: 0xFF1F01)),
+              ]),
+            startPoint: .init(x: 0.26, y: 0.0),
+            endPoint: .init(x: 0.26, y: 1.0)
+          )
+        )
+      }
       .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
-      .disabled(paymentStatus == .ongoing)
+      .disabled(iapObserverManager.paymentStatus == .ongoing)
       .padding(.horizontal, 16)
     }
   }
 
-  @MainActor
-  private func purchaseSubscription() async {
-    paymentStatus = .ongoing
-
-    addPaymentForSubcription(type: selectedTierType)
-  }
-
   private func addPaymentForSubcription(type: BraveVPNSubscriptionTier) {
-    var subscriptionProduct: SKProduct?
+    iapObserverManager.paymentStatus = .ongoing
 
+    var subscriptionProduct: SKProduct?
     switch type {
     case .yearly:
       subscriptionProduct = BraveVPNProductInfo.yearlySubProduct
@@ -313,8 +247,7 @@ public struct BraveVPNPaywallView: View {
 
     guard let subscriptionProduct = subscriptionProduct else {
       Logger.module.error("Failed to retrieve \(type.rawValue) subcription product")
-      paymentStatus = .failure
-
+      iapObserverManager.paymentStatus = .failure(nil)
       return
     }
 
@@ -324,7 +257,7 @@ public struct BraveVPNPaywallView: View {
 
   @MainActor
   public func restorePurchase() async {
-    paymentStatus = .ongoing
+    iapObserverManager.paymentStatus = .ongoing
 
     SKPaymentQueue.default().restoreCompletedTransactions()
 
@@ -337,7 +270,7 @@ public struct BraveVPNPaywallView: View {
     iapRestoreTimer = Task.delayed(bySeconds: 30.0) { @MainActor in
       try Task.checkCancellation()
 
-      paymentStatus = .failure
+      iapObserverManager.paymentStatus = .failure(nil)
 
       // Show Alert for failure of restore
       isShowingPurchaseAlert = true
@@ -364,6 +297,9 @@ public struct BraveVPNPaywallView: View {
 
 #if DEBUG
 #Preview("VPNSubscriptionPaywall") {
-  BraveVPNPaywallView(openVPNAuthenticationInNewTab: {})
+  BraveVPNPaywallView(
+    openVPNAuthenticationInNewTab: {},
+    installVPNProfile: {}
+  )
 }
 #endif
