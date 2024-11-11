@@ -281,10 +281,8 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
     std::ignore = profile2_dir_.Set(path);
     ProfileManager* profile_manager = g_browser_process->profile_manager();
     size_t starting_number_of_profiles = profile_manager->GetNumberOfProfiles();
-    if (!base::PathExists(path) && !base::CreateDirectory(path)) {
-      NOTREACHED_IN_MIGRATION()
-          << "Could not create directory at " << path.MaybeAsASCII();
-    }
+    CHECK(base::PathExists(path) || base::CreateDirectory(path))
+        << path.MaybeAsASCII();
     Profile* profile = profile_manager->GetProfile(path);
     DCHECK(profile);
     EXPECT_EQ(starting_number_of_profiles + 1,

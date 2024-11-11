@@ -39,6 +39,8 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
                                          const GURL& url)
     : ui::MojoWebUIController(web_ui,
                               true /* Needed for webui browser tests */) {
+  CHECK(url.host() == kWalletPageHost);
+
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source =
       content::WebUIDataSource::CreateAndAdd(profile, kWalletPageHost);
@@ -51,16 +53,11 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
   }
 
   // Add required resources.
-  if (url.host() == kWalletPageHost) {
-    webui::SetupWebUIDataSource(
-        source,
-        UNSAFE_TODO(base::make_span(kBraveWalletPageGenerated,
-                                    kBraveWalletPageGeneratedSize)),
-        IDR_WALLET_PAGE_HTML);
-  } else {
-    NOTREACHED_IN_MIGRATION()
-        << "Failed to find page resources for:" << url.path();
-  }
+  webui::SetupWebUIDataSource(
+      source,
+      UNSAFE_TODO(base::make_span(kBraveWalletPageGenerated,
+                                  kBraveWalletPageGeneratedSize)),
+      IDR_WALLET_PAGE_HTML);
 
   source->AddBoolean("isAndroid", true);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
