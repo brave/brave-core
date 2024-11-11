@@ -172,7 +172,6 @@ test("brave_unit_tests") {
     "//brave/browser/profiles:unit_tests",
     "//brave/browser/profiles:util",
     "//brave/browser/safebrowsing",
-    "//brave/browser/search:unit_tests",
     "//brave/browser/themes",
     "//brave/browser/ui:unit_tests",
     "//brave/browser/ui/ai_chat:unit_tests",
