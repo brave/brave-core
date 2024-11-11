@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/containers/span.h"
 #include "build/build_config.h"
 
 namespace content {
@@ -24,7 +25,7 @@ struct ResourcePath;
 content::WebUIDataSource* CreateAndAddWebUIDataSource(
     content::WebUI* web_ui,
     const std::string& name,
-    const webui::ResourcePath* resource_map,
+    base::span<const webui::ResourcePath> resource_map,
     size_t resouece_map_size,
     int html_resource_id,
     bool disable_trusted_types_csp = false);
