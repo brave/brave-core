@@ -187,8 +187,6 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
       [[fallthrough]];
     case BraveTabMenuModel::CommandSwapTabsInTile:
       return true;
-    default:
-      break;
   }
   NOTREACHED() << "All commands are handled above";
 }
@@ -242,8 +240,6 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandSwapTabsInTile:
       SwapTabsInTile();
       return;
-    default:
-      break;
   }
   NOTREACHED() << "All commands are handled above";
 }
