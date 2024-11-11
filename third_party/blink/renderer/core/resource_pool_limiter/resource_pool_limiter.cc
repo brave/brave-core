@@ -53,8 +53,7 @@ int GetResourceLimit(ResourcePoolLimiter::ResourceType resource_type) {
     case ResourcePoolLimiter::ResourceType::kEventSource:
       return 250;
   }
-  NOTREACHED_IN_MIGRATION();
-  return 0;
+  NOTREACHED_NORETURN();
 }
 
 }  // namespace
