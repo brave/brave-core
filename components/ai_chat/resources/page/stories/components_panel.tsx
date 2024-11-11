@@ -65,24 +65,38 @@ function getPageContentRefineEvent(): mojom.ConversationEntryEvent {
   }
 }
 
+const associatedContentNone: mojom.SiteInfo =  {
+  contentType: mojom.ContentType.PageContent,
+  isContentAssociationPossible: false,
+  contentUsedPercentage: 0,
+  isContentRefined: false,
+  id: undefined,
+  title: undefined,
+  hostname: undefined,
+  url: undefined,
+}
+
 const CONVERSATIONS: mojom.Conversation[] = [
   {
     title: 'Star Trek Poem',
     uuid: '1',
     hasContent: true,
-    createdTime: { internalValue: BigInt('13278618001000000') },
+    updatedTime: { internalValue: BigInt('13278618001000000') },
+    associatedContent: associatedContentNone,
   },
   {
     title: 'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
     uuid: '2',
     hasContent: true,
-    createdTime: { internalValue: BigInt('13278618001000001') },
+    updatedTime: { internalValue: BigInt('13278618001000001') },
+    associatedContent: associatedContentNone,
   },
   {
     title: 'Wedding speech improvements',
     uuid: '3',
     hasContent: true,
-    createdTime: { internalValue: BigInt('13278618001000002') },
+    updatedTime: { internalValue: BigInt('13278618001000002') },
+    associatedContent: associatedContentNone,
   }
 ]
 
