@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Selamat Datang di Brave</translation>
 <translation id="4117451092682672487">Privasi. Dapatkan dengan mudah.</translation>
 <translation id="7909375417585209817">Dengan Brave sebagai bawaan, setiap tautan yang Anda ketuk akan terbuka dengan perlindungan privasi Brave.</translation>
+<translation id="3737878115109582442">Tambahkan widget pencarian</translation>
+<translation id="6199413390010319240">Miliki Brave di ujung jari Anda untuk menjelajahi web dengan lebih cepat.</translation>
+<translation id="4338600611020922010">Tambahkan ke layar beranda</translation>
 <translation id="7370959926683925817">Memblokir iklan. Menyimpan data. Setiap hari.</translation>
 <translation id="7281027579943912834">Dengan Brave sebagai bawaan, setiap tautan yang Anda ketuk mendapat perlindungan pemblokiran iklan Brave. Setiap halaman, video, dan aliran.</translation>
 <translation id="5148943178722443958">Bantulah membuat Brave lebih baik.</translation>
@@ -483,7 +486,11 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="9055546041146396417">Jika situs ini tampak rusak, coba turunkan Shield.</translation>
 <translation id="1209739344687072997">Laporkan situs rusak</translation>
 <translation id="8510478288840333677">Beri tahu pengembang Brave bahwa situs ini tidak berfungsi dengan baik saat Perisai aktif:</translation>
-<translation id="5429200298326665264">Catatan: Alamat situs ini akan dikirim beserta nomor versi Brave dan alamat IP Anda (yang tidak akan disimpan).</translation>
+<translation id="1653405824851871276">Terima kasih telah membantu menjadikan Brave lebih baik bagi semua. Laporan ini hanya akan berisi informasi yang diperlukan bagi kami untuk memperbaiki situs ini. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Pelajari lebih lanjut.</translation>
+<translation id="8740275226259417070">Ini adalah halaman kesalahan. Ini tidak dapat dilaporkan sebagai situs yang rusak.</translation>
+<translation id="721949491455392748">Sertakan tangkapan layar halaman saat ini</translation>
+<translation id="8459191579769999214">Lihat tangkapan layar</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
@@ -662,6 +669,8 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="6284218950354553099">Kirimkan ping penggunaan harian secara otomatis ke Brave</translation>
 <translation id="2181060149810222381">Pesan privat ini memungkinkan Brave memperkirakan pengguna aktifnya.</translation>
 <translation id="6725413948756358325">Nama Akun</translation>
+<translation id="3240773103344793224">Perubahan kepemilikan akun diminta</translation>
+<translation id="8041423758956015568">Transaksi ini akan mengalihkan kepemilikan akun ke program baru. Tindakan ini tidak dapat dibatalkan dan dapat mengakibatkan hilangnya dana.</translation>
 <translation id="6062431965141524986">Anda dapat membuat akun sekunder dengan mengimpor kunci privat Anda.</translation>
 <translation id="3952797765659730604">Masukkan, tempelkan, atau impor berkas rangkaian kunci privat atau JSON Anda.</translation>
 <translation id="569068482611873351">Impor...</translation>
@@ -728,7 +737,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="5747552184818312860">Kedaluwarsa</translation>
 <translation id="1656814355341174523">Kelola Langganan</translation>
 <translation id="1919008675977575793">Peladen</translation>
-<translation id="4812684235631257312">Hos</translation>
 <translation id="5646376287012673985">Lokasi</translation>
 <translation id="8375573361134671513">Atur Ulang Konfigurasi</translation>
 <translation id="850405162932416400">Dukungan VPN</translation>
@@ -755,6 +763,8 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="5431902940483264007">Optimal</translation>
 <translation id="6527596624419285047">Menggunakan peladen terbaik yang ada</translation>
 <translation id="6789157560111825412">Peladen yang tersedia</translation>
+<translation id="5823953367746119927">Wilayah peladen</translation>
+<translation id="6991535320595227154">Peladen <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Pilih Masalah</translation>
 <translation id="6687228121145903051">Tidak dapat menyambung ke VPN (Kesalahan lain)</translation>
 <translation id="9184988385244077767">Tidak ada internet ketika tersambung</translation>
@@ -1079,8 +1089,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="622372328961630111">Tambahkan NFT yang Anda miliki secara otomatis ke Dompet dengan menggunakan API pihak ketiga. <ph name="BEGIN_LINK_1"/>Pelajari lebih lanjut.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Akun Tabel Pencarian Alamat:</translation>
 <translation id="7659483790930268440">Indeks Tabel Pencarian Alamat:</translation>
-<translation id="4932733599132424254">Tanggal</translation>
-<translation id="346505172740911461">Harga Pasar</translation>
 <translation id="5494920125229734069">Pilih semua</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Masuk dengan Dompet Brave</translation>
@@ -1096,6 +1104,8 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 riwayat obrolan Anda akan menghapus semua percakapan Anda sebelumnya dengan Leo. Tindakan ini tidak dapat dibatalkan.</translation>
 <translation id="3692772534525889713">Tautkan pembelian di Play Store Anda ke akun Brave Anda untuk menggunakan Brave Leo pada perangkat lain.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Satu tahun</translation>
+<translation id="2985392169397572983">NILAI TERBAIK</translation>
 <translation id="1166682575529520472">Bulanan</translation>
 <translation id="451189393813405346">Tanyakan pada Leo</translation>
 <translation id="7322560193401221004">Ingat posisi putar ulang berkas</translation>
@@ -1164,7 +1174,7 @@ riwayat obrolan Anda akan menghapus semua percakapan Anda sebelumnya dengan Leo.
 <translation id="2389665228467129817">Mengobrol lebih lama</translation>
 <translation id="4314705522985583059">Dapatkan batas tingkat yang lebih tinggi untuk percakapan yang lebih lama.</translation>
 <translation id="6365289557497555234">Semua paket berlangganan diperbarui secara otomatis namun dapat dibatalkan kapan pun sebelum diperbarui.</translation>
-<translation id="6637015365469044269">Tingkatkan sekarang</translation>
+<translation id="5543505256451301851">Cobalah gratis selama 7 hari</translation>
 <translation id="614530507403667291">Model bawaan untuk percakapan baru</translation>
 <translation id="4071849832011229600">Model bawaan</translation>
 <translation id="4185473179105062442">Terima BAT secara langsung dengan alamat kripto kustodian mandiri</translation>

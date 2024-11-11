@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">ברוכים הבאים ל-Brave</translation>
 <translation id="4117451092682672487">פרטיות. בפשטות.</translation>
 <translation id="7909375417585209817">עם Brave כברירת מחדל, כל קישור שאתם מקישים עליו נפתח עם הגנות הפרטיות של Brave.</translation>
+<translation id="3737878115109582442">הוספת ווידג'ט החיפוש</translation>
+<translation id="6199413390010319240">Brave בקצות האצבעות שלך כדי שתוכל למצוא הכל מהר יותר.</translation>
+<translation id="4338600611020922010">הוספה למסך הבית</translation>
 <translation id="7370959926683925817">חסום פרסומות. שמור מידע. כל יום.</translation>
 <translation id="7281027579943912834">עם Brave כברירת מחדל, כל קישור שאתה מקיש מקבל את הגנת חסימת המודעות של Brave. כל עמוד, סרטון וזרם.</translation>
 <translation id="5148943178722443958">עזרו לנו להפוך את Brave לטוב יותר.</translation>
@@ -484,7 +487,11 @@
 <translation id="9055546041146396417">אם נראה שאתר זה שבור, נסה/י לכבות את Shields.</translation>
 <translation id="1209739344687072997">דווח/י על אתר לא תקין</translation>
 <translation id="8510478288840333677">הודע/י למפתחים של Brave כי אתר זה אינו עובד בצורה תקינה עם Shields:</translation>
-<translation id="5429200298326665264">הערה: כתובת אתר זה תשלח עם מספר גרסת Brave שלך וכתובת ה-IP שלך (שלא תאוחסן).</translation>
+<translation id="1653405824851871276">תודה שעזרת להפוך את Brave לטוב יותר עבור כולם. הדיווח יכיל רק את המידע הדרוש לנו לתיקון אתר זה.<ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">למד עוד.</translation>
+<translation id="8740275226259417070">זוהי שגיאת דף. לא ניתן לדווח עליה כעל אתר שבור.</translation>
+<translation id="721949491455392748">יש לכלול צילום מסך של הדף הנוכחי</translation>
+<translation id="8459191579769999214">הצג את צילום המסך</translation>
 <translation id="5299848999918506028">תודה!</translation>
 <translation id="76550953340008122">תודה שהודעת למפתחים של Brave שמשהו לא תקין באתר זה. אנו נעשה כמיטב יכולתנו לתקן זאת!</translation>
 <translation id="650318023204990401">בקרות מתקדמות</translation>
@@ -663,6 +670,8 @@
 <translation id="6284218950354553099">שלח PING של שימוש יומי ל-Brave</translation>
 <translation id="2181060149810222381">ה-ping הפרטי מאפשר ל-Brave להעריך משתמשים פעילים.</translation>
 <translation id="6725413948756358325">שם החשבון</translation>
+<translation id="3240773103344793224">בקשה לשינוי בעלות חשבון</translation>
+<translation id="8041423758956015568">עסקה זאת תגרום להקצאת בעלות מחדש עבור החשבון לתוכנית חדשה. פעולה זאת לא ניתנת לביטול ועלולה לגרום לאובדן כספי.</translation>
 <translation id="6062431965141524986">ניתן ליצור חשבון משני על ידי ייבוא המפתח הפרטי שלך.</translation>
 <translation id="3952797765659730604">הכנס, הדבק, או תייבא את קובץ המחרוזת של מפתח פרטי שלך או JSON.</translation>
 <translation id="569068482611873351">ייבא...</translation>
@@ -729,7 +738,6 @@
 <translation id="5747552184818312860">מועד תפוגה</translation>
 <translation id="1656814355341174523">ניהול מנוי</translation>
 <translation id="1919008675977575793">שרת</translation>
-<translation id="4812684235631257312">מארח</translation>
 <translation id="5646376287012673985">מיקום</translation>
 <translation id="8375573361134671513">איפוס תצורה</translation>
 <translation id="850405162932416400">תמיכת VPN</translation>
@@ -756,6 +764,8 @@
 <translation id="5431902940483264007">אופטימלי</translation>
 <translation id="6527596624419285047">השתמש בשרת הזמין הטוב ביותר</translation>
 <translation id="6789157560111825412">שרתים זמינים</translation>
+<translation id="5823953367746119927">אזור שרת</translation>
+<translation id="6991535320595227154">שרת <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">בחירת הבעיה.</translation>
 <translation id="6687228121145903051">לא ניתן להתחבר ל- VPN (שגיאה אחרת)</translation>
 <translation id="9184988385244077767">אין אינטרנט בזמן התחברות</translation>
@@ -1080,8 +1090,6 @@
 <translation id="622372328961630111">הוסף אוטומטית NFTs שבבעלותך לארנק באמצעות ממשקי API של צד שלישי.<ph name="BEGIN_LINK_1"/>למד עוד.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">חשבון טבלת חיפוש כתובות:</translation>
 <translation id="7659483790930268440">אינדקס טבלת חיפוש כתובות:</translation>
-<translation id="4932733599132424254">תאריך</translation>
-<translation id="346505172740911461">מחיר שוק</translation>
 <translation id="5494920125229734069">בחר הכל</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">היכנס עם Brave Wallet</translation>
@@ -1096,6 +1104,8 @@
 <translation id="6165101586663336913">איפוס עוזר Leo יחייב אותך להצטרף לשימוש ב-Leo בעתיד, וגם ינקה את היסטוריית הצ'אט שלך. ניקוי היסטוריית הצ'אט שלך ימחק את כל השיחות הקודמות שלך עם Leo. לא ניתן לבטל פעולה זו.</translation>
 <translation id="3692772534525889713">קשרו את הרכישה שלכם בחנות Play לחשבון Brave כדי להשתמש ב-Brave Leo במכשירים נוספים.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">שנה אחת</translation>
+<translation id="2985392169397572983">הכי משתלם</translation>
 <translation id="1166682575529520472">חודשי</translation>
 <translation id="451189393813405346">תשאל את ליאו</translation>
 <translation id="7322560193401221004">זכור את מיקום השמעת הקבצים</translation>
@@ -1164,7 +1174,7 @@
 <translation id="2389665228467129817">נהלו צ'טים ארוכים יותר</translation>
 <translation id="4314705522985583059">קבלו מגבלות קצב גבוהות יותר עבור שיחות ארוכות יותר.</translation>
 <translation id="6365289557497555234">כל המנויים מתחדשים באופן אוטומטי אך ניתן\nלבטלם בכל עת לפני החידוש.</translation>
-<translation id="6637015365469044269">שדרג כעת</translation>
+<translation id="5543505256451301851">נסה 7 ימים בחינם</translation>
 <translation id="614530507403667291">מודל ברירת מחדל לשיחות חדשות</translation>
 <translation id="4071849832011229600">מודל ברירת המחדל</translation>
 <translation id="4185473179105062442">קבלו BAT ישירות לכתובת קריפטו במשמורת עצמית</translation>
