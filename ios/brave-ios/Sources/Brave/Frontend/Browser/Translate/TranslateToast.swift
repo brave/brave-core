@@ -15,9 +15,6 @@ private struct TranslationOptionsView: View {
   @State
   private var searchText = ""
 
-  @State
-  private var timer: Timer?
-
   @Binding
   var language: Locale.Language?
 
