@@ -43,9 +43,9 @@ scoped_refptr<Importer> CreateImporterByType(importer::ImporterType type) {
     case importer::TYPE_WHALE:
       return new ChromeImporter();
     default:
-      NOTREACHED_IN_MIGRATION();
-      return nullptr;
+      break;
   }
+  NOTREACHED() << "All handled for supported types above.";
 }
 
 }  // namespace
@@ -95,10 +95,7 @@ void BraveProfileImportImpl::StartImport(
 #if BUILDFLAG(IS_WIN)
   import_thread_->init_com_with_mta(false);
 #endif
-  if (!import_thread_->Start()) {
-    NOTREACHED_IN_MIGRATION();
-    ImporterCleanup();
-  }
+  CHECK(import_thread_->Start());
   bridge_ = new BraveExternalProcessImporterBridge(
       localized_strings,
       mojo::SharedRemote<chrome::mojom::ProfileImportObserver>(

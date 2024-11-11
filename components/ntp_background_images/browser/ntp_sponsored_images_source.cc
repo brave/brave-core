@@ -64,13 +64,7 @@ void NTPSponsoredImagesSource::StartDataRequest(
   }
 
   base::FilePath image_file_path = GetLocalFilePathFor(path);
-  if (image_file_path.empty()) {
-    content::GetUIThreadTaskRunner({})->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback),
-                                  scoped_refptr<base::RefCountedMemory>()));
-    return;
-  }
-
+  CHECK(!image_file_path.empty());
   GetImageFile(image_file_path, std::move(callback));
 }
 
@@ -119,8 +113,7 @@ base::FilePath NTPSponsoredImagesSource::GetLocalFilePathFor(
     const std::string& path) {
   const bool is_super_referral_path = IsSuperReferralPath(path);
   auto* images_data = service_->GetBrandedImagesData(is_super_referral_path);
-  if (!images_data)
-    return base::FilePath();
+  CHECK(images_data);
 
   const auto basename_from_path =
       base::FilePath::FromUTF8Unsafe(path).BaseName();
@@ -145,8 +138,9 @@ base::FilePath NTPSponsoredImagesSource::GetLocalFilePathFor(
     }
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return base::FilePath();
+  // Should give valid path always here because invalid |path| was
+  // already filtered by `IsValidPath()`.
+  NOTREACHED();
 }
 
 bool NTPSponsoredImagesSource::IsValidPath(const std::string& path) const {
