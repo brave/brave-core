@@ -99,6 +99,14 @@ license_files = ['LICENSE']
 [crate.adss]
 license_files = ['LICENSE']
 
+[crate.ahash]
+extra_kv = { raw_gn = '''
+  library_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
+  executable_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
+  proc_macro_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
+  rustflags = [ "-Zallow-features=min_specialization" ]
+'''}
+
 [crate.ansi_term]
 license_files = ['LICENCE']
 

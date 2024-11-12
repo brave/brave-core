@@ -51,4 +51,8 @@ cargo_crate("lib") {
   build_sources = [
     "//brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/build.rs",
   ]
+  library_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
+  executable_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
+  proc_macro_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
+  rustflags = [ "-Zallow-features=min_specialization" ]
 }
