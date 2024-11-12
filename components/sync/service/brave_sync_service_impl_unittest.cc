@@ -759,9 +759,8 @@ class BraveSyncServiceImplGACookiesTest
                   primary_accountchange_event);
             },
             this);
-      default:
-        NOTREACHED_NORETURN();
     }
+    NOTREACHED();
   }
 };
 
@@ -796,9 +795,8 @@ INSTANTIATE_TEST_SUITE_P(
           return "OnAccountsInCookieUpdated";
         case GACookiesMethodType::kOnPrimaryAccountChanged:
           return "OnPrimaryAccountChanged";
-        default:
-          NOTREACHED_NORETURN();
       }
+      NOTREACHED();
     });
 
 }  // namespace syncer

@@ -84,8 +84,7 @@ std::string BraveVPNRegionDataManager::GetRegionPrecisionForName(
       }
     }
   }
-
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 void BraveVPNRegionDataManager::SetFallbackDeviceRegion() {

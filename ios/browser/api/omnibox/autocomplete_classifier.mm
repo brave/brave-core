@@ -43,9 +43,8 @@ AutocompleteMatch::Type MatchTypeFromBraveType(
       return AutocompleteMatch::Type::CLIPBOARD_TEXT;
     case BraveIOSAutocompleteMatchTypeOpenTab:
       return AutocompleteMatch::Type::OPEN_TAB;
-    default:
-      NOTREACHED_NORETURN();
   }
+  NOTREACHED();
 }
 
 BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
@@ -74,7 +73,7 @@ BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
     case AutocompleteMatch::Type::OPEN_TAB:
       return BraveIOSAutocompleteMatchTypeOpenTab;
     default:
-      NOTREACHED_NORETURN();
+      NOTREACHED();
   }
 }
 }  // namespace brave

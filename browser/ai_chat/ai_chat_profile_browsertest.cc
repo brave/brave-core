@@ -40,9 +40,8 @@ const char* GetProfileTypeString(ProfileType type) {
       return "Private";
     case ProfileType::kTor:
       return "Tor";
-    default:
-      NOTREACHED_NORETURN();
   }
+  NOTREACHED();
 }
 }  // namespace
 
@@ -74,9 +73,8 @@ class AIChatProfileTest : public InProcessBrowserTest,
         brave::NewOffTheRecordWindowTor(browser());
         return observer.Wait();
       }
-      default:
-        NOTREACHED_NORETURN();
     }
+    NOTREACHED();
   }
 
   bool IsAIChatEnabled() { return GetParam() == ProfileType::kRegular; }

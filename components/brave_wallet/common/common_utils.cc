@@ -194,7 +194,7 @@ mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
     return mojom::CoinType::ZEC;
   }
 
-  NOTREACHED_NORETURN() << "Unknown keyring: " << keyring_id;
+  NOTREACHED() << "Unknown keyring: " << keyring_id;
 }
 
 mojom::CoinType GetCoinTypeFromTxDataUnion(
@@ -219,7 +219,7 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
     return mojom::CoinType::ZEC;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
@@ -303,9 +303,8 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
       } else {
         return {mojom::KeyringId::kZCashTestnet};
       }
-    default:
-      NOTREACHED_NORETURN();
   }
+  NOTREACHED();
 }
 
 mojom::AccountIdPtr MakeAccountId(mojom::CoinType coin,
@@ -367,7 +366,7 @@ std::string GetNetworkForBitcoinKeyring(const mojom::KeyringId& keyring_id) {
   if (IsBitcoinTestnetKeyring(keyring_id)) {
     return mojom::kBitcoinTestnet;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id) {
@@ -383,7 +382,7 @@ std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id) {
   if (IsZCashTestnetKeyring(keyring_id)) {
     return mojom::kZCashTestnet;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 bool IsHTTPSOrLocalhostURL(const std::string& url_string) {

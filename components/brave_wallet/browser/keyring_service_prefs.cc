@@ -47,7 +47,7 @@ std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
     case mojom::KeyringId::kBitcoinHardwareTestnet:
       return "bitcoin_hardware_test";
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 const base::Value* GetPrefForKeyring(PrefService* profile_prefs,
