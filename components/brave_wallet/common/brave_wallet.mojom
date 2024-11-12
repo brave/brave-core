@@ -1828,7 +1828,7 @@ struct ZCashAddress {
 };
 
 // A block when account was marked as shielded, so we can use this block
-// as a start point for scanning purposes
+// as a start point for scanning purposes.
 struct ZCashAccountShieldBirthday {
   uint64 value;
   string hash;
@@ -1839,8 +1839,11 @@ struct ZCashAccountInfo {
   ZCashAddress next_transparent_change_address;
   ZCashAccountShieldBirthday? account_shield_birthday;
   // Address that contains both transparent and orchard part
-  // Could be null if orchard is not enabled
+  // Could be null if orchard is not enabled.
   string? unified_address;
+  // Address that contains orchard part only
+  // Could be null if orchard is not enabled.
+  string? orchard_address;
 };
 
 enum ZCashAddressValidationResult {
@@ -1959,7 +1962,7 @@ struct ZecTxOutput {
 struct ZecTxData {
   bool use_shielded_pool;
   string to;
-  // Memo field should exist only for shielded output
+  // Memo field should exist only for shielded output.
   array<uint8>? memo;
   uint64 amount;
   uint64 fee;
