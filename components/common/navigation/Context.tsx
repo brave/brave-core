@@ -6,7 +6,10 @@
 import { useEffect } from "react";
 import * as React from "react";
 
+// Dictionary of url params, parsed from current location
 export type NavigationParams = { [key: string]: string | undefined }
+
+// Map of route to param handlers
 export type Routes = Map<string, Array<undefined | ((params: NavigationParams) => void)>>;
 
 export interface NavigationContext {
@@ -21,6 +24,10 @@ const Context = React.createContext<NavigationContext>({
     removeRoute: () => { }
 })
 
+// Parses a param name from a path segment (or null, if the segment is not a
+// param)
+// {foo} ==> foo
+// bar ==> null
 const getParamName = (part: string) => {
     if (part.startsWith("{") && part.endsWith("}")) {
         return part.substring(1, part.length - 1)
@@ -28,6 +35,10 @@ const getParamName = (part: string) => {
     return null
 }
 
+// Finds a matching route for a given URL - if found returns a tuple of 
+// 1. The route (for looking up in the routes map)
+// 2. The list of callbacks for the given route
+// 3. The parsed parameters for the route.
 const findMatchingRoute = (url: string, routes: Routes) => {
     const path = new URL(url).pathname
     const pathParts = path.split('/')
@@ -64,6 +75,7 @@ const findMatchingRoute = (url: string, routes: Routes) => {
     return [null, [], {}] as const
 }
 
+// Accesses the current NavigationParams
 export function useParams<T extends NavigationParams = NavigationParams>() {
     return React.useContext(Context).params as T
 }
@@ -72,7 +84,7 @@ export function useNavigation<T extends NavigationParams = NavigationParams>() {
     return React.useContext(Context) as NavigationContext & { params: T }
 }
 
-
+// Listens to Navigations and provides up to date navigation params to consumers.
 export function NavigationContext(props: React.PropsWithChildren) {
     const routes = React.useRef<Routes>(new Map())
     const [params, setParams] = React.useState<NavigationParams>({})
