@@ -80,7 +80,7 @@ void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
-  const auto collect_and_merge = base::BarrierCallback<
+  auto collect_and_merge = base::BarrierCallback<
       base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>(
       filters_providers.size(),
       base::BindOnce(&AdBlockFiltersProviderManager::FinishCombinating,
@@ -89,7 +89,7 @@ void AdBlockFiltersProviderManager::LoadFilterSetForEngine(
     task_tracker_.PostTask(
         base::SequencedTaskRunner::GetCurrentDefault().get(), FROM_HERE,
         base::BindOnce(&AdBlockFiltersProvider::LoadFilterSet,
-                       provider->AsWeakPtr(), std::move(collect_and_merge)));
+                       provider->AsWeakPtr(), collect_and_merge));
   }
 }
 
