@@ -38,8 +38,8 @@ export class ExtensionsBraveItemListMoreItemsElement extends ExtensionsBraveItem
     };
   }
 
-  private apps: chrome.developerPrivate.ExtensionInfo[];
-  private extensions: chrome.developerPrivate.ExtensionInfo[];
+  private apps: chrome.developerPrivate.ExtensionInfo[] = [];
+  private extensions: chrome.developerPrivate.ExtensionInfo[] = [];
 
   shouldShowMoreItemsMessage_() {
     if (!this.apps || !this.extensions)
