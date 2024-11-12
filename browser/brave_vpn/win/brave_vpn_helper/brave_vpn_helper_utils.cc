@@ -113,7 +113,7 @@ std::wstring GetBraveVpnHelperRegistryStoragePath() {
       return L"Software\\BraveSoftware\\Brave\\Vpn\\HelperServiceDevelopment";
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 std::wstring GetBraveVpnOneTimeServiceCleanupStoragePath() {
@@ -132,7 +132,7 @@ std::wstring GetBraveVpnOneTimeServiceCleanupStoragePath() {
              L"pment";
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 }  // namespace brave_vpn

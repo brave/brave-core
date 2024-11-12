@@ -961,7 +961,7 @@ GURL NetworkManager::GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
     return GetPolygonMainnet()->rpc_endpoints.front();
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 // static
@@ -1291,18 +1291,19 @@ std::string NetworkManager::GetCurrentChainId(
       return chain_id_from_prefs;
     }
   }
-  if (coin == mojom::CoinType::ETH) {
-    return mojom::kMainnetChainId;
-  } else if (coin == mojom::CoinType::SOL) {
-    return mojom::kSolanaMainnet;
-  } else if (coin == mojom::CoinType::FIL) {
-    return mojom::kFilecoinMainnet;
-  } else if (coin == mojom::CoinType::BTC) {
-    return mojom::kBitcoinMainnet;
-  } else if (coin == mojom::CoinType::ZEC) {
-    return mojom::kZCashMainnet;
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      return mojom::kMainnetChainId;
+    case mojom::CoinType::SOL:
+      return mojom::kSolanaMainnet;
+    case mojom::CoinType::FIL:
+      return mojom::kFilecoinMainnet;
+    case mojom::CoinType::BTC:
+      return mojom::kBitcoinMainnet;
+    case mojom::CoinType::ZEC:
+      return mojom::kZCashMainnet;
   }
-  NOTREACHED_NORETURN() << coin;
+  NOTREACHED() << coin;
 }
 
 bool NetworkManager::SetCurrentChainId(mojom::CoinType coin,

@@ -151,19 +151,13 @@ base::Value::List ConversationEventsToList(
 
     // Set role
     auto role_it = kRoleMap->find(event.role);
-    if (role_it != kRoleMap->end()) {
-      event_dict.Set("role", role_it->second);
-    } else {
-      NOTREACHED_NORETURN();
-    }
+    CHECK(role_it != kRoleMap->end());
+    event_dict.Set("role", role_it->second);
 
     // Set type
     auto type_it = kTypeMap->find(event.type);
-    if (type_it != kTypeMap->end()) {
-      event_dict.Set("type", type_it->second);
-    } else {
-      NOTREACHED_NORETURN();
-    }
+    CHECK(type_it != kTypeMap->end());
+    event_dict.Set("type", type_it->second);
 
     event_dict.Set("content", event.content);
     events.Append(std::move(event_dict));

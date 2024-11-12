@@ -57,10 +57,10 @@ const char* GetPromoShownKeyName(ConversionType type) {
       return kButtonShownKey;
     case ConversionType::kNTP:
       return kNTPShownKey;
-    default:
+    case ConversionType::kNone:
       break;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 const char* GetPromoTriggeredKeyName(ConversionType type) {
@@ -82,10 +82,10 @@ const char* GetPromoTriggeredKeyName(ConversionType type) {
       return kButtonTriggeredKey;
     case ConversionType::kNTP:
       return kNTPTriggeredKey;
-    default:
+    case ConversionType::kNone:
       break;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 const char* GetPromoTypeHistogramName(ConversionType type) {
@@ -107,10 +107,10 @@ const char* GetPromoTypeHistogramName(ConversionType type) {
       return kSearchPromoButtonHistogramName;
     case ConversionType::kNTP:
       return kSearchPromoNTPHistogramName;
-    default:
+    case ConversionType::kNone:
       break;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 void UpdateHistograms(PrefService* prefs) {

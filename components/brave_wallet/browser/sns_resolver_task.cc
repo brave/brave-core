@@ -303,7 +303,7 @@ std::optional<SolanaAddress> ParseAndVerifySolRecordData(
   } else if (record_item.version == SnsRecordsVersion::kRecordsV2) {
     return ParseAndVerifySolRecordV2Data(sol_record_payload, domain_owner);
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 std::optional<std::string> ParseAndVerifyTextRecordData(
@@ -331,7 +331,7 @@ std::optional<std::string> ParseAndVerifyTextRecordData(
     }
     return std::nullopt;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L16
