@@ -1,10 +1,11 @@
 Name: js-sys
 URL: https://crates.io/crates/js-sys
+Version: 0.3.67
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/js-sys-0.3.67/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
 Description: Bindings for all JS global objects and functions in all JS environments like
 Node.js and browsers, built on `#[wasm_bindgen]` using the `wasm-bindgen` crate.
 
-Version: 0.3.67
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/js-sys-0.3.67/LICENSE-APACHE

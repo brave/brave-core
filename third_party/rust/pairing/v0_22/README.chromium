@@ -1,9 +1,10 @@
 Name: pairing
 URL: https://crates.io/crates/pairing
-Description: Pairing-friendly elliptic curve library
 Version: 0.22.0
-Security Critical: yes
-Shipped: yes
+Revision: 6f1348f23312b3bbb3556a111ca075072967b26d
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/pairing-0.22.0/LICENSE-APACHE
-Revision: 6f1348f23312b3bbb3556a111ca075072967b26d
+Shipped: yes
+Security Critical: yes
+
+Description: Pairing-friendly elliptic curve library

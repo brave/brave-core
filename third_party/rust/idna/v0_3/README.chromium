@@ -1,9 +1,10 @@
 Name: idna
 URL: https://crates.io/crates/idna
-Description: IDNA (Internationalizing Domain Names in Applications) and Punycode.
 Version: 0.3.0
-Security Critical: yes
-Shipped: yes
+Revision: 359bc90a4f07224f79cc79c45dc873d44bcd6f14
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/idna-0.3.0/LICENSE-APACHE
-Revision: 359bc90a4f07224f79cc79c45dc873d44bcd6f14
+Shipped: yes
+Security Critical: yes
+
+Description: IDNA (Internationalizing Domain Names in Applications) and Punycode.

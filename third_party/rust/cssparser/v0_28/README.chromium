@@ -1,9 +1,10 @@
 Name: cssparser
 URL: https://crates.io/crates/cssparser
-Description: Rust implementation of CSS Syntax Level 3
 Version: 0.28.1
-Security Critical: yes
-Shipped: yes
+Revision: 02129220f848246ce8899f45a50d4b15068ebd79
 License: Mozilla Public License 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.28.1/LICENSE
-Revision: 02129220f848246ce8899f45a50d4b15068ebd79
+Shipped: yes
+Security Critical: yes
+
+Description: Rust implementation of CSS Syntax Level 3

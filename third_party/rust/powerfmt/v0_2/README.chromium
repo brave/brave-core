@@ -1,12 +1,13 @@
 Name: powerfmt
 URL: https://crates.io/crates/powerfmt
+Version: 0.2.0
+Revision: 5889a2a65c99836fd718340726f6b4379bc5028f
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/powerfmt-0.2.0/LICENSE-Apache
+Shipped: yes
+Security Critical: yes
+
 Description:     `powerfmt` is a library that provides utilities for formatting values. This crate makes it
     significantly easier to support filling to a minimum width with alignment, avoid heap
     allocation, and avoid repetitive calculations.
 
-Version: 0.2.0
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/powerfmt-0.2.0/LICENSE-Apache
-Revision: 5889a2a65c99836fd718340726f6b4379bc5028f

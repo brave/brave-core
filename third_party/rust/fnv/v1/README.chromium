@@ -1,9 +1,10 @@
 Name: fnv
 URL: https://crates.io/crates/fnv
-Description: Fowler–Noll–Vo hash function
 Version: 1.0.7
-Security Critical: yes
-Shipped: yes
+Revision: 4b4784ebfd3332dc61f0640764d6f1140e03a9ab
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/fnv-1.0.7/LICENSE-APACHE
-Revision: 4b4784ebfd3332dc61f0640764d6f1140e03a9ab
+Shipped: yes
+Security Critical: yes
+
+Description: Fowler–Noll–Vo hash function

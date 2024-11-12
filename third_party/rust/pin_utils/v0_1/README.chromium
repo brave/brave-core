@@ -1,10 +1,11 @@
 Name: pin-utils
 URL: https://crates.io/crates/pin-utils
-Description: Utilities for pinning
-
 Version: 0.1.0
-Security Critical: yes
-Shipped: yes
+Revision: cddb4e490757830eff709310b32376420d7f5e93
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/pin-utils-0.1.0/LICENSE-APACHE
-Revision: cddb4e490757830eff709310b32376420d7f5e93
+Shipped: yes
+Security Critical: yes
+
+Description: Utilities for pinning
+

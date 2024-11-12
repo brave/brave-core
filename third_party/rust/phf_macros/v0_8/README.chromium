@@ -1,9 +1,10 @@
 Name: phf_macros
 URL: https://crates.io/crates/phf_macros
-Description: Macros to generate types in the phf crate
 Version: 0.8.0
-Security Critical: yes
-Shipped: yes
+Revision: 81c7cc5b48649108428671d3b8ad151f6fbdb359
 License: MIT
 License File:
-Revision: 81c7cc5b48649108428671d3b8ad151f6fbdb359
+Shipped: yes
+Security Critical: yes
+
+Description: Macros to generate types in the phf crate

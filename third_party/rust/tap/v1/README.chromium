@@ -1,9 +1,10 @@
 Name: tap
 URL: https://crates.io/crates/tap
-Description: Generic extensions for tapping values in Rust
 Version: 1.0.1
-Security Critical: yes
-Shipped: yes
+Revision: f5315f0f5ca90ce6399daac76c1fe3ba645a4e4e
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/tap-1.0.1/LICENSE.txt
-Revision: f5315f0f5ca90ce6399daac76c1fe3ba645a4e4e
+Shipped: yes
+Security Critical: yes
+
+Description: Generic extensions for tapping values in Rust

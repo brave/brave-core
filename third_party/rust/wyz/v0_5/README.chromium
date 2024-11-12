@@ -1,9 +1,10 @@
 Name: wyz
 URL: https://crates.io/crates/wyz
-Description: myrrlyn’s utility collection
 Version: 0.5.1
-Security Critical: yes
-Shipped: yes
+Revision: 83f076970d745dc1706b46126d5700aa072af031
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/wyz-0.5.1/LICENSE.txt
-Revision: 83f076970d745dc1706b46126d5700aa072af031
+Shipped: yes
+Security Critical: yes
+
+Description: myrrlyn’s utility collection

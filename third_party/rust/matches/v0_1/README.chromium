@@ -1,9 +1,10 @@
 Name: matches
 URL: https://crates.io/crates/matches
-Description: A macro to evaluate, as a boolean, whether an expression matches a pattern.
 Version: 0.1.10
-Security Critical: yes
-Shipped: yes
+Revision: e66ab5acd06085513490fd8ea41a61ad556c0cf9
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/matches-0.1.10/LICENSE
-Revision: e66ab5acd06085513490fd8ea41a61ad556c0cf9
+Shipped: yes
+Security Critical: yes
+
+Description: A macro to evaluate, as a boolean, whether an expression matches a pattern.

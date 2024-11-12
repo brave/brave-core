@@ -1,9 +1,10 @@
 Name: futf
 URL: https://crates.io/crates/futf
-Description: Handling fragments of UTF-8
 Version: 0.1.5
-Security Critical: yes
-Shipped: yes
+Revision: 594e25bef5a87d9d70c93bf27e40538de13e3b10
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/futf-0.1.5/LICENSE-APACHE
-Revision: 594e25bef5a87d9d70c93bf27e40538de13e3b10
+Shipped: yes
+Security Critical: yes
+
+Description: Handling fragments of UTF-8

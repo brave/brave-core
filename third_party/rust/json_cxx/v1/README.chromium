@@ -1,8 +1,9 @@
 Name: json-cxx
 URL: https://crates.io/crates/json-cxx
-Description: FFI Interface to Rust Json
 Version: 1.0.0
-Security Critical: yes
-Shipped: yes
 License: Mozilla Public License 2.0
 License File:
+Shipped: yes
+Security Critical: yes
+
+Description: FFI Interface to Rust Json

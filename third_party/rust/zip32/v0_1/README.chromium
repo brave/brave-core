@@ -1,9 +1,10 @@
 Name: zip32
 URL: https://crates.io/crates/zip32
-Description: Common types for implementing shielded hierarchical deterministic wallets
 Version: 0.1.1
-Security Critical: yes
-Shipped: yes
+Revision: de85e1c69081ed3c6c1e01a6e615a4add10a49df
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/zip32-0.1.1/LICENSE-APACHE
-Revision: de85e1c69081ed3c6c1e01a6e615a4add10a49df
+Shipped: yes
+Security Critical: yes
+
+Description: Common types for implementing shielded hierarchical deterministic wallets

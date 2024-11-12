@@ -1,9 +1,10 @@
 Name: wasm-bindgen-macro
 URL: https://crates.io/crates/wasm-bindgen-macro
-Description: Definition of the `#[wasm_bindgen]` attribute, an internal dependency
-
 Version: 0.2.90
-Security Critical: yes
-Shipped: yes
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/wasm-bindgen-macro-0.2.90/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: Definition of the `#[wasm_bindgen]` attribute, an internal dependency
+

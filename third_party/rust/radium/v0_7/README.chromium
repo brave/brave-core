@@ -1,9 +1,10 @@
 Name: radium
 URL: https://crates.io/crates/radium
-Description: Portable interfaces for maybe-atomic types
 Version: 0.7.0
-Security Critical: yes
-Shipped: yes
+Revision: 3f27e0d827338aee919213fd071b99819a1b9fff
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/radium-0.7.0/LICENSE.txt
-Revision: 3f27e0d827338aee919213fd071b99819a1b9fff
+Shipped: yes
+Security Critical: yes
+
+Description: Portable interfaces for maybe-atomic types

@@ -1,9 +1,10 @@
 Name: halo2_gadgets
 URL: https://crates.io/crates/halo2_gadgets
-Description: Reusable gadgets and chip implementations for Halo 2
 Version: 0.3.0
-Security Critical: yes
-Shipped: yes
+Revision: 263356784042d7d4c1c17d357c94c1acaeb75ab5
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-0.3.0/../../../../../common/licenses/Apache-2.0
-Revision: 263356784042d7d4c1c17d357c94c1acaeb75ab5
+Shipped: yes
+Security Critical: yes
+
+Description: Reusable gadgets and chip implementations for Halo 2

@@ -1,9 +1,10 @@
 Name: zcash_note_encryption
 URL: https://crates.io/crates/zcash_note_encryption
-Description: Note encryption for Zcash transactions
 Version: 0.4.0
-Security Critical: yes
-Shipped: yes
+Revision: 80adb54e264eb5de362c6b1c3bae76737fc27252
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/zcash_note_encryption-0.4.0/LICENSE-APACHE
-Revision: 80adb54e264eb5de362c6b1c3bae76737fc27252
+Shipped: yes
+Security Critical: yes
+
+Description: Note encryption for Zcash transactions

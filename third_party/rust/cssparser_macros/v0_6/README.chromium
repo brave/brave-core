@@ -1,9 +1,10 @@
 Name: cssparser-macros
 URL: https://crates.io/crates/cssparser-macros
-Description: Procedural macros for cssparser
 Version: 0.6.0
-Security Critical: yes
-Shipped: yes
+Revision: 65d6c3e0a5dc222f745dbc7bc16c92a49e3d2aff
 License: Mozilla Public License 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/LICENSE
-Revision: 65d6c3e0a5dc222f745dbc7bc16c92a49e3d2aff
+Shipped: yes
+Security Critical: yes
+
+Description: Procedural macros for cssparser

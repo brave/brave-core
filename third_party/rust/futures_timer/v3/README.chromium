@@ -1,10 +1,11 @@
 Name: futures-timer
 URL: https://crates.io/crates/futures-timer
-Description: Timeouts for futures.
-
 Version: 3.0.2
-Security Critical: yes
-Shipped: yes
+Revision: 30e562cdde45b8a6ee93d22094df8664ff8dfdfb
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/futures-timer-3.0.2/LICENSE-APACHE
-Revision: 30e562cdde45b8a6ee93d22094df8664ff8dfdfb
+Shipped: yes
+Security Critical: yes
+
+Description: Timeouts for futures.
+

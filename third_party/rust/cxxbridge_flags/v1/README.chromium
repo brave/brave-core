@@ -1,8 +1,9 @@
 Name: cxxbridge-flags
 URL: https://crates.io/crates/cxxbridge-flags
-Description: Compiler configuration of the `cxx` crate (implementation detail)
 Version: 1.0.129
-Security Critical: yes
-Shipped: yes
 License: Apache 2.0
 License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Compiler configuration of the `cxx` crate (implementation detail)

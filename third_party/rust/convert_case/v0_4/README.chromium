@@ -1,9 +1,10 @@
 Name: convert_case
 URL: https://crates.io/crates/convert_case
-Description: Convert strings into any case
 Version: 0.4.0
-Security Critical: yes
-Shipped: yes
+Revision: 300d9eef9e8c970e15f324afbc3df8b6a4ebbf71
 License: MIT
 License File:
-Revision: 300d9eef9e8c970e15f324afbc3df8b6a4ebbf71
+Shipped: yes
+Security Critical: yes
+
+Description: Convert strings into any case

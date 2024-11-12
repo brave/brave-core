@@ -1,9 +1,10 @@
 Name: num-integer
 URL: https://crates.io/crates/num-integer
-Description: Integer traits and functions
 Version: 0.1.45
-Security Critical: yes
-Shipped: yes
+Revision: 683903c79f21b196f4ee3a19e7cf0151021cc6c3
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/num-integer-0.1.45/LICENSE-APACHE
-Revision: 683903c79f21b196f4ee3a19e7cf0151021cc6c3
+Shipped: yes
+Security Critical: yes
+
+Description: Integer traits and functions

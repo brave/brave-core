@@ -1,9 +1,10 @@
 Name: signature
 URL: https://crates.io/crates/signature
-Description: Traits for cryptographic signature algorithms (e.g. ECDSA, Ed25519)
 Version: 2.2.0
-Security Critical: yes
-Shipped: yes
+Revision: 5adcd4819b380b4aaec2b57c6bf3f2239a109060
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/signature-2.2.0/LICENSE-APACHE
-Revision: 5adcd4819b380b4aaec2b57c6bf3f2239a109060
+Shipped: yes
+Security Critical: yes
+
+Description: Traits for cryptographic signature algorithms (e.g. ECDSA, Ed25519)

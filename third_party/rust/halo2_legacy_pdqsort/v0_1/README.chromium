@@ -1,11 +1,12 @@
 Name: halo2_legacy_pdqsort
 URL: https://crates.io/crates/halo2_legacy_pdqsort
+Version: 0.1.0
+Revision: c3b69083adcc5ab63d02ffbbc716ee19bdcdc81f
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
 Description: A copy of the core::slice::sort module from the Rust 1.56.1 standard library, modified to behave the same on 32-bit platforms as on 64-bit.
 This is intended to work around a determinism bug in the halo2_proofs crate.
 
-Version: 0.1.0
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/LICENSE-APACHE
-Revision: c3b69083adcc5ab63d02ffbbc716ee19bdcdc81f

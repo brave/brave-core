@@ -1,9 +1,10 @@
 Name: star-sharks
 URL: https://crates.io/crates/star-sharks
-Description: Shamir's Secret Sharing library for the STAR protocol
 Version: 0.6.1
-Security Critical: yes
-Shipped: yes
+Revision: 462a673663dd025721832026fb021193c1fe926e
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/star-sharks-0.6.1/LICENSE-APACHE
-Revision: 462a673663dd025721832026fb021193c1fe926e
+Shipped: yes
+Security Critical: yes
+
+Description: Shamir's Secret Sharing library for the STAR protocol

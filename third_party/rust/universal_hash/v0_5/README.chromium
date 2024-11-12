@@ -1,9 +1,10 @@
 Name: universal-hash
 URL: https://crates.io/crates/universal-hash
-Description: Traits which describe the functionality of universal hash functions (UHFs)
 Version: 0.5.1
-Security Critical: yes
-Shipped: yes
+Revision: 742af86f821d7f79e76962d302c819b14622a485
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/universal-hash-0.5.1/LICENSE-APACHE
-Revision: 742af86f821d7f79e76962d302c819b14622a485
+Shipped: yes
+Security Critical: yes
+
+Description: Traits which describe the functionality of universal hash functions (UHFs)

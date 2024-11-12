@@ -1,9 +1,10 @@
 Name: markup5ever
 URL: https://crates.io/crates/markup5ever
-Description: Common code for xml5ever and html5ever
 Version: 0.10.1
-Security Critical: yes
-Shipped: yes
+Revision: c6f06dba02617ec1bd98c1bd44314b6c78af7091
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/markup5ever-0.10.1/LICENSE-APACHE
-Revision: c6f06dba02617ec1bd98c1bd44314b6c78af7091
+Shipped: yes
+Security Critical: yes
+
+Description: Common code for xml5ever and html5ever

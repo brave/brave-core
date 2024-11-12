@@ -1,9 +1,10 @@
 Name: uint
 URL: https://crates.io/crates/uint
-Description: Large fixed-size integer arithmetic
 Version: 0.9.5
-Security Critical: yes
-Shipped: yes
+Revision: c41d51df8a314150c46cbbff31f8140a35dfb02c
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/uint-0.9.5/../../../../../common/licenses/Apache-2.0
-Revision: c41d51df8a314150c46cbbff31f8140a35dfb02c
+Shipped: yes
+Security Critical: yes
+
+Description: Large fixed-size integer arithmetic

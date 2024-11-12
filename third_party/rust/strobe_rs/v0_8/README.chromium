@@ -1,9 +1,10 @@
 Name: strobe-rs
 URL: https://crates.io/crates/strobe-rs
-Description: An implementation of the Strobe protocol framework in pure Rust
 Version: 0.8.1
-Security Critical: yes
-Shipped: yes
+Revision: 46905c3fbe6dc50d6546a7060778fa9ffc0834c8
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/strobe-rs-0.8.1/LICENSE-APACHE
-Revision: 46905c3fbe6dc50d6546a7060778fa9ffc0834c8
+Shipped: yes
+Security Critical: yes
+
+Description: An implementation of the Strobe protocol framework in pure Rust

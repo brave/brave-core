@@ -1,10 +1,11 @@
 Name: tracing-attributes
 URL: https://crates.io/crates/tracing-attributes
-Description: Procedural macro attributes for automatically instrumenting functions.
-
 Version: 0.1.27
-Security Critical: yes
-Shipped: yes
+Revision: 2502f19d934b092fc01bb7493eacbb16b4038bf3
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/tracing-attributes-0.1.27/LICENSE
-Revision: 2502f19d934b092fc01bb7493eacbb16b4038bf3
+Shipped: yes
+Security Critical: yes
+
+Description: Procedural macro attributes for automatically instrumenting functions.
+
