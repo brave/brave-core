@@ -12,9 +12,7 @@
 #include "src/components/sync/service/sync_internals_util.cc"
 #undef ConstructAboutInformation
 
-namespace syncer {
-
-namespace sync_ui_util {
+namespace syncer::sync_ui_util {
 
 base::Value::Dict ConstructAboutInformation(
     IncludeSensitiveData include_sensitive_data,
@@ -60,6 +58,4 @@ base::Value::Dict ConstructAboutInformation(
   return about_info;
 }
 
-}  // namespace sync_ui_util
-
-}  // namespace syncer
+}  // namespace syncer::sync_ui_util

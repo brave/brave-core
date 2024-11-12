@@ -9,9 +9,7 @@
 
 #include "third_party/blink/public/common/features.h"
 
-namespace blink {
-
-namespace bindings {
+namespace blink::bindings {
 
 namespace {
 
@@ -67,6 +65,4 @@ PLATFORM_EXPORT void IDLMemberInstaller::BraveInstallAttributes<
   }
 }
 
-}  // namespace bindings
-
-}  // namespace blink
+}  // namespace blink::bindings

@@ -49,9 +49,7 @@ void UintToLEBytes(T val, std::vector<uint8_t>* bytes) {
 
 }  // namespace
 
-namespace brave_wallet {
-
-namespace solana {
+namespace brave_wallet::solana {
 
 namespace system_program {
 
@@ -302,6 +300,4 @@ std::optional<SolanaInstruction> Transfer(
 
 }  // namespace bubblegum_program
 
-}  // namespace solana
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::solana
