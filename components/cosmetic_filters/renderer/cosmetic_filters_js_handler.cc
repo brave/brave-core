@@ -500,6 +500,9 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
   if (!resources_dict_ || web_frame->IsProvisional())
     return;
 
+  // For testing purposes, always launch the content picker.
+  LaunchContentPicker();
+
   SCOPED_UMA_HISTOGRAM_TIMER_MICROS("Brave.CosmeticFilters.ApplyRules");
   TRACE_EVENT1("brave.adblock", "ApplyRules", "url", url_.spec());
 
