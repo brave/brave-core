@@ -1,0 +1,5 @@
+TOML parse error at line 9, column 1
+  |
+9 | comment-cr   = "Carriage return in comment" # \x0da=1
+  | ^
+duplicate key `comment-cr` in document root

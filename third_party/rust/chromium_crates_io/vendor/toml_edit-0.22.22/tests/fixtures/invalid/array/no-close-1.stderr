@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 24
+  |
+1 | no-close-1 = [ 1, 2, 3
+  |                        ^
+invalid array
+expected `]`

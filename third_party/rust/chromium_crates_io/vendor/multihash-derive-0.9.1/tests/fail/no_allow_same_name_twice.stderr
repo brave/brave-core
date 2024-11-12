@@ -1,0 +1,50 @@
+error[E0428]: the name `Foo` is defined multiple times
+  --> tests/fail/no_allow_same_name_twice.rs:22:5
+   |
+20 |     Foo,
+   |     --- previous definition of the type `Foo` here
+21 |     #[mh(code = 0x1, hasher = FooHasher)]
+22 |     Foo,
+   |     ^^^ `Foo` redefined here
+   |
+   = note: `Foo` must be defined only once in the type namespace of this enum
+
+warning: unused variable: `input`
+ --> tests/fail/no_allow_same_name_twice.rs:7:26
+  |
+7 |     fn update(&mut self, input: &[u8]) { }
+  |                          ^^^^^ help: if this is intentional, prefix it with an underscore: `_input`
+  |
+  = note: `#[warn(unused_variables)]` on by default
+
+error[E0004]: non-exhaustive patterns: `&Code::Foo` not covered
+  --> tests/fail/no_allow_same_name_twice.rs:16:17
+   |
+16 | #[derive(Clone, Debug, Eq, PartialEq, Copy, multihash_derive::MultihashDigest)]
+   |                 ^^^^^ pattern `&Code::Foo` not covered
+   |
+note: `Code` defined here
+  --> tests/fail/no_allow_same_name_twice.rs:18:10
+   |
+18 | pub enum Code {
+   |          ^^^^
+...
+22 |     Foo,
+   |     --- not covered
+   = note: the matched value is of type `&Code`
+   = note: this error originates in the derive macro `Debug` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unreachable pattern
+  --> tests/fail/no_allow_same_name_twice.rs:18:10
+   |
+18 |    pub enum Code {
+   |   __________^
+   |  |__________|
+19 | ||     #[mh(code = 0x0, hasher = FooHasher)]
+20 | ||     Foo,
+   | ||_______- matches all the relevant values
+21 | |      #[mh(code = 0x1, hasher = FooHasher)]
+22 | |      Foo,
+   | |________^ no value can reach this
+   |
+   = note: `#[warn(unreachable_patterns)]` on by default

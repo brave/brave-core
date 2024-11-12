@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 14
+  |
+1 | arrr = [true false]
+  |              ^
+invalid array
+expected `]`

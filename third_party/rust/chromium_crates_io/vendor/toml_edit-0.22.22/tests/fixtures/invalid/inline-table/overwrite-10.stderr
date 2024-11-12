@@ -1,0 +1,5 @@
+TOML parse error at line 4, column 6
+  |
+4 | a = {b.a = 1, b = 2, b.c = 3}
+  |      ^
+duplicate key `b`

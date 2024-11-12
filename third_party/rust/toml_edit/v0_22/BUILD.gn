@@ -1,0 +1,86 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "toml_edit"
+  epoch = "0.22"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/array.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/array_of_tables.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/de/array.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/de/datetime.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/de/key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/de/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/de/spanned.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/de/table.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/de/table_enum.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/de/value.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/document.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/encode.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/index.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/inline_table.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/internal_string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/item.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/array.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/datetime.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/document.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/inline_table.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/numbers.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/state.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/strings.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/table.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/trivia.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/parser/value.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/raw_string.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/repr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/ser/array.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/ser/key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/ser/map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/ser/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/ser/pretty.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/ser/value.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/table.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/value.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/visit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/src/visit_mut.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.22.22"
+  cargo_pkg_authors =
+      "Andronik Ordian <write@reusable.software>, Ed Page <eopage@gmail.com>"
+  cargo_pkg_name = "toml_edit"
+  cargo_pkg_description = "Yet another format-preserving TOML parser."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/indexmap/v2:lib",
+    "//brave/third_party/rust/toml_datetime/v0_6:lib",
+    "//brave/third_party/rust/winnow/v0_6:lib",
+  ]
+  features = [
+    "display",
+    "parse",
+  ]
+}
