@@ -894,6 +894,7 @@ bool AIChatDatabase::CreateSchema() {
   static constexpr char kCreateConversationTableQuery[] =
       "CREATE TABLE IF NOT EXISTS conversation("
       "uuid TEXT PRIMARY KEY NOT NULL,"
+      // Encrypted conversation title string
       "title BLOB)";
   CHECK(GetDB().IsSQLValid(kCreateConversationTableQuery));
   if (!GetDB().Execute(kCreateConversationTableQuery)) {
@@ -906,7 +907,7 @@ bool AIChatDatabase::CreateSchema() {
       "CREATE TABLE IF NOT EXISTS associated_content("
       "uuid TEXT PRIMARY KEY NOT NULL,"
       "conversation_uuid TEXT NOT NULL,"
-      // Encrypted title string
+      // Encrypted associated content title string
       "title BLOB NOT NULL,"
       // Encrypted url string
       "url BLOB NOT NULL,"
@@ -919,6 +920,7 @@ bool AIChatDatabase::CreateSchema() {
       "last_contents BLOB,"
       // Don't need REAL for content_used_percentage since
       // we're never using decimal values.
+      // UI expects 0 - 100 values.
       "content_used_percentage INTEGER NOT NULL,"
       "is_content_refined INTEGER NOT NULL)";
   CHECK(GetDB().IsSQLValid(kCreateAssociatedContentTableQuery));
