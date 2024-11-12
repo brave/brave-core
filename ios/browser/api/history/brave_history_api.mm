@@ -226,9 +226,8 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
       /*transition*/ ui::PAGE_TRANSITION_TYPED,
       /*hidden=*/false, /*visit_source*/ history::VisitSource::SOURCE_BROWSED,
       /*did_replace_entry=*/false, /*consider_for_ntp_most_visited=*/true,
-      /*title*/ base::SysNSStringToUTF16(history.title),
-      /*opener*/ std::nullopt,
-      /*bookmark_id*/ std::nullopt);
+      /*is_ephemeral*/ false,
+      /*title*/ base::SysNSStringToUTF16(history.title));
 
   history_service_->AddPage(args);
 }
