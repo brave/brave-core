@@ -1076,7 +1076,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     suggestions_.clear();
   }
 
-  if (is_page_associated && suggestions_.empty() &&
+  if (suggestions_.empty() &&
       suggestion_generation_status_ !=
           mojom::SuggestionGenerationStatus::IsGenerating &&
       suggestion_generation_status_ !=

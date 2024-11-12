@@ -17,6 +17,7 @@
 #include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/ranges/algorithm.h"
+#include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -1326,14 +1327,15 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
 
+  base::RunLoop loop;
   // The prompt should be submitted to the engine, not the title.
   EXPECT_CALL(*engine,
               GenerateAssistantResponse(false, StrEq(""), _, "do the thing!",
-                                        StrEq(""), _, _));
+                                        StrEq(""), _, _))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
-  testing::Sequence s;
   conversation_handler_->SubmitHumanConversationEntry("the thing");
-  task_environment_.RunUntilIdle();
+  loop.Run();
   testing::Mock::VerifyAndClearExpectations(engine);
 
   // Suggestion should be removed
