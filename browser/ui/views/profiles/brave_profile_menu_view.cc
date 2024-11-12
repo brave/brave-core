@@ -48,7 +48,7 @@ void BraveProfileMenuView::SetProfileIdentityInfo(
           .GetProfileAttributesWithPath(profile->GetPath());
   // Reset IdentityInfo to get rid of the subtitle string
   // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in").
-  SetProfileIdentityInfo(
+  ProfileMenuView::SetProfileIdentityInfo(
       /*profile_name=*/std::u16string(),
       profile_attributes->GetProfileThemeColors().profile_highlight_color,
       /*edit_button_params=*/std::nullopt,
