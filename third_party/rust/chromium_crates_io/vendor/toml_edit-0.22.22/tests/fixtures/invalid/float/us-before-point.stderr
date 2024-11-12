@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 21
+  |
+1 | us-before-point = 1_.2
+  |                     ^
+invalid integer
+expected digit

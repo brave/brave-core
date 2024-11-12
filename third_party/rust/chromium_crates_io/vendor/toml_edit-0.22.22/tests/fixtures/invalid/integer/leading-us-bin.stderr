@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 18
+  |
+1 | leading-us-bin = _0b1
+  |                  ^
+invalid integer
+expected leading digit

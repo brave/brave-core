@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 18
+  |
+1 | inf_underscore = in_f
+  |                  ^
+invalid string
+expected `"`, `'`

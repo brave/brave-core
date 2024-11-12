@@ -1,0 +1,25 @@
+[package]
+name = "fvm_ipld_encoding"
+description = "Sharded IPLD encoding."
+version = "0.5.1"
+license = "MIT OR Apache-2.0"
+authors = ["ChainSafe Systems <info@chainsafe.io>", "Protocol Labs", "Filecoin Core Devs"]
+edition = "2021"
+repository = "https://github.com/filecoin-project/ref-fvm"
+
+[dependencies]
+serde = { workspace = true }
+serde_tuple = { workspace = true }
+cid = { workspace = true, features = ["serde", "std"] }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+fvm_ipld_blockstore = { workspace = true }
+multihash-codetable = { workspace = true, features = ["blake2b"] }
+serde_ipld_dagcbor = "0.6.1"
+serde_repr = "0.1"
+
+[features]
+default = []
+
+[dev-dependencies]
+serde_json = { workspace = true }

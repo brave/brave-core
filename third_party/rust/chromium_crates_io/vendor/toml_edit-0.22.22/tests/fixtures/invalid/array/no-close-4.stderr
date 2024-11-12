@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 25
+  |
+1 | no-close-4 = [{ key = 42
+  |                         ^
+invalid inline table
+expected `}`
