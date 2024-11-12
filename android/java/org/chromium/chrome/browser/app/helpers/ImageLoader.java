@@ -110,9 +110,8 @@ public class ImageLoader {
                 validUrl = url;
             }
 
-            WebContentsFactory webContentsFactory = new WebContentsFactory();
             WebContents webContents =
-                    webContentsFactory.createWebContentsWithWarmRenderer(
+                    WebContentsFactory.createWebContentsWithWarmRenderer(
                             profile, true, NetId.INVALID);
             webContents.downloadImage(
                     new GURL(validUrl), // Url
