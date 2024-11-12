@@ -368,7 +368,7 @@ class SettingsViewController: TableViewController {
       )
     )
 
-    if !tabManager.privateBrowsingManager.isPrivateBrowsing {
+    if !tabManager.privateBrowsingManager.isPrivateBrowsing && FeatureList.kAIChat.enabled {
       section.rows.append(leoSettingsRow)
     }
 
