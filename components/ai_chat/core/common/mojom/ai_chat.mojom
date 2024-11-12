@@ -94,7 +94,8 @@ struct SiteInfo {
   // from long page content
   bool is_content_refined;
 
-  // Indicates if the URL scheme is of a type that allows for content association.
+  // Indicates if the URL scheme is of a type that allows for
+  // content association.
   // TODO(petemill): SiteInfo should just not exist if content-associated is
   // not possible.
   bool is_content_association_possible;
