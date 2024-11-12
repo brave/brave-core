@@ -15,27 +15,25 @@ namespace internal {
 BASE_EXPORT void print_rust_log(const char* msg,
                                 const char* file,
                                 int line,
-                                enum RustLogSeverity severity) {
-  logging::LogSeverity log_severity = 0;
+                                LogSeverity severity,
+                                bool verbose) {
   switch (severity) {
-    // Trace and debug logs are considered verbose and VLOGed.
-    case RustLogSeverity::TRACE:
-      log_severity = -4;
-      break;
-    case RustLogSeverity::DEBUG:
-      log_severity = -3;
+    // Trace and debug logs are set as `LOGGING_INFO`. Trace is also set as
+    // versbose, so we make a higher level verbosity.
+    case LOGGING_INFO:
+      severity = LOGGING_VERBOSE - verbose;
       break;
     default:
       // All other cases are handled by the upstream version.
-      print_rust_log_chromium_impl(msg, file, line, severity);
+      print_rust_log_chromium_impl(msg, file, line, severity, verbose);
       return;
   }
 
-  if (!VLOG_IS_ON(-log_severity)) {
+  if (!VLOG_IS_ON(-severity)) {
     return;
   }
 
-  logging::LogMessage log_message(file, line, log_severity);
+  logging::LogMessage log_message(file, line, severity);
   log_message.stream() << msg;
 }
 
