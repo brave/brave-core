@@ -326,4 +326,40 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
 }
 
+TEST_P(AIChatDatabaseTest, DeleteAllData) {
+  std::string uuid = "first";
+  GURL page_url = GURL("https://example.com/page");
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true,
+      mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
+                           std::nullopt, std::nullopt, std::nullopt, 0, false,
+                           false));
+
+  auto history = CreateSampleChatHistory(1u);
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
+                                   history[0]->Clone()));
+
+  // Verify data is persisted
+  {
+    mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
+
+    ExpectConversationEntryEquals(FROM_HERE, result->entries[0], history[0]);
+    auto conversations = db_->GetAllConversations();
+    EXPECT_EQ(conversations.size(), 1u);
+    ExpectConversationEquals(FROM_HERE, conversations[0], metadata);
+  }
+
+  // Delete all data
+  db_->DeleteAllData();
+
+  // Verify no data
+  {
+    auto conversations = db_->GetAllConversations();
+    EXPECT_EQ(conversations.size(), 0u);
+    mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
+    EXPECT_EQ(result->entries.size(), 0u);
+  }
+}
+
 }  // namespace ai_chat

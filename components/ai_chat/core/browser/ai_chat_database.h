@@ -75,7 +75,10 @@ class AIChatDatabase {
 
   sql::Database& GetDB();
 
-  bool LazyInit();
+  // Initializes the database if it hasn't been initialized yet. If |re_init|
+  // is true, it will forget previous intiialization state and attempt to
+  // re-initialize the database (e.g. after a table deletion).
+  bool LazyInit(bool re_init = false);
   sql::InitStatus InitInternal();
 
   std::vector<mojom::ConversationTurnPtr> GetConversationEntries(

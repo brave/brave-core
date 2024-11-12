@@ -50,8 +50,8 @@ AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
 
 AIChatDatabase::~AIChatDatabase() = default;
 
-bool AIChatDatabase::LazyInit() {
-  if (!db_init_status_.has_value()) {
+bool AIChatDatabase::LazyInit(bool re_init) {
+  if (!db_init_status_.has_value() || re_init) {
     db_init_status_ = InitInternal();
   }
 
@@ -60,7 +60,7 @@ bool AIChatDatabase::LazyInit() {
 
 sql::InitStatus AIChatDatabase::InitInternal() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!GetDB().Open(db_file_path_)) {
+  if (!GetDB().is_open() && !GetDB().Open(db_file_path_)) {
     return sql::InitStatus::INIT_FAILURE;
   }
 
@@ -811,26 +811,20 @@ bool AIChatDatabase::DeleteConversationEntry(
 
 bool AIChatDatabase::DeleteAllData() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!LazyInit()) {
+  // Ignore init failure when deletion. We only need the database to be open.
+  LazyInit();
+
+  if (!GetDB().is_open()) {
     return false;
   }
 
-  static constexpr char kDropConversationTableQuery[] =
-      "DROP TABLE conversation";
-  static constexpr char kDropAssociatedContentTableQuery[] =
-      "DROP TABLE associated_content";
-  static constexpr char kDropConversationEntryTableQuery[] =
-      "DROP TABLE conversation_entry";
-  static constexpr char kDropCompletionEventTableQuery[] =
-      "DROP TABLE conversation_entry_event_completion";
-  static constexpr char kDropSearchQueriesEventTableQuery[] =
-      "DROP TABLE conversation_entry_event_search_queries";
+  // Delete everything
+  if (!GetDB().Raze()) {
+    return false;
+  }
 
-  return GetDB().Execute(kDropConversationTableQuery) &&
-         GetDB().Execute(kDropAssociatedContentTableQuery) &&
-         GetDB().Execute(kDropConversationEntryTableQuery) &&
-         GetDB().Execute(kDropCompletionEventTableQuery) &&
-         GetDB().Execute(kDropSearchQueriesEventTableQuery) && CreateSchema();
+  // Re-init the database
+  return LazyInit(true);
 }
 
 sql::Database& AIChatDatabase::GetDB() {
