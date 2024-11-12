@@ -630,36 +630,48 @@ void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
 
 void AIChatService::MaybeUnloadConversation(
     ConversationHandler* conversation_handler) {
-  if (!conversation_handler->IsAnyClientConnected() &&
-      !conversation_handler->IsRequestInProgress()) {
-    // Can erase handler because no active UI
-    bool has_history = conversation_handler->HasAnyHistory();
-    auto uuid = conversation_handler->get_conversation_uuid();
-    conversation_observations_.RemoveObservation(conversation_handler);
-    conversation_handlers_.erase(uuid);
-    DVLOG(1) << "Unloaded conversation (" << uuid << ") from memory. Now have "
+  // Don't unload if there is active UI for the conversation
+  if (conversation_handler->IsAnyClientConnected()) {
+    return;
+  }
+
+  bool has_history = conversation_handler->HasAnyHistory();
+
+  // Without the history feature enabled, we can keep the conversation in memory
+  // until there is no active content and chat history. Without an associated
+  // content there will be no way to ask for the conversation. If history is
+  // enabled then we can load from storage if the conversation is requested
+  // again.
+  if (!IsAIChatHistoryEnabled() &&
+      conversation_handler->IsAssociatedContentAlive() && has_history) {
+    return;
+  }
+
+  // With the history feature enabled, only unload if there is no request in
+  // progress.
+  if (IsAIChatHistoryEnabled() && has_history &&
+      conversation_handler->IsRequestInProgress()) {
+    return;
+  }
+
+  auto uuid = conversation_handler->get_conversation_uuid();
+  conversation_observations_.RemoveObservation(conversation_handler);
+  conversation_handlers_.erase(uuid);
+  DVLOG(1) << "Unloaded conversation (" << uuid << ") from memory. Now have "
+           << conversations_.size() << " Conversation metadata items and "
+           << conversation_handlers_.size()
+           << " ConversationHandler instances.";
+  if (!IsAIChatHistoryEnabled() || !has_history) {
+    // Can erase because no active UI and no history, so it's
+    // not a real / persistable conversation
+    conversations_.erase(uuid);
+    std::erase_if(content_conversations_,
+                  [&uuid](const auto& kv) { return kv.second == uuid; });
+    DVLOG(1) << "Erased conversation (" << uuid << "). Now have "
              << conversations_.size() << " Conversation metadata items and "
              << conversation_handlers_.size()
              << " ConversationHandler instances.";
-    if (!IsAIChatHistoryEnabled() || !has_history) {
-      // Can erase because no active UI and no history, so it's
-      // not a real / persistable conversation
-      conversations_.erase(uuid);
-      std::erase_if(content_conversations_,
-                    [&uuid](const auto& kv) { return kv.second == uuid; });
-      DVLOG(1) << "Erased conversation (" << uuid << "). Now have "
-               << conversations_.size() << " Conversation metadata items and "
-               << conversation_handlers_.size()
-               << " ConversationHandler instances.";
-      OnConversationListChanged();
-    }
-  } else {
-    DVLOG(4) << "Not unloading conversation ("
-             << conversation_handler->get_conversation_uuid()
-             << ") from memory. Has active clients: "
-             << (conversation_handler->IsAnyClientConnected() ? "yes" : "no")
-             << " Request is in progress: "
-             << (conversation_handler->IsRequestInProgress() ? "yes" : "no");
+    OnConversationListChanged();
   }
 }
 
@@ -819,6 +831,10 @@ void AIChatService::OnConversationTitleChanged(ConversationHandler* handler,
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateConversationTitle))
         .WithArgs(handler->get_conversation_uuid(), std::move(title));
   }
+}
+
+void AIChatService::OnAssociatedContentDestroyed(ConversationHandler* handler) {
+  MaybeUnloadConversation(handler);
 }
 
 void AIChatService::GetVisibleConversations(
