@@ -5,7 +5,11 @@
 
 #include "brave/browser/ui/views/brave_ads/color_util.h"
 
+#include <array>
+
 #include "base/compiler_specific.h"
+#include "base/containers/span_reader.h"
+#include "base/containers/span_writer.h"
 #include "base/strings/string_number_conversions.h"
 
 namespace brave_ads {
@@ -21,18 +25,17 @@ bool RgbStringToSkColor(std::string_view rgb, SkColor* color) {
     return false;
   }
 
-  uint32_t components[kColorComponentsCount];
-  for (size_t i = 0; i < kColorComponentsCount; ++i) {
-    const size_t beg = kColorComponentLen * i;
-    uint32_t component = 0;
-    if (!base::HexStringToUInt(rgb.substr(beg, kColorComponentLen),
-                               &component)) {
+  std::array<uint32_t, kColorComponentsCount> hex;
+  base::SpanReader<const char> reader(rgb);
+  base::SpanWriter<uint32_t> writer(hex);
+  while (auto component = reader.Read<kColorComponentLen>()) {
+    uint32_t value;
+    if (!base::HexStringToUInt(base::as_string_view(*component), &value)) {
       return false;
     }
-    UNSAFE_TODO(components[i] = component);
+    writer.Write(value);
   }
-
-  *color = SkColorSetRGB(components[0], components[1], components[2]);
+  *color = SkColorSetRGB(hex[0], hex[1], hex[2]);
   return true;
 }
 

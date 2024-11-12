@@ -5,6 +5,7 @@
 
 #include "brave/base/process/process_launcher.h"
 
+#include <array>
 #include <optional>
 #include <string>
 #include <vector>
@@ -22,7 +23,7 @@ std::optional<std::string> ProcessLauncher::ReadAppOutput(
     base::CommandLine cmdline,
     base::LaunchOptions options,
     int timeout_sec) {
-  int pipe_fd[2];
+  std::array<int, 2> pipe_fd;
   if (pipe(pipe_fd) < 0) {
     return std::nullopt;
   }

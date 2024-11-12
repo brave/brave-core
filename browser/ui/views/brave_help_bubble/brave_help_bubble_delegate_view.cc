@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_delegate_view.h"
 
+#include <array>
 #include <utility>
 
 #include "base/strings/utf_string_conversions.h"
@@ -101,7 +102,7 @@ class BorderWithArrow : public views::BubbleBorder {
                              BubbleArrowPart part) {
     constexpr size_t kNumPoints = 4;
     gfx::RectF bounds_f(bounds);
-    SkPoint points[kNumPoints];
+    std::array<SkPoint, kNumPoints> points;
     switch (GetBubbleArrowSide(arrow)) {
       case views::BubbleArrowSide::kRight:
         points[0] = {bounds_f.x(), bounds_f.y()};
@@ -137,7 +138,8 @@ class BorderWithArrow : public views::BubbleBorder {
         break;
     }
 
-    return SkPath::Polygon(points, kNumPoints, part == BubbleArrowPart::kFill);
+    return SkPath::Polygon(points.data(), kNumPoints,
+                           part == BubbleArrowPart::kFill);
   }
 };
 }  // namespace
