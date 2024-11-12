@@ -320,6 +320,10 @@ bool ConversationHandler::IsRequestInProgress() {
   return is_request_in_progress_;
 }
 
+bool ConversationHandler::IsAssociatedContentAlive() {
+  return associated_content_delegate_ && !archive_content_;
+}
+
 void ConversationHandler::OnConversationDeleted() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnConversationDeleted();
@@ -386,7 +390,7 @@ void ConversationHandler::OnAssociatedContentDestroyed(
   // fetch. It may be populated later, e.g. through back navigation.
   // If this conversation is allowed to be associated with content, we can keep
   // using our current cached content.
-  associated_content_delegate_ = nullptr;
+  DisassociateContentDelegate();
   if (!chat_history_.empty() && should_send_page_contents_ &&
       metadata_->associated_content &&
       metadata_->associated_content->is_content_association_possible) {
@@ -397,6 +401,10 @@ void ConversationHandler::OnAssociatedContentDestroyed(
     SetArchiveContent(std::move(last_text_content), is_video);
   }
   OnAssociatedContentInfoChanged();
+  // Notify observers
+  for (auto& observer : observers_) {
+    observer.OnAssociatedContentDestroyed(this);
+  }
 }
 
 void ConversationHandler::SetArchiveContent(std::string text_content,

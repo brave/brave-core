@@ -193,7 +193,11 @@ class MockAssociatedContent
 
   void DisassociateWithConversations(std::string archived_text_content,
                                      bool archived_is_video) {
+    std::set<raw_ptr<ConversationHandler>> related_conversations;
     for (auto& conversation : related_conversations_) {
+      related_conversations.insert(conversation);
+    }
+    for (auto& conversation : related_conversations) {
       if (conversation) {
         conversation->OnAssociatedContentDestroyed(archived_text_content,
                                                    archived_is_video);
@@ -428,6 +432,61 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   task_environment_.RunUntilIdle();
 }
 
+TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
+  NiceMock<MockAssociatedContent> associated_content{};
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+  associated_content.SetContentId(1);
+  ConversationHandler* conversation_with_content_no_messages =
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr());
+  EXPECT_TRUE(conversation_with_content_no_messages);
+  // Asking again for same content ID gets same conversation
+  EXPECT_EQ(
+      conversation_with_content_no_messages,
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr()));
+  // Shouldn't be visible without messages
+  ExpectVisibleConversationsSize(FROM_HERE, 0u);
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+  // Disconnecting the client should unload the handler and delete the
+  // conversation.
+  auto client1 =
+      CreateConversationClient(conversation_with_content_no_messages);
+  DisconnectConversationClient(client1.get());
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
+  ExpectVisibleConversationsSize(FROM_HERE, 0u);
+
+  // Create a new conversation for same content, with messages this time
+  ConversationHandler* conversation_with_content =
+      ai_chat_service_->GetOrCreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr());
+  conversation_with_content->SetChatHistoryForTesting(
+      CreateSampleChatHistory(1u));
+  ExpectVisibleConversationsSize(FROM_HERE, 1u);
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+  auto client2 = CreateConversationClient(conversation_with_content);
+  DisconnectConversationClient(client2.get());
+
+  if (IsAIChatHistoryEnabled()) {
+    // Disconnecting all clients should delete the handler until because it
+    // can be reloaded from storage.
+    EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
+    ExpectVisibleConversationsSize(FROM_HERE, 1u);
+    associated_content.DisassociateWithConversations("", false);
+    EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
+    ExpectVisibleConversationsSize(FROM_HERE, 1u);
+  } else {
+    // Disconnecting all clients should keep the handler in memory until
+    // the content is destroyed.
+    EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+    ExpectVisibleConversationsSize(FROM_HERE, 1u);
+    associated_content.DisassociateWithConversations("", false);
+    EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
+    ExpectVisibleConversationsSize(FROM_HERE, 0u);
+  }
+}
+
 TEST_P(AIChatServiceUnitTest, GetOrCreateConversationHandlerForContent) {
   ConversationHandler* conversation_without_content = CreateConversation();
 
@@ -463,27 +522,24 @@ TEST_P(AIChatServiceUnitTest, GetOrCreateConversationHandlerForContent) {
   // Creating a second conversation with the same associated content should
   // make the second conversation the default for that content, but leave
   // the first still associated with the content.
-  ConversationHandler* conversation_with_content2 =
+  ConversationHandler* conversation2 =
       ai_chat_service_->CreateConversationHandlerForContent(
           associated_content.GetContentId(), associated_content.GetWeakPtr());
-  EXPECT_NE(conversation_with_content, conversation_with_content2);
+  EXPECT_NE(conversation_with_content, conversation2);
   EXPECT_NE(conversation_with_content->get_conversation_uuid(),
-            conversation_with_content2->get_conversation_uuid());
-  EXPECT_EQ(
-      conversation_with_content2->GetAssociatedContentDelegateForTesting(),
-      &associated_content);
-  EXPECT_EQ(
-      conversation_with_content->GetAssociatedContentDelegateForTesting(),
-      conversation_with_content2->GetAssociatedContentDelegateForTesting());
+            conversation2->get_conversation_uuid());
+  EXPECT_EQ(conversation2->GetAssociatedContentDelegateForTesting(),
+            &associated_content);
+  EXPECT_EQ(conversation_with_content->GetAssociatedContentDelegateForTesting(),
+            conversation2->GetAssociatedContentDelegateForTesting());
   // Check the second conversation is the default for that content ID
   EXPECT_EQ(
       ai_chat_service_->GetOrCreateConversationHandlerForContent(
           associated_content.GetContentId(), associated_content.GetWeakPtr()),
-      conversation_with_content2);
+      conversation2);
   // Let the conversation be deleted
-  std::string conversation2_uuid =
-      conversation_with_content2->get_conversation_uuid();
-  auto client1 = CreateConversationClient(conversation_with_content2);
+  std::string conversation2_uuid = conversation2->get_conversation_uuid();
+  auto client1 = CreateConversationClient(conversation2);
   DisconnectConversationClient(client1.get());
   ConversationHandler* conversation_with_content3 =
       ai_chat_service_->GetOrCreateConversationHandlerForContent(
