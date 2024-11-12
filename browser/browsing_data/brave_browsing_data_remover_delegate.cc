@@ -59,10 +59,12 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     }
   }
 
-  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY &&
-      ai_chat::IsAIChatEnabled(profile_->GetPrefs()) &&
-      ai_chat::features::IsAIChatHistoryEnabled()) {
-    ClearAiChatHistory(delete_begin, delete_end);
+  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY) {
+    ai_chat::AIChatService* ai_chat_service =
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);
+    if (ai_chat_service) {
+      ai_chat_service->DeleteConversations(delete_begin, delete_end);
+    }
   }
 }
 
@@ -93,11 +95,4 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
       }
     }
   }
-}
-
-void BraveBrowsingDataRemoverDelegate::ClearAiChatHistory(base::Time begin_time,
-                                                          base::Time end_time) {
-  // Delete all Leo data
-  ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_)
-      ->ClearAllHistory();
 }

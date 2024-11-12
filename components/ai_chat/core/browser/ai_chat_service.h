@@ -119,7 +119,8 @@ class AIChatService : public KeyedService,
           associated_content);
 
   // Removes all in-memory and persisted data for all conversations
-  void ClearAllHistory();
+  void DeleteConversations(std::optional<base::Time> begin_time = std::nullopt,
+                           std::optional<base::Time> end_time = std::nullopt);
 
   void OpenConversationWithStagedEntries(
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
@@ -179,7 +180,7 @@ class AIChatService : public KeyedService,
       int associated_content_id,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content);
-  void MaybeEraseConversation(ConversationHandler* conversation);
+  void MaybeUnloadConversation(ConversationHandler* conversation);
   void HandleFirstEntry(
       ConversationHandler* handler,
       mojom::ConversationTurnPtr& entry,

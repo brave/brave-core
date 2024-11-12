@@ -16,6 +16,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -148,8 +149,15 @@ void BraveLeoAssistantHandler::HandleResetLeoData(
 
   ShowLeoAssistantIconVisibleIfNot(sidebar_service);
 
-  ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_)
-      ->ClearAllHistory();
+  ai_chat::AIChatService* service =
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);
+  if (!service) {
+    return;
+  }
+  service->DeleteConversations();
+  if (profile_) {
+    ai_chat::SetUserOptedIn(profile_->GetPrefs(), false);
+  }
 
   AllowJavascript();
 }

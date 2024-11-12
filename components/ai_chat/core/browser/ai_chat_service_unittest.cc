@@ -631,4 +631,63 @@ TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
   testing::Mock::VerifyAndClearExpectations(&associated_content);
 }
 
+TEST_P(AIChatServiceUnitTest, DeleteConversations) {
+  // Create conversations, call DeleteConversations and verify all conversations
+  // are deleted, whether a client is connected or not.
+  ConversationHandler* conversation_handler1 = CreateConversation();
+  auto client1 = CreateConversationClient(conversation_handler1);
+  conversation_handler1->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ConversationHandler* conversation_handler2 = CreateConversation();
+  auto client2 = CreateConversationClient(conversation_handler2);
+  conversation_handler2->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ConversationHandler* conversation_handler3 = CreateConversation();
+  auto client3 = CreateConversationClient(conversation_handler3);
+  conversation_handler3->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ExpectVisibleConversationsSize(FROM_HERE, 3);
+
+  ai_chat_service_->DeleteConversations();
+
+  ExpectVisibleConversationsSize(FROM_HERE, 0);
+
+  // Verify deleted from database
+  ResetService();
+  ExpectVisibleConversationsSize(FROM_HERE, 0);
+}
+
+TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
+  // Create conversations, call DeleteConversations and verify all conversations
+  // are deleted, whether a client is connected or not.
+  ConversationHandler* conversation_handler1 = CreateConversation();
+  auto client1 = CreateConversationClient(conversation_handler1);
+  // This conversation 3 hours in the past
+  conversation_handler1->SetChatHistoryForTesting(
+      CreateSampleChatHistory(1u, -3));
+
+  ConversationHandler* conversation_handler2 = CreateConversation();
+  auto client2 = CreateConversationClient(conversation_handler2);
+  // This conversation 2 hours in the past
+  conversation_handler2->SetChatHistoryForTesting(
+      CreateSampleChatHistory(1u, -2));
+
+  ConversationHandler* conversation_handler3 = CreateConversation();
+  auto client3 = CreateConversationClient(conversation_handler3);
+  // This conversation 1 hour in the past
+  conversation_handler3->SetChatHistoryForTesting(
+      CreateSampleChatHistory(1u, -1));
+
+  ExpectVisibleConversationsSize(FROM_HERE, 3);
+
+  ai_chat_service_->DeleteConversations(base::Time::Now() - base::Minutes(245),
+                                        base::Time::Now() - base::Minutes(110));
+
+  ExpectVisibleConversationsSize(FROM_HERE, 1);
+
+  // Verify deleted from database
+  ResetService();
+  ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 1 : 0);
+}
+
 }  // namespace ai_chat

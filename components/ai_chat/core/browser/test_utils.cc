@@ -181,7 +181,7 @@ mojom::Conversation* GetConversation(
 
 std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
     size_t num_query_pairs,
-    uint32_t future_hours) {
+    int32_t future_hours) {
   std::vector<mojom::ConversationTurnPtr> history;
   base::Time now = base::Time::Now();
   for (size_t i = 0; i < num_query_pairs; i++) {

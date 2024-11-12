@@ -273,23 +273,44 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
   return conversation;
 }
 
-void AIChatService::ClearAllHistory() {
-  // Delete opt-in state
-  profile_prefs_->ClearPref(prefs::kLastAcceptedDisclaimer);
+void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
+                                        std::optional<base::Time> end_time) {
+  if (!begin_time.has_value() && !end_time.has_value()) {
+    // Delete all conversations
+    // Delete in-memory data
+    conversation_observations_.RemoveAllObservations();
+    conversation_handlers_.clear();
+    conversations_.clear();
+    content_conversations_.clear();
 
-  // Delete in-memory data
-  conversation_observations_.RemoveAllObservations();
-  conversation_handlers_.clear();
-  conversations_.clear();
-  content_conversations_.clear();
-  OnConversationListChanged();
-
-  // Delete database data
-  if (ai_chat_db_) {
-    ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteAllData));
+    // Delete database data
+    if (ai_chat_db_) {
+      ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteAllData));
+    }
+    if (ai_chat_metrics_ != nullptr) {
+      ai_chat_metrics_->RecordReset();
+    }
+    OnConversationListChanged();
+    return;
   }
-  if (ai_chat_metrics_ != nullptr) {
-    ai_chat_metrics_->RecordReset();
+
+  // Get all keys from conversations_
+  std::vector<std::string> conversation_keys;
+
+  for (auto& [uuid, conversation] : conversations_) {
+    if ((!begin_time.has_value() || begin_time->is_null() ||
+         conversation->updated_time >= begin_time) &&
+        (!end_time.has_value() || end_time->is_null() || end_time->is_max() ||
+         conversation->updated_time <= end_time)) {
+      conversation_keys.push_back(uuid);
+    }
+  }
+
+  for (const auto& uuid : conversation_keys) {
+    DeleteConversation(uuid);
+  }
+  if (!conversation_keys.empty()) {
+    OnConversationListChanged();
   }
 }
 
@@ -313,11 +334,11 @@ void AIChatService::MaybeInitStorage() {
     }
     has_loaded_conversations_from_storage_ = false;
     // Remove any conversations from in-memory that aren't connected to UI.
-    // Iterate in reverse and call MaybeEraseConversation to avoid iterator
+    // Iterate in reverse and call MaybeUnloadConversation to avoid iterator
     // invalidation.
     for (auto it = conversation_handlers_.rbegin();
          it != conversation_handlers_.rend(); ++it) {
-      MaybeEraseConversation(it->second.get());
+      MaybeUnloadConversation(it->second.get());
     }
     // Erase any conversations metadata that is not connected to UI
     for (auto it = conversations_.begin(); it != conversations_.end();) {
@@ -467,9 +488,9 @@ void AIChatService::DismissPremiumPrompt() {
 }
 
 void AIChatService::DeleteConversation(const std::string& id) {
-  ConversationHandler* conversation_handler =
-      conversation_handlers_.at(id).get();
   if (conversation_handlers_.contains(id)) {
+    ConversationHandler* conversation_handler =
+        conversation_handlers_.at(id).get();
     conversation_observations_.RemoveObservation(conversation_handler);
     conversation_handlers_.erase(id);
   }
@@ -520,7 +541,7 @@ void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
   std::move(callback).Run(status, std::move(info));
 }
 
-void AIChatService::MaybeEraseConversation(
+void AIChatService::MaybeUnloadConversation(
     ConversationHandler* conversation_handler) {
   if (!conversation_handler->IsAnyClientConnected() &&
       !conversation_handler->IsRequestInProgress()) {
@@ -565,7 +586,7 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
   // We don't unload a conversation if it has a request in progress, so check
   // again when that changes.
   if (!in_progress) {
-    MaybeEraseConversation(handler);
+    MaybeUnloadConversation(handler);
   }
 }
 
@@ -661,7 +682,7 @@ void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
 void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
   DVLOG(4) << "Client connection changed for conversation "
            << handler->get_conversation_uuid();
-  MaybeEraseConversation(handler);
+  MaybeUnloadConversation(handler);
 }
 
 void AIChatService::OnConversationTitleChanged(ConversationHandler* handler,

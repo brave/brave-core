@@ -21,7 +21,12 @@
 
 namespace {
 
-constexpr int kCurrentDatabaseVersion = 1;
+// These database versions should roll together unless we develop migrations.
+// Lowest version we support migrations from - existing database will be deleted
+// if lower.
+constexpr int kLowestSupportedDatabaseVersion = 2;
+// Current version of the database. Increase if breaking changes are made.
+constexpr int kCurrentDatabaseVersion = 2;
 
 constexpr char kSearchQueriesSeparator[] = "|||";
 
@@ -56,6 +61,12 @@ bool AIChatDatabase::LazyInit() {
 sql::InitStatus AIChatDatabase::InitInternal() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!GetDB().Open(db_file_path_)) {
+    return sql::InitStatus::INIT_FAILURE;
+  }
+
+  if (sql::MetaTable::RazeIfIncompatible(
+          &GetDB(), kLowestSupportedDatabaseVersion, kCurrentDatabaseVersion) ==
+      sql::RazeIfIncompatibleResult::kFailed) {
     return sql::InitStatus::INIT_FAILURE;
   }
 
