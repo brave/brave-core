@@ -101,7 +101,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 @end
 
 @interface BraveAds () <AdsClientBridge> {
-  std::unique_ptr<AdsClientIOS> adsClient;
   std::unique_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
   std::unique_ptr<brave_ads::AdEventCache> adEventCache;
   raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
@@ -147,7 +146,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
     adEventCache = std::make_unique<brave_ads::AdEventCache>();
 
-    adsClient = std::make_unique<AdsClientIOS>(self);
     adsClientNotifier = std::make_unique<brave_ads::AdsClientNotifier>();
   }
   return self;
@@ -161,7 +159,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   [self stopNetworkMonitor];
 
   [self deallocAdsClientNotifier];
-  [self deallocAdsClient];
 
   [self deallocAdEventCache];
 
@@ -170,10 +167,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 - (void)deallocAdsClientNotifier {
   adsClientNotifier.reset();
-}
-
-- (void)deallocAdsClient {
-  adsClient.reset();
 }
 
 - (void)deallocAdEventCache {
@@ -258,9 +251,10 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   CHECK(adsService);
 
   adsService->InitializeAds(
-      base::SysNSStringToUTF8(self.storagePath), *adsClient,
-      std::move(cppSysInfo), std::move(cppBuildChannelInfo),
-      std::move(cppWalletInfo), base::BindOnce(^(const bool success) {
+      base::SysNSStringToUTF8(self.storagePath),
+      std::make_unique<AdsClientIOS>(self), std::move(cppSysInfo),
+      std::move(cppBuildChannelInfo), std::move(cppWalletInfo),
+      base::BindOnce(^(const bool success) {
         if (success) {
           [self registerAdsResources];
           [self periodicallyCheckForAdsResourceUpdates];
@@ -1687,11 +1681,13 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)clearData:(void (^)())completion {
-  if (adsService == nil) {
+  if (![self isServiceRunning]) {
     return completion();
   }
 
-  adsService->ClearData(base::BindOnce(completion));
+  adsService->ClearData(base::BindOnce(^() {
+    completion();
+  }));
 }
 
 #pragma mark - Ads client notifier
