@@ -1,7 +1,16 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index 1c7e5fc10fb9b0a8ebc6b3b65431e9a65ece20e9..4bebc15f2f894804c7caf97ecbe42db34a00bb09 100644
+index 1c7e5fc10fb9b0a8ebc6b3b65431e9a65ece20e9..c330f3a3589ead0ccd81f5efeb4f5ce8b219c605 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
+@@ -150,7 +150,7 @@ pub fn readme_file_from_package<'a>(
+     if license_files.is_empty() {
+         // Exceptions for https://crbug.com/369075726 can only apply to crates that are not
+         // shipped.
+-        let does_crbug_369075726_apply = !shipped
++        let does_crbug_369075726_apply = true || !shipped
+             && crate_config
+                 .as_ref()
+                 .map_or(false, |cfg| cfg.no_license_file_tracked_in_crbug_369075726);
 @@ -209,7 +209,7 @@ pub fn readme_file_from_package<'a>(
  
  // Allowed licenses, in the format they are specified in Cargo.toml files from
