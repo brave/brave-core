@@ -44,7 +44,7 @@ class AdsServiceImplIOS : public KeyedService {
   bool IsRunning() const;
 
   void InitializeAds(const std::string& storage_path,
-                     AdsClient& ads_client,
+                     std::unique_ptr<AdsClient> ads_client,
                      mojom::SysInfoPtr mojom_sys_info,
                      mojom::BuildChannelInfoPtr mojom_build_channel,
                      mojom::WalletInfoPtr mojom_wallet,
@@ -100,17 +100,24 @@ class AdsServiceImplIOS : public KeyedService {
   // KeyedService:
   void Shutdown() override;
 
-  void InitializeDatabase(const std::string& storage_path);
-  void Cleanup();
-
+  void InitializeAds(InitializeCallback callback);
   void InitializeAdsCallback(InitializeCallback callback, bool success);
+  void InitializeDatabase();
+
   void ShutdownAdsCallback(ShutdownCallback callback, bool success);
+
+  void ClearAdsData(base::OnceClosure callback, bool success);
+  void ClearAdsDataCallback(base::OnceClosure callback);
 
   const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
 
   const scoped_refptr<base::SequencedTaskRunner> database_queue_;
 
   base::FilePath storage_path_;
+  std::unique_ptr<AdsClient> ads_client_;
+  mojom::SysInfoPtr mojom_sys_info_;
+  mojom::BuildChannelInfoPtr mojom_build_channel_;
+  mojom::WalletInfoPtr mojom_wallet_;
 
   base::SequenceBound<Database> database_;
 

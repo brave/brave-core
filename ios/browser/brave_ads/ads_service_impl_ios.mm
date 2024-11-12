@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 
+#include <memory>
 #include <string>
 
 #include "base/check.h"
@@ -12,11 +13,13 @@
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
@@ -48,25 +51,20 @@ bool AdsServiceImplIOS::IsRunning() const {
 
 void AdsServiceImplIOS::InitializeAds(
     const std::string& storage_path,
-    AdsClient& ads_client,
+    std::unique_ptr<AdsClient> ads_client,
     mojom::SysInfoPtr mojom_sys_info,
     mojom::BuildChannelInfoPtr mojom_build_channel,
     mojom::WalletInfoPtr mojom_wallet,
     InitializeCallback callback) {
   CHECK(!IsRunning());
 
-  InitializeDatabase(storage_path);
+  storage_path_ = base::FilePath(storage_path);
+  ads_client_ = std::move(ads_client);
+  mojom_sys_info_ = std::move(mojom_sys_info);
+  mojom_build_channel_ = std::move(mojom_build_channel);
+  mojom_wallet_ = std::move(mojom_wallet);
 
-  ads_ = Ads::CreateInstance(ads_client);
-
-  ads_->SetSysInfo(std::move(mojom_sys_info));
-  ads_->SetBuildChannel(std::move(mojom_build_channel));
-  ads_->SetFlags(BuildFlags());
-
-  ads_->Initialize(
-      std::move(mojom_wallet),
-      base::BindOnce(&AdsServiceImplIOS::InitializeAdsCallback,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  InitializeAds(std::move(callback));
 }
 
 void AdsServiceImplIOS::ShutdownAds(ShutdownCallback callback) {
@@ -77,35 +75,21 @@ void AdsServiceImplIOS::ShutdownAds(ShutdownCallback callback) {
                                 std::move(callback)));
 }
 
+void AdsServiceImplIOS::ClearData(base::OnceClosure callback) {
+  UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
+  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
+
+  ShutdownAds(base::BindOnce(&AdsServiceImplIOS::ClearAdsData,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             std::move(callback)));
+}
+
 void AdsServiceImplIOS::RunDBTransaction(
     mojom::DBTransactionInfoPtr mojom_db_transaction,
     RunDBTransactionCallback callback) {
   database_.AsyncCall(&brave_ads::Database::RunDBTransaction)
       .WithArgs(std::move(mojom_db_transaction))
       .Then(std::move(callback));
-}
-
-void AdsServiceImplIOS::ClearData(base::OnceClosure callback) {
-  // Ensure the Brave Ads service is stopped before clearing data.
-  CHECK(!IsRunning());
-
-  UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
-  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
-
-  database_queue_->PostTaskAndReply(
-      FROM_HERE,
-      base::BindOnce(
-          [](const base::FilePath& storage_path) {
-            sql::Database::Delete(storage_path.Append(kAdsDatabaseFilename));
-
-            base::DeleteFile(
-                storage_path.Append(brave_ads::kClientJsonFilename));
-
-            base::DeleteFile(
-                storage_path.Append(brave_ads::kConfirmationsJsonFilename));
-          },
-          storage_path_),
-      std::move(callback));
 }
 
 void AdsServiceImplIOS::GetStatementOfAccounts(
@@ -207,12 +191,21 @@ void AdsServiceImplIOS::Shutdown() {
   database_.Reset();
 }
 
-void AdsServiceImplIOS::InitializeDatabase(const std::string& storage_path) {
-  storage_path_ = base::FilePath(storage_path);
+void AdsServiceImplIOS::InitializeAds(InitializeCallback callback) {
+  CHECK(!IsRunning());
 
-  database_ = base::SequenceBound<brave_ads::Database>(
-      database_queue_,
-      base::FilePath(storage_path_.Append(kAdsDatabaseFilename)));
+  InitializeDatabase();
+
+  ads_ = Ads::CreateInstance(*ads_client_);
+
+  ads_->SetSysInfo(mojom_sys_info_.Clone());
+  ads_->SetBuildChannel(mojom_build_channel_.Clone());
+  ads_->SetFlags(BuildFlags());
+
+  ads_->Initialize(
+      mojom_wallet_.Clone(),
+      base::BindOnce(&AdsServiceImplIOS::InitializeAdsCallback,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImplIOS::InitializeAdsCallback(InitializeCallback callback,
@@ -224,11 +217,47 @@ void AdsServiceImplIOS::InitializeAdsCallback(InitializeCallback callback,
   std::move(callback).Run(success);
 }
 
+void AdsServiceImplIOS::InitializeDatabase() {
+  database_ = base::SequenceBound<brave_ads::Database>(
+      database_queue_,
+      base::FilePath(storage_path_.Append(kAdsDatabaseFilename)));
+}
+
 void AdsServiceImplIOS::ShutdownAdsCallback(ShutdownCallback callback,
                                             const bool success) {
   Shutdown();
 
   std::move(callback).Run(success);
+}
+
+void AdsServiceImplIOS::ClearAdsData(base::OnceClosure callback,
+                                     const bool success) {
+  if (!success) {
+    return std::move(callback).Run();
+  }
+
+  // Ensure the Brave Ads service is stopped before clearing data.
+  CHECK(!IsRunning());
+
+  database_queue_->PostTaskAndReply(
+      FROM_HERE,
+      base::BindOnce(
+          [](const base::FilePath& storage_path) {
+            sql::Database::Delete(storage_path.Append(kAdsDatabaseFilename));
+
+            base::DeleteFile(
+                storage_path.Append(brave_ads::kClientJsonFilename));
+
+            base::DeleteFile(
+                storage_path.Append(brave_ads::kConfirmationsJsonFilename));
+          },
+          storage_path_),
+      base::BindOnce(&AdsServiceImplIOS::ClearAdsDataCallback,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImplIOS::ClearAdsDataCallback(base::OnceClosure callback) {
+  InitializeAds(base::IgnoreArgs<bool>(std::move(callback)));
 }
 
 }  // namespace brave_ads
