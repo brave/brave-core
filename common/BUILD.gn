@@ -35,7 +35,6 @@ source_set("channel_info") {
 
     deps = [
       "//base:base",
-      "//base:logging_buildflags",
       "//components/version_info:version_info",
     ]
 
