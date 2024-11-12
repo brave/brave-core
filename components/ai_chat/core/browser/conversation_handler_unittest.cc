@@ -1103,9 +1103,9 @@ TEST_F(
   // MaybeFetchOrClearContentStagedConversation should clear old staged entries
   // and fetch new ones.
   EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
-  // One from SetupHistory and one from removing old entries and adding
+  // 4 from SetupHistory and 4 from adding
   // new entries in OnGetStagedEntriesFromContent.
-  EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(2);
+  EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(8);
 
   // Fill history with staged and non-staged entries.
   SetupHistory({{"old query" /* text */, true /*from_brave_search_SERP */},
@@ -1160,7 +1160,7 @@ TEST_F(ConversationHandlerUnitTest, OnGetStagedEntriesFromContent) {
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   ASSERT_TRUE(conversation_handler_->IsAnyClientConnected());
 
-  EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(2);
+  EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(8);
   // Fill history with staged and non-staged entries.
   SetupHistory({{"q1" /* text */, true /*from_brave_search_SERP */},
                 {"s1", "true"},

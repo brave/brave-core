@@ -1089,7 +1089,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     }
 
     // Optimize by merging with previous completion events if delta updates
-    // are supported or otherwise replacing faddedthe previous event.
+    // are supported or otherwise replacing the previous event.
     if (entry->events->size() > 0) {
       auto& last_event = entry->events->back();
       if (last_event->is_completion_event()) {
