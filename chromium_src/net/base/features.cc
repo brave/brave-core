@@ -8,8 +8,7 @@
 #include "base/feature_override.h"
 #include "brave/net/dns/secure_dns_endpoints.h"
 
-namespace net {
-namespace features {
+namespace net::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kEnableWebTransportDraft07, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -84,5 +83,4 @@ const base::FeatureParam<bool> kBraveForgetFirstPartyStorageByDefault = {
     &kBraveForgetFirstPartyStorage, "BraveForgetFirstPartyStorageByDefault",
     false};
 
-}  // namespace features
-}  // namespace net
+}  // namespace net::features

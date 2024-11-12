@@ -7,13 +7,11 @@
 
 #include "base/feature_override.h"
 
-namespace network {
-namespace features {
+namespace network::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kFledgePst, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivateStateTokens, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace features
-}  // namespace network
+}  // namespace network::features

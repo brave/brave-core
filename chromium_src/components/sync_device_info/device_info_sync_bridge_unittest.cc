@@ -10,8 +10,7 @@
 #include "base/test/task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace base {
-namespace test {
+namespace base::test {
 namespace {
 
 // This trick substitutes TaskEnvironment to make the test
@@ -31,8 +30,7 @@ class TaskEnvironmentOptionalMockTime : public TaskEnvironment {
 };
 
 }  // namespace
-}  // namespace test
-}  // namespace base
+}  // namespace base::test
 
 #define TaskEnvironment TaskEnvironmentOptionalMockTime
 #define ShouldReuploadOnceAfterLocalDeviceInfoTombstone \

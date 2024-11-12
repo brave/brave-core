@@ -8,8 +8,8 @@
 #include "brave/v8/include/v8-isolate-page-graph-utils.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-namespace v8 {
-namespace page_graph {
+
+namespace v8::page_graph {
 
 ExecutingScript GetExecutingScript(Isolate* isolate, bool include_position) {
   i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(isolate);
@@ -27,6 +27,6 @@ void SetPageGraphDelegate(Isolate* isolate,
   internal_isolate->set_page_graph_delegate(page_graph_delegate);
 }
 
-}  // namespace page_graph
-}  // namespace v8
+}  // namespace v8::page_graph
+
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)

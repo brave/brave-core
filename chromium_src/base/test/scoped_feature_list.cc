@@ -7,8 +7,7 @@
 
 #include "src/base/test/scoped_feature_list.cc"
 
-namespace base {
-namespace test {
+namespace base::test {
 
 void ScopedFeatureList::InitWithFeaturesAndDisable(
     const FeatureRef& feature_to_disable,
@@ -19,5 +18,4 @@ void ScopedFeatureList::InitWithFeaturesAndDisable(
   InitWithFeatures(enabled_features, all_disabled_features);
 }
 
-}  // namespace test
-}  // namespace base
+}  // namespace base::test

@@ -7,9 +7,7 @@
 
 #include "base/feature_override.h"
 
-namespace companion {
-namespace features {
-namespace internal {
+namespace companion::features::internal {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kCompanionEnabledByObservingExpsNavigations,
@@ -18,6 +16,4 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSidePanelCompanion2, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace internal
-}  // namespace features
-}  // namespace companion
+}  // namespace companion::features::internal

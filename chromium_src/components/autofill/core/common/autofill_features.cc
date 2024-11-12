@@ -7,12 +7,10 @@
 
 #include "base/feature_override.h"
 
-namespace autofill {
-namespace features {
+namespace autofill::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {test::kAutofillServerCommunication, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace features
-}  // namespace autofill
+}  // namespace autofill::features

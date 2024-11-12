@@ -546,9 +546,7 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
  ]})brave_hsts_json";
 }  // namespace
 
-namespace net {
-
-namespace transport_security_state {
+namespace net::transport_security_state {
 
 bool ParseCertificatesFile(std::string_view certs_input,
                            Pinsets* pinsets,
@@ -898,6 +896,4 @@ bool ParseJSON(std::string_view hsts_json,
                                 pinsets);
 }
 
-}  // namespace transport_security_state
-
-}  // namespace net
+}  // namespace net::transport_security_state

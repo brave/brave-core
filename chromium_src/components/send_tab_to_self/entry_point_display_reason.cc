@@ -11,9 +11,7 @@
 #include "src/components/send_tab_to_self/entry_point_display_reason.cc"
 #undef GetEntryPointDisplayReason
 
-namespace send_tab_to_self {
-
-namespace internal {
+namespace send_tab_to_self::internal {
 
 std::optional<EntryPointDisplayReason> GetEntryPointDisplayReason(
     const GURL& url_to_share,
@@ -39,6 +37,4 @@ std::optional<EntryPointDisplayReason> GetEntryPointDisplayReason(
   return reason;
 }
 
-}  // namespace internal
-
-}  // namespace send_tab_to_self
+}  // namespace send_tab_to_self::internal

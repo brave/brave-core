@@ -5,15 +5,13 @@
 
 #include "content/browser/web_package/signed_exchange_utils.h"
 
-namespace content {
-namespace signed_exchange_utils {
+namespace content::signed_exchange_utils {
 
 bool IsSignedExchangeReportingForDistributorsEnabled() {
   return false;
 }
 
-}  // namespace signed_exchange_utils
-}  // namespace content
+}  // namespace content::signed_exchange_utils
 
 #define IsSignedExchangeReportingForDistributorsEnabled \
   IsSignedExchangeReportingForDistributorsEnabled_Chromium

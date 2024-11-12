@@ -7,8 +7,7 @@
 
 #include "base/feature_override.h"
 
-namespace optimization_guide {
-namespace features {
+namespace optimization_guide::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kOptimizationGuideFetchingForSRP, base::FEATURE_DISABLED_BY_DEFAULT},
@@ -19,5 +18,4 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
      base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace features
-}  // namespace optimization_guide
+}  // namespace optimization_guide::features

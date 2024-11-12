@@ -8,12 +8,10 @@
 #include "base/feature_override.h"
 #include "build/build_config.h"
 
-namespace webapps {
-namespace features {
+namespace webapps::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kWebAppsEnableMLModelForPromotion, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace features
-}  // namespace webapps
+}  // namespace webapps::features

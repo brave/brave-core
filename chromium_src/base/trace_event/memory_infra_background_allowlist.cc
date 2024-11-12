@@ -10,8 +10,7 @@
 #include "src/base/trace_event/memory_infra_background_allowlist.cc"
 #undef IsMemoryAllocatorDumpNameInAllowlist
 
-namespace base {
-namespace trace_event {
+namespace base::trace_event {
 
 bool IsMemoryAllocatorDumpNameInAllowlist(const std::string& name) {
   if (name.starts_with(
@@ -21,5 +20,4 @@ bool IsMemoryAllocatorDumpNameInAllowlist(const std::string& name) {
   return IsMemoryAllocatorDumpNameInAllowlist_ChromiumImpl(name);
 }
 
-}  // namespace trace_event
-}  // namespace base
+}  // namespace base::trace_event

@@ -9,8 +9,7 @@
 #include "src/components/browsing_data/core/pref_names.cc"
 #undef RegisterBrowserUserPrefs
 
-namespace browsing_data {
-namespace prefs {
+namespace browsing_data::prefs {
 
 void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
   RegisterBrowserUserPrefs_ChromiumImpl(registry);
@@ -27,5 +26,4 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kDeleteBraveLeoHistoryOnExit, false);
 }
 
-}  // namespace prefs
-}  // namespace browsing_data
+}  // namespace browsing_data::prefs
