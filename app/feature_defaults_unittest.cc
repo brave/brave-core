@@ -108,7 +108,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kSharedStorageAPI,
       &blink::features::kSharedStorageAPIM118,
       &blink::features::kSharedStorageAPIM125,
-      &blink::features::kSharedStorageSelectURLLimit,
       &blink::features::kSpeculationRulesPrefetchFuture,
       &blink::features::kTextFragmentAnchor,
 #if BUILDFLAG(IS_ANDROID)
