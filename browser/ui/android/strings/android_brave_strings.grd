@@ -896,15 +896,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ONBOARDING_SET_DEFAULT" desc="Text for set default onboarding">
         With Brave as default, every link you tap opens with Brave's privacy protections.
       </message>
-      <message name="IDS_ONBOARDING_SEARCH_WIDGET_TITLE" desc="Title for the search widget onboarding screen">
-        Add the search widget
-      </message>
-      <message name="IDS_ONBOARDING_SEARCH_WIDGET_TEXT" desc="Prompt the user to add the search widget to their home screen">
-        Have Brave at your fingertips to explore the web faster.
-      </message>
-      <message name="IDS_ONBOARDING_SEARCH_WIDGET_BUTTON" desc="Call to action for the search widget onboarding screen">
-        Add to home screen
-      </message>
       <message name="IDS_PRIVACY_ONBOARDING_INDIA" desc="Text for privacy onboarding for india">
         Block ads. Save data. Every single day.
       </message>
