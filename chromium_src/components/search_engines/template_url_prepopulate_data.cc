@@ -644,8 +644,8 @@ std::vector<const PrepopulatedEngine*> GetEnginesFromEngineIDs(
   std::vector<const PrepopulatedEngine*> engines;
   const auto& brave_engines_map =
       TemplateURLPrepopulateData::GetBraveEnginesMap();
-  for (size_t i = 0; i < engine_ids.size(); ++i) {
-    const PrepopulatedEngine* engine = brave_engines_map.at(engine_ids[i]);
+  for (BravePrepopulatedEngineID engine_id : engine_ids) {
+    const PrepopulatedEngine* engine = brave_engines_map.at(engine_id);
     CHECK(engine);
     engines.push_back(engine);
   }
