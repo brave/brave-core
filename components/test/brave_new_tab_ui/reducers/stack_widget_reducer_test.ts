@@ -80,6 +80,16 @@ describe('stackWidgetReducer', () => {
       }
       const assertion = handleWidgetPrefsChange(newState, oldState)
       expect(assertion).toEqual(expectedState)
+
+      // Test again for vpn widget.
+      newState.showBraveTalk = false
+      expectedState.showBraveTalk = false;
+      newState.showBraveVPN = true
+      expectedState.showBraveVPN = true
+      expectedState.widgetStackOrder = ['rewards', 'braveVPN']
+
+      const assertionForVPN = handleWidgetPrefsChange(newState, oldState)
+      expect(assertionForVPN).toEqual(expectedState)
     })
     it('removes a widget from the stack if its being turned off', () => {
       const oldState = {
