@@ -1,0 +1,20 @@
+[package]
+name = "multihash-derive"
+version = "0.9.1"
+edition = "2018"
+description = "Proc macro for deriving custom multihash tables."
+license = "MIT"
+repository = "https://github.com/multiformats/rust-multihash"
+
+[features]
+default = ["std"]
+std = ["multihash/std", "core2/std"]
+
+[dependencies]
+multihash-derive-impl = { version = "0.1.2", path = "../derive-impl" }
+multihash = { version = "0.19.2", path = "../", default-features = false }
+core2 = { version = "0.4.0", default-features = false }
+
+[dev-dependencies]
+trybuild = "1.0.80"
+multihash-codetable = { path = "../codetable", features = ["strobe"] }

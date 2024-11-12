@@ -1,0 +1,6 @@
+TOML parse error at line 2, column 6
+  |
+2 | [xyz = 5
+  |      ^
+invalid table header
+expected `.`, `]`

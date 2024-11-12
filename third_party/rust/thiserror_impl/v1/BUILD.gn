@@ -12,22 +12,23 @@ cargo_crate("lib") {
   crate_name = "thiserror_impl"
   epoch = "1"
   crate_type = "proc-macro"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.38/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.38/src/ast.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.38/src/attr.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.38/src/expand.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.38/src/fmt.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.38/src/generics.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.38/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.38/src/prop.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.38/src/valid.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/src/ast.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/src/attr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/src/expand.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/src/fmt.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/src/generics.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/src/prop.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/src/span.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/src/valid.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
-  edition = "2018"
-  cargo_pkg_version = "1.0.38"
+  edition = "2021"
+  cargo_pkg_version = "1.0.65"
   cargo_pkg_authors = "David Tolnay <dtolnay@gmail.com>"
   cargo_pkg_name = "thiserror-impl"
   cargo_pkg_description = "Implementation detail of the `thiserror` crate"
@@ -40,6 +41,6 @@ cargo_crate("lib") {
   deps = [
     "//brave/third_party/rust/proc_macro2/v1:lib",
     "//brave/third_party/rust/quote/v1:lib",
-    "//brave/third_party/rust/syn/v1:lib",
+    "//brave/third_party/rust/syn/v2:lib",
   ]
 }

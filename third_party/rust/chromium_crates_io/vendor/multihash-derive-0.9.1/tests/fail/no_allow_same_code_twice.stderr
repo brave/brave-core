@@ -1,0 +1,13 @@
+error: the #mh(code) attribute `0x0` is defined multiple times, previous definition at line 0
+  --> tests/fail/no_allow_same_code_twice.rs:21:17
+   |
+21 |     #[mh(code = 0x0, hasher = FooHasher)]
+   |                 ^^^
+
+warning: unused variable: `input`
+ --> tests/fail/no_allow_same_code_twice.rs:7:26
+  |
+7 |     fn update(&mut self, input: &[u8]) { }
+  |                          ^^^^^ help: if this is intentional, prefix it with an underscore: `_input`
+  |
+  = note: `#[warn(unused_variables)]` on by default

@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 26
+  |
+1 | [[closing-bracket.missing]
+  |                          ^
+invalid table header
+expected `.`, `]]`

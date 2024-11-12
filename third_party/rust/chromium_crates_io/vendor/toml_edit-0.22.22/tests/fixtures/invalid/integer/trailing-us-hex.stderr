@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 23
+  |
+1 | trailing-us-hex = 0x1_
+  |                       ^
+invalid hexadecimal integer
+expected digit
