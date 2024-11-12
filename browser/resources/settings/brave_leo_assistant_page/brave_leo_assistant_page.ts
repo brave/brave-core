@@ -198,7 +198,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       // Confirm that the user knows conversation history will be permanently
       // deleted.
       if (!target?.checked) {
-        if (!confirm('Disabling conversation storage will erase all previously stored conversations.')) {
+        if (!confirm(this.i18n('braveLeoAssistantHistoryPreferenceConfirm'))) {
           target.checked = !target.checked
         }
       }

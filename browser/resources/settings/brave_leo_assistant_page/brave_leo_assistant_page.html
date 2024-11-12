@@ -118,7 +118,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 <template is="dom-if" if="[[isHistoryFeatureEnabled_]]">
   <settings-toggle-button class="cr-row hr"
     pref="{{prefs.brave.ai_chat.storage_enabled}}"
-    label="Store my conversation history"
+    label="$i18n{braveLeoAssistantHistoryPreferenceLabel}"
     on-settings-boolean-control-change="onStorageEnabledChange_">
   </settings-toggle-button>
   <div class="settings-box " on-click="onResetAssistantData_">
