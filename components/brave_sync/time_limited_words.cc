@@ -196,8 +196,7 @@ TimeLimitedWords::ParseImpl(const std::string& time_limited_words,
   } else {
     return base::unexpected(ValidationStatus::kWrongWordsNumber);
   }
-
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 base::expected<std::string, TimeLimitedWords::ValidationStatus>

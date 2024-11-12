@@ -58,8 +58,7 @@ std::string GetToAddressFromTxDataUnion(
   if (tx_data_union.is_zec_tx_data()) {
     return tx_data_union.get_zec_tx_data()->to;
   }
-
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 size_t CalculatePendingTxCount(

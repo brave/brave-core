@@ -44,7 +44,7 @@ std::wstring GetBraveVpnServiceFilterName() {
       return L"Brave VPN Development Service DNS Filter";
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 GUID GetVpnDnsSublayerGUID() {
@@ -81,7 +81,7 @@ GUID GetVpnDnsSublayerGUID() {
               {0x95, 0xe8, 0x00, 0x81, 0x13, 0xd3, 0xc0, 0xd6}};
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 DWORD AddSublayer(GUID uuid) {

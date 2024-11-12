@@ -609,7 +609,7 @@ void BraveSearchConversionPromotionView::UpdateHoverState() {
 int BraveSearchConversionPromotionView::GetBannerTypeTitleStringResourceId() {
   switch (type_) {
     case ConversionType::kBannerTypeA:
-      NOTREACHED_NORETURN();
+      NOTREACHED();
     case ConversionType::kBannerTypeB:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_TITLE;
     case ConversionType::kBannerTypeC:
@@ -620,17 +620,19 @@ int BraveSearchConversionPromotionView::GetBannerTypeTitleStringResourceId() {
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DDG_TITLE;
     case ConversionType::kDDGBannerTypeD:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DDG_TITLE;
-    default:
+    case ConversionType::kNone:
+    case ConversionType::kButton:
+    case ConversionType::kNTP:
       break;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 int BraveSearchConversionPromotionView::GetBannerTypeDescStringResourceId() {
   switch (type_) {
     case ConversionType::kBannerTypeA:
-      NOTREACHED_NORETURN();
+      NOTREACHED();
     case ConversionType::kBannerTypeB:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DESC;
     case ConversionType::kBannerTypeC:
@@ -641,11 +643,13 @@ int BraveSearchConversionPromotionView::GetBannerTypeDescStringResourceId() {
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DDG_DESC;
     case ConversionType::kDDGBannerTypeD:
       return IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DDG_DESC;
-    default:
+    case ConversionType::kNone:
+    case ConversionType::kButton:
+    case ConversionType::kNTP:
       break;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 bool BraveSearchConversionPromotionView::UseDDG() const {
