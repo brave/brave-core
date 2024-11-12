@@ -1,9 +1,10 @@
 Name: cipher
 URL: https://crates.io/crates/cipher
-Description: Traits for describing block ciphers and stream ciphers
 Version: 0.4.4
-Security Critical: yes
-Shipped: yes
+Revision: 0af93f6076a76757c65cb2ef6f6abd9756440478
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/LICENSE-APACHE
-Revision: 0af93f6076a76757c65cb2ef6f6abd9756440478
+Shipped: yes
+Security Critical: yes
+
+Description: Traits for describing block ciphers and stream ciphers

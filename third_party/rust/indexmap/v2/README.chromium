@@ -1,9 +1,10 @@
 Name: indexmap
 URL: https://crates.io/crates/indexmap
-Description: A hash table with consistent order and fast iteration.
 Version: 2.6.0
-Security Critical: yes
-Shipped: yes
+Revision: bf0362ba25ad3cade401e8314c9ab7aafc638db8
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/indexmap-2.6.0/LICENSE-APACHE
-Revision: bf0362ba25ad3cade401e8314c9ab7aafc638db8
+Shipped: yes
+Security Critical: yes
+
+Description: A hash table with consistent order and fast iteration.

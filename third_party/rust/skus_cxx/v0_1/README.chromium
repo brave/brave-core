@@ -1,8 +1,9 @@
 Name: skus-cxx
 URL: https://crates.io/crates/skus-cxx
-Description: 
 Version: 0.1.0
-Security Critical: yes
-Shipped: yes
 License: Mozilla Public License 2.0
 License File:
+Shipped: yes
+Security Critical: yes
+
+Description: 

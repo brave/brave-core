@@ -1,10 +1,11 @@
 Name: futures-io
 URL: https://crates.io/crates/futures-io
-Description: The `AsyncRead`, `AsyncWrite`, `AsyncSeek`, and `AsyncBufRead` traits for the futures-rs library.
-
 Version: 0.3.27
-Security Critical: yes
-Shipped: yes
+Revision: cfc501c9c7ef53c531ed43533bb02845f65ff79e
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/futures-io-0.3.27/LICENSE-APACHE
-Revision: cfc501c9c7ef53c531ed43533bb02845f65ff79e
+Shipped: yes
+Security Critical: yes
+
+Description: The `AsyncRead`, `AsyncWrite`, `AsyncSeek`, and `AsyncBufRead` traits for the futures-rs library.
+

@@ -1,9 +1,10 @@
 Name: thiserror
 URL: https://crates.io/crates/thiserror
-Description: derive(Error)
 Version: 1.0.65
-Security Critical: yes
-Shipped: yes
+Revision: 5088592a4efb6a5c40b4d869eb1a0e2eacf622cb
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/thiserror-1.0.65/LICENSE-APACHE
-Revision: 5088592a4efb6a5c40b4d869eb1a0e2eacf622cb
+Shipped: yes
+Security Critical: yes
+
+Description: derive(Error)

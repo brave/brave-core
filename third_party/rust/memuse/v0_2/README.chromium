@@ -1,9 +1,10 @@
 Name: memuse
 URL: https://crates.io/crates/memuse
-Description: Traits for measuring dynamic memory usage of types
 Version: 0.2.1
-Security Critical: yes
-Shipped: yes
+Revision: 8ddcbcb4a26098a73b79764b4550ae62b2632dac
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/memuse-0.2.1/LICENSE-APACHE
-Revision: 8ddcbcb4a26098a73b79764b4550ae62b2632dac
+Shipped: yes
+Security Critical: yes
+
+Description: Traits for measuring dynamic memory usage of types

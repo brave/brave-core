@@ -1,9 +1,10 @@
 Name: chrono
 URL: https://crates.io/crates/chrono
-Description: Date and time library for Rust
 Version: 0.4.24
-Security Critical: yes
-Shipped: yes
+Revision: daa86a77d36d74f474913fd3b560a40f1424bd77
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/LICENSE.txt
-Revision: daa86a77d36d74f474913fd3b560a40f1424bd77
+Shipped: yes
+Security Critical: yes
+
+Description: Date and time library for Rust

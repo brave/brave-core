@@ -1,9 +1,10 @@
 Name: toml_datetime
 URL: https://crates.io/crates/toml_datetime
-Description: A TOML-compatible datetime type
 Version: 0.6.8
-Security Critical: yes
-Shipped: yes
+Revision: eb16379c179650a0d8cf5f42bb2987124b57b0f7
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/toml_datetime-0.6.8/LICENSE-APACHE
-Revision: eb16379c179650a0d8cf5f42bb2987124b57b0f7
+Shipped: yes
+Security Critical: yes
+
+Description: A TOML-compatible datetime type
