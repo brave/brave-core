@@ -1,0 +1,18 @@
+[package]
+name = "multihash-derive-impl"
+version = "0.1.2"
+authors = ["David Craven <david@craven.ch>"]
+edition = "2018"
+description = "Internal proc-macro crate for the MultihashDigest derive"
+license = "MIT"
+repository = "https://github.com/multiformats/rust-multihash"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = { version = "1.0.24", features = ["span-locations"] }
+proc-macro-crate = "3.1.0"
+quote = "1.0.7"
+syn = "2.0.66"
+synstructure = "0.13.1"

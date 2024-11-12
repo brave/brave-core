@@ -1,0 +1,5 @@
+TOML parse error at line 3, column 1
+  |
+3 | type.edible = false  # INVALID
+  | ^
+dotted key `type` attempted to extend non-table type (inline table)

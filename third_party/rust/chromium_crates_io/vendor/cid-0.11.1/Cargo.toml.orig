@@ -1,0 +1,39 @@
+[package]
+name = "cid"
+version = "0.11.1"
+description = "CID in rust"
+homepage = "https://github.com/multiformats/rust-cid"
+authors = ["Friedel Ziegelmayer <dignifiedquire@gmail.com>"]
+keywords = ["ipld", "ipfs", "cid", "multihash", "multiformats"]
+license = "MIT"
+readme = "README.md"
+edition = "2021"
+rust-version = "1.60"
+
+[features]
+default = ["std"]
+std = ["alloc", "core2/alloc", "multihash/std", "unsigned-varint/std"]
+alloc = ["dep:multibase", "core2/alloc", "multihash/alloc"]
+arb = ["dep:arbitrary", "dep:quickcheck", "dep:rand", "multihash/arb"]
+scale-codec = ["dep:parity-scale-codec", "multihash/scale-codec"]
+serde-codec = ["serde"] # Deprecated, don't use.
+serde = ["alloc", "dep:serde", "dep:serde_bytes", "multihash/serde"]
+
+[dependencies]
+multihash = { version = "0.19.0", default-features = false }
+unsigned-varint = { version = "0.8.0", default-features = false }
+
+multibase = { version = "0.9.1", optional = true, default-features = false }
+parity-scale-codec = { version = "3.0.0", default-features = false, features = ["derive"], optional = true }
+quickcheck = { version = "1.0", optional = true }
+rand = { version = "0.8.5", optional = true, features = ["small_rng"]}
+serde = { version = "1.0.116", default-features = false, optional = true }
+serde_bytes = { version = "0.11.5", optional = true }
+arbitrary = { version = "1.1.0", optional = true }
+
+core2 = { version = "0.4", default-features = false }
+
+[dev-dependencies]
+multihash-derive = { version = "0.9.0", default-features = false }
+serde_json = { version = "1.0.59", default-features = false, features = ["alloc"]}
+multihash-codetable = { version = "0.1.0", default-features = false, features = ["digest", "sha2"] }

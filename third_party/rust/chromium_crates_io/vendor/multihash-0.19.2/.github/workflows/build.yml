@@ -1,0 +1,162 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+        toolchain: [stable]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Cache Dependencies & Build Outputs
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          components: rustfmt, clippy
+
+      - name: Check Code Format
+        run: cargo fmt --all -- --check
+        shell: bash
+
+      - name: Code Lint
+        run: cargo clippy --all-targets --all-features --workspace -- -D warnings
+        shell: bash
+
+      - name: Code Lint Without Default Features
+        run: cargo clippy --no-default-features --workspace -- -D warnings
+        shell: bash
+
+      - name: Test
+        run: cargo test --all-features --workspace
+        shell: bash
+
+  build-no-std:
+    name: Build no_std
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv6m-none-eabi
+
+      - name: Build
+        run: cargo build --no-default-features --workspace --target thumbv6m-none-eabi
+        shell: bash
+
+  build-no-std-with-serde:
+    name: Build no_std with `serde` feature enabled
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv6m-none-eabi
+
+      - name: Build
+        run: cargo build --no-default-features --features serde --workspace --target thumbv6m-none-eabi
+        shell: bash
+
+  msrv:
+    name: MSRV
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Extract MSRV from Cargo.toml
+        run: |
+          MSRV=$(cargo metadata --format-version 1 --no-deps | jq -r '.packages[] | select(.name == "multihash") | .rust_version')
+          echo "MSRV=$MSRV" >> $GITHUB_ENV
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.MSRV }}
+
+      - uses: Swatinem/rust-cache@v2
+
+      - run: cargo +"$MSRV" build --package multihash
+
+  coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    container:
+      image: xd009642/tarpaulin:0.31.2
+      options: --security-opt seccomp=unconfined
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate code coverage
+        run: cargo tarpaulin --verbose --all-features --workspace --timeout 120 --out Xml
+
+      - name: Upload Code Coverage
+        uses: codecov/codecov-action@v4
+
+  cargo-deny:
+    name: Cargo Deny
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install cargo-deny
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deny
+
+      - name: Cargo Deny - Check
+        run: cargo deny check
+        shell: bash
+
+  # todo: run on all crates
+  cargo-hack-codetable:
+    name: Cargo Hack - codetable
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install cargo-hack
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-hack
+
+      - name: Cargo Hack - Check each feature
+        run: cargo hack check -p multihash-codetable --each-feature
+        shell: bash
+        env:
+          RUSTFLAGS: -D warnings
+
+  semver-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check semver
+        uses: obi1kenobi/cargo-semver-checks-action@v2

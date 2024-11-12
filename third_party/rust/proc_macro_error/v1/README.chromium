@@ -1,9 +1,0 @@
-Name: proc-macro-error
-URL: https://crates.io/crates/proc-macro-error
-Description: Almost drop-in replacement to panics in proc-macros
-Version: 1.0.4
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/proc-macro-error-1.0.4/LICENSE-APACHE
-Revision: e231741c47af1beda78d53aee29500cccb8266cd

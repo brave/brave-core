@@ -1,0 +1,5 @@
+TOML parse error at line 1, column 8
+  |
+1 | tbl = { a.b = "a_b", a.b.c = "a_b_c" }
+  |        ^
+dotted key `a.b` attempted to extend non-table type (string)
