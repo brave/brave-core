@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dotknij dwukrotnie, aby włączyć lub wyłączyć Brave Shields";
 
-/* Sync page title */
-"BraveSync" = "Synchronizacja";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Szczegóły synchronizacji";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "Aby rozpocząć, należy zainstalować oprogramowanie Brave na wszystkich urządzeniach, które planujesz zsynchronizować. Aby je połączyć, rozpocznij łańcuch synchronizacji, który zostanie użyty do bezpiecznego połączenia ze sobą wszystkich urządzeń.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Zamknij wszystkie karty (%i)";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Wpisz podane słowa łańcucha synchronizacji w poniższym formularzu.";
-
-/* Code words section title */
-"CodeWords" = "Słowa kodowe";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Pobierz";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Pliki cookie i dane witryny";
-
-/* Copied action complete title */
-"Copied" = "Skopiowano!";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Skopiowano do schowka!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Skopiuj informację o aplikacji do schowka.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Skopiuj informację o zakładkach do schowka.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Skopiuj do schowka";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Kopiuj informacje o wsparciu";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Usuń";
 
-/* Sync device settings page title. */
-"Devices" = "Urządzenia w łańcuchu synchronizacji";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Urządzenie %1$@ (%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Włącz funkcję odświeżania przez ściąganie";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Wprowadź słowa kodowe";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Wprowadź słowa kodowe poniżej";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Podaj nazwę folderu";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Funkcja bezpiecznego przeglądania chroni przed stronami, o których wiadomo, że są niebezpieczne. [Dowiedz się więcej](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Włącz aparat";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Ukrywaj podglądy linków";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Nieprawidłowe dane w żądaniu płatności";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Kod synchronizacji jest nieprawidłowy. Sprawdź go i spróbuj ponownie.";
 
 /* History tableview section header */
 "LastMonth" = "W zeszłym miesiącu";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Nowe okno incognito";
 
-/* New sync code button title */
-"NewSyncCode" = "Rozpocznij nowy łańcuch synchronizacji";
-
 /* New Tab title */
 "NewTab" = "Nowa karta";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Brak wyników wyszukiwania.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Wprowadź wszystkie słowa i spróbuj ponownie";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Niewystarczająca liczba słów";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Automatyczne przekierowanie linków NPR do ich wersji tekstowej (pod adresem text.npr.org).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Powiększenie strony";
-
-/* Sync pair device settings section title */
-"Pair" = "Paruj";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Hasła";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Karta w trybie prywatnym";
 
-/* QR Code section title */
-"QRCode" = "Kod QR";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Szybkie wyszukiwarki";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Automatyczne przekierowanie linków Reddit do starszego interfejsu (pod adresem old.reddit.com). Aby wymusić wyświetlenie nowego interfejsu Reddit, użyj zamiast tego new.reddit.com.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Usuń";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Usuń z ulubionych";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Zapisz loginy";
-
-/* Scan sync code title */
-"Scan" = "Skanuj";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Mam kod synchronizacji";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Zablokowane skrypty";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Pokaż zakładki";
 
-/* Show code words instead */
-"ShowCodeWords" = "Pokaż słowa kodowe";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Pokaż pobrane elementy";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Ukryj powiadomienia";
 
-/* Sync settings section title */
-"Sync" = "Synchronizacja";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Dodaj nowe urządzenie";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Dodaj komputer";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "Synchronizuj kod QR łańcucha";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "Na drugim urządzeniu mobilnym przejdź do obszaru Synchronizacja w panelu Ustawienia i dotknij przycisku „Skanuj kod synchronizacji”. Skorzystaj z aparatu, aby zeskanować poniższy kod QR.\n\n Traktuj ten kod jak hasło. Jeśli ktoś go pozna, będzie mógł odczytać i zmodyfikować synchronizowane dane.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Wpisz kod synchronizacji";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Przejdź na urządzeniu do obszaru Synchronizacja w panelu Ustawienia i dotknij przycisku „%@”. Wprowadź słowa kodowe łańcucha synchronizacji podane poniżej.\n\n Traktuj ten kod jak hasło. Jeśli ktoś go pozna, będzie mógł odczytać i zmodyfikować synchronizowane dane.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Wprowadź słowa kodowe";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Dodaj tablet lub telefon";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Pomyślnie wyeksportowano zakładki";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Zakładki zostały zaimportowane pomyślnie";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Zsynchronizuj urządzenie";
+"sync.chainAccountDeletionErrorDescription" = "Zsynchronizuj urządzenie";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Zsynchronizuj urządzenie";
+"sync.chainAccountDeletionErrorTitle" = "Zsynchronizuj urządzenie";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Nie można dołączyć do tego łańcucha. Usunięto konto.";
+"sync.chainAlreadyDeletedAlertDescription" = "Nie można dołączyć do tego łańcucha. Usunięto konto.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Zsynchronizuj urządzenie";
+"sync.chainAlreadyDeletedAlertTitle" = "Zsynchronizuj urządzenie";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Wybierz typ urządzenia";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Wybierz typ urządzenia, z którym chcesz zsynchronizować.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Kod wygasł. Wygeneruj nowy, dotykając poniższego przycisku.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "min.";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "godz.";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "sek.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Ten tymczasowy kod jest ważny przez następne %@";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "godzina";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "sekunda";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Wpisz podane słowa łańcucha synchronizacji w poniższym formularzu.";
+
+/* Code words section title */
+"sync.codeWords" = "Słowa kodowe";
+
+/* Computer device button title */
+"sync.computerDevice" = "Komputer";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Zarządzaj informacjami, które chcesz synchronizować między urządzeniami. Te ustawienia mają wpływ tylko na to urządzenie.";
+"sync.configurationInformationText" = "Zarządzaj informacjami, które chcesz synchronizować między urządzeniami. Te ustawienia mają wpływ tylko na to urządzenie.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Usuń konto Sync";
+/* Copied action complete title */
+"sync.copied" = "Skopiowano!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Skopiowano do schowka!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Skopiuj do schowka";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Usuń konto Sync";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Usuń konto Sync";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Usunięcie konta spowoduje wykasowanie zaszyfrowanych danych z serwerów Brave i wyłączy synchronizację na wszystkich połączonych urządzeniach.";
+"sync.deleteAccountAlertDescriptionPart1" = "Usunięcie konta spowoduje wykasowanie zaszyfrowanych danych z serwerów Brave i wyłączy synchronizację na wszystkich połączonych urządzeniach.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Nie spowoduje to usunięcia danych, które są przechowywane lokalnie na tych urządzeniach.";
+"sync.deleteAccountAlertDescriptionPart2" = "Nie spowoduje to usunięcia danych, które są przechowywane lokalnie na tych urządzeniach.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Wygląda na to, że ten kod został utworzony na urządzeniu ze starszą wersją aplikacji Brave. Zaktualizuj Brave do najnowszej wersji na innym urządzeniu, a następnie utwórz nowy kod synchronizacji.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Coś poszło nie tak podczas wykrywania urządzeń w łańcuchu synchronizacji.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Urządzenia w łańcuchu synchronizacji";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Urządzenia w łańcuchu synchronizacji";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Wprowadź słowa kodowe";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Wprowadź słowa kodowe poniżej";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Ten kod synchronizacji wygasł. Wygeneruj nowy kod synchronizacji i spróbuj ponownie.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Przepraszamy, coś poszło nie tak";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Włącz aparat";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Agent synchronizacji działa obecnie w trybie offline lub jest niedostępny. Spróbuj ponownie później.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Błąd komunikacji z synchronizacją";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Szczegóły synchronizacji";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Kod synchronizacji jest nieprawidłowy. Sprawdź go i spróbuj ponownie.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Uwaga: należy zweryfikować, czy rozpoznajesz każde urządzenie z powyższej listy. Urządzenia w łańcuchu synchronizacji mogą otrzymać osobiste dane, takie jak hasła i historia przeglądania.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Zatwierdzanie urządzenia";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Osiągnięto maksymalną dozwoloną liczbę urządzeń (10) w łańcuchu synchronizacji. Usuń urządzenie, aby kontynuować.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Limit urządzeń";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Rozpocznij nowy łańcuch synchronizacji";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Sprawdź połączenie internetowe i spróbuj ponownie.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Nie można połączyć się z procesem synchronizacji";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Wprowadź wszystkie słowa i spróbuj ponownie";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Niewystarczająca liczba słów";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Paruj";
+
+/* QR Code section title */
+"sync.qrCode" = "Kod QR";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Lokalne dane na urządzeniu pozostaną niezmienione na wszystkich urządzeniach. Inne urządzenia w tym łańcuchu synchronizacji pozostaną zsynchronizowane. ";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Usunąć %@ z łańcucha synchronizacji?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Usuń";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Usuń urządzenie";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Urządzenie";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Aktualnie zsynchronizowane dane zostaną zachowane, ale wszystkie dane w pamięci podręcznej synchronizacji Brave zostaną usunięte. Aby ponownie zsynchronizować dane urządzenia, należy rozpocząć nowy łańcuch synchronizacji.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Usuń łańcuch synchronizacji";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "Usunięcie %@ spowoduje skasowanie łańcucha synchronizacji.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Usunięcie urządzenia z łańcucha synchronizacji nie spowoduje usunięcia zsynchronizowanych danych z urządzenia.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Usunąć %@ z łańcucha synchronizacji?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Usuń to urządzenie";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "To urządzenie zostanie odłączone od grupy synchronizacji i nie będzie już odbierać ani wysyłać danych synchronizacji. Wszystkie istniejące dane pozostaną na urządzeniu.";
+
+/* Scan sync code title */
+"sync.scan" = "Skanuj";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Mam kod synchronizacji";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Aby dodać urządzenie do łańcucha synchronizacji lub włączyć synchronizację haseł, należy najpierw ustawić kod dostępu na urządzeniu.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Ustaw kod dostępu";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "Poniższa lista urządzeń zawiera wszystkie urządzenia w łańcuchu synchronizacji. Każdym urządzeniem można zarządzać z dowolnego innego urządzenia.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Ustawienia synchronizacji";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Pokaż słowa kodowe";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Użyję aparatu…";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "To usunięcie jest trwałe i nie ma możliwości odzyskania danych. Jeśli zdecydujesz się ponownie zacząć używać aplikacji Sync, będzie trzeba utworzyć nowe konto i ponownie dodać każde urządzenie po kolei.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Coś poszło nie tak podczas wykrywania urządzeń w łańcuchu synchronizacji.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Urządzenia i ustawienia";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Urządzenia w łańcuchu synchronizacji";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Usunąć to urządzenie?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Uwaga: należy zweryfikować, czy rozpoznajesz każde urządzenie z powyższej listy. Urządzenia w łańcuchu synchronizacji mogą otrzymać osobiste dane, takie jak hasła i historia przeglądania.";
+/* Sync settings section title */
+"sync.syncTitle" = "Synchronizuj";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Zatwierdzanie urządzenia";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Nie udało się";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Osiągnięto maksymalną dozwoloną liczbę urządzeń (10) w łańcuchu synchronizacji. Usuń urządzenie, aby kontynuować.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Tablet lub telefon";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Limit urządzeń";
+/* This device cell */
+"sync.thisDevice" = "To urządzenie";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Aby dodać urządzenie do łańcucha synchronizacji lub włączyć synchronizację haseł, należy najpierw ustawić kod dostępu na urządzeniu.";
+/* Sync to existing device */
+"sync.toDevice" = "Zsynchronizuj z urządzeniem";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Ustaw kod dostępu";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Na zsynchronizowanym urządzeniu otwórz Ustawienia Brave i przejdź do sekcji Ustawienia. -> Synchronizacja. Wybierz opcję „Dodaj urządzenie” i zeskanuj kod wyświetlony na ekranie.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Ustawienia synchronizacji";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Nie udało się zsynchronizować tego urządzenia";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Dodaj nowe urządzenie";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Nie można dołączyć do grupy synchronizacji. Sprawdź wprowadzone słowa i spróbuj ponownie.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Dodaj komputer";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Synchronizuj kod QR łańcucha";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Na drugim urządzeniu mobilnym przejdź do obszaru Synchronizacja w panelu Ustawienia i dotknij przycisku „Skanuj kod synchronizacji”. Skorzystaj z aparatu, aby zeskanować poniższy kod QR.\n\n Traktuj ten kod jak hasło. Jeśli ktoś go pozna, będzie mógł odczytać i zmodyfikować synchronizowane dane.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Wpisz kod synchronizacji";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Przejdź na urządzeniu do obszaru Synchronizacja w panelu Ustawienia i dotknij przycisku „%@”. Wprowadź słowa kodowe łańcucha synchronizacji podane poniżej.\n\n Traktuj ten kod jak hasło. Jeśli ktoś go pozna, będzie mógł odczytać i zmodyfikować synchronizowane dane.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Wprowadź słowa kodowe";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Dodaj tablet lub telefon";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Wybierz typ urządzenia";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Wybierz typ urządzenia, z którym chcesz zsynchronizować.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Kod wygasł. Wygeneruj nowy, dotykając poniższego przycisku.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Ten tymczasowy kod jest ważny przez następne %@";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Komputer";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Usuń konto Sync";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Nie można połączyć";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Wygląda na to, że ten kod został utworzony na urządzeniu ze starszą wersją aplikacji Brave. Zaktualizuj Brave do najnowszej wersji na innym urządzeniu, a następnie utwórz nowy kod synchronizacji.";
+"sync.validForTooLongError" = "Ten kod jest nieprawidłowy. Sprawdź, czy godzina i strefa czasowa są skonfigurowane prawidłowo na Twoim urządzeniu.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Urządzenia i ustawienia";
+/* Sync settings welcome */
+"sync.welcome" = "Aby rozpocząć, należy zainstalować oprogramowanie Brave na wszystkich urządzeniach, które planujesz zsynchronizować. Aby je połączyć, rozpocznij łańcuch synchronizacji, który zostanie użyty do bezpiecznego połączenia ze sobą wszystkich urządzeń.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Ten kod synchronizacji wygasł. Wygeneruj nowy kod synchronizacji i spróbuj ponownie.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Przepraszamy, coś poszło nie tak";
+/* Word count title */
+"sync.wordCount" = "Liczba słów: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Zaimportowane zakładki";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Agent synchronizacji działa obecnie w trybie offline lub jest niedostępny. Spróbuj ponownie później.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Błąd komunikacji z synchronizacją";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Sprawdź połączenie internetowe i spróbuj ponownie.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Nie można połączyć się z procesem synchronizacji";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Lokalne dane na urządzeniu pozostaną niezmienione na wszystkich urządzeniach. Inne urządzenia w tym łańcuchu synchronizacji pozostaną zsynchronizowane. ";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Usunąć %@ z łańcucha synchronizacji?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Usuń urządzenie";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Urządzenie";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Aktualnie zsynchronizowane dane zostaną zachowane, ale wszystkie dane w pamięci podręcznej synchronizacji Brave zostaną usunięte. Aby ponownie zsynchronizować dane urządzenia, należy rozpocząć nowy łańcuch synchronizacji.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Usuń łańcuch synchronizacji";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "Usunięcie %@ spowoduje skasowanie łańcucha synchronizacji.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Usunięcie urządzenia z łańcucha synchronizacji nie spowoduje usunięcia zsynchronizowanych danych z urządzenia.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Usunąć %@ z łańcucha synchronizacji?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Usuń to urządzenie";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Usunąć to urządzenie?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "To urządzenie zostanie odłączone od grupy synchronizacji i nie będzie już odbierać ani wysyłać danych synchronizacji. Wszystkie istniejące dane pozostaną na urządzeniu.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "Poniższa lista urządzeń zawiera wszystkie urządzenia w łańcuchu synchronizacji. Każdym urządzeniem można zarządzać z dowolnego innego urządzenia.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Użyję aparatu…";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Tablet lub telefon";
-
-/* This device cell */
-"SyncThisDevice" = "To urządzenie";
-
-/* Sync to existing device */
-"SyncToDevice" = "Zsynchronizuj z urządzeniem";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Na zsynchronizowanym urządzeniu otwórz Ustawienia Brave i przejdź do sekcji Ustawienia. -> Synchronizacja. Wybierz opcję „Dodaj urządzenie” i zeskanuj kod wyświetlony na ekranie.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Nie udało się zsynchronizować tego urządzenia";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Nie udało się";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Ten kod jest nieprawidłowy. Sprawdź, czy godzina i strefa czasowa są skonfigurowane prawidłowo na Twoim urządzeniu.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Zamknij ";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Włączyć sugestie wyszukiwania?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Nie można dołączyć do grupy synchronizacji. Sprawdź wprowadzone słowa i spróbuj ponownie.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Nie można połączyć";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Odblokuj";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widżety";
-
-/* Word count title */
-"WordCount" = "Liczba słów: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "r.";

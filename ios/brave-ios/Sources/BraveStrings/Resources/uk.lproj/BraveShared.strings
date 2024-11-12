@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Торкніться двічі, щоб увімкнути Brave Shields";
 
-/* Sync page title */
-"BraveSync" = "Синхронізація";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Синхронізувати внутрішні дані";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "Щоб розпочати, потрібно встановити Brave на кожен пристрій, який ви хочете синхронізувати. Щоб об’єднати усі пристрої в одну захищену мережу, створіть ланцюжок синхронізації.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Закрити усі вкладки (%i)";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Уведіть надані вам кодові слова для ланцюжкової синхронізації у формі нижче.";
-
-/* Code words section title */
-"CodeWords" = "Кодові слова";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Завантажити";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Файли cookie та дані сайтів";
-
-/* Copied action complete title */
-"Copied" = "Скопійовано!";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Скопійовано в буфер!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Скопіювати дані програми до буферу обміну.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Скопіювати інформацію про вкладки до буфера обміну.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Копіювати в буфер";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Скопіювати відомості для служби підтримки";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Видалити";
 
-/* Sync device settings page title. */
-"Devices" = "Пристрої в ланцюжку синхронізації";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Пристрій %1$@ (%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Увімкнути функцію «Потягнути, щоб оновити»";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Введіть кодові слова";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Введіть кодові слова нижче";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Уведіть назву папки";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Safe Browsing захищає від вебсайтів, які можуть бути небезпечними. [Докладніше](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Увімкнути камеру";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Не показувати попередній перегляд посилань";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Недійсні дані в запиті платежу";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Невірний код синхронізації. Будь ласка, перевірте його і спробуйте знову.";
 
 /* History tableview section header */
 "LastMonth" = "Останній місяць";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Нове приватне вікно";
 
-/* New sync code button title */
-"NewSyncCode" = "Створити новий ланцюжок синхронізації";
-
 /* New Tab title */
 "NewTab" = "Нова вкладка";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Пошук не дав результатів.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Введіть усі слова і спробуйте знову.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Недостатньо слів";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Автоматичне переспрямування посилань NPR на текстові версії (text.npr.org).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Масштабування сторінки";
-
-/* Sync pair device settings section title */
-"Pair" = "З'єднати";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Паролі";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Приватна вкладка";
 
-/* QR Code section title */
-"QRCode" = "QR код";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Системи швидкого пошуку";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Автоматичне переспрямування посилань Reddit на старішу версію (old.reddit.com). Щоб перейти у нову версію інтерфейсу Reddit, використовуйте посилання new.reddit.com.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Видалити";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Вилучити зі списку обраного";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Зберегти облікові дані";
-
-/* Scan sync code title */
-"Scan" = "Сканувати";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "У мене є код синхронізації";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Заблоковані скрипти";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Показати закладки";
 
-/* Show code words instead */
-"ShowCodeWords" = "Показати кодові слова";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Показати завантаження";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Приховувати попередження";
 
-/* Sync settings section title */
-"Sync" = "Синхронізація";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Додати пристрій";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Додавання комп’ютера";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "QR-код ланцюжка синхронізації";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "На іншому мобільному пристрої перейдіть до меню «Синхронізація» на панелі налаштувань і торкніться кнопки «Сканувати код синхронізації». Відскануйте наведений нижче QR-код за допомогою камери.\n\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Введіть код синхронізації";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "На своєму пристрої перейдіть до меню «Синхронізація» на панелі налаштувань і торкніться кнопки «%@». Уведіть наведені нижче кодові слова для ланцюжка синхронізації.\n\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Уведіть кодові слова";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Додавання планшета або телефону";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Закладки експортовано";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Закладки імпортовано";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Синхронізувати пристрій";
+"sync.chainAccountDeletionErrorDescription" = "Синхронізувати пристрій";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Синхронізувати пристрій";
+"sync.chainAccountDeletionErrorTitle" = "Синхронізувати пристрій";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Не вдалося приєднатися до ланцюжка. Обліковий запис видалено.";
+"sync.chainAlreadyDeletedAlertDescription" = "Не вдалося приєднатися до ланцюжка. Обліковий запис видалено.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Синхронізувати пристрій";
+"sync.chainAlreadyDeletedAlertTitle" = "Синхронізувати пристрій";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Виберіть тип пристрою";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Виберіть тип пристрою, що ви бажаєте синхронізувати.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Термін коду сплив. Згенеруйте новий, торкнувшись кнопки нижче.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "хв.";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "годин";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "секунд";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Цей тимчасовий код діє наступні %@";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "година";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "секунда";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Уведіть надані вам кодові слова для ланцюжкової синхронізації у формі нижче.";
+
+/* Code words section title */
+"sync.codeWords" = "Кодові слова";
+
+/* Computer device button title */
+"sync.computerDevice" = "Комп’ютер";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Виберіть інформацію, що синхронізуватиметься між пристроями. Ці налаштування стосуватимуться лише цього пристрою.";
+"sync.configurationInformationText" = "Керуйте інформацією, яку ви бажаєте синхронізувати між пристроями. Ці налаштування вплинуть лише на цей пристрій.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Видалити обліковий запис для синхронізації";
+/* Copied action complete title */
+"sync.copied" = "Скопійовано!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Скопійовано в буфер!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Копіювати в буфер";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Видалити обліковий запис для синхронізації";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Видалити обліковий запис для синхронізації";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Видалення облікового запису призведе до видалення зашифрованих даних із серверів Brave і вимкнення синхронізації на всіх ваших підключених пристроях. ";
+"sync.deleteAccountAlertDescriptionPart1" = "Видалення облікового запису призведе до видалення ваших зашифрованих даних із серверів Brave і вимкнення синхронізації на всіх під’єднаних пристроях.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Однак дані, що зберігаються на цих пристроях, видалено не буде.";
+"sync.deleteAccountAlertDescriptionPart2" = "Однак дані, що зберігаються на цих пристроях, не будуть видалені.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Схоже, що цей код було створено на пристрої зі старою версією Brave. Оновіть Brave до найновішої версії на іншому пристрої, а потім створіть новий код синхронізації.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Під час визначення пристроїв у ланцюжку синхронізації сталася помилка.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Пристрої в ланцюжку синхронізації";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Пристрої в ланцюжку синхронізації";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Введіть кодові слова";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Введіть кодові слова нижче";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Термін дії цього коду синхронізації минув. Згенеруйте новий код і повторіть спробу.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Сталася помилка";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Увімкнути камеру";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Наразі агент синхронізації не підключений до мережі або недоступний. Спробуйте ще раз пізніше.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Помилка зв’язку під час синхронізації";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Синхронізувати внутрішні дані";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Недійсний код синхронізації. Будь ласка, перевірте його і спробуйте знову.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Примітка. Ви повинні підтвердити кожен пристрій у списку зверху. Пристрої в ланцюжку синхронізації можуть отримувати персональні дані, як-от паролі й історія перегляду.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Підтвердження пристрою";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Ви досягли максимальної кількості пристроїв (10), дозволених у ланцюжку синхронізації. Видаліть пристрій, щоб продовжити.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Обмеження пристроїв";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Створити новий ланцюжок синхронізації";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Перевірте з'єднання з інтернетом і спробуйте знову.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Неможливо під'єднатися до синхронізації";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Введіть усі слова і спробуйте знову.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Недостатньо слів";
+
+/* Sync pair device settings section title */
+"sync.pair" = "З'єднати";
+
+/* QR Code section title */
+"sync.qrCode" = "QR код";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Дані локального пристрою залишаться без змін на всіх пристроях. Інші пристрої в цьому ланцюжку залишаться синхронізованими.";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Видалити %@ з ланцюжка синхронізації?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Вилучити";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Видалити пристрій";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Пристрій";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Наразі синхронізовані дані буде збережено, але всі дані в кеші синхронізації Brave буде видалено. Щоб знову синхронізувати дані пристрою, потрібно створити новий ланцюжок синхронізації.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Видалити ланцюжок синхронізації";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "У разі вилучення %@ буде видалено ланцюжок синхронізації.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Вилучення пристрою з ланцюжка синхронізації не призведе до видалення всіх попередньо синхронізованих даних.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Видалити %@ з ланцюжка синхронізації?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Вилучити цей пристрій";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Цей пристрій буде від'єднаний від синхронізації і більше не буде обмінюватись даними. Всі наявні дані залишаться на пристрої.";
+
+/* Scan sync code title */
+"sync.scan" = "Сканувати";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "У мене є код синхронізації";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Щоб додати пристрій у ланцюжок синхронізації або ввімкнути чи вимкнути синхронізацію паролів, спершу слід установити код доступу на пристрої.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Установити код доступу";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "У наведеному нижче списку зазначено всі пристрої у вашому ланцюжку синхронізації. Кожним пристроєм можна керувати з будь-якого іншого пристрою.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Налаштування синхронізації";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Показати кодові слова";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Використати камеру…";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Дані буде видалено остаточно. Їх неможливо буде відновити. Якщо ви вирішите знову користуватися синхронізацією, вам потрібно буде створити новий обліковий запис і ще раз додати свої пристрої.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Під час визначення пристроїв у ланцюжку синхронізації сталася помилка.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Пристрої та налаштування";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Пристрої в ланцюжку синхронізації";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Вилучити цей пристрій?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Примітка. Ви повинні підтвердити кожен пристрій у списку зверху. Пристрої в ланцюжку синхронізації можуть отримувати персональні дані, як-от паролі й історія перегляду.";
+/* Sync settings section title */
+"sync.syncTitle" = "Синхронізація";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Підтвердження пристрою";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Не вдалося";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Ви досягли максимальної кількості пристроїв (10), дозволених у ланцюжку синхронізації. Видаліть пристрій, щоб продовжити.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Планшет або телефон";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Обмеження пристроїв";
+/* This device cell */
+"sync.thisDevice" = "Цей пристрій";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Щоб додати пристрій у ланцюжок синхронізації або ввімкнути чи вимкнути синхронізацію паролів, спершу слід установити код доступу на пристрої.";
+/* Sync to existing device */
+"sync.toDevice" = "Синхронізація з пристроєм";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Установити код доступу";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "На пристрої, який уже синхронізовано, відкрийте меню «Налаштування Brave» і перейдіть до розділу «Налаштування» -> «Синхронізація». Виберіть пункт «Додати пристрій» і відскануйте код, зображений на екрані.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Налаштування синхронізації";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Не вдається синхронізувати цей пристрій";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Додати пристрій";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Не вдається приєднатися до групи синхронізації. Перевірте правильність введення кодових слів і спробуйте знову.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Додавання комп’ютера";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "QR-код ланцюга синхронізації";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "На іншому мобільному пристрої перейдіть до меню «Синхронізація» на панелі налаштувань і торкніться кнопки «Сканувати код синхронізації». Відскануйте наведений нижче QR-код за допомогою камери.\n\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Введіть код синхронізації";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "На своєму пристрої перейдіть до меню «Синхронізація» на панелі налаштувань і торкніться кнопки «%@». Уведіть наведені нижче кодові слова для ланцюжка синхронізації.\n\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Уведіть кодові слова";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Додавання планшета або телефону";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Виберіть тип пристрою";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Виберіть тип пристрою, що ви бажаєте синхронізувати.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Термін коду сплив. Згенеруйте новий, торкнувшись кнопки нижче.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Цей тимчасовий код діє наступні %@";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Комп’ютер";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Видалити обліковий запис для синхронізації";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Неможливо з'єднатися";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Схоже, що цей код було створено на пристрої зі старою версією Brave. Оновіть Brave до найновішої версії на іншому пристрої, а потім створіть новий код синхронізації.";
+"sync.validForTooLongError" = "Цей код недійсний. Перевірте правильність налаштування часу на вашому пристрої.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Пристрої та налаштування";
+/* Sync settings welcome */
+"sync.welcome" = "Щоб розпочати, потрібно встановити Brave на кожен пристрій, який ви хочете синхронізувати. Щоб об’єднати всі пристрої в одну захищену мережу, створіть ланцюжок синхронізації.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Термін дії цього коду синхронізації минув. Згенеруйте новий код і повторіть спробу.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Сталася помилка";
+/* Word count title */
+"sync.wordCount" = "Кількість слів: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Імпортовані закладки";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Наразі агент синхронізації не підключений до мережі або недоступний. Спробуйте ще раз пізніше.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Помилка зв’язку під час синхронізації";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Перевірте з'єднання з інтернетом і спробуйте знову.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Неможливо під'єднатися до синхронізації";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Дані локального пристрою залишаться без змін на всіх пристроях. Інші пристрої в цьому ланцюжку залишаться синхронізованими.";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Видалити %@ з ланцюжка синхронізації?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Видалити пристрій";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Пристрій";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Наразі синхронізовані дані буде збережено, але всі дані в кеші синхронізації Brave буде видалено. Щоб знову синхронізувати дані пристрою, потрібно створити новий ланцюжок синхронізації.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Видалити ланцюжок синхронізації";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "У разі вилучення %@ буде видалено ланцюжок синхронізації.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Вилучення пристрою з ланцюжка синхронізації не призведе до видалення всіх попередньо синхронізованих даних.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Видалити %@ з ланцюжка синхронізації?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Вилучити цей пристрій";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Вилучити цей пристрій?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Цей пристрій буде від'єднаний від синхронізації і більше не буде обмінюватись даними. Всі наявні дані залишаться на пристрої.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "У наведенному нижче списку пристроїв вказано всі пристрої ланцюжка синхронізації. Кожним пристроєм у списку можна керувати з будь-якого іншого пристрою у списку.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Використати камеру…";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Планшет або телефон";
-
-/* This device cell */
-"SyncThisDevice" = "Цей пристрій";
-
-/* Sync to existing device */
-"SyncToDevice" = "Синхронізація з пристроєм";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "На пристрої, який уже синхронізовано, відкрийте меню «Налаштування Brave» і перейдіть до розділу «Налаштування» -> «Синхронізація». Виберіть пункт «Додати пристрій» і відскануйте код, зображений на екрані.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Не вдається синхронізувати цей пристрій";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Не вдалося";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Цей код недійсний. Перевірте, чи правильно налаштовано час і часовий пояс на вашому пристрої.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Закрити";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Не вдається приєднатися до групи синхронізації. Перевірте правильність введення кодових слів і спробуйте знову.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Неможливо з'єднатися";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Розблокувати";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Віджети";
-
-/* Word count title */
-"WordCount" = "Кількість слів: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "р.";

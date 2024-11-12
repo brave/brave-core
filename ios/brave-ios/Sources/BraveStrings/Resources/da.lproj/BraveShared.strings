@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dobbelttryk for at skifte til Brave Shields";
 
-/* Sync page title */
-"BraveSync" = "Synkroniser ";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Synkroniser interne";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "For at begynde skal du have installeret Brave på alle de enheder du planlægger at Synkronisere. For at kæde dem sammen skal du oprette en synkroniseringskæde, som du skal bruge til at forbinde alle dine enheder sikkert. ";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Luk alle %i faner";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Skriv din synkroniseringskædes angivne kodeord i formularen herunder. ";
-
-/* Code words section title */
-"CodeWords" = "Kodeord";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Download";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookies og site-data";
-
-/* Copied action complete title */
-"Copied" = "Kopieret!";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Kopieret til udklipsholder!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Kopiér appoplysninger til udklipsholder.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Kopiér faneoplysninger til udklipsholder.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Kopier til udklipsholder";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Kopiér supportoplysninger";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Slet";
 
-/* Sync device settings page title. */
-"Devices" = "Enheder på synkroniseringskæde";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Enhed %1$@ (%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Aktiver træk for at opdatere";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Indtast kodeord";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Indtast kodeord nedenfor";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Indtast mappenavn";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Safe Browsing beskytter mod websteder, som er kendt for at være farlige.[Få mere at vide](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Aktiver kamera";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Skjul linkforhåndsvisninger";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Ugyldige oplysninger i betalingsanmodningen";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Ugyldig synkroniseringskode, kontrollér venligst og prøv igen. ";
 
 /* History tableview section header */
 "LastMonth" = "Sidste måned";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Nyt inkognitovindue";
 
-/* New sync code button title */
-"NewSyncCode" = "Start en ny Synkroniseringskæde ";
-
 /* New Tab title */
 "NewTab" = "Ny fane";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Ingen søgeresultater fundet.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Indtast alle ordene og prøv igen.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Ikke nok ord";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Omdirigerer automatisk NPR-links til deres tekstbaserede version (på text.npr.org).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Sidezoom";
-
-/* Sync pair device settings section title */
-"Pair" = "Start parring";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Adgangskoder";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Privat Fane";
 
-/* QR Code section title */
-"QRCode" = "QR-kode";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Kviksøgemaskiner";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Omdirigerer automatisk Reddit-links til den ældre grænseflade (på old.reddit.com). For at gennemtvinge den nye Reddit-grænseflade skal du bruge new.reddit.com i stedet.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Fjern";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Fjern favorit";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Gem login";
-
-/* Scan sync code title */
-"Scan" = "Scan";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Jeg har en Synkroniseringskode ";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Scripts blokeret";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Vis bogmærker";
 
-/* Show code words instead */
-"ShowCodeWords" = "Vis kodeord i stedet";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Vis downloads";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Undertryk advarsler";
 
-/* Sync settings section title */
-"Sync" = "Synkroniser ";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Tilføj Ny Enhed ";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Tilføj en computer";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "Synkroniser Kæde-QR-Kode ";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "På din anden mobilenhed skal du navigere til Synkroniser i panelet Indstillinger og trykke på knappen »Scan synkroniseringskode«. Brug dit kamera til at scanne QR-koden nedenfor.\n\nBehandl denne kode som en adgangskode. Hvis nogen får fat i den, kan de læse og ændre dine synkroniserede data.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Indtast synkroniseringskoden";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "På din enhed skal du navigere til Synkroniser i panelet Indstillinger og trykke på knappen »%@«. Indtast synkroniseringskædens kodeord, der vises nedenfor.\n\nBehandl denne kode som en adgangskode. Hvis nogen får fat i den, kan de læse og ændre dine synkroniserede data.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Indtast kodeord";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Tilføj en tablet eller telefon";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Bogmærker blev eksporteret";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Bogmærker blev importeret";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Synkroniser enhed";
+"sync.chainAccountDeletionErrorDescription" = "Synkroniser enhed";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Synkroniser enhed";
+"sync.chainAccountDeletionErrorTitle" = "Synkroniser enhed";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Kunne ikke tilslutte sig denne kæde. Kontoen blev slettet.";
+"sync.chainAlreadyDeletedAlertDescription" = "Kunne ikke tilslutte sig denne kæde. Kontoen blev slettet.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Synkroniser enhed";
+"sync.chainAlreadyDeletedAlertTitle" = "Synkroniser enhed";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Vælg Enhedstype ";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Vælg den type enhed du ønsker at synkronisere til. ";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Koden er udløbet. Tryk på knappen nedenfor for at få en ny.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "min";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "timer";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "sekunder";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Denne midlertidige kode er gyldig i de næste %@";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "time";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "sekund";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Skriv din synkroniseringskædes angivne kodeord i formularen herunder. ";
+
+/* Code words section title */
+"sync.codeWords" = "Kodeord";
+
+/* Computer device button title */
+"sync.computerDevice" = "Computer";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Administrer hvilke oplysninger du vil synkronisere mellem enheder. Disse indstillinger påvirker kun denne enhed.";
+"sync.configurationInformationText" = "Administrer hvilke oplysninger du vil synkronisere mellem enheder. Disse indstillinger påvirker kun denne enhed.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Slet synkroniseringskonto";
+/* Copied action complete title */
+"sync.copied" = "Kopieret!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Kopieret til udklipsholder!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Kopier til udklipsholder";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Slet synkroniseringskonto";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Slet synkroniseringskonto";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Hvis du sletter din konto, bliver dine krypterede data fra Brave-servere fjernet, og Sync bliver deaktiveret på alle dine forbundne enheder.";
+"sync.deleteAccountAlertDescriptionPart1" = "Hvis du sletter din konto, bliver dine krypterede data fra Brave-servere fjernet, og Sync bliver deaktiveret på alle dine forbundne enheder.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Det sletter dog ikke data, der blev gemt lokalt på de enheder.";
+"sync.deleteAccountAlertDescriptionPart2" = "Det sletter dog ikke data, der blev gemt lokalt på de enheder.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Denne kode ser ud til at være oprettet på en enhed med en ældre version af Brave. Opdatér til den nyeste version af Brave på din anden enhed, og opret en ny synkroniseringskode.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Noget gik galt under hentning af enheder i synkroniseringskæde.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Enheder på synkroniseringskæde";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Enheder i synkroniseringskæden";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Indtast kodeord";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Indtast kodeord nedenfor";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Denne synkroniseringskode er udløbet. Generer en ny synkroniseringskode, og prøv igen.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Beklager, men noget gik galt";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Aktiver kamera";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Synkroniseringsagenten er i øjeblikket offline eller ikke tilgængelig. Prøv igen senere.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Synkroniseringskommunikationsfejl";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Synkroniser interne";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Ugyldig synkroniseringskode, kontrollér venligst og prøv igen. ";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Bemærk: Du skal bekræfte, at du genkender hver enhed på listen ovenfor. Enheder i en synkroniseringskæde kan modtage personlige data som adgangskoder og browserhistorik.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Bekræftelse af enhed";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Du har nået det maksimale antal tilladte enheder (10) i en synkroniseringskæde. Fjern en enhed for at fortsætte.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Enhedsgrænse";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Start en ny Synkroniseringskæde ";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Tjek din internetforbindelse, og prøv igen.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Kan ikke oprette forbindelse til synkronisering";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Indtast alle ordene og prøv igen.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Ikke nok ord";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Start parring";
+
+/* QR Code section title */
+"sync.qrCode" = "QR-kode";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Lokale enhedsdata forbliver intakte på alle enheder. Andre enheder i denne synkroniseringskæde forbliver synkroniseret. ";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Vil du fjerne %@ fra synkroniseringskæden?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Fjern";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Fjernenhed";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Enhed";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Data, der i øjeblikket er synkroniseret, vil blive bevaret, men alle data i Braves synkroniseringscache vil blive slettet. Du skal starte en ny synkroniseringskæde for at synkronisere enhedsdata igen.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Slet synkroniseringskæde";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "Fjernelse af %@ vil slette synkroniseringskæden.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Fjernelse af enheden fra synkroniseringskæden vil ikke slette tidligere synkroniserede data fra enheden.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Vil du fjerne %@ fra synkroniseringskæden?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Fjern denne enhed";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Denne enhed vil blive afbrudt fra synkroniseringsgruppen og vil ikke længere modtage eller sende synkroniseringsdata. Alle eksisterende data forbliver på enheden.";
+
+/* Scan sync code title */
+"sync.scan" = "Scan";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Jeg har en Synkroniseringskode ";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "For at tilføje en enhed til synkroniseringskæden eller skifte synkronisering af adgangskode, skal du først indstille en adgangskode på din enhed.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Indstil en adgangskode";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "Listen over enheder herunder inkluderer alle enheder i din synkroniseringskæde. Hver enhed kan administreres fra alle andre enheder. ";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Synkroniseringsindstillinger ";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Vis kodeord i stedet";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Jeg bruger mit kamera...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Denne sletning er permanent, og dataene kan på ingen måde gendannes. Hvis du beslutter dig for at begynde at bruge Sync igen, skal du oprette en ny konto og tilføje hver enhed igen en efter en.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Noget gik galt under hentning af enheder i synkroniseringskæde.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Enheder og indstillinger";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Enheder i synkroniseringskæden";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Vil du fjerne denne enhed?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Bemærk: Du skal bekræfte, at du genkender hver enhed på listen ovenfor. Enheder i en synkroniseringskæde kan modtage personlige data som adgangskoder og browserhistorik.";
+/* Sync settings section title */
+"sync.syncTitle" = "Synkroniser ";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Bekræftelse af enhed";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Mislykket";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Du har nået det maksimale antal tilladte enheder (10) i en synkroniseringskæde. Fjern en enhed for at fortsætte.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Tablet eller telefon";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Enhedsgrænse";
+/* This device cell */
+"sync.thisDevice" = "Denne enhed";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "For at tilføje en enhed til synkroniseringskæden eller skifte synkronisering af adgangskode, skal du først indstille en adgangskode på din enhed.";
+/* Sync to existing device */
+"sync.toDevice" = "Synkroniser til enhed";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Indstil en adgangskode";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Brug en eksisterende synkroniseret enhed til at åbne Brave-indstillinger og navigere til Indstillinger -> Synkronisering. Vælg »Tilføj enhed«, og scan den kode, der vises på skærmen.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Synkroniseringsindstillinger ";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Denne enhed kan ikke synkroniseres";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Tilføj Ny Enhed ";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Kan ikke deltage i synkroniseringsgruppen. Tjek de indtastede ord, og prøv igen.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Tilføj en computer";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Synkroniser Kæde-QR-Kode ";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "På din anden mobilenhed skal du navigere til Synkroniser i panelet Indstillinger og trykke på knappen »Scan synkroniseringskode«. Brug dit kamera til at scanne QR-koden nedenfor.\n\nBehandl denne kode som en adgangskode. Hvis nogen får fat i den, kan de læse og ændre dine synkroniserede data.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Indtast synkroniseringskoden";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "På din enhed skal du navigere til Synkroniser i panelet Indstillinger og trykke på knappen »%@«. Indtast synkroniseringskædens kodeord, der vises nedenfor.\n\nBehandl denne kode som en adgangskode. Hvis nogen får fat i den, kan de læse og ændre dine synkroniserede data.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Indtast kodeord";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Tilføj en tablet eller telefon";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Vælg Enhedstype ";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Vælg den type enhed du ønsker at synkronisere til. ";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Koden er udløbet. Tryk på knappen nedenfor for at få en ny.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Denne midlertidige kode er gyldig i de næste %@";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Computer";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Slet synkroniseringskonto";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Kan ikke oprette forbindelse";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Denne kode ser ud til at være oprettet på en enhed med en ældre version af Brave. Opdatér til den nyeste version af Brave på din anden enhed, og opret en ny synkroniseringskode.";
+"sync.validForTooLongError" = "Hoden er ugyldig. Kontrollér at tidspunkt og tidszone er korrekt indstillet på din enhed.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Enheder og indstillinger";
+/* Sync settings welcome */
+"sync.welcome" = "For at begynde skal du have installeret Brave på alle de enheder du planlægger at Synkronisere. For at kæde dem sammen skal du oprette en synkroniseringskæde, som du skal bruge til at forbinde alle dine enheder sikkert. ";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Denne synkroniseringskode er udløbet. Generer en ny synkroniseringskode, og prøv igen.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Beklager, men noget gik galt";
+/* Word count title */
+"sync.wordCount" = "Ordantal: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Importerede bogmærker";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Synkroniseringsagenten er i øjeblikket offline eller ikke tilgængelig. Prøv igen senere.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Synkroniseringskommunikationsfejl";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Tjek din internetforbindelse, og prøv igen.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Kan ikke oprette forbindelse til synkronisering";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Lokale enhedsdata forbliver intakte på alle enheder. Andre enheder i denne synkroniseringskæde forbliver synkroniseret. ";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Vil du fjerne %@ fra synkroniseringskæden?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Fjernenhed";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Enhed";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Data, der i øjeblikket er synkroniseret, vil blive bevaret, men alle data i Braves synkroniseringscache vil blive slettet. Du skal starte en ny synkroniseringskæde for at synkronisere enhedsdata igen.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Slet synkroniseringskæde";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "Fjernelse af %@ vil slette synkroniseringskæden.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Fjernelse af enheden fra synkroniseringskæden vil ikke slette tidligere synkroniserede data fra enheden.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Vil du fjerne %@ fra synkroniseringskæden?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Fjern denne enhed";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Vil du fjerne denne enhed?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Denne enhed vil blive afbrudt fra synkroniseringsgruppen og vil ikke længere modtage eller sende synkroniseringsdata. Alle eksisterende data forbliver på enheden.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "Listen over enheder herunder inkluderer alle enheder i din synkroniseringskæde. Hver enhed kan administreres fra alle andre enheder. ";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Jeg bruger mit kamera...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Tablet eller telefon";
-
-/* This device cell */
-"SyncThisDevice" = "Denne enhed";
-
-/* Sync to existing device */
-"SyncToDevice" = "Synkroniser til enhed";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Brug en eksisterende synkroniseret enhed til at åbne Brave-indstillinger og navigere til Indstillinger -> Synkronisering. Vælg »Tilføj enhed«, og scan den kode, der vises på skærmen.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Denne enhed kan ikke synkroniseres";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Mislykket";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Hoden er ugyldig. Kontrollér at tidspunkt og tidszone er korrekt indstillet på din enhed.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Luk";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Vil du aktivere søgeforslag?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Kan ikke deltage i synkroniseringsgruppen. Tjek de indtastede ord, og prøv igen.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Kan ikke oprette forbindelse";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Lås op";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widgets";
-
-/* Word count title */
-"WordCount" = "Ordantal: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "år.";

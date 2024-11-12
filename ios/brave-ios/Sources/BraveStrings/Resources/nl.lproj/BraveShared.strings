@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dubbeltik om Brave Shields aan of uit te zetten";
 
-/* Sync page title */
-"BraveSync" = "Synchronisatie";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Foutopsporing voor synchronisatie";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "Je moet Brave installeren op alle apparaten die je wilt synchroniseren. Koppel ze aan elkaar met een synchronisatieketen om al je apparaten veilig te verbinden.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Sluit alle %i tabbladen";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Typ de verkregen codewoorden voor de synchronisatieketen in het onderstaande formulier.";
-
-/* Code words section title */
-"CodeWords" = "Codewoorden";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Download";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookies en sitegegevens";
-
-/* Copied action complete title */
-"Copied" = "Gekopieerd.";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Gekopieerd naar klembord.";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Kopieer appgegevens naar klembord.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Kopieer tabbladgegevens naar het klembord.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Kopieer naar klembord";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Kopieer ondersteuningsgegevens";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Verwijder";
 
-/* Sync device settings page title. */
-"Devices" = "Apparaten in synchronisatieketen";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Apparaat %1$@ (%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Schakel 'Trek omlaag om te vernieuwen' in";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Voer codewoorden in";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Voer codewoorden hieronder in";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Voer mapnaam in";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Safe Browsing beschermt je tegen websites waarvan bekend is dat ze gevaarlijk zijn. [Meer informatie](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Schakel camera in";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Verberg voorvertoningen van links";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Ongeldige gegevens in betalingsverzoek";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Ongeldige sync code, check and probeer opnieuw.";
 
 /* History tableview section header */
 "LastMonth" = "Afgelopen maand";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Nieuw privévenster";
 
-/* New sync code button title */
-"NewSyncCode" = "Nieuwe synchronisatieketen";
-
 /* New Tab title */
 "NewTab" = "Nieuw tabblad";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Geen zoekresultaten.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Voer alle woorden in en probeer het opnieuw.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Onvoldoende woorden";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Leidt NPR-links automatisch om naar hun tekstversie (op text.npr.org).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Paginazoom";
-
-/* Sync pair device settings section title */
-"Pair" = "Koppel";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Wachtwoorden";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Privétabblad";
 
-/* QR Code section title */
-"QRCode" = "QR-code";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Snelzoekmachines";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Leidt Reddit-links automatisch om naar de oudere interface (op old.reddit.com). Voor de nieuwe Reddit-interface gebruik je new.reddit.com.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Verwijder";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Verwijder favoriet";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Bewaar logins";
-
-/* Scan sync code title */
-"Scan" = "Scan";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Ik heb een synchronisatiecode";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Geblokkeerde scripts";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Toon bladwijzers";
 
-/* Show code words instead */
-"ShowCodeWords" = "Toon liever codewoorden";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Toon downloads";
 
@@ -2953,8 +2887,23 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Onderdruk waarschuwingen";
 
-/* Sync settings section title */
-"Sync" = "Synchronisatie";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Voeg nieuw apparaat toe";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Voeg een computer toe";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "QR-code voor synchronisatieketen";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Voer de synchronisatiecode in";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Voer de codewoorden in";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Voeg een tablet of telefoon toe";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Bladwijzers geëxporteerd";
@@ -2972,190 +2921,251 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Bladwijzers geïmporteerd";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Synchroniseer apparaat";
+"sync.chainAccountDeletionErrorDescription" = "Synchroniseer apparaat";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Synchroniseer apparaat";
+"sync.chainAccountDeletionErrorTitle" = "Synchroniseer apparaat";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Deelname aan deze keten is niet mogelijk. Account is verwijderd.";
+"sync.chainAlreadyDeletedAlertDescription" = "Deelname aan deze keten is niet mogelijk. Account is verwijderd.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Synchroniseer apparaat";
+"sync.chainAlreadyDeletedAlertTitle" = "Synchroniseer apparaat";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Kies het type apparaat";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Kies het type apparaat dat je wilt synchroniseren.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "min";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "uren";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "seconden";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "uur";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "seconde";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Typ de verkregen codewoorden voor de synchronisatieketen in het onderstaande formulier.";
+
+/* Code words section title */
+"sync.codeWords" = "Codewoorden";
+
+/* Computer device button title */
+"sync.computerDevice" = "Computer";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Beheer welke gegevens je wilt synchroniseren tussen je apparaten. Deze instellingen zijn alleen van toepassing op dit apparaat.";
+"sync.configurationInformationText" = "Beheer welke gegevens je wilt synchroniseren tussen je apparaten. Deze instellingen zijn alleen van toepassing op dit apparaat.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Verwijder synchronisatieaccount";
+/* Copied action complete title */
+"sync.copied" = "Gekopieerd.";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Gekopieerd naar klembord.";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Kopieer naar klembord";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Verwijder synchronisatieaccount";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Verwijder synchronisatieaccount";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Als u uw account verwijdert, worden al uw versleutelde gegevens op Brave-servers verwijderd en wordt Sync op al uw verbonden apparaten uitgeschakeld.";
+"sync.deleteAccountAlertDescriptionPart1" = "Als u uw account verwijdert, worden al uw versleutelde gegevens op Brave-servers verwijderd en wordt Sync op al uw verbonden apparaten uitgeschakeld.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "De gegevens die lokaal op apparaten zijn opgeslagen, worden echter niet verwijderd.";
+"sync.deleteAccountAlertDescriptionPart2" = "De gegevens die lokaal op apparaten zijn opgeslagen, worden echter niet verwijderd.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Zo te zien is deze code gecreëerd op een apparaat met een oudere versie van Brave. Werk bij naar de nieuwste versie van Brave op uw andere apparaat en maak dan een nieuwe synchronisatiecode.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Er is iets misgegaan bij het ophalen van de apparaten uit de synchronisatieketen.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Apparaten in synchronisatieketen";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Apparaten in synchronisatieketen";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Voer codewoorden in";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Voer codewoorden hieronder in";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Deze synchronisatiecode is verlopen. Genereer een nieuwe synchronisatiecode en probeer het opnieuw.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Er is iets misgegaan";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Schakel camera in";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "De synchronisatieagent is momenteel offline of niet bereikbaar. Probeer het later opnieuw.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Communicatiefout tijdens synchronisatie";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Foutopsporing voor synchronisatie";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Ongeldige sync code, check and probeer opnieuw.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Opmerking: Controleer of je elk apparaat in de lijst hierboven herkent. Apparaten in een synchronisatieketen kunnen persoonlijke gegevens ontvangen zoals wachtwoorden en browsegeschiedenis.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Apparaatbevestiging";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Je hebt het maximale aantal apparaten (10) voor een synchronisatieketen bereikt. Verwijder een apparaat om door te gaan.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Apparaatlimiet";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Nieuwe synchronisatieketen";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Controleer de internetverbinding en probeer het opnieuw.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Geen synchronisatieverbinding";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Voer alle woorden in en probeer het opnieuw.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Onvoldoende woorden";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Koppel";
+
+/* QR Code section title */
+"sync.qrCode" = "QR-code";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "De gegevens op alle apparaten blijven intact. Andere apparaten in deze synchronisatieketen blijven gesynchroniseerd.";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Wil je %@ verwijderen uit de synchronisatieketen?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Verwijder";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Verwijder apparaat";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Apparaat";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "De huidig gesynchroniseerde gegevens blijven behouden, maar alle gegevens in de synchronisatiecache van Brave worden verwijderd. Je moet een nieuwe synchronisatieketen starten om de apparaatgegevens opnieuw te synchroniseren.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Verwijder synchronisatieketen";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "Als je %@ verwijdert, wordt de synchronisatieketen verwijderd.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Als je het apparaat verwijdert uit de synchronisatieketen, worden de eerder gesynchroniseerde gegevens op het apparaat niet gewist.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Wil je %@ verwijderen uit de synchronisatieketen?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Verwijder dit apparaat";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Dit apparaat wordt verwijderd uit de synchronisatiegroep en ontvangt of stuurt geen synchronisatiegegevens meer. Alle bestaande gegevens op het apparaat blijven behouden.";
+
+/* Scan sync code title */
+"sync.scan" = "Scan";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Ik heb een synchronisatiecode";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Als je een apparaat wilt toevoegen aan de synchronisatieketen of je wachtwoorden wilt synchroniseren, moet je eerst een toegangscode op je apparaat instellen.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Stel een toegangscode in";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "In de lijst met apparaten hieronder staan alle apparaten uit je synchronisatieketen. Elk apparaat kan worden beheerd vanaf een ander apparaat.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Synchronisatie-instellingen";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Toon liever codewoorden";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Ik gebruik mijn camera...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Deze verwijdering is definitief en je kunt de gegevens niet terugzetten. Als je later je apparaten opnieuw wilt synchroniseren, moet je een nieuw account maken en elk apparaat weer toevoegen.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Er is iets misgegaan bij het ophalen van de apparaten uit de synchronisatieketen.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Apparaten en instellingen";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Apparaten in synchronisatieketen";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Wil je dit apparaat verwijderen?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Opmerking: Controleer of je elk apparaat in de lijst hierboven herkent. Apparaten in een synchronisatieketen kunnen persoonlijke gegevens ontvangen zoals wachtwoorden en browsegeschiedenis.";
+/* Sync settings section title */
+"sync.syncTitle" = "Synchronisatie";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Apparaatbevestiging";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Mislukt";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Je hebt het maximale aantal apparaten (10) voor een synchronisatieketen bereikt. Verwijder een apparaat om door te gaan.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Tablet of telefoon";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Apparaatlimiet";
+/* This device cell */
+"sync.thisDevice" = "Dit apparaat";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Als je een apparaat wilt toevoegen aan de synchronisatieketen of je wachtwoorden wilt synchroniseren, moet je eerst een toegangscode op je apparaat instellen.";
+/* Sync to existing device */
+"sync.toDevice" = "Synchroniseer met apparaat";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Stel een toegangscode in";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Ga op een gesynchroniseerd apparaat naar Instellingen > Synchronisatie. Kies 'Voeg apparaat toe' en scan de code op het scherm.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Synchronisatie-instellingen";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Dit apparaat kan niet worden gesynchroniseerd";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Voeg nieuw apparaat toe";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Deelnemen aan synchronisatiegroep is mislukt. Controleer de ingevoerde woorden en probeer het opnieuw.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Voeg een computer toe";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "QR-code voor synchronisatieketen";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Ga op je tweede mobiele apparaat naar 'Synchronisatie' in instellingen en tik op de knop 'Scan synchronisatiecode'. Gebruik je camera om de QR-code hieronder te scannen.\n\nBehandel deze code als een wachtwoord. Als iemand deze in handen krijgt, kan die persoon je gesynchroniseerde gegevens lezen en wijzigen.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Voer de synchronisatiecode in";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Ga op je apparaat naar 'Synchronisatie' in Instellingen en tik op de knop '%@'. Voer de onderstaande codewoorden van de synchronisatieketen in.\n\nBehandel deze code als een wachtwoord. Als iemand deze in handen krijgt, kan die persoon je gesynchroniseerde gegevens lezen en wijzigen.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Voer de codewoorden in";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Voeg een tablet of telefoon toe";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Kies het type apparaat";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Kies het type apparaat dat je wilt synchroniseren.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Code is verlopen. Maak een nieuwe aan door op de knop hieronder te tikken.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Deze tijdelijke code is geldig voor de komende %@";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Computer";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Verwijder synchronisatieaccount";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Geen verbinding mogelijk";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Zo te zien is deze code gecreëerd op een apparaat met een oudere versie van Brave. Werk bij naar de nieuwste versie van Brave op uw andere apparaat en maak dan een nieuwe synchronisatiecode.";
+"sync.validForTooLongError" = "Deze code is ongeldig. Controleer of de tijd en tijdzone correct zijn ingesteld op je apparaat.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Apparaten en instellingen";
+/* Sync settings welcome */
+"sync.welcome" = "Je moet Brave installeren op alle apparaten die je wilt synchroniseren. Koppel ze aan elkaar met een synchronisatieketen om al je apparaten veilig te verbinden.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Deze synchronisatiecode is verlopen. Genereer een nieuwe synchronisatiecode en probeer het opnieuw.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Er is iets misgegaan";
+/* Word count title */
+"sync.wordCount" = "Aantal woorden: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Geïmporteerde bladwijzers";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "De synchronisatieagent is momenteel offline of niet bereikbaar. Probeer het later opnieuw.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Communicatiefout tijdens synchronisatie";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Controleer de internetverbinding en probeer het opnieuw.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Geen synchronisatieverbinding";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "De gegevens op alle apparaten blijven intact. Andere apparaten in deze synchronisatieketen blijven gesynchroniseerd.";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Wil je %@ verwijderen uit de synchronisatieketen?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Verwijder apparaat";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Apparaat";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "De huidig gesynchroniseerde gegevens blijven behouden, maar alle gegevens in de synchronisatiecache van Brave worden verwijderd. Je moet een nieuwe synchronisatieketen starten om de apparaatgegevens opnieuw te synchroniseren.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Verwijder synchronisatieketen";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "Als je %@ verwijdert, wordt de synchronisatieketen verwijderd.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Als je het apparaat verwijdert uit de synchronisatieketen, worden de eerder gesynchroniseerde gegevens op het apparaat niet gewist.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Wil je %@ verwijderen uit de synchronisatieketen?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Verwijder dit apparaat";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Wil je dit apparaat verwijderen?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Dit apparaat wordt verwijderd uit de synchronisatiegroep en ontvangt of stuurt geen synchronisatiegegevens meer. Alle bestaande gegevens op het apparaat blijven behouden.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "In de lijst met apparaten hieronder staan alle apparaten uit je synchronisatieketen. Elk apparaat kan worden beheerd vanaf een ander apparaat.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Ik gebruik mijn camera...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Tablet of telefoon";
-
-/* This device cell */
-"SyncThisDevice" = "Dit apparaat";
-
-/* Sync to existing device */
-"SyncToDevice" = "Synchroniseer met apparaat";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Ga op een gesynchroniseerd apparaat naar Instellingen > Synchronisatie. Kies 'Voeg apparaat toe' en scan de code op het scherm.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Dit apparaat kan niet worden gesynchroniseerd";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Mislukt";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Deze code is ongeldig. Controleer of de tijd en tijdzone correct zijn ingesteld op je apparaat.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Sluit";
@@ -3484,12 +3494,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Wil je de zoeksuggesties aanzetten?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Deelnemen aan synchronisatiegroep is mislukt. Controleer de ingevoerde woorden en probeer het opnieuw.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Geen verbinding mogelijk";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Ontgrendel";
 
@@ -3699,9 +3703,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widgets";
-
-/* Word count title */
-"WordCount" = "Aantal woorden: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "jaar";

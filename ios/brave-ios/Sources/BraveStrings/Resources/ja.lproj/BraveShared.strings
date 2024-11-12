@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "ダブルタップでBrave Shieldを切り替える";
 
-/* Sync page title */
-"BraveSync" = "Brave Sync";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "内部同期";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全にリンクできます。";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "%i 個のタブをすべて閉じる";
 
-/* Code words input help */
-"CodeWordInputHelp" = "同期チェーンコードを以下に入力してください。";
-
-/* Code words section title */
-"CodeWords" = "コード";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "ダウンロード";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "クッキーとサイトのデータ";
-
-/* Copied action complete title */
-"Copied" = "コピーしました！";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "クリップボードにコピーしました！";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "アプリ情報をクリップボードにコピーします。";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "タブ情報をクリップボードにコピーします。";
-
-/* Copy codewords title */
-"CopyToClipboard" = "クリップボードにコピーしました";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "サポート情報をコピー";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "削除する";
 
-/* Sync device settings page title. */
-"Devices" = "同期チェーンに追加済のデバイス";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "デバイス %1$@ (%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "画面を下に引っ張って更新を有効にする";
-
-/* Sync enter code words */
-"EnterCodeWords" = "コードを入力";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "以下にコードを入力";
 
 /* Description for new folder popup */
 "EnterFolderName" = "フォルダ名を入力";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "セーフ ブラウジングは、危険だと考えられるウェブサイトからブラウザを保護します。[詳細はこちら](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "カメラを有効にする";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "リンクプレビューを非表示にする";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "不正な支払いリクエスト";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "同期コードが無効ですので、確認してからやり直してください。";
 
 /* History tableview section header */
 "LastMonth" = "先月";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "新規シークレット ウインドウ";
 
-/* New sync code button title */
-"NewSyncCode" = "新たな同期チェーンを開始する";
-
 /* New Tab title */
 "NewTab" = "新しいタブ";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "検索結果が見つかりませんでした。";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "すべてのワードを入力して、もう一度やり直してください。";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "ワードが足りません";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPRのリンクをテキストベースのバージョン (text.npr.org) に自動でリダイレクトします。";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "ページのズーム";
-
-/* Sync pair device settings section title */
-"Pair" = "ペア";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "パスワード";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "プライベートタブ";
 
-/* QR Code section title */
-"QRCode" = "QRコード";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "クイック検索エンジン";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Reddit のリンクを旧式インターフェース (old.reddit.com) に自動でリダイレクトします。新しいRedditインターフェースを表示するには、new.reddit.comにアクセスしてください。";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "削除";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "お気に入りを削除";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "ログイン情報を保存";
-
-/* Scan sync code title */
-"Scan" = "スキャン";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "既に同期コードを持っている";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "ブロック済みのスクリプト";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "ブックマークを表示";
 
-/* Show code words instead */
-"ShowCodeWords" = "コードを表示する";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "ダウンロードを表示";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "アラートを抑える";
 
-/* Sync settings section title */
-"Sync" = "Brave Sync";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "デバイスを追加";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "コンピュータを追加";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "同期チェーン追加用QRコード";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "2つ目のモバイルデバイスで、「設定」から「同期」を開き、「同期コードのスキャンまたは入力」をタップしてください。その後、カメラで下のQRコードをスキャンします。\n\nこのコードはパスワードと同様に大切に保管してください。データの閲覧・修正が可能となるため、第三者に共有しないようご注意ください。";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "同期コードを入力";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "お使いのデバイスで、「設定」パネルの「同期」に移動し、「%@」ボタンをタップして以下の同期チェーンコードワードを入力してください。\n\nこのコードはパスワードと同様に大切に保管してください。データの閲覧・修正が可能となるため、第三者に共有しないようご注意ください。";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "コードを入力";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "タブレットまたは電話を追加";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "ブックマークをエクスポートしました";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "ブックマークは正常にインポートされました";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "デバイスを同期";
+"sync.chainAccountDeletionErrorDescription" = "デバイスを同期";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "デバイスを同期";
+"sync.chainAccountDeletionErrorTitle" = "デバイスを同期";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "このチェーンに参加できません。アカウントが削除されています。";
+"sync.chainAlreadyDeletedAlertDescription" = "このチェーンに参加できません。アカウントが削除されています。";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "デバイスを同期";
+"sync.chainAlreadyDeletedAlertTitle" = "デバイスを同期";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "デバイスの種類を選択";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "同期するデバイスの種類を選択してください。";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "コードの有効期限が切れています。下のボタンをタップして新しいコードを作成してください。";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "分";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "数時間";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "秒";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "この一時コードはあと%@有効です";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "時間";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "秒";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "同期チェーンコードを以下に入力してください。";
+
+/* Code words section title */
+"sync.codeWords" = "コード";
+
+/* Computer device button title */
+"sync.computerDevice" = "コンピュータ";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "複数のデバイス間でどの情報を同期させるかを管理します。ここでの設定は、このデバイスにのみ適用されます。";
+"sync.configurationInformationText" = "複数のデバイス間でどの情報を同期させるかを管理します。ここでの設定は、このデバイスにのみ適用されます。";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "同期アカウントを削除";
+/* Copied action complete title */
+"sync.copied" = "コピーしました！";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "クリップボードにコピーしました！";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "クリップボードにコピーしました";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "同期アカウントを削除";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "同期アカウントを削除";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されたすべてのデバイスで同期が無効になります。";
+"sync.deleteAccountAlertDescriptionPart1" = "アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されたすべてのデバイスで同期が無効になります。";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "ただし、それらのデバイスでローカルに格納されたデータは削除されません。";
+"sync.deleteAccountAlertDescriptionPart2" = "ただし、それらのデバイスでローカルに格納されたデータは削除されません。";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "このコードは、古いバージョンのBraveを実行しているデバイスで作成されたようです。他のデバイスでBraveの最新バージョンにアップデートしてから、新しい同期コードを作成してください。";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "同期チェーンでのデバイス取得中に問題が発生しました。";
+
+/* Sync device settings page title. */
+"sync.devices" = "同期チェーンに追加済のデバイス";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "同期チェーン内のデバイス";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "コードを入力";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "以下にコードを入力";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "同期コードが期限切れです。新しい同期コードを生成してもう一度お試しください。";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "問題が発生しました";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "カメラを有効にする";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Syncエージェントは現在オフラインか、見つかりませんでした。時間をおいてもう一度お試しください。";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Syncの接続エラー";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "内部同期";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "同期コードが無効ですので、確認してからやり直してください。";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "注意: 上記のリストにある各デバイスを確認してください。同期チェーン内のデバイスは、パスワードや閲覧履歴などの個人データを受け取る可能性があります。";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "デバイスの確認";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "同期チェーンで許可されるデバイスの最大数に達しました。デバイスを削除して続行してください。";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "デバイス制限";
+
+/* New sync code button title */
+"sync.newSyncCode" = "新たな同期チェーンを開始する";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "同期に接続できません";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "すべてのワードを入力して、もう一度やり直してください。";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "ワードが足りません";
+
+/* Sync pair device settings section title */
+"sync.pair" = "ペア";
+
+/* QR Code section title */
+"sync.qrCode" = "QRコード";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "ローカルのデバイスデータは、すべてのデバイスでそのまま残ります。この同期チェーンに含まれるその他のデバイスは、引き続き同期されます。";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "%@を同期チェーンから削除しますか？";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "削除";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "デバイスを削除";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "デバイス";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "現在同期されているデータは残りますが、Brave Syncにキャッシュされたすべてのデータは消去されます。もう一度同期をしたい場合は新しいチェーンを開始する必要があります。";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "同期チェーンを削除";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "%@を削除すると同期チェーンが削除されます。";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "同期チェーンからデバイスを削除しても、そのデバイスから以前に同期したデータは消去されません。";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "%@を同期チェーンから削除しますか？";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "このデバイスを削除";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "このデバイスは同期グループから切断され、同期データを受信または送信しなくなります。既存のデータはすべてデバイスに維持されます。";
+
+/* Scan sync code title */
+"sync.scan" = "スキャン";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "既に同期コードを持っている";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "デバイスをシンクチェーンに追加したり、パスワードシンクを切り替えたりするには、まず端末にパスコードを設定する必要があります。";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "パスコードを設定する";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "現在、同期チェーンには以下のデバイスが接続されています。各デバイスから他のデバイスの追加・削除が可能です。";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Sync設定";
+
+/* Show code words instead */
+"sync.showCodeWords" = "コードを表示する";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "自分のカメラを使用する...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "同期チェーンでのデバイス取得中に問題が発生しました。";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "デバイスと設定";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "同期チェーン内のデバイス";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "このデバイスを削除しますか？";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "注意: 上記のリストにある各デバイスを確認してください。同期チェーン内のデバイスは、パスワードや閲覧履歴などの個人データを受け取る可能性があります。";
+/* Sync settings section title */
+"sync.syncTitle" = "同期";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "デバイスの確認";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "失敗";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "同期チェーンで許可されるデバイスの最大数に達しました。デバイスを削除して続行してください。";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "タブレットまたは電話";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "デバイス制限";
+/* This device cell */
+"sync.thisDevice" = "このデバイス";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "デバイスをシンクチェーンに追加したり、パスワードシンクを切り替えたりするには、まず端末にパスコードを設定する必要があります。";
+/* Sync to existing device */
+"sync.toDevice" = "デバイスと同期";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "パスコードを設定する";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "すでに同期されている別の端末上で、Braveの設定 > Syncと選択し、\"デバイスを追加\"を選択してください。そこで以下のコードをスキャンすることで同期設定が可能です。";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Sync設定";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "このデバイスを同期できません";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "デバイスを追加";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "同期グループに参加できませんでした。入力したワードをチェックして、もう一度やり直してください。";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "コンピュータを追加";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "同期チェーン追加用QRコード";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "2つ目のモバイルデバイスで、「設定」から「同期」を開き、「同期コードのスキャンまたは入力」をタップしてください。その後、カメラで下のQRコードをスキャンします。\n\nこのコードはパスワードと同様に大切に保管してください。データの閲覧・修正が可能となるため、第三者に共有しないようご注意ください。";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "同期コードを入力";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "お使いのデバイスで、「設定」パネルの「同期」に移動し、「%@」ボタンをタップして以下の同期チェーンコードワードを入力してください。\n\nこのコードはパスワードと同様に大切に保管してください。データの閲覧・修正が可能となるため、第三者に共有しないようご注意ください。";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "コードを入力";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "タブレットまたは電話を追加";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "デバイスの種類を選択";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "同期するデバイスの種類を選択してください。";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "コードの有効期限が切れています。下のボタンをタップして新しいコードを作成してください。";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "この一時コードはあと%@有効です";
-
-/* Computer device button title */
-"SyncComputerDevice" = "コンピュータ";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "同期アカウントを削除";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "接続できません";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "このコードは、古いバージョンのBraveを実行しているデバイスで作成されたようです。他のデバイスでBraveの最新バージョンにアップデートしてから、新しい同期コードを作成してください。";
+"sync.validForTooLongError" = "このコードは無効です。お使いの端末の時刻とタイムゾーンが正しく設定されていることをご確認ください。";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "デバイスと設定";
+/* Sync settings welcome */
+"sync.welcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全にリンクできます。";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "同期コードが期限切れです。新しい同期コードを生成してもう一度お試しください。";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "問題が発生しました";
+/* Word count title */
+"sync.wordCount" = "ワード数: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "インポートされたブックマーク";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Syncエージェントは現在オフラインか、見つかりませんでした。時間をおいてもう一度お試しください。";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Syncの接続エラー";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "同期に接続できません";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "ローカルのデバイスデータは、すべてのデバイスでそのまま残ります。この同期チェーンに含まれるその他のデバイスは、引き続き同期されます。";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "%@を同期チェーンから削除しますか？";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "デバイスを削除";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "デバイス";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "現在同期されているデータは残りますが、Brave Syncにキャッシュされたすべてのデータは消去されます。もう一度同期をしたい場合は新しいチェーンを開始する必要があります。";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "同期チェーンを削除";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "%@を削除すると同期チェーンが削除されます。";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "同期チェーンからデバイスを削除しても、そのデバイスから以前に同期したデータは消去されません。";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "%@を同期チェーンから削除しますか？";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "このデバイスを削除";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "このデバイスを削除しますか？";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "このデバイスは同期グループから切断され、同期データを受信または送信しなくなります。既存のデータはすべてデバイスに維持されます。";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "現在、同期チェーンには以下のデバイスが接続されています。各デバイスから他のデバイスの追加・削除が可能です。";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "自分のカメラを使用する...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "タブレットまたは電話";
-
-/* This device cell */
-"SyncThisDevice" = "このデバイス";
-
-/* Sync to existing device */
-"SyncToDevice" = "デバイスと同期";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "すでに同期されている別の端末上で、Braveの設定 > Syncと選択し、\"デバイスを追加\"を選択してください。そこで以下のコードをスキャンすることで同期設定が可能です。";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "このデバイスを同期できません";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "失敗";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "このコードは無効です。お使いの端末の時刻とタイムゾーンが正しく設定されていることをご確認ください。";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "閉じる";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "検索候補をオンにしますか？";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "同期グループに参加できませんでした。入力したワードをチェックして、もう一度やり直してください。";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "接続できません";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "ロック解除";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "ウィジェット";
-
-/* Word count title */
-"WordCount" = "ワード数: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "年";

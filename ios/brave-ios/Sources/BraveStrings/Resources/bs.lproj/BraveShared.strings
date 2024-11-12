@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dvaput dodirnite za uključivanje/isključivanje Štitova Brave";
 
-/* Sync page title */
-"BraveSync" = "Sinkroniziraj";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Unutarnja sinkronizacija";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "Za početak preglednik Brave treba biti instaliran na svim uređajima koje planirate sinkronizirati. Kako biste ih spojili, pokrenite lanac sinkronizacije kojim ćete na siguran način spojiti sve svoje uređaje.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Usluga Razgovor Brave";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Zatvori sve kartice (%i)";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Upišite svoju isporučenu šifru lanca sinkronizacije u obrazac koji se nalazi u nastavku.";
-
-/* Code words section title */
-"CodeWords" = "Kôdna riječ";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Preuzmi";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Kolačići i podaci web-lokacije";
-
-/* Copied action complete title */
-"Copied" = "Kopirano!";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Kopirano u međuspremnik!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Kopirajte informacije o aplikaciji u međuspremnik.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Kopirajte informacije o karticama u međuspremnik.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Kopiraj u međuspremnik";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Kopiraj informacije za podršku";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Izbriši";
 
-/* Sync device settings page title. */
-"Devices" = "Uređaji u lancu sinkronizacije";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Uređaj %1$@ (%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Omogući povlačenje za osvježavanje";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Upiši kôdne riječi";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Upišite šifre u nastavku";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Upišite naziv mape";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Sigurnim pregledavanjem dobivate zaštitu od mrežnih mjesta za koje se zna da su opasna. [Doznaj više] (%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Omogući kameru";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Sakrij pretpregled veza";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Nevaljane pojedinosti zahtjeva za plaćanjem";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Nevaljani kôd za sinkronizaciju. Provjerite i pokušajte ponovno.";
 
 /* History tableview section header */
 "LastMonth" = "Prošli mjesec";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Novi privatni prozor";
 
-/* New sync code button title */
-"NewSyncCode" = "Započni novi lanac sinkronizacije";
-
 /* New Tab title */
 "NewTab" = "Nova kartica";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Nisu pronađeni rezultati pretraživanja.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Upišite sve riječi i pokušajte ponovno.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Nema dovoljno riječi";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Automatski preusmjerava poveznice NPR na njihovu tekstnu inačicu (na text.npr.org).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Zumiranje stranice";
-
-/* Sync pair device settings section title */
-"Pair" = "Upari";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Zaporke";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Kartica Privatno";
 
-/* QR Code section title */
-"QRCode" = "QR kȏd";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Brze tražilice";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Automatski preusmjerava poveznice usluge Reddit na starije sučelje (na old.reddit.com). Za prisilno pokretanje novog sučelja usluge Reddit umjesto toga upotrijebite new.reddit.com.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Ukloni";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Ukloni omiljenu stavku";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Spremi prijave";
-
-/* Scan sync code title */
-"Scan" = "Traži";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Imam šifru za sinkronizaciju";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Blokirane skripte";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Pokaži knjižne oznake";
 
-/* Show code words instead */
-"ShowCodeWords" = "Umjesto toga pokaži šifre";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Pokaži preuzimanja";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Potisni upozorenja";
 
-/* Sync settings section title */
-"Sync" = "Sinkroniziraj";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Dodaj novi uređaj";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Dodaj računalo";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "Kȏd QR lanca sinkronizacije";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "Na svom drugom mobilnom uređaju idite na stavku Sinkronizacija na ploči Postavke i dodirnite gumb „Očitaj kôd za sinkronizaciju”. Upotrijebite kameru za očitavanje koda QR u nastavku.\n\nSmatrajte kôd lozinkom. Ako mu tko pristupi, može čitati i izmjenjivati vaše sinkronizirane podatke.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Upis koda za sinkronizaciju";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Na svom uređaju idite na stavku Sinkronizacija na ploči Postavke i dodirnite gumb „%@”. Upišite kôd lanca sinkronizacije prikazan u nastavku.\n\nSmatrajte kôd lozinkom. Ako mu tko pristupi, može čitati i izmjenjivati vaše sinkronizirane podatke.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Upis šifre";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Dodavanje tabletnog uređaja ili telefona";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Knjižne oznake uspješno su izvezene";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Knjižne oznake uspješno su uvezene";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Sinkronizacija uređaja";
+"sync.chainAccountDeletionErrorDescription" = "Sinkronizacija uređaja";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Sinkronizacija uređaja";
+"sync.chainAccountDeletionErrorTitle" = "Sinkronizacija uređaja";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Nije moguće pridružiti se ovom lancu. Račun je izbrisan.";
+"sync.chainAlreadyDeletedAlertDescription" = "Nije moguće pridružiti se ovom lancu. Račun je izbrisan.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Sinkronizacija uređaja";
+"sync.chainAlreadyDeletedAlertTitle" = "Sinkronizacija uređaja";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Odabrati tip uređaja";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Odabrati tip uređaja s kojim biste se htjeli sinkronizirati.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Kôd je istekao. Generirajte novi pritiskom na gumb u nastavku.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "min";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "sati";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "sekunde";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Ovaj privremeni kôd valjan je tijekom sljedećeg razdoblja: %@";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "sat";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "sekunda";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Upišite svoju isporučenu šifru lanca sinkronizacije u obrazac koji se nalazi u nastavku.";
+
+/* Code words section title */
+"sync.codeWords" = "Kôdna riječ";
+
+/* Computer device button title */
+"sync.computerDevice" = "Računalo";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Odlučite koje informacije želite sinkronizirati među uređajima. Ove postavke se odnose samo na trenutni uređaj.";
+"sync.configurationInformationText" = "Odlučite koje informacije želite sinkronizirati među uređajima. Ove postavke se odnose samo na trenutni uređaj.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Brisanje računa za sinkronizaciju";
+/* Copied action complete title */
+"sync.copied" = "Kopirano!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Kopirano u međuspremnik!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Kopiraj u međuspremnik";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Brisanje računa za sinkronizaciju";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Brisanje računa za sinkronizaciju";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Brisanjem vašeg računa uklanjanju se vaši šifrirani podaci s poslužitelja Brave i onemogućuje se sinkronizacija na svim vašim povezanim uređajima.";
+"sync.deleteAccountAlertDescriptionPart1" = "Brisanjem vašeg računa uklanjanju se vaši šifrirani podaci s poslužitelja Brave i onemogućuje se sinkronizacija na svim vašim povezanim uređajima.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Međutim, neće se izbrisati podaci koji su lokalno pohranjeni na tim uređajima.";
+"sync.deleteAccountAlertDescriptionPart2" = "Međutim, neće se izbrisati podaci koji su lokalno pohranjeni na tim uređajima.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Izgleda da je ovaj kȏd nastao na uređaju s instaliranom starijom inačicom preglednika Brave. Ažurirajte na najnoviju inačicu preglednika Brave na svom drugom uređaju, a zatim stvorite novi kȏd za sinkronizaciju.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Nešto nije u redu pri dohvaćanju uređaja u lancu sinkronizacije.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Uređaji u lancu sinkronizacije";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Uređaji u lancu sinkronizacije";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Upiši kôdne riječi";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Upišite šifre u nastavku";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Ovaj je kôd za sinkronizaciju istekao. Generirajte novi kôd za sinkronizaciju i pokušajte ponovno.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Žao nam je, ali nešto nije u redu";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Omogući kameru";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Agent za sinkronizaciju trenutačno je izvan mreže ili nije dostupan. Pokušajte ponovno poslije.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Pogreška sinkronizacije komunikacije";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Unutarnja sinkronizacija";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Nevaljani kôd za sinkronizaciju. Provjerite i pokušajte ponovno.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Napomena: trebali biste provjeriti prepoznajete li svaki uređaj na popisu poviše. Uređaji u lancu sinkronizacije mogu primati osobne podatke kao što su lozinke i povijest pregledavanja.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Potvrda uređaja";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Dosegli ste najveći dopušteni broj uređaja (10) u lancu sinkronizacije. Uklonite uređaj za nastavak.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Ograničenje uređaja";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Započni novi lanac sinkronizacije";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Provjerite internetsku vezu i pokušajte ponovno.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Nije moguće povezivanje za sinkronizaciju";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Upišite sve riječi i pokušajte ponovno.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Nema dovoljno riječi";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Upari";
+
+/* QR Code section title */
+"sync.qrCode" = "QR kȏd";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Lokalni podatci uređaja ostaju netaknuti na svim uređajima. Ostali uređaji u ovom lancu sinkronizacije i dalje su sinkronizirani.";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Ukloniti %@ iz lanca sinkronizacije?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Uklonite";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Ukloni uređaj";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Uređaj";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Trenutačno sinkronizirani podatci zadržavaju se, ali se svi podatci u predmemoriji sinkronizacije preglednika Brave brišu. Morate pokrenuti novi lanac sinkronizacije za ponovno sinkroniziranje podataka uređaja.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Izbriši lanac sinkronizacije";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "Ako se ukloni %@, briše se lanac sinkronizacije.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Uklanjanjem uređaja iz lanca sinkronizacije ne čiste se prethodno sinkronizirani podatci s uređaja.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Ukloniti %@ iz lanca sinkronizacije?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Ukloni ovaj uređaj";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Prekida se veza ovog uređaja s grupom sinkronizacije i više se ne primaju ili šalju podatci o sinkronizaciji. Svi postojeći podatci ostaju na uređaju.";
+
+/* Scan sync code title */
+"sync.scan" = "Traži";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Imam šifru za sinkronizaciju";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Kako biste dodali uređaj lancu sinkronizacije ili uključili/isključili sinkronizaciju lozinke, prvo morate postaviti šifru na svom uređaju.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Postavljanje šifre";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "Popis uređaja u nastavku uključuje sve uređaje u vašem lancu sinkronizacije. Svakim uređajem moguće je upravljati s bilo kojeg drugog uređaja.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Postavke sinkronizacije";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Umjesto toga pokaži šifre";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Koristim se mojom kamerom...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Takvo je brisanje trajno i ne postoji način za oporavljanje podataka. Ako odlučite ponovno početi upotrebljavati značajku Sinkronizacija, morate stvoriti novi račun i ponovno dodati svaki uređaj jedan po jedan.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Nešto nije u redu pri dohvaćanju uređaja u lancu sinkronizacije.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Uređaji i postavke";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Uređaji u lancu sinkronizacije";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Ukloniti ovaj uređaj?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Napomena: trebali biste provjeriti prepoznajete li svaki uređaj na popisu poviše. Uređaji u lancu sinkronizacije mogu primati osobne podatke kao što su lozinke i povijest pregledavanja.";
+/* Sync settings section title */
+"sync.syncTitle" = "Sinkroniziraj";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Potvrda uređaja";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Neuspješno";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Dosegli ste najveći dopušteni broj uređaja (10) u lancu sinkronizacije. Uklonite uređaj za nastavak.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Tabletni uređaj ili telefon";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Ograničenje uređaja";
+/* This device cell */
+"sync.thisDevice" = "Ovaj uređaj";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Kako biste dodali uređaj lancu sinkronizacije ili uključili/isključili sinkronizaciju lozinke, prvo morate postaviti šifru na svom uređaju.";
+/* Sync to existing device */
+"sync.toDevice" = "Sinkroniziraj s uređajem";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Postavljanje šifre";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Upotrebom postojećeg sinkroniziranog uređaja otvorite postavke preglednika Brave i idite na Postavke -> Sinkronizacija. Odaberite „Dodaj uređaj ” i očitajte kôd prikazan na zaslonu.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Postavke sinkronizacije";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Nije moguće sinkronizirati ovaj uređaj";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Dodaj novi uređaj";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Nije moguće pridružiti se grupi za sinkronizaciju. Provjerite upisane riječi i pokušajte ponovno.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Dodaj računalo";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Kȏd QR lanca sinkronizacije";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Na svom drugom mobilnom uređaju idite na stavku Sinkronizacija na ploči Postavke i dodirnite gumb „Očitaj kôd za sinkronizaciju”. Upotrijebite kameru za očitavanje koda QR u nastavku.\n\nSmatrajte kôd lozinkom. Ako mu tko pristupi, može čitati i izmjenjivati vaše sinkronizirane podatke.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Upis koda za sinkronizaciju";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Na svom uređaju idite na stavku Sinkronizacija na ploči Postavke i dodirnite gumb „%@”. Upišite kôd lanca sinkronizacije prikazan u nastavku.\n\nSmatrajte kôd lozinkom. Ako mu tko pristupi, može čitati i izmjenjivati vaše sinkronizirane podatke.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Upis šifre";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Dodavanje tabletnog uređaja ili telefona";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Odabrati tip uređaja";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Odabrati tip uređaja s kojim biste se htjeli sinkronizirati.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Kôd je istekao. Generirajte novi pritiskom na gumb u nastavku.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Ovaj privremeni kôd valjan je tijekom sljedećeg razdoblja: %@";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Računalo";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Izbriši račun za sinkronizaciju";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Nije moguće povezivanje";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Izgleda da je ovaj kȏd nastao na uređaju s instaliranom starijom inačicom preglednika Brave. Ažurirajte na najnoviju inačicu preglednika Brave na svom drugom uređaju, a zatim stvorite novi kȏd za sinkronizaciju.";
+"sync.validForTooLongError" = "Ovaj kôd nije valjan. Provjerite jesu li na uređaju vrijeme i vremenska zona ispravno postavljeni.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Uređaji i postavke";
+/* Sync settings welcome */
+"sync.welcome" = "Za početak preglednik Brave treba biti instaliran na svim uređajima koje planirate sinkronizirati. Kako biste ih spojili, pokrenite lanac sinkronizacije kojim ćete na siguran način spojiti sve svoje uređaje.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Ovaj je kôd za sinkronizaciju istekao. Generirajte novi kôd za sinkronizaciju i pokušajte ponovno.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Žao nam je, ali nešto nije u redu";
+/* Word count title */
+"sync.wordCount" = "Broj riječi: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Uvezene knjižne oznake";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Agent za sinkronizaciju trenutačno je izvan mreže ili nije dostupan. Pokušajte ponovno poslije.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Pogreška sinkronizacije komunikacije";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Provjerite internetsku vezu i pokušajte ponovno.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Nije moguće povezivanje za sinkronizaciju";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Lokalni podatci uređaja ostaju netaknuti na svim uređajima. Ostali uređaji u ovom lancu sinkronizacije i dalje su sinkronizirani.";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Ukloniti %@ iz lanca sinkronizacije?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Ukloni uređaj";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Uređaj";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Trenutačno sinkronizirani podatci zadržavaju se, ali se svi podatci u predmemoriji sinkronizacije preglednika Brave brišu. Morate pokrenuti novi lanac sinkronizacije za ponovno sinkroniziranje podataka uređaja.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Izbriši lanac sinkronizacije";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "Ako se ukloni %@, briše se lanac sinkronizacije.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Uklanjanjem uređaja iz lanca sinkronizacije ne čiste se prethodno sinkronizirani podatci s uređaja.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Ukloniti %@ iz lanca sinkronizacije?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Ukloni ovaj uređaj";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Ukloniti ovaj uređaj?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Prekida se veza ovog uređaja s grupom sinkronizacije i više se ne primaju ili šalju podatci o sinkronizaciji. Svi postojeći podatci ostaju na uređaju.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "Popis uređaja u nastavku uključuje sve uređaje u vašem lancu sinkronizacije. Svakim uređajem moguće je upravljati s bilo kojeg drugog uređaja.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Koristim se mojom kamerom...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Tabletni uređaj ili telefon";
-
-/* This device cell */
-"SyncThisDevice" = "Ovaj uređaj";
-
-/* Sync to existing device */
-"SyncToDevice" = "Sinkroniziraj s uređajem";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Upotrebom postojećeg sinkroniziranog uređaja otvorite postavke preglednika Brave i idite na Postavke -> Sinkronizacija. Odaberite „Dodaj uređaj ” i očitajte kôd prikazan na zaslonu.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Nije moguće sinkronizirati ovaj uređaj";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Neuspješno";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Ovaj kôd nije valjan. Provjerite jesu li na uređaju vrijeme i vremenska zona ispravno postavljeni.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Zatvori";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Uključiti prijedloge za pretraživanje?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Nije moguće pridružiti se grupi za sinkronizaciju. Provjerite upisane riječi i pokušajte ponovno.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Nije moguće povezivanje";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Otključaj";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Mali programi (widgeti)";
-
-/* Word count title */
-"WordCount" = "Broj riječi: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "god.";

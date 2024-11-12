@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Dvojitým klepnutím prepínate štíty Brave";
 
-/* Sync page title */
-"BraveSync" = "Synchronizácia";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Synchronizovať vnútorné časti";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "Ak chcete začať, na všetkých zariadeniach, ktoré plánujete synchronizovať, si budete musieť nainštalovať Brave. Ak ich chcete spojiť, spustite reťazec synchronizácie, ktorý použijete na bezpečné prepojenie všetkých vašich zariadení.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Zatvoriť všetky karty %i";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Do nižšie uvedeného formulára zadajte poskytnutý slovný kód pre synchronizačný reťazec.";
-
-/* Code words section title */
-"CodeWords" = "Kódy";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Stiahnuť";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Súbory cookie a údaje lokality";
-
-/* Copied action complete title */
-"Copied" = "Skopírované!";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Skopírované do schránky!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Kopírovať informácie o aplikácii do schránky.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Kopírovať informácie o kartách do schránky.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Vložiť do schránky";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Kopírovať informácie pre podporu";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Odstrániť";
 
-/* Sync device settings page title. */
-"Devices" = "Zariadenia v synchronizačnom reťazci";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Zariadenie %1$ @ (%2$ @)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Povoliť obnovenie potiahnutím";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Zadajte kódy";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Nižšie zadajte slová kódu";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Zadajte názov priečinka";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Bezpečné prehliadanie chráni pred webovými stránkami, o ktorých je známe, že sú nebezpečné.[Zistiť viac] (%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Povoliť fotoaparát";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Skryť ukážky odkazov";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Neplatné údaje v žiadosti o platbu";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Neplatný synchronizačný kód, skontrolujte ho a skúste to znova.";
 
 /* History tableview section header */
 "LastMonth" = "Minulý mesiac";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Nové okno inkognito";
 
-/* New sync code button title */
-"NewSyncCode" = "Spustiť nový synchronizačný reťazec ";
-
 /* New Tab title */
 "NewTab" = "Nová karta";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Nenašli sa žiadne výsledky vyhľadávania.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Zadajte všetky slová a skúste to znova.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Malý počet slov";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Automaticky presmeruje odkazy NPR na ich textovú verziu (na text.npr.org).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Priblíženie stránky";
-
-/* Sync pair device settings section title */
-"Pair" = "Párovať";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Heslá";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Súkromná karta";
 
-/* QR Code section title */
-"QRCode" = "QR kód";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Rýchle vyhľadávače";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Automaticky presmeruje odkazy Reddit na staršie rozhranie (na old.reddit.com). Ak chcete použiť nové rozhranie Reddit, použite namiesto toho new.reddit.com.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Odstrániť";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Odstrániť obľúbené";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Uložiť prihlasovacie údaje";
-
-/* Scan sync code title */
-"Scan" = "Vyhľadať";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Mám kód synchronizácie";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "skripty zablokované";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Zobraziť záložky";
 
-/* Show code words instead */
-"ShowCodeWords" = "Zobraziť namiesto toho slová kódu";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Zobraziť stiahnuté súbory";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Potlačiť upozornenia";
 
-/* Sync settings section title */
-"Sync" = "Synchronizácia";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Pridať nové zariadenie";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Pridať počítač";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "QR kód synchronizačného reťazca";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "Na druhom mobilnom zariadení prejdite na Synchronizovať na paneli Nastavenia a klepnite na tlačidlo „Skenovať synchronizačný kód“. Pomocou fotoaparátu naskenujte QR kód nižšie.\n\n S týmto kódom zaobchádzajte ako s heslom. Ak ho niekto získa, môže čítať a upravovať vaše synchronizované údaje.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Zadajte synchronizačný kód";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Na svojom zariadení prejdite na Synchronizovať na paneli Nastavenia a klepnite na tlačidlo „%@“. Zadajte slová kódu synchronizačného reťazca zobrazené nižšie.\n\n S týmto kódom zaobchádzajte ako s heslom. Ak ho niekto získa, môže čítať a upravovať vaše synchronizované údaje.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Zadajte slová kódu";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Pridať tablet alebo telefón";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Záložky boli úspešne exportované";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Záložky boli úspešne importované";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Synchronizovať zariadenie";
+"sync.chainAccountDeletionErrorDescription" = "Synchronizovať zariadenie";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Synchronizovať zariadenie";
+"sync.chainAccountDeletionErrorTitle" = "Synchronizovať zariadenie";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Nepodarilo sa pripojiť k tomuto reťazcu. Účet bol odstránený.";
+"sync.chainAlreadyDeletedAlertDescription" = "Nepodarilo sa pripojiť k tomuto reťazcu. Účet bol odstránený.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Synchronizovať zariadenie";
+"sync.chainAlreadyDeletedAlertTitle" = "Synchronizovať zariadenie";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Vybrať druh zariadenia";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Vyberte typ zariadenia, s ktorým chcete vykonať synchronizáciu.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Platnosť kódu vypršala. Vygenerujte si nový ťuknutím na tlačidlo nižšie.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "min";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "hodiny";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "sekundy";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Tento dočasný kód je platný na %@";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "hodina";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "sekunda";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Do nižšie uvedeného formulára zadajte poskytnutý slovný kód pre synchronizačný reťazec.";
+
+/* Code words section title */
+"sync.codeWords" = "Kódy";
+
+/* Computer device button title */
+"sync.computerDevice" = "Počítač";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Spravujte informácie, ktoré chcete synchronizovať medzi zariadeniami. Tieto nastavenia platia iba na tomto zariadení.";
+"sync.configurationInformationText" = "Spravujte informácie, ktoré chcete synchronizovať medzi zariadeniami. Tieto nastavenia platia iba na tomto zariadení.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Odstrániť synchronizovaný účet";
+/* Copied action complete title */
+"sync.copied" = "Skopírované!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Skopírované do schránky!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Vložiť do schránky";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Odstrániť synchronizovaný účet";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Odstrániť synchronizovaný účet";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Vymazaním účtu vymažete vaše zašifrované údaje z Brave serverov a znemožníte Synchronizáciu na všetkých vašich pripojených zariadeniach.";
+"sync.deleteAccountAlertDescriptionPart1" = "Vymazaním účtu vymažete vaše zašifrované údaje z Brave serverov a znemožníte Synchronizáciu na všetkých vašich pripojených zariadeniach.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Údaje uložené lokálne na týchto zariadeniach sa však nezmažú.";
+"sync.deleteAccountAlertDescriptionPart2" = "Údaje uložené lokálne na týchto zariadeniach sa však nezmažú.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Zdá sa, že kód bol vytvorený na zariadení so starou verziou prehliadača Brave. Aktualizujte prehliadač Brave na najnovšiu verziu na svojom zariadení a následne vytvorte nový synchronizačný kód.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Pri načítavaní zariadení v synchronizačnom reťazci sa vyskytla chyba.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Zariadenia v synchronizačnom reťazci";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Zariadenia v synchronizačnom reťazci";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Zadajte kódy";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Nižšie zadajte slová kódu";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Platnosť tohto synchronizačného kódu vypršala, vygenerujte nový synchronizačný kód a skúste to znova.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Prepáčte, niečo sa pokazilo";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Povoliť fotoaparát";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Agent synchronizácie je momentálne offline alebo nedostupný. Skúste to neskôr.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Chyba synchronizácie komunikácie";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Synchronizovať vnútorné časti";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Neplatný synchronizačný kód, skontrolujte ho a skúste to znova.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Poznámka: Mali by ste si overiť, či poznáte každé zariadenie v zozname vyššie. Zariadenia v synchronizačnom reťazci môžu prijímať osobné údaje, ako sú heslá a história prehliadania.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Potvrdenie zariadenia";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Dosiahli ste maximálny povolený počet zariadení (10) v synchronizačnom reťazci. Ak chcete pokračovať, odstráňte zariadenie.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Limit zariadenia";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Spustiť nový synchronizačný reťazec ";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Skontrolujte svoje internetové pripojenie a skúste to znova.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Nedá sa pripojiť k synchronizácii";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Zadajte všetky slová a skúste to znova.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Malý počet slov";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Párovať";
+
+/* QR Code section title */
+"sync.qrCode" = "QR kód";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Údaje o lokálnom zariadení zostanú na všetkých zariadeniach nedotknuté. Ostatné zariadenia v tomto reťazci synchronizácie zostanú synchronizované. ";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Odstrániť %@ zo synchronizačného reťazca?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Odstrániť";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Odstrániť zariadenie";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Zariadenie";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Aktuálne synchronizované dáta zostanú zachované, ale všetky dáta vo vyrovnávacej pamäti synchronizácie Brave budú vymazané. Ak chcete znova synchronizovať údaje zariadenia, budete musieť spustiť nový synchronizačný reťazec.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Odstrániť synchronizačný reťazec";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "Odstránením %@ sa odstráni synchronizačný reťazec.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Odstránením zariadenia zo synchronizačného reťazca nevymažete predtým synchronizované údaje zo zariadenia.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Odstrániť %@ zo synchronizačného reťazca?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Odstrániť toto zariadenie";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Toto zariadenie bude odpojené od synchronizačnej skupiny a už nebude prijímať ani odosielať synchronizačné údaje. Všetky existujúce údaje zostanú v zariadení.";
+
+/* Scan sync code title */
+"sync.scan" = "Vyhľadať";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Mám kód synchronizácie";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Ak chcete pridať zariadenie k synchronizačnému reťazcu alebo prepnúť synchronizáciu hesla, musíte najprv na svojom zariadení nastaviť prístupový kód.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Nastaviť prístupový kód";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "Nižšie uvedený zoznam zariadení obsahuje všetky zariadenia v synchronizačnom reťazci. Každé zariadenie môže byť spravované z akéhokoľvek iného zariadenia.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Synchronizovať nastavenia";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Zobraziť namiesto toho slová kódu";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Použijem svoj fotoaparát ...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Toto vymazanie je trvalé a neexistuje spôsob, ako obnoviť údaje. Ak sa rozhodnete znova začať používať Synchronizáciu, budete si musieť vytvoriť nový účet a znova pridať každé zariadenie jedno po druhom.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Pri načítavaní zariadení v synchronizačnom reťazci sa vyskytla chyba.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Zariadenia a nastavenia";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Zariadenia v synchronizačnom reťazci";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Chcete toto zariadenie odstrániť?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Poznámka: Mali by ste si overiť, či poznáte každé zariadenie v zozname vyššie. Zariadenia v synchronizačnom reťazci môžu prijímať osobné údaje, ako sú heslá a história prehliadania.";
+/* Sync settings section title */
+"sync.syncTitle" = "Synchronizácia";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Potvrdenie zariadenia";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Neúspešné";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Dosiahli ste maximálny povolený počet zariadení (10) v synchronizačnom reťazci. Ak chcete pokračovať, odstráňte zariadenie.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Tablet alebo telefón";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Limit zariadenia";
+/* This device cell */
+"sync.thisDevice" = "Toto zariadenie";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Ak chcete pridať zariadenie k synchronizačnému reťazcu alebo prepnúť synchronizáciu hesla, musíte najprv na svojom zariadení nastaviť prístupový kód.";
+/* Sync to existing device */
+"sync.toDevice" = "Synchronizovať so zariadením";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Nastaviť prístupový kód";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Pomocou existujúceho synchronizovaného zariadenia otvorte Nastavenia Brave a prejdite na Nastavenia-> Synchronizácia. Zvoľte „Pridať zariadenie“ a naskenujte kód zobrazený na obrazovke.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Synchronizovať nastavenia";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Toto zariadenie sa nedá synchronizovať";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Pridať nové zariadenie";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Nedá sa pripojiť k synchronizačnej skupine. Skontrolujte zadané slová a skúste to znova.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Pridať počítač";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "QR kód synchronizačného reťazca";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Na druhom mobilnom zariadení prejdite na Synchronizovať na paneli Nastavenia a klepnite na tlačidlo „Skenovať synchronizačný kód“. Pomocou fotoaparátu naskenujte QR kód nižšie.\n\n S týmto kódom zaobchádzajte ako s heslom. Ak ho niekto získa, môže čítať a upravovať vaše synchronizované údaje.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Zadajte synchronizačný kód";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Na svojom zariadení prejdite na Synchronizovať na paneli Nastavenia a klepnite na tlačidlo „%@“. Zadajte slová kódu synchronizačného reťazca zobrazené nižšie.\n\n S týmto kódom zaobchádzajte ako s heslom. Ak ho niekto získa, môže čítať a upravovať vaše synchronizované údaje.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Zadajte slová kódu";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Pridať tablet alebo telefón";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Vybrať druh zariadenia";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Vyberte typ zariadenia, s ktorým chcete vykonať synchronizáciu.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Platnosť kódu vypršala. Vygenerujte si nový ťuknutím na tlačidlo nižšie.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Tento dočasný kód je platný na %@";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Počítač";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Odstrániť synchronizovaný účet";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Nedá sa pripojiť";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Zdá sa, že kód bol vytvorený na zariadení so starou verziou prehliadača Brave. Aktualizujte prehliadač Brave na najnovšiu verziu na svojom zariadení a následne vytvorte nový synchronizačný kód.";
+"sync.validForTooLongError" = "Tento kód je neplatný. Skontrolujte, či je vo vašom zariadení správne nastavený čas a časové pásmo.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Zariadenia a nastavenia";
+/* Sync settings welcome */
+"sync.welcome" = "Ak chcete začať, na všetkých zariadeniach, ktoré plánujete synchronizovať, si budete musieť nainštalovať Brave. Ak ich chcete spojiť, spustite reťazec synchronizácie, ktorý použijete na bezpečné prepojenie všetkých vašich zariadení.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Platnosť tohto synchronizačného kódu vypršala, vygenerujte nový synchronizačný kód a skúste to znova.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Prepáčte, niečo sa pokazilo";
+/* Word count title */
+"sync.wordCount" = "Počet slov: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Importované záložky";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Agent synchronizácie je momentálne offline alebo nedostupný. Skúste to neskôr.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Chyba synchronizácie komunikácie";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Skontrolujte svoje internetové pripojenie a skúste to znova.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Nedá sa pripojiť k synchronizácii";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Údaje o lokálnom zariadení zostanú na všetkých zariadeniach nedotknuté. Ostatné zariadenia v tomto reťazci synchronizácie zostanú synchronizované. ";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Odstrániť %@ zo synchronizačného reťazca?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Odstrániť zariadenie";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Zariadenie";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Aktuálne synchronizované dáta zostanú zachované, ale všetky dáta vo vyrovnávacej pamäti synchronizácie Brave budú vymazané. Ak chcete znova synchronizovať údaje zariadenia, budete musieť spustiť nový synchronizačný reťazec.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Odstrániť synchronizačný reťazec";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "Odstránením %@ sa odstráni synchronizačný reťazec.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Odstránením zariadenia zo synchronizačného reťazca nevymažete predtým synchronizované údaje zo zariadenia.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Odstrániť %@ zo synchronizačného reťazca?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Odstrániť toto zariadenie";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Chcete toto zariadenie odstrániť?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Toto zariadenie bude odpojené od synchronizačnej skupiny a už nebude prijímať ani odosielať synchronizačné údaje. Všetky existujúce údaje zostanú v zariadení.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "Nižšie uvedený zoznam zariadení obsahuje všetky zariadenia v synchronizačnom reťazci. Každé zariadenie môže byť spravované z akéhokoľvek iného zariadenia.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Použijem svoj fotoaparát ...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Tablet alebo telefón";
-
-/* This device cell */
-"SyncThisDevice" = "Toto zariadenie";
-
-/* Sync to existing device */
-"SyncToDevice" = "Synchronizovať so zariadením";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Pomocou existujúceho synchronizovaného zariadenia otvorte Nastavenia Brave a prejdite na Nastavenia-> Synchronizácia. Zvoľte „Pridať zariadenie“ a naskenujte kód zobrazený na obrazovke.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Toto zariadenie sa nedá synchronizovať";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Neúspešné";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Tento kód je neplatný. Skontrolujte, či je vo vašom zariadení správne nastavený čas a časové pásmo.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Zavrieť";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Chcete zapnúť návrhy vyhľadávania?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Nedá sa pripojiť k synchronizačnej skupine. Skontrolujte zadané slová a skúste to znova.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Nedá sa pripojiť";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Odomknúť";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Miniaplikácie";
-
-/* Word count title */
-"WordCount" = "Počet slov: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "r.";

@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Brave Kalkanları'nı değiştirmek için iki kez dokunun";
 
-/* Sync page title */
-"BraveSync" = "Eşitle";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Senkronizasyon Hata Ayıklama";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "Başlamak için, senkronize etmeyi planladığınız tüm cihazlarda Brave'in yüklü olması gerekir. Bunları birbirine zincirlemek için, tüm cihazlarınızı güvenli bir şekilde birbirine bağlarken kullanacağınız bir eşitleme zinciri başlatın.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Sohbet";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tüm %i Sekmelerini Kapat";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Sağlanan eşitleme zinciri kod sözcüklerinizi aşağıdaki forma yazın.";
-
-/* Code words section title */
-"CodeWords" = "Kod Sözcükleri";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "indir";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Çerezler ve Site Verileri";
-
-/* Copied action complete title */
-"Copied" = "Kopyalandı";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Panoya kopyalandı!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Uygulama bilgilerini panoya kopyalayın.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Sekmelerle ilgili bilgileri panoya kopyalayın.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Panoya kopyala";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Destek Bilgilerini Kopyala";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Sil";
 
-/* Sync device settings page title. */
-"Devices" = "Eşitleme zincirindeki cihazlar";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Aygıt %1$@ ( %2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Çekerek Yenilemeyi Etkinleştir";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Kod sözcüklerini girme";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Kod sözcüklerini aşağıya girin";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Klasör adını girin";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Güvenli Gezinme, tehlikeli oldukları bilinen web sitelerine karşı koruma sağlar. [Daha Fazla Bilgi](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Kamerayı Etkinleştir";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Bağlantı Önizlemelerini Gizle";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Ödeme isteğinde geçersiz ayrıntılar";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Eş zamanlama kodu geçersiz, lütfen kontrol edip tekrar deneyin.";
 
 /* History tableview section header */
 "LastMonth" = "Geçen ay";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Yeni Kişisel Pencere";
 
-/* New sync code button title */
-"NewSyncCode" = "Yeni bir Eşitleme Zinciri başlatın";
-
 /* New Tab title */
 "NewTab" = "Yeni Sekme";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Arama sonucu bulunamadı.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Lütfen tüm sözcükleri girin ve yeniden deneyin.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Yeterli Sözcük Yok";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "NPR bağlantıları otomatik olarak metin tabanlı sürümlerine (text.npr.org adresindeki) yönlendirir.";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Sayfa Yakınlaştırma";
-
-/* Sync pair device settings section title */
-"Pair" = "Eşleştir";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Şifreler";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Gizli Sekme";
 
-/* QR Code section title */
-"QRCode" = "QR Kodu";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Hızlı Arama Motorları";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Reddit bağlantılarını otomatik olarak (old.reddit.com adresindeki) daha eski arayüze bağlar. Yeni Reddit arayüzünü kullanmak için, bunun yerine new.reddit.com adresini kullanın.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Kaldır";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Sık Kullanılanı Kaldır";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Oturumları Kaydet";
-
-/* Scan sync code title */
-"Scan" = "Tara";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Eşitleme Kodum var";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Engellenen Komut Dosyaları";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Yer İşaretlerini Göster";
 
-/* Show code words instead */
-"ShowCodeWords" = "Bunun yerine kod sözcüklerini göster";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "İndirilenleri Göster";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Uyarıları Bastır";
 
-/* Sync settings section title */
-"Sync" = "Eşitle";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Yeni Aygıt Ekle";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Bilgisayar Ekle";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "Zincir QR Kodunu Eşitle";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "İkinci mobil cihazınızda, Ayarlar panelinde Eşitle'ye gidin ve \"Eşitleme Kodunu Tara\" düğmesine dokunun. Aşağıdaki QR Kodunu taramak için kameranızı kullanın.\n\nBu kodu parola gibi düşünün. Birisi onu eline geçirirse, eşitlenmiş verilerinizi okuyabilir ve değiştirebilir.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Eşitleme kodunu girin";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Cihazınızda, Ayarlar panelinde Eşitle'ye gidin ve \"%@\" düğmesine dokunun. Aşağıda gösterilen eşitleme zinciri kodu sözcüklerini girin.\n\nBu kodu parola gibi düşünün. Birisi onu ele geçirirse, eşitlenmiş verilerinizi okuyabilir ve değiştirebilir.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Kod Sözcüklerini Girin";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Tablet veya Telefon Ekleme";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Yer İşaretleri Başarıyla Dışa Aktarıldı";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Başarıyla Alınan Yer İşaretleri";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Cihazı Senkronize Et";
+"sync.chainAccountDeletionErrorDescription" = "Cihazı Senkronize Et";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Cihazı Senkronize Et";
+"sync.chainAccountDeletionErrorTitle" = "Cihazı Senkronize Et";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Bu zincire katılınamadı. Hesap önceden silinmiş.";
+"sync.chainAlreadyDeletedAlertDescription" = "Bu zincire katılınamadı. Hesap önceden silinmiş.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Cihazı Senkronize Et";
+"sync.chainAlreadyDeletedAlertTitle" = "Cihazı Senkronize Et";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Aygıt Türünü Seç";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Eşitlemek istediğiniz aygıt türünü seçin.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Kodun süresi doldu. Aşağıdaki butona dokunarak yeni bir tane oluşturun.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "dk";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "saat";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "saniye";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Bu geçici kod, %@ boyunca geçerlidir";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "saat";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "saniye\n";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Sağlanan eşitleme zinciri kod sözcüklerinizi aşağıdaki forma yazın.";
+
+/* Code words section title */
+"sync.codeWords" = "Kod Sözcükleri";
+
+/* Computer device button title */
+"sync.computerDevice" = "Bilgisayar";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Cihazlar arasında hangi bilgileri senkronize etmek istediğinizi yönetin. Bu ayarlar yalnızca bu cihazı etkiler.";
+"sync.configurationInformationText" = "Cihazlar arasında hangi bilgileri senkronize etmek istediğinizi yönetin. Bu ayarlar yalnızca bu cihazı etkiler.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Senkronizasyon Hesabını Sil";
+/* Copied action complete title */
+"sync.copied" = "Kopyalandı";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Panoya kopyalandı!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Panoya kopyala";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Senkronizasyon Hesabını Sil";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Senkronizasyon Hesabını Sil";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Hesabınızı silmek, şifrelenmiş verilerinizi Brave sunucularından kaldırır ve bağlı tüm cihazlarınızda Senkronizasyonu devre dışı bırakır.";
+"sync.deleteAccountAlertDescriptionPart1" = "Hesabınızı silmek, şifrelenmiş verilerinizi Brave sunucularından kaldırır ve bağlı tüm cihazlarınızda Senkronizasyonu devre dışı bırakır.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Ancak bu işlem, bu cihazlarda yerel olarak depolanan verileri silmez.";
+"sync.deleteAccountAlertDescriptionPart2" = "Ancak bu işlem, bu cihazlarda yerel olarak depolanan verileri silmez.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Görünüşe göre bu kod Brave'in eski bir sürümünü çalıştıran bir cihazda oluşturulmuş. Lütfen diğer cihazınızda Brave'i en yeni sürümüne güncelleyin ve bundan sonra yeni bir senkronizasyon kodu oluşturun.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Senkronizasyon zincirindeki cihazlar alınırken bir şeyler ters gitti.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Eşitleme zincirindeki cihazlar";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Senkronizasyon Zincirindeki Cihazlar";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Kod sözcüklerini girme";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Kod sözcüklerini aşağıya girin";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Bu senkronize kodunun süresi dolmuş, lütfen yeni bir senkronize kodu oluşturun ve tekrar deneyin.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Üzgünüz, bir sorun oluştu";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Kamerayı Etkinleştir";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Eşitleme Aracısı şu anda çevrimdışı veya erişilemez. Lütfen daha sonra yeniden deneyin.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Eşitleme iletişim hatası";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Senkronizasyon Hata Ayıklama";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Eş zamanlama kodu geçersiz, lütfen kontrol edip tekrar deneyin.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Not: Yukarıdaki listede bulunan her bir cihazı tanıdığınızı doğrulamanız gereklidir. Bir senkronizasyon zincirindeki cihazlar; parolalar ve göz atma geçmişi gibi kişisel verileri alabilirler.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Cihaz Doğrulaması";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Bir senkronizasyon zincirinde izin verilen maksimum cihaz sayısına (10) ulaştınız. Devam etmek için bir cihazı kaldırın.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Cihaz sınırı";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Yeni bir Eşitleme Zinciri başlatın";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "İnternet bağlantınızı kontrol edin ve yeniden deneyin.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Eşitlemeye bağlanılamıyor";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Lütfen tüm sözcükleri girin ve yeniden deneyin.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Yeterli Sözcük Yok";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Eşleştir";
+
+/* QR Code section title */
+"sync.qrCode" = "QR Kodu";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Yerel cihaz verileri tüm cihazlarda bozulmadan kalır. Bu Eşitleme Zincirindeki diğer aygıtlar eşitlenmeye devam edecek. ";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Eşitleme Zincirinden %@ kaldırılsın mı?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Kaldır";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Aygıtı kaldır";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "aygıt";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Şu anda eşitlenen veriler korunur, ancak Brave's Sync önbelleğinde bulunan tüm veriler silinir. Cihaz verilerini yeniden eşitlemek için yeni bir eşitleme zinciri başlatmanız gerekir.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Eşitleme Zincirini Sil";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "%@ kaldırıldığında Eşitleme Zinciri silinir.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Aygıtı Eşitleme Zinciri'nden kaldırmak, daha önce eşitlenen verileri cihazdan temizlemez.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Eşitleme Zincirinden %@ kaldırılsın mı?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Bu aygıtı kaldır";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Bu aygıtın eşitleme grubuyla bağlantısı kesilecek ve aygıt artık eşitleme verilerini almayacak veya göndermeyecek. Var olan tüm veriler cihazda kalacaktır.";
+
+/* Scan sync code title */
+"sync.scan" = "Tara";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Eşitleme Kodum var";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Senkronizasyon zincirine bir cihaz eklemek veya şifre senkronizasyonunu açmak veya kapatmak için, önce cihazınıza bir pin kodu belirlemeniz gerekmektedir.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Bir Parola Belirleyin";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "Aşağıdaki cihaz listesi, eşitleme zincirinizdeki tüm cihazları içerir. Her cihaz başka bir cihazdan yönetilebilir.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Senkronizasyon Ayarları";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Bunun yerine kod sözcüklerini göster";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Kameramı kullanacağım...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Silme işlemi kalıcıdır ve verileri kurtarmanın hiçbir yolu yoktur. Senkronizasyonu tekrar kullanmaya karar verirseniz, yeni bir hesap oluşturmanız ve tüm cihazları tek tek yeniden eklemeniz gerekecektir.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Senkronizasyon zincirindeki cihazlar alınırken bir şeyler ters gitti.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Aygıtlar ve Ayarlar";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Senkronizasyon Zincirindeki Cihazlar";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Bu cihaz kaldırılsın mı?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Not: Yukarıdaki listede bulunan her bir cihazı tanıdığınızı doğrulamanız gereklidir. Bir senkronizasyon zincirindeki cihazlar; parolalar ve göz atma geçmişi gibi kişisel verileri alabilirler.";
+/* Sync settings section title */
+"sync.syncTitle" = "Eşitle";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Cihaz Doğrulaması";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Başarısız";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Bir senkronizasyon zincirinde izin verilen maksimum cihaz sayısına (10) ulaştınız. Devam etmek için bir cihazı kaldırın.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Tablet veya Telefon";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Cihaz sınırı";
+/* This device cell */
+"sync.thisDevice" = "Bu Aygıt";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Senkronizasyon zincirine bir cihaz eklemek veya şifre senkronizasyonunu açmak veya kapatmak için, önce cihazınıza bir pin kodu belirlemeniz gerekmektedir.";
+/* Sync to existing device */
+"sync.toDevice" = "Aygıtla eşitle";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Bir Parola Belirleyin";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Mevcut eşitlenmiş cihazı kullanarak Brave Ayarlarını açın ve Ayarlar -> Eşitleme'ye gidin. \"Cihaz Ekle\"yi seçin ve ekranda görüntülenen kodu tarayın.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Senkronizasyon Ayarları";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Bu cihaz senkronize edilemiyor";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Yeni Aygıt Ekle";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Eşitleme grubuna katılınamıyor. Lütfen girilen sözcükleri kontrol edin ve yeniden deneyin.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Bilgisayar Ekle";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Zincir QR Kodunu Eşitle";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "İkinci mobil cihazınızda, Ayarlar panelinde Eşitle'ye gidin ve \"Eşitleme Kodunu Tara\" düğmesine dokunun. Aşağıdaki QR Kodunu taramak için kameranızı kullanın.\n\nBu kodu parola gibi düşünün. Birisi onu eline geçirirse, eşitlenmiş verilerinizi okuyabilir ve değiştirebilir.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Eşitleme kodunu girin";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Cihazınızda, Ayarlar panelinde Eşitle'ye gidin ve \"%@\" düğmesine dokunun. Aşağıda gösterilen eşitleme zinciri kodu sözcüklerini girin.\n\nBu kodu parola gibi düşünün. Birisi onu ele geçirirse, eşitlenmiş verilerinizi okuyabilir ve değiştirebilir.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Kod Sözcüklerini Girin";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Tablet veya Telefon Ekleme";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Aygıt Türünü Seç";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Eşitlemek istediğiniz aygıt türünü seçin.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Kodun süresi doldu. Aşağıdaki butona dokunarak yeni bir tane oluşturun.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Bu geçici kod, %@ boyunca geçerlidir";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Bilgisayar";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Senkronizasyon Hesabını Sil";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Bağlanılamıyor";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Görünüşe göre bu kod Brave'in eski bir sürümünü çalıştıran bir cihazda oluşturulmuş. Lütfen diğer cihazınızda Brave'i en yeni sürümüne güncelleyin ve bundan sonra yeni bir senkronizasyon kodu oluşturun.";
+"sync.validForTooLongError" = "Bu kod geçersiz. Lütfen cihazınızdaki saatin ve saat diliminin doğru şekilde ayarlandığını teyit edin.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Aygıtlar ve Ayarlar";
+/* Sync settings welcome */
+"sync.welcome" = "Başlamak için, senkronize etmeyi planladığınız tüm cihazlarda Brave'in yüklü olması gerekir. Bunları birbirine zincirlemek için, tüm cihazlarınızı güvenli bir şekilde birbirine bağlarken kullanacağınız bir eşitleme zinciri başlatın.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Bu senkronize kodunun süresi dolmuş, lütfen yeni bir senkronize kodu oluşturun ve tekrar deneyin.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Üzgünüz, bir sorun oluştu";
+/* Word count title */
+"sync.wordCount" = "Sözcük sayısı: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "İçe Aktarılan Yer İşaretleri";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Eşitleme Aracısı şu anda çevrimdışı veya erişilemez. Lütfen daha sonra yeniden deneyin.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Eşitleme iletişim hatası";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "İnternet bağlantınızı kontrol edin ve yeniden deneyin.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Eşitlemeye bağlanılamıyor";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Yerel cihaz verileri tüm cihazlarda bozulmadan kalır. Bu Eşitleme Zincirindeki diğer aygıtlar eşitlenmeye devam edecek. ";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Eşitleme Zincirinden %@ kaldırılsın mı?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Aygıtı kaldır";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "aygıt";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Şu anda eşitlenen veriler korunur, ancak Brave's Sync önbelleğinde bulunan tüm veriler silinir. Cihaz verilerini yeniden eşitlemek için yeni bir eşitleme zinciri başlatmanız gerekir.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Eşitleme Zincirini Sil";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "%@ kaldırıldığında Eşitleme Zinciri silinir.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Aygıtı Eşitleme Zinciri'nden kaldırmak, daha önce eşitlenen verileri cihazdan temizlemez.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Eşitleme Zincirinden %@ kaldırılsın mı?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Bu aygıtı kaldır";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Bu cihaz kaldırılsın mı?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Bu aygıtın eşitleme grubuyla bağlantısı kesilecek ve aygıt artık eşitleme verilerini almayacak veya göndermeyecek. Var olan tüm veriler cihazda kalacaktır.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "Aşağıdaki cihaz listesi, eşitleme zincirinizdeki tüm cihazları içerir. Her cihaz başka bir cihazdan yönetilebilir.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Kameramı kullanacağım...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Tablet veya Telefon";
-
-/* This device cell */
-"SyncThisDevice" = "Bu Aygıt";
-
-/* Sync to existing device */
-"SyncToDevice" = "Aygıtla eşitle";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Mevcut eşitlenmiş cihazı kullanarak Brave Ayarlarını açın ve Ayarlar -> Eşitleme'ye gidin. \"Cihaz Ekle\"yi seçin ve ekranda görüntülenen kodu tarayın.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Bu cihaz senkronize edilemiyor";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Başarısız";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Bu kod geçersiz. Lütfen cihazınızdaki saatin ve saat diliminin doğru şekilde ayarlandığını teyit edin.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Kapat";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Arama önerileri açılsın mı?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Eşitleme grubuna katılınamıyor. Lütfen girilen sözcükleri kontrol edin ve yeniden deneyin.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Bağlanılamıyor";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Kilidi aç";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widget'lar";
-
-/* Word count title */
-"WordCount" = "Sözcük sayısı: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "yıl";

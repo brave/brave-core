@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "انقر نقرًا مزدوجًا لتبديل Brave Shields";
 
-/* Sync page title */
-"BraveSync" = "مزامنة";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "مزامنة الأجزاء الداخلية";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "للبدء، تحتاج لأن تثبت Brave على جميع الأجهزة التي تنوي مزامنتها. ولكي تربط هذه الأجهزة معًا، ابدأ سلسلة المزامنة التي ستستخدمها لربط جميع أجهزتك معًا بشكل آمن.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "محادثة Brave";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "إغلاق كافة علامات التبويب %i";
 
-/* Code words input help */
-"CodeWordInputHelp" = "أدخل كلمات رمز سلسلة المزامنة التي زودت بها في النموذج أدناه.";
-
-/* Code words section title */
-"CodeWords" = "الكلمات الرمزية";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "تنزيل";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "ملفات تعريف الارتباط وبيانات المواقع";
-
-/* Copied action complete title */
-"Copied" = "تم النسخ.";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "تم النسخ إلى الحافظة!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "نسخ معلومات التطبيق إلى الحافظة.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "نسخ معلومات علامات التبويب إلى الحافظة.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "نسخ إلى الحافظة";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "نسخ معلومات الدعم";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "حذف";
 
-/* Sync device settings page title. */
-"Devices" = "الأجهزة على سلسلة المزامنة";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "الجهاز %1$@ (%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "تمكين السحب للتحديث";
-
-/* Sync enter code words */
-"EnterCodeWords" = "أدخل شِفرة الكلمات";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "أدخل كلمات الرمز أدناه";
 
 /* Description for new folder popup */
 "EnterFolderName" = "أدخل اسم المجلد";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "يحمي التصفح الآمن من مواقع الويب المعروفة بخطورتها. [تعرف على المزيد](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "تمكين الكاميرا";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "إخفاء معاينات الرابط";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "تفاصيل غير صالحة في طلب الدفع";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "رمز مزامنة غير صالح، يُرجى التحقق والمحاولة مرة أخرى.";
 
 /* History tableview section header */
 "LastMonth" = "الشهر الماضي";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "نافذة خاصة جديدة";
 
-/* New sync code button title */
-"NewSyncCode" = "بدء سلسلة مزامنة جديدة";
-
 /* New Tab title */
 "NewTab" = "علامة تبويب جديدة";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "لم يتم العثور على نتائج البحث.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "الرجاء إدخال جميع الكلمات والمحاولة مرة أخرى.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "لا توجد كلمات كافية";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "يعيد توجيه روابط NPR تلقائيًا إلى نسختها النصية (في text.npr.org).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "تكبير / تصغير الصفحة";
-
-/* Sync pair device settings section title */
-"Pair" = "إقران";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "كلمات المرور";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "علامة تبويب خاصة";
 
-/* QR Code section title */
-"QRCode" = "رمز الاستجابة السريعة";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "محركات البحث السريع";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "يعيد توجيه روابط Reddit تلقائيًا إلى الواجهة القديمة (عند old.reddit.com). لفرض واجهة Reddit الجديدة، استخدم new.reddit.com بدلًا من ذلك.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "احذف";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "إزالة قائمة المفضلات";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "حفظ تسجيلات الدخول";
-
-/* Scan sync code title */
-"Scan" = "فحص";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "لدي رمز مزامنة";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "البرامج النصية المحظورة";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "إظهار الإشارات المرجعية";
 
-/* Show code words instead */
-"ShowCodeWords" = "إظهار كلمات التعليمات البرمجية بدلًا من ذلك";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "عرض التنزيلات";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "إيقاف التنبيهات";
 
-/* Sync settings section title */
-"Sync" = "مزامنة";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "إضافة جهاز جديد";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "إضافة جهاز حاسوب";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "رمز الاستجابة السريعة لسلسلة المزامنة";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "على جهازك المحمول الثاني، انتقل إلى المزامنة في لوحة الإعدادات وانقر فوق الزر \"مسح رمز المزامنة ضوئيًا\". استخدم الكاميرا لمسح رمز الاستجابة السريعة أدناه ضوئيًا.\n\nتعامل مع هذا الرمز ككلمة مرور. إذا حصل شخص ما عليه، فيمكنه قراءة بياناتك المتزامنة وتعديلها.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "أدخل رمز المزامنة";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "على جهازك، انتقل إلى المزامنة في لوحة الإعدادات وانقر فوق الزر \"%@\". أدخل كلمات رمز سلسلة المزامنة الموضحة أدناه.\n\nتعامل مع هذا الرمز ككلمة مرور. إذا حصل شخص ما عليه، فيمكنه قراءة بياناتك المتزامنة وتعديلها.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "أدخل كلمات الرمز";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "إضافة جهاز لوحي أو هاتف";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "تم تصدير الإشارات المرجعية بنجاح";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "تم استيراد الإشارات المرجعية بنجاح";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "جهاز المزامنة";
+"sync.chainAccountDeletionErrorDescription" = "جهاز المزامنة";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "جهاز المزامنة";
+"sync.chainAccountDeletionErrorTitle" = "جهاز المزامنة";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "لا يمكن الانضمام إلى هذه السلسلة. تم حذف الحساب.";
+"sync.chainAlreadyDeletedAlertDescription" = "لا يمكن الانضمام إلى هذه السلسلة. تم حذف الحساب.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "جهاز المزامنة";
+"sync.chainAlreadyDeletedAlertTitle" = "جهاز المزامنة";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "اختر نوع الجهاز";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "اختر نوع الجهاز الذي ترغب في مزامنته.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "انتهت صلاحية الرمز. يُرجى إنشاء رمز جديد بالضغط على الزر أدناه.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "دقيقه";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "ساعات";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "ثوانٍ";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "هذا الرمز المؤقت صالح لـ %@ التالية";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "ساعة";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "ثانية";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "أدخل كلمات رمز سلسلة المزامنة التي زودت بها في النموذج أدناه.";
+
+/* Code words section title */
+"sync.codeWords" = "الكلمات الرمزية";
+
+/* Computer device button title */
+"sync.computerDevice" = "جهاز الكمبيوتر";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "قم بإدارة المعلومات التي تريد مزامنتها بين الأجهزة. تؤثر هذه الإعدادات فقط على هذا الجهاز.";
+"sync.configurationInformationText" = "قم بإدارة المعلومات التي تريد مزامنتها بين الأجهزة. تؤثر هذه الإعدادات فقط على هذا الجهاز.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "حذف حساب المزامنة";
+/* Copied action complete title */
+"sync.copied" = "تم النسخ.";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "تم النسخ إلى الحافظة!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "نسخ إلى الحافظة";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "حذف حساب المزامنة";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "حذف حساب المزامنة";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "سيؤدي حذف حسابك إلى إزالة بياناتك المشفرة من خوادم Brave وتعطيل المزامنة على جميع أجهزتك المتصلة.";
+"sync.deleteAccountAlertDescriptionPart1" = "سيؤدي حذف حسابك إلى إزالة بياناتك المشفرة من خوادم Brave وتعطيل المزامنة على جميع أجهزتك المتصلة.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "ومع ذلك لن يحذف البيانات المخزنة محليًا على تلك الأجهزة.";
+"sync.deleteAccountAlertDescriptionPart2" = "ومع ذلك لن يحذف البيانات المخزنة محليًا على تلك الأجهزة.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "يبدو أنه تم إنشاء هذا الرمز على جهاز يعمل بإصدار أقدم من Brave. يرجى التحديث إلى أحدث إصدار من Brave على جهازك الآخر، ثم إنشاء رمز مزامنة جديد.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "حدث خطأ ما أثناء استرداد الأجهزة في سلسلة المزامنة.";
+
+/* Sync device settings page title. */
+"sync.devices" = "الأجهزة على سلسلة المزامنة";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "الأجهزة في سلسلة المزامنة";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "أدخل شِفرة الكلمات";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "أدخل كلمات الرمز أدناه";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "انتهت صلاحية رمز المزامنة هذا، يرجى إنشاء رمز مزامنة جديد والمحاولة مرةً أخرى.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "معذرةً، حدث خطأ ما";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "تمكين الكاميرا";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "عامل المزامنة غير متصل حاليًا أو لا يمكن الوصول إليه. يرجى إعادة المحاولة لاحقًا.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "خطأ في مزامنة الاتصال";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "مزامنة الأجزاء الداخلية";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "رمز مزامنة غير صالح، يُرجى التحقق والمحاولة مرة أخرى.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "ملاحظة: يجب عليك التحقق من التعرف على كل جهاز في القائمة أعلاه. قد تتلقى الأجهزة في سلسلة المزامنة بيانات شخصية مثل كلمات المرور وسجل التصفح.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "تأكيد الجهاز";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "لقد وصلت إلى الحد الأقصى لعدد الأجهزة (10) المسموح بها في سلسلة المزامنة. أزل جهازًا للمتابعة.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "حد الأجهزة";
+
+/* New sync code button title */
+"sync.newSyncCode" = "بدء سلسلة مزامنة جديدة";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "تحقق من اتصالك بالإنترنت وحاول مرةً أخرى.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "تعذر الاتصال بالمزامنة";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "الرجاء إدخال جميع الكلمات والمحاولة مرة أخرى.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "لا توجد كلمات كافية";
+
+/* Sync pair device settings section title */
+"sync.pair" = "إقران";
+
+/* QR Code section title */
+"sync.qrCode" = "رمز الاستجابة السريعة";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "ستظل بيانات الجهاز المحلية سليمة على جميع الأجهزة. وستظل الأجهزة الأخرى في سلسلة المزامنة هذه متزامنة. ";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "إزالة %@ من سلسلة المزامنة؟";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "احذف";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "إزالة الجهاز";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "جهاز";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "سيتم الاحتفاظ بالبيانات التي تتم مزامنتها حاليًا ولكن سيتم حذف جميع البيانات الموجودة في ذاكرة التخزين المؤقت لمزامنة Brave. ستحتاج إلى بدء سلسلة مزامنة جديدة لمزامنة بيانات الجهاز مرةً أخرى.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "حذف سلسلة المزامنة";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "ستؤدي إزالة %@ إلى حذف سلسلة المزامنة.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "لن تؤدي إزالة الجهاز من سلسلة المزامنة إلى مسح البيانات التي تمت مزامنتها سابقًا من الجهاز.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "إزالة %@ من سلسلة المزامنة؟";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "حذف هذا الجهاز";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "سيتم فصل هذا الجهاز عن مجموعة المزامنة ولن يتلقى بيانات المزامنة أو يرسلها بعد الآن. وستظل جميع البيانات الموجودة على الجهاز.";
+
+/* Scan sync code title */
+"sync.scan" = "فحص";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "لدي رمز مزامنة";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "لإضافة جهاز إلى سلسلة المزامنة أو تبديل مزامنة كلمة المرور، يجب أولًا تعيين رمز مرور على جهازك.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "تعيين رمز مرور";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "قائمة الأجهزة أدناه تحتوي على جميع الأجهزة في سلسلة المزامنة لديك. يمكن إدارة كل جهاز من الأجهزة الأخرى.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "إعدادات المزامنة";
+
+/* Show code words instead */
+"sync.showCodeWords" = "إظهار كلمات التعليمات البرمجية بدلًا من ذلك";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "سأستخدم الكاميرا...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "هذا الحذف دائم ولا توجد طريقة لاستعادة البيانات. إذا قررت البدء في استخدام المزامنة مرةً أخرى، فستحتاج إلى إنشاء حساب جديد وإعادة إضافة كل جهاز واحدًا تلو الآخر.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "حدث خطأ ما أثناء استرداد الأجهزة في سلسلة المزامنة.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "الأجهزة والإعدادات";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "الأجهزة في سلسلة المزامنة";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "إزالة هذا الجهاز؟";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "ملاحظة: يجب عليك التحقق من التعرف على كل جهاز في القائمة أعلاه. قد تتلقى الأجهزة في سلسلة المزامنة بيانات شخصية مثل كلمات المرور وسجل التصفح.";
+/* Sync settings section title */
+"sync.syncTitle" = "مزامنة";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "تأكيد الجهاز";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "لم ينجح";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "لقد وصلت إلى الحد الأقصى لعدد الأجهزة (10) المسموح بها في سلسلة المزامنة. أزل جهازًا للمتابعة.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "الكمبيوتر اللوحي أو الهاتف";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "حد الأجهزة";
+/* This device cell */
+"sync.thisDevice" = "هذا الجهاز";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "لإضافة جهاز إلى سلسلة المزامنة أو تبديل مزامنة كلمة المرور، يجب أولًا تعيين رمز مرور على جهازك.";
+/* Sync to existing device */
+"sync.toDevice" = "مزامنة مع الجهاز";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "تعيين رمز مرور";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "باستخدام الجهاز الحالي الذي تمت مزامنته، افتح إعدادات Brave وانتقل إلى الإعدادات -> مزامنة. واختر \"إضافة جهاز\" وامسح الرمز المعروض على الشاشة ضوئيًا.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "إعدادات المزامنة";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "لا يمكن مزامنة هذا الجهاز";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "إضافة جهاز جديد";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "يتعذر الانضمام إلى مجموعة المزامنة. يرجى التحقق من الكلمات المدخلة والمحاولة مرةً أخرى.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "إضافة جهاز حاسوب";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "رمز الاستجابة السريعة لسلسلة المزامنة";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "على جهازك المحمول الثاني، انتقل إلى المزامنة في لوحة الإعدادات وانقر فوق الزر \"مسح رمز المزامنة ضوئيًا\". استخدم الكاميرا لمسح رمز الاستجابة السريعة أدناه ضوئيًا.\n\nتعامل مع هذا الرمز ككلمة مرور. إذا حصل شخص ما عليه، فيمكنه قراءة بياناتك المتزامنة وتعديلها.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "أدخل رمز المزامنة";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "على جهازك، انتقل إلى المزامنة في لوحة الإعدادات وانقر فوق الزر \"%@\". أدخل كلمات رمز سلسلة المزامنة الموضحة أدناه.\n\nتعامل مع هذا الرمز ككلمة مرور. إذا حصل شخص ما عليه، فيمكنه قراءة بياناتك المتزامنة وتعديلها.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "أدخل كلمات الرمز";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "إضافة جهاز لوحي أو هاتف";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "اختر نوع الجهاز";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "اختر نوع الجهاز الذي ترغب في مزامنته.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "انتهت صلاحية الرمز. يُرجى إنشاء رمز جديد بالضغط على الزر أدناه.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "هذا الرمز المؤقت صالح لـ %@ التالية";
-
-/* Computer device button title */
-"SyncComputerDevice" = "جهاز الكمبيوتر";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "حذف حساب المزامنة";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "يتعذر الاتصال";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "يبدو أنه تم إنشاء هذا الرمز على جهاز يعمل بإصدار أقدم من Brave. يرجى التحديث إلى أحدث إصدار من Brave على جهازك الآخر، ثم إنشاء رمز مزامنة جديد.";
+"sync.validForTooLongError" = "هذا الرمز غير صالح. يُرجى التحقق من ضبط الوقت والمنطقة الزمنية بشكل صحيح على جهازك.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "الأجهزة والإعدادات";
+/* Sync settings welcome */
+"sync.welcome" = "للبدء، تحتاج لأن تثبت Brave على جميع الأجهزة التي تنوي مزامنتها. ولكي تربط هذه الأجهزة معًا، ابدأ سلسلة المزامنة التي ستستخدمها لربط جميع أجهزتك معًا بشكل آمن.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "انتهت صلاحية رمز المزامنة هذا، يرجى إنشاء رمز مزامنة جديد والمحاولة مرةً أخرى.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "معذرةً، حدث خطأ ما";
+/* Word count title */
+"sync.wordCount" = "عدد الكلمات: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "الإشارات المرجعية المستوردة";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "عامل المزامنة غير متصل حاليًا أو لا يمكن الوصول إليه. يرجى إعادة المحاولة لاحقًا.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "خطأ في مزامنة الاتصال";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "تحقق من اتصالك بالإنترنت وحاول مرةً أخرى.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "تعذر الاتصال بالمزامنة";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "ستظل بيانات الجهاز المحلية سليمة على جميع الأجهزة. وستظل الأجهزة الأخرى في سلسلة المزامنة هذه متزامنة. ";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "إزالة %@ من سلسلة المزامنة؟";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "إزالة الجهاز";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "جهاز";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "سيتم الاحتفاظ بالبيانات التي تتم مزامنتها حاليًا ولكن سيتم حذف جميع البيانات الموجودة في ذاكرة التخزين المؤقت لمزامنة Brave. ستحتاج إلى بدء سلسلة مزامنة جديدة لمزامنة بيانات الجهاز مرةً أخرى.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "حذف سلسلة المزامنة";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "ستؤدي إزالة %@ إلى حذف سلسلة المزامنة.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "لن تؤدي إزالة الجهاز من سلسلة المزامنة إلى مسح البيانات التي تمت مزامنتها سابقًا من الجهاز.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "إزالة %@ من سلسلة المزامنة؟";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "حذف هذا الجهاز";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "إزالة هذا الجهاز؟";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "سيتم فصل هذا الجهاز عن مجموعة المزامنة ولن يتلقى بيانات المزامنة أو يرسلها بعد الآن. وستظل جميع البيانات الموجودة على الجهاز.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "قائمة الأجهزة أدناه تحتوي على جميع الأجهزة في سلسلة المزامنة لديك. يمكن إدارة كل جهاز من الأجهزة الأخرى.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "سأستخدم الكاميرا...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "الكمبيوتر اللوحي أو الهاتف";
-
-/* This device cell */
-"SyncThisDevice" = "هذا الجهاز";
-
-/* Sync to existing device */
-"SyncToDevice" = "مزامنة مع الجهاز";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "باستخدام الجهاز الحالي الذي تمت مزامنته، افتح إعدادات Brave وانتقل إلى الإعدادات -> مزامنة. واختر \"إضافة جهاز\" وامسح الرمز المعروض على الشاشة ضوئيًا.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "لا يمكن مزامنة هذا الجهاز";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "لم ينجح";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "هذا الرمز غير صالح. يُرجى التحقق من ضبط الوقت والمنطقة الزمنية بشكل صحيح على جهازك.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "إغلاق";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "هل تريد تشغيل اقتراحات البحث؟";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "يتعذر الانضمام إلى مجموعة المزامنة. يرجى التحقق من الكلمات المدخلة والمحاولة مرةً أخرى.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "يتعذر الاتصال";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "فتح القفل";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = " عناصر واجهة المستخدم";
-
-/* Word count title */
-"WordCount" = "عدد الكلمات: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "سنه";

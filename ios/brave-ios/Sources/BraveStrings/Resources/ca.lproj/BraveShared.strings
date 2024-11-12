@@ -211,15 +211,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Fes doble toc per activar Escuts de Brave";
 
-/* Sync page title */
-"BraveSync" = "Sincronització";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Sincronització d'interns";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "Per començar, necessitaràs tenir instal·lat Brave a tots els dispositius que tens la intenció de sincronitzar. Per encadenar-los, inicia una cadena de sincronització que faràs servir per enllaçar de forma segura tots els teus dispositius.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Conversa de Brave";
 
@@ -454,12 +445,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tanca totes les %i pestanyes";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Escriu en el formulari de sota les paraules del codi de cadena de sincronització proporcionat.";
-
-/* Code words section title */
-"CodeWords" = "Paruales del codi";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Descarrega";
 
@@ -474,12 +459,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Dades de llocs web i galetes";
-
-/* Copied action complete title */
-"Copied" = "Copiat!";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Copiat al porta-retalls!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Copia la informació de l'app al porta-retalls.";
@@ -498,9 +477,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Copieu la informació de les pestanyes al porta-retalls.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Copia al porta-retalls";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Copia la informació de suport";
@@ -628,9 +604,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Suprimeix";
 
-/* Sync device settings page title. */
-"Devices" = "Dispositius en cadena de sincronització";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispositiu %1$@ (%2$@)";
 
@@ -696,12 +669,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Activa la funció de tirar per a actualitzar";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Introdueix paraules del codi";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Introdueix paraules de codi a continuació";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Introdueix el nom de la carpeta";
@@ -832,9 +799,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "La navegació segura protegeix dels llocs web que se sap que són perillosos. [Aprèn més](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Activa la càmera";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Amaga les visualitzacions prèvies d'enllaços";
 
@@ -885,9 +849,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Les dades de la sol·licitud de pagament no són vàlides";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Codi de sincronització invàlid, si us plau comprova-ho i torna-ho a intentar. ";
 
 /* History tableview section header */
 "LastMonth" = "Darrer mes";
@@ -1012,9 +973,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Nova finestra privada";
 
-/* New sync code button title */
-"NewSyncCode" = "Inicia una nova cadena de sincronització";
-
 /* New Tab title */
 "NewTab" = "Pestanya nova";
 
@@ -1038,12 +996,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "No s'ha trobat cap resultat de cerca.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Introdueix totes les paraules i torna-ho a provar.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Calen més paraules";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Redirigeix ​​automàticament els enllaços NPR a la seva versió basada en text (a text.npr.org).";
@@ -1443,9 +1395,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Zoom de la pàgina";
-
-/* Sync pair device settings section title */
-"Pair" = "Vincula";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Contrasenyes";
@@ -2023,9 +1972,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Pestanya d'incògnit";
 
-/* QR Code section title */
-"QRCode" = "Codi QR";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Motors de cerca ràpida";
 
@@ -2160,9 +2106,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Redirigeix ​​automàticament els enllaços de Reddit a la interfície anterior (a old.reddit.com). Per forçar la nova interfície de Reddit, utilitza new.reddit.com.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Elimina";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Elimina el preferit";
@@ -2457,12 +2400,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Desa registres";
-
-/* Scan sync code title */
-"Scan" = "Escaneja";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Tinc un codi de sincronització";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Scripts bloquejats";
@@ -2860,9 +2797,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Mostra les adreces d'interès";
 
-/* Show code words instead */
-"ShowCodeWords" = "En lloc d'això, mostra paraules en codi";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Mostra descàrregues";
 
@@ -2911,8 +2845,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Suprimeix alertes";
 
-/* Sync settings section title */
-"Sync" = "Sincronització";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Afegeix nou dispositiu";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Afegeix un ordinador";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "Codi QR de la cadena de sincronització";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "Al segon dispositiu mòbil, aneu a Sincronització al tauler de configuració i toqueu el botó \"Escaneja el codi de sincronització\". Utilitzeu la vostra càmera per escanejar el codi QR a continuació.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Introdueix el codi de sincronització";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Al dispositiu, aneu a Sincronització al tauler de configuració i toqueu el botó \"%@\". Introduïu les paraules del codi de la cadena de sincronització que es mostren a continuació.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Introdueix paraules de codi";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Afegeix tauleta tàctil o telèfon";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Adreces d'interès exportades correctament";
@@ -2930,187 +2885,254 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Adreces d'interès importades correctament";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Sincronitza el dispositiu";
+"sync.chainAccountDeletionErrorDescription" = "Sincronitza el dispositiu";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Sincronitza el dispositiu";
+"sync.chainAccountDeletionErrorTitle" = "Sincronitza el dispositiu";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "No s'ha pogut unir a aquesta cadena. S'ha suprimit el compte.";
+"sync.chainAlreadyDeletedAlertDescription" = "No s'ha pogut unir a aquesta cadena. S'ha suprimit el compte.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Sincronitza el dispositiu";
+"sync.chainAlreadyDeletedAlertTitle" = "Sincronitza el dispositiu";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Tria el tipus de dispositiu";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Tria el tipus de dispositiu amb què et vols sincronitzar.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "min";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "hores";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "segons";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Aquest codi temporal és vàlid per al proper %\nAquest codi temporal és vàlid durant les properes %@";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "hora";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "segon";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Escriu en el formulari de sota les paraules del codi de cadena de sincronització proporcionat.";
+
+/* Code words section title */
+"sync.codeWords" = "Paruales del codi";
+
+/* Computer device button title */
+"sync.computerDevice" = "Ordinador";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Gestiona la informació que vols sincronitzar entre els dispositius. Aquesta configuració només tindrà efecte en aquest dispositiu.";
+"sync.configurationInformationText" = "Gestiona la informació que vols sincronitzar entre els dispositius. Aquesta configuració només tindrà efecte en aquest dispositiu.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Suprimeix el compte de sincronització";
+/* Copied action complete title */
+"sync.copied" = "S'ha copiat!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Copiat al porta-retalls!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Copia al porta-retalls";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Suprimeix el compte de sincronització";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Suprimeix el compte de sincronització";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Si suprimeixes el compte, se suprimiran les teves dades xifrades dels servidors Brave i es desactivarà la sincronització en tots els dispositius connectats.";
+"sync.deleteAccountAlertDescriptionPart1" = "Si suprimeixes el compte, se suprimiran les teves dades xifrades dels servidors Brave i es desactivarà la sincronització en tots els dispositius connectats.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "No obstant això, no s'eliminaran les dades que s'emmagatzemen localment en aquests dispositius.";
+"sync.deleteAccountAlertDescriptionPart2" = "No obstant això, no s'eliminaran les dades que s'emmagatzemen localment en aquests dispositius.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Sembla que s'ha creat aquest codi en un aparell amb una versió més antiga de Brave. Actualitzeu l'altre aparell amb la versió més recent de Brave i, a continuació, creeu un codi de sincronització nou.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "S'ha produït un error en recuperar dispositius en cadena de sincronització.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Dispositius en cadena de sincronització";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Dispositius en cadena de sincronització";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Introdueix paraules del codi";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Introdueix paraules de codi a continuació";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Aquest codi de sincronització ha caducat; genera un codi de sincronització nou i torna-ho a provar.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Disculpa, s'ha produït un error";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Activa la càmera";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Actualment, l'agent de sincronització està fora de línia o no es pot contactar. Siusplau, intenta-ho més tard.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Error de comunicació de sincronització";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Sincronització d'interns";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Codi de sincronització invàlid, si us plau comprova-ho i torna-ho a intentar.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Nota: Hauries de verificar que reconeixes tots els dispositius de la llista anterior. Els dispositius d'una cadena de sincronització poden rebre dades personals com ara contrasenyes i l'historial de navegació.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Confirmació del dispositiu";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Has assolit el nombre màxim de dispositius (10) permesos en una cadena de sincronització. Elimina un dispositiu per continuar.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Límit del dispositiu";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Inicia una nova cadena de sincronització";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Comprova la teva connexió a Internet i torna-ho a provar.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "No es pot connectar per sincronitzar";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Introdueix totes les paraules i torna-ho a provar.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Calen més paraules";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Vincula";
+
+/* QR Code section title */
+"sync.qrCode" = "Codi QR";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Les dades del dispositiu local es mantindran intactes en tots els dispositius. Altres dispositius d'aquesta cadena de sincronització es mantindran sincronitzats.";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Vols eliminar %@ de la cadena de sincronització?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Elimina";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Esborra dispositiu";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Dispositiu";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Les actuals dades sincronitzades es conservaran, però se suprimiran totes les dades de la memòria cau de la sincronització de Brave. Hauràs d'iniciar una nova cadena de sincronització per tornar a sincronitzar les dades del dispositiu.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Suprimeix cadena de sincronització";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "Si elimines %@, se suprimirà la cadena de sincronització.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Si elimines el dispositiu de la cadena de sincronització, no s'esborraran les anteriors dades sincronitzades del dispositiu.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Vols eliminar %@ de la cadena de sincronització?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Elimina aquest dispositiu";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Aquest dispositiu es desconnectarà del grup de sincronització i ja no rebrà ni enviarà dades de sincronització. Totes les dades existents romandran al dispositiu.";
+
+/* Scan sync code title */
+"sync.scan" = "Escaneja";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Tinc un codi de sincronització";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Per afegir un dispositiu a la cadena de sincronització o canviar la sincronització de contrasenyes, primer has d'establir una contrasenya al dispositiu.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Estableix una contrasenya";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "La llista següent inclou tots els dispositius que tens a la teva cadena de sincronització. Cada dispositiu pot gestionar-se des de qualsevol altre dispositiu.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Configuració de sincronització";
+
+/* Show code words instead */
+"sync.showCodeWords" = "En lloc d'això, mostra paraules en codi";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Utilitzaré la meva càmera...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decideixes començar a utilitzar de nou la sincronització, hauràs de crear un compte nou i tornar a afegir cada dispositiu un per un.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "S'ha produït un error en recuperar dispositius en cadena de sincronització.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Dispositius i configuració";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Dispositius en cadena de sincronització";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Vols eliminar aquest dispositiu?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Nota: Hauries de verificar que reconeixes tots els dispositius de la llista anterior. Els dispositius d'una cadena de sincronització poden rebre dades personals com ara contrasenyes i l'historial de navegació.";
+/* Sync settings section title */
+"sync.syncTitle" = "Sincronització";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Confirmació del dispositiu";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Sense èxit";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Has assolit el nombre màxim de dispositius (10) permesos en una cadena de sincronització. Elimina un dispositiu per continuar.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Tauleta tàctil o telèfon";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Límit del dispositiu";
+/* This device cell */
+"sync.thisDevice" = "Aquest dispositiu";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Per afegir un dispositiu a la cadena de sincronització o canviar la sincronització de contrasenyes, primer has d'establir una contrasenya al dispositiu.";
+/* Sync to existing device */
+"sync.toDevice" = "Sincronitza amb el dispositiu";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Estableix una contrasenya";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Si utilitzes un dispositiu sincronitzat existent, obre la configuració de Brave i ves a Configuració -> Sincronització. Tria \"Afegeix dispositiu\" i escaneja el codi que es mostra a la pantalla.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Configuració de sincronització";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "No es pot sincronitzar aquest dispositiu";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Afegeix nou dispositiu";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "No es pot unir al grup de sincronització. Comprova les paraules introduïdes i torna-ho a provar.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Afegeix un ordinador";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Codi QR de la cadena de sincronització";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Al segon dispositiu mòbil, aneu a Sincronització al tauler de configuració i toqueu el botó \"Escaneja el codi de sincronització\". Utilitzeu la vostra càmera per escanejar el codi QR a continuació.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Introdueix el codi de sincronització";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Al dispositiu, aneu a Sincronització al tauler de configuració i toqueu el botó \"%@\". Introduïu les paraules del codi de la cadena de sincronització que es mostren a continuació.\n\nTracta aquest codi com una contrasenya. Si algú s'apodera d'ell, pot llegir i modificar les teves dades sincronitzades.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Introdueix paraules de codi";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Afegeix tauleta tàctil o telèfon";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Tria el tipus de dispositiu";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Tria el tipus de dispositiu amb què et vols sincronitzar.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Aquest codi temporal és vàlid per al proper %\nAquest codi temporal és vàlid durant les properes %@";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Ordinador";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Suprimeix el compte de sincronització";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "No es pot connectar";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Sembla que s'ha creat aquest codi en un aparell amb una versió més antiga de Brave. Actualitzeu l'altre aparell amb la versió més recent de Brave i, a continuació, creeu un codi de sincronització nou.";
+"sync.validForTooLongError" = "Aquest codi no és vàlid. Comprova que l'hora i la zona horària s'han establert correctament al teu dispositiu.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Dispositius i configuració";
+/* Sync settings welcome */
+"sync.welcome" = "Per començar, necessitaràs tenir instal·lat Brave a tots els dispositius que tens la intenció de sincronitzar. Per encadenar-los, inicia una cadena de sincronització que faràs servir per enllaçar de forma segura tots els teus dispositius.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Aquest codi de sincronització ha caducat; genera un codi de sincronització nou i torna-ho a provar.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Disculpa, s'ha produït un error";
+/* Word count title */
+"sync.wordCount" = "Nombre de paraules: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Adreces d'interès importades";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Actualment, l'agent de sincronització està fora de línia o no es pot contactar. Siusplau, intenta-ho més tard.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Error de comunicació de sincronització";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Comprova la teva connexió a Internet i torna-ho a provar.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "No es pot connectar per sincronitzar";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Les dades del dispositiu local es mantindran intactes en tots els dispositius. Altres dispositius d'aquesta cadena de sincronització es mantindran sincronitzats.";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Vols suprimir %@ de la cadena de sincronització?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Esborra dispositiu";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Dispositiu";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Les actuals dades sincronitzades es conservaran, però se suprimiran totes les dades de la memòria cau de la sincronització de Brave. Hauràs d'iniciar una nova cadena de sincronització per tornar a sincronitzar les dades del dispositiu.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Suprimeix cadena de sincronització";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "Si elimines %@, se suprimirà la cadena de sincronització.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Si elimines el dispositiu de la cadena de sincronització, no s'esborraran les anteriors dades sincronitzades del dispositiu.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Vols eliminar %@ de la cadena de sincronització?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Elimina aquest dispositiu";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Vols eliminar aquest dispositiu?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Aquest dispositiu es desconnectarà del grup de sincronització i ja no rebrà ni enviarà dades de sincronització. Totes les dades existents romandran al dispositiu.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "La llista següent inclou tots els dispositius que tens a la teva cadena de sincronització. Cada dispositiu pot gestionar-se des de qualsevol altre dispositiu.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Utilitzaré la meva càmera...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Tauleta tàctil o telèfon";
-
-/* This device cell */
-"SyncThisDevice" = "Aquest dispositiu";
-
-/* Sync to existing device */
-"SyncToDevice" = "Sincronitza amb el dispositiu";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Si utilitzes un dispositiu sincronitzat existent, obre la configuració de Brave i ves a Configuració -> Sincronització. Tria \"Afegeix dispositiu\" i escaneja el codi que es mostra a la pantalla.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "No es pot sincronitzar aquest dispositiu";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Sense èxit";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Aquest codi no és vàlid. Comprova que l'hora i la zona horària s'han establert correctament al dispositiu.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Tanca";
@@ -3439,12 +3461,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Vols activar els suggeriments de cerca?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "No es pot unir al grup de sincronització. Comprova les paraules introduïdes i torna-ho a provar.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "No es pot connectar";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Desbloqueja";
 
@@ -3654,9 +3670,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Ginys";
-
-/* Word count title */
-"WordCount" = "Nombre de paraules: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "any";
