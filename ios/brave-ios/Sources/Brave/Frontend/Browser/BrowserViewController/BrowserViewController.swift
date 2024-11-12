@@ -3666,6 +3666,18 @@ extension BrowserViewController {
   }
 
   func openBraveLeo(with query: String? = nil) {
+    if !FeatureList.kAIChat.enabled {
+      let alert = UIAlertController(
+        title: Strings.AIChat.leoDisabledMessageTitle,
+        message: Strings.AIChat.leoDisabledMessageDescription,
+        preferredStyle: .alert
+      )
+      let action = UIAlertAction(title: Strings.OKString, style: .default)
+      alert.addAction(action)
+      present(alert, animated: true)
+      return
+    }
+
     let webView = (query == nil) ? tabManager.selectedTab?.webView : nil
 
     let model = AIChatViewModel(
