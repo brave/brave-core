@@ -15,13 +15,11 @@
 #include "components/grit/brave_components_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 
-namespace translate {
-namespace google_apis {
+namespace translate::google_apis {
 std::string GetAPIKey() {
   return BUILDFLAG(BRAVE_SERVICES_KEY);
 }
-}  // namespace google_apis
-}  // namespace translate
+}  // namespace translate::google_apis
 
 #define TranslateScript ChromiumTranslateScript
 #include "src/components/translate/core/browser/translate_script.cc"

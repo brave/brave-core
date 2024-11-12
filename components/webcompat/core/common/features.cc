@@ -7,8 +7,7 @@
 
 #include "base/feature_list.h"
 
-namespace webcompat {
-namespace features {
+namespace webcompat::features {
 
 // This flag enables the webcompat exceptions service, which allows
 // a remote list to control site-specific exceptions to Brave features
@@ -17,5 +16,4 @@ BASE_FEATURE(kBraveWebcompatExceptionsService,
              "BraveWebcompatExceptionsService",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace webcompat
+}  // namespace webcompat::features

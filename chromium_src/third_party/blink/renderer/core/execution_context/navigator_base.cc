@@ -14,8 +14,7 @@
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 
-namespace blink {
-namespace probe {
+namespace blink::probe {
 
 void ApplyBraveHardwareConcurrencyOverride(blink::ExecutionContext* context,
                                            unsigned int* hardware_concurrency) {
@@ -53,8 +52,7 @@ void ApplyBraveHardwareConcurrencyOverride(blink::ExecutionContext* context,
   *hardware_concurrency = farbled_value;
 }
 
-}  // namespace probe
-}  // namespace blink
+}  // namespace blink::probe
 
 #define userAgent userAgent_ChromiumImpl
 #define ApplyHardwareConcurrencyOverride                        \
