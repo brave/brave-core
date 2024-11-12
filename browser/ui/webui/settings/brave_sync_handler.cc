@@ -56,6 +56,8 @@ std::string GetSyncCodeValidationString(
       NOTREACHED_IN_MIGRATION();
       return "";
   }
+  NOTREACHED() << "Unexpected value for TimeLimitedWords::ValidationStatus: "
+               << base::to_underlying(validation_result);
 }
 
 }  // namespace
