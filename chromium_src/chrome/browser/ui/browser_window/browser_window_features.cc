@@ -40,6 +40,6 @@ BraveVPNController* BrowserWindowFeatures::GetBraveVPNController() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   return brave_vpn_controller_.get();
 #else
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 #endif
 }

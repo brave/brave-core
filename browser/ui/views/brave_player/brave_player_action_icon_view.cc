@@ -84,7 +84,7 @@ const gfx::VectorIcon& BravePlayerActionIconView::GetVectorIcon() const {
   // We don't use vector icon because we need gradation effect.
   // TODO(sko) When Nala icon updates, try use vector icon and blending effect
   // to generate gradation effect.
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 void BravePlayerActionIconView::UpdateImpl() {

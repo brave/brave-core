@@ -1855,7 +1855,7 @@ void KeyringService::CreateKeyringInternal(mojom::KeyringId keyring_id,
     bitcoin_hardware_keyrings_[keyring_id] =
         std::make_unique<BitcoinHardwareKeyring>(true);
   } else {
-    NOTREACHED_NORETURN() << keyring_id;
+    NOTREACHED() << keyring_id;
   }
 }
 

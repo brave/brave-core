@@ -35,9 +35,9 @@ base::FilePath FindPakFilePath(const base::FilePath& assets_path,
     return pak_path;
   }
   if (locale != "en-US") {
-    return FindPakFilePath(assets_path, "en-US");
   }
-  NOTREACHED_NORETURN();
+  CHECK_NE(locale, "en-US");
+  return FindPakFilePath(assets_path, "en-US");
 }
 
 void LoadLocaleResources() {
