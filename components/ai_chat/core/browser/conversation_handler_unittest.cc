@@ -149,6 +149,11 @@ class MockAssociatedContent
               (ConversationHandler::GetStagedEntriesCallback),
               (override));
 
+  MOCK_METHOD(void,
+              OnRelatedConversationDisassociated,
+              (ConversationHandler*),
+              (override));
+
   base::WeakPtr<ConversationHandler::AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
@@ -413,11 +418,19 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
 
+  // Submitting conversation entry should inform associated content
+  // that it is no longer associated with the conversation
+  // and shouldn't access the conversation because the conversation
+  // will not be considering the associated content for lifetime notifications.
+  EXPECT_CALL(*associated_content_, OnRelatedConversationDisassociated)
+      .Times(1);
+
   conversation_handler_->SubmitSelectedText(
       "I have spoken.", mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   // article_text_ and suggestions_ should be cleared when page content is
   // unlinked.
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
@@ -1362,6 +1375,15 @@ TEST_F(ConversationHandlerUnitTest, SelectedLanguage) {
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest, Destuctor) {
+  // Verify that the conversation handler cleans up the associated content
+  // object when it is destroyed.
+  EXPECT_CALL(*associated_content_, OnRelatedConversationDisassociated)
+      .Times(1);
+  conversation_handler_.reset();
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 }
 
 class PageContentRefineTest : public ConversationHandlerUnitTest,
