@@ -1421,7 +1421,7 @@ bool VerticalTabStripRegionView::IsMenuShowing() const {
 void VerticalTabStripRegionView::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& p,
-    ui::MenuSourceType source_type) {
+    ui::mojom::MenuSourceType source_type) {
   if (IsMenuShowing()) {
     return;
   }

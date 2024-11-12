@@ -124,9 +124,10 @@ class VerticalTabStripRegionView : public views::View,
   void OnFullscreenStateChanged() override;
 
   // views::ContextMenuController:
-  void ShowContextMenuForViewImpl(views::View* source,
-                                  const gfx::Point& p,
-                                  ui::MenuSourceType source_type) override;
+  void ShowContextMenuForViewImpl(
+      views::View* source,
+      const gfx::Point& p,
+      ui::mojom::MenuSourceType source_type) override;
 
   class HeaderView;
   class MouseWatcher;
