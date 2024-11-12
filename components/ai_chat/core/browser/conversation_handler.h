@@ -67,7 +67,7 @@ class ConversationHandler : public mojom::ConversationHandler,
     AssociatedContentDelegate();
     virtual ~AssociatedContentDelegate();
     virtual void AddRelatedConversation(ConversationHandler* conversation) {}
-    virtual void OnRelatedConversationDestroyed(
+    virtual void OnRelatedConversationDisassociated(
         ConversationHandler* conversation) {}
     // Unique ID for the content. For browser Tab content, this should be
     // a navigation ID that's re-used during back navigations.
@@ -299,6 +299,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   void PerformQuestionGeneration(std::string page_content,
                                  bool is_video,
                                  std::string invalidation_token);
+
+  // Disassociate with the current associated content. Use this instead of
+  // settings associated_content_delegegate_ to nullptr to ensure that we
+  // inform the delegate, otherwise when this class instance is destroyed,
+  // the delegate will not be informed.
+  void DisassociateContentDelegate();
 
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);

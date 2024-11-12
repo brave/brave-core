@@ -157,9 +157,7 @@ ConversationHandler::ConversationHandler(
 }
 
 ConversationHandler::~ConversationHandler() {
-  if (associated_content_delegate_) {
-    associated_content_delegate_->OnRelatedConversationDestroyed(this);
-  }
+  DisassociateContentDelegate();
   OnConversationDeleted();
 }
 
@@ -208,8 +206,10 @@ void ConversationHandler::OnConversationDeleted() {
 }
 
 void ConversationHandler::InitEngine() {
-  CHECK(!model_key_.empty());
-  const mojom::Model* model = model_service_->GetModel(model_key_);
+  const mojom::Model* model = nullptr;
+  if (!model_key_.empty()) {
+    model = model_service_->GetModel(model_key_);
+  }
   // Make sure we get a valid model, defaulting to static default or first.
   if (!model) {
     // It is unexpected that we get here. Dump a call stack
@@ -218,8 +218,10 @@ void ConversationHandler::InitEngine() {
     base::debug::DumpWithoutCrashing();
     // Use default
     model = model_service_->GetModel(features::kAIModelsDefaultKey.Get());
-    DCHECK(model) << "The default model set via feature param does not exist";
     if (!model) {
+      SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key",
+                                  features::kAIModelsDefaultKey.Get());
+      base::debug::DumpWithoutCrashing();
       const auto& all_models = model_service_->GetModels();
       // Use first if given bad default value
       model = all_models.at(0).get();
@@ -290,7 +292,6 @@ void ConversationHandler::SetAssociatedContentDelegate(
 
   // Unarchive content
   if (archive_content_) {
-    associated_content_delegate_ = nullptr;
     archive_content_ = nullptr;
   } else if (!chat_history_.empty()) {
     // Cannot associate new content with a conversation which already has
@@ -301,6 +302,7 @@ void ConversationHandler::SetAssociatedContentDelegate(
     return;
   }
 
+  DisassociateContentDelegate();
   associated_content_delegate_ = delegate;
   associated_content_delegate_->AddRelatedConversation(this);
   // Default to send page contents when we have a valid contents.
@@ -445,12 +447,10 @@ void ConversationHandler::ChangeModel(const std::string& model_key) {
   CHECK(!model_key.empty());
   // Check that the key exists
   auto* new_model = model_service_->GetModel(model_key);
-  if (!new_model) {
-    NOTREACHED_IN_MIGRATION()
-        << "No matching model found for key: " << model_key;
-    return;
+  if (new_model) {
+    model_key_ = new_model->key;
   }
-  model_key_ = new_model->key;
+  // Always call InitEngine, even with a bad key as we need a model
   InitEngine();
 }
 
@@ -554,7 +554,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
     // Now the conversation is committed, we can remove some unneccessary data
     // if we're not associated with a page.
     suggestions_.clear();
-    associated_content_delegate_ = nullptr;
+    DisassociateContentDelegate();
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
     PerformAssistantGeneration(question_part);
@@ -737,6 +737,13 @@ void ConversationHandler::PerformQuestionGeneration(
       is_video, page_content, selected_language_,
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ConversationHandler::DisassociateContentDelegate() {
+  if (associated_content_delegate_) {
+    associated_content_delegate_->OnRelatedConversationDisassociated(this);
+    associated_content_delegate_ = nullptr;
+  }
 }
 
 void ConversationHandler::GetAssociatedContentInfo(

@@ -74,7 +74,7 @@ void AssociatedContentDriver::AddRelatedConversation(
   associated_conversations_.insert(conversation);
 }
 
-void AssociatedContentDriver::OnRelatedConversationDestroyed(
+void AssociatedContentDriver::OnRelatedConversationDisassociated(
     ConversationHandler* conversation) {
   associated_conversations_.erase(conversation);
 }
