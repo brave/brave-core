@@ -254,12 +254,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         return BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
     }
 
-    private void startTimer(int delayMillis) {
-        new Handler().postDelayed(this::nextOnboardingStep, delayMillis);
-    }
-
     ActivityResultLauncher<String> mRequestPermissionLauncher = registerForActivityResult(
-            new ActivityResultContracts.RequestPermission(), isGranted -> { startTimer(3000); });
+            new ActivityResultContracts.RequestPermission(), isGranted -> { nextOnboardingStep(); });
 
     private void nextOnboardingStep() {
         if (isActivityFinishingOrDestroyed()) return;
@@ -328,7 +324,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 && !shouldForceDefaultBrowserPrompt()) {
             mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
         } else {
-            startTimer(3000);
+            nextOnboardingStep();
         }
     }
 
@@ -554,7 +550,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private void finishNativeInitializationPostWork() {
         assert mInitializeViewsDone;
-        startTimer(1000);
+        nextOnboardingStep();
     }
 
     @Override
