@@ -52,7 +52,6 @@ struct LoadCommittedDetails;
 }
 
 class AIChatUIBrowserTest;
-class UpstreamPDFIntegratoinTest;
 
 namespace ai_chat {
 class AIChatMetrics;
@@ -134,7 +133,6 @@ class AIChatTabHelper : public content::WebContentsObserver,
   friend class content::WebContentsUserData<AIChatTabHelper>;
   friend class ::AIChatUIBrowserTest;
   friend class AIChatTabHelperUnitTest;
-  friend class ::UpstreamPDFIntegratoinTest;
 
   // To observe PDF InnerWebContents for "Finished loading PDF" event which
   // means PDF content has been loaded to an accessibility tree.
