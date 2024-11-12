@@ -63,6 +63,24 @@ describe('stackWidgetReducer', () => {
     })
   })
 
+  describe('addNewStackWidget', () => {
+    it('puts new widget at the top at first', () => {
+      const state = {
+        ...storage.defaultState,
+        widgetStackOrder: ['braveTalk', 'rewards']
+      }
+
+      // Last item in |widgetStackOrder| is top-most card.
+      const expectedState = {
+        ...storage.defaultState,
+        widgetStackOrder: ['braveTalk', 'rewards', 'braveVPN']
+      }
+
+      const assertion = storage.addNewStackWidget(state)
+      expect(assertion).toEqual(expectedState)
+    })
+  })
+
   describe('handleWidgetPrefsChange', () => {
     it('puts a widget in the forgeround if it is being turned back on', () => {
       const oldState = {
