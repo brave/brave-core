@@ -448,7 +448,7 @@ extension BrowserViewController: TabManagerDelegate {
 
     if FeatureList.kBraveShredFeature.enabled {
       let shredDataAction = UIAction(
-        title: String(format: Strings.Shields.shredSiteData),
+        title: Strings.Shields.shredSiteData,
         image: UIImage(braveSystemNamed: "leo.shred.data"),
         attributes: .destructive,
         handler: UIAction.deferredActionHandler { [weak self] _ in
