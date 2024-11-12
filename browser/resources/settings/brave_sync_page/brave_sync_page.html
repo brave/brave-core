@@ -11,12 +11,19 @@
       role-description="$i18n{subpageArrowRoleDescription}"
     >
     </cr-link-row>
-    <div class="hr"></div>
-    <sync-url-input
-      id="customSyncUrl"
-      pref="{{prefs.brave_sync.sync_service_url}}"
+
+    <template
+      is="dom-if"
+      if="[[shouldShowCustomSyncInput_]]"
     >
-    </sync-url-input>
+      <div class="hr"></div>
+      <sync-url-input
+        id="customSyncUrl"
+        pref="{{prefs.brave_sync.sync_service_url}}"
+        disabled="[[shouldDisableCustomSyncInput_]]"
+      >
+      </sync-url-input>
+    </template>
   </div>
 
   <template
