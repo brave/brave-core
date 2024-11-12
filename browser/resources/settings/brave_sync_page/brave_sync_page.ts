@@ -60,6 +60,14 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
         type: String,
         computed: 'computeSyncLabel_(syncStatus_)'
       },
+      shouldShowCustomSyncInput_: {
+        type: Boolean,
+        computed: 'computeShouldShowCustomSyncInput_(syncStatus_)'
+      },
+      shouldDisableCustomSyncInput_: {
+        type: Boolean,
+        computed: 'computeShouldDisableCustomSyncInput_(syncStatus_)'
+      },
     };
   }
 
@@ -79,6 +87,20 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
       !this.syncStatus_.firstSetupInProgress;
     const key = isAlreadySetup ? 'braveSyncManageActionLabel' : 'braveSyncSetupActionLabel';
     return this.i18n(key);
+  }
+
+  computeShouldShowCustomSyncInput_() {
+    const isAlreadySetup =
+      this.syncStatus_ !== undefined && !this.syncStatus_.firstSetupInProgress
+
+    return !(
+      isAlreadySetup &&
+      this.braveBrowserProxy_.getCustomSyncUrlAtStartup() === ''
+    )
+  }
+
+  computeShouldDisableCustomSyncInput_() {
+    return  this.syncStatus_ !== undefined && !this.syncStatus_.firstSetupInProgress
   }
 
   override connectedCallback() {
