@@ -209,11 +209,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mBtnPositive != null) {
             mBtnPositive.setOnClickListener(
                     view -> {
-                        int currentStep = ChromeSharedPreferences.getInstance().readInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, -1);
+                        int currentStep = getCurrentPage();
                         if (currentStep == 1 && !isDefaultBrowser()) {
                             setDefaultBrowserAndProceedToNextStep();
                         } else if (shouldOfferSearchWidget() && currentStep == 2) {
                             BraveSearchWidgetUtils.requestPinAppWidget();
+                            ChromeSharedPreferences.getInstance()
+                                    .writeInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, 1);
                             nextOnboardingStep();
                         } else {
                             nextOnboardingStep();
@@ -224,7 +226,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mBtnNegative != null) {
             mBtnNegative.setOnClickListener(
                     view -> {
-                        int currentStep = ChromeSharedPreferences.getInstance().readInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, -1);
+                        int currentStep = getCurrentPage();
                         if (currentStep == getAnalyticsConsentPageStep()) {
                             CustomTabActivity.showInfoPage(this, P3A_URL);
                         } else {
@@ -266,11 +268,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (isActivityFinishingOrDestroyed()) return;
 
         ChromeSharedPreferences.getInstance()
-                    .writeInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, ChromeSharedPreferences.getInstance()
-                    .readInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, -1) + 1);
+                .writeInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, getCurrentPage() + 1);
 
-        int currentStep = ChromeSharedPreferences.getInstance()
-                    .readInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, -1);
+        int currentStep = getCurrentPage();
         if (currentStep == 0) {
             showIntroPage();
         } else if (currentStep == 1) {
@@ -297,6 +297,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private int getAnalyticsConsentPageStep() {
         return shouldOfferSearchWidget() ? 3 : 2;
+    }
+
+    private int getCurrentPage() {
+        return ChromeSharedPreferences.getInstance()
+                .readInt(OnboardingPrefManager.CURRENT_ONBOARDING_PAGE, -1);
     }
 
     private void showIntroPage() {
