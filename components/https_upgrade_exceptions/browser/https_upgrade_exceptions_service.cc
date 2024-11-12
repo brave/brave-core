@@ -51,7 +51,7 @@ void HttpsUpgradeExceptionsService::OnDATFileDataReady(
   }
   std::vector<std::string> lines = base::SplitString(
       contents, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  for (const auto& line : lines) {
+  for (auto&& line : lines) {
     exceptional_domains_.insert(std::move(line));
   }
   is_ready_ = true;

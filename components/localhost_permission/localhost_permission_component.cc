@@ -72,7 +72,7 @@ void LocalhostPermissionComponent::OnDATFileDataReady(
       continue;
     }
     // Construct a GURL from the line, and store the eTLD+1.
-    const auto url = GURL("https://" + std::move(line));
+    const auto url = GURL("https://" + line);
     if (url.is_valid()) {
       allowed_domains_.insert(GetDomain(url));
     }

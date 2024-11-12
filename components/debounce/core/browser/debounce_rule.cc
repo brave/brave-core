@@ -201,8 +201,7 @@ DebounceRule::ParseRules(const std::string& contents) {
     }
     for (const URLPattern& pattern : rule->include_pattern_set()) {
       if (!pattern.host().empty()) {
-        const std::string etldp1 =
-            DebounceRule::GetETLDForDebounce(pattern.host());
+        std::string etldp1 = DebounceRule::GetETLDForDebounce(pattern.host());
         if (!etldp1.empty()) {
           hosts.insert(std::move(etldp1));
         }

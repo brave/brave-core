@@ -43,7 +43,7 @@ constexpr char kControlAuthCookieName[] = "control_auth_cookie";
 constexpr char kControlPortName[] = "controlport";
 }  // namespace
 
-TorFileWatcher::TorFileWatcher(const base::FilePath& watch_dir_path)
+TorFileWatcher::TorFileWatcher(base::FilePath watch_dir_path)
     : polling_(false),
       repoll_(false),
       watch_dir_path_(std::move(watch_dir_path)),
