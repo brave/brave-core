@@ -86,7 +86,6 @@ export default function FullScreen() {
 
   }, [isSmall])
 
-  // change to <Icon name={isNavigationCollapsed ? 'sidenav-expand' : 'sidenav-collapse'} />
   return (
     <div className={styles.fullscreen}>
       <div className={styles.left}>
@@ -96,7 +95,7 @@ export default function FullScreen() {
             kind='plain-faint'
             onClick={toggleAside}
             >
-            <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'edit-box' : 'sidepanel-open'} />
+            <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
             </Button>
           {!isNavigationRendered && (
             <>
