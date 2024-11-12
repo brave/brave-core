@@ -47,7 +47,7 @@ class RewardsEngineHelper : public base::SupportsUserData::Data {
 template <typename T>
 class WithHelperKey {
  public:
-  static const void* GetHelperKey() { return std::addressof(kHelperKey); }
+  static const void* GetHelperKey() { return &kHelperKey; }
 
  private:
   static inline const int kHelperKey = 0;
