@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Ketuk dua kali untuk mengalihkan Brave Shields";
 
-/* Sync page title */
-"BraveSync" = "Sinkronisasi";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Sinkronkan Internal";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "Untuk memulai, Anda perlu memasang Brave di semua perangkat yang ingin disinkronisasi. Untuk menyinkronkan, mulai rantai sinkronisasi yang akan Anda gunakan untuk menghubungkan semua perangkat dengan aman.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Obrolan Brave";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tutup Semua %i Tab";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Ketikkan kata kode rantai sinkronisasi yang telah diberikan di formulir di bawah ini.";
-
-/* Code words section title */
-"CodeWords" = "Kode Kata";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Unduh";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Kuki dan Data Situs";
-
-/* Copied action complete title */
-"Copied" = "Disalin!";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Disalin ke Clipboard!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Salin informasi aplikasi ke clipboard.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Salin info Tab ke papan klip.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Salin ke Clipboard";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Salin Info Dukungan";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Hapus";
 
-/* Sync device settings page title. */
-"Devices" = "Perangkat pada rantai sinkronisasi";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Perangkat %1$@ (%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Aktifkan Tarik-untuk-penyegaran";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Masukkan kode kata";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Masukkan kode kata di bawah ini";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Masukkan nama folder";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Perambanan Aman melindungi terhadap situs web yang dikenal berbahaya. [Pelajari Lebih Lanjut](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Aktifkan Kamera";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Sembunyikan Pratinjau Tautan";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Detail dalam permintaan pembayaran tidak valid";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Kode sinkron tidak sah, harap periksa dan coba lagi.";
 
 /* History tableview section header */
 "LastMonth" = "Bulan lalu";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Jendela Samaran Baru";
 
-/* New sync code button title */
-"NewSyncCode" = "Mulai Rantai Sinkronisasi baru";
-
 /* New Tab title */
 "NewTab" = "Tab Baru";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Hasil pencarian tidak ditemukan.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Masukkan semua kata, lalu coba lagi.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Kata Tidak Cukup";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Mengarahkan ulang tautan NPR secara otomatis ke versi berbasis teks mereka (di text.npr.org).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Pembesaran Halaman";
-
-/* Sync pair device settings section title */
-"Pair" = "Pasangkan";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Kata Sandi";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Tab Pribadi";
 
-/* QR Code section title */
-"QRCode" = "Kode QR";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Mesin Pencari Cepat";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Mengarahkan ulang tautan Reddit secara otomatis ke antarmuka yang lebih lama (di old.reddit.com). Untuk memaksa antarmuka Reddit baru, sebaliknya gunakan new.reddit.com.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Hapus";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Hapus Favorit";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Simpan Info Masuk";
-
-/* Scan sync code title */
-"Scan" = "Pindai";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Saya memiliki Kode Sinkronisasi";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Skrip Diblokir";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Tampilkan Markah";
 
-/* Show code words instead */
-"ShowCodeWords" = "Sebaliknya, tampilkan kata-kata kode";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Tampilkan Unduhan";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Cegah Munculnya Peringatan";
 
-/* Sync settings section title */
-"Sync" = "Sinkronisasi";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Tambah Perangkat Baru";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Tambahkan Komputer";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "Sinkronisasikan Kode QR Kelompok";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "Pada perangkat seluler kedua Anda, navigasikan ke Sinkronisasi pada panel Pengaturan dan ketuk tombol \"Pindai Kode Sinkronisasi\". Gunakan kamera Anda untuk memindai Kode QR di bawah ini.\n\nPerlakukan kode ini seperti Sandi. Jika seseorang mendapatkannya, mereka dapat membaca dan mengubah data Anda yang disinkronkan.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Masukkan kode sinkronisasi";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Pada perangkat Anda, navigasikan ke Sinkronisasi di panel Pengaturan dan ketuk tombol \"%@\". Masukkan kata kode rantai sinkronisasi yang ditunjukkan di bawah ini.\n\nPerlakukan kode ini seperti Sandi. Jika seseorang mendapatkannya, mereka dapat membaca dan mengubah data Anda yang disinkronkan.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Masukkan Kata Kode";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Tambahkan Tablet atau Ponsel";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Markah Berhasil Diekspor";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Impor Markah Buku Berhasil";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Sinkronisasikan Perangkat";
+"sync.chainAccountDeletionErrorDescription" = "Sinkronisasikan Perangkat";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Sinkronisasikan Perangkat";
+"sync.chainAccountDeletionErrorTitle" = "Sinkronisasikan Perangkat";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Tidak dapat bergabung dengan rantai ini. Akun telah dihapus.";
+"sync.chainAlreadyDeletedAlertDescription" = "Tidak dapat bergabung dengan rantai ini. Akun telah dihapus.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Sinkronisasikan Perangkat";
+"sync.chainAlreadyDeletedAlertTitle" = "Sinkronisasikan Perangkat";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Pilih Jenis Perangkat";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Pilih jenis perangkat yang ingin Anda sinkronisasikan.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Kode kedaluwarsa. Buat kode baru dengan mengetuk tombol di bawah ini.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "menit";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "jam";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "detik";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Kode sementara ini berlaku untuk %@ ke depan.";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "jam";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "detik";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Ketikkan kata kode rantai sinkronisasi yang telah diberikan di formulir di bawah ini.";
+
+/* Code words section title */
+"sync.codeWords" = "Kode Kata";
+
+/* Computer device button title */
+"sync.computerDevice" = "Komputer";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Kelola informasi yang ingin Anda sinkronisasikan di antara perangkat. Pengaturan ini hanya memengaruhi perangkat ini.";
+"sync.configurationInformationText" = "Kelola informasi yang ingin Anda sinkronisasikan di antara perangkat. Pengaturan ini hanya memengaruhi perangkat ini.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Hapus Sinkronisasi Akun";
+/* Copied action complete title */
+"sync.copied" = "Disalin!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Disalin ke Clipboard!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Salin ke Clipboard";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Hapus Sinkronisasi Akun";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Hapus Sinkronisasi Akun";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Menghapus akun Anda akan menghapus data Anda yang terenkripsi dari peladen Brave dan menonaktifkan Sinkronisasi dari semua perangkat Anda yang terhubung.";
+"sync.deleteAccountAlertDescriptionPart1" = "Menghapus akun Anda akan menghapus data Anda yang terenkripsi dari peladen Brave dan menonaktifkan Sinkronisasi dari semua perangkat Anda yang terhubung.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Namun hal ini tidak akan menghapus data yang disimpan secara lokal pada perangkat-perangkat tersebut.";
+"sync.deleteAccountAlertDescriptionPart2" = "Namun hal ini tidak akan menghapus data yang disimpan secara lokal pada perangkat-perangkat tersebut.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Sepertinya kode ini dibuat dalam perangkat yang menjalankan Brave versi lebih lama. Silakan perbarui ke versi terbaru Brave pada perangkat Anda yang lain dan kemudian buatlah kode sinkronisasi yang baru.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Telah terjadi kesalahan saat mendeteksi perangkat dalam rantai sinkronisasi.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Perangkat pada rantai sinkronisasi";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Perangkat pada Rantai Sinkronisasi";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Masukkan kode kata";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Masukkan kode kata di bawah ini";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Kode sinkronisasi ini telah kedaluwarsa. Silakan menghasilkan kode sinkronisasi yang baru dan coba lagi.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Maaf, telah terjadi kesalahan";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Aktifkan Kamera";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Agen Sinkronisasi saat ini sedang luring atau tidak dapat dihubungi. Coba lagi nanti.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Kesalahan Komunikasi Sinkronisasi";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Sinkronkan Internal";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Kode sinkron tidak sah, harap periksa dan coba lagi.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Catatan: Anda harus memverifikasi bahwa Anda mengenali setiap perangkat dalam daftar di atas. Perangkat pada rantai sinkronisasi dapat menerima data pribadi seperti kata sandi dan riwayat perambanan.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Konfirmasi Perangkat";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Anda telah mencapai jumlah maksimal perangkat (10) yang diizinkan dalam rantai sinkronisasi. Hapus satu perangkat agar dapat melanjutkan.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Batas perangkat";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Mulai Rantai Sinkronisasi baru";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Periksa sambungan internet Anda, lalu coba lagi.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Tidak dapat tersambung untuk sinkronisasi";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Masukkan semua kata, lalu coba lagi.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Kata Tidak Cukup";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Pasangkan";
+
+/* QR Code section title */
+"sync.qrCode" = "Kode QR";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Data perangkat lokal akan tetap tersimpan di semua perangkat. Perangkat lainnya dalam Rantai Sinkronisasi ini akan tetap disinkronisasi. ";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Hapus %@ dari Rantai Sinkronisasi?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Hapus";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Hapus perangkat";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Perangkat";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Data yang saat ini disinkronisasi akan disimpan, namun semua data dalam tembolok Sinkronisasi Brave akan dihapus. Anda harus memulai rantai sinkronisasi baru agar dapat menyinkronkan data perangkat lagi.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Hapus Rantai Sinkronisasi";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "Menghapus %@ akan menghapus Rantai Sinkronisasi.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Menghapus perangkat dari Rantai Sinkronisasi tidak akan menghapus data yang disinkronisasi dari perangkat.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Hapus %@ dari Rantai Sinkronisasi?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Hapus perangkat ini";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Sambungan perangkat ini akan diputus dari grup sinkronisasi dan tidak akan lagi menerima atau mengirim data sinkronisasi. Semua data yang ada akan tetap tersimpan di perangkat ini.";
+
+/* Scan sync code title */
+"sync.scan" = "Pindai";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Saya memiliki Kode Sinkronisasi";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Untuk menambahkan perangkat ke rantai sinkronisasi atau memilih sinkronisasi kata sandi, Anda harus terlebih dahulu menetapkan kode sandi di perangkat Anda.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Atur Kode Masuk";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "Daftar perangkat di bawah mencakup semua perangkat dalam rantai sinkronisasi. Setiap perangkat dapat dikelola dari perangkat lainnya.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Pengaturan Sinkronisasi";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Sebaliknya, tampilkan kata-kata kode";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Saya akan menggunakan kamera...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika Anda memutuskan untuk kembali menggunakan Sinkronisasi, Anda perlu membuat akun baru dan menambahkan ulang setiap perangkat satu per satu.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Telah terjadi kesalahan saat mendeteksi perangkat dalam rantai sinkronisasi.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Perangkat & Pengaturan";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Perangkat pada Rantai Sinkronisasi";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Hapus perangkat ini?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Catatan: Anda harus memverifikasi bahwa Anda mengenali setiap perangkat dalam daftar di atas. Perangkat pada rantai sinkronisasi dapat menerima data pribadi seperti kata sandi dan riwayat perambanan.";
+/* Sync settings section title */
+"sync.syncTitle" = "Sinkronisasi";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Konfirmasi Perangkat";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Gagal";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Anda telah mencapai jumlah maksimal perangkat (10) yang diizinkan dalam rantai sinkronisasi. Hapus satu perangkat agar dapat melanjutkan.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Tablet atau Ponsel";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Batas perangkat";
+/* This device cell */
+"sync.thisDevice" = "Perangkat Ini";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Untuk menambahkan perangkat ke rantai sinkronisasi atau memilih sinkronisasi kata sandi, Anda harus terlebih dahulu menetapkan kode sandi di perangkat Anda.";
+/* Sync to existing device */
+"sync.toDevice" = "Sinkronisasikan dengan perangkat";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Atur Kode Masuk";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Dengan menggunakan perangkat sinkronisasi yang telah ada, buka Pengaturan Brave dan navigasilah ke Pengaturan > Sinkronisasi. Pilih \"Tambahkan Perangkat\" dan pindai kode yang ditampilkan di layar.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Pengaturan Sinkronisasi";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Tidak dapat mensinkronkan perangkat ini";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Tambah Perangkat Baru";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Tidak dapat bergabung ke grup sinkronisasi. Periksa kata yang dimasukkan, lalu coba lagi.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Tambahkan Komputer";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Sinkronisasikan Kode QR Kelompok";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Pada perangkat seluler kedua Anda, navigasikan ke Sinkronisasi pada panel Pengaturan dan ketuk tombol \"Pindai Kode Sinkronisasi\". Gunakan kamera Anda untuk memindai Kode QR di bawah ini.\n\nPerlakukan kode ini seperti Sandi. Jika seseorang mendapatkannya, mereka dapat membaca dan mengubah data Anda yang disinkronkan.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Masukkan kode sinkronisasi";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Pada perangkat Anda, navigasikan ke Sinkronisasi di panel Pengaturan dan ketuk tombol \"%@\". Masukkan kata kode rantai sinkronisasi yang ditunjukkan di bawah ini.\n\nPerlakukan kode ini seperti Sandi. Jika seseorang mendapatkannya, mereka dapat membaca dan mengubah data Anda yang disinkronkan.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Masukkan Kata Kode";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Tambahkan Tablet atau Ponsel";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Pilih Jenis Perangkat";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Pilih jenis perangkat yang ingin Anda sinkronisasikan.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Kode kedaluwarsa. Buat kode baru dengan mengetuk tombol di bawah ini.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Kode sementara ini berlaku untuk %@ ke depan.";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Komputer";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Hapus Sinkronisasi Akun";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Tidak dapat Tersambung";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Sepertinya kode ini dibuat dalam perangkat yang menjalankan Brave versi lebih lama. Silakan perbarui ke versi terbaru Brave pada perangkat Anda yang lain dan kemudian buatlah kode sinkronisasi yang baru.";
+"sync.validForTooLongError" = "Kode ini tidak valid. Silakan periksa bahwa waktu dan zona waktu telah ditetapkan dengan tepat di peranti Anda.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Perangkat & Pengaturan";
+/* Sync settings welcome */
+"sync.welcome" = "Untuk memulai, Anda perlu memasang Brave di semua perangkat yang ingin disinkronisasi. Untuk menyinkronkan, mulai rantai sinkronisasi yang akan Anda gunakan untuk menghubungkan semua perangkat dengan aman.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Kode sinkronisasi ini telah kedaluwarsa. Silakan menghasilkan kode sinkronisasi yang baru dan coba lagi.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Maaf, telah terjadi kesalahan";
+/* Word count title */
+"sync.wordCount" = "Jumlah kata: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Markah Buku yang Diimpor";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Agen Sinkronisasi saat ini sedang luring atau tidak dapat dihubungi. Coba lagi nanti.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Kesalahan Komunikasi Sinkronisasi";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Periksa sambungan internet Anda, lalu coba lagi.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Tidak dapat tersambung untuk sinkronisasi";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Data perangkat lokal akan tetap tersimpan di semua perangkat. Perangkat lainnya dalam Rantai Sinkronisasi ini akan tetap disinkronisasi. ";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Hapus %@ dari Rantai Sinkronisasi?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Hapus perangkat";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Perangkat";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Data yang saat ini disinkronisasi akan disimpan, namun semua data dalam tembolok Sinkronisasi Brave akan dihapus. Anda harus memulai rantai sinkronisasi baru agar dapat menyinkronkan data perangkat lagi.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Hapus Rantai Sinkronisasi";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "Menghapus %@ akan menghapus Rantai Sinkronisasi.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Menghapus perangkat dari Rantai Sinkronisasi tidak akan menghapus data yang disinkronisasi dari perangkat.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Hapus %@ dari Rantai Sinkronisasi?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Hapus perangkat ini";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Hapus perangkat ini?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Sambungan perangkat ini akan diputus dari grup sinkronisasi dan tidak akan lagi menerima atau mengirim data sinkronisasi. Semua data yang ada akan tetap tersimpan di perangkat ini.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "Daftar perangkat di bawah mencakup semua perangkat dalam rantai sinkronisasi. Setiap perangkat dapat dikelola dari perangkat lainnya.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Saya akan menggunakan kamera...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Tablet atau Ponsel";
-
-/* This device cell */
-"SyncThisDevice" = "Perangkat Ini";
-
-/* Sync to existing device */
-"SyncToDevice" = "Sinkronisasikan dengan perangkat";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Dengan menggunakan perangkat sinkronisasi yang telah ada, buka Pengaturan Brave dan navigasilah ke Pengaturan > Sinkronisasi. Pilih \"Tambahkan Perangkat\" dan pindai kode yang ditampilkan di layar.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Tidak dapat mensinkronkan perangkat ini";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Gagal";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Kode ini tidak valid. Silakan periksa bahwa waktu dan zona waktu telah ditetapkan dengan tepat di peranti Anda.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Tutup";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Aktifkan saran pencarian?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Tidak dapat bergabung ke grup sinkronisasi. Periksa kata yang dimasukkan, lalu coba lagi.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Tidak dapat Tersambung";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Buka Kunci";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Tombol";
-
-/* Word count title */
-"WordCount" = "Jumlah kata: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "th.";
