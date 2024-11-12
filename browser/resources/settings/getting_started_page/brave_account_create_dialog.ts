@@ -6,13 +6,14 @@
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
+import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js';
 
 /**
  * @fileoverview
  * 'settings-brave-account-create-dialog'...
  */
 
-export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
+export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitElement) {
   static get is() {
     return 'settings-brave-account-create-dialog'
   }
@@ -93,11 +94,31 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   protected icon: string = 'warning-triangle-filled'
 
   protected regexps: Array<[RegExp, boolean, string]> = [
-    [/[a-z]/, false, '1 lowercase letter'],
-    [/[A-Z]/, false, '1 uppercase letter'],
-    [/[0-9]/, false, '1 number'],
-    [/[^a-zA-Z0-9]/, false, '1 special character'],
-    [/^.{5,}$/, false, '5 characters']
+    [
+      /[a-z]/,
+      false,
+      this.i18n('braveAccountPasswordStrengthCheckerTooltipLowercaseRequirement')
+    ],
+    [
+      /[A-Z]/,
+      false,
+      this.i18n('braveAccountPasswordStrengthCheckerTooltipUppercaseRequirement')
+    ],
+    [
+      /[0-9]/,
+      false,
+      this.i18n('braveAccountPasswordStrengthCheckerTooltipNumberRequirement')
+    ],
+    [
+      /[^a-zA-Z0-9]/,
+      false,
+      this.i18n('braveAccountPasswordStrengthCheckerTooltipSpecialCharacterRequirement')
+    ],
+    [
+      /^.{5,}$/,
+      false,
+      this.i18n('braveAccountPasswordStrengthCheckerTooltipLengthRequirement')
+    ]
   ]
   protected percent: number = 0
 }

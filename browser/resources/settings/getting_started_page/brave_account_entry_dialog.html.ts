@@ -9,24 +9,24 @@ import { SettingsBraveAccountEntryDialogElement } from './brave_account_entry_di
 
 export function getHtml(this: SettingsBraveAccountEntryDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog dialog-description="$i18n{braveSyncBraveAccountDesc}"
-                                   dialog-title="Get started with your Brave account">
+    <settings-brave-account-dialog dialog-description="$i18n{braveAccountEntryDialogDescription}"
+                                   dialog-title="$i18n{braveAccountEntryDialogTitle}">
       <div slot="buttons">
         <leo-button @click=${() => this.fire('create-button-clicked')}>
-          Create a Brave account
+          $i18n{braveAccountCreateBraveAccountButtonLabel}
         </leo-button>
         <leo-button kind="outline"
                     @click=${() => this.fire('sign-in-button-clicked')}>
-          Already have an account? Sign in
+          $i18n{braveAccountHaveAccountSignInButtonLabel}
         </leo-button>
       </div>
       <div slot="footer">
         <div class="footer-text">
-          For advanced users, we also support self-custody of your Brave account keys for an extra layer of privacy. <a href="#">Learn more</a>
+          $i18nRaw{braveAccountSelfCustodyDescription}
         </div>
         <leo-button kind="plain-faint"
                     @click=${() => this.fire('self-custody-button-clicked')}>
-          Use self-custody
+          $i18n{braveAccountSelfCustodyButtonLabel}
         </leo-button>
       </div>
     </settings-brave-account-dialog>

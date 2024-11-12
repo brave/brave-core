@@ -8,34 +8,34 @@ import { SettingsBraveAccountCreateDialogElement } from './brave_account_create_
 
 export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog dialog-description="$i18n{braveSyncBraveAccountDesc}"
-                                   dialog-title="Create your account"
+    <settings-brave-account-dialog dialog-description="$i18n{braveAccountCreateDialogDescription}"
+                                   dialog-title="$i18n{braveAccountCreateDialogTitle}"
                                    show-back-button>
       <div slot="inputs">
-        <leo-input placeholder="Enter your email address"
+        <leo-input placeholder="$i18n{braveAccountEmailAddressInputPlaceholder}"
                    showErrors
                    @input=${this.onEmailAddressInput}>
           <div class="label ${this.emailAddress.length !== 0 && !this.isEmailAddressValid
                            || this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias ?
                             'red' : ''}">
-            Email address
+            $i18n{braveAccountEmailAddressInputLabel}
           </div>
           <div class="dropdown ${this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias ? 'visible' : ''}"
                id="brave-alias-dropdown"
                slot="errors">
             <leo-icon name="warning-triangle-filled"></leo-icon>
-            <div>You can't use @bravealias.com addresses for creating Brave accounts. Please try again with a different domain.</div>
+            <div>$i18n{braveAccountEmailAddressInputErrorMessage}</div>
           </div>
         </leo-input>
-        <leo-input placeholder="Enter a name for your account"
+        <leo-input placeholder="$i18n{braveAccountAccountNameInputPlaceholder}"
                    @input=${this.onAccountNameInput}>
-          <div class="label">Account name</div>
+          <div class="label">$i18n{braveAccountAccountNameInputLabel}</div>
         </leo-input>
-        <leo-input placeholder="Enter your password"
+        <leo-input placeholder="$i18n{braveAccountPasswordInputPlaceholder}"
                    showErrors
                    type="password"
                    @input=${this.onCreatePasswordInput}>
-          <div class="label">Create a password</div>
+          <div class="label">$i18n{braveAccountCreatePasswordInputLabel}</div>
           <leo-icon name="eye-off"
                     slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
@@ -55,17 +55,17 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                   ${(() => {
                     switch(this.getCategory()) {
                       case 'weak':
-                        return 'Weak'
+                        return html`$i18n{braveAccountPasswordStrengthCheckerWeak}`
                       case 'medium':
-                        return 'Medium'
+                        return html`$i18n{braveAccountPasswordStrengthCheckerMedium}`
                       case 'strong':
-                        return 'Strong'
+                        return html`$i18n{braveAccountPasswordStrengthCheckerStrong}`
                     }
                   })()}
                 </div>
               </div>
               <div slot="content">
-                Passwords should have at least:
+                $i18n{braveAccountPasswordStrengthCheckerTooltipTitle}
                 ${this.regexps.map(([_, requirement_met, text]) => html`
                   <div class="password-requirement ${requirement_met ? 'requirement-met' : ''}">
                     <leo-icon name=${requirement_met ? 'check-circle-outline' : 'close-circle'}></leo-icon>
@@ -76,14 +76,14 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
             </leo-tooltip>
           </div>
         </leo-input>
-        <leo-input placeholder="Confirm your password"
+        <leo-input placeholder="$i18n{braveAccountConfirmPasswordInputPlaceholder}"
                    showErrors
                    type="password"
                    @input=${this.onConfirmPasswordInput}>
           <div class="label ${this.passwordConfirmation.length !== 0
                            && this.passwordConfirmation !== this.password ?
                               'red' : ''}">
-            Confirm password
+            $i18n{braveAccountConfirmPasswordInputLabel}
           </div>
           <leo-icon name="eye-off"
                     slot="right-icon"
@@ -93,12 +93,17 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                id="password-confirmation-dropdown"
                slot="errors">
             <leo-icon name=${this.getIconName()}></leo-icon>
-            <div>${`Passwords ${this.icon === 'check-circle-filled' ? '' : 'don\'t'} match`}</div>
+            <div>
+              ${this.icon === 'check-circle-filled'
+                ? html`$i18n{braveAccountConfirmPasswordInputSuccessMessage}`
+                : html`$i18n{braveAccountConfirmPasswordInputErrorMessage}`
+              }
+            </div>
           </div>
         </leo-input>
         <leo-checkbox @change=${this.onChange}>
           <div>
-            I have read and accept the <a href="#">Terms of service</a> and <a href="#">Privacy agreement</a>.
+            $i18nRaw{braveAccountConsentCheckboxLabel}
           </div>
         </leo-checkbox>
       </div>
@@ -110,7 +115,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                                || this.passwordConfirmation !== this.password
                                || !this.isChecked}
                     @click=${() => this.fire('create-account-button-clicked')}>
-          Create account
+          $i18n{braveAccountCreateAccountButtonLabel}
         </leo-button>
       </div>
     </settings-brave-account-dialog>

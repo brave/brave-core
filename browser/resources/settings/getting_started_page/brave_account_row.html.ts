@@ -21,16 +21,22 @@ export function getHtml(this: SettingsBraveAccountRow) {
       </div>
       <div class="texts">
         <div class="text-top ${this.signedIn ? 'signed-in' : ''}">
-          ${this.signedIn ? 'Szilard Szaloki' : 'Sign in or create a Brave account'}
+          ${this.signedIn ? 'Szilard Szaloki' : '$i18n{braveAccountRowTitle}'}
         </div>
         <div class="text-bottom ${this.signedIn ? 'signed-in' : ''}">
-          ${this.signedIn ? 'szilardszaloki@gmail.com' : '$i18n{braveSyncBraveAccountDesc}'}
+          ${this.signedIn ? 'szilardszaloki@gmail.com' : '$i18n{braveAccountRowDescription}'}
         </div>
       </div>
       <leo-button kind=${this.signedIn ? 'outline' : 'filled'}
                   size="small"
-                  @click=${this.signedIn ? () => this.signedIn = false : () => this.dialogType = DialogType.ENTRY}>
-        ${this.signedIn ? 'Manage account' : 'Get started'}
+                  @click=${this.signedIn
+                    ? () => this.signedIn = false
+                    : () => this.dialogType = DialogType.ENTRY
+                  }>
+        ${this.signedIn
+          ? '$i18n{braveAccountManageAccountButtonLabel}'
+          : '$i18n{braveAccountGetStartedButtonLabel}'
+        }
       </leo-button>
     </div>
     ${(() => {

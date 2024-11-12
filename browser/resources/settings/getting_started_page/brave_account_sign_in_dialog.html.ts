@@ -9,22 +9,22 @@ import { SettingsBraveAccountSignInDialogElement } from './brave_account_sign_in
 
 export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog dialog-description="$i18n{braveSyncBraveAccountDesc}"
-                                   dialog-title="Sign in to your account"
+    <settings-brave-account-dialog dialog-description="$i18n{braveAccountSignInDialogDescription}"
+                                   dialog-title="$i18n{braveAccountSignInDialogTitle}"
                                    show-back-button>
       <div slot="inputs">
-        <leo-input placeholder="Enter your email address"
+        <leo-input placeholder="$i18n{braveAccountEmailAddressInputPlaceholder}"
                    @input=${this.onEmailAddressInput}>
-          <div class="label">Email address</div>
+          <div class="label">$i18n{braveAccountEmailAddressInputLabel}</div>
         </leo-input>
-        <leo-input placeholder="Enter your password"
+        <leo-input placeholder="$i18n{braveAccountPasswordInputPlaceholder}"
                    type="password"
                    @input=${this.onPasswordInput}>
           <div class="password">
-            <div class="label">Password</div>
+            <div class="label">$i18n{braveAccountPasswordInputLabel}</div>
             <div class="forgot-password"
                  @click=${() => this.fire('forgot-password-button-clicked')}>
-              Forgot your password?
+              $i18n{braveAccountForgotPasswordButtonLabel}
             </div>
           </div>
           <leo-icon id="icon"
@@ -37,7 +37,7 @@ export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
       <div slot="buttons">
         <leo-button ?isDisabled=${!this.isEmailAddressValid || !this.isPasswordValid}
                     @click=${() => this.fire('sign-in-button-clicked')}>
-          Sign in
+          $i18n{braveAccountSignInButtonLabel}
         </leo-button>
       </div>
     </settings-brave-account-dialog>

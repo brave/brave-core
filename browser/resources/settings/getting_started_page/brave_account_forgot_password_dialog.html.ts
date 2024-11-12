@@ -9,24 +9,24 @@ import { SettingsBraveAccountForgotPasswordDialogElement } from './brave_account
 
 export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog alert-message="[Explain that if they reset their password without having an active login, all the user data will be deleted]"
-                                   dialog-description="Confirm your Brave account email and we'll email you a link to reset your password. The link will only be valid for [X] hours."
-                                   dialog-title="Forgot your password?"
+    <settings-brave-account-dialog alert-message="$i18n{braveAccountAlertMessage}"
+                                   dialog-description="$i18n{braveAccountForgotPasswordDialogDescription}"
+                                   dialog-title="$i18n{braveAccountForgotPasswordDialogTitle}"
                                    horizontal-buttons
                                    show-back-button>
       <div slot="inputs">
-        <leo-input placeholder="Enter your email address"
+        <leo-input placeholder="$i18n{braveAccountEmailAddressInputPlaceholder}"
                    @input=${this.onEmailAddressInput}>
-          <div class="label">Email address</div>
+          <div class="label">$i18n{braveAccountEmailAddressInputLabel}</div>
         </leo-input>
       </div>
       <div slot="buttons">
         <leo-button kind="plain-faint"
                     @click=${() => this.fire('cancel-button-clicked')}>
-          Cancel
+          $i18n{braveAccountCancelButtonLabel}
         </leo-button>
         <leo-button ?isDisabled=${!this.isEmailAddressValid}>
-          Reset your password
+          $i18n{braveAccountResetPasswordButtonLabel}
         </leo-button>
       </div>
     </settings-brave-account-dialog>
