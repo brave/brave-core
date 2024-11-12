@@ -6,6 +6,8 @@
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -47,7 +49,7 @@ std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
     case mojom::KeyringId::kBitcoinHardwareTestnet:
       return "bitcoin_hardware_test";
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 const base::Value* GetPrefForKeyring(PrefService* profile_prefs,

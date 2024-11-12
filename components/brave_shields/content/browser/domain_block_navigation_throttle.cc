@@ -245,7 +245,7 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
         ShowInterstitial(proceed_with_resume_cancel);
         break;
       case DomainBlockingType::kNone:
-        NOTREACHED_NORETURN();
+        NOTREACHED();
     }
   }
 }

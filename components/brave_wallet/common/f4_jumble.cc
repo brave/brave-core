@@ -66,17 +66,10 @@ std::vector<uint8_t> Blake2b(base::span<const uint8_t> payload,
 
   FillBlake2bParamPersonal(personalizer, params);
 
-  if (blake2b_init_param(&blake_state, &params) != 0) {
-    NOTREACHED_NORETURN();
-  }
-  if (blake2b_update(&blake_state, payload.data(), payload.size()) != 0) {
-    NOTREACHED_NORETURN();
-  }
+  CHECK_EQ(blake2b_init_param(&blake_state, &params), 0);
+  CHECK_EQ(blake2b_update(&blake_state, payload.data(), payload.size()), 0);
   std::vector<uint8_t> result(digest_len);
-  if (blake2b_final(&blake_state, result.data(), digest_len) != 0) {
-    NOTREACHED_NORETURN();
-  }
-
+  CHECK_EQ(blake2b_final(&blake_state, result.data(), digest_len), 0);
   return result;
 }
 
