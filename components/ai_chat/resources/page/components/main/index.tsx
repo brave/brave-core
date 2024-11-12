@@ -15,6 +15,7 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { isLeoModel } from '../../model_utils'
 import ErrorConnection from '../alerts/error_connection'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
+import ErrorInvalidEndpointURL from '../alerts/error_invalid_endpoint_url'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import LongConversationInfo from '../alerts/long_conversation_info'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
@@ -88,6 +89,12 @@ function Main() {
     if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.ContextLimitReached) {
       currentErrorElement = (
         <ErrorConversationEnd />
+      )
+    }
+
+    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.InvalidEndpointURL) {
+      currentErrorElement = (
+        <ErrorInvalidEndpointURL />
       )
     }
   }

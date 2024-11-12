@@ -23,7 +23,8 @@ enum APIError {
   None,
   ConnectionIssue,
   RateLimitReached,
-  ContextLimitReached
+  ContextLimitReached,
+  InvalidEndpointURL
 };
 
 enum ModelEngineType {
