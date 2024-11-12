@@ -278,7 +278,7 @@ void SplitViewTabStripModelAdapter::TabPinnedStateChanged(
 
 void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
     std::optional<tab_groups::TabGroupId> group,
-    tabs::TabModel* tab,
+    tabs::TabInterface* tab,
     int index) {
   if (!model_->ContainsIndex(index)) {
     return;
