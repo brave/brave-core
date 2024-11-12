@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">Gi utviklerne av Brave beskjed om at dette nettstedet ikke fungerer skikkelig med Shields:</translation>
 <translation id="3110968385867124099">Denne siden kan ikke rapporteres fordi den ikke ble vist med HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Denne siden er en lokal nettside og kvalifiserer ikke for rapportering.</translation>
-<translation id="3645455863322075098">Denne siden er en feilside og kvalifiserer ikke for rapportering.</translation>
-<translation id="105644511106871142">Takk for at du hjelper til med å gjøre Brave bedre for alle. Denne rapporten sender bare informasjon som kreves for at vi skal kunne fikse dette nettstedet.</translation>
+<translation id="8740275226259417070">Dette er en feilside. Den kan ikke rapporteres inn som en ødelagt nettside.</translation>
+<translation id="6806248680442980382">Takk for at du hjelper til med å gjøre Brave bedre for alle. Denne rapporten inneholder kun informasjon som kreves for at vi skal kunne fikse dette nettstedet.</translation>
 <translation id="6476216365964140603">Ytterligere informasjon (valgfritt)</translation>
 <translation id="6145852496180774737">Kontakt meg på: (valgfritt)</translation>
 <translation id="7616645803364270729">E-post, Twitter osv.</translation>
@@ -462,6 +462,8 @@
 <translation id="6318437367327684789">for alltid</translation>
 <translation id="8797999629784150206">Du kan når som helst endre <ph name="SITE_PERMISSIONS"/> dine. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">nettstedstillatelse</translation>
+<translation id="7222371875290545057">Vil du tillate Leo AI-samtaler i Brave?</translation>
+<translation id="1518915449477235311">Vil du tillate at <ph name="URL"/> åpner Leo AI-samtaler i Brave?</translation>
 <translation id="4355784577209159847">Tillat bruken av tredjepartscookies for gammel Google-pålogging</translation>
 <translation id="5770656036486891920"><ph name="URL"/> ønsker å bruke tredjepartscookies for den gamle versjonen av Google-pålogginger</translation>
 <translation id="6053826678715267477">Gi tilgang til localhost-ressurser</translation>
@@ -694,6 +696,26 @@
 <translation id="957921474773060718">Neste bidrag:</translation>
 <translation id="351973834053818251">Faste bidrag</translation>
 <translation id="7751260505918304024">Vis alle</translation>
+<translation id="2894334939992402676">Finn ut mer om måter å gi bidrag på.</translation>
+<translation id="4114667046481794032">Bidragsbeløp</translation>
+<translation id="2628057126110572782">Denne innholdsskaperen godtar per nå bare bidrag via følgende metoder:</translation>
+<translation id="7396847690567283204">Belønninger – saldo</translation>
+<translation id="3253225298092156258">Ikke tilgjengelig</translation>
+<translation id="8028314716653189513">Velg metoden du vil bruke for å gi bidrag til Brave Software.</translation>
+<translation id="4094286757932277327">Partnerlommebok</translation>
+<translation id="1511998469385905184">Prøv på nytt senere.</translation>
+<translation id="7550470870580166294">Utilstrekkelige midler</translation>
+<translation id="7020972866926315918">Det ser ut til at du er logget ut av <ph name="PROVIDER"/> for Brave Rewards. Logg på igjen for å fortsette.</translation>
+<translation id="1166682575529520472">Månedlig</translation>
+<translation id="7138678301420049075">Annet</translation>
+<translation id="2134931506717037391">Send <ph name="AMOUNT"/> BAT</translation>
+<translation id="4791565605790056151">Sender bidrag</translation>
+<translation id="8251969358165471584">Web3-lommebok</translation>
+<translation id="7160424977552599351">Bruk Web3-lommeboken din</translation>
+<translation id="6369571967625114920">Private Brave-annonser er ikke tilgjengelig i regionen din ennå.</translation>
+<translation id="5309155375926073606">Ja, jeg vil også bidra til Brave Search og godtar å bli med i <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">Bidra med et begrenset utvalg anonyme søke- og surfedata for å forbedre Brave-søket med Web Discovery Project. Det er fullstendig open source-basert.</translation>
+<translation id="4174337572777167894">Web Discovery-prosjektet</translation>
 <translation id="7090992647511817643">konto</translation>
 <translation id="4822132585477111396">Blokkjede</translation>
 <translation id="3269475789479462358">domene</translation>
@@ -796,7 +818,6 @@
 <translation id="6517332033658428773">Se gjennom swap</translation>
 <translation id="8692596799753687794">Velg pristilbudsleverandør</translation>
 <translation id="463712644600982655">Hver aggregator gir tilbud ved å bruke likviditet fra deres API. De samler inn prisinformasjon fra ulike børser og tilbyr prisene basert på disse dataene.</translation>
-<translation id="3253225298092156258">Ikke tilgjengelig</translation>
 <translation id="473775607612524610">Oppdater</translation>
 <translation id="4389658703251593158">Dette paret støttes ikke av<ph name="PROVIDER_NAME"/></translation>
 <translation id="1176173785350238153">Endre leverandør</translation>
@@ -1056,6 +1077,8 @@
 <translation id="793994607260936590">første</translation>
 <translation id="4709524402122994378">transaksjoner</translation>
 <translation id="4591079278963448049">Den tilhørende token-kontoen finnes ikke ennå. Et lite SOL-beløp vil brukes på å opprette og finansiere en.</translation>
+<translation id="3240773103344793224">Endring av kontoeierskap er forespurt</translation>
+<translation id="8041423758956015568">Denne transaksjonen overdrar eierskapet av kontoen til et nytt program. Handlingen kan ikke angres, og det kan føre til at midler på kontoen går tapt.</translation>
 <translation id="1426320910664514906">Datakraftsgrense</translation>
 <translation id="1229774280326250926">Gas Premium</translation>
 <translation id="148169246131967347">Gas-avgiftsgrense</translation>
@@ -1277,10 +1300,25 @@
 <translation id="5722321409991816187">Vis spam-NFT-er</translation>
 <translation id="2588752742385122166">Porteføljeinnstillinger</translation>
 <translation id="7662492121143629144">Alle kontoer</translation>
+<translation id="8845001906332463065">Få hjelp</translation>
+<translation id="6248202915200795128">Tar dette lenger tid enn forventet?</translation>
+<translation id="5417904796609871601">Vis på aktivitet-fanen</translation>
+<translation id="8915839655070878476">Du kan trygt lukke dette vinduet.</translation>
+<translation id="7020017785602386950">Sender <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> til <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> er sendt til kontoen <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269">Bytter <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> til <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> på <ph name="NETWORK"/></translation>
+<translation id="312867981877298982">Beløpet på <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> er lagt til i kontoen <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189">Sender <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> via kryptobro til <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042">Kunne ikke <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
+<translation id="6990756606864308319">Det oppstod en feil ved forsøket på å <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> til <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
+<translation id="6449575669814542383">Godkjenner <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> til <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">En ny transaksjon opprettes for å kansellere den eksisterende transaksjonen.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} transaksjon til venter.}
+      other {{PENDING_TRANSACTIONS} transaksjoner til venter.}
+    }</translation>
 <translation id="6954150712710630841">Transaksjonen er sendt</translation>
-<translation id="905855245798176174">Transaksjonen er send til nettverket og venter på bekreftelse.</translation>
 <translation id="619697073289995370">Transaksjonen er signert</translation>
-<translation id="7493732383203109611">Transaksjonen er signert og sendes til nettverket via DApp</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> ble returnert til lommeboken din</translation>
 <translation id="4577432071459867390">Transaksjonen mislyktes</translation>
 <translation id="4359235192593147041">Transaksjonen mislyktes som følge av en stor prisendring. Øk slingringstoleransen for å gjennomføre transaksjoner ved større prisendringer.</translation>
@@ -1711,7 +1749,6 @@
 <translation id="1958146856582208323">Token-overføring</translation>
 <translation id="3550219298671597013">Overfør NFT</translation>
 <translation id="8043066678623588950">Videresend FIL</translation>
-<translation id="7138678301420049075">Annet</translation>
 <translation id="8703556909820882288">Komprimert NFT-overføring</translation>
 <translation id="2713141960460256091">Signer og send DApp-transaksjon</translation>
 <translation id="6387730345715997739">Signer DApp-transaksjon</translation>
@@ -1793,7 +1830,6 @@
 <translation id="7056969230130642253">Du har lest alle innleggene i feeden</translation>
 <translation id="7292242212818928219">Nytt innhold er tilgjengelig. Vil du oppdatere siden?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Hurtigkommandoer</translation>
 <translation id="7481312909269577407">Frem</translation>
 <translation id="1272079795634619415">Stopp</translation>
 <translation id="302781076327338683">Oppdater og omgå bufret innhold</translation>
@@ -1946,10 +1982,12 @@
 <translation id="1344005710343072293">Denne kombinasjonen brukes allerede for kommandoen <ph name="COMMAND"/>. Hvis du lagrer kombinasjonen, overstyrer dette den eksisterende snarveien.</translation>
 <translation id="831931573200952705">Denne kombinasjonen brukes allerede for <ph name="COMMAND"/>, og kan ikke endres.</translation>
 <translation id="3537006124004887164">Denne kombinasjonen brukes allerede for <ph name="COMMAND"/>, og kan ikke endres. Prøv å endre den via App-snarveier i Systeminnstillinger.</translation>
+<translation id="8536713137312218707">Hurtigkommandoer</translation>
 <translation id="712598284361781729">Ny delt visning</translation>
 <translation id="1130188644637295274">Åpne i delt visning</translation>
 <translation id="6459036216700972269">Udelte faner</translation>
 <translation id="4235382917338421035">Bytt faneposisjoner</translation>
+<translation id="4144468798716165316">Hurtigkommandoer</translation>
 <translation id="3617523374417810198">Ny delt visning</translation>
 <translation id="8571323456914890254">Åpne i delt visning</translation>
 <translation id="5329136173514538969">Udelte faner</translation>
@@ -2012,7 +2050,6 @@
 <translation id="1691256669639196606">Administrer abonnement</translation>
 <translation id="2304783958703511257">Avanserte innstillinger</translation>
 <translation id="3037594989275592390">Språåkmodeller</translation>
-<translation id="6637015365469044269">Oppgrader nå</translation>
 <translation id="5543505256451301851">Prøv syv dager gratis</translation>
 <translation id="849535826888024304">Grensen for svar er nådd</translation>
 <translation id="2252128900328632803">Du har nådd grensen for svar fra Leo. Lås opp flere svar ved å abonnere på Premium, eller prøv på nytt senere.</translation>
@@ -2023,7 +2060,7 @@
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /måned</translation>
 <translation id="5151923271944811339">Bytt til gratismodellen</translation>
 <translation id="5474757891469990756">Få tilgang til Leos fulle potensial med Premium:</translation>
-<translation id="5552332211527367850">Få prioritert tilgang til kraftige modeller med ulike ferdigheter</translation>
+<translation id="3453542753968940696">Få prioritert tilgang til kraftige modeller med ulike ferdigheter.</translation>
 <translation id="5031778211368112461">Få tilgang til modeller som er bedre egnet til kreative oppgaver og innholdsgenerering.</translation>
 <translation id="298783097210745222">Få mer presise svar for mer nyanserte samtaler.</translation>
 <translation id="4314705522985583059">Utvid samtalegrensene.</translation>
@@ -2052,6 +2089,7 @@
 <translation id="8712637175834984815">Skjønner</translation>
 <translation id="1093419424466417703">Siden er for lang for Leo. Det kan mangle noe kontekst fra samtalen. Leo klarte å lese <ph name="PERCENTAGE"/> av sidens innhold.</translation>
 <translation id="2186990448773134544">Sideinnholdet er oppsummert ved å trekke ut den mest relevante informasjonen fra siden, ettersom den inneholdt for mye tekst for Leo.</translation>
+<translation id="5140068729857132378">Finner de relevante delene av nettstedet …</translation>
 <translation id="4370698775470316661">Denne samtalen er for lang, og kan ikke fortsette. Det kan finnes andre tilgjengelige modeller med Leo der samtalen kan holde høy kvalitet over lengre tid.</translation>
 <translation id="5719170755629028558">Forbedrer svaret ditt med Brave-søk …</translation>
 <translation id="5794962229997281366">Forbedret svarsøk for <ph name="SEARCH_TERMS"/>.</translation>
