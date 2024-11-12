@@ -153,8 +153,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest, DragOnCurrentTab) {
                   .EqualsIgnoringRef(url));
 }
 
+// Flaky on Mac.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_ContextMenuInUnobscuredRegion \
+  DISABLED_ContextMenuInUnobscuredRegion
+#else
+#define MAYBE_ContextMenuInUnobscuredRegion ContextMenuInUnobscuredRegion
+#endif
 IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
-                       ContextMenuInUnobscuredRegion) {
+                       MAYBE_ContextMenuInUnobscuredRegion) {
   ToggleVerticalTabStrip();
 
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
