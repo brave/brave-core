@@ -48,23 +48,19 @@ TEST(PermissionUtilsUnitTest, GetConcatOriginFromWalletAddresses) {
   for (const auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.expected_out_origin);
 
-    url::Origin out_origin;
-    EXPECT_TRUE(GetConcatOriginFromWalletAddresses(origin, test_case.addrs,
-                                                   &out_origin));
-    EXPECT_EQ(out_origin,
+    EXPECT_EQ(GetConcatOriginFromWalletAddresses(origin, test_case.addrs),
               url::Origin::Create(GURL(test_case.expected_out_origin)));
 
-    EXPECT_FALSE(GetConcatOriginFromWalletAddresses(
-        url::Origin(), test_case.addrs, &out_origin));
-    EXPECT_FALSE(GetConcatOriginFromWalletAddresses(
-        origin, std::vector<std::string>(), &out_origin));
+    EXPECT_FALSE(
+        GetConcatOriginFromWalletAddresses(url::Origin(), test_case.addrs));
+    EXPECT_FALSE(
+        GetConcatOriginFromWalletAddresses(origin, std::vector<std::string>()));
 
     // Origin with port case:
-    EXPECT_TRUE(GetConcatOriginFromWalletAddresses(
-        url::Origin::Create(GURL("https://test.com:123")), test_case.addrs,
-        &out_origin));
-    EXPECT_EQ(out_origin, url::Origin::Create(
-                              GURL(test_case.expected_out_origin_with_port)));
+    EXPECT_EQ(
+        GetConcatOriginFromWalletAddresses(
+            url::Origin::Create(GURL("https://test.com:123")), test_case.addrs),
+        url::Origin::Create(GURL(test_case.expected_out_origin_with_port)));
   }
 }
 
@@ -249,7 +245,6 @@ TEST(PermissionUtilsUnitTest, ParseRequestingOrigin) {
 }
 
 TEST(PermissionUtilsUnitTest, GetSubRequestOrigin) {
-  url::Origin new_origin;
   url::Origin old_origin = url::Origin::Create(GURL("https://test.com"));
   url::Origin old_origin_with_port =
       url::Origin::Create(GURL("https://test.com:123"));
@@ -272,25 +267,20 @@ TEST(PermissionUtilsUnitTest, GetSubRequestOrigin) {
   for (auto& test_case : cases) {
     SCOPED_TRACE(testing::Message() << test_case.account);
 
-    EXPECT_FALSE(GetSubRequestOrigin(test_case.type, url::Origin(),
-                                     test_case.account, &new_origin));
+    EXPECT_FALSE(
+        GetSubRequestOrigin(test_case.type, url::Origin(), test_case.account));
     // invalid type
     EXPECT_FALSE(GetSubRequestOrigin(permissions::RequestType::kGeolocation,
-                                     old_origin, test_case.account,
-                                     &new_origin));
-    EXPECT_FALSE(
-        GetSubRequestOrigin(test_case.type, old_origin, "", &new_origin));
-    EXPECT_FALSE(GetSubRequestOrigin(test_case.type, old_origin,
-                                     test_case.account, nullptr));
+                                     old_origin, test_case.account));
+    EXPECT_FALSE(GetSubRequestOrigin(test_case.type, old_origin, ""));
 
-    EXPECT_TRUE(GetSubRequestOrigin(test_case.type, old_origin,
-                                    test_case.account, &new_origin));
-    EXPECT_EQ(new_origin,
-              url::Origin::Create(GURL(test_case.expected_new_origin)));
-    EXPECT_TRUE(GetSubRequestOrigin(test_case.type, old_origin_with_port,
-                                    test_case.account, &new_origin));
-    EXPECT_EQ(new_origin, url::Origin::Create(
-                              GURL(test_case.expected_new_origin_with_port)));
+    EXPECT_EQ(
+        GetSubRequestOrigin(test_case.type, old_origin, test_case.account),
+        url::Origin::Create(GURL(test_case.expected_new_origin)));
+    EXPECT_EQ(
+        GetSubRequestOrigin(test_case.type, old_origin_with_port,
+                            test_case.account),
+        url::Origin::Create(GURL(test_case.expected_new_origin_with_port)));
   }
 }
 

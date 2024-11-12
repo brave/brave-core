@@ -8,8 +8,8 @@
 #include <optional>
 #include <utility>
 
-#include "base/containers/extend.h"
 #include "base/containers/span.h"
+#include "base/containers/span_writer.h"
 #include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
@@ -28,7 +28,7 @@ constexpr auto kSetComputeUnitLimit = static_cast<uint8_t>(
 constexpr auto kSetComputeUnitPrice = static_cast<uint8_t>(
     mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice);
 constexpr auto kTransfer =
-    static_cast<uint8_t>(mojom::SolanaSystemInstruction::kTransfer);
+    static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer);
 constexpr auto kTransferChecked =
     static_cast<uint8_t>(mojom::SolanaTokenInstruction::kTransferChecked);
 
@@ -51,9 +51,11 @@ std::optional<SolanaInstruction> Transfer(const std::string& from_pubkey,
   }
 
   // Instruction data is consisted of u32 instruction index and u64 lamport.
-  std::vector<uint8_t> instruction_data;
-  base::Extend(instruction_data, base::U32ToLittleEndian(kTransfer));
-  base::Extend(instruction_data, base::U64ToLittleEndian(lamport));
+  std::array<uint8_t, 12> instruction_data;
+  auto span_writer = base::SpanWriter(base::span(instruction_data));
+  span_writer.WriteU32LittleEndian(kTransfer);
+  span_writer.WriteU64LittleEndian(lamport);
+  CHECK(span_writer.remaining_span().empty());
 
   return SolanaInstruction(
       mojom::kSolanaSystemProgramId,
@@ -98,10 +100,12 @@ std::optional<SolanaInstruction> TransferChecked(
   }
 
   // Instruction data is consisted of u8 instruction index and u64 amount.
-  std::vector<uint8_t> instruction_data;
-  base::Extend(instruction_data, base::U8ToLittleEndian(kTransferChecked));
-  base::Extend(instruction_data, base::U64ToLittleEndian(amount));
-  base::Extend(instruction_data, base::U8ToLittleEndian(decimals));
+  std::array<uint8_t, 10> instruction_data;
+  auto span_writer = base::SpanWriter(base::span(instruction_data));
+  span_writer.WriteU8LittleEndian(kTransferChecked);
+  span_writer.WriteU64LittleEndian(amount);
+  span_writer.WriteU8LittleEndian(decimals);
+  CHECK(span_writer.remaining_span().empty());
 
   std::vector<SolanaAccountMeta> account_metas = {
       SolanaAccountMeta(source_pubkey, std::nullopt, false, true),
@@ -167,10 +171,11 @@ namespace compute_budget_program {
 // Set the compute unit limit for transaction execution.
 // https://docs.rs/solana-sdk/1.18.14/src/solana_sdk/compute_budget.rs.html#33
 SolanaInstruction SetComputeUnitLimit(uint32_t units) {
-  std::vector<uint8_t> instruction_data;
-
-  base::Extend(instruction_data, base::U8ToLittleEndian(kSetComputeUnitLimit));
-  base::Extend(instruction_data, base::U32ToLittleEndian(units));
+  std::array<uint8_t, 5> instruction_data;
+  auto span_writer = base::SpanWriter(base::span(instruction_data));
+  span_writer.WriteU8LittleEndian(kSetComputeUnitLimit);
+  span_writer.WriteU32LittleEndian(units);
+  CHECK(span_writer.remaining_span().empty());
 
   return SolanaInstruction(mojom::kSolanaComputeBudgetProgramId, {},
                            instruction_data);
@@ -179,10 +184,11 @@ SolanaInstruction SetComputeUnitLimit(uint32_t units) {
 // Set the compute unit price for transaction execution.
 // https://docs.rs/solana-sdk/1.18.14/src/solana_sdk/compute_budget.rs.html#36
 SolanaInstruction SetComputeUnitPrice(uint64_t price) {
-  std::vector<uint8_t> instruction_data;
-
-  base::Extend(instruction_data, base::U8ToLittleEndian(kSetComputeUnitPrice));
-  base::Extend(instruction_data, base::U64ToLittleEndian(price));
+  std::array<uint8_t, 9> instruction_data;
+  auto span_writer = base::SpanWriter(base::span(instruction_data));
+  span_writer.WriteU8LittleEndian(kSetComputeUnitPrice);
+  span_writer.WriteU64LittleEndian(price);
+  CHECK(span_writer.remaining_span().empty());
 
   return SolanaInstruction(mojom::kSolanaComputeBudgetProgramId, {},
                            instruction_data);
@@ -200,33 +206,38 @@ std::optional<SolanaInstruction> Transfer(
   const std::string log_wrapper = "noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV";
 
   // Init instruction data with the instruction discriminator.
-  std::vector<uint8_t> instruction_data = kTransferInstructionDiscriminator;
+  std::array<uint8_t, 8 + 3 * 32 + 8 + 4> instruction_data;
+  auto span_writer = base::SpanWriter(base::span(instruction_data));
+
+  span_writer.Write(kTransferInstructionDiscriminator);
 
   std::vector<uint8_t> root_bytes;
   if (!Base58Decode(proof.root, &root_bytes, kSolanaHashSize)) {
     return std::nullopt;
   }
-  base::Extend(instruction_data, root_bytes);
+  span_writer.Write(root_bytes);
 
   std::vector<uint8_t> data_hash_bytes;
   if (!Base58Decode(proof.data_hash, &data_hash_bytes, kSolanaHashSize)) {
     return std::nullopt;
   }
-  base::Extend(instruction_data, data_hash_bytes);
+  span_writer.Write(data_hash_bytes);
 
   std::vector<uint8_t> creator_hash_bytes;
   if (!Base58Decode(proof.creator_hash, &creator_hash_bytes, kSolanaHashSize)) {
     return std::nullopt;
   }
-  base::Extend(instruction_data, creator_hash_bytes);
+  span_writer.Write(creator_hash_bytes);
 
   // Nonce
   // Use leaf.index for nonce like the example
   // https://solana.com/developers/guides/javascript/compressed-nfts#build-the-transfer-instruction
-  base::Extend(instruction_data, base::U64ToLittleEndian(proof.leaf_index));
+  span_writer.WriteU64LittleEndian(proof.leaf_index);
 
   // Index
-  base::Extend(instruction_data, base::U32ToLittleEndian(proof.leaf_index));
+  span_writer.WriteU32LittleEndian(proof.leaf_index);
+
+  CHECK(span_writer.remaining_span().empty());
 
   // Create account metas.
   std::vector<SolanaAccountMeta> account_metas({
@@ -246,9 +257,9 @@ std::optional<SolanaInstruction> Transfer(
   if (proof.proof.size() < canopy_depth) {
     return std::nullopt;
   }
-  size_t end = proof.proof.size() - proof.canopy_depth;
-  for (size_t i = 0; i < end; ++i) {
-    account_metas.emplace_back(proof.proof[i], std::nullopt, false, false);
+  for (auto& proof_item :
+       base::span(proof.proof).first(proof.proof.size() - proof.canopy_depth)) {
+    account_metas.emplace_back(proof_item, std::nullopt, false, false);
   }
 
   return SolanaInstruction(mojom::kSolanaBubbleGumProgramId,

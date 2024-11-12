@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/compiler_specific.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/values.h"
@@ -122,8 +123,7 @@ base::FilePath WalletDataFilesInstallerPolicy::GetRelativeInstallDir() const {
 }
 
 void WalletDataFilesInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
-  hash->assign(std::begin(kWalletDataFilesSha2Hash),
-               std::end(kWalletDataFilesSha2Hash));
+  *hash = base::ToVector(kWalletDataFilesSha2Hash);
 }
 
 std::string WalletDataFilesInstallerPolicy::GetName() const {

@@ -195,7 +195,7 @@ void DiscoverAccountTaskBase::OnGetAddressStats(
     account_is_used_ = true;
   }
 
-  CHECK_EQ(address->key_id->change, static_cast<uint32_t>(stage));
+  CHECK_EQ(address->key_id->change, base::to_underlying(stage));
   auto& state = GetState(stage);
 
   if (address_is_transacted) {

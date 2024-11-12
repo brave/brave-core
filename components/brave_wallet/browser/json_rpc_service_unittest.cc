@@ -18,6 +18,7 @@
 #include "base/base64.h"
 #include "base/containers/contains.h"
 #include "base/containers/span.h"
+#include "base/containers/span_writer.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -607,13 +608,11 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
   static std::vector<uint8_t> MakeTokenAccountData(const SolanaAddress& mint,
                                                    const SolanaAddress& owner) {
     std::vector<uint8_t> data(165);
-    auto mint_span = base::span(data).subspan(0, 32);
-    base::ranges::copy(mint.bytes(), mint_span.begin());
-    auto owner_span = base::span(data).subspan(32, 32);
-    base::ranges::copy(owner.bytes(), owner_span.begin());
 
-    auto amount_span = base::span(data).subspan(64, 1);
-    *amount_span.data() = 1;
+    auto span_writer = base::SpanWriter(base::span(data));
+    span_writer.Write(mint.bytes());
+    span_writer.Write(owner.bytes());
+    span_writer.WriteU8LittleEndian(1);
 
     return data;
   }

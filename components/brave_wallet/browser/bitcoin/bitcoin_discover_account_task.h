@@ -35,7 +35,7 @@ struct DiscoveredBitcoinAccount {
 
 class DiscoverAccountTaskBase {
  public:
-  enum class DiscoveryStage { kReceive, kChange };
+  enum class DiscoveryStage : uint32_t { kReceive, kChange };
 
   using DiscoverAccountCallback = base::OnceCallback<void(
       base::expected<DiscoveredBitcoinAccount, std::string>)>;

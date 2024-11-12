@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+
 #include "base/command_line.h"
-#include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -107,12 +107,12 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
   std::vector<std::string> expected_allowed_accounts = {addresses[0],
                                                         addresses[2]};
   for (const auto& account : expected_allowed_accounts) {
-    url::Origin sub_request_origin;
-    ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+    auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
         permissions::RequestType::kBraveEthereum, GetLastCommitedOrigin(),
-        account, &sub_request_origin));
+        account);
+    ASSERT_TRUE(sub_request_origin);
     host_content_settings_map()->SetContentSettingDefaultScope(
-        sub_request_origin.GetURL(), GetLastCommitedOrigin().GetURL(),
+        sub_request_origin->GetURL(), GetLastCommitedOrigin().GetURL(),
         ContentSettingsType::BRAVE_ETHEREUM,
         ContentSetting::CONTENT_SETTING_ALLOW);
   }
