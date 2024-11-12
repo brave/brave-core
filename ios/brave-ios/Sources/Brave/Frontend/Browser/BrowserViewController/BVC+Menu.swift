@@ -376,6 +376,20 @@ extension BrowserViewController {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
           }
+          MenuItemButton(
+            icon: Image(braveSystemName: "leo.shred.data"),
+            title: Strings.Shields.shredSiteData
+          ) {
+            browserViewController.dismiss(animated: true) {
+              guard let tab = self.browserViewController.tabManager.selectedTab,
+                let url = tab.url
+              else { return }
+              let alert = UIAlertController.shredDataAlert(url: url) { _ in
+                self.browserViewController.shredData(for: url, in: tab)
+              }
+              browserViewController.present(alert, animated: true)
+            }
+          }
           NightModeMenuButton(dismiss: {
             browserViewController.dismiss(animated: true)
           })
