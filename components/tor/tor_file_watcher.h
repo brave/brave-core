@@ -35,7 +35,7 @@ class TorFileWatcher {
   using WatchCallback = base::OnceCallback<
       void(bool success, std::vector<uint8_t> cookie, int port)>;
 
-  explicit TorFileWatcher(const base::FilePath& watch_dir_path);
+  explicit TorFileWatcher(base::FilePath watch_dir_path);
 
   ~TorFileWatcher();
 
