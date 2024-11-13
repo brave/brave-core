@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
@@ -128,7 +129,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (base::FeatureList::IsEnabled(
                  brave_news::features::kBraveNewsFeedUpdate) &&
              host == kBraveNewsInternalsHost) {
-    return new BraveNewsInternalsUI(web_ui, url.host());
+    return new BraveNewsInternalsUI(
+        web_ui, url.host(),
+        brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile));
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host == chrome::kChromeUINewTabHost) {
