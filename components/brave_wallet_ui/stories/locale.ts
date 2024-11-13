@@ -1530,5 +1530,7 @@ provideStrings({
     'Currently this account supports transparent transactions which means they are visible to everyone on the blockchain.',
   braveWalletAccountShieldedDescription:
     'Upgrading to a shielded account means that these transactions hide the sender, receiver and amount details.',
-  braveWalletShielded: 'Shielded'
+  braveWalletShielded: 'Shielded',
+  braveWalletUnified: 'Unified',
+  braveWalletTransparent: 'Transparent'
 })
