@@ -88,19 +88,11 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #define BRAVE_VPN_COLOR_IDS                        \
-    E_CPONLY(kColorBraveVpnButtonErrorBorder)      \
-    E_CPONLY(kColorBraveVpnButtonBorder)           \
-    E_CPONLY(kColorBraveVpnButtonText)    \
-    E_CPONLY(kColorBraveVpnButtonTextError)    \
-    E_CPONLY(kColorBraveVpnButtonIconConnected)    \
+   E_CPONLY(kColorBraveVpnButtonIconConnected)     \
     E_CPONLY(kColorBraveVpnButtonIconDisconnected) \
-    E_CPONLY(kColorBraveVpnButtonIconError) \
+    E_CPONLY(kColorBraveVpnButtonIconError)        \
     E_CPONLY(kColorBraveVpnButtonBackgroundNormal) \
-    E_CPONLY(kColorBraveVpnButtonBackgroundHover)  \
-    E_CPONLY(kColorBraveVpnButtonErrorBackgroundNormal) \
-    E_CPONLY(kColorBraveVpnButtonErrorBackgroundHover)  \
-    E_CPONLY(kColorBraveVpnButtonIconInner) \
-    E_CPONLY(kColorBraveVpnButtonIconErrorInner)
+    E_CPONLY(kColorBraveVpnButtonErrorBackgroundNormal)
 #else
 #define BRAVE_VPN_COLOR_IDS
 #endif
