@@ -341,7 +341,7 @@ void NTPP3AHelperImpl::RecordCreativeMetric(const std::string& histogram_name,
       std::lower_bound(kCountBuckets, std::end(kCountBuckets), count);
   int answer = it_count - kCountBuckets;
   if (use_uma_for_testing_) {
-    if (!is_constellation) {
+    if (is_constellation) {
       base::UmaHistogramExactLinear(histogram_name, answer,
                                     std::size(kCountBuckets) + 1);
     }

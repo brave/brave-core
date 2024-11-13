@@ -41,4 +41,9 @@ std::optional<MetricLogType> StringToMetricLogType(
   return std::nullopt;
 }
 
+bool IsMetricCreative(const std::string& histogram_name) {
+  return histogram_name.starts_with(kCreativeMetricPrefix) ||
+         histogram_name.starts_with(kCampaignMetricPrefix);
+}
+
 }  // namespace p3a

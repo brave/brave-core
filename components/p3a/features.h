@@ -20,6 +20,8 @@ BASE_DECLARE_FEATURE(kConstellationEnclaveAttestation);
 // See https://github.com/brave/brave-browser/issues/34003 for more info.
 // Disables JSON measurements for "typical" cadence.
 BASE_DECLARE_FEATURE(kTypicalJSONDeprecation);
+// Disables NTT JSON measurements.
+BASE_DECLARE_FEATURE(kNTTJSONDeprecation);
 // Disables JSON measurements for all other cadences.
 BASE_DECLARE_FEATURE(kOtherJSONDeprecation);
 
@@ -29,6 +31,7 @@ BASE_DECLARE_FEATURE(kNebula);
 bool IsConstellationEnabled();
 bool IsConstellationEnclaveAttestationEnabled();
 bool IsJSONDeprecated(MetricLogType log_type);
+bool ShouldOnlyAllowNTTJSON();
 bool IsNebulaEnabled();
 
 }  // namespace features

@@ -53,11 +53,6 @@ bool IsMetricP2A(const std::string& histogram_name) {
   return histogram_name.starts_with("Brave.P2A");
 }
 
-bool IsMetricCreative(const std::string& histogram_name) {
-  return histogram_name.starts_with(kCreativeMetricPrefix) ||
-         histogram_name.starts_with(kCampaignMetricPrefix);
-}
-
 }  // namespace
 
 std::string GetUploadType(const std::string& histogram_name) {

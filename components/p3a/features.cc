@@ -21,12 +21,24 @@ BASE_FEATURE(kConstellationEnclaveAttestation,
 // for typical (weekly) cadence P3A questions.
 BASE_FEATURE(kTypicalJSONDeprecation,
              "BraveP3ATypicalJSONDeprecation",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
+// Disable reporting answers over direct https+json
+// for other (daily or monthly) cadence P3A questions.
+// The BraveP3AOtherJSONDeprecationV2 must be enabled for this to function.
+BASE_FEATURE(kNTTJSONDeprecation,
+             "BraveP3ANTTJSONDeprecation",
+#if BUILDFLAG(IS_IOS)
+             base::FEATURE_DISABLED_BY_DEFAULT
+#else
+             base::FEATURE_ENABLED_BY_DEFAULT
+#endif
+);
+
 // Disable reporting answers over direct https+json
 // for other (daily or monthly) cadence P3A questions.
 BASE_FEATURE(kOtherJSONDeprecation,
-             "BraveP3AOtherJSONDeprecation",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             "BraveP3AOtherJSONDeprecationV2",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 // Report P3A responses with "Nebula" differential privacy
 // sampling enabled. See https://github.com/brave/brave-browser/issues/35841
 BASE_FEATURE(kNebula,
@@ -43,10 +55,20 @@ bool IsConstellationEnclaveAttestationEnabled() {
 }
 
 bool IsJSONDeprecated(MetricLogType log_type) {
-  if (log_type == MetricLogType::kTypical) {
-    return base::FeatureList::IsEnabled(features::kTypicalJSONDeprecation);
+  switch (log_type) {
+    case MetricLogType::kTypical:
+      return base::FeatureList::IsEnabled(features::kTypicalJSONDeprecation);
+    case MetricLogType::kExpress:
+      return base::FeatureList::IsEnabled(features::kNTTJSONDeprecation) &&
+             base::FeatureList::IsEnabled(features::kOtherJSONDeprecation);
+    default:
+      return base::FeatureList::IsEnabled(features::kOtherJSONDeprecation);
   }
-  return base::FeatureList::IsEnabled(features::kOtherJSONDeprecation);
+}
+
+bool ShouldOnlyAllowNTTJSON() {
+  return base::FeatureList::IsEnabled(features::kOtherJSONDeprecation) &&
+         !base::FeatureList::IsEnabled(features::kNTTJSONDeprecation);
 }
 
 bool IsNebulaEnabled() {
