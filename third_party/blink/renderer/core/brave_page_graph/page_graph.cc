@@ -1313,9 +1313,9 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
         .parser_node = AddNode<NodeParser>(),
         .extensions_node = AddNode<NodeExtensions>(),
     };
-    execution_context_nodes_.insert(execution_context, std::move(nodes));
     AddEdge<EdgeStructure>(nodes.parser_node, nodes.extensions_node);
     AddEdge<EdgeStructure>(nodes.parser_node, dom_root);
+    execution_context_nodes_.insert(execution_context, std::move(nodes));
   }
 
   if (owner) {

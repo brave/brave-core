@@ -1141,6 +1141,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
         ASSERT_EQ(playlist->items.size(), 5u);
       }));
 
+  items.clear();
   for (int i = 0; i < 5; i++) {
     auto item = prototype_item.Clone();
     item->id = base::Token::CreateRandom().ToString();
