@@ -57,22 +57,15 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
     enabled = enabled && GetPrefs()->GetBoolean(kBraveAutofillPrivateWindows);
     return enabled;
   }
-};
-
-class BraveBrowserAutofillManager : public BrowserAutofillManager {
- public:
-  using BrowserAutofillManager::BrowserAutofillManager;
 
   bool IsAutofillEnabled() const override {
-    auto enabled = BrowserAutofillManager::IsAutofillEnabled();
-    if (client().GetProfileType() !=
-            profile_metrics::BrowserProfileType::kIncognito &&
-        client().GetProfileType() !=
+    auto enabled = ChromeAutofillClient::IsAutofillEnabled();
+    if (GetProfileType() != profile_metrics::BrowserProfileType::kIncognito &&
+        GetProfileType() !=
             profile_metrics::BrowserProfileType::kOtherOffTheRecordProfile) {
       return enabled;
     }
-    enabled = enabled &&
-              client().GetPrefs()->GetBoolean(kBraveAutofillPrivateWindows);
+    enabled = enabled && GetPrefs()->GetBoolean(kBraveAutofillPrivateWindows);
     return enabled;
   }
 };
@@ -81,7 +74,5 @@ class BraveBrowserAutofillManager : public BrowserAutofillManager {
 
 #define WrapUnique WrapUnique(new autofill::BraveChromeAutofillClient(web_contents))); \
   if (0) std::unique_ptr<autofill::ChromeAutofillClient> dummy(
-#define BrowserAutofillManager BraveBrowserAutofillManager
 #include "src/chrome/browser/ui/autofill/chrome_autofill_client.cc"
-#undef BrowserAutofillManager
 #undef WrapUnique
