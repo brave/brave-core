@@ -177,6 +177,7 @@ test("brave_unit_tests") {
     "//brave/browser/ui/ai_chat:unit_tests",
     "//brave/browser/ui/brave_rewards:unit_tests",
     "//brave/browser/ui/brave_tooltips",
+    "//brave/browser/user_education:unit_tests",
     "//brave/browser/web_discovery:unit_tests",
     "//brave/chromium_src/components/flags_ui:unit_tests",
     "//brave/chromium_src/components/privacy_sandbox:unit_tests",
