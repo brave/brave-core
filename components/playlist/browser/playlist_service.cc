@@ -1280,8 +1280,6 @@ void PlaylistService::RequestStreamingQuery(
   }
 
   streaming_observer_.Bind(std::move(streaming_observer));
-  mojo::Remote<mojom::PlaylistStreamingObserver> observer;
-  observer.Bind(std::move(streaming_observer));
   playlist_streaming_->RequestStreamingQuery(
       query_id, url, method,
       base::BindOnce(&PlaylistService::OnResponseStarted,
