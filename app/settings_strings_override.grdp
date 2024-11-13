@@ -96,15 +96,6 @@
       </if>
   </if>
 
-  <message name="IDS_SETTINGS_ANTI_ABUSE_DESCRIPTION" desc="The label used for the anti-abuse site settings description.">
-    Sites you visit can verify that you're a real profile and not a bot
-  </message>
-  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_TWO" desc="A description that informs users how the anti-abuse features work.">
-    As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
-  </message>
-  <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_THREE" desc="A description that informs users how their browsing could be helped by the anti-abuse features.">
-    Browsing is faster because a site is less likely to ask you to verify you're a real profile
-  </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_SUBHEADER" desc="A subheader for the cookies card of the 'Privacy guide', for blocking third party cookies in private.">
     Block third-party cookies in Private
   </message>

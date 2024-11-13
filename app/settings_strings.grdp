@@ -1504,16 +1504,16 @@
     Sites can't help verify you're not a bot
   </message>
   <message name="IDS_SETTINGS_ANTI_ABUSE_DESCRIPTION" desc="The label used for the anti-abuse site settings description.">
-    Sites you visit can verify that you're a real profile and not a bot
+    Sites you visit can verify that you're a real person and not a bot
   </message>
   <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_ONE" desc="A description that informs users that Brave saves a small amount of data when the anti-abuse features are enabled.">
     A site you visit can save a small amount of info with Brave, mainly to validate you're not a bot
   </message>
   <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_TWO" desc="A description that informs users how the anti-abuse features work.">
-    As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
+    As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real person
   </message>
   <message name="IDS_SETTINGS_ANTI_ABUSE_WHEN_ON_SECTION_THREE" desc="A description that informs users how their browsing could be helped by the anti-abuse features.">
-    Browsing is faster because a site is less likely to ask you to verify you're a real profile
+    Browsing is faster because a site is less likely to ask you to verify you're a real person
   </message>
   <message name="IDS_SETTINGS_ANTI_ABUSE_THINGS_TO_CONSIDER_SECTION_ONE" desc="A description that informs users that the anti-abuse features do not reveal their browsing history.">
     This setting works without identifying you or allowing sites to see your browsing history, though sites can share a small amount of info as part of the verification

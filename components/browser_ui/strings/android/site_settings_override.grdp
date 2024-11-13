@@ -3,18 +3,6 @@
   <message name="IDS_THIRD_PARTY_COOKIES_LINK_ROW_SUB_LABEL_DISABLED_INCOGNITO" desc="2 of 3 possible states for the Third-party cookies setting. This text appears beneath the 'Third-party cookies' button label.">
     Third-party cookies are blocked in Private mode
   </message>
-  <message name="IDS_ANTI_ABUSE_DESCRIPTION" desc="A setting that, if turned on, will enable anti-abuse functionality.">
-    Sites you visit can verify that you're a real profile and not a bot
-  </message>
-
-  <message name="IDS_ANTI_ABUSE_WHEN_ON_SECTION_TWO" desc="Summary text explaining how the anti-abuse features work.">
-    As you keep browsing, sites can check with Brave and verify with a previous site you've visited that you're likely a real profile
-  </message>
-
-  <message name="IDS_ANTI_ABUSE_WHEN_ON_SECTION_THREE" desc="Summary text explaining that browsing could be helped by the anti-abuse features.">
-    Browsing is faster because a site is less likely to ask you to verify you're a real profile
-  </message>
-
   <message name="IDS_WEBSITE_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_INCOGNITO_RADIO_LABEL" desc="2 of 3 options the user has to configure cookies. See the cookies page for context: chrome://settings/cookies. For more about Private mode, see https://support.google.com/chrome?p=private.">
     Block third-party cookies in Private mode
   </message>
