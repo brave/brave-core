@@ -37,7 +37,7 @@ private struct TranslationOptionsView: View {
       .navigationTitle(Strings.BraveTranslate.languageSelectionButtonTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .cancellationAction) {
           Button(Strings.CancelString) {
             dismiss()
           }
@@ -55,12 +55,13 @@ private struct TranslationOptionsView: View {
     return searchText.isEmpty
       ? languages
       : languages.filter({
-        languageName(for: $0).lowercased().contains(searchText.lowercased())
+        languageName(for: $0).localizedCaseInsensitiveContains(searchText)
       })
   }
 
   // TODO: Take from Brave-Core's list
   // TODO: Take from Apple's list
+  // https://github.com/brave/brave-browser/issues/42280
   private var languages: [Locale.Language] {
     return [
       "af",  // Afrikaans

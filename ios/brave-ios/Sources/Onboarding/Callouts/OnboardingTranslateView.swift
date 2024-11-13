@@ -24,10 +24,8 @@ public struct OnboardingTranslateView: View {
   public var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 0.0) {
-        Image(
-          uiImage: UIImage(named: "translate-onboarding-icon", in: .module, compatibleWith: nil)!
-        )
-        .padding([.top, .bottom], 24.0)
+        Image("translate-onboarding-icon", bundle: .module)
+          .padding(.vertical, 24.0)
 
         Text(Strings.BraveTranslateOnboarding.translateTitle)
           .font(.callout.weight(.semibold))
@@ -71,11 +69,6 @@ public struct OnboardingTranslateView: View {
               .padding()
               .frame(maxWidth: .infinity)
               .foregroundStyle(Color(braveSystemName: .textSecondary))
-              .background(
-                ContainerRelativeShape()
-                  .fill(Color(.clear))
-              )
-              .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
           }
         )
         .buttonStyle(.plain)
@@ -84,7 +77,6 @@ public struct OnboardingTranslateView: View {
     }
     .multilineTextAlignment(.center)
     .osAvailabilityModifiers { content in
-      #if compiler(>=5.8)
       if #available(iOS 16.4, *) {
         content
           .scrollBounceBehavior(.basedOnSize)
@@ -94,12 +86,6 @@ public struct OnboardingTranslateView: View {
             scrollView.alwaysBounceVertical = false
           }
       }
-      #else
-      content
-        .introspectScrollView { scrollView in
-          scrollView.alwaysBounceVertical = false
-        }
-      #endif
     }
   }
 }

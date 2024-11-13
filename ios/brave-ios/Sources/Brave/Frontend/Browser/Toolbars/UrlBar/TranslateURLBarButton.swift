@@ -62,8 +62,6 @@ class TranslateURLBarButton: UIButton {
     self.tintColor = (isHighlighted || isSelected) ? selectedTintColor : unselectedTintColor
   }
 
-  private var _translateState: TranslateState = .unavailable
-
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     updateIconSize()
@@ -81,13 +79,9 @@ class TranslateURLBarButton: UIButton {
     )
   }
 
-  var translateState: TranslateState {
-    get {
-      return _translateState
-    }
-    set(state) {
-      _translateState = state
-      switch _translateState {
+  var translateState: TranslateState = .unavailable {
+    didSet {
+      switch translateState {
       case .unavailable:
         self.isEnabled = false
         self.isSelected = false

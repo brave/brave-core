@@ -19,7 +19,7 @@ struct BraveTranslateSettingsView: View {
         Toggle(isOn: $translateEnabled.value) {
           Text(Strings.BraveTranslate.settingsTranslateEnabledOptionTitle)
         }
-        .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+        .tint(Color.accentColor)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } footer: {
         Text(Strings.BraveTranslate.settingsTranslateEnabledOptionDescription)

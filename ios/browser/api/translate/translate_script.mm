@@ -69,7 +69,7 @@
     }
   }
 
-  return result;
+  return [result copy];
 }
 
 @end

@@ -80,8 +80,7 @@ try {
       } catch {
           return url;
       }
-  }
-  ;
+  };
 
   const emptySvgDataUrl = 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg"/>');
 
@@ -115,11 +114,11 @@ try {
     
     XMLHttpRequest.prototype.getResponseHeader = function(headerName) {
       return this[requestHeadersProperty][headerName];
-    };
+    }
     
     XMLHttpRequest.prototype.getAllResponseHeaders = function() {
       return this[requestHeadersProperty];
-    };
+    }
     
     XMLHttpRequest.prototype.realSetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
     XMLHttpRequest.prototype.setRequestHeader = function(header, value) {
@@ -129,7 +128,7 @@ try {
       
       this[requestHeadersProperty][header] = value;
       this.realSetRequestHeader(header, value);
-    };
+    }
     
     XMLHttpRequest.prototype.realOverrideMimeType = XMLHttpRequest.prototype.overrideMimeType;
     XMLHttpRequest.prototype.overrideMimeType = function(mimeType) {
@@ -147,7 +146,7 @@ try {
       this[userProperty] = user;
       this[passwordProperty] = password;
       return this.realOpen(method, rewriteUrl(url), isAsync, user, password);
-    };
+    }
 
     XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
     XMLHttpRequest.prototype.send = function(body) {
@@ -208,7 +207,7 @@ try {
       } catch (e) {
         return this.realSend(body);
       }
-    };
+    }
   } else {
     if (typeof XMLHttpRequest.prototype.realOpen === 'undefined') {
       XMLHttpRequest.prototype.realOpen = XMLHttpRequest.prototype.open;
@@ -217,7 +216,7 @@ try {
       }
     }
   }
-  ;
+  
   // An overridden version of onLoadJavascript from translate.js, that fetches
   // and evaluates secondary scripts (i.e. main.js).
   // The differences:
@@ -238,10 +237,8 @@ try {
           // nosemgrep
           new Function(processJavascript(this.responseText)).call(window);
       }
-      ;
       xhr.send();
   }
-  ;
 
   // The styles to hide root elements that are injected by the scripts in the DOM.
   // Currently they are always invisible. The styles are added in case of changes
@@ -267,9 +264,9 @@ try {
           element.innerText = processCSS(this.responseText) + braveExtraStyles;
           document.head.appendChild(element);
       }
-      ;
+      
       xhr.send();
-  };
+  }
 } catch(error) {
   cr.googleTranslate.onTranslateElementError(error);
 }

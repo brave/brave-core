@@ -61,7 +61,7 @@ public struct BravePopupView<Content: View>: UIViewControllerRepresentable {
         // The system dismissed our Popup automatically, but never updated our presentation state
         // It usually does this if you present another Popup or sheet
         // Manually update it
-        if let controller = context.coordinator.presentedViewController?.value
+        if let controller = context.coordinator.presentedViewController
           as? PopupViewController<Content>
         {
           DispatchQueue.main.async {
@@ -80,7 +80,7 @@ public struct BravePopupView<Content: View>: UIViewControllerRepresentable {
 
       if let parent = uiViewController.parent, !parent.isBeingDismissed {
         let controller = PopupViewController(rootView: content, isDismissable: true)
-        context.coordinator.presentedViewController = .init(controller)
+        context.coordinator.presentedViewController = controller
 
         DispatchQueue.main.async {
           if KeyboardHelper.defaultHelper.currentState != nil {
@@ -100,7 +100,7 @@ public struct BravePopupView<Content: View>: UIViewControllerRepresentable {
         }
       }
     } else {
-      if let presentedViewController = context.coordinator.presentedViewController?.value,
+      if let presentedViewController = context.coordinator.presentedViewController,
         presentedViewController == uiViewController.presentedViewController
       {
         uiViewController.presentedViewController?.dismiss(animated: true) {
@@ -112,7 +112,7 @@ public struct BravePopupView<Content: View>: UIViewControllerRepresentable {
   }
 
   public class Coordinator {
-    var presentedViewController: WeakRef<UIViewController>?
+    weak var presentedViewController: UIViewController?
   }
 
   public func makeCoordinator() -> Coordinator {

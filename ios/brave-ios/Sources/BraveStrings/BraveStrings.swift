@@ -2727,7 +2727,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Translate",
-    comment: "Share action title"
+    comment: "Title of an action that allows the user to translate the current web-page to another language"
   )
   public static let findInPage = NSLocalizedString(
     "FindInPage",
@@ -9610,6 +9610,13 @@ extension Strings {
       bundle: .module,
       value: "When enabled, Brave Translate will automatically detect your page's current language, and display a translate button in the URL bar.",
       comment: "This text is for a Toggle that allows the user to enable or disable page translation."
+    )
+
+    public static let availableVoiceOverAnnouncement = NSLocalizedString(
+      "BraveTranslate.availableVoiceOverAnnouncement",
+      bundle: .module,
+      value: "Page Translation available",
+      comment: "Accessibility message e.g. spoken by VoiceOver when page translation becomes available."
     )
   }
 }

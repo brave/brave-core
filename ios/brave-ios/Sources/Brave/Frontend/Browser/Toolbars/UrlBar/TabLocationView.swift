@@ -189,7 +189,7 @@ class TabLocationView: UIView {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
               UIAccessibility.post(
                 notification: .announcement,
-                argument: Strings.braveTranslateAvailableVoiceOverAnnouncement
+                argument: Strings.BraveTranslate.availableVoiceOverAnnouncement
               )
             }
           }

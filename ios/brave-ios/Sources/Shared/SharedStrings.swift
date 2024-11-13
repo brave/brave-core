@@ -269,16 +269,6 @@ extension Strings {
   )
 }
 
-// Brave Translate
-extension Strings {
-  public static let braveTranslateAvailableVoiceOverAnnouncement = NSLocalizedString(
-    "BraveTranslateAvailableVoiceOverAnnouncement",
-    bundle: .module,
-    value: "Page Translation available",
-    comment: "Accessibility message e.g. spoken by VoiceOver when page translation becomes available."
-  )
-}
-
 // QR Code scanner.
 extension Strings {
   public static let scanQRCodeViewTitle = NSLocalizedString(
