@@ -1,0 +1,12 @@
+diff --git a/third_party/libjxl/DIR_METADATA b/third_party/libjxl/DIR_METADATA
+new file mode 100644
+index 0000000000000..beadfa62dc3ad
+--- /dev/null
++++ b/third_party/libjxl/DIR_METADATA
+@@ -0,0 +1,6 @@
++monorail: {
++  component: "Internals>Images>Codecs"
++}
++buganizer_public: {
++  component_id: 1456316
++}

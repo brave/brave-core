@@ -1,0 +1,14 @@
+diff --git a/.gitmodules b/.gitmodules
+index 0412e8dc4fe15..4a92a5969c6c1 100644
+--- a/.gitmodules
++++ b/.gitmodules
+@@ -137,6 +137,9 @@
+ [submodule "third_party/dawn"]
+ 	path = third_party/dawn
+ 	url = https://dawn.googlesource.com/dawn
++[submodule "third_party/libjxl/src"]
++	path = third_party/libjxl/src
++	url = https://chromium.googlesource.com/external/github.com/libjxl/libjxl
+ [submodule "third_party/highway/src"]
+ 	path = third_party/highway/src
+ 	url = https://chromium.googlesource.com/external/github.com/google/highway

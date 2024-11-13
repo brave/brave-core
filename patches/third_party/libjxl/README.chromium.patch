@@ -1,0 +1,35 @@
+From f5c7d3d1de59f03f178378f06167e991db53091c Mon Sep 17 00:00:00 2001
+From: Ho Cheung <hocheung@chromium.org>
+Date: Wed, 13 Nov 2024 17:20:30 +0800
+Subject: [PATCH] README
+
+---
+ third_party/libjxl/README.chromium | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+ create mode 100644 third_party/libjxl/README.chromium
+
+diff --git a/third_party/libjxl/README.chromium b/third_party/libjxl/README.chromium
+new file mode 100644
+index 0000000000000..663ea8ca062bf
+--- /dev/null
++++ b/third_party/libjxl/README.chromium
+@@ -0,0 +1,16 @@
++Name: libjxl JPEG XL image decoder library
++Short Name: libjxl
++URL: https://github.com/libjxl/libjxl
++Version: 0.10.3
++Date: 2024-06-27
++Revision: 4a3b22d2600f92d8706fb72d85d52bfee2acbd54
++License: BSD 3-Clause
++License File: src/LICENSE
++Security Critical: yes
++CPEPrefix: cpe:/a:libjxl_project:libjxl:0.10.3
++
++Description:
++The reference implementation for the JPEG XL image encoder/decoder.
++
++Local Modifications:
++None. Only decoder-side is compiled, for use in blink Internals>Images>Codecs.
+-- 
+2.45.2
+

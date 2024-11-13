@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/flag_descriptions.h b/chrome/browser/flag_descriptions.h
+index 11f139945c5d7..ca09aef60d561 100644
+--- a/chrome/browser/flag_descriptions.h
++++ b/chrome/browser/flag_descriptions.h
+@@ -4747,6 +4747,11 @@ extern const char kDcheckIsFatalName[];
+ extern const char kDcheckIsFatalDescription[];
+ #endif  // BUILDFLAG(DCHECK_IS_CONFIGURABLE)
+ 
++#if BUILDFLAG(ENABLE_JXL_DECODER)
++extern const char kEnableJXLName[];
++extern const char kEnableJXLDescription[];
++#endif  // BUILDFLAG(ENABLE_JXL_DECODER)
++
+ #if BUILDFLAG(ENABLE_NACL)
+ extern const char kNaclName[];
+ extern const char kNaclDescription[];

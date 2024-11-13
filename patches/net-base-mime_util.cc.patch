@@ -1,0 +1,20 @@
+diff --git a/net/base/mime_util.cc b/net/base/mime_util.cc
+index 272ffa0f80ca2..42e2517159b2c 100644
+--- a/net/base/mime_util.cc
++++ b/net/base/mime_util.cc
+@@ -165,6 +165,7 @@ static const MimeInfo kPrimaryMappings[] = {
+     {"image/avif", "avif"},
+     {"image/gif", "gif"},
+     {"image/jpeg", "jpeg,jpg"},
++    {"image/jxl", "jxl"},
+     {"image/png", "png"},
+     {"image/apng", "png,apng"},
+     {"image/svg+xml", "svg,svgz"},
+@@ -661,6 +662,7 @@ static const char* const kStandardImageTypes[] = {"image/avif",
+                                                   "image/gif",
+                                                   "image/ief",
+                                                   "image/jpeg",
++                                                  "image/jxl",
+                                                   "image/webp",
+                                                   "image/pict",
+                                                   "image/pipeg",

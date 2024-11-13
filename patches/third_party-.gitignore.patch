@@ -1,0 +1,12 @@
+diff --git a/third_party/.gitignore b/third_party/.gitignore
+index 826765cd63fb1..d5c0ae68255c2 100644
+--- a/third_party/.gitignore
++++ b/third_party/.gitignore
+@@ -81,6 +81,7 @@
+ /libei/cipd/lib64/
+ /libgifcodec
+ /libjingle/source
++/libjxl/src
+ /libupnp
+ /llvm
+ /llvm-allocated-type

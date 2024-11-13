@@ -1,0 +1,20 @@
+diff --git a/third_party/libjxl/OWNERS b/third_party/libjxl/OWNERS
+new file mode 100644
+index 0000000000000..263b9dcc4bb0c
+--- /dev/null
++++ b/third_party/libjxl/OWNERS
+@@ -0,0 +1,14 @@
++# Owners:
++alex313031@gmail.com
++uioptt24@gmail.com
++firsching@google.com
++noel@chromium.org
++scroggo@google.com
++
++# Reviewers:
++alex313031@gmail.com
++uioptt24@gmail.com
++firsching@google.com
++# eustas@chromium.org
++# sboukortt@google.com
++# veluca@google.com

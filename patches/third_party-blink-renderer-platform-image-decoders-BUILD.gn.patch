@@ -1,0 +1,21 @@
+diff --git a/third_party/blink/renderer/platform/image-decoders/BUILD.gn b/third_party/blink/renderer/platform/image-decoders/BUILD.gn
+index 6668b18e562d6..3bf2d88105cf0 100644
+--- a/third_party/blink/renderer/platform/image-decoders/BUILD.gn
++++ b/third_party/blink/renderer/platform/image-decoders/BUILD.gn
+@@ -31,6 +31,8 @@ component("image_decoders") {
+     "image_frame.h",
+     "jpeg/jpeg_image_decoder.cc",
+     "jpeg/jpeg_image_decoder.h",
++    "jxl/jxl_image_decoder.cc",
++    "jxl/jxl_image_decoder.h",
+     "png/png_image_decoder.cc",
+     "png/png_image_decoder.h",
+     "png/png_image_reader.cc",
+@@ -67,6 +69,7 @@ component("image_decoders") {
+     "//third_party/blink/public:blink_headers",
+     "//third_party/blink/public/common:buildflags",
+     "//third_party/blink/public/common:headers",
++    "//third_party/libjxl",
+     "//third_party/libpng",
+     "//third_party/libwebp",
+     "//third_party/libyuv",

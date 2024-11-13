@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/common/mime_util/mime_util.cc b/third_party/blink/common/mime_util/mime_util.cc
+index dbcb7fe689938..318ced5c0d966 100644
+--- a/third_party/blink/common/mime_util/mime_util.cc
++++ b/third_party/blink/common/mime_util/mime_util.cc
+@@ -31,6 +31,9 @@ constexpr auto kSupportedImageTypes = base::MakeFixedFlatSet<std::string_view>({
+     "image/jpeg",
+     "image/pjpeg",
+     "image/jpg",
++#if BUILDFLAG(ENABLE_JXL_DECODER)
++    "image/jxl",
++#endif
+     "image/webp",
+     "image/png",
+     "image/apng",

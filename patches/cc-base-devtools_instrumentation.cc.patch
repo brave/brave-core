@@ -1,0 +1,14 @@
+diff --git a/cc/base/devtools_instrumentation.cc b/cc/base/devtools_instrumentation.cc
+index 1888c850430a9..e25c3ca7f97fe 100644
+--- a/cc/base/devtools_instrumentation.cc
++++ b/cc/base/devtools_instrumentation.cc
+@@ -105,6 +105,9 @@ ScopedImageDecodeTask::~ScopedImageDecodeTask() {
+     case ImageType::kJpeg:
+       histogram_name = "Renderer4.ImageDecodeTaskDurationUs.Jpeg";
+       break;
++    case ImageType::kJxl:
++      histogram_name = "Renderer4.ImageUploadTaskDurationUs.Jxl";
++      break;
+     case ImageType::kPng:
+       histogram_name = "Renderer4.ImageDecodeTaskDurationUs.Png";
+       break;

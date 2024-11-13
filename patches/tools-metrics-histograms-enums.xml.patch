@@ -1,0 +1,12 @@
+diff --git a/tools/metrics/histograms/enums.xml b/tools/metrics/histograms/enums.xml
+index 600e56e7d5ed6..63971a37753ab 100644
+--- a/tools/metrics/histograms/enums.xml
++++ b/tools/metrics/histograms/enums.xml
+@@ -20744,6 +20744,7 @@ from previous Chrome versions.
+   <int value="188610022" label="NewMessageListView:enabled"/>
+   <int value="189728101" label="FasterLocationReload:disabled"/>
+   <int value="189777537" label="DisableInitialMostVisitedFadeIn:enabled"/>
++  <int value="190282969" label="JXL:disabled"/>
+   <int value="190395448" label="SearchWebInSidePanel:enabled"/>
+   <int value="191737931" label="enable-mark-http-as"/>
+   <int value="191891628" label="AutocompleteExtendedSuggestions:enabled"/>

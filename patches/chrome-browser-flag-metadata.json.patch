@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/flag-metadata.json b/chrome/browser/flag-metadata.json
+index 43a70f13600b5..5c56fc0062592 100644
+--- a/chrome/browser/flag-metadata.json
++++ b/chrome/browser/flag-metadata.json
+@@ -3486,6 +3486,12 @@
+     ],
+     "expiry_milestone": 140
+   },
++  {
++    "name": "enable-jxl",
++    "owners": [ "firsching@google.com", "uioptt24@gmail.com", "alex313031@gmail.com" ],
++    // Keep JPEG XL support forever!.
++    "expiry_milestone": -1
++  },
+   {
+     "name": "enable-keyboard-backlight-toggle",
+     "owners": [ "rtinkoff@chromium.org" ],

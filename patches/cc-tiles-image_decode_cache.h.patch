@@ -1,0 +1,13 @@
+diff --git a/cc/tiles/image_decode_cache.h b/cc/tiles/image_decode_cache.h
+index c8d805c8e7e0c..f362dfff9a5a9 100644
+--- a/cc/tiles/image_decode_cache.h
++++ b/cc/tiles/image_decode_cache.h
+@@ -88,6 +88,8 @@ class CC_EXPORT ImageDecodeCache {
+         return ScopedImageType::kIco;
+       case ImageType::kJPEG:
+         return ScopedImageType::kJpeg;
++      case ImageType::kJXL:
++        return ScopedImageType::kJxl;
+       case ImageType::kPNG:
+         return ScopedImageType::kPng;
+       case ImageType::kWEBP:

@@ -1,0 +1,13 @@
+diff --git a/cc/base/devtools_instrumentation.h b/cc/base/devtools_instrumentation.h
+index f6613f70e2257..0bd0557751c13 100644
+--- a/cc/base/devtools_instrumentation.h
++++ b/cc/base/devtools_instrumentation.h
+@@ -71,7 +71,7 @@ class CC_BASE_EXPORT ScopedLayerTask {
+ 
+ class CC_BASE_EXPORT ScopedImageTask {
+  public:
+-  enum class ImageType { kAvif, kBmp, kGif, kIco, kJpeg, kPng, kWebP, kOther };
++  enum class ImageType { kAvif, kBmp, kGif, kIco, kJpeg, kPng, kWebP, kJxl, kOther };
+ 
+   explicit ScopedImageTask(ImageType image_type)
+       : image_type_(image_type), start_time_(base::TimeTicks::Now()) {}

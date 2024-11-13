@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
+index f8ce99486900e..487d96020676f 100644
+--- a/third_party/blink/common/features.cc
++++ b/third_party/blink/common/features.cc
+@@ -1270,6 +1270,9 @@ BASE_FEATURE(kKalmanHeuristics,
+              "KalmanHeuristics",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++// Enables the JPEG XL Image File Format (JXL).
++BASE_FEATURE(kJXL, "JXL", base::FEATURE_DISABLED_BY_DEFAULT);
++
+ BASE_FEATURE(kKeepAliveInBrowserMigration,
+              "KeepAliveInBrowserMigration",
+              base::FEATURE_DISABLED_BY_DEFAULT);

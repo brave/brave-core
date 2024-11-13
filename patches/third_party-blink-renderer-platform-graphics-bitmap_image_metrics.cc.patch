@@ -1,0 +1,16 @@
+diff --git a/third_party/blink/renderer/platform/graphics/bitmap_image_metrics.cc b/third_party/blink/renderer/platform/graphics/bitmap_image_metrics.cc
+index 7b4b085348968..6b7cb4140260e 100644
+--- a/third_party/blink/renderer/platform/graphics/bitmap_image_metrics.cc
++++ b/third_party/blink/renderer/platform/graphics/bitmap_image_metrics.cc
+@@ -37,6 +37,11 @@ BitmapImageMetrics::StringToDecodedImageType(const String& type) {
+ #if BUILDFLAG(ENABLE_AV1_DECODER)
+   if (type == "avif")
+     return BitmapImageMetrics::DecodedImageType::kAVIF;
++#endif
++#if BUILDFLAG(ENABLE_JXL_DECODER)
++  if (type == "jxl") {
++    return BitmapImageMetrics::DecodedImageType::kJXL;
++  }
+ #endif
+   return BitmapImageMetrics::DecodedImageType::kUnknown;
+ }

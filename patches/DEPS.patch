@@ -1,0 +1,24 @@
+diff --git a/DEPS b/DEPS
+index 4f5df0d6c01ee..ea597454c56af 100644
+--- a/DEPS
++++ b/DEPS
+@@ -482,6 +482,10 @@ vars = {
+   # Three lines of non-changing comments so that
+   # the commit queue can handle CLs rolling feed
+   # and whatever else without interference from each other.
++  'libjxl_revision': '4a3b22d2600f92d8706fb72d85d52bfee2acbd54',
++  # Three lines of non-changing comments so that
++  # the commit queue can handle CLs rolling feed
++  # and whatever else without interference from each other.
+   'highway_revision': '8295336dd70f1201d42c22ab5b0861de38cf8fbf',
+   # Three lines of non-changing comments so that
+   # the commit queue can handle CLs rolling ffmpeg
+@@ -1656,6 +1660,9 @@ deps = {
+   'src/third_party/dav1d/libdav1d':
+     Var('chromium_git') + '/external/github.com/videolan/dav1d.git' + '@' + '389450f61ea0b2057fc9ea393d3065859c4ba7f2',
+ 
++  'src/third_party/libjxl/src':
++    Var('chromium_git') + '/external/github.com/libjxl/libjxl.git' + '@' + Var('libjxl_revision'),
++
+   'src/third_party/dawn':
+     Var('dawn_git') + '/dawn.git' + '@' +  Var('dawn_revision'),
