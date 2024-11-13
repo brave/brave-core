@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index f58b9b0333e01f95ecf1b1d3fd3e273b675705cc..e14627f84f7dab5f368e36dbc30d8fbeb87409df 100644
+index 6aef73a782904554d4ccae7ad127a3ce72273cc7..46695640b54e0d45e52a53448fc5bd2b437c1d9c 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
 @@ -4820,6 +4820,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
@@ -18,23 +18,23 @@ index f58b9b0333e01f95ecf1b1d3fd3e273b675705cc..e14627f84f7dab5f368e36dbc30d8fbe
    // If it's a credentialless frame tree, use its nonce even if it's within a
    // fenced frame tree to maintain the guarantee that a credentialless frame
    // tree has a unique nonce.
-@@ -4872,6 +4874,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
+@@ -4878,6 +4880,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
      // current value of net::features::ThirdPartyStoragePartitioning.
      if (rfs_document_data_for_storage_key->runtime_feature_state_read_context()
-             .IsDisableThirdPartyStoragePartitioning2Enabled()) {
+             .IsDisableThirdPartyStoragePartitioning3Enabled()) {
 +      BRAVE_RENDER_FRAME_HOST_IMPL_IS_THIRD_PARTY_STORAGE_PARTITIONING_ENABLED_CHECK_IF_CAN_BE_DISABLED
        return false;
      }
      // Compile the list of third-party origins we need to check in addition to
-@@ -4889,6 +4892,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
+@@ -4895,6 +4898,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
      if (rfs_document_data_for_storage_key->runtime_feature_state_read_context()
-             .IsDisableThirdPartyStoragePartitioning2EnabledForThirdParty(
+             .IsDisableThirdPartyStoragePartitioning3EnabledForThirdParty(
                  third_party_origins)) {
 +      BRAVE_RENDER_FRAME_HOST_IMPL_IS_THIRD_PARTY_STORAGE_PARTITIONING_ENABLED_CHECK_IF_CAN_BE_DISABLED
        return false;
      }
-   } else {
-@@ -9236,6 +9240,7 @@ void RenderFrameHostImpl::CreateNewWindow(
+   }
+@@ -9304,6 +9308,7 @@ void RenderFrameHostImpl::CreateNewWindow(
          dom_storage_context, params->session_storage_namespace_id);
    }
  

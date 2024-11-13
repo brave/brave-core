@@ -1,21 +1,16 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index 52a5cedded6821629a4a4336c9d06bdd41b06cce..5072947b44ba0e0cd1b3196da3555b7c6f392b12 100644
+index e04bd65da095e23e724e9f004923dac7f2b76273..074e1ed93c5c6dd286aeca5daf2b27c3785c960b 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
-@@ -27,10 +27,12 @@ js_files = [
- # Also needed on LaCros for Print Preview. Remove once CrOS Print Preview
- # launches.
- if (is_chromeos) {
-+} if (!is_android) {
-   js_files += [ "iron-fit-behavior/iron-fit-behavior.js" ]
- }
+@@ -22,6 +22,7 @@ js_files = [
+ ]
  
  if (is_chromeos_ash) {
 +} if (!is_android) {
    js_files += [
      "iron-a11y-announcer/iron-a11y-announcer.js",
      "iron-behaviors/iron-control-state.js",
-@@ -252,11 +254,13 @@ ts_library("library") {
+@@ -243,11 +244,13 @@ ts_library("library") {
    # Also needed on LaCros for Print Preview. Remove once CrOS Print Preview
    # launches.
    if (is_chromeos) {
@@ -29,7 +24,7 @@ index 52a5cedded6821629a4a4336c9d06bdd41b06cce..5072947b44ba0e0cd1b3196da3555b7c
      definitions += [
        "components-chromium/iron-a11y-announcer/iron-a11y-announcer.d.ts",
        "components-chromium/iron-collapse/iron-collapse.d.ts",
-@@ -292,4 +296,5 @@ ts_library("library") {
+@@ -286,4 +289,5 @@ ts_library("library") {
        "components-chromium/paper-tooltip/paper-tooltip.d.ts",
      ]
    }

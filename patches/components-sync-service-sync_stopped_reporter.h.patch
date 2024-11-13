@@ -1,5 +1,5 @@
 diff --git a/components/sync/service/sync_stopped_reporter.h b/components/sync/service/sync_stopped_reporter.h
-index 2d089dbc665c4313a0c585d344e8f6153ec437ed..cbc1b92267ccfaec035aa88f6cf84012ee3b5ebe 100644
+index ab3a7a373120d57ca60c2e5f3867b6e050b71076..d144da982c929a319dd89aa1d05e3f8c292bd165 100644
 --- a/components/sync/service/sync_stopped_reporter.h
 +++ b/components/sync/service/sync_stopped_reporter.h
 @@ -29,7 +29,7 @@ class SyncStoppedReporter {
@@ -10,4 +10,4 @@ index 2d089dbc665c4313a0c585d344e8f6153ec437ed..cbc1b92267ccfaec035aa88f6cf84012
 +  virtual ~SyncStoppedReporter();
  
    // Inform the sync server that sync was stopped on this device.
-   // |access_token|, |cache_guid|, and |birthday| must not be empty.
+   // `access_token`, `cache_guid`, and `birthday` must not be empty.

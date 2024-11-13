@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index ae53dbedea7b96c12aff75c66812ababa144a3c0..61b2c7f6d962fa060fe30cd3023e9324feeac48c 100644
+index 0fad18d9b8fada126e315597de0235b45c7d9ea4..54ab2ed997a9bf9829848a0d5995a33bb6b1c32e 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -695,6 +695,7 @@ class TabStripModel : public TabGroupController {
-   tabs::TabModel* GetTabForWebContents(
+@@ -693,6 +693,7 @@ class TabStripModel : public TabGroupController {
+   tabs::TabInterface* GetTabForWebContents(
        const content::WebContents* contents) const;
  
 +  TAB_STRIP_MODEL_H_

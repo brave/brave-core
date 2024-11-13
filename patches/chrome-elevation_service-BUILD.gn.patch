@@ -1,5 +1,5 @@
 diff --git a/chrome/elevation_service/BUILD.gn b/chrome/elevation_service/BUILD.gn
-index 88ed423e737ea90ba93f97da86ec6b55552bf52e..16222646243e034810a17f83faa158bd7602e92f 100644
+index 09fc1d0d8f03af5a4158716cb40d1f0324a031f4..2c1e9603c9e07ff7233b101471039c46efad3517 100644
 --- a/chrome/elevation_service/BUILD.gn
 +++ b/chrome/elevation_service/BUILD.gn
 @@ -11,6 +11,7 @@ import("//testing/test.gni")
@@ -10,11 +10,11 @@ index 88ed423e737ea90ba93f97da86ec6b55552bf52e..16222646243e034810a17f83faa158bd
  
    writes_tlb = true
  }
-@@ -105,6 +106,7 @@ source_set("lib") {
+@@ -79,6 +80,7 @@ source_set("lib") {
      "crypt32.lib",
      "rpcrt4.lib",
    ]
 +  deps += brave_elevation_service_lib_deps
  }
  
- process_version_rc_template("version_resources") {
+ source_set("service_lib") {
