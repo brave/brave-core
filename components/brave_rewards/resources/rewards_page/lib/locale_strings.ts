@@ -32,7 +32,6 @@ export type StringKey =
   'adsSettingsAdTypeTitle' |
   'adsSettingsAdViewsTitle' |
   'adsSettingsButtonLabel' |
-  'adsSettingsEarningsLabel' |
   'adsSettingsPayoutDateLabel' |
   'adsSettingsTotalAdsLabel' |
   'adsSettingsNewsOffTooltip' |
@@ -92,6 +91,7 @@ export type StringKey =
   'captchaSupportButtonLabel' |
   'closeButtonLabel' |
   'communityTitle' |
+  'connectedAdsViewedText' |
   'connectAccountSubtext' |
   'connectAccountText' |
   'connectButtonLabel' |
@@ -141,8 +141,6 @@ export type StringKey =
   'countrySelectText' |
   'doneButtonLabel' |
   'earningsAdsReceivedText' |
-  'earningsEstimateText' |
-  'earningsRangeTooltip' |
   'helpButtonLabel' |
   'learnMoreLink' |
   'merchStoreTitle' |

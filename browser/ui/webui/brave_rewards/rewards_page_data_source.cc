@@ -59,7 +59,6 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"adsSettingsAdTypeTitle", IDS_REWARDS_ADS_SETTINGS_AD_TYPE_TITLE},
     {"adsSettingsAdViewsTitle", IDS_REWARDS_ADS_SETTINGS_AD_VIEWS_TITLE},
     {"adsSettingsButtonLabel", IDS_REWARDS_ADS_SETTINGS_BUTTON_LABEL},
-    {"adsSettingsEarningsLabel", IDS_REWARDS_ADS_SETTINGS_EARNINGS_LABEL},
     {"adsSettingsPayoutDateLabel", IDS_REWARDS_ADS_SETTINGS_PAYOUT_DATE_LABEL},
     {"adsSettingsTotalAdsLabel", IDS_REWARDS_ADS_SETTINGS_TOTAL_ADS_LABEL},
     {"adsSettingsNewsOffTooltip", IDS_REWARDS_ADS_SETTINGS_NEWS_OFF_TOOLTIP},
@@ -203,8 +202,6 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"countrySelectText", IDS_REWARDS_COUNTRY_SELECT_TEXT},
     {"doneButtonLabel", IDS_BRAVE_REWARDS_ONBOARDING_DONE},
     {"earningsAdsReceivedText", IDS_REWARDS_EARNINGS_ADS_RECEIVED_TEXT},
-    {"earningsEstimateText", IDS_REWARDS_EARNINGS_ESTIMATE_TEXT},
-    {"earningsRangeTooltip", IDS_REWARDS_EARNINGS_RANGE_TOOLTIP},
     {"helpButtonLabel", IDS_REWARDS_HELP_BUTTON_LABEL},
     {"learnMoreLink", IDS_REWARDS_LEARN_MORE},
     {"merchStoreTitle", IDS_REWARDS_MERCH_STORE_TITLE},
@@ -298,11 +295,8 @@ void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
   auto* browser_context = web_ui.GetWebContents()->GetBrowserContext();
   auto* source = content::WebUIDataSource::CreateAndAdd(browser_context, host);
 
-  webui::SetupWebUIDataSource(
-      source,
-      UNSAFE_TODO(
-          base::make_span(kRewardsPageGenerated, kRewardsPageGeneratedSize)),
-      IDR_NEW_BRAVE_REWARDS_PAGE_HTML);
+  webui::SetupWebUIDataSource(source, kRewardsPageGenerated,
+                              IDR_NEW_BRAVE_REWARDS_PAGE_HTML);
 
   // Adaptive captcha challenges are displayed in an iframe on the Rewards
   // panel. In order to display these challenges we need to specify in CSP that
