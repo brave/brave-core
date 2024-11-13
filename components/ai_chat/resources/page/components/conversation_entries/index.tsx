@@ -23,6 +23,7 @@ import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
 import { useConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
+import SuggestedQuestion from '../suggested_question'
 
 const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.CanGenerate,
@@ -41,13 +42,8 @@ function ConversationEntries(props: ConversationEntriesProps) {
 
   const showSuggestions: boolean =
     aiChatContext.hasAcceptedAgreement &&
-    conversationContext.shouldSendPageContents &&
     (conversationContext.suggestedQuestions.length > 0 ||
       SUGGESTION_STATUS_SHOW_BUTTON.includes(conversationContext.suggestionStatus))
-
-  const handleQuestionSubmit = (question: string) => {
-    conversationContext.conversationHandler?.submitHumanConversationEntry(question)
-  }
 
   const lastEntryElementRef = React.useRef<HTMLDivElement>(null)
   const [activeMenuId, setActiveMenuId] = React.useState<number | null>()
@@ -170,24 +166,24 @@ function ConversationEntries(props: ConversationEntriesProps) {
                     </div>
                     <span>{isHuman ? 'You' : 'Leo'}</span>
                   </div>
-                    {!turn.selectedText && (
-                      <div className={styles.rightContainer}>
-                        {latestEdit && (
-                          <div className={styles.editLabel}>
-                            <span className={styles.editLabelText}>
-                              {getLocale('editedLabel')}
-                            </span>
-                          </div>
-                        )}
-                        <div className={styles.turnActions}>
-                          <CopyButton onClick={handleCopyText} />
-                          {!isAIAssistant &&
-                            <EditButton
-                              onClick={() => setEditInputId(id)}
-                            />
-                          }
-                          {isAIAssistant &&
-                            conversationContext.currentModel?.options.leoModelOptions && (
+                  {!turn.selectedText && (
+                    <div className={styles.rightContainer}>
+                      {latestEdit && (
+                        <div className={styles.editLabel}>
+                          <span className={styles.editLabelText}>
+                            {getLocale('editedLabel')}
+                          </span>
+                        </div>
+                      )}
+                      <div className={styles.turnActions}>
+                        <CopyButton onClick={handleCopyText} />
+                        {!isAIAssistant &&
+                          <EditButton
+                            onClick={() => setEditInputId(id)}
+                          />
+                        }
+                        {isAIAssistant &&
+                          conversationContext.currentModel?.options.leoModelOptions && (
                             <ContextMenuAssistant
                               ref={portalRefs}
                               turnId={id}
@@ -197,9 +193,9 @@ function ConversationEntries(props: ConversationEntriesProps) {
                               onEditAnswerClicked={() => setEditInputId(id)}
                             />
                           )}
-                        </div>
                       </div>
-                    )}
+                    </div>
+                  )}
                 </div>
                 <div className={styles.message}>
                   {isAIAssistant && !showEditInput && (
@@ -249,34 +245,24 @@ function ConversationEntries(props: ConversationEntriesProps) {
       {showSuggestions && (
         <div className={styles.suggestedQuestionsBox}>
           <div className={styles.questionsList}>
-            {conversationContext.suggestedQuestions.map((question, id) => (
-              <Button
-                key={id}
-                kind='outline'
-                size='small'
-                onClick={() => handleQuestionSubmit(question)}
-                isDisabled={conversationContext.shouldDisableUserInput}
-              >
-                <span className={styles.buttonText}>{question}</span>
-              </Button>
-            ))}
+            {conversationContext.suggestedQuestions.map((question, i) => <SuggestedQuestion key={question} question={question} />)}
             {SUGGESTION_STATUS_SHOW_BUTTON.includes(
               conversationContext.suggestionStatus
-            ) && (
-              <Button
-                onClick={() => conversationContext.generateSuggestedQuestions()}
-                // isDisabled={context.suggestionStatus === mojom.SuggestionGenerationStatus.IsGenerating}
-                isLoading={
-                  conversationContext.suggestionStatus ===
-                  mojom.SuggestionGenerationStatus.IsGenerating
-                }
-                kind='outline'
-              >
-                <span className={styles.buttonText}>
-                  {getLocale('suggestQuestionsLabel')}
-                </span>
-              </Button>
-            )}
+            ) && conversationContext.shouldSendPageContents && (
+                <Button
+                  onClick={() => conversationContext.generateSuggestedQuestions()}
+                  // isDisabled={context.suggestionStatus === mojom.SuggestionGenerationStatus.IsGenerating}
+                  isLoading={
+                    conversationContext.suggestionStatus ===
+                    mojom.SuggestionGenerationStatus.IsGenerating
+                  }
+                  kind='outline'
+                >
+                  <span className={styles.buttonText}>
+                    {getLocale('suggestQuestionsLabel')}
+                  </span>
+                </Button>
+              )}
           </div>
         </div>
       )}

@@ -383,10 +383,6 @@ interface ConversationHandler {
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
-  // List of all suggested questions
-  GetSuggestedQuestions() => (
-      array<string> questions, SuggestionGenerationStatus suggestion_status);
-
   // The browser should generate some questions and fire an event when they
   // are ready.
   GenerateQuestions();

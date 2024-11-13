@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -203,7 +204,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void ModifyConversation(uint32_t turn_index,
                           const std::string& new_text) override;
   void SubmitSummarizationRequest() override;
-  void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
+  std::vector<std::string> GetSuggestedQuestionsForTest();
+  void SetSuggestedQuestionForTest(std::string title, std::string prompt);
   void GenerateQuestions() override;
   void GetAssociatedContentInfo(
       GetAssociatedContentInfoCallback callback) override;
@@ -284,6 +286,19 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
 
+  struct Suggestion {
+    std::string title;
+    std::optional<std::string> prompt;
+
+    explicit Suggestion(std::string title);
+    Suggestion(std::string title, std::string prompt);
+    Suggestion(const Suggestion&) = delete;
+    Suggestion& operator=(const Suggestion&) = delete;
+    Suggestion(Suggestion&&);
+    Suggestion& operator=(Suggestion&&);
+    ~Suggestion();
+  };
+
   void InitEngine();
   void BuildAssociatedContentInfo();
   bool IsContentAssociationPossible();
@@ -350,7 +365,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   std::vector<mojom::ConversationTurnPtr> chat_history_;
   mojom::ConversationTurnPtr pending_conversation_entry_;
   // Any previously-generated suggested questions
-  std::vector<std::string> suggestions_;
+  std::vector<Suggestion> suggestions_;
   std::string selected_language_;
   // Is a conversation engine request in progress (does not include
   // non-conversation engine requests.
