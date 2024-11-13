@@ -17,6 +17,7 @@
 #include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/ranges/algorithm.h"
+#include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -355,7 +356,7 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
                         testing::ElementsAre(l10n_util::GetStringUTF8(
                             IDS_CHAT_UI_SUMMARIZE_PAGE)));
           } else {
-            EXPECT_TRUE(state->suggested_questions.empty());
+            EXPECT_EQ(4u, state->suggested_questions.size());
           }
           EXPECT_EQ(state->suggestion_status,
                     should_send_content
@@ -440,11 +441,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
         // once conversation history is committed.
         EXPECT_FALSE(site_info->is_content_association_possible);
       }));
-  conversation_handler_->GetSuggestedQuestions(
-      base::BindLambdaForTesting([&](const std::vector<std::string>& questions,
-                                     mojom::SuggestionGenerationStatus status) {
-        EXPECT_TRUE(questions.empty());
-      }));
+  EXPECT_TRUE(conversation_handler_->GetSuggestedQuestionsForTest().empty());
 
   EXPECT_TRUE(conversation_handler_->HasAnyHistory());
   const auto& history = conversation_handler_->GetConversationHistory();
@@ -527,12 +524,9 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
 
   // Should not be any LLM-generated suggested questions yet because they
   // weren't asked for
-  conversation_handler_->GetSuggestedQuestions(
-      base::BindLambdaForTesting([&](const std::vector<std::string>& questions,
-                                     mojom::SuggestionGenerationStatus status) {
-        EXPECT_EQ(1u, questions.size());
-        EXPECT_EQ(questions[0], "Summarize this page");
-      }));
+  const auto questions = conversation_handler_->GetSuggestedQuestionsForTest();
+  EXPECT_EQ(1u, questions.size());
+  EXPECT_EQ(questions[0], "Summarize this page");
 
   const auto& history2 = conversation_handler_->GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> expected_history2;
@@ -1315,6 +1309,37 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, GenerateQuestions) {
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       GeneratesQuestionsByDefault) {
+  EXPECT_EQ(4u, conversation_handler_->GetSuggestedQuestionsForTest().size());
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       SelectingDefaultQuestionSendsPrompt) {
+  conversation_handler_->SetSuggestedQuestionForTest("the thing",
+                                                     "do the thing!");
+  auto suggestions = conversation_handler_->GetSuggestedQuestionsForTest();
+  EXPECT_EQ(1u, suggestions.size());
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  base::RunLoop loop;
+  // The prompt should be submitted to the engine, not the title.
+  EXPECT_CALL(*engine,
+              GenerateAssistantResponse(false, StrEq(""), _, "do the thing!",
+                                        StrEq(""), _, _))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("the thing");
+  loop.Run();
+  testing::Mock::VerifyAndClearExpectations(engine);
+
+  // Suggestion should be removed
+  EXPECT_EQ(0u, conversation_handler_->GetSuggestedQuestionsForTest().size());
 }
 
 TEST_F(ConversationHandlerUnitTest, SelectedLanguage) {

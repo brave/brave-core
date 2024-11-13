@@ -200,4 +200,59 @@ Your goal is to help user rewrite the excerpt and only include the rewritten tex
 Sure, here is the rewritten version of the excerpt: &lt;response&gt;
 </message>
 
+<message name="IDS_AI_CHAT_STATIC_STARTER_TITLE_MEMO" translateable="false">
+  Write a memo
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_PROMPT_MEMO" translateable="false">
+  I need to write a memo. To start, please ask me for details like the recipient, topic, key points to cover, and any deadline.
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_TITLE_INTERVIEW" translateable="false">
+  Generate interview questions
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_PROMPT_INTERVIEW" translateable="false">
+  I want to generate interview questions. To start, please ask me about the job position, required skills, experience level, and any specific traits they're looking for?
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_TITLE_STUDY_PLAN" translateable="false">
+  Create a study plan
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_PROMPT_STUDY_PLAN" translateable="false">
+  I need to create a study plan. To start, please ask me about the subjects or topics, timeframe, current knowledge level, and any other information that might be necessary to craft an effective study plan.
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_TITLE_PROJECT_TIMELINE" translateable="false">
+  Create a project timeline
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_PROMPT_PROJECT_TIMELINE" translateable="false">
+  I need to create a project timeline. To start, please ask me about the project type, start and end dates, major milestones, team size, and any critical deadlines?
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_TITLE_MARKETING_STRATEGY" translateable="false">
+  Develop a marketing strategy
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_PROMPT_MARKETING_STRATEGY" translateable="false">
+  I want to develop a marketing strategy. To start, please ask me about the product or service, target audience, budget, current market position, and key competitors.
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_TITLE_PRESENTATION_OUTLINE" translateable="false">
+  Outline a presentation
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_PROMPT_PRESENTATION_OUTLINE" translateable="false">
+  I need to outline a presentation. To start, please ask me about the topic, audience, duration, main objectives, and any specific points that must be included?
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_TITLE_BRAINSTORM" translateable="false">
+  Help me brainstorm
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_PROMPT_BRAINSTORM" translateable="false">
+  I need help brainstorming. To start, please ask me what problem I'm trying to solve, any constraints or requirements, and what kind of ideas I'm looking for (e.g., creative, practical, cost-effective).
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_TITLE_PROFESSIONAL_EMAIL" translateable="false">
+  Craft a professional email
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_PROMPT_PROFESSIONAL_EMAIL" translateable="false">
+  I need to craft a professional email. To start, please ask me about the recipient, the purpose of the email, key points to convey, and any specific action I want the recipient to take?
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_TITLE_BUSINESS_PROPOSAL" translateable="false">
+  Formulate a business proposal
+</message>
+<message name="IDS_AI_CHAT_STATIC_STARTER_PROMPT_BUSINESS_PROPOSAL" translateable="false">
+  I want to formulate a business proposal. To start, please ask me about the business idea, target market, unique selling points, financial projections, and any potential investors or partners.
+</message>
+
 </grit-part>
