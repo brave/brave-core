@@ -1,0 +1,30 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojom") {
+  sources = [ "csv_safari_password_parser.mojom" ]
+
+  public_deps = [
+    "//sandbox/policy/mojom",
+    "//url/mojom:url_mojom_gurl",
+  ]
+
+  cpp_typemaps = [
+    {
+      types = [
+        {
+          mojom = "password_manager.mojom.CSVSafariPassword"
+          cpp = "password_manager::CSVSafariPassword"
+        },
+      ]
+      traits_headers = [ "csv_safari_password_parser_traits.h" ]
+      traits_sources = [ "csv_safari_password_parser_traits.cc" ]
+      traits_public_deps =
+          [ "//brave/components/password_manager/core/browser/import:csv" ]
+    },
+  ]
+}
