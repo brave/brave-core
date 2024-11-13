@@ -6,17 +6,22 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_NEWS_INTERNALS_BRAVE_NEWS_INTERNALS_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_NEWS_INTERNALS_BRAVE_NEWS_INTERNALS_UI_H_
 
-#include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
+namespace brave_news {
+class BraveNewsController;
+}
+
 class BraveNewsInternalsUI : public content::WebUIController {
  public:
   explicit BraveNewsInternalsUI(content::WebUI* web_ui,
-                                const std::string& host);
+                                const std::string& host,
+                                brave_news::BraveNewsController* controller);
   BraveNewsInternalsUI(const BraveNewsInternalsUI&) = delete;
   BraveNewsInternalsUI& operator=(const BraveNewsInternalsUI&) = delete;
   ~BraveNewsInternalsUI() override;
@@ -27,6 +32,7 @@ class BraveNewsInternalsUI : public content::WebUIController {
       mojo::PendingReceiver<brave_news::mojom::BraveNewsInternals> receiver);
 
  private:
+  raw_ptr<brave_news::BraveNewsController> controller_ = nullptr;
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 

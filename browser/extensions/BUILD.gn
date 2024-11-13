@@ -133,7 +133,6 @@ source_set("extensions") {
     "//brave/browser/extensions/api:generated_api_registration",
     "//brave/browser/themes",
     "//brave/browser/ui:brave_tab_prefs",
-    "//brave/browser/ui:ui_public_dependencies",
     "//brave/common",
     "//brave/common/extensions/api",
     "//brave/components/ai_chat/core/common",

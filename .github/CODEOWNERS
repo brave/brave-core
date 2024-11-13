@@ -10,6 +10,9 @@ DEPS @brave/deps-reviewers
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 
+# brave/browser/ui/BUILD.gn should not have new files added to it
+browser/ui/BUILD.gn @bridiver
+
 # BraveBrowserProcess public interface
 browser/brave_browser_process.h @bridiver
 
