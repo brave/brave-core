@@ -3,15 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
+#include <array>
 
+#include "base/containers/span.h"
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
+#include "base/types/cxx23_to_underlying.h"
+#include "base/types/zip.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
@@ -82,38 +81,23 @@ class TabActivationWaiter : public TabStripModelObserver {
   int number_of_unconsumed_active_tab_changes_ = 0;
 };
 
-}  // namespace
-
 constexpr char kEphemeralStorageTestPage[] = "/storage/ephemeral-storage.html";
 
-typedef enum StorageResult {
-  kSuccess,
-  kEmpty,
-  kBlocked,
-  kNA,
-} StorageResult;
+enum class StorageResult {
+  kSuccess = 0,
+  kEmpty = 1,
+  kBlocked = 2,
+  kNA = 6,
+};
 
-// Converts a StorageResult to its corresponding JS `testOutcomeEnum `
-// representation.
-int AsNumber(StorageResult r) {
-  switch (r) {
-    case StorageResult::kSuccess:
-      return 0;
-    case StorageResult::kEmpty:
-      return 1;
-    case StorageResult::kBlocked:
-      return 2;
-    case StorageResult::kNA:
-      return 6;
-  }
-}
+using ResultSet = std::array<StorageResult, 4u>;
 
-typedef enum class StorageType {
+enum class StorageType {
   kCookies,
   kLocalStorage,
   kSessionStorage,
   kIndexDB,
-} StorageType;
+};
 
 // Converts a StorageType to its corresponding representation in the report
 // from the page's JS code.
@@ -129,6 +113,8 @@ std::string AsString(StorageType t) {
       return "index-db";
   }
 }
+
+}  // namespace
 
 // This test suite recreates the behavior of the ephemeral storage tests
 // available on Brave's QA test pages, whose source is located at
@@ -149,9 +135,10 @@ std::string AsString(StorageType t) {
 // - local frame
 // - remote frame
 // - nested frame
-class EphemeralStorageTest : public InProcessBrowserTest {
+class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
  public:
-  EphemeralStorageTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+  EphemeralStorageQaBrowserTest()
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     std::vector<base::test::FeatureRef> disabled_features;
     feature_list_.InitWithFeatures({net::features::kBraveEphemeralStorage},
                                    disabled_features);
@@ -193,7 +180,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   void SetThirdPartyCookiePref(bool setting) {
     browser()->profile()->GetPrefs()->SetInteger(
         prefs::kCookieControlsMode,
-        static_cast<int>(
+        base::to_underlying(
             setting ? content_settings::CookieControlsMode::kBlockThirdParty
                     : content_settings::CookieControlsMode::kOff));
   }
@@ -267,40 +254,40 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   // Checks that the test page's generated storage report matches the expected
   // values
   void CheckStorageResults(content::WebContents* contents,
-                           const StorageResult expected[4][4]) {
-    CheckStorageResults(contents, StorageType::kCookies, expected[0]);
-    CheckStorageResults(contents, StorageType::kLocalStorage, expected[1]);
-    CheckStorageResults(contents, StorageType::kSessionStorage, expected[2]);
-    CheckStorageResults(contents, StorageType::kIndexDB, expected[3]);
+                           base::span<const ResultSet, 4u> expected) {
+    static constexpr auto kStringTypes =
+        std::to_array({StorageType::kCookies, StorageType::kLocalStorage,
+                       StorageType::kSessionStorage, StorageType::kIndexDB});
+
+    for (auto [type, results] : base::zip(kStringTypes, expected)) {
+      CheckStorageResults(contents, type, results);
+    }
   }
 
   // Checks a particular row of the 2D storage results matrix, corresponding to
   // a single storage type
   void CheckStorageResults(content::WebContents* contents,
                            StorageType storage_type,
-                           const StorageResult expected[4]) {
+                           const ResultSet& expected) {
     SCOPED_TRACE(::testing::Message()
-                 << "StorageType: " << static_cast<int>(storage_type));
-    EXPECT_EQ(AsNumber(expected[0]),
-              EvalJs(contents,
-                     "window.generateStorageReport().then(report => report['" +
-                         AsString(storage_type) + "']['this-frame'])"));
-    EXPECT_EQ(AsNumber(expected[1]),
-              EvalJs(contents,
-                     "window.generateStorageReport().then(report => report['" +
-                         AsString(storage_type) + "']['local-frame'])"));
-    EXPECT_EQ(AsNumber(expected[2]),
-              EvalJs(contents,
-                     "window.generateStorageReport().then(report => report['" +
-                         AsString(storage_type) + "']['remote-frame'])"));
-    EXPECT_EQ(AsNumber(expected[3]),
-              EvalJs(contents,
-                     "window.generateStorageReport().then(report => report['" +
-                         AsString(storage_type) + "']['nested-frame'])"));
+                 << "StorageType: " << base::to_underlying(storage_type));
+
+    // The frames we want to test against and in the expected order.
+    static constexpr auto kFrames = std::to_array<std::string_view>(
+        {"this-frame", "local-frame", "remote-frame", "nested-frame"});
+
+    for (auto [result, frame] : base::zip(expected, kFrames)) {
+      EXPECT_EQ(
+          base::to_underlying(result),
+          content::EvalJs(contents, content::JsReplace(
+                                        "window.generateStorageReport().then("
+                                        "report => report[$1][$2])",
+                                        AsString(storage_type), frame)));
+    }
   }
 
   // Tests storage stored and then loaded within a single page session.
-  void TestInitialCase(const StorageResult expected[4][4]) {
+  void TestInitialCase(base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(original_tab_);
 
     CheckStorageResults(original_tab_, expected);
@@ -308,7 +295,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
   // Tests storage stored from one page and then loaded from a remote page in
   // the same browsing session.
-  void TestRemotePageSameSession(const StorageResult expected[4][4]) {
+  void TestRemotePageSameSession(base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(original_tab_);
     ASSERT_EQ(1, tabs_->count());
 
@@ -325,7 +312,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
   // Tests storage stored from one page and then loaded from a remote page in a
   // new browsing session.
-  void TestRemotePageNewSession(const StorageResult expected[4][4]) {
+  void TestRemotePageNewSession(base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(original_tab_);
     ASSERT_EQ(1, tabs_->count());
 
@@ -334,8 +321,9 @@ class EphemeralStorageTest : public InProcessBrowserTest {
     ASSERT_EQ(1, tabs_->active_index());
 
     std::string target =
-        EvalJs(original_tab_.get(),
-               "document.getElementById('continue-test-url-step-3').value")
+        content::EvalJs(
+            original_tab_.get(),
+            "document.getElementById('continue-test-url-step-3').value")
             .ExtractString();
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
 
@@ -348,7 +336,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
   // Tests storage stored from one page and then loaded from the same page in a
   // new tab from the same browsing session.
-  void TestThisPageSameSession(const StorageResult expected[4][4]) {
+  void TestThisPageSameSession(base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(original_tab_);
     ASSERT_EQ(1, tabs_->count());
 
@@ -365,7 +353,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
   // Tests storage stored from one page and then loaded from the same page in a
   // new tab from a different browsing session.
-  void TestThisPageDifferentSession(const StorageResult expected[4][4]) {
+  void TestThisPageDifferentSession(base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(original_tab_);
     ASSERT_EQ(1, tabs_->count());
 
@@ -374,8 +362,9 @@ class EphemeralStorageTest : public InProcessBrowserTest {
     ASSERT_EQ(1, tabs_->active_index());
 
     std::string target =
-        EvalJs(original_tab_.get(),
-               "document.getElementById('continue-test-url-step-5').value")
+        content::EvalJs(
+            original_tab_.get(),
+            "document.getElementById('continue-test-url-step-5').value")
             .ExtractString();
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
 
@@ -388,7 +377,7 @@ class EphemeralStorageTest : public InProcessBrowserTest {
 
   // Tests storage stored from one page and then loaded from the same page
   // after having reset the browsing session.
-  void TestNewPageResetSession(const StorageResult expected[4][4]) {
+  void TestNewPageResetSession(base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(original_tab_);
     ASSERT_EQ(1, tabs_->count());
 
@@ -397,8 +386,9 @@ class EphemeralStorageTest : public InProcessBrowserTest {
     ASSERT_EQ(1, tabs_->active_index());
 
     std::string target =
-        EvalJs(original_tab_.get(),
-               "document.getElementById('continue-test-url-step-6').value")
+        content::EvalJs(
+            original_tab_.get(),
+            "document.getElementById('continue-test-url-step-6').value")
             .ExtractString();
 
     const int previous_tab_count = browser()->tab_strip_model()->count();
@@ -440,286 +430,359 @@ class EphemeralStorageTest : public InProcessBrowserTest {
   raw_ptr<TabStripModel, DanglingUntriaged> tabs_ = nullptr;
 };
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest, CrossSiteCookiesBlockedInitial) {
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
+                       CrossSiteCookiesBlockedInitial) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(true);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kSuccess, kEmpty},
-      {kSuccess, kSuccess, kSuccess, kEmpty},
-      {kSuccess, kSuccess, kSuccess, kEmpty},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kSuccess},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kEmpty},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kEmpty},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kEmpty},
   };
   TestInitialCase(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CrossSiteCookiesBlockedRemotePageSameSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(true);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
   };
   TestRemotePageSameSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CrossSiteCookiesBlockedRemotePageNewSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(true);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
   };
   TestRemotePageNewSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CrossSiteCookiesBlockedThisPageSameSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(true);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
   };
   TestThisPageSameSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CrossSiteCookiesBlockedThisPageDifferentSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(true);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
   };
   TestThisPageDifferentSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CrossSiteCookiesBlockedNewPageResetSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(true);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kEmpty, kNA},
-      {kSuccess, kSuccess, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kSuccess, kSuccess, kEmpty, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess, StorageResult::kEmpty,
+       StorageResult::kNA},
   };
   TestNewPageResetSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest, CookiesBlockedInitial) {
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest, CookiesBlockedInitial) {
   SetCookiePref(CONTENT_SETTING_BLOCK);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kBlocked},
-      {kBlocked, kBlocked, kBlocked, kBlocked},
-      {kBlocked, kBlocked, kBlocked, kBlocked},
-      {kBlocked, kBlocked, kBlocked, kBlocked},
+  const ResultSet expected[4] = {
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kBlocked},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kBlocked},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kBlocked},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kBlocked},
   };
   TestInitialCase(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesBlockedRemotePageSameSession) {
   SetCookiePref(CONTENT_SETTING_BLOCK);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
   };
   TestRemotePageSameSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesBlockedRemotePageNewSession) {
   SetCookiePref(CONTENT_SETTING_BLOCK);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
   };
   TestRemotePageNewSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesBlockedThisPageSameSession) {
   SetCookiePref(CONTENT_SETTING_BLOCK);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
   };
   TestThisPageSameSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesBlockedThisPageDifferentSession) {
   SetCookiePref(CONTENT_SETTING_BLOCK);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
   };
   TestThisPageDifferentSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesBlockedNewPageResetSession) {
   SetCookiePref(CONTENT_SETTING_BLOCK);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
-      {kBlocked, kBlocked, kBlocked, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
+      {StorageResult::kBlocked, StorageResult::kBlocked,
+       StorageResult::kBlocked, StorageResult::kNA},
   };
   TestNewPageResetSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest, CookiesAllowedInitial) {
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest, CookiesAllowedInitial) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(false);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kSuccess},
-      {kSuccess, kSuccess, kSuccess, kEmpty},
-      {kSuccess, kSuccess, kSuccess, kEmpty},
-      {kSuccess, kSuccess, kSuccess, kEmpty},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kSuccess},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kEmpty},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kEmpty},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kEmpty},
   };
   TestInitialCase(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesAllowedRemotePageSameSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(false);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
   };
   TestRemotePageSameSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesAllowedRemotePageNewSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(false);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
   };
   TestRemotePageNewSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesAllowedThisPageSameSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(false);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
   };
   TestThisPageSameSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesAllowedThisPageDifferentSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(false);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
   };
   TestThisPageDifferentSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesAllowedNewPageResetSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(false);
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
   };
   TestNewPageResetSession(expected);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
+IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
                        CookiesAllowedNewPageResetSessionSetPerDomain) {
   // Set the cookie control type to allow for the test page's domain (not
   // browser-wide!).
@@ -727,11 +790,15 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageTest,
 
   SetupTestPage();
 
-  const StorageResult expected[4][4] = {
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
-      {kEmpty, kEmpty, kEmpty, kNA},
-      {kSuccess, kSuccess, kSuccess, kNA},
+  const ResultSet expected[4] = {
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
+      {StorageResult::kEmpty, StorageResult::kEmpty, StorageResult::kEmpty,
+       StorageResult::kNA},
+      {StorageResult::kSuccess, StorageResult::kSuccess,
+       StorageResult::kSuccess, StorageResult::kNA},
   };
   TestNewPageResetSession(expected);
 }
