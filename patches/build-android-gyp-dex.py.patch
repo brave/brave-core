@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index 836a19357dac5bc5ca28d5a9864fd6d09f005402..265545df755553e7f1ec8c6350712de871728b22 100755
+index a9cde18492fcbe09a1a4efc8b46b6313e0554849..1309c1dfc4fd6037e88980abfe9609bc9ea28d84 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
 @@ -30,6 +30,7 @@ DEFAULT_IGNORE_WARNINGS = (
@@ -8,5 +8,5 @@ index 836a19357dac5bc5ca28d5a9864fd6d09f005402..265545df755553e7f1ec8c6350712de8
      r'Running R8 version main', )
 +DEFAULT_IGNORE_WARNINGS += ( r'.Brave', )
  
- _IGNORE_SERVICE_ENTRIES = (
-     # ServiceLoader call is used only for ProtoBuf full (non-lite).
+ _MERGE_SERVICE_ENTRIES = (
+     # Uses ServiceLoader to find all implementing classes, so multiple are

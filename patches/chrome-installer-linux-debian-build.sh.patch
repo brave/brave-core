@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1de5139832 100755
+index 2038b7aebd65f6973424844ff1971c563294556f..5d4c40455312dea8c60dfab3c1ba03dd510886ad 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -75,10 +75,10 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
  }
  
  process_opts() {
-@@ -258,6 +263,17 @@ fi
- eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
+@@ -258,6 +263,16 @@ else
+ fi
+ eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/\1='\2'/" \
    "${OUTPUTDIR}/installer/theme/BRANDING")
- 
 +PACKAGEANDCHANNEL="${PACKAGE}-${CHANNEL}"
 +if [ "$CHANNEL" = "unstable" ]; then
 +  PACKAGEANDCHANNEL="${PACKAGE}-dev"
@@ -89,11 +89,10 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
 +if [ "$CHANNEL" = "stable" ]; then
 +  PACKAGEANDCHANNEL="${PACKAGE}"
 +fi
-+
+ 
  verify_channel
  
- # Some Debian packaging tools want these set.
-@@ -268,6 +284,8 @@ export ARCHITECTURE="${ARCHITECTURE}"
+@@ -269,6 +284,8 @@ export ARCHITECTURE="${ARCHITECTURE}"
  DEB_COMMON_DEPS="${OUTPUTDIR}/deb_common.deps"
  COMMON_DEPS=$(sed ':a;N;$!ba;s/\n/, /g' "${DEB_COMMON_DEPS}")
  COMMON_PREDEPS="dpkg (>= 1.14.0)"

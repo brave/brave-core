@@ -1,9 +1,9 @@
 diff --git a/third_party/rust/regex/v1/BUILD.gn b/third_party/rust/regex/v1/BUILD.gn
-index f0d31d456cbf7ac3cd5f9254dbad783a683a559d..c407b8a6d2dcee372dba39c8945d2ee89e480157 100644
+index ea9dea31cdd372f5b992ca268f97840de892bd9b..d8f7211ca142d45878c2d7edd61b609c39874f4c 100644
 --- a/third_party/rust/regex/v1/BUILD.gn
 +++ b/third_party/rust/regex/v1/BUILD.gn
-@@ -68,5 +68,4 @@ cargo_crate("lib") {
-     "unicode-segment",
+@@ -71,5 +71,4 @@ cargo_crate("lib") {
+     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
    ]
  
 -  testonly = true

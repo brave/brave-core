@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 132702a6a7ed2f8fd3333d25334cd0aa1f6f30d0..ef17c31e60cab39ccaa5c28f63071a4ffa2f5614 100644
+index 753cde04f0a35b51a9f637381f5098158fae0ea3..dc8834ed692188b0388746a22919c61816a2543d 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1470,6 +1470,7 @@ source_set("extensions") {
-       "//components/enterprise/data_controls/core/browser",
-     ]
-   }
+@@ -1479,6 +1479,7 @@ source_set("extensions") {
+       ]
+     }
+   }  # if (enable_extensions)
 +  deps += brave_extensions_resources
  }
  
- # KeyedService factories initialization.
+ if (enable_extensions) {
