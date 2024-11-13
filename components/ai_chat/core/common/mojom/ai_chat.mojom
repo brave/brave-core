@@ -361,6 +361,7 @@ struct ConversationState {
   SiteInfo associated_content_info;
   bool should_send_content;
   APIError error;
+  bool should_summarize_immediately;
   // TODO(petemill): include conversation history, once
   // `OnConversationHistoryUpdate` is more intelligent (see TOOD in definition).
 };

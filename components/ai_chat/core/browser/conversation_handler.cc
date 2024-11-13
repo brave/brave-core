@@ -379,7 +379,7 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
       model_key, std::move(suggestions), suggestion_generation_status_,
       associated_content_info_->Clone(), should_send_page_contents_,
-      current_error_);
+      current_error_, true);
 
   std::move(callback).Run(std::move(state));
 }

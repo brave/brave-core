@@ -42,6 +42,7 @@ export interface ConversationContext extends CharCountContext {
   shouldShowLongPageWarning: boolean
   shouldShowLongConversationInfo: boolean
   shouldSendPageContents: boolean
+  shouldSummarizeImmediately: boolean
   inputText: string
   // TODO(petemill): rename to `filteredActions`?
   actionList: mojom.ActionGroup[]
@@ -82,6 +83,7 @@ const defaultContext: ConversationContext = {
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,
   shouldSendPageContents: true,
+  shouldSummarizeImmediately: false,
   inputText: '',
   actionList: [],
   selectedActionType: undefined,
@@ -206,7 +208,8 @@ export function ConversationContextProvider(
         suggestionStatus,
         associatedContentInfo,
         shouldSendContent,
-        error
+        error,
+        shouldSummarizeImmediately
       } } = await conversationHandler.getState()
       setPartialContext({
         conversationUuid,
@@ -216,7 +219,8 @@ export function ConversationContextProvider(
         suggestionStatus,
         associatedContentInfo,
         shouldSendPageContents: shouldSendContent,
-        currentError: error
+        currentError: error,
+        shouldSummarizeImmediately
       })
     }
 

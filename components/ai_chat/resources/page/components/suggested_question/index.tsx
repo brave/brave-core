@@ -14,6 +14,12 @@ export default function SuggestedQuestion({ question }: { question: string }) {
     context.conversationHandler?.submitHumanConversationEntry(question)
   }
 
+  React.useEffect(() => {
+    if (context.shouldSummarizeImmediately) {
+      handleQuestionSubmit('Summarize this page')
+    }
+  }, [])
+
   return <Button
     kind='outline'
     size='small'
