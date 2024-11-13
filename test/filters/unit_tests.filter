@@ -658,6 +658,14 @@
 -SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_OneModule
 -SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_TwoModulesWithPassword
 
+# These tests fail because our feature override for kSidePanelJourneys doesn't
+# seem to work correctly in these tests. Have not diagnosed the specific reason
+# why. We also run these tests as part of brave_unit_tests where they seem to
+# work correctly.
+-RecentTabsSubMenuModelTest.NoTabs
+-RecentTabsSubMenuModelTest.OtherDevices
+-RecentTabsSubMenuModelTest.OtherDevicesDynamicUpdate
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
