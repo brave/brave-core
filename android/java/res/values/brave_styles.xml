@@ -373,7 +373,7 @@
 
     <!-- Brave Shields -->
     <style name="BraveShieldsBlockCookieModeText" parent="DefaultRegular">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <!-- Nala tokens styles  -->

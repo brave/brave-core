@@ -24,6 +24,11 @@ struct DefaultShieldsSectionView: View {
 
   @ObservedObject var settings: AdvancedShieldsSettings
   @State private var cookieAlertType: CookieAlertType?
+  /// If we should force show the Block All Cookies row.
+  /// If a user disables the toggle with the feature flag disabled, we don't
+  /// want the row to disappear on the user. So if we are showing the row
+  /// when the view opens, it should remain visible until the view is dismissed.
+  @State private var showBlockAllCookies = false
 
   var body: some View {
     Section {
@@ -102,7 +107,9 @@ struct DefaultShieldsSectionView: View {
         option: Preferences.Shields.blockScripts
       )
 
-      if FeatureList.kBlockAllCookiesToggle.enabled || Preferences.Privacy.blockAllCookies.value {
+      if showBlockAllCookies || FeatureList.kBlockAllCookiesToggle.enabled
+        || Preferences.Privacy.blockAllCookies.value
+      {
         OptionToggleView(
           title: Strings.blockAllCookies,
           subtitle: Strings.blockCookiesDescription,
@@ -196,7 +203,11 @@ struct DefaultShieldsSectionView: View {
       Text(Strings.shieldsDefaults)
     } footer: {
       Text(Strings.shieldsDefaultsFooter)
-    }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+    }
+    .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    .onAppear {
+      showBlockAllCookies = Preferences.Privacy.blockAllCookies.value
+    }
   }
 
   private func toggleCookieSetting(with status: Bool) async {
