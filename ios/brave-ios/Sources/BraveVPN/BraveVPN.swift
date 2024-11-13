@@ -66,8 +66,10 @@ public class BraveVPN {
     helper.grdTunnelProviderManagerLocalizedDescription = connectionName
     helper.tunnelProviderBundleIdentifier = AppInfo.baseBundleIdentifier + ".BraveWireGuard"
     helper.appGroupIdentifier = AppInfo.sharedContainerIdentifier
-    helper.timezoneChangedBlock = {
-      Logger.module.debug("VPN Region Updated (TimeZone changed)")
+    helper.timezoneChangedBlock = { (changed, oldRegion, newRegion) in
+      Logger.module.debug(
+        "VPN Region Updated. Timezone changed from: \(oldRegion.timeZoneName) to: \(newRegion.timeZoneName)"
+      )
     }
 
     if case .notPurchased = vpnState {
@@ -147,6 +149,16 @@ public class BraveVPN {
         GRDVPNHelper.disableSmartProxyRouting()
         BraveVPN.smartProxyRoutingHosts = []
       }
+    }
+  }
+
+  public static var isKillSwitchEnabled: Bool {
+    get {
+      helper.killSwitchEnabled
+    }
+
+    set {
+      helper.killSwitchEnabled = newValue
     }
   }
 

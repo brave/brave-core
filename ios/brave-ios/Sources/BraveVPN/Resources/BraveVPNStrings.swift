@@ -1228,5 +1228,43 @@ extension Strings {
       comment:
         "The text that briefly explains how Brave VPN subscription is going to be charged and managed."
     )
+
+    public static let settingsVPNSmartProxyEnabled =
+      NSLocalizedString(
+        "vpn.settingsVPNSmartProxyEnabled",
+        bundle: .module,
+        value: "Enable Smart Proxy",
+        comment: "Whether the VPN's Smart-Proxy feature is enabled or not"
+      )
+
+    public static let settingsVPNSmartProxyDescription =
+      NSLocalizedString(
+        "vpn.settingsVPNSmartProxyDescription",
+        bundle: .module,
+        value:
+          "Smart Proxy Routing ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third-party services, such as Netflix, Hulu, BBC iPlayer, Pandora, etc.",
+        comment:
+          "The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings."
+      )
+
+    public static let settingsVPNKillSwitchTitle =
+      NSLocalizedString(
+        "vpn.settingsVPNKillSwitchTitle",
+        bundle: .module,
+        value:
+          "Enable Kill Switch",
+        comment:
+          "The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc."
+      )
+
+    public static let settingsVPNKillSwitchDescription =
+      NSLocalizedString(
+        "vpn.settingsVPNKillSwitchDescription",
+        bundle: .module,
+        value:
+          "When enabled, if your VPN connection drops unexpectedly, your device will automatically be disconnected from the internet, to prevent IP-Address and Data leaks.",
+        comment:
+          "The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc."
+      )
   }
 }

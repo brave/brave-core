@@ -36,6 +36,7 @@ public class BraveVPNSettingsViewController: TableViewController {
   private let resetCellId = "reset"
   private let vpnStatusSectionCellId = "vpnStatus"
   private let vpnSmartProxySectionCellId = "vpnSmartProxy"
+  private let vpnKillSwitchSectionCellId = "vpnKillSwitch"
 
   private var vpnConnectionStatusSwitch: SwitchAccessoryView?
 
@@ -153,9 +154,16 @@ public class BraveVPNSettingsViewController: TableViewController {
     )
 
     let vpnSmartProxyToggleView = SwitchAccessoryView(
-      initialValue: GRDVPNHelper.smartProxyRoutingEnabled(),
+      initialValue: BraveVPN.isSmartProxyRoutingEnabled,
       valueChange: { isSmartProxyEnabled in
         BraveVPN.isSmartProxyRoutingEnabled = isSmartProxyEnabled
+      }
+    )
+
+    let vpnKillSwitchToggleView = SwitchAccessoryView(
+      initialValue: BraveVPN.isKillSwitchEnabled,
+      valueChange: { isKillSwitchEnabled in
+        BraveVPN.isKillSwitchEnabled = isKillSwitchEnabled
       }
     )
 
@@ -175,9 +183,18 @@ public class BraveVPNSettingsViewController: TableViewController {
           uuid: vpnStatusSectionCellId
         ),
         Row(
-          text: "Use Smart Proxy",
+          text: Strings.VPN.settingsVPNSmartProxyEnabled,
+          detailText: Strings.VPN.settingsVPNSmartProxyDescription,
           accessory: .view(vpnSmartProxyToggleView),
+          cellClass: MultilineSubtitleCell.self,
           uuid: vpnSmartProxySectionCellId
+        ),
+        Row(
+          text: Strings.VPN.settingsVPNKillSwitchTitle,
+          detailText: Strings.VPN.settingsVPNKillSwitchDescription,
+          accessory: .view(vpnKillSwitchToggleView),
+          cellClass: MultilineSubtitleCell.self,
+          uuid: vpnKillSwitchSectionCellId
         ),
       ],
       uuid: vpnStatusSectionCellId
