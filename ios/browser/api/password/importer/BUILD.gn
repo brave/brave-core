@@ -1,0 +1,34 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("importer") {
+  sources = [
+    "brave_password_importer.h",
+    "brave_password_importer.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/password_manager/core/browser/import:importer",
+    "//brave/components/password_manager/services/csv_password:lib",
+    "//components/password_manager/core/browser/password_store:password_store_interface",
+    "//components/password_manager/core/browser/ui",
+    "//ios/chrome/browser/affiliations/model:model",
+    "//ios/chrome/browser/passwords/model:store_factory",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/webauthn/model",
+    "//ios/web/public/thread",
+    "//net",
+    "//ui/base:base",
+    "//url",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}

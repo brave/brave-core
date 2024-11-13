@@ -1,0 +1,32 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("importer") {
+  sources = [
+    "brave_history_importer.h",
+    "brave_history_importer.mm",
+    "history_json_reader.cc",
+    "history_json_reader.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/history/core/browser",
+    "//components/keyed_service/core:core",
+    "//ios/chrome/browser/history/model",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public/thread",
+    "//net",
+    "//ui/base:base",
+    "//url",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}

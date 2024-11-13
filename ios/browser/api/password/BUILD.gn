@@ -18,6 +18,7 @@ source_set("password") {
 
   deps = [
     "//base",
+    "//brave/ios/browser/api/password/importer",
     "//components/keyed_service/ios:ios",
     "//components/password_manager/core/browser/",
     "//ios/chrome/browser/passwords/model",
