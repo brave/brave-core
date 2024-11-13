@@ -34,8 +34,8 @@ public class WebcompatReporterServiceFactory {
     private WebcompatReporterServiceFactory() {}
 
     public WebcompatReporterHandler getWebcompatReporterHandler(
-            ConnectionErrorHandler connectionErrorHandler) {
-        Profile profile = Utils.getProfile(false); // Always use regular profile
+            ConnectionErrorHandler connectionErrorHandler, boolean isIncognito) {
+        Profile profile = Utils.getProfile(isIncognito);
         long nativeHandle =
                 WebcompatReporterServiceFactoryJni.get()
                         .getInterfaceToWebcompatReporterService(profile);

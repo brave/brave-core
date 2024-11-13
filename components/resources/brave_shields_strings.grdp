@@ -117,6 +117,14 @@
     Clears cookies and other site data when you close a site.
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL" desc="Shields panel toggle label that would save webcompat report contact info data when enabled.">
+    Store contact information for future broken site reports
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL_SUBLABEL" desc="Description for shields panel toggle label that would save webcompat report contact info data when enabled.">
+    If you provide contact info it will be stored for future reports
+  </message>
+
   <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies.">
     Block all cookies
   </message>

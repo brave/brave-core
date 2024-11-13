@@ -121,6 +121,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           type: chrome.settingsPrivate.PrefType.BOOLEAN,
           value: true,
         }
+      },
+      isContactInfoSaveFlagEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
+        }
       }
     }
   }
@@ -186,6 +194,13 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         value: value,
       }
     })
+    this.browserProxy_.getContactInfoSaveFlag().then(value => {
+      this.isContactInfoSaveFlagEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
+    })
   }
 
   onAdControlChange_ () {
@@ -219,6 +234,12 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   onForgetFirstPartyStorageToggleChange_ () {
     this.browserProxy_.setForgetFirstPartyStorageEnabled(
       this.$.forgetFirstPartyStorageControlType.checked
+    )
+  }
+
+  onSaveContactInfoToggle_() {
+    this.browserProxy_.setContactInfoSaveFlag(
+      this.$.setContactInfoSaveFlagToggle.checked
     )
   }
 }

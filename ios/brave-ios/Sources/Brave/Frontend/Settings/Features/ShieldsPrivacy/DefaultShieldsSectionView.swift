@@ -162,6 +162,12 @@ struct DefaultShieldsSectionView: View {
         toggle: $settings.cookieConsentBlocking
       )
 
+      ToggleView(
+        title: Strings.braveShieldsSaveContactInfo,
+        subtitle: Strings.braveShieldsSaveContactInfoDescription,
+        toggle: $settings.isSaveContactInfoEnabled
+      )
+
       if FeatureList.kBraveShredFeature.enabled {
         Picker(selection: $settings.shredLevel) {
           ForEach(SiteShredLevel.allCases) { level in

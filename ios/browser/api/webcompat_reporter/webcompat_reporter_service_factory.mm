@@ -6,9 +6,12 @@
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_factory.h"
 
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
+#include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_delegate.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace webcompat_reporter {
@@ -37,16 +40,31 @@ WebcompatReporterServiceFactory::WebcompatReporterServiceFactory()
 
 WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() {}
 
+void WebcompatReporterServiceFactory::RegisterBrowserStatePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  webcompat_reporter::prefs::RegisterProfilePrefs(
+      static_cast<PrefRegistrySimple*>(registry));
+}
+
 std::unique_ptr<KeyedService>
 WebcompatReporterServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
+  auto* browser_state = ChromeBrowserState::FromBrowserState(context);
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
       context->GetSharedURLLoaderFactory());
   component_updater::ComponentUpdateService* cus =
       GetApplicationContext()->GetComponentUpdateService();
   return std::make_unique<WebcompatReporterService>(
+      !browser_state || browser_state->IsOffTheRecord()
+          ? nullptr
+          : browser_state->GetPrefs(),
       std::make_unique<WebcompatReporterServiceDelegateImpl>(cus),
       std::move(report_uploader));
+}
+
+web::BrowserState* WebcompatReporterServiceFactory::GetBrowserStateToUse(
+    web::BrowserState* context) const {
+  return GetBrowserStateOwnInstanceInIncognito(context);
 }
 
 }  // namespace webcompat_reporter

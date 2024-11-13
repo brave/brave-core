@@ -161,6 +161,7 @@ source_set("extensions") {
     "//brave/components/request_otr/common",
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
+    "//brave/components/webcompat_reporter/common",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/extensions",

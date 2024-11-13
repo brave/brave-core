@@ -11,9 +11,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/values.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
+#include "brave/components/webcompat_reporter/common/pref_names.h"
 
 namespace {
 
@@ -87,14 +87,33 @@ struct ReportFiller {
       service_delegate;
 };
 
+void ProcessContactInfo(
+    PrefService* profile_prefs,
+    const webcompat_reporter::mojom::ReportInfoPtr& report_info) {
+  if (!profile_prefs) {
+    return;
+  }
+  if (!report_info->contact || report_info->contact->empty()) {
+    return;
+  }
+  profile_prefs->SetString(
+      webcompat_reporter::prefs::kContactInfoPrefs,
+      profile_prefs->GetBooleanOr(
+          webcompat_reporter::prefs::kContactInfoSaveFlagPrefs, false)
+          ? report_info->contact.value()
+          : "");
+}
+
 }  // namespace
 
 namespace webcompat_reporter {
 
 WebcompatReporterService::WebcompatReporterService(
+    PrefService* profile_prefs,
     std::unique_ptr<Delegate> service_delegate,
     std::unique_ptr<WebcompatReportUploader> report_uploader)
-    : service_delegate_(std::move(service_delegate)),
+    : profile_prefs_(profile_prefs),
+      service_delegate_(std::move(service_delegate)),
       report_uploader_(std::move(report_uploader)) {}
 
 WebcompatReporterService::~WebcompatReporterService() = default;
@@ -120,7 +139,50 @@ void WebcompatReporterService::SubmitWebcompatReport(
       .FillReportWithComponetsInfo()
       .FillReportWithAdblockListNames();
 
+  ProcessContactInfo(profile_prefs_, report_info);
+
   report_uploader_->SubmitReport(std::move(report_info));
+}
+
+void WebcompatReporterService::SetContactInfoSaveFlag(bool value) {
+  if (!profile_prefs_) {
+    return;
+  }
+  if (!value) {
+    profile_prefs_->SetString(prefs::kContactInfoPrefs, "");
+  }
+  profile_prefs_->SetBoolean(prefs::kContactInfoSaveFlagPrefs, value);
+}
+
+void WebcompatReporterService::GetContactInfoSaveFlag(
+    GetContactInfoSaveFlagCallback callback) {
+  if (!profile_prefs_) {
+    std::move(callback).Run(false);
+    return;
+  }
+  auto save_flag_value =
+      profile_prefs_->GetBoolean(prefs::kContactInfoSaveFlagPrefs);
+  std::move(callback).Run(std::move(save_flag_value));
+}
+
+void WebcompatReporterService::GetContactInfo(GetContactInfoCallback callback) {
+  if (!profile_prefs_) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  auto save_flag_value =
+      profile_prefs_->GetBoolean(prefs::kContactInfoSaveFlagPrefs);
+  if (!save_flag_value) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto contact_value = profile_prefs_->GetString(prefs::kContactInfoPrefs);
+  std::move(callback).Run(std::move(contact_value));
+}
+
+void WebcompatReporterService::SetPrefServiceTest(PrefService* pref_service) {
+  profile_prefs_ = pref_service;
 }
 
 }  // namespace webcompat_reporter

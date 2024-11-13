@@ -12,6 +12,7 @@ import { RectangularCard } from './basic'
 
 interface Props {
   siteUrl: string
+  contactInfo: string
   isErrorPage: boolean
   submitted: boolean
   onSubmitReport: () => void
@@ -26,6 +27,7 @@ export default class WebcompatReportModal extends React.PureComponent<Props, {}>
   render () {
     const {
       siteUrl,
+      contactInfo,
       submitted,
       onSubmitReport,
       isErrorPage,
@@ -45,6 +47,7 @@ export default class WebcompatReportModal extends React.PureComponent<Props, {}>
           ) : (
             <ReportView
               siteUrl={siteUrl}
+              contactInfo={contactInfo}
               isErrorPage={isErrorPage}
               isHttpPage={isHttpPage}
               isLocalPage={isLocalPage}

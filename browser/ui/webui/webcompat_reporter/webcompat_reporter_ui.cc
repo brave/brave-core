@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
@@ -26,6 +27,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "brave/components/webcompat_reporter/resources/grit/webcompat_reporter_generated_map.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -52,14 +54,13 @@ namespace {
 constexpr char kUISourceHistogramName[] = "Brave.Webcompat.UISource";
 constexpr int kMaxScreenshotPixelCount = 1280 * 720;
 
-std::string BoolToString(bool value) {
-  return value ? "true" : "false";
-}
-
 }  // namespace
 
 WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
-    : ui_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
+    : reporter_service_(
+          WebcompatReporterServiceFactory::GetServiceForContext(profile)),
+      pref_service_(profile->GetPrefs()),
+      ui_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
       pending_report_(mojom::ReportInfo::New()) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
@@ -244,11 +245,8 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
     pending_report_->contact = contact_arg->GetString();
   }
 
-  auto* reporter_service =
-      WebcompatReporterServiceFactory::GetServiceForContext(
-          Profile::FromWebUI(web_ui()));
-  if (reporter_service) {
-    reporter_service->SubmitWebcompatReport(pending_report_->Clone());
+  if (reporter_service_) {
+    reporter_service_->SubmitWebcompatReport(pending_report_->Clone());
   }
 }
 

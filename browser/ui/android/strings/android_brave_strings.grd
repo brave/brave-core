@@ -1609,6 +1609,12 @@ Are you sure you want to do this?
       <message name="IDS_FINGERPRINT_LANGUAGE_SWITCH_SUMMARY" desc="Title for shields option fingerprint language">
         Reduces how much websites can learn about you based on your browser's language settings.
       </message>
+      <message name="IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_SWITCH" desc="Shields panel toggle label that would save webcompat report contact info data when enabled.">
+        Store contact information for future broken site reports
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_SWITCH_SUMMARY" desc="Description for shields panel toggle label that would save webcompat report contact info data when enabled.">
+        If you provide contact info it will be stored for future reports
+      </message>
       <message name="IDS_BLOCK_FINGERPRINTING_TEXT" desc="Text for shields option.">
         Prevents websites from recognizing your device
       </message>
@@ -1674,6 +1680,15 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT_VIEW_SCREENSHOT_LABEL" desc="Link text for viewing a screenshot for a broken website report">
           View screenshot
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_DETAILS_PLACEHOLDER" desc="Placeholder text for the optional details field in the broken website report">
+          Additional details (optional)
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">
+          Contact me at: (optional)
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">
+          Email, Twitter, etc.
       </message>
       <message name="IDS_THANK_YOU" desc="Title for thank you UI for shields.">
         Thank you!

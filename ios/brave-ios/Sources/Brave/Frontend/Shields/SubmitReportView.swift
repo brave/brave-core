@@ -48,6 +48,19 @@ struct SubmitReportView: View {
           .textFieldStyle(BraveTextFieldStyle())
           .autocorrectionDisabled()
           .textInputAutocapitalization(.never)
+          .onAppear {
+            guard
+              let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
+                privateMode: isPrivateBrowsing
+              )
+            else {
+              return
+            }
+            Task { @MainActor in
+              self.contactDetails = await webcompatReporterAPI.contactInfo() ?? ""
+            }
+          }
+          Text(Strings.Shields.reportBrokenContactMeDescription).font(.caption)
         }
       }
       .padding()
@@ -117,21 +130,23 @@ struct SubmitReportView: View {
     else {
       return
     }
+    let version = String(
+      format: "%@ (%@)",
+      AppInfo.appVersion,
+      AppInfo.buildNumber
+    )
+    let adblkList = FilterListStorage.shared.filterLists
+      .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
+      .joined(separator: ",")
     webcompatReporterAPI.submitWebcompatReport(
       reportInfo: .init(
         channel: AppConstants.buildChannel.webCompatReportName,
-        braveVersion: String(
-          format: "%@ (%@)",
-          AppInfo.appVersion,
-          AppInfo.buildNumber
-        ),
+        braveVersion: version,
         reportUrl: url.absoluteString,
         shieldsEnabled: String(!domain.areAllShieldsOff),
         adBlockSetting: domain.globalBlockAdsAndTrackingLevel.reportLabel,
         fpBlockSetting: domain.finterprintProtectionLevel.reportLabel,
-        adBlockListNames: FilterListStorage.shared.filterLists
-          .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
-          .joined(separator: ","),
+        adBlockListNames: adblkList,
         languages: Locale.current.language.languageCode?.identifier,
         languageFarbling: String(true),
         braveVpnConnected: String(BraveVPN.isConnected),

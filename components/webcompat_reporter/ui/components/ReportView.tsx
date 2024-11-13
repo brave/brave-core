@@ -26,10 +26,15 @@ import {
 
 // Localization data
 import { getLocale } from '../../../common/locale'
-import { captureScreenshot, clearScreenshot, getCapturedScreenshot } from '../browser_proxy'
+import {
+  captureScreenshot,
+  clearScreenshot,
+  getCapturedScreenshot,
+} from '../browser_proxy'
 
 interface Props {
   siteUrl: string
+  contactInfo: string
   isErrorPage: boolean
   isHttpPage: boolean
   isLocalPage: boolean
@@ -49,7 +54,16 @@ const WEBCOMPAT_INFO_WIKI_URL = 'https://github.com/brave/brave-browser/wiki/Web
 export default class ReportView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { details: '', contact: '', attachScreenshot: false, screenshotObjectUrl: null }
+    this.state = {
+      details: '',
+      contact: props.contactInfo,
+      attachScreenshot: false,
+      screenshotObjectUrl: null
+    }
+  }
+
+  handleContactInfoChange = async (ev: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ contact: ev.target.value })
   }
 
   handleScreenshotChange = async (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,7 +145,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
               </InputLabel>
               <Input
                 placeholder={getLocale('reportContactPlaceholder')}
-                onChange={(ev) => this.setState({ contact: ev.target.value })}
+                onChange={this.handleContactInfoChange}
                 type='text'
                 maxLength={2000}
                 value={contact}
