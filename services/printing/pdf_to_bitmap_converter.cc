@@ -28,6 +28,7 @@ void PdfToBitmapConverter::GetPdfPageCount(
   if (!pdf_map.IsValid()) {
     DLOG(ERROR) << "Failed to decode memory map for PDF";
     std::move(callback).Run(std::nullopt);
+    return;
   }
   auto pdf_buffer = pdf_map.GetMemoryAsSpan<const uint8_t>();
   int page_count;
@@ -47,6 +48,7 @@ void PdfToBitmapConverter::GetBitmap(
   if (!pdf_map.IsValid()) {
     DLOG(ERROR) << "Failed to decode memory map for PDF";
     std::move(callback).Run(SkBitmap());
+    return;
   }
   auto pdf_buffer = pdf_map.GetMemoryAsSpan<const uint8_t>();
 
