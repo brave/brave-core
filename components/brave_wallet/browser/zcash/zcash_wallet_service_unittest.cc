@@ -331,7 +331,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   orchard_storage()
       .AsyncCall(&ZCashOrchardStorage::UpdateNotes)
       .WithArgs(account_id.Clone(), std::vector<OrchardNote>({note}),
-                std::vector<OrchardNullifier>(), 50000, "hash50000")
+                std::vector<OrchardNoteSpend>(), 50000, "hash50000")
       .Then(std::move(update_notes_callback));
 
   task_environment_.RunUntilIdle();
@@ -416,7 +416,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
   orchard_storage()
       .AsyncCall(&ZCashOrchardStorage::UpdateNotes)
       .WithArgs(account_id.Clone(), std::vector<OrchardNote>({note}),
-                std::vector<OrchardNullifier>(), 50000, "hash50000")
+                std::vector<OrchardNoteSpend>(), 50000, "hash50000")
       .Then(std::move(update_notes_callback));
 
   task_environment_.RunUntilIdle();

@@ -186,10 +186,10 @@ class ZCashShieldSyncServiceTest : public testing::Test {
             // First 2 notes are spent
             if (block->height == 255) {
               result.spent_notes.push_back(
-                  GenerateMockNullifier(account_id, block->height, 1));
+                  GenerateMockNoteSpend(account_id, block->height, 1));
             } else if (block->height == 265) {
               result.spent_notes.push_back(
-                  GenerateMockNullifier(account_id, block->height, 2));
+                  GenerateMockNoteSpend(account_id, block->height, 2));
             }
           }
           std::move(callback).Run(result);
@@ -312,7 +312,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
               // First 2 notes are spent
               if (block->height == 855) {
                 result.spent_notes.push_back(
-                    GenerateMockNullifier(account_id, block->height, 3));
+                    GenerateMockNoteSpend(account_id, block->height, 3));
               }
             }
             std::move(callback).Run(result);
@@ -424,7 +424,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
               // Add a nullifier for previous note
               if (block->height == 905) {
                 result.spent_notes.push_back(
-                    GenerateMockNullifier(account_id, block->height, 3));
+                    GenerateMockNoteSpend(account_id, block->height, 3));
               }
             }
             std::move(callback).Run(result);
