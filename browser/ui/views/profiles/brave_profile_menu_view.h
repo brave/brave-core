@@ -28,8 +28,7 @@ class BraveProfileMenuView : public ProfileMenuView {
       const std::u16string& title,
       const std::u16string& subtitle = std::u16string(),
       const std::u16string& management_label = std::u16string(),
-      const ui::ThemedVectorIcon& avatar_header_art =
-          ui::ThemedVectorIcon()) override;
+      const gfx::VectorIcon* header_art_icon = nullptr) override;
   void BuildAutofillButtons() override;
   void BuildSyncInfo() override;
   void BuildFeatureButtons() override;
