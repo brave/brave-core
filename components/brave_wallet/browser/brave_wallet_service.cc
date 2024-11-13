@@ -1176,10 +1176,8 @@ void BraveWalletService::OnGetImportInfo(
             false,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
         break;
-      default:
-        NOTREACHED();
     }
-    return;
+    NOTREACHED();
   }
 
   bool is_valid_mnemonic = keyring_service_->RestoreWalletSync(

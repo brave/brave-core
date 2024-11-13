@@ -1765,6 +1765,13 @@ void JsonRpcService::UnstoppableDomainsGetWalletAddr(
     return;
   }
 
+  if (!(token->coin == mojom::CoinType::ETH ||
+        token->coin == mojom::CoinType::SOL ||
+        token->coin == mojom::CoinType::FIL)) {
+    std::move(callback).Run("", mojom::ProviderError::kSuccess, "");
+    return;
+  }
+
   unstoppable_domains::WalletAddressKey key = {domain, token->coin,
                                                token->symbol, token->chain_id};
   if (ud_get_eth_addr_calls_.HasCall(key)) {

@@ -3884,6 +3884,22 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidDomain) {
   }
 }
 
+TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidCoin) {
+  base::MockCallback<JsonRpcService::UnstoppableDomainsGetWalletAddrCallback>
+      callback;
+
+  for (auto coin : {mojom::CoinType::BTC, mojom::CoinType::ZEC}) {
+    auto token = mojom::BlockchainToken::New();
+    token->coin = coin;
+    EXPECT_CALL(callback, Run("", mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+        "brave.crypto", token.Clone(), callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+
+  EXPECT_TRUE(AllCoinsTested());
+}
+
 TEST_F(JsonRpcServiceUnitTest, IsValidEnsDomain) {
   std::vector<std::string> valid_domains = {"brave.eth", "test.brave.eth",
                                             "brave-test.test-dev.eth"};
