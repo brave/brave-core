@@ -2510,6 +2510,11 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
     if (unified_address) {
       result->unified_address = *unified_address;
     }
+    auto orchard_address = zcash_keyring->GetShieldedAddress(
+        *mojom::ZCashKeyId::New(account_id->account_index, 0, 0));
+    if (orchard_address) {
+      result->orchard_address = orchard_address->address_string;
+    }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
     return result;
