@@ -56,21 +56,6 @@ leo-input:not(:focus):has(> .red) {
   z-index: 1;
 }
 
-#password-dropdown.weak {
-  --primary-color: var(--leo-color-systemfeedback-error-icon);
-  --secondary-color: var(--leo-color-systemfeedback-error-background);
-}
-
-#password-dropdown.medium {
-  --primary-color: var(--leo-color-systemfeedback-warning-icon);
-  --secondary-color: var(--leo-color-systemfeedback-warning-background);
-}
-
-#password-dropdown.strong {
-  --primary-color: var(--leo-color-systemfeedback-success-icon);
-  --secondary-color: var(--leo-color-systemfeedback-success-background);
-}
-
 leo-tooltip {
   --leo-tooltip-padding: 0px;
   width: 100%;
@@ -79,34 +64,6 @@ leo-tooltip {
 leo-tooltip > [slot=content] {
   padding: var(--leo-spacing-l);
   /* width: calc(var(--cr-dialog-width) - 2 * var(--leo-spacing-2xl) - 2 * var(--leo-spacing-l)); */
-}
-
-.password-strength-indicator {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-}
-
-.password-strength-bar {
-  background-color: var(--secondary-color);
-  border-radius: var(--leo-radius-m);
-  height: 4px;
-  transition: 750ms;
-  width: 376px;
-}
-
-.password-strength {
-  background-color: var(--primary-color);
-  border-radius: var(--leo-radius-m);
-  height: 100%;
-  transition: 750ms;
-  width: calc(1% * var(--password-strength));
-}
-
-.password-strength-category {
-  color: var(--primary-color);
-  font: var(--leo-font-small-regular);
-  transition: 750ms;
 }
 
 .password-requirement {

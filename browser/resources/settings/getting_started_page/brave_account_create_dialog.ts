@@ -3,10 +3,105 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { CrLitElement, css, html } from '//resources/lit/v3_0/lit.rollup.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js';
+
+class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
+  static get is() {
+    return 'password-strength-meter'
+  }
+
+  static override get styles() {
+    return css`
+      :host {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      :host([category=Weak]) {
+        --primary-color: var(--leo-color-systemfeedback-error-icon);
+        --secondary-color: var(--leo-color-systemfeedback-error-background);
+      }
+
+      :host([category=Medium]) {
+        --primary-color: var(--leo-color-systemfeedback-warning-icon);
+        --secondary-color: var(--leo-color-systemfeedback-warning-background);
+      }
+
+      :host([category=Strong]) {
+        --primary-color: var(--leo-color-systemfeedback-success-icon);
+        --secondary-color: var(--leo-color-systemfeedback-success-background);
+      }
+
+      .bar {
+        background-color: var(--secondary-color);
+        border-radius: var(--leo-radius-m);
+        height: 4px;
+        transition: 750ms;
+        width: 376px;
+      }
+
+      .strength {
+        background-color: var(--primary-color);
+        border-radius: var(--leo-radius-m);
+        height: 100%;
+        transition: 750ms;
+        width: calc(1% * var(--strength));
+      }
+
+      .text {
+        color: var(--primary-color);
+        font: var(--leo-font-small-regular);
+        transition: 750ms;
+      }
+    `
+  }
+
+  override render() {
+    return html`
+      <div class="bar">
+        <div class="strength" style="--strength: ${this.strength}"></div>
+      </div>
+      <div class="text">
+        ${this.i18n(`braveAccountPasswordStrengthMeter${this.category}`)}
+      </div>
+    `
+  }
+
+  static override get properties() {
+    return {
+      category: { type: String, reflect: true },
+      strength: { type: Number },
+      text: { type: String },
+    }
+  }
+
+  override updated(changedProperties: Map<PropertyKey, unknown>) {
+    if (changedProperties.has('strength')) {
+      this.category = this.strength < 60
+        ? 'Weak'
+        : this.strength < 100
+          ? 'Medium'
+          : 'Strong'
+    }
+  }
+
+  protected category: string = 'Weak'
+  protected strength: number = 0
+  protected text: string = ''
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'password-strength-meter': PasswordStrengthMeter
+  }
+}
+
+customElements.define(
+  PasswordStrengthMeter.is, PasswordStrengthMeter)
 
 /**
  * @fileoverview
@@ -35,14 +130,16 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
       isChecked: { type: Boolean },
       password: { type: String },
       passwordConfirmation: { type: String },
-      percent: { type: Number },
+      passwordStrength: { type: Number },
     }
   }
 
   protected onEmailAddressInput(detail: { value: string }) {
     this.emailAddress = detail.value
-    this.isEmailAddressValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.emailAddress)
-    this.emailAddressEndsWithBraveAlias = this.emailAddress.endsWith('@bravealias.com')
+    this.isEmailAddressValid =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.emailAddress)
+    this.emailAddressEndsWithBraveAlias =
+      this.emailAddress.endsWith('@bravealias.com')
   }
 
   protected onAccountNameInput(detail: { value: string }) {
@@ -51,7 +148,7 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
 
   protected onCreatePasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.percent = this.regexps.filter(
+    this.passwordStrength = this.regexps.filter(
       regexp => regexp[1] = regexp[0].test(this.password)
     ).length / this.regexps.length * 100
   }
@@ -70,10 +167,6 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
     const isShowing = target.getAttribute('name') === 'eye-on'
     target.setAttribute('name', isShowing ? 'eye-off' : 'eye-on')
     target.parentElement!.setAttribute('type', isShowing ? 'password' : 'text')
-  }
-
-  protected getCategory() {
-    return this.percent < 60 ? 'weak' : this.percent < 100 ? 'medium' : 'strong'
   }
 
   protected getIconName() {
@@ -97,30 +190,30 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
     [
       /[a-z]/,
       false,
-      this.i18n('braveAccountPasswordStrengthCheckerTooltipLowercaseRequirement')
+      this.i18n('braveAccountPasswordStrengthMeterTooltipLowercaseRequirement')
     ],
     [
       /[A-Z]/,
       false,
-      this.i18n('braveAccountPasswordStrengthCheckerTooltipUppercaseRequirement')
+      this.i18n('braveAccountPasswordStrengthMeterTooltipUppercaseRequirement')
     ],
     [
       /[0-9]/,
       false,
-      this.i18n('braveAccountPasswordStrengthCheckerTooltipNumberRequirement')
+      this.i18n('braveAccountPasswordStrengthMeterTooltipNumberRequirement')
     ],
     [
       /[^a-zA-Z0-9]/,
       false,
-      this.i18n('braveAccountPasswordStrengthCheckerTooltipSpecialCharacterRequirement')
+      this.i18n('braveAccountPasswordStrengthMeterTooltipSpecialCharacterRequirement')
     ],
     [
       /^.{5,}$/,
       false,
-      this.i18n('braveAccountPasswordStrengthCheckerTooltipLengthRequirement')
+      this.i18n('braveAccountPasswordStrengthMeterTooltipLengthRequirement')
     ]
   ]
-  protected percent: number = 0
+  protected passwordStrength: number = 0
 }
 
 declare global {

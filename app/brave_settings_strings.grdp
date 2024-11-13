@@ -80,31 +80,31 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL" desc="Label for the 'Create a password' input field">
     Create a password
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_CHECKER_WEAK" desc="The password strength checker's 'weak' state">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK" desc="The password strength checker's 'weak' state">
     Weak
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_CHECKER_MEDIUM" desc="The password strength checker's 'medium' state">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM" desc="The password strength checker's 'medium' state">
     Medium
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_CHECKER_STRONG" desc="The password strength checker's 'strong' state">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG" desc="The password strength checker's 'strong' state">
     Strong
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_CHECKER_TOOLTIP_TITLE" desc="Title for the password strength checker's tooltip">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOOLTIP_TITLE" desc="Title for the password strength checker's tooltip">
     Passwords should have at least:
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_CHECKER_TOOLTIP_LOWERCASE_REQUIREMENT" desc="The password strength checker's lowercase letter requirement">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOOLTIP_LOWERCASE_REQUIREMENT" desc="The password strength checker's lowercase letter requirement">
     1 lowercase letter
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_CHECKER_TOOLTIP_UPPERCASE_REQUIREMENT" desc="The password strength checker's uppercase letter requirement">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOOLTIP_UPPERCASE_REQUIREMENT" desc="The password strength checker's uppercase letter requirement">
     1 uppercase letter
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_CHECKER_TOOLTIP_NUMBER_REQUIREMENT" desc="The password strength checker's number requirement">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOOLTIP_NUMBER_REQUIREMENT" desc="The password strength checker's number requirement">
     1 number
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_CHECKER_TOOLTIP_SPECIAL_CHARACTER_REQUIREMENT" desc="The password strength checker's special character requirement">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOOLTIP_SPECIAL_CHARACTER_REQUIREMENT" desc="The password strength checker's special character requirement">
     1 special character
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_CHECKER_TOOLTIP_LENGTH_REQUIREMENT" desc="The password strength checker's password length requirement">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOOLTIP_LENGTH_REQUIREMENT" desc="The password strength checker's password length requirement">
     5 characters
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL" desc="Label for the 'Confirm password' input field">

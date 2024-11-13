@@ -8,9 +8,11 @@ import { SettingsBraveAccountCreateDialogElement } from './brave_account_create_
 
 export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
   return html`<!--_html_template_start_-->
-    <settings-brave-account-dialog dialog-description="$i18n{braveAccountCreateDialogDescription}"
-                                   dialog-title="$i18n{braveAccountCreateDialogTitle}"
-                                   show-back-button>
+    <settings-brave-account-dialog
+      dialog-description="$i18n{braveAccountCreateDialogDescription}"
+      dialog-title="$i18n{braveAccountCreateDialogTitle}"
+      show-back-button
+    >
       <div slot="inputs">
         <leo-input placeholder="$i18n{braveAccountEmailAddressInputPlaceholder}"
                    showErrors
@@ -40,32 +42,15 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
                     slot="right-icon"
                     @click=${this.OnEyeIconClicked}>
           </leo-icon>
-          <div slot="errors" class="dropdown ${this.percent !== 0 ? 'visible' : ''} ${this.getCategory()}"
+          <div slot="errors" class="dropdown ${this.passwordStrength !== 0 ? 'visible' : ''}"
                              id="password-dropdown">
             <leo-tooltip mode="default"
                          mouseleaveTimeout="0"
                          placement="bottom">
-              <div class="password-strength-indicator">
-                <div class="password-strength-bar">
-                  <div class="password-strength"
-                       style="--password-strength: ${this.percent}">
-                  </div>
-                </div>
-                <div class="password-strength-category">
-                  ${(() => {
-                    switch(this.getCategory()) {
-                      case 'weak':
-                        return html`$i18n{braveAccountPasswordStrengthCheckerWeak}`
-                      case 'medium':
-                        return html`$i18n{braveAccountPasswordStrengthCheckerMedium}`
-                      case 'strong':
-                        return html`$i18n{braveAccountPasswordStrengthCheckerStrong}`
-                    }
-                  })()}
-                </div>
-              </div>
+              <password-strength-meter strength=${this.passwordStrength}>
+              </password-strength-meter>
               <div slot="content">
-                $i18n{braveAccountPasswordStrengthCheckerTooltipTitle}
+                $i18n{braveAccountPasswordStrengthMeterTooltipTitle}
                 ${this.regexps.map(([_, requirement_met, text]) => html`
                   <div class="password-requirement ${requirement_met ? 'requirement-met' : ''}">
                     <leo-icon name=${requirement_met ? 'check-circle-outline' : 'close-circle'}></leo-icon>
@@ -111,7 +96,7 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
         <leo-button ?isDisabled=${!this.isEmailAddressValid
                                || this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias
                                || !this.isAccountNameValid
-                               || this.percent !== 100
+                               || this.passwordStrength !== 100
                                || this.passwordConfirmation !== this.password
                                || !this.isChecked}
                     @click=${() => this.fire('create-account-button-clicked')}>
