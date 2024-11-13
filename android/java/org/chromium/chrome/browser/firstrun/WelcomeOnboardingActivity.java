@@ -259,10 +259,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mCurrentStep == 0) {
             showIntroPage();
         } else if (mCurrentStep == 1) {
-            if (shouldForceDefaultBrowserPrompt()) {
+            if (DayZeroHelper.getDayZeroExptFlag()
+                    || !BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+                showBrowserSelectionPage();
+            } else if (!isDefaultBrowser()) {
                 setDefaultBrowserAndProceedToNextStep();
             } else {
-                showBrowserSelectionPage();
+                nextOnboardingStep();
             }
         } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
             showAnalyticsConsentPage();
@@ -314,7 +317,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                         200);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                && !shouldForceDefaultBrowserPrompt()) {
+                && DayZeroHelper.getDayZeroExptFlag()) {
             mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
         } else {
             startTimer(3000);
