@@ -3632,7 +3632,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         When on
       </message>
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_BODY" desc="Text that describes the benefits users will get if they turn on the metrics sharing option.">
-        Help make Brave better for profiles who use it the way you do
+        Help make Brave better for people who use it the way you do
       </message>
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_HEADER" desc="Header of the section with info about the data that users share with Brave if they turn on the metric sharing option.">
         Things to consider
@@ -5985,7 +5985,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <message name="IDS_QR_CODE_SHARE_DESCRIPTION" desc="Text on QR Code sharing tab describing how to use the QR Code.">
-        To share with profiles nearby, let them scan this QR Code
+        To share with people nearby, let them scan this QR Code
       </message>
 
       <message name="IDS_QR_CODE_DOWNLOAD" desc="Text on QR Code download button.">
