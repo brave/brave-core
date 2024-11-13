@@ -15,7 +15,7 @@
 }
 
 .content {
-  border-radius: var(--leo-radius-xl) 0 0 var(--leo-radius-xl);
+  border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
   flex: 1 1 0%;
   overflow: hidden;
   display: flex;

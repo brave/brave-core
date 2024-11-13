@@ -361,6 +361,8 @@ leo_icons = [
   "shuffle-on.svg",
   "shuffle-toggle-on.svg",
   "sidepanel-open.svg",
+  "sidenav-collapse.svg",
+  "sidenav-expand.svg",
   "smartphone-desktop-off.svg",
   "smartphone-desktop.svg",
   "smartphone-hand.svg",

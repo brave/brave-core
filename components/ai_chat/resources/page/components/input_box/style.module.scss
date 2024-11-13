@@ -5,12 +5,12 @@
 
 .form {
   border-radius: var(--leo-radius-m);
-  border: 1px solid var(--leo-color-divider-strong);
+  border: 1px solid var(--leo-color-divider-subtle);
   width: 100%;
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   position: relative;
-  box-shadow: var(--leo-effect-elevation-01);
+  transition: all 0.2s ease-in-out;
 
   &:has(textarea:disabled) {
     border-color: var(--leo-color-divider-subtle);
@@ -20,6 +20,9 @@
       color: var(--leo-color-text-disabled);
     }
   }
+}
+.form:hover, .form:focus-visible{
+  box-shadow: var(--leo-effect-elevation-01);
 }
 
 .growWrap {
