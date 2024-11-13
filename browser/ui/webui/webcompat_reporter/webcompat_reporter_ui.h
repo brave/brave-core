@@ -28,6 +28,7 @@ class WebUI;
 namespace webcompat_reporter {
 
 class WebcompatReporterUI;
+class WebcompatReporterService;
 
 class WebcompatReporterUIConfig
     : public content::DefaultWebUIConfig<WebcompatReporterUI> {
@@ -61,6 +62,8 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
 
   void HandleSubmitReport(const base::Value::List& args);
 
+  raw_ptr<WebcompatReporterService> reporter_service_ = nullptr;
+  raw_ptr<PrefService> pref_service_ = nullptr;
   raw_ptr<content::RenderWidgetHostView> render_widget_host_view_;
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
 

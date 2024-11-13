@@ -113,7 +113,14 @@
     on-settings-boolean-control-change="onForgetFirstPartyStorageToggleChange_"
     pref="[[isForgetFirstPartyStorageEnabled_]]">
   </settings-toggle-button>
-</div>
+  <settings-toggle-button id="setContactInfoSaveFlagToggle"
+      class="cr-row"
+      pref="[[isContactInfoSaveFlagEnabled_]]"
+      label="$i18n{braveShieldsSaveContactInfo}"
+      sub-label="$i18n{braveShieldsSaveContactInfoSublabel}"
+      on-settings-boolean-control-change="onSaveContactInfoToggle_">
+  </settings-toggle-button>
+  </div>
 <settings-animated-pages id="filters" section="shields">
   <div route-path="default">
     <cr-link-row

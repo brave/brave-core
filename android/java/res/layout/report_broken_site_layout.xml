@@ -49,6 +49,49 @@
         android:textSize="16sp"
         android:textColor="@color/default_icon_color_tint_list"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="end">
+
+    <EditText
+        android:id="@+id/details_info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:hint="@string/report_broken_site_details_placeholder"
+        android:importantForAutofill="no"
+        android:textSize="14sp"
+        android:inputType="textMultiLine"
+        android:textColor="@color/wallet_text_color"
+        android:textColorHint="@color/brave_theme_hint_text" />
+
+    <TextView
+        android:id="@+id/contact_info_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/default_icon_color_tint_list"
+        android:text="@string/report_broken_site_contact_label"/>
+
+    <EditText
+        android:id="@+id/contact_info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:hint="@string/report_broken_site_contact_placeholder"
+        android:importantForAutofill="no"
+        android:maxLines="1"
+        android:maxLength="30"
+        android:textSize="14sp"
+        android:inputType="text"
+        android:textColor="@color/wallet_text_color"
+        android:textColorHint="@color/brave_theme_hint_text" />
+    
+    </LinearLayout>
+
     <android.widget.CheckBox
         android:id="@+id/checkbox_include_screenshot"
         android:layout_width="wrap_content"
