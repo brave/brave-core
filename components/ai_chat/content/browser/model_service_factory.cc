@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/content/browser/model_service_factory.h"
 
+#include "base/check.h"
 #include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"

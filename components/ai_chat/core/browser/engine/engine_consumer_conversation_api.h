@@ -11,9 +11,13 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+
+template <class T>
+class scoped_refptr;
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -22,6 +26,10 @@ class SharedURLLoaderFactory;
 namespace ai_chat {
 
 class AIChatCredentialManager;
+namespace mojom {
+class LeoModelOptions;
+class ModelOptions;
+}  // namespace mojom
 
 // An AI Chat engine consumer that uses the remote HTTP Brave Conversation API.
 // Converts between AI Chat's Conversation actions and data model

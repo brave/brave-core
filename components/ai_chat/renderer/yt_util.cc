@@ -5,9 +5,13 @@
 
 #include "brave/components/ai_chat/renderer/yt_util.h"
 
+#include <functional>
+#include <ios>
 #include <optional>
+#include <ostream>
 #include <string>
 
+#include "base/containers/checked_iterators.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/ranges/algorithm.h"

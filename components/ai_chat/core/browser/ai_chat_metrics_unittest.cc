@@ -5,15 +5,19 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 
+#include <stddef.h>
+
 #include <limits>
-#include <memory>
+#include <string>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 
-#include "base/memory/raw_ptr.h"
+#include "base/numerics/clamped_math.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"

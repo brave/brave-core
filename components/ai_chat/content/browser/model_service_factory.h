@@ -9,6 +9,11 @@
 #include <memory>
 
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "components/keyed_service/core/keyed_service.h"
+
+namespace content {
+class BrowserContext;
+}  // namespace content
 
 namespace base {
 

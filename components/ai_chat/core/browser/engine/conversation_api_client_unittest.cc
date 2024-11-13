@@ -5,23 +5,26 @@
 
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 
-#include <memory>
+#include <list>
 #include <optional>
 #include <string>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
-#include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -29,6 +32,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "components/prefs/testing_pref_service.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -36,6 +40,19 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+#include "url/url_constants.h"
+
+class PrefService;
+namespace mojo {
+template <typename Interface>
+class PendingRemote;
+}  // namespace mojo
+namespace skus {
+namespace mojom {
+class SkusService;
+}  // namespace mojom
+}  // namespace skus
 
 using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
 using ::testing::_;

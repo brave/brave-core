@@ -5,8 +5,6 @@
 
 #include "brave/components/ai_chat/core/common/pref_names.h"
 
-#include <string>
-
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

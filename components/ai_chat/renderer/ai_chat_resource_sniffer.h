@@ -9,11 +9,21 @@
 #include <memory>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer_throttle_delegate.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 
+class GURL;
+namespace network {
+namespace mojom {
+class URLResponseHead;
+}  // namespace mojom
+struct ResourceRequest;
+}  // namespace network
+
 namespace ai_chat {
+class AIChatResourceSnifferThrottleDelegate;
 
 class AIChatResourceSniffer : public body_sniffer::BodyHandler {
  public:

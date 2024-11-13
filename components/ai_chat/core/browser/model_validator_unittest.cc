@@ -5,13 +5,16 @@
 
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 
-#include <limits>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
+#include "base/numerics/checked_math.h"
+#include "base/strings/string_number_conversions.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 

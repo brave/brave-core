@@ -7,21 +7,31 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_BRAVE_SEARCH_THROTTLE_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "content/public/browser/navigation_throttle.h"
 #include "content/public/browser/permission_result.h"
 
+namespace blink {
+namespace mojom {
+enum class PermissionStatus : int32_t;
+}  // namespace mojom
+}  // namespace blink
+
 namespace content {
 class WebContents;
+class NavigationHandle;
 }
 
 class PrefService;
 
 namespace ai_chat {
+class AIChatService;
 
 // A network throttle which intercepts Brave Search requests.
 // Currently the only use case is to intercept requests to open Leo AI chat, so

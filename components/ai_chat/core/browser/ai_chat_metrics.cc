@@ -5,14 +5,28 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 
+#include <limits.h>
+
 #include <algorithm>
+#include <atomic>
+#include <cmath>
+#include <compare>
+#include <cstdint>
+#include <functional>
 #include <limits>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
-#include "base/metrics/histogram_functions.h"
+#include "base/functional/bind.h"
+#include "base/location.h"
+#include "base/metrics/histogram_base.h"
+#include "base/metrics/histogram_functions_internal_overloads.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
+#include "base/numerics/clamped_math.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"

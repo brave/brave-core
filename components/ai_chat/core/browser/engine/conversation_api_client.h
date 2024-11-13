@@ -7,13 +7,25 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_CLIENT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace api_request_helper {
 class APIRequestResult;
@@ -24,6 +36,8 @@ class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace ai_chat {
+class AIChatCredentialManager;
+struct CredentialCacheEntry;
 
 // Performs remote request to the remote HTTP Brave Conversation API.
 class ConversationAPIClient {

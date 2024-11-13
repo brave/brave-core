@@ -6,16 +6,28 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 
+#include <cstdint>
+#include <map>
 #include <memory>
 #include <optional>
+#include <ostream>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
+#include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -29,6 +41,12 @@
 #include "url/gurl.h"
 
 class AIChatUIBrowserTest;
+namespace mojo {
+template <typename Interface>
+class PendingRemote;
+template <typename T>
+class PendingReceiver;
+}  // namespace mojo
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -39,6 +57,7 @@ namespace ai_chat {
 class AIChatFeedbackAPI;
 class AIChatService;
 class AssociatedArchiveContent;
+class AIChatCredentialManager;
 
 // Performs all conversation-related operations, responsible for sending
 // messages to the conversation engine, handling the responses, and owning

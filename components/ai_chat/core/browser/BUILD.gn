@@ -87,6 +87,7 @@ static_library("browser") {
     "//components/keyed_service/core",
     "//components/os_crypt/sync:os_crypt",
     "//components/prefs",
+    "//components/update_client",
     "//components/user_prefs",
     "//net/traffic_annotation",
     "//services/data_decoder/public/cpp",

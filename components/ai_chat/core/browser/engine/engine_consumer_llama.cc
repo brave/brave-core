@@ -5,30 +5,42 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
 
-#include <memory>
+#include <stddef.h>
+
+#include <functional>
+#include <ios>
 #include <optional>
+#include <ostream>
 #include <string>
 #include <string_view>
-#include <utility>
+#include <type_traits>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/i18n/time_formatting.h"
-#include "base/memory/raw_ptr.h"
+#include "base/logging.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
+
+namespace ai_chat {
+class AIChatCredentialManager;
+}  // namespace ai_chat
 
 namespace {
 

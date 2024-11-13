@@ -5,16 +5,20 @@
 
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 
-#include <memory>
+#include <string>
+#include <string_view>
 
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "build/build_config.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 

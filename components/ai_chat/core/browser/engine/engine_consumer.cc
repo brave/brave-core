@@ -5,6 +5,10 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 
+#include <optional>
+
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+
 namespace ai_chat {
 
 EngineConsumer::EngineConsumer() = default;

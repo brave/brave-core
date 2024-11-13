@@ -3,27 +3,47 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <stddef.h>
+
+#include <cstdint>
 #include <memory>
+#include <ostream>
 #include <string>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
+#include "base/location.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notimplemented.h"
+#include "base/notreached.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer.h"
 #include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer_throttle_delegate.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/body_sniffer/body_sniffer_url_loader.h"
+#include "mojo/public/c/system/data_pipe.h"
+#include "mojo/public/c/system/types.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "mojo/public/cpp/system/data_pipe_utils.h"
+#include "mojo/public/cpp/system/data_pipe.h"
+#include "mojo/public/cpp/system/handle.h"
+#include "mojo/public/cpp/system/simple_watcher.h"
+#include "services/network/public/cpp/url_loader_completion_status.h"
+#include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/test/test_url_loader_client.h"
-#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "url/gurl.h"
 

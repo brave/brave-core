@@ -5,18 +5,29 @@
 
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 
+#include <iterator>
 #include <memory>
+#include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check_is_test.h"
+#include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "components/component_updater/component_updater_paths.h"
+#include "components/update_client/update_client_errors.h"
 #include "crypto/sha2.h"
+
+namespace base {
+class Version;
+}  // namespace base
 
 namespace ai_chat {
 

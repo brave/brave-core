@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_ARCHIVE_CONTENT_H_
 
 #include <string>
+#include <string_view>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"

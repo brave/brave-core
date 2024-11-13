@@ -4,7 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ai_chat/core/browser/engine/mock_remote_completion_client.h"
-#include <string>
+
+#include <string_view>
+
+#include "base/memory/scoped_refptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace ai_chat {
