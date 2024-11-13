@@ -14,8 +14,11 @@ extension BraveVPN {
   }
 
   /// List of regions the VPN can connect to
-  /// This list is not static and it will be fetcghed with every app launch
+  /// This list is not static and it will be fetched with every app launch
   static var allRegions: [GRDRegion] = []
+
+  /// List of smart proxy routing hosts that are applied to the VPN connection
+  static var smartProxyRoutingHosts: [GRDSmartProxyHost] = []
 
   /// Record last used region
   /// It is used to hold details of the region when automatic selection is used

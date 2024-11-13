@@ -66,6 +66,9 @@ public class BraveVPN {
     helper.grdTunnelProviderManagerLocalizedDescription = connectionName
     helper.tunnelProviderBundleIdentifier = AppInfo.baseBundleIdentifier + ".BraveWireGuard"
     helper.appGroupIdentifier = AppInfo.sharedContainerIdentifier
+    helper.timezoneChangedBlock = {
+      Logger.module.debug("VPN Region Updated (TimeZone changed)")
+    }
 
     if case .notPurchased = vpnState {
       // Unlikely if user has never bought the vpn, we clear vpn config here for safety.
@@ -129,6 +132,22 @@ public class BraveVPN {
     }
 
     return .purchased(enabled: isConnected)
+  }
+
+  public static var isSmartProxyRoutingEnabled: Bool {
+    get {
+      GRDVPNHelper.smartProxyRoutingEnabled()
+    }
+
+    set {
+      if newValue {
+        GRDVPNHelper.enableSmartProxyRouting()
+        BraveVPN.smartProxyRoutingHosts = BraveVPN.helper.smartProxyRoutingHosts ?? []
+      } else {
+        GRDVPNHelper.disableSmartProxyRouting()
+        BraveVPN.smartProxyRoutingHosts = []
+      }
+    }
   }
 
   /// Returns true if the user is connected to Brave's vpn at the moment.
