@@ -117,50 +117,13 @@ void AddBraveVpnColorMixer(ui::ColorProvider* provider,
                            const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorBraveVpnButtonText] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x1C, 0x1E, 0x26),
-                                    SkColorSetRGB(0xED, 0xEE, 0xF1))};
-  mixer[kColorBraveVpnButtonTextError] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0xDC, 0x1D, 0x3C),
-                                    SkColorSetRGB(0xEB, 0x63, 0x7A))};
-
-  const bool is_dark = key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
-  const bool has_custom_theme = !!key.custom_theme;
-  if (has_custom_theme) {
-    // TODO(simonhong): Use proper vpn bg/border colors with custom theme.
-    mixer[kColorBraveVpnButtonBorder] = {PickSimilarColorToToolbar(
-        key, mixer, SkColorSetARGB(0x14, 0x13, 0x16, 0x20),
-        SkColorSetARGB(0x4D, 0x04, 0x04, 0x06))};
-    mixer[kColorBraveVpnButtonBackgroundHover] = {PickSimilarColorToToolbar(
-        key, mixer, SkColorSetARGB(0x14, 0x13, 0x16, 0x20),
-        SkColorSetARGB(0x4D, 0x04, 0x04, 0x06))};
-  } else {
-    mixer[kColorBraveVpnButtonBorder] = {nala::kColorDividerSubtle};
-    // TODO(simonhong): Use leo color. button/Background-active is not available
-    // yet.
-    mixer[kColorBraveVpnButtonBackgroundHover] = {
-        is_dark ? SkColorSetRGB(0x0D, 0x0F, 0x14)
-                : SkColorSetRGB(0xDB, 0xDE, 0xE2)};
-  }
-  mixer[kColorBraveVpnButtonErrorBorder] = {kColorBraveVpnButtonTextError};
-
-  mixer[kColorBraveVpnButtonIconConnected] = {SkColorSetRGB(0x3F, 0xA4, 0x50)};
-  mixer[kColorBraveVpnButtonIconDisconnected] = {PickColorContrastingToToolbar(
-      key, mixer, SkColorSetARGB(0x99, 0x0B, 0x16, 0x41),
-      SkColorSetARGB(0xCC, 0xB1, 0xB7, 0xCD))};
-  mixer[kColorBraveVpnButtonIconInner] = {PickSimilarColorToToolbar(
-      key, mixer, SK_ColorWHITE, SkColorSetARGB(0x33, 0x04, 0x04, 0x06))};
-  mixer[kColorBraveVpnButtonIconError] = {kColorBraveVpnButtonErrorBorder};
-  mixer[kColorBraveVpnButtonIconErrorInner] = {PickSimilarColorToToolbar(
-      key, mixer, SK_ColorWHITE, SkColorSetRGB(0x0F, 0x17, 0x2A))};
-
+  mixer[kColorBraveVpnButtonIconConnected] = {
+      nala::kColorSystemfeedbackSuccessIcon};
+  mixer[kColorBraveVpnButtonIconDisconnected] = {nala::kColorIconDefault};
+  mixer[kColorBraveVpnButtonIconError] = {nala::kColorSystemfeedbackErrorIcon};
   mixer[kColorBraveVpnButtonBackgroundNormal] = {kColorToolbar};
-  mixer[kColorBraveVpnButtonErrorBackgroundNormal] = {PickSimilarColorToToolbar(
-      key, mixer, SkColorSetARGB(0x31, 0xDC, 0x1D, 0x3C),
-      SkColorSetARGB(0x33, 0xEB, 0x63, 0x7A))};
-  mixer[kColorBraveVpnButtonErrorBackgroundHover] = {PickSimilarColorToToolbar(
-      key, mixer, SkColorSetARGB(0x40, 0xDC, 0x1D, 0x3C),
-      SkColorSetARGB(0x40, 0xEB, 0x63, 0x7A))};
+  mixer[kColorBraveVpnButtonErrorBackgroundNormal] = {
+      nala::kColorSystemfeedbackErrorBackground};
 }
 #endif
 
