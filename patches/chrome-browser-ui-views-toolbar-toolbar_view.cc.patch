@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index b85883d5057b2cfc753b681b46c2d0d88f3c9758..2af622ce1dbaf20bafce7e98bd5a95e24fc75519 100644
+index b9325db09ad8b8fbaaba3bf2009ca44c9eb6e65b..8bf5448c713c0e6040e212a02b4b909ee095ea64 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -464,6 +464,7 @@ void ToolbarView::Init() {
-     send_tab_to_self_button_ =
+@@ -478,6 +478,7 @@ void ToolbarView::Init() {
          container_view_->AddChildView(std::move(send_tab_to_self_button));
+   }
  
 +  BRAVE_TOOLBAR_VIEW_INIT
    avatar_ = container_view_->AddChildView(

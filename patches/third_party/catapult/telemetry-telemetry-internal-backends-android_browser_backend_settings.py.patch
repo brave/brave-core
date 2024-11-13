@@ -1,9 +1,0 @@
-diff --git a/telemetry/telemetry/internal/backends/android_browser_backend_settings.py b/telemetry/telemetry/internal/backends/android_browser_backend_settings.py
-index a42990fea23b70347138a71f062b45aa82381563..a30e0cd5ae51053e22e2d87c23c604d7dd880705 100644
---- a/telemetry/telemetry/internal/backends/android_browser_backend_settings.py
-+++ b/telemetry/telemetry/internal/backends/android_browser_backend_settings.py
-@@ -582,3 +582,4 @@ ANDROID_BACKEND_SETTINGS = (
-     ANDROID_CHROME_CANARY,
-     ANDROID_SYSTEM_CHROME
- )
-+from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

@@ -1,10 +1,10 @@
 diff --git a/components/cached_flags/BUILD.gn b/components/cached_flags/BUILD.gn
-index 0fc4dee05a3e7ecc9aab16d9745057cb578d004e..62dc984a60ed5f828d49b44b86d36ff048b051fe 100644
+index 04024aae23a7996837c962f6b914c910c5630387..235a3298e1749ceea796bdb44f33f27f38b2e640 100644
 --- a/components/cached_flags/BUILD.gn
 +++ b/components/cached_flags/BUILD.gn
 @@ -25,6 +25,7 @@ android_library("java") {
-     "android/java/src/org/chromium/components/cached_flags/IntCachedFieldTrialParameter.java",
-     "android/java/src/org/chromium/components/cached_flags/StringCachedFieldTrialParameter.java",
+     "android/java/src/org/chromium/components/cached_flags/IntCachedFeatureParam.java",
+     "android/java/src/org/chromium/components/cached_flags/StringCachedFeatureParam.java",
    ]
 +  sources += brave_components_cached_flags_java_sources
  }

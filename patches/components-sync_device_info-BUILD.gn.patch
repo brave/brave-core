@@ -1,10 +1,10 @@
 diff --git a/components/sync_device_info/BUILD.gn b/components/sync_device_info/BUILD.gn
-index a5dd5cb4fa5f78b600f825e25e7f699102f8d425..f42f8e91e95775e4b5d4d28f50cec667e723e967 100644
+index 1ee3436ad9a1a8c1d9941c41fce2fd9d56558c81..d1f79f0761a926143791b9dd6cda90b829c42f0c 100644
 --- a/components/sync_device_info/BUILD.gn
 +++ b/components/sync_device_info/BUILD.gn
-@@ -92,6 +92,7 @@ static_library("sync_device_info") {
-   if (is_chromeos_ash) {
-     deps += [ "//chromeos/ash/components/system" ]
+@@ -89,6 +89,7 @@ static_library("sync_device_info") {
+   if (is_win) {
+     sources += [ "local_device_info_util_win.cc" ]
    }
 +  sources += brave_components_sync_device_info_sources deps += brave_components_sync_device_info_deps
  }

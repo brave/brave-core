@@ -1,12 +1,12 @@
 diff --git a/ios/chrome/browser/net/model/ios_chrome_network_delegate.h b/ios/chrome/browser/net/model/ios_chrome_network_delegate.h
-index 74f907ab45e3e1f333ce978fac279b711e787db0..c6c7d82f5fcdad5b222726236e5ab4ada6636788 100644
+index 68689a6cd82c05245a4fb659c6b321487aba573a..b1fa46c4243eaa5074b6865453e7825ed50ec35d 100644
 --- a/ios/chrome/browser/net/model/ios_chrome_network_delegate.h
 +++ b/ios/chrome/browser/net/model/ios_chrome_network_delegate.h
-@@ -51,6 +51,7 @@ class IOSChromeNetworkDelegate : public net::NetworkDelegateImpl {
-                                         PrefService* pref_service);
+@@ -30,6 +30,7 @@ class IOSChromeNetworkDelegate : public net::NetworkDelegateImpl {
+   ~IOSChromeNetworkDelegate() override;
  
   private:
 +  BRAVE_IOS_CHROME_NETWORK_DELEGATE_H
-   // NetworkDelegate implementation.
-   int OnBeforeURLRequest(net::URLRequest* request,
-                          net::CompletionOnceCallback callback,
+   bool OnCancelURLRequestWithPolicyViolatingReferrerHeader(
+       const net::URLRequest& request,
+       const GURL& target_url,

@@ -1,19 +1,19 @@
 diff --git a/content/browser/browsing_data/browsing_data_filter_builder_impl.cc b/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
-index 1eea94fe241b2260719279c98c667469ea044601..dde98be87121fe77c243427503361325d4621875 100644
+index 44403636b3e3ac6651a9bac9e886966b429022b1..beefbcd8deb6c3498b9544525c7bf2180a125e01 100644
 --- a/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
 +++ b/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
-@@ -59,6 +59,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
-         storage_key.origin() == origin) {
-       return is_delete_list;
+@@ -70,6 +70,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
+         }
+         break;
      }
 +    BRAVE_MATCHES_STORAGE_KEY
    }
  
-   switch (match_mode) {
-@@ -82,6 +83,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
-       return is_delete_list ==
-              base::Contains(registerable_domains, registerable_domain);
-     }
+   auto third_party_predicate = [&]() {
+@@ -99,6 +100,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
+       return origin_all_context_predicate();
+     case OriginMatchingMode::kOriginAndThirdParty:
+       return third_party_predicate() || origin_all_context_predicate();
 +    BRAVE_MATCHES_STORAGE_KEY_SWITCH
    }
  
