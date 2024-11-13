@@ -14,7 +14,7 @@ index 98fd56c9308df54eb0f3fa52997a80fd72efa503..5049e89e98f1296199ccffed1f14063f
        if (defined(invoker.css_files)) {
          in_files += invoker.css_files
        }
-+      if (defined(invoker.exclude_html_css_preprocess_files)) { in_files -= invoker.exclude_html_css_preprocess_files }
++      if (defined(invoker.exclude_html_css_preprocess_files)) { in_files -= invoker.exclude_html_css_preprocess_files } if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps }
      }
    }
  
