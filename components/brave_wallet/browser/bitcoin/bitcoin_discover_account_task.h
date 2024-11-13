@@ -35,8 +35,6 @@ struct DiscoveredBitcoinAccount {
 
 class DiscoverAccountTaskBase {
  public:
-  enum class DiscoveryStage : uint32_t { kReceive, kChange };
-
   using DiscoverAccountCallback = base::OnceCallback<void(
       base::expected<DiscoveredBitcoinAccount, std::string>)>;
 
@@ -60,11 +58,11 @@ class DiscoverAccountTaskBase {
   virtual mojom::BitcoinAddressPtr GetAddressById(
       const mojom::BitcoinKeyIdPtr& key_id) = 0;
 
-  bool MaybeQueueRequests(DiscoveryStage stage);
+  bool MaybeQueueRequests(bool receive_state);
 
   void WorkOnTask();
   void OnGetAddressStats(
-      DiscoveryStage stage,
+      bool receive_state,
       mojom::BitcoinAddressPtr address,
       base::expected<bitcoin_rpc::AddressStats, std::string> stats);
 
@@ -73,7 +71,7 @@ class DiscoverAccountTaskBase {
   }
 
  private:
-  State& GetState(DiscoveryStage stage);
+  State& GetState(bool receive_state);
 
   const raw_ref<BitcoinWalletService> bitcoin_wallet_service_;
   std::string network_id_;

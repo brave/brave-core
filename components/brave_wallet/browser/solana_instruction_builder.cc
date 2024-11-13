@@ -10,7 +10,7 @@
 
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
-#include "base/numerics/byte_conversions.h"
+#include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
@@ -19,22 +19,12 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 
-namespace brave_wallet {
-
-namespace {
-
-constexpr auto kSetComputeUnitLimit = static_cast<uint8_t>(
-    mojom::SolanaComputeBudgetInstruction::kSetComputeUnitLimit);
-constexpr auto kSetComputeUnitPrice = static_cast<uint8_t>(
-    mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice);
-constexpr auto kTransfer =
-    static_cast<uint32_t>(mojom::SolanaSystemInstruction::kTransfer);
-constexpr auto kTransferChecked =
-    static_cast<uint8_t>(mojom::SolanaTokenInstruction::kTransferChecked);
-
-}  // namespace
-
 namespace brave_wallet::solana {
+
+using mojom::SolanaComputeBudgetInstruction::kSetComputeUnitLimit;
+using mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice;
+using mojom::SolanaSystemInstruction::kTransfer;
+using mojom::SolanaTokenInstruction::kTransferChecked;
 
 namespace system_program {
 
@@ -53,7 +43,7 @@ std::optional<SolanaInstruction> Transfer(const std::string& from_pubkey,
   // Instruction data is consisted of u32 instruction index and u64 lamport.
   std::array<uint8_t, 12> instruction_data;
   auto span_writer = base::SpanWriter(base::span(instruction_data));
-  span_writer.WriteU32LittleEndian(kTransfer);
+  span_writer.WriteU32LittleEndian(base::checked_cast<uint32_t>(kTransfer));
   span_writer.WriteU64LittleEndian(lamport);
   CHECK(span_writer.remaining_span().empty());
 
@@ -102,7 +92,8 @@ std::optional<SolanaInstruction> TransferChecked(
   // Instruction data is consisted of u8 instruction index and u64 amount.
   std::array<uint8_t, 10> instruction_data;
   auto span_writer = base::SpanWriter(base::span(instruction_data));
-  span_writer.WriteU8LittleEndian(kTransferChecked);
+  span_writer.WriteU8LittleEndian(
+      base::checked_cast<uint8_t>(kTransferChecked));
   span_writer.WriteU64LittleEndian(amount);
   span_writer.WriteU8LittleEndian(decimals);
   CHECK(span_writer.remaining_span().empty());
@@ -173,7 +164,8 @@ namespace compute_budget_program {
 SolanaInstruction SetComputeUnitLimit(uint32_t units) {
   std::array<uint8_t, 5> instruction_data;
   auto span_writer = base::SpanWriter(base::span(instruction_data));
-  span_writer.WriteU8LittleEndian(kSetComputeUnitLimit);
+  span_writer.WriteU8LittleEndian(
+      base::checked_cast<uint8_t>(kSetComputeUnitLimit));
   span_writer.WriteU32LittleEndian(units);
   CHECK(span_writer.remaining_span().empty());
 
@@ -186,7 +178,8 @@ SolanaInstruction SetComputeUnitLimit(uint32_t units) {
 SolanaInstruction SetComputeUnitPrice(uint64_t price) {
   std::array<uint8_t, 9> instruction_data;
   auto span_writer = base::SpanWriter(base::span(instruction_data));
-  span_writer.WriteU8LittleEndian(kSetComputeUnitPrice);
+  span_writer.WriteU8LittleEndian(
+      base::checked_cast<uint8_t>(kSetComputeUnitPrice));
   span_writer.WriteU64LittleEndian(price);
   CHECK(span_writer.remaining_span().empty());
 
@@ -206,7 +199,7 @@ std::optional<SolanaInstruction> Transfer(
   const std::string log_wrapper = "noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV";
 
   // Init instruction data with the instruction discriminator.
-  std::array<uint8_t, 8 + 3 * 32 + 8 + 4> instruction_data;
+  std::array<uint8_t, 116> instruction_data;
   auto span_writer = base::SpanWriter(base::span(instruction_data));
 
   span_writer.Write(kTransferInstructionDiscriminator);

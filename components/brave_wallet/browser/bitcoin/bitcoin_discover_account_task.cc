@@ -68,9 +68,8 @@ DiscoverAccountTaskBase::DiscoverAccountTaskBase(
 DiscoverAccountTaskBase::~DiscoverAccountTaskBase() = default;
 
 DiscoverAccountTaskBase::State& DiscoverAccountTaskBase::GetState(
-    DiscoveryStage stage) {
-  return stage == DiscoveryStage::kReceive ? receive_addresses_state_
-                                           : change_addresses_state_;
+    bool receive_state) {
+  return receive_state ? receive_addresses_state_ : change_addresses_state_;
 }
 
 void DiscoverAccountTaskBase::ScheduleWorkOnTask() {
@@ -79,8 +78,8 @@ void DiscoverAccountTaskBase::ScheduleWorkOnTask() {
                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
-bool DiscoverAccountTaskBase::MaybeQueueRequests(DiscoveryStage stage) {
-  auto& state = GetState(stage);
+bool DiscoverAccountTaskBase::MaybeQueueRequests(bool receive_state) {
+  auto& state = GetState(receive_state);
 
   uint32_t start_index = 0;
 
@@ -99,8 +98,7 @@ bool DiscoverAccountTaskBase::MaybeQueueRequests(DiscoveryStage stage) {
     }
 
     auto address = GetAddressById(mojom::BitcoinKeyId::New(
-        stage == DiscoveryStage::kReceive ? kBitcoinReceiveIndex
-                                          : kBitcoinChangeIndex,
+        receive_state ? kBitcoinReceiveIndex : kBitcoinChangeIndex,
         address_index));
     if (!address) {
       return false;
@@ -111,7 +109,7 @@ bool DiscoverAccountTaskBase::MaybeQueueRequests(DiscoveryStage stage) {
     bitcoin_wallet_service_->bitcoin_rpc().GetAddressStats(
         network_id_, address->address_string,
         base::BindOnce(&DiscoverAccountTaskBase::OnGetAddressStats,
-                       weak_ptr_factory_.GetWeakPtr(), stage,
+                       weak_ptr_factory_.GetWeakPtr(), receive_state,
                        address->Clone()));
   }
 
@@ -129,11 +127,11 @@ void DiscoverAccountTaskBase::WorkOnTask() {
   }
 
   bool queue_requests_failed = false;
-  if (!MaybeQueueRequests(DiscoveryStage::kReceive)) {
+  if (!MaybeQueueRequests(true)) {
     queue_requests_failed = true;
   }
   if (account_is_used_) {
-    if (!MaybeQueueRequests(DiscoveryStage::kChange)) {
+    if (!MaybeQueueRequests(false)) {
       queue_requests_failed = true;
     }
   }
@@ -167,7 +165,7 @@ void DiscoverAccountTaskBase::WorkOnTask() {
 }
 
 void DiscoverAccountTaskBase::OnGetAddressStats(
-    DiscoveryStage stage,
+    bool receive_state,
     mojom::BitcoinAddressPtr address,
     base::expected<bitcoin_rpc::AddressStats, std::string> stats) {
   DCHECK_GT(active_requests_, 0u);
@@ -195,8 +193,8 @@ void DiscoverAccountTaskBase::OnGetAddressStats(
     account_is_used_ = true;
   }
 
-  CHECK_EQ(address->key_id->change, base::to_underlying(stage));
-  auto& state = GetState(stage);
+  CHECK_EQ(address->key_id->change, !receive_state);
+  auto& state = GetState(receive_state);
 
   if (address_is_transacted) {
     if (!state.last_transacted_address ||
