@@ -48,6 +48,7 @@ class DefaultBraveShieldsHandler
   void IsFirstPartyCosmeticFilteringEnabled(const base::Value::List& args);
   void SetCookieControlType(const base::Value::List& args);
   void GetCookieControlType(const base::Value::List& args);
+  void GetHideBlockAllCookieFlag(const base::Value::List& args);
   void SetFingerprintingControlType(const base::Value::List& args);
   void GetFingerprintingControlType(const base::Value::List& args);
   void SetFingerprintingBlockEnabled(const base::Value::List& args);

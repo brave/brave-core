@@ -82,6 +82,10 @@ export interface DefaultBraveShieldsBrowserProxy {
    * @return {!Promise<boolean>}
    */
   getContactInfoSaveFlag(): Promise<boolean>
+  /**
+   * @return {!Promise<boolean>}
+   */
+  getHideBlockAllCookieTogle(): Promise<boolean>
 }
 
 export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsBrowserProxy {
@@ -168,6 +172,11 @@ export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsB
   /** @override */
   getContactInfoSaveFlag () {
     return sendWithPromise('getContactInfoSaveFlag')
+  }
+
+  /** @override */
+  getHideBlockAllCookieTogle () {
+    return sendWithPromise('getHideBlockAllCookieTogle')
   }
 
   static getInstance(): DefaultBraveShieldsBrowserProxy {
