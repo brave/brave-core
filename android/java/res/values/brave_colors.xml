@@ -429,5 +429,5 @@
     <color name="schemes_primary">#3e37d4</color>
     <color name="schemes_surface_container_highest">#c7c7cc</color>
 
-    <color name="quick_search_bg">#FFFFFF</color>
+    <!-- <color name="quick_search_bg">#FFFFFF</color> -->
 </resources>
