@@ -446,8 +446,8 @@ TEST_F(ZCashDecoderUnitTest, ParseCompactBlock) {
   // Missed protobuf prefix is incorrect
   {
     std::vector<std::string> input;
-    for (size_t i = 0; i < blocks.size(); i++) {
-      input.push_back(blocks[i].SerializeAsString());
+    for (const auto& block : blocks) {
+      input.push_back(block.SerializeAsString());
     }
 
     base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;

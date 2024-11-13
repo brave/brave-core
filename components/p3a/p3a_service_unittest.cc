@@ -184,12 +184,12 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendTypical) {
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 4U);
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 
-  for (size_t i = 0; i < test_histograms.size(); i++) {
-    if (test_histograms[i].rfind(kP2APrefix, 0) == 0) {
-      ASSERT_NE(p2a_json_sent_metrics_.find(test_histograms[i]),
+  for (const auto& test_histogram : test_histograms) {
+    if (test_histogram.rfind(kP2APrefix, 0) == 0) {
+      ASSERT_NE(p2a_json_sent_metrics_.find(test_histogram),
                 p2a_json_sent_metrics_.end());
     } else {
-      ASSERT_NE(p3a_json_sent_metrics_.find(test_histograms[i]),
+      ASSERT_NE(p3a_json_sent_metrics_.find(test_histogram),
                 p3a_json_sent_metrics_.end());
     }
   }
@@ -202,12 +202,12 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendTypical) {
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 4U);
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 
-  for (size_t i = 0; i < test_histograms.size(); i++) {
-    if (test_histograms[i].rfind(kP2APrefix, 0) == 0) {
-      ASSERT_NE(p2a_json_sent_metrics_.find(test_histograms[i]),
+  for (const auto& test_histogram : test_histograms) {
+    if (test_histogram.rfind(kP2APrefix, 0) == 0) {
+      ASSERT_NE(p2a_json_sent_metrics_.find(test_histogram),
                 p2a_json_sent_metrics_.end());
     } else {
-      ASSERT_NE(p3a_json_sent_metrics_.find(test_histograms[i]),
+      ASSERT_NE(p3a_json_sent_metrics_.find(test_histogram),
                 p3a_json_sent_metrics_.end());
     }
   }
