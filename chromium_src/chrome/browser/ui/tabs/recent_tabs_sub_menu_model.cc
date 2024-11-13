@@ -53,13 +53,7 @@ constexpr char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
 BraveRecentTabsSubMenuModel::BraveRecentTabsSubMenuModel(
     ui::AcceleratorProvider* accelerator_provider,
     Browser* browser)
-    : RecentTabsSubMenuModel(accelerator_provider, browser) {
-  // We disable history clusters feature, so this command won't work.
-  std::optional<size_t> show_history_clusters_index =
-      GetIndexOfCommandId(IDC_SHOW_HISTORY_CLUSTERS_SIDE_PANEL);
-  CHECK(show_history_clusters_index);
-  RemoveItemAt(show_history_clusters_index.value());
-}
+    : RecentTabsSubMenuModel(accelerator_provider, browser) {}
 
 BraveRecentTabsSubMenuModel::~BraveRecentTabsSubMenuModel() {}
 
