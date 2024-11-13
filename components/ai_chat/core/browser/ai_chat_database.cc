@@ -827,6 +827,38 @@ bool AIChatDatabase::DeleteAllData() {
   return LazyInit(true);
 }
 
+bool AIChatDatabase::DeleteAssociatedWebContent(
+    std::optional<base::Time> begin_time,
+    std::optional<base::Time> end_time) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+  DVLOG(4) << "Deleting associated web content for time range "
+           << begin_time.value_or(base::Time()) << " to "
+           << end_time.value_or(base::Time::Max());
+  // Set any associated content url, title and content to NULL where
+  // conversation had any entry between begin_time and end_time.
+  static constexpr char kQuery[] =
+      "UPDATE associated_content"
+      " SET url=NULL, title=NULL, last_contents=NULL"
+      " WHERE conversation_uuid IN ("
+      "  SELECT conversation_uuid"
+      "  FROM conversation_entry"
+      "  WHERE date >= ? AND date <= ?)";
+  sql::Statement statement(GetDB().GetUniqueStatement(kQuery));
+  CHECK(statement.is_valid());
+  statement.BindTime(0, begin_time.value_or(base::Time()));
+  statement.BindTime(1, end_time.value_or(base::Time::Max()));
+  if (!statement.Run()) {
+    DVLOG(0) << "Failed to execute 'associated_content' update statement for "
+                "DeleteAssociatedWebContent: "
+             << db_.GetErrorMessage();
+    return false;
+  }
+  return true;
+}
+
 sql::Database& AIChatDatabase::GetDB() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return db_;
@@ -908,9 +940,9 @@ bool AIChatDatabase::CreateSchema() {
       "uuid TEXT PRIMARY KEY NOT NULL,"
       "conversation_uuid TEXT NOT NULL,"
       // Encrypted associated content title string
-      "title BLOB NOT NULL,"
+      "title BLOB,"
       // Encrypted url string
-      "url BLOB NOT NULL,"
+      "url BLOB,"
       // Stores SiteInfo.IsVideo. Future-proofed for multiple content types
       // 0 for regular content
       // 1 for video.

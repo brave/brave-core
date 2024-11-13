@@ -70,6 +70,9 @@ class AIChatDatabase {
   // Drops all data and tables in the database, and re-creates empty tables
   bool DeleteAllData();
 
+  bool DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
+                                  std::optional<base::Time> end_time);
+
  private:
   friend class AIChatDatabaseTest;
 

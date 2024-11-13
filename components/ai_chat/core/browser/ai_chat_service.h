@@ -17,6 +17,7 @@
 
 #include "base/callback_list.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -122,6 +123,12 @@ class AIChatService : public KeyedService,
   void DeleteConversations(std::optional<base::Time> begin_time = std::nullopt,
                            std::optional<base::Time> end_time = std::nullopt);
 
+  // Remove only web-content data from conversations
+  void DeleteAssociatedWebContent(
+      std::optional<base::Time> begin_time = std::nullopt,
+      std::optional<base::Time> end_time = std::nullopt,
+      base::OnceCallback<void(bool)> callback = base::DoNothing());
+
   void OpenConversationWithStagedEntries(
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content,
@@ -168,8 +175,8 @@ class AIChatService : public KeyedService,
   void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor, bool success);
   void LoadConversationsLazy(ConversationMapCallback callback);
   void OnLoadConversationsLazyData(
-      ConversationMapCallback callback,
       std::vector<mojom::ConversationPtr> conversations);
+  void ReloadConversations(bool from_cancel = false);
   void OnConversationDataReceived(
       std::string conversation_uuid,
       base::OnceCallback<void(ConversationHandler*)> callback,
@@ -218,9 +225,13 @@ class AIChatService : public KeyedService,
   // Storage for conversations
   base::SequenceBound<AIChatDatabase> ai_chat_db_;
 
+  // nullopt if haven't started fetching, empty if done fetching
+  std::optional<std::vector<ConversationMapCallback>>
+      on_conversations_loaded_callbacks_;
+  base::OnceClosure cancel_conversation_load_callback_ = base::NullCallback();
+
   // All conversation metadata. Mainly just titles and uuids. Key is uuid
   ConversationMap conversations_;
-  bool has_loaded_conversations_from_storage_ = false;
 
   // Only keep ConversationHandlers around that are being
   // actively used. Any metadata that needs to stay in-memory

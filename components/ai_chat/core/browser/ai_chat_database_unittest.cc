@@ -362,4 +362,72 @@ TEST_P(AIChatDatabaseTest, DeleteAllData) {
   }
 }
 
+TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
+  GURL page_url = GURL("https://example.com/page");
+  std::string expected_contents = "First contents";
+
+  // The times in the Conversation are irrelevant, only the times of the entries
+  // are persisted.
+  mojom::ConversationPtr metadata_first = mojom::Conversation::New(
+      "first", "title", base::Time::Now() - base::Hours(2), true,
+      mojom::SiteInfo::New("first-content", mojom::ContentType::PageContent,
+                           "page title", page_url.host(), page_url, 62, true,
+                           true));
+  mojom::ConversationPtr metadata_second = mojom::Conversation::New(
+      "second", "title", base::Time::Now() - base::Hours(1), true,
+      mojom::SiteInfo::New("second-content", mojom::ContentType::PageContent,
+                           "page title", page_url.host(), page_url, 62, true,
+                           true));
+
+  auto history_first = CreateSampleChatHistory(1u, -2);
+  auto history_second = CreateSampleChatHistory(1u, -1);
+
+  EXPECT_TRUE(db_->AddConversation(metadata_first->Clone(),
+                                   std::make_optional(expected_contents),
+                                   history_first[0]->Clone()));
+
+  EXPECT_TRUE(db_->AddConversation(metadata_second->Clone(),
+                                   std::make_optional(expected_contents),
+                                   history_second[0]->Clone()));
+
+  // Verify data is persisted
+  auto conversations = db_->GetAllConversations();
+  EXPECT_EQ(conversations.size(), 2u);
+  ExpectConversationEquals(FROM_HERE, conversations[0], metadata_first);
+  ExpectConversationEquals(FROM_HERE, conversations[1], metadata_second);
+
+  mojom::ConversationArchivePtr archive_result =
+      db_->GetConversationData("first");
+  EXPECT_EQ(archive_result->associated_content.size(), 1u);
+  EXPECT_EQ(archive_result->associated_content[0]->content_uuid,
+            "first-content");
+  EXPECT_EQ(archive_result->associated_content[0]->content, expected_contents);
+  archive_result = db_->GetConversationData("second");
+  EXPECT_EQ(archive_result->associated_content.size(), 1u);
+  EXPECT_EQ(archive_result->associated_content[0]->content_uuid,
+            "second-content");
+  EXPECT_EQ(archive_result->associated_content[0]->content, expected_contents);
+
+  // Delete associated content to only consider the second conversation
+  EXPECT_TRUE(db_->DeleteAssociatedWebContent(
+      base::Time::Now() + base::Minutes(-61), std::nullopt));
+
+  // Verify only url, title and content was deleted and only from the second
+  // conversation
+  conversations = db_->GetAllConversations();
+  EXPECT_EQ(conversations.size(), 2u);
+  ExpectConversationEquals(FROM_HERE, conversations[0], metadata_first);
+  metadata_second->associated_content->url = std::nullopt;
+  metadata_second->associated_content->title = std::nullopt;
+  ExpectConversationEquals(FROM_HERE, conversations[1], metadata_second);
+
+  archive_result = db_->GetConversationData("second");
+  EXPECT_TRUE(archive_result->associated_content.empty());
+  archive_result = db_->GetConversationData("first");
+  EXPECT_EQ(archive_result->associated_content.size(), 1u);
+  EXPECT_EQ(archive_result->associated_content[0]->content_uuid,
+            "first-content");
+  EXPECT_EQ(archive_result->associated_content[0]->content, expected_contents);
+}
+
 }  // namespace ai_chat

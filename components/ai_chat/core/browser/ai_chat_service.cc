@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/adapters.h"
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
@@ -73,6 +74,16 @@ std::vector<mojom::Conversation*> FilterVisibleConversations(
   base::ranges::sort(conversations, std::greater<>(),
                      &mojom::Conversation::updated_time);
   return conversations;
+}
+
+bool IsConversationUpdatedTimeWithinRange(
+    std::optional<base::Time> begin_time,
+    std::optional<base::Time> end_time,
+    mojom::ConversationPtr& conversation) {
+  return ((!begin_time.has_value() || begin_time->is_null() ||
+           conversation->updated_time >= begin_time) &&
+          (!end_time.has_value() || end_time->is_null() || end_time->is_max() ||
+           conversation->updated_time <= end_time));
 }
 
 }  // namespace
@@ -286,6 +297,7 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
     // Delete database data
     if (ai_chat_db_) {
       ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteAllData));
+      ReloadConversations();
     }
     if (ai_chat_metrics_ != nullptr) {
       ai_chat_metrics_->RecordReset();
@@ -298,10 +310,8 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
   std::vector<std::string> conversation_keys;
 
   for (auto& [uuid, conversation] : conversations_) {
-    if ((!begin_time.has_value() || begin_time->is_null() ||
-         conversation->updated_time >= begin_time) &&
-        (!end_time.has_value() || end_time->is_null() || end_time->is_max() ||
-         conversation->updated_time <= end_time)) {
+    if (IsConversationUpdatedTimeWithinRange(begin_time, end_time,
+                                             conversation)) {
       conversation_keys.push_back(uuid);
     }
   }
@@ -312,6 +322,23 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
   if (!conversation_keys.empty()) {
     OnConversationListChanged();
   }
+}
+
+void AIChatService::DeleteAssociatedWebContent(
+    std::optional<base::Time> begin_time,
+    std::optional<base::Time> end_time,
+    base::OnceCallback<void(bool)> callback) {
+  if (!ai_chat_db_) {
+    std::move(callback).Run(true);
+    return;
+  }
+
+  ai_chat_db_.AsyncCall(&AIChatDatabase::DeleteAssociatedWebContent)
+      .WithArgs(begin_time, end_time)
+      .Then(std::move(callback));
+
+  // Update local data
+  ReloadConversations();
 }
 
 void AIChatService::MaybeInitStorage() {
@@ -327,28 +354,12 @@ void AIChatService::MaybeInitStorage() {
   } else {
     // Delete all stored data from database
     if (ai_chat_db_) {
+      DVLOG(0) << "Unloading AI Chat database due to pref change";
       base::SequenceBound<AIChatDatabase> ai_chat_db = std::move(ai_chat_db_);
       ai_chat_db.AsyncCall(&AIChatDatabase::DeleteAllData)
           .Then(base::BindOnce(&AIChatService::OnDataDeletedForDisabledStorage,
                                weak_ptr_factory_.GetWeakPtr()));
     }
-    has_loaded_conversations_from_storage_ = false;
-    // Remove any conversations from in-memory that aren't connected to UI.
-    // Iterate in reverse and call MaybeUnloadConversation to avoid iterator
-    // invalidation.
-    for (auto it = conversation_handlers_.rbegin();
-         it != conversation_handlers_.rend(); ++it) {
-      MaybeUnloadConversation(it->second.get());
-    }
-    // Erase any conversations metadata that is not connected to UI
-    for (auto it = conversations_.begin(); it != conversations_.end();) {
-      if (!conversation_handlers_.contains(it->first)) {
-        it = conversations_.erase(it);
-      } else {
-        ++it;
-      }
-    }
-    OnConversationListChanged();
   }
 }
 
@@ -372,53 +383,134 @@ void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor,
 }
 
 void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
+  // Remove any conversations from in-memory that aren't connected to UI.
+  // This is done now, in the callback from DeleteAllData, in case there
+  // was any in-progress operations that would have resulted in adding data
+  // back to conversations_ whilst waiting for DeleteAllData to complete.
+  for (auto& [uuid, conversation_handler] :
+       base::Reversed(conversation_handlers_)) {
+    MaybeUnloadConversation(conversation_handler.get());
+  }
+  // Remove any conversation metadata that isn't connected to a still-alive
+  // handler.
+  for (auto it = conversations_.begin(); it != conversations_.end();) {
+    if (!conversation_handlers_.contains(it->first)) {
+      it = conversations_.erase(it);
+    } else {
+      ++it;
+    }
+  }
+  OnConversationListChanged();
   // Re-check the preference since it could have been re-enabled
   // whilst the database operation was in progress. If so, we can re-use
   // the same database instance (post data deletion).
   if (!IsAIChatHistoryEnabled()) {
+    // If there is a LoadConversationsLazy in progress, it will get cancelled
+    // on destruction of ai_chat_db_ so call the callbacks.
+    if (on_conversations_loaded_callbacks_.has_value() &&
+        !on_conversations_loaded_callbacks_->empty()) {
+      for (auto& callback : on_conversations_loaded_callbacks_.value()) {
+        std::move(callback).Run(conversations_);
+      }
+    }
+
     ai_chat_db_.Reset();
+    cancel_conversation_load_callback_ = base::NullCallback();
+    on_conversations_loaded_callbacks_ = std::nullopt;
   }
 }
 
 void AIChatService::LoadConversationsLazy(ConversationMapCallback callback) {
-  // TODO(petemill): If there's a timing issue on startup with multiple
-  // clients requesting conversations whilst an initial request is still loading
-  // then we can make a OneShotEvent. But without it, those clients will still
-  // get notified when the initial request completes. They won't know there's
-  // data incoming though.
-  if (!ai_chat_db_ || has_loaded_conversations_from_storage_) {
+  // Send immediately if we have finished loading from storage
+  if (!ai_chat_db_ || (on_conversations_loaded_callbacks_.has_value() &&
+                       on_conversations_loaded_callbacks_->empty())) {
     std::move(callback).Run(conversations_);
     return;
   }
-  has_loaded_conversations_from_storage_ = true;
+  if (on_conversations_loaded_callbacks_.has_value()) {
+    on_conversations_loaded_callbacks_->push_back(std::move(callback));
+    return;
+  }
+
+  on_conversations_loaded_callbacks_ = std::vector<ConversationMapCallback>();
+  on_conversations_loaded_callbacks_->push_back(std::move(callback));
   ai_chat_db_.AsyncCall(&AIChatDatabase::GetAllConversations)
       .Then(base::BindOnce(&AIChatService::OnLoadConversationsLazyData,
-                           weak_ptr_factory_.GetWeakPtr(),
-                           std::move(callback)));
+                           weak_ptr_factory_.GetWeakPtr()));
 }
 
 void AIChatService::OnLoadConversationsLazyData(
-    ConversationMapCallback callback,
     std::vector<mojom::ConversationPtr> conversations) {
+  if (!cancel_conversation_load_callback_.is_null()) {
+    std::move(cancel_conversation_load_callback_).Run();
+    cancel_conversation_load_callback_ = base::NullCallback();
+    return;
+  }
+  DVLOG(1) << "Loaded " << conversations.size() << " conversations.";
   for (auto& conversation : conversations) {
+    std::string uuid = conversation->uuid;
     DVLOG(2) << "Loaded conversation " << conversation->uuid
              << " with details: " << "\n has content: "
              << conversation->has_content
              << "\n last updated: " << conversation->updated_time
              << "\n title: " << conversation->title;
-    if (conversations_.contains(conversation->uuid)) {
-      // This can occur during testing when conversations are created and
-      // persisted before the database is initially queried. We don't want to
-      // overwrite the existing in-memory items as they are likely
-      // being referenced by ConversationHandler instances.
-      continue;
+    // It's ok to overwrite existing metadata - some operations may modify
+    // the database data and we want to keep the in-memory data syncrhonised,
+    // but we have to let any ConversationHandler instances know because
+    // the have a reference to the metadata.
+    conversations_.insert_or_assign(uuid, std::move(conversation));
+    if (conversation_handlers_.contains(uuid)) {
+      // Replace the metadata since the old reference is invalid
+      ConversationHandler* handler = conversation_handlers_.at(uuid).get();
+      handler->SetConversationMetadata(conversations_.at(uuid).get());
+      // If a reload was asked for, then we should also update the deeper
+      // conversation data from the database, since the reload was likely due
+      // to underlying data changing.
+      ai_chat_db_.AsyncCall(&AIChatDatabase::GetConversationData)
+          .WithArgs(uuid)
+          .Then(base::BindOnce(
+              [](base::WeakPtr<ConversationHandler> handler,
+                 mojom::ConversationArchivePtr updated_data) {
+                if (!handler) {
+                  return;
+                }
+                handler->UpdateArchiveContent(std::move(updated_data));
+              },
+              handler->GetWeakPtr()));
     }
-    conversations_.insert_or_assign(conversation->uuid,
-                                    std::move(conversation));
   }
-  DVLOG(1) << "Loaded " << conversations.size() << " conversations.";
-  std::move(callback).Run(conversations_);
+  if (on_conversations_loaded_callbacks_.has_value()) {
+    for (auto& callback : on_conversations_loaded_callbacks_.value()) {
+      std::move(callback).Run(conversations_);
+    }
+    on_conversations_loaded_callbacks_->clear();
+  }
   OnConversationListChanged();
+}
+
+void AIChatService::ReloadConversations(bool from_cancel) {
+  // If in the middle of a conversation load, then make sure data is ignored,
+  // and ask again when current load is complete.
+  if (!from_cancel && on_conversations_loaded_callbacks_.has_value() &&
+      !on_conversations_loaded_callbacks_->empty()) {
+    cancel_conversation_load_callback_ =
+        base::BindOnce(&AIChatService::ReloadConversations,
+                       weak_ptr_factory_.GetWeakPtr(), true);
+    return;
+  }
+
+  // Collect any previous callbacks and force conversations to load again
+  std::vector<ConversationMapCallback> previous_callbacks;
+  if (on_conversations_loaded_callbacks_.has_value()) {
+    on_conversations_loaded_callbacks_->swap(previous_callbacks);
+  }
+  on_conversations_loaded_callbacks_ = std::nullopt;
+  LoadConversationsLazy(base::DoNothing());
+
+  // Re-queue any previous callbacks
+  for (auto& callback : previous_callbacks) {
+    LoadConversationsLazy(std::move(callback));
+  }
 }
 
 void AIChatService::MaybeAssociateContentWithConversation(

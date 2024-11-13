@@ -50,12 +50,22 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     ClearShieldsSettings(delete_begin, delete_end);
   }
 
-  // Brave News feed cache
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
+    // Brave News feed cache
     if (auto* brave_news_controller =
             brave_news::BraveNewsControllerFactory::GetForBrowserContext(
                 profile_)) {
       brave_news_controller->ClearHistory();
+    }
+    // AI Chat history but only associated content, not neccessary if we
+    // are also deleting entire AI Chat history.
+    if (!(remove_mask &
+          chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY)) {
+      ai_chat::AIChatService* ai_chat_service =
+          ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);
+      if (ai_chat_service) {
+        ai_chat_service->DeleteAssociatedWebContent(delete_begin, delete_end);
+      }
     }
   }
 

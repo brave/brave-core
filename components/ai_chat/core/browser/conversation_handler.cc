@@ -234,7 +234,7 @@ ConversationHandler::ConversationHandler(
              << conversation_data->entries.size();
     chat_history_ = std::move(conversation_data->entries);
   }
-  
+
   MaybeSeedOrClearSuggestions();
 }
 
@@ -264,6 +264,39 @@ void ConversationHandler::Bind(
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   receivers_.Add(this, std::move(receiver));
   Bind(std::move(conversation_ui_handler));
+}
+
+void ConversationHandler::SetConversationMetadata(
+    mojom::Conversation* conversation) {
+  metadata_ = conversation;
+  // If we don't update archive_content_ then BuildAssociatedContentInfo will
+  // update the Conversation metadata from the previous version.
+  if (archive_content_) {
+    archive_content_->SetMetadata(
+        metadata_->associated_content->url.value_or(GURL()),
+        base::UTF8ToUTF16(metadata_->associated_content->title.value_or("")),
+        metadata_->associated_content->content_type ==
+            mojom::ContentType::VideoTranscript);
+  }
+  OnAssociatedContentInfoChanged();
+}
+
+void ConversationHandler::UpdateArchiveContent(
+    mojom::ConversationArchivePtr conversation_data) {
+  // We don't need to update text content if it's not archive since live
+  // content owns the text content and is re-fetched on demand.
+  if (archive_content_) {
+    // Only supports a single associated content for now
+    std::string text_content;
+    if (!conversation_data->associated_content.empty() &&
+        conversation_data->associated_content[0]->content_uuid ==
+            metadata_->associated_content->uuid) {
+      text_content = conversation_data->associated_content[0]->content;
+    } else {
+      text_content = "";
+    }
+    archive_content_->SetContent(std::move(text_content));
+  }
 }
 
 bool ConversationHandler::IsAnyClientConnected() {
@@ -347,7 +380,7 @@ void ConversationHandler::OnAssociatedContentDestroyed(
   associated_content_delegate_ = nullptr;
   if (!chat_history_.empty() && should_send_page_contents_ &&
       metadata_->associated_content &&
-      metadata_->associated_content->url.has_value()) {
+      metadata_->associated_content->is_content_association_possible) {
     // Get the latest version of article text and
     // associated_content_info_ if this chat has history and was connected to
     // the associated conversation, then store the content so the conversation
@@ -1266,7 +1299,6 @@ void ConversationHandler::GeneratePageContent(GetPageContentCallback callback) {
       << "UI shouldn't allow operations before user has accepted agreement";
 
   // Keep hold of the current content so we can check if it changed
-  is_content_different_ = false;
   std::string current_content =
       std::string(associated_content_delegate_->GetCachedTextContent());
   associated_content_delegate_->GetContent(
@@ -1283,7 +1315,9 @@ void ConversationHandler::OnGeneratePageContentComplete(
     std::string invalidation_token) {
   engine_->SanitizeInput(contents_text);
 
-  is_content_different_ = contents_text != previous_content;
+  // Keep is_content_different_ as true if it's the initial state
+  is_content_different_ =
+      is_content_different_ || contents_text != previous_content;
 
   metadata_->associated_content->content_type =
       is_video ? mojom::ContentType::VideoTranscript
@@ -1470,6 +1504,7 @@ void ConversationHandler::OnConversationEntryAdded(
   if (is_content_different_ && associated_content_delegate_) {
     associated_content_value =
         associated_content_delegate_->GetCachedTextContent();
+    is_content_different_ = false;
   }
   // If this is the first entry that isn't staged, notify about all previous
   // staged entries
