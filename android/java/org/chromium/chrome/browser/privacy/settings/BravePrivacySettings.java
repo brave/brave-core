@@ -231,7 +231,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
-
         // override title
         getActivity().setTitle(R.string.brave_shields_and_privacy);
 
@@ -508,6 +507,10 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else if (PREF_SHIELDS_SAVE_CONTACT_INFO.equals(key)) {
             mWebcompatReporterHandler.setContactInfoSaveFlag((boolean) newValue);
         } else if (PREF_BLOCK_CROSS_SITE_COOKIES.equals(key)) {
+            mBlockCrosssiteCookies.setVisibleEntry(
+                    0,
+                    ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE)
+                            || (int) newValue == STRICT);
             switch ((int) newValue) {
                 case STRICT:
                     BraveShieldsContentSettings.setCookiesPref(
@@ -635,7 +638,10 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             mAdsTrakersBlockPref.setSummary(
                     getActivity().getResources().getString(R.string.block_trackers_ads_option_3));
         }
-
+        mBlockCrosssiteCookies.setVisibleEntry(
+                0,
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE)
+                        || cookiesBlockPref == STRICT);
         if (cookiesBlockPref == STRICT) {
             mBlockCrosssiteCookies.setCheckedIndex(0);
             mBlockCrosssiteCookies.setSummary(

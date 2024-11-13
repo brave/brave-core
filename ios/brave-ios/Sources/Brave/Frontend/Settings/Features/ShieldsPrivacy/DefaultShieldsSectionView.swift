@@ -24,6 +24,11 @@ struct DefaultShieldsSectionView: View {
 
   @ObservedObject var settings: AdvancedShieldsSettings
   @State private var cookieAlertType: CookieAlertType?
+  /// If we should force show the Block All Cookies row.
+  /// If a user disables the toggle with the feature flag disabled, we don't
+  /// want the row to disappear on the user. So if we are showing the row
+  /// when the view opens, it should remain visible until the view is dismissed.
+  @State private var showBlockAllCookies = false
 
   var body: some View {
     Section {
@@ -102,48 +107,51 @@ struct DefaultShieldsSectionView: View {
         option: Preferences.Shields.blockScripts
       )
 
-      OptionToggleView(
-        title: Strings.blockAllCookies,
-        subtitle: Strings.blockCookiesDescription,
-        option: Preferences.Privacy.blockAllCookies,
-        onChange: { newValue in
-          if newValue {
-            cookieAlertType = .confirm
-          } else {
-            Task {
-              await toggleCookieSetting(with: false)
+      if showBlockAllCookies || FeatureList.kBlockAllCookiesToggle.enabled
+        || Preferences.Privacy.blockAllCookies.value
+      {
+        OptionToggleView(
+          title: Strings.blockAllCookies,
+          subtitle: Strings.blockCookiesDescription,
+          option: Preferences.Privacy.blockAllCookies,
+          onChange: { newValue in
+            if newValue {
+              cookieAlertType = .confirm
+            } else {
+              Task {
+                await toggleCookieSetting(with: false)
+              }
             }
           }
-        }
-      )
-      .alert(item: $cookieAlertType) { cookieAlertType in
-        switch cookieAlertType {
-        case .confirm:
-          return Alert(
-            title: Text(Strings.blockAllCookiesAction),
-            message: Text(Strings.blockAllCookiesAlertInfo),
-            primaryButton: .default(
-              Text(Strings.blockAllCookiesAction),
-              action: {
-                Task {
-                  await toggleCookieSetting(with: true)
+        )
+        .alert(item: $cookieAlertType) { cookieAlertType in
+          switch cookieAlertType {
+          case .confirm:
+            return Alert(
+              title: Text(Strings.blockAllCookiesAction),
+              message: Text(Strings.blockAllCookiesAlertInfo),
+              primaryButton: .default(
+                Text(Strings.blockAllCookiesAction),
+                action: {
+                  Task {
+                    await toggleCookieSetting(with: true)
+                  }
                 }
-              }
-            ),
-            secondaryButton: .cancel(
-              Text(Strings.cancelButtonTitle),
-              action: {
-                Preferences.Privacy.blockAllCookies.value = false
-              }
+              ),
+              secondaryButton: .cancel(
+                Text(Strings.cancelButtonTitle),
+                action: {
+                  Preferences.Privacy.blockAllCookies.value = false
+                }
+              )
             )
-          )
-        case .failed:
-          return Alert(
-            title: Text(Strings.blockAllCookiesFailedAlertMsg)
-          )
+          case .failed:
+            return Alert(
+              title: Text(Strings.blockAllCookiesFailedAlertMsg)
+            )
+          }
         }
       }
-
       OptionToggleView(
         title: Strings.fingerprintingProtection,
         subtitle: Strings.fingerprintingProtectionDescription,
@@ -195,7 +203,11 @@ struct DefaultShieldsSectionView: View {
       Text(Strings.shieldsDefaults)
     } footer: {
       Text(Strings.shieldsDefaultsFooter)
-    }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+    }
+    .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    .onAppear {
+      showBlockAllCookies = Preferences.Privacy.blockAllCookies.value
+    }
   }
 
   private func toggleCookieSetting(with status: Bool) async {

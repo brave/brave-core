@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceDialogFragmentCompat;
 
-import org.chromium.base.ContextUtils;
+import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -27,15 +27,15 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompat {
     public static final String TAG = "BravePreferenceDialogFragment";
     private RadioGroup mRadioGroup;
-    private CharSequence[] mDialogEntries;
-    private BraveDialogPreference dialogPreference;
-    private Preference.OnPreferenceChangeListener onPreferenceChangeListener;
-    private int newValue;
+    private BraveDialogPreference.DialogEntry[] mDialogEntries;
+    private BraveDialogPreference mDialogPreference;
+    private Preference.OnPreferenceChangeListener mOnPreferenceChangeListener;
+    private int mNewValue;
 
-    private static String currentPreference;
+    private static String sCurrentPreference;
 
     public void setPreferenceDialogListener(Preference.OnPreferenceChangeListener listener) {
-        this.onPreferenceChangeListener = listener;
+        this.mOnPreferenceChangeListener = listener;
     }
 
     @NonNull
@@ -43,7 +43,7 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
         BravePreferenceDialogFragment fragment = new BravePreferenceDialogFragment();
         Bundle bundle = new Bundle(1);
         bundle.putString(PreferenceDialogFragmentCompat.ARG_KEY, preference.getKey());
-        currentPreference = preference.getKey();
+        sCurrentPreference = preference.getKey();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -51,30 +51,31 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dialogPreference = (BraveDialogPreference) getPreference();
+        mDialogPreference = (BraveDialogPreference) getPreference();
     }
 
     @Override
     public void onDialogClosed(boolean positiveResult) {
-        if (onPreferenceChangeListener != null) {
-            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-            if (currentPreference.equals(BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION)) {
-                onPreferenceChangeListener.onPreferenceChange(
-                        dialogPreference,
+        if (mOnPreferenceChangeListener != null) {
+            SharedPreferencesManager sharedPreferencesManager =
+                    ChromeSharedPreferences.getInstance();
+            if (sCurrentPreference.equals(BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION)) {
+                mOnPreferenceChangeListener.onPreferenceChange(
+                        mDialogPreference,
                         BraveShieldsContentSettings.getShieldsValue(
                                 ProfileManager.getLastUsedRegularProfile(),
                                 "",
                                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING));
-            } else if (currentPreference.equals(BravePrivacySettings.PREF_BLOCK_TRACKERS_ADS)) {
-                onPreferenceChangeListener.onPreferenceChange(
-                        dialogPreference,
+            } else if (sCurrentPreference.equals(BravePrivacySettings.PREF_BLOCK_TRACKERS_ADS)) {
+                mOnPreferenceChangeListener.onPreferenceChange(
+                        mDialogPreference,
                         BraveShieldsContentSettings.getShieldsValue(
                                 ProfileManager.getLastUsedRegularProfile(),
                                 "",
                                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS));
             } else {
-                onPreferenceChangeListener.onPreferenceChange(
-                        dialogPreference, sharedPreferences.getInt(currentPreference, 1));
+                mOnPreferenceChangeListener.onPreferenceChange(
+                        mDialogPreference, sharedPreferencesManager.readInt(sCurrentPreference, 1));
             }
         }
     }
@@ -88,12 +89,12 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
                     new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            newValue = checkedId;
-                            SharedPreferences.Editor sharedPreferencesEditor =
-                                    ContextUtils.getAppSharedPreferences().edit();
-                            if (currentPreference.equals(
+                            mNewValue = checkedId;
+                            SharedPreferencesManager sharedPreferencesManager =
+                                    ChromeSharedPreferences.getInstance();
+                            if (sCurrentPreference.equals(
                                     BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION)) {
-                                if ((int) newValue == 0) {
+                                if ((int) mNewValue == 0) {
                                     BraveShieldsContentSettings.setShieldsValue(
                                             ProfileManager.getLastUsedRegularProfile(),
                                             "",
@@ -101,7 +102,7 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
                                                     .RESOURCE_IDENTIFIER_FINGERPRINTING,
                                             BraveShieldsContentSettings.BLOCK_RESOURCE,
                                             false);
-                                } else if ((int) newValue == 1) {
+                                } else if ((int) mNewValue == 1) {
                                     BraveShieldsContentSettings.setShieldsValue(
                                             ProfileManager.getLastUsedRegularProfile(),
                                             "",
@@ -118,9 +119,9 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
                                             BraveShieldsContentSettings.ALLOW_RESOURCE,
                                             false);
                                 }
-                            } else if (currentPreference.equals(
+                            } else if (sCurrentPreference.equals(
                                     BravePrivacySettings.PREF_BLOCK_TRACKERS_ADS)) {
-                                switch ((int) newValue) {
+                                switch ((int) mNewValue) {
                                     case 0:
                                         BraveShieldsContentSettings.setShieldsValue(
                                                 ProfileManager.getLastUsedRegularProfile(),
@@ -150,10 +151,9 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
                                         break;
                                 }
                             } else {
-                                sharedPreferencesEditor.putInt(currentPreference, (int) newValue);
+                                sharedPreferencesManager.writeInt(
+                                        sCurrentPreference, (int) mNewValue);
                             }
-
-                            sharedPreferencesEditor.apply();
                         }
                     });
         }
@@ -166,25 +166,25 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
 
-        String subtitle = dialogPreference.getDialogSubtitle();
+        String subtitle = mDialogPreference.getDialogSubtitle();
         TextView subTitle = view.findViewById(R.id.summary);
         subTitle.setText(subtitle);
         subTitle.refreshDrawableState();
         mRadioGroup = view.findViewById(R.id.options);
-        mDialogEntries = dialogPreference.getDialogEntries();
-
+        mDialogEntries = mDialogPreference.getDialogEntries();
         int index = 0;
 
-        for (CharSequence entry : mDialogEntries) {
+        for (BraveDialogPreference.DialogEntry entry : mDialogEntries) {
             RadioButton radioButton = new RadioButton(getContext());
             radioButton.setLayoutParams(setParams());
-            radioButton.setTextSize(15);
-            radioButton.setText(entry);
+            radioButton.setTextAppearance(R.style.BraveShieldsBlockCookieModeText);
+            radioButton.setText(entry.getEntryText());
+            radioButton.setVisibility(entry.isVisible() ? View.VISIBLE : View.GONE);
             radioButton.setId(index);
             if (mRadioGroup != null) {
                 mRadioGroup.addView(radioButton);
             }
-            if (index == dialogPreference.getCheckedIndex()) {
+            if (index == mDialogPreference.getCheckedIndex()) {
                 radioButton.setChecked(true);
             }
             index++;

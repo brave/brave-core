@@ -10,15 +10,45 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import androidx.preference.DialogPreference;
+
 import org.chromium.chrome.R;
 
 public class BraveDialogPreference extends DialogPreference {
-    private CharSequence[] mDialogEntries;
+    public static final class DialogEntry {
+        private boolean mIsVisible;
+        private CharSequence mEntyText;
+
+        public DialogEntry(CharSequence entryText) {
+            mEntyText = entryText;
+            mIsVisible = true;
+        }
+
+        public CharSequence getEntryText() {
+            return mEntyText;
+        }
+
+        public void setEntryText(CharSequence entrryText) {
+            mEntyText = entrryText;
+        }
+
+        public void setVisible(boolean isVisible) {
+            mIsVisible = isVisible;
+        }
+
+        public boolean isVisible() {
+            return mIsVisible;
+        }
+    }
+
+    private DialogEntry[] mDialogEntries;
     private String mDialogSubs;
     private int mCheckedIndex;
 
     public void setDialogEntries(CharSequence[] mDialogEntries) {
-        this.mDialogEntries = mDialogEntries;
+        this.mDialogEntries = new DialogEntry[mDialogEntries.length];
+        for (int i = 0; i < mDialogEntries.length; i++) {
+            this.mDialogEntries[i] = new DialogEntry(mDialogEntries[i]);
+        }
     }
 
     public BraveDialogPreference(Context context, AttributeSet attrs) {
@@ -53,7 +83,7 @@ public class BraveDialogPreference extends DialogPreference {
         this.mDialogSubs = mDialogSubs;
     }
 
-    public CharSequence[] getDialogEntries() {
+    public DialogEntry[] getDialogEntries() {
         return mDialogEntries;
     }
 
@@ -63,5 +93,13 @@ public class BraveDialogPreference extends DialogPreference {
 
     public void setCheckedIndex(int mCheckedIndex) {
         this.mCheckedIndex = mCheckedIndex;
+    }
+
+    public void setVisibleEntry(int entryIndex, boolean isVisible) {
+        if (entryIndex >= mDialogEntries.length) {
+            return;
+        }
+
+        this.mDialogEntries[entryIndex].setVisible(isVisible);
     }
 }

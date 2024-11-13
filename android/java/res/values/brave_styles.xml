@@ -371,6 +371,11 @@
         <item name="android:textColor">@color/rewards_panel_action_color</item>
     </style>
 
+    <!-- Brave Shields -->
+    <style name="BraveShieldsBlockCookieModeText" parent="DefaultRegular">
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <!-- Nala tokens styles  -->
 
     <style name="DefaultRegular">

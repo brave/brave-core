@@ -11,6 +11,7 @@
 #include "base/values.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -108,6 +109,11 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       "getContactInfoSaveFlag",
       base::BindRepeating(&DefaultBraveShieldsHandler::GetContactInfoSaveFlag,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getHideBlockAllCookieTogle",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag,
+          base::Unretained(this)));
 
   content_settings_observation_.Observe(
       HostContentSettingsMapFactory::GetForProfile(profile_));
@@ -214,6 +220,23 @@ void DefaultBraveShieldsHandler::GetCookieControlType(
   AllowJavascript();
   ResolveJavascriptCallback(args[0].Clone(),
                             base::Value(ControlTypeToString(setting)));
+}
+
+void DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+  const ControlType setting = brave_shields::GetCookieControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_),
+      CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
+
+  const bool block_all_cookies_feature_enabled = base::FeatureList::IsEnabled(
+      brave_shields::features::kBlockAllCookiesToggle);
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0].Clone(),
+                            base::Value(setting != ControlType::BLOCK &&
+                                        !block_all_cookies_feature_enabled));
 }
 
 void DefaultBraveShieldsHandler::SetCookieControlType(
