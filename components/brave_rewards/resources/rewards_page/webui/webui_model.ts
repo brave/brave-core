@@ -11,7 +11,8 @@ import {
   externalWalletProviderFromString
 } from '../../shared/lib/external_wallet'
 
-import { AppModel, AppState, Notification, defaultState } from '../lib/app_model'
+import { AppModel } from '../lib/app_model'
+import { AppState, Notification, defaultState } from '../lib/app_state'
 import { RewardsPageProxy } from './rewards_page_proxy'
 import { createStateManager } from '../../shared/lib/state_manager'
 import { createAdsHistoryAdapter } from './ads_history_adapter'
@@ -273,6 +274,11 @@ export function createModel(): AppModel {
     stateManager.update({ notifications: list })
   }
 
+  async function updateCards() {
+    const { cards } = await pageHandler.fetchUICards()
+    stateManager.update({ cards: cards || null })
+  }
+
   async function loadData() {
     // Discards the supplied promise so that the `Promise.all` below does not
     // block on the result. Any calls that may be blocked on a network request
@@ -293,7 +299,8 @@ export function createModel(): AppModel {
       updateRewardsParameters(),
       updateNotifications(),
       inBackground(updateCurrentCreator()),
-      inBackground(updateCaptchaInfo({ pendingOnly: true }))
+      inBackground(updateCaptchaInfo({ pendingOnly: true })),
+      inBackground(updateCards())
     ])
 
     stateManager.update({ loading: false })

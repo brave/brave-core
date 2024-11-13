@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
 
-import { AutoContributeEntry } from '../../lib/app_model'
+import { AutoContributeEntry } from '../../lib/app_state'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { formatMessage } from '../../../shared/lib/locale_context'
 import { AppModelContext, useAppState } from '../../lib/app_model_context'

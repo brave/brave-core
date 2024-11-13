@@ -10,7 +10,7 @@ import ButtonMenu from '@brave/leo/react/buttonMenu'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { useCallbackWrapper } from '../../lib/callback_wrapper'
-import { AdsHistoryItem } from '../../lib/app_model'
+import { AdsHistoryItem } from '../../lib/app_state'
 import { AppModelContext } from '../../lib/app_model_context'
 import { Modal } from '../modal'
 

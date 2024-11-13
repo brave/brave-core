@@ -1108,6 +1108,13 @@ void RewardsServiceImpl::GetRewardsParameters(
       base::BindOnce(&OnGetRewardsParameters, std::move(callback)));
 }
 
+void RewardsServiceImpl::FetchUICards(FetchUICardsCallback callback) {
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback), std::nullopt);
+  }
+  engine_->FetchUICards(std::move(callback));
+}
+
 void RewardsServiceImpl::OnGetRewardsParameters(
     GetRewardsParametersCallback callback,
     mojom::RewardsParametersPtr parameters) {
