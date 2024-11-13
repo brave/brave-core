@@ -30,7 +30,7 @@
 
 -keep class org.chromium.components.browser_ui.site_settings.SingleCategorySettings {
     *** mCategory;
-    *** getAddExceptionDialogMessage(...);
+    *** getAddExceptionDialogMessageResourceId(...);
     *** resetList(...);
 }
 

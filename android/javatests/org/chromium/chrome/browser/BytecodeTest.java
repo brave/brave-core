@@ -556,10 +556,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                        "getAddExceptionDialogMessage",
+                        "getAddExceptionDialogMessageResourceId",
                         MethodModifier.REGULAR,
-                        false,
-                        null));
+                        true,
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
@@ -924,13 +924,6 @@ public class BytecodeTest {
                         getClassForPath(
                                 "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
                         int.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                        "getAddExceptionDialogMessage",
-                        MethodModifier.REGULAR,
-                        true,
-                        String.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
