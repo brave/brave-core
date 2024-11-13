@@ -41,10 +41,6 @@ export const style = scoped.css`
     }
   }
 
-  .earnings-range {
-    font: ${font.default.semibold};
-  }
-
   .connect {
     display: flex;
     align-items: center;

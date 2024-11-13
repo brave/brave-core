@@ -39,10 +39,7 @@ export function createModel(): AppModel {
         'search-result': 1,
         'inline-content': 0
       },
-      minEarningsThisMonth: 21.244,
-      maxEarningsThisMonth: 32.980,
       minEarningsPreviousMonth: 1.244,
-      maxEarningsPreviousMonth: 2.980,
       nextPaymentDate: Date.now() + (4 * 24 * 60 * 60 * 1000),
       notificationAdsPerHour: 5,
       shouldAllowSubdivisionTargeting: true,

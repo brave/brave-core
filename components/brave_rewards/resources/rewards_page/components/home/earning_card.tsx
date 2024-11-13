@@ -6,10 +6,8 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import Tooltip from '@brave/leo/react/tooltip'
 
 import { formatMessage } from '../../../shared/lib/locale_context'
-import { formatEarningsEstimate, formatEarningsRange } from '../../lib/formatters'
 import { useAppState } from '../../lib/app_model_context'
 import { useLocaleContext, usePluralString } from '../../lib/locale_strings'
 import { useConnectAccountRouter } from '../../lib/connect_account_router'
@@ -37,8 +35,12 @@ export function EarningCard() {
   const [showAdsSettingsModal, setShowAdsSettingsModal] = React.useState(false)
   const [showAdsHistoryModal, setShowAdsHistoryModal] = React.useState(false)
 
-  const adsViewedString = usePluralString(
+  const unconnectedAdsViewedString = usePluralString(
     'unconnectedAdsViewedText',
+    adsInfo?.adsReceivedThisMonth)
+
+  const connectedAdsViewedString = usePluralString(
+    'connectedAdsViewedText',
     adsInfo?.adsReceivedThisMonth)
 
   function toggleAdDetails() {
@@ -60,7 +62,7 @@ export function EarningCard() {
           <img alt='BAT' src={batCoinGray} />
           <div className='counter-text'>
             {
-              formatMessage(adsViewedString, {
+              formatMessage(unconnectedAdsViewedString, {
                 tags: {
                   $1: (content) => (
                     <div key='value' className='counter-value'>
@@ -97,34 +99,15 @@ export function EarningCard() {
     if (!adsInfo) {
       return
     }
-    return formatMessage(getString('earningsEstimateText'), [
-      <div key='value' className='counter-value'>
-        {
-          formatEarningsEstimate(
-            adsInfo.minEarningsThisMonth,
-            adsInfo.maxEarningsThisMonth)
-        } BAT
-        {
-          adsInfo.maxEarningsThisMonth > adsInfo.minEarningsThisMonth &&
-            <Tooltip mode='default'>
-              <Icon name='info-outline' />
-              <div slot='content'>
-                {
-                  formatMessage(getString('earningsRangeTooltip'), [
-                    <div key='range' className='earnings-range'>
-                      {
-                        formatEarningsRange(
-                          adsInfo.minEarningsThisMonth,
-                          adsInfo.maxEarningsThisMonth)
-                      } BAT
-                    </div>
-                  ])
-                }
-              </div>
-            </Tooltip>
-        }
-      </div>
-    ])
+    return formatMessage(connectedAdsViewedString, {
+      tags: {
+        $1: (content) => (
+          <div key='value' className='counter-value'>
+            {content}
+          </div>
+        )
+      }
+    })
   }
 
   function renderAdsSummary() {

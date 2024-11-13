@@ -26,54 +26,55 @@ export const style = scoped.css`
   }
 
   h4 {
-     padding: 16px;
-     display: flex;
-     align-items: center;
-     justify-content: space-between;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-     a {
-       --leo-icon-size: 16px;
-       --leo-icon-color: ${color.icon.interactive};
+    a {
+      --leo-icon-size: 16px;
+      --leo-icon-color: ${color.icon.interactive};
 
-       font: ${font.components.buttonSmall};
-       color: ${color.text.interactive};
-       text-decoration: none;
-       display: flex;
-       gap: 8px;
-     }
-   }
+      font: ${font.components.buttonSmall};
+      color: ${color.text.interactive};
+      text-decoration: none;
+      display: flex;
+      gap: 8px;
+    }
+  }
 
-   section a {
-     display: flex;
-     gap: 16px;
-     text-decoration: none;
-     color: ${color.text.primary};
-     padding: 8px;
-     border-bottom: solid 1px ${color.divider.subtle};
+  section a {
+    display: flex;
+    gap: 16px;
+    text-decoration: none;
+    color: ${color.text.primary};
+    padding: 8px;
+    border-bottom: solid 1px ${color.divider.subtle};
 
-     &:last-child {
-       border-bottom: none;
-     }
+    &:last-child {
+      border-bottom: none;
+    }
 
-     img {
-       height: 56px;
-       width: 56px;
-       border-radius: 12px;
-       border: solid 1px ${color.divider.subtle};
-     }
-   }
+    img {
+      flex: 0 0 56px;
+      height: 56px;
+      width: 56px;
+      border-radius: 12px;
+      border: solid 1px ${color.divider.subtle};
+    }
+  }
 
-   .item-info {
-     display: flex;
-     flex-direction: column;
+  .item-info {
+    display: flex;
+    flex-direction: column;
 
-     .title {
-       font: ${font.default.semibold};
-     }
+    .title {
+      font: ${font.default.semibold};
+    }
 
-     .description {
-       font: ${font.xSmall.regular};
-       color: ${color.text.tertiary};
-     }
-   }
+    .description {
+      font: ${font.xSmall.regular};
+      color: ${color.text.tertiary};
+    }
+  }
 `

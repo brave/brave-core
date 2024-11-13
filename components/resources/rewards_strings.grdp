@@ -110,6 +110,13 @@
       other {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> you've seen this month.}
     }
   </message>
+  <message name="IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT" desc="">
+    {ADS_VIEWED, plural,
+      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> this month}
+      =1 {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph># Ad<ph name="COUNT_END">$2</ph> this month}
+      other {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> this month}
+    }
+  </message>
 
   <!-- Rewards new tab page widget -->
   <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
@@ -722,9 +729,6 @@
   <message name="IDS_REWARDS_ADS_SETTINGS_BUTTON_LABEL" desc="">
     Ads Settings
   </message>
-  <message name="IDS_REWARDS_ADS_SETTINGS_EARNINGS_LABEL" desc="">
-    Earnings so far this month
-  </message>
   <message name="IDS_REWARDS_ADS_SETTINGS_PAYOUT_DATE_LABEL" desc="">
     Next earnings payout date
   </message>
@@ -782,12 +786,6 @@
 
   <message name="IDS_REWARDS_EARNINGS_ADS_RECEIVED_TEXT" desc="">
     <ph name="NUM">$1</ph> ads received this month
-  </message>
-  <message name="IDS_REWARDS_EARNINGS_ESTIMATE_TEXT" desc="">
-    You've earned <ph name="NUM">$1</ph> so far this month
-  </message>
-  <message name="IDS_REWARDS_EARNINGS_RANGE_TOOLTIP" desc="">
-    You're estimated to earn between: <ph name="RANGE">$1</ph>
   </message>
 
   <message name="IDS_REWARDS_PAYOUT_ACCOUNT_BALANCE_LABEL" desc="">

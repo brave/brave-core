@@ -44,7 +44,8 @@ namespace {
 
 static constexpr auto kPluralStrings =
     base::MakeFixedFlatMap<std::string_view, int>(
-        {{"unconnectedAdsViewedText",
+        {{"connectedAdsViewedText", IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT},
+         {"unconnectedAdsViewedText",
           IDS_REWARDS_UNCONNECTED_ADS_VIEWED_TEXT}});
 
 PrefService* GetLocalState() {
@@ -483,9 +484,6 @@ void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
     auto statement = mojom::AdsStatement::New();
 
     statement->min_earnings_previous_month = info->min_earnings_previous_month;
-    statement->max_earnings_previous_month = info->max_earnings_previous_month;
-    statement->min_earnings_this_month = info->min_earnings_this_month;
-    statement->max_earnings_this_month = info->max_earnings_this_month;
     statement->next_payment_date = info->next_payment_date;
     statement->ads_received_this_month = info->ads_received_this_month;
     statement->ad_type_summary_this_month = mojom::AdTypeSummary::New();
