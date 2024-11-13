@@ -49,15 +49,13 @@ void WebcompatReporterServiceFactory::RegisterBrowserStatePrefs(
 std::unique_ptr<KeyedService>
 WebcompatReporterServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
-  auto* browser_state = ChromeBrowserState::FromBrowserState(context);
+  auto* profile = ProfileIOS::FromBrowserState(context);
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
       context->GetSharedURLLoaderFactory());
   component_updater::ComponentUpdateService* cus =
       GetApplicationContext()->GetComponentUpdateService();
   return std::make_unique<WebcompatReporterService>(
-      !browser_state || browser_state->IsOffTheRecord()
-          ? nullptr
-          : browser_state->GetPrefs(),
+      !profile || profile->IsOffTheRecord() ? nullptr : profile->GetPrefs(),
       std::make_unique<WebcompatReporterServiceDelegateImpl>(cus),
       std::move(report_uploader));
 }
