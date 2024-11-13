@@ -5,34 +5,57 @@
 
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 
+#include <stddef.h>
+
 #include <algorithm>
+#include <functional>
+#include <ios>
 #include <iterator>
 #include <memory>
 #include <optional>
-#include <utility>
+#include <string_view>
+#include <type_traits>
 #include <vector>
 
+#include "base/check.h"
+#include "base/containers/span.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
+#include "base/metrics/field_trial_params.h"
+#include "base/notreached.h"
+#include "base/numerics/safe_math.h"
 #include "base/rand_util.h"
+#include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "base/time/time.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "base/types/strong_alias.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+#include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -41,6 +64,7 @@
       l10n_util::GetStringUTF8(IDS_AI_CHAT_STATIC_STARTER_PROMPT_##TYPE)
 
 namespace ai_chat {
+class AIChatCredentialManager;
 
 namespace {
 

@@ -11,17 +11,25 @@
 
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
 
+#include <string.h>
+
+#include <memory>
+#include <string_view>
+#include <utility>
+
 #include "base/files/file_path.h"
 #include "base/location.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/constants/brave_paths.h"
+#include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {

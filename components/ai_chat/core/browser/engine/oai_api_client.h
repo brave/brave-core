@@ -10,8 +10,15 @@
 #include <string>
 #include <utility>
 
+#include "base/functional/callback.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 
 namespace api_request_helper {
 class APIRequestResult;
@@ -22,6 +29,9 @@ class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace ai_chat {
+namespace mojom {
+class CustomModelOptions;
+}  // namespace mojom
 
 // Performs remote request to the OAI format APIs.
 class OAIAPIClient {

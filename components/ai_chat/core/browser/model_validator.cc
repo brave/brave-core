@@ -5,9 +5,11 @@
 
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "base/numerics/safe_math.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/net/base/url_util.h"
+
+class GURL;
 
 namespace ai_chat {
 

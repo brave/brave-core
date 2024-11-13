@@ -10,10 +10,15 @@
 #include <optional>
 
 #include "base/containers/flat_map.h"
+#include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/time_period_storage/time_period_storage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
+#include "build/build_config.h"
 
 class PrefRegistrySimple;
 class PrefService;

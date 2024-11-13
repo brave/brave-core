@@ -8,8 +8,8 @@
 #include <optional>
 #include <utility>
 
+#include "base/numerics/clamped_math.h"
 #include "base/time/time.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
 
