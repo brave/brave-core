@@ -47,6 +47,7 @@
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -587,6 +588,21 @@ void ConversationHandler::ChangeModel(const std::string& model_key) {
   auto* new_model = model_service_->GetModel(model_key);
   if (new_model) {
     model_key_ = new_model->key;
+
+  // Applies to Custom Models alone. Verify that the endpoint URL for this model
+  // is valid. Model endpoints may be valid in one session, but not in another.
+  // For example, if --allow-leo-private-ips is enabled, the endpoint does not
+  // need to use HTTPS.
+  if (new_model->options->is_custom_model_options()) {
+    if (!ModelValidator::IsValidEndpoint(
+            new_model->options->get_custom_model_options()->endpoint)) {
+      SetAPIError(mojom::APIError::InvalidEndpointURL);
+      return;
+    } else {
+      SetAPIError(mojom::APIError::None);
+    }
+  }
+
   }
   // Always call InitEngine, even with a bad key as we need a model
   InitEngine();
@@ -614,21 +630,6 @@ void ConversationHandler::SubmitHumanConversationEntry(
     mojom::ConversationTurnPtr turn) {
   VLOG(1) << __func__;
   DVLOG(4) << __func__ << ": " << turn->text;
-
-  // Applies to Custom Models alone. Verify that the endpoint URL for this model
-  // is valid. Model endpoints may be valid in one session, but not in another.
-  // For example, if --allow-leo-private-ips is enabled, the endpoint does not
-  // need to use HTTPS.
-  const mojom::Model& model = GetCurrentModel();
-  if (model.options->is_custom_model_options()) {
-    // Use ModelValidator to validate model
-    if (!ModelValidator::IsValidEndpoint(
-            model.options->get_custom_model_options()->endpoint)) {
-      // If the endpoint URL is invalid, return an error.
-      SetAPIError(mojom::APIError::InvalidEndpointURL);
-      return;
-    }
-  }
 
   // If there's edits, use the last one as the latest turn.
   bool has_edits = turn->edits && !turn->edits->empty();
