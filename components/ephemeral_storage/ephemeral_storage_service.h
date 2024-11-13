@@ -29,7 +29,7 @@
 #include "url/origin.h"
 
 class EphemeralStorageBrowserTest;
-class EphemeralStorageTest;
+class EphemeralStorageQaBrowserTest;
 class HostContentSettingsMap;
 class PrefService;
 
@@ -84,7 +84,7 @@ class EphemeralStorageService : public KeyedService {
 
  private:
   friend EphemeralStorageBrowserTest;
-  friend EphemeralStorageTest;
+  friend EphemeralStorageQaBrowserTest;
   friend permissions::PermissionLifetimeManagerBrowserTest;
 
   void FirstPartyStorageAreaInUse(const std::string& ephemeral_domain);
