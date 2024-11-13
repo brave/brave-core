@@ -332,4 +332,9 @@ extension AsyncFileManager {
   public func downloadsPath() async throws -> URL {
     try await url(for: .documentDirectory, appending: "Downloads", create: true)
   }
+
+  /// URL where temporary files are stored.
+  public var temporaryDirectory: URL {
+    fileManager.temporaryDirectory
+  }
 }
