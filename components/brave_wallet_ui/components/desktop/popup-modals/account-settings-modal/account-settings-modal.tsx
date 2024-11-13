@@ -7,6 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query'
 import ProgressRingReact from '@brave/leo/react/progressRing'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
+import ControlItem from '@brave/leo/react/controlItem'
 
 // redux
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,6 +17,10 @@ import {
   AccountsTabState,
   AccountsTabActions
 } from '../../../../page/reducers/accounts-tab-reducer'
+
+// selectors
+import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
 
 // utils
 import { getLocale, getLocaleWithTag } from '../../../../../common/locale'
@@ -28,19 +33,25 @@ import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/ur
 import { AccountButtonOptions } from '../../../../options/account-list-button-options'
 
 // types
-import { BraveWallet } from '../../../../constants/types'
+import {
+  BraveWallet,
+  zcashAddressOptionType
+} from '../../../../constants/types'
 
 // components
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
 import PopupModal from '../index'
 import PasswordInput from '../../../shared/password-input/index'
+import {
+  CreateAccountIcon //
+} from '../../../shared/create-account-icon/create-account-icon'
 
 // hooks
 import { useIsMounted } from '../../../../common/hooks/useIsMounted'
 import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
-import { useAccountOrb } from '../../../../common/hooks/use-orb'
 import {
   useGetQrCodeImageQuery,
+  useGetZCashAccountInfoQuery,
   useUpdateAccountNameMutation //
 } from '../../../../common/slices/api.slice'
 import {
@@ -59,49 +70,135 @@ import {
   ButtonWrapper,
   ErrorText,
   Line,
-  NameAndIcon,
-  AccountCircle,
-  AccountName,
   QRCodeImage,
   EditWrapper,
-  Alert
+  Alert,
+  ControlsWrapper,
+  SegmentedControl
 } from './account-settings-modal.style'
-import { LeoSquaredButton, VerticalSpacer } from '../../../shared/style'
+import {
+  Column,
+  LeoSquaredButton,
+  Text,
+  VerticalSpacer
+} from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 
+const zcashAddressOptions: zcashAddressOptionType[] = [
+  {
+    addressType: 'unified',
+    label: 'braveWalletUnified'
+  },
+  {
+    addressType: 'shielded',
+    label: 'braveWalletShielded'
+  },
+  {
+    addressType: 'transparent',
+    label: 'braveWalletTransparent'
+  }
+]
 interface DepositModalProps {
   selectedAccount: BraveWallet.AccountInfo
 }
 
 export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
-  const orb = useAccountOrb(selectedAccount)
+  // state
+  const [selectedZCashAddressOption, setSelectedZCashAddressOption] =
+    React.useState<string>('unified')
 
-  // queries
+  // redux
+  const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashShieldedTransactionsEnabled
+  )
+
+  // queries and memos
   const { receiveAddress } = useReceiveAddressQuery(selectedAccount.accountId)
+  const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
+    isZCashShieldedTransactionsEnabled &&
+      selectedAccount.accountId.coin === BraveWallet.CoinType.ZEC
+      ? selectedAccount.accountId
+      : skipToken
+  )
+
+  const displayAddress = React.useMemo(() => {
+    if (
+      isZCashShieldedTransactionsEnabled &&
+      selectedAccount.accountId.coin === BraveWallet.CoinType.ZEC &&
+      zcashAccountInfo?.accountShieldBirthday
+    ) {
+      return selectedZCashAddressOption === 'unified'
+        ? zcashAccountInfo.unifiedAddress
+        : selectedZCashAddressOption === 'shielded'
+        ? zcashAccountInfo.orchardAddress
+        : zcashAccountInfo.nextTransparentReceiveAddress.addressString
+    }
+    return receiveAddress
+  }, [
+    isZCashShieldedTransactionsEnabled,
+    selectedAccount,
+    receiveAddress,
+    zcashAccountInfo,
+    selectedZCashAddressOption
+  ])
+
   const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
-    receiveAddress || skipToken
+    displayAddress || skipToken
   )
 
   // render
   return (
-    <>
-      <NameAndIcon>
-        <AccountCircle orb={orb} />
-        <AccountName>{selectedAccount.name}</AccountName>
-      </NameAndIcon>
+    <Column padding='0px 16px'>
+      <Column
+        gap='8px'
+        margin='0px 0px 24px 0px'
+      >
+        <CreateAccountIcon
+          account={selectedAccount}
+          size='huge'
+        />
+        <Text
+          textSize='14px'
+          textColor='primary'
+        >
+          {selectedAccount.name}
+        </Text>
+      </Column>
+
+      {zcashAccountInfo && zcashAccountInfo.accountShieldBirthday && (
+        <ControlsWrapper width='unset'>
+          <SegmentedControl
+            value={selectedZCashAddressOption}
+            onChange={({ value }) => {
+              if (value) {
+                setSelectedZCashAddressOption(value)
+              }
+            }}
+          >
+            {zcashAddressOptions.map((option) => (
+              <ControlItem
+                key={option.addressType}
+                value={option.addressType}
+              >
+                {getLocale(option.label)}
+              </ControlItem>
+            ))}
+          </SegmentedControl>
+        </ControlsWrapper>
+      )}
 
       <QRCodeWrapper>
-        {isLoadingQrCode || !receiveAddress ? (
+        {isLoadingQrCode || !displayAddress ? (
           <ProgressRingReact mode='indeterminate' />
         ) : (
           <QRCodeImage src={qrCode} />
         )}
       </QRCodeWrapper>
 
-      {receiveAddress ? (
-        <CopyTooltip text={receiveAddress}>
+      {displayAddress ? (
+        <CopyTooltip text={displayAddress}>
           <AddressButton>
-            {receiveAddress}
+            {displayAddress}
             <CopyIcon />
           </AddressButton>
         </CopyTooltip>
@@ -112,7 +209,7 @@ export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
         />
       )}
       <VerticalSpacer space={20} />
-    </>
+    </Column>
   )
 }
 

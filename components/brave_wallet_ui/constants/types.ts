@@ -1104,3 +1104,9 @@ export const StorybookTransactionOptions: StorybookTransactionTypes[] = [
 export type StorybookTransactionArgs = {
   transactionType: StorybookTransactionTypes
 }
+
+export type zcashAddressTypes = 'unified' | 'shielded' | 'transparent'
+export type zcashAddressOptionType = {
+  addressType: zcashAddressTypes
+  label: string
+}
