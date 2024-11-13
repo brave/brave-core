@@ -1818,6 +1818,7 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   })";
 
   // Add the chain_id, contract, and token_id from simple hash response
+  nft_identifiers.clear();
   auto nft_identifier1 = mojom::NftIdentifier::New();
   nft_identifier1->chain_id = mojom::kSolanaMainnet;
   nft_identifier1->contract_address =

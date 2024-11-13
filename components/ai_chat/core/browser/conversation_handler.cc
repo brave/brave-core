@@ -418,17 +418,6 @@ void ConversationHandler::RateMessage(bool is_liked,
 
   const std::vector<mojom::ConversationTurnPtr>& history = chat_history_;
 
-  auto on_complete = base::BindOnce(
-      [](RateMessageCallback callback, APIRequestResult result) {
-        if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
-          std::string id = *result.value_body().GetDict().FindString("id");
-          std::move(callback).Run(id);
-          return;
-        }
-        std::move(callback).Run(std::nullopt);
-      },
-      std::move(callback));
-
   // TODO(petemill): Something more robust than relying on message index,
   // and probably a message uuid.
   uint32_t current_turn_id = turn_id + 1;
@@ -439,7 +428,18 @@ void ConversationHandler::RateMessage(bool is_liked,
 
     feedback_api_->SendRating(
         is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,
-        model.options->get_leo_model_options()->name, std::move(on_complete));
+        model.options->get_leo_model_options()->name,
+        base::BindOnce(
+            [](RateMessageCallback callback, APIRequestResult result) {
+              if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
+                std::string id =
+                    *result.value_body().GetDict().FindString("id");
+                std::move(callback).Run(id);
+                return;
+              }
+              std::move(callback).Run(std::nullopt);
+            },
+            std::move(callback)));
 
     return;
   }

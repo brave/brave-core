@@ -79,8 +79,7 @@ void LinkageChecker::MaybeUpdateExternalWalletStatus(
       client().ExternalWalletDisconnected();
       wallet = nullptr;
     } else {
-      LogError(FROM_HERE) << "Failed to transition " << wallet->type
-                          << " wallet state";
+      LogError(FROM_HERE) << "Failed to transition wallet state";
       return;
     }
   }

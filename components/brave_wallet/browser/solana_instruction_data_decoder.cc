@@ -786,18 +786,18 @@ const std::vector<ParamNameTypeTuple>* DecodeInstructionType(
   if (program_id == mojom::kSolanaSystemProgramId) {
     if (auto ins_type = DecodeSystemInstructionType(data, offset)) {
       auto* ret = &GetSystemInstructionParams().at(*ins_type);
-      decoded_data.sys_ins_type = std::move(ins_type);
       decoded_data.account_params =
           GetSystemInstructionAccountParams().at(*ins_type);
+      decoded_data.sys_ins_type = std::move(ins_type);
       return ret;
     }
   } else if (program_id == mojom::kSolanaTokenProgramId ||
              program_id == mojom::kSolanaToken2022ProgramId) {
     if (auto ins_type = DecodeTokenInstructionType(data, offset)) {
       auto* ret = &GetTokenInstructionParams().at(*ins_type);
-      decoded_data.token_ins_type = std::move(ins_type);
       decoded_data.account_params =
           GetTokenInstructionAccountParams().at(*ins_type);
+      decoded_data.token_ins_type = std::move(ins_type);
       return ret;
     }
   }

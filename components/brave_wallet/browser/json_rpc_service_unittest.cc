@@ -6963,22 +6963,21 @@ TEST_F(JsonRpcServiceUnitTest, EthGetLogs) {
   base::Value::List topics;
 
   // Invalid network ID yields internal error
-  TestEthGetLogs("0xinvalid", "earliest", "latest",
-                 std::move(contract_addresses), std::move(topics), {},
-                 mojom::ProviderError::kInternalError,
+  TestEthGetLogs("0xinvalid", "earliest", "latest", contract_addresses.Clone(),
+                 topics.Clone(), {}, mojom::ProviderError::kInternalError,
                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   // Non 200 response yields internal error
   SetHTTPRequestTimeoutInterceptor();
   TestEthGetLogs(mojom::kMainnetChainId, "earliest", "latest",
-                 std::move(contract_addresses), std::move(topics), {},
+                 contract_addresses.Clone(), topics.Clone(), {},
                  mojom::ProviderError::kInternalError,
                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   // Invalid response body yields parsing error
   SetInvalidJsonInterceptor();
   TestEthGetLogs(mojom::kMainnetChainId, "earliest", "latest",
-                 std::move(contract_addresses), std::move(topics), {},
+                 contract_addresses.Clone(), topics.Clone(), {},
                  mojom::ProviderError::kParsingError,
                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
@@ -7030,7 +7029,7 @@ TEST_F(JsonRpcServiceUnitTest, EthGetLogs) {
   SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
                  "eth_getLogs", "", response);
   TestEthGetLogs(mojom::kMainnetChainId, "earliest", "latest",
-                 std::move(contract_addresses), std::move(topics),
+                 contract_addresses.Clone(), topics.Clone(),
                  std::move(expected_logs), mojom::ProviderError::kSuccess, "");
 }
 

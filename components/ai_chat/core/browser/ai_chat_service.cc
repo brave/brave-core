@@ -281,7 +281,7 @@ void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
 
   last_premium_status_ = status;
   if (ai_chat::HasUserOptedIn(profile_prefs_) && ai_chat_metrics_ != nullptr) {
-    ai_chat_metrics_->OnPremiumStatusUpdated(false, status, std::move(info));
+    ai_chat_metrics_->OnPremiumStatusUpdated(false, status, info.Clone());
   }
   model_service_->OnPremiumStatus(status);
   std::move(callback).Run(status, std::move(info));

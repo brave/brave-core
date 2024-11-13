@@ -191,7 +191,7 @@ TEST(SolanaMessageUnitTest, SerializeExceedNumOfAccountMaxSize) {
                        std::vector<uint8_t>());
   lookups.emplace_back(*SolanaAddress::FromBase58(kTestAccount),
                        std::vector<uint8_t>({2}), std::vector<uint8_t>());
-  ASSERT_TRUE(static_accounts.empty());
+  static_accounts.clear();
   msg =
       SolanaMessage(mojom::SolanaMessageVersion::kV0, kRecentBlockhash,
                     kLastValidBlockHeight, kFromAccount, SolanaMessageHeader(),
@@ -199,8 +199,8 @@ TEST(SolanaMessageUnitTest, SerializeExceedNumOfAccountMaxSize) {
   EXPECT_FALSE(msg.Serialize(nullptr));
 
   // Number of read indexes exceeds UINT8_MAX.
-  ASSERT_TRUE(static_accounts.empty());
-  ASSERT_TRUE(lookups.empty());
+  static_accounts.clear();
+  lookups.clear();
   lookups.emplace_back(*SolanaAddress::FromBase58(kToAccount),
                        std::vector<uint8_t>(), max_indexes);
   lookups.emplace_back(*SolanaAddress::FromBase58(kTestAccount),
@@ -213,8 +213,8 @@ TEST(SolanaMessageUnitTest, SerializeExceedNumOfAccountMaxSize) {
 
   // Number of entries in combined static_accounts, write_indexes, read_indexes
   // array exceeds UINT8_MAX.
-  ASSERT_TRUE(static_accounts.empty());
-  ASSERT_TRUE(lookups.empty());
+  static_accounts.clear();
+  lookups.clear();
   for (size_t i = 0; i < UINT8_MAX / 3; ++i) {
     static_accounts.emplace_back(*SolanaAddress::FromBase58(kFromAccount));
   }

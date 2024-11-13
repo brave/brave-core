@@ -118,6 +118,7 @@ void ZCashWalletService::GetReceiverAddress(
   if (!addr) {
     std::move(callback).Run(
         nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
   }
   auto str_addr = addr->address_string;
   std::move(callback).Run(mojom::ZCashAddress::New(str_addr, std::move(id)),
