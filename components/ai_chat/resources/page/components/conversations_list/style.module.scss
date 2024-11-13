@@ -16,6 +16,9 @@
     padding: 0;
     margin: 0;
   }
+  li {
+    margin-bottom: var(--leo-spacing-s);
+  }
 }
 
 .navItem {
@@ -24,14 +27,17 @@
   padding: var(--leo-spacing-l) var(--leo-spacing-xl);
   border-radius: 8px;
   position: relative;
+  transition: all 0.2s ease-out allow-discrete;
 
   &:hover {
-    background: var(--leo-color-container-background);
+    background: var(--leo-color-container-highlight);
+    box-shadow: var(--leo-effect-elevation-01);
   }
 }
 
 .navItemActive {
   background: var(--leo-color-container-background);
+  transition: all 0.2s ease-out allow-discrete;
 }
 
 .optionsMenu {
@@ -42,7 +48,7 @@
 
 .optionsButton {
   --leo-icon-size: 20px;
-  color: var(--leo-color-icon-interactive);
+  color: var(--leo-color-icon-default);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

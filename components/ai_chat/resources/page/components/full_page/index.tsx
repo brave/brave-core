@@ -90,13 +90,13 @@ export default function FullScreen() {
     <div className={styles.fullscreen}>
       <div className={styles.left}>
         <div className={styles.controls}>
-          <Button
-            fab
-            kind='plain-faint'
-            onClick={toggleAside}
-          >
-            <Icon name='window-tabs-vertical-expanded' />
-          </Button>
+              <Button
+              fab
+              kind='plain-faint'
+              onClick={toggleAside}
+              >
+              <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
+              </Button>
           {!isNavigationRendered && (
             <>
               <Button
