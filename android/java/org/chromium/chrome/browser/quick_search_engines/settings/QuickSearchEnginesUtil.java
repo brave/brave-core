@@ -5,7 +5,12 @@
 
 package org.chromium.chrome.browser.quick_search_engines.settings;
 
+import android.content.Context;
+
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.ContextUtils;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -20,6 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 public class QuickSearchEnginesUtil {
+    private static final String YOUTUBE_SEARCH_ENGINE_URL =
+            "https://www.youtube.com/results?search_query={searchTerms}";
+
     public static void saveSearchEnginesIntoPref(
             Map<String, QuickSearchEnginesModel> searchEnginesMap) {
         new SharedPreferencesHelper()
@@ -69,10 +77,30 @@ public class QuickSearchEnginesUtil {
                                 templateUrl.getURL(),
                                 true);
                 searchEnginesMap.put(templateUrl.getKeyword(), quickSearchEnginesModel);
+                if (BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(templateUrl.getKeyword())
+                        && !searchEnginesMap.containsKey(
+                                BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD)) {
+                    addYtQuickSearchEnginesModel(searchEnginesMap);
+                }
             }
+        }
+        if (!searchEnginesMap.containsKey(BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD)) {
+            addYtQuickSearchEnginesModel(searchEnginesMap);
         }
         saveSearchEnginesIntoPref(searchEnginesMap);
         return searchEnginesMap;
+    }
+
+    private static void addYtQuickSearchEnginesModel(
+            Map<String, QuickSearchEnginesModel> searchEnginesMap) {
+        Context context = ContextUtils.getApplicationContext();
+        QuickSearchEnginesModel ytQuickSearchEnginesModel =
+                new QuickSearchEnginesModel(
+                        context.getResources().getString(R.string.youtube),
+                        BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD,
+                        YOUTUBE_SEARCH_ENGINE_URL,
+                        true);
+        searchEnginesMap.put(ytQuickSearchEnginesModel.getKeyword(), ytQuickSearchEnginesModel);
     }
 
     public static List<QuickSearchEnginesModel> getQuickSearchEnginesForSettings(Profile profile) {
