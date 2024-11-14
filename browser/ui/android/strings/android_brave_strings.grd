@@ -1415,7 +1415,7 @@ Are you sure you want to do this?
         Browsing visibility
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VISIBILITY_DESCRIPTION" desc="Browsing visibility description shown when a user opens a private tab explaining private mode">
-        Note that -even in private windows- your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work device/network).
+        Note that, even in private windows, your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work device/network).
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VPN" desc="VPN title shown when a user opens a private tab explaining private mode">
         Brave VPN
