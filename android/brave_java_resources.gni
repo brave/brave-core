@@ -593,6 +593,7 @@ brave_java_resources = [
   "java/res/drawable/ic_shield_done_outlined.xml",
   "java/res/drawable/ic_site_settings.xml",
   "java/res/drawable/ic_smartphone.xml",
+  "java/res/drawable/ic_social_youtube.xml",
   "java/res/drawable/ic_sol_asset_icon.xml",
   "java/res/drawable/ic_sol_color.xml",
   "java/res/drawable/ic_solana_eligible_ui_icon.xml",

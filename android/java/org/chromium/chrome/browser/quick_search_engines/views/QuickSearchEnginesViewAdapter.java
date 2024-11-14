@@ -42,6 +42,8 @@ public class QuickSearchEnginesViewAdapter
 
         if (adapterPosition == 0) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_leo_icon);
+        } else if (BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD.equals(keyword)) {
+            quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_social_youtube);
         } else if (BraveActivity.BING_SEARCH_ENGINE_KEYWORD.equals(keyword)) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_microsoft_color);
         } else if (BraveActivity.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(keyword)) {
