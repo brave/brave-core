@@ -601,6 +601,13 @@ extension Strings {
       value: "Subscription",
       comment: "The title for the header for subscription details"
     )
+    public static let advancedSettingsViewReceiptTitle = NSLocalizedString(
+      "aichat.advancedSettingsViewReceiptTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "View AppStore Receipt",
+      comment: "The title for the button that allows the user to view the AppStore Receipt"
+    )
     public static let appStoreErrorTitle = NSLocalizedString(
       "aichat.appStoreErrorTitle",
       tableName: "BraveLeo",

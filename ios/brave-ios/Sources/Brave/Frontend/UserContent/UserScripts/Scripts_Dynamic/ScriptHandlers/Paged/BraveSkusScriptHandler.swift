@@ -94,7 +94,6 @@ class BraveSkusScriptHandler: TabContentScript {
     switch method {
     case .refreshOrder:
       let order = try OrderMessage.from(message: message)
-      // Serialize to jsonObject???
       return await skusManager.refreshOrder(for: order.orderId, domain: skusDomain)
 
     case .fetchOrderCredentials:

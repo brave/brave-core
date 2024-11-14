@@ -63,7 +63,16 @@ public struct StoreKitReceiptView: View {
 
         NavigationLink(
           destination: {
-            groupedProductsView(for: receipt.inAppPurchaseReceipts)
+            let purchaseDate = Date.now
+            let expirationDate = Date.distantFuture
+
+            groupedProductsView(
+              for: receipt.inAppPurchaseReceipts.sorted(by: {
+                $0.purchaseDate ?? purchaseDate > $1.purchaseDate ?? purchaseDate
+                  || $0.subscriptionExpirationDate ?? expirationDate > $1.subscriptionExpirationDate
+                    ?? expirationDate
+              })
+            )
           },
           label: {
             Text("In-App Purchases")

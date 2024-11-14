@@ -172,3 +172,41 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
     return true
   }
 }
+
+extension BraveVPNInAppPurchaseObserver {
+  @MainActor
+  static func refreshReceipt() async throws {
+    let request = SKReceiptRefreshRequest()
+    let delegate = ReceiptRefreshDelegate()
+    request.delegate = delegate
+
+    try await withCheckedThrowingContinuation { continuation in
+      delegate.completion = { result in
+        switch result {
+        case .success:
+          continuation.resume()
+        case .failure(let error):
+          continuation.resume(throwing: error)
+        }
+      }
+
+      request.start()
+    }
+  }
+
+  private class ReceiptRefreshDelegate: NSObject, SKRequestDelegate {
+    var completion: ((Result<Void, Error>) -> Void)?
+
+    func requestDidFinish(_ request: SKRequest) {
+      completion?(.success(()))
+      completion = nil
+      request.delegate = nil
+    }
+
+    func request(_ request: SKRequest, didFailWithError error: Error) {
+      completion?(.failure(error))
+      completion = nil
+      request.delegate = nil
+    }
+  }
+}
