@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.util;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewTreeObserver;
+
 import org.chromium.base.Log;
 
 public class KeyboardVisibilityHelper {
@@ -45,7 +46,7 @@ public class KeyboardVisibilityHelper {
                     if (keyboardVisible != mIsKeyboardVisible) {
                         mIsKeyboardVisible = keyboardVisible;
                         if (keyboardVisible) {
-                            // mKeyboardVisibilityListener.onKeyboardOpened(heightDifference);
+                            mKeyboardVisibilityListener.onKeyboardOpened(heightDifference);
                         } else {
                             mKeyboardVisibilityListener.onKeyboardClosed();
                         }

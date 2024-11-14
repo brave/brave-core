@@ -5,10 +5,6 @@
 
 package org.chromium.chrome.browser.quick_search_engines.utils;
 
-
-
-
-
 public class QuickSearchEnginesViewsUtil {
 
     // private static View mQuickSearchEnginesView;
