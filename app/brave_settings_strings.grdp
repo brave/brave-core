@@ -1413,6 +1413,9 @@ Leo AI. This action can't be undone.
   <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_INVALID_ERROR" desc="An error message when the url is invalid">
     You have entered an invalid URL. Please enter a valid URL.
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_VALID_AS_PRIVATE_IP" desc="An error message when the url is invalid, but would be valid as a private IP address">
+    If you would like to use a private IP address, you must first enable "Private IP Addresses for Custom Model Enpoints" via brave://flags/#brave-ai-chat-allow-private-ips
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_ADD_NEW_BUTTON_LABEL" desc="A label for a button that opens a panel with input forms for a user to add model">
     Add new model
   </message>
