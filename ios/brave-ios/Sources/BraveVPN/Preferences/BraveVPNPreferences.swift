@@ -8,7 +8,6 @@ import Preferences
 
 extension Preferences {
   final public class VPN {
-    public static let popupShowed = Option<Bool>(key: "vpn.popup-showed", default: false)
     /// When the current subscription plan expires. It is nil if the user has not bought any vpn plan yet.
     /// In case of receipt expiration this date might be set to some old date(like year 1970)
     /// to make sure vpn expiration logic will be called.
