@@ -240,6 +240,14 @@ extension Strings {
         comment: "Footer text to link your VPN receipt to other devices."
       )
 
+    public static let settingsViewReceipt =
+      NSLocalizedString(
+        "vpn.settingsViewReceipt",
+        bundle: .module,
+        value: "View AppStore Receipt",
+        comment: "Button to allow the user to view the app-store receipt."
+      )
+
     public static let settingsServerHost =
       NSLocalizedString(
         "vpn.settingsServerHost",
