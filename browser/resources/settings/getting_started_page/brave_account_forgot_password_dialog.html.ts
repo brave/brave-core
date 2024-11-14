@@ -17,9 +17,9 @@ export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
       show-back-button
     >
       <div slot="inputs">
-        <leo-input placeholder="$i18n{braveAccountEmailAddressInputPlaceholder}"
-                   @input=${this.onEmailAddressInput}>
-          <div class="label">$i18n{braveAccountEmailAddressInputLabel}</div>
+        <leo-input placeholder="$i18n{braveAccountEmailInputPlaceholder}"
+                   @input=${this.onEmailInput}>
+          <div class="label">$i18n{braveAccountEmailInputLabel}</div>
         </leo-input>
       </div>
       <div slot="buttons">
@@ -27,7 +27,7 @@ export function getHtml(this: SettingsBraveAccountForgotPasswordDialogElement) {
                     @click=${() => this.fire('cancel-button-clicked')}>
           $i18n{braveAccountCancelButtonLabel}
         </leo-button>
-        <leo-button ?isDisabled=${!this.isEmailAddressValid}>
+        <leo-button ?isDisabled=${!this.isEmailValid}>
           $i18n{braveAccountResetPasswordButtonLabel}
         </leo-button>
       </div>

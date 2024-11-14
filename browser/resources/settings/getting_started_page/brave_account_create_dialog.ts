@@ -123,23 +123,22 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
 
   static override get properties() {
     return {
-      emailAddress: { type: String },
-      emailAddressEndsWithBraveAlias: { type: Boolean },
-      isEmailAddressValid: { type: Boolean },
+      email: { type: String },
       isAccountNameValid: { type: Boolean },
-      isChecked: { type: Boolean },
+      isCheckboxChecked: { type: Boolean },
+      isEmailBraveAlias: { type: Boolean },
+      isEmailValid: { type: Boolean },
       password: { type: String },
       passwordConfirmation: { type: String },
       passwordStrength: { type: Number },
     }
   }
 
-  protected onEmailAddressInput(detail: { value: string }) {
-    this.emailAddress = detail.value
-    this.isEmailAddressValid =
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.emailAddress)
-    this.emailAddressEndsWithBraveAlias =
-      this.emailAddress.endsWith('@bravealias.com')
+  protected onEmailInput(detail: { value: string }) {
+    this.email = detail.value
+    this.isEmailValid =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.email)
+    this.isEmailBraveAlias = this.email.endsWith('@bravealias.com')
   }
 
   protected onAccountNameInput(detail: { value: string }) {
@@ -148,17 +147,17 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
 
   protected onCreatePasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.passwordStrength = this.regexps.filter(
-      regexp => regexp[1] = regexp[0].test(this.password)
-    ).length / this.regexps.length * 100
+    this.passwordStrength = this.requirements.filter(
+      requirement => requirement[1] = requirement[0].test(this.password)
+    ).length / this.requirements.length * 100
   }
 
   protected onConfirmPasswordInput(detail: { value: string }) {
     this.passwordConfirmation = detail.value
   }
 
-  protected onChange(detail: { checked: boolean }) {
-    this.isChecked = detail.checked
+  protected onCheckboxChanged(detail: { checked: boolean }) {
+    this.isCheckboxChecked = detail.checked
   }
 
   protected OnEyeIconClicked(event: Event) {
@@ -171,22 +170,24 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
 
   protected getIconName() {
     if (this.passwordConfirmation.length !== 0) {
-      this.icon = this.passwordConfirmation === this.password ? 'check-circle-filled' : 'warning-triangle-filled'
+      this.icon = this.passwordConfirmation === this.password
+        ? 'check-circle-filled'
+        : 'warning-triangle-filled'
     }
 
     return this.icon
   }
 
-  protected emailAddress: string = ''
-  protected emailAddressEndsWithBraveAlias: boolean = false
-  protected isEmailAddressValid: boolean = false
+  protected email: string = ''
+  protected icon: string = 'warning-triangle-filled'
   protected isAccountNameValid: boolean = false
-  protected isChecked: boolean = false
+  protected isCheckboxChecked: boolean = false
+  protected isEmailBraveAlias: boolean = false
+  protected isEmailValid: boolean = false
   protected password: string = ''
   protected passwordConfirmation: string = ''
-  protected icon: string = 'warning-triangle-filled'
-
-  protected regexps: Array<[RegExp, boolean, string]> = [
+  protected passwordStrength: number = 0
+  protected requirements: Array<[RegExp, boolean, string]> = [
     [
       /[a-z]/,
       false,
@@ -213,7 +214,6 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
       this.i18n('braveAccountPasswordStrengthMeterTooltipLengthRequirement')
     ]
   ]
-  protected passwordStrength: number = 0
 }
 
 declare global {

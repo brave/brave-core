@@ -15,9 +15,9 @@ export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
       show-back-button
     >
       <div slot="inputs">
-        <leo-input placeholder="$i18n{braveAccountEmailAddressInputPlaceholder}"
-                   @input=${this.onEmailAddressInput}>
-          <div class="label">$i18n{braveAccountEmailAddressInputLabel}</div>
+        <leo-input placeholder="$i18n{braveAccountEmailInputPlaceholder}"
+                   @input=${this.onEmailInput}>
+          <div class="label">$i18n{braveAccountEmailInputLabel}</div>
         </leo-input>
         <leo-input placeholder="$i18n{braveAccountPasswordInputPlaceholder}"
                    type="password"
@@ -37,7 +37,7 @@ export function getHtml(this: SettingsBraveAccountSignInDialogElement) {
         </leo-input>
       </div>
       <div slot="buttons">
-        <leo-button ?isDisabled=${!this.isEmailAddressValid || !this.isPasswordValid}
+        <leo-button ?isDisabled=${!this.isEmailValid || !this.isPasswordValid}
                     @click=${() => this.fire('sign-in-button-clicked')}>
           $i18n{braveAccountSignInButtonLabel}
         </leo-button>

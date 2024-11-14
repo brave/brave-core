@@ -27,13 +27,13 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
 
   static override get properties() {
     return {
-      isEmailAddressValid: { type: Boolean },
+      isEmailValid: { type: Boolean },
       isPasswordValid: { type: Boolean },
     }
   }
 
-  protected onEmailAddressInput(detail: { value: string }) {
-    this.isEmailAddressValid =
+  protected onEmailInput(detail: { value: string }) {
+    this.isEmailValid =
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(detail.value)
   }
 
@@ -49,7 +49,7 @@ export class SettingsBraveAccountSignInDialogElement extends CrLitElement {
     target.parentElement!.setAttribute('type', isShowing ? 'password' : 'text')
   }
 
-  protected isEmailAddressValid: boolean = false
+  protected isEmailValid: boolean = false
   protected isPasswordValid: boolean = false
 }
 

@@ -66,15 +66,18 @@ leo-tooltip > [slot=content] {
   /* width: calc(var(--cr-dialog-width) - 2 * var(--leo-spacing-2xl) - 2 * var(--leo-spacing-l)); */
 }
 
-.password-requirement {
-  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
+.requirement {
   align-items: center;
   display: flex;
   gap: 8px;
 }
 
-.password-requirement.requirement-met {
+leo-icon[name=check-circle-outline] {
   --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+}
+
+leo-icon[name=close-circle] {
+  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
 }
 
 #password-confirmation-dropdown {

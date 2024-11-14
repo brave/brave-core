@@ -14,19 +14,19 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
       show-back-button
     >
       <div slot="inputs">
-        <leo-input placeholder="$i18n{braveAccountEmailAddressInputPlaceholder}"
+        <leo-input placeholder="$i18n{braveAccountEmailInputPlaceholder}"
                    showErrors
-                   @input=${this.onEmailAddressInput}>
-          <div class="label ${this.emailAddress.length !== 0 && !this.isEmailAddressValid
-                           || this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias ?
-                            'red' : ''}">
-            $i18n{braveAccountEmailAddressInputLabel}
+                   @input=${this.onEmailInput}>
+          <div class="label ${this.email.length !== 0 && !this.isEmailValid
+                           || this.isEmailValid && this.isEmailBraveAlias ?
+                              'red' : ''}">
+            $i18n{braveAccountEmailInputLabel}
           </div>
-          <div class="dropdown ${this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias ? 'visible' : ''}"
+          <div class="dropdown ${this.isEmailValid && this.isEmailBraveAlias ? 'visible' : ''}"
                id="brave-alias-dropdown"
                slot="errors">
             <leo-icon name="warning-triangle-filled"></leo-icon>
-            <div>$i18n{braveAccountEmailAddressInputErrorMessage}</div>
+            <div>$i18n{braveAccountEmailInputErrorMessage}</div>
           </div>
         </leo-input>
         <leo-input placeholder="$i18n{braveAccountAccountNameInputPlaceholder}"
@@ -51,9 +51,10 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
               </password-strength-meter>
               <div slot="content">
                 $i18n{braveAccountPasswordStrengthMeterTooltipTitle}
-                ${this.regexps.map(([_, requirement_met, text]) => html`
-                  <div class="password-requirement ${requirement_met ? 'requirement-met' : ''}">
-                    <leo-icon name=${requirement_met ? 'check-circle-outline' : 'close-circle'}></leo-icon>
+                ${this.requirements.map(([_, met, text]) => html`
+                  <div class="requirement">
+                    <leo-icon name=${met ? 'check-circle-outline' : 'close-circle'}>
+                    </leo-icon>
                     ${text}
                   </div>`
                 )}
@@ -86,19 +87,17 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
             </div>
           </div>
         </leo-input>
-        <leo-checkbox @change=${this.onChange}>
-          <div>
-            $i18nRaw{braveAccountConsentCheckboxLabel}
-          </div>
+        <leo-checkbox @change=${this.onCheckboxChanged}>
+          <div>$i18nRaw{braveAccountConsentCheckboxLabel}</div>
         </leo-checkbox>
       </div>
       <div slot="buttons">
-        <leo-button ?isDisabled=${!this.isEmailAddressValid
-                               || this.isEmailAddressValid && this.emailAddressEndsWithBraveAlias
+        <leo-button ?isDisabled=${!this.isEmailValid
+                               || this.isEmailValid && this.isEmailBraveAlias
                                || !this.isAccountNameValid
                                || this.passwordStrength !== 100
                                || this.passwordConfirmation !== this.password
-                               || !this.isChecked}
+                               || !this.isCheckboxChecked}
                     @click=${() => this.fire('create-account-button-clicked')}>
           $i18n{braveAccountCreateAccountButtonLabel}
         </leo-button>

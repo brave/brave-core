@@ -27,16 +27,16 @@ export class SettingsBraveAccountForgotPasswordDialogElement extends CrLitElemen
 
   static override get properties() {
     return {
-      isEmailAddressValid: { type: Boolean },
+      isEmailValid: { type: Boolean },
     }
   }
 
-  protected onEmailAddressInput(detail: { value: string }) {
-    this.isEmailAddressValid =
+  protected onEmailInput(detail: { value: string }) {
+    this.isEmailValid =
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(detail.value)
   }
 
-  protected isEmailAddressValid: boolean = false
+  protected isEmailValid: boolean = false
 }
 
 declare global {

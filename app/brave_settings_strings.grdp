@@ -68,7 +68,7 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION" desc="Description for the dialog where the user can create their Brave Account">
     A Brave account will allow you to easily sync your settings, passwords, bookmarks, etc. across all your devices and access our full range of premium products.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_ADDRESS_INPUT_ERROR_MESSAGE" desc="Error message for when the user tries to use a @bravealias.com email address when creating their Brave Account">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE" desc="Error message for when the user tries to use a @bravealias.com email address when creating their Brave Account">
     You can't use @bravealias.com addresses for creating Brave accounts. Please try again with a different domain.
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ACCOUNT_NAME_INPUT_LABEL" desc="Label for the 'Account name' input field">
@@ -161,10 +161,10 @@
   </message>
 
   <!-- Common: -->
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_ADDRESS_INPUT_LABEL" desc="Label for the 'Email address' input field">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL" desc="Label for the 'Email address' input field">
     Email address
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_ADDRESS_INPUT_PLACEHOLDER" desc="Placeholder for the 'Email address' input field">
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER" desc="Placeholder for the 'Email address' input field">
     Enter your email address
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER" desc="Placeholder for the 'Create a password'/'Password' input fields">
