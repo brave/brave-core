@@ -1,0 +1,33 @@
+<!--
+ Copyright (c) 2024 The Brave Authors. All rights reserved.
+ This Source Code Form is subject to the terms of the Mozilla Public
+ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Ads internals</title>
+  <link rel="stylesheet" href="chrome://resources/css/text_defaults.css">
+  <if expr="is_ios">
+    <!-- TODO(crbug.com/487000): Remove this once injected by web. -->
+    <script src="chrome://resources/js/ios/web_ui.js"></script>
+    <script src="chrome://resources/js/ios/mojo_api.js"></script>
+  </if>
+  <script src="/ads_internals.bundle.js"></script>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html>

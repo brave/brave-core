@@ -1,0 +1,29 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("ads_internals") {
+  sources = [
+    "ads_internals_ui.cc",
+    "ads_internals_ui.h",
+  ]
+
+  deps = [
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/browser/resources:generated_resources",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_rewards/common",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//components/prefs",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+  ]
+}

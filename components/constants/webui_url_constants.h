@@ -12,6 +12,7 @@ inline constexpr char kAdblockHost[] = "adblock";
 inline constexpr char kAdblockInternalsHost[] = "adblock-internals";
 inline constexpr char kAdblockJS[] = "brave_adblock.js";
 inline constexpr char kSkusInternalsHost[] = "skus-internals";
+inline constexpr char kAdsInternalsHost[] = "ads-internals";
 inline constexpr char kWebcompatReporterHost[] = "webcompat";
 inline constexpr char kRewardsPageHost[] = "rewards";
 inline constexpr char kRewardsPageURL[] = "chrome://rewards/";
