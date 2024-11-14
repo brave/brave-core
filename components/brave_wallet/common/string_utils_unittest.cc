@@ -16,22 +16,6 @@ using ::testing::Optional;
 
 namespace brave_wallet {
 
-TEST(StringUtilsUnitTest, IsValidBase10String) {
-  ASSERT_TRUE(IsValidBase10String("0"));
-  ASSERT_TRUE(IsValidBase10String("1"));
-  ASSERT_TRUE(IsValidBase10String("-1"));
-  ASSERT_TRUE(IsValidBase10String("1234567891011121314"));
-  ASSERT_TRUE(IsValidBase10String("-1234567891011121314"));
-  // Can have 0's before
-  ASSERT_TRUE(IsValidBase10String("0123"));
-  ASSERT_TRUE(IsValidBase10String("-0123"));
-  ASSERT_FALSE(IsValidBase10String("0x0"));
-  ASSERT_FALSE(IsValidBase10String("123A"));
-  ASSERT_FALSE(IsValidBase10String(""));
-  ASSERT_FALSE(IsValidBase10String("hello world"));
-  ASSERT_FALSE(IsValidBase10String("12$$"));
-}
-
 TEST(StringUtilsUnitTest, Base10ValueToUint256) {
   EXPECT_THAT(Base10ValueToUint256("0"), Optional(uint256_t{0u}));
   EXPECT_THAT(Base10ValueToUint256("1"), Optional(uint256_t{1}));
