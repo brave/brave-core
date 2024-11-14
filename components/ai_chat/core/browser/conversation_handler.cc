@@ -593,15 +593,16 @@ void ConversationHandler::ChangeModel(const std::string& model_key) {
     // another. For example, if --allow-leo-private-ips is enabled, the endpoint
     // does not need to use HTTPS.
     if (new_model->options->is_custom_model_options()) {
-      if (!ModelValidator::IsValidEndpoint(
-              new_model->options->get_custom_model_options()->endpoint)) {
-        SetAPIError(mojom::APIError::InvalidEndpointURL);
-        return;
-      } else {
-        SetAPIError(mojom::APIError::None);
-      }
+      const bool is_valid_endpoint = ModelValidator::IsValidEndpoint(
+          new_model->options->get_custom_model_options()->endpoint);
+      SetAPIError(is_valid_endpoint ? mojom::APIError::None
+                                    : mojom::APIError::InvalidEndpointURL);
+    } else {
+      // Non-custom model activated; clear any previous API error.
+      SetAPIError(mojom::APIError::None);
     }
   }
+
   // Always call InitEngine, even with a bad key as we need a model
   InitEngine();
 }
