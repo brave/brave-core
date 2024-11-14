@@ -44,8 +44,6 @@ public class QuickSearchEnginesFragment extends BravePreferenceFragment
     private MenuItem mCloseItem;
     private MenuItem mSaveItem;
 
-    private LinearLayout mDefaultSearchEngineLayout;
-
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
 
     @Override
@@ -90,38 +88,6 @@ public class QuickSearchEnginesFragment extends BravePreferenceFragment
 
         quickSearchOptionsLayout.setVisibility(
                 QuickSearchEnginesUtil.getQuickSearchEnginesFeature() ? View.VISIBLE : View.GONE);
-
-        // Default search engine layout
-        QuickSearchEnginesModel defaultSearchEnginesModel =
-                QuickSearchEnginesUtil.getDefaultSearchEngine(getProfile());
-        mDefaultSearchEngineLayout = view.findViewById(R.id.default_search_engine_layout);
-        ImageView defaultSearchEngineLogo =
-                mDefaultSearchEngineLayout.findViewById(R.id.search_engine_logo);
-        ImageUtils.loadSearchEngineLogo(
-                getProfile(), defaultSearchEngineLogo, defaultSearchEnginesModel.getKeyword());
-        TextView defaultSearchEngineText =
-                mDefaultSearchEngineLayout.findViewById(R.id.search_engine_text);
-        defaultSearchEngineText.setText(defaultSearchEnginesModel.getShortName());
-        MaterialSwitch defaultSearchEngineSwitch =
-                mDefaultSearchEngineLayout.findViewById(R.id.search_engine_switch);
-        mDefaultSearchEngineLayout.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isChecked = defaultSearchEngineSwitch.isChecked();
-                        defaultSearchEngineSwitch.setChecked(!isChecked);
-                    }
-                });
-
-        defaultSearchEngineSwitch.setChecked(defaultSearchEnginesModel.isEnabled());
-        defaultSearchEngineSwitch.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        defaultSearchEnginesModel.setEnabled(isChecked);
-                        updateQuickSearchEnginesInPref(defaultSearchEnginesModel);
-                    }
-                });
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.quick_search_settings_recyclerview);
         LinearLayoutManager linearLayoutManager =
@@ -215,8 +181,6 @@ public class QuickSearchEnginesFragment extends BravePreferenceFragment
     private void editModeUiVisibility() {
         if (mQuickSearchEnginesAdapter != null) {
             boolean isEditMode = mQuickSearchEnginesAdapter.isEditMode();
-            mDefaultSearchEngineLayout.setEnabled(!isEditMode);
-            mDefaultSearchEngineLayout.setAlpha(!isEditMode ? 1.0f : 0.5f);
             if (mCloseItem != null) {
                 mCloseItem.setVisible(!isEditMode);
             }
