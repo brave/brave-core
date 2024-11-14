@@ -15,9 +15,6 @@
 
 namespace brave_wallet {
 
-// Returns true if a string contains only 0-9 digits
-bool IsValidBase10String(std::string_view input);
-
 // Takes a base-10 string as input and converts it to a uint256_t
 std::optional<uint256_t> Base10ValueToUint256(std::string_view input);
 std::optional<int256_t> Base10ValueToInt256(std::string_view input);
