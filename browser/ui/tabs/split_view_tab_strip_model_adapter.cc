@@ -29,10 +29,8 @@ SplitViewTabStripModelAdapter::~SplitViewTabStripModelAdapter() = default;
 
 void SplitViewTabStripModelAdapter::MakeTiledTabsAdjacent(const TabTile& tile,
                                                           bool move_right_tab) {
-  auto tab1 = tile.first;
-  auto tab2 = tile.second;
-  auto index1 = model_->GetIndexOfTab(tab1);
-  auto index2 = model_->GetIndexOfTab(tab2);
+  auto index1 = model_->GetIndexOfTab(tile.first.Get());
+  auto index2 = model_->GetIndexOfTab(tile.second.Get());
 
   if (index1 + 1 == index2) {
     // Already adjacent
@@ -61,13 +59,13 @@ bool SplitViewTabStripModelAdapter::SynchronizeGroupedState(
   DCHECK(!is_in_synch_grouped_state_);
   base::AutoReset<bool> resetter(&is_in_synch_grouped_state_, true);
   auto other_tab = tile.first == source ? tile.second : tile.first;
-  auto other_tab_index = model_->GetIndexOfTab(other_tab);
+  auto other_tab_index = model_->GetIndexOfTab(other_tab.Get());
   auto tab_group_for_secondary_tab = model_->GetTabGroupForTab(other_tab_index);
   if (group == tab_group_for_secondary_tab) {
     return false;
   }
 
-  auto tab_index = model_->GetIndexOfTab(other_tab);
+  auto tab_index = model_->GetIndexOfTab(other_tab.Get());
   if (group) {
     model_->AddToExistingGroup({tab_index}, group.value());
   } else {
@@ -89,13 +87,13 @@ bool SplitViewTabStripModelAdapter::SynchronizePinnedState(
   }
 
   const bool source_tab_is_pinned =
-      model_->IsTabPinned(model_->GetIndexOfTab(source));
+      model_->IsTabPinned(model_->GetIndexOfTab(source.Get()));
   if (source_tab_is_pinned ==
-      model_->IsTabPinned(model_->GetIndexOfTab(tab2))) {
+      model_->IsTabPinned(model_->GetIndexOfTab(tab2.Get()))) {
     return false;
   }
 
-  model_->SetTabPinned(model_->GetIndexOfTab(tab2), source_tab_is_pinned);
+  model_->SetTabPinned(model_->GetIndexOfTab(tab2.Get()), source_tab_is_pinned);
   MakeTiledTabsAdjacent(tile, true);
   return true;
 }
@@ -105,10 +103,8 @@ void SplitViewTabStripModelAdapter::TabDragEnded() {
   // the tiles.
   std::vector<TabTile> tiles_to_break;
   for (const auto& tile : split_view_browser_data_->tiles()) {
-    auto tab1 = tile.first;
-    auto tab2 = tile.second;
-    int index1 = model_->GetIndexOfTab(tab1);
-    int index2 = model_->GetIndexOfTab(tab2);
+    int index1 = model_->GetIndexOfTab(tile.first.Get());
+    int index2 = model_->GetIndexOfTab(tile.second.Get());
     if (index2 - index1 == 1) {
       return;
     }
@@ -166,8 +162,8 @@ void SplitViewTabStripModelAdapter::OnTabInserted(
 
   std::vector<int> indices_to_be_moved;
   for (const auto& tile : split_view_browser_data_->tiles()) {
-    auto lower_index = model_->GetIndexOfTab(tile.first);
-    auto higher_index = model_->GetIndexOfTab(tile.second);
+    auto lower_index = model_->GetIndexOfTab(tile.first.Get());
+    auto higher_index = model_->GetIndexOfTab(tile.second.Get());
     CHECK_LT(lower_index, higher_index);
 
     for (auto inserted_index : inserted_indices) {
@@ -188,7 +184,8 @@ void SplitViewTabStripModelAdapter::OnTabInserted(
                 return;
               }
 
-              if (index != adapter->model_->GetIndexOfTab(tab)) [[unlikely]] {
+              if (index != adapter->model_->GetIndexOfTab(tab.Get()))
+                  [[unlikely]] {
                 // Index changed. Cancel the move.
                 return;
               }
@@ -196,8 +193,8 @@ void SplitViewTabStripModelAdapter::OnTabInserted(
               adapter->model_->MoveWebContentsAt(index, index + 1,
                                                  /*select_after_move*/ false);
             },
-            weak_ptr_factory_.GetWeakPtr(), model_->GetTabHandleAt(index),
-            index));
+            weak_ptr_factory_.GetWeakPtr(),
+            model_->GetTabAtIndex(index)->GetHandle(), index));
   }
 
   // TODO(sko) There're a few more things to consider
@@ -211,7 +208,8 @@ void SplitViewTabStripModelAdapter::OnTabMoved(
   // In case a tiled tab is moved, we need to move the corresponding tile
   // together
   auto tab_handle =
-      model_->GetTabHandleAt(model_->GetIndexOfWebContents(move->contents));
+      model_->GetTabAtIndex(model_->GetIndexOfWebContents(move->contents))
+          ->GetHandle();
 
   auto tile = split_view_browser_data_->GetTile(tab_handle);
   if (!tile) {
@@ -230,11 +228,11 @@ void SplitViewTabStripModelAdapter::OnTabWillBeRemoved(
     content::WebContents* contents,
     int index) {
   auto get_web_contents_from_tab_handle = [this](tabs::TabHandle tab) {
-    return model_->GetWebContentsAt(model_->GetIndexOfTab(tab));
+    return model_->GetWebContentsAt(model_->GetIndexOfTab(tab.Get()));
   };
 
   // In case a tiled tab is removed, we need to remove the corresponding tile
-  if (auto tab = model_->GetTabHandleAt(index);
+  if (auto tab = model_->GetTabAtIndex(index)->GetHandle();
       split_view_browser_data_->IsTabTiled(tab)) {
     auto tile = *split_view_browser_data_->GetTile(tab);
 
@@ -252,7 +250,7 @@ void SplitViewTabStripModelAdapter::TabPinnedStateChanged(
     int index) {
   // In case a tiled tab is pinned or unpinned, we need to synchronize the other
   // tab together.
-  auto changed_tab_handle = model_->GetTabHandleAt(index);
+  auto changed_tab_handle = model_->GetTabAtIndex(index)->GetHandle();
 
   auto tile = split_view_browser_data_->GetTile(changed_tab_handle);
   if (!tile) {
@@ -260,7 +258,8 @@ void SplitViewTabStripModelAdapter::TabPinnedStateChanged(
   }
 
   auto source_tab =
-      model_->GetTabHandleAt(model_->GetIndexOfWebContents(contents));
+      model_->GetTabAtIndex(model_->GetIndexOfWebContents(contents))
+          ->GetHandle();
   DCHECK(tile->first == source_tab || tile->second == source_tab);
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
@@ -290,7 +289,7 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
 
   // In case a tiled tab is grouped or ungrouped, we need to synchronize the
   // other tab together.
-  auto changed_tab_handle = model_->GetTabHandleAt(index);
+  auto changed_tab_handle = model_->GetTabAtIndex(index)->GetHandle();
   auto tile = split_view_browser_data_->GetTile(changed_tab_handle);
   if (!tile) {
     return;

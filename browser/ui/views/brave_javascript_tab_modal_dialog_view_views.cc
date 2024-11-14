@@ -134,8 +134,10 @@ gfx::Point BraveJavaScriptTabModalDialogViewViews::
   }
 
   auto* tab_strip_model = browser->tab_strip_model();
-  auto tab_handle = tab_strip_model->GetTabHandleAt(
-      tab_strip_model->GetIndexOfWebContents(base::to_address(web_contents_)));
+  auto tab_handle = tab_strip_model
+                        ->GetTabAtIndex(tab_strip_model->GetIndexOfWebContents(
+                            base::to_address(web_contents_)))
+                        ->GetHandle();
 
   auto* split_view_browser_data = SplitViewBrowserData::FromBrowser(browser);
   CHECK(split_view_browser_data);
