@@ -55,7 +55,6 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/grit/brave_components_strings.h"
-#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -589,20 +588,19 @@ void ConversationHandler::ChangeModel(const std::string& model_key) {
   if (new_model) {
     model_key_ = new_model->key;
 
-  // Applies to Custom Models alone. Verify that the endpoint URL for this model
-  // is valid. Model endpoints may be valid in one session, but not in another.
-  // For example, if --allow-leo-private-ips is enabled, the endpoint does not
-  // need to use HTTPS.
-  if (new_model->options->is_custom_model_options()) {
-    if (!ModelValidator::IsValidEndpoint(
-            new_model->options->get_custom_model_options()->endpoint)) {
-      SetAPIError(mojom::APIError::InvalidEndpointURL);
-      return;
-    } else {
-      SetAPIError(mojom::APIError::None);
+    // Applies to Custom Models alone. Verify that the endpoint URL for this
+    // model is valid. Model endpoints may be valid in one session, but not in
+    // another. For example, if --allow-leo-private-ips is enabled, the endpoint
+    // does not need to use HTTPS.
+    if (new_model->options->is_custom_model_options()) {
+      if (!ModelValidator::IsValidEndpoint(
+              new_model->options->get_custom_model_options()->endpoint)) {
+        SetAPIError(mojom::APIError::InvalidEndpointURL);
+        return;
+      } else {
+        SetAPIError(mojom::APIError::None);
+      }
     }
-  }
-
   }
   // Always call InitEngine, even with a bad key as we need a model
   InitEngine();
