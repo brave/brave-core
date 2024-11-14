@@ -34,14 +34,14 @@ bool EthAddress::operator!=(const EthAddress& other) const {
 }
 
 // static
-EthAddress EthAddress::FromPublicKey(const std::vector<uint8_t>& public_key) {
+EthAddress EthAddress::FromPublicKey(base::span<const uint8_t> public_key) {
+  // TODO(apaymyshev): should be a fixed-size span.
   if (public_key.size() != 64) {
     VLOG(1) << __func__ << ": public key size should be 64 bytes";
     return EthAddress();
   }
 
-  return EthAddress(
-      base::as_byte_span(KeccakHash(public_key)).last(kEthAddressLength));
+  return EthAddress(base::span(KeccakHash(public_key)).last(kEthAddressLength));
 }
 
 // static
@@ -121,7 +121,7 @@ std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
         base::NumberToString(static_cast<uint64_t>(eip1191_chaincode)) + "0x";
   }
 
-  const std::string address_str = HexEncodeLower(bytes_.data(), bytes_.size());
+  const std::string address_str = HexEncodeLower(bytes_);
   const std::string hash_str = base::HexEncode(
       KeccakHash(base::as_byte_span(base::StrCat({prefix, address_str}))));
 

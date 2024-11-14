@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -26,7 +27,7 @@ std::vector<uint8_t> GetMessageHash(base::span<const uint8_t> message) {
                                      base::NumberToString(message.size())});
   std::vector<uint8_t> hash_input(prefix.begin(), prefix.end());
   base::Extend(hash_input, message);
-  return KeccakHashToVector(hash_input);
+  return base::ToVector(KeccakHash(hash_input));
 }
 
 }  // namespace

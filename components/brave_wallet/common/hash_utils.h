@@ -8,7 +8,6 @@
 
 #include <array>
 #include <string>
-#include <vector>
 
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "crypto/sha2.h"
@@ -23,8 +22,6 @@ using SHA256HashArray = std::array<uint8_t, crypto::kSHA256Length>;
 using Ripemd160HashArray = std::array<uint8_t, kRipemd160HashLength>;
 
 KeccakHashArray KeccakHash(base::span<const uint8_t> input);
-// TODO(apaymyshev): remove this when all callers are refactored.
-std::vector<uint8_t> KeccakHashToVector(base::span<const uint8_t> input);
 
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')

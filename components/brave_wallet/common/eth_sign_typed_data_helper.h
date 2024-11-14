@@ -36,12 +36,12 @@ class EthSignTypedDataHelper {
   void SetTypes(base::Value::Dict types);
   void SetVersion(Version version);
 
-  Eip712HashArray GetTypeHash(const std::string& primary_type_name) const;
+  Eip712HashArray GetTypeHash(const std::string_view primary_type_name) const;
   std::optional<std::pair<Eip712HashArray, base::Value::Dict>> HashStruct(
-      const std::string& primary_type_name,
+      const std::string_view primary_type_name,
       const base::Value::Dict& data) const;
   std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>> EncodeData(
-      const std::string& primary_type_name,
+      const std::string_view primary_type_name,
       const base::Value::Dict& data) const;
   static Eip712HashArray GetTypedDataMessageToSign(
       base::span<const uint8_t> domain_hash,
@@ -63,12 +63,12 @@ class EthSignTypedDataHelper {
 
   void FindAllDependencyTypes(
       base::flat_map<std::string, base::Value>* known_types,
-      const std::string& anchor_type_name) const;
+      const std::string_view anchor_type_name) const;
   std::string EncodeType(const base::Value& type,
-                         const std::string& type_name) const;
-  std::string EncodeTypes(const std::string& primary_type_name) const;
+                         const std::string_view type_name) const;
+  std::string EncodeTypes(const std::string_view primary_type_name) const;
 
-  std::optional<Eip712HashArray> EncodeField(const std::string& type,
+  std::optional<Eip712HashArray> EncodeField(const std::string_view type_string,
                                              const base::Value& value) const;
 
   base::Value::Dict types_;

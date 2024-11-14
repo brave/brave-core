@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/to_vector.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -189,7 +190,7 @@ std::vector<uint8_t> EthTransaction::GetMessageToSign(uint256_t chain_id,
 
   const std::string message = RLPEncode(base::Value(std::move(list)));
   auto result = std::vector<uint8_t>(message.begin(), message.end());
-  return hash ? KeccakHashToVector(result) : result;
+  return hash ? base::ToVector(KeccakHash(result)) : result;
 }
 
 std::string EthTransaction::GetSignedTransaction() const {

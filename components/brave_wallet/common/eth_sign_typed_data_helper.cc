@@ -48,7 +48,7 @@ void EthSignTypedDataHelper::SetVersion(Version version) {
 
 void EthSignTypedDataHelper::FindAllDependencyTypes(
     base::flat_map<std::string, base::Value>* known_types,
-    const std::string& anchor_type_name) const {
+    const std::string_view anchor_type_name) const {
   DCHECK(!anchor_type_name.empty());
   DCHECK(known_types);
 
@@ -66,8 +66,8 @@ void EthSignTypedDataHelper::FindAllDependencyTypes(
     }
     const std::string* type = field.GetDict().FindString("type");
     if (type) {
-      auto type_split = base::SplitString(*type, "[", base::KEEP_WHITESPACE,
-                                          base::SPLIT_WANT_ALL);
+      auto type_split = base::SplitStringPiece(
+          *type, "[", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
       std::string lookup_type = *type;
       if (type_split.size() == 2) {
         lookup_type = type_split[0];
@@ -82,7 +82,7 @@ void EthSignTypedDataHelper::FindAllDependencyTypes(
 
 std::string EthSignTypedDataHelper::EncodeType(
     const base::Value& type,
-    const std::string& type_name) const {
+    const std::string_view type_name) const {
   if (!type.is_list()) {
     return std::string();
   }
@@ -108,7 +108,7 @@ std::string EthSignTypedDataHelper::EncodeType(
 }
 
 std::string EthSignTypedDataHelper::EncodeTypes(
-    const std::string& primary_type_name) const {
+    const std::string_view primary_type_name) const {
   std::string result;
 
   base::flat_map<std::string, base::Value> types_map;
@@ -128,13 +128,13 @@ std::string EthSignTypedDataHelper::EncodeTypes(
 }
 
 EthSignTypedDataHelper::Eip712HashArray EthSignTypedDataHelper::GetTypeHash(
-    const std::string& primary_type_name) const {
+    const std::string_view primary_type_name) const {
   return KeccakHash(base::as_byte_span(EncodeTypes(primary_type_name)));
 }
 
 std::optional<
     std::pair<EthSignTypedDataHelper::Eip712HashArray, base::Value::Dict>>
-EthSignTypedDataHelper::HashStruct(const std::string& primary_type_name,
+EthSignTypedDataHelper::HashStruct(const std::string_view primary_type_name,
                                    const base::Value::Dict& data) const {
   auto encoded_data = EncodeData(primary_type_name, data);
   if (!encoded_data) {
@@ -147,7 +147,7 @@ EthSignTypedDataHelper::HashStruct(const std::string& primary_type_name,
 // Encode the json data by the its type defined in json custom types starting
 // from primary type. See unittests for some examples.
 std::optional<std::pair<std::vector<uint8_t>, base::Value::Dict>>
-EthSignTypedDataHelper::EncodeData(const std::string& primary_type_name,
+EthSignTypedDataHelper::EncodeData(const std::string_view primary_type_name,
                                    const base::Value::Dict& data) const {
   const auto* primary_type = types_.FindList(primary_type_name);
   if (!primary_type) {
@@ -176,6 +176,8 @@ EthSignTypedDataHelper::EncodeData(const std::string& primary_type_name,
       sanitized_data.Set(*name_str, value->Clone());
     } else {
       if (version_ == Version::kV4) {
+        // https://github.com/MetaMask/eth-sig-util/blob/66a8c0935c14d6ef80b583148d0c758c198a9c4a/src/sign-typed-data.ts#L248
+        // Insert null line in case of a missing field.
         result.insert(result.end(), 32, 0);
       }
     }
@@ -186,9 +188,8 @@ EthSignTypedDataHelper::EncodeData(const std::string& primary_type_name,
 // Encode each field of a custom type, if a field is also a custom type it
 // will call EncodeData recursively until it reaches an atomic type
 std::optional<EthSignTypedDataHelper::Eip712HashArray>
-EthSignTypedDataHelper::EncodeField(const std::string& type_string,
+EthSignTypedDataHelper::EncodeField(const std::string_view type,
                                     const base::Value& value) const {
-  auto type = std::string_view(type_string);
   // ES6 section 20.1.2.6 Number.MAX_SAFE_INTEGER
   constexpr double kMaxSafeInteger = static_cast<double>(kMaxSafeIntegerUint64);
 
@@ -200,12 +201,12 @@ EthSignTypedDataHelper::EncodeField(const std::string& type_string,
     if (!value.is_list()) {
       return std::nullopt;
     }
-    auto type_split = base::SplitString(type, "[", base::KEEP_WHITESPACE,
-                                        base::SPLIT_WANT_ALL);
+    auto type_split = base::SplitStringPiece(type, "[", base::KEEP_WHITESPACE,
+                                             base::SPLIT_WANT_ALL);
     if (type_split.size() != 2) {
       return std::nullopt;
     }
-    const std::string array_type = type_split[0];
+    auto array_type = type_split[0];
     std::vector<uint8_t> array_result;
     for (const auto& item : value.GetList()) {
       auto encoded_item = EncodeField(array_type, item);
@@ -371,7 +372,7 @@ EthSignTypedDataHelper::EncodeField(const std::string& type_string,
   if (!value.is_dict()) {
     return std::nullopt;
   }
-  auto encoded_data = EncodeData(type_string, value.GetDict());
+  auto encoded_data = EncodeData(type, value.GetDict());
   if (!encoded_data) {
     return std::nullopt;
   }

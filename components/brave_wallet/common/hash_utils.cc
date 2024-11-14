@@ -37,11 +37,6 @@ KeccakHashArray KeccakHash(base::span<const uint8_t> input) {
   return result;
 }
 
-std::vector<uint8_t> KeccakHashToVector(base::span<const uint8_t> input) {
-  auto hash = KeccakHash(input);
-  return {hash.begin(), hash.end()};
-}
-
 std::string GetFunctionHash(const std::string& input) {
   return ToHex(GetFunctionHashBytes4(input));
 }

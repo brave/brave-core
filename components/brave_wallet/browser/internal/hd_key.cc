@@ -16,6 +16,7 @@
 
 #include "base/check.h"
 #include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/numerics/byte_conversions.h"
@@ -397,8 +398,7 @@ void HDKey::SetPrivateKey(base::span<const uint8_t> value) {
   }
   private_key_.assign(value.begin(), value.end());
   GeneratePublicKey();
-  auto pubkey_hash = Hash160(public_key_);
-  identifier_.assign(pubkey_hash.begin(), pubkey_hash.end());
+  identifier_ = base::ToVector(Hash160(public_key_));
 
   const uint8_t* ptr = identifier_.data();
   fingerprint_ = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;
@@ -426,9 +426,8 @@ void HDKey::SetPublicKey(
     LOG(ERROR) << __func__ << ": not a valid public key";
     return;
   }
-  public_key_.assign(value.begin(), value.end());
-  auto pubkey_hash = Hash160(public_key_);
-  identifier_.assign(pubkey_hash.begin(), pubkey_hash.end());
+  public_key_ = base::ToVector(value);
+  identifier_ = base::ToVector(Hash160(public_key_));
 
   const uint8_t* ptr = identifier_.data();
   fingerprint_ = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;

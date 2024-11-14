@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
@@ -684,10 +685,9 @@ void EthereumProviderImpl::SignTypedMessage(
   mojom::SignDataUnionPtr sign_data =
       mojom::SignDataUnion::NewEthSignTypedData(std::move(eth_sign_typed_data));
 
-  SignMessageInternal(
-      account_id, std::move(sign_data),
-      std::vector<uint8_t>(message_to_sign.begin(), message_to_sign.end()),
-      std::move(callback), std::move(id));
+  SignMessageInternal(account_id, std::move(sign_data),
+                      base::ToVector(message_to_sign), std::move(callback),
+                      std::move(id));
 }
 
 void EthereumProviderImpl::SignMessageInternal(
