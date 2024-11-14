@@ -9,6 +9,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "base/containers/span.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 
 namespace blink {
@@ -18,7 +19,7 @@ class PLATFORM_EXPORT BraveAudioFarblingHelper final {
   BraveAudioFarblingHelper(double fudge_factor, uint64_t seed, bool max);
   ~BraveAudioFarblingHelper();
 
-  void FarbleAudioChannel(float* dst, size_t count) const;
+  void FarbleAudioChannel(base::span<float> dst) const;
   void FarbleFloatTimeDomainData(const float* input_buffer,
                                  float* destination,
                                  size_t len,
