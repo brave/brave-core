@@ -126,7 +126,7 @@
     </message>
     <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_CRS_CERTIFICATES_DESCRIPTION" desc="Description of the Brave Root Store certificates section of cert manager.">
       The Brave Root Store contains certificates from Certificate Authorities trusted by the
-      Brave Root Program, and is continually reviewed on an ongoing basis.
+      Chrome Root Program, and is continually reviewed on an ongoing basis.
     </message>
     <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_CRS_LEARN_MORE_LINK" desc="Link to learning more about the Brave Root Store.">
       Learn more

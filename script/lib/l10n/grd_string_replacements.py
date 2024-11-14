@@ -66,6 +66,7 @@ fixup_replacements = [
     (r'Brave Pay', r'Google Pay'),
     (r'Brave Photos', r'Google Photos'),
     (r'Brave Projects', r'Chromium Projects'),
+    (r'Brave Root Program', r'Chrome Root Program'),
     (r'BraveVox', r'ChromeVox'),
     (r'powered by Brave AI', r'powered by Google AI'),
     (r'Invite profiles', r'Invite people'),
