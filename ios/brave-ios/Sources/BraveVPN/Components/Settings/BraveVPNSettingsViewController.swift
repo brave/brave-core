@@ -80,6 +80,9 @@ public class BraveVPNSettingsViewController: TableViewController {
       Row(
         text: Strings.VPN.settingsLinkReceipt,
         selection: { [unowned self] in
+          Task {
+            try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+          }
           openURL?(.brave.braveVPNLinkReceiptProd)
         },
         cellClass: ButtonCell.self
@@ -91,6 +94,9 @@ public class BraveVPNSettingsViewController: TableViewController {
         Row(
           text: "[Staging] Link Receipt",
           selection: { [unowned self] in
+            Task {
+              try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+            }
             openURL?(.brave.braveVPNLinkReceiptStaging)
           },
           cellClass: ButtonCell.self
@@ -98,6 +104,9 @@ public class BraveVPNSettingsViewController: TableViewController {
         Row(
           text: "[Dev] Link Receipt",
           selection: { [unowned self] in
+            Task {
+              try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+            }
             openURL?(.brave.braveVPNLinkReceiptDev)
           },
           cellClass: ButtonCell.self
