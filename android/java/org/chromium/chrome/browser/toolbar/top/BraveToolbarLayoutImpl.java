@@ -1279,7 +1279,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onUrlFocusChange(boolean hasFocus) {
-        Log.e("onUrlFocusChange", "hasFoucs : " + hasFocus);
         Context context = getContext();
         String countryCode = Locale.getDefault().getCountry();
         try {
@@ -1295,42 +1294,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 searchActivityIntent.setAction(Intent.ACTION_VIEW);
                 context.startActivity(searchActivityIntent);
             }
-
-            // if (hasFocus) {
-            //     Log.e("onUrlFocusChange", "getLocationBarQuery() : "+getLocationBarQuery());
-
-            //     View rootView =
-            //         braveActivity.getWindow().getDecorView().findViewById(
-            //                 android.R.id.content);
-
-            //     rootView.getViewTreeObserver()
-            //             .addOnGlobalLayoutListener(
-            //                     new ViewTreeObserver.OnGlobalLayoutListener() {
-            //                         @Override
-            //                         public void onGlobalLayout() {
-            //                             Rect r = new Rect();
-            //                             rootView.getWindowVisibleDisplayFrame(r);
-            //                             int screenHeight = rootView.getRootView().getHeight();
-            //                             int visibleHeight = r.bottom;
-            //                             int heightDifference = screenHeight - visibleHeight;
-
-            //                             boolean keyboardVisible = heightDifference > screenHeight
-            // * 0.15;
-            //                             if (keyboardVisible) {
-            //
-            // braveActivity.showQuickActionSearchEnginesView(heightDifference);
-            //                             } else {
-            //                                 braveActivity.removeQuickActionSearchEnginesView();
-            //                             }
-            //                         }
-            //                     });
-            // } else {
-            //     braveActivity.removeQuickActionSearchEnginesView();
-            // }
-            // if (!hasFocus) {
-            //     braveActivity.removeQuickActionSearchEnginesView();
-            // }
-
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onUrlFocusChange " + e);
         }
