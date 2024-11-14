@@ -35,12 +35,8 @@ class RewardsServiceObserver;
 
 using GetPublisherInfoListCallback =
     base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr> list)>;
-using GetAutoContributionAmountCallback = base::OnceCallback<void(double)>;
-using GetAutoContributePropertiesCallback =
-    base::OnceCallback<void(mojom::AutoContributePropertiesPtr)>;
 using GetPublisherMinVisitTimeCallback = base::OnceCallback<void(int)>;
 using GetPublisherMinVisitsCallback = base::OnceCallback<void(int)>;
-using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::OnceCallback<void(uint64_t)>;
 using GetRewardsInternalsInfoCallback =
     base::OnceCallback<void(mojom::RewardsInternalsInfoPtr info)>;
@@ -167,10 +163,6 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherMinVisits(
       GetPublisherMinVisitsCallback callback) = 0;
   virtual void SetPublisherMinVisits(int visits) const = 0;
-  virtual void SetAutoContributionAmount(double amount) const = 0;
-  virtual void GetAutoContributeEnabled(
-      GetAutoContributeEnabledCallback callback) = 0;
-  virtual void SetAutoContributeEnabled(bool enabled) = 0;
 
   virtual void GetBalanceReport(
       const uint32_t month,
@@ -183,8 +175,6 @@ class RewardsService : public KeyedService {
       const std::string& url,
       const std::string& favicon_url,
       const std::string& publisher_blob) = 0;
-  virtual void GetAutoContributionAmount(
-      GetAutoContributionAmountCallback callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
 
@@ -207,11 +197,6 @@ class RewardsService : public KeyedService {
       const std::string& publisher_key,
       bool exclude) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;
-  virtual void IsAutoContributeSupported(
-      base::OnceCallback<void(bool)> callback) = 0;
-  virtual void GetAutoContributeProperties(
-      GetAutoContributePropertiesCallback callback) = 0;
-
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
 

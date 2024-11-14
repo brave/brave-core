@@ -50,11 +50,6 @@ class WalletProvider {
                          double amount,
                          ResultCallback callback);
 
-  void TransferFunds(double amount,
-                     const std::string& address,
-                     const std::string& contribution_id,
-                     ResultCallback callback);
-
   virtual void BeginLogin(BeginExternalWalletLoginCallback callback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,

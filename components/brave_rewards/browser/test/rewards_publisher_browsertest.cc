@@ -131,29 +131,4 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitVerifiedPublisher) {
-  test_util::StartProcessWithConnectedUser(browser()->profile());
-  rewards_service_->SetAutoContributeEnabled(true);
-  context_helper_->LoadRewardsPage();
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "duckduckgo.com"), true);
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitUnverifiedPublisher) {
-  test_util::StartProcessWithConnectedUser(browser()->profile());
-  rewards_service_->SetAutoContributeEnabled(true);
-  context_helper_->LoadRewardsPage();
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "brave.com"), false);
-}
-
-// Registered publishers without a wallet address are displayed as not verified
-IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitRegisteredPublisher) {
-  test_util::StartProcessWithConnectedUser(browser()->profile());
-  rewards_service_->SetAutoContributeEnabled(true);
-  context_helper_->LoadRewardsPage();
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "registeredsite.com"), false);
-}
-
 }  // namespace brave_rewards

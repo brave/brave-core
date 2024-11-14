@@ -401,19 +401,7 @@ int BraveRewardsNativeWorker::GetPublisherStatus(JNIEnv* env, uint64_t tabId) {
 
 void BraveRewardsNativeWorker::IncludeInAutoContribution(JNIEnv* env,
                                                          uint64_t tabId,
-                                                         bool exclude) {
-  PublishersInfoMap::iterator iter(map_publishers_info_.find(tabId));
-  if (iter != map_publishers_info_.end()) {
-    if (exclude) {
-      iter->second->excluded = brave_rewards::mojom::PublisherExclude::EXCLUDED;
-    } else {
-      iter->second->excluded = brave_rewards::mojom::PublisherExclude::INCLUDED;
-    }
-    if (brave_rewards_service_) {
-      brave_rewards_service_->SetPublisherExclude(iter->second->id, exclude);
-    }
-  }
-}
+                                                         bool exclude) {}
 
 void BraveRewardsNativeWorker::RemovePublisherFromMap(JNIEnv* env,
                                                       uint64_t tabId) {
@@ -611,30 +599,12 @@ bool BraveRewardsNativeWorker::IsCurrentPublisherInRecurrentDonations(
 }
 
 void BraveRewardsNativeWorker::GetAutoContributeProperties(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->GetAutoContributeProperties(
-        base::BindOnce(&BraveRewardsNativeWorker::OnGetAutoContributeProperties,
-                       weak_factory_.GetWeakPtr()));
-  }
-}
-
-void BraveRewardsNativeWorker::OnGetAutoContributeProperties(
-    brave_rewards::mojom::AutoContributePropertiesPtr properties) {
-  if (properties) {
-    auto_contrib_properties_ = std::move(properties);
-  }
-
-  JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onGetAutoContributeProperties(
       env, weak_java_brave_rewards_native_worker_.get(env));
 }
 
 bool BraveRewardsNativeWorker::IsAutoContributeEnabled(JNIEnv* env) {
-  if (!auto_contrib_properties_) {
-    return false;
-  }
-
-  return auto_contrib_properties_->enabled_contribute;
+  return false;
 }
 
 void BraveRewardsNativeWorker::GetReconcileStamp(JNIEnv* env) {
@@ -775,26 +745,11 @@ void BraveRewardsNativeWorker::SetAdsPerHour(JNIEnv* env, jint value) {
 }
 
 void BraveRewardsNativeWorker::SetAutoContributionAmount(JNIEnv* env,
-                                                         jdouble value) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->SetAutoContributionAmount(value);
-  }
-}
+                                                         jdouble value) {}
 
 void BraveRewardsNativeWorker::GetAutoContributionAmount(JNIEnv* env) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->GetAutoContributionAmount(
-        base::BindOnce(&BraveRewardsNativeWorker::OnGetAutoContributionAmount,
-                       weak_factory_.GetWeakPtr()));
-  }
-}
-
-void BraveRewardsNativeWorker::OnGetAutoContributionAmount(
-    double auto_contribution_amount) {
-  JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onGetAutoContributionAmount(
-      env, weak_java_brave_rewards_native_worker_.get(env),
-      auto_contribution_amount);
+      env, weak_java_brave_rewards_native_worker_.get(env), 0);
 }
 
 void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {
@@ -992,11 +947,7 @@ void BraveRewardsNativeWorker::OnRefreshPublisher(
 
 void BraveRewardsNativeWorker::SetAutoContributeEnabled(
     JNIEnv* env,
-    bool isAutoContributeEnabled) {
-  if (brave_rewards_service_) {
-    brave_rewards_service_->SetAutoContributeEnabled(isAutoContributeEnabled);
-  }
-}
+    bool isAutoContributeEnabled) {}
 
 void BraveRewardsNativeWorker::RecordPanelTrigger(JNIEnv* env) {
   if (brave_rewards_service_) {
