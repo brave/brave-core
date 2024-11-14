@@ -1,0 +1,113 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
+import("//testing/test.gni")
+
+source_set("ntp_background") {
+  sources = [
+    "ntp_p3a_helper_impl.cc",
+    "ntp_p3a_helper_impl.h",
+    "ntp_tab_helper.cc",
+    "ntp_tab_helper.h",
+    "view_counter_service_factory.cc",
+    "view_counter_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/browser/brave_ads",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/constants",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/buildflags",
+    "//brave/components/p3a",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//url",
+  ]
+
+  if (enable_custom_background) {
+    sources += [
+      "brave_ntp_custom_background_service_delegate.cc",
+      "brave_ntp_custom_background_service_delegate.h",
+      "brave_ntp_custom_background_service_factory.cc",
+      "brave_ntp_custom_background_service_factory.h",
+      "constants.h",
+      "custom_background_file_manager.cc",
+      "custom_background_file_manager.h",
+      "ntp_background_prefs.cc",
+      "ntp_background_prefs.h",
+    ]
+
+    deps += [
+      "//chrome/browser/image_fetcher",
+      "//chrome/browser/themes",
+      "//services/data_decoder/public/cpp",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "ntp_p3a_helper_impl_unittest.cc" ]
+
+  deps = [
+    ":ntp_background",
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_referrals/browser",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/p3a",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+
+  if (enable_custom_background) {
+    sources += [
+      "brave_ntp_custom_background_service_delegate_unittest.cc",
+      "ntp_background_prefs_unittest.cc",
+    ]
+
+    deps += [
+      "//brave/components/constants",
+      "//chrome/test:test_support",
+    ]
+  }
+}
+
+if (enable_custom_background) {
+  source_set("browser_tests") {
+    testonly = true
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "custom_background_file_manager_browsertest.cc" ]
+
+    deps = [
+      ":ntp_background",
+      "//base",
+      "//base/test:test_support",
+      "//brave/components/constants",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+    ]
+
+    data = [ "//brave/test/data/ntp_background/background.jpg" ]
+  }
+}

@@ -100,7 +100,6 @@ test("brave_unit_tests") {
     "//brave/browser/brave_stats/first_run_util_unittest.cc",
     "//brave/browser/browsing_data/brave_browsing_data_remover_delegate_unittest.cc",
     "//brave/browser/download/brave_download_item_model_unittest.cc",
-    "//brave/browser/ntp_background/ntp_p3a_helper_impl_unittest.cc",
     "//brave/browser/profiles/profile_util_unittest.cc",
     "//brave/chromium_src/chrome/browser/favicon/favicon_utils_unittest.cc",
     "//brave/chromium_src/chrome/browser/history/history_utils_unittest.cc",
@@ -168,6 +167,7 @@ test("brave_unit_tests") {
     "//brave/browser/misc_metrics:unit_tests",
     "//brave/browser/net:unit_tests",
     "//brave/browser/new_tab:unittest",
+    "//brave/browser/ntp_background:unit_tests",
     "//brave/browser/permissions:unit_tests",
     "//brave/browser/profiles:unit_tests",
     "//brave/browser/profiles:util",
@@ -372,10 +372,6 @@ test("brave_unit_tests") {
 
   data = [ "data/" ]
 
-  if (enable_custom_background) {
-    sources += [ "//brave/browser/ntp_background/brave_ntp_custom_background_service_delegate_unittest.cc" ]
-  }
-
   public_deps = [
     ":brave_test_support_unit",
     "//base",
@@ -392,7 +388,6 @@ test("brave_unit_tests") {
     sources += [
       "../utility/importer/chrome_importer_unittest.cc",
       "//brave/browser/brave_resources_util_unittest.cc",
-      "//brave/browser/ntp_background/ntp_background_prefs_unittest.cc",
       "//brave/browser/profiles/brave_profile_manager_unittest.cc",
       "//brave/browser/resources/settings/brandcode_config_fetcher_unittest.cc",
       "//brave/browser/resources/settings/reset_report_uploader_unittest.cc",
@@ -852,6 +847,7 @@ test("brave_browser_tests") {
     "//brave/browser/misc_metrics:browser_tests",
     "//brave/browser/net:browser_tests",
     "//brave/browser/new_tab:browser_tests",
+    "//brave/browser/ntp_background",
     "//brave/browser/permissions:browser_tests",
     "//brave/browser/profiles:util",
     "//brave/browser/psst:browser_tests",
@@ -1160,9 +1156,7 @@ test("brave_browser_tests") {
   }
 
   if (enable_custom_background) {
-    sources += [ "//brave/browser/ntp_background/custom_background_file_manager_browsertest.cc" ]
-
-    data = [ "data/ntp_background/background.jpg" ]
+    deps += [ "//brave/browser/ntp_background:browser_tests" ]
   }
 
   # API tests and extension deps
