@@ -85,18 +85,6 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void RemoveRecurringContribution(
       const std::string& creator_id,
       RemoveRecurringContributionCallback callback) override;
-  void GetAutoContributeSettings(
-      GetAutoContributeSettingsCallback callback) override;
-  void GetAutoContributeSites(GetAutoContributeSitesCallback callback) override;
-  void SetAutoContributeEnabled(
-      bool enabled,
-      SetAutoContributeEnabledCallback callback) override;
-  void SetAutoContributeAmount(
-      double amount,
-      SetAutoContributeAmountCallback callback) override;
-  void RemoveAutoContributeSite(
-      const std::string& creator_id,
-      RemoveAutoContributeSiteCallback callback) override;
   void GetAdsSettings(GetAdsSettingsCallback callback) override;
   void GetAdsStatement(GetAdsStatementCallback callback) override;
   void GetAdsHistory(GetAdsHistoryCallback callback) override;

@@ -260,9 +260,6 @@ export function createHost (): Host {
         const { options, exchangeInfo, payoutStatus } = params
         stateManager.update({ options, exchangeInfo, payoutStatus })
       }),
-      apiAdapter.getSettings().then((settings) => {
-        stateManager.update({ settings })
-      }),
       apiAdapter.getSelfCustodyInviteDismissed().then((dismissed) => {
         stateManager.update({ selfCustodyInviteDismissed: dismissed })
       }),
@@ -338,23 +335,6 @@ export function createHost (): Host {
         updatePublisherInfo().then(() => {
           stateManager.update({ publisherRefreshing: false })
         }).catch(console.error)
-      })
-    },
-
-    setIncludeInAutoContribute (include) {
-      const { publisherInfo } = stateManager.getState()
-      if (!publisherInfo) {
-        return
-      }
-
-      // Confusingly, |includeInAutoContribution| takes an "exclude" parameter.
-      chrome.braveRewards.includeInAutoContribution(publisherInfo.id, !include)
-
-      stateManager.update({
-        publisherInfo: {
-          ...publisherInfo,
-          autoContributeEnabled: include
-        }
       })
     },
 

@@ -160,9 +160,6 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
 
   void GetClientCountryCode(GetClientCountryCodeCallback callback) override;
 
-  void IsAutoContributeSupportedForClient(
-      IsAutoContributeSupportedForClientCallback callback) override;
-
   void GetLegacyWallet(GetLegacyWalletCallback callback) override;
 
   void ShowNotification(const std::string& type,

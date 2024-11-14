@@ -29,13 +29,9 @@ interface RewardsEngine {
 
   FetchUICards() => (array<UICard>? cards);
 
-  GetAutoContributeProperties() => (AutoContributeProperties props);
-
   GetPublisherMinVisitTime() => (int32 min_visit_time);
 
   GetPublisherMinVisits() => (int32 min_visits);
-
-  GetAutoContributeEnabled() => (bool auto_contribute);
 
   GetReconcileStamp() => (uint64 reconcile_stamp);
 
@@ -67,18 +63,12 @@ interface RewardsEngine {
 
   SetPublisherMinVisits(int32 visits);
 
-  SetAutoContributionAmount(double amount);
-
-  SetAutoContributeEnabled(bool enabled);
-
   GetBalanceReport(ActivityMonth month, int32 year)
       => (Result result, BalanceReportInfo? report);
 
   GetPublisherActivityFromUrl(uint64 window_id,
                               VisitData visit_data,
                               string publisher_blob);
-
-  GetAutoContributionAmount() => (double contribution_amount);
 
   GetPublisherBanner(string publisher_id)
       => (PublisherBanner? banner);
@@ -223,9 +213,6 @@ interface RewardsEngineClient {
 
   [Sync]
   GetClientCountryCode() => (string country_code);
-
-  [Sync]
-  IsAutoContributeSupportedForClient() => (bool value);
 
   [Sync]
   GetLegacyWallet() => (string wallet);

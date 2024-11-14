@@ -11,7 +11,6 @@ class RewardsInternalsAutoContributeController: UITableViewController {
 
   let rewardsAPI: BraveRewardsAPI
   private var publishers: [BraveCore.BraveRewards.PublisherInfo] = []
-  private var autocontributeProperties: BraveCore.BraveRewards.AutoContributeProperties?
   private let percentFormatter = NumberFormatter().then {
     $0.numberStyle = .percent
   }
@@ -41,10 +40,6 @@ class RewardsInternalsAutoContributeController: UITableViewController {
       guard let self = self else { return }
       self.publishers = list
       self.tableView.reloadData()
-    }
-    rewardsAPI.fetchAutoContributeProperties { [weak self] properties in
-      self?.autocontributeProperties = properties
-      self?.tableView.reloadData()
     }
   }
 
@@ -76,12 +71,7 @@ class RewardsInternalsAutoContributeController: UITableViewController {
     switch indexPath.section {
     case 0:
       cell.textLabel?.text = "Next Contribution Date"
-      if let reconcileStamp = autocontributeProperties?.reconcileStamp {
-        let date = Date(timeIntervalSince1970: TimeInterval(reconcileStamp))
-        cell.detailTextLabel?.text = dateFormatter.string(from: date)
-      } else {
-        cell.detailTextLabel?.text = "–"
-      }
+      cell.detailTextLabel?.text = "–"
       return cell
     case 1:
       guard let publisher = publishers[safe: indexPath.item] else { return cell }

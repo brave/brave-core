@@ -168,10 +168,6 @@ void RewardsClientIOS::GetClientCountryCode(
     GetClientCountryCodeCallback callback) {
   [bridge_ getClientCountryCode:std::move(callback)];
 }
-void RewardsClientIOS::IsAutoContributeSupportedForClient(
-    IsAutoContributeSupportedForClientCallback callback) {
-  [bridge_ isAutoContributeSupportedForClient:std::move(callback)];
-}
 void RewardsClientIOS::GetClientInfo(GetClientInfoCallback callback) {
   [bridge_ clientInfo:std::move(callback)];
 }

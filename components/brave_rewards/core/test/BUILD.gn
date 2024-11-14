@@ -15,7 +15,6 @@ source_set("test") {
     "//brave/components/brave_rewards/core/common/request_signer_unittest.cc",
     "//brave/components/brave_rewards/core/common/signer_unittest.cc",
     "//brave/components/brave_rewards/core/common/url_loader_unittest.cc",
-    "//brave/components/brave_rewards/core/contribution/contribution_unblinded_unittest.cc",
     "//brave/components/brave_rewards/core/contribution/contribution_util_unittest.cc",
     "//brave/components/brave_rewards/core/credentials/credentials_util_unittest.cc",
     "//brave/components/brave_rewards/core/database/database_migration_unittest.cc",

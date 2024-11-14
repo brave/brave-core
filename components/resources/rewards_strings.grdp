@@ -819,42 +819,6 @@
     Your BAT earnings will be paid to this payout account.
   </message>
 
-  <message name="IDS_REWARDS_AC_AMOUNT_LABEL" desc="">
-    You will send
-  </message>
-  <message name="IDS_REWARDS_AC_AMOUNT_TEXT" desc="">
-    Up to <ph name="AMOUNT">$1</ph> BAT
-  </message>
-  <message name="IDS_REWARDS_AC_ATTENTION_LABEL" desc="">
-    Attention
-  </message>
-  <message name="IDS_REWARDS_AC_DISABLED_TEXT" desc="">
-    An automatic way to support websites and content creators, based on how much time you spend on their content.
-  </message>
-  <message name="IDS_REWARDS_AC_DISABLED_TITLE" desc="">
-    Auto-Contribute is disabled
-  </message>
-  <message name="IDS_REWARDS_AC_EMPTY_LIST_TEXT" desc="">
-    Verified creators that you visit will appear here as you browse.
-  </message>
-  <message name="IDS_REWARDS_AC_INFO_TEXT" desc="">
-    Auto-contribute automatically sends monthly contributions to creators verified with Brave, based on how much time you spend on their content.
-  </message>
-  <message name="IDS_REWARDS_AC_INFO_TITLE" desc="">
-    How does Auto-Contribute work?
-  </message>
-  <message name="IDS_REWARDS_AC_NEXT_CONTRIBUTION_LABEL" desc="">
-    Next contribution date
-  </message>
-  <message name="IDS_REWARDS_AC_SITE_COUNT_LABEL" desc="">
-    Sites viewed
-  </message>
-  <message name="IDS_REWARDS_AC_SITE_LABEL" desc="">
-    Site
-  </message>
-  <message name="IDS_REWARDS_AC_TITLE" desc="">
-    Auto-Contribute
-  </message>
   <message name="IDS_REWARDS_BENEFITS_STORE_SUBTEXT" desc="">
     Get Brave-branded products.
   </message>

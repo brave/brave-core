@@ -202,29 +202,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       AutoContributionMultiplePublishersUphold) {
-  contribution_->StartProcessWithBalance(30);
-  rewards_service_->SetAutoContributeEnabled(true);
-  context_helper_->LoadRewardsPage();
-  SetSKUOrderResponse();
-
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "duckduckgo.com"), true);
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "laurenwags.github.io"), true);
-
-  rewards_service_->StartContributionsForTesting();
-
-  contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::OK);
-
-  contribution_->IsBalanceCorrect();
-
-  test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "20.00 BAT");
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        TipVerifiedPublisherWithCustomAmount) {
   contribution_->StartProcessWithBalance(30);
   contribution_->TipPublisher(
@@ -298,7 +275,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        RecurringTipNonIntegralAmount) {
   contribution_->StartProcessWithBalance(30);
-  rewards_service_->SetAutoContributeEnabled(true);
 
   const bool verified = true;
   context_helper_->VisitPublisher(
@@ -311,84 +287,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::OK);
 
   ASSERT_EQ(contribution_->GetReconcileTipTotal(), 2.5);
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       RecurringAndPartialAutoContribution) {
-  contribution_->StartProcessWithBalance(30);
-  rewards_service_->SetAutoContributeEnabled(true);
-  SetSKUOrderResponse();
-
-  // Visit verified publisher
-  const bool verified = true;
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "duckduckgo.com"), true);
-
-  // Set monthly recurring
-  contribution_->TipViaCode("duckduckgo.com", 25.0,
-                            mojom::PublisherStatus::UPHOLD_VERIFIED, true);
-
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "brave.com"), !verified);
-
-  // Trigger contribution process
-  rewards_service_->StartContributionsForTesting();
-
-  // Wait for reconciliation to complete
-  contribution_->WaitForTipReconcileCompleted();
-  ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::OK);
-
-  // Wait for reconciliation to complete successfully
-  contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::OK);
-
-  // Make sure that balance is updated correctly
-  contribution_->IsBalanceCorrect();
-
-  // Check that summary table shows the appropriate contribution
-  test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "5.00 BAT");
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       MultipleRecurringOverBudgetAndPartialAutoContribution) {
-  contribution_->StartProcessWithBalance(30);
-  rewards_service_->SetAutoContributeEnabled(true);
-  SetSKUOrderResponse();
-
-  contribution_->TipViaCode("duckduckgo.com", 3.0,
-                            mojom::PublisherStatus::UPHOLD_VERIFIED, true);
-
-  contribution_->TipViaCode("site1.com", 5.0,
-                            mojom::PublisherStatus::UPHOLD_VERIFIED, true);
-
-  contribution_->TipViaCode("site2.com", 5.0,
-                            mojom::PublisherStatus::UPHOLD_VERIFIED, true);
-
-  contribution_->TipViaCode("site3.com", 5.0,
-                            mojom::PublisherStatus::UPHOLD_VERIFIED, true);
-
-  const bool verified = true;
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "duckduckgo.com"), verified);
-
-  // Trigger contribution process
-  rewards_service_->StartContributionsForTesting();
-
-  // Wait for reconciliation to complete
-  contribution_->WaitForMultipleTipReconcileCompleted(3);
-  ASSERT_EQ(contribution_->GetTipStatus(), mojom::Result::OK);
-
-  // Wait for reconciliation to complete successfully
-  contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), mojom::Result::OK);
-
-  // Make sure that balance is updated correctly
-  contribution_->IsBalanceCorrect();
-
-  // Check that summary table shows the appropriate contribution
-  test_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-ac]", "4.00 BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PanelMonthlyTipAmount) {

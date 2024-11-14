@@ -20,12 +20,11 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_rewards/core/contribution/contribution_ac.h"
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_external_wallet.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_monthly.h"
-#include "brave/components/brave_rewards/core/contribution/contribution_sku.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_tip.h"
-#include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
@@ -43,7 +42,7 @@ class Contribution {
 
   void ProcessContributionQueue();
 
-  void SetAutoContributeTimer();
+  void SetReconcileStampTimer();
 
   void SetMonthlyContributionTimer();
 
@@ -65,24 +64,6 @@ class Contribution {
 
   void CheckContributionQueue();
 
-  void TransferFunds(const mojom::SKUTransaction& transaction,
-                     const std::string& destination,
-                     const std::string& wallet_type,
-                     const std::string& contribution_id,
-                     ResultCallback callback);
-
-  void SKUAutoContribution(const std::string& contribution_id,
-                           const std::string& wallet_type,
-                           ResultCallback callback);
-
-  void StartUnblinded(const std::vector<mojom::CredsBatchType>& types,
-                      const std::string& contribution_id,
-                      ResultCallback callback);
-
-  void RetryUnblinded(const std::vector<mojom::CredsBatchType>& types,
-                      const std::string& contribution_id,
-                      ResultCallback callback);
-
   void GetRecurringTips(GetRecurringTipsCallback callback);
 
  private:
@@ -92,8 +73,6 @@ class Contribution {
 
   void OnMonthlyContributionsFinished(MonthlyContributionOptions options,
                                       mojom::Result result);
-
-  void StartAutoContribute();
 
   void OnNextMonthlyContributionTimeRead(std::optional<base::Time> time);
 
@@ -158,10 +137,6 @@ class Contribution {
 
   void OnMarkContributionQueueAsComplete(mojom::Result result);
 
-  void RetryUnblindedContribution(std::vector<mojom::CredsBatchType> types,
-                                  ResultCallback callback,
-                                  mojom::ContributionInfoPtr contribution);
-
   void Result(const std::string& queue_id,
               const std::string& contribution_id,
               mojom::Result result);
@@ -178,21 +153,15 @@ class Contribution {
 
   void Retry(mojom::ContributionInfoPtr contribution, mojom::Result result);
 
-  void OnMarkUnblindedTokensAsSpendable(const std::string& contribution_id,
-                                        mojom::Result result);
-
   void OnRecurringTipsRead(GetRecurringTipsCallback callback,
                            std::vector<mojom::PublisherInfoPtr> list);
 
   const raw_ref<RewardsEngine> engine_;
-  Unblinded unblinded_;
-  ContributionSKU sku_;
   ContributionMonthly monthly_;
-  ContributionAC ac_;
   ContributionTip tip_;
   ContributionExternalWallet external_wallet_;
   std::map<std::string, ContributionRequest> requests_;
-  base::OneShotTimer auto_contribute_timer_;
+  base::OneShotTimer reconcile_stamp_timer_;
   base::OneShotTimer monthly_contribution_timer_;
   std::map<std::string, base::OneShotTimer> retry_timers_;
   base::OneShotTimer queue_timer_;

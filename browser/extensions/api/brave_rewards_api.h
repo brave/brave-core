@@ -184,39 +184,6 @@ class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
                        brave_rewards::mojom::BalanceReportInfoPtr report);
 };
 
-class BraveRewardsIncludeInAutoContributionFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.includeInAutoContribution", UNKNOWN)
-
- protected:
-  ~BraveRewardsIncludeInAutoContributionFunction() override;
-
-  ResponseAction Run() override;
-};
-
-class BraveRewardsSetAutoContributeEnabledFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.setAutoContributeEnabled", UNKNOWN)
-
- protected:
-  ~BraveRewardsSetAutoContributeEnabledFunction() override;
-
-  ResponseAction Run() override;
-};
-
-class BraveRewardsGetACEnabledFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getACEnabled", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetACEnabledFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnGetACEnabled(bool enabled);
-};
-
 class BraveRewardsSaveRecurringTipFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.saveRecurringTip", UNKNOWN)
@@ -413,20 +380,6 @@ class BraveRewardsUpdateScheduledCaptchaResultFunction
   ~BraveRewardsUpdateScheduledCaptchaResultFunction() override;
 
   ResponseAction Run() override;
-};
-
-class BraveRewardsGetPrefsFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getPrefs", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetPrefsFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void GetAutoContributePropertiesCallback(
-      brave_rewards::mojom::AutoContributePropertiesPtr properties);
 };
 
 }  // namespace api

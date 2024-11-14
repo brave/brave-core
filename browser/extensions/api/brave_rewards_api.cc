@@ -282,23 +282,6 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsIncludeInAutoContributionFunction::
-    ~BraveRewardsIncludeInAutoContributionFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsIncludeInAutoContributionFunction::Run() {
-  std::optional<brave_rewards::IncludeInAutoContribution::Params> params =
-      brave_rewards::IncludeInAutoContribution::Params::Create(args());
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->SetPublisherExclude(params->publisher_key,
-                                         params->exclude);
-  }
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsGetRewardsParametersFunction::
     ~BraveRewardsGetRewardsParametersFunction() = default;
 
@@ -322,7 +305,6 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
   if (!parameters) {
     data.Set("rate", 0.0);
     data.Set("monthlyTipChoices", base::Value::List());
-    data.Set("autoContributeChoices", base::Value::List());
     data.Set("payoutStatus", base::Value::Dict());
     data.Set("walletProviderRegions", base::Value::Dict());
     data.Set("vbatExpired", false);
@@ -335,12 +317,6 @@ void BraveRewardsGetRewardsParametersFunction::OnGetRewardsParameters(
     monthly_choices.Append(item);
   }
   data.Set("monthlyTipChoices", std::move(monthly_choices));
-
-  base::Value::List ac_choices;
-  for (double const& choice : parameters->auto_contribute_choices) {
-    ac_choices.Append(choice);
-  }
-  data.Set("autoContributeChoices", std::move(ac_choices));
 
   base::Value::Dict payout_status;
   for (const auto& [key, value] : parameters->payout_status) {
@@ -530,49 +506,10 @@ void BraveRewardsGetBalanceReportFunction::OnBalanceReport(
     ::brave_rewards::mojom::BalanceReportInfoPtr report) {
   base::Value::Dict data;
   data.Set("ads", report ? report->earning_from_ads : 0.0);
-  data.Set("contribute", report ? report->auto_contribute : 0.0);
+  data.Set("contribute", 0.0);
   data.Set("tips", report ? report->one_time_donation : 0.0);
   data.Set("monthly", report ? report->recurring_donation : 0.0);
   Respond(WithArguments(std::move(data)));
-}
-
-BraveRewardsSetAutoContributeEnabledFunction::
-    ~BraveRewardsSetAutoContributeEnabledFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsSetAutoContributeEnabledFunction::Run() {
-  std::optional<brave_rewards::SetAutoContributeEnabled::Params> params =
-      brave_rewards::SetAutoContributeEnabled::Params::Create(args());
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->SetAutoContributeEnabled(params->enabled);
-  return RespondNow(NoArguments());
-}
-
-BraveRewardsGetACEnabledFunction::~BraveRewardsGetACEnabledFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetACEnabledFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
-  }
-
-  rewards_service->GetAutoContributeEnabled(
-      base::BindOnce(&BraveRewardsGetACEnabledFunction::OnGetACEnabled, this));
-  return RespondLater();
-}
-
-void BraveRewardsGetACEnabledFunction::OnGetACEnabled(bool enabled) {
-  Respond(WithArguments(enabled));
 }
 
 BraveRewardsSaveRecurringTipFunction::~BraveRewardsSaveRecurringTipFunction() =
@@ -961,31 +898,6 @@ BraveRewardsUpdateScheduledCaptchaResultFunction::Run() {
   }
 
   return RespondNow(NoArguments());
-}
-
-BraveRewardsGetPrefsFunction::~BraveRewardsGetPrefsFunction() = default;
-
-ExtensionFunction::ResponseAction BraveRewardsGetPrefsFunction::Run() {
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(
-      Profile::FromBrowserContext(browser_context()));
-
-  if (!rewards_service)
-    return RespondNow(Error("Rewards service is not initialized"));
-
-  rewards_service->GetAutoContributeProperties(base::BindRepeating(
-      &BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback,
-      this));
-
-  return RespondLater();
-}
-
-void BraveRewardsGetPrefsFunction::GetAutoContributePropertiesCallback(
-    ::brave_rewards::mojom::AutoContributePropertiesPtr properties) {
-  base::Value::Dict prefs;
-  prefs.Set("autoContributeEnabled",
-            properties ? properties->enabled_contribute : false);
-  prefs.Set("autoContributeAmount", properties ? properties->amount : 0.0);
-  Respond(WithArguments(std::move(prefs)));
 }
 
 }  // namespace extensions::api

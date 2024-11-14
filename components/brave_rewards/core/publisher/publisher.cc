@@ -293,13 +293,9 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
   uint64_t min_visit_time =
       static_cast<uint64_t>(engine_->state()->GetPublisherMinVisitTime());
 
-  // for new visits that are excluded or are not long enough or ac is off
-  bool min_duration_new = duration < min_visit_time && !ignore_time;
   bool min_duration_ok = duration > min_visit_time || ignore_time;
 
-  if ((new_publisher || updated_publisher) &&
-      (excluded || !engine_->state()->GetAutoContributeEnabled() ||
-       min_duration_new || !is_verified)) {
+  if (new_publisher || updated_publisher) {
     panel_info = publisher_info->Clone();
 
     engine_->database()->SavePublisherInfo(

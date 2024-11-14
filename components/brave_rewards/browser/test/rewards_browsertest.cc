@@ -196,26 +196,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultPublisherAmounts) {
   ASSERT_EQ(tip_options, std::vector<double>({1, 5, 50}));
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
-  test_util::StartProcessWithConnectedUser(browser()->profile());
-  rewards_service_->SetAutoContributeEnabled(true);
-  context_helper_->LoadRewardsPage();
-  context_helper_->VisitPublisher(
-      test_util::GetUrl(https_server_.get(), "3zsistemi.si"), true);
-
-  test_util::NavigateToPublisherPage(browser(), https_server_.get(),
-                                     "3zsistemi.si");
-
-  // Open the Rewards popup
-  base::WeakPtr<content::WebContents> popup_contents =
-      context_helper_->OpenRewardsPopup();
-  ASSERT_TRUE(popup_contents);
-
-  const std::string score = test_util::WaitForElementThenGetContent(
-      popup_contents.get(), "[data-test-id=attention-score-text]");
-  EXPECT_NE(score.find("100%"), std::string::npos);
-}
-
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
   test_util::CreateRewardsWallet(rewards_service_);
   context_helper_->LoadRewardsPage();

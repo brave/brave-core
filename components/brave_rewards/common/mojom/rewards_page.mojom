@@ -27,12 +27,6 @@ struct AvailableCountryInfo {
   string default_country_code;
 };
 
-struct AutoContributeSettings {
-  bool enabled;
-  double amount;
-  double next_auto_contribute_date;
-};
-
 struct AdsSubdivision {
   string code;
   string name;
@@ -76,7 +70,6 @@ struct CaptchaInfo {
 };
 
 enum RewardsNotificationType {
-  kAutoContribute,
   kTipsProcessed,
   kGeneral
 };
@@ -142,19 +135,6 @@ interface RewardsPageHandler {
 
   // Removes a recurring contribution for the specified creator.
   RemoveRecurringContribution(string creator_id) => ();
-
-  // Returns the current AC settings for the user.
-  GetAutoContributeSettings() => (AutoContributeSettings? settings);
-
-  // Returns the current list of sites that will considered for auto-contribute.
-  GetAutoContributeSites() => (array<PublisherInfo> sites);
-
-  // Sets auto-contribute preferences.
-  SetAutoContributeEnabled(bool enabled) => ();
-  SetAutoContributeAmount(double amount) => ();
-
-  // Removes a creator from auto-contribute calculations.
-  RemoveAutoContributeSite(string creator_id) => ();
 
   // Returns Brave Ads settings for the current user.
   GetAdsSettings() => (AdsSettings settings);

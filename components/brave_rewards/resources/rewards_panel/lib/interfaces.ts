@@ -37,7 +37,6 @@ export interface PublisherInfo {
   icon: string
   platform: PublisherPlatform | null
   attentionScore: number
-  autoContributeEnabled: boolean
   monthlyTip: number
   supportedWalletProviders: ExternalWalletProvider[]
 }
@@ -54,13 +53,7 @@ export interface AdaptiveCaptchaInfo {
   status: AdaptiveCaptchaStatus
 }
 
-export interface Settings {
-  autoContributeEnabled: boolean
-  autoContributeAmount: number
-}
-
 export interface Options {
-  autoContributeAmounts: number[]
   externalWalletRegions: Map<string, ExternalWalletProviderRegionInfo>
   vbatDeadline: number | undefined
   vbatExpired: boolean
@@ -74,7 +67,6 @@ export interface HostState {
   rewardsEnabled: boolean
   requestedView: RequestedView | null
   balance: Optional<number>
-  settings: Settings
   options: Options
   adaptiveCaptchaInfo: AdaptiveCaptchaInfo | null
   exchangeInfo: ExchangeInfo
@@ -104,7 +96,6 @@ export interface Host {
   openAdaptiveCaptchaSupport: () => void
   openRewardsSettings: () => void
   refreshPublisherStatus: () => void
-  setIncludeInAutoContribute: (include: boolean) => void
   sendTip: () => void
   handleExternalWalletAction: (action: ExternalWalletAction) => void
   handleNotificationAction: (action: NotificationAction) => void

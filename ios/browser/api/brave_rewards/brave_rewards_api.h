@@ -155,10 +155,6 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly, copy) NSString* rewardsDatabasePath;
 
-- (void)fetchAutoContributeProperties:
-    (void (^)(BraveRewardsAutoContributeProperties* _Nullable properties))
-        completion;
-
 #pragma mark - Reporting
 
 @property(nonatomic) UInt32 selectedTabId;

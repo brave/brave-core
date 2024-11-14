@@ -74,11 +74,6 @@ INSTANTIATE_TEST_SUITE_P(
             "0_HTTP_200_success", net::HTTP_OK,
             R"(
               {
-                "autocontribute": {
-                  "choices": [1, 2.0, 3, "4.0", 5, "6.0", 7, "8.0", "9",
-                              10.0, 20],
-                  "defaultChoice": 1
-                },
                 "batRate": 0.301298,
                 "custodianRegions": {
                   "bitflyer": {
@@ -116,9 +111,6 @@ INSTANTIATE_TEST_SUITE_P(
             base::BindRepeating([]() -> Result {
               auto params = mojom::RewardsParameters::New();
               params->rate = 0.301298;
-              params->auto_contribute_choice = 1;
-              params->auto_contribute_choices = {1.0, 2.0,  3.0, 5.0,
-                                                 7.0, 10.0, 20.0};
               params->tip_choices = std::vector{1.25, 5.0, 10.5};
               params->monthly_tip_choices = std::vector{1.25, 5.0, 10.5};
               params->payout_status = {{"bitflyer", "off"},

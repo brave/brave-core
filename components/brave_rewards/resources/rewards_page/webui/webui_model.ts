@@ -164,34 +164,6 @@ export function createModel(): AppModel {
     stateManager.update({ rewardsParameters })
   }
 
-  async function updateAutoContributeInfo() {
-    const [{ settings }, { sites }] = await Promise.all([
-      pageHandler.getAutoContributeSettings(),
-      pageHandler.getAutoContributeSites()
-    ])
-
-    if (!settings) {
-      stateManager.update({ autoContributeInfo: null })
-      return
-    }
-
-    stateManager.update({
-      autoContributeInfo: {
-        ...settings,
-        entries: sites.map((item) => ({
-          site: {
-            id: item.id,
-            icon: item.faviconUrl,
-            name: item.name,
-            url: item.url,
-            platform: parseCreatorPlatform(item.provider)
-          },
-          attention: item.percent / 100
-        }))
-      }
-    })
-  }
-
   async function updateRecurringContributions() {
     const { contributions } = await pageHandler.getRecurringContributions()
     stateManager.update({
@@ -292,7 +264,6 @@ export function createModel(): AppModel {
       updateSelfCustodyInviteDismissed(),
       updateAdsInfo(),
       updateRecurringContributions(),
-      updateAutoContributeInfo(),
       updateRewardsParameters(),
       updateNotifications(),
       inBackground(updateCurrentCreator()),
@@ -476,20 +447,6 @@ export function createModel(): AppModel {
       const detail = adsHistoryAdapter.getRawDetail(id)
       adsHistoryAdapter.setInappropriate(id, value)
       await pageHandler.toggleAdInappropriate(detail)
-    },
-
-    async setAutoContributeEnabled(enabled) {
-      await pageHandler.setAutoContributeEnabled(enabled)
-      updateAutoContributeInfo()
-    },
-
-    async setAutoContributeAmount(amount) {
-      await pageHandler.setAutoContributeAmount(amount)
-      updateAutoContributeInfo()
-    },
-
-    async removeAutoContributeSite(id) {
-      await pageHandler.removeAutoContributeSite(id)
     },
 
     async removeRecurringContribution(id) {

@@ -30,7 +30,6 @@ export function Panel () {
 
   const [userType, setUserType] = React.useState(host.state.userType)
   const [balance, setBalance] = React.useState(host.state.balance)
-  const [settings, setSettings] = React.useState(host.state.settings)
   const [externalWallet, setExternalWallet] =
     React.useState(host.state.externalWallet)
   const [exchangeInfo, setExchangeInfo] =
@@ -66,7 +65,6 @@ export function Panel () {
   useHostListener(host, (state) => {
     setUserType(state.userType)
     setBalance(state.balance)
-    setSettings(state.settings)
     setExternalWallet(state.externalWallet)
     setExchangeInfo(state.exchangeInfo)
     setEarningsInfo(state.earningsInfo)
@@ -136,7 +134,7 @@ export function Panel () {
           exchangeCurrency={exchangeInfo.currency}
           showSummary={activeView === 'summary'}
           summaryData={summaryData}
-          autoContributeEnabled={settings.autoContributeEnabled}
+          autoContributeEnabled={false}
           onExternalWalletAction={host.handleExternalWalletAction}
           onManageAds={onSettingsClick}
         />

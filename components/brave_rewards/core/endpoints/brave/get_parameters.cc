@@ -37,27 +37,6 @@ Result ParseBody(RewardsEngine& engine, const std::string& body) {
   auto parameters = mojom::RewardsParameters::New();
   parameters->rate = *rate;
 
-  const auto auto_contribute_choice =
-      dict.FindDoubleByDottedPath("autocontribute.defaultChoice");
-  if (!auto_contribute_choice) {
-    engine.LogError(FROM_HERE) << "Failed to parse body";
-    return base::unexpected(Error::kFailedToParseBody);
-  }
-  parameters->auto_contribute_choice = *auto_contribute_choice;
-
-  const auto* auto_contribute_choices =
-      dict.FindListByDottedPath("autocontribute.choices");
-  if (!auto_contribute_choices || auto_contribute_choices->empty()) {
-    engine.LogError(FROM_HERE) << "Failed to parse body";
-    return base::unexpected(Error::kFailedToParseBody);
-  }
-
-  for (const auto& choice : *auto_contribute_choices) {
-    if (choice.is_double() || choice.is_int()) {
-      parameters->auto_contribute_choices.push_back(choice.GetDouble());
-    }
-  }
-
   const auto* tip_choices = dict.FindListByDottedPath("tips.defaultTipChoices");
   if (!tip_choices || tip_choices->empty()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";

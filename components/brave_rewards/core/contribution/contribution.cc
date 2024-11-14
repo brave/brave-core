@@ -35,31 +35,6 @@ namespace brave_rewards::internal {
 
 namespace {
 
-bool IsRevivedAC(const mojom::ContributionInfo& contribution) {
-  using mojom::ContributionProcessor;
-  using mojom::RewardsType;
-
-  if (contribution.type != RewardsType::AUTO_CONTRIBUTE) {
-    return false;
-  }
-
-  // Only externally-funded ACs are considered "revived".
-  if (contribution.processor == ContributionProcessor::BRAVE_TOKENS) {
-    return false;
-  }
-
-  // If the |created_at| field does not have a valid timestamp, then do not
-  // consider this a revived AC.
-  if (contribution.created_at == 0) {
-    return false;
-  }
-
-  // ACs that were started over 20 days ago are considered "revived".
-  base::Time created_at =
-      base::Time::FromSecondsSinceUnixEpoch(contribution.created_at);
-  return base::Time::Now() - created_at > base::Days(20);
-}
-
 mojom::ContributionStep ConvertResultIntoContributionStep(
     mojom::Result result) {
   switch (result) {
@@ -111,10 +86,7 @@ Contribution::ContributionRequest::~ContributionRequest() = default;
 
 Contribution::Contribution(RewardsEngine& engine)
     : engine_(engine),
-      unblinded_(engine),
-      sku_(engine),
       monthly_(engine),
-      ac_(engine),
       tip_(engine),
       external_wallet_(engine) {}
 
@@ -186,7 +158,7 @@ void Contribution::NotCompletedContributions(
 
 void Contribution::ResetReconcileStamp() {
   engine_->state()->ResetReconcileStamp();
-  SetAutoContributeTimer();
+  SetReconcileStampTimer();
 }
 
 void Contribution::StartContributionsForTesting() {
@@ -231,20 +203,6 @@ void Contribution::OnMonthlyContributionsFinished(
   if (result == mojom::Result::OK) {
     SetMonthlyContributionTimer();
   }
-
-  // Existing tests expect that, when all contributions are triggered, monthly
-  // contributions will be sent before AC contributions. When testing, we
-  // process contributions in series instead of in parallel.
-  if (options == MonthlyContributionOptions::kSendAllContributions) {
-    StartAutoContribute();
-  }
-}
-
-void Contribution::StartAutoContribute() {
-  uint64_t reconcile_stamp = engine_->state()->GetReconcileStamp();
-  ResetReconcileStamp();
-  engine_->Log(FROM_HERE) << "Starting auto-contribute";
-  ac_.Process(reconcile_stamp);
 }
 
 void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
@@ -264,10 +222,7 @@ void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
 void Contribution::Start(mojom::ContributionQueuePtr info) {
   CHECK(info);
 
-  // For auto-contributions, ensure that AC is still enabled before starting the
-  // contribution flow.
-  if (info->type == mojom::RewardsType::AUTO_CONTRIBUTE &&
-      !engine_->state()->GetAutoContributeEnabled()) {
+  if (info->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
     engine_->LogError(FROM_HERE) << "AC is disabled, skipping contribution";
     MarkContributionQueueAsComplete(info->id, false);
     return;
@@ -278,8 +233,8 @@ void Contribution::Start(mojom::ContributionQueuePtr info) {
   engine_->wallet()->FetchBalance(std::move(fetch_callback));
 }
 
-void Contribution::SetAutoContributeTimer() {
-  if (auto_contribute_timer_.IsRunning()) {
+void Contribution::SetReconcileStampTimer() {
+  if (reconcile_stamp_timer_.IsRunning()) {
     return;
   }
 
@@ -291,11 +246,11 @@ void Contribution::SetAutoContributeTimer() {
     delay = base::Seconds(next_reconcile_stamp - now);
   }
 
-  engine_->Log(FROM_HERE) << "Auto-contribute timer set for " << delay;
+  engine_->Log(FROM_HERE) << "Reconcile stamp timer set for " << delay;
 
-  auto_contribute_timer_.Start(
+  reconcile_stamp_timer_.Start(
       FROM_HERE, delay,
-      base::BindOnce(&Contribution::StartAutoContribute,
+      base::BindOnce(&Contribution::ResetReconcileStamp,
                      weak_factory_.GetWeakPtr()));
 }
 
@@ -394,18 +349,13 @@ void Contribution::ContributionCompleted(
     return;
   }
 
-  // It is currently possible for some externally funded ACs to be stalled until
-  // browser restart. Those ACs should complete in the background without
-  // updating the current month's balance report or generating a notification.
-  if (!IsRevivedAC(*contribution)) {
-    engine_->client()->OnReconcileComplete(result, contribution->Clone());
+  engine_->client()->OnReconcileComplete(result, contribution->Clone());
 
-    if (result == mojom::Result::OK) {
-      engine_->database()->SaveBalanceReportInfoItem(
-          util::GetCurrentMonth(), util::GetCurrentYear(),
-          GetReportTypeFromRewardsType(contribution->type),
-          contribution->amount, base::DoNothing());
-    }
+  if (result == mojom::Result::OK) {
+    engine_->database()->SaveBalanceReportInfoItem(
+        util::GetCurrentMonth(), util::GetCurrentYear(),
+        GetReportTypeFromRewardsType(contribution->type), contribution->amount,
+        base::DoNothing());
   }
 
   engine_->database()->UpdateContributionInfoStepAndCount(
@@ -422,11 +372,6 @@ void Contribution::ContributionCompletedSaved(
   if (result != mojom::Result::OK) {
     engine_->LogError(FROM_HERE) << "Contribution step and count failed";
   }
-
-  engine_->database()->MarkUnblindedTokensAsSpendable(
-      contribution_id,
-      base::BindOnce(&Contribution::OnMarkUnblindedTokensAsSpendable,
-                     weak_factory_.GetWeakPtr(), contribution_id));
 }
 
 void Contribution::OneTimeTip(const std::string& publisher_key,
@@ -478,19 +423,17 @@ void Contribution::CreateNewEntry(const std::string& wallet_type,
     return;
   }
 
+  if (queue->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
+    engine_->LogError(FROM_HERE) << "AC is disabled";
+    MarkContributionQueueAsComplete(queue->id, false);
+    return;
+  }
+
   const auto balance_it = balance->wallets.find(wallet_type);
   const double wallet_balance =
       balance_it != balance->wallets.cend() ? balance_it->second : 0.0;
   if (wallet_balance == 0) {
     engine_->Log(FROM_HERE) << "Wallet balance is 0 for " << wallet_type;
-    CreateNewEntry(GetNextProcessor(wallet_type), std::move(balance),
-                   std::move(queue));
-    return;
-  }
-
-  if (wallet_type == constant::kWalletBitflyer &&
-      queue->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
-    engine_->Log(FROM_HERE) << "AC is not supported for bitFlyer wallets";
     CreateNewEntry(GetNextProcessor(wallet_type), std::move(balance),
                    std::move(queue));
     return;
@@ -637,62 +580,6 @@ void Contribution::Process(mojom::ContributionQueuePtr queue,
   CreateNewEntry(GetNextProcessor(""), std::move(balance), std::move(queue));
 }
 
-void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
-                                 const std::string& destination,
-                                 const std::string& wallet_type,
-                                 const std::string& contribution_id,
-                                 ResultCallback callback) {
-  if (wallet_type == constant::kWalletUphold) {
-    engine_->uphold()->TransferFunds(transaction.amount, destination,
-                                     contribution_id, std::move(callback));
-    return;
-  }
-
-  if (wallet_type == constant::kWalletBitflyer) {
-    engine_->bitflyer()->TransferFunds(transaction.amount, destination,
-                                       contribution_id, std::move(callback));
-    return;
-  }
-
-  if (wallet_type == constant::kWalletGemini) {
-    engine_->gemini()->TransferFunds(transaction.amount, destination,
-                                     contribution_id, std::move(callback));
-    return;
-  }
-
-  engine_->LogError(FROM_HERE) << "Wallet type not supported";
-}
-
-void Contribution::SKUAutoContribution(const std::string& contribution_id,
-                                       const std::string& wallet_type,
-                                       ResultCallback callback) {
-  sku_.AutoContribution(contribution_id, wallet_type, std::move(callback));
-}
-
-void Contribution::StartUnblinded(
-    const std::vector<mojom::CredsBatchType>& types,
-    const std::string& contribution_id,
-    ResultCallback callback) {
-  unblinded_.Start(types, contribution_id, std::move(callback));
-}
-
-void Contribution::RetryUnblinded(
-    const std::vector<mojom::CredsBatchType>& types,
-    const std::string& contribution_id,
-    ResultCallback callback) {
-  engine_->database()->GetContributionInfo(
-      contribution_id,
-      base::BindOnce(&Contribution::RetryUnblindedContribution,
-                     weak_factory_.GetWeakPtr(), types, std::move(callback)));
-}
-
-void Contribution::RetryUnblindedContribution(
-    std::vector<mojom::CredsBatchType> types,
-    ResultCallback callback,
-    mojom::ContributionInfoPtr contribution) {
-  unblinded_.Retry(types, std::move(contribution), std::move(callback));
-}
-
 void Contribution::Result(const std::string& queue_id,
                           const std::string& contribution_id,
                           mojom::Result result) {
@@ -808,16 +695,6 @@ void Contribution::SetRetryCounter(mojom::ContributionInfoPtr contribution) {
                      contribution->Clone()));
 }
 
-void Contribution::OnMarkUnblindedTokensAsSpendable(
-    const std::string& contribution_id,
-    mojom::Result result) {
-  if (result != mojom::Result::OK) {
-    engine_->Log(FROM_HERE)
-        << "Failed to mark unblinded tokens as unreserved for contribution "
-        << contribution_id;
-  }
-}
-
 void Contribution::Retry(mojom::ContributionInfoPtr contribution,
                          mojom::Result result) {
   if (result != mojom::Result::OK) {
@@ -835,10 +712,9 @@ void Contribution::Retry(mojom::ContributionInfoPtr contribution,
     return;
   }
 
-  if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE &&
-      !engine_->state()->GetAutoContributeEnabled()) {
+  if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
     engine_->Log(FROM_HERE) << "AC is disabled, completing contribution";
-    ContributionCompleted(mojom::Result::AC_OFF, std::move(contribution));
+    ContributionCompleted(mojom::Result::FAILED, std::move(contribution));
     return;
   }
 
@@ -858,11 +734,6 @@ void Contribution::Retry(mojom::ContributionInfoPtr contribution,
     case mojom::ContributionProcessor::UPHOLD:
     case mojom::ContributionProcessor::BITFLYER:
     case mojom::ContributionProcessor::GEMINI: {
-      if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
-        sku_.Retry(std::move(contribution), std::move(result_callback));
-        return;
-      }
-
       external_wallet_.Retry(std::move(contribution),
                              std::move(result_callback));
       return;

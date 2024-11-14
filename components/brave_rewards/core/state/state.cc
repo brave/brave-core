@@ -72,48 +72,6 @@ void State::GetScoreValues(double* a, double* b) {
   *b = engine_->GetState<double>(kScoreB);
 }
 
-void State::SetAutoContributeEnabled(bool enabled) {
-  // If AC is not supported, then always set the pref to false.
-  if (!engine_->IsAutoContributeSupportedForClient()) {
-    enabled = false;
-  }
-
-  engine_->database()->SaveEventLog(kAutoContributeEnabled,
-                                    std::to_string(enabled));
-  engine_->SetState(kAutoContributeEnabled, enabled);
-
-  if (enabled) {
-    engine_->publisher()->CalcScoreConsts(GetPublisherMinVisitTime());
-  }
-}
-
-bool State::GetAutoContributeEnabled() {
-  // If AC is not supported, then always report AC as disabled.
-  if (!engine_->IsAutoContributeSupportedForClient()) {
-    return false;
-  }
-
-  return engine_->GetState<bool>(kAutoContributeEnabled);
-}
-
-void State::SetAutoContributionAmount(const double amount) {
-  engine_->database()->SaveEventLog(kAutoContributeAmount,
-                                    std::to_string(amount));
-  engine_->SetState(kAutoContributeAmount, amount);
-}
-
-double State::GetAutoContributionAmount() {
-  double amount = engine_->GetState<double>(kAutoContributeAmount);
-  if (amount == 0.0) {
-    auto& provider = engine_->Get<RewardsParametersProvider>();
-    if (auto params = provider.GetCachedParameters()) {
-      amount = params->auto_contribute_choice;
-    }
-  }
-
-  return amount;
-}
-
 uint64_t State::GetReconcileStamp() {
   auto stamp = engine_->GetState<uint64_t>(kNextReconcileStamp);
   if (stamp == 0) {

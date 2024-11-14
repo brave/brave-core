@@ -14,7 +14,6 @@ import { isSelfCustodyProvider } from '../../shared/lib/external_wallet'
 import PageWallet from './pageWallet'
 
 import { AdsPanel } from './ads_panel'
-import { AutoContributePanel } from './auto_contribute_panel'
 import { TipsPanel } from './tips_panel'
 import { MonthlyTipsPanel } from './monthly_tips_panel'
 import { SettingsOptInForm } from '../../shared/components/onboarding'
@@ -157,20 +156,6 @@ export function Settings () {
     actions.getReconcileStamp()
   }, [rewardsData.enabledContribute])
 
-  const shouldShowAutoContribute = () => {
-    if (rewardsData.userType === 'unconnected') {
-      return false
-    }
-    if (!rewardsData.isAcSupported) {
-      return false
-    }
-    const { externalWallet } = rewardsData
-    if (externalWallet && isSelfCustodyProvider(externalWallet.type)) {
-      return false
-    }
-    return true
-  }
-
   const shouldShowTips = () => {
     if (rewardsData.userType === 'unconnected') {
       return false
@@ -247,12 +232,6 @@ export function Settings () {
           <style.settingGroup>
             <AdsPanel />
           </style.settingGroup>
-          {
-            shouldShowAutoContribute() &&
-              <style.settingGroup data-test-id='auto-contribute-settings'>
-                <AutoContributePanel />
-              </style.settingGroup>
-          }
           {
             shouldShowTips() &&
               <>

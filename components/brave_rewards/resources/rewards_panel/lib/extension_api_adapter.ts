@@ -21,8 +21,7 @@ import {
   EarningsInfo,
   ExchangeInfo,
   Options,
-  PublisherInfo,
-  Settings
+  PublisherInfo
 } from './interfaces'
 
 import { optional, Optional } from '../../shared/lib/optional'
@@ -35,17 +34,6 @@ import { optional, Optional } from '../../shared/lib/optional'
 export function getRewardsBalance () {
   return new Promise<Optional<number>>((resolve) => {
     chrome.braveRewards.fetchBalance((balance) => { resolve(optional(balance)) })
-  })
-}
-
-export function getSettings () {
-  return new Promise<Settings>((resolve) => {
-    chrome.braveRewards.getPrefs((prefs) => {
-      resolve({
-        autoContributeEnabled: prefs.autoContributeEnabled,
-        autoContributeAmount: prefs.autoContributeAmount
-      })
-    })
   })
 }
 
@@ -87,7 +75,6 @@ export function getRewardsParameters () {
       resolve({
         options: {
           externalWalletRegions: regionMap,
-          autoContributeAmounts: parameters.autoContributeChoices,
           vbatDeadline: parameters.vbatDeadline,
           vbatExpired: parameters.vbatExpired
         },
@@ -292,7 +279,6 @@ function defaultPublisherInfo (url: string): PublisherInfo | null {
     icon: iconURL(parsedURL.origin),
     platform: null,
     attentionScore: 0,
-    autoContributeEnabled: true,
     monthlyTip: 0,
     supportedWalletProviders: []
   }
@@ -360,7 +346,6 @@ export async function getPublisherInfo (tabId: number) {
     icon: iconURL(String(publisher.favIconUrl || publisher.url || '')),
     platform: getPublisherPlatform(String(publisher.provider || '')),
     attentionScore: Number(publisher.percentage) / 100 || 0,
-    autoContributeEnabled: !publisher.excluded,
     monthlyTip: await getMonthlyTipAmount(publisherKey),
     supportedWalletProviders
   }

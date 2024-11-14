@@ -18,8 +18,6 @@ namespace brave_rewards::internal {
 namespace {
 
 constexpr char kRateKey[] = "rate";
-constexpr char kAutoContributeChoicePath[] = "ac.choice";
-constexpr char kAutoContributeChoicesPath[] = "ac.choices";
 constexpr char kTipChoicesPath[] = "tip.choices";
 constexpr char kTipMonthlyChoicesPath[] = "tip.monthly_choices";
 constexpr char kPayoutStatusKey[] = "payout_status";
@@ -90,18 +88,6 @@ mojom::RewardsParametersPtr RewardsParametersProvider::DictToParameters(
     // valid data in the cache. For other fields, perform a best-effort read and
     // fallback to default field data if not available.
     return nullptr;
-  }
-
-  if (auto choice = dict.FindDoubleByDottedPath(kAutoContributeChoicePath)) {
-    parameters->auto_contribute_choice = *choice;
-  }
-
-  if (auto* list = dict.FindListByDottedPath(kAutoContributeChoicesPath)) {
-    for (auto& list_value : *list) {
-      if (list_value.is_double()) {
-        parameters->auto_contribute_choices.push_back(list_value.GetDouble());
-      }
-    }
   }
 
   if (auto* list = dict.FindListByDottedPath(kTipChoicesPath)) {
@@ -218,10 +204,6 @@ void RewardsParametersProvider::StoreParameters(
   base::Value::Dict dict;
 
   dict.Set(kRateKey, parameters.rate);
-  dict.SetByDottedPath(kAutoContributeChoicePath,
-                       parameters.auto_contribute_choice);
-  dict.SetByDottedPath(kAutoContributeChoicesPath,
-                       VectorToList(parameters.auto_contribute_choices));
   dict.SetByDottedPath(kTipChoicesPath, VectorToList(parameters.tip_choices));
   dict.SetByDottedPath(kTipMonthlyChoicesPath,
                        VectorToList(parameters.monthly_tip_choices));

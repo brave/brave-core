@@ -97,8 +97,6 @@ struct Regions {
 
 struct RewardsParameters {
   double rate;
-  double auto_contribute_choice;
-  array<double> auto_contribute_choices;
   array<double> tip_choices;
   array<double> monthly_tip_choices;
   map<string, string> payout_status;
@@ -106,14 +104,6 @@ struct RewardsParameters {
   mojo_base.mojom.Time vbat_deadline;
   bool vbat_expired;
   int32 tos_version = 1;
-};
-
-struct AutoContributeProperties {
-  bool enabled_contribute;
-  double amount;
-  uint64 contribution_min_time;
-  int32 contribution_min_visits;
-  uint64 reconcile_stamp;
 };
 
 struct MediaEventInfo {

@@ -191,11 +191,6 @@ class BraveRewardsNativeWorker
 
   void OnGetGetReconcileStamp(uint64_t timestamp);
 
-  void OnGetAutoContributeProperties(
-      brave_rewards::mojom::AutoContributePropertiesPtr properties);
-
-  void OnGetAutoContributionAmount(double auto_contribution_amount);
-
   void OnPanelPublisherInfo(brave_rewards::RewardsService* rewards_service,
                             const brave_rewards::mojom::Result result,
                             const brave_rewards::mojom::PublisherInfo* info,
@@ -270,7 +265,6 @@ class BraveRewardsNativeWorker
   raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;
   brave_rewards::mojom::RewardsParametersPtr parameters_;
   brave_rewards::mojom::Balance balance_;
-  brave_rewards::mojom::AutoContributePropertiesPtr auto_contrib_properties_;
   PublishersInfoMap map_publishers_info_;
   std::map<std::string, brave_rewards::mojom::PublisherInfoPtr>
       map_recurrent_publishers_;

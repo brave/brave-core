@@ -395,14 +395,6 @@
                     "minimum": 0
                   }
                 },
-                "autoContributeChoices": {
-                  "type": "array",
-                  "description": "A list of auto-contribute amount options",
-                  "items": {
-                    "type": "number",
-                    "minimum": 0
-                  }
-                },
                 "payoutStatus": {
                   "type": "object",
                   "additionalProperties": {
@@ -572,21 +564,6 @@
         "does_not_support_promises": "Requires refactoring"
       },
       {
-        "name": "includeInAutoContribution",
-        "type": "function",
-        "description": "Toggles auto-contribution for rewards panel",
-        "parameters": [
-          {
-            "name": "publisher_key",
-            "type": "string"
-          },
-          {
-            "name": "exclude",
-            "type": "boolean"
-          }
-        ]
-      },
-      {
         "name": "getRewardsEnabled",
         "type": "function",
         "description": "Gets a value indicating whether the user has opted-in to Rewards",
@@ -601,33 +578,6 @@
           ]
         },
         "does_not_support_promises": "Requires refactoring"
-      },
-      {
-        "name": "getACEnabled",
-        "type": "function",
-        "description": "Gets whether auto contribute is enabled",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "enabled",
-              "type": "boolean"
-            }
-          ]
-        },
-        "does_not_support_promises": "Requires refactoring"
-      },
-      {
-        "name": "setAutoContributeEnabled",
-        "type": "function",
-        "description": "Updates ac enabled state",
-        "parameters": [
-          {
-            "name": "enabled",
-            "type": "boolean"
-          }
-        ]
       },
       {
         "name": "saveRecurringTip",
@@ -944,30 +894,6 @@
             "type": "boolean"
           }
         ]
-      },
-      {
-        "name": "getPrefs",
-        "type": "function",
-        "description": "Gets rewards preferences for the current profile",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "type": "object",
-              "name": "prefs",
-              "properties": {
-                "autoContributeEnabled": {
-                  "type": "boolean"
-                },
-                "autoContributeAmount": {
-                  "type": "number"
-                }
-              }
-            }
-          ]
-        },
-        "does_not_support_promises": "Requires refactoring"
       }
     ]
   }

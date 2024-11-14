@@ -88,7 +88,7 @@ void InitializationManager::OnStateInitialized(InitializeCallback callback,
 
 void InitializationManager::InitializeHelpers() {
   engine().publisher()->SetPublisherServerListTimer();
-  engine().contribution()->SetAutoContributeTimer();
+  engine().contribution()->SetReconcileStampTimer();
   engine().contribution()->SetMonthlyContributionTimer();
   engine().contribution()->Initialize();
   engine().Get<RewardsParametersProvider>().StartAutoUpdate();

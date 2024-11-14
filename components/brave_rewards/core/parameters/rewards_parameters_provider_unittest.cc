@@ -22,10 +22,6 @@ namespace {
 
 constexpr char kCachedParametersJSON[] = R"(
     {
-      "ac": {
-        "choice": 1.0,
-        "choices": [1.0, 2.0, 3.0, 5.0, 7.0, 10.0, 20.0]
-      },
       "payout_status": {
         "bitflyer": "processing",
         "gemini": "processing",
@@ -68,10 +64,6 @@ constexpr char kCachedParametersJSON[] = R"(
 
 constexpr char kParametersEndpointResponse[] = R"(
     {
-      "autocontribute": {
-        "choices": [1],
-        "defaultChoice": 1
-      },
       "batRate": 0.3,
       "custodianRegions": {
         "bitflyer": {
@@ -121,9 +113,6 @@ TEST_F(RewardsParametersProviderTest, DictToParameters) {
   auto params = RewardsParametersProvider::DictToParameters(value->GetDict());
   ASSERT_TRUE(params);
 
-  EXPECT_EQ(params->auto_contribute_choice, 1.0);
-  EXPECT_EQ(params->auto_contribute_choices,
-            (std::vector<double>{1, 2, 3, 5, 7, 10, 20}));
   EXPECT_EQ(params->payout_status.at("uphold"), "processing");
   EXPECT_EQ(params->rate, 0.25);
   EXPECT_EQ(params->tip_choices, (std::vector<double>{1.25, 5, 10.5}));
