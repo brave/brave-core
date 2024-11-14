@@ -26,6 +26,7 @@ class CreativeSetConversions final : public TableInterface {
             ResultCallback callback);
 
   void GetUnexpired(GetCreativeSetConversionsCallback callback) const;
+  void GetActive(GetCreativeSetConversionsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
 

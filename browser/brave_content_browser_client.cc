@@ -37,6 +37,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
@@ -86,6 +87,7 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -628,6 +630,8 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<ai_rewriter::mojom::AIRewriterPageHandler>();
   }
 #endif
+
+  registry.ForWebUI<AdsInternalsUI>().Add<bat_ads::mojom::AdsInternals>();
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
     registry.ForWebUI<SkusInternalsUI>().Add<skus::mojom::SkusInternals>();

@@ -58,6 +58,10 @@ class ADS_EXPORT Ads {
   // `true` if successful otherwise `false`.
   virtual void Shutdown(ShutdownCallback callback) = 0;
 
+  // Called to get internals. The callback takes one argument -
+  // `base::Value::List` containing info of the obtained internals.
+  virtual void GetInternals(GetInternalsCallback callback) = 0;
+
   // Called to get diagnostics to help identify issues. The callback takes one
   // argument - `base::Value::List` containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;

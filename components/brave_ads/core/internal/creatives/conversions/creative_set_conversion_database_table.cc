@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads::database::table {
@@ -216,6 +217,38 @@ void CreativeSetConversions::GetUnexpired(
           WHERE
             $2 < expire_at;)",
       {GetTableName(), TimeToSqlValueAsString(base::Time::Now())}, nullptr);
+  BindColumnTypes(mojom_db_action);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+
+  GetAdsClient().RunDBTransaction(
+      std::move(mojom_db_transaction),
+      base::BindOnce(&GetCallback, std::move(callback)));
+}
+
+void CreativeSetConversions::GetActive(
+    GetCreativeSetConversionsCallback callback) const {
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kStepStatement;
+  mojom_db_action->sql = base::ReplaceStringPlaceholders(
+      R"(
+          SELECT
+            creative_set_conversion.creative_set_id,
+            creative_set_conversion.url_pattern,
+            creative_set_conversion.verifiable_advertiser_public_key,
+            creative_set_conversion.observation_window,
+            creative_set_conversion.expire_at
+          FROM
+            $1 AS creative_set_conversion
+            INNER JOIN ad_events ON ad_events.creative_set_id = creative_set_conversion.creative_set_id
+          WHERE
+            $2 < expire_at
+            AND ad_events.confirmation_type IN ('$3', '$4');)",
+      {GetTableName(), TimeToSqlValueAsString(base::Time::Now()),
+       ToString(mojom::ConfirmationType::kViewedImpression),
+       ToString(mojom::ConfirmationType::kClicked)},
+      nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 

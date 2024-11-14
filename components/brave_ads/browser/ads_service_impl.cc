@@ -500,7 +500,8 @@ void AdsServiceImpl::NotifyAdsServiceInitialized() const {
   }
 }
 
-void AdsServiceImpl::ShutdownAndClearAdsServiceDataAndMaybeRestart() {
+void AdsServiceImpl::ShutdownAndClearAdsServiceDataAndMaybeRestart(
+    ClearDataCallback callback) {
   ShutdownAdsService();
 
   VLOG(6) << "Clearing ads data";
@@ -540,16 +541,19 @@ void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestart() {
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, ads_service_path_),
       base::BindOnce(
           &AdsServiceImpl::ClearAdsServiceDataAndMaybeRestartCallback,
-          weak_ptr_factory_.GetWeakPtr()));
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestartCallback(
+    ClearDataCallback callback,
     const bool success) {
   if (!success) {
     VLOG(0) << "Failed to clear ads data";
   } else {
     VLOG(6) << "Cleared ads data";
   }
+
+  std::move(callback).Run(success);
 
   MaybeStartBatAdsService();
 }
@@ -1170,10 +1174,19 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
       /*intentional*/ base::DoNothing());
 }
 
-void AdsServiceImpl::ClearData(base::OnceClosure callback) {
+void AdsServiceImpl::ClearData(ClearDataCallback callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
-  ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart();
-  std::move(callback).Run();
+  ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart(std::move(callback));
+}
+
+void AdsServiceImpl::GetInternals(GetInternalsCallback callback) {
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*internals*/ std::nullopt);
+  }
+
+  bat_ads_associated_remote_->GetInternals(
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*internals*/ std::nullopt));
 }
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
@@ -1887,12 +1900,12 @@ void AdsServiceImpl::OnRewardsWalletCreated() {
 void AdsServiceImpl::OnExternalWalletConnected() {
   ShowReminder(mojom::ReminderType::kExternalWalletConnected);
 
-  ShutdownAndClearAdsServiceDataAndMaybeRestart();
+  ShutdownAndClearAdsServiceDataAndMaybeRestart(/*intentional*/ base::DoNothing());
 }
 
 void AdsServiceImpl::OnCompleteReset(const bool success) {
   if (success) {
-    ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart();
+    ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart(/*intentional*/ base::DoNothing());
   }
 }
 

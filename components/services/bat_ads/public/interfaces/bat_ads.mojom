@@ -164,6 +164,8 @@ interface BatAds {
   Initialize(brave_ads.mojom.WalletInfo? mojom_wallet) => (bool success);
   Shutdown() => (bool success);
 
+  GetInternals() => (mojo_base.mojom.ListValue? value);
+
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
   GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? mojom_statement);
@@ -219,4 +221,14 @@ interface BatAds {
   ToggleSaveAd(brave_ads.mojom.ReactionInfo mojom_reaction) => (bool success);
   ToggleMarkAdAsInappropriate(brave_ads.mojom.ReactionInfo mojom_reaction) =>
       (bool success);
+};
+
+interface AdsInternals {
+  GetAdsInternals() => (string response);
+  ClearAdsData() => (bool success);
+  CreateAdsInternalsPageHandler(pending_remote<AdsInternalsPage> page);
+};
+
+interface AdsInternalsPage {
+  OnBraveRewardsEnabledChanged(bool enabled);
 };

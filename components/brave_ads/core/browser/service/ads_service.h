@@ -85,13 +85,18 @@ class AdsService : public KeyedService {
   // Called when a notification ad with `placement_id` is clicked.
   virtual void OnNotificationAdClicked(const std::string& placement_id) = 0;
 
-  // Called to clear ads data.
-  virtual void ClearData(base::OnceClosure callback) = 0;
+  // Called to clear ads data. The callback takes one argument - `bool`
+  // is set to `true` if successful otherwise `false`
+  virtual void ClearData(ClearDataCallback callback) = 0;
 
   // Called to add an ads observer.
   virtual void AddBatAdsObserver(
       mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
           bat_ads_observer_pending_remote) = 0;
+
+  // Called to get internals. The callback takes one argument -
+  // `base::Value::List` containing info of the obtained internals.
+  virtual void GetInternals(GetInternalsCallback callback) = 0;
 
   // Called to get diagnostics to help identify issues. The callback takes one
   // argument - `base::Value::List` containing info of the obtained diagnostics.
@@ -143,7 +148,7 @@ class AdsService : public KeyedService {
   // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
   // generated for the viewed impression event should be used for all other
   // events for the same ad placement. The callback takes one argument - `bool`
-  // is set to `true if successful otherwise `false`. Must be called before the
+  // is set to `true` if successful otherwise `false`. Must be called before the
   // `mojom::NewTabPageAdEventType::target_url` landing page is opened.
   virtual void TriggerNewTabPageAdEvent(
       const std::string& placement_id,

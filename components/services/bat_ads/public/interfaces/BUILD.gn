@@ -6,6 +6,7 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("interfaces") {
+  generate_java = true
   sources = [ "bat_ads.mojom" ]
 
   public_deps = [

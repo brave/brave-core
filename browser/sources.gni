@@ -138,6 +138,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
+  "//brave/browser/ui/webui/ads_internals",
   "//brave/common",
   "//brave/common:mojo_bindings",
   "//brave/components/ai_chat/content/browser",

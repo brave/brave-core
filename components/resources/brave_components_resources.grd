@@ -81,6 +81,7 @@
         <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />
       </if>
 
+      <part file="../brave_ads/browser/resources/ads_internals_resources.grdp" />
       <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
       <part file="../playlist/browser/resources/playlist_resources.grdp" />
       <part file="../brave_news/browser/resources/news_resources.grdp" />
