@@ -1,0 +1,10 @@
+diff --git a/ui/webui/resources/cr_components/certificate_manager/BUILD.gn b/ui/webui/resources/cr_components/certificate_manager/BUILD.gn
+index c7fbec010504b332d55068c1bd051f55d0115e06..9c0e5cbb73817f12fed96ffae95ea58d947f598f 100644
+--- a/ui/webui/resources/cr_components/certificate_manager/BUILD.gn
++++ b/ui/webui/resources/cr_components/certificate_manager/BUILD.gn
+@@ -110,4 +110,5 @@ build_webui("build") {
+   webui_context_type = "relative"
+   generate_grdp = true
+   grd_resource_path_prefix = rebase_path(".", "//ui/webui/resources")
++  import("//brave/ui/webui/resources/cr_components/certificate_manager/sources.gni") non_web_component_files += brave_certificate_manager_non_web_component_files exclude_ts_preprocess_files = brave_certificate_manager_ts_local_files preprocess_deps = brave_certificate_manager_preprocess_extra_deps
+ }

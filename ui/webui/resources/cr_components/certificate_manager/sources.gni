@@ -1,0 +1,16 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_certificate_manager_non_web_component_files = [
+  "brave_overrides/certificate_manager_v2.ts",
+  "brave_overrides/index.ts",
+]
+
+brave_certificate_manager_preprocess_extra_deps = [
+  "//brave/ui/webui/resources/cr_components/certificate_manager:preprocess",
+]
+
+brave_certificate_manager_ts_local_files =
+    brave_certificate_manager_non_web_component_files
