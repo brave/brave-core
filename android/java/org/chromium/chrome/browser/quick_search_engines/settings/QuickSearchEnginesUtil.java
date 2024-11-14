@@ -80,20 +80,27 @@ public class QuickSearchEnginesUtil {
                 if (BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(templateUrl.getKeyword())
                         && !searchEnginesMap.containsKey(
                                 BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD)) {
-                    Context context = ContextUtils.getApplicationContext();
-                    QuickSearchEnginesModel ytQuickSearchEnginesModel =
-                            new QuickSearchEnginesModel(
-                                    context.getResources().getString(R.string.youtube),
-                                    BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD,
-                                    YOUTUBE_SEARCH_ENGINE_URL,
-                                    true);
-                    searchEnginesMap.put(
-                            ytQuickSearchEnginesModel.getKeyword(), ytQuickSearchEnginesModel);
+                    addYtQuickSearchEnginesModel(searchEnginesMap);
                 }
             }
         }
+        if (!searchEnginesMap.containsKey(BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD)) {
+            addYtQuickSearchEnginesModel(searchEnginesMap);
+        }
         saveSearchEnginesIntoPref(searchEnginesMap);
         return searchEnginesMap;
+    }
+
+    private static void addYtQuickSearchEnginesModel(
+            Map<String, QuickSearchEnginesModel> searchEnginesMap) {
+        Context context = ContextUtils.getApplicationContext();
+        QuickSearchEnginesModel ytQuickSearchEnginesModel =
+                new QuickSearchEnginesModel(
+                        context.getResources().getString(R.string.youtube),
+                        BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD,
+                        YOUTUBE_SEARCH_ENGINE_URL,
+                        true);
+        searchEnginesMap.put(ytQuickSearchEnginesModel.getKeyword(), ytQuickSearchEnginesModel);
     }
 
     public static List<QuickSearchEnginesModel> getQuickSearchEnginesForSettings(Profile profile) {
