@@ -184,9 +184,8 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
     } else {
       conversation->associated_content->is_content_association_possible = false;
     }
-
-    conversation_list.emplace_back(std::move(conversation));
   }
+
   // Final row's conversation
   if (conversation) {
     conversation_list.emplace_back(std::move(conversation));

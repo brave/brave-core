@@ -1329,7 +1329,7 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
     Show suggested prompts in the conversation
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_HISTORY_PREFERENCE_LABEL" desc="The label for the checkbox determining whether to storage AI Chat conversations">
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_HISTORY_PREFERENCE_LABEL" desc="The label for the checkbox determining whether to store AI Chat conversations">
     Store my conversation history
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_HISTORY_PREFERENCE_CONFIRM" desc="The confirmation prompt about disabling the AI Chat history preference">

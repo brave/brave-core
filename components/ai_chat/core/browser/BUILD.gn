@@ -97,7 +97,7 @@ static_library("browser") {
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
-    "//sql:sql",
+    "//sql",
     "//third_party/abseil-cpp:absl",
     "//third_party/re2",
     "//ui/base",
