@@ -401,36 +401,6 @@ TEST_F(EngineConsumerOAIUnitTest,
           }));
   run_loop->Run();
   testing::Mock::VerifyAndClearExpectations(client);
-
-  // Test with page content refine event.
-  {
-    mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-        mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-        std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-        std::nullopt, false);
-    entry->events->push_back(
-        mojom::ConversationEntryEvent::NewPageContentRefineEvent(
-            mojom::PageContentRefineEvent::New()));
-    history.push_back(std::move(entry));
-  }
-  run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
-      .WillOnce(
-          [](const mojom::CustomModelOptions, base::Value::List messages,
-             EngineConsumer::GenerationDataCallback,
-             EngineConsumer::GenerationCompletedCallback completed_callback) {
-            std::move(completed_callback)
-                .Run(EngineConsumer::GenerationResult(""));
-          });
-
-  engine_->GenerateAssistantResponse(
-      false, "This is my page.", GetHistoryWithModifiedReply(), "Who?", "",
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
-  run_loop->Run();
-  testing::Mock::VerifyAndClearExpectations(client);
 }
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {

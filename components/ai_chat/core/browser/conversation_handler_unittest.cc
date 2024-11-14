@@ -1500,6 +1500,9 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
     conversation_handler_->PerformAssistantGeneration(
         test_case.prompt, test_case.page_content, false, "");
 
+    testing::Mock::VerifyAndClearExpectations(mock_engine);
+    testing::Mock::VerifyAndClearExpectations(mock_text_embedder);
+
     if (test_case.should_refine_page_content && IsPageContentRefineEnabled()) {
       const auto& conversation_history =
           conversation_handler_->GetConversationHistory();
@@ -1508,6 +1511,15 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
       EXPECT_TRUE(conversation_history.back()
                       ->events->back()
                       ->is_page_content_refine_event());
+
+      conversation_handler_->OnGetRefinedPageContent(
+          test_case.prompt, base::DoNothing(), base::DoNothing(),
+          test_case.page_content, false, base::ok("refined_page_content"));
+      EXPECT_FALSE(
+          base::ranges::any_of(conversation_history, [](const auto& turn) {
+            return !turn->events->empty() &&
+                   turn->events->back()->is_page_content_refine_event();
+          }));
     }
   }
 }

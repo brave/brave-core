@@ -24,12 +24,8 @@ bool EngineConsumer::CanPerformCompletionRequest(
     return false;
   }
 
-  // Page refine event is fired between a human message and an assistant
-  // response.
   const auto& last_turn = conversation_history.back();
-  if (last_turn->character_type != mojom::CharacterType::HUMAN &&
-      (!last_turn->events->empty() &&
-       !last_turn->events->back()->is_page_content_refine_event())) {
+  if (last_turn->character_type != mojom::CharacterType::HUMAN) {
     return false;
   }
 

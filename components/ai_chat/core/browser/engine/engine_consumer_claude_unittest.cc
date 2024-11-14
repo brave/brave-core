@@ -235,35 +235,6 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
-
-  // Test with page content refine event.
-  {
-    mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-        mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-        std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-        std::nullopt, false);
-    entry->events->push_back(
-        mojom::ConversationEntryEvent::NewPageContentRefineEvent(
-            mojom::PageContentRefineEvent::New()));
-    history.push_back(std::move(entry));
-  }
-  run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
-      .WillOnce([](const std::string& prompt,
-                   const std::vector<std::string>& stop_words,
-                   EngineConsumer::GenerationCompletedCallback callback,
-                   EngineConsumer::GenerationDataCallback data_callback) {
-        std::move(callback).Run("");
-      });
-
-  engine_->GenerateAssistantResponse(
-      false, "This is my page.", GetHistoryWithModifiedReply(), "Who?", "",
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
-  run_loop->Run();
-  testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 }
 
 TEST_F(EngineConsumerClaudeUnitTest, GenerateAssistantResponseEarlyReturn) {
