@@ -17,7 +17,6 @@
     // Please, keep in alphabetical order.
     "path_excludes": [
         "base/feature_override.h",
-        "base/types/zip.h",
         "check_chromium_src_config.json5",
         "chrome/browser/devtools/url_constants_unittest.cc",
         "chrome/browser/history/history_utils_unittest.cc",
