@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.quick_search_engines.settings;
+package org.chromium.chrome.browser.quick_search_engines.utils;
 
 import android.content.Context;
 
@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
 import org.chromium.chrome.browser.util.SharedPreferencesHelper;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesModel;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
