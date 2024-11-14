@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <array>
 
 #include "base/files/file_path.h"
 #include "base/path_service.h"
@@ -30,9 +31,9 @@ using brave_shields::ControlType;
 
 namespace {
 
-const gfx::Rect kTestWindowBounds[] = {
-    gfx::Rect(200, 100, 300, 200), gfx::Rect(50, 50, 200, 200),
-    gfx::Rect(50, 50, 475, 460), gfx::Rect(0, 0, 200, 200)};
+constexpr auto kTestWindowBounds = std::to_array<const gfx::Rect>(
+    {gfx::Rect(200, 100, 300, 200), gfx::Rect(50, 50, 200, 200),
+     gfx::Rect(50, 50, 475, 460), gfx::Rect(0, 0, 200, 200)});
 
 }  // namespace
 

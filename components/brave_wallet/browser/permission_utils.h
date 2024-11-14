@@ -9,6 +9,7 @@
 #include <optional>
 #include <queue>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -65,7 +66,7 @@ bool ParseRequestingOrigin(permissions::RequestType type,
  */
 std::optional<url::Origin> GetSubRequestOrigin(permissions::RequestType type,
                                                const url::Origin& old_origin,
-                                               const std::string& account);
+                                               std::string_view account);
 
 /**
  * Given accounts, and origin, return the WebUI URL for connecting with site
