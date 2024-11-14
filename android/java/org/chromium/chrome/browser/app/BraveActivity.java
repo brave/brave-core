@@ -339,7 +339,6 @@ public abstract class BraveActivity extends ChromeActivity
     private boolean mSpoofCustomTab;
 
     private View mQuickSearchEnginesView;
-    private KeyboardVisibilityHelper mKeyboardVisibilityHelper;
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -1280,12 +1279,9 @@ public abstract class BraveActivity extends ChromeActivity
                                 .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
             checkAppUpdate();
         }
-        mKeyboardVisibilityHelper =
-                new KeyboardVisibilityHelper(
-                        findViewById(android.R.id.content), BraveActivity.this);
-        if (mKeyboardVisibilityHelper != null) {
-            mKeyboardVisibilityHelper.addListener();
-        }
+
+        // Quick search engines views changes
+        new KeyboardVisibilityHelper(BraveActivity.this, BraveActivity.this);
         AppCompatEditText urlBar = findViewById(R.id.url_bar);
         if (urlBar != null) {
             urlBar.addTextChangedListener(
@@ -1296,12 +1292,10 @@ public abstract class BraveActivity extends ChromeActivity
 
                         @Override
                         public void onTextChanged(
-                                CharSequence s, int start, int before, int count) {
-                            if (s.toString().isEmpty()) {
-                                Log.e("quick_search", "s.toString().isEmpty() : ");
+                                CharSequence query, int start, int before, int count) {
+                            if (query.toString().isEmpty()) {
                                 removeQuickActionSearchEnginesView();
                             } else {
-                                Log.e("quick_search", "s.toString() not empty : ");
                                 if (getBraveToolbarLayout().isUrlBarFocused()) {
                                     View rootView = findViewById(android.R.id.content);
                                     Rect r = new Rect();
@@ -2560,7 +2554,6 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void showQuickActionSearchEnginesView(int keypadHeight) {
-        Log.e("quick_search", "showQuickActionSearchEnginesView");
         if (mQuickSearchEnginesView != null
                 || !QuickSearchEnginesUtil.getQuickSearchEnginesFeature()) {
             return;
@@ -2612,12 +2605,7 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void removeQuickActionSearchEnginesView() {
-        // if (mKeyboardVisibilityHelper != null) {
-        //     Log.e("quick_search", "removeQuickActionSearchEnginesView 1");
-        //     mKeyboardVisibilityHelper.removeListener();
-        // }
         if (mQuickSearchEnginesView != null && mQuickSearchEnginesView.getParent() != null) {
-            Log.e("quick_search", "removeQuickActionSearchEnginesView 2");
             WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
             windowManager.removeView(mQuickSearchEnginesView);
             mQuickSearchEnginesView = null;
@@ -2649,25 +2637,16 @@ public abstract class BraveActivity extends ChromeActivity
                 getCurrentProfile(), logoView, quickSearchEnginesModel.getKeyword());
     }
 
-    public void shouldShowQuickSearchEngines() {
-        Log.e("quick_search", "shouldShowQuickSearchEngines");
-        if (mKeyboardVisibilityHelper != null) {
-            mKeyboardVisibilityHelper.addListener();
-        }
-    }
-
     @Override
     public void onKeyboardOpened(int keyboardHeight) {
         if (getBraveToolbarLayout().isUrlBarFocused()
                 && !getBraveToolbarLayout().getLocationBarQuery().isEmpty()) {
-            Log.e("quick_search", "onKeyboardOpened");
             showQuickActionSearchEnginesView(keyboardHeight);
         }
     }
 
     @Override
     public void onKeyboardClosed() {
-        Log.e("quick_search", "onKeyboardClosed");
         removeQuickActionSearchEnginesView();
     }
 }
