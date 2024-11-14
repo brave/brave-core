@@ -283,6 +283,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
+    public static final String GOOGLE_SEARCH_ENGINE_KEYWORD = ":g";
+    public static final String YOUTUBE_SEARCH_ENGINE_KEYWORD = ":yt";
     public static final String BRAVE_SEARCH_ENGINE_KEYWORD = ":br";
     public static final String BING_SEARCH_ENGINE_KEYWORD = ":b";
     public static final String STARTPAGE_SEARCH_ENGINE_KEYWORD = ":sp";

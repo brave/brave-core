@@ -60,7 +60,12 @@ public class QuickSearchEnginesAdapter
                                 quickSearchEnginesModel);
                     }
                 });
-        if (BraveActivity.BING_SEARCH_ENGINE_KEYWORD.equals(quickSearchEnginesModel.getKeyword())) {
+        if (BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD.equals(
+                quickSearchEnginesModel.getKeyword())) {
+            quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
+                    R.drawable.ic_social_youtube);
+        } else if (BraveActivity.BING_SEARCH_ENGINE_KEYWORD.equals(
+                quickSearchEnginesModel.getKeyword())) {
             quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
                     R.drawable.ic_microsoft_color);
         } else if (BraveActivity.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(
