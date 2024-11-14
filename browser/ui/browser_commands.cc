@@ -131,7 +131,7 @@ std::optional<tabs::TabHandle> GetActiveTabHandle(Browser* browser) {
   }
 
   const int active_tab_index = model->GetIndexOfWebContents(active_contents);
-  return model->GetTabHandleAt(active_tab_index);
+  return model->GetTabAtIndex(active_tab_index)->GetHandle();
 }
 
 std::vector<int> GetSelectedIndices(Browser* browser) {
@@ -1015,7 +1015,7 @@ void NewSplitViewForTab(Browser* browser,
   }
 
   auto* model = browser->tab_strip_model();
-  const int tab_index = model->GetIndexOfTab(*tab);
+  const int tab_index = model->GetIndexOfTab(tab->Get());
   const int new_tab_index = model->IsTabPinned(tab_index)
                                 ? model->IndexOfFirstNonPinnedTab()
                                 : tab_index + 1;
@@ -1028,8 +1028,9 @@ void NewSplitViewForTab(Browser* browser,
                      /*foreground*/ true);
   }
 
-  split_view_data->TileTabs({.first = model->GetTabHandleAt(tab_index),
-                             .second = model->GetTabHandleAt(new_tab_index)});
+  split_view_data->TileTabs(
+      {.first = model->GetTabAtIndex(tab_index)->GetHandle(),
+       .second = model->GetTabAtIndex(new_tab_index)->GetHandle()});
 }
 
 void TileTabs(Browser* browser, const std::vector<int>& indices) {
@@ -1057,15 +1058,16 @@ void TileTabs(Browser* browser, const std::vector<int>& indices) {
   auto* model = browser->tab_strip_model();
   auto tab1 = indices[0];
   auto tab2 = indices[1];
-  CHECK(!split_view_data->IsTabTiled(model->GetTabHandleAt(tab1)));
-  CHECK(!split_view_data->IsTabTiled(model->GetTabHandleAt(tab2)));
+  CHECK(!split_view_data->IsTabTiled(model->GetTabAtIndex(tab1)->GetHandle()));
+  CHECK(!split_view_data->IsTabTiled(model->GetTabAtIndex(tab2)->GetHandle()));
 
   if (tab2 < tab1) {
     std::swap(tab1, tab2);
   }
 
-  split_view_data->TileTabs({.first = model->GetTabHandleAt(tab1),
-                             .second = model->GetTabHandleAt(tab2)});
+  split_view_data->TileTabs(
+      {.first = model->GetTabAtIndex(tab1)->GetHandle(),
+       .second = model->GetTabAtIndex(tab2)->GetHandle()});
 }
 
 void BreakTiles(Browser* browser, const std::vector<int>& indices) {
@@ -1081,7 +1083,7 @@ void BreakTiles(Browser* browser, const std::vector<int>& indices) {
   auto* model = browser->tab_strip_model();
   for (auto index : indices) {
     // The tile could have already been broken from the earlier iteration.
-    if (auto tab_handle = model->GetTabHandleAt(index);
+    if (auto tab_handle = model->GetTabAtIndex(index)->GetHandle();
         split_view_data->IsTabTiled(tab_handle)) {
       split_view_data->BreakTile(tab_handle);
     }
@@ -1105,7 +1107,8 @@ bool IsTabsTiled(Browser* browser, const std::vector<int>& indices) {
   auto* model = browser->tab_strip_model();
 
   return base::ranges::any_of(indices, [&](auto index) {
-    return split_view_data->IsTabTiled(model->GetTabHandleAt(index));
+    return split_view_data->IsTabTiled(
+        model->GetTabAtIndex(index)->GetHandle());
   });
 }
 
@@ -1129,7 +1132,8 @@ bool CanTileTabs(Browser* browser, const std::vector<int>& indices) {
 
   auto* model = browser->tab_strip_model();
   return base::ranges::none_of(indices, [&](auto index) {
-    return split_view_data->IsTabTiled(model->GetTabHandleAt(index));
+    return split_view_data->IsTabTiled(
+        model->GetTabAtIndex(index)->GetHandle());
   });
 }
 
@@ -1152,8 +1156,8 @@ void SwapTabsInTile(Browser* browser) {
   auto tile = *split_view_data->GetTile(tab);
   split_view_data->SwapTabsInTile(tile);
 
-  model->MoveWebContentsAt(model->GetIndexOfTab(tile.second),
-                           model->GetIndexOfTab(tile.first),
+  model->MoveWebContentsAt(model->GetIndexOfTab(tile.second.Get()),
+                           model->GetIndexOfTab(tile.first.Get()),
                            /*select_after_move*/ false);
 }
 

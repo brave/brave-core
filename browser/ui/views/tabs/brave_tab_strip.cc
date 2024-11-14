@@ -176,9 +176,9 @@ void BraveTabStrip::MaybeStartDrag(
       auto* tab_strip_model = controller_->GetBrowser()->tab_strip_model();
       // Make sure both tiled tabs are in selection.
       new_selection.AddIndexToSelection(
-          tab_strip_model->GetIndexOfTab(tile->first));
+          tab_strip_model->GetIndexOfTab(tile->first.Get()));
       new_selection.AddIndexToSelection(
-          tab_strip_model->GetIndexOfTab(tile->second));
+          tab_strip_model->GetIndexOfTab(tile->second.Get()));
       new_selection.set_active(tab_strip_model->active_index());
       tab_strip_model->SetSelectionFromModel(new_selection);
     }
@@ -239,7 +239,7 @@ bool BraveTabStrip::IsFirstTabInTile(const Tab* tab) const {
 
   auto tile = GetTileForTab(tab);
   DCHECK(tile) << "This must be called only when IsTabTiled() returned true";
-  return browser->tab_strip_model()->GetIndexOfTab(tile->first) == *index;
+  return browser->tab_strip_model()->GetIndexOfTab(tile->first.Get()) == *index;
 }
 
 TabTiledState BraveTabStrip::GetTiledStateForTab(int index) const {
@@ -271,7 +271,8 @@ std::optional<TabTile> BraveTabStrip::GetTileForTab(const Tab* tab) const {
     return std::nullopt;
   }
 
-  return data->GetTile(browser->tab_strip_model()->GetTabHandleAt(*index));
+  return data->GetTile(
+      browser->tab_strip_model()->GetTabAtIndex(*index)->GetHandle());
 }
 
 void BraveTabStrip::UpdateTabContainer() {
