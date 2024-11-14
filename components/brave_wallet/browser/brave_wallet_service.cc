@@ -1157,11 +1157,9 @@ void BraveWalletService::OnDiscoverAssetsCompleted(
 void BraveWalletService::OnGetImportInfo(
     const std::string& new_password,
     base::OnceCallback<void(bool, const std::optional<std::string>&)> callback,
-    bool result,
-    ImportInfo info,
-    std::optional<ImportError> error) {
-  if (!result) {
-    switch (error.value_or(ImportError::kInternalError)) {
+    base::expected<ImportInfo, ImportError> info) {
+  if (!info.has_value()) {
+    switch (info.error()) {
       case ImportError::kJsonError:
         std::move(callback).Run(false, l10n_util::GetStringUTF8(
                                            IDS_BRAVE_WALLET_IMPORT_JSON_ERROR));
@@ -1177,20 +1175,20 @@ void BraveWalletService::OnGetImportInfo(
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
         break;
     }
-    NOTREACHED();
+    return;
   }
 
   bool is_valid_mnemonic = keyring_service_->RestoreWalletSync(
-      info.mnemonic, new_password, info.is_legacy_crypto_wallets);
+      info->mnemonic, new_password, info->is_legacy_crypto_wallets);
   if (!is_valid_mnemonic) {
     std::move(callback).Run(
         false, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_MNEMONIC_ERROR));
     return;
   }
-  if (info.number_of_accounts > 1) {
+  if (info->number_of_accounts > 1) {
     keyring_service_->AddAccountsWithDefaultName(mojom::CoinType::ETH,
                                                  mojom::kDefaultKeyringId,
-                                                 info.number_of_accounts - 1);
+                                                 info->number_of_accounts - 1);
   }
 
   // Only register the component if the import is successful.
