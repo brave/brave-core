@@ -11,6 +11,7 @@ enum OperationResult {
   Success,
   InvalidUrl,
   InvalidContextSize,
+  UrlValidAsPrivateEndpoint,
 };
 
 interface AIChatSettingsHelper {
