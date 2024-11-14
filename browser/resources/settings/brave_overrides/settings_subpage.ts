@@ -36,7 +36,7 @@ RegisterStyleOverride(
     .cr-title-text {
         color: var(--cr-title-text-color);
         font-weight: 600 !important;
-        font-size: var(--leo-typography-heading-h3-font-size) !important;
+        font-size: var(--leo-typography-heading-h4-font-size) !important;
     }
   </style>
   `
