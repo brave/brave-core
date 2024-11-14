@@ -38,6 +38,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
             FullscreenManager fullscreenManager,
             TabObscuringHandler tabObscuringHandler,
             int bottomControlsHeight,
+            int bottomControlsShadowHeight,
             ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
             ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             Supplier<Boolean> readAloudRestoringSupplier) {
@@ -49,6 +50,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
                 fullscreenManager,
                 tabObscuringHandler,
                 bottomControlsHeight,
+                bottomControlsShadowHeight,
                 overlayPanelVisibilitySupplier,
                 edgeToEdgeControllerSupplier,
                 readAloudRestoringSupplier);
