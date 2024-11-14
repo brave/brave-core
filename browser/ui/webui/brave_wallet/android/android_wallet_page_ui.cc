@@ -53,11 +53,8 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
   }
 
   // Add required resources.
-  webui::SetupWebUIDataSource(
-      source,
-      UNSAFE_TODO(base::make_span(kBraveWalletPageGenerated,
-                                  kBraveWalletPageGeneratedSize)),
-      IDR_WALLET_PAGE_HTML);
+  webui::SetupWebUIDataSource(source, base::span(kBraveWalletPageGenerated),
+                              IDR_WALLET_PAGE_HTML);
 
   source->AddBoolean("isAndroid", true);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);

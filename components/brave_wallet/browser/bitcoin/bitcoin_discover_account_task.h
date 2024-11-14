@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_DISCOVER_ACCOUNT_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_DISCOVER_ACCOUNT_TASK_H_
 
+#include <memory>
 #include <string>
+#include <utility>
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
@@ -56,10 +58,11 @@ class DiscoverAccountTaskBase {
   virtual mojom::BitcoinAddressPtr GetAddressById(
       const mojom::BitcoinKeyIdPtr& key_id) = 0;
 
-  bool MaybeQueueRequests(uint32_t state_index);
+  bool MaybeQueueRequests(bool receive_state);
 
   void WorkOnTask();
   void OnGetAddressStats(
+      bool receive_state,
       mojom::BitcoinAddressPtr address,
       base::expected<bitcoin_rpc::AddressStats, std::string> stats);
 
@@ -68,13 +71,14 @@ class DiscoverAccountTaskBase {
   }
 
  private:
+  State& GetState(bool receive_state);
+
   const raw_ref<BitcoinWalletService> bitcoin_wallet_service_;
   std::string network_id_;
 
   uint32_t active_requests_ = 0;
-  // Indexed by 0 and 1 for receive and change addresses discovery states
-  // respectively.
-  State states_[2];
+  State receive_addresses_state_;
+  State change_addresses_state_;
   bool account_is_used_ = false;
   mojom::BitcoinBalancePtr balance_;
 

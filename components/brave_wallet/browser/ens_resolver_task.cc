@@ -117,13 +117,13 @@ EnsResolverTaskError::~EnsResolverTaskError() = default;
 std::vector<uint8_t> MakeAddrCall(const std::string& domain) {
   return eth_abi::TupleEncoder()
       .AddFixedBytes(Namehash(domain))
-      .EncodeWithSelector(base::make_span(kAddrBytes32Selector));
+      .EncodeWithSelector(base::span(kAddrBytes32Selector));
 }
 
 std::vector<uint8_t> MakeContentHashCall(const std::string& domain) {
   return eth_abi::TupleEncoder()
       .AddFixedBytes(Namehash(domain))
-      .EncodeWithSelector(base::make_span(kContentHashBytes32Selector));
+      .EncodeWithSelector(base::span(kContentHashBytes32Selector));
 }
 
 OffchainLookupData::OffchainLookupData() = default;

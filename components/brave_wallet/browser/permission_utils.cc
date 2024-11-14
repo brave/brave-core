@@ -28,21 +28,23 @@ constexpr char kAddrPattern[] = "addr=([[:alnum:]]{1,128})";
 
 // Given an origin and an account address, append the account address to the
 // end of the host piece of the origin, then return it as the new origin.
-bool AddAccountToHost(const url::Origin& old_origin,
-                      const std::string& account,
-                      url::Origin* new_origin) {
-  if (old_origin.opaque() || account.empty() || !new_origin) {
-    return false;
+std::optional<url::Origin> AddAccountToHost(const url::Origin& old_origin,
+                                            const std::string& account) {
+  if (old_origin.opaque() || account.empty()) {
+    return std::nullopt;
   }
 
   GURL::Replacements replacements;
   std::string new_host = base::StrCat({old_origin.host(), account});
   replacements.SetHostStr(new_host);
 
-  *new_origin =
+  auto new_origin =
       url::Origin::Create(old_origin.GetURL().ReplaceComponents(replacements));
 
-  return !new_origin->host().empty();
+  if (new_origin.host().empty()) {
+    return std::nullopt;
+  }
+  return new_origin;
 }
 
 // Given the overwritten origin, such as https://test.com{addr=123&addr=456},
@@ -123,12 +125,11 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
 
 namespace brave_wallet {
 
-bool GetConcatOriginFromWalletAddresses(
+std::optional<url::Origin> GetConcatOriginFromWalletAddresses(
     const url::Origin& old_origin,
-    const std::vector<std::string>& addresses,
-    url::Origin* new_origin) {
+    const std::vector<std::string>& addresses) {
   if (old_origin.opaque() || addresses.empty()) {
-    return false;
+    return std::nullopt;
   }
 
   std::string addresses_suffix = "{";
@@ -140,7 +141,7 @@ bool GetConcatOriginFromWalletAddresses(
   }
   addresses_suffix += "}";
 
-  return AddAccountToHost(old_origin, addresses_suffix, new_origin);
+  return AddAccountToHost(old_origin, addresses_suffix);
 }
 
 bool ParseRequestingOriginFromSubRequest(permissions::RequestType type,
@@ -164,23 +165,22 @@ bool ParseRequestingOrigin(permissions::RequestType type,
                                        address_queue);
 }
 
-bool GetSubRequestOrigin(permissions::RequestType type,
-                         const url::Origin& old_origin,
-                         const std::string& account,
-                         url::Origin* new_origin) {
+std::optional<url::Origin> GetSubRequestOrigin(permissions::RequestType type,
+                                               const url::Origin& old_origin,
+                                               const std::string& account) {
   if (type != permissions::RequestType::kBraveEthereum &&
       type != permissions::RequestType::kBraveSolana) {
-    return false;
+    return std::nullopt;
   }
-  std::string account_with_separater;
+  std::string account_with_separator;
   if (type == permissions::RequestType::kBraveEthereum) {
-    account_with_separater = account;
+    account_with_separator = account;
   } else {
-    account_with_separater =
+    account_with_separator =
         account.empty() ? account : base::StrCat({"__", account});
   }
 
-  return AddAccountToHost(old_origin, account_with_separater, new_origin);
+  return AddAccountToHost(old_origin, account_with_separator);
 }
 
 GURL GetConnectWithSiteWebUIURL(const GURL& webui_base_url,

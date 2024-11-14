@@ -198,18 +198,18 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
     if (entry.address && entry.permission) {
       auto last_committed_origin =
           url::Origin::Create(active_web_contents()->GetLastCommittedURL());
-      url::Origin origin;
-      EXPECT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
-          last_committed_origin, {std::string(entry.address)}, &origin));
+      auto origin = brave_wallet::GetConcatOriginFromWalletAddresses(
+          last_committed_origin, {std::string(entry.address)});
+      EXPECT_TRUE(origin);
       permission_manager()->RequestPermissionsForOrigin(
           {*entry.permission}, active_web_contents()->GetPrimaryMainFrame(),
-          origin.GetURL(), true, base::DoNothing());
+          origin->GetURL(), true, base::DoNothing());
 
-      url::Origin sub_request_origin;
-      EXPECT_TRUE(brave_wallet::GetSubRequestOrigin(
+      auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
           ContentSettingsTypeToRequestType(entry.type), last_committed_origin,
-          entry.address, &sub_request_origin));
-      return sub_request_origin.GetURL();
+          entry.address);
+      EXPECT_TRUE(sub_request_origin);
+      return sub_request_origin->GetURL();
     } else {
       content::ExecuteScriptAsync(
           GetActiveMainFrame(),

@@ -63,7 +63,7 @@ class BitcoinMaxSendSolverUnitTest : public testing::Test {
     tx_input.utxo_address = address;
     std::string txid_fake = address + base::NumberToString(amount);
     tx_input.utxo_outpoint.txid =
-        crypto::SHA256Hash(base::as_bytes(base::make_span(txid_fake)));
+        crypto::SHA256Hash(base::as_byte_span(txid_fake));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid.back();
     tx_input.utxo_value = amount;
 

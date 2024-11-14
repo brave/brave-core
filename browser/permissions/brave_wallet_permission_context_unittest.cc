@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+
 #include <string>
 #include <vector>
 
 #include "base/memory/ptr_util.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/brave_permission_manager.h"
-#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/test/base/testing_profile.h"
@@ -212,17 +213,17 @@ TEST_F(BraveWalletPermissionContextUnitTest, GetWebSitesWithPermission) {
             entry.permission, browser_context());
     EXPECT_EQ(web_sites.size(), (uint32_t)1);
 
-    url::Origin origin_wallet_address;
-    EXPECT_TRUE(brave_wallet::GetSubRequestOrigin(
+    auto origin_wallet_address = brave_wallet::GetSubRequestOrigin(
         permissions::ContentSettingsTypeToRequestType(entry.type), origin,
-        entry.address, &origin_wallet_address));
+        entry.address);
+    ASSERT_TRUE(origin_wallet_address);
     // origin_wallet_address looks like that
     // "https://www.brave.com__brg44hdsehzapvs8beqzvkq4egwevs3fre6ze2eno6s8/"
     // web_sites[0] looks like that
     // "https://www.brave.com__brg44hdsehzapvs8beqzvkq4egwevs3fre6ze2eno6s8:443"
     // That's why we are going to compare scheme, host and port if it's exist
     // in both URLs
-    EXPECT_TRUE(Matches(origin_wallet_address.GetURL(), GURL(web_sites[0])));
+    EXPECT_TRUE(Matches(origin_wallet_address->GetURL(), GURL(web_sites[0])));
   }
 }
 

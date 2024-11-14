@@ -41,7 +41,7 @@ bool GetBLSPublicKey(const std::vector<uint8_t>& private_key,
   return true;
 }
 
-std::string GetExportEncodedJSON(const std::string& base64_encoded_private_key,
+std::string GetExportEncodedJSON(base::span<const uint8_t> private_key_bytes,
                                  const std::string& address) {
   std::optional<mojom::FilecoinAddressProtocol> protocol =
       FilAddress::GetProtocolFromAddress(address);
@@ -52,8 +52,8 @@ std::string GetExportEncodedJSON(const std::string& base64_encoded_private_key,
       "{\"Type\":\"%s\",\"PrivateKey\":\"%s\"}",
       protocol.value() == mojom::FilecoinAddressProtocol::BLS ? "bls"
                                                               : "secp256k1",
-      base64_encoded_private_key.c_str());
-  return base::ToLowerASCII(base::HexEncode(json.data(), json.size()));
+      base::Base64Encode(private_key_bytes).c_str());
+  return base::ToLowerASCII(base::HexEncode(json));
 }
 
 }  // namespace
@@ -119,18 +119,16 @@ bool FilecoinKeyring::DecodeImportPayload(
 
 std::string FilecoinKeyring::EncodePrivateKeyForExport(
     const std::string& address) {
-  if (base::Contains(imported_bls_accounts_, address)) {
-    return GetExportEncodedJSON(
-        base::Base64Encode(base::make_span(*imported_bls_accounts_[address])),
-        address);
+  if (auto it = imported_bls_accounts_.find(address);
+      it != imported_bls_accounts_.end()) {
+    return GetExportEncodedJSON(*it->second, address);
   }
 
   HDKey* key = GetHDKeyFromAddress(address);
   if (!key) {
     return "";
   }
-  return GetExportEncodedJSON(base::Base64Encode(key->GetPrivateKeyBytes()),
-                              address);
+  return GetExportEncodedJSON(key->GetPrivateKeyBytes(), address);
 }
 
 std::vector<std::string> FilecoinKeyring::GetImportedAccountsForTesting()
@@ -207,9 +205,9 @@ std::optional<std::string> FilecoinKeyring::SignTransaction(
     return std::nullopt;
   }
 
-  if (base::Contains(imported_bls_accounts_, address)) {
-    return tx->GetSignedTransaction(
-        fil_address, base::make_span(*imported_bls_accounts_[address]));
+  if (auto it = imported_bls_accounts_.find(address);
+      it != imported_bls_accounts_.end()) {
+    return tx->GetSignedTransaction(fil_address, *it->second);
   }
 
   HDKey* hd_key = GetHDKeyFromAddress(address);

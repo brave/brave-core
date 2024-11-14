@@ -192,12 +192,12 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  url::Origin sub_request_origin;
-  ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+  auto sub_request_origin = brave_wallet::GetSubRequestOrigin(
       permissions::RequestType::kBraveEthereum, GetLastCommitedOrigin(),
-      eth_account->address, &sub_request_origin));
+      eth_account->address);
+  ASSERT_TRUE(sub_request_origin);
   host_content_settings_map()->SetContentSettingDefaultScope(
-      sub_request_origin.GetURL(), GetLastCommitedOrigin().GetURL(),
+      sub_request_origin->GetURL(), GetLastCommitedOrigin().GetURL(),
       ContentSettingsType::BRAVE_ETHEREUM,
       ContentSetting::CONTENT_SETTING_ALLOW);
   SetSelectedAccount(eth_account->account_id);
