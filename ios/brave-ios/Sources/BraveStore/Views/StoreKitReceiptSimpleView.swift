@@ -44,76 +44,58 @@ public struct StoreKitReceiptSimpleView: View {
   }
 
   public var body: some View {
-    if let receipt = receipt {
-      List {
-        StoreKitReceiptSimpleLineView(
-          title: Strings.ReceiptViewer.applicationVersionTitle,
-          value: receipt.appVersion
-        )
+    VStack {
+      if let receipt = receipt {
+        List {
+          StoreKitReceiptSimpleLineView(
+            title: Strings.ReceiptViewer.applicationVersionTitle,
+            value: receipt.appVersion
+          )
 
-        StoreKitReceiptSimpleLineView(
-          title: Strings.ReceiptViewer.receiptDateTitle,
-          value: formatDate(receipt.receiptCreationDate)
-        )
+          StoreKitReceiptSimpleLineView(
+            title: Strings.ReceiptViewer.receiptDateTitle,
+            value: formatDate(receipt.receiptCreationDate)
+          )
 
-        productsView(for: groupProducts(receipt: receipt))
-      }
-      .navigationTitle(Strings.ReceiptViewer.receiptViewerTitle)
-      .navigationViewStyle(.stack)
-      .introspectNavigationController { controller in
-        controller.navigationBar.topItem?.backButtonDisplayMode = .minimal
-      }
-      .toolbar {
-        if let base64EncodedReceipt {
-          ToolbarItem(placement: .navigationBarTrailing) {
-            ShareLink(item: base64EncodedReceipt) {
-              Label(Strings.ReceiptViewer.shareReceiptTitle, systemImage: "square.and.arrow.up")
-            }
-            .padding()
-          }
+          productsView(for: groupProducts(receipt: receipt))
         }
-      }
-    } else if loading {
-      ProgressView(Strings.ReceiptViewer.receiptViewerLoadingTitle)
-        .navigationTitle(Strings.ReceiptViewer.receiptViewerTitle)
-        .navigationViewStyle(.stack)
-        .introspectNavigationController { controller in
-          controller.navigationBar.topItem?.backButtonDisplayMode = .minimal
-        }
-        .task {
-          if let receipt = try? AppStoreReceipt.receipt {
-            self.base64EncodedReceipt = receipt
+      } else if loading {
+        ProgressView(Strings.ReceiptViewer.receiptViewerLoadingTitle)
+          .task {
+            if let receipt = try? AppStoreReceipt.receipt {
+              self.base64EncodedReceipt = receipt
 
-            if let data = Data(base64Encoded: receipt) {
-              self.receipt = BraveStoreKitReceipt(data: data)
-              loading = false
-            }
-          }
-        }
-    } else {
-      VStack {
-        Text(
-          base64EncodedReceipt == nil
-            ? Strings.ReceiptViewer.noReceiptFoundTitle
-            : Strings.ReceiptViewer.receiptLoadingErrorTitle
-        )
-        .fixedSize(horizontal: false, vertical: true)
-        .frame(maxWidth: .infinity)
-        .padding(30.0)
-        .navigationTitle(Strings.ReceiptViewer.receiptViewerTitle)
-        .navigationViewStyle(.stack)
-        .introspectNavigationController { controller in
-          controller.navigationBar.topItem?.backButtonDisplayMode = .minimal
-        }
-        .toolbar {
-          if let base64EncodedReceipt {
-            ToolbarItem(placement: .navigationBarTrailing) {
-              ShareLink(item: base64EncodedReceipt) {
-                Label(Strings.ReceiptViewer.shareReceiptTitle, systemImage: "square.and.arrow.up")
+              if let data = Data(base64Encoded: receipt) {
+                self.receipt = BraveStoreKitReceipt(data: data)
+                loading = false
               }
-              .padding()
             }
           }
+      } else {
+        VStack {
+          Text(
+            base64EncodedReceipt == nil
+              ? Strings.ReceiptViewer.noReceiptFoundTitle
+              : Strings.ReceiptViewer.receiptLoadingErrorTitle
+          )
+          .fixedSize(horizontal: false, vertical: true)
+          .frame(maxWidth: .infinity)
+          .padding(30.0)
+        }
+      }
+    }
+    .navigationTitle(Strings.ReceiptViewer.receiptViewerTitle)
+    .navigationViewStyle(.stack)
+    .introspectNavigationController { controller in
+      controller.navigationBar.topItem?.backButtonDisplayMode = .minimal
+    }
+    .toolbar {
+      if let base64EncodedReceipt {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          ShareLink(item: base64EncodedReceipt) {
+            Label(Strings.ReceiptViewer.shareReceiptTitle, systemImage: "square.and.arrow.up")
+          }
+          .padding()
         }
       }
     }
