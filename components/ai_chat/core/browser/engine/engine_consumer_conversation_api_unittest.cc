@@ -366,42 +366,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest,
-       GenerateEvents_PageContentRefine) {
-  auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
-  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
-                    const std::string& selected_language,
-                    EngineConsumer::GenerationDataCallback data_callback,
-                    EngineConsumer::GenerationCompletedCallback callback) {
-        std::move(callback).Run("");
-      });
-
-  std::vector<mojom::ConversationTurnPtr> history;
-  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
-  turn->character_type = mojom::CharacterType::HUMAN;
-  turn->text = "Which show is this about?";
-  history.push_back(std::move(turn));
-
-  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, false);
-  entry->events->push_back(
-      mojom::ConversationEntryEvent::NewPageContentRefineEvent(
-          mojom::PageContentRefineEvent::New()));
-  history.push_back(std::move(entry));
-
-  engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "Who?", "", base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
-  testing::Mock::VerifyAndClearExpectations(mock_api_client);
-}
-
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_EarlyReturn) {
   EngineConsumer::ConversationHistory history;
   auto* mock_api_client = GetMockConversationAPIClient();

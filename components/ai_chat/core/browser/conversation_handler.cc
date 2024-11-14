@@ -1222,6 +1222,15 @@ void ConversationHandler::OnGetRefinedPageContent(
     std::string page_content,
     bool is_video,
     base::expected<std::string, std::string> refined_page_content) {
+  // Remove tenative assistant entry dedicated for page content event
+  const auto& last_turn = chat_history_.back();
+  if (last_turn->events && !last_turn->events->empty() &&
+      last_turn->events->back()->is_page_content_refine_event()) {
+    chat_history_.pop_back();
+    OnHistoryUpdate();
+  } else {
+    VLOG(1) << "last entry should be page content refine event";
+  }
   std::string page_content_to_use = std::move(page_content);
   if (refined_page_content.has_value()) {
     page_content_to_use = std::move(refined_page_content.value());
