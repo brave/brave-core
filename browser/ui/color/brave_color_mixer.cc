@@ -713,6 +713,9 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
                                const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
+  if (!key.custom_theme) {
+    mixer[kColorToolbarContentAreaSeparator] = {nala::kColorDividerSubtle};
+  }
   mixer[kColorBraveOmniboxResultViewSeparator] = {
       kColorToolbarContentAreaSeparator};
   mixer[kColorOmniboxResultsUrl] = {nala::kColorTextInteractive};
