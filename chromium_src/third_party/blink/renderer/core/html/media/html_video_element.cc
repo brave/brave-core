@@ -14,7 +14,7 @@ void HTMLVideoElement::RequestFullscreen() {
       GetDocument().GetFrame(),
       mojom::blink::UserActivationNotificationType::kInteraction,
       /*need_browser_verification*/ false);
-  webkitEnterFullscreen();
+  EnterFullscreen();
 }
 
 }  // namespace blink
