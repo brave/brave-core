@@ -9,6 +9,7 @@ import { BraveWallet } from '../../../constants/types'
 // Utils
 import { handleEndpointError } from '../../../utils/api-utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
+import { mapLimit } from 'async'
 
 export const zcashEndpoints = ({
   query,
@@ -43,7 +44,7 @@ export const zcashEndpoints = ({
           )
         }
       },
-      invalidatesTags: ['ZCashAccountInfo']
+      invalidatesTags: ['ZCashAccountInfo', 'IsShieldingAvailable']
     }),
     getZCashAccountInfo: query<
       BraveWallet.ZCashAccountInfo | null,
@@ -69,6 +70,33 @@ export const zcashEndpoints = ({
         }
       },
       providesTags: ['ZCashAccountInfo']
+    }),
+    getIsShieldingAvailable: query<boolean, BraveWallet.AccountId[]>({
+      queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { zcashWalletService } = baseQuery(undefined).data
+
+          const accountInfos = await mapLimit(
+            args,
+            10,
+            async (accountId: BraveWallet.AccountId) =>
+              await zcashWalletService.getZCashAccountInfo(accountId)
+          )
+
+          return {
+            data: !accountInfos.some(
+              (info) => info.accountInfo?.accountShieldBirthday
+            )
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Error getting is shielding available: ',
+            error
+          )
+        }
+      },
+      providesTags: ['IsShieldingAvailable']
     })
   }
 }
