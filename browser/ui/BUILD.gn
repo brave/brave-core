@@ -330,6 +330,7 @@ source_set("ui") {
 
     deps += [
       "//base",
+      "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
       "//brave/common",
       "//brave/components/constants",
