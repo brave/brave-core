@@ -313,8 +313,8 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
   const int offset =
       IsPinnedTabContainer() ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
 
-  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first) - offset;
-  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second) - offset;
+  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first.Get()) - offset;
+  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second.Get()) - offset;
   if (!controller_->IsValidModelIndex(tab1_index) ||
       !controller_->IsValidModelIndex(tab2_index)) {
     // In case the tiled tab is not in this container, this can happen.
@@ -353,7 +353,8 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
   canvas.DrawRoundRect(bounding_rects, kRadius, flags);
 
   auto active_tab_handle =
-      tab_strip_model->GetTabHandleAt(tab_strip_model->active_index());
+      tab_strip_model->GetTabAtIndex(tab_strip_model->active_index())
+          ->GetHandle();
   if (!is_vertical_tab && active_tab_handle != tile.first &&
       active_tab_handle != tile.second &&
       !GetTabAtModelIndex(tab1_index)->IsMouseHovered() &&
@@ -773,8 +774,8 @@ void BraveTabContainer::UpdateTabsBorderInTile(const TabTile& tile) {
   const int offset =
       IsPinnedTabContainer() ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
 
-  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first) - offset;
-  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second) - offset;
+  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first.Get()) - offset;
+  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second.Get()) - offset;
 
   if (!controller_->IsValidModelIndex(tab1_index) ||
       !controller_->IsValidModelIndex(tab2_index)) {
