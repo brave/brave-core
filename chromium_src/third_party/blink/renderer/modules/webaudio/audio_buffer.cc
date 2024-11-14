@@ -15,21 +15,19 @@
 
 #define BRAVE_AUDIOBUFFER_GETCHANNELDATA                                      \
   {                                                                           \
-    NotShared<DOMFloat32Array> array = getChannelData(channel_index);         \
-    DOMFloat32Array* destination_array = array.Get();                         \
-    size_t len = destination_array->length();                                 \
-    if (len > 0) {                                                            \
+    NotShared<DOMFloat32Array> destination = getChannelData(channel_index);   \
+    base::span<float> dst = destination->AsSpan();                            \
+    if (!dst.empty()) {                                                       \
       if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
-        float* destination = destination_array->Data();                       \
-        brave::BraveSessionCache::From(*context).FarbleAudioChannel(          \
-            destination, len);                                                \
+        brave::BraveSessionCache::From(*context).FarbleAudioChannel(dst);     \
       }                                                                       \
     }                                                                         \
   }
 
-#define BRAVE_AUDIOBUFFER_COPYFROMCHANNEL                                    \
-  if (ExecutionContext* context = ExecutionContext::From(script_state)) {    \
-    brave::BraveSessionCache::From(*context).FarbleAudioChannel(dst, count); \
+#define BRAVE_AUDIOBUFFER_COPYFROMCHANNEL                                 \
+  if (ExecutionContext* context = ExecutionContext::From(script_state)) { \
+    brave::BraveSessionCache::From(*context).FarbleAudioChannel(          \
+        dst.first(count));                                                \
   }
 
 #include "src/third_party/blink/renderer/modules/webaudio/audio_buffer.cc"
