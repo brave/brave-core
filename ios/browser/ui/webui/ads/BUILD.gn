@@ -1,0 +1,47 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/config/features.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("ads") {
+  sources = [
+    "ads_internals_ui.h",
+    "ads_internals_ui.mm",
+  ]
+
+  deps = [
+    "//brave/components/brave_ads/browser/resources:generated_resources",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/constants",
+    "//brave/components/l10n/common",
+    "//brave/components/resources:static_resources",
+    "//brave/ios/browser/brave_ads",
+    "//components/prefs",
+    "//components/resources",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/browser_state",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/ui/util:util",
+    "//ios/web",
+    "//ios/web:resources",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+    "//ios/web/public/webui",
+    "//ios/web/webui",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/js:resources",
+    "//ui/base",
+    "//ui/base/clipboard",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//mojo/public/mojom/base",
+  ]
+}

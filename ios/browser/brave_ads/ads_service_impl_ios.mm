@@ -6,6 +6,7 @@
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/check.h"
@@ -136,7 +137,7 @@ void AdsServiceImplIOS::OnNotificationAdClicked(
   NOTIMPLEMENTED() << "Not used on iOS.";
 }
 
-void AdsServiceImplIOS::ClearData(base::OnceClosure callback) {
+void AdsServiceImplIOS::ClearData(ClearDataCallback callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
   prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
 
@@ -149,6 +150,14 @@ void AdsServiceImplIOS::AddBatAdsObserver(
     mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
     /*bat_ads_observer_pending_remote*/) {
   NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::GetInternals(GetInternalsCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*internals=*/std::nullopt);
+  }
+
+  ads_->GetInternals(std::move(callback));
 }
 
 void AdsServiceImplIOS::GetDiagnostics(GetDiagnosticsCallback callback) {
@@ -437,7 +446,9 @@ void AdsServiceImplIOS::Shutdown() {
 }
 
 void AdsServiceImplIOS::InitializeAds(InitializeCallback callback) {
-  CHECK(!IsInitialized());
+  if (IsInitialized()) {
+    return std::move(callback).Run(/*success=*/false);
+  }
 
   InitializeDatabase();
 
@@ -475,14 +486,16 @@ void AdsServiceImplIOS::ShutdownAdsCallback(ShutdownCallback callback,
   std::move(callback).Run(success);
 }
 
-void AdsServiceImplIOS::ClearAdsData(base::OnceClosure callback,
+void AdsServiceImplIOS::ClearAdsData(ClearDataCallback callback,
                                      const bool success) {
   if (!success) {
-    return std::move(callback).Run();
+    return std::move(callback).Run(/*success=*/false);
   }
 
   // Ensure the Brave Ads service is stopped before clearing data.
-  CHECK(!IsInitialized());
+  if (IsInitialized()) {
+    return std::move(callback).Run(/*success=*/false);
+  }
 
   database_queue_->PostTaskAndReply(
       FROM_HERE,
@@ -501,8 +514,8 @@ void AdsServiceImplIOS::ClearAdsData(base::OnceClosure callback,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImplIOS::ClearAdsDataCallback(base::OnceClosure callback) {
-  InitializeAds(base::IgnoreArgs<bool>(std::move(callback)));
+void AdsServiceImplIOS::ClearAdsDataCallback(ClearDataCallback callback) {
+  InitializeAds(std::move(callback));
 }
 
 }  // namespace brave_ads

@@ -322,6 +322,7 @@ extension BrowserViewController: TopToolbarDelegate {
       "local-state",
       "version",
       "skus-internals",
+      "ads-internals",
     ]
     guard let host = url.host, supportedPages.contains(host) else {
       return false
