@@ -75,7 +75,8 @@ enum class EntryPoint {
   kToolbarButton = 3,
   kMenuItem = 4,
   kOmniboxCommand = 5,
-  kMaxValue = kOmniboxCommand
+  kBraveSearch = 6,
+  kMaxValue = kBraveSearch
 };
 
 enum class ContextMenuAction {
