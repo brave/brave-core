@@ -50,6 +50,7 @@ import {
 import {
   EditTokenModal //
 } from '../popup-modals/edit_token_modal/edit_token_modal'
+import { ShieldedLabel } from '../../shared/shielded_label/shielded_label'
 
 // Styled Components
 import {
@@ -246,13 +247,19 @@ export const PortfolioAssetItem = ({
                     </>
                   ) : (
                     <>
-                      <AssetName
-                        textSize='14px'
-                        isBold={true}
-                        textAlign='left'
+                      <Row
+                        width='unset'
+                        gap='6px'
                       >
-                        {token.name}
-                      </AssetName>
+                        <AssetName
+                          textSize='14px'
+                          isBold={true}
+                          textAlign='left'
+                        >
+                          {token.isShielded ? 'Zcash' : token.name}
+                        </AssetName>
+                        {token.isShielded && <ShieldedLabel />}
+                      </Row>
                       <NetworkDescriptionText
                         textSize='12px'
                         isBold={false}

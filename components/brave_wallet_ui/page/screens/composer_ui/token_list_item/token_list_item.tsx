@@ -30,6 +30,9 @@ import { NftIcon } from '../../../../components/shared/nft-icon/nft-icon'
 import {
   LoadingSkeleton //
 } from '../../../../components/shared/loading-skeleton/index'
+import {
+  ShieldedLabel //
+} from '../../../../components/shared/shielded_label/shielded_label'
 
 // Styled Components
 import {
@@ -54,7 +57,6 @@ import {
 import {
   Column,
   Row,
-  HorizontalSpace,
   VerticalSpace,
   Text
 } from '../../../../components/shared/style'
@@ -109,6 +111,9 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
           ? `#${reduceInt(new Amount(token.tokenId).format())}`
           : ''
         return `${token.name || token.symbol} ${id}`
+      }
+      if (token.isShielded) {
+        return 'Zcash'
       }
       return token.name || token.symbol
     }, [token])
@@ -193,6 +198,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   justifyContent='flex-start'
                   width='100%'
                   padding='0px 8px 0px 0px'
+                  gap='6px'
                 >
                   <TokenNameText
                     textSize='14px'
@@ -202,11 +208,9 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   >
                     {tokenDisplayName}
                   </TokenNameText>
+                  {token.isShielded && <ShieldedLabel />}
                   {disabledText && (
-                    <>
-                      <HorizontalSpace space='8px' />
-                      <DisabledLabel>{getLocale(disabledText)}</DisabledLabel>
-                    </>
+                    <DisabledLabel>{getLocale(disabledText)}</DisabledLabel>
                   )}
                 </TokenNameRow>
                 <TokenBalanceText
