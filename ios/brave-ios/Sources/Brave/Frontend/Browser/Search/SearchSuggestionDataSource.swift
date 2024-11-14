@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AIChat
+import BraveCore
 import BraveUI
 import Foundation
 import Preferences
@@ -84,7 +85,9 @@ class SearchSuggestionDataSource {
       sections.append(.openTabsAndHistoryAndBookmarks)
     }
 
-    if !tabType.isPrivate && Preferences.AIChat.autocompleteSuggestionsEnabled.value {
+    if !tabType.isPrivate && Preferences.AIChat.autocompleteSuggestionsEnabled.value
+      && FeatureList.kAIChat.enabled
+    {
       sections.append(.aiChat)
     }
 
