@@ -112,10 +112,6 @@ public class QuickSearchEnginesFragment extends BravePreferenceFragment
                     && mQuickSearchEnginesAdapter.getQuickSearchEngines().size() > 0) {
                 Map<String, QuickSearchEnginesModel> searchEnginesMap =
                         new LinkedHashMap<String, QuickSearchEnginesModel>();
-                QuickSearchEnginesModel defaultSearchEnginesModel =
-                        QuickSearchEnginesUtil.getDefaultSearchEngine(getProfile());
-                searchEnginesMap.put(
-                        defaultSearchEnginesModel.getKeyword(), defaultSearchEnginesModel);
                 for (QuickSearchEnginesModel quickSearchEnginesModel :
                         mQuickSearchEnginesAdapter.getQuickSearchEngines()) {
                     searchEnginesMap.put(

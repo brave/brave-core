@@ -2602,6 +2602,10 @@ public abstract class BraveActivity extends ChromeActivity
                 new QuickSearchEnginesModel("", "", "", true);
         searchEngines.add(0, leoQuickSearchEnginesModel);
 
+        QuickSearchEnginesModel defaultQuickSearchEnginesModel =
+                QuickSearchEnginesUtil.getDefaultSearchEngine(getCurrentProfile());
+        searchEngines.add(1, defaultQuickSearchEnginesModel);
+
         QuickSearchEnginesViewAdapter adapter =
                 new QuickSearchEnginesViewAdapter(BraveActivity.this, searchEngines, this);
         recyclerView.setAdapter(adapter);
