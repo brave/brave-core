@@ -29,7 +29,7 @@ constexpr char kAddrPattern[] = "addr=([[:alnum:]]{1,128})";
 // Given an origin and an account address, append the account address to the
 // end of the host piece of the origin, then return it as the new origin.
 std::optional<url::Origin> AddAccountToHost(const url::Origin& old_origin,
-                                            const std::string& account) {
+                                            std::string_view account) {
   if (old_origin.opaque() || account.empty()) {
     return std::nullopt;
   }
@@ -167,7 +167,7 @@ bool ParseRequestingOrigin(permissions::RequestType type,
 
 std::optional<url::Origin> GetSubRequestOrigin(permissions::RequestType type,
                                                const url::Origin& old_origin,
-                                               const std::string& account) {
+                                               std::string_view account) {
   if (type != permissions::RequestType::kBraveEthereum &&
       type != permissions::RequestType::kBraveSolana) {
     return std::nullopt;
