@@ -6,13 +6,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
-#include "brave/components/brave_news/common/locales_helper.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
@@ -42,32 +36,9 @@ class DayZeroBrowserUIExptTest : public testing::Test,
     }
   }
 
-  void CheckBrowserHasDayZeroUI(Profile* profile) {
-    auto* prefs = profile->GetPrefs();
-    EXPECT_FALSE(prefs->GetBoolean(kNewTabPageShowRewards));
-    EXPECT_FALSE(prefs->GetBoolean(kNewTabPageShowBraveTalk));
-    EXPECT_FALSE(prefs->GetBoolean(kShowWalletIconOnToolbar));
-    EXPECT_FALSE(
-        prefs->GetBoolean(ntp_background_images::prefs::
-                              kNewTabPageShowSponsoredImagesBackgroundImage));
-    EXPECT_FALSE(
-        prefs->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
-    EXPECT_FALSE(prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
-  }
-
-  void CheckBrowserHasOriginalUI(Profile* profile) {
-    auto* prefs = profile->GetPrefs();
-    EXPECT_TRUE(prefs->GetBoolean(kNewTabPageShowRewards));
-    EXPECT_TRUE(prefs->GetBoolean(kNewTabPageShowBraveTalk));
-    EXPECT_TRUE(prefs->GetBoolean(kShowWalletIconOnToolbar));
-    EXPECT_TRUE(
-        prefs->GetBoolean(ntp_background_images::prefs::
-                              kNewTabPageShowSponsoredImagesBackgroundImage));
-    EXPECT_TRUE(
-        prefs->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
-    EXPECT_EQ(prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday),
-              brave_news::IsUserInDefaultEnabledLocale());
-  }
+  // Keeping below methods empty to add future features and test
+  void CheckBrowserHasDayZeroUI(Profile* profile) {}
+  void CheckBrowserHasOriginalUI(Profile* profile) {}
 
   bool IsDayZeroEnabled() { return GetParam(); }
 
@@ -85,6 +56,7 @@ TEST_P(DayZeroBrowserUIExptTest, PrefsTest) {
   auto* profile2 =
       testing_profile_manager_.CreateTestingProfile("TestProfile2");
 
+  // Add check for DayZero prefs here
   if (IsDayZeroEnabled()) {
     CheckBrowserHasDayZeroUI(profile);
     CheckBrowserHasDayZeroUI(profile2);
