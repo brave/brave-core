@@ -9,7 +9,6 @@ import Toggle from '@brave/leo/react/toggle'
 import Tooltip from '@brave/leo/react/tooltip'
 
 import { formatMessage } from '../../../shared/lib/locale_context'
-import { formatEarningsRange } from '../../lib/formatters'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { AdType } from '../../lib/app_state'
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
@@ -130,18 +129,6 @@ export function AdsSettingsModal(props: Props) {
           </NewTabLink>
         </p>
         <section className='summary'>
-          <div className='row'>
-            <span>
-              {getString('adsSettingsEarningsLabel')}
-            </span>
-            <span className='value'>
-              {
-                formatEarningsRange(
-                    adsInfo.minEarningsThisMonth,
-                    adsInfo.maxEarningsThisMonth)
-              } BAT
-            </span>
-          </div>
           <div className='row'>
             <span>
               {getString('adsSettingsPayoutDateLabel')}

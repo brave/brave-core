@@ -37,10 +37,7 @@ export interface AdsInfo {
   adsEnabled: Record<AdType, boolean>
   adsReceivedThisMonth: number
   adTypesReceivedThisMonth: Record<AdType, number>
-  minEarningsThisMonth: number
-  maxEarningsThisMonth: number
   minEarningsPreviousMonth: number
-  maxEarningsPreviousMonth: number
   nextPaymentDate: number
   notificationAdsPerHour: number
   shouldAllowSubdivisionTargeting: boolean
