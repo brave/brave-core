@@ -860,12 +860,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusAndPermission) {
       base::BindLambdaForTesting(
           [&url, &account_0](const ContentSettingsPattern& primary_pattern,
                              const ContentSettingsPattern& secondary_pattern) {
-            url::Origin new_origin;
-            if (GetSubRequestOrigin(permissions::RequestType::kBraveSolana,
-                                    url::Origin::Create(url),
-                                    account_0->address, &new_origin) &&
-                primary_pattern.Matches(new_origin.GetURL())) {
-              return true;
+            if (auto new_origin = GetSubRequestOrigin(
+                    permissions::RequestType::kBraveSolana,
+                    url::Origin::Create(url), account_0->address)) {
+              return primary_pattern.Matches(new_origin->GetURL());
             }
             return false;
           }));
