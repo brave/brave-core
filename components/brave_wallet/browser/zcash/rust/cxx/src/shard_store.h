@@ -18,54 +18,59 @@ struct ShardTreeCheckpoint;
 struct ShardTreeCap;
 struct ShardTreeCheckpointBundle;
 
-using ShardStoreContext = ::brave_wallet::OrchardShardTreeDelegate;
+using ShardTreeDelegate = ::brave_wallet::OrchardShardTreeDelegate;
 
-ShardStoreStatusCode shard_store_last_shard(const ShardStoreContext& ctx,
+ShardStoreStatusCode shard_store_last_shard(const ShardTreeDelegate& delegate,
                                             ShardTreeShard& into,
                                             uint8_t shard_level);
-ShardStoreStatusCode shard_store_put_shard(ShardStoreContext& ctx,
+ShardStoreStatusCode shard_store_put_shard(ShardTreeDelegate& delegate,
                                            const ShardTreeShard& tree);
-ShardStoreStatusCode shard_store_get_shard(const ShardStoreContext& ctx,
+ShardStoreStatusCode shard_store_get_shard(const ShardTreeDelegate& delegate,
                                            const ShardTreeAddress& addr,
                                            ShardTreeShard& tree);
 ShardStoreStatusCode shard_store_get_shard_roots(
-    const ShardStoreContext& ctx,
+    const ShardTreeDelegate& delegate,
     ::rust::Vec<ShardTreeAddress>& into,
     uint8_t shard_level);
-ShardStoreStatusCode shard_store_truncate(ShardStoreContext& ctx,
+ShardStoreStatusCode shard_store_truncate(ShardTreeDelegate& delegate,
                                           const ShardTreeAddress& address);
-ShardStoreStatusCode shard_store_get_cap(const ShardStoreContext& ctx,
+ShardStoreStatusCode shard_store_get_cap(const ShardTreeDelegate& delegate,
                                          ShardTreeCap& into);
-ShardStoreStatusCode shard_store_put_cap(ShardStoreContext& ctx,
+ShardStoreStatusCode shard_store_put_cap(ShardTreeDelegate& delegate,
                                          const ShardTreeCap& tree);
-ShardStoreStatusCode shard_store_min_checkpoint_id(const ShardStoreContext& ctx,
-                                                   uint32_t& into);
-ShardStoreStatusCode shard_store_max_checkpoint_id(const ShardStoreContext& ctx,
-                                                   uint32_t& into);
+ShardStoreStatusCode shard_store_min_checkpoint_id(
+    const ShardTreeDelegate& delegate,
+    uint32_t& into);
+ShardStoreStatusCode shard_store_max_checkpoint_id(
+    const ShardTreeDelegate& delegate,
+    uint32_t& into);
 ShardStoreStatusCode shard_store_add_checkpoint(
-    ShardStoreContext& ctx,
+    ShardTreeDelegate& delegate,
     uint32_t checkpoint_id,
     const ShardTreeCheckpoint& checkpoint);
-ShardStoreStatusCode shard_store_checkpoint_count(const ShardStoreContext& ctx,
-                                                  size_t& into);
+ShardStoreStatusCode shard_store_checkpoint_count(
+    const ShardTreeDelegate& delegate,
+    size_t& into);
 ShardStoreStatusCode shard_store_get_checkpoint_at_depth(
-    const ShardStoreContext& ctx,
+    const ShardTreeDelegate& delegate,
     size_t depth,
     uint32_t& into_checkpoint_id,
     ShardTreeCheckpoint& into_checpoint);
-ShardStoreStatusCode shard_store_get_checkpoint(const ShardStoreContext& ctx,
-                                                uint32_t checkpoint_id,
-                                                ShardTreeCheckpoint& into);
+ShardStoreStatusCode shard_store_get_checkpoint(
+    const ShardTreeDelegate& delegate,
+    uint32_t checkpoint_id,
+    ShardTreeCheckpoint& into);
 ShardStoreStatusCode shard_store_update_checkpoint(
-    ShardStoreContext& ctx,
+    ShardTreeDelegate& delegate,
     uint32_t checkpoint_id,
     const ShardTreeCheckpoint& checkpoint);
-ShardStoreStatusCode shard_store_remove_checkpoint(ShardStoreContext& ctx,
+ShardStoreStatusCode shard_store_remove_checkpoint(ShardTreeDelegate& delegate,
                                                    uint32_t checkpoint_id);
-ShardStoreStatusCode shard_store_truncate_checkpoint(ShardStoreContext& ctx,
-                                                     uint32_t checkpoint_id);
+ShardStoreStatusCode shard_store_truncate_checkpoint(
+    ShardTreeDelegate& delegate,
+    uint32_t checkpoint_id);
 ShardStoreStatusCode shard_store_get_checkpoints(
-    const ShardStoreContext& ctx,
+    const ShardTreeDelegate& delegate,
     size_t limit,
     ::rust::Vec<ShardTreeCheckpointBundle>& into);
 

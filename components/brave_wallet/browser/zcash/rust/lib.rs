@@ -65,7 +65,7 @@ use crate::ffi::{
     OrchardCompactAction,
     OrchardOutput,
     OrchardSpend,
-    ShardStoreContext,
+    ShardTreeDelegate,
     ShardStoreStatusCode,
     ShardTreeAddress,
     ShardTreeCap,
@@ -432,11 +432,11 @@ mod ffi {
 
         // Creates shard tree of default orchard height
         fn create_shard_tree(
-            ctx: UniquePtr<ShardStoreContext>
+            delegate: UniquePtr<ShardTreeDelegate>
         ) -> Box<OrchardShardTreeBundleResult>;
         // Creates shard tree of smaller size for testing purposes
         fn create_testing_shard_tree(
-            ctx: UniquePtr<ShardStoreContext>
+            delegate: UniquePtr<ShardTreeDelegate>
         ) -> Box<OrchardTestingShardTreeBundleResult>;
 
         fn insert_commitments(
@@ -468,60 +468,60 @@ mod ffi {
     unsafe extern "C++" {
         include!("brave/components/brave_wallet/browser/zcash/rust/cxx/src/shard_store.h");
 
-        type ShardStoreContext;
+        type ShardTreeDelegate;
 
         fn shard_store_last_shard(
-            ctx: &ShardStoreContext, into: &mut ShardTreeShard, shard_level: u8) -> ShardStoreStatusCode;
+            delegate: &ShardTreeDelegate, into: &mut ShardTreeShard, shard_level: u8) -> ShardStoreStatusCode;
         fn shard_store_get_shard(
-            ctx: &ShardStoreContext,
+            delegate: &ShardTreeDelegate,
             addr: &ShardTreeAddress,
             tree: &mut ShardTreeShard) -> ShardStoreStatusCode;
         fn shard_store_put_shard(
-            ctx: Pin<&mut ShardStoreContext>,
+            delegate: Pin<&mut ShardTreeDelegate>,
             tree: &ShardTreeShard) -> ShardStoreStatusCode;
         fn shard_store_get_shard_roots(
-            ctx: &ShardStoreContext, into: &mut Vec<ShardTreeAddress>, shard_level: u8) -> ShardStoreStatusCode;
+            delegate: &ShardTreeDelegate, into: &mut Vec<ShardTreeAddress>, shard_level: u8) -> ShardStoreStatusCode;
         fn shard_store_truncate(
-            ctx: Pin<&mut ShardStoreContext>,
+            delegate: Pin<&mut ShardTreeDelegate>,
             address: &ShardTreeAddress) -> ShardStoreStatusCode;
         fn shard_store_get_cap(
-            ctx: &ShardStoreContext,
+            delegate: &ShardTreeDelegate,
             into: &mut ShardTreeCap) -> ShardStoreStatusCode;
         fn shard_store_put_cap(
-            ctx: Pin<&mut ShardStoreContext>,
+            delegate: Pin<&mut ShardTreeDelegate>,
             tree: &ShardTreeCap) -> ShardStoreStatusCode;
         fn shard_store_min_checkpoint_id(
-            ctx: &ShardStoreContext, into: &mut u32) -> ShardStoreStatusCode;
+            delegate: &ShardTreeDelegate, into: &mut u32) -> ShardStoreStatusCode;
         fn shard_store_max_checkpoint_id(
-            ctx: &ShardStoreContext, into: &mut u32) -> ShardStoreStatusCode;
+            delegate: &ShardTreeDelegate, into: &mut u32) -> ShardStoreStatusCode;
         fn shard_store_add_checkpoint(
-            ctx: Pin<&mut ShardStoreContext>,
+            delegate: Pin<&mut ShardTreeDelegate>,
             checkpoint_id: u32,
             checkpoint: &ShardTreeCheckpoint) -> ShardStoreStatusCode;
         fn shard_store_update_checkpoint(
-            ctx: Pin<&mut ShardStoreContext>,
+            delegate: Pin<&mut ShardTreeDelegate>,
             checkpoint_id: u32,
             checkpoint: &ShardTreeCheckpoint) -> ShardStoreStatusCode;
         fn shard_store_checkpoint_count(
-            ctx: &ShardStoreContext,
+            delegate: &ShardTreeDelegate,
             into: &mut usize) -> ShardStoreStatusCode;
         fn shard_store_get_checkpoint_at_depth(
-            ctx: &ShardStoreContext,
+            delegate: &ShardTreeDelegate,
             depth: usize,
             into_checkpoint_id: &mut u32,
             into_checkpoint: &mut ShardTreeCheckpoint) -> ShardStoreStatusCode;
         fn shard_store_get_checkpoint(
-            ctx: &ShardStoreContext,
+            delegate: &ShardTreeDelegate,
             checkpoint_id: u32,
             into: &mut ShardTreeCheckpoint) -> ShardStoreStatusCode;
         fn shard_store_remove_checkpoint(
-            ctx: Pin<&mut ShardStoreContext>,
+            delegate: Pin<&mut ShardTreeDelegate>,
             checkpoint_id: u32) -> ShardStoreStatusCode;
         fn shard_store_truncate_checkpoint(
-            ctx: Pin<&mut ShardStoreContext>,
+            delegate: Pin<&mut ShardTreeDelegate>,
             checkpoint_id: u32) -> ShardStoreStatusCode;
         fn shard_store_get_checkpoints(
-            ctx: &ShardStoreContext,
+            delegate: &ShardTreeDelegate,
             limit: usize,
             into: &mut Vec<ShardTreeCheckpointBundle>) -> ShardStoreStatusCode;
     }
@@ -1163,7 +1163,7 @@ impl OrchardWitnessBundle {
 
 #[derive(Clone)]
 pub struct CxxShardStoreImpl<H, const SHARD_HEIGHT: u8>  {
-    native_context: Rc<RefCell<UniquePtr<ShardStoreContext>>>,
+    native_context: Rc<RefCell<UniquePtr<ShardTreeDelegate>>>,
     _hash_type: PhantomData<H>,
 }
 
@@ -1291,9 +1291,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         &self,
         addr: Address,
     ) -> Result<Option<LocatedPrunableTree<Self::H>>, Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut into = ShardTreeShard::default();
-        let result = shard_store_get_shard(&*ctx.try_borrow().unwrap(),
+        let result = shard_store_get_shard(&*delegate.try_borrow().unwrap(),
             &ShardTreeAddress::try_from(&addr).map_err(|_| Error::ShardStoreError)?,
             &mut into);
         if result == ShardStoreStatusCode::Ok {
@@ -1307,10 +1307,10 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn last_shard(&self) -> Result<Option<LocatedPrunableTree<Self::H>>, Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut into = ShardTreeShard::default();
         let result =
-            shard_store_last_shard(&*ctx.try_borrow().unwrap(), &mut into, SHARD_HEIGHT);
+            shard_store_last_shard(&*delegate.try_borrow().unwrap(), &mut into, SHARD_HEIGHT);
         if result == ShardStoreStatusCode::Ok {
             let tree = LocatedPrunableTree::<H>::try_from(&into)?;
             return Ok(Some(tree));
@@ -1322,10 +1322,10 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn put_shard(&mut self, subtree: LocatedPrunableTree<Self::H>) -> Result<(), Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let shard = ShardTreeShard::try_from(&subtree).map_err(|_| Error::ShardStoreError)?;
         let result =
-            shard_store_put_shard(ctx.try_borrow_mut().unwrap().pin_mut(), &shard);
+            shard_store_put_shard(delegate.try_borrow_mut().unwrap().pin_mut(), &shard);
         if result == ShardStoreStatusCode::Ok {
           return Ok(());
         }
@@ -1333,9 +1333,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn get_shard_roots(&self) -> Result<Vec<Address>, Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut input : Vec<ShardTreeAddress> = vec![];
-        let result = shard_store_get_shard_roots(&*ctx.try_borrow().unwrap(), &mut input, SHARD_HEIGHT);
+        let result = shard_store_get_shard_roots(&*delegate.try_borrow().unwrap(), &mut input, SHARD_HEIGHT);
         if result == ShardStoreStatusCode::Ok {
           return Ok(input.into_iter().map(|res| {
             Address::from_parts(res.level.into(), res.index.into())
@@ -1348,9 +1348,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn truncate(&mut self, from: Address) -> Result<(), Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let result =
-            shard_store_truncate(ctx.try_borrow_mut().unwrap().pin_mut(),
+            shard_store_truncate(delegate.try_borrow_mut().unwrap().pin_mut(),
           &ShardTreeAddress::try_from(&from).map_err(|_| Error::ShardStoreError)?);
         if result == ShardStoreStatusCode::Ok || result == ShardStoreStatusCode::None {
           return Ok(());
@@ -1360,10 +1360,10 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn get_cap(&self) -> Result<PrunableTree<Self::H>, Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut input = ShardTreeCap::default();
         let result =
-            shard_store_get_cap(&*ctx.try_borrow().unwrap(), &mut input);
+            shard_store_get_cap(&*delegate.try_borrow().unwrap(), &mut input);
 
         if result == ShardStoreStatusCode::Ok {
             let tree = PrunableTree::<H>::try_from(&input)?;
@@ -1377,12 +1377,12 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn put_cap(&mut self, cap: PrunableTree<Self::H>) -> Result<(), Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut result_cap = ShardTreeCap::default();
         write_shard(&mut result_cap.data, &cap).map_err(|_| Error::ShardStoreError)?;
 
         let result =
-            shard_store_put_cap(ctx.try_borrow_mut().unwrap().pin_mut(), &result_cap);
+            shard_store_put_cap(delegate.try_borrow_mut().unwrap().pin_mut(), &result_cap);
         if result == ShardStoreStatusCode::Ok {
             return Ok(());
         }
@@ -1390,10 +1390,10 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn min_checkpoint_id(&self) -> Result<Option<Self::CheckpointId>, Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut input : u32 = 0;
         let result =
-            shard_store_min_checkpoint_id(&*ctx.try_borrow().unwrap(), &mut input);
+            shard_store_min_checkpoint_id(&*delegate.try_borrow().unwrap(), &mut input);
         if result == ShardStoreStatusCode::Ok {
             return Ok(Some(input.into()));
         } else if result == ShardStoreStatusCode::None {
@@ -1403,9 +1403,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn max_checkpoint_id(&self) -> Result<Option<Self::CheckpointId>, Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut input : u32 = 0;
-        let result = shard_store_max_checkpoint_id(&*ctx.try_borrow().unwrap(), &mut input);
+        let result = shard_store_max_checkpoint_id(&*delegate.try_borrow().unwrap(), &mut input);
         if result == ShardStoreStatusCode::Ok {
             return Ok(Some(input.into()));
         } else if result == ShardStoreStatusCode::None {
@@ -1419,10 +1419,10 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         checkpoint_id: Self::CheckpointId,
         checkpoint: Checkpoint,
     ) -> Result<(), Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let ffi_checkpoint_id : u32 = checkpoint_id.try_into().map_err(|_| Error::ShardStoreError)?;
         let result =
-            shard_store_add_checkpoint(ctx.try_borrow_mut().unwrap().pin_mut(),
+            shard_store_add_checkpoint(delegate.try_borrow_mut().unwrap().pin_mut(),
             ffi_checkpoint_id,
             &ShardTreeCheckpoint::try_from(&checkpoint)?);
         if result == ShardStoreStatusCode::Ok {
@@ -1432,9 +1432,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn checkpoint_count(&self) -> Result<usize, Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut input : usize = 0;
-        let result = shard_store_checkpoint_count(&*ctx.try_borrow().unwrap(), &mut input);
+        let result = shard_store_checkpoint_count(&*delegate.try_borrow().unwrap(), &mut input);
         if result == ShardStoreStatusCode::Ok {
             return Ok(input.into());
         } else if result == ShardStoreStatusCode::None {
@@ -1447,11 +1447,11 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         &self,
         checkpoint_depth: usize,
     ) -> Result<Option<(Self::CheckpointId, Checkpoint)>, Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut input_checkpoint_id : u32 = 0;
         let mut input_checkpoint : ShardTreeCheckpoint = ShardTreeCheckpoint::default();
 
-        let result = shard_store_get_checkpoint_at_depth(&*ctx.try_borrow().unwrap(),
+        let result = shard_store_get_checkpoint_at_depth(&*delegate.try_borrow().unwrap(),
             checkpoint_depth,
             &mut input_checkpoint_id,
             &mut input_checkpoint);
@@ -1468,10 +1468,10 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         &self,
         checkpoint_id: &Self::CheckpointId,
     ) -> Result<Option<Checkpoint>, Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut input_checkpoint : ShardTreeCheckpoint = ShardTreeCheckpoint::default();
 
-        let result = shard_store_get_checkpoint(&*ctx.try_borrow().unwrap(),
+        let result = shard_store_get_checkpoint(&*delegate.try_borrow().unwrap(),
             (*checkpoint_id).into(),
             &mut input_checkpoint);
 
@@ -1487,9 +1487,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     where
         F: FnMut(&Self::CheckpointId, &Checkpoint) -> Result<(), Self::Error>,
     {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut into : Vec<ShardTreeCheckpointBundle> = vec![];
-        let result = shard_store_get_checkpoints(&*ctx.try_borrow().unwrap(), limit, &mut into);
+        let result = shard_store_get_checkpoints(&*delegate.try_borrow().unwrap(), limit, &mut into);
         if result == ShardStoreStatusCode::Ok {
             for item in into {
                 let checkpoint = Checkpoint::from(&item.checkpoint);
@@ -1510,10 +1510,10 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     where
         F: Fn(&mut Checkpoint) -> Result<(), Self::Error>,
     {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let mut input_checkpoint = ShardTreeCheckpoint::default();
         let result_get_checkpoint =
-            shard_store_get_checkpoint(&*ctx.try_borrow().unwrap(), (*checkpoint_id).into(), &mut input_checkpoint);
+            shard_store_get_checkpoint(&*delegate.try_borrow().unwrap(), (*checkpoint_id).into(), &mut input_checkpoint);
         if result_get_checkpoint == ShardStoreStatusCode::Ok {
             return Ok(true);
         } else if result_get_checkpoint == ShardStoreStatusCode::None {
@@ -1524,7 +1524,7 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
 
         update(&mut checkpoint).map_err(|_| Error::ShardStoreError)?;
         let result_update_checkpoint =
-            shard_store_update_checkpoint(ctx.try_borrow_mut().unwrap().pin_mut(),
+            shard_store_update_checkpoint(delegate.try_borrow_mut().unwrap().pin_mut(),
                 (*checkpoint_id).into(), &ShardTreeCheckpoint::try_from(&checkpoint)?);
         if result_update_checkpoint == ShardStoreStatusCode::Ok {
             return Ok(true);
@@ -1535,9 +1535,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn remove_checkpoint(&mut self, checkpoint_id: &Self::CheckpointId) -> Result<(), Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let result =
-            shard_store_remove_checkpoint(ctx.try_borrow_mut().unwrap().pin_mut(), (*checkpoint_id).into());
+            shard_store_remove_checkpoint(delegate.try_borrow_mut().unwrap().pin_mut(), (*checkpoint_id).into());
         if result == ShardStoreStatusCode::Ok {
             return Ok(());
         } else if result == ShardStoreStatusCode::None {
@@ -1550,9 +1550,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         &mut self,
         checkpoint_id: &Self::CheckpointId,
     ) -> Result<(), Self::Error> {
-        let ctx = self.native_context.clone();
+        let delegate = self.native_context.clone();
         let result =
-            shard_store_truncate_checkpoint(ctx.try_borrow_mut().unwrap().pin_mut(), (*checkpoint_id).into());
+            shard_store_truncate_checkpoint(delegate.try_borrow_mut().unwrap().pin_mut(), (*checkpoint_id).into());
         if result == ShardStoreStatusCode::Ok {
             return Ok(());
         } else if result == ShardStoreStatusCode::None {
@@ -1562,7 +1562,7 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 }
 
-fn create_shard_tree(context: UniquePtr<ShardStoreContext>) -> Box<OrchardShardTreeBundleResult> {
+fn create_shard_tree(context: UniquePtr<ShardTreeDelegate>) -> Box<OrchardShardTreeBundleResult> {
     let shard_store = OrchardCxxShardStoreImpl {
         native_context: Rc::new(RefCell::new(context)),
         _hash_type: Default::default()
@@ -1596,7 +1596,7 @@ fn create_mock_decode_result(prior_tree_state: ShardTreeState, commitments: Shar
     })))
 }
 
-fn create_testing_shard_tree(context: UniquePtr<ShardStoreContext>) -> Box<OrchardTestingShardTreeBundleResult> {
+fn create_testing_shard_tree(context: UniquePtr<ShardTreeDelegate>) -> Box<OrchardTestingShardTreeBundleResult> {
     let shard_store = TestingCxxShardStoreImpl {
         native_context: Rc::new(RefCell::new(context)),
         _hash_type: Default::default()
