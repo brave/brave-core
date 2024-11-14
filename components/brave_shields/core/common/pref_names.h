@@ -25,6 +25,8 @@ inline constexpr char kAdBlockRegionalFilters[] =
     "brave.ad_block.regional_filters";
 inline constexpr char kAdBlockListSubscriptions[] =
     "brave.ad_block.list_subscriptions";
+inline constexpr char kAdBlockDeveloperMode[] = "brave.ad_block.developer_mode";
+
 inline constexpr char kFBEmbedControlType[] = "brave.fb_embed_default";
 inline constexpr char kTwitterEmbedControlType[] =
     "brave.twitter_embed_default";

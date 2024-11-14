@@ -22,6 +22,8 @@ import {getTemplate} from './brave_adblock_subpage.html.js'
 
 import { loadTimeData } from '../i18n_setup.js'
 
+import type {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js';
+
 const AdBlockSubpageBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
 class AdBlockSubpage extends AdBlockSubpageBase {
@@ -164,6 +166,17 @@ class AdBlockSubpage extends AdBlockSubpageBase {
 
   isLastAttemptFailed_(item) {
     return item.last_successful_update_attempt !== 0 && item.last_successful_update_attempt === item.last_update_attempt
+  }
+
+  onDeveloperModeChange_(event: Event) {
+    const target = event.target as SettingsToggleButtonElement
+    if (target.checked) {
+      setTimeout(() => {
+        this.browserProxy_.getCustomFilters().then((value) => {
+          this.customFilters_ = value
+        })
+      })
+    }
   }
 }
 

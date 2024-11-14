@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_CUSTOM_RESOURCE_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_CUSTOM_RESOURCE_PROVIDER_H_
 
+#include <memory>
 #include <string>
 
 #include "base/files/file_path.h"
@@ -37,6 +38,8 @@ class AdBlockCustomResourceProvider
       const base::FilePath& storage_root,
       std::unique_ptr<AdBlockResourceProvider> default_resource_provider);
   ~AdBlockCustomResourceProvider() override;
+
+  void EnableDeveloperMode(bool enabled);
 
   void GetCustomResources(GetCallback callback);
   void AddResource(const base::Value& resource, StatusCallback on_complete);
@@ -79,6 +82,7 @@ class AdBlockCustomResourceProvider
 
   std::unique_ptr<AdBlockResourceProvider> default_resource_provider_ = nullptr;
   std::unique_ptr<value_store::ValueStoreFrontend> storage_;
+  bool developer_mode_enabled_ = false;
 
   base::WeakPtrFactory<AdBlockCustomResourceProvider> weak_ptr_factory_{this};
 };

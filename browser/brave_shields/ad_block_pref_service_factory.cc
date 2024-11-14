@@ -11,6 +11,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/ad_block_pref_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/proxy_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -47,7 +48,8 @@ AdBlockPrefServiceFactory::BuildServiceInstanceForBrowserContext(
   Profile* profile = Profile::FromBrowserContext(context);
 
   auto service = std::make_unique<AdBlockPrefService>(
-      g_brave_browser_process->ad_block_service(), profile->GetPrefs());
+      g_brave_browser_process->ad_block_service(), profile->GetPrefs(),
+      g_browser_process->local_state());
 
   auto pref_proxy_config_tracker =
       ProxyServiceFactory::CreatePrefProxyConfigTrackerOfProfile(

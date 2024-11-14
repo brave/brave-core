@@ -128,6 +128,7 @@ class AdBlockService {
   AdBlockCustomFiltersProvider* custom_filters_provider();
   AdBlockCustomResourceProvider* custom_resource_provider();
 
+  void EnableDeveloperMode(bool enabled);
   void EnableTag(const std::string& tag, bool enabled);
   void AddUserCosmeticFilter(const std::string& filter);
 

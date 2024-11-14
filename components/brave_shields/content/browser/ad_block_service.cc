@@ -358,6 +358,15 @@ AdBlockService::AdBlockService(
 
 AdBlockService::~AdBlockService() = default;
 
+void AdBlockService::EnableDeveloperMode(bool enabled) {
+  if (custom_resource_provider()) {
+    custom_resource_provider()->EnableDeveloperMode(enabled);
+  }
+  if (custom_filters_provider()) {
+    custom_filters_provider()->EnableDeveloperMode(enabled);
+  }
+}
+
 void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Tags only need to be modified for the default engine.

@@ -28,6 +28,8 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   AdBlockCustomFiltersProvider& operator=(const AdBlockCustomFiltersProvider&) =
       delete;
 
+  void EnableDeveloperMode(bool enabled);
+
   void AddUserCosmeticFilter(const std::string& filter);
   void CreateSiteExemption(const std::string& host);
 
@@ -43,6 +45,7 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
 
  private:
   const raw_ptr<PrefService> local_state_;
+  bool developer_mode_enabled_ = false;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

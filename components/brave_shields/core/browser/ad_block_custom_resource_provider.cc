@@ -7,6 +7,7 @@
 
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
@@ -15,18 +16,16 @@
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "components/prefs/scoped_user_pref_update.h"
 #include "components/value_store/value_store_factory_impl.h"
 #include "components/value_store/value_store_frontend.h"
 #include "components/value_store/value_store_task_runner.h"
 
 namespace brave_shields {
-using base::Value;
 
 namespace {
-constexpr const char kStorageUMA[] = "Custom Resources";
+constexpr const char kStorageUMA[] = "AdBlock Custom Resources";
 constexpr const base::FilePath::CharType kStorageName[] =
-    FILE_PATH_LITERAL("Custom Resources");
+    FILE_PATH_LITERAL("AdBlock Custom Resources");
 constexpr const char kStorageScriptletsKey[] = "SCRIPTLETS";
 
 constexpr const char kNameField[] = "name";
@@ -129,8 +128,20 @@ AdBlockCustomResourceProvider::~AdBlockCustomResourceProvider() {
   default_resource_provider_->RemoveObserver(this);
 }
 
+void AdBlockCustomResourceProvider::EnableDeveloperMode(bool enabled) {
+  if (developer_mode_enabled_ == enabled) {
+    return;
+  }
+  developer_mode_enabled_ = enabled;
+  ReloadResourcesAndNotify();
+}
+
 void AdBlockCustomResourceProvider::GetCustomResources(
     base::OnceCallback<void(base::Value)> callback) {
+  if (!developer_mode_enabled_) {
+    return std::move(callback).Run(base::Value(base::Value::Type::LIST));
+  }
+
   storage_->Get(
       kStorageScriptletsKey,
       base::BindOnce(

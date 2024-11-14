@@ -35,7 +35,8 @@ std::string GetTagFromPrefName(const std::string& pref_name) {
 }  // namespace
 
 AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
-                                       PrefService* prefs)
+                                       PrefService* prefs,
+                                       PrefService* local_state)
     : ad_block_service_(ad_block_service), prefs_(prefs) {
   pref_change_registrar_.reset(new PrefChangeRegistrar());
   pref_change_registrar_->Init(prefs_);
@@ -56,6 +57,17 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
   OnPreferenceChanged(prefs::kFBEmbedControlType);
   OnPreferenceChanged(prefs::kTwitterEmbedControlType);
   OnPreferenceChanged(prefs::kLinkedInEmbedControlType);
+
+  if (!prefs->HasPrefPath(prefs::kAdBlockDeveloperMode)) {
+    const std::string& custom_filters =
+        local_state->GetString(prefs::kAdBlockCustomFilters);
+    prefs->SetBoolean(prefs::kAdBlockDeveloperMode, !custom_filters.empty());
+  }
+  pref_change_registrar_->Add(
+      prefs::kAdBlockDeveloperMode,
+      base::BindRepeating(&AdBlockPrefService::OnDeveloperModeChanged,
+                          base::Unretained(this)));
+  OnDeveloperModeChanged();
 }
 
 AdBlockPrefService::~AdBlockPrefService() = default;
@@ -108,6 +120,11 @@ void AdBlockPrefService::OnPreferenceChanged(const std::string& pref_name) {
   }
   bool enabled = prefs_->GetBoolean(pref_name);
   ad_block_service_->EnableTag(tag, enabled);
+}
+
+void AdBlockPrefService::OnDeveloperModeChanged() {
+  const bool enabled = prefs_->GetBoolean(prefs::kAdBlockDeveloperMode);
+  ad_block_service_->EnableDeveloperMode(enabled);
 }
 
 void AdBlockPrefService::OnProxyConfigChanged(

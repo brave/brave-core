@@ -577,6 +577,12 @@
   <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_INPUT_PLACEHOLDER" desc="A placeholder label for the input form to allow the user to filter from a list of content filters">
     Filter lists
   </message>
+  <message name="IDS_BRAVE_ADBLOCK_DEVELOPER_MODE_LABEL" desc="Label for custom scriptlets lists section">
+    Developer mode
+  </message>
+  <message name="IDS_BRAVE_ADBLOCK_DEVELOPER_MODE_DESC" desc="Label for custom scriptlets lists section">
+    Allows to add custom filtering rules and scriptlets
+  </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS_LIST_LABEL" desc="Label for custom scriptlets lists section">
     Custom scriptlets
   </message>

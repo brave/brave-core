@@ -17,6 +17,10 @@ bool IsMemoryAllocatorDumpNameInAllowlist(const std::string& name) {
           "extensions/value_store/Extensions.Database.Open.BraveWallet/")) {
     return true;
   }
+  if (name.starts_with("extensions/value_store/"
+                       "Extensions.Database.Open.AdBlock Custom Resources/")) {
+    return true;
+  }
   return IsMemoryAllocatorDumpNameInAllowlist_ChromiumImpl(name);
 }
 

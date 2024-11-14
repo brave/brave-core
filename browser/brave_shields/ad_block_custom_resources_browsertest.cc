@@ -165,6 +165,8 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
 };
 
 IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
+  EnableDeveloperMode(true);
+
   NavigateToURL(GURL("brave://settings/shields/filters"));
 
   constexpr const char kContent[] = "window.test = 'custom-script'";
@@ -206,6 +208,8 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
 }
 
 IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, ExecCustomScriptlet) {
+  EnableDeveloperMode(true);
+
   NavigateToURL(GURL("brave://settings/shields/filters"));
 
   constexpr const char kContent[] = "window.test = 'custom-script'";
@@ -223,6 +227,8 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, ExecCustomScriptlet) {
 }
 
 IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
+  EnableDeveloperMode(true);
+
   constexpr const char kBraveFix[] = "window.test = 'default-script'";
   constexpr const char kBraveFixResource[] = R"json(
     [{
