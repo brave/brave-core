@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 
+#include <string>
+
 #include "brave/components/ai_chat/core/common/features.h"
 #include "base/numerics/safe_math.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -90,14 +92,20 @@ bool ModelValidator::HasValidContextSize(
 }
 
 // Static
-bool ModelValidator::IsValidEndpoint(const GURL& endpoint) {
+bool ModelValidator::IsValidEndpoint(const GURL& endpoint,
+                                     bool check_as_private_ip) {
   // HTTPS and localhost URLs are always allowed.
   if (net::IsHTTPSOrLocalhostURL(endpoint)) {
     return true;
   }
 
+  // Scheme should be HTTP or HTTPS
+  if (!endpoint.SchemeIsHTTPOrHTTPS()) {
+    return false;
+  }
+
   // If enabled, we'll permit certain private endpoints.
-  if (ai_chat::features::IsAllowPrivateIPsEnabled()) {
+  if (ai_chat::features::IsAllowPrivateIPsEnabled() || check_as_private_ip) {
     VLOG(2) << "Evaluating private endpoint for model";
     // If the endpoint is a private hostname, we will allow it.
     return IsValidPrivateHost(endpoint) || IsValidPrivateIPAddress(endpoint);

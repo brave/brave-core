@@ -43,6 +43,7 @@ class BraveLeoAssistantHandler : public settings::SettingsPageUIHandler,
 
   void NotifyChatUiChanged(const bool& isLeoVisible);
 
+  void HandleValidateModelEndpoint(const base::Value::List& args);
   void HandleToggleLeoIcon(const base::Value::List& args);
   void HandleGetLeoIconVisibility(const base::Value::List& args);
   void HandleResetLeoData(const base::Value::List& args);

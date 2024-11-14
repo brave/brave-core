@@ -17,6 +17,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -86,6 +87,11 @@ void BraveLeoAssistantHandler::RegisterMessages() {
       "resetLeoData",
       base::BindRepeating(&BraveLeoAssistantHandler::HandleResetLeoData,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "validateModelEndpoint",
+      base::BindRepeating(
+          &BraveLeoAssistantHandler::HandleValidateModelEndpoint,
+          base::Unretained(this)));
 }
 
 void BraveLeoAssistantHandler::OnJavascriptAllowed() {
@@ -129,6 +135,22 @@ void BraveLeoAssistantHandler::HandleToggleLeoIcon(
   if (!ShowLeoAssistantIconVisibleIfNot(service)) {
     HideLeoAssistantIconIfNot(service);
   }
+}
+
+void BraveLeoAssistantHandler::HandleValidateModelEndpoint(
+    const base::Value::List& args) {
+  AllowJavascript();
+
+  const base::Value::Dict& dict = args[1].GetDict();
+  GURL endpoint(*dict.FindString("url"));
+
+  base::Value::Dict response;
+
+  response.Set("isValid", ai_chat::ModelValidator::IsValidEndpoint(endpoint));
+  response.Set("isValidAsPrivateIp",
+               ai_chat::ModelValidator::IsValidEndpoint(endpoint, true));
+
+  ResolveJavascriptCallback(args[0], response);
 }
 
 void BraveLeoAssistantHandler::HandleGetLeoIconVisibility(

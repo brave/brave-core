@@ -6,6 +6,7 @@
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
+import { sendWithPromise } from 'chrome://resources/js/cr.js'
 import type { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
@@ -157,20 +158,28 @@ export class ModelConfigUI extends ModelConfigUIBase {
   }
 
   onModelServerEndpointChange_(e: any) {
-    this.endpointUrl = e.target.value
+    const target = e.target as HTMLInputElement
+    const url = target.value
+    this.endpointUrl = url
 
-    // We need to check if the URL is valid because sending bad URL will cause
-    // renderer to crash. This is mainly due to mojo IPC not being able to
-    // handle bad URLs properly for |mojomUrl| type
-    try {
-      new URL(e.target.value)
-      this.isUrlInvalid = false
-    } catch {
-      this.isUrlInvalid = true
-      this.invalidUrlErrorMessage = this.i18n(
-        'braveLeoAssistantEndpointInvalidError'
-      )
-    }
+    sendWithPromise('validateModelEndpoint', { url })
+      .then(({ isValid, isValidAsPrivateIp }) => {
+        if (isValid) {
+          // URL Is valid
+          this.isUrlInvalid = false
+          this.invalidUrlErrorMessage = ''
+        } else if (isValidAsPrivateIp) {
+          // URL would be valid as a private IP; inform the user
+          this.isUrlInvalid = true
+          this.invalidUrlErrorMessage =
+            this.i18n('braveLeoAssistantEndpointValidAsPrivateIp')
+        } else {
+          // URL is invalid
+          this.isUrlInvalid = true
+          this.invalidUrlErrorMessage =
+            this.i18n('braveLeoAssistantEndpointInvalidError')
+        }
+      })
   }
 
   onModelApiKeyChange_(e: any) {
