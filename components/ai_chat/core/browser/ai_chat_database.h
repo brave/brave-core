@@ -54,6 +54,7 @@ class AIChatDatabase {
   bool AddConversationEntry(
       std::string_view conversation_uuid,
       mojom::ConversationTurnPtr entry,
+      std::optional<std::string_view> model_key = std::nullopt,
       std::optional<std::string> editing_id = std::nullopt);
 
   // Updates the title of the conversation with the provided UUID

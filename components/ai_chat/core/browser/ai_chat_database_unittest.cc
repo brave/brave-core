@@ -135,7 +135,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
                   std::nullopt, std::nullopt, 0, false, false);
     mojom::ConversationPtr metadata =
         mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
-                                 std::move(associated_content));
+                                 std::nullopt, std::move(associated_content));
 
     // Persist the first entry (and get the response ready)
     auto history = CreateSampleChatHistory(1u);
@@ -167,7 +167,10 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
 
     // Add another pair of entries
     auto next_history = CreateSampleChatHistory(1u, 1);
-    EXPECT_TRUE(db_->AddConversationEntry(uuid, next_history[0]->Clone()));
+    // Change the model this time
+    std::string new_model_key = "model-2";
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, next_history[0]->Clone(),
+                                          new_model_key));
     EXPECT_TRUE(db_->AddConversationEntry(uuid, next_history[1]->Clone()));
 
     // Verify all entries are returned
@@ -176,6 +179,12 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
       history.push_back(std::move(entry));
     }
     ExpectConversationHistoryEquals(FROM_HERE, result_2->entries, history);
+
+    // Verify metadata now has new model key
+    conversations = db_->GetAllConversations();
+    EXPECT_EQ(conversations.size(), has_content ? 1u : 2u);
+    ExpectConversationEquals(
+        FROM_HERE, has_content ? conversations[0] : conversations[1], metadata);
 
     // Edits (delete, re-add and check edit re-construction)
 
@@ -255,7 +264,7 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
         base::StrCat({"for_conversation_title_", initial_title});
     const std::string updated_title = "updated title";
     mojom::ConversationPtr metadata = mojom::Conversation::New(
-        uuid, initial_title, base::Time::Now(), true,
+        uuid, initial_title, base::Time::Now(), true, std::nullopt,
         mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
                              std::nullopt, std::nullopt, std::nullopt, 0, false,
                              false));
@@ -287,7 +296,7 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   std::string content_uuid = "content_uuid";
   GURL page_url = GURL("https://example.com/page");
   mojom::ConversationPtr metadata = mojom::Conversation::New(
-      uuid, "title", base::Time::Now() - base::Hours(2), true,
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New(content_uuid, mojom::ContentType::PageContent,
                            "page title", page_url.host(), page_url, 62, true,
                            true));
@@ -330,7 +339,7 @@ TEST_P(AIChatDatabaseTest, DeleteAllData) {
   std::string uuid = "first";
   GURL page_url = GURL("https://example.com/page");
   mojom::ConversationPtr metadata = mojom::Conversation::New(
-      uuid, "title", base::Time::Now() - base::Hours(2), true,
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
                            std::nullopt, std::nullopt, std::nullopt, 0, false,
                            false));
@@ -369,12 +378,12 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   // The times in the Conversation are irrelevant, only the times of the entries
   // are persisted.
   mojom::ConversationPtr metadata_first = mojom::Conversation::New(
-      "first", "title", base::Time::Now() - base::Hours(2), true,
+      "first", "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New("first-content", mojom::ContentType::PageContent,
                            "page title", page_url.host(), page_url, 62, true,
                            true));
   mojom::ConversationPtr metadata_second = mojom::Conversation::New(
-      "second", "title", base::Time::Now() - base::Hours(1), true,
+      "second", "title", base::Time::Now() - base::Hours(1), true, "model-2",
       mojom::SiteInfo::New("second-content", mojom::ContentType::PageContent,
                            "page title", page_url.host(), page_url, 62, true,
                            true));

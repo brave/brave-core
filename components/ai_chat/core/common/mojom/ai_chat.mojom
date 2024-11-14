@@ -109,6 +109,8 @@ struct Conversation {
   mojo_base.mojom.Time updated_time;
   // If there are entries and the conversation should be selectable
   bool has_content;
+  // Model key, if different than default
+  string? model_key;
 
   SiteInfo associated_content;
 };

@@ -213,8 +213,10 @@ ConversationHandler::ConversationHandler(
       &ConversationHandler::OnConversationUIConnectionChanged,
       weak_ptr_factory_.GetWeakPtr()));
   models_observer_.Observe(model_service_.get());
-  // TODO(petemill): differ based on premium status, if different
-  ChangeModel(model_service->GetDefaultModelKey());
+
+  ChangeModel(conversation->model_key.value_or("").empty()
+                  ? model_service->GetDefaultModelKey()
+                  : conversation->model_key.value());
 
   if (initial_state.has_value() && !initial_state.value()->entries.empty()) {
     // We only support single associated content for now
@@ -350,6 +352,13 @@ void ConversationHandler::InitEngine() {
   // Model's key might not be the same as what we asked for (e.g. if the model
   // no longer exists).
   model_key_ = model->key;
+
+  // Update Conversation metadata's model key
+  if (model_key_ != model_service_->GetDefaultModelKey()) {
+    metadata_->model_key = model_key_;
+  } else {
+    metadata_->model_key = std::nullopt;
+  }
 
   engine_ = model_service_->GetEngineForModel(model_key_, url_loader_factory_,
                                               credential_manager_);

@@ -24,9 +24,9 @@ namespace {
 // These database versions should roll together unless we develop migrations.
 // Lowest version we support migrations from - existing database will be deleted
 // if lower.
-constexpr int kLowestSupportedDatabaseVersion = 2;
+constexpr int kLowestSupportedDatabaseVersion = 1;
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 2;
+constexpr int kCurrentDatabaseVersion = 1;
 
 constexpr char kSearchQueriesSeparator[] = "|||";
 
@@ -36,6 +36,16 @@ std::optional<std::string> GetOptionalString(sql::Statement& statement,
     return std::nullopt;
   }
   return std::make_optional(statement.ColumnString(index));
+}
+
+void BindOptionalString(sql::Statement& statement,
+                        int index,
+                        const std::optional<std::string>& value) {
+  if (value.has_value() && !value.value().empty()) {
+    statement.BindString(index, value.value());
+  } else {
+    statement.BindNull(index);
+  }
 }
 
 }  // namespace
@@ -107,7 +117,8 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
   // All conversation metadata, associated content and most
   // and most recent entry date. 1 row for each associated content.
   static constexpr char kQuery[] =
-      "SELECT conversation.uuid, conversation.title, last_activity_date.date,"
+      "SELECT conversation.uuid, conversation.title, conversation.model_key,"
+      "  last_activity_date.date,"
       "  associated_content.uuid, associated_content.title,"
       "  associated_content.url, associated_content.content_type,"
       "  associated_content.content_used_percentage,"
@@ -142,31 +153,33 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
         conversation_list.emplace_back(std::move(conversation));
       }
     }
+    auto index = 1;
     conversation = mojom::Conversation::New();
     conversation->uuid = uuid;
     conversation->title =
-        DecryptOptionalColumnToString(statement, 1).value_or("");
-    conversation->updated_time = statement.ColumnTime(2);
+        DecryptOptionalColumnToString(statement, index++).value_or("");
+    conversation->model_key = GetOptionalString(statement, index++);
+    conversation->updated_time = statement.ColumnTime(index++);
     conversation->has_content = true;
 
     conversation->associated_content = mojom::SiteInfo::New();
 
-    if (statement.GetColumnType(3) != sql::ColumnType::kNull) {
+    if (statement.GetColumnType(index) != sql::ColumnType::kNull) {
       DVLOG(1) << __func__ << " got associated content";
 
-      conversation->associated_content->uuid = statement.ColumnString(3);
+      conversation->associated_content->uuid = statement.ColumnString(index++);
       conversation->associated_content->title =
-          DecryptOptionalColumnToString(statement, 4);
-      auto url_raw = DecryptOptionalColumnToString(statement, 5);
+          DecryptOptionalColumnToString(statement, index++);
+      auto url_raw = DecryptOptionalColumnToString(statement, index++);
       if (url_raw.has_value()) {
         conversation->associated_content->url = GURL(url_raw.value());
       }
       conversation->associated_content->content_type =
-          static_cast<mojom::ContentType>(statement.ColumnInt(6));
+          static_cast<mojom::ContentType>(statement.ColumnInt(index++));
       conversation->associated_content->content_used_percentage =
-          statement.ColumnInt(7);
+          statement.ColumnInt(index++);
       conversation->associated_content->is_content_refined =
-          statement.ColumnBool(8);
+          statement.ColumnBool(index++);
       conversation->associated_content->is_content_association_possible = true;
     } else {
       conversation->associated_content->is_content_association_possible = false;
@@ -358,21 +371,16 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
   }
 
   static constexpr char kInsertConversationQuery[] =
-      "INSERT INTO conversation(uuid, title) "
-      "VALUES(?, ?)";
+      "INSERT INTO conversation(uuid, title, model_key) "
+      "VALUES(?, ?, ?)";
   sql::Statement statement(
       GetDB().GetUniqueStatement(kInsertConversationQuery));
   CHECK(statement.is_valid());
 
   statement.BindString(0, conversation->uuid);
 
-  if (conversation->title.empty()) {
-    statement.BindNull(1);
-  } else {
-    if (!BindAndEncryptString(statement, 1, conversation->title)) {
-      return false;
-    }
-  }
+  BindAndEncryptOptionalString(statement, 1, conversation->title);
+  BindOptionalString(statement, 2, conversation->model_key);
 
   if (!statement.Run()) {
     DVLOG(0) << "Failed to execute 'conversation' insert statement: "
@@ -485,6 +493,7 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
 bool AIChatDatabase::AddConversationEntry(
     std::string_view conversation_uuid,
     mojom::ConversationTurnPtr entry,
+    std::optional<std::string_view> model_key,
     std::optional<std::string> editing_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(!conversation_uuid.empty());
@@ -493,23 +502,49 @@ bool AIChatDatabase::AddConversationEntry(
     return false;
   }
 
-  // Verify the conversation exists
+  // Verify the conversation exists and get existing model key. We don't
+  // want to add orphan conversation entries when the conversation doesn't
+  // exist.
   static constexpr char kGetConversationIdQuery[] =
-      "SELECT uuid FROM conversation WHERE uuid=?";
-  sql::Statement get_conversation_id_statement(
+      "SELECT model_key FROM conversation WHERE uuid=?";
+  sql::Statement get_conversation_model_statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE, kGetConversationIdQuery));
-  CHECK(get_conversation_id_statement.is_valid());
-  get_conversation_id_statement.BindString(0, conversation_uuid);
-  if (!get_conversation_id_statement.Step()) {
+  CHECK(get_conversation_model_statement.is_valid());
+  get_conversation_model_statement.BindString(0, conversation_uuid);
+  if (!get_conversation_model_statement.Step()) {
     DVLOG(0) << "ID not found in 'conversation' table";
     return false;
   }
+  auto existing_model_key =
+      GetOptionalString(get_conversation_model_statement, 0);
 
   sql::Transaction transaction(&GetDB());
   CHECK(GetDB().is_open());
   if (!transaction.Begin()) {
     DVLOG(0) << "Transaction cannot begin";
     return false;
+  }
+
+  bool has_valid_new_model_key = !model_key.value_or("").empty();
+  bool should_update_model = (
+      // Clear existing
+      (!has_valid_new_model_key && existing_model_key.has_value()) ||
+      // Change or add existing
+      (has_valid_new_model_key &&
+       (existing_model_key.value_or("") != model_key.value())));
+  if (should_update_model) {
+    // Update model key if neccessary
+    static constexpr char kUpdateModelKeyQuery[] =
+        "UPDATE conversation SET model_key=? WHERE uuid=?";
+    sql::Statement update_model_key_statement(
+        GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateModelKeyQuery));
+    update_model_key_statement.BindString(1, conversation_uuid);
+    if (has_valid_new_model_key) {
+      update_model_key_statement.BindString(0, model_key.value());
+    } else {
+      update_model_key_statement.BindNull(0);
+    }
+    update_model_key_statement.Run();
   }
 
   sql::Statement insert_conversation_entry_statement;
@@ -604,7 +639,7 @@ bool AIChatDatabase::AddConversationEntry(
 
   if (entry->edits.has_value()) {
     for (auto& edit : entry->edits.value()) {
-      if (!AddConversationEntry(conversation_uuid, std::move(edit),
+      if (!AddConversationEntry(conversation_uuid, std::move(edit), model_key,
                                 entry->uuid.value())) {
         return false;
       }
@@ -927,7 +962,8 @@ bool AIChatDatabase::CreateSchema() {
       "CREATE TABLE IF NOT EXISTS conversation("
       "uuid TEXT PRIMARY KEY NOT NULL,"
       // Encrypted conversation title string
-      "title BLOB)";
+      "title BLOB,"
+      "model_key TEXT)";
   CHECK(GetDB().IsSQLValid(kCreateConversationTableQuery));
   if (!GetDB().Execute(kCreateConversationTableQuery)) {
     return false;

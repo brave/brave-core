@@ -210,8 +210,9 @@ class ConversationHandlerUnitTest : public testing::Test {
     mojom::SiteInfoPtr non_content = mojom::SiteInfo::New(
         std::nullopt, mojom::ContentType::PageContent, std::nullopt,
         std::nullopt, std::nullopt, 0, false, false);
-    conversation_ = mojom::Conversation::New("uuid", "title", base::Time::Now(),
-                                             false, std::move(non_content));
+    conversation_ =
+        mojom::Conversation::New("uuid", "title", base::Time::Now(), false,
+                                 std::nullopt, std::move(non_content));
 
     conversation_handler_ = std::make_unique<ConversationHandler>(
         conversation_.get(), ai_chat_service_.get(), model_service_.get(),

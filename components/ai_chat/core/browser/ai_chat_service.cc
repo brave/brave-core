@@ -148,7 +148,7 @@ ConversationHandler* AIChatService::CreateConversation() {
   // Create the conversation metadata
   {
     mojom::ConversationPtr conversation = mojom::Conversation::New(
-        conversation_uuid, "", base::Time::Now(), false,
+        conversation_uuid, "", base::Time::Now(), false, std::nullopt,
         mojom::SiteInfo::New(base::Uuid::GenerateRandomV4().AsLowercaseString(),
                              mojom::ContentType::PageContent, std::nullopt,
                              std::nullopt, std::nullopt, 0, false, false));
@@ -741,7 +741,7 @@ void AIChatService::HandleNewEntry(
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversationEntry))
         .WithArgs(handler->get_conversation_uuid(), entry.Clone(),
-                  std::nullopt);
+                  conversation->model_key, std::nullopt);
 
     if (associated_content_value.has_value() &&
         conversation->associated_content->is_content_association_possible) {
