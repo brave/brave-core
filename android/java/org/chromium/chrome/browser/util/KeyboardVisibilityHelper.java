@@ -5,13 +5,15 @@
 
 package org.chromium.chrome.browser.util;
 
-import android.app.Activity;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import org.chromium.base.Log;
 
 public class KeyboardVisibilityHelper {
     private boolean mIsKeyboardVisible;
+    private View mRootView;
+    private KeyboardVisibilityListener mKeyboardVisibilityListener;
 
     public interface KeyboardVisibilityListener {
         void onKeyboardOpened(int keyboardHeight);
@@ -19,30 +21,51 @@ public class KeyboardVisibilityHelper {
         void onKeyboardClosed();
     }
 
-    public KeyboardVisibilityHelper(Activity activity, KeyboardVisibilityListener listener) {
-        View rootView = activity.findViewById(android.R.id.content);
+    public KeyboardVisibilityHelper(
+            View rootView, KeyboardVisibilityListener keyboardVisibilityListener) {
+        mRootView = rootView;
+        mKeyboardVisibilityListener = keyboardVisibilityListener;
+    }
 
-        rootView.getViewTreeObserver()
-                .addOnGlobalLayoutListener(
-                        new ViewTreeObserver.OnGlobalLayoutListener() {
-                            @Override
-                            public void onGlobalLayout() {
-                                Rect r = new Rect();
-                                rootView.getWindowVisibleDisplayFrame(r);
-                                int screenHeight = rootView.getRootView().getHeight();
-                                int visibleHeight = r.bottom;
-                                int heightDifference = screenHeight - visibleHeight;
+    private ViewTreeObserver.OnGlobalLayoutListener mListener =
+            new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    if (mRootView == null) {
+                        Log.e("quick_search", "mListener 1");
+                        return;
+                    }
+                    Rect r = new Rect();
+                    mRootView.getWindowVisibleDisplayFrame(r);
+                    int screenHeight = mRootView.getRootView().getHeight();
+                    int visibleHeight = r.bottom;
+                    int heightDifference = screenHeight - visibleHeight;
 
-                                boolean keyboardVisible = heightDifference > screenHeight * 0.15;
-                                if (keyboardVisible != mIsKeyboardVisible) {
-                                    mIsKeyboardVisible = keyboardVisible;
-                                    if (keyboardVisible) {
-                                        listener.onKeyboardOpened(heightDifference);
-                                    } else {
-                                        listener.onKeyboardClosed();
-                                    }
-                                }
-                            }
-                        });
+                    boolean keyboardVisible = heightDifference > screenHeight * 0.15;
+                    if (keyboardVisible != mIsKeyboardVisible) {
+                        mIsKeyboardVisible = keyboardVisible;
+                        if (keyboardVisible) {
+                            // mKeyboardVisibilityListener.onKeyboardOpened(heightDifference);
+                        } else {
+                            mKeyboardVisibilityListener.onKeyboardClosed();
+                        }
+                    }
+                }
+            };
+
+    public void addListener() {
+        Log.e("quick_search", "addListener 1");
+        if (mRootView != null) {
+            Log.e("quick_search", "addListener 2");
+            mRootView.getViewTreeObserver().addOnGlobalLayoutListener(mListener);
+        }
+    }
+
+    public void removeListener() {
+        Log.e("quick_search", "removeListener 1");
+        if (mRootView != null) {
+            Log.e("quick_search", "removeListener 2");
+            mRootView.getViewTreeObserver().removeOnGlobalLayoutListener(mListener);
+        }
     }
 }
