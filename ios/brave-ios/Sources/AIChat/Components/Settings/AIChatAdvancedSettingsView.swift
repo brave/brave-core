@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import BraveUI
 import DesignSystem
 import Preferences
@@ -327,6 +328,16 @@ public struct AIChatAdvancedSettingsView: View {
               dismissButton: .default(Text(Strings.OKString))
             )
           }
+        }
+
+        // Check if there's an AppStore receipt and subscriptions have been loaded
+        if !viewModel.isSubscriptionStatusLoading && viewModel.inAppPurchaseSubscriptionState != nil
+        {
+          NavigationLink {
+            StoreKitReceiptSimpleView()
+          } label: {
+            LabelView(title: Strings.AIChat.advancedSettingsViewReceiptTitle)
+          }.listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       } header: {
         Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle.uppercased())
