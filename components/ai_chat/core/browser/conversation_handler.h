@@ -199,10 +199,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  // When the conversation needs to be provided with a new reference to the
-  // conversation metadata.
-  void SetConversationMetadata(mojom::Conversation* conversation);
-  void UpdateArchiveContent(mojom::ConversationArchivePtr conversation_data);
+  // Called when the provided Conversation data is updated
+  void OnConversationMetadataUpdated();
+  void OnArchiveContentUpdated(mojom::ConversationArchivePtr conversation_data);
 
   bool IsAnyClientConnected();
   bool HasAnyHistory();

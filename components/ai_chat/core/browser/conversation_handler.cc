@@ -268,11 +268,8 @@ void ConversationHandler::Bind(
   Bind(std::move(conversation_ui_handler));
 }
 
-void ConversationHandler::SetConversationMetadata(
-    mojom::Conversation* conversation) {
-  metadata_ = conversation;
-  // If we don't update archive_content_ then BuildAssociatedContentInfo will
-  // update the Conversation metadata from the previous version.
+void ConversationHandler::OnConversationMetadataUpdated() {
+  // Pass the updated data to archive content
   if (archive_content_) {
     archive_content_->SetMetadata(
         metadata_->associated_content->url.value_or(GURL()),
@@ -280,10 +277,12 @@ void ConversationHandler::SetConversationMetadata(
         metadata_->associated_content->content_type ==
             mojom::ContentType::VideoTranscript);
   }
+  // Notify UI. If we have live content then the metadata will be updated
+  // again from that live data.
   OnAssociatedContentInfoChanged();
 }
 
-void ConversationHandler::UpdateArchiveContent(
+void ConversationHandler::OnArchiveContentUpdated(
     mojom::ConversationArchivePtr conversation_data) {
   // We don't need to update text content if it's not archive since live
   // content owns the text content and is re-fetched on demand.

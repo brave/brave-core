@@ -456,16 +456,24 @@ void AIChatService::OnLoadConversationsLazyData(
              << "\n last updated: " << conversation->updated_time
              << "\n title: " << conversation->title;
     // It's ok to overwrite existing metadata - some operations may modify
-    // the database data and we want to keep the in-memory data synchronised,
-    // but we have to let any ConversationHandler instances know because
-    // the have a reference to the metadata.
-    auto [inserted_it, _] =
-        conversations_.insert_or_assign(uuid, std::move(conversation));
+    // the database data and we want to keep the in-memory data synchronised.
+    auto existing_conversation_it = conversations_.find(uuid);
+    if (existing_conversation_it != conversations_.end()) {
+      auto& existing_conversation = existing_conversation_it->second;
+      existing_conversation->title = conversation->title;
+      existing_conversation->updated_time = conversation->updated_time;
+      existing_conversation->has_content = conversation->has_content;
+      existing_conversation->model_key = conversation->model_key;
+      existing_conversation->associated_content =
+          std::move(conversation->associated_content);
+    } else {
+      conversations_.emplace(uuid, std::move(conversation));
+    }
     auto handler_it = conversation_handlers_.find(uuid);
     if (handler_it != conversation_handlers_.end()) {
-      // Replace the metadata since the old reference is invalid
+      // Notify the handler that metadata is possibly changed
       ConversationHandler* handler = handler_it->second.get();
-      handler->SetConversationMetadata(inserted_it->second.get());
+      handler->OnConversationMetadataUpdated();
       // If a reload was asked for, then we should also update the deeper
       // conversation data from the database, since the reload was likely due
       // to underlying data changing.
@@ -477,7 +485,7 @@ void AIChatService::OnLoadConversationsLazyData(
                 if (!handler) {
                   return;
                 }
-                handler->UpdateArchiveContent(std::move(updated_data));
+                handler->OnArchiveContentUpdated(std::move(updated_data));
               },
               handler->GetWeakPtr()));
     }
