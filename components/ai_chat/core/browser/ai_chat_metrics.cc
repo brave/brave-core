@@ -67,6 +67,7 @@ constexpr char kContextMenuEntryPointKey[] = "context_menu";
 constexpr char kToolbarButtonEntryPointKey[] = "toolbar_button";
 constexpr char kMenuItemEntryPointKey[] = "menu_item";
 constexpr char kOmniboxCommandEntryPointKey[] = "omnibox_command";
+constexpr char kBraveSearchEntryPointKey[] = "brave_search";
 
 constexpr auto kContextMenuActionKeys =
     base::MakeFixedFlatMap<ContextMenuAction, const char*>(
@@ -86,7 +87,8 @@ constexpr auto kEntryPointKeys =
          {EntryPoint::kContextMenu, kContextMenuEntryPointKey},
          {EntryPoint::kToolbarButton, kToolbarButtonEntryPointKey},
          {EntryPoint::kMenuItem, kMenuItemEntryPointKey},
-         {EntryPoint::kOmniboxCommand, kOmniboxCommandEntryPointKey}});
+         {EntryPoint::kOmniboxCommand, kOmniboxCommandEntryPointKey},
+         {EntryPoint::kBraveSearch, kBraveSearchEntryPointKey}});
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
@@ -234,7 +236,7 @@ void AIChatMetrics::RecordReset() {
   UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName,
                              std::numeric_limits<int>::max() - 1, 3);
   UMA_HISTOGRAM_EXACT_LINEAR(kAcquisitionSourceHistogramName,
-                             std::numeric_limits<int>::max() - 1, 6);
+                             std::numeric_limits<int>::max() - 1, 7);
 }
 
 void AIChatMetrics::OnPremiumStatusUpdated(bool is_new_user,

@@ -350,11 +350,19 @@ TEST_F(AIChatMetricsUnitTest, MostUsedEntryPoint) {
       kMostUsedEntryPointHistogramName,
       static_cast<int>(EntryPoint::kToolbarButton), 1);
 
-  task_environment_.FastForwardBy(base::Days(7));
-  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 10);
+  for (size_t i = 0; i < 4; i++) {
+    ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kBraveSearch);
+  }
+
+  histogram_tester_.ExpectBucketCount(
+      kMostUsedEntryPointHistogramName,
+      static_cast<int>(EntryPoint::kBraveSearch), 1);
 
   task_environment_.FastForwardBy(base::Days(7));
-  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 10);
+  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 14);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 14);
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
