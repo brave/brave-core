@@ -104,16 +104,15 @@ macro_rules! impl_result {
             // we have to clone the inner value instead of passing ownership
             // This is not really a big deal because eventually we want to
             // replace this with mojo which would serialize this anyway
-            fn unwrap(self: &$r) -> Box<$t> {
-                Box::new(self.0.as_ref().expect(
-                    "Unhandled error before unwrap call").clone())
+            fn unwrap(self: &mut $r) -> Box<$t> {
+                Box::new((self.0.as_mut().unwrap()).take().unwrap())
             }
         }
 
         impl From<Result<$f, Error>> for $r {
             fn from(result: Result<$f, Error>) -> Self {
                 match result {
-                    Ok(v) => Self(Ok($t(v))),
+                    Ok(v) => Self(Ok(Some($t(v)))),
                     Err(e) => Self(Err(e)),
                 }
             }
@@ -331,7 +330,7 @@ mod ffi {
 
         fn is_ok(self: &OrchardExtendedSpendingKeyResult) -> bool;
         fn error_message(self: &OrchardExtendedSpendingKeyResult) -> String;
-        fn unwrap(self: &OrchardExtendedSpendingKeyResult) -> Box<OrchardExtendedSpendingKey>;
+        fn unwrap(self: &mut OrchardExtendedSpendingKeyResult) -> Box<OrchardExtendedSpendingKey>;
 
         fn batch_decode(
             fvk_bytes: &[u8; 96],  // Array size should match kOrchardFullViewKeySize
@@ -365,15 +364,15 @@ mod ffi {
 
         fn is_ok(self: &OrchardAuthorizedBundleResult) -> bool;
         fn error_message(self: &OrchardAuthorizedBundleResult) -> String;
-        fn unwrap(self: &OrchardAuthorizedBundleResult) -> Box<OrchardAuthorizedBundle>;
+        fn unwrap(self: &mut OrchardAuthorizedBundleResult) -> Box<OrchardAuthorizedBundle>;
 
         fn is_ok(self: &OrchardUnauthorizedBundleResult) -> bool;
         fn error_message(self: &OrchardUnauthorizedBundleResult) -> String;
-        fn unwrap(self: &OrchardUnauthorizedBundleResult) -> Box<OrchardUnauthorizedBundle>;
+        fn unwrap(self: &mut OrchardUnauthorizedBundleResult) -> Box<OrchardUnauthorizedBundle>;
 
         fn is_ok(self: &BatchOrchardDecodeBundleResult) -> bool;
         fn error_message(self: &BatchOrchardDecodeBundleResult) -> String;
-        fn unwrap(self: &BatchOrchardDecodeBundleResult) -> Box<BatchOrchardDecodeBundle>;
+        fn unwrap(self: &mut BatchOrchardDecodeBundleResult) -> Box<BatchOrchardDecodeBundle>;
 
         fn size(self :&BatchOrchardDecodeBundle) -> usize;
         fn note_value(self :&BatchOrchardDecodeBundle, index: usize) -> u32;
@@ -388,11 +387,11 @@ mod ffi {
 
         fn is_ok(self: &OrchardShardTreeBundleResult) -> bool;
         fn error_message(self: &OrchardShardTreeBundleResult) -> String;
-        fn unwrap(self: &OrchardShardTreeBundleResult) -> Box<OrchardShardTreeBundle>;
+        fn unwrap(self: &mut OrchardShardTreeBundleResult) -> Box<OrchardShardTreeBundle>;
 
         fn is_ok(self: &OrchardTestingShardTreeBundleResult) -> bool;
         fn error_message(self: &OrchardTestingShardTreeBundleResult) -> String;
-        fn unwrap(self: &OrchardTestingShardTreeBundleResult) -> Box<OrchardTestingShardTreeBundle>;
+        fn unwrap(self: &mut OrchardTestingShardTreeBundleResult) -> Box<OrchardTestingShardTreeBundle>;
 
         // Orchard digest is desribed here https://zips.z.cash/zip-0244#t-4-orchard-digest
         // Used in constructing signature digest and tx id
@@ -408,7 +407,7 @@ mod ffi {
         // Witness is used to construct zk-proof for the transaction
         fn is_ok(self: &OrchardWitnessBundleResult) -> bool;
         fn error_message(self: &OrchardWitnessBundleResult) -> String;
-        fn unwrap(self: &OrchardWitnessBundleResult) -> Box<OrchardWitnessBundle>;
+        fn unwrap(self: &mut OrchardWitnessBundleResult) -> Box<OrchardWitnessBundle>;
         fn size(self :&OrchardWitnessBundle) -> usize;
         fn item(self: &OrchardWitnessBundle, index: usize) -> [u8; 32];
 
@@ -619,43 +618,26 @@ impl From<incrementalmerkletree::MerklePath<MerkleHashOrchard, 8>> for MarkleHas
     }
 }
 
-#[derive(Clone)]
+
 pub struct OrchardWitnessBundleValue {
     path: MarkleHashVec
 }
 
-impl<const TREE_HEIGHT: u8, const SHARD_HEIGHT: u8, const PRUNING_DEPTH: u8>
-Clone for OrchardGenericShardTreeBundleValue<TREE_HEIGHT, SHARD_HEIGHT, PRUNING_DEPTH> {
-    fn clone(&self) -> Self {
-        OrchardGenericShardTreeBundleValue {
-            tree : ShardTree::new(self.tree.store().clone(),
-            PRUNING_DEPTH.into())
-        }
-    }
-}
-
-#[derive(Clone)]
 struct OrchardExtendedSpendingKey(ExtendedSpendingKey);
-#[derive(Clone)]
 struct OrchardAuthorizedBundle(OrchardAuthorizedBundleValue);
-#[derive(Clone)]
 struct OrchardUnauthorizedBundle(OrchardUnauthorizedBundleValue);
-#[derive(Clone)]
 struct BatchOrchardDecodeBundle(BatchOrchardDecodeBundleValue);
-#[derive(Clone)]
 struct OrchardShardTreeBundle(OrchardShardTreeBundleValue);
-#[derive(Clone)]
 struct OrchardTestingShardTreeBundle(OrchardTestingShardTreeBundleValue);
-#[derive(Clone)]
 struct OrchardWitnessBundle(OrchardWitnessBundleValue);
 
-struct OrchardExtendedSpendingKeyResult(Result<OrchardExtendedSpendingKey, Error>);
-struct OrchardAuthorizedBundleResult(Result<OrchardAuthorizedBundle, Error>);
-struct OrchardUnauthorizedBundleResult(Result<OrchardUnauthorizedBundle, Error>);
-struct BatchOrchardDecodeBundleResult(Result<BatchOrchardDecodeBundle, Error>);
-struct OrchardShardTreeBundleResult(Result<OrchardShardTreeBundle, Error>);
-struct OrchardWitnessBundleResult(Result<OrchardWitnessBundle, Error>);
-struct OrchardTestingShardTreeBundleResult(Result<OrchardTestingShardTreeBundle, Error>);
+struct OrchardExtendedSpendingKeyResult(Result<Option<OrchardExtendedSpendingKey>, Error>);
+struct OrchardAuthorizedBundleResult(Result<Option<OrchardAuthorizedBundle>, Error>);
+struct OrchardUnauthorizedBundleResult(Result<Option<OrchardUnauthorizedBundle>, Error>);
+struct BatchOrchardDecodeBundleResult(Result<Option<BatchOrchardDecodeBundle>, Error>);
+struct OrchardShardTreeBundleResult(Result<Option<OrchardShardTreeBundle>, Error>);
+struct OrchardWitnessBundleResult(Result<Option<OrchardWitnessBundle>, Error>);
+struct OrchardTestingShardTreeBundleResult(Result<Option<OrchardTestingShardTreeBundle>, Error>);
 
 impl_result!(OrchardExtendedSpendingKey, OrchardExtendedSpendingKeyResult, ExtendedSpendingKey);
 impl_result!(OrchardAuthorizedBundle, OrchardAuthorizedBundleResult, OrchardAuthorizedBundleValue);
@@ -1150,9 +1132,8 @@ impl OrchardWitnessBundle {
     }
 }
 
-#[derive(Clone)]
 pub struct CxxShardStoreImpl<H, const SHARD_HEIGHT: u8>  {
-    native_context: Rc<RefCell<UniquePtr<ShardTreeDelegate>>>,
+    delegate: UniquePtr<ShardTreeDelegate>,
     _hash_type: PhantomData<H>,
 }
 
@@ -1280,9 +1261,8 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         &self,
         addr: Address,
     ) -> Result<Option<LocatedPrunableTree<Self::H>>, Self::Error> {
-        let delegate = self.native_context.clone();
         let mut into = ShardTreeShard::default();
-        let result = (&*delegate.try_borrow().unwrap()).GetShard(
+        let result = self.delegate.GetShard(
             &ShardTreeAddress::try_from(&addr).map_err(|_| Error::ShardStoreError)?,
             &mut into);
         if result == ShardStoreStatusCode::Ok {
@@ -1296,10 +1276,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn last_shard(&self) -> Result<Option<LocatedPrunableTree<Self::H>>, Self::Error> {
-        let delegate = self.native_context.clone();
         let mut into = ShardTreeShard::default();
         let result =
-            (&*delegate.try_borrow().unwrap()).LastShard(&mut into, SHARD_HEIGHT);
+            self.delegate.LastShard(&mut into, SHARD_HEIGHT);
         if result == ShardStoreStatusCode::Ok {
             let tree = LocatedPrunableTree::<H>::try_from(&into)?;
             return Ok(Some(tree));
@@ -1311,10 +1290,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn put_shard(&mut self, subtree: LocatedPrunableTree<Self::H>) -> Result<(), Self::Error> {
-        let delegate = self.native_context.clone();
         let shard = ShardTreeShard::try_from(&subtree).map_err(|_| Error::ShardStoreError)?;
         let result =
-            (delegate.try_borrow_mut().unwrap().pin_mut()).PutShard(&shard);
+            self.delegate.PutShard(&shard);
         if result == ShardStoreStatusCode::Ok {
           return Ok(());
         }
@@ -1322,9 +1300,8 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn get_shard_roots(&self) -> Result<Vec<Address>, Self::Error> {
-        let delegate = self.native_context.clone();
         let mut input : Vec<ShardTreeAddress> = vec![];
-        let result = (&*delegate.try_borrow().unwrap()).GetShardRoots(&mut input, SHARD_HEIGHT);
+        let result = self.delegate.GetShardRoots(&mut input, SHARD_HEIGHT);
         if result == ShardStoreStatusCode::Ok {
           return Ok(input.into_iter().map(|res| {
             Address::from_parts(res.level.into(), res.index.into())
@@ -1337,9 +1314,8 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn truncate(&mut self, from: Address) -> Result<(), Self::Error> {
-        let delegate = self.native_context.clone();
         let result =
-            (&*delegate.try_borrow().unwrap()).Truncate(
+            self.delegate.Truncate(
           &ShardTreeAddress::try_from(&from).map_err(|_| Error::ShardStoreError)?);
         if result == ShardStoreStatusCode::Ok || result == ShardStoreStatusCode::None {
           return Ok(());
@@ -1349,10 +1325,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn get_cap(&self) -> Result<PrunableTree<Self::H>, Self::Error> {
-        let delegate = self.native_context.clone();
         let mut input = ShardTreeCap::default();
         let result =
-            (&*delegate.try_borrow().unwrap()).GetCap(&mut input);
+            self.delegate.GetCap(&mut input);
 
         if result == ShardStoreStatusCode::Ok {
             let tree = PrunableTree::<H>::try_from(&input)?;
@@ -1366,12 +1341,11 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn put_cap(&mut self, cap: PrunableTree<Self::H>) -> Result<(), Self::Error> {
-        let delegate = self.native_context.clone();
         let mut result_cap = ShardTreeCap::default();
         write_shard(&mut result_cap.data, &cap).map_err(|_| Error::ShardStoreError)?;
 
         let result =
-        (&*delegate.try_borrow().unwrap()).PutCap(&result_cap);
+        self.delegate.PutCap(&result_cap);
         if result == ShardStoreStatusCode::Ok {
             return Ok(());
         }
@@ -1379,10 +1353,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn min_checkpoint_id(&self) -> Result<Option<Self::CheckpointId>, Self::Error> {
-        let delegate = self.native_context.clone();
         let mut input : u32 = 0;
         let result =
-            (&*delegate.try_borrow().unwrap()).MinCheckpointId(&mut input);
+            self.delegate.MinCheckpointId(&mut input);
         if result == ShardStoreStatusCode::Ok {
             return Ok(Some(input.into()));
         } else if result == ShardStoreStatusCode::None {
@@ -1392,9 +1365,8 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn max_checkpoint_id(&self) -> Result<Option<Self::CheckpointId>, Self::Error> {
-        let delegate = self.native_context.clone();
         let mut input : u32 = 0;
-        let result = (&*delegate.try_borrow().unwrap()).MaxCheckpointId(&mut input);
+        let result = self.delegate.MaxCheckpointId(&mut input);
         if result == ShardStoreStatusCode::Ok {
             return Ok(Some(input.into()));
         } else if result == ShardStoreStatusCode::None {
@@ -1408,9 +1380,8 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         checkpoint_id: Self::CheckpointId,
         checkpoint: Checkpoint,
     ) -> Result<(), Self::Error> {
-        let delegate = self.native_context.clone();
         let ffi_checkpoint_id : u32 = checkpoint_id.try_into().map_err(|_| Error::ShardStoreError)?;
-        let result = (&*delegate.try_borrow().unwrap()).AddCheckpoint(
+        let result = self.delegate.AddCheckpoint(
             ffi_checkpoint_id,
             &ShardTreeCheckpoint::try_from(&checkpoint)?);
         if result == ShardStoreStatusCode::Ok {
@@ -1420,9 +1391,8 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn checkpoint_count(&self) -> Result<usize, Self::Error> {
-        let delegate = self.native_context.clone();
         let mut input : usize = 0;
-        let result = (&*delegate.try_borrow().unwrap()).CheckpointCount(&mut input);
+        let result = self.delegate.CheckpointCount(&mut input);
         if result == ShardStoreStatusCode::Ok {
             return Ok(input.into());
         } else if result == ShardStoreStatusCode::None {
@@ -1435,11 +1405,10 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         &self,
         checkpoint_depth: usize,
     ) -> Result<Option<(Self::CheckpointId, Checkpoint)>, Self::Error> {
-        let delegate = self.native_context.clone();
         let mut input_checkpoint_id : u32 = 0;
         let mut input_checkpoint : ShardTreeCheckpoint = ShardTreeCheckpoint::default();
 
-        let result = (&*delegate.try_borrow().unwrap()).CheckpointAtDepth(
+        let result = self.delegate.CheckpointAtDepth(
             checkpoint_depth,
             &mut input_checkpoint_id,
             &mut input_checkpoint);
@@ -1456,10 +1425,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         &self,
         checkpoint_id: &Self::CheckpointId,
     ) -> Result<Option<Checkpoint>, Self::Error> {
-        let delegate = self.native_context.clone();
         let mut input_checkpoint : ShardTreeCheckpoint = ShardTreeCheckpoint::default();
 
-        let result = (&*delegate.try_borrow().unwrap()).GetCheckpoint(
+        let result = self.delegate.GetCheckpoint(
             (*checkpoint_id).into(),
             &mut input_checkpoint);
 
@@ -1475,9 +1443,8 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     where
         F: FnMut(&Self::CheckpointId, &Checkpoint) -> Result<(), Self::Error>,
     {
-        let delegate = self.native_context.clone();
         let mut into : Vec<ShardTreeCheckpointBundle> = vec![];
-        let result = (&*delegate.try_borrow().unwrap()).GetCheckpoints(limit, &mut into);
+        let result = self.delegate.GetCheckpoints(limit, &mut into);
         if result == ShardStoreStatusCode::Ok {
             for item in into {
                 let checkpoint = Checkpoint::from(&item.checkpoint);
@@ -1498,10 +1465,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     where
         F: Fn(&mut Checkpoint) -> Result<(), Self::Error>,
     {
-        let delegate = self.native_context.clone();
         let mut input_checkpoint = ShardTreeCheckpoint::default();
         let result_get_checkpoint =
-            (&*delegate.try_borrow().unwrap()).GetCheckpoint((*checkpoint_id).into(), &mut input_checkpoint);
+            self.delegate.GetCheckpoint((*checkpoint_id).into(), &mut input_checkpoint);
         if result_get_checkpoint == ShardStoreStatusCode::Ok {
             return Ok(true);
         } else if result_get_checkpoint == ShardStoreStatusCode::None {
@@ -1512,7 +1478,7 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
 
         update(&mut checkpoint).map_err(|_| Error::ShardStoreError)?;
         let result_update_checkpoint =
-        (&*delegate.try_borrow().unwrap()).UpdateCheckpoint(
+        self.delegate.UpdateCheckpoint(
                 (*checkpoint_id).into(), &ShardTreeCheckpoint::try_from(&checkpoint)?);
         if result_update_checkpoint == ShardStoreStatusCode::Ok {
             return Ok(true);
@@ -1523,9 +1489,8 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 
     fn remove_checkpoint(&mut self, checkpoint_id: &Self::CheckpointId) -> Result<(), Self::Error> {
-        let delegate = self.native_context.clone();
         let result =
-        (&*delegate.try_borrow().unwrap()).RemoveCheckpoint((*checkpoint_id).into());
+        self.delegate.RemoveCheckpoint((*checkpoint_id).into());
         if result == ShardStoreStatusCode::Ok {
             return Ok(());
         } else if result == ShardStoreStatusCode::None {
@@ -1538,9 +1503,8 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         &mut self,
         checkpoint_id: &Self::CheckpointId,
     ) -> Result<(), Self::Error> {
-        let delegate = self.native_context.clone();
         let result =
-        (&*delegate.try_borrow().unwrap()).TruncateCheckpoint ((*checkpoint_id).into());
+        self.delegate.TruncateCheckpoint ((*checkpoint_id).into());
         if result == ShardStoreStatusCode::Ok {
             return Ok(());
         } else if result == ShardStoreStatusCode::None {
@@ -1550,9 +1514,9 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 }
 
-fn create_shard_tree(context: UniquePtr<ShardTreeDelegate>) -> Box<OrchardShardTreeBundleResult> {
+fn create_shard_tree(delegate: UniquePtr<ShardTreeDelegate>) -> Box<OrchardShardTreeBundleResult> {
     let shard_store = OrchardCxxShardStoreImpl {
-        native_context: Rc::new(RefCell::new(context)),
+        delegate: delegate,
         _hash_type: Default::default()
     };
     let shardtree = ShardTree::new(shard_store, PRUNING_DEPTH.try_into().unwrap());
@@ -1584,9 +1548,9 @@ fn create_mock_decode_result(prior_tree_state: ShardTreeState, commitments: Shar
     })))
 }
 
-fn create_testing_shard_tree(context: UniquePtr<ShardTreeDelegate>) -> Box<OrchardTestingShardTreeBundleResult> {
-    let shard_store = TestingCxxShardStoreImpl {
-        native_context: Rc::new(RefCell::new(context)),
+fn create_testing_shard_tree(delegate: UniquePtr<ShardTreeDelegate>) -> Box<OrchardTestingShardTreeBundleResult> {
+    let shard_store: CxxShardStoreImpl<MerkleHashOrchard, 4> = TestingCxxShardStoreImpl {
+        delegate: delegate,
         _hash_type: Default::default()
     };
     let shardtree = ShardTree::new(shard_store, TESTING_PRUNING_DEPTH.try_into().unwrap());
