@@ -258,7 +258,7 @@ FilAddress FilAddress::FromPayload(const std::vector<uint8_t>& payload,
       return FilAddress();
     }
   } else {
-    NOTREACHED_IN_MIGRATION();
+    NOTREACHED() << protocol;
   }
   return FilAddress(payload, protocol, network);
 }

@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -146,7 +147,7 @@ void BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet(
     DCHECK(importers_[type]->IsInitialized());
     importers_[type]->GetImportInfo(password, std::move(callback));
   } else {
-    std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
+    std::move(callback).Run(base::unexpected(ImportError::kInternalError));
   }
 }
 

@@ -74,13 +74,13 @@ class MockBraveWalletServiceDelegateImpl
   ~MockBraveWalletServiceDelegateImpl() override = default;
 
   using GetImportInfoCallback =
-      base::OnceCallback<void(bool, ImportInfo, ImportError)>;
+      BraveWalletServiceDelegate::GetImportInfoCallback;
   void GetImportInfoFromExternalWallet(
       mojom::ExternalWalletType type,
       const std::string& password,
       GetImportInfoCallback callback) override {
-    std::move(callback).Run(true, ImportInfo({kMnemonicDivideCruise, false, 1}),
-                            ImportError::kNone);
+    std::move(callback).Run(
+        base::ok(ImportInfo({kMnemonicDivideCruise, false, 1})));
   }
 };
 

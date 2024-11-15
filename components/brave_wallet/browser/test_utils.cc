@@ -54,8 +54,7 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
       case mojom::KeyringId::kBitcoinHardwareTestnet:
         return "Bitcoin Hardware Testnet Account";
     }
-    NOTREACHED_IN_MIGRATION();
-    return "";
+    NOTREACHED() << keyring_id;
   };
 
   return prefix() + " " + base::NumberToString(index);

@@ -211,11 +211,11 @@ void JSEthereumProvider::Install(bool install_ethereum_provider,
                          gin::StringToV8(isolate, kBraveEthereum), true);
 
   // Set window.ethereumProvider
-  {
+  if (install_ethereum_provider) {
     v8::Local<v8::Value> ethereum_value =
         global->Get(context, gin::StringToV8(isolate, kEthereum))
             .ToLocalChecked();
-    if (install_ethereum_provider && ethereum_value->IsUndefined()) {
+    if (ethereum_value->IsUndefined()) {
       if (!allow_overwrite_window_ethereum_provider) {
         SetProviderNonWritable(context, global, ethereum_proxy,
                                gin::StringToV8(isolate, kEthereum), true);
@@ -718,7 +718,6 @@ void JSEthereumProvider::AnnounceProvider() {
            ->SetIntegrityLevel(isolate->GetCurrentContext(),
                                v8::IntegrityLevel::kFrozen)
            .ToChecked()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -728,7 +727,6 @@ void JSEthereumProvider::AnnounceProvider() {
                     base::Value("info"), context),
                 std::move(info_object))
           .IsNothing()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -741,7 +739,6 @@ void JSEthereumProvider::AnnounceProvider() {
                     base::Value("provider"), context),
                 provider)
           .IsNothing()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -749,7 +746,6 @@ void JSEthereumProvider::AnnounceProvider() {
           ->SetIntegrityLevel(isolate->GetCurrentContext(),
                               v8::IntegrityLevel::kFrozen)
           .IsNothing()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -760,7 +756,6 @@ void JSEthereumProvider::AnnounceProvider() {
                     base::Value("detail"), context),
                 std::move(detail))
           .IsNothing()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 

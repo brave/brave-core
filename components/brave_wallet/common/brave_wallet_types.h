@@ -97,14 +97,11 @@ struct ImportInfo {
   std::string mnemonic;
   bool is_legacy_crypto_wallets;
   size_t number_of_accounts;
+
+  bool operator==(const ImportInfo&) const = default;
 };
 
-enum class ImportError {
-  kNone = 0,
-  kJsonError,
-  kPasswordError,
-  kInternalError
-};
+enum class ImportError { kJsonError = 1, kPasswordError, kInternalError };
 
 struct SolanaSignatureStatus {
   SolanaSignatureStatus() = default;
