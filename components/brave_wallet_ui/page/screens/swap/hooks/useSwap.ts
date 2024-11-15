@@ -1335,6 +1335,17 @@ export const useSwap = () => {
     selectedQuoteOptionId
   ])
 
+  useEffect(() => {
+    // Reset selectedProvider to Auto if no tokens are selected
+    if (!fromToken && !toToken) {
+      setSelectingFromOrTo(undefined)
+      setFromAmount('')
+      setToAmount('')
+      reset()
+      setSelectedProvider(BraveWallet.SwapProvider.kAuto)
+    }
+  }, [fromToken, toToken, reset])
+
   return {
     fromAccount,
     fromToken,
