@@ -84,7 +84,6 @@
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
 #include "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
-#include "ios/chrome/browser/credential_provider/model/credential_provider_support.h"
 #include "ios/chrome/browser/credential_provider/model/credential_provider_util.h"
 #endif
 
@@ -255,9 +254,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
                 cus, GetApplicationContext()->GetLocalState())];
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
-    if (IsCredentialProviderExtensionSupported()) {
-      CredentialProviderServiceFactory::GetForProfile(_main_profile);
-    }
+    CredentialProviderServiceFactory::GetForProfile(_main_profile);
 #endif
   }
   return self;
