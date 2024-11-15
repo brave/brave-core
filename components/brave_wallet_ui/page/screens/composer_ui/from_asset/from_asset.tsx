@@ -49,6 +49,9 @@ import {
 import {
   BalanceDetailsModal //
 } from '../../../../components/desktop/popup-modals/balance_details_modal/balance_details_modal'
+import {
+  ShieldedLabel //
+} from '../../../../components/shared/shielded_label/shielded_label'
 
 // Styled Components
 import {
@@ -230,6 +233,7 @@ export const FromAsset = (props: Props) => {
                   6
                 )}
               </BalanceText>
+              {token.isShielded && <ShieldedLabel />}
               {token.coin === BraveWallet.CoinType.BTC && hasPendingBalance && (
                 <>
                   <BalanceText
