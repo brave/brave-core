@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ANALYTICS_P2A_P2A_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ANALYTICS_P2A_P2A_H_
 
-#include <string>
+#include <string_view>
 
 class PrefService;
 class PrefRegistrySimple;
@@ -15,7 +15,7 @@ namespace brave_ads {
 
 void RegisterP2APrefs(PrefRegistrySimple* registry);
 
-void RecordAndEmitP2AHistogramName(PrefService* prefs, const std::string& name);
+void RecordAndEmitP2AHistogramName(PrefService* prefs, std::string_view name);
 
 void SuspendP2AHistograms();
 
