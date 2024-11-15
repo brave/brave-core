@@ -149,7 +149,6 @@ brave_java_resources = [
   "java/res/drawable-nodpi/eth.png",
   "java/res/drawable-nodpi/ic_quick_action_search_and_bookmark_widget_preview.png",
   "java/res/drawable-nodpi/loader0_orange.png",
-  "java/res/drawable-nodpi/open_yt_in_brave.png",
   "java/res/drawable-sw600dp/bottomsheet_rewards_tipping_success_background.xml",
   "java/res/drawable-xhdpi/brave_ads_launch_graphic.png",
   "java/res/drawable-xhdpi/brave_sync_btn_laptop.png",

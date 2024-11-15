@@ -1,8 +1,8 @@
-/**
- * Copyright (c) 2024 The Brave Authors. All rights reserved. This Source Code Form is subject to
- * the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with
- * this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 package org.chromium.chrome.browser;
 
 import android.os.Bundle;
@@ -12,13 +12,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.chrome.browser.util.TabUtils;
 
 public class OpenYtInBraveDialogFragment extends BraveDialogFragment
         implements View.OnClickListener {
+
+    public static final String YOUTUBE_URL = "https://youtube.com";
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,17 +37,21 @@ public class OpenYtInBraveDialogFragment extends BraveDialogFragment
 
         TextView mIgnoreButton = view.findViewById(R.id.btn_ignore);
         mIgnoreButton.setOnClickListener(this);
+
+        LottieAnimationView mAnimatedView = view.findViewById(R.id.animation_view);
+        String animationFile =
+                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                        ? "moving_ads_dark.json"
+                        : "moving_ads_light.json";
+        mAnimatedView.setAnimation(animationFile);
+        mAnimatedView.playAnimation();
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_done) {
             BravePrefServiceBridge.getInstance().setPlayYTVideoInBrowserEnabled(true);
-            Tab activityTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
-            if (activityTab != null) {
-                LoadUrlParams loadUrlParams = new LoadUrlParams("https://youtube.com");
-                activityTab.loadUrl(loadUrlParams);
-            }
+            TabUtils.openUrlInSameTab(YOUTUBE_URL);
         }
         dismiss();
     }
