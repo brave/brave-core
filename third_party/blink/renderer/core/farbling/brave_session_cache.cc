@@ -383,7 +383,7 @@ bool BraveSessionCache::AllowFontFamily(
   }
   switch (farbling_level_) {
     case BraveFarblingLevel::OFF:
-      break;
+      return true;
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
       if (AllowFontByFamilyName(family_name,
@@ -397,10 +397,8 @@ bool BraveSessionCache::AllowFontFamily(
         return false;
       }
     }
-    default:
-      NOTREACHED_IN_MIGRATION();
   }
-  return true;
+  NOTREACHED();
 }
 
 FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(FarbleKey key) {

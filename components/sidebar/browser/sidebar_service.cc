@@ -68,8 +68,7 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
     return SidebarItem::BuiltInItemType::kHistory;
   }
 
-  NOTREACHED_IN_MIGRATION() << url;
-  return SidebarItem::BuiltInItemType::kNone;
+  NOTREACHED() << url;
 }
 
 }  // namespace
@@ -665,12 +664,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
         return SidebarItem();
       }
     }
-    case SidebarItem::BuiltInItemType::kNone: {
-      NOTREACHED_IN_MIGRATION();
+    case SidebarItem::BuiltInItemType::kNone:
       break;
-    }
   }
-  return SidebarItem();
+  NOTREACHED();
 }
 
 void SidebarService::OnPreferenceChanged(const std::string& pref_name) {
