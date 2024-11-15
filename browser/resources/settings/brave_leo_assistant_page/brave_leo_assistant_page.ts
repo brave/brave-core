@@ -4,16 +4,19 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import '//resources/cr_elements/md_select.css.js'
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
-import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
+import 'chrome://resources/brave/leo.bundle.js'
+import {assert} from 'chrome://resources/js/assert.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
+import {Router} from '../router.js'
+import {loadTimeData} from '../i18n_setup.js'
+import {routes} from '../route.js';
 import {getTemplate} from './brave_leo_assistant_page.html.js'
 import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, PremiumStatus, ModelWithSubtitle, PremiumInfo, ModelAccess, Model}
   from './brave_leo_assistant_browser_proxy.js'
-import 'chrome://resources/brave/leo.bundle.js'
-import { Router } from '../router.js';
-import {routes} from '../route.js';
 
 const BraveLeoAssistantPageBase =
   WebUiListenerMixin(I18nMixin(PrefsMixin(PolymerElement)))
@@ -33,6 +36,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     static get properties() {
       return {
+        prefs: {
+          type: Object,
+          notify: true,
+        },
         leoAssistantShowOnToolbarPref_: {
           type: Boolean,
           value: false,
@@ -51,6 +58,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     private isPremiumUser_: boolean
+
+    isHistoryFeatureEnabled_: boolean =
+      loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
+
     leoAssistantShowOnToolbarPref_: boolean
     defaultModelKeyPrefValue_: string
     models_: ModelWithSubtitle[]
@@ -179,6 +190,18 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     openManageAccountPage_() {
       window.open(this.manageUrl_, "_self", "noopener noreferrer")
+    }
+
+    private onStorageEnabledChange_(event: Event) {
+      const target = event.target
+      assert(target instanceof SettingsToggleButtonElement);
+      // Confirm that the user knows conversation history will be permanently
+      // deleted.
+      if (!target?.checked) {
+        if (!confirm(this.i18n('braveLeoAssistantHistoryPreferenceConfirm'))) {
+          target.checked = !target.checked
+        }
+      }
     }
 }
 

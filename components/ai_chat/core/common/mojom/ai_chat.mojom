@@ -7,6 +7,7 @@ module ai_chat.mojom;
 
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
+import "mojo/public/mojom/base/time.mojom";
 
 enum CharacterType {
   HUMAN,
@@ -69,19 +70,59 @@ enum SuggestionGenerationStatus {
   HasGenerated,
 };
 
+// Type of content that is extracted
+enum ContentType {
+  PageContent,
+  VideoTranscript,
+};
+
+// A piece of content associated with a conversation.
+// TODO(petemill): Rename to AssociatedContent and have hostname/url/title be
+// part of a detail property (which would have different structure possibilities
+// depending on content type.
 struct SiteInfo {
-  // Title is present if the site has associated page content
+  string? uuid;
+  ContentType content_type;
+  // Web page specific fields, if available and allowed
   string? title;
-  // Indicates if the URL scheme is of a type that allows for content association.
-  bool is_content_association_possible;
-  // Current tab's url and hostname, if http(s)
   string? hostname;
   url.mojom.Url? url;
+
   // Percentage of the content that has been utilized by remote LLM (0-100)
   int32 content_used_percentage;
   // Indicates content has been refined through extracting most relevant parts
   // from long page content
   bool is_content_refined;
+
+  // Indicates if the URL scheme is of a type that allows for
+  // content association.
+  // TODO(petemill): SiteInfo should just not exist if content-associated is
+  // not possible.
+  bool is_content_association_possible;
+};
+
+struct Conversation {
+  string uuid;
+  // Set by the LLM or the user
+  string title;
+  // Time used for ordering purposes
+  mojo_base.mojom.Time updated_time;
+  // If there are entries and the conversation should be selectable
+  bool has_content;
+  // Model key, if different than default
+  string? model_key;
+
+  SiteInfo associated_content;
+};
+
+struct ContentArchive {
+  string content_uuid;
+  string content;
+};
+
+struct ConversationArchive {
+  array<ConversationTurn> entries;
+  array<ContentArchive> associated_content;
 };
 
 enum ActionType {
@@ -154,6 +195,9 @@ union ConversationEntryEvent {
 // The selected_text attribute contains what user selects in the page when
 // calling from the context menu.
 struct ConversationTurn {
+  // Populated if owned by a conversation
+  string? uuid;
+
   CharacterType character_type;
   ActionType action_type;
   ConversationTurnVisibility visibility;
@@ -251,16 +295,6 @@ union ActionEntry {
 struct ActionGroup {
   string category;
   array<ActionEntry> entries;
-};
-
-struct Conversation {
-  string uuid;
-  // Set by the LLM or the user
-  string title;
-  // Time used for ordering purposes
-  mojo_base.mojom.Time created_time;
-  // If there are entries and the conversation should be selectable
-  bool has_content;
 };
 
 interface Service {

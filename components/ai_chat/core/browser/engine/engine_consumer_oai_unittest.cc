@@ -246,6 +246,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Push a single user turn into the history.
   history.push_back(mojom::ConversationTurn::New(
+      std::nullopt,
       mojom::CharacterType::HUMAN,                 // Author is the user
       mojom::ActionType::UNSPECIFIED,              // No specific action
       mojom::ConversationTurnVisibility::VISIBLE,  // Visible to the user
@@ -306,14 +307,16 @@ TEST_F(EngineConsumerOAIUnitTest,
   std::string expected_system_message = "This is a custom system prompt.";
 
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      std::nullopt, mojom::CharacterType::HUMAN,
+      mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE, human_input, selected_text,
       std::nullopt, base::Time::Now(), std::nullopt, false));
 
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, assistant_input, std::nullopt,
-      std::nullopt, base::Time::Now(), std::nullopt, false));
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      assistant_input, std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, false));
 
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -418,10 +421,10 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
   testing::Mock::VerifyAndClearExpectations(client);
 
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, false);
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "", std::nullopt, std::vector<mojom::ConversationEntryEventPtr>{},
+      base::Time::Now(), std::nullopt, false);
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));

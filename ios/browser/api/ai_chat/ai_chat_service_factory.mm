@@ -67,8 +67,10 @@ std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
   return std::make_unique<AIChatService>(
       model_service, std::move(credential_manager),
       user_prefs::UserPrefs::Get(context), ai_chat_metrics_.get(),
+      GetApplicationContext()->GetOSCryptAsync(),
       context->GetSharedURLLoaderFactory(),
-      version_info::GetChannelString(::GetChannel()));
+      version_info::GetChannelString(::GetChannel()),
+      ProfileIOS::FromBrowserState(context)->GetStatePath());
 }
 
 web::BrowserState* AIChatServiceFactory::GetBrowserStateToUse(

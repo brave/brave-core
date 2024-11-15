@@ -736,6 +736,7 @@ struct AIChatView_Preview: PreviewProvider {
             AIChatResponseMessageView(
               turn:
                 .init(
+                  uuid: nil,
                   characterType: .assistant,
                   actionType: .response,
                   visibility: .visible,

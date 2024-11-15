@@ -43,7 +43,6 @@ class BraveBrowsingDataRemoverDelegate
                           base::OnceCallback<void(uint64_t)> callback) override;
 
   void ClearShieldsSettings(base::Time begin_time, base::Time end_time);
-  void ClearAiChatHistory(base::Time begin_time, base::Time end_time);
 
   raw_ptr<Profile> profile_ = nullptr;
   base::WeakPtrFactory<BraveBrowsingDataRemoverDelegate> weak_ptr_factory_{

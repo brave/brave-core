@@ -106,7 +106,7 @@
 - (void)submitHumanConversationEntry:(NSString*)text {
   current_conversation_->SubmitHumanConversationEntry(
       ai_chat::mojom::ConversationTurn::New(
-          ai_chat::mojom::CharacterType::HUMAN,
+          std::nullopt, ai_chat::mojom::CharacterType::HUMAN,
           ai_chat::mojom::ActionType::UNSPECIFIED,
           ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
           base::SysNSStringToUTF8(text), std::nullopt, std::nullopt,

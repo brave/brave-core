@@ -215,16 +215,17 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // selected text but with page association.
   EngineConsumer::ConversationHistory history;
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
       "Which show is this catchphrase from?", "I have spoken.", std::nullopt,
       base::Time::Now(), std::nullopt, false));
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "The Mandalorian.", std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, false));
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::RESPONSE,
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE,
       "Is it related to a broader series?", std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false));
@@ -294,7 +295,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   // Tests events building from history with modified agent reply.
   EngineConsumer::ConversationHistory history;
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
       "Which show is 'This is the way' from?", std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false));
@@ -315,18 +316,19 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   modified_events.push_back(modified_completion_event.Clone());
 
   auto edit = mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-      std::nullopt, std::move(modified_events), base::Time::Now(), std::nullopt,
-      false);
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "The Mandalorian.", std::nullopt, std::move(modified_events),
+      base::Time::Now(), std::nullopt, false);
   std::vector<mojom::ConversationTurnPtr> edits;
   edits.push_back(std::move(edit));
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "Mandalorian.", std::nullopt,
-      std::move(events), base::Time::Now(), std::move(edits), false));
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "Mandalorian.", std::nullopt, std::move(events), base::Time::Now(),
+      std::move(edits), false));
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
       "Is it related to a broader series?", std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false));
@@ -381,10 +383,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_EarlyReturn) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, false);
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "", std::nullopt, std::vector<mojom::ConversationEntryEventPtr>{},
+      base::Time::Now(), std::nullopt, false);
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));

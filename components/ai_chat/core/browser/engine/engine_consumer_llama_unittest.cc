@@ -73,14 +73,16 @@ class EngineConsumerLlamaUnitTest : public testing::Test {
 TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   EngineConsumer::ConversationHistory history;
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      std::nullopt, mojom::CharacterType::HUMAN,
+      mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
       "Which show is this catchphrase from?", "This is the way.", std::nullopt,
       base::Time::Now(), std::nullopt, false));
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "The Mandalorian.", std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, false));
   auto* mock_remote_completion_client =
       static_cast<MockRemoteCompletionClient*>(engine_->GetAPIForTesting());
   std::string prompt_before_time_and_date =
@@ -256,10 +258,10 @@ TEST_F(EngineConsumerLlamaUnitTest, GenerateAssistantResponseEarlyReturn) {
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, false);
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "", std::nullopt, std::vector<mojom::ConversationEntryEventPtr>{},
+      base::Time::Now(), std::nullopt, false);
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));

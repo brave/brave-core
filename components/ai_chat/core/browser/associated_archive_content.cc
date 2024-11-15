@@ -33,6 +33,18 @@ AssociatedArchiveContent::AssociatedArchiveContent(GURL url,
 
 AssociatedArchiveContent::~AssociatedArchiveContent() = default;
 
+void AssociatedArchiveContent::SetMetadata(GURL url,
+                                           std::u16string title,
+                                           bool is_video) {
+  url_ = url;
+  title_ = title;
+  is_video_ = is_video;
+}
+
+void AssociatedArchiveContent::SetContent(std::string text_content) {
+  text_content_ = text_content;
+}
+
 int AssociatedArchiveContent::GetContentId() const {
   return -1;
 }
