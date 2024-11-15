@@ -6,14 +6,17 @@
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
 import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
-import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
+import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 
 import 'chrome://resources/brave/leo.bundle.js'
 
 RegisterPolymerTemplateModifications({
-  'site-details': (templateContent) => {
+  'site-details': (templateContent: HTMLTemplateElement) => {
+    // Add top-padding to subpage
+    templateContent.prepend(html`<style>#usage { padding-top: var(--leo-padding-l); }</style>`)
+
     if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
       const idleDetectionItem = templateContent.querySelector('[category="[[contentSettingsTypesEnum_.IDLE_DETECTION]]"]')
       if (!idleDetectionItem) {
