@@ -76,6 +76,7 @@ brave_settings_non_web_component_files = [
   "brave_overrides/cookies_page.ts",
   "brave_overrides/cr_icon.ts",
   "brave_overrides/default_browser_page.ts",
+  "brave_overrides/edit_dictionary_page.ts",
   "brave_overrides/import_data_dialog.ts",
   "brave_overrides/index.ts",
   "brave_overrides/iron_icon.ts",
