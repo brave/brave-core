@@ -803,7 +803,6 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
     data[i].conversation_handler->GetAssociatedContentInfo(
         base::BindLambdaForTesting([&](mojom::SiteInfoPtr site_info,
                                        bool should_send_page_contents) {
-          LOG(ERROR) << __func__;
           SCOPED_TRACE(testing::Message() << "data index: " << i);
           EXPECT_TRUE(site_info->is_content_association_possible);
           EXPECT_TRUE(site_info->url.has_value());
