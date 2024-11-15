@@ -10,6 +10,8 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/strings/pattern.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/epoch_operator_condition_matcher_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/numerical_operator_condition_matcher_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/pattern_condition_matcher_util.h"
@@ -55,19 +57,22 @@ bool MatchConditions(const PrefProviderInterface* const pref_provider,
       condition_matchers, [pref_provider](const auto& condition_matcher) {
         const auto& [pref_path, condition] = condition_matcher;
 
-        // If `has_not_operator` is `true`, the condition will match only if the
-        // pref path does not exist.
-        const bool has_not_operator = HasNotOperator(pref_path);
-
         const std::string stripped_pref_path =
             MaybeStripOperatorPrefix(pref_path);
-        if (const std::optional<std::string> value =
-                MaybeGetPrefValueAsString(pref_provider, stripped_pref_path)) {
-          return !has_not_operator && MatchCondition(*value, condition);
+        const std::optional<std::string> value =
+            MaybeGetPrefValueAsString(pref_provider, stripped_pref_path);
+
+        if (HasNotOperator(pref_path)) {
+          // Match if the pref path does not exist.
+          return !value;
         }
 
-        // Unknown pref path.
-        return has_not_operator;
+        if (IsNumericalOperator(condition)) {
+          // Default to "0" if the pref path does not exist.
+          return MatchCondition(value.value_or("0"), condition);
+        }
+
+        return value ? MatchCondition(*value, condition) : false;
       });
 }
 
