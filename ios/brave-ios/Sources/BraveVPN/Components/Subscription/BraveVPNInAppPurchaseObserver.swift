@@ -19,7 +19,6 @@ public class BraveVPNIAPObserverManager: NSObject, ObservableObject {
   }
 
   @Published var paymentStatus: BraveVPNPaymentStatus = .unknown
-  @Published var isPromotedPurchase = false
 
   private let iapObserver: BraveVPNInAppPurchaseObserver
 
@@ -33,15 +32,19 @@ public class BraveVPNIAPObserverManager: NSObject, ObservableObject {
 // MARK: - IAPObserverDelegate
 extension BraveVPNIAPObserverManager: BraveVPNInAppPurchaseObserverDelegate {
   public func purchasedOrRestoredProduct(validateReceipt: Bool) {
-    paymentStatus = .success(receiptValidationRequired: validateReceipt)
+    DispatchQueue.main.async {
+      self.paymentStatus = .success(receiptValidationRequired: validateReceipt)
+    }
   }
 
   public func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
-    paymentStatus = .failure(error)
+    DispatchQueue.main.async {
+      self.paymentStatus = .failure(error)
+    }
   }
 
   public func handlePromotedInAppPurchase() {
-    isPromotedPurchase = true
+    // No-op In app purchase promotion is handled on bvc
   }
 }
 

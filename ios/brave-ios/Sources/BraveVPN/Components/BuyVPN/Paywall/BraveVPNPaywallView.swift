@@ -254,8 +254,7 @@ public struct BraveVPNPaywallView: View {
     SKPaymentQueue.default().add(payment)
   }
 
-  @MainActor
-  public func restorePurchase() async {
+  public func restorePurchase() {
     iapObserverManager.paymentStatus = .ongoing
 
     SKPaymentQueue.default().restoreCompletedTransactions()
