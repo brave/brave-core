@@ -727,73 +727,60 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
     return;
   }
 
-  GURL content_url("https://example.com");
-  std::u16string page_title = u"page title";
-  std::string page_content = "page content";
+  const GURL content_url("https://example.com");
+  const std::u16string page_title = u"page title";
+  const std::string page_content = "page content";
 
-  NiceMock<MockAssociatedContent> associated_content_1{};
-  ON_CALL(associated_content_1, GetURL())
-      .WillByDefault(testing::Return(content_url));
-  ON_CALL(associated_content_1, GetTitle())
-      .WillByDefault(testing::Return(page_title));
-  ON_CALL(associated_content_1, GetTextContent)
-      .WillByDefault(testing::Return(page_content));
-  associated_content_1.SetContentId(1);
+  struct Data {
+    NiceMock<MockAssociatedContent> associated_content;
+    raw_ptr<ConversationHandler> conversation_handler;
+    std::unique_ptr<MockConversationHandlerClient> client;
+  };
+  std::array<Data, 3> data;
 
-  NiceMock<MockAssociatedContent> associated_content_2{};
-  ON_CALL(associated_content_2, GetURL())
-      .WillByDefault(testing::Return(content_url));
-  ON_CALL(associated_content_2, GetTitle())
-      .WillByDefault(testing::Return(page_title));
-  ON_CALL(associated_content_2, GetTextContent)
-      .WillByDefault(testing::Return(page_content));
-  associated_content_2.SetContentId(2);
+  // First conversation and its content should stay alive and still report
+  // actual content info even though it falls in the deletion time range.
+  // Second conversation should have its content archived and should report
+  // empty content info since it falls in the deletion time range.
+  // Third conversation should have its content archived but should report
+  // actual content info since it does not fall in the deletion time range.
 
-  NiceMock<MockAssociatedContent> associated_content_3{};
-  ON_CALL(associated_content_3, GetURL())
-      .WillByDefault(testing::Return(content_url));
-  ON_CALL(associated_content_3, GetTitle())
-      .WillByDefault(testing::Return(page_title));
-  ON_CALL(associated_content_3, GetTextContent)
-      .WillByDefault(testing::Return(page_content));
-  associated_content_3.SetContentId(3);
+  for (int i = 0; i < 3; i++) {
+    ON_CALL(data[i].associated_content, GetURL())
+        .WillByDefault(testing::Return(content_url));
+    ON_CALL(data[i].associated_content, GetTitle())
+        .WillByDefault(testing::Return(page_title));
+    ON_CALL(data[i].associated_content, GetTextContent)
+        .WillByDefault(testing::Return(page_content));
+    data[i].associated_content.SetContentId(i);
 
-  // This conversation and its content should stay alive and still report actual
-  // content info even though it falls in the deletion time range.
-  ConversationHandler* conversation_handler1 =
-      ai_chat_service_->GetOrCreateConversationHandlerForContent(
-          associated_content_1.GetContentId(),
-          associated_content_1.GetWeakPtr());
-  EXPECT_TRUE(conversation_handler1);
-  auto client1 = CreateConversationClient(conversation_handler1);
-  conversation_handler1->SetChatHistoryForTesting(
-      CreateSampleChatHistory(1u, -3));
+    data[i].conversation_handler =
+        ai_chat_service_->GetOrCreateConversationHandlerForContent(
+            data[i].associated_content.GetContentId(),
+            data[i].associated_content.GetWeakPtr());
+    EXPECT_TRUE(data[i].conversation_handler);
+    data[i].client = CreateConversationClient(data[i].conversation_handler);
+    data[i].conversation_handler->SetChatHistoryForTesting(
+        CreateSampleChatHistory(1u, -3 + i));
 
-  // This conversation should have its content archived and should report empty
-  // content info since it falls in the deletion time range.
-  ConversationHandler* conversation_handler2 =
-      ai_chat_service_->GetOrCreateConversationHandlerForContent(
-          associated_content_2.GetContentId(),
-          associated_content_2.GetWeakPtr());
-  EXPECT_TRUE(conversation_handler2);
-  auto client2 = CreateConversationClient(conversation_handler2);
-  conversation_handler2->SetChatHistoryForTesting(
-      CreateSampleChatHistory(1u, -2));
-
-  // This conversation should have its content archived but should report actual
-  // content info since it does not fall in the deletion time range.
-  ConversationHandler* conversation_handler3 =
-      ai_chat_service_->GetOrCreateConversationHandlerForContent(
-          associated_content_3.GetContentId(),
-          associated_content_3.GetWeakPtr());
-  EXPECT_TRUE(conversation_handler2);
-  auto client3 = CreateConversationClient(conversation_handler3);
-  conversation_handler3->SetChatHistoryForTesting(
-      CreateSampleChatHistory(1u, -1));
+    // Verify associated are initially correct
+    base::RunLoop run_loop;
+    data[i].conversation_handler->GetAssociatedContentInfo(
+        base::BindLambdaForTesting([&](mojom::SiteInfoPtr site_info,
+                                       bool should_send_page_contents) {
+          SCOPED_TRACE(testing::Message() << "data index: " << i);
+          EXPECT_TRUE(site_info->is_content_association_possible);
+          EXPECT_TRUE(site_info->url.has_value());
+          EXPECT_EQ(site_info->url.value(), content_url);
+          EXPECT_EQ(site_info->title.value(), base::UTF16ToUTF8(page_title));
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
 
   // Archive content for conversations 2 and 3
-  associated_content_2.DisassociateWithConversations(page_content, false);
-  associated_content_3.DisassociateWithConversations(page_content, false);
+  data[1].associated_content.DisassociateWithConversations(page_content, false);
+  data[2].associated_content.DisassociateWithConversations(page_content, false);
 
   // Delete associated content from conversations between 1 hours ago and 3
   // hours ago.
@@ -811,75 +798,39 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
 
   task_environment_.RunUntilIdle();
 
-  {
+  for (int i = 0; i < 3; i++) {
     base::RunLoop run_loop;
-    conversation_handler1->GetAssociatedContentInfo(base::BindLambdaForTesting(
-        [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
+    data[i].conversation_handler->GetAssociatedContentInfo(
+        base::BindLambdaForTesting([&](mojom::SiteInfoPtr site_info,
+                                       bool should_send_page_contents) {
+          LOG(ERROR) << __func__;
+          SCOPED_TRACE(testing::Message() << "data index: " << i);
           EXPECT_TRUE(site_info->is_content_association_possible);
           EXPECT_TRUE(site_info->url.has_value());
-          EXPECT_EQ(site_info->url.value(), content_url);
-          EXPECT_EQ(site_info->title.value(), base::UTF16ToUTF8(page_title));
+          EXPECT_TRUE(site_info->title.has_value());
+          if (i == 1) {
+            EXPECT_TRUE(site_info->url->is_empty());
+            EXPECT_TRUE(site_info->title->empty());
+          } else {
+            EXPECT_EQ(site_info->url.value(), content_url);
+            EXPECT_EQ(site_info->title.value(), base::UTF16ToUTF8(page_title));
+          }
           run_loop.Quit();
         }));
     run_loop.Run();
-  }
 
-  {
-    base::RunLoop run_loop;
-    conversation_handler1->GeneratePageContent(
+    base::RunLoop run_loop_2;
+    data[i].conversation_handler->GeneratePageContent(
         base::BindLambdaForTesting([&](std::string content, bool is_video,
                                        std::string invalidation_token) {
-          EXPECT_EQ(content, page_content);
-          run_loop.Quit();
+          if (i == 1) {
+            EXPECT_TRUE(content.empty());
+          } else {
+            EXPECT_EQ(content, page_content);
+          }
+          run_loop_2.Quit();
         }));
-    run_loop.Run();
-  }
-
-  {
-    base::RunLoop run_loop;
-    conversation_handler2->GetAssociatedContentInfo(base::BindLambdaForTesting(
-        [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
-          EXPECT_TRUE(site_info->is_content_association_possible);
-          EXPECT_TRUE(site_info->url->is_empty());
-          EXPECT_TRUE(site_info->title->empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
-
-  {
-    base::RunLoop run_loop;
-    conversation_handler2->GeneratePageContent(
-        base::BindLambdaForTesting([&](std::string content, bool is_video,
-                                       std::string invalidation_token) {
-          EXPECT_TRUE(content.empty());
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
-
-  {
-    base::RunLoop run_loop;
-    conversation_handler3->GetAssociatedContentInfo(base::BindLambdaForTesting(
-        [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
-          EXPECT_TRUE(site_info->is_content_association_possible);
-          EXPECT_TRUE(site_info->url.has_value());
-          EXPECT_EQ(site_info->url.value(), content_url);
-          EXPECT_EQ(site_info->title.value(), base::UTF16ToUTF8(page_title));
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-  }
-
-  {
-    base::RunLoop run_loop;
-    conversation_handler3->GeneratePageContent(
-        base::BindLambdaForTesting([&](std::string content, bool is_video,
-                                       std::string invalidation_token) {
-          EXPECT_EQ(content, page_content);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    run_loop_2.Run();
   }
 }
 
