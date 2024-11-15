@@ -30,6 +30,8 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabWindowManager;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.base.WindowDelegate;
@@ -120,7 +122,9 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 tabModelSelectorSupplier,
                 uiOverrides,
                 baseChromeLayout,
-                bottomWindowPaddingSupplier,
+                () ->
+                        bottomWindowPaddingSupplier.get()
+                                + (isBottomToolbarVisible() ? locationBarLayout.getHeight() : 0),
                 onLongClickListener);
 
         if (mUrlBar != null) {
@@ -141,5 +145,10 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             mQRButton.setOnClickListener(null);
             mQRButton = null;
         }
+    }
+
+    private static boolean isBottomToolbarVisible() {
+        return BottomToolbarConfiguration.isBottomToolbarEnabled()
+                && BraveMenuButtonCoordinator.isMenuFromBottom();
     }
 }
