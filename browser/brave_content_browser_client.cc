@@ -652,6 +652,10 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
           .Add<brave_new_tab_page::mojom::PageHandlerFactory>()
           .Add<brave_news::mojom::BraveNewsController>();
 
+  auto ntp_next_registration =
+      registry.ForWebUI<brave_new_tab::NewTabPageUI>()
+          .Add<brave_new_tab::mojom::NewTabPageHandler>();
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     ntp_registration.Add<brave_vpn::mojom::ServiceHandler>();
@@ -660,6 +664,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 
   if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
     ntp_registration.Add<searchbox::mojom::PageHandler>();
+    ntp_next_registration.Add<searchbox::mojom::PageHandler>();
   }
 
   if (base::FeatureList::IsEnabled(
@@ -846,9 +851,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         commands::mojom::CommandsService, BraveSettingsUI>(map);
   }
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_new_tab::mojom::NewTabPageHandler, brave_new_tab::NewTabPageUI>(
-      map);
 #endif
 
   auto* prefs =

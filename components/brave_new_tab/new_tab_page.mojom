@@ -37,11 +37,29 @@ struct SponsoredImageBackground {
   SponsoredImageLogo? logo;
 };
 
+struct SearchEngineInfo {
+  int64 prepopulate_id;
+  string name;
+  string keyword;
+  string host;
+  string favicon_url;
+};
+
+struct EventDetails {
+  bool alt_key;
+  bool ctrl_key;
+  bool meta_key;
+  bool shift_key;
+};
+
 // WebUI-side handler for notifications from the browser.
 interface NewTabPage {
 
   // Called when a background-related profile preference has been updated.
   OnBackgroundPrefsUpdated();
+
+  // Called when search-related profile preference has been updated.
+  OnSearchPrefsUpdated();
 
 };
 
@@ -51,6 +69,9 @@ interface NewTabPageHandler {
   // Sets the NewTabPage remove interface that will receive notifications from
   // the browser.
   SetNewTabPage(pending_remote<NewTabPage> page);
+
+  // Loads a binary resource from Brave's private CDN.
+  LoadResourceFromPcdn(string url) => (array<uint8>? resource_data);
 
   // Gets or sets whether the user has enabled background images or colors on
   // the new tab page.
@@ -90,5 +111,31 @@ interface NewTabPageHandler {
   // Removes the specified custom image background from the list of available
   // backgrounds.
   RemoveCustomBackground(string background_url) => ();
+
+  // Gets or sets whether the search box is displayed on the NTP.
+  GetShowSearchBox() => (bool show_search_box);
+  SetShowSearchBox(bool show_search_box) => ();
+
+  // Gets or sets whether search suggestions are enabled.
+  GetSearchSuggestionsEnabled() => (bool enabled);
+  SetSearchSuggestionsEnabled(bool enabled) => ();
+
+  // Gets or sets whether the prompt to enable search suggestions has been
+  // dismissed.
+  GetSearchSuggestionsPromptDismissed() => (bool dismissed);
+  SetSearchSuggestionsPromptDismissed(bool dismissed) => ();
+
+  // Gets or sets the last used search engine.
+  GetLastUsedSearchEngine() => (string engine);
+  SetLastUsedSearchEngine(string engine) => ();
+
+  // Returns the list of available search engines for use on the NTP search box.
+  GetAvailableSearchEngines() => (array<SearchEngineInfo> search_engines);
+
+  // Opens search for the specified query and engine.
+  OpenSearch(string query, string engine, EventDetails details) => ();
+
+  // Opens a URL from the search box.
+  OpenURLFromSearch(string url, EventDetails details) => ();
 
 };

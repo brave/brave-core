@@ -20,7 +20,7 @@ export class NewTabPageProxy {
   }
 
   addListeners(listeners: Partial<mojom.NewTabPageInterface>) {
-    addCallbackListeners(this.callbackRouter, listeners)
+    return addCallbackListeners(this.callbackRouter, listeners)
   }
 
   static getInstance(): NewTabPageProxy {

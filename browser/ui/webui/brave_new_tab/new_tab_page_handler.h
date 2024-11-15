@@ -20,6 +20,15 @@
 #include "mojo/public/cpp/bindings/remote.h"
 
 class PrefService;
+class TemplateURLService;
+
+namespace brave_private_cdn {
+class PrivateCDNRequestHelper;
+}
+
+namespace tabs {
+class TabInterface;
+}
 
 namespace brave_new_tab {
 
@@ -28,15 +37,21 @@ class CustomImageChooser;
 
 class NewTabPageHandler : public mojom::NewTabPageHandler {
  public:
-  NewTabPageHandler(mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
-                    std::unique_ptr<CustomImageChooser> custom_image_chooser,
-                    std::unique_ptr<BackgroundAdapter> background_adapter,
-                    PrefService& pref_service);
+  NewTabPageHandler(
+      mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
+      std::unique_ptr<CustomImageChooser> custom_image_chooser,
+      std::unique_ptr<BackgroundAdapter> background_adapter,
+      std::unique_ptr<brave_private_cdn::PrivateCDNRequestHelper> pcdn_helper,
+      tabs::TabInterface& tab,
+      PrefService& pref_service,
+      TemplateURLService& template_url_service);
 
   ~NewTabPageHandler() override;
 
   // mojom::NewTabPageHandler:
   void SetNewTabPage(mojo::PendingRemote<mojom::NewTabPage> page) override;
+  void LoadResourceFromPcdn(const std::string& url,
+                            LoadResourceFromPcdnCallback callback) override;
   void GetBackgroundsEnabled(GetBackgroundsEnabledCallback callback) override;
   void SetBackgroundsEnabled(bool enabled,
                              SetBackgroundsEnabledCallback callback) override;
@@ -58,6 +73,33 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
       ShowCustomBackgroundChooserCallback callback) override;
   void RemoveCustomBackground(const std::string& background_url,
                               RemoveCustomBackgroundCallback callback) override;
+  void GetShowSearchBox(GetShowSearchBoxCallback callback) override;
+  void SetShowSearchBox(bool show_search_box,
+                        SetShowSearchBoxCallback callback) override;
+  void GetSearchSuggestionsEnabled(
+      GetSearchSuggestionsEnabledCallback callback) override;
+  void SetSearchSuggestionsEnabled(
+      bool enabled,
+      SetSearchSuggestionsEnabledCallback callback) override;
+  void GetSearchSuggestionsPromptDismissed(
+      GetSearchSuggestionsPromptDismissedCallback callback) override;
+  void SetSearchSuggestionsPromptDismissed(
+      bool dismissed,
+      SetSearchSuggestionsPromptDismissedCallback callback) override;
+  void GetLastUsedSearchEngine(
+      GetLastUsedSearchEngineCallback callback) override;
+  void SetLastUsedSearchEngine(
+      const std::string& engine_host,
+      SetLastUsedSearchEngineCallback callback) override;
+  void GetAvailableSearchEngines(
+      GetAvailableSearchEnginesCallback callback) override;
+  void OpenSearch(const std::string& query,
+                  const std::string& engine,
+                  mojom::EventDetailsPtr details,
+                  OpenSearchCallback callback) override;
+  void OpenURLFromSearch(const std::string& url,
+                         mojom::EventDetailsPtr details,
+                         OpenURLFromSearchCallback callback) override;
 
  private:
   void OnCustomBackgroundsSelected(ShowCustomBackgroundChooserCallback callback,
@@ -70,7 +112,10 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   UpdateObserver update_observer_;
   std::unique_ptr<CustomImageChooser> custom_image_chooser_;
   std::unique_ptr<BackgroundAdapter> background_adapter_;
+  std::unique_ptr<brave_private_cdn::PrivateCDNRequestHelper> pcdn_helper_;
+  raw_ref<tabs::TabInterface> tab_;
   raw_ref<PrefService> pref_service_;
+  raw_ref<TemplateURLService> template_url_service_;
   base::WeakPtrFactory<NewTabPageHandler> weak_factory_{this};
 };
 

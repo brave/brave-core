@@ -35,6 +35,7 @@ export function createNewTabModel(): NewTabModel {
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
   const store = createStore(defaultState())
+  const pcdnImageURLs = new Map<string, string>()
 
   function updateCurrentBackground() {
     store.update({
@@ -122,6 +123,21 @@ export function createNewTabModel(): NewTabModel {
     getState: store.getState,
 
     addListener: store.addListener,
+
+    async getPcdnImageURL(url) {
+      const cachedURL = pcdnImageURLs.get(url)
+      if (cachedURL) {
+        return cachedURL
+      }
+      const { resourceData } = await handler.loadResourceFromPcdn(url)
+      if (!resourceData) {
+        throw new Error('Image resource could not be loaded from PCDN')
+      }
+      const blob = new Blob([new Uint8Array(resourceData)], { type: 'image/*' })
+      const objectURL = URL.createObjectURL(blob)
+      pcdnImageURLs.set(url, objectURL)
+      return objectURL
+    },
 
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })

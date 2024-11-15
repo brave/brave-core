@@ -35,12 +35,13 @@ export const style = scoped.css`
   }
 
   .topsites-container {
-    min-height: 32px;
+    margin: 16px 0;
   }
 
   .searchbox-container {
     flex: 1 1 auto;
     margin: 16px 0;
+    align-self: stretch;
   }
 
   .background-caption-container {
@@ -89,6 +90,53 @@ global.css`
     h4 {
       font: ${font.heading.h4};
       margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    dialog, [popover] {
+      border: none;
+      color: inherit;
+      margin: 0;
+      padding: 0;
+      background: none;
+
+      &::backdrop {
+        background-color: transparent;
+      }
+    }
+
+    .popover-menu {
+      padding: 4px;
+      border-radius: 8px;
+      border: solid 1px ${color.divider.subtle};
+      background: ${color.container.background};
+      box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 180px;
+
+      .divider {
+        height: 1px;
+        background: ${color.divider.subtle};
+      }
+
+      button {
+        --leo-icon-size: 20px;
+
+        padding: 8px 24px 8px 8px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        &:hover, &.highlight {
+          background: ${color.container.highlight};
+        }
+      }
     }
   }
 `
