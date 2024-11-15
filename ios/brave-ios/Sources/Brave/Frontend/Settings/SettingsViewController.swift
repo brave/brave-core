@@ -1344,10 +1344,12 @@ class SettingsViewController: TableViewController {
       installVPNProfile: { [weak self] in
         guard let self = self else { return }
         // Not using `push` since we don't want the user to go back.
-        self.navigationController?.setViewControllers(
-          [BraveVPNInstallViewController()],
-          animated: true
-        )
+        self.dismiss(animated: true) {
+          self.navigationController?.setViewControllers(
+            [BraveVPNInstallViewController()],
+            animated: true
+          )
+        }
       }
     )
 

@@ -27,7 +27,6 @@ public struct BraveVPNPaywallView: View {
 
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.sizeCategory) private var sizeCategory
-  @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
   public init(
     openVPNAuthenticationInNewTab: @escaping (() -> Void),
