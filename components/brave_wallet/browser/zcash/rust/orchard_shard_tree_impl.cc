@@ -96,10 +96,15 @@ ShardTreeCheckpointBundle From(
                             checkpoint.mark_removed.end())};
 }
 
-ShardStoreStatusCode shard_store_get_shard(const ShardTreeDelegate& delegate,
-                                           const ShardTreeAddress& addr,
-                                           ShardTreeShard& input) {
-  auto shard = delegate.GetShard(From(addr));
+ShardTreeDelegate::ShardTreeDelegate(
+    std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate)
+    : delegate_(std::move(delegate)) {}
+
+ShardTreeDelegate::~ShardTreeDelegate() = default;
+
+ShardStoreStatusCode ShardTreeDelegate::GetShard(const ShardTreeAddress& addr,
+                                                 ShardTreeShard& input) const {
+  auto shard = delegate_->GetShard(From(addr));
   if (!shard.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!shard.value()) {
@@ -109,10 +114,9 @@ ShardStoreStatusCode shard_store_get_shard(const ShardTreeDelegate& delegate,
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_last_shard(const ShardTreeDelegate& delegate,
-                                            ShardTreeShard& input,
-                                            uint8_t shard_level) {
-  auto shard = delegate.LastShard(shard_level);
+ShardStoreStatusCode ShardTreeDelegate::LastShard(ShardTreeShard& input,
+                                                  uint8_t shard_level) const {
+  auto shard = delegate_->LastShard(shard_level);
   if (!shard.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!shard.value()) {
@@ -122,9 +126,9 @@ ShardStoreStatusCode shard_store_last_shard(const ShardTreeDelegate& delegate,
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_put_shard(ShardTreeDelegate& delegate,
-                                           const ShardTreeShard& tree) {
-  auto result = delegate.PutShard(From(tree));
+ShardStoreStatusCode ShardTreeDelegate::PutShard(
+    const ShardTreeShard& tree) const {
+  auto result = delegate_->PutShard(From(tree));
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!result.value()) {
@@ -133,11 +137,10 @@ ShardStoreStatusCode shard_store_put_shard(ShardTreeDelegate& delegate,
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_get_shard_roots(
-    const ShardTreeDelegate& delegate,
+ShardStoreStatusCode ShardTreeDelegate::GetShardRoots(
     ::rust::Vec<ShardTreeAddress>& input,
-    uint8_t shard_level) {
-  auto shard = delegate.GetShardRoots(shard_level);
+    uint8_t shard_level) const {
+  auto shard = delegate_->GetShardRoots(shard_level);
   if (!shard.has_value()) {
     return ShardStoreStatusCode::Error;
   }
@@ -147,9 +150,9 @@ ShardStoreStatusCode shard_store_get_shard_roots(
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_truncate(ShardTreeDelegate& delegate,
-                                          const ShardTreeAddress& address) {
-  auto result = delegate.Truncate(address.index);
+ShardStoreStatusCode ShardTreeDelegate::Truncate(
+    const ShardTreeAddress& address) const {
+  auto result = delegate_->Truncate(address.index);
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!result.value()) {
@@ -158,9 +161,8 @@ ShardStoreStatusCode shard_store_truncate(ShardTreeDelegate& delegate,
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_get_cap(const ShardTreeDelegate& delegate,
-                                         ShardTreeCap& input) {
-  auto result = delegate.GetCap();
+ShardStoreStatusCode ShardTreeDelegate::GetCap(ShardTreeCap& input) const {
+  auto result = delegate_->GetCap();
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!result.value()) {
@@ -170,19 +172,16 @@ ShardStoreStatusCode shard_store_get_cap(const ShardTreeDelegate& delegate,
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_put_cap(ShardTreeDelegate& delegate,
-                                         const ShardTreeCap& tree) {
-  auto result = delegate.PutCap(From(tree));
+ShardStoreStatusCode ShardTreeDelegate::PutCap(const ShardTreeCap& tree) const {
+  auto result = delegate_->PutCap(From(tree));
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   }
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_min_checkpoint_id(
-    const ShardTreeDelegate& delegate,
-    uint32_t& input) {
-  auto result = delegate.MinCheckpointId();
+ShardStoreStatusCode ShardTreeDelegate::MinCheckpointId(uint32_t& input) const {
+  auto result = delegate_->MinCheckpointId();
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!result.value()) {
@@ -192,10 +191,8 @@ ShardStoreStatusCode shard_store_min_checkpoint_id(
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_max_checkpoint_id(
-    const ShardTreeDelegate& delegate,
-    uint32_t& input) {
-  auto result = delegate.MaxCheckpointId();
+ShardStoreStatusCode ShardTreeDelegate::MaxCheckpointId(uint32_t& input) const {
+  auto result = delegate_->MaxCheckpointId();
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!result.value()) {
@@ -205,21 +202,18 @@ ShardStoreStatusCode shard_store_max_checkpoint_id(
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_add_checkpoint(
-    ShardTreeDelegate& delegate,
+ShardStoreStatusCode ShardTreeDelegate::AddCheckpoint(
     uint32_t checkpoint_id,
-    const ShardTreeCheckpoint& checkpoint) {
-  auto result = delegate.AddCheckpoint(checkpoint_id, From(checkpoint));
+    const ShardTreeCheckpoint& checkpoint) const {
+  auto result = delegate_->AddCheckpoint(checkpoint_id, From(checkpoint));
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   }
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_checkpoint_count(
-    const ShardTreeDelegate& delegate,
-    size_t& into) {
-  auto result = delegate.CheckpointCount();
+ShardStoreStatusCode ShardTreeDelegate::CheckpointCount(size_t& into) const {
+  auto result = delegate_->CheckpointCount();
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   }
@@ -227,12 +221,11 @@ ShardStoreStatusCode shard_store_checkpoint_count(
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_get_checkpoint_at_depth(
-    const ShardTreeDelegate& delegate,
+ShardStoreStatusCode ShardTreeDelegate::CheckpointAtDepth(
     size_t depth,
     uint32_t& into_checkpoint_id,
-    ShardTreeCheckpoint& into_checkpoint) {
-  auto checkpoint_id = delegate.GetCheckpointAtDepth(depth);
+    ShardTreeCheckpoint& into_checkpoint) const {
+  auto checkpoint_id = delegate_->GetCheckpointAtDepth(depth);
   if (!checkpoint_id.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!checkpoint_id.value()) {
@@ -240,7 +233,7 @@ ShardStoreStatusCode shard_store_get_checkpoint_at_depth(
   }
   into_checkpoint_id = **checkpoint_id;
 
-  auto checkpoint = delegate.GetCheckpoint(into_checkpoint_id);
+  auto checkpoint = delegate_->GetCheckpoint(into_checkpoint_id);
   if (!checkpoint.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!checkpoint.value()) {
@@ -250,11 +243,10 @@ ShardStoreStatusCode shard_store_get_checkpoint_at_depth(
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_get_checkpoint(
-    const ShardTreeDelegate& delegate,
+ShardStoreStatusCode ShardTreeDelegate::GetCheckpoint(
     uint32_t checkpoint_id,
-    ShardTreeCheckpoint& input) {
-  auto checkpoint = delegate.GetCheckpoint(checkpoint_id);
+    ShardTreeCheckpoint& input) const {
+  auto checkpoint = delegate_->GetCheckpoint(checkpoint_id);
   if (!checkpoint.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!checkpoint.value()) {
@@ -264,11 +256,10 @@ ShardStoreStatusCode shard_store_get_checkpoint(
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_update_checkpoint(
-    ShardTreeDelegate& delegate,
+ShardStoreStatusCode ShardTreeDelegate::UpdateCheckpoint(
     uint32_t checkpoint_id,
-    const ShardTreeCheckpoint& checkpoint) {
-  auto result = delegate.UpdateCheckpoint(checkpoint_id, From(checkpoint));
+    const ShardTreeCheckpoint& checkpoint) const {
+  auto result = delegate_->UpdateCheckpoint(checkpoint_id, From(checkpoint));
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!result.value()) {
@@ -277,9 +268,9 @@ ShardStoreStatusCode shard_store_update_checkpoint(
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_remove_checkpoint(ShardTreeDelegate& delegate,
-                                                   uint32_t checkpoint_id) {
-  auto result = delegate.RemoveCheckpoint(checkpoint_id);
+ShardStoreStatusCode ShardTreeDelegate::RemoveCheckpoint(
+    uint32_t checkpoint_id) const {
+  auto result = delegate_->RemoveCheckpoint(checkpoint_id);
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!result.value()) {
@@ -288,10 +279,9 @@ ShardStoreStatusCode shard_store_remove_checkpoint(ShardTreeDelegate& delegate,
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_truncate_checkpoint(
-    ShardTreeDelegate& delegate,
-    uint32_t checkpoint_id) {
-  auto result = delegate.TruncateCheckpoints(checkpoint_id);
+ShardStoreStatusCode ShardTreeDelegate::TruncateCheckpoint(
+    uint32_t checkpoint_id) const {
+  auto result = delegate_->TruncateCheckpoints(checkpoint_id);
   if (!result.has_value()) {
     return ShardStoreStatusCode::Error;
   } else if (!result.value()) {
@@ -300,11 +290,10 @@ ShardStoreStatusCode shard_store_truncate_checkpoint(
   return ShardStoreStatusCode::Ok;
 }
 
-ShardStoreStatusCode shard_store_get_checkpoints(
-    const ShardTreeDelegate& delegate,
+ShardStoreStatusCode ShardTreeDelegate::GetCheckpoints(
     size_t limit,
-    ::rust::Vec<ShardTreeCheckpointBundle>& into) {
-  auto checkpoints = delegate.GetCheckpoints(limit);
+    ::rust::Vec<ShardTreeCheckpointBundle>& into) const {
+  auto checkpoints = delegate_->GetCheckpoints(limit);
   if (!checkpoints.has_value()) {
     return ShardStoreStatusCode::Error;
   }
@@ -357,8 +346,8 @@ OrchardShardTreeImpl::~OrchardShardTreeImpl() {}
 // static
 std::unique_ptr<OrchardShardTree> OrchardShardTree::Create(
     std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate) {
-  auto shard_tree_result =
-      ::brave_wallet::orchard::create_shard_tree(std::move(delegate));
+  auto shard_tree_result = ::brave_wallet::orchard::create_shard_tree(
+      std::make_unique<ShardTreeDelegate>(std::move(delegate)));
   if (!shard_tree_result->is_ok()) {
     return nullptr;
   }
