@@ -8,7 +8,9 @@
 #include <memory>
 #include <utility>
 
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
@@ -48,19 +50,31 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     ClearShieldsSettings(delete_begin, delete_end);
   }
 
-  // Brave News feed cache
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
+    // Brave News feed cache
     if (auto* brave_news_controller =
             brave_news::BraveNewsControllerFactory::GetForBrowserContext(
                 profile_)) {
       brave_news_controller->ClearHistory();
     }
+    // AI Chat history but only associated content, not neccessary if we
+    // are also deleting entire AI Chat history.
+    if (!(remove_mask &
+          chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY)) {
+      ai_chat::AIChatService* ai_chat_service =
+          ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);
+      if (ai_chat_service) {
+        ai_chat_service->DeleteAssociatedWebContent(delete_begin, delete_end);
+      }
+    }
   }
 
-  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY &&
-      ai_chat::IsAIChatEnabled(profile_->GetPrefs()) &&
-      ai_chat::features::IsAIChatHistoryEnabled()) {
-    ClearAiChatHistory(delete_begin, delete_end);
+  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY) {
+    ai_chat::AIChatService* ai_chat_service =
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);
+    if (ai_chat_service) {
+      ai_chat_service->DeleteConversations(delete_begin, delete_end);
+    }
   }
 }
 
@@ -91,10 +105,4 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
       }
     }
   }
-}
-
-void BraveBrowsingDataRemoverDelegate::ClearAiChatHistory(base::Time begin_time,
-                                                          base::Time end_time) {
-  // Handler for the Brave Leo History clearing.
-  // It is prepared for future implementation.
 }

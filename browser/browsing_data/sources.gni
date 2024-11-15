@@ -14,6 +14,8 @@ brave_browser_browsing_data_sources = [
 
 brave_browser_browsing_data_deps = [
   "//base",
+  "//brave/browser/ai_chat",
+  "//brave/components/ai_chat/core/browser",
   "//chrome/browser:browser_process",
   "//chrome/browser/browsing_data:constants",
   "//chrome/browser/profiles:profile",

@@ -22,6 +22,11 @@ namespace ai_chat {
 // content.
 // Similarly, if a conversation is loaded from storage, and the conversation
 // was associated with content, this class is used to represent that content.
+//
+// If this class is used to represent archive content that can be shared by
+// multiple conversations, consider changing owner to the AIChatService and
+// having it subclass AssociatedContentDriver for related conversation
+// management.
 class AssociatedArchiveContent
     : public ConversationHandler::AssociatedContentDelegate {
  public:
@@ -32,6 +37,11 @@ class AssociatedArchiveContent
   ~AssociatedArchiveContent() override;
   AssociatedArchiveContent(const AssociatedArchiveContent&) = delete;
   AssociatedArchiveContent& operator=(const AssociatedArchiveContent&) = delete;
+
+  // Occassionally even an archive is updated, such as when content is deleted
+  // for privacy reasons.
+  void SetMetadata(GURL url, std::u16string title, bool is_video);
+  void SetContent(std::string text_content);
 
   int GetContentId() const override;
   GURL GetURL() const override;
