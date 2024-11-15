@@ -14,6 +14,16 @@ namespace brave_ads {
 
 class BraveAdsEpochOperatorConditionMatcherUtilTest : public test::TestBase {};
 
+TEST_F(BraveAdsEpochOperatorConditionMatcherUtilTest, IsOperator) {
+  // Act & Assert
+  EXPECT_TRUE(IsEpochOperator("[T=]:1"));
+}
+
+TEST_F(BraveAdsEpochOperatorConditionMatcherUtilTest, IsNotOperator) {
+  // Act & Assert
+  EXPECT_FALSE(IsEpochOperator("[R=]:1"));
+}
+
 TEST_F(BraveAdsEpochOperatorConditionMatcherUtilTest, DoNotMatchNonOperator) {
   // Act & Assert
   EXPECT_FALSE(MatchEpochOperator(
