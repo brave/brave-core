@@ -388,9 +388,12 @@ void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
   // This is done now, in the callback from DeleteAllData, in case there
   // was any in-progress operations that would have resulted in adding data
   // back to conversations_ whilst waiting for DeleteAllData to complete.
-  for (auto& [_, conversation_handler] :
-       base::Reversed(conversation_handlers_)) {
-    MaybeUnloadConversation(conversation_handler.get());
+  std::vector<ConversationHandler*> all_conversation_handlers;
+  for (auto& [_, conversation_handler] : conversation_handlers_) {
+    all_conversation_handlers.push_back(conversation_handler.get());
+  }
+  for (auto* conversation_handler : all_conversation_handlers) {
+    MaybeUnloadConversation(conversation_handler);
   }
   // Remove any conversation metadata that isn't connected to a still-alive
   // handler.
