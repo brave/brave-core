@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/webui_embedding_context.cc b/chrome/browser/ui/webui/webui_embedding_context.cc
+index 77ac87a688034c0b144a73065a76010d7397637c..5566c2e3a1194f45e10344fe0231daee3adee1b3 100644
+--- a/chrome/browser/ui/webui/webui_embedding_context.cc
++++ b/chrome/browser/ui/webui/webui_embedding_context.cc
+@@ -113,7 +113,7 @@ class EmbeddingTabTracker {
+   }
+ 
+   // The tab interface currently embedding the host contents.
+-  raw_ptr<tabs::TabInterface> tab_interface_ = nullptr;
++  raw_ptr<tabs::TabInterface, DanglingUntriaged> tab_interface_ = nullptr;
+ 
+   // Notifies this when `tab_interface_` will detach, tracked to invalidate
+   // the tab before destruction.
