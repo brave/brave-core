@@ -167,6 +167,7 @@ class AIChatService : public KeyedService,
   size_t GetInMemoryConversationCountForTesting();
 
  private:
+  // Key is uuid
   using ConversationMap = std::map<std::string, mojom::ConversationPtr>;
   using ConversationMapCallback = base::OnceCallback<void(ConversationMap&)>;
 
@@ -230,7 +231,7 @@ class AIChatService : public KeyedService,
       on_conversations_loaded_callbacks_;
   base::OnceClosure cancel_conversation_load_callback_ = base::NullCallback();
 
-  // All conversation metadata. Mainly just titles and uuids. Key is uuid
+  // All conversation metadata. Mainly just titles and uuids.
   ConversationMap conversations_;
 
   // Only keep ConversationHandlers around that are being

@@ -58,15 +58,15 @@ class AIChatDatabase {
       std::optional<std::string> editing_id = std::nullopt);
 
   // Updates the title of the conversation with the provided UUID
-  bool UpdateConversationTitle(std::string conversation_uuid,
-                               std::string title);
+  bool UpdateConversationTitle(std::string_view conversation_uuid,
+                               std::string_view title);
 
   // Deletes the conversation with the provided UUID
   bool DeleteConversation(std::string_view conversation_uuid);
 
   // Deletes the conversation entry with the provided ID and all associated
   // edits and events.
-  bool DeleteConversationEntry(std::string conversation_entry_uuid);
+  bool DeleteConversationEntry(std::string_view conversation_entry_uuid);
 
   // Drops all data and tables in the database, and re-creates empty tables
   bool DeleteAllData();
@@ -96,10 +96,10 @@ class AIChatDatabase {
       int index);
   void BindAndEncryptOptionalString(sql::Statement& statement,
                                     int index,
-                                    const std::optional<std::string>& value);
+                                    std::optional<std::string_view> value);
   bool BindAndEncryptString(sql::Statement& statement,
                             int index,
-                            const std::string& value);
+                            std::string_view value);
 
   bool CreateSchema();
 

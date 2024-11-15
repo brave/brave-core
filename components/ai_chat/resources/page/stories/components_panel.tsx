@@ -83,6 +83,7 @@ const CONVERSATIONS: mojom.Conversation[] = [
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000000') },
     associatedContent: associatedContentNone,
+    modelKey: undefined,
   },
   {
     title: 'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
@@ -90,6 +91,7 @@ const CONVERSATIONS: mojom.Conversation[] = [
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000001') },
     associatedContent: associatedContentNone,
+    modelKey: undefined,
   },
   {
     title: 'Wedding speech improvements',
@@ -97,6 +99,7 @@ const CONVERSATIONS: mojom.Conversation[] = [
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000002') },
     associatedContent: associatedContentNone,
+    modelKey: undefined,
   }
 ]
 

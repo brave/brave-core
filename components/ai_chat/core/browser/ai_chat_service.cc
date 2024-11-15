@@ -208,11 +208,12 @@ void AIChatService::GetConversation(
       [](base::WeakPtr<AIChatService> instance, std::string conversation_uuid,
          base::OnceCallback<void(ConversationHandler*)> callback,
          ConversationMap& conversations) {
-        if (!conversations.contains(conversation_uuid)) {
+        auto conversation_it = conversations.find(conversation_uuid);
+        if (conversation_it == conversations.end()) {
           std::move(callback).Run(nullptr);
           return;
         }
-        mojom::ConversationPtr& metadata = conversations.at(conversation_uuid);
+        mojom::ConversationPtr& metadata = conversation_it->second;
         // Get archive content and conversation entries
         instance->ai_chat_db_.AsyncCall(&AIChatDatabase::GetConversationData)
             .WithArgs(metadata->uuid)
@@ -231,12 +232,12 @@ void AIChatService::OnConversationDataReceived(
   DVLOG(4) << __func__ << " for " << conversation_uuid
            << " with data: " << data->entries.size() << " entries and "
            << data->associated_content.size() << " contents";
-  if (!conversations_.contains(conversation_uuid)) {
+  auto conversation_it = conversations_.find(conversation_uuid);
+  if (conversation_it == conversations_.end()) {
     std::move(callback).Run(nullptr);
     return;
   }
-  mojom::Conversation* conversation =
-      conversations_.at(conversation_uuid).get();
+  mojom::Conversation* conversation = conversation_it->second.get();
   std::unique_ptr<ConversationHandler> conversation_handler =
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
@@ -387,7 +388,7 @@ void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
   // This is done now, in the callback from DeleteAllData, in case there
   // was any in-progress operations that would have resulted in adding data
   // back to conversations_ whilst waiting for DeleteAllData to complete.
-  for (auto& [uuid, conversation_handler] :
+  for (auto& [_, conversation_handler] :
        base::Reversed(conversation_handlers_)) {
     MaybeUnloadConversation(conversation_handler.get());
   }
@@ -455,14 +456,16 @@ void AIChatService::OnLoadConversationsLazyData(
              << "\n last updated: " << conversation->updated_time
              << "\n title: " << conversation->title;
     // It's ok to overwrite existing metadata - some operations may modify
-    // the database data and we want to keep the in-memory data syncrhonised,
+    // the database data and we want to keep the in-memory data synchronised,
     // but we have to let any ConversationHandler instances know because
     // the have a reference to the metadata.
-    conversations_.insert_or_assign(uuid, std::move(conversation));
-    if (conversation_handlers_.contains(uuid)) {
+    auto [inserted_it, _] =
+        conversations_.insert_or_assign(uuid, std::move(conversation));
+    auto handler_it = conversation_handlers_.find(uuid);
+    if (handler_it != conversation_handlers_.end()) {
       // Replace the metadata since the old reference is invalid
-      ConversationHandler* handler = conversation_handlers_.at(uuid).get();
-      handler->SetConversationMetadata(conversations_.at(uuid).get());
+      ConversationHandler* handler = handler_it->second.get();
+      handler->SetConversationMetadata(inserted_it->second.get());
       // If a reload was asked for, then we should also update the deeper
       // conversation data from the database, since the reload was likely due
       // to underlying data changing.
@@ -580,10 +583,9 @@ void AIChatService::DismissPremiumPrompt() {
 }
 
 void AIChatService::DeleteConversation(const std::string& id) {
-  if (conversation_handlers_.contains(id)) {
-    ConversationHandler* conversation_handler =
-        conversation_handlers_.at(id).get();
-    conversation_observations_.RemoveObservation(conversation_handler);
+  auto handler_it = conversation_handlers_.find(id);
+  if (handler_it != conversation_handlers_.end()) {
+    conversation_observations_.RemoveObservation(handler_it->second.get());
     conversation_handlers_.erase(id);
   }
   conversations_.erase(id);

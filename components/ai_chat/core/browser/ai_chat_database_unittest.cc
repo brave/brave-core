@@ -116,15 +116,15 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
   for (bool has_content : {true, false}) {
     SCOPED_TRACE(testing::Message() << (has_content ? "With" : "Without")
                                     << " associated content");
-    std::string uuid = has_content ? "first" : "second";
-    std::string content_uuid = "content";
+    const std::string uuid = has_content ? "first" : "second";
+    const std::string content_uuid = "content";
     // Create the conversation metadata which gets persisted
     // when the first entry is asked to be persisted.
     // Put an incorrect time value to show that the time from the
     // mojom::Conversation is not persisted and instead is taken from the most
     // recent entry.
-    GURL page_url = GURL("https://example.com/page");
-    std::string expected_contents = "Page contents";
+    const GURL page_url = GURL("https://example.com/page");
+    const std::string expected_contents = "Page contents";
     mojom::SiteInfoPtr associated_content =
         has_content
             ? mojom::SiteInfo::New(
@@ -133,7 +133,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
             : mojom::SiteInfo::New(
                   std::nullopt, mojom::ContentType::PageContent, std::nullopt,
                   std::nullopt, std::nullopt, 0, false, false);
-    mojom::ConversationPtr metadata =
+    const mojom::ConversationPtr metadata =
         mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
                                  std::nullopt, std::move(associated_content));
 
@@ -193,7 +193,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
         db_->DeleteConversationEntry(result_2->entries.back()->uuid.value()));
 
     // Verify the last entry is gone
-    history.erase(history.end() - 1);
+    history.pop_back();
     mojom::ConversationArchivePtr result_3 = db_->GetConversationData(uuid);
     ExpectConversationHistoryEquals(FROM_HERE, result_3->entries, history);
 
@@ -258,7 +258,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
 }
 
 TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
-  std::vector<std::string> initial_titles = {"first title", ""};
+  const std::vector<std::string> initial_titles = {"first title", ""};
   for (const auto& initial_title : initial_titles) {
     const std::string uuid =
         base::StrCat({"for_conversation_title_", initial_title});
@@ -270,7 +270,7 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
                              false));
 
     // Persist the first entry (and get the response ready)
-    auto history = CreateSampleChatHistory(1u);
+    const auto history = CreateSampleChatHistory(1u);
 
     EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
                                      history[0]->Clone()));
@@ -292,9 +292,9 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
 }
 
 TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
-  std::string uuid = "for_associated_content";
-  std::string content_uuid = "content_uuid";
-  GURL page_url = GURL("https://example.com/page");
+  const std::string uuid = "for_associated_content";
+  const std::string content_uuid = "content_uuid";
+  const GURL page_url = GURL("https://example.com/page");
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New(content_uuid, mojom::ContentType::PageContent,
@@ -336,8 +336,8 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
 }
 
 TEST_P(AIChatDatabaseTest, DeleteAllData) {
-  std::string uuid = "first";
-  GURL page_url = GURL("https://example.com/page");
+  const std::string uuid = "first";
+  const GURL page_url = GURL("https://example.com/page");
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,

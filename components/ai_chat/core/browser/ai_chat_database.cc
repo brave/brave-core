@@ -208,6 +208,8 @@ mojom::ConversationArchivePtr AIChatDatabase::GetConversationData(
 
 std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     std::string_view conversation_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   static constexpr char kEntriesQuery[] =
       "SELECT uuid, date, entry_text, character_type, editing_entry_uuid, "
       "action_type, selected_text"
@@ -332,6 +334,8 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
 std::vector<mojom::ContentArchivePtr>
 AIChatDatabase::GetArchiveContentsForConversation(
     std::string_view conversation_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   static constexpr char kQuery[] =
       "SELECT uuid, last_contents"
       " FROM associated_content"
@@ -461,22 +465,15 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
   }
   CHECK(statement.is_valid());
   int index = 0;
-  BindAndEncryptOptionalString(statement, index, associated_content->title);
-  index++;
-  BindAndEncryptOptionalString(statement, index,
+  BindAndEncryptOptionalString(statement, index++, associated_content->title);
+  BindAndEncryptOptionalString(statement, index++,
                                associated_content->url->spec());
-  index++;
-  statement.BindInt(index,
-                    static_cast<int32_t>(associated_content->content_type));
-  index++;
-  BindAndEncryptOptionalString(statement, index, contents);
-  index++;
-  statement.BindInt(index, associated_content->content_used_percentage);
-  index++;
-  statement.BindBool(index, associated_content->is_content_refined);
-  index++;
-  statement.BindString(index, associated_content->uuid.value());
-  index++;
+  statement.BindInt(index++,
+                    base::to_underlying(associated_content->content_type));
+  BindAndEncryptOptionalString(statement, index++, contents);
+  statement.BindInt(index++, associated_content->content_used_percentage);
+  statement.BindBool(index++, associated_content->is_content_refined);
+  statement.BindString(index++, associated_content->uuid.value());
   statement.BindString(index, conversation_uuid);
 
   if (!statement.Run()) {
@@ -576,9 +573,9 @@ bool AIChatDatabase::AddConversationEntry(
   BindAndEncryptOptionalString(insert_conversation_entry_statement, index++,
                                entry->text);
   insert_conversation_entry_statement.BindInt(
-      index++, static_cast<int>(entry->character_type));
+      index++, base::to_underlying(entry->character_type));
   insert_conversation_entry_statement.BindInt(
-      index++, static_cast<int>(entry->action_type));
+      index++, base::to_underlying(entry->action_type));
   BindAndEncryptOptionalString(insert_conversation_entry_statement, index++,
                                entry->selected_text);
 
@@ -654,8 +651,8 @@ bool AIChatDatabase::AddConversationEntry(
   return true;
 }
 
-bool AIChatDatabase::UpdateConversationTitle(std::string conversation_uuid,
-                                             std::string title) {
+bool AIChatDatabase::UpdateConversationTitle(std::string_view conversation_uuid,
+                                             std::string_view title) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
     return false;
@@ -762,7 +759,7 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
 }
 
 bool AIChatDatabase::DeleteConversationEntry(
-    std::string conversation_entry_uuid) {
+    std::string_view conversation_entry_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
     return false;
@@ -871,6 +868,7 @@ bool AIChatDatabase::DeleteAssociatedWebContent(
   DVLOG(4) << "Deleting associated web content for time range "
            << begin_time.value_or(base::Time()) << " to "
            << end_time.value_or(base::Time::Max());
+
   // Set any associated content url, title and content to NULL where
   // conversation had any entry between begin_time and end_time.
   static constexpr char kQuery[] =
@@ -928,10 +926,10 @@ std::optional<std::string> AIChatDatabase::DecryptOptionalColumnToString(
 void AIChatDatabase::BindAndEncryptOptionalString(
     sql::Statement& statement,
     int index,
-    const std::optional<std::string>& value) {
+    std::optional<std::string_view> value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (value.has_value() && !value.value().empty()) {
-    auto encrypted_value = encryptor_.EncryptString(value.value());
+    auto encrypted_value = encryptor_.EncryptString(std::string(value.value()));
     if (!encrypted_value) {
       DVLOG(0) << "Failed to encrypt value";
       statement.BindNull(index);
@@ -945,9 +943,9 @@ void AIChatDatabase::BindAndEncryptOptionalString(
 
 bool AIChatDatabase::BindAndEncryptString(sql::Statement& statement,
                                           int index,
-                                          const std::string& value) {
+                                          std::string_view value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto encrypted_value = encryptor_.EncryptString(value);
+  auto encrypted_value = encryptor_.EncryptString(std::string(value));
   if (!encrypted_value) {
     DVLOG(0) << "Failed to encrypt value";
     return false;
@@ -957,6 +955,7 @@ bool AIChatDatabase::BindAndEncryptString(sql::Statement& statement,
 }
 
 bool AIChatDatabase::CreateSchema() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   static constexpr char kCreateConversationTableQuery[] =
       "CREATE TABLE IF NOT EXISTS conversation("
       "uuid TEXT PRIMARY KEY NOT NULL,"
