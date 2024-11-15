@@ -60,6 +60,10 @@ inline constexpr char kBraveVPNEnvironment[] = "brave.brave_vpn.env";
 // Dict that has subscriber credential its expiration date.
 inline constexpr char kBraveVPNSubscriberCredential[] =
     "brave.brave_vpn.subscriber_credential";
+// Set the expiry of the last redeemed credential.
+// Useful in case redemption fails and person uses all credentials.
+inline constexpr char kBraveVPNLastCredentialExpiry[] =
+    "brave.brave_vpn.last_credential_expiry";
 
 // Time that session expired occurs.
 inline constexpr char kBraveVPNSessionExpiredDate[] =

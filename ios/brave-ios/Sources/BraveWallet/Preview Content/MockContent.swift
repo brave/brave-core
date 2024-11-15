@@ -28,7 +28,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.MainnetChainId,
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
 
   static let previewDaiToken: BraveWallet.BlockchainToken = .init(
@@ -48,7 +49,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.MainnetChainId,
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
 
   static let mockUSDCToken: BraveWallet.BlockchainToken = .init(
@@ -68,7 +70,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.MainnetChainId,
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
 
   static let mockSolToken: BraveWallet.BlockchainToken = .init(
@@ -88,7 +91,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.SolanaMainnet,
-    coin: .sol
+    coin: .sol,
+    isShielded: false
   )
 
   static let mockSpdToken: BraveWallet.BlockchainToken = .init(
@@ -108,7 +112,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.SolanaMainnet,
-    coin: .sol
+    coin: .sol,
+    isShielded: false
   )
 
   static let mockERC721NFTToken: BraveWallet.BlockchainToken = .init(
@@ -128,7 +133,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "30934",
     coingeckoId: "",
     chainId: BraveWallet.MainnetChainId,
-    coin: .eth
+    coin: .eth,
+    isShielded: false
   )
 
   static let mockSolanaNFTToken: BraveWallet.BlockchainToken = .init(
@@ -148,7 +154,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.SolanaMainnet,
-    coin: .sol
+    coin: .sol,
+    isShielded: false
   )
 
   static let mockFilToken: BraveWallet.BlockchainToken = .init(
@@ -168,7 +175,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.FilecoinMainnet,
-    coin: .fil
+    coin: .fil,
+    isShielded: false
   )
 
   static let mockBTCToken: BraveWallet.BlockchainToken = .init(
@@ -188,7 +196,8 @@ extension BraveWallet.BlockchainToken {
     tokenId: "",
     coingeckoId: "",
     chainId: BraveWallet.BitcoinMainnet,
-    coin: .btc
+    coin: .btc,
+    isShielded: false
   )
 }
 
@@ -550,10 +559,14 @@ extension BraveWallet.SignMessageRequest {
       accountId: BraveWallet.AccountInfo.previewAccount.accountId,
       signData: .init(
         ethSignTypedData: .init(
-          message: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
-          domain: "",
-          domainHash: nil,
-          primaryHash: nil,
+          addressParam: "address",
+          messageJson: "To avoid digital cat burglars, sign below to authenticate with CryptoKitties.",
+          domainJson: "{}",
+          typesJson: "{}",
+          primaryType: "primaryType",
+          chainId: nil,
+          domainHash: [],
+          primaryHash: [],
           meta: nil
         )
       ),
@@ -642,33 +655,31 @@ extension BraveWallet.SwapFees {
 extension BraveWallet.ZeroExQuote {
   /// Price quote for 1 ETH to BAT (sell amount entered)
   static let mockOneETHToBATQuote: BraveWallet.ZeroExQuote = .init(
-    price: "10137.516188895530252258",
-    guaranteedPrice: "",
-    to: "",
-    data: "",
-    value: "1000000000000000000",  // 1 ETH
-    gas: "375000",
-    estimatedGas: "375000",
-    gasPrice: "46500000000",
-    protocolFee: "0",
-    minimumProtocolFee: "0",
-    buyTokenAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",  // BAT
-    sellTokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",  // ETH
     buyAmount: "10137516188895530252258",
-    sellAmount: "1000000000000000000",  // 1 ETH
-    allowanceTarget: "0x0000000000000000000000000000000000000000",
-    sellTokenToEthRate: "1",
-    buyTokenToEthRate: "10439.88960404354826969",
-    estimatedPriceImpact: "1.8958",
-    sources: [],
+    buyToken: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",  // BAT
     fees: .init(
       zeroExFee: .init(
-        feeType: "volume",
-        feeToken: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
-        feeAmount: "15286142457313100889",
-        billingType: "on-chain"
+        amount: "15286142457313100889",
+        token: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        type: "volume"
       )
-    )
+    ),
+    gas: "375000",
+    gasPrice: "46500000000",
+    liquidityAvailable: true,
+    minBuyAmount: "99032421",
+    route: .init(
+      fills: [.init(
+        from: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        to: "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        source: "SolidlyV3",
+        proportionBps: "10000"
+      )]
+    ),
+    sellAmount: "1000000000000000000",  // 1 ETH
+    sellToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",  // ETH
+    totalNetworkFee: "2034668056550000",
+    allowanceTarget: "0x0000000000000000000000000000000000000000"
   )
 }
 

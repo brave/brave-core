@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-
 # These files needs access to some files in chrome/browser target.
 brave_browser_misc_metrics_sources = [
   "//brave/browser/misc_metrics/profile_misc_metrics_service.cc",
@@ -15,6 +13,7 @@ brave_browser_misc_metrics_sources = [
 brave_browser_misc_metrics_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/profiles:util",
+  "//brave/components/ai_chat/core/browser",
   "//brave/components/misc_metrics",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles:profiles",
@@ -22,11 +21,6 @@ brave_browser_misc_metrics_deps = [
   "//components/keyed_service/core",
   "//content/public/browser",
 ]
-
-if (enable_ai_chat) {
-  brave_browser_misc_metrics_deps +=
-      [ "//brave/components/ai_chat/core/browser" ]
-}
 
 brave_browser_misc_metrics_android_sources = [
   "//brave/browser/misc_metrics/misc_android_metrics.cc",

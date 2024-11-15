@@ -22,7 +22,7 @@ class AdsClientIOS : public brave_ads::AdsClient {
   ~AdsClientIOS() override;
 
  private:
-  __unsafe_unretained id<AdsClientBridge> bridge_;
+  __weak id<AdsClientBridge> bridge_;
 
   void AddObserver(brave_ads::AdsClientNotifierObserver* observer) override;
   void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer) override;

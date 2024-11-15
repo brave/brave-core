@@ -5,7 +5,6 @@
 
 brave_flags_deps = [
   "//base",
-  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_rewards/common",

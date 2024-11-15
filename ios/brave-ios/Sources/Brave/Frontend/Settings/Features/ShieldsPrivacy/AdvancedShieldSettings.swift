@@ -82,6 +82,17 @@ import os
     }
   }
 
+  @Published var isSaveContactInfoEnabled: Bool = false {
+    didSet {
+      guard let webcompatReporterHandler else {
+        isSaveContactInfoEnabled = false
+        return
+      }
+
+      webcompatReporterHandler.setContactInfoSaveFlag(value: isSaveContactInfoEnabled)
+    }
+  }
+
   typealias ClearDataCallback = @MainActor (Bool, Bool) -> Void
   @Published var clearableSettings: [ClearableSetting]
 
@@ -91,6 +102,7 @@ import os
   private let debounceService: DebounceService?
   private let rewards: BraveRewards?
   private let clearDataCallback: ClearDataCallback
+  private let webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?
   let tabManager: TabManager
 
   init(
@@ -100,6 +112,7 @@ import os
     debounceService: DebounceService?,
     braveCore: BraveCoreMain,
     rewards: BraveRewards?,
+    webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?,
     clearDataCallback: @escaping ClearDataCallback
   ) {
     self.p3aUtilities = braveCore.p3aUtils
@@ -114,6 +127,7 @@ import os
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     self.shredLevel = ShieldPreferences.shredLevel
+    self.webcompatReporterHandler = webcompatReporterHandler
 
     cookieConsentBlocking = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID
@@ -181,6 +195,9 @@ import os
 
     self.clearableSettings = clearableSettings
     registerSubscriptions()
+    Task { @MainActor in
+      self.isSaveContactInfoEnabled = await webcompatReporterHandler?.contactInfoSaveFlag() ?? false
+    }
   }
 
   func clearPrivateData(_ clearables: [Clearable]) async {

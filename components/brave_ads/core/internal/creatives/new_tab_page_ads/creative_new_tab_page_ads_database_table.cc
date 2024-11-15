@@ -27,7 +27,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
-#include "brave/components/brave_ads/core/public/serving/new_tab_page_ad_serving_condition_matcher_util.h"
+#include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads::database::table {
@@ -41,13 +41,12 @@ constexpr char kTableName[] = "creative_new_tab_page_ads";
 
 constexpr int kDefaultBatchSize = 50;
 
-NewTabPageAdConditionMatchers StringToConditionMatchers(
-    const std::string& value) {
+ConditionMatcherMap StringToConditionMatchers(const std::string& value) {
   const std::vector<std::string> condition_matchers_as_string =
       base::SplitString(value, ";", base::TRIM_WHITESPACE,
                         base::SPLIT_WANT_NONEMPTY);
 
-  NewTabPageAdConditionMatchers condition_matchers;
+  ConditionMatcherMap condition_matchers;
   for (const auto& condition_matcher_as_string : condition_matchers_as_string) {
     const std::vector<std::string> condition_matcher =
         base::SplitString(condition_matcher_as_string, "|",
@@ -392,7 +391,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
                      std::move(callback)));
@@ -465,7 +464,7 @@ void CreativeNewTabPageAds::GetForSegments(
 
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&GetForSegmentsCallback, segments, std::move(callback)));
 }
@@ -521,7 +520,7 @@ void CreativeNewTabPageAds::GetForActiveCampaigns(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient()->RunDBTransaction(
+  GetAdsClient().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&GetAllCallback, std::move(callback)));
 }

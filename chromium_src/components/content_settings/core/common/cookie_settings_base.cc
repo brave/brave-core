@@ -47,9 +47,10 @@ bool BraveIsAllowedThirdParty(const GURL& url,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return true;
 
-  for (auto i = entity_list->begin(); i != entity_list->end(); ++i) {
-    if (i->first.Matches(url) && i->second.Matches(first_party_url))
+  for (const auto& entity : *entity_list) {
+    if (entity.first.Matches(url) && entity.second.Matches(first_party_url)) {
       return true;
+    }
   }
 
   return false;

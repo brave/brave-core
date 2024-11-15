@@ -44,7 +44,7 @@ namespace ntp_background_images {
 
 namespace {
 
-constexpr int kSIComponentUpdateCheckIntervalMins = 15;
+constexpr base::TimeDelta kSIComponentUpdateCheckInterval = base::Minutes(15);
 constexpr char kNTPManifestFile[] = "photo.json";
 constexpr char kNTPSRMappingTableFile[] = "mapping-table.json";
 
@@ -71,8 +71,10 @@ std::string HandleComponentData(const base::FilePath& installed_dir) {
   std::string contents;
 
   if (json_path.empty()) {
-    NOTREACHED_IN_MIGRATION()
-        << __func__ << ": Can't find valid manifest file in " << installed_dir;
+    // NTP sponsored component should have photo.json always but anything can
+    // happen outside of browser. Handle it gracefully instead of crash.
+    DVLOG(2) << __func__ << ": Can't find valid manifest file in "
+             << installed_dir;
     return contents;
   }
 
@@ -157,7 +159,7 @@ void NTPBackgroundImagesService::CheckNTPSIComponentUpdateIfNeeded() {
 
   // If previous update check is missed, do update check now.
   if (base::Time::Now() - last_update_check_time_ >
-      base::Minutes(kSIComponentUpdateCheckIntervalMins)) {
+      kSIComponentUpdateCheckInterval) {
     si_update_check_callback_.Run();
   }
 }
@@ -167,6 +169,10 @@ void NTPBackgroundImagesService::CheckImagesComponentUpdate(
   DVLOG(2) << __func__ << ": Check NTP Images component update";
 
   last_update_check_time_ = base::Time::Now();
+  si_update_check_timer_.Start(
+      FROM_HERE, last_update_check_time_ + kSIComponentUpdateCheckInterval,
+      base::BindOnce(si_update_check_callback_));
+
   BraveOnDemandUpdater::GetInstance()->EnsureInstalled(component_id);
 }
 
@@ -215,8 +221,8 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 
   last_update_check_time_ = base::Time::Now();
   si_update_check_timer_.Start(
-      FROM_HERE, base::Minutes(kSIComponentUpdateCheckIntervalMins),
-      si_update_check_callback_);
+      FROM_HERE, last_update_check_time_ + kSIComponentUpdateCheckInterval,
+      base::BindOnce(si_update_check_callback_));
 }
 
 void NTPBackgroundImagesService::CheckSuperReferralComponent() {

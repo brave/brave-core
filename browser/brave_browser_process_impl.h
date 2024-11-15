@@ -12,7 +12,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -44,12 +43,6 @@ class LocalhostPermissionComponent;
 namespace brave_stats {
 class BraveStatsUpdater;
 }  // namespace brave_stats
-
-namespace greaselion {
-#if BUILDFLAG(ENABLE_GREASELION)
-class GreaselionDownloadService;
-#endif
-}  // namespace greaselion
 
 namespace debounce {
 class DebounceComponentInstaller;
@@ -113,9 +106,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   https_upgrade_exceptions_service() override;
   localhost_permission::LocalhostPermissionComponent*
   localhost_permission_component() override;
-#if BUILDFLAG(ENABLE_GREASELION)
-  greaselion::GreaselionDownloadService* greaselion_download_service() override;
-#endif
   debounce::DebounceComponentInstaller* debounce_component_installer() override;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRComponentInstallerPolicy*
@@ -183,10 +173,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       https_upgrade_exceptions_service_;
   std::unique_ptr<localhost_permission::LocalhostPermissionComponent>
       localhost_permission_component_;
-#if BUILDFLAG(ENABLE_GREASELION)
-  std::unique_ptr<greaselion::GreaselionDownloadService>
-      greaselion_download_service_;
-#endif
   std::unique_ptr<debounce::DebounceComponentInstaller>
       debounce_component_installer_;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)

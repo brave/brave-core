@@ -75,7 +75,16 @@ export function createWalletApiBase() {
       'PinnableNftIds',
       'PendingSignMessageRequests',
       'PendingSignMessageErrors',
-      'ActiveOrigin'
+      'ActiveOrigin',
+      'MeldFiatCurrencies',
+      'MeldCryptoCurrencies',
+      'DefaultCountryCode',
+      'MeldCountries',
+      'MeldServiceProviders',
+      'MeldCryptoQuotes',
+      'MeldPaymentMethods',
+      'MeldWidget',
+      'ZCashAccountInfo'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

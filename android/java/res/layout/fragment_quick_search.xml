@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+ -->
+
+<LinearLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical">
+
+     <include layout="@layout/quick_search_settings_item"
+          android:id="@+id/quick_search_feature_layout" />
+
+     <LinearLayout
+          android:id="@+id/quick_search_options_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               style="@style/DefaultSemibold"
+               android:layout_marginHorizontal="16dp"
+               android:layout_marginTop="16dp"
+               android:layout_marginBottom="8dp"
+               android:text="@string/currently_used_search_engines"
+               android:textColor="@color/schemes_primary"/>
+
+          <include layout="@layout/quick_search_settings_item"
+               android:id="@+id/default_search_engine_layout" />
+
+          <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/quick_search_settings_recyclerview"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:overScrollMode="never" />
+
+          <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               style="@style/SmallRegular"
+               android:layout_marginHorizontal="16dp"
+               android:layout_marginTop="16dp"
+               android:text="@string/long_press_to_change_order"
+               android:textColor="@color/text_secondary"/>
+     </LinearLayout>
+
+</LinearLayout>

@@ -169,6 +169,8 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void, OnFaviconImageDataChanged, (), (override));
 
+  MOCK_METHOD(void, OnConversationDeleted, (), (override));
+
  private:
   mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
   mojo::Remote<mojom::ConversationHandler> conversation_handler_remote_;
@@ -199,6 +201,7 @@ class MockAssociatedContent
               GetStagedEntriesFromContent,
               (ConversationHandler::GetStagedEntriesCallback),
               (override));
+  MOCK_METHOD(bool, HasOpenAIChatPermission, (), (const, override));
 
   base::WeakPtr<ConversationHandler::AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
@@ -255,7 +258,8 @@ class AIChatServiceUnitTest : public testing::Test,
     }
   }
 
-  void ExpectVisibleConversationsSize(size_t size) {
+  void ExpectVisibleConversationsSize(base::Location location, size_t size) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     client_->service_remote()->GetVisibleConversations(
         base::BindLambdaForTesting(
@@ -339,7 +343,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_NoMessages) {
   ConversationHandler* conversation_handler2 = CreateConversation();
 
   // Shouldn't "display" any conversations without messages
-  ExpectVisibleConversationsSize(0);
+  ExpectVisibleConversationsSize(FROM_HERE, 0);
 
   // Before connecting any clients to the conversations, none should be deleted
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
@@ -374,7 +378,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   ConversationHandler* conversation_handler2 = CreateConversation();
   conversation_handler2->SetChatHistoryForTesting(CreateSampleHistory());
 
-  ExpectVisibleConversationsSize(2u);
+  ExpectVisibleConversationsSize(FROM_HERE, 2u);
 
   // Before connecting any clients to the conversations, none should be deleted
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 2u);
@@ -386,7 +390,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(),
             IsAIChatHistoryEnabled() ? 2u : 1u);
 
-  ExpectVisibleConversationsSize(IsAIChatHistoryEnabled() ? 2u : 1u);
+  ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 1u);
 
   // Connect a client then disconnect
   auto client2 = CreateConversationClient(conversation_handler2);
@@ -394,7 +398,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(),
             IsAIChatHistoryEnabled() ? 2u : 0u);
 
-  ExpectVisibleConversationsSize(IsAIChatHistoryEnabled() ? 2u : 0u);
+  ExpectVisibleConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 2u : 0u);
 
   testing::Mock::VerifyAndClearExpectations(client_.get());
   task_environment_.RunUntilIdle();
@@ -490,6 +494,63 @@ TEST_P(AIChatServiceUnitTest,
             run_loop.Quit();
           }));
   run_loop.Run();
+}
+
+TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
+  NiceMock<MockAssociatedContent> associated_content{};
+  ConversationHandler* conversation =
+      ai_chat_service_->CreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr());
+  auto conversation_client = CreateConversationClient(conversation);
+
+  ON_CALL(associated_content, HasOpenAIChatPermission)
+      .WillByDefault(testing::Return(false));
+  EXPECT_CALL(associated_content, GetStagedEntriesFromContent).Times(0);
+
+  bool opened = false;
+  ai_chat_service_->OpenConversationWithStagedEntries(
+      associated_content.GetWeakPtr(),
+      base::BindLambdaForTesting([&]() { opened = true; }));
+  EXPECT_FALSE(opened);
+  testing::Mock::VerifyAndClearExpectations(&associated_content);
+}
+
+TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries) {
+  NiceMock<MockAssociatedContent> associated_content{};
+  ConversationHandler* conversation =
+      ai_chat_service_->CreateConversationHandlerForContent(
+          associated_content.GetContentId(), associated_content.GetWeakPtr());
+  auto conversation_client = CreateConversationClient(conversation);
+
+  ON_CALL(associated_content, GetStagedEntriesFromContent)
+      .WillByDefault(
+          [](ConversationHandler::GetStagedEntriesCallback callback) {
+            std::move(callback).Run(std::vector<SearchQuerySummary>{
+                SearchQuerySummary("query", "summary")});
+          });
+  ON_CALL(associated_content, HasOpenAIChatPermission)
+      .WillByDefault(testing::Return(true));
+
+  // Allowed scheme to be associated with a conversation
+  ON_CALL(associated_content, GetURL())
+      .WillByDefault(testing::Return(GURL("https://example.com")));
+
+  // One from setting up a connected client, one from
+  // OpenConversationWithStagedEntries.
+  EXPECT_CALL(associated_content, GetStagedEntriesFromContent).Times(2);
+
+  bool opened = false;
+  ai_chat_service_->OpenConversationWithStagedEntries(
+      associated_content.GetWeakPtr(),
+      base::BindLambdaForTesting([&]() { opened = true; }));
+
+  base::RunLoop().RunUntilIdle();
+  auto& history = conversation->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);
+  EXPECT_EQ(history[0]->text, "query");
+  EXPECT_EQ(history[1]->text, "summary");
+  EXPECT_TRUE(opened);
+  testing::Mock::VerifyAndClearExpectations(&associated_content);
 }
 
 }  // namespace ai_chat

@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import * as S from './style'
-import LottiePlayer from '../lottie-player'
+import LottiePlayer from '$web-common/lottiePlayer'
 import { getLocale } from '$web-common/locale'
 import DataContext from '../../state/context'
 import { useViewTypeTransition } from '../../state/hooks'

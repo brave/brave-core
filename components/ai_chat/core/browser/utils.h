@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
 
+#include <string>
+
 #include "base/functional/callback_forward.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -15,8 +17,12 @@
 #include "url/gurl.h"
 
 class PrefService;
+class GURL;
 
 namespace ai_chat {
+namespace mojom {
+enum class ActionType : int32_t;
+}  // namespace mojom
 
 // Check both policy and feature flag to determine if AI Chat is enabled.
 bool IsAIChatEnabled(PrefService* prefs);

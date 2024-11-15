@@ -15,6 +15,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/buildflags.h"
+#include "brave/browser/brave_stats/features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/brave_stats/switches.h"
 #include "brave/common/brave_channel_info.h"
@@ -110,8 +111,8 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
   }
 
   std::optional<std::string> day_zero_variant;
-  if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
-    day_zero_variant = features::kBraveDayZeroExperimentVariant.Get();
+  if (base::FeatureList::IsEnabled(::features::kBraveDayZeroExperiment)) {
+    day_zero_variant = ::features::kBraveDayZeroExperimentVariant.Get();
   }
   general_browser_usage_p3a_ =
       std::make_unique<misc_metrics::GeneralBrowserUsage>(
@@ -132,6 +133,11 @@ BraveStatsUpdater::~BraveStatsUpdater() {
 }
 
 void BraveStatsUpdater::Start() {
+  if (IsHeadlessOrAutomationMode() &&
+      !features::IsHeadlessClientRefcodeEnabled()) {
+    // Do not send usage pings if headless mode or automation mode are enabled.
+    return;
+  }
   // Startup timer, only initiated once we've checked for a promo
   // code.
   DCHECK(!server_ping_startup_timer_);

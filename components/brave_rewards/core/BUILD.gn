@@ -294,6 +294,8 @@ static_library("engine") {
     "endpoints/bitflyer/post_commit_transaction_bitflyer.h",
     "endpoints/brave/get_parameters.cc",
     "endpoints/brave/get_parameters.h",
+    "endpoints/brave/get_ui_cards.cc",
+    "endpoints/brave/get_ui_cards.h",
     "endpoints/brave/get_wallet.cc",
     "endpoints/brave/get_wallet.h",
     "endpoints/brave/patch_wallets.cc",

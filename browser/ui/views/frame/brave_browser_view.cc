@@ -587,6 +587,18 @@ void BraveBrowserView::UpdateSearchTabsButtonState() {
 
 BraveBrowserView::~BraveBrowserView() {
   tab_cycling_event_handler_.reset();
+  // Removes the bubble from the browser, as it uses the `ToolbarView` as an
+  // archor, and that leaves a dangling reference once the `TopContainerView` is
+  // destroyed before all `SupportsUserData` is cleared.
+  if (brave_shields::CookieListOptInBubbleHost::FromBrowser(browser_.get())) {
+    brave_shields::CookieListOptInBubbleHost::RemoveFromBrowser(browser_.get());
+  }
+
+  // Same as above.
+  if (brave_rewards::TipPanelBubbleHost::FromBrowser(browser_.get())) {
+    brave_rewards::TipPanelBubbleHost::RemoveFromBrowser(browser_.get());
+  }
+
   DCHECK(!tab_cycling_event_handler_);
 }
 
@@ -602,9 +614,9 @@ void BraveBrowserView::ToggleSidebar() {
   browser_->GetFeatures().side_panel_ui()->Toggle();
 }
 
-void BraveBrowserView::ShowBraveVPNBubble() {
+void BraveBrowserView::ShowBraveVPNBubble(bool show_select) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  vpn_panel_controller_.ShowBraveVPNPanel();
+  vpn_panel_controller_.ShowBraveVPNPanel(show_select);
 #endif
 }
 
@@ -776,10 +788,6 @@ void BraveBrowserView::ShowWaybackMachineBubble() {
 
 WalletButton* BraveBrowserView::GetWalletButton() {
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
-}
-
-void BraveBrowserView::WillShowSidePanel(bool show_on_deregistered) {
-  sidebar_container_view_->WillShowSidePanel(show_on_deregistered);
 }
 
 void BraveBrowserView::NotifyDialogPositionRequiresUpdate() {

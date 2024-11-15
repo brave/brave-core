@@ -43,9 +43,9 @@ scoped_refptr<Importer> CreateImporterByType(importer::ImporterType type) {
     case importer::TYPE_WHALE:
       return new ChromeImporter();
     default:
-      NOTREACHED_IN_MIGRATION();
-      return nullptr;
+      break;
   }
+  NOTREACHED() << "All handled for supported types above.";
 }
 
 }  // namespace
@@ -64,13 +64,11 @@ void BraveProfileImportImpl::StartImport(
     mojo::PendingRemote<brave::mojom::ProfileImportObserver> brave_observer) {
   // Signal change to OSCrypt password for importing from Chrome/Chromium
   base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
-  if (base::StartsWith(base::UTF16ToUTF8(source_profile.importer_name),
-                       "Chrome", base::CompareCase::SENSITIVE)) {
+  if (source_profile.importer_name.starts_with(u"Chrome")) {
     command_line->AppendSwitch("import-chrome");
   } else if (source_profile.importer_type == importer::TYPE_EDGE_CHROMIUM) {
     command_line->AppendSwitch("import-edge");
-  } else if (base::StartsWith(base::UTF16ToUTF8(source_profile.importer_name),
-                              "Chromium", base::CompareCase::SENSITIVE)) {
+  } else if (source_profile.importer_name.starts_with(u"Chromium")) {
     command_line->AppendSwitch("import-chromium");
   } else if (source_profile.importer_type == importer::TYPE_OPERA) {
     command_line->AppendSwitch("import-opera");
@@ -97,10 +95,7 @@ void BraveProfileImportImpl::StartImport(
 #if BUILDFLAG(IS_WIN)
   import_thread_->init_com_with_mta(false);
 #endif
-  if (!import_thread_->Start()) {
-    NOTREACHED_IN_MIGRATION();
-    ImporterCleanup();
-  }
+  CHECK(import_thread_->Start());
   bridge_ = new BraveExternalProcessImporterBridge(
       localized_strings,
       mojo::SharedRemote<chrome::mojom::ProfileImportObserver>(

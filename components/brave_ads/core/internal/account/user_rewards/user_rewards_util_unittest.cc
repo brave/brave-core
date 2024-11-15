@@ -23,11 +23,11 @@ class BraveAdsUserRewardsUtilTest : public AdsClientNotifierObserverMock,
   void SetUp() override {
     test::TestBase::SetUp();
 
-    GetAdsClient()->AddObserver(&ads_client_notifier_observer_mock_);
+    GetAdsClient().AddObserver(&ads_client_notifier_observer_mock_);
   }
 
   void TearDown() override {
-    GetAdsClient()->RemoveObserver(&ads_client_notifier_observer_mock_);
+    GetAdsClient().RemoveObserver(&ads_client_notifier_observer_mock_);
 
     test::TestBase::TearDown();
   }

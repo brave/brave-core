@@ -61,10 +61,8 @@ std::pair<std::string, std::string> CreateSignatureString(
     // For all the headers to sign, we expect their values to be be in the
     // headers flat_map and use the value there to add to the signature string.
     auto header = headers.find(header_to_sign);
-    if (header == headers.end()) {
-      NOTREACHED_NORETURN()
-          << "Can't sign over non-existent header " << header_to_sign;
-    }
+    CHECK(header != headers.end())
+        << "Can't sign over non-existent header " << header_to_sign;
     signature_string.append(
         base::StrCat({header_to_sign, ": ", header->second}));
   }

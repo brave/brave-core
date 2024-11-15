@@ -19,17 +19,17 @@ struct TabInfo;
 
 class TabManagerObserver : public base::CheckedObserver {
  public:
+  // Invoked when a new `tab` is opened.
+  virtual void OnDidOpenNewTab(const TabInfo& tab) {}
+
+  // Invoked when the `tab` has loaded.
+  virtual void OnTabDidLoad(const TabInfo& tab, const int http_status_code) {}
+
   // Invoked when the tab specfied by `tab_id` changes focus.
   virtual void OnTabDidChangeFocus(const int32_t tab_id) {}
 
   // Invoked when the `tab` is updated.
   virtual void OnTabDidChange(const TabInfo& tab) {}
-
-  // Invoked when the `tab` has loaded.
-  virtual void OnTabDidLoad(const TabInfo& tab, const int http_status_code) {}
-
-  // Invoked when a new `tab` is opened.
-  virtual void OnDidOpenNewTab(const TabInfo& tab) {}
 
   // Invoked when the text content for the tab specified by `tab_id` did change.
   virtual void OnTextContentDidChange(const int32_t tab_id,

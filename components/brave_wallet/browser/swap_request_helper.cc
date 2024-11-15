@@ -199,19 +199,15 @@ std::optional<base::Value::Dict> EncodeToken(
 }
 
 std::string EncodeStepType(const mojom::LiFiStepType type) {
-  if (type == mojom::LiFiStepType::kSwap) {
-    return "swap";
+  switch (type) {
+    case mojom::LiFiStepType::kSwap:
+      return "swap";
+    case mojom::LiFiStepType::kCross:
+      return "cross";
+    case mojom::LiFiStepType::kLiFi:
+      return "lifi";
   }
-
-  if (type == mojom::LiFiStepType::kCross) {
-    return "cross";
-  }
-
-  if (type == mojom::LiFiStepType::kLiFi) {
-    return "lifi";
-  }
-
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 std::optional<base::Value::Dict> EncodeStepAction(mojom::LiFiActionPtr action) {

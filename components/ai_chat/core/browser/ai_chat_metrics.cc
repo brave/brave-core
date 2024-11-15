@@ -5,14 +5,28 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 
+#include <limits.h>
+
 #include <algorithm>
+#include <atomic>
+#include <cmath>
+#include <compare>
+#include <cstdint>
+#include <functional>
 #include <limits>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
-#include "base/metrics/histogram_functions.h"
+#include "base/functional/bind.h"
+#include "base/location.h"
+#include "base/metrics/histogram_base.h"
+#include "base/metrics/histogram_functions_internal_overloads.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
+#include "base/numerics/clamped_math.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -53,6 +67,7 @@ constexpr char kContextMenuEntryPointKey[] = "context_menu";
 constexpr char kToolbarButtonEntryPointKey[] = "toolbar_button";
 constexpr char kMenuItemEntryPointKey[] = "menu_item";
 constexpr char kOmniboxCommandEntryPointKey[] = "omnibox_command";
+constexpr char kBraveSearchEntryPointKey[] = "brave_search";
 
 constexpr auto kContextMenuActionKeys =
     base::MakeFixedFlatMap<ContextMenuAction, const char*>(
@@ -72,7 +87,8 @@ constexpr auto kEntryPointKeys =
          {EntryPoint::kContextMenu, kContextMenuEntryPointKey},
          {EntryPoint::kToolbarButton, kToolbarButtonEntryPointKey},
          {EntryPoint::kMenuItem, kMenuItemEntryPointKey},
-         {EntryPoint::kOmniboxCommand, kOmniboxCommandEntryPointKey}});
+         {EntryPoint::kOmniboxCommand, kOmniboxCommandEntryPointKey},
+         {EntryPoint::kBraveSearch, kBraveSearchEntryPointKey}});
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
@@ -220,7 +236,7 @@ void AIChatMetrics::RecordReset() {
   UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName,
                              std::numeric_limits<int>::max() - 1, 3);
   UMA_HISTOGRAM_EXACT_LINEAR(kAcquisitionSourceHistogramName,
-                             std::numeric_limits<int>::max() - 1, 6);
+                             std::numeric_limits<int>::max() - 1, 7);
 }
 
 void AIChatMetrics::OnPremiumStatusUpdated(bool is_new_user,

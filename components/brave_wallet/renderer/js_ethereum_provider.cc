@@ -211,11 +211,11 @@ void JSEthereumProvider::Install(bool install_ethereum_provider,
                          gin::StringToV8(isolate, kBraveEthereum), true);
 
   // Set window.ethereumProvider
-  {
+  if (install_ethereum_provider) {
     v8::Local<v8::Value> ethereum_value =
         global->Get(context, gin::StringToV8(isolate, kEthereum))
             .ToLocalChecked();
-    if (install_ethereum_provider && ethereum_value->IsUndefined()) {
+    if (ethereum_value->IsUndefined()) {
       if (!allow_overwrite_window_ethereum_provider) {
         SetProviderNonWritable(context, global, ethereum_proxy,
                                gin::StringToV8(isolate, kEthereum), true);
@@ -445,24 +445,21 @@ v8::Local<v8::Promise> JSEthereumProvider::SendMethod(gin::Arguments* args) {
     return v8::Local<v8::Promise>();
   }
 
-  std::unique_ptr<base::Value> params;
+  base::Value::List params;
   if (args->Length() > 1) {
     v8::Local<v8::Value> arg2;
     if (!args->GetNext(&arg2)) {
       args->ThrowError();
       return v8::Local<v8::Promise>();
     }
-    params = content::V8ValueConverter::Create()->FromV8Value(
+    auto arg_params = content::V8ValueConverter::Create()->FromV8Value(
         arg2, isolate->GetCurrentContext());
-    if (!params || !params->is_list()) {
+    if (!arg_params || !arg_params->is_list()) {
       args->ThrowError();
       return v8::Local<v8::Promise>();
     }
-  } else {
-    // supported_single_arg_function
-    params = std::make_unique<base::Value>(base::Value::Type::LIST);
+    params = std::move(arg_params->GetList());
   }
-
   if (!EnsureConnected()) {
     return v8::Local<v8::Promise>();
   }
@@ -479,7 +476,7 @@ v8::Local<v8::Promise> JSEthereumProvider::SendMethod(gin::Arguments* args) {
 
   // There's no id in this format so we can just use 1
   ethereum_provider_->Send(
-      method, std::move(*params),
+      method, std::move(params),
       base::BindOnce(&JSEthereumProvider::OnRequestOrSendAsync,
                      weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
                      nullptr, std::move(promise_resolver), isolate));
@@ -721,7 +718,6 @@ void JSEthereumProvider::AnnounceProvider() {
            ->SetIntegrityLevel(isolate->GetCurrentContext(),
                                v8::IntegrityLevel::kFrozen)
            .ToChecked()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -731,7 +727,6 @@ void JSEthereumProvider::AnnounceProvider() {
                     base::Value("info"), context),
                 std::move(info_object))
           .IsNothing()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -744,7 +739,6 @@ void JSEthereumProvider::AnnounceProvider() {
                     base::Value("provider"), context),
                 provider)
           .IsNothing()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -752,7 +746,6 @@ void JSEthereumProvider::AnnounceProvider() {
           ->SetIntegrityLevel(isolate->GetCurrentContext(),
                               v8::IntegrityLevel::kFrozen)
           .IsNothing()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -763,7 +756,6 @@ void JSEthereumProvider::AnnounceProvider() {
                     base::Value("detail"), context),
                 std::move(detail))
           .IsNothing()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 

@@ -16,7 +16,7 @@
 namespace brave_wallet {
 
 ZCashCreateShieldTransactionTask::ZCashCreateShieldTransactionTask(
-    ZCashWalletService* zcash_wallet_service,
+    ZCashWalletService& zcash_wallet_service,
     const std::string& chain_id,
     const mojom::AccountIdPtr& account_id,
     const OrchardAddrRawPart& receiver,
@@ -109,6 +109,7 @@ bool ZCashCreateShieldTransactionTask::CreateTransaction() {
   }
   zcash_transaction.set_amount(orchard_output.value);
   zcash_transaction.set_to(*orchard_unified_addr);
+  zcash_transaction.set_memo(memo_);
 
   transaction_ = std::move(zcash_transaction);
 

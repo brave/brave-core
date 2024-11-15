@@ -14,6 +14,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -93,7 +94,19 @@ void BraveSidePanelCoordinator::OnViewVisibilityChanged(
     views::View* observed_view,
     views::View* starting_from) {
   UpdateToolbarButtonHighlight(observed_view->GetVisible());
+
+  // See the comment of SidePanelCoordinator::OnViewVisibilityChanged()
+  // about this condition.
+  bool update_items_state = true;
+  if (observed_view->GetVisible() || !current_key_) {
+    update_items_state = false;
+  }
+
   SidePanelCoordinator::OnViewVisibilityChanged(observed_view, starting_from);
+
+  if (update_items_state) {
+    GetBraveBrowserView()->sidebar_container_view()->UpdateActiveItemState();
+  }
 }
 
 std::optional<SidePanelEntry::Key>
@@ -150,24 +163,7 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
 
   // Notify to give opportunity to observe another panel entries from
   // global or active tab's contextual registry.
-  auto* brave_browser_view = static_cast<BraveBrowserView*>(browser_view_);
-  CHECK(browser_view_->unified_side_panel()->children().size() == 1);
-  const auto content_wrapper =
-      browser_view_->unified_side_panel()->children()[0];
-  bool show_on_deregistered = false;
-  // If current entry is not null and its content is already removed from
-  // wrapper when new panel is about to be shown, new panel is shown by
-  // deregistering current panel. See the comment of
-  // SidebarContainerView::WillShowSidePanel() about why |show_on_deregistered|
-  // is needed.
-  // Instead, we can override base class' Show(const UniqueKey& entry, ...)
-  // method as we can know whether it's shown by deregistering with
-  // |open_trigger| arg. However, need patching to make it virtual as base class
-  // already have overridden same name methods.
-  if (current_entry_.get() && content_wrapper->children().empty()) {
-    show_on_deregistered = true;
-  }
-  brave_browser_view->WillShowSidePanel(show_on_deregistered);
+  GetBraveBrowserView()->sidebar_container_view()->WillShowSidePanel();
   SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key, entry,
                                           std::move(content_view));
 }
@@ -181,4 +177,8 @@ void BraveSidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(
 
   SidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(key,
                                                                  is_active);
+}
+
+BraveBrowserView* BraveSidePanelCoordinator::GetBraveBrowserView() {
+  return static_cast<BraveBrowserView*>(browser_view_);
 }

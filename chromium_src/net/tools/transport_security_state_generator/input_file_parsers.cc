@@ -546,17 +546,15 @@ constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
  ]})brave_hsts_json";
 }  // namespace
 
-namespace net {
-
-namespace transport_security_state {
+namespace net::transport_security_state {
 
 bool ParseCertificatesFile(std::string_view certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
   constexpr std::string_view brave_certs = R"brave_certs(
-# Last updated: Tue Oct 22 21:35:24 UTC 2024
+# Last updated: Tue Nov 12 21:42:18 UTC 2024
 PinsListTimestamp
-1729632924
+1731447738
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/
@@ -898,6 +896,4 @@ bool ParseJSON(std::string_view hsts_json,
                                 pinsets);
 }
 
-}  // namespace transport_security_state
-
-}  // namespace net
+}  // namespace net::transport_security_state

@@ -22,9 +22,12 @@ std::wstring GetProgIdForFileType() {
     case version_info::Channel::CANARY:
       return L"BraveSSFile";
     default:
-      NOTREACHED_IN_MIGRATION();
-      return L"BraveFile";
+      break;
   }
+  // install_static::GetChromeChannel() only gives above four types
+  // for official build. And we don't support installer build for
+  // unofficial build.
+  NOTREACHED();
 }
 
 bool ShouldUseFileTypeProgId(const std::wstring& ext) {

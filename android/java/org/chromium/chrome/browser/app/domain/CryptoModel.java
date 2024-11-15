@@ -35,6 +35,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// Unused members, never read:
+// - mSolanaTxManagerProxy
+// - mSwapService
+// - mBlockchainRegistry
+// - mEthTxManagerProxy
+// - mAssetRatioService
+@SuppressWarnings("UnusedVariable")
 public class CryptoModel {
     private TxService mTxService;
     private final PendingTxHelper mPendingTxHelper;

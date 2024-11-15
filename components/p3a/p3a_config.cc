@@ -133,7 +133,7 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
 
   config.average_upload_interval = MaybeOverrideTimeDeltaFromCommandLine(
       cmdline, switches::kP3AUploadIntervalSeconds,
-      std::move(config.average_upload_interval));
+      config.average_upload_interval);
 
   config.randomize_upload_interval =
       !cmdline->HasSwitch(switches::kP3ADoNotRandomizeUploadInterval);
@@ -141,15 +141,15 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
   config.json_rotation_intervals[MetricLogType::kSlow] =
       MaybeOverrideTimeDeltaFromCommandLine(
           cmdline, switches::kP3ASlowRotationIntervalSeconds,
-          std::move(config.json_rotation_intervals[MetricLogType::kSlow]));
+          config.json_rotation_intervals[MetricLogType::kSlow]);
   config.json_rotation_intervals[MetricLogType::kTypical] =
       MaybeOverrideTimeDeltaFromCommandLine(
           cmdline, switches::kP3ATypicalRotationIntervalSeconds,
-          std::move(config.json_rotation_intervals[MetricLogType::kTypical]));
+          config.json_rotation_intervals[MetricLogType::kTypical]);
   config.json_rotation_intervals[MetricLogType::kExpress] =
       MaybeOverrideTimeDeltaFromCommandLine(
           cmdline, switches::kP3AExpressRotationIntervalSeconds,
-          std::move(config.json_rotation_intervals[MetricLogType::kExpress]));
+          config.json_rotation_intervals[MetricLogType::kExpress]);
 
   config.fake_star_epochs[MetricLogType::kSlow] =
       MaybeSetUint8FromCommandLine(cmdline, switches::kP3AFakeSlowStarEpoch);

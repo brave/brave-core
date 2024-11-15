@@ -5,25 +5,26 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 
-#include <memory>
 #include <optional>
 #include <string>
-#include <utility>
+#include <string_view>
+#include <type_traits>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
-#include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -359,42 +360,6 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   engine_->GenerateAssistantResponse(
       false, "I have spoken.", history, "Is it related to a broader series?",
       "", base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
-  run_loop.Run();
-  testing::Mock::VerifyAndClearExpectations(mock_api_client);
-}
-
-TEST_F(EngineConsumerConversationAPIUnitTest,
-       GenerateEvents_PageContentRefine) {
-  auto* mock_api_client = GetMockConversationAPIClient();
-  base::RunLoop run_loop;
-  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
-      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
-                    const std::string& selected_language,
-                    EngineConsumer::GenerationDataCallback data_callback,
-                    EngineConsumer::GenerationCompletedCallback callback) {
-        std::move(callback).Run("");
-      });
-
-  std::vector<mojom::ConversationTurnPtr> history;
-  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
-  turn->character_type = mojom::CharacterType::HUMAN;
-  turn->text = "Which show is this about?";
-  history.push_back(std::move(turn));
-
-  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, false);
-  entry->events->push_back(
-      mojom::ConversationEntryEvent::NewPageContentRefineEvent(
-          mojom::PageContentRefineEvent::New()));
-  history.push_back(std::move(entry));
-
-  engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "Who?", "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();

@@ -51,7 +51,7 @@ inline constexpr char kTargetUrl[] = "https://brave.com";
 inline constexpr char kTitle[] = "Test Ad Title";
 inline constexpr char kDescription[] = "Test Ad Description";
 
-inline constexpr int kValue = 1.0;
+inline constexpr double kValue = 1.0;
 
 }  // namespace brave_ads::test
 

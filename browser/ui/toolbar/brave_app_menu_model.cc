@@ -67,9 +67,7 @@ BraveAppMenuModel::BraveAppMenuModel(
     Browser* browser,
     AppMenuIconController* app_menu_icon_controller,
     AlertMenuItem alert_item)
-    : AppMenuModel(provider, browser, app_menu_icon_controller, alert_item)
-{
-}
+    : AppMenuModel(provider, browser, app_menu_icon_controller, alert_item) {}
 
 BraveAppMenuModel::~BraveAppMenuModel() = default;
 
@@ -87,7 +85,7 @@ BraveAppMenuModel::ConvertIDCToSidebarShowOptions(int id) {
     default:
       break;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 #endif  // defined(TOOLKIT_VIEWS)
 
@@ -287,6 +285,14 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
     need_separator = false;
   }
 
+  if (!browser()->profile()->IsOffTheRecord()) {
+    if (auto index =
+            more_tools_menu_model->GetIndexOfCommandId(IDC_NAME_WINDOW)) {
+      more_tools_menu_model->InsertItemWithStringIdAt(
+          *index + 1, IDC_SHOW_APPS_PAGE, IDS_IDC_SHOW_APPS_PAGE);
+    }
+  }
+
 #if BUILDFLAG(ENABLE_COMMANDER)
   if (auto index =
           more_tools_menu_model->GetIndexOfCommandId(IDC_NAME_WINDOW)) {
@@ -446,8 +452,6 @@ std::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
     }
   }
 
-  NOTREACHED_IN_MIGRATION()
-      << "At least, a menu item for this command should exist: "
-      << commands_to_check[commands_size - 1];
-  return std::nullopt;
+  NOTREACHED() << "At least, a menu item for this command should exist: "
+               << commands_to_check[commands_size - 1];
 }

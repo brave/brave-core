@@ -30,8 +30,8 @@ std::optional<mojom::EnvironmentType> ParseEnvironmentCommandLineSwitch() {
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for Environment: "
-                        << base::to_underlying(*rewards_flags.environment);
+  NOTREACHED() << "Unexpected value for Environment: "
+               << base::to_underlying(*rewards_flags.environment);
 }
 
 }  // namespace brave_ads

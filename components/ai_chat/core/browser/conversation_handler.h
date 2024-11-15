@@ -6,15 +6,28 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 
+#include <cstdint>
+#include <map>
 #include <memory>
+#include <optional>
+#include <ostream>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
+#include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -28,6 +41,12 @@
 #include "url/gurl.h"
 
 class AIChatUIBrowserTest;
+namespace mojo {
+template <typename Interface>
+class PendingRemote;
+template <typename T>
+class PendingReceiver;
+}  // namespace mojo
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -38,6 +57,7 @@ namespace ai_chat {
 class AIChatFeedbackAPI;
 class AIChatService;
 class AssociatedArchiveContent;
+class AIChatCredentialManager;
 
 // Performs all conversation-related operations, responsible for sending
 // messages to the conversation engine, handling the responses, and owning
@@ -67,7 +87,7 @@ class ConversationHandler : public mojom::ConversationHandler,
     AssociatedContentDelegate();
     virtual ~AssociatedContentDelegate();
     virtual void AddRelatedConversation(ConversationHandler* conversation) {}
-    virtual void OnRelatedConversationDestroyed(
+    virtual void OnRelatedConversationDisassociated(
         ConversationHandler* conversation) {}
     // Unique ID for the content. For browser Tab content, this should be
     // a navigation ID that's re-used during back navigations.
@@ -89,6 +109,9 @@ class ConversationHandler : public mojom::ConversationHandler,
     // use it to fetch search query and summary from Brave search chatllm
     // endpoint.
     virtual void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
+    // Signifies whether the content has permission to open a conversation's UI
+    // within the browser.
+    virtual bool HasOpenAIChatPermission() const;
 
     void GetTopSimilarityWithPromptTilContextLimit(
         const std::string& prompt,
@@ -134,6 +157,8 @@ class ConversationHandler : public mojom::ConversationHandler,
 
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
+    virtual void OnConversationTitleChanged(ConversationHandler* handler,
+                                            std::string title) {}
     virtual void OnSelectedLanguageChanged(
         ConversationHandler* handler,
         const std::string& selected_language) {}
@@ -160,6 +185,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   bool IsAnyClientConnected();
   bool HasAnyHistory();
+  void OnConversationDeleted();
 
   // Called when the associated content is destroyed or navigated away. If
   // it's a navigation, the AssociatedContentDelegate will set itself to a new
@@ -197,7 +223,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void ModifyConversation(uint32_t turn_index,
                           const std::string& new_text) override;
   void SubmitSummarizationRequest() override;
-  void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
+  std::vector<std::string> GetSuggestedQuestionsForTest();
+  void SetSuggestedQuestionForTest(std::string title, std::string prompt);
   void GenerateQuestions() override;
   void GetAssociatedContentInfo(
       GetAssociatedContentInfoCallback callback) override;
@@ -220,6 +247,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
 
+  // Some associated content may provide some conversation that the user wants
+  // to continue, e.g. Brave Search.
+  void MaybeFetchOrClearContentStagedConversation();
+
   base::WeakPtr<ConversationHandler> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
@@ -241,6 +272,10 @@ class ConversationHandler : public mojom::ConversationHandler,
     return associated_content_delegate_.get();
   }
 
+  void SetRequestInProgressForTesting(bool in_progress) {
+    is_request_in_progress_ = in_progress;
+  }
+
  protected:
   // ModelService::Observer
   void OnModelListUpdated() override;
@@ -258,6 +293,10 @@ class ConversationHandler : public mojom::ConversationHandler,
                            UpdateOrCreateLastAssistantEntry_NotDelta);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            UpdateOrCreateLastAssistantEntry_NotDeltaWithSearch);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           OnGetStagedEntriesFromContent);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           OnGetStagedEntriesFromContent_FailedChecks);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, SelectedLanguage);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LocalModelsUpdater);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
@@ -265,6 +304,19 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LeoLocalModelsUpdater);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
+
+  struct Suggestion {
+    std::string title;
+    std::optional<std::string> prompt;
+
+    explicit Suggestion(std::string title);
+    Suggestion(std::string title, std::string prompt);
+    Suggestion(const Suggestion&) = delete;
+    Suggestion& operator=(const Suggestion&) = delete;
+    Suggestion(Suggestion&&);
+    Suggestion& operator=(Suggestion&&);
+    ~Suggestion();
+  };
 
   void InitEngine();
   void BuildAssociatedContentInfo();
@@ -282,9 +334,12 @@ class ConversationHandler : public mojom::ConversationHandler,
                                  bool is_video,
                                  std::string invalidation_token);
 
-  // Some associated content may provide some conversation that the user wants
-  // to continue, e.g. Brave Search.
-  void MaybeFetchOrClearContentStagedConversation();
+  // Disassociate with the current associated content. Use this instead of
+  // settings associated_content_delegegate_ to nullptr to ensure that we
+  // inform the delegate, otherwise when this class instance is destroyed,
+  // the delegate will not be informed.
+  void DisassociateContentDelegate();
+
   void OnGetStagedEntriesFromContent(
       const std::optional<std::vector<SearchQuerySummary>>& entries);
 
@@ -313,7 +368,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnHistoryUpdate();
   void OnSuggestedQuestionsChanged();
   void OnAssociatedContentInfoChanged();
+  void OnConversationEntriesChanged();
   void OnClientConnectionChanged();
+  void OnConversationTitleChanged(std::string title);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnSelectedLanguageChanged(const std::string& selected_language);
   void OnAssociatedContentFaviconImageDataChanged();
@@ -327,7 +384,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   std::vector<mojom::ConversationTurnPtr> chat_history_;
   mojom::ConversationTurnPtr pending_conversation_entry_;
   // Any previously-generated suggested questions
-  std::vector<std::string> suggestions_;
+  std::vector<Suggestion> suggestions_;
   std::string selected_language_;
   // Is a conversation engine request in progress (does not include
   // non-conversation engine requests.

@@ -5,8 +5,7 @@
 
 #include "src/v8/src/execution/isolate.cc"
 
-namespace v8 {
-namespace internal {
+namespace v8::internal {
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 namespace {
@@ -66,5 +65,4 @@ std::vector<v8::page_graph::ExecutingScript> Isolate::GetAllExecutingScripts() {
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-}  // namespace internal
-}  // namespace v8
+}  // namespace v8::internal

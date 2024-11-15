@@ -28,11 +28,11 @@ bool DoesSupportCountryCode() {
 
 CountryCode::CountryCode()
     : cached_country_code_(brave_l10n::GetDefaultISOCountryCodeString()) {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 }
 
 CountryCode::~CountryCode() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

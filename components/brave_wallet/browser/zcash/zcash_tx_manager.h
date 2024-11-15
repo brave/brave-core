@@ -17,8 +17,6 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 
-class PrefService;
-
 namespace brave_wallet {
 
 class AccountResolverDelegate;
@@ -29,12 +27,11 @@ class ZCashTxStateManager;
 
 class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
  public:
-  ZCashTxManager(TxService* tx_service,
-                 ZCashWalletService* bitcoin_wallet_service,
-                 KeyringService* keyring_service,
-                 PrefService* prefs,
-                 TxStorageDelegate* delegate,
-                 AccountResolverDelegate* account_resolver_delegate);
+  ZCashTxManager(TxService& tx_service,
+                 ZCashWalletService& bitcoin_wallet_service,
+                 KeyringService& keyring_service,
+                 TxStorageDelegate& delegate,
+                 AccountResolverDelegate& account_resolver_delegate);
   ~ZCashTxManager() override;
   ZCashTxManager(const ZCashTxManager&) = delete;
   ZCashTxManager& operator=(const ZCashTxManager&) = delete;
@@ -42,8 +39,8 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
  private:
   friend class BraveWalletP3AUnitTest;
 
-  ZCashTxStateManager* GetZCashTxStateManager();
-  ZCashBlockTracker* GetZCashBlockTracker();
+  ZCashTxStateManager& GetZCashTxStateManager();
+  ZCashBlockTracker& GetZCashBlockTracker();
 
   // ZCashBlockTracker::Observer
   void OnLatestHeightUpdated(const std::string& chain_id,
@@ -84,8 +81,7 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
   void OnGetTransactionStatus(const std::string& tx_meta_id,
                               base::expected<bool, std::string> confirm_status);
 
-  raw_ptr<ZCashWalletService> zcash_wallet_service_ = nullptr;
-  raw_ptr<ZCashRpc, DanglingUntriaged> zcash_rpc_ = nullptr;
+  raw_ref<ZCashWalletService> zcash_wallet_service_;
   base::ScopedObservation<ZCashBlockTracker, ZCashBlockTracker::Observer>
       block_tracker_observation_{this};
   base::WeakPtrFactory<ZCashTxManager> weak_factory_{this};

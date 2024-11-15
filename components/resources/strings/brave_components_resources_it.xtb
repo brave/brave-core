@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">Segnala agli sviluppatori di Brave che questo sito non funziona bene con gli Scudi:</translation>
 <translation id="3110968385867124099">Questa pagina non può essere segnalata perché non comunica tramite HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Questa pagina è una pagina web locale e non può essere segnalata.</translation>
-<translation id="3645455863322075098">Questa pagina è una pagina di errore e non può essere segnalata.</translation>
-<translation id="105644511106871142">Grazie per aver contribuito a rendere Brave migliore per tutti. Questa segnalazione invierà solo le informazioni necessarie per riparare il sito.</translation>
+<translation id="8740275226259417070">Questa è una pagina di errore. Non è segnalabile come sito non funzionante.</translation>
+<translation id="6806248680442980382">Grazie di averci aiutato a rendere Brave migliore per tutti. Questa segnalazione conterrà solo le informazioni che ci servono per sistemare il sito.</translation>
 <translation id="6476216365964140603">Dettagli aggiuntivi (facoltativo)</translation>
 <translation id="6145852496180774737">Contattami via: (facoltativo)</translation>
 <translation id="7616645803364270729">E-mail, Twitter ecc.</translation>
@@ -461,6 +461,8 @@
 <translation id="6318437367327684789">per sempre</translation>
 <translation id="8797999629784150206">Puoi modificare le <ph name="SITE_PERMISSIONS"/> in qualsiasi momento. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">autorizzazione del sito</translation>
+<translation id="7222371875290545057">Vuoi autorizzare l’apertura delle conversazioni di Leo AI su Brave?</translation>
+<translation id="1518915449477235311">Vuoi autorizzare <ph name="URL"/> ad aprire le conversazioni di Leo AI su Brave?</translation>
 <translation id="4355784577209159847">Consenti l’uso dei cookie di terze parti per la vecchia versione del sign-in di Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> vuole utilizzare cookie di terze parti per la vecchia versione del sign-in di Google</translation>
 <translation id="6053826678715267477">Consenti l’accesso alle risorse del localhost</translation>
@@ -693,6 +695,26 @@
 <translation id="957921474773060718">Prossimo contributo:</translation>
 <translation id="351973834053818251">Contributi periodici</translation>
 <translation id="7751260505918304024">Mostra tutto</translation>
+<translation id="2894334939992402676">Scopri di più sui metodi per inviare dei contributi</translation>
+<translation id="4114667046481794032">Importo del contributo</translation>
+<translation id="2628057126110572782">Questo creatore di contenuti al momento accetta solo contributi inviati con i metodi seguenti:</translation>
+<translation id="7396847690567283204">Saldo delle ricompense</translation>
+<translation id="3253225298092156258">Non disponibile</translation>
+<translation id="8028314716653189513">Scegli il metodo che vuoi usare per i contributi a Brave Software:</translation>
+<translation id="4094286757932277327">Portafoglio custodial</translation>
+<translation id="1511998469385905184">Puoi riprovare in seguito.</translation>
+<translation id="7550470870580166294">Fondi Insufficienti</translation>
+<translation id="7020972866926315918">Il tuo profilo non risulta connesso a <ph name="PROVIDER"/> per le ricompense di Brave. Riaccedi per continuare.</translation>
+<translation id="1166682575529520472">Mensile</translation>
+<translation id="7138678301420049075">Altro</translation>
+<translation id="2134931506717037391">Invia <ph name="AMOUNT"/> BAT</translation>
+<translation id="4791565605790056151">Invio del contributo</translation>
+<translation id="8251969358165471584">Portafoglio Web3</translation>
+<translation id="7160424977552599351">Usa il tuo portafoglio Web3</translation>
+<translation id="6369571967625114920">Gli annunci privati di Brave non sono disponibili nella tua area geografica.</translation>
+<translation id="5309155375926073606">Sì, desidero anche contribuire a Ricerca Brave e voglio aderire al <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">Rendi ancora più efficace Ricerca Brave fornendo dati di ricerca e di navigazione anonimi con il Web Discovery Project. È tutto open-source.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">account</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">dominio</translation>
@@ -795,7 +817,6 @@
 <translation id="6517332033658428773">Rivedi cambio</translation>
 <translation id="8692596799753687794">Scegli il fornitore di quotazioni</translation>
 <translation id="463712644600982655">Ogni aggregatore fornisce quotazioni utilizzando la liquidità della propria API. Raccoglie informazioni sui prezzi da vari exchange e offre i prezzi sulla base di questi dati.</translation>
-<translation id="3253225298092156258">Non disponibile</translation>
 <translation id="473775607612524610">Aggiorna</translation>
 <translation id="4389658703251593158">Questa coppia non è supportata da <ph name="PROVIDER_NAME"/></translation>
 <translation id="1176173785350238153">Cambia fornitore</translation>
@@ -1055,6 +1076,8 @@
 <translation id="793994607260936590">prima</translation>
 <translation id="4709524402122994378">transazioni</translation>
 <translation id="4591079278963448049">L’account associato al token non esiste ancora. Una piccola quantità di SOL sarà utilizzata per creare e finanziare l’account.</translation>
+<translation id="3240773103344793224">È necessario cambiare la proprietà dell’account</translation>
+<translation id="8041423758956015568">Con questa transazione la proprietà dell’account sarà assegnata a un nuovo programma. L’azione è irreversibile e può comportare la perdita dei fondi.</translation>
 <translation id="1426320910664514906">Gas Limite</translation>
 <translation id="1229774280326250926">Commissione gas premium</translation>
 <translation id="148169246131967347">Limite commissione gas</translation>
@@ -1276,10 +1299,25 @@
 <translation id="5722321409991816187">Mostra gli NFT di spam</translation>
 <translation id="2588752742385122166">Impostazioni del portafoglio</translation>
 <translation id="7662492121143629144">Tutti i conti</translation>
+<translation id="8845001906332463065">Chiedi assistenza</translation>
+<translation id="6248202915200795128">Ci vuole più tempo del previsto?</translation>
+<translation id="5417904796609871601">Visualizza nelle attività</translation>
+<translation id="8915839655070878476">Puoi tranquillamente chiudere questa finestra.</translation>
+<translation id="7020017785602386950">Stiamo inviando <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> a: <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212">L’importo di <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> è stato inviato all’account <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269">Stiamo cambiando <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> su: <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> – via <ph name="NETWORK"/></translation>
+<translation id="312867981877298982">L’importo di <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> è stato aggiunto al tuo account <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189">Stiamo trasferendo <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> a: <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042">Impossibile <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
+<translation id="6990756606864308319">Si è verificato un errore nel tentativo di <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/> <ph name="AMOUNT"/> <ph name="AMOUNT_AFTER"/> a <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
+<translation id="6449575669814542383">Stiamo approvando <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> per: <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">Per annullare la transazione precedente ne verrà creata una nuova.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} altra transazione in sospeso.}
+      other {{PENDING_TRANSACTIONS} transazioni in sospeso.}
+    }</translation>
 <translation id="6954150712710630841">Transazione inviata</translation>
-<translation id="905855245798176174">La transazione è stata inviata alla rete ed è in attesa di conferma.</translation>
 <translation id="619697073289995370">Transazione firmata</translation>
-<translation id="7493732383203109611">La transazione è stata firmata e verrà inviata alla rete dalla DApp</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> è stato rinviato al tuo portafoglio</translation>
 <translation id="4577432071459867390">Transazione non riuscita</translation>
 <translation id="4359235192593147041">La transazione non è riuscita a causa di un elevato movimento dei prezzi. Aumenta la tolleranza di slippage per poter eseguire transazioni anche in caso di scostamenti elevati.</translation>
@@ -1710,7 +1748,6 @@
 <translation id="1958146856582208323">Trasferimento di token</translation>
 <translation id="3550219298671597013">Trasferisci NFT</translation>
 <translation id="8043066678623588950">Inoltra FIL</translation>
-<translation id="7138678301420049075">Altro</translation>
 <translation id="8703556909820882288">Trasferimento di NFT compressi</translation>
 <translation id="2713141960460256091">Firma e invia la transazione DApp</translation>
 <translation id="6387730345715997739">Firma la transazione DApp</translation>
@@ -1792,7 +1829,6 @@
 <translation id="7056969230130642253">È tutto aggiornato</translation>
 <translation id="7292242212818928219">Nuovi contenuti disponibili. Ricaricare?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Comandi rapidi</translation>
 <translation id="7481312909269577407">Avanti</translation>
 <translation id="1272079795634619415">Interrompi</translation>
 <translation id="302781076327338683">Ricarica bypassando la cache</translation>
@@ -1945,10 +1981,12 @@
 <translation id="1344005710343072293">Questa combinazione viene utilizzata per <ph name="COMMAND"/>. Il salvataggio sovrascriverà la scorciatoia.</translation>
 <translation id="831931573200952705">Questa combinazione viene utilizzata per <ph name="COMMAND"/> e non può essere modificata.</translation>
 <translation id="3537006124004887164">Questa combinazione viene utilizzata per <ph name="COMMAND"/> e non può essere modificata. Prova a modificarla tramite le “Abbreviazioni app” nelle Impostazioni di sistema.</translation>
+<translation id="8536713137312218707">Comandi rapidi</translation>
 <translation id="712598284361781729">Nuova vista doppia</translation>
 <translation id="1130188644637295274">Apri con vista doppia</translation>
 <translation id="6459036216700972269">Riunisci schede</translation>
 <translation id="4235382917338421035">Cambia posizioni della scheda</translation>
+<translation id="4144468798716165316">Comandi rapidi</translation>
 <translation id="3617523374417810198">Nuova vista doppia</translation>
 <translation id="8571323456914890254">Apri con vista doppia</translation>
 <translation id="5329136173514538969">Riunisci schede</translation>
@@ -2011,7 +2049,6 @@
 <translation id="1691256669639196606">Gestisci abbonamento</translation>
 <translation id="2304783958703511257">Impostazioni avanzate</translation>
 <translation id="3037594989275592390">Modelli linguistici</translation>
-<translation id="6637015365469044269">Fai l’upgrade</translation>
 <translation id="5543505256451301851">Prova gratis per 7 giorni</translation>
 <translation id="849535826888024304">Limite del tasso di risposta raggiunto</translation>
 <translation id="2252128900328632803">Hai raggiunto il limite del tasso per Leo. Sblocca un tasso di risposta maggiore abbonandoti a Premium, oppure riprova più tardi.</translation>
@@ -2022,7 +2059,7 @@
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD $/mese</translation>
 <translation id="5151923271944811339">Passa al modello gratis</translation>
 <translation id="5474757891469990756">Sblocca tutte le potenzialità di Leo con Premium:</translation>
-<translation id="5552332211527367850">Accesso prioritario a modelli efficaci con diverse abilità</translation>
+<translation id="3453542753968940696">Accesso prioritario a modelli efficaci con diverse abilità.</translation>
 <translation id="5031778211368112461">Accedi a modelli più adatti alle attività creative e alla generazione di contenuti.</translation>
 <translation id="298783097210745222">Ricevi risposte più accurate per conversazioni più brillanti.</translation>
 <translation id="4314705522985583059">Approfitta di limiti di utilizzo più ampi per conversazioni più lunghe.</translation>
@@ -2051,6 +2088,7 @@
 <translation id="8712637175834984815">Fatto</translation>
 <translation id="1093419424466417703">La pagina è troppo lunga per Leo. Potrebbe mancare del contesto alla conversazione. Leo è riuscito a leggere il <ph name="PERCENTAGE"/> dei contenuti della pagina.</translation>
 <translation id="2186990448773134544">La pagina era troppo lunga per Leo e il suo contenuto è stato adattato estraendo le informazioni più rilevanti.</translation>
+<translation id="5140068729857132378">Stiamo cercando le parti pertinenti della pagina web…</translation>
 <translation id="4370698775470316661">Questa conversazione è troppo lunga e non può continuare. Potrebbero essere disponibili altri modelli con cui Leo è in grado di mantenere la precisione per conversazioni più lunghe.</translation>
 <translation id="5719170755629028558">Stiamo migliorando la risposta con Ricerca Brave...</translation>
 <translation id="5794962229997281366">Ricerca della risposta migliorata per <ph name="SEARCH_TERMS"/></translation>

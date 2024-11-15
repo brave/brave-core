@@ -59,7 +59,6 @@ import java.util.concurrent.Executors;
 public class SignSolTransactionsFragment extends BaseDAppsBottomSheetDialogFragment {
     private static final String TAG = "SignTransaction";
 
-    private static final String PARAM_ACITITY_TYPE = "sign_param";
     private List<NavigationItem> mTabTitles;
     private List<SignSolTransactionsRequest> mSignSolTransactionRequests;
     private ViewPager2 mViewPager;
@@ -136,7 +135,6 @@ public class SignSolTransactionsFragment extends BaseDAppsBottomSheetDialogFragm
     }
 
     private void initComponents() {
-        assert getArguments() != null;
         updateTxPanelPerStep();
         fetchSignRequestData();
         Spanned associatedSPLTokenAccountInfo =
@@ -151,14 +149,8 @@ public class SignSolTransactionsFragment extends BaseDAppsBottomSheetDialogFragm
         mTxLearnMore.setMovementMethod(LinkMovementMethod.getInstance());
         mTxLearnMore.setText(associatedSPLTokenAccountInfo);
 
-        mBtSign.setOnClickListener(
-                v -> {
-                    processRequest(true);
-                });
-        mBtCancel.setOnClickListener(
-                v -> {
-                    processRequest(false);
-                });
+        mBtSign.setOnClickListener(v -> processRequest(true));
+        mBtCancel.setOnClickListener(v -> processRequest(false));
 
         mTvTxCounter.setOnClickListener(
                 v -> {

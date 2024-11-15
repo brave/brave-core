@@ -239,17 +239,8 @@ public class BraveRewards: PreferencesObserver {
   /// Clear Brave Ads Data.
   @MainActor func clearAdsData() async {
     await withCheckedContinuation { continuation in
-      ads.shutdownService { [ads] in
-        ads.clearData {
-          continuation.resume()
-        }
-      }
-    }
-    if shouldStartAds {
-      await withCheckedContinuation { continuation in
-        ads.initialize { _ in
-          continuation.resume()
-        }
+      ads.clearData {
+        continuation.resume()
       }
     }
   }

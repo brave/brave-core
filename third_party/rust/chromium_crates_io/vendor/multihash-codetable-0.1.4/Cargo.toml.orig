@@ -1,0 +1,65 @@
+[package]
+name = "multihash-codetable"
+description = "Default multihash code-table with cryptographically secure hash implementations"
+version = "0.1.4"
+repository = "https://github.com/multiformats/rust-multihash"
+license = "MIT"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default = ["std"]
+std = ["blake2b_simd?/std", "blake2s_simd?/std", "blake3?/std", "digest?/std", "sha1?/std", "sha2?/std", "sha3?/std", "strobe-rs?/std", "ripemd?/std", "multihash-derive/std", "core2/std"]
+arb = ["dep:arbitrary", "std"]
+sha1 = ["dep:digest", "dep:sha1"]
+sha2 = ["dep:digest", "dep:sha2"]
+sha3 = ["dep:digest", "dep:sha3"]
+ripemd = ["dep:digest", "dep:ripemd"]
+strobe = ["dep:strobe-rs"]
+blake2b = ["dep:blake2b_simd"]
+blake2s = ["dep:blake2s_simd"]
+blake3 = ["dep:blake3"]
+
+[dependencies]
+blake2b_simd = { version = "1.0.0", default-features = false, optional = true }
+blake2s_simd = { version = "1.0.0", default-features = false, optional = true }
+blake3 = { version = "1.2.0", default-features = false, optional = true }
+digest = { version = "0.10.1", default-features = false, optional = true }
+sha1 = { version = "0.10.5", default-features = false, optional = true }
+sha2 = { version = "0.10.0", default-features = false, optional = true }
+sha3 = { version = "0.10.0", default-features = false, optional = true }
+strobe-rs = { version = "0.10.0", default-features = false, optional = true }
+ripemd = { version = "0.1.1", default-features = false, optional = true }
+multihash-derive = { version = "0.9.1", path = "../derive", default-features = false }
+core2 = { version = "0.4.0", default-features = false }
+serde = { version = "1.0.158", features = ["derive"], default-features = false, optional = true }
+arbitrary = { version = "1.3.2", optional = true, features = ["derive"] }
+
+[dev-dependencies]
+hex = "0.4.2"
+unsigned-varint = { version = "0.8.0", default-features = false }
+criterion = "0.5.1"
+rand = "0.8.5"
+
+[[bench]]
+name = "multihash"
+harness = false
+
+[[test]]
+name = "lib"
+required-features = ["sha1", "sha2", "sha3", "ripemd", "strobe", "blake2b", "blake2s", "blake3"]
+
+[[example]]
+name = "custom_table"
+path = "examples/custom_table.rs"
+required-features = ["blake2b", "sha2"]
+
+[[example]]
+name = "manual_mh"
+path = "examples/manual_mh.rs"
+required-features = ["sha2"]
+
+[package.metadata.docs.rs]
+features = ["std", "sha1", "sha2", "sha3", "ripemd", "strobe", "blake2b", "blake2s", "blake3", "serde"]
+rustdoc-args = ["--cfg", "docs_rs"]

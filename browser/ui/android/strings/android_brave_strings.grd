@@ -509,6 +509,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_INDEX_OTHER_SEARCH_ENGINES_TEXT" desc="Text for the settings related to index other search engines">
         Automatically indexes websites that follow the OpenSearch spec.
       </message>
+      <message name="IDS_QUICK_SEARCH_ENGINES" desc="Title for quick search engines option">
+        Quick search engines
+      </message>
+      <message name="IDS_QUICK_SEARCH_ENGINES_WITH_HYPHEN" desc="Title for quick search engines with hyphen">
+        Quick-Search Engines
+      </message>
+      <message name="IDS_SHOW_QUICK_SEARCH_BAR" desc="Title for show quick search bar switch">
+        Show quick search bar
+      </message>
+      <message name="IDS_CURRENTLY_USED_SEARCH_ENGINES" desc="Description text for quick-search engines">
+        Currently used search engines
+      </message>
+      <message name="IDS_LONG_PRESS_TO_CHANGE_ORDER" desc="Text for changing the order of quick-search engines">
+        Long press to change the order
+      </message>
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
       </message>
@@ -880,15 +895,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_ONBOARDING_SET_DEFAULT" desc="Text for set default onboarding">
         With Brave as default, every link you tap opens with Brave's privacy protections.
-      </message>
-      <message name="IDS_ONBOARDING_SEARCH_WIDGET_TITLE" desc="Title for the search widget onboarding screen">
-        Add the search widget
-      </message>
-      <message name="IDS_ONBOARDING_SEARCH_WIDGET_TEXT" desc="Prompt the user to add the search widget to their home screen">
-        Have Brave at your fingertips to explore the web faster.
-      </message>
-      <message name="IDS_ONBOARDING_SEARCH_WIDGET_BUTTON" desc="Call to action for the search widget onboarding screen">
-        Add to home screen
       </message>
       <message name="IDS_PRIVACY_ONBOARDING_INDIA" desc="Text for privacy onboarding for india">
         Block ads. Save data. Every single day.
@@ -1400,7 +1406,7 @@ Are you sure you want to do this?
         Browsing visibility
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VISIBILITY_DESCRIPTION" desc="Browsing visibility description shown when a user opens a private tab explaining private mode">
-        Note that -even in private windows- your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work device/network).
+        Note that, even in private windows, your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work device/network).
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VPN" desc="VPN title shown when a user opens a private tab explaining private mode">
         Brave VPN
@@ -1594,6 +1600,12 @@ Are you sure you want to do this?
       <message name="IDS_FINGERPRINT_LANGUAGE_SWITCH_SUMMARY" desc="Title for shields option fingerprint language">
         Reduces how much websites can learn about you based on your browser's language settings.
       </message>
+      <message name="IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_SWITCH" desc="Shields panel toggle label that would save webcompat report contact info data when enabled.">
+        Store contact information for future broken site reports
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_SWITCH_SUMMARY" desc="Description for shields panel toggle label that would save webcompat report contact info data when enabled.">
+        If you provide contact info it will be stored for future reports
+      </message>
       <message name="IDS_BLOCK_FINGERPRINTING_TEXT" desc="Text for shields option.">
         Prevents websites from recognizing your device
       </message>
@@ -1659,6 +1671,15 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT_VIEW_SCREENSHOT_LABEL" desc="Link text for viewing a screenshot for a broken website report">
           View screenshot
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_DETAILS_PLACEHOLDER" desc="Placeholder text for the optional details field in the broken website report">
+          Additional details (optional)
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">
+          Contact me at: (optional)
+      </message>
+      <message name="IDS_REPORT_BROKEN_SITE_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">
+          Email, Twitter, etc.
       </message>
       <message name="IDS_THANK_YOU" desc="Title for thank you UI for shields.">
         Thank you!
@@ -2207,6 +2228,12 @@ Are you sure you want to do this?
     <message name="IDS_ACCOUNT_NAME" desc="Brave wallet accounts text">
       Account Name
     </message>
+    <message name="IDS_WALLET_CHANGE_OWNERSHIP_WARNING" desc="Brave Wallet warning title displayed when requesting a change of ownership">
+      Account ownership change requested
+    </message>
+    <message name="IDS_WALLET_CHANGE_OWNERSHIP_DESCRIPTION" desc="Brave Wallet warning description displayed when requesting a change of ownership">
+      This transaction will reassign ownership of the account to a new program. This action is irreversible and may result in loss of funds.
+    </message>
     <message name="IDS_ACCOUNT_NAME_TEXT" desc="Brave wallet accounts text">
       You can create a secondary account by importing your private key.
     </message>
@@ -2336,14 +2363,17 @@ Are you sure you want to do this?
     <message name="IDS_RENEWS_MONTHLY" desc="Brave VPN plan text">
       Renews monthly
     </message>
+    <message name="IDS_RENEWS_ANNUALLY" desc="Brave VPN plan annually renewal text">
+      Renews annually
+    </message>
     <message name="IDS_MONTHLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="MONTHLY_AMOUNT">%1$s</ph> /month
     </message>
     <message name="IDS_ONE_YEAR" desc="Brave VPN plan text">
       One Year
     </message>
-    <message name="IDS_RENEW_MONTHLY_SAVE" desc="Brave VPN plan text">
-      Renews annually (<ph name="DISCOUNT_TEXT_START">&lt;discount_text&gt;</ph>save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%<ph name="DISCOUNT_TEXT_END">&lt;/discount_text&gt;</ph>)
+    <message name="IDS_RENEW_YEARLY_SAVE" desc="Brave VPN plan text">
+      (<ph name="DISCOUNT_TEXT_START">&lt;discount_text&gt;</ph>save <ph name="PERCENTAGE_AMOUNT">%1$d</ph>%%<ph name="DISCOUNT_TEXT_END">&lt;/discount_text&gt;</ph>)
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION_AMOUNT" desc="Brave VPN plan text">
       <ph name="YEARLY_AMOUNT">%1$s</ph> /year
@@ -2566,7 +2596,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ADVANCED_SETTINGS_NONCE_HINT" desc="Brave crypto wallet advance setting custom nonce hint">
       Enter custom nonce value
     </message>
-    <message name="IDS_BRAVE_WALLET_ADVANCED_SETTINGS_SAVE" desc="Brave crypto wallet advance setting save/set nonce value action button">
+    <message name="IDS_ACTION_SAVE" desc="Text for save action">
       Save
     </message>
     <message name="IDS_BRAVE_WALLET_TX_PROPOGATION_WARNING" desc="Trnsaction warning regarding low gas or invalid nonce etc.">

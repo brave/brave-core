@@ -28,8 +28,8 @@ ConversionActionType ToConversionActionType(
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::ConfirmationType: "
-                        << base::to_underlying(mojom_confirmation_type);
+  NOTREACHED() << "Unexpected value for mojom::ConfirmationType: "
+               << base::to_underlying(mojom_confirmation_type);
 }
 
 ConversionActionType ToConversionActionType(
@@ -42,7 +42,7 @@ ConversionActionType ToConversionActionType(
     return ConversionActionType::kClickThrough;
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for action_type: " << action_type;
+  NOTREACHED() << "Unexpected value for action_type: " << action_type;
 }
 
 std::string ToString(const ConversionActionType action_type) {
@@ -60,8 +60,8 @@ std::string ToString(const ConversionActionType action_type) {
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for ConversionActionType: "
-                        << base::to_underlying(action_type);
+  NOTREACHED() << "Unexpected value for ConversionActionType: "
+               << base::to_underlying(action_type);
 }
 
 }  // namespace brave_ads

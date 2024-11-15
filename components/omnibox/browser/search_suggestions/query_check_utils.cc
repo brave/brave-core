@@ -33,7 +33,7 @@ size_t GetPosForHashChars(char c) {
     return c - 'A' + 10 + 26;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 double GetHashProb(const std::string& query) {

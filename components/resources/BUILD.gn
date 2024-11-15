@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
@@ -54,10 +53,12 @@ brave_grit("static_resources") {
 repack("resources") {
   deps = [
     ":static_resources",
+    "//brave/components/ai_chat/resources/page:generated_resources",
     "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/skus/browser/resources:generated_resources",
   ]
   sources = [
+    "$root_gen_dir/brave/components/ai_chat/resources/page/ai_chat_ui_generated.pak",
     "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",
     "$root_gen_dir/components/brave_components_static.pak",
   ]
@@ -99,11 +100,6 @@ repack("resources") {
       "$root_gen_dir/brave/components/speedreader/resources/panel/brave_speedreader_toolbar_generated.pak",
       "$root_gen_dir/brave/components/webcompat_reporter/resources/webcompat_reporter_generated.pak",
     ]
-  }
-
-  if (enable_ai_chat) {
-    deps += [ "//brave/components/ai_chat/resources/page:generated_resources" ]
-    sources += [ "$root_gen_dir/brave/components/ai_chat/resources/page/ai_chat_ui_generated.pak" ]
   }
 
   if (enable_ai_rewriter) {

@@ -181,6 +181,36 @@ function InsertShieldsSubpage (pages: Element)
     `)
 }
 
+function InsertBraveOpenAIChatSubpage (pages: Element)
+{
+  pages.appendChild(
+    html`
+      <template is="dom-if" route-path="/content/braveOpenAIChat" no-search>
+        <settings-subpage
+          associated-control="[[$$('#braveAIChat')]]"
+          page-title="${loadTimeData.getString('siteSettingsBraveOpenAIChat')}">
+          <settings-category-default-radio-group
+              id="braveAIChatDefault"
+              category="[[contentSettingsTypesEnum_.BRAVE_OPEN_AI_CHAT]]"
+              block-option-label=
+                "${loadTimeData.getString('siteSettingsBraveOpenAIChatBlock')}"
+              allow-option-label=
+                "${loadTimeData.getString('siteSettingsBraveOpenAIChatAsk')}"
+              allow-option-icon="user"
+              block-option-icon="user-off">
+          </settings-category-default-radio-group>
+          <category-setting-exceptions
+            id="braveAIChatExceptions"
+            category="[[contentSettingsTypesEnum_.BRAVE_OPEN_AI_CHAT]]"
+            block-header="${loadTimeData.getString('siteSettingsBlock')}"
+            allow-header="${loadTimeData.getString('siteSettingsAllow')}"
+            read-only-list>
+          </category-setting-exceptions>
+        </settings-subpage>
+      </template>
+    `)
+}
+
 RegisterPolymerTemplateModifications({
   'settings-privacy-page': (templateContent) => {
     const pages = templateContent.getElementById('pages')
@@ -207,6 +237,11 @@ RegisterPolymerTemplateModifications({
         loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
       if (isLocalhostAccessFeatureEnabled) {
         InsertLocalhostAccessSubpage(pages)
+      }
+      const isOpenAIChatFromBraveSearchEnabled =
+        loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
+      if (isOpenAIChatFromBraveSearchEnabled) {
+        InsertBraveOpenAIChatSubpage(pages)
       }
       InsertAutoplaySubpage(pages)
       const isNativeBraveWalletEnabled =

@@ -15,7 +15,7 @@
 
 namespace brave_wallet {
 
-BitcoinBlockTracker::BitcoinBlockTracker(bitcoin_rpc::BitcoinRpc* bitcoin_rpc)
+BitcoinBlockTracker::BitcoinBlockTracker(bitcoin_rpc::BitcoinRpc& bitcoin_rpc)
     : bitcoin_rpc_(bitcoin_rpc) {}
 
 BitcoinBlockTracker::~BitcoinBlockTracker() = default;

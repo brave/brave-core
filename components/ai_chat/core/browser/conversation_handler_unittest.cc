@@ -17,6 +17,7 @@
 #include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/ranges/algorithm.h"
+#include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -119,6 +120,8 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void, OnFaviconImageDataChanged, (), (override));
 
+  MOCK_METHOD(void, OnConversationDeleted, (), (override));
+
  private:
   mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
   mojo::Remote<mojom::ConversationHandler> conversation_handler_;
@@ -145,6 +148,11 @@ class MockAssociatedContent
   MOCK_METHOD(void,
               GetStagedEntriesFromContent,
               (ConversationHandler::GetStagedEntriesCallback),
+              (override));
+
+  MOCK_METHOD(void,
+              OnRelatedConversationDisassociated,
+              (ConversationHandler*),
               (override));
 
   base::WeakPtr<ConversationHandler::AssociatedContentDelegate> GetWeakPtr() {
@@ -200,7 +208,8 @@ class ConversationHandlerUnitTest : public testing::Test {
         model_service_.get(), std::move(credential_manager), &prefs_, nullptr,
         shared_url_loader_factory_, "");
 
-    conversation_ = mojom::Conversation::New("uuid", "title", false);
+    conversation_ =
+        mojom::Conversation::New("uuid", "title", base::Time::Now(), false);
 
     conversation_handler_ = std::make_unique<ConversationHandler>(
         conversation_.get(), ai_chat_service_.get(), model_service_.get(),
@@ -258,6 +267,32 @@ class ConversationHandlerUnitTest : public testing::Test {
                       SearchQuerySummary("query", "summary"),
                       SearchQuerySummary("query2", "summary2")}));
             });
+  }
+
+  // Pair of text and whether it's from Brave Search SERP
+  void SetupHistory(std::vector<std::pair<std::string, bool>> entries) {
+    std::vector<mojom::ConversationTurnPtr> history;
+    for (size_t i = 0; i < entries.size(); i++) {
+      bool is_human = i % 2 == 0;
+
+      std::optional<std::vector<mojom::ConversationEntryEventPtr>> events;
+      if (!is_human) {
+        events = std::vector<mojom::ConversationEntryEventPtr>();
+        events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(entries[i].first)));
+      }
+
+      auto entry = mojom::ConversationTurn::New(
+          is_human ? mojom::CharacterType::HUMAN
+                   : mojom::CharacterType::ASSISTANT,
+          is_human ? mojom::ActionType::QUERY : mojom::ActionType::RESPONSE,
+          mojom::ConversationTurnVisibility::VISIBLE,
+          entries[i].first /* text */, std::nullopt /* selected_text */,
+          std::move(events), base::Time::Now(), std::nullopt /* edits */,
+          entries[i].second /* from_brave_search_SERP */);
+      history.push_back(std::move(entry));
+    }
+    conversation_handler_->SetChatHistoryForTesting(std::move(history));
   }
 
  protected:
@@ -321,7 +356,7 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
                         testing::ElementsAre(l10n_util::GetStringUTF8(
                             IDS_CHAT_UI_SUMMARIZE_PAGE)));
           } else {
-            EXPECT_TRUE(state->suggested_questions.empty());
+            EXPECT_EQ(4u, state->suggested_questions.size());
           }
           EXPECT_EQ(state->suggestion_status,
                     should_send_content
@@ -384,11 +419,19 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
 
+  // Submitting conversation entry should inform associated content
+  // that it is no longer associated with the conversation
+  // and shouldn't access the conversation because the conversation
+  // will not be considering the associated content for lifetime notifications.
+  EXPECT_CALL(*associated_content_, OnRelatedConversationDisassociated)
+      .Times(1);
+
   conversation_handler_->SubmitSelectedText(
       "I have spoken.", mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   // article_text_ and suggestions_ should be cleared when page content is
   // unlinked.
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
@@ -398,11 +441,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
         // once conversation history is committed.
         EXPECT_FALSE(site_info->is_content_association_possible);
       }));
-  conversation_handler_->GetSuggestedQuestions(
-      base::BindLambdaForTesting([&](const std::vector<std::string>& questions,
-                                     mojom::SuggestionGenerationStatus status) {
-        EXPECT_TRUE(questions.empty());
-      }));
+  EXPECT_TRUE(conversation_handler_->GetSuggestedQuestionsForTest().empty());
 
   EXPECT_TRUE(conversation_handler_->HasAnyHistory());
   const auto& history = conversation_handler_->GetConversationHistory();
@@ -485,12 +524,9 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
 
   // Should not be any LLM-generated suggested questions yet because they
   // weren't asked for
-  conversation_handler_->GetSuggestedQuestions(
-      base::BindLambdaForTesting([&](const std::vector<std::string>& questions,
-                                     mojom::SuggestionGenerationStatus status) {
-        EXPECT_EQ(1u, questions.size());
-        EXPECT_EQ(questions[0], "Summarize this page");
-      }));
+  const auto questions = conversation_handler_->GetSuggestedQuestionsForTest();
+  EXPECT_EQ(1u, questions.size());
+  EXPECT_EQ(questions[0], "Summarize this page");
 
   const auto& history2 = conversation_handler_->GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> expected_history2;
@@ -1004,19 +1040,110 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
 }
 
-TEST_F(ConversationHandlerUnitTest_OptedOut,
+TEST_F(
+    ConversationHandlerUnitTest,
+    MaybeFetchOrClearContentStagedConversation_FetchStagedEntriesWithHistory) {
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  ASSERT_TRUE(conversation_handler_->IsAnyClientConnected());
+
+  // MaybeFetchOrClearContentStagedConversation should clear old staged entries
+  // and fetch new ones.
+  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
+  // One from SetupHistory and one from removing old entries and adding
+  // new entries in OnGetStagedEntriesFromContent.
+  EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(2);
+
+  // Fill history with staged and non-staged entries.
+  SetupHistory({{"old query" /* text */, true /*from_brave_search_SERP */},
+                {"old summary", "true"},
+                {"normal query", false},
+                {"normal response", false}});
+
+  // Setting mock return values for GetStagedEntriesFromContent.
+  SetAssociatedContentStagedEntries(/*empty=*/false, /*multi=*/true);
+
+  conversation_handler_->MaybeFetchOrClearContentStagedConversation();
+  task_environment_.RunUntilIdle();
+
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(&client);
+
+  auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 6u);
+  EXPECT_FALSE(history[0]->from_brave_search_SERP);
+  EXPECT_EQ(history[0]->text, "normal query");
+  EXPECT_FALSE(history[1]->from_brave_search_SERP);
+  EXPECT_EQ(history[1]->text, "normal response");
+  EXPECT_TRUE(history[2]->from_brave_search_SERP);
+  EXPECT_EQ(history[2]->text, "query");
+  EXPECT_TRUE(history[3]->from_brave_search_SERP);
+  EXPECT_EQ(history[3]->text, "summary");
+  EXPECT_TRUE(history[4]->from_brave_search_SERP);
+  EXPECT_EQ(history[4]->text, "query2");
+  EXPECT_TRUE(history[5]->from_brave_search_SERP);
+  EXPECT_EQ(history[5]->text, "summary2");
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       OnGetStagedEntriesFromContent_FailedChecks) {
+  // No staged entries would be added if a request is in progress.
+  conversation_handler_->SetRequestInProgressForTesting(true);
+  std::vector<SearchQuerySummary> entries = {{"query", "summary"},
+                                             {"query2", "summary2"}};
+  conversation_handler_->OnGetStagedEntriesFromContent(entries);
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
+
+  // No staged entries if should_send_page_contents_ is false.
+  conversation_handler_->SetRequestInProgressForTesting(false);
+  conversation_handler_->SetShouldSendPageContents(false);
+  conversation_handler_->OnGetStagedEntriesFromContent(entries);
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
+}
+
+TEST_F(ConversationHandlerUnitTest, OnGetStagedEntriesFromContent) {
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  ASSERT_TRUE(conversation_handler_->IsAnyClientConnected());
+
+  EXPECT_CALL(client, OnConversationHistoryUpdate()).Times(2);
+  // Fill history with staged and non-staged entries.
+  SetupHistory({{"q1" /* text */, true /*from_brave_search_SERP */},
+                {"s1", "true"},
+                {"q2", false},
+                {"r1", false}});
+
+  std::vector<SearchQuerySummary> entries = {{"query", "summary"},
+                                             {"query2", "summary2"}};
+  conversation_handler_->OnGetStagedEntriesFromContent(entries);
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&client);
+
+  auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 6u);
+  EXPECT_FALSE(history[0]->from_brave_search_SERP);
+  EXPECT_EQ(history[0]->text, "q2");
+  EXPECT_FALSE(history[1]->from_brave_search_SERP);
+  EXPECT_EQ(history[1]->text, "r1");
+  EXPECT_TRUE(history[2]->from_brave_search_SERP);
+  EXPECT_EQ(history[2]->text, "query");
+  EXPECT_TRUE(history[3]->from_brave_search_SERP);
+  EXPECT_EQ(history[3]->text, "summary");
+  EXPECT_TRUE(history[4]->from_brave_search_SERP);
+  EXPECT_EQ(history[4]->text, "query2");
+  EXPECT_TRUE(history[5]->from_brave_search_SERP);
+  EXPECT_EQ(history[5]->text, "summary2");
+}
+
+TEST_F(ConversationHandlerUnitTest,
        MaybeFetchOrClearSearchQuerySummary_NotOptedIn) {
-  // Content will have staged entries, but we want to make sure that
-  // ConversationHandler won't ask for them when not opted-in yet.
+  // Staged entries could be retrieved before user opts in.
   SetAssociatedContentStagedEntries(/*empty=*/false);
-  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(0);
-  // Modifying whether page contents should be sent should trigger content
-  // staging.
+  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   // Don't get a false positive because no client is automatically connected.
+  // Connecting a client will trigger content staging.
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
-  conversation_handler_->SetShouldSendPageContents(false);
-  conversation_handler_->SetShouldSendPageContents(true);
   conversation_handler_->GetAssociatedContentInfo(base::BindLambdaForTesting(
       [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
         EXPECT_TRUE(should_send_page_contents);
@@ -1025,7 +1152,7 @@ TEST_F(ConversationHandlerUnitTest_OptedOut,
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(conversation_handler_.get());
 
-  EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
+  EXPECT_FALSE(conversation_handler_->GetConversationHistory().empty());
 }
 
 TEST_F(ConversationHandlerUnitTest,
@@ -1093,11 +1220,11 @@ TEST_F(ConversationHandlerUnitTest,
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 
-  // Verify that no re-fetch happens when new client connects
+  // Verify that fetch happens when another client connects.
   client.Disconnect();
   task_environment_.RunUntilIdle();
   EXPECT_FALSE(conversation_handler_->IsAnyClientConnected());
-  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(0);
+  EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   NiceMock<MockConversationHandlerClient> client2(conversation_handler_.get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
@@ -1184,6 +1311,37 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, GenerateQuestions) {
   testing::Mock::VerifyAndClearExpectations(engine);
 }
 
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       GeneratesQuestionsByDefault) {
+  EXPECT_EQ(4u, conversation_handler_->GetSuggestedQuestionsForTest().size());
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       SelectingDefaultQuestionSendsPrompt) {
+  conversation_handler_->SetSuggestedQuestionForTest("the thing",
+                                                     "do the thing!");
+  auto suggestions = conversation_handler_->GetSuggestedQuestionsForTest();
+  EXPECT_EQ(1u, suggestions.size());
+
+  // Mock engine response
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  base::RunLoop loop;
+  // The prompt should be submitted to the engine, not the title.
+  EXPECT_CALL(*engine,
+              GenerateAssistantResponse(false, StrEq(""), _, "do the thing!",
+                                        StrEq(""), _, _))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("the thing");
+  loop.Run();
+  testing::Mock::VerifyAndClearExpectations(engine);
+
+  // Suggestion should be removed
+  EXPECT_EQ(0u, conversation_handler_->GetSuggestedQuestionsForTest().size());
+}
+
 TEST_F(ConversationHandlerUnitTest, SelectedLanguage) {
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
@@ -1242,6 +1400,15 @@ TEST_F(ConversationHandlerUnitTest, SelectedLanguage) {
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+TEST_F(ConversationHandlerUnitTest, Destuctor) {
+  // Verify that the conversation handler cleans up the associated content
+  // object when it is destroyed.
+  EXPECT_CALL(*associated_content_, OnRelatedConversationDisassociated)
+      .Times(1);
+  conversation_handler_.reset();
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 }
 
 class PageContentRefineTest : public ConversationHandlerUnitTest,
@@ -1333,6 +1500,9 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
     conversation_handler_->PerformAssistantGeneration(
         test_case.prompt, test_case.page_content, false, "");
 
+    testing::Mock::VerifyAndClearExpectations(mock_engine);
+    testing::Mock::VerifyAndClearExpectations(mock_text_embedder);
+
     if (test_case.should_refine_page_content && IsPageContentRefineEnabled()) {
       const auto& conversation_history =
           conversation_handler_->GetConversationHistory();
@@ -1341,6 +1511,15 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
       EXPECT_TRUE(conversation_history.back()
                       ->events->back()
                       ->is_page_content_refine_event());
+
+      conversation_handler_->OnGetRefinedPageContent(
+          test_case.prompt, base::DoNothing(), base::DoNothing(),
+          test_case.page_content, false, base::ok("refined_page_content"));
+      EXPECT_FALSE(
+          base::ranges::any_of(conversation_history, [](const auto& turn) {
+            return !turn->events->empty() &&
+                   turn->events->back()->is_page_content_refine_event();
+          }));
     }
   }
 }

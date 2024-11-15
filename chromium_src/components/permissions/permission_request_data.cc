@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "components/permissions/permission_request_data.h"
+
 #include <optional>
 
 #include "components/permissions/permission_context_base.h"
-#include "components/permissions/permission_request_data.h"
 
 namespace permissions {
 
@@ -21,6 +22,8 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
       return RequestType::kBraveGoogleSignInPermission;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
       return RequestType::kBraveLocalhostAccessPermission;
+    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+      return RequestType::kBraveOpenAIChat;
     default:
       return ContentSettingsTypeToRequestTypeIfExists(content_settings_type);
   }

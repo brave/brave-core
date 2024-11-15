@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Icon from '@brave/leo/react/icon'
 
-import { RecurringContribution } from '../../lib/app_model'
+import { RecurringContribution } from '../../lib/app_state'
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { getCreatorIconSrc, getCreatorPlatformIcon } from '../../lib/creator_icon'

@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_DISCOVER_ACCOUNT_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_DISCOVER_ACCOUNT_TASK_H_
 
+#include <memory>
 #include <string>
+#include <utility>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
@@ -17,7 +19,6 @@
 namespace brave_wallet {
 
 class BitcoinWalletService;
-class KeyringService;
 class HDKey;
 
 struct DiscoveredBitcoinAccount {
@@ -37,7 +38,7 @@ class DiscoverAccountTaskBase {
   using DiscoverAccountCallback = base::OnceCallback<void(
       base::expected<DiscoveredBitcoinAccount, std::string>)>;
 
-  DiscoverAccountTaskBase(BitcoinWalletService* bitcoin_wallet_service,
+  DiscoverAccountTaskBase(BitcoinWalletService& bitcoin_wallet_service,
                           const std::string& network_id);
   virtual ~DiscoverAccountTaskBase();
 
@@ -57,21 +58,27 @@ class DiscoverAccountTaskBase {
   virtual mojom::BitcoinAddressPtr GetAddressById(
       const mojom::BitcoinKeyIdPtr& key_id) = 0;
 
-  bool MaybeQueueRequests(uint32_t state_index);
+  bool MaybeQueueRequests(bool receive_state);
 
   void WorkOnTask();
   void OnGetAddressStats(
+      bool receive_state,
       mojom::BitcoinAddressPtr address,
       base::expected<bitcoin_rpc::AddressStats, std::string> stats);
 
-  raw_ptr<BitcoinWalletService> bitcoin_wallet_service_;
-  raw_ptr<KeyringService> keyring_service_;
+  BitcoinWalletService& bitcoin_wallet_service() {
+    return *bitcoin_wallet_service_;
+  }
+
+ private:
+  State& GetState(bool receive_state);
+
+  const raw_ref<BitcoinWalletService> bitcoin_wallet_service_;
   std::string network_id_;
 
   uint32_t active_requests_ = 0;
-  // Indexed by 0 and 1 for receive and change addresses discovery states
-  // respectively.
-  State states_[2];
+  State receive_addresses_state_;
+  State change_addresses_state_;
   bool account_is_used_ = false;
   mojom::BitcoinBalancePtr balance_;
 
@@ -82,7 +89,7 @@ class DiscoverAccountTaskBase {
 
 class DiscoverWalletAccountTask : public DiscoverAccountTaskBase {
  public:
-  DiscoverWalletAccountTask(BitcoinWalletService* bitcoin_wallet_service,
+  DiscoverWalletAccountTask(BitcoinWalletService& bitcoin_wallet_service,
                             mojom::KeyringId keyring_id,
                             uint32_t account_index);
   ~DiscoverWalletAccountTask() override;
@@ -96,7 +103,7 @@ class DiscoverWalletAccountTask : public DiscoverAccountTaskBase {
 
 class DiscoverExtendedKeyAccountTask : public DiscoverAccountTaskBase {
  public:
-  DiscoverExtendedKeyAccountTask(BitcoinWalletService* bitcoin_wallet_service,
+  DiscoverExtendedKeyAccountTask(BitcoinWalletService& bitcoin_wallet_service,
                                  const std::string& network_id,
                                  const std::string& extended_key);
   ~DiscoverExtendedKeyAccountTask() override;

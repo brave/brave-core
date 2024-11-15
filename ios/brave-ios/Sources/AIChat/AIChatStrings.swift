@@ -601,6 +601,13 @@ extension Strings {
       value: "Subscription",
       comment: "The title for the header for subscription details"
     )
+    public static let advancedSettingsViewReceiptTitle = NSLocalizedString(
+      "aichat.advancedSettingsViewReceiptTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "View AppStore Receipt",
+      comment: "The title for the button that allows the user to view the AppStore Receipt"
+    )
     public static let appStoreErrorTitle = NSLocalizedString(
       "aichat.appStoreErrorTitle",
       tableName: "BraveLeo",
@@ -978,6 +985,24 @@ extension Strings {
         "Code example",
       comment:
         "The default title displayed above a code block when the language of the code is not known."
+    )
+    public static let leoDisabledMessageTitle = NSLocalizedString(
+      "aichat.leoDisabledMessageTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo Disabled",
+      comment:
+        "The title that shows in an alert when the Leo/AI-Chat feature is disabled."
+    )
+    public static let leoDisabledMessageDescription = NSLocalizedString(
+      "aichat.leoDisabledMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo is currently disabled via feature flags. To re-enable Leo, please visit brave://flags and enable it.",
+      comment:
+        "The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature."
     )
   }
 }

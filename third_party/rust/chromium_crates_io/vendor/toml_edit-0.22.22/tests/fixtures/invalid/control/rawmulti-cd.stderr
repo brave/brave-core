@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 24
+  |
+1 | rawmulti-cd   = '''null
+'''
+  |                        ^
+invalid multiline literal string

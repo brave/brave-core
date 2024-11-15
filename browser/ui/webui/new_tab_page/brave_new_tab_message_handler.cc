@@ -18,11 +18,11 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/search_engines/pref_names.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -86,6 +86,9 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  pref_data.Set("showBraveVPN", prefs->GetBoolean(kNewTabPageShowBraveVPN));
+#endif
   pref_data.Set(
       "showSearchBox",
       prefs->GetBoolean(brave_search_conversion::prefs::kShowNTPSearchBox));
@@ -98,17 +101,6 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set("searchSuggestionsEnabled",
                 prefs->GetBoolean(prefs::kSearchSuggestEnabled));
   return pref_data;
-}
-
-base::Value::Dict GetPrivatePropertiesDictionary(PrefService* prefs) {
-  base::Value::Dict private_data;
-  private_data.Set(
-      "useAlternativePrivateSearchEngine",
-      prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider));
-  private_data.Set(
-      "showAlternativePrivateSearchEngineToggle",
-      prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle));
-  return private_data;
 }
 
 // TODO(petemill): Move p3a to own NTP component so it can
@@ -200,18 +192,8 @@ void BraveNewTabMessageHandler::RegisterMessages() {
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetStats,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "getNewTabPagePrivateProperties",
-      base::BindRepeating(
-          &BraveNewTabMessageHandler::HandleGetPrivateProperties,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "getNewTabAdsData",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetNewTabAdsData,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "toggleAlternativePrivateSearchEngine",
-      base::BindRepeating(&BraveNewTabMessageHandler::
-                              HandleToggleAlternativeSearchEngineProvider,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "saveNewTabPagePref",
@@ -262,15 +244,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       kFingerprintingBlocked,
       base::BindRepeating(&BraveNewTabMessageHandler::OnStatsChanged,
                           base::Unretained(this)));
-
-  if (IsPrivateNewTab(profile_)) {
-    // Private New Tab Page preferences
-    pref_change_registrar_.Add(
-        kUseAlternativePrivateSearchEngineProvider,
-        base::BindRepeating(
-            &BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
-            base::Unretained(this)));
-  }
   // News
   pref_change_registrar_.Add(
       brave_news::prefs::kBraveNewsOptedIn,
@@ -329,6 +302,12 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       kNewTabPageShowBraveTalk,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  pref_change_registrar_.Add(
+      kNewTabPageShowBraveVPN,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+#endif
   pref_change_registrar_.Add(
       kNewTabPageHideAllWidgets,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
@@ -362,28 +341,11 @@ void BraveNewTabMessageHandler::HandleGetStats(const base::Value::List& args) {
   ResolveJavascriptCallback(args[0], data);
 }
 
-void BraveNewTabMessageHandler::HandleGetPrivateProperties(
-    const base::Value::List& args) {
-  AllowJavascript();
-  PrefService* prefs = profile_->GetPrefs();
-  auto data = GetPrivatePropertiesDictionary(prefs);
-  ResolveJavascriptCallback(args[0], data);
-}
-
 void BraveNewTabMessageHandler::HandleGetNewTabAdsData(
     const base::Value::List& args) {
   AllowJavascript();
 
   ResolveJavascriptCallback(args[0], GetAdsDataDictionary());
-}
-
-void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
-    const base::Value::List& args) {
-  // Alternative search related code will not be used.
-  // Cleanup "toggleAlternativePrivateSearchEngine" message handler when it's
-  // deleted from NTP Webui.
-  // https://github.com/brave/brave-browser/issues/23493
-  NOTREACHED_IN_MIGRATION();
 }
 
 void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
@@ -452,6 +414,10 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settings_key = kNewTabPageHideAllWidgets;
   } else if (settings_key_input == "showBraveTalk") {
     settings_key = kNewTabPageShowBraveTalk;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  } else if (settings_key_input == "showBraveVPN") {
+    settings_key = kNewTabPageShowBraveVPN;
+#endif
   } else if (settings_key_input == "showSearchBox") {
     settings_key = brave_search_conversion::prefs::kShowNTPSearchBox;
   } else if (settings_key_input == "promptEnableSearchSuggestions") {
@@ -554,9 +520,12 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
       data->FindString(ntp_background_images::kCreativeInstanceIDKey);
   const std::string* wallpaper_id =
       data->FindString(ntp_background_images::kWallpaperIDKey);
+  const std::string* campaign_id =
+      data->FindString(ntp_background_images::kCampaignIdKey);
   service->BrandedWallpaperWillBeDisplayed(
       wallpaper_id ? *wallpaper_id : "",
-      creative_instance_id ? *creative_instance_id : "");
+      creative_instance_id ? *creative_instance_id : "",
+      campaign_id ? *campaign_id : "");
 
   constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
   wallpaper.Set(kBrandedWallpaperKey, std::move(*data));
@@ -569,12 +538,6 @@ void BraveNewTabMessageHandler::HandleCustomizeClicked(
   p3a::RecordValueIfGreater<NTPCustomizeUsage>(
       NTPCustomizeUsage::kOpened, kCustomizeUsageHistogramName,
       kNTPCustomizeUsageStatus, g_browser_process->local_state());
-}
-
-void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {
-  PrefService* prefs = profile_->GetPrefs();
-  auto data = GetPrivatePropertiesDictionary(prefs);
-  FireWebUIListener("private-tab-data-updated", data);
 }
 
 void BraveNewTabMessageHandler::OnStatsChanged() {

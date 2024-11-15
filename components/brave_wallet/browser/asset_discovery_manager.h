@@ -31,7 +31,6 @@ class BraveWalletService;
 class JsonRpcService;
 class SimpleHashClient;
 class KeyringService;
-class NetworkManager;
 
 class AssetDiscoveryManager : public KeyringServiceObserverBase {
  public:
@@ -39,10 +38,10 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
   using APIRequestResult = api_request_helper::APIRequestResult;
   AssetDiscoveryManager(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      BraveWalletService* wallet_service,
-      JsonRpcService* json_rpc_service,
-      KeyringService* keyring_service,
-      SimpleHashClient* simple_hash_client,
+      BraveWalletService& wallet_service,
+      JsonRpcService& json_rpc_service,
+      KeyringService& keyring_service,
+      SimpleHashClient& simple_hash_client,
       PrefService* prefs);
 
   AssetDiscoveryManager(const AssetDiscoveryManager&) = delete;
@@ -85,11 +84,10 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
 
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   std::queue<std::unique_ptr<AssetDiscoveryTask>> queue_;
-  raw_ptr<BraveWalletService> wallet_service_;
-  raw_ptr<NetworkManager> network_manager_;
-  raw_ptr<JsonRpcService> json_rpc_service_;
-  raw_ptr<KeyringService> keyring_service_;
-  raw_ptr<SimpleHashClient> simple_hash_client_;
+  raw_ref<BraveWalletService> wallet_service_;
+  raw_ref<JsonRpcService> json_rpc_service_;
+  raw_ref<KeyringService> keyring_service_;
+  raw_ref<SimpleHashClient> simple_hash_client_;
   raw_ptr<PrefService> prefs_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};

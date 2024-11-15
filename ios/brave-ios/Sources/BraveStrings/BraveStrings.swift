@@ -4397,6 +4397,14 @@ extension Strings {
       comment:
         "A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field)."
     )
+
+    public static let reportBrokenContactMeDescription = NSLocalizedString(
+      "ReportBrokenContactMeDescription",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "If you provide contact info it will be stored for reporting broken sites in the future.",
+      comment: "Contact info storing description"
+    )
   }
 }
 
@@ -6120,6 +6128,156 @@ extension Strings {
         bundle: .module,
         value: "Key Usage",
         comment: "Title indicating what the private or public key can be used for."
+      )
+  }
+}
+
+// MARK: - StoreKit Receipt Viewer
+
+extension Strings {
+  public struct ReceiptViewer {
+    public static let vpnMonthlySubscriptionName =
+      NSLocalizedString(
+        "storekitReceiptViewer.vpnMonthlySubscriptionName",
+        bundle: .module,
+        value: "Brave VPN Monthly",
+        comment: "The title of the product subscription the user purchased (Monthly subscription)"
+      )
+
+    public static let vpnYearlySubscriptionName =
+      NSLocalizedString(
+        "storekitReceiptViewer.vpnYearlySubscriptionName",
+        bundle: .module,
+        value: "Brave VPN Yearly",
+        comment: "The title of the product subscription the user purchased (Yearly subscription)"
+      )
+
+    public static let leoMonthlySubscriptionName =
+      NSLocalizedString(
+        "storekitReceiptViewer.leoMonthlySubscriptionName",
+        bundle: .module,
+        value: "Brave Leo Monthly",
+        comment: "The title of the product subscription the user purchased (Monthly subscription)"
+      )
+
+    public static let leoYearlySubscriptionName =
+      NSLocalizedString(
+        "storekitReceiptViewer.leoYearlySubscriptionName",
+        bundle: .module,
+        value: "Brave Leo Yearly",
+        comment: "The title of the product subscription the user purchased (Yearly subscription)"
+      )
+
+    public static let receiptViewerTitle =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptViewerTitle",
+        bundle: .module,
+        value: "App Store Receipt",
+        comment: "The title of the screen that shows the App Store Receipt"
+      )
+
+    public static let noReceiptFoundTitle =
+      NSLocalizedString(
+        "storekitReceiptViewer.noReceiptFoundTitle",
+        bundle: .module,
+        value: "Sorry, no App Store receipts were found",
+        comment: "The error message when the App Store Receipt was not found in the Application Bundle"
+      )
+
+    public static let receiptLoadingErrorTitle =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptLoadingErrorTitle",
+        bundle: .module,
+        value: "Sorry, the App Store receipt could not be loaded",
+        comment: "The error message when the App Store Receipt was found in the Application Bundle, but could not be loaded"
+      )
+
+    public static let applicationVersionTitle =
+      NSLocalizedString(
+        "storekitReceiptViewer.applicationVersionTitle",
+        bundle: .module,
+        value: "Application Version",
+        comment: "The title of the label that shows the Application Version"
+      )
+
+    public static let receiptDateTitle =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptDateTitle",
+        bundle: .module,
+        value: "Receipt Date",
+        comment: "The title of the label that shows the date the receipt was created"
+      )
+
+    public static let receiptOrderIDTitle =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptOrderIDTitle",
+        bundle: .module,
+        value: "Order ID",
+        comment: "The title of the label that shows the Order ID of the user's purchase"
+      )
+
+    public static let receiptTransactionIDTitle =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptTransactionIDTitle",
+        bundle: .module,
+        value: "Transaction ID",
+        comment: "The title of the label that shows the Transaction ID of the user's purchase"
+      )
+
+    public static let receiptOriginalPurchaseDateTitle =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptOriginalPurchaseDateTitle",
+        bundle: .module,
+        value: "Original Purchase Date",
+        comment: "The title of the label that shows the date when the product subscription was first purchased"
+      )
+
+    public static let receiptPurchaseDate =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptPurchaseDate",
+        bundle: .module,
+        value: "Purchase Date",
+        comment: "The title of the label that shows the date when the product subscription was recently purchased or renewed"
+      )
+
+    public static let receiptExpirationDate =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptExpirationDate",
+        bundle: .module,
+        value: "Expiration Date",
+        comment: "The title of the label that shows the date when the product subscription expired"
+      )
+
+    public static let receiptCancellationDate =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptCancellationDate",
+        bundle: .module,
+        value: "Cancellation Date",
+        comment: "The title of the label that shows the date when the product subscription was cancelled"
+      )
+
+    public static let receiptInvalidDate =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptInvalidDate",
+        bundle: .module,
+        value: "N/A",
+        comment: "The title of the label that shows any invalid date - Not Available or N/A for short is displayed"
+      )
+
+    public static let receiptViewerLoadingTitle =
+      NSLocalizedString(
+        "storekitReceiptViewer.receiptViewerLoadingTitle",
+        bundle: .module,
+        value: "Loading Please Wait...",
+        comment: "The title of the label that shows when the Receipt Viewer is still loading resources and subscription information"
+      )
+
+    public static let shareReceiptTitle =
+      NSLocalizedString(
+        "storekitReceiptViewer.shareReceiptTitle",
+        bundle: .module,
+        value: "Share Receipt",
+        comment: "The title of the button that shows a system action sheet, to share the receipt"
       )
   }
 }
@@ -8774,6 +8932,22 @@ extension Strings {
     bundle: .module,
     value: "Block Cookie Consent Notices",
     comment: "A title for a setting that enables cookie consent notices"
+  )
+
+  public static let braveShieldsSaveContactInfo = NSLocalizedString(
+    "BraveShieldsSaveContactInfo",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Store contact information for future broken site reports",
+    comment: "Shields panel toggle label that would save webcompat report contact info data when enabled."
+  )
+
+  public static let braveShieldsSaveContactInfoDescription = NSLocalizedString(
+    "BraveShieldsSaveContactInfoDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "If you provide contact info it will be stored for future reports",
+    comment: "Description for shields panel toggle label that would save webcompat report contact info data when enabled."
   )
 }
 

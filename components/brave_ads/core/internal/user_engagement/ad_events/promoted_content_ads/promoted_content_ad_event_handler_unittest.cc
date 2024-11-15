@@ -9,10 +9,8 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
@@ -22,18 +20,6 @@
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
-
-namespace {
-
-PromotedContentAdInfo BuildAndSaveAd() {
-  const CreativePromotedContentAdInfo creative_ad =
-      test::BuildCreativePromotedContentAd(
-          /*should_generate_random_uuids=*/false);
-  database::SaveCreativePromotedContentAds({creative_ad});
-  return BuildPromotedContentAd(creative_ad);
-}
-
-}  // namespace
 
 class BraveAdsPromotedContentAdEventHandlerTest : public test::TestBase {
  protected:
@@ -64,7 +50,8 @@ class BraveAdsPromotedContentAdEventHandlerTest : public test::TestBase {
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
   test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   // Act & Assert
@@ -78,7 +65,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireViewedEvent) {
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasAlreadyViewed) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
@@ -96,7 +84,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireViewedEventIfAdPlacementWasNotServed) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
@@ -111,7 +100,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
@@ -125,7 +115,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest, FireClickedEvent) {
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasAlreadyClicked) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression,
                             mojom::ConfirmationType::kClicked});
@@ -142,7 +133,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireClickedEventIfAdPlacementWasNotServed) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFirePromotedContentAdEvent(
@@ -182,7 +174,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventForMissingCreativeInstanceId) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
@@ -198,7 +191,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerHour.Get() - 1);
 
@@ -215,7 +209,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerHour.Get());
 
@@ -235,7 +230,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerDay.Get() - 1);
 
@@ -252,7 +248,8 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
 TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
        DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
-  const PromotedContentAdInfo ad = BuildAndSaveAd();
+  const PromotedContentAdInfo ad = test::BuildAndSavePromotedContentAd(
+      /*should_generate_random_uuids=*/false);
   test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumPromotedContentAdsPerDay.Get());
 

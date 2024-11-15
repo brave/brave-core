@@ -12,10 +12,7 @@ assert(!is_android)
 brave_grit("brave_theme_resources") {
   source = "brave_theme_resources.grd"
   defines = chrome_grit_defines
-  defines += [
-    "enable_ai_chat=$enable_ai_chat",
-    "enable_playlist_webui=$enable_playlist_webui",
-  ]
+  defines += [ "enable_playlist_webui=$enable_playlist_webui" ]
   outputs = [
     "grit/brave_theme_resources.h",
     "grit/brave_theme_resources_map.cc",

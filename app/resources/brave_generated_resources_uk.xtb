@@ -113,6 +113,7 @@
 <translation id="8722651357687610395">Зробити Brave типовим браузером</translation>
 <translation id="2370739752330685659">Можливо, пізніше</translation>
 <translation id="5100490448228945668">Відхиліть пошукову конверсію Brave, натисніть Enter, щоб вилучити цю пропозицію</translation>
+<translation id="6213208892248046484">Перемкнути на Пошук Brave</translation>
 <translation id="9194637241566114638">Допоможіть покращити <ph name="SEARCH_NAME"/>, надсилаючи анонімні дані про використання. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Пошук Brave</translation>
 <translation id="8184318863960255706">Докладніше</translation>
@@ -501,6 +502,9 @@
 <translation id="7181706637590665047">Не дозволяти доступ до ресурсів localhost</translation>
 <translation id="1336116824874668514">Доступ до ресурсів localhost заборонено</translation>
 <translation id="1485435696620658073">Доступ до ресурсів localhost дозволено</translation>
+<translation id="5794692721727586076">Чат із ШІ Leo</translation>
+<translation id="8115153008662981040">Сайти можуть просити відкрити чат із ШІ Leo</translation>
+<translation id="1145070115730668595">Заборонити сайту відкривати чат із ШІ Leo</translation>
 <translation id="6414370348346025511">Стандартний захист увімкнено.</translation>
 <translation id="5565355416171743213">Почати синхронізацію</translation>
 <translation id="4332558599726753990">Налаштування синхронізації</translation>
@@ -573,7 +577,7 @@
 <translation id="3128251601544028053">Коли ви вводите запит у панелі адреси чи полі пошуку, Brave надсилає його до типової пошукової системи, щоб отримати кращі пропозиції. Ця функція недоступна в приватних вікнах.</translation>
 <translation id="6285118765755298263">Індексувати інші пошукові системи</translation>
 <translation id="919715748352669592">Автоматичне індексування вебсайтів, що відповідають специфікації OpenSearch.</translation>
-<translation id="842628013524824194">Звичайне вікно – пошукова система в панелі адреси</translation>
+<translation id="9195748375338942941">Звичайне вікно – пошукова система в панелі адреси.</translation>
 <translation id="5324939009884545145">Приватне вікно – пошукова система в панелі адреси</translation>
 <translation id="6864914031231797928">Дозволити вхід через Google для розширень</translation>
 <translation id="7878791177459550035">Медіароутер забезпечує можливість трансляції в браузері.</translation>

@@ -86,7 +86,8 @@ void SafetyNetCheckRunner::jobFinished(SafetyNetCheck* finished_job) {
   if (it != jobs_.end()) {
     jobs_.erase(it);
   } else {
-    NOTREACHED_IN_MIGRATION();
+    DCHECK(false)
+        << "SafetyNetCheck code is obsolete and should not be called anymore";
   }
 }
 

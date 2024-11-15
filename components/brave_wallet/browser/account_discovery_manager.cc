@@ -48,8 +48,8 @@ AccountDiscoveryManager::DiscoveryContext::DiscoveryContext(
 AccountDiscoveryManager::DiscoveryContext::~DiscoveryContext() = default;
 
 AccountDiscoveryManager::AccountDiscoveryManager(
-    JsonRpcService* rpc_service,
-    KeyringService* keyring_service,
+    JsonRpcService& rpc_service,
+    KeyringService& keyring_service,
     BitcoinWalletService* bitcoin_wallet_service)
     : json_rpc_service_(rpc_service),
       keyring_service_(keyring_service),
@@ -104,12 +104,6 @@ void AccountDiscoveryManager::AddDiscoveryAccount(
   auto addr = keyring_service_->GetDiscoveryAddress(
       context->keyring_id, context->discovery_account_index);
   if (!addr) {
-    NOTREACHED_IN_MIGRATION();
-    return;
-  }
-
-  if (!json_rpc_service_) {
-    CHECK_IS_TEST();
     return;
   }
 
@@ -137,7 +131,7 @@ void AccountDiscoveryManager::AddDiscoveryAccount(
                        weak_ptr_factory_.GetWeakPtr(), std::move(context)));
 
   } else {
-    NOTREACHED_IN_MIGRATION();
+    NOTREACHED() << context->coin_type;
   }
 }
 

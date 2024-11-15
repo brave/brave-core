@@ -1,0 +1,127 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.turn {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
+  letter-spacing: -0.1px;
+}
+
+.turnContainerMobile {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.turnContainerHighlight {
+  background: var(--leo-color-container-interactive);
+}
+
+.turnAI {
+  background-color: transparent;
+}
+
+.suggestedQuestionsBox {
+  padding: var(--leo-spacing-2xl);
+
+  leo-button {
+    --leo-button-padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  }
+}
+
+.questionsList {
+  --leo-button-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--leo-spacing-m);
+}
+
+.avatarContainer {
+  display: flex;
+  gap: var(--leo-spacing-m);
+  align-items: center;
+
+  span {
+    font: var(--leo-font-default-semibold);
+    color: var(--leo-color-text-tertiary);
+  }
+}
+
+.avatar {
+  --leo-icon-size: 18px;
+  width: 28px;
+  height: 28px;
+  background: var(--leo-color-container-highlight);
+  border-radius: 100px;
+  flex-shrink: 0;
+  color: var(--leo-color-icon-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarAI {
+  background: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);
+  color: white;
+}
+
+.message {
+  margin: 0;
+  width: 100%;
+}
+
+.humanMessageContent {
+  white-space: pre-wrap;
+}
+
+.feedbackFormPortal {
+  padding: 0 16px;
+}
+
+.siteTitleContainer {
+  margin-top: var(--leo-spacing-m);
+}
+
+.rightContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.turnHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.turnActions {
+  display: flex;
+  gap: 12px;
+}
+
+.editLabel {
+  display: flex;
+  height: 20px;
+  padding: 0px var(--leo-spacing-s);
+  align-items: center;
+  gap: var(--leo-spacing-xs);
+  border-radius: var(--leo-radius-s);
+  background: var(--leo-color-neutral-20);
+}
+
+.editLabelText {
+  color: var(---leo-color-neutral-60);
+  text-transform: uppercase;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 10px;
+}

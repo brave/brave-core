@@ -13,7 +13,7 @@ namespace permissions {
 PermissionLifetimeOption::PermissionLifetimeOption(
     std::u16string label,
     std::optional<base::TimeDelta> lifetime)
-    : label(std::move(label)), lifetime(std::move(lifetime)) {}
+    : label(std::move(label)), lifetime(lifetime) {}
 
 PermissionLifetimeOption::PermissionLifetimeOption(
     const PermissionLifetimeOption&) = default;

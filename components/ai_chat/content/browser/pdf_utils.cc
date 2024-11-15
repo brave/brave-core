@@ -5,13 +5,23 @@
 
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 
+#include <optional>
+#include <string>
+#include <string_view>
+#include <vector>
+
+#include "base/functional/function_ref.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/strcat.h"
 #include "components/strings/grit/components_strings.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
 #include "pdf/buildflags.h"
 #include "services/strings/grit/services_strings.h"
+#include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/accessibility/ax_node.h"
+#include "ui/accessibility/ax_tree_id.h"
 #include "ui/accessibility/ax_tree_manager.h"
 #include "ui/base/l10n/l10n_util.h"
 

@@ -139,6 +139,7 @@ export interface ParsedTransaction
   // Solana Specific
   isAssociatedTokenAccountCreation: boolean
   hasSystemProgramAssignInstruction: boolean
+  zcashMemo: number[] | undefined
 }
 
 export type ParsedTransactionWithoutFiatValues = Omit<
@@ -1449,7 +1450,8 @@ export const getTransactionFiatValues = ({
             contractAddress: '',
             chainId: txNetwork.chainId,
             coin: txNetwork.coin,
-            coingeckoId: ''
+            coingeckoId: '',
+            isShielded: false
           }
         })
       : Amount.empty()
@@ -1558,7 +1560,8 @@ export const getTransactionFiatValues = ({
           contractAddress: '',
           chainId: txNetwork.chainId,
           coin: txNetwork.coin,
-          coingeckoId: ''
+          coingeckoId: '',
+          isShielded: false
         }
       })
     : Amount.empty()
@@ -1743,7 +1746,8 @@ export const parseTransactionWithoutPrices = ({
     weiTransferredValue,
     formattedSendCurrencyTotal,
     isAssociatedTokenAccountCreation: isAssociatedTokenAccountCreationTx(tx),
-    hasSystemProgramAssignInstruction: hasSystemProgramAssignInstruction(tx)
+    hasSystemProgramAssignInstruction: hasSystemProgramAssignInstruction(tx),
+    zcashMemo: tx.txDataUnion.zecTxData?.memo ?? undefined
   }
 }
 
@@ -1769,7 +1773,8 @@ export const parseTransactionWithPrices = ({
         symbol: transactionNetwork.symbol,
         contractAddress: '',
         chainId: transactionNetwork.chainId,
-        coingeckoId: ''
+        coingeckoId: '',
+        isShielded: false
       }).format()
     : ''
 
@@ -1806,7 +1811,8 @@ export const parseTransactionWithPrices = ({
       token,
       txNetwork: transactionNetwork,
       transferredValueWei: weiTransferredValue
-    })
+    }),
+    zcashMemo: tx.txDataUnion.zecTxData?.memo ?? undefined
   }
 }
 

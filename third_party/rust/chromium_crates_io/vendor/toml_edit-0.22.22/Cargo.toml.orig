@@ -1,0 +1,83 @@
+[package]
+name = "toml_edit"
+version = "0.22.22"
+keywords = ["encoding", "toml"]
+categories = ["encoding", "parser-implementations", "parsing", "config"]
+description = "Yet another format-preserving TOML parser."
+authors = ["Andronik Ordian <write@reusable.software>", "Ed Page <eopage@gmail.com>"]
+autotests = false
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+include.workspace = true
+
+[package.metadata.docs.rs]
+features = ["serde"]
+rustdoc-args = ["--cfg", "docsrs"]
+
+[package.metadata.release]
+tag-name = "v{{version}}"
+pre-release-replacements = [
+  {file="CHANGELOG.md", search="Unreleased", replace="{{version}}", min=1},
+  {file="CHANGELOG.md", search="\\.\\.\\.HEAD", replace="...{{tag_name}}", exactly=1},
+  {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}", min=1},
+  {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n## [Unreleased] - ReleaseDate\n", exactly=1},
+  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: https://github.com/toml-rs/toml/compare/{{tag_name}}...HEAD", exactly=1},
+]
+
+[features]
+default = ["parse", "display"]
+parse = ["dep:winnow"]
+display = []
+perf = ["dep:kstring"]
+serde = ["dep:serde", "toml_datetime/serde", "dep:serde_spanned"]
+# Provide a method disable_recursion_limit to parse arbitrarily deep structures
+# without any consideration for overflowing the stack. Additionally you will
+# need to be careful around other recursive operations on the parsed result
+# which may overflow the stack after deserialization has completed, including,
+# but not limited to, Display and Debug and Drop impls.
+unbounded = []
+
+[dependencies]
+indexmap = { version = "2.3.0", features = ["std"] }
+winnow = { version = "0.6.18", optional = true }
+serde = { version = "1.0.145", optional = true }
+kstring = { version = "2.0.0", features = ["max_inline"], optional = true }
+toml_datetime = { version = "0.6.8", path = "../toml_datetime" }
+serde_spanned = { version = "0.6.7", path = "../serde_spanned", features = ["serde"], optional = true }
+
+[dev-dependencies]
+serde_json = "1.0.116"
+toml-test-harness = "0.4.8"
+toml-test-data = "1.11.0"
+libtest-mimic = "0.7.2"
+snapbox = "0.6.0"
+proptest = "1.5.0"
+
+[[test]]
+name = "testsuite"
+required-features = ["parse", "display"]
+
+[[test]]
+name = "decoder_compliance"
+required-features = ["parse"]
+harness = false
+
+[[test]]
+name = "encoder_compliance"
+required-features = ["parse", "display"]
+harness = false
+
+[[test]]
+name = "invalid"
+required-features = ["parse", "display"]
+harness = false
+
+[[example]]
+name = "visit"
+required-features = ["parse", "display"]
+test = true
+
+[lints]
+workspace = true

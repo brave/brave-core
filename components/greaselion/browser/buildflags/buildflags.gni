@@ -1,5 +1,0 @@
-import("//extensions/buildflags/buildflags.gni")
-
-declare_args() {
-  enable_greaselion = enable_extensions
-}

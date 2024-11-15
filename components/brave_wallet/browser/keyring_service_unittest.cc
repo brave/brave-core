@@ -351,19 +351,19 @@ class KeyringServiceUnitTest : public testing::Test {
       mojom::KeyringId keyring_id) {
     EXPECT_CALL(*observer, WalletCreated()).Times(0);
 
-    for (size_t i = 0; i < imported_accounts.size(); ++i) {
-      auto account = ImportFilecoinAccount(service, imported_accounts[i].name,
-                                           imported_accounts[i].import_payload,
-                                           imported_accounts[i].network);
+    for (const auto& imported_account : imported_accounts) {
+      auto account = ImportFilecoinAccount(service, imported_account.name,
+                                           imported_account.import_payload,
+                                           imported_account.network);
       ASSERT_TRUE(account);
-      EXPECT_EQ(account->address, imported_accounts[i].address);
+      EXPECT_EQ(account->address, imported_account.address);
 
       auto payload = EncodePrivateKeyForExport(
           service, MakeAccountId(mojom::CoinType::FIL, keyring_id,
                                  mojom::AccountKind::kImported,
-                                 imported_accounts[i].address));
+                                 imported_account.address));
       EXPECT_TRUE(payload);
-      EXPECT_EQ(imported_accounts[i].import_payload, *payload);
+      EXPECT_EQ(imported_account.import_payload, *payload);
 
       EXPECT_EQ(account, service->GetSelectedWalletAccount());
     }
@@ -3105,8 +3105,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   KeyringService& service = *brave_wallet_service.keyring_service();
 
@@ -3147,8 +3148,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3189,8 +3191,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3233,8 +3236,9 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   bitcoin_test_rpc_server.SetUpBitcoinRpc(std::nullopt, std::nullopt);
   BitcoinHDKeyring keyring_84(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
@@ -3311,8 +3315,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3353,8 +3358,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
@@ -3417,8 +3423,9 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
-      brave_wallet_service.GetBitcoinWalletService());
+      *brave_wallet_service.GetBitcoinWalletService());
 
   std::vector<std::string> requested_addresses;
   bool first_restore = true;
@@ -3876,6 +3883,8 @@ TEST_F(KeyringServiceUnitTest, MigrateSelectedAccount) {
   EXPECT_EQ(all_accounts->selected_account, fil_acc);
 }
 
+#if BUILDFLAG(ENABLE_ORCHARD)
+
 // Generated using https://github.com/zcash/zcash-test-vectors
 TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {
   base::test::ScopedFeatureList feature_list;
@@ -3952,5 +3961,7 @@ TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes_ZCashDisabled) {
                               mojom::AccountKind::kDerived, 1),
       mojom::ZCashKeyId::New(1, 0 /* external */, 3)));
 }
+
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet

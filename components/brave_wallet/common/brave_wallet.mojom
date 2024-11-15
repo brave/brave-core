@@ -160,7 +160,7 @@ interface EthereumProvider {
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
   Enable() => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
-  Send(string method, mojo_base.mojom.Value params) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Send(string method, mojo_base.mojom.ListValue params) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
   SendAsync(mojo_base.mojom.Value input) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response, bool reject, string first_allowed_account, bool update_bind_js_properties);
 
   // Used for the connect event
@@ -455,67 +455,61 @@ union SwapQuoteUnion {
 
 union SwapTransactionUnion {
   string jupiter_transaction;
-  ZeroExQuote zero_ex_transaction;
+  ZeroExTransaction zero_ex_transaction;
   LiFiTransactionUnion lifi_transaction;
   SquidTransactionUnion squid_transaction;
 };
 
-struct ZeroExSource {
-  string name;
-  string proportion;
-};
-
 struct ZeroExFee {
-  string fee_type;
-  string fee_token;
-  string fee_amount;
-  string billing_type;
+  string amount;
+  string token;
+  string type;
 };
 
 struct ZeroExFees {
   ZeroExFee? zero_ex_fee;
 };
 
-struct ZeroExQuote {
-  string price;
-  string guaranteed_price; // Unused for price quote response
-  string to;   // Unused for price quote response
-  string data; // Unused for price quote response
-  string value;
+struct ZeroExTransaction {
+  string to;
+  string data;
   string gas;
-  string estimated_gas;
   string gas_price;
-  string protocol_fee;
-  string minimum_protocol_fee;
-  string buy_token_address;
-  string sell_token_address;
+  string value;
+};
+
+struct ZeroExRouteFill {
+  string from;
+  string to;
+  string source;
+  string proportion_bps;
+};
+
+struct ZeroExRoute {
+  array<ZeroExRouteFill> fills;
+};
+
+struct ZeroExQuote {
   string buy_amount;
-  string sell_amount;
-  string allowance_target;
-  string sell_token_to_eth_rate;
-  string buy_token_to_eth_rate;
-  string estimated_price_impact;
-  array<ZeroExSource> sources;
+  string buy_token;
   ZeroExFees fees;
-};
+  string gas;
+  string gas_price;
+  bool liquidity_available;
+  string min_buy_amount;
+  ZeroExRoute route;
+  string sell_amount;
+  string sell_token;
+  string total_network_fee;
 
-struct ZeroExValidationError {
-  string field;
-  string code;
-  string reason;
-};
-
-struct ZeroExGenericError {
-  string message;
+  // Custom field
+  string allowance_target;
 };
 
 struct ZeroExError {
-  string code;
-  string reason;
-  array<ZeroExValidationError> validation_errors;
-  ZeroExGenericError? values;
+  string name;
+  string message;
   bool is_insufficient_liquidity;
-  bool is_insufficient_allowance;
 };
 
 union SwapErrorUnion {
@@ -981,6 +975,7 @@ struct WalletInfo {
   bool is_z_cash_enabled;
   bool is_ankr_balances_feature_enabled;
   bool is_transaction_simulations_feature_enabled;
+  bool is_z_cash_shielded_transactions_enabled;
 };
 
 // Browser-side handler for common panel / page things
@@ -1017,6 +1012,7 @@ struct BlockchainToken {
   string coingecko_id = "";
   string chain_id;
   CoinType coin;
+  bool is_shielded = false; // Zcash only, marks whether asset belongs to the shielded pool.
 };
 
 struct AllowanceInfo {
@@ -1821,6 +1817,8 @@ struct ZCashKeyId {
 
 struct ZCashBalance {
   uint64 total_balance;
+  uint64 transparent_balance;
+  uint64 shielded_balance;
   map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
 };
 
@@ -1830,7 +1828,7 @@ struct ZCashAddress {
 };
 
 // A block when account was marked as shielded, so we can use this block
-// as a start point for scanning purposes
+// as a start point for scanning purposes.
 struct ZCashAccountShieldBirthday {
   uint64 value;
   string hash;
@@ -1841,16 +1839,20 @@ struct ZCashAccountInfo {
   ZCashAddress next_transparent_change_address;
   ZCashAccountShieldBirthday? account_shield_birthday;
   // Address that contains both transparent and orchard part
-  // Could be null if orchard is not enabled
+  // Could be null if orchard is not enabled.
   string? unified_address;
+  // Address that contains orchard part only
+  // Could be null if orchard is not enabled.
+  string? orchard_address;
 };
 
 enum ZCashAddressValidationResult {
   Unknown = 0,
-  Success = 1,
-  InvalidTransparent = 2,
-  InvalidUnified = 3,
-  NetworkMismatch = 4
+  ValidTransparent = 1,
+  ValidShielded = 2,
+  InvalidTransparent = 3,
+  InvalidUnified = 4,
+  NetworkMismatch = 5
 };
 
 struct ZCashShieldSyncStatus {
@@ -1958,8 +1960,9 @@ struct ZecTxOutput {
 };
 
 struct ZecTxData {
+  bool use_shielded_pool;
   string to;
-  // Memo field should exist only for shielded output
+  // Memo field should exist only for shielded output.
   array<uint8>? memo;
   uint64 amount;
   uint64 fee;
@@ -2269,12 +2272,18 @@ union EthSignTypedDataMeta {
 
 // https://eips.ethereum.org/EIPS/eip-712
 struct EthSignTypedData {
-  // message for display
-  string message;
-  string domain;
+  string address_param;
+
+  string message_json;  // sanitized json string
+  string domain_json;   // sanitized json string
+  string types_json;    // sanitized json string
+  string primary_type;
+
+  string? chain_id;  // chainId from domain
+
   // These fields are for hardware eip712 signing
-  string? domain_hash;
-  string? primary_hash;
+  array<uint8> domain_hash;
+  array<uint8> primary_hash;
 
   EthSignTypedDataMeta? meta;
 };

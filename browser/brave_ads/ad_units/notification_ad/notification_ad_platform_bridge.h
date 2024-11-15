@@ -33,7 +33,7 @@ class NotificationAdPlatformBridge {
   void CloseNotificationAd(const std::string& notification_id);
 
  private:
-  raw_ref<Profile> profile_;
+  const raw_ref<Profile> profile_;
 };
 
 }  // namespace brave_ads

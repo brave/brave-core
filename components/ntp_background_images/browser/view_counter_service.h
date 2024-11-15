@@ -16,7 +16,7 @@
 #include "base/scoped_observation.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/public/serving/new_tab_page_ad_serving_condition_matcher_util.h"
+#include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
@@ -84,7 +84,7 @@ class ViewCounterService : public KeyedService,
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaper() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaper();
-  std::optional<brave_ads::NewTabPageAdConditionMatchers> GetConditionMatchers(
+  std::optional<brave_ads::ConditionMatcherMap> GetConditionMatchers(
       const base::Value::Dict& dict);
   std::optional<base::Value::Dict>
   GetNextBrandedWallpaperWhichMatchesConditions();
@@ -97,7 +97,8 @@ class ViewCounterService : public KeyedService,
   std::string GetSuperReferralCode() const;
 
   void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id,
-                                       const std::string& creative_instance_id);
+                                       const std::string& creative_instance_id,
+                                       const std::string& campaign_id);
 
   NTPBackgroundImagesData* GetCurrentWallpaperData() const;
   // Gets the current data for branded wallpaper, if there

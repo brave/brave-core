@@ -12,8 +12,6 @@
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
-class PrefService;
-
 namespace base {
 class Value;
 }  // namespace base
@@ -26,9 +24,8 @@ class EthTxMeta;
 
 class EthTxStateManager : public TxStateManager {
  public:
-  EthTxStateManager(PrefService* prefs,
-                    TxStorageDelegate* delegate,
-                    AccountResolverDelegate* account_resolver_delegate);
+  EthTxStateManager(TxStorageDelegate& delegate,
+                    AccountResolverDelegate& account_resolver_delegate);
   ~EthTxStateManager() override;
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;

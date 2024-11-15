@@ -35,14 +35,17 @@ const char* TypeToString(NTPBackgroundPrefs::Type type) {
 
 NTPBackgroundPrefs::Type StringToType(const std::string& type_string) {
   // See class description for details.
-  if (type_string == "brave")
+  if (type_string == "brave") {
     return NTPBackgroundPrefs::Type::kBrave;
-  if (type_string == "custom_image")
+  }
+  if (type_string == "custom_image") {
     return NTPBackgroundPrefs::Type::kCustomImage;
-  if (type_string == "solid_color" || type_string == "color")
+  }
+  if (type_string == "solid_color" || type_string == "color") {
     return NTPBackgroundPrefs::Type::kColor;
+  }
 
-  NOTREACHED_IN_MIGRATION();
+  // This shouldn't occur normally, but is possible if prefs are corrupted.
   return NTPBackgroundPrefs::Type::kBrave;
 }
 
@@ -66,11 +69,13 @@ void NTPBackgroundPrefs::RegisterPref(
 }
 
 void NTPBackgroundPrefs::MigrateOldPref() {
-  if (!service_->HasPrefPath(kDeprecatedPrefName))
+  if (!service_->HasPrefPath(kDeprecatedPrefName)) {
     return;
+  }
 
-  if (service_->GetBoolean(kDeprecatedPrefName))
+  if (service_->GetBoolean(kDeprecatedPrefName)) {
     SetType(Type::kCustomImage);
+  }
 
   service_->ClearPref(kDeprecatedPrefName);
 }
@@ -82,8 +87,9 @@ NTPBackgroundPrefs::Type NTPBackgroundPrefs::GetType() const {
 }
 
 void NTPBackgroundPrefs::SetType(Type type) {
-  if (type == GetType())
+  if (type == GetType()) {
     return;
+  }
 
   ScopedDictPrefUpdate update(service_, kPrefName);
   update->Set(kTypeKey, TypeToString(type));
@@ -142,8 +148,9 @@ void NTPBackgroundPrefs::RemoveCustomImageFromList(
 std::vector<std::string> NTPBackgroundPrefs::GetCustomImageList() const {
   const auto& list = service_->GetList(kCustomImageListPrefName);
   std::vector<std::string> result;
-  for (const auto& item : list)
+  for (const auto& item : list) {
     result.push_back(item.GetString());
+  }
 
   return result;
 }

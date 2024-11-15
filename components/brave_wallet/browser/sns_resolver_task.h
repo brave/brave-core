@@ -207,7 +207,7 @@ class SnsResolverTaskContainer {
         return;
       }
     }
-    NOTREACHED_IN_MIGRATION();
+    NOTREACHED();
   }
 
   std::vector<ResultCallback> TaskDone(SnsResolverTask* task) {

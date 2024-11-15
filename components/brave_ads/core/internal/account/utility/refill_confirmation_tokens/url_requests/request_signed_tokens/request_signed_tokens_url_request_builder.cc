@@ -40,7 +40,7 @@ std::string BuildDigestHeaderValue(const std::string& body) {
 
 RequestSignedTokensUrlRequestBuilder::RequestSignedTokensUrlRequestBuilder(
     WalletInfo wallet,
-    std::vector<cbr::BlindedToken> blinded_tokens)
+    cbr::BlindedTokenList blinded_tokens)
     : wallet_(std::move(wallet)), blinded_tokens_(std::move(blinded_tokens)) {
   CHECK(wallet_.IsValid());
   CHECK(!blinded_tokens_.empty());

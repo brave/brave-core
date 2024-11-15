@@ -11,8 +11,7 @@
 #include "src/builtins/builtins-utils.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
 
-namespace v8 {
-namespace internal {
+namespace v8::internal {
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
 static std::string ToPageGraphArg(Isolate* isolate, Handle<Object> object) {
@@ -74,5 +73,4 @@ void ReportBuiltinCallAndResponse(Isolate* isolate,
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
 
-}  // namespace internal
-}  // namespace v8
+}  // namespace v8::internal

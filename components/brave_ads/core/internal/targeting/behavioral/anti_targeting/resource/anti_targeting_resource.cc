@@ -46,11 +46,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 AntiTargetingResource::AntiTargetingResource() {
-  GetAdsClient()->AddObserver(this);
+  GetAdsClient().AddObserver(this);
 }
 
 AntiTargetingResource::~AntiTargetingResource() {
-  GetAdsClient()->RemoveObserver(this);
+  GetAdsClient().RemoveObserver(this);
 }
 
 AntiTargetingSiteList AntiTargetingResource::GetSites(

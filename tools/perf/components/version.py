@@ -9,8 +9,6 @@ import json
 from typing import List
 import components.git_tools as git_tools
 
-from components.perf_test_utils import GetProcessOutput
-
 
 class ChromiumVersion:
   _version: List[int]

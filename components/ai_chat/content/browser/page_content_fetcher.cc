@@ -5,37 +5,61 @@
 
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 
+#include <array>
+#include <functional>
 #include <memory>
-#include <sstream>
+#include <optional>
+#include <ostream>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/containers/checked_iterators.h"
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
+#include "base/logging.h"
+#include "base/memory/weak_ptr.h"
 #include "base/strings/string_split.h"
+#include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/render_process_host.h"
-#include "content/public/browser/render_widget_host_view.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/base/load_flags.h"
+#include "net/base/net_errors.h"
+#include "net/cookies/site_for_cookies.h"
 #include "net/http/http_request_headers.h"
+#include "net/http/http_response_headers.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/data_decoder/public/cpp/safe_xml_parser.h"
+#include "services/data_decoder/public/mojom/xml_parser.mojom.h"
 #include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "url/gurl.h"
+#include "url/origin.h"
+#include "url/url_constants.h"
+
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "content/public/browser/render_widget_host_view.h"
+#endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 
 namespace ai_chat {
 
@@ -135,9 +159,20 @@ class PageContentFetcherInternal {
     content_extractor_->GetSearchSummarizerKey(std::move(callback));
   }
 
-  void StartGithub(
-      GURL patch_url,
-      FetchPageContentCallback callback) {
+  void GetOpenAIChatButtonNonce(
+      mojo::Remote<mojom::PageContentExtractor> content_extractor,
+      mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
+    content_extractor_ = std::move(content_extractor);
+    if (!content_extractor_) {
+      DeleteSelf();
+      return;
+    }
+    content_extractor_.set_disconnect_handler(base::BindOnce(
+        &PageContentFetcherInternal::DeleteSelf, base::Unretained(this)));
+    content_extractor_->GetOpenAIChatButtonNonce(std::move(callback));
+  }
+
+  void StartGithub(GURL patch_url, FetchPageContentCallback callback) {
     auto request = std::make_unique<network::ResourceRequest>();
     request->url = patch_url;
     request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
@@ -458,6 +493,18 @@ void PageContentFetcher::GetSearchSummarizerKey(
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
   fetcher->GetSearchSummarizerKey(std::move(extractor), std::move(callback));
+}
+
+void PageContentFetcher::GetOpenAIChatButtonNonce(
+    mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
+  auto* primary_rfh = web_contents_->GetPrimaryMainFrame();
+  DCHECK(primary_rfh->IsRenderFrameLive());
+
+  auto* fetcher = new PageContentFetcherInternal(nullptr);
+  mojo::Remote<mojom::PageContentExtractor> extractor;
+  primary_rfh->GetRemoteInterfaces()->GetInterface(
+      extractor.BindNewPipeAndPassReceiver());
+  fetcher->GetOpenAIChatButtonNonce(std::move(extractor), std::move(callback));
 }
 
 }  // namespace ai_chat

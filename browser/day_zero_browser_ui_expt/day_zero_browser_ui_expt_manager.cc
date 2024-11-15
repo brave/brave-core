@@ -11,12 +11,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/day_zero_browser_ui_expt/pref_names.h"
-#include "brave/components/brave_news/common/locales_helper.h"
-#include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -117,18 +112,6 @@ void DayZeroBrowserUIExptManager::OnProfileManagerDestroying() {
 
 void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
   VLOG(2) << __func__ << " Update prefs for day zero expt.";
-
-  auto* prefs = profile->GetPrefs();
-  prefs->SetDefaultPrefValue(kNewTabPageShowRewards, base::Value(false));
-  prefs->SetDefaultPrefValue(kNewTabPageShowBraveTalk, base::Value(false));
-  prefs->SetDefaultPrefValue(kShowWalletIconOnToolbar, base::Value(false));
-  prefs->SetDefaultPrefValue(ntp_background_images::prefs::
-                                 kNewTabPageShowSponsoredImagesBackgroundImage,
-                             base::Value(false));
-  prefs->SetDefaultPrefValue(brave_rewards::prefs::kShowLocationBarButton,
-                             base::Value(false));
-  prefs->SetDefaultPrefValue(brave_news::prefs::kNewTabPageShowToday,
-                             base::Value(false));
 #if BUILDFLAG(IS_ANDROID)
   Java_DayZeroHelper_setDayZeroExptAndroid(
       base::android::AttachCurrentThread(), false);
@@ -137,19 +120,6 @@ void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
 
 void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
   VLOG(2) << __func__ << " Update prefs for day zero expt.";
-
-  auto* prefs = profile->GetPrefs();
-  prefs->SetDefaultPrefValue(kNewTabPageShowRewards, base::Value(true));
-  prefs->SetDefaultPrefValue(kNewTabPageShowBraveTalk, base::Value(true));
-  prefs->SetDefaultPrefValue(kShowWalletIconOnToolbar, base::Value(true));
-  prefs->SetDefaultPrefValue(ntp_background_images::prefs::
-                                 kNewTabPageShowSponsoredImagesBackgroundImage,
-                             base::Value(true));
-  prefs->SetDefaultPrefValue(brave_rewards::prefs::kShowLocationBarButton,
-                             base::Value(true));
-  prefs->SetDefaultPrefValue(
-      brave_news::prefs::kNewTabPageShowToday,
-      base::Value(brave_news::IsUserInDefaultEnabledLocale()));
 #if BUILDFLAG(IS_ANDROID)
   Java_DayZeroHelper_setDayZeroExptAndroid(
       base::android::AttachCurrentThread(), true);

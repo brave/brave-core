@@ -6,12 +6,16 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_TAB_HELPER_H_
 
+#include <cstdint>
 #include <memory>
-#include <optional>
 #include <string>
+#include <string_view>
+#include <utility>
 
+#include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -23,13 +27,33 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+#include "url/gurl.h"
+
+namespace favicon {
+class FaviconDriver;
+}  // namespace favicon
+namespace gfx {
+class Image;
+}  // namespace gfx
+namespace mojo {
+template <typename T>
+class PendingAssociatedReceiver;
+}  // namespace mojo
+namespace ui {
+struct AXUpdatesAndEvents;
+}  // namespace ui
 
 namespace content {
 class ScopedAccessibilityMode;
+class NavigationEntry;
+class RenderFrameHost;
+class WebContents;
+struct LoadCommittedDetails;
 }
 
 class AIChatUIBrowserTest;
 class UpstreamPDFIntegratoinTest;
+
 namespace ai_chat {
 class AIChatMetrics;
 
@@ -74,6 +98,12 @@ class AIChatTabHelper : public content::WebContentsObserver,
     // Attempts to find a search summarizer key for the page.
     virtual void GetSearchSummarizerKey(
         GetSearchSummarizerKeyCallback callback) = 0;
+
+    // Fetches the nonce for the OpenLeo button from the page HTML and validate
+    // if it matches the href URL and the passed in nonce.
+    virtual void GetOpenAIChatButtonNonce(
+        mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback
+            callback) = 0;
   };
 
   AIChatTabHelper(const AIChatTabHelper&) = delete;
@@ -96,6 +126,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // mojom::PageContentExtractorHost
   void OnInterceptedPageContentChanged() override;
+
+  void GetOpenAIChatButtonNonce(
+      mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback);
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -156,6 +189,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void MaybeSameDocumentIsNewPage();
 
   void GetSearchSummarizerKey(GetSearchSummarizerKeyCallback callback) override;
+
+  bool HasOpenAIChatPermission() const override;
 
   void OnFetchPageContentComplete(GetPageContentCallback callback,
                                   std::string content,

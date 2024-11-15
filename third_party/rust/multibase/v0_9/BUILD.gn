@@ -1,7 +1,6 @@
-# Copyright (c) 2024 The Brave Authors. All rights reserved.
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at https://mozilla.org/MPL/2.0/.
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
 
 # @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
 # tools/crates/gnrt.
@@ -40,5 +39,4 @@ cargo_crate("lib") {
     "//brave/third_party/rust/data_encoding/v2:lib",
     "//brave/third_party/rust/data_encoding_macro/v0_1:lib",
   ]
-  features = [ "std" ]
 }

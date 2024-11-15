@@ -36,7 +36,6 @@ public class RateUtils {
 
     private static final String PREF_RATE = "rate";
     private static final String PREF_NEXT_RATE_DATE = "next_rate_date";
-    private static final String PREF_NEXT_APP_OPEN_COUNT = "next_app_open_count";
     private static final String PREF_ADDED_BOOKMARK_COUNT = "added_bookmark_count";
 
     private static final String PREF_LAST_SESSION_SHOWN = "last_session_shown";

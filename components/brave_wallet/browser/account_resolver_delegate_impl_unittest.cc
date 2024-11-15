@@ -49,7 +49,7 @@ class AccountResolverDelegateImplUnitTest : public testing::Test {
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
 
     resolver_ =
-        std::make_unique<AccountResolverDelegateImpl>(keyring_service_.get());
+        std::make_unique<AccountResolverDelegateImpl>(*keyring_service_);
   }
 
   ~AccountResolverDelegateImplUnitTest() override = default;

@@ -15,18 +15,18 @@ inline constexpr char kClearFavicon[] = "clear";
 
 inline constexpr char kIgnorePublisherBlob[] = "ignore";
 
-const uint64_t kReconcileInterval =
+inline constexpr uint64_t kReconcileInterval =
     30 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
-const uint64_t kPromotionRefreshInterval =
+inline constexpr uint64_t kPromotionRefreshInterval =
     base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
-const uint64_t kPendingContributionExpirationInterval =
+inline constexpr uint64_t kPendingContributionExpirationInterval =
     90 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
-const double kVotePrice = 0.25;
+inline constexpr double kVotePrice = 0.25;
 
-const int kMinVisitTime = 8;
+inline constexpr int kMinVisitTime = 8;
 
 }  // namespace constant
 }  // namespace brave_rewards::internal

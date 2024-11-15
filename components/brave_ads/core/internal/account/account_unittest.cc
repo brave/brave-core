@@ -54,7 +54,7 @@ class BraveAdsAccountTest : public test::TestBase {
     test::TestBase::TearDown();
   }
 
-  raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;
+  raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;  // Not owned.
 
   AccountObserverMock account_observer_mock_;
 };
@@ -217,7 +217,7 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   EXPECT_CALL(account_observer_mock_,
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
-                  test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
+                  test::kCreativeInstanceId, test::kSegment, test::kValue,
                   mojom::AdType::kNotificationAd,
                   mojom::ConfirmationType::kViewedImpression,
                   /*reconciled_at*/ std::nullopt)));
@@ -251,7 +251,7 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   EXPECT_CALL(account_observer_mock_,
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
-                  test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
+                  test::kCreativeInstanceId, test::kSegment, test::kValue,
                   mojom::AdType::kNotificationAd,
                   mojom::ConfirmationType::kViewedImpression,
                   /*reconciled_at*/ std::nullopt)));
@@ -330,7 +330,7 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
   EXPECT_CALL(account_observer_mock_,
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
-                  test::kCreativeInstanceId, test::kSegment, /*value*/ 1.0,
+                  test::kCreativeInstanceId, test::kSegment, test::kValue,
                   mojom::AdType::kNotificationAd,
                   mojom::ConfirmationType::kViewedImpression,
                   /*reconciled_at*/ std::nullopt)));

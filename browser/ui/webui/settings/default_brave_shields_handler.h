@@ -48,6 +48,7 @@ class DefaultBraveShieldsHandler
   void IsFirstPartyCosmeticFilteringEnabled(const base::Value::List& args);
   void SetCookieControlType(const base::Value::List& args);
   void GetCookieControlType(const base::Value::List& args);
+  void GetHideBlockAllCookieFlag(const base::Value::List& args);
   void SetFingerprintingControlType(const base::Value::List& args);
   void GetFingerprintingControlType(const base::Value::List& args);
   void SetFingerprintingBlockEnabled(const base::Value::List& args);
@@ -58,6 +59,10 @@ class DefaultBraveShieldsHandler
   void GetNoScriptControlType(const base::Value::List& args);
   void SetForgetFirstPartyStorageEnabled(const base::Value::List& args);
   void GetForgetFirstPartyStorageEnabled(const base::Value::List& args);
+  void SetContactInfoSaveFlag(const base::Value::List& args);
+  void GetContactInfoSaveFlag(const base::Value::List& args);
+  void OnGetContactInfoSaveFlag(base::Value javascript_callback,
+                                const bool contact_info_save_flag);
 
   raw_ptr<Profile> profile_ = nullptr;
 
@@ -66,6 +71,7 @@ class DefaultBraveShieldsHandler
   base::ScopedObservation<content_settings::CookieSettings,
                           content_settings::CookieSettings::Observer>
       cookie_settings_observation_{this};
+  base::WeakPtrFactory<DefaultBraveShieldsHandler> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_DEFAULT_BRAVE_SHIELDS_HANDLER_H_

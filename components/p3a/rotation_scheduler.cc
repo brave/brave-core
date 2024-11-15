@@ -76,9 +76,8 @@ base::Time GetNextJsonRotationTime(MetricLogType log_type,
       return NextMonday(last_rotation);
     case MetricLogType::kExpress:
       return NextDay(last_rotation);
-    default:
-      NOTREACHED_IN_MIGRATION();
   }
+  NOTREACHED();
 }
 
 const char* GetJsonRotationTimestampPref(MetricLogType log_type) {
@@ -89,10 +88,8 @@ const char* GetJsonRotationTimestampPref(MetricLogType log_type) {
       return kLastTypicalJsonRotationTimeStampPref;
     case MetricLogType::kExpress:
       return kLastExpressJsonRotationTimeStampPref;
-    default:
-      NOTREACHED_IN_MIGRATION();
   }
-  return nullptr;
+  NOTREACHED();
 }
 
 const char* GetConstellationRotationTimestampPref(MetricLogType log_type) {
@@ -103,10 +100,8 @@ const char* GetConstellationRotationTimestampPref(MetricLogType log_type) {
       return kLastTypicalConstellationRotationTimeStampPref;
     case MetricLogType::kExpress:
       return kLastExpressConstellationRotationTimeStampPref;
-    default:
-      NOTREACHED_IN_MIGRATION();
   }
-  return nullptr;
+  NOTREACHED();
 }
 
 }  // namespace

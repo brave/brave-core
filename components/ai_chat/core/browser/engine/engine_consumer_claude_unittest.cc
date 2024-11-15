@@ -5,24 +5,27 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
 
-#include <memory>
 #include <optional>
 #include <string>
-#include <utility>
+#include <string_view>
+#include <type_traits>
 #include <vector>
 
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_remote_completion_client.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -118,8 +121,8 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
                     const std::vector<std::string>& stop_words,
                     EngineConsumer::GenerationCompletedCallback callback,
                     EngineConsumer::GenerationDataCallback data_callback) {
-        EXPECT_TRUE(base::StartsWith(prompt, prompt_before_time_and_date));
-        EXPECT_TRUE(base::EndsWith(prompt, prompt_after_time_and_date));
+        EXPECT_TRUE(prompt.starts_with(prompt_before_time_and_date));
+        EXPECT_TRUE(prompt.ends_with(prompt_after_time_and_date));
         std::move(callback).Run("");
       });
   {
@@ -191,8 +194,8 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
                     const std::vector<std::string>& stop_words,
                     EngineConsumer::GenerationCompletedCallback callback,
                     EngineConsumer::GenerationDataCallback data_callback) {
-        EXPECT_TRUE(base::StartsWith(prompt, prompt_before_time_and_date));
-        EXPECT_TRUE(base::EndsWith(prompt, prompt_after_time_and_date));
+        EXPECT_TRUE(prompt.starts_with(prompt_before_time_and_date));
+        EXPECT_TRUE(prompt.ends_with(prompt_after_time_and_date));
         std::move(callback).Run("");
       });
 
@@ -222,35 +225,6 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
         EXPECT_NE(prompt.find("Which show is 'This is the way' from?"),
                   std::string::npos);
         EXPECT_NE(prompt.find("The Mandalorian."), std::string::npos);
-        std::move(callback).Run("");
-      });
-
-  engine_->GenerateAssistantResponse(
-      false, "This is my page.", GetHistoryWithModifiedReply(), "Who?", "",
-      base::DoNothing(),
-      base::BindLambdaForTesting(
-          [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
-  run_loop->Run();
-  testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
-
-  // Test with page content refine event.
-  {
-    mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-        mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-        std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-        std::nullopt, false);
-    entry->events->push_back(
-        mojom::ConversationEntryEvent::NewPageContentRefineEvent(
-            mojom::PageContentRefineEvent::New()));
-    history.push_back(std::move(entry));
-  }
-  run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
-      .WillOnce([](const std::string& prompt,
-                   const std::vector<std::string>& stop_words,
-                   EngineConsumer::GenerationCompletedCallback callback,
-                   EngineConsumer::GenerationDataCallback data_callback) {
         std::move(callback).Run("");
       });
 

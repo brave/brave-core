@@ -111,6 +111,8 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
       {"braveVpnSettingsTooltip", IDS_BRAVE_VPN_MAIN_PANEL_VPN_SETTINGS_TITLE},
       {"braveVpnSessionExpiredContent",
        IDS_BRAVE_VPN_MAIN_PANEL_SESSION_EXPIRED_PART_CONTENT},
+      {"braveVpnOutOfCredentials",
+       IDS_BRAVE_VPN_MAIN_PANEL_OUT_OF_CREDENTIALS_TITLE},
   };
 
   for (const auto& str : kLocalizedStrings) {

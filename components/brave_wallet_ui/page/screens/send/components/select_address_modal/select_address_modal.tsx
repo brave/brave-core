@@ -636,7 +636,9 @@ const processZCashAddress = (
   }
   if (
     zecAddressValidationResult !==
-    BraveWallet.ZCashAddressValidationResult.Success
+    BraveWallet.ZCashAddressValidationResult.ValidTransparent &&
+    zecAddressValidationResult !==
+    BraveWallet.ZCashAddressValidationResult.ValidShielded
   ) {
     return AddressMessageInfoIds.invalidAddressError
   }

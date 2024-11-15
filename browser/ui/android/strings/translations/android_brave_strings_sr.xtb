@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Добродошли у Brave</translation>
 <translation id="4117451092682672487">Поједноставлјена заштита приватности.</translation>
 <translation id="7909375417585209817">Када је Brave поставлјен као подразумеван прегледач, сваки линк на који кликнете отвара се са Brave заштитом приватности.</translation>
+<translation id="3737878115109582442">Dodajte vidžet za pretragu</translation>
+<translation id="6199413390010319240">Neka vam Brave bude nadohvat ruke da biste brže istraživali veb.</translation>
+<translation id="4338600611020922010">Dodajte na početni ekran</translation>
 <translation id="7370959926683925817">Блокирајте огласе. Сачувајте податке. Сваког дана.</translation>
 <translation id="7281027579943912834">Када је Brave подешен као подразумевани прегледач, свака веза коју додирнете добија Brave заштиту за блокиранје огласа. То важи за сваку страницу, видео и стрим.</translation>
 <translation id="5148943178722443958">Помозите нам да поболјшамо Brave.</translation>
@@ -483,7 +486,11 @@
 <translation id="9055546041146396417">Ако се веб страница чини поквареном, покушајте са исклјученим штитом.</translation>
 <translation id="1209739344687072997">Пријавите раскинуту везу са сајтом</translation>
 <translation id="8510478288840333677">Обавестите програмере апликације Браве да овај сајт не функционише исправно са Схиелдс-ом:</translation>
-<translation id="5429200298326665264">Напомена: Ова адреса сајта ће бити доставлјена са вашим бројем Браве верзије и ИП адресом (која нец́е бити сачувана).</translation>
+<translation id="1653405824851871276">Hvala vam što pomažete da Brave bude bolji za sve. Ovaj izveštaj će sadržati samo informacije koje su neophodne da bi se ovaj sajt popravio. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Saznajte više.</translation>
+<translation id="8740275226259417070">Ova stranica je stranica s greškom. Ona se ne može prijaviti kao pokvaren veb-sajt.</translation>
+<translation id="721949491455392748">Uključite snimak ekrana za trenutnu stranicu</translation>
+<translation id="8459191579769999214">Prikazati snimak ekrana</translation>
 <translation id="5299848999918506028">Хвала!</translation>
 <translation id="76550953340008122">Хвала што сте обавестили програмере апликације Браве да нешто није у реду са овим сајтом. Даћемо све од себе да то поправимо!</translation>
 <translation id="650318023204990401">Напредне контроле</translation>
@@ -662,6 +669,8 @@
 <translation id="6284218950354553099">Аутоматски шалји дневни сигнал провере одзива Браве-у</translation>
 <translation id="2181060149810222381">Овај приватни пинг омогућава Браве да процени активне кориснике.</translation>
 <translation id="6725413948756358325">Име налога</translation>
+<translation id="3240773103344793224">Zahteva se promena vlasništva nad nalogom</translation>
+<translation id="8041423758956015568">Ova transakcija ponovo dodeljuje vlasništvo naloga novom programu. Ova radnja je nepovratna i može dovesti do gubitka sredstava.</translation>
 <translation id="6062431965141524986">Можете креирати секундарни налог тако што ћете обавити увоз свог приватног клјуча.</translation>
 <translation id="3952797765659730604">Упишите, налепите или увезите стринг датотеку свог приватног клјуча или ЈСОН.</translation>
 <translation id="569068482611873351">Увоз...</translation>
@@ -728,7 +737,6 @@
 <translation id="5747552184818312860">Истиче</translation>
 <translation id="1656814355341174523">Управлјанје претплатама</translation>
 <translation id="1919008675977575793">Сервер</translation>
-<translation id="4812684235631257312">Хост</translation>
 <translation id="5646376287012673985">Локација</translation>
 <translation id="8375573361134671513">Ресетованје конфигурације</translation>
 <translation id="850405162932416400">ВПН техничка подршка</translation>
@@ -755,6 +763,8 @@
 <translation id="5431902940483264007">Optimalno</translation>
 <translation id="6527596624419285047">Koristite najbolji server koji je dostupan</translation>
 <translation id="6789157560111825412">Dostupni serveri</translation>
+<translation id="5823953367746119927">Region servera</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/> server</translation>
 <translation id="4397083831618200686">Изаберите ситуацију</translation>
 <translation id="6687228121145903051">Није могуће повезиванје на ВПН (друга грешка)</translation>
 <translation id="9184988385244077767">Нема везе са интернетом при повезиванју</translation>
@@ -1079,8 +1089,6 @@
 <translation id="622372328961630111">Аутоматски додајте NFT које поседујете у новчаник помоћу API треће стране. <ph name="BEGIN_LINK_1"/>Сазнајте више.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Налог табеле за траженје адреса:</translation>
 <translation id="7659483790930268440">Индекс табеле за траженје адреса:</translation>
-<translation id="4932733599132424254">Датум</translation>
-<translation id="346505172740911461">Тржишна цена</translation>
 <translation id="5494920125229734069">Избор свих ставки</translation>
 <translation id="6129027151000961048">Лав</translation>
 <translation id="8613144770663526433">Пријавите се са Браве новчаником</translation>
@@ -1095,6 +1103,8 @@
 <translation id="6165101586663336913">Ресетованје асистента Леа ће захтевати од вас да се одлучите за коришћенје Леа у будућности и такође ће обрисати историју ћасканја. Брисанјем историје ћасканја избрисаћете све ваше претходне разговоре са Леом. Ова раднја се не може опозвати.</translation>
 <translation id="3692772534525889713">Повежите своју Плаy Сторе куповину са својим Браве налогом како бисте користили Браве Лео на другим уређајима.</translation>
 <translation id="73236265316873967">Лео Премиум</translation>
+<translation id="1028627582482425924">Godinu dana</translation>
+<translation id="2985392169397572983">NAJBOLJA VREDNOST</translation>
 <translation id="1166682575529520472">Месечно</translation>
 <translation id="451189393813405346">Питајте Леа</translation>
 <translation id="7322560193401221004">Запамтити овај положај датотеке за репродукованје</translation>
@@ -1163,7 +1173,7 @@
 <translation id="2389665228467129817">Ћаскати дуже</translation>
 <translation id="4314705522985583059">Добијте већи лимит брзине за дуже разговоре.</translation>
 <translation id="6365289557497555234">Све претплате се аутоматски обнавлјају, али се могу отказати у било које време пре обнавлјанја.</translation>
-<translation id="6637015365469044269">Надоградити сада.</translation>
+<translation id="5543505256451301851">Isprobajte 7 dana besplatno</translation>
 <translation id="614530507403667291">Подразумевани модел за нове разговоре</translation>
 <translation id="4071849832011229600">Подразумевани модел</translation>
 <translation id="4185473179105062442">Примајте БАТ директно на крипто адресу за самостално вођенје рачуна</translation>

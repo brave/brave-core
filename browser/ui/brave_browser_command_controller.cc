@@ -12,13 +12,16 @@
 #include "base/feature_list.h"
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -41,12 +44,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/web_contents.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/browser/ai_chat/ai_chat_utils.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -233,10 +230,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForBraveVPN();
   UpdateCommandForPlaylist();
   UpdateCommandForWaybackMachine();
-#if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_change_registrar_.Init(browser_->profile()->GetPrefs());
-#endif
-#if BUILDFLAG(ENABLE_AI_CHAT)
+
   UpdateCommandForAIChat();
   if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
     pref_change_registrar_.Add(
@@ -245,7 +240,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
             &BraveBrowserCommandController::UpdateCommandForAIChat,
             base::Unretained(this)));
   }
-#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(browser_->profile())) {
     pref_change_registrar_.Add(
@@ -280,6 +275,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_COMMANDER, commander::IsEnabled());
 #endif
 
+  UpdateCommandEnabled(IDC_SHOW_APPS_PAGE,
+                       !browser_->profile()->IsPrimaryOTRProfile());
+
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
@@ -311,6 +309,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandsForPin();
 
   UpdateCommandEnabled(IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY, true);
+  UpdateCommandEnabled(IDC_EXPORT_ALL_BOOKMARKS, true);
 
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
@@ -352,14 +351,15 @@ void BraveBrowserCommandController::UpdateCommandForSidebar() {
   }
 }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveBrowserCommandController::UpdateCommandForAIChat() {
   // AI Chat command implementation needs sidebar
-  bool command_enabled = (sidebar::CanUseSidebar(&*browser_) &&
-                          ai_chat::IsAllowedForContext(browser_->profile()));
-  UpdateCommandEnabled(IDC_TOGGLE_AI_CHAT, command_enabled);
+  bool allowed_for_context = ai_chat::IsAllowedForContext(browser_->profile());
+  UpdateCommandEnabled(IDC_TOGGLE_AI_CHAT, sidebar::CanUseSidebar(&*browser_) &&
+                                               allowed_for_context);
+  UpdateCommandEnabled(
+      IDC_OPEN_FULL_PAGE_CHAT,
+      ai_chat::features::IsAIChatHistoryEnabled() && allowed_for_context);
 }
-#endif
 
 void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -538,9 +538,10 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ShowBraveWallet(&*browser_);
       break;
     case IDC_TOGGLE_AI_CHAT:
-#if BUILDFLAG(ENABLE_AI_CHAT)
       brave::ToggleAIChat(&*browser_);
-#endif
+      break;
+    case IDC_OPEN_FULL_PAGE_CHAT:
+      brave::ShowFullpageChat(&*browser_);
       break;
     case IDC_SPEEDREADER_ICON_ONCLICK:
       brave::MaybeDistillAndShowSpeedreaderBubble(&*browser_);
@@ -607,7 +608,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
       brave::ShowPlaylistBubble(&*browser_);
 #else
-      NOTREACHED_IN_MIGRATION() << " This command shouldn't be enabled";
+      NOTREACHED() << " This command shouldn't be enabled";
 #endif
       break;
     case IDC_SHOW_WAYBACK_MACHINE_BUBBLE:
@@ -654,10 +655,16 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
       brave::ToggleAllBookmarksButtonVisibility(base::to_address(browser_));
       break;
+    case IDC_EXPORT_ALL_BOOKMARKS:
+      brave::ExportAllBookmarks(&*browser_);
+      break;
     case IDC_COMMANDER:
 #if BUILDFLAG(ENABLE_COMMANDER)
       brave::ToggleCommander(base::to_address(browser_));
 #endif
+      break;
+    case IDC_SHOW_APPS_PAGE:
+      brave::ShowAppsPage(&*browser_);
       break;
     case IDC_WINDOW_GROUP_UNGROUPED_TABS:
       brave::GroupUngroupedTabs(&*browser_);

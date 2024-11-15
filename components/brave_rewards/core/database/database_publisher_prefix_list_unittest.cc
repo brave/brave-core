@@ -86,8 +86,7 @@ TEST_F(RewardsDatabasePublisherPrefixListTest, Reset) {
     EXPECT_EQ(transaction->commands.size(), 2u);
     EXPECT_EQ(transaction->commands[0]->command,
               "DELETE FROM publisher_prefix_list");
-    EXPECT_TRUE(base::StartsWith(
-        transaction->commands[1]->command,
+    EXPECT_TRUE(transaction->commands[1]->command.starts_with(
         "INSERT OR REPLACE INTO publisher_prefix_list (hash_prefix) "
         "VALUES (x'00000000'),(x'00000001'),(x'00000002'),"));
   }

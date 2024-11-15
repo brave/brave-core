@@ -7,8 +7,7 @@
 
 #include "base/feature_override.h"
 
-namespace blink {
-namespace features {
+namespace blink::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     // Upgrade all mixed content
@@ -106,5 +105,4 @@ bool IsPrerender2Enabled() {
   return false;
 }
 
-}  // namespace features
-}  // namespace blink
+}  // namespace blink::features

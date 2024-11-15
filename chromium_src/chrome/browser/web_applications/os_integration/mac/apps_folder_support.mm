@@ -43,9 +43,8 @@ base::FilePath GetLocalizableBraveAppShortcutsSubdirName() {
       return base::FilePath(kBraveBrowserNightlyAppDirName);
     case version_info::Channel::UNKNOWN:
       return base::FilePath(kBraveBrowserDevelopmentAppDirName);
-    default:
-      NOTREACHED_IN_MIGRATION();
-      return base::FilePath(kBraveBrowserDevelopmentAppDirName);
   }
+
+  NOTREACHED() << "All possible channels are handled above.";
 }
 }  // namespace

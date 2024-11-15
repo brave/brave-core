@@ -13,5 +13,6 @@ import("sources.gni")
 # compile (etc.) from that directory.
 preprocess_if_expr("preprocess") {
   out_folder = "$root_gen_dir/chrome/browser/resources/extensions/preprocessed"
-  in_files = brave_extensions_local_ts_files + brave_extensions_local_html_files
+  in_files =
+      brave_extensions_local_ts_files + brave_extensions_local_html_css_files
 }

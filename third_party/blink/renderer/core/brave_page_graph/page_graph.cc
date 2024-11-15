@@ -849,7 +849,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
     const blink::ExceptionState* exception_state,
     const std::optional<blink::PageGraphValue>& result) {
   const std::string_view name_piece(name);
-  if (base::StartsWith(name_piece, "Document.")) {
+  if (name_piece.starts_with("Document.")) {
     if (name_piece == "Document.cookie.get") {
       RegisterStorageRead(execution_context,
                           String(*receiver_data.FindString("cookie_url")),
@@ -867,7 +867,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
                            brave_page_graph::StorageLocation::kCookie);
       return;
     }
-  } else if (base::StartsWith(name_piece, "Storage.")) {
+  } else if (name_piece.starts_with("Storage.")) {
     String storage_type(*receiver_data.FindString("storage_type"));
     DCHECK(storage_type == "localStorage" || storage_type == "sessionStorage");
     const auto storage = storage_type == "localStorage"
@@ -1069,7 +1069,7 @@ void PageGraph::AddGraphItem(std::unique_ptr<GraphItem> graph_item) {
       edges_.push_back(graph_edge);
     }
   } else {
-    NOTREACHED_IN_MIGRATION();
+    NOTREACHED();
   }
 }
 
@@ -1313,9 +1313,9 @@ void PageGraph::RegisterDocumentNodeCreated(blink::Document* document) {
         .parser_node = AddNode<NodeParser>(),
         .extensions_node = AddNode<NodeExtensions>(),
     };
-    execution_context_nodes_.insert(execution_context, std::move(nodes));
     AddEdge<EdgeStructure>(nodes.parser_node, nodes.extensions_node);
     AddEdge<EdgeStructure>(nodes.parser_node, dom_root);
+    execution_context_nodes_.insert(execution_context, std::move(nodes));
   }
 
   if (owner) {

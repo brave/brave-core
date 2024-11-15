@@ -483,7 +483,9 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="9055546041146396417">Si ce site semble en panne, essayez de désactiver Shields.</translation>
 <translation id="1209739344687072997">Signaler une panne du site</translation>
 <translation id="8510478288840333677">Faites savoir aux développeurs de Brave que ce site ne fonctionne pas correctement avec les boucliers :</translation>
-<translation id="5429200298326665264">Remarque : cette adresse de site sera soumise avec votre numéro de version de Brave et votre adresse IP (qui ne sera pas enregistrée).</translation>
+<translation id="8759753423332885148">En savoir plus.</translation>
+<translation id="721949491455392748">Inclure une capture d'écran de la page actuelle</translation>
+<translation id="8459191579769999214">Afficher la capture d'écran</translation>
 <translation id="5299848999918506028">Merci !</translation>
 <translation id="76550953340008122">Merci d'avoir fait savoir aux développeurs de Brave qu'il y a quelque chose qui ne marche pas sur ce site. Nous ferons de notre mieux pour le réparer !</translation>
 <translation id="650318023204990401">Commandes avancées</translation>
@@ -728,7 +730,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="5747552184818312860">Date d'expiration</translation>
 <translation id="1656814355341174523">Gérer l'abonnement</translation>
 <translation id="1919008675977575793">Serveur</translation>
-<translation id="4812684235631257312">Hôte</translation>
 <translation id="5646376287012673985">Position</translation>
 <translation id="8375573361134671513">Réinitialiser la configuration</translation>
 <translation id="850405162932416400">Assistance VPN</translation>
@@ -1079,8 +1080,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="622372328961630111">Ajoutez automatiquement au portefeuille les NFT que vous détenez à l'aide d'API tierces. <ph name="BEGIN_LINK_1"/>Apprenez-en davantage.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Compte du tableau de la recherche d'adresses :</translation>
 <translation id="7659483790930268440">Index du tableau de la recherche d'adresses :</translation>
-<translation id="4932733599132424254">Date</translation>
-<translation id="346505172740911461">Prix du marché</translation>
 <translation id="5494920125229734069">Tout sélectionner</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Se connecter au portefeuille Brave</translation>
@@ -1095,6 +1094,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="6165101586663336913">La réinitialisation de l'assistant Leo requiert que vous choisissiez d'utiliser Leo à l'avenir et effacera également votre historique de chat. L'effacement de votre historique de chat supprimera toutes vos conversations précédentes avec Leo. Cette action est définitive.</translation>
 <translation id="3692772534525889713">Associez votre achat sur le Play Store à votre compte Brave pour utiliser Brave Leo sur d'autres appareils.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Un an</translation>
 <translation id="1166682575529520472">Mensuel</translation>
 <translation id="451189393813405346">Demander à Leo</translation>
 <translation id="7322560193401221004">Se souvenir de la position de lecture du fichier</translation>
@@ -1163,7 +1163,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="2389665228467129817">Discutez plus longtemps</translation>
 <translation id="4314705522985583059">Obtenez des limites de taux plus élevées pour des conversations plus longues.</translation>
 <translation id="6365289557497555234">Tous les abonnements sont à renouvellement automatique, mais il est possible\nd'annuler à tout moment avant le renouvellement.</translation>
-<translation id="6637015365469044269">Mettre à niveau</translation>
+<translation id="5543505256451301851">Essayer gratuitement pendant 7 jours</translation>
 <translation id="614530507403667291">Modèle par défaut pour les nouvelles conversations</translation>
 <translation id="4071849832011229600">Modèle par défaut</translation>
 <translation id="4185473179105062442">Recevez les BAT directement à une adresse de cryptomonnaie en garde autonome</translation>

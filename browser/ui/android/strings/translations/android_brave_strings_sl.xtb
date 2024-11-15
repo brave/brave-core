@@ -235,6 +235,9 @@
 <translation id="7207456302801184289">Dobrodošli v Brave</translation>
 <translation id="4117451092682672487">Zasebnost. Enostavno preprosto.</translation>
 <translation id="7909375417585209817">Če je privzeta možnost Brave, se vsaka povezava, ki jo tapnete, odpre z zaščito zasebnosti Brave.</translation>
+<translation id="3737878115109582442">Dodajte iskalni pripomoček</translation>
+<translation id="6199413390010319240">Imejte Brave na dosegu roke in še hitreje raziskujte splet.</translation>
+<translation id="4338600611020922010">Dodajanje na začetni zaslon</translation>
 <translation id="7370959926683925817">Blokirajte oglase. Shranite podatke. Vsak dan.</translation>
 <translation id="7281027579943912834">S privzeto funkcijo Brave vsaka povezava, ki se je dotaknete, prejme Braveovo zaščito za blokiranje oglasov. Vsaka stran, videoposnetek in prenos.</translation>
 <translation id="5148943178722443958">Pomagajte izboljšati Brave.</translation>
@@ -488,7 +491,11 @@ je v teku.
 <translation id="9055546041146396417">Če se spletno mesto zdi kot okvarjeno, poskusite dostop brez zaščite Shields.</translation>
 <translation id="1209739344687072997">Prijavite nedelujočo spletno stran</translation>
 <translation id="8510478288840333677">Obvestite razvijalce Brave o tem, da spletna stran ne deluje pravilno s ščiti:</translation>
-<translation id="5429200298326665264">Opomba: Naslov te spletne strani bo poslan skupaj s številko različice brskalnika Brave in vašim naslovom IP (ki ne bo shranjen).</translation>
+<translation id="1653405824851871276">Zahvaljujemo se vam, da ste pomagali izboljšati Brave za vse. To poročilo bo vsebovalo le informacije, ki jih potrebujemo za popravljanje tega spletnega mesta.<ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Več o tem</translation>
+<translation id="8740275226259417070">To je stran z napako. Ni je mogoče prijaviti kot nedelujočo stran.</translation>
+<translation id="721949491455392748">Vključite posnetek zaslona trenutne strani</translation>
+<translation id="8459191579769999214">Oglejte si posnetek zaslona</translation>
 <translation id="5299848999918506028">Hvala!</translation>
 <translation id="76550953340008122">Hvala, ker ste obvestili razvijalce Brave, da je s to spletno stranjo nekaj narobe. Potrudili se bomo, da to popravimo!</translation>
 <translation id="650318023204990401">Napredne nastavitve</translation>
@@ -669,6 +676,8 @@ je v teku.
 <translation id="6284218950354553099">Samodejno pošlji ping o dnevni uporabi Braveu</translation>
 <translation id="2181060149810222381">S tem zasebnim pingom lahko Brave oceni aktivne uporabnike.</translation>
 <translation id="6725413948756358325">Ime računa</translation>
+<translation id="3240773103344793224">Zahtevana sprememba lastništva računa</translation>
+<translation id="8041423758956015568">Ta transakcija bo lastništvo računa prenesla na nov program. To dejanje je nepreklicno in lahko povzroči izgubo sredstev.</translation>
 <translation id="6062431965141524986">Sekundarni račun lahko ustvarite z uvozom zasebnega ključa.</translation>
 <translation id="3952797765659730604">Vnesite, prilepite ali uvozite svojo datoteko niza zasebnega ključa ali JSON.</translation>
 <translation id="569068482611873351">Uvozi ...</translation>
@@ -735,7 +744,6 @@ je v teku.
 <translation id="5747552184818312860">Poteče</translation>
 <translation id="1656814355341174523">Urejanje naročnine</translation>
 <translation id="1919008675977575793">Strežnik</translation>
-<translation id="4812684235631257312">Gostitelj</translation>
 <translation id="5646376287012673985">Lokacija</translation>
 <translation id="8375573361134671513">Ponastavi konfiguracijo</translation>
 <translation id="850405162932416400">Podpora za VPN</translation>
@@ -762,6 +770,8 @@ je v teku.
 <translation id="5431902940483264007">Optimalno</translation>
 <translation id="6527596624419285047">Uporabite najboljši razpoložljivi strežnik</translation>
 <translation id="6789157560111825412">Razpoložljivi strežniki</translation>
+<translation id="5823953367746119927">Regija strežnika</translation>
+<translation id="6991535320595227154">Strežnik<ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Izberite težavo</translation>
 <translation id="6687228121145903051">Ne morem se povezati z VPN (druga vrsta napake)</translation>
 <translation id="9184988385244077767">Pri vzpostavljeni povezavi ni interneta</translation>
@@ -1086,8 +1096,6 @@ je v teku.
 <translation id="622372328961630111">Samodejno dodajte NFT-je, ki jih imate, v denarnico z uporabo API-jev tretjih oseb. <ph name="BEGIN_LINK_1"/>Več o tem.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Račun tabele za iskanje naslovov:</translation>
 <translation id="7659483790930268440">Indeks tabele za iskanje naslovov:</translation>
-<translation id="4932733599132424254">Datum</translation>
-<translation id="346505172740911461">Tržna cena</translation>
 <translation id="5494920125229734069">Izberi vse</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Prijavite se s Brave Wallet</translation>
@@ -1102,6 +1110,8 @@ je v teku.
 <translation id="6165101586663336913">Če ponastavite pomočnika Leo, se boste morali prijaviti za uporabo Lea v prihodnosti, počistili pa boste tudi svojo zgodovino klepetov. Če izbrišete zgodovino klepeta, boste izbrisali vse prejšnje pogovore z Leom. Tega dejanja ni mogoče razveljaviti.</translation>
 <translation id="3692772534525889713">Povežite nakup v Trgovini Play z računom Brave in uporabljajte Brave Leo v drugih napravah.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Eno leto</translation>
+<translation id="2985392169397572983">NAJBOLJŠA VREDNOST</translation>
 <translation id="1166682575529520472">Mesečno</translation>
 <translation id="451189393813405346">Vprašaj Lea</translation>
 <translation id="7322560193401221004">Zapomni si položaj predvajanja datoteke</translation>
@@ -1170,7 +1180,7 @@ je v teku.
 <translation id="2389665228467129817">Klepetajte dlje časa</translation>
 <translation id="4314705522985583059">Pridobite višje cenovne omejitve za daljše pogovore.</translation>
 <translation id="6365289557497555234">Vse naročnine se samodejno podaljšajo, vendar jih lahko kadar koli pred podaljšanjem prekličete.</translation>
-<translation id="6637015365469044269">Posodobite zdaj</translation>
+<translation id="5543505256451301851">Poskusite 7 dni brezplačno</translation>
 <translation id="614530507403667291">Privzeti model za nove pogovore</translation>
 <translation id="4071849832011229600">Privzet model</translation>
 <translation id="4185473179105062442">Prejemanje BAT neposredno na kriptografski naslov za lastno hrambo</translation>

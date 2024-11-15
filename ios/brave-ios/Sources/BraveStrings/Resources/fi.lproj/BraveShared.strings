@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "Vaihda Brave-suojauksen asetusta kaksoisnapauttamalla";
 
-/* Sync page title */
-"BraveSync" = "Synkronointi";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "Synkronoi sisäiset toiminnot";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "Ensi alkuun sinun on asennettava Brave synkronoitaville laitteille. Voit ketjuttaa ne käynnistämällä synkronointiketjun, jonka avulla voit yhdistää kaikki laitteesi toisiinsa turvallisesti.";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave Talk";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Sulje kaikki %i välilehteä";
 
-/* Code words input help */
-"CodeWordInputHelp" = "Kirjoita sinulle annettu synkronoinnin ketjukoodi alla olevaan lomakkeeseen.";
-
-/* Code words section title */
-"CodeWords" = "Koodisanat";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "Lataa";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Evästeet ja sivustotiedot";
-
-/* Copied action complete title */
-"Copied" = "Kopioitu";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "Kopioitu leikepöydälle!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Kopioi sovelluksen tiedot leikepöydälle.";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "Kopioi sovelluksen tiedot leikepöydälle.";
-
-/* Copy codewords title */
-"CopyToClipboard" = "Kopioi leikepöydälle";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "Kopioi tukitiedot";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "Poista";
 
-/* Sync device settings page title. */
-"Devices" = "Laitteet synkronisointiketjussa";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Laite %1$@ (%2$@)";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Ota Päivitä vetämällä -ominaisuus käyttöön";
-
-/* Sync enter code words */
-"EnterCodeWords" = "Syötä koodisanat";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "Kirjoita koodisanat alla";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Anna kansion nimi";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "Selaussuoja suojaa sivustoilta, joiden tiedetään olevan vaarallisia. [Lue lisää](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "Ota kamera käyttöön";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "Piilota linkkiesikats.";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Virheelliset tiedot maksupyynnössä";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "Virheellinen synkronointikoodi. Tarkista koodi ja yritä uudelleen.";
 
 /* History tableview section header */
 "LastMonth" = "Viime kuukausi";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "Uusi incognito-ikkuna";
 
-/* New sync code button title */
-"NewSyncCode" = "Käynnistä uusi synkronointiketju";
-
 /* New Tab title */
 "NewTab" = "Uusi välilehti";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "Hakutuloksia ei löytynyt.";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "Kirjoita kaikki sanat ja yritä uudelleen.";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "Ei tarpeeksi sanoja";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Ohjaa automaattisesti NPR-linkit niiden tekstipohjaiseen versioon (text.npr.org).";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "Sivun zoomaus";
-
-/* Sync pair device settings section title */
-"Pair" = "Muodosta laitepari";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "Salasanat";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "Yksityinen välilehti";
 
-/* QR Code section title */
-"QRCode" = "Viivakoodi";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Pikahakukoneet";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "Ohjaa Reddit-linkit automaattisesti vanhempaan käyttöliittymään (osoitteeseen old.reddit.com). Voit pakottaa käyttämään uutta Reddit-käyttöliittymää käyttämällä osoitetta new.reddit.com.";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "Poista";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "Poista suosikki";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "Tallenna kirjautumistiedot";
-
-/* Scan sync code title */
-"Scan" = "Etsi";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "Minulla on synkronointikoodi";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "Komentosarjat estetty";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Näytä kirjanmerkit";
 
-/* Show code words instead */
-"ShowCodeWords" = "Näytä sen sijaan koodisanat";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Näytä lataukset";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "Estä hälytykset";
 
-/* Sync settings section title */
-"Sync" = "Synkronointi";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Lisää uusi laite";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Lisää tietokone";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "Synkronointiketjun ruutukoodi";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "Siirry toisella mobiililaitteellasi Synkronointi-kohtaan Asetukset-paneelissa ja napauta Skannaa synkronointikoodi -painiketta. Skannaa alla oleva QR-koodi kamerasi avulla.\n\nKohtele koodia kuin salasanaa. Jos joku saa sen käsiinsä, hän voi lukea ja muokata synkronoituja tietojasi.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Anna synkronointikoodi";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Siirry laitteellasi Synkronointi-kohtaan Asetukset-paneelissa ja napauta ”%@”-painiketta. Syötä alla näkyvät synkronointiketjukoodin sanat.\n\nKohtele koodia kuin salasanaa. Jos joku saa sen käsiinsä, hän voi lukea ja muokata synkronoituja tietojasi.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Anna koodisanat";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Lisää tabletti tai puhelin";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "Kirjanmerkkien vienti onnistui";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "Kirjanmerkkien tuonti onnistui";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "Synkronoi laite";
+"sync.chainAccountDeletionErrorDescription" = "Synkronoi laite";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "Synkronoi laite";
+"sync.chainAccountDeletionErrorTitle" = "Synkronoi laite";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "Ei voitu liittyä tähän ketjuun. Tili poistettiin.";
+"sync.chainAlreadyDeletedAlertDescription" = "Ei voitu liittyä tähän ketjuun. Tili poistettiin.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "Synkronoi laite";
+"sync.chainAlreadyDeletedAlertTitle" = "Synkronoi laite";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Valitse laitteen tyyppi";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Valitse synkronoitavan kohdelaitteen tyyppi.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Koodi vanhentui. Luo uusi napauttamalla alla olevaa painiketta.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "min";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "tuntia";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "sekuntia";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Tämä väliaikainen koodi on voimassa seuraavat %@";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "tunti";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "sekunti";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Kirjoita sinulle annettu synkronoinnin ketjukoodi alla olevaan lomakkeeseen.";
+
+/* Code words section title */
+"sync.codeWords" = "Koodisanat";
+
+/* Computer device button title */
+"sync.computerDevice" = "Tietokone";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "Hallinnoi laitteiden välille synkronoitavaa tietoja. Nämä asetukset pätevät vain tähän laitteeseen.";
+"sync.configurationInformationText" = "Hallinnoi laitteiden välille synkronoitavaa tietoja. Nämä asetukset pätevät vain tähän laitteeseen.";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "Poista synkronointitili";
+/* Copied action complete title */
+"sync.copied" = "Kopioitu";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Kopioitu leikepöydälle!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Kopioi leikepöydälle";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "Poista synkronointitili";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "Poista synkronointitili";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Kun poistat tilisi, salatut tietosi poistetaan Brave-palvelimilta ja synkronointi poistetaan käytöstä kaikilta yhdistetyiltä laitteiltasi.";
+"sync.deleteAccountAlertDescriptionPart1" = "Kun poistat tilisi, salatut tietosi poistetaan Brave-palvelimilta ja synkronointi poistetaan käytöstä kaikilta yhdistetyiltä laitteiltasi.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "Paikallisesti tallennettuja tietoja ei kuitenkaan poisteta näiltä laitteilta.";
+"sync.deleteAccountAlertDescriptionPart2" = "Paikallisesti tallennettuja tietoja ei kuitenkaan poisteta näiltä laitteilta.";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Vaikuttaa siltä, että tämä koodi luotiin vanhaa Brave-versiota käyttävällä laitteella. Päivitä Brave uusimpaan versioon toisella laitteella ja luo uusi synkronointikoodi.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Jokin meni vikaan haettaessa laitteita synkronointiketjussa.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Laitteet synkronisointiketjussa";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Synkronointiketjussa olevat laitteet";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Syötä koodisanat";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Kirjoita koodisanat alla";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Tämä synkronointikoodi on vanhentunut. Luo uusi synkronointikoodi ja yritä uudelleen.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Pahoittelut, jokin meni vikaan";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Ota kamera käyttöön";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Synkronointohjelma on tällä hetkellä offline-tilassa tai se ei ole käytettävissä. Yritä myöhemmin uudelleen.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Synkronoinnin viestintävirhe";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Synkronoi sisäiset toiminnot";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Virheellinen synkronointikoodi. Tarkista koodi ja yritä uudelleen.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Huomautus: Varmista, että tunnistat jokaisen edellä olevassa luettelossa olevan laitteen. Synkronointiketjuun kuuluvat laitteet voivat vastaanottaa henkilötietoja, kuten salasanoja ja selaushistoriaa.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Laitteen vahvistus";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Olet saavuttanut synkronointiketjussa sallitun laitteiden enimmäismäärän (10). Jatka poistamalla laite.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Laiterajoitus";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Käynnistä uusi synkronointiketju";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Tarkista Internet-yhteys ja yritä uudelleen.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Synkronointiin ei saada yhteyttä";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Kirjoita kaikki sanat ja yritä uudelleen.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Ei tarpeeksi sanoja";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Muodosta laitepari";
+
+/* QR Code section title */
+"sync.qrCode" = "Viivakoodi";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Paikalliset laitetiedot säilyvät ennallaan kaikissa laitteissa. Muut tämän synkronointiketjun laitteet pysyvät synkronoituina. ";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Poistetaanko %@ synkronointiketjusta?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Poista";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Poista laite";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Laite";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Tällä hetkellä synkronoidut tiedot säilytetään, mutta kaikki Braven synkronoinnin välimuistitiedot poistetaan. Sinun on aloitettava uusi synkronointiketju, jotta voit synkronoida laitetiedot uudelleen.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Poista synkronointiketju";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "Laitteen %@ poistaminen poistaa synkronointiketjun.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Tämän laitteen irrottaminen tästä synkronointiketjusta ei poista aikaisemmin synkronoituja tietoja laitteesta.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Poistetaanko %@ synkronointiketjusta?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Poista tämä laite";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Tämä laite poistetaan synkronointiryhmästä, eikä se enää vastaanota tai lähetä synkronointitietoja. Kaikki olemassa olevat tiedot säilyvät laitteella.";
+
+/* Scan sync code title */
+"sync.scan" = "Etsi";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Minulla on synkronointikoodi";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Jos haluat lisätä laitteen synkronointiketjuun tai vaihtaa salasanan synkronointiasetusta, sinun on ensin asetettava laitteellesi salasana.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Aseta salasana";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "Alla oleva laiteluettelo kattaa kaikki synkronointiketjusi laitteet. Jokaista laitetta voidaan hallinnoida minkä tahansa muun laitteen kautta.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Synkronointiasetukset";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Näytä sen sijaan koodisanat";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Käytän kameraa…";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Tämä poisto on pysyvä, eikä tietoja voi palauttaa. Jos päätät, että aloitat synkronoinnin käytön uudelleen, sinun täytyy luoda uusi tili ja lisätä jokainen laite uudelleen yksitellen.";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "Jokin meni vikaan haettaessa laitteita synkronointiketjussa.";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Laitteet ja asetukset";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "Synkronointiketjussa olevat laitteet";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Poistetaanko tämä laite?";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "Huomautus: Varmista, että tunnistat jokaisen edellä olevassa luettelossa olevan laitteen. Synkronointiketjuun kuuluvat laitteet voivat vastaanottaa henkilötietoja, kuten salasanoja ja selaushistoriaa.";
+/* Sync settings section title */
+"sync.syncTitle" = "Synkronointi";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "Laitteen vahvistus";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Epäonnistui";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "Olet saavuttanut synkronointiketjussa sallitun laitteiden enimmäismäärän (10). Jatka poistamalla laite.";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Tabletti tai puhelin";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "Laiterajoitus";
+/* This device cell */
+"sync.thisDevice" = "Tämä laite";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "Jos haluat lisätä laitteen synkronointiketjuun tai vaihtaa salasanan synkronointiasetusta, sinun on ensin asetettava laitteellesi salasana.";
+/* Sync to existing device */
+"sync.toDevice" = "Synkronoi laitteeseen";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "Aseta salasana";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Avaa aiemmin synkronoitua laitetta käyttäen Braven asetukset ja siirry kohtaan Asetukset > Synkronoi. Valitse Lisää laite ja lue näytölle ilmestyvä koodi.";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "Synkronointiasetukset";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Tätä laitetta ei voi synkronoida";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "Lisää uusi laite";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Synkronointiryhmään ei voi liittyä. Tarkista kirjoitetut sanat ja yritä uudelleen.";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "Lisää tietokone";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Synkronointiketjun ruutukoodi";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "Siirry toisella mobiililaitteellasi Synkronointi-kohtaan Asetukset-paneelissa ja napauta Skannaa synkronointikoodi -painiketta. Skannaa alla oleva QR-koodi kamerasi avulla.\n\nKohtele koodia kuin salasanaa. Jos joku saa sen käsiinsä, hän voi lukea ja muokata synkronoituja tietojasi.";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "Anna synkronointikoodi";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Siirry laitteellasi Synkronointi-kohtaan Asetukset-paneelissa ja napauta ”%@”-painiketta. Syötä alla näkyvät synkronointiketjukoodin sanat.\n\nKohtele koodia kuin salasanaa. Jos joku saa sen käsiinsä, hän voi lukea ja muokata synkronoituja tietojasi.";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "Anna koodisanat";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "Lisää tabletti tai puhelin";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "Valitse laitteen tyyppi";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "Valitse synkronoitavan kohdelaitteen tyyppi.";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "Koodi vanhentui. Luo uusi napauttamalla alla olevaa painiketta.";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "Tämä väliaikainen koodi on voimassa seuraavat %@";
-
-/* Computer device button title */
-"SyncComputerDevice" = "Tietokone";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "Poista synkronointitili";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Yhdistäminen ei onnistu";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Vaikuttaa siltä, että tämä koodi luotiin vanhaa Brave-versiota käyttävällä laitteella. Päivitä Brave uusimpaan versioon toisella laitteella ja luo uusi synkronointikoodi.";
+"sync.validForTooLongError" = "Tämä koodi on virheellinen. Tarkista, että aika ja aikavyöhyke on määritetty oikein laitteessasi.";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "Laitteet ja asetukset";
+/* Sync settings welcome */
+"sync.welcome" = "Ensi alkuun sinun on asennettava Brave synkronoitaville laitteille. Voit ketjuttaa ne käynnistämällä synkronointiketjun, jonka avulla voit yhdistää kaikki laitteesi toisiinsa turvallisesti.";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "Tämä synkronointikoodi on vanhentunut. Luo uusi synkronointikoodi ja yritä uudelleen.";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "Pahoittelut, jokin meni vikaan";
+/* Word count title */
+"sync.wordCount" = "Sanamäärä: %i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "Tuodut kirjanmerkit";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "Synkronointohjelma on tällä hetkellä offline-tilassa tai se ei ole käytettävissä. Yritä myöhemmin uudelleen.";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Synkronoinnin viestintävirhe";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "Tarkista Internet-yhteys ja yritä uudelleen.";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "Synkronointiin ei saada yhteyttä";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Paikalliset laitetiedot säilyvät ennallaan kaikissa laitteissa. Muut tämän synkronointiketjun laitteet pysyvät synkronoituina. ";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "Poistetaanko %@ synkronointiketjusta?";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "Poista laite";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "Laite";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Tällä hetkellä synkronoidut tiedot säilytetään, mutta kaikki Braven synkronoinnin välimuistitiedot poistetaan. Sinun on aloitettava uusi synkronointiketju, jotta voit synkronoida laitetiedot uudelleen.";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "Poista synkronointiketju";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "Laitteen %@ poistaminen poistaa synkronointiketjun.";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "Tämän laitteen irrottaminen tästä synkronointiketjusta ei poista aikaisemmin synkronoituja tietoja laitteesta.";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "Poistetaanko %@ synkronointiketjusta?";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "Poista tämä laite";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "Poistetaanko tämä laite?";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "Tämä laite poistetaan synkronointiryhmästä, eikä se enää vastaanota tai lähetä synkronointitietoja. Kaikki olemassa olevat tiedot säilyvät laitteella.";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "Alla oleva laiteluettelo kattaa kaikki synkronointiketjusi laitteet. Jokaista laitetta voidaan hallinnoida minkä tahansa muun laitteen kautta.";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Käytän kameraa…";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "Tabletti tai puhelin";
-
-/* This device cell */
-"SyncThisDevice" = "Tämä laite";
-
-/* Sync to existing device */
-"SyncToDevice" = "Synkronoi laitteeseen";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Avaa aiemmin synkronoitua laitetta käyttäen Braven asetukset ja siirry kohtaan Asetukset > Synkronoi. Valitse Lisää laite ja lue näytölle ilmestyvä koodi.";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Tätä laitetta ei voi synkronoida";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "Epäonnistui";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "Tämä koodi on virheellinen. Tarkista, että aika ja aikavyöhyke on määritetty oikein laitteessasi.";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Sulje";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Otetaanko hakuehdotukset käyttöön?";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "Synkronointiryhmään ei voi liittyä. Tarkista kirjoitetut sanat ja yritä uudelleen.";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "Yhdistäminen ei onnistu";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "Poista lukitus";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Widgetit";
-
-/* Word count title */
-"WordCount" = "Sanamäärä: %i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "v.";

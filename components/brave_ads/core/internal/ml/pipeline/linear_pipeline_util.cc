@@ -79,7 +79,7 @@ std::optional<TransformationVector> LoadTransformations(
       }
       case linear_text_classification::flat::TransformationType::
           TransformationType_NONE: {
-        NOTREACHED_NORETURN();
+        NOTREACHED();
       }
     }
     if (!transformation_ptr) {
@@ -120,7 +120,7 @@ std::optional<PipelineInfo> LoadLinearPipeline(const uint8_t* const data,
     return std::nullopt;
   }
 
-  LinearModel linear_model(model);
+  LinearModel linear_model(*model);
   return PipelineInfo(locale->str(), std::move(*transformations),
                       std::move(linear_model), std::nullopt);
 }

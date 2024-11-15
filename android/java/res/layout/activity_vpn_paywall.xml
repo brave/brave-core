@@ -162,7 +162,7 @@
                             android:id="@+id/yearly_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/renew_monthly_save"
+                            android:text="@string/renews_annually"
                             android:textColor="@color/primitive_blurple_95"
                             android:textAlignment="textStart"
                             style="@style/DefaultRegular"/>

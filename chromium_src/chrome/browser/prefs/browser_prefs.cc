@@ -8,10 +8,9 @@
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/misc_metrics/uptime_monitor.h"
-#include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/brave_adaptive_captcha/prefs_util.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
@@ -40,7 +39,6 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #endif
 
@@ -80,10 +78,6 @@
 #include "brave/components/sidebar/browser/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/browser/model_service.h"
-#endif
-
 // This method should be periodically pruned of year+ old migrations.
 void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
                                  const base::FilePath& profile_path) {
@@ -101,12 +95,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   brave_sync::MigrateBraveSyncPrefs(profile_prefs);
 
 #if !BUILDFLAG(IS_ANDROID)
-  // Added 9/2020
-  new_tab_page::MigrateNewTabPagePrefs(profile_prefs);
-
-  // Added 06/2022
-  brave::MigrateSearchEngineProviderPrefs(profile_prefs);
-
   // Added 10/2022
   profile_prefs->ClearPref(kDefaultBrowserLaunchingCount);
 #endif
@@ -188,10 +176,8 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   brave_tabs::MigrateBraveProfilePrefs(profile_prefs);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   // Added 2024-04
   ai_chat::ModelService::MigrateProfilePrefs(profile_prefs);
-#endif
 
   // Added 2024-05
   ipfs::ClearDeprecatedIpfsPrefs(profile_prefs);

@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.shields;
 
-import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -31,6 +30,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -50,7 +50,6 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -74,7 +73,6 @@ import java.util.Map;
 public class BraveShieldsHandler
         implements BraveRewardsHelper.LargeIconReadyCallback, ConnectionErrorHandler {
     private static final String TAG = "BraveShieldsHandler";
-    private static final int URL_SPEC_MAX_LINES = 3;
     private static final String CHROME_ERROR = "chrome-error://";
 
     private static class BlockersInfo {
@@ -95,12 +93,10 @@ public class BraveShieldsHandler
 
     private Context mContext;
     private PopupWindow mPopupWindow;
-    private AnimatorSet mMenuItemEnterAnimator;
     private BraveShieldsMenuObserver mMenuObserver;
     private View mHardwareButtonMenuAnchor;
     private final Map<Integer, BlockersInfo> mTabsStat =
             Collections.synchronizedMap(new HashMap<Integer, BlockersInfo>());
-    private OnCheckedChangeListener mBraveShieldsAdsTrackingChangeListener;
     private SwitchCompat mBraveShieldsBlockingScriptsSwitch;
     private OnCheckedChangeListener mBraveShieldsBlockingScriptsChangeListener;
     private SwitchCompat mBraveShieldsForgetFirstPartyStorageSwitch;
@@ -118,8 +114,6 @@ public class BraveShieldsHandler
     private LinearLayout mReportBrokenSiteLayout;
     private LinearLayout mReportErrorPageLayout;
     private TextView mSiteBlockCounterText;
-    private TextView mShieldsDownText;
-    private TextView mSiteBrokenWarningText;
     private View mBottomDivider;
     private ImageView mToggleIcon;
 
@@ -133,6 +127,8 @@ public class BraveShieldsHandler
     private Profile mProfile;
     public boolean isDisconnectEntityLoaded;
     private CheckBox mCheckBoxScreenshot;
+    private EditText mEditTextDetails;
+    private EditText mEditTextContact;
     private View mDialogView;
     private Dialog mDialog;
     private ImageView mImageView;
@@ -155,6 +151,7 @@ public class BraveShieldsHandler
 
     /**
      * Constructs a BraveShieldsHandler object.
+     *
      * @param context Context that is using the BraveShieldsMenu.
      */
     public BraveShieldsHandler(Context context) {
@@ -239,16 +236,13 @@ public class BraveShieldsHandler
         // the keyboard, instead of overlapping the keyboard as it should.
         int displayHeight = mContext.getResources().getDisplayMetrics().heightPixels;
         int widthHeight = mContext.getResources().getDisplayMetrics().widthPixels;
-        int currentDisplayWidth = widthHeight;
 
         // In appcompat 23.2.1, DisplayMetrics are not updated after rotation change. This is a
         // workaround for it. See crbug.com/599048.
         // TODO(ianwen): Remove the rotation check after we roll to 23.3.0.
         if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-            currentDisplayWidth = Math.min(displayHeight, widthHeight);
             displayHeight = Math.max(displayHeight, widthHeight);
         } else if (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {
-            currentDisplayWidth = Math.max(displayHeight, widthHeight);
             displayHeight = Math.min(displayHeight, widthHeight);
         } else {
             assert false : "Rotation unexpected";
@@ -301,9 +295,8 @@ public class BraveShieldsHandler
             popupWindow.setElevation(20);
         }
         // mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.drawable.picture_frame));
-        //Set the location of the window on the screen
+        // Set the location of the window on the screen
         popupWindow.showAsDropDown(anchorView, 0, 0);
-        popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NOT_NEEDED);
         popupWindow.setAnimationStyle(R.style.EndIconMenuAnim);
 
         // Turn off window animations for low end devices, and on Android M, which has built-in menu
@@ -326,8 +319,15 @@ public class BraveShieldsHandler
     }
 
     private void initWebcompatReporterService() {
+        if (mWebcompatReporterHandler != null) {
+            mWebcompatReporterHandler.close();
+        }
+        Tab currentActiveTab = mIconFetcher.getTab();
+        final boolean isPrivateWindow =
+                currentActiveTab != null ? currentActiveTab.isIncognito() : false;
         mWebcompatReporterHandler =
-                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this);
+                WebcompatReporterServiceFactory.getInstance()
+                        .getWebcompatReporterHandler(this, isPrivateWindow);
     }
 
     public void updateUrlSpec(String urlSpec) {
@@ -424,8 +424,6 @@ public class BraveShieldsHandler
         mAboutLayout = mPopupView.findViewById(R.id.brave_shields_about_layout_id);
         mToggleLayout = mPopupView.findViewById(R.id.brave_shields_toggle_layout_id);
         mSiteBlockCounterText = mPopupView.findViewById(R.id.site_block_count_text);
-        mShieldsDownText = mPopupView.findViewById(R.id.shield_down_text);
-        mSiteBrokenWarningText = mPopupView.findViewById(R.id.site_broken_warning_text);
 
         mReportBrokenSiteLayout = mPopupView.findViewById(R.id.brave_shields_report_site_layout_id);
         mReportErrorPageLayout =
@@ -837,6 +835,8 @@ public class BraveShieldsHandler
                         mViewScreenshot.setVisibility(View.GONE);
                     }
                 });
+        mEditTextDetails = mReportBrokenSiteLayout.findViewById(R.id.details_info_text);
+        mEditTextContact = mReportBrokenSiteLayout.findViewById(R.id.contact_info_text);
 
         Button mSubmitButton = mReportBrokenSiteLayout.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(
@@ -850,6 +850,12 @@ public class BraveShieldsHandler
                         mThankYouLayout.setVisibility(View.VISIBLE);
                     }
                 });
+        mWebcompatReporterHandler.getContactInfo(
+                contactInfo -> {
+                    if (contactInfo != null && !contactInfo.isEmpty()) {
+                        mEditTextContact.setText(contactInfo);
+                    }
+                });
     }
 
     private ReportInfo getReportInfo(String siteUrl) {
@@ -858,6 +864,9 @@ public class BraveShieldsHandler
         reportInfo.braveVersion = BraveVersionConstants.VERSION;
         reportInfo.reportUrl = siteUrl;
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
+        reportInfo.details = mEditTextDetails.getText().toString();
+        reportInfo.contact = mEditTextContact.getText().toString();
+        Tab currentActiveTab = mIconFetcher.getTab();
         return reportInfo;
     }
 
@@ -949,17 +958,18 @@ public class BraveShieldsHandler
                 });
 
         LinearLayout mSiteBlockLayout = mMainLayout.findViewById(R.id.site_block_layout);
-        TextView mSiteBrokenWarningText = mMainLayout.findViewById(R.id.site_broken_warning_text);
+        TextView siteBrokenWarningText = mMainLayout.findViewById(R.id.site_broken_warning_text);
 
         TextView mShieldsUpText = mMainLayout.findViewById(R.id.shield_up_text);
-        String mBraveShieldsText = mContext.getResources().getString(R.string.brave_shields_onboarding_title);
+        String mBraveShieldsText =
+                mContext.getResources().getString(R.string.brave_shields_onboarding_title);
 
         if (isChecked) {
             mShieldDownText.setVisibility(View.GONE);
             mReportBrokenSiteButton.setVisibility(View.GONE);
 
             mSiteBlockLayout.setVisibility(View.VISIBLE);
-            mSiteBrokenWarningText.setVisibility(View.VISIBLE);
+            siteBrokenWarningText.setVisibility(View.VISIBLE);
             mToggleLayout.setVisibility(View.VISIBLE);
 
             String mUpText = mContext.getResources().getString(R.string.up);
@@ -971,7 +981,7 @@ public class BraveShieldsHandler
             mReportBrokenSiteButton.setVisibility(View.VISIBLE);
 
             mSiteBlockLayout.setVisibility(View.GONE);
-            mSiteBrokenWarningText.setVisibility(View.GONE);
+            siteBrokenWarningText.setVisibility(View.GONE);
             mToggleLayout.setVisibility(View.GONE);
             setToggleView(false);
 
@@ -983,8 +993,6 @@ public class BraveShieldsHandler
     }
 
     private void setUpViews() {
-        boolean isNightMode = GlobalNightModeStateProviderHolder.getInstance().isInNightMode();
-
         initViews();
 
         setUpMainLayout();

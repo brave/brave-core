@@ -103,7 +103,7 @@ void RedeemRewardConfirmation::CreateConfirmation(
   BLOG(6, UrlRequestToString(mojom_url_request));
   BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  GetAdsClient()->UrlRequest(
+  GetAdsClient().UrlRequest(
       std::move(mojom_url_request),
       base::BindOnce(&RedeemRewardConfirmation::CreateConfirmationCallback,
                      std::move(redeem_confirmation), confirmation));
@@ -145,7 +145,7 @@ void RedeemRewardConfirmation::FetchPaymentToken(
   BLOG(6, UrlRequestToString(mojom_url_request));
   BLOG(7, UrlRequestHeadersToString(mojom_url_request));
 
-  GetAdsClient()->UrlRequest(
+  GetAdsClient().UrlRequest(
       std::move(mojom_url_request),
       base::BindOnce(&RedeemRewardConfirmation::FetchPaymentTokenCallback,
                      std::move(redeem_confirmation), confirmation));
@@ -248,7 +248,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                         /*should_retry=*/true));
   }
 
-  const std::optional<std::vector<cbr::UnblindedToken>> unblinded_tokens =
+  const std::optional<cbr::UnblindedTokenList> unblinded_tokens =
       ParseVerifyAndUnblindTokens(
           *payment_token_dict, {confirmation.reward->token},
           {confirmation.reward->blinded_token}, *public_key);

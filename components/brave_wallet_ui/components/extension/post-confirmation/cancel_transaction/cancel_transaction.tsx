@@ -3,6 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
+
+// Actions
+import * as WalletPanelActions from '../../../../panel/actions/wallet_panel_actions'
 
 // Types
 import { SerializableTransactionInfo } from '../../../../constants/types'
@@ -37,6 +41,7 @@ export const CancelTransaction = (props: Props) => {
 
   // Hooks
   const [cancelTx] = useCancelTransactionMutation()
+  const dispatch = useDispatch()
 
   // Methods
   const onClickCancelTransaction = () => {
@@ -45,6 +50,7 @@ export const CancelTransaction = (props: Props) => {
       chainId: transaction.chainId,
       transactionId: transaction.id
     })
+    dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
   }
 
   return (

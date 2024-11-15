@@ -4,6 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import LeoButton from '@brave/leo/react/button'
+import { useDispatch } from 'react-redux'
+
+// Actions
+import * as WalletPanelActions from '../../../../panel/actions/wallet_panel_actions'
 
 // Hooks
 import {
@@ -61,7 +65,8 @@ export const TransactionFailedOrCanceled = (props: Props) => {
 
   // Hooks
   const [retryTx] = useRetryTransactionMutation()
-
+  const dispatch = useDispatch()
+  
   // Computed
   const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
   const isBridge = isBridgeTransaction(transaction)
@@ -96,6 +101,7 @@ export const TransactionFailedOrCanceled = (props: Props) => {
       chainId: transaction.chainId,
       transactionId: transaction.id
     })
+    dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
   }
 
   return (

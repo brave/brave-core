@@ -34,12 +34,16 @@ class WebcompatReporterServiceFactory : public BrowserStateKeyedServiceFactory {
 
  private:
   friend class base::NoDestructor<WebcompatReporterServiceFactory>;
+  void RegisterBrowserStatePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
 
   WebcompatReporterServiceFactory();
   ~WebcompatReporterServiceFactory() override;
 
   // BrowserStateKeyedServiceFactory implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
+      web::BrowserState* context) const override;
+  web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
 };
 

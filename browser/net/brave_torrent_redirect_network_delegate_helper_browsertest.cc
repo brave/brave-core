@@ -50,7 +50,7 @@ class BraveTorrentRedirectNetworkDelegateHelperTest
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       const net::test_server::HttpRequest& request) {
     auto relative_url = request.relative_url;
-    if (base::EndsWith(relative_url, ".torrent")) {
+    if (relative_url.ends_with(".torrent")) {
       auto response = std::make_unique<net::test_server::BasicHttpResponse>();
       response->set_code(net::HTTP_OK);
       response->set_content("a torrent file");

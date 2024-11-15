@@ -44,9 +44,7 @@ std::string GetDomain(const std::string& prefix,
     return prefix + ".brave.software";
   }
 
-  NOTREACHED_IN_MIGRATION();
-
-  return "";
+  NOTREACHED() << "Unsupported environment: " << environment;
 }
 
 std::string GetEnvironmentForDomain(const std::string& domain) {

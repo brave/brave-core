@@ -49,7 +49,6 @@ public class HlsUtils {
         if (playlistService == null) {
             return;
         }
-        String mediaPath = getHlsMediaFilePath(playlistItem);
         String hlsManifestFilePath = getHlsManifestFilePath(playlistItem);
         final String manifestUrl = getHlsResolutionManifestUrl(context, playlistItem);
         if (TextUtils.isEmpty(manifestUrl)) {
@@ -178,7 +177,6 @@ public class HlsUtils {
     private static String getPlaylistIdFromFile(PlaylistItem playlistItem) {
         String playlistId = "Default";
         if (playlistItem != null && playlistItem.cached) {
-            String playlistItemMediaPath = playlistItem.mediaPath.url;
             // For i.e.
             // "file:///data/user/0/com.brave.browser_nightly/app_chrome/Default/playlist/399C40F34AF31E593D0C48B9ECEEB4CA/media_file.m3u8"
             String[] paths = playlistItem.mediaPath.url.split(File.separator);

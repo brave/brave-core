@@ -125,20 +125,18 @@ BraveWalletService::BraveWalletService(
 
   if (IsBitcoinEnabled()) {
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
-        keyring_service(), profile_prefs, network_manager(),
-        url_loader_factory);
+        *keyring_service(), *network_manager(), url_loader_factory);
   }
 
   if (IsZCashEnabled()) {
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
         delegate_->GetWalletBaseDirectory().AppendASCII(kZCashDataFolderName),
-        keyring_service(), profile_prefs, network_manager(),
-        url_loader_factory);
+        *keyring_service(), network_manager(), url_loader_factory);
   }
 
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
-      keyring_service(), profile_prefs, delegate_->GetWalletBaseDirectory(),
+      *keyring_service(), profile_prefs, delegate_->GetWalletBaseDirectory(),
       base::SequencedTaskRunner::GetCurrentDefault());
 
   brave_wallet_p3a_ = std::make_unique<BraveWalletP3A>(
@@ -146,8 +144,8 @@ BraveWalletService::BraveWalletService(
 
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
   asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
-      url_loader_factory, this, json_rpc_service(), keyring_service(),
-      simple_hash_client_.get(), profile_prefs);
+      url_loader_factory, *this, *json_rpc_service(), *keyring_service(),
+      *simple_hash_client_, profile_prefs);
 
   delegate_->AddObserver(this);
 
@@ -1135,8 +1133,7 @@ void BraveWalletService::OnActiveOriginChanged(
 
 void BraveWalletService::WalletRestored() {
   account_discovery_manager_ = std::make_unique<AccountDiscoveryManager>(
-      json_rpc_service_.get(), keyring_service_.get(),
-      bitcoin_wallet_service_.get());
+      *json_rpc_service_, *keyring_service_, bitcoin_wallet_service_.get());
   account_discovery_manager_->StartDiscovery();
 }
 
@@ -1160,11 +1157,9 @@ void BraveWalletService::OnDiscoverAssetsCompleted(
 void BraveWalletService::OnGetImportInfo(
     const std::string& new_password,
     base::OnceCallback<void(bool, const std::optional<std::string>&)> callback,
-    bool result,
-    ImportInfo info,
-    ImportError error) {
-  if (!result) {
-    switch (error) {
+    base::expected<ImportInfo, ImportError> info) {
+  if (!info.has_value()) {
+    switch (info.error()) {
       case ImportError::kJsonError:
         std::move(callback).Run(false, l10n_util::GetStringUTF8(
                                            IDS_BRAVE_WALLET_IMPORT_JSON_ERROR));
@@ -1179,24 +1174,21 @@ void BraveWalletService::OnGetImportInfo(
             false,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
         break;
-      case ImportError::kNone:
-      default:
-        NOTREACHED_IN_MIGRATION();
     }
     return;
   }
 
   bool is_valid_mnemonic = keyring_service_->RestoreWalletSync(
-      info.mnemonic, new_password, info.is_legacy_crypto_wallets);
+      info->mnemonic, new_password, info->is_legacy_crypto_wallets);
   if (!is_valid_mnemonic) {
     std::move(callback).Run(
         false, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_MNEMONIC_ERROR));
     return;
   }
-  if (info.number_of_accounts > 1) {
+  if (info->number_of_accounts > 1) {
     keyring_service_->AddAccountsWithDefaultName(mojom::CoinType::ETH,
                                                  mojom::kDefaultKeyringId,
-                                                 info.number_of_accounts - 1);
+                                                 info->number_of_accounts - 1);
   }
 
   // Only register the component if the import is successful.
@@ -1628,8 +1620,7 @@ void BraveWalletService::GenerateReceiveAddress(
     return;
   }
 
-  NOTREACHED_IN_MIGRATION() << account_id->coin;
-  std::move(callback).Run("", WalletInternalErrorMessage());
+  NOTREACHED() << account_id->coin;
 }
 
 void BraveWalletService::OnGenerateBtcReceiveAddress(

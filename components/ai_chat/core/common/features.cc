@@ -9,17 +9,13 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "build/build_config.h"
 
 namespace ai_chat::features {
 
 BASE_FEATURE(kAIChat,
              "AIChat",
-#if BUILDFLAG(ENABLE_AI_CHAT_FEATURE_FLAG)
              base::FEATURE_ENABLED_BY_DEFAULT
-#else
-             base::FEATURE_DISABLED_BY_DEFAULT
-#endif
 );
 const base::FeatureParam<std::string> kAIModelsDefaultKey{
     &kAIChat, "default_model", "chat-leo-expanded"};
@@ -58,6 +54,18 @@ BASE_FEATURE(kPageContentRefine,
 
 bool IsPageContentRefineEnabled() {
   return base::FeatureList::IsEnabled(features::kPageContentRefine);
+}
+
+BASE_FEATURE(kOpenAIChatFromBraveSearch,
+             "OpenAIChatFromBraveSearch",
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
+
+bool IsOpenAIChatFromBraveSearchEnabled() {
+  return base::FeatureList::IsEnabled(features::kOpenAIChatFromBraveSearch);
 }
 
 }  // namespace ai_chat::features

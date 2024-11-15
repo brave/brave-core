@@ -5,35 +5,66 @@
 
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 
+#include <stddef.h>
+
 #include <algorithm>
+#include <functional>
+#include <ios>
+#include <iterator>
 #include <memory>
-#include <utility>
+#include <optional>
+#include <string_view>
+#include <type_traits>
 #include <vector>
 
+#include "base/check.h"
+#include "base/containers/span.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
+#include "base/metrics/field_trial_params.h"
+#include "base/notreached.h"
+#include "base/numerics/safe_math.h"
+#include "base/rand_util.h"
+#include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "base/time/time.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "base/types/strong_alias.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+#include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#define STARTER_PROMPT(TYPE)                                         \
+  l10n_util::GetStringUTF8(IDS_AI_CHAT_STATIC_STARTER_TITLE_##TYPE), \
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_STATIC_STARTER_PROMPT_##TYPE)
+
 namespace ai_chat {
+class AIChatCredentialManager;
 
 namespace {
 
@@ -42,6 +73,8 @@ using ai_chat::mojom::ConversationTurn;
 
 using AssociatedContentDelegate =
     ConversationHandler::AssociatedContentDelegate;
+
+constexpr size_t kDefaultSuggestionsCount = 4;
 
 }  // namespace
 
@@ -61,6 +94,10 @@ void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
 void AssociatedContentDelegate::GetStagedEntriesFromContent(
     GetStagedEntriesCallback callback) {
   std::move(callback).Run(std::nullopt);
+}
+
+bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
+  return false;
 }
 
 void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
@@ -127,6 +164,16 @@ void AssociatedContentDelegate::OnTextEmbedderInitialized(bool initialized) {
   pending_top_similarity_requests_.clear();
 }
 
+ConversationHandler::Suggestion::Suggestion(std::string title)
+    : title(std::move(title)) {}
+ConversationHandler::Suggestion::Suggestion(std::string title,
+                                            std::string prompt)
+    : title(std::move(title)), prompt(std::move(prompt)) {}
+ConversationHandler::Suggestion::Suggestion(Suggestion&&) = default;
+ConversationHandler::Suggestion& ConversationHandler::Suggestion::operator=(
+    Suggestion&&) = default;
+ConversationHandler::Suggestion::~Suggestion() = default;
+
 ConversationHandler::ConversationHandler(
     const mojom::Conversation* conversation,
     AIChatService* ai_chat_service,
@@ -150,12 +197,12 @@ ConversationHandler::ConversationHandler(
   models_observer_.Observe(model_service_.get());
   // TODO(petemill): differ based on premium status, if different
   ChangeModel(model_service->GetDefaultModelKey());
+  MaybeSeedOrClearSuggestions();
 }
 
 ConversationHandler::~ConversationHandler() {
-  if (associated_content_delegate_) {
-    associated_content_delegate_->OnRelatedConversationDestroyed(this);
-  }
+  DisassociateContentDelegate();
+  OnConversationDeleted();
 }
 
 void ConversationHandler::AddObserver(Observer* observer) {
@@ -196,9 +243,17 @@ bool ConversationHandler::HasAnyHistory() {
                               });
 }
 
+void ConversationHandler::OnConversationDeleted() {
+  for (auto& client : conversation_ui_handlers_) {
+    client->OnConversationDeleted();
+  }
+}
+
 void ConversationHandler::InitEngine() {
-  CHECK(!model_key_.empty());
-  const mojom::Model* model = model_service_->GetModel(model_key_);
+  const mojom::Model* model = nullptr;
+  if (!model_key_.empty()) {
+    model = model_service_->GetModel(model_key_);
+  }
   // Make sure we get a valid model, defaulting to static default or first.
   if (!model) {
     // It is unexpected that we get here. Dump a call stack
@@ -207,8 +262,10 @@ void ConversationHandler::InitEngine() {
     base::debug::DumpWithoutCrashing();
     // Use default
     model = model_service_->GetModel(features::kAIModelsDefaultKey.Get());
-    DCHECK(model) << "The default model set via feature param does not exist";
     if (!model) {
+      SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key",
+                                  features::kAIModelsDefaultKey.Get());
+      base::debug::DumpWithoutCrashing();
       const auto& all_models = model_service_->GetModels();
       // Use first if given bad default value
       model = all_models.at(0).get();
@@ -279,7 +336,6 @@ void ConversationHandler::SetAssociatedContentDelegate(
 
   // Unarchive content
   if (archive_content_) {
-    associated_content_delegate_ = nullptr;
     archive_content_ = nullptr;
   } else if (!chat_history_.empty()) {
     // Cannot associate new content with a conversation which already has
@@ -290,6 +346,7 @@ void ConversationHandler::SetAssociatedContentDelegate(
     return;
   }
 
+  DisassociateContentDelegate();
   associated_content_delegate_ = delegate;
   associated_content_delegate_->AddRelatedConversation(this);
   // Default to send page contents when we have a valid contents.
@@ -339,9 +396,12 @@ void ConversationHandler::GetState(GetStateCallback callback) {
 
   BuildAssociatedContentInfo();
 
+  std::vector<std::string> suggestions;
+  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
+                         [](const auto& s) { return s.title; });
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
-      model_key, suggestions_, suggestion_generation_status_,
+      model_key, std::move(suggestions), suggestion_generation_status_,
       associated_content_info_->Clone(), should_send_page_contents_,
       current_error_);
 
@@ -358,17 +418,6 @@ void ConversationHandler::RateMessage(bool is_liked,
 
   const std::vector<mojom::ConversationTurnPtr>& history = chat_history_;
 
-  auto on_complete = base::BindOnce(
-      [](RateMessageCallback callback, APIRequestResult result) {
-        if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
-          std::string id = *result.value_body().GetDict().FindString("id");
-          std::move(callback).Run(id);
-          return;
-        }
-        std::move(callback).Run(std::nullopt);
-      },
-      std::move(callback));
-
   // TODO(petemill): Something more robust than relying on message index,
   // and probably a message uuid.
   uint32_t current_turn_id = turn_id + 1;
@@ -379,7 +428,18 @@ void ConversationHandler::RateMessage(bool is_liked,
 
     feedback_api_->SendRating(
         is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,
-        model.options->get_leo_model_options()->name, std::move(on_complete));
+        model.options->get_leo_model_options()->name,
+        base::BindOnce(
+            [](RateMessageCallback callback, APIRequestResult result) {
+              if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
+                std::string id =
+                    *result.value_body().GetDict().FindString("id");
+                std::move(callback).Run(id);
+                return;
+              }
+              std::move(callback).Run(std::nullopt);
+            },
+            std::move(callback)));
 
     return;
   }
@@ -434,12 +494,10 @@ void ConversationHandler::ChangeModel(const std::string& model_key) {
   CHECK(!model_key.empty());
   // Check that the key exists
   auto* new_model = model_service_->GetModel(model_key);
-  if (!new_model) {
-    NOTREACHED_IN_MIGRATION()
-        << "No matching model found for key: " << model_key;
-    return;
+  if (new_model) {
+    model_key_ = new_model->key;
   }
-  model_key_ = new_model->key;
+  // Always call InitEngine, even with a bad key as we need a model
   InitEngine();
 }
 
@@ -494,13 +552,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
   DCHECK(latest_turn->character_type == mojom::CharacterType::HUMAN);
   is_request_in_progress_ = true;
   OnAPIRequestInProgressChanged();
-  // If it's a suggested question, remove it
-  auto found_question_iter =
-      base::ranges::find(suggestions_, latest_turn->text);
-  if (found_question_iter != suggestions_.end()) {
-    suggestions_.erase(found_question_iter);
-    OnSuggestedQuestionsChanged();
-  }
+
   // Directly modify Entry's text to remove engine-breaking substrings
   if (!has_edits) {  // Edits are already sanitized.
     engine_->SanitizeInput(latest_turn->text);
@@ -514,7 +566,15 @@ void ConversationHandler::SubmitHumanConversationEntry(
   // callers of SubmitHumanConversationEntry mojo API currently don't have
   // action_type specified.
   std::string question_part = latest_turn->text;
-  if (latest_turn->action_type == mojom::ActionType::UNSPECIFIED) {
+  // If it's a suggested question, remove it
+  auto found_question_iter =
+      base::ranges::find(suggestions_, latest_turn->text, &Suggestion::title);
+  if (found_question_iter != suggestions_.end()) {
+    question_part =
+        found_question_iter->prompt.value_or(found_question_iter->title);
+    suggestions_.erase(found_question_iter);
+    OnSuggestedQuestionsChanged();
+  } else if (latest_turn->action_type == mojom::ActionType::UNSPECIFIED) {
     if (latest_turn->text ==
         l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
       latest_turn->action_type = mojom::ActionType::SUMMARIZE_PAGE;
@@ -543,7 +603,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
     // Now the conversation is committed, we can remove some unneccessary data
     // if we're not associated with a page.
     suggestions_.clear();
-    associated_content_delegate_ = nullptr;
+    DisassociateContentDelegate();
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
     PerformAssistantGeneration(question_part);
@@ -660,9 +720,17 @@ void ConversationHandler::SubmitSummarizationRequest() {
   SubmitHumanConversationEntry(std::move(turn));
 }
 
-void ConversationHandler::GetSuggestedQuestions(
-    GetSuggestedQuestionsCallback callback) {
-  std::move(callback).Run(suggestions_, suggestion_generation_status_);
+std::vector<std::string> ConversationHandler::GetSuggestedQuestionsForTest() {
+  std::vector<std::string> suggestions;
+  base::ranges::transform(suggestions_, std::back_inserter(suggestions),
+                          [](const auto& s) { return s.title; });
+  return suggestions;
+}
+
+void ConversationHandler::SetSuggestedQuestionForTest(std::string title,
+                                                      std::string prompt) {
+  suggestions_.clear();
+  suggestions_.emplace_back(title, prompt);
 }
 
 void ConversationHandler::GenerateQuestions() {
@@ -726,6 +794,13 @@ void ConversationHandler::PerformQuestionGeneration(
       is_video, page_content, selected_language_,
       base::BindOnce(&ConversationHandler::OnSuggestedQuestionsResponse,
                      weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ConversationHandler::DisassociateContentDelegate() {
+  if (associated_content_delegate_) {
+    associated_content_delegate_->OnRelatedConversationDisassociated(this);
+    associated_content_delegate_ = nullptr;
+  }
 }
 
 void ConversationHandler::GetAssociatedContentInfo(
@@ -863,6 +938,7 @@ void ConversationHandler::AddToConversationHistory(
   chat_history_.push_back(std::move(turn));
 
   OnHistoryUpdate();
+  OnConversationEntriesChanged();
 }
 
 void ConversationHandler::PerformAssistantGeneration(
@@ -970,6 +1046,12 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     entry->text = event->get_completion_event()->completion;
   }
 
+  if (event->is_conversation_title_event()) {
+    OnConversationTitleChanged(event->get_conversation_title_event()->title);
+    // Don't add this event to history
+    return;
+  }
+
   if (event->is_selected_language_event()) {
     OnSelectedLanguageChanged(
         event->get_selected_language_event()->selected_language);
@@ -978,7 +1060,8 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
   }
 
   entry->events->push_back(std::move(event));
-
+  // Update clients for partial entries but not observers, who will get notified
+  // when we know this is a complete entry.
   OnHistoryUpdate();
 }
 
@@ -986,14 +1069,38 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
   const bool is_page_associated =
       IsContentAssociationPossible() && should_send_page_contents_;
 
-  if (!is_page_associated && !suggestions_.empty()) {
+  if (!is_page_associated) {
     suggestions_.clear();
     suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
+    suggestions_.emplace_back(STARTER_PROMPT(MEMO));
+    suggestions_.emplace_back(STARTER_PROMPT(INTERVIEW));
+    suggestions_.emplace_back(STARTER_PROMPT(STUDY_PLAN));
+    suggestions_.emplace_back(STARTER_PROMPT(PROJECT_TIMELINE));
+    suggestions_.emplace_back(STARTER_PROMPT(MARKETING_STRATEGY));
+    suggestions_.emplace_back(STARTER_PROMPT(PRESENTATION_OUTLINE));
+    suggestions_.emplace_back(STARTER_PROMPT(BRAINSTORM));
+    suggestions_.emplace_back(STARTER_PROMPT(PROFESSIONAL_EMAIL));
+    suggestions_.emplace_back(STARTER_PROMPT(BUSINESS_PROPOSAL));
+
+    // We don't have an external list of all the available suggestions, so we
+    // generate all of them  and remove random ones until we have the required
+    // number and then shuffle the result.
+    while (suggestions_.size() > kDefaultSuggestionsCount) {
+      auto remove_at = base::RandInt(0, suggestions_.size() - 1);
+      suggestions_.erase(suggestions_.begin() + remove_at);
+    }
+    base::RandomShuffle(suggestions_.begin(), suggestions_.end());
     OnSuggestedQuestionsChanged();
     return;
   }
 
-  if (is_page_associated && suggestions_.empty() &&
+  // This means we have the default suggestions
+  if (suggestion_generation_status_ ==
+      mojom::SuggestionGenerationStatus::None) {
+    suggestions_.clear();
+  }
+
+  if (suggestions_.empty() &&
       suggestion_generation_status_ !=
           mojom::SuggestionGenerationStatus::IsGenerating &&
       suggestion_generation_status_ !=
@@ -1028,25 +1135,17 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
   }
 
   const bool can_check_for_staged_conversation =
-      ai_chat_service_->HasUserOptedIn() && IsContentAssociationPossible() &&
-      should_send_page_contents_;
+      IsContentAssociationPossible() && should_send_page_contents_;
   if (!can_check_for_staged_conversation) {
     // Clear any staged conversation entries since user might have unassociated
     // content with this conversation
-    if (chat_history_.empty()) {
-      return;
-    }
-
-    const auto& last_turn = chat_history_.back();
-    if (last_turn->from_brave_search_SERP) {
-      chat_history_.clear();  // Clear the staged entries.
+    size_t num_entries = chat_history_.size();
+    std::erase_if(chat_history_, [](const mojom::ConversationTurnPtr& turn) {
+      return turn->from_brave_search_SERP;
+    });
+    if (num_entries != chat_history_.size()) {
       OnHistoryUpdate();
     }
-    return;
-  }
-
-  // Can only have staged entries at the start of a conversation.
-  if (!chat_history_.empty()) {
     return;
   }
 
@@ -1058,10 +1157,15 @@ void ConversationHandler::MaybeFetchOrClearContentStagedConversation() {
 void ConversationHandler::OnGetStagedEntriesFromContent(
     const std::optional<std::vector<SearchQuerySummary>>& entries) {
   // Check if all requirements are still met.
-  if (!entries || !chat_history_.empty() || !IsContentAssociationPossible() ||
-      !should_send_page_contents_ || !ai_chat_service_->HasUserOptedIn()) {
+  if (is_request_in_progress_ || !entries || !IsContentAssociationPossible() ||
+      !should_send_page_contents_) {
     return;
   }
+
+  // Clear previous staged entries.
+  std::erase_if(chat_history_, [](const mojom::ConversationTurnPtr& turn) {
+    return turn->from_brave_search_SERP;
+  });
 
   // Add the query & summary pairs to the conversation history and call
   // OnHistoryUpdate to update UI.
@@ -1118,6 +1222,15 @@ void ConversationHandler::OnGetRefinedPageContent(
     std::string page_content,
     bool is_video,
     base::expected<std::string, std::string> refined_page_content) {
+  // Remove tenative assistant entry dedicated for page content event
+  const auto& last_turn = chat_history_.back();
+  if (last_turn->events && !last_turn->events->empty() &&
+      last_turn->events->back()->is_page_content_refine_event()) {
+    chat_history_.pop_back();
+    OnHistoryUpdate();
+  } else {
+    VLOG(1) << "last entry should be page content refine event";
+  }
   std::string page_content_to_use = std::move(page_content);
   if (refined_page_content.has_value()) {
     page_content_to_use = std::move(refined_page_content.value());
@@ -1146,17 +1259,36 @@ void ConversationHandler::OnEngineCompletionComplete(
   is_request_in_progress_ = false;
 
   if (result.has_value()) {
+    DVLOG(2) << __func__ << ": With value";
     // Handle success, which might mean do nothing much since all
     // data was passed in the streaming "received" callback.
     if (!result->empty()) {
       UpdateOrCreateLastAssistantEntry(
           mojom::ConversationEntryEvent::NewCompletionEvent(
               mojom::CompletionEvent::New(*result)));
+      OnConversationEntriesChanged();
+    } else {
+      auto& last_entry = chat_history_.back();
+      if (last_entry->character_type != mojom::CharacterType::ASSISTANT) {
+        SetAPIError(mojom::APIError::ConnectionIssue);
+      }
     }
     MaybePopPendingRequests();
   } else {
     // handle failure
-    SetAPIError(std::move(result.error()));
+    if (result.error() != mojom::APIError::None) {
+      DVLOG(2) << __func__ << ": With error";
+      SetAPIError(std::move(result.error()));
+    } else {
+      DVLOG(2) << __func__ << ": With no error";
+      // No error but check if no content was received
+      auto& last_entry = chat_history_.back();
+      if (last_entry->character_type != mojom::CharacterType::ASSISTANT) {
+        SetAPIError(mojom::APIError::ConnectionIssue);
+      } else {
+        SetAPIError(mojom::APIError::None);
+      }
+    }
   }
 
   OnAPIRequestInProgressChanged();
@@ -1165,18 +1297,20 @@ void ConversationHandler::OnEngineCompletionComplete(
 void ConversationHandler::OnSuggestedQuestionsResponse(
     EngineConsumer::SuggestedQuestionResult result) {
   if (result.has_value()) {
-    suggestions_.insert(suggestions_.end(), result->begin(), result->end());
+    std::ranges::transform(result.value(), std::back_inserter(suggestions_),
+                           [](const auto& s) { return Suggestion(s); });
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::HasGenerated;
+    DVLOG(2) << "Got questions:" << base::JoinString(result.value(), "\n");
   } else {
     // TODO(nullhook): Set a specialized error state generated questions
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
+    DVLOG(2) << "Got no questions";
   }
 
   // Notify observers
   OnSuggestedQuestionsChanged();
-  DVLOG(2) << "Got questions:" << base::JoinString(suggestions_, "\n");
 }
 
 void ConversationHandler::OnModelListUpdated() {
@@ -1229,7 +1363,10 @@ void ConversationHandler::OnHistoryUpdate() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnConversationHistoryUpdate();
   }
+  OnConversationEntriesChanged();
+}
 
+void ConversationHandler::OnConversationEntriesChanged() {
   for (auto& observer : observers_) {
     // TODO(petemill): only tell observers about complete turns. This is
     // expensive to do for every event generated by in-progress turns,
@@ -1305,6 +1442,12 @@ void ConversationHandler::OnClientConnectionChanged() {
   }
 }
 
+void ConversationHandler::OnConversationTitleChanged(std::string title) {
+  for (auto& observer : observers_) {
+    observer.OnConversationTitleChanged(this, title);
+  }
+}
+
 void ConversationHandler::OnConversationUIConnectionChanged(
     mojo::RemoteSetElementId id) {
   OnClientConnectionChanged();
@@ -1322,8 +1465,12 @@ void ConversationHandler::OnAssociatedContentFaviconImageDataChanged() {
 }
 
 void ConversationHandler::OnSuggestedQuestionsChanged() {
+  std::vector<std::string> suggestions;
+  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
+                         [](const auto& s) { return s.title; });
+
   for (auto& client : conversation_ui_handlers_) {
-    client->OnSuggestedQuestionsChanged(suggestions_,
+    client->OnSuggestedQuestionsChanged(suggestions,
                                         suggestion_generation_status_);
   }
 }
@@ -1335,3 +1482,5 @@ void ConversationHandler::OnAPIRequestInProgressChanged() {
 }
 
 }  // namespace ai_chat
+
+#undef STARTER_PROMPT

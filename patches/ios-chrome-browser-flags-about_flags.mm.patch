@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index b0c5593997ca87d85407cf2a02c355e2fe3683c6..d26dfb9a57b055edc432e2f37478878ac1fa2a50 100644
+index 58561d0af3fd4b484f50d6e4a71a4439e42c8be8..de9c075c1d63234874d9ae53ea7e6f8221f014d0 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1124,6 +1124,7 @@ const FeatureEntry::FeatureVariation kSendTabIOSPushNotificationsVariations[] =

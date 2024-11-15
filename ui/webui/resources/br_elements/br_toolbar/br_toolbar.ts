@@ -1,167 +1,198 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Convert to Polymer class and remove ts-nocheck
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js';
+import { loadTimeData } from '//resources/js/load_time_data.js';
 
-import 'chrome://resources/polymer/v3_0/iron-media-query/iron-media-query.js';
-import '../br_shared_vars.css.js';
-import '../br_shared_style.css.js';
-import './br_toolbar_search_field.js';
+import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
+import { getHtml } from './br_toolbar.html.js';
+import { getCss } from './br_toolbar.css.js';
 
-import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
-import {Polymer} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import './br_toolbar_search_field.js'
 
-import {getTemplate} from './br_toolbar.html.js'
-
-const customCurrentWebUINameMap = {
+const customCurrentWebUINameMap: { [key: string]: string } = {
   extensions: 'settings',
   sync: 'settings',
 }
 
-Polymer({
-  is: 'cr-toolbar',
+export interface CrToolbarElement {
+  $: {
+    search: HTMLElement
+  }
+}
 
-  _template: getTemplate(),
+export class CrToolbarElement extends CrLitElement {
+  static get is() {
+    return 'cr-toolbar'
+  }
 
-  properties: {
-    // Name to display in the toolbar, in titlecase.
-    pageName: String,
+  static override get styles() {
+    return getCss()
+  }
 
-    // Prompt text to display in the search field.
-    searchPrompt: String,
+  override render() {
+    return getHtml.bind(this)()
+  }
 
-    // Tooltip to display on the clear search button.
-    clearLabel: String,
+  static override get properties() {
+    return {
+      // Name to display in the toolbar, in titlecase.
+      pageName: { type: String },
 
-    // Tooltip to display on the menu button.
-    menuLabel: String,
+      // Prompt text to display in the search field.
+      searchPrompt: { type: String },
 
-    // Promotional toolstip string, shown in narrow mode if showMenuPromo is
-    // true.
-    menuPromo: String,
+      // Tooltip to display on the clear search button.
+      clearLabel: { type: String },
 
-    // Value is proxied through to cr-toolbar-search-field. When true,
-    // the search field will show a processing spinner.
-    spinnerActive: Boolean,
+      // Tooltip to display on the menu button.
+      menuLabel: { type: String },
 
-    // Controls whether the menu button is shown at the start of the menu.
-    showMenu: {type: Boolean, value: false},
+      // Promotional toolstip string, shown in narrow mode if showMenuPromo is
+      // true.
+      menuPromo: { type: String },
 
-    // Whether to show menu promo tooltip.
-    showMenuPromo: {
-      type: Boolean,
-      value: false,
-    },
+      // Value is proxied through to cr-toolbar-search-field. When true,
+      // the search field will show a processing spinner.
+      spinnerActive: { type: Boolean },
 
-    // Controls whether the search field is shown.
-    showSearch: {type: Boolean, value: true},
+      // Controls whether the menu button is shown at the start of the menu.
+      showMenu: { type: Boolean },
 
-    // True when the toolbar is displaying in narrow mode.
-    narrow: {
-      type: Boolean,
-      reflectToAttribute: true,
-      readonly: true,
-      notify: true,
-    },
+      // Whether to show menu promo tooltip.
+      showMenuPromo: { type: Boolean },
 
-    /**
-     * The threshold at which the toolbar will change from normal to narrow
-     * mode, in px.
-     */
-    narrowThreshold: {
-      type: Number,
-      value: 900,
-    },
+      // Controls whether the search field is shown.
+      showSearch: { type: Boolean },
 
-    closeMenuPromo: String,
+      // True when the toolbar is displaying in narrow mode.
+      narrow: { type: Boolean, reflect: true, notify: true },
 
-    noSearch: {
-      observer: 'noSearchChanged_',
-      type: Boolean,
-      // boolean props on html attributes must default to false
-      value: false
-    },
+      /**
+       * The threshold at which the toolbar will change from normal to narrow
+       * mode, in px.
+       */
+      narrowThreshold: { type: Number },
 
-    /** @private */
-    showingSearch_: {
-      type: Boolean,
-      reflectToAttribute: true,
-    },
+      closeMenuPromo: { type: String },
 
-    shouldShowRewardsButton_: {
-      type: Boolean,
-      value: true,
-    },
+      /** @private */
+      showingSearch_: {
+        type: Boolean,
+        reflect: true,
+      },
 
-    isBraveWalletAllowed_: {
-      type: Boolean,
-      value: true,
-    },
-  },
+      shouldShowRewardsButton_: {
+        type: Boolean,
+      },
+
+      isBraveWalletAllowed_: {
+        type: Boolean,
+      },
+
+      fontsLoadedClassName: {
+        type: String
+      }
+    }
+  }
+
+  pageName = ''
+  searchPrompt = ''
+  clearLabel = ''
+  menuLabel = ''
+  menuPromo = ''
+  spinnerActive = false
+  showMenu = false
+  showMenuPromo = false
+  showSearch = true
+  narrow = false
+  narrowThreshold = 900
+  narrowQuery_: MediaQueryList | null = null
+  closeMenuPromo = ''
+  showingSearch = false
+  showRewardsButton = true
+  isBraveWalletAllowed_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
+
+  // Localized strings:
+  historyTitle = loadTimeData.getString('brToolbarHistoryTitle')
+  settingsTitle = loadTimeData.getString('brToolbarSettingsTitle')
+  bookmarksTitle = loadTimeData.getString('brToolbarBookmarksTitle')
+  downloadsTitle = loadTimeData.getString('brToolbarDownloadsTitle')
+  braveRewardsTitle = loadTimeData.getString('brToolbarRewardsTitle')
+  walletsTitle = loadTimeData.getString('brToolbarWalletsTitle')
+
+  // Settings from `loadTimeData`
+  shouldShowRewardsButton_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
+
+  // Non-observed properties
+  fontsLoadedClassName = ''
+
+  // Slotted content
+  toolbarExtraSlot: HTMLSlotElement
+  toolbarExtraElement: Element
+
+  override willUpdate(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('narrowThreshold')) {
+      this.narrowQuery_ = window.matchMedia(`(max-width: ${this.narrowThreshold}px)`);
+      this.narrow = this.narrowQuery_.matches
+      this.narrowQuery_.addEventListener('change', () => {
+        this.narrow = this.narrowQuery_?.matches ?? false;
+      });
+    }
+  }
 
   /** @return {!CrToolbarSearchFieldElement} */
-  getSearchField: function() {
+  getSearchField() {
     return this.$.search;
-  },
+  }
 
-  /** @private */
-  onMenuTap_: function() {
-    this.dispatchEvent(new CustomEvent(
-      'cr-toolbar-menu-click', {bubbles: true, composed: true}))
-  },
+  protected onMenuClick_() {
+    this.fire('cr-toolbar-menu-click')
+  }
 
   focusMenuButton() {
     requestAnimationFrame(() => {
       // Wait for next animation frame in case dom-if has not applied yet and
       // added the menu button.
       const menuButton =
-          this.shadowRoot!.querySelector<HTMLElement>('#menuButton');
+        this.shadowRoot!.querySelector<HTMLElement>('#menuButton');
       if (menuButton) {
         menuButton.focus();
       }
     });
-  },
+  }
 
   /** @return {boolean} */
   isMenuFocused() {
     return !!this.shadowRoot!.activeElement &&
-        this.shadowRoot!.activeElement.id === 'menuButton';
-  },
-
-  /** @private */
-  noSearchChanged_: function () {
-    this.updateSearchDisplayed_()
-  },
-
-  /** @private */
-  updateSearchDisplayed_: function () {
-    this.$.search.hidden = this.noSearch
-  },
+      this.shadowRoot!.activeElement.id === 'menuButton';
+  }
 
   /**
    * @param {string} title
    * @param {boolean} showMenuPromo
    * @return {string} The title if the menu promo isn't showing, else "".
    */
-  titleIfNotShowMenuPromo_: function(title, showMenuPromo) {
+  titleIfNotShowMenuPromo_(title: string, showMenuPromo: boolean) {
     return showMenuPromo ? '' : title;
-  },
+  }
 
-  getNavItemSelectedClassName: function(itemName) {
+  getNavItemSelectedClassName(itemName: string) {
     // which navigation item is the current page?
     let currentWebUIName = document.location.hostname
     // override name from hostname, if applicable
     if (customCurrentWebUINameMap[currentWebUIName])
       currentWebUIName = customCurrentWebUINameMap[currentWebUIName]
-    // does it match the item calling this function?
-    const itemWebUIName = itemName
+
     if (itemName === currentWebUIName)
       return '-selected'
     // not selected
     return ''
-  },
+  }
 
   notifyIfExtraSlotFilled() {
     const slotIsFilled = this.toolbarExtraSlot.assignedNodes().length !== 0
@@ -171,12 +202,12 @@ Polymer({
     } else {
       this.toolbarExtraElement.classList.remove(classNameFilled)
     }
-  },
+  }
 
-  initSlotFilledDetection: function() {
-    // Style the 'extra items' slot only if it containts
+  initSlotFilledDetection() {
+    // Style the 'extra items' slot only if it contains
     // content.
-    const toolbarExtraElement = this.$$('.toolbar-extra')
+    const toolbarExtraElement = this.querySelector('.toolbar-extra')
     if (!toolbarExtraElement) {
       console.error('Could not find "toolbar-extra" element')
       return
@@ -189,46 +220,18 @@ Polymer({
     this.toolbarExtraElement = toolbarExtraElement
     this.toolbarExtraSlot = toolbarExtraSlot
     this.notifyIfExtraSlotFilled()
-    toolbarExtraSlot.addEventListener('slotchange',  (e) => {
+    toolbarExtraSlot.addEventListener('slotchange', () => {
       this.notifyIfExtraSlotFilled()
     })
-  },
+  }
 
-  getLoadTimeDataBoolean: function(value: string) {
-    if (loadTimeData.data_) {
-      return loadTimeData.getBoolean(value)
-    }
-    return window.loadTimeData.getBoolean(value)
-  },
-
-  getLoadTimeDataString: function(value: string) {
-    if (loadTimeData.data_) {
-      return loadTimeData.getString(value)
-    }
-    return window.loadTimeData.getString(value)
-  },
-
-  initStrings: function() {
-    this.historyTitle = this.getLoadTimeDataString('brToolbarHistoryTitle')
-    this.settingsTitle = this.getLoadTimeDataString('brToolbarSettingsTitle')
-    this.bookmarksTitle = this.getLoadTimeDataString('brToolbarBookmarksTitle')
-    this.downloadsTitle = this.getLoadTimeDataString('brToolbarDownloadsTitle')
-    this.braveRewardsTitle = this.getLoadTimeDataString('brToolbarRewardsTitle')
-    this.walletsTitle = this.getLoadTimeDataString('brToolbarWalletsTitle')
-  },
-
-  /** @override */
-  attached: function () {
-    this.shouldShowRewardsButton_ =
-      this.getLoadTimeDataBoolean('brToolbarShowRewardsButton')
-    this.isBraveWalletAllowed_ =
-      this.getLoadTimeDataBoolean('isBraveWalletAllowed')
+  override connectedCallback() {
+    super.connectedCallback()
     this.initSlotFilledDetection()
-    this.initStrings()
     this.initFontLoadDetection()
-  },
+  }
 
-  initFontLoadDetection: async function() {
+  async initFontLoadDetection() {
     // Font detection.
     // Wait for component to render with font style.
     await new Promise(resolve => window.requestAnimationFrame(resolve))
@@ -245,9 +248,14 @@ Polymer({
       console.debug('font was loaded after a wait')
     }
     this.setFontsAreLoaded()
-  },
+  }
 
-  setFontsAreLoaded: function() {
+  setFontsAreLoaded() {
     this.fontsLoadedClassName = 'fonts-loaded'
   }
-});
+}
+
+customElements.define(
+  CrToolbarElement.is, CrToolbarElement)
+
+

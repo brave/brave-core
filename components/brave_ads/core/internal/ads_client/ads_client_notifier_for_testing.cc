@@ -7,7 +7,6 @@
 
 #include "base/check_op.h"
 #include "base/containers/contains.h"
-#include "net/http/http_status_code.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -177,19 +176,21 @@ void AdsClientNotifierForTesting::NotifyDidSolveAdaptiveCaptcha() {
 
 void AdsClientNotifierForTesting::SimulateOpeningNewTab(
     const int32_t tab_id,
-    const std::vector<GURL>& redirect_chain) {
+    const std::vector<GURL>& redirect_chain,
+    const int http_status_code) {
   CHECK(!base::Contains(redirect_chains_, tab_id)) << "Tab already open";
 
   redirect_chains_[tab_id] = redirect_chain;
 
   SimulateSelectTab(tab_id);
 
-  SimulateNavigateToURL(tab_id, redirect_chain);
+  SimulateNavigateToURL(tab_id, redirect_chain, http_status_code);
 }
 
 void AdsClientNotifierForTesting::SimulateNavigateToURL(
     const int32_t tab_id,
-    const std::vector<GURL>& redirect_chain) {
+    const std::vector<GURL>& redirect_chain,
+    const int http_status_code) {
   CHECK(base::Contains(redirect_chains_, tab_id)) << "Tab does not exist";
 
   redirect_chains_[tab_id] = redirect_chain;
@@ -198,7 +199,7 @@ void AdsClientNotifierForTesting::SimulateNavigateToURL(
 
   NotifyTabDidChange(tab_id, redirect_chain, /*is_new_navigation=*/true,
                      /*is_restoring=*/false, is_visible);
-  NotifyTabDidLoad(tab_id, net::HTTP_OK);
+  NotifyTabDidLoad(tab_id, http_status_code);
 }
 
 void AdsClientNotifierForTesting::SimulateSelectTab(const int32_t tab_id) {

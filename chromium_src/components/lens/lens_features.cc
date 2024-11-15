@@ -7,13 +7,11 @@
 
 #include "base/feature_override.h"
 
-namespace lens {
-namespace features {
+namespace lens::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kLensOverlay, base::FEATURE_DISABLED_BY_DEFAULT},
     {kLensStandalone, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace features
-}  // namespace lens
+}  // namespace lens::features

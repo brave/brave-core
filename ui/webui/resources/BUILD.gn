@@ -41,13 +41,13 @@ if (!is_android && !is_ios) {
     # Ensure all the files are relative to this dir (with a brave/ prefix),
     # and not //ui/webui/resources which is the default for build_cr_component.
     if (!is_android && !is_ios) {
-      web_component_files = [
-        "br_elements/br_toolbar/br_toolbar.ts",
-        "br_elements/br_toolbar/br_toolbar_search_field.ts",
-      ]
       non_web_component_files = [
-        "polymer_overriding.ts",
+        "br_elements/br_toolbar/br_toolbar.ts",
+        "br_elements/br_toolbar/br_toolbar.html.ts",
+        "br_elements/br_toolbar/br_toolbar_search_field.ts",
+        "br_elements/br_toolbar/br_toolbar_search_field.html.ts",
         "lit_overriding.ts",
+        "polymer_overriding.ts",
       ]
 
       # All the cr_overrides we add should be included in the build.
@@ -63,11 +63,11 @@ if (!is_android && !is_ios) {
       css_files = [
         "br_elements/br_shared_style.css",
         "br_elements/br_shared_vars.css",
+        "br_elements/br_toolbar/br_toolbar.css",
+        "br_elements/br_toolbar/br_toolbar_search_field.css",
         "page_specific/settings/br_settings_shared.css",
       ]
     }
-
-    html_to_wrapper_template = "detect"
 
     ts_composite = true
     generate_grdp = true
@@ -167,10 +167,11 @@ leo_icons = [
   "autoplay-off.svg",
   "autoplay-on.svg",
   "backward.svg",
+  "bank.svg",
   "bar-chart.svg",
   "bat-color.svg",
-  "bank.svg",
   "bing-color.svg",
+  "social-leo-favicon-fullheight-color.svg",
   "bluetooth-off.svg",
   "bluetooth.svg",
   "brave-icon-outline.svg",
@@ -228,6 +229,7 @@ leo_icons = [
   "eye-on.svg",
   "file-corrupted.svg",
   "file-edit.svg",
+  "file-text.svg",
   "file.svg",
   "files-many.svg",
   "filter.svg",
@@ -320,6 +322,7 @@ leo_icons = [
   "plus-add.svg",
   "previous-outline.svg",
   "product-bat-outline.svg",
+  "product-bookmarks.svg",
   "product-brave-leo.svg",
   "product-brave-news.svg",
   "product-brave-talk.svg",
@@ -358,6 +361,8 @@ leo_icons = [
   "shuffle-on.svg",
   "shuffle-toggle-on.svg",
   "sidepanel-open.svg",
+  "sidenav-collapse.svg",
+  "sidenav-expand.svg",
   "smartphone-desktop-off.svg",
   "smartphone-desktop.svg",
   "smartphone-hand.svg",
@@ -430,6 +435,7 @@ leo_icons = [
   "xmark-color.svg",
   "yahoo-color.svg",
   "yandex-color.svg",
+  "window-tabs-vertical-expanded.svg",
 ]
 
 if (enable_brave_vpn_panel) {

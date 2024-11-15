@@ -41,10 +41,10 @@ std::string ExtractApiRequestPath(const GURL& request_url) {
                               ->rpc_endpoints[0]
                               .spec();
 
-  if (base::StartsWith(spec, mainnet_url_spec)) {
+  if (spec.starts_with(mainnet_url_spec)) {
     return spec.substr(mainnet_url_spec.size());
   }
-  if (base::StartsWith(spec, testnet_url_spec)) {
+  if (spec.starts_with(testnet_url_spec)) {
     return spec.substr(testnet_url_spec.size());
   }
 
@@ -112,19 +112,16 @@ std::optional<std::string> IsAddressUtxoRequest(
 
 }  // namespace
 
-BitcoinTestRpcServer::BitcoinTestRpcServer() {
-  shared_url_loader_factory_ =
-      base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-          &url_loader_factory_);
-
+BitcoinTestRpcServer::BitcoinTestRpcServer()
+    : shared_url_loader_factory_(url_loader_factory_.GetSafeWeakWrapper()) {
   url_loader_factory_.SetInterceptor(base::BindRepeating(
       &BitcoinTestRpcServer::RequestInterceptor, base::Unretained(this)));
 }
 
 BitcoinTestRpcServer::BitcoinTestRpcServer(
-    BitcoinWalletService* bitcoin_wallet_service)
+    BitcoinWalletService& bitcoin_wallet_service)
     : BitcoinTestRpcServer() {
-  bitcoin_wallet_service->SetUrlLoaderFactoryForTesting(GetURLLoaderFactory());
+  bitcoin_wallet_service.SetUrlLoaderFactoryForTesting(GetURLLoaderFactory());
 }
 
 BitcoinTestRpcServer::~BitcoinTestRpcServer() = default;
@@ -256,7 +253,7 @@ void BitcoinTestRpcServer::RequestInterceptor(
     return;
   }
 
-  NOTREACHED_IN_MIGRATION() << request.url.spec();
+  NOTREACHED() << request.url.spec();
 }
 
 void BitcoinTestRpcServer::SetUpBitcoinRpc(

@@ -280,6 +280,9 @@ class SettingsViewController: TableViewController {
                   debounceService: DebounceServiceFactory.get(privateMode: false),
                   braveCore: braveCore,
                   rewards: rewards,
+                  webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(
+                    privateMode: false
+                  ),
                   clearDataCallback: { [weak self] isLoading, isHistoryCleared in
                     guard let view = self?.navigationController?.view, view.window != nil else {
                       assertionFailure()
@@ -368,7 +371,7 @@ class SettingsViewController: TableViewController {
       )
     )
 
-    if !tabManager.privateBrowsingManager.isPrivateBrowsing {
+    if !tabManager.privateBrowsingManager.isPrivateBrowsing && FeatureList.kAIChat.enabled {
       section.rows.append(leoSettingsRow)
     }
 

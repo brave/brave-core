@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
@@ -63,6 +64,7 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
+#include "brave/components/playlist/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -127,7 +129,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (base::FeatureList::IsEnabled(
                  brave_news::features::kBraveNewsFeedUpdate) &&
              host == kBraveNewsInternalsHost) {
-    return new BraveNewsInternalsUI(web_ui, url.host());
+    return new BraveNewsInternalsUI(
+        web_ui, url.host(),
+        brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile));
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host == chrome::kChromeUINewTabHost) {
@@ -244,8 +248,10 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
   }
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url)) {
-    return WebUI::kNoWebUI;
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url)) {
+      return WebUI::kNoWebUI;
+    }
   }
 #endif
 

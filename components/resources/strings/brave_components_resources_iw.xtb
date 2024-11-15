@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">הודע/י למפתחים של Brave כי אתר זה אינו עובד בצורה תקינה עם Shields:</translation>
 <translation id="3110968385867124099">לא ניתן לדווח על דף זה משום שהוא הועבר באמצעות HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">דף זה הוא דף אינטרנט מקומי ולא ניתן לדווח עליו.</translation>
-<translation id="3645455863322075098">דף זה הוא דף שגיאה ולא ניתן לדווח עליו.</translation>
-<translation id="105644511106871142">תודה לכם שסייעתם לשפר את Brave עבור כולם. בדיווח זה יישלח רק המידע הדרוש עבורנו לתיקון אתר זה.</translation>
+<translation id="8740275226259417070">זוהי שגיאת דף. לא ניתן לדווח עליה כעל אתר שבור.</translation>
+<translation id="6806248680442980382">תודה שעזרת להפוך את Brave לטוב יותר עבור כולם. דיווח זה יכלול רק את המידע הדרוש לנו לתיקון אתר זה.</translation>
 <translation id="6476216365964140603">פרטים נוספים (אופציונלי)</translation>
 <translation id="6145852496180774737">צור איתי קשר בכתובת: (לא חובה)</translation>
 <translation id="7616645803364270729">דואר אלקטרוני, טוויטר וכו'.</translation>
@@ -465,6 +465,8 @@
 <translation id="8797999629784150206">באפשרותך לשנות את ה-<ph name="SITE_PERMISSIONS"/> שלך בכל עת.
  <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">הרשאת אתר</translation>
+<translation id="7222371875290545057">האם לאפשר פתיחת שיחות Leo AI ב-Brave?</translation>
+<translation id="1518915449477235311">האם לאפשר ל-<ph name="URL"/> לפתוח את שיחות Leo AI ב-Brave?</translation>
 <translation id="4355784577209159847">אפשר להשתמש בקובצי Cookie של צד שלישי לכניסה ב-Google מהדור הקודם</translation>
 <translation id="5770656036486891920"><ph name="URL"/> רוצה להשתמש בקובצי Cookie של צד שלישי לצורך כניסה מדור קודם של Google</translation>
 <translation id="6053826678715267477">אפשר גישה למשאבי localhost</translation>
@@ -699,6 +701,26 @@
 <translation id="957921474773060718">התרומה הבאה:</translation>
 <translation id="351973834053818251">תרומות מחזוריות</translation>
 <translation id="7751260505918304024">הצג הכל</translation>
+<translation id="2894334939992402676">מידע נוסף אודות שיטות התרומה</translation>
+<translation id="4114667046481794032">סכום התרומה</translation>
+<translation id="2628057126110572782">יוצר זה מקבל תרומות כעת באמצעות השיטות הבאות בלבד:</translation>
+<translation id="7396847690567283204">יתרת תגמולים</translation>
+<translation id="3253225298092156258">לא זמין</translation>
+<translation id="8028314716653189513">יש לבחור בשיטת שבה ברצונך להשתמש כדי לתרום לתוכנת Brave:</translation>
+<translation id="4094286757932277327">ארנק משמורת</translation>
+<translation id="1511998469385905184">ניתן לנסות שוב מאוחר יותר.</translation>
+<translation id="7550470870580166294">יתרה אינה מספיקה</translation>
+<translation id="7020972866926315918">נראה שהתנתקת מ-<ph name="PROVIDER"/> עבור תגמולי Brave. יש להתחבר שוב כדי להמשיך.</translation>
+<translation id="1166682575529520472">חודשי</translation>
+<translation id="7138678301420049075">אחר</translation>
+<translation id="2134931506717037391">שלח <ph name="AMOUNT"/> BAT</translation>
+<translation id="4791565605790056151">שולח תרומה</translation>
+<translation id="8251969358165471584">ארנק Web3</translation>
+<translation id="7160424977552599351">השתמש בארנק Web3</translation>
+<translation id="6369571967625114920">מודעות אישיות ב-Brave אינן זמינות עדיין באזורך.</translation>
+<translation id="5309155375926073606">כן, בנוסף הייתי רוצה לתרום לחיפוש Brave ולהצטרף אל <ph name="LINK_BEGIN"/>פרויקט גילוי Web<ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">ניתן לתרום נתוני חיפוש וגלישה באופן אנונימי כדי ללטש את חיפוש Brave באמצעות פרויקט גילוי Web. זהו מקור פתוח לחלוטין.</translation>
+<translation id="4174337572777167894">פרויקט גילוי אתרים</translation>
 <translation id="7090992647511817643">חֶשְׁבּוֹן</translation>
 <translation id="4822132585477111396">מזהה שרשרת</translation>
 <translation id="3269475789479462358">תְחוּם</translation>
@@ -801,7 +823,6 @@
 <translation id="6517332033658428773">סקרו החלפה</translation>
 <translation id="8692596799753687794">בחרו ספק להצעות מחיר</translation>
 <translation id="463712644600982655">כל אגרגטור מספק הצעות מחיר באמצעות נזילות ה-API שלו. הוא אוסף מידע על מחירים ממספר המרות ומציע את המחירים בהתאם לנתונים אלה.</translation>
-<translation id="3253225298092156258">לא זמין</translation>
 <translation id="473775607612524610">עדכן</translation>
 <translation id="4389658703251593158">התאמה זאת אינה נתמכת על ידי <ph name="PROVIDER_NAME"/></translation>
 <translation id="1176173785350238153">החלף ספק</translation>
@@ -1061,6 +1082,8 @@
 <translation id="793994607260936590">ראשון</translation>
 <translation id="4709524402122994378">עסקאות</translation>
 <translation id="4591079278963448049">חשבון האסימון המשויך עדיין לא קיים. סכום קטן של SOL יושקע כדי ליצור ולממן אותו.</translation>
+<translation id="3240773103344793224">בקשה לשינוי בעלות חשבון</translation>
+<translation id="8041423758956015568">עסקה זאת תגרום להקצאת בעלות מחדש עבור החשבון לתוכנית חדשה. פעולה זאת לא ניתנת לביטול ועלולה לגרום לאובדן כספי.</translation>
 <translation id="1426320910664514906">הגבלת דלק</translation>
 <translation id="1229774280326250926">גז פרימיום</translation>
 <translation id="148169246131967347">תקרת דמי גז</translation>
@@ -1282,10 +1305,25 @@
 <translation id="5722321409991816187">הצג ספאם NFTs</translation>
 <translation id="2588752742385122166">הגדרות תיק</translation>
 <translation id="7662492121143629144">כל החשבונות</translation>
+<translation id="8845001906332463065">קבלת עזרה</translation>
+<translation id="6248202915200795128">האם הפעולה אורכת יותר מדי זמן?</translation>
+<translation id="5417904796609871601">הצג בפעילות</translation>
+<translation id="8915839655070878476">ניתן לסגור חלון זה באופן בטוח.</translation>
+<translation id="7020017785602386950">שולח <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> אל <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> נשלח אל חשבון <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269">מחליף את <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ל-<ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> ב-<ph name="NETWORK"/></translation>
+<translation id="312867981877298982">סכום בסך <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> נוסף לחשבונך <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189">מגשר את <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> אל<ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042">לא ניתן <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
+<translation id="6990756606864308319">אירעה שגיאה בניסיון <ph name="SEND_SWAP_OR_BRIDGE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> אל <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
+<translation id="6449575669814542383">מאשר את <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> עבור<ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">עסקה חדשה תיווצר על מנת לבטל את העסקה הקיימת.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} עוד עסקאות ממתינות.}
+      other {{PENDING_TRANSACTIONS} עוד עסקאות ממתינות.}
+    }</translation>
 <translation id="6954150712710630841">העסקה נשלחה</translation>
-<translation id="905855245798176174">העסקה נשלחה בהצלחה לרשת וממתינה לאישור.</translation>
 <translation id="619697073289995370">עסקה נחתמה</translation>
-<translation id="7493732383203109611">העסקה נחתמה ותשלח לרשת על ידי ה-DApp</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> הוחזר/ו לארנק שלך</translation>
 <translation id="4577432071459867390">העסקה נכשלה</translation>
 <translation id="4359235192593147041">העסקה נכשלה עקב תנועת מחירים גדולה. הגדל את הרגישות למעידה כדי להצליח בתנועת מחירים גדולה יותר.</translation>
@@ -1724,7 +1762,6 @@ CoinGecko</translation>
 <translation id="1958146856582208323">העברת אסימונים</translation>
 <translation id="3550219298671597013">העברת NFT</translation>
 <translation id="8043066678623588950">העברת FIL</translation>
-<translation id="7138678301420049075">אחר</translation>
 <translation id="8703556909820882288">העברת NFT מכווץ</translation>
 <translation id="2713141960460256091">חתימה ושליחה של עסקת DApp</translation>
 <translation id="6387730345715997739">חתימה על עסקת DApp</translation>
@@ -1803,7 +1840,6 @@ CoinGecko</translation>
 <translation id="7056969230130642253">אתם מאד עסוקים</translation>
 <translation id="7292242212818928219">תוכן חדש זמין. לטעון מחדש?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">פקודות מהירות</translation>
 <translation id="7481312909269577407">קדימה</translation>
 <translation id="1272079795634619415">הפסק</translation>
 <translation id="302781076327338683">טען מחדש את הcache העוקף</translation>
@@ -1956,10 +1992,12 @@ CoinGecko</translation>
 <translation id="1344005710343072293">שילוב זה משמש למטרת <ph name="COMMAND"/>. שמירה תעקוף את קיצור הדרך הזה.</translation>
 <translation id="831931573200952705">שילוב זה נמצא בשימוש <ph name="COMMAND"/> ולא ניתן לשנותו.</translation>
 <translation id="3537006124004887164">שילוב זה נמצא בשימוש<ph name="COMMAND"/>ולא ניתן לשנותו. נסה לשנות אותו באמצעות 'קיצורי דרך לאפליקציה' בהגדרות המערכת.</translation>
+<translation id="8536713137312218707">פקודות מהירות</translation>
 <translation id="712598284361781729">תצוגה מפוצלת חדשה</translation>
 <translation id="1130188644637295274">פתח בתצוגה מפוצלת</translation>
 <translation id="6459036216700972269">לא לפצל כרטיסיות</translation>
 <translation id="4235382917338421035">החליפו מיקום טאב</translation>
+<translation id="4144468798716165316">פקודות מהירות</translation>
 <translation id="3617523374417810198">תצוגה מפוצלת חדשה</translation>
 <translation id="8571323456914890254">פתח בתצוגה מפוצלת</translation>
 <translation id="5329136173514538969">לא לפצל כרטיסיות</translation>
@@ -2022,7 +2060,6 @@ CoinGecko</translation>
 <translation id="1691256669639196606">ניהול מנוי</translation>
 <translation id="2304783958703511257">הגדרות מתקדמות</translation>
 <translation id="3037594989275592390">מודלים של שפה</translation>
-<translation id="6637015365469044269">שדרג כעת</translation>
 <translation id="5543505256451301851">נסה 7 ימים בחינם</translation>
 <translation id="849535826888024304">הגעת למגבלת שיעור התגובה</translation>
 <translation id="2252128900328632803">הגעתם לגבול הדירו של ליאו. פתחו דירוג תגובה גבוה יותר על ידי הרשמה לפרמיום, או נסו שוב בקרוב.</translation>
@@ -2033,7 +2070,7 @@ CoinGecko</translation>
 <translation id="8556044455877152001">דולר ארה"ב <ph name="PRICE_VALUE"/> /חודש</translation>
 <translation id="5151923271944811339">עבור לדגם החינמי</translation>
 <translation id="5474757891469990756">בואו לגלות את העוצמה המרבית של Leo במנוי ה-Premium:</translation>
-<translation id="5552332211527367850">גישה מועדפת למודלים העוצמתיים בעלי המיומנויות השונות</translation>
+<translation id="3453542753968940696">גישה מועדפת למודלים העוצמתיים בעלי המיומנויות השונות.</translation>
 <translation id="5031778211368112461">קבלו גישה למודלים המותאמים למשימות היצירתיות ולייצור התוכן שלכם בצורה טובה יותר.</translation>
 <translation id="298783097210745222">קבלו תשובות מדויקות יותר עבור שיחות מורכבות יותר.</translation>
 <translation id="4314705522985583059">קבלו מגבלות קצב גבוהות יותר עבור שיחות ארוכות יותר.</translation>
@@ -2062,6 +2099,7 @@ CoinGecko</translation>
 <translation id="8712637175834984815">הבנתי</translation>
 <translation id="1093419424466417703">הדף ארוך מדי עבור ליאו. ייתכן שחלק מההקשר חסר מהשיחה. ליאו הצליח לקרוא <ph name="PERCENTAGE"/> מתוכן הדף.</translation>
 <translation id="2186990448773134544">תוכן הדף משופר באמצעות חילוץ המידע הרלוונטי ביותר מהדף משום שהוא ארוך מדי עבור Leo.</translation>
+<translation id="5140068729857132378">מוצא את החלקים הרלוונטיים של דף האינטרנט...</translation>
 <translation id="4370698775470316661">השיחה הזו ארוכה מדי ואי אפשר להמשיך. ייתכן שקיימים דגמים אחרים שבהם ליאו מסוגל לשמור על דיוק לשיחות ארוכות יותר.</translation>
 <translation id="5719170755629028558">משפר את התשובה שלך עם חיפוש Brave...</translation>
 <translation id="5794962229997281366">תשובה משופרת לחיפוש טוב יותר של<ph name="SEARCH_TERMS"/>.</translation>

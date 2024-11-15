@@ -43,6 +43,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kBraveVPNWireguardProfileCredentials, "");
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
   registry->RegisterDictionaryPref(prefs::kBraveVPNSubscriberCredential);
+  registry->RegisterTimePref(prefs::kBraveVPNLastCredentialExpiry, {});
   registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);
   registry->RegisterTimePref(prefs::kBraveVPNSessionExpiredDate, {});
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
@@ -104,11 +105,9 @@ std::string_view GetMigratedNameIfNeeded(PrefService* local_prefs,
     return name;
   }
 
-  if (kV1ToV2Map.contains(name)) {
-    return kV1ToV2Map.at(name);
-  }
-
-  NOTREACHED_NORETURN();
+  auto it = kV1ToV2Map.find(name);
+  CHECK(it != kV1ToV2Map.end());
+  return it->second;
 }
 
 bool IsBraveVPNWireguardEnabled(PrefService* local_state) {
@@ -229,8 +228,7 @@ std::string GetManageUrl(const std::string& env) {
   if (env == skus::kEnvDevelopment)
     return brave_vpn::kManageUrlDev;
 
-  NOTREACHED_IN_MIGRATION();
-  return brave_vpn::kManageUrlProd;
+  NOTREACHED() << "All env handled above.";
 }
 
 // On desktop, the environment is tied to SKUs because you would purchase it

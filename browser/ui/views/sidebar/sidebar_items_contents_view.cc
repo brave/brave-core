@@ -28,7 +28,8 @@
 #include "brave/browser/ui/views/sidebar/sidebar_edit_item_bubble_delegate_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/browser/pref_names.h"
@@ -57,11 +58,6 @@
 #include "ui/views/controls/separator.h"
 #include "ui/views/layout/box_layout.h"
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#endif
-
 namespace {
 
 constexpr gfx::Size kIconSize(SidebarButtonView::kExternalIconSize,
@@ -74,7 +70,7 @@ std::string GetFirstCharFromURL(const GURL& url) {
   if (target.empty()) {
     target = url.spec();
   }
-  if (base::StartsWith(target, "www.")) {
+  if (target.starts_with("www.")) {
     target = target.substr(4, 1);
   } else {
     target = target.substr(0, 1);
@@ -230,8 +226,6 @@ void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
     LaunchEditItemDialog();
     return;
   }
-
-  NOTREACHED_IN_MIGRATION();
 }
 
 bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
@@ -249,8 +243,7 @@ bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
     return GetSidebarService(browser_)->IsEditableItemAt(*index);
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return false;
+  NOTREACHED() << "No more commands now.";
 }
 
 void SidebarItemsContentsView::OnContextMenuClosed() {
@@ -443,8 +436,7 @@ SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
     }
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return std::nullopt;
+  NOTREACHED() << "screen_position must be included in child views";
 }
 
 std::optional<size_t> SidebarItemsContentsView::DrawDragIndicator(
@@ -521,7 +513,6 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
 
   const auto& item_model = controller->model()->GetAllSidebarItems()[*index];
   if (item_model.open_in_panel) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
     if (item_model.built_in_item_type ==
         sidebar::SidebarItem::BuiltInItemType::kChatUI) {
       ai_chat::AIChatMetrics* metrics =
@@ -529,7 +520,6 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
       CHECK(metrics);
       metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kSidebar);
     }
-#endif
     controller->ActivatePanelItem(item_model.built_in_item_type);
     return;
   }
@@ -572,9 +562,10 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
       return get_image_model(kLeoProductPlaylistIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kChatUI:
       return get_image_model(kLeoProductBraveLeoIcon, state);
-    case sidebar::SidebarItem::BuiltInItemType::kNone:
-      NOTREACHED_NORETURN();
+    default:
+      break;
   }
+  NOTREACHED() << "we don't ask image for other types";
 }
 
 void SidebarItemsContentsView::OnWidgetDestroying(views::Widget* widget) {

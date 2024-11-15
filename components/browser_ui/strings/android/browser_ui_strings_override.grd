@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+  <translations>
+    <file path="translations/browser_ui_strings_override_af.xtb" lang="af" />
+    <file path="translations/browser_ui_strings_override_am.xtb" lang="am" />
+    <file path="translations/browser_ui_strings_override_ar.xtb" lang="ar" />
+    <file path="translations/browser_ui_strings_override_as.xtb" lang="as" />
+    <file path="translations/browser_ui_strings_override_az.xtb" lang="az" />
+    <file path="translations/browser_ui_strings_override_be.xtb" lang="be" />
+    <file path="translations/browser_ui_strings_override_bg.xtb" lang="bg" />
+    <file path="translations/browser_ui_strings_override_bn.xtb" lang="bn" />
+    <file path="translations/browser_ui_strings_override_bs.xtb" lang="bs" />
+    <file path="translations/browser_ui_strings_override_ca.xtb" lang="ca" />
+    <file path="translations/browser_ui_strings_override_cs.xtb" lang="cs" />
+    <file path="translations/browser_ui_strings_override_cy.xtb" lang="cy" />
+    <file path="translations/browser_ui_strings_override_da.xtb" lang="da" />
+    <file path="translations/browser_ui_strings_override_de.xtb" lang="de" />
+    <file path="translations/browser_ui_strings_override_el.xtb" lang="el" />
+    <file path="translations/browser_ui_strings_override_en-GB.xtb" lang="en-GB" />
+    <file path="translations/browser_ui_strings_override_es.xtb" lang="es" />
+    <file path="translations/browser_ui_strings_override_es-419.xtb" lang="es-419" />
+    <file path="translations/browser_ui_strings_override_et.xtb" lang="et" />
+    <file path="translations/browser_ui_strings_override_eu.xtb" lang="eu" />
+    <file path="translations/browser_ui_strings_override_fa.xtb" lang="fa" />
+    <file path="translations/browser_ui_strings_override_fi.xtb" lang="fi" />
+    <file path="translations/browser_ui_strings_override_fil.xtb" lang="fil" />
+    <file path="translations/browser_ui_strings_override_fr.xtb" lang="fr" />
+    <file path="translations/browser_ui_strings_override_fr-CA.xtb" lang="fr-CA" />
+    <file path="translations/browser_ui_strings_override_gl.xtb" lang="gl" />
+    <file path="translations/browser_ui_strings_override_gu.xtb" lang="gu" />
+    <file path="translations/browser_ui_strings_override_hi.xtb" lang="hi" />
+    <file path="translations/browser_ui_strings_override_hr.xtb" lang="hr" />
+    <file path="translations/browser_ui_strings_override_hu.xtb" lang="hu" />
+    <file path="translations/browser_ui_strings_override_hy.xtb" lang="hy" />
+    <file path="translations/browser_ui_strings_override_id.xtb" lang="id" />
+    <file path="translations/browser_ui_strings_override_is.xtb" lang="is" />
+    <file path="translations/browser_ui_strings_override_it.xtb" lang="it" />
+    <file path="translations/browser_ui_strings_override_iw.xtb" lang="iw" />
+    <file path="translations/browser_ui_strings_override_ja.xtb" lang="ja" />
+    <file path="translations/browser_ui_strings_override_ka.xtb" lang="ka" />
+    <file path="translations/browser_ui_strings_override_kk.xtb" lang="kk" />
+    <file path="translations/browser_ui_strings_override_km.xtb" lang="km" />
+    <file path="translations/browser_ui_strings_override_kn.xtb" lang="kn" />
+    <file path="translations/browser_ui_strings_override_ko.xtb" lang="ko" />
+    <file path="translations/browser_ui_strings_override_ky.xtb" lang="ky" />
+    <file path="translations/browser_ui_strings_override_lo.xtb" lang="lo" />
+    <file path="translations/browser_ui_strings_override_lt.xtb" lang="lt" />
+    <file path="translations/browser_ui_strings_override_lv.xtb" lang="lv" />
+    <file path="translations/browser_ui_strings_override_mk.xtb" lang="mk" />
+    <file path="translations/browser_ui_strings_override_ml.xtb" lang="ml" />
+    <file path="translations/browser_ui_strings_override_mn.xtb" lang="mn" />
+    <file path="translations/browser_ui_strings_override_mr.xtb" lang="mr" />
+    <file path="translations/browser_ui_strings_override_ms.xtb" lang="ms" />
+    <file path="translations/browser_ui_strings_override_my.xtb" lang="my" />
+    <file path="translations/browser_ui_strings_override_ne.xtb" lang="ne" />
+    <file path="translations/browser_ui_strings_override_nl.xtb" lang="nl" />
+    <file path="translations/browser_ui_strings_override_no.xtb" lang="no" />
+    <file path="translations/browser_ui_strings_override_or.xtb" lang="or" />
+    <file path="translations/browser_ui_strings_override_pa.xtb" lang="pa" />
+    <file path="translations/browser_ui_strings_override_pl.xtb" lang="pl" />
+    <file path="translations/browser_ui_strings_override_pt-BR.xtb" lang="pt-BR" />
+    <file path="translations/browser_ui_strings_override_pt-PT.xtb" lang="pt-PT" />
+    <file path="translations/browser_ui_strings_override_ro.xtb" lang="ro" />
+    <file path="translations/browser_ui_strings_override_ru.xtb" lang="ru" />
+    <file path="translations/browser_ui_strings_override_si.xtb" lang="si" />
+    <file path="translations/browser_ui_strings_override_sk.xtb" lang="sk" />
+    <file path="translations/browser_ui_strings_override_sl.xtb" lang="sl" />
+    <file path="translations/browser_ui_strings_override_sq.xtb" lang="sq" />
+    <file path="translations/browser_ui_strings_override_sr.xtb" lang="sr" />
+    <file path="translations/browser_ui_strings_override_sr-Latn.xtb" lang="sr-Latn" />
+    <file path="translations/browser_ui_strings_override_sv.xtb" lang="sv" />
+    <file path="translations/browser_ui_strings_override_sw.xtb" lang="sw" />
+    <file path="translations/browser_ui_strings_override_ta.xtb" lang="ta" />
+    <file path="translations/browser_ui_strings_override_te.xtb" lang="te" />
+    <file path="translations/browser_ui_strings_override_th.xtb" lang="th" />
+    <file path="translations/browser_ui_strings_override_tr.xtb" lang="tr" />
+    <file path="translations/browser_ui_strings_override_uk.xtb" lang="uk" />
+    <file path="translations/browser_ui_strings_override_ur.xtb" lang="ur" />
+    <file path="translations/browser_ui_strings_override_uz.xtb" lang="uz" />
+    <file path="translations/browser_ui_strings_override_vi.xtb" lang="vi" />
+    <file path="translations/browser_ui_strings_override_zh-CN.xtb" lang="zh-CN" />
+    <file path="translations/browser_ui_strings_override_zh-HK.xtb" lang="zh-HK" />
+    <file path="translations/browser_ui_strings_override_zh-TW.xtb" lang="zh-TW" />
+    <file path="translations/browser_ui_strings_override_zu.xtb" lang="zu" />
+  </translations>
+  <release seq="1">
+    <messages fallback_to_english="true">
+      <part file="site_settings_override.grdp" />
+
+      <message name="IDS_NOTIFICATION_INCOGNITO_TAB" desc="Text used as notifications source when the notification is from Private tabs.">
+        Private tab
+      </message>
+      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user (who is currently in Private mode) that the site they are currently using is going to share data with an external application." formatter_data="android_java">
+        This site is about to share information with an app outside of Private mode.
+      </message>
+      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING_TITLE" desc="Title for dialog asking if the user wants to leave Private mode. [CHAR_LIMIT=32]" formatter_data="android_java">
+        Leave Private mode?
+      </message>
+      </messages>
+  </release>
+</grit>

@@ -92,11 +92,19 @@ BASE_FEATURE(kBraveReduceLanguage,
 // When enabled, brave shred feature will be available
 BASE_FEATURE(kBraveShredFeature,
              "BraveShredFeature",
+#if BUILDFLAG(IS_IOS)
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#else
              base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
 // When enabled, brave shred will clear all cache data when shredding.
 BASE_FEATURE(kBraveShredCacheData,
              "BraveShredCacheData",
+#if BUILDFLAG(IS_IOS)
+             base::FEATURE_ENABLED_BY_DEFAULT);
+#else
              base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
 // When enabled, show Strict (aggressive) fingerprinting mode in Brave Shields.
 BASE_FEATURE(kBraveShowStrictFingerprintingMode,
              "BraveShowStrictFingerprintingMode",
@@ -114,6 +122,10 @@ BASE_FEATURE(kBraveDarkModeBlock,
 BASE_FEATURE(kCosmeticFilteringSyncLoad,
              "CosmeticFilterSyncLoad",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// If the feature flag is on, we show the Block all Cookies toggle
+BASE_FEATURE(kBlockAllCookiesToggle,
+             "BlockAllCookiesToggle",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables extra TRACE_EVENTs in content filter js. The feature is
 // primary designed for local debugging.

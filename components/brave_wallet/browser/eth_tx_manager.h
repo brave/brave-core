@@ -22,8 +22,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 
-class PrefService;
-
 namespace brave_wallet {
 
 class EthTxManagerUnitTest;
@@ -38,12 +36,11 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   using AddUnapprovedEvmTransactionCallback =
       mojom::TxService::AddUnapprovedEvmTransactionCallback;
 
-  EthTxManager(TxService* tx_service,
+  EthTxManager(TxService& tx_service,
                JsonRpcService* json_rpc_service,
-               KeyringService* keyring_service,
-               PrefService* prefs,
-               TxStorageDelegate* delegate,
-               AccountResolverDelegate* account_resolver_delegate);
+               KeyringService& keyring_service,
+               TxStorageDelegate& delegate,
+               AccountResolverDelegate& account_resolver_delegate);
   ~EthTxManager() override;
   EthTxManager(const EthTxManager&) = delete;
   EthTxManager operator=(const EthTxManager&) = delete;
@@ -291,14 +288,12 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
                      uint256_t block_num) override {}
   void OnNewBlock(const std::string& chain_id, uint256_t block_num) override;
 
-  EthTxStateManager* GetEthTxStateManager();
-  EthBlockTracker* GetEthBlockTracker();
+  EthTxStateManager& GetEthTxStateManager();
+  EthBlockTracker& GetEthBlockTracker();
 
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
-  raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
 
   base::WeakPtrFactory<EthTxManager> weak_factory_{this};
 };

@@ -16,7 +16,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
@@ -29,10 +29,6 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/features.h"
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
@@ -239,11 +235,10 @@ class SidebarServiceTest : public testing::Test {
     }
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
     if (!ai_chat::features::IsAIChatEnabled()) {
       item_count -= 1;
     }
-#endif
+
     return item_count;
   }
 
@@ -513,12 +508,10 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
           return false;
         }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
         if (!ai_chat::features::IsAIChatEnabled() &&
             built_in_type == SidebarItem::BuiltInItemType::kChatUI) {
           return false;
         }
-#endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
         if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
@@ -825,11 +818,9 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
   }
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     expected_count += 1;
   }
-#endif
 
   // Check service has updated built-in item. Previously url was deprecated.xxx.
   EXPECT_EQ(expected_count, service_->items().size());
@@ -935,8 +926,9 @@ class SidebarServiceTestWithPlaylist : public SidebarServiceTest {
     auto iter = base::ranges::find_if(items, [](const SidebarItem& item) {
       return item.type == SidebarItem::Type::kTypeBuiltIn && item.open_in_panel;
     });
-    if (iter == items.end())
+    if (iter == items.end()) {
       return;
+    }
 
     const int index = std::distance(items.begin(), iter);
     service_->RemoveItemAt(index);
@@ -971,9 +963,7 @@ class SidebarServiceOrderingTest : public SidebarServiceTest {
 
   void SetUp() override {
     SidebarServiceTest::SetUp();
-#if BUILDFLAG(ENABLE_AI_CHAT)
     scoped_feature_list_.InitAndEnableFeature(ai_chat::features::kAIChat);
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   }
 
   bool ValidateBuiltInTypesOrdering(
@@ -1014,9 +1004,7 @@ class SidebarServiceOrderingTest : public SidebarServiceTest {
   }
 
  private:
-#if BUILDFLAG(ENABLE_AI_CHAT)
   base::test::ScopedFeatureList scoped_feature_list_;
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 };
 
 TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
@@ -1049,11 +1037,7 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
       SidebarItem::BuiltInItemType::kBraveTalk,
   };
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   auto expected_count = sidebar_items->size();
-#else
-  auto expected_count = sidebar_items->size() - 1;
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count++;
@@ -1077,11 +1061,7 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
       SidebarItem::BuiltInItemType::kPlaylist,
   };
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   auto expected_count = sidebar_items->size();
-#else
-  auto expected_count = sidebar_items->size() - 1;
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
@@ -1108,11 +1088,7 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
       SidebarItem::BuiltInItemType::kWallet,
   };
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   auto expected_count = sidebar_items->size() + 1;
-#else
-  auto expected_count = sidebar_items->size();
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {

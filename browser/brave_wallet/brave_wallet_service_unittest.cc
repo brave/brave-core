@@ -299,9 +299,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
  public:
   BraveWalletServiceUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        shared_url_loader_factory_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+        shared_url_loader_factory_(url_loader_factory_.GetSafeWeakWrapper()) {}
 
   ~BraveWalletServiceUnitTest() override = default;
 
@@ -443,11 +441,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
     sol_token_ = mojom::BlockchainToken::New(
         "", "Solana", "sol.png", false, false, false, false,
         mojom::SPLTokenProgram::kUnsupported, false, false, "SOL", 9, true, "",
-        "", mojom::kSolanaMainnet, mojom::CoinType::SOL);
+        "", mojom::kSolanaMainnet, mojom::CoinType::SOL, false);
     fil_token_ = mojom::BlockchainToken::New(
         "", "Filecoin", "fil.png", false, false, false, false,
         mojom::SPLTokenProgram::kUnsupported, false, false, "FIL", 18, true, "",
-        "", mojom::kFilecoinMainnet, mojom::CoinType::FIL);
+        "", mojom::kFilecoinMainnet, mojom::CoinType::FIL, false);
   }
 
   void TearDown() override {
@@ -692,9 +690,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   }
 
   void SimulateOnGetImportInfo(const std::string& new_password,
-                               bool result,
-                               const ImportInfo& info,
-                               ImportError error,
+                               base::expected<ImportInfo, ImportError> info,
                                bool* success_out,
                                std::string* error_message_out) {
     // People import with a blank default keyring, so clear it out
@@ -710,7 +706,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
               }
               run_loop.Quit();
             }),
-        result, info, error);
+        info);
     run_loop.Run();
   }
 
@@ -860,6 +856,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
   AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
 
   content::BrowserTaskEnvironment task_environment_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
@@ -883,8 +881,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
   mojom::BlockchainTokenPtr sol_usdc_;
   mojom::BlockchainTokenPtr sol_tsla_;
   mojom::BlockchainTokenPtr fil_token_;
-  network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
@@ -1023,7 +1019,8 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
     auto native_asset = mojom::BlockchainToken::New(
         "", chain->symbol_name, "", false, false, false, false,
         mojom::SPLTokenProgram::kUnsupported, false, false, chain->symbol,
-        chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH);
+        chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH,
+        false);
     std::vector<mojom::BlockchainTokenPtr> tokens;
     GetUserAssets(chain->chain_id, mojom::CoinType::ETH, &tokens);
     if (chain->chain_id == mojom::kMainnetChainId) {
@@ -1135,7 +1132,8 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   mojom::BlockchainTokenPtr erc721_token = mojom::BlockchainToken::New(
       "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", "BAYC", "bayc.png", false,
       false, false, false, mojom::SPLTokenProgram::kUnsupported, true, false,
-      "BAYC", 0, true, "0x1", "", mojom::kMainnetChainId, mojom::CoinType::ETH);
+      "BAYC", 0, true, "0x1", "", mojom::kMainnetChainId, mojom::CoinType::ETH,
+      false);
   responses[kERC721InterfaceId] = interface_supported_response;
   responses[kERC1155InterfaceId] = interface_not_supported_response;
   SetGetEthNftStandardInterceptor(network, responses);
@@ -1156,7 +1154,7 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
       false, false, false, false, mojom::SPLTokenProgram::kUnsupported, true,
       false, "ADIDAS", 0, true, "0x1", "", mojom::kMainnetChainId,
-      mojom::CoinType::ETH);
+      mojom::CoinType::ETH, false);
   responses[kERC721InterfaceId] = interface_not_supported_response;
   responses[kERC1155InterfaceId] = interface_supported_response;
   SetGetEthNftStandardInterceptor(network, responses);
@@ -1178,7 +1176,7 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
       false, false, false, false, mojom::SPLTokenProgram::kUnsupported, true,
       false, "ADIDAS", 0, true, "0x2", "", mojom::kMainnetChainId,
-      mojom::CoinType::ETH);
+      mojom::CoinType::ETH, false);
   responses[kERC721InterfaceId] = interface_not_supported_response;
   responses[kERC1155InterfaceId] = interface_supported_response;
   SetGetEthNftStandardInterceptor(network, responses);
@@ -1199,7 +1197,7 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
       "0x3333333333333333333333333333333333333333", "333333", "333333.png",
       false, false, false, false, mojom::SPLTokenProgram::kUnsupported, true,
       false, "333333", 0, true, "0x1", "", mojom::kMainnetChainId,
-      mojom::CoinType::ETH);
+      mojom::CoinType::ETH, false);
   responses[kERC721InterfaceId] = "invalid";
   responses[kERC1155InterfaceId] = interface_not_supported_response;
   SetGetEthNftStandardInterceptor(network, responses);
@@ -1210,7 +1208,7 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
       "0x4444444444444444444444444444444444444444", "444444", "444444.png",
       false, false, false, false, mojom::SPLTokenProgram::kUnsupported, true,
       false, "444444", 0, true, "0x1", "", mojom::kMainnetChainId,
-      mojom::CoinType::ETH);
+      mojom::CoinType::ETH, false);
   responses[kERC721InterfaceId] = interface_not_supported_response;
   responses[kERC1155InterfaceId] = interface_not_supported_response;
   SetGetEthNftStandardInterceptor(network, responses);
@@ -1564,7 +1562,7 @@ TEST_F(BraveWalletServiceUnitTest,
   auto native_asset = mojom::BlockchainToken::New(
       "", "symbol_name", "https://url1.com", false, false, false, false,
       mojom::SPLTokenProgram::kUnsupported, false, false, "symbol", 11, true,
-      "", "", "0x5566", mojom::CoinType::ETH);
+      "", "", "0x5566", mojom::CoinType::ETH, false);
 
   std::vector<mojom::BlockchainTokenPtr> tokens;
 
@@ -2209,31 +2207,32 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   const char* new_password = "brave1234!";
   bool success;
   std::string error_message;
-  SimulateOnGetImportInfo(new_password, false, ImportInfo(),
-                          ImportError::kJsonError, &success, &error_message);
+  SimulateOnGetImportInfo(new_password,
+                          base::unexpected(ImportError::kJsonError), &success,
+                          &error_message);
   EXPECT_FALSE(success);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_JSON_ERROR));
 
-  SimulateOnGetImportInfo(new_password, false, ImportInfo(),
-                          ImportError::kPasswordError, &success,
-                          &error_message);
+  SimulateOnGetImportInfo(new_password,
+                          base::unexpected(ImportError::kPasswordError),
+                          &success, &error_message);
   EXPECT_FALSE(success);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR));
 
-  SimulateOnGetImportInfo(new_password, false, ImportInfo(),
-                          ImportError::kInternalError, &success,
-                          &error_message);
+  SimulateOnGetImportInfo(new_password,
+                          base::unexpected(ImportError::kInternalError),
+                          &success, &error_message);
   EXPECT_FALSE(success);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
 
   error_message.clear();
   const char* valid_mnemonic = kMnemonicDripCaution;
-  SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({valid_mnemonic, false, 3}),
-                          ImportError::kNone, &success, &error_message);
+  SimulateOnGetImportInfo(new_password,
+                          base::ok(ImportInfo({valid_mnemonic, false, 3})),
+                          &success, &error_message);
   EXPECT_TRUE(success);
   EXPECT_TRUE(error_message.empty());
   {
@@ -2257,9 +2256,9 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
       "balance rose almost area busy among bring hidden bind later capable "
       "pulp "
       "laundry";
-  SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({valid_legacy_mnemonic, true, 4}),
-                          ImportError::kNone, &success, &error_message);
+  SimulateOnGetImportInfo(
+      new_password, base::ok(ImportInfo({valid_legacy_mnemonic, true, 4})),
+      &success, &error_message);
   EXPECT_TRUE(success);
   EXPECT_TRUE(error_message.empty());
   {
@@ -2279,9 +2278,9 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   }
 
   const char* invalid_mnemonic = "not correct seed word";
-  SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({invalid_mnemonic, false, 2}),
-                          ImportError::kNone, &success, &error_message);
+  SimulateOnGetImportInfo(new_password,
+                          base::ok(ImportInfo({invalid_mnemonic, false, 2})),
+                          &success, &error_message);
   EXPECT_FALSE(success);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_MNEMONIC_ERROR));
@@ -2425,7 +2424,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
             "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin",
             "usdc.png", false, true, false, false,
             mojom::SPLTokenProgram::kUnsupported, false, false, "USDC", 6, true,
-            "", "", chain_id, mojom::CoinType::ETH);
+            "", "", chain_id, mojom::CoinType::ETH, false);
     ASSERT_EQ(usdc_from_blockchain_registry,
               GetRegistry()->GetTokenByAddress(
                   chain_id, mojom::CoinType::ETH,
@@ -2434,18 +2433,19 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
         mojom::BlockchainToken::New(
             "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "", false,
             true, false, false, mojom::SPLTokenProgram::kUnsupported, false,
-            false, "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH);
+            false, "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH,
+            false);
     ASSERT_TRUE(service_->AddUserAssetInternal(usdc_from_user_assets.Clone()));
 
     mojom::BlockchainTokenPtr usdc_from_request = mojom::BlockchainToken::New(
         "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USDC", "", false, true,
         false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
-        "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH);
+        "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH, false);
 
     mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
         "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", false, true,
         false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
-        "COLOR", 18, true, "", "", chain_id, mojom::CoinType::ETH);
+        "COLOR", 18, true, "", "", chain_id, mojom::CoinType::ETH, false);
 
     // Case 1: Suggested token does not exist (no entry with the same contract
     // address) in BlockchainRegistry nor user assets.
@@ -2490,13 +2490,13 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
             "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png",
             false, true, false, false, mojom::SPLTokenProgram::kUnsupported,
             false, false, "USDT", 6, true, "", "", chain_id,
-            mojom::CoinType::ETH);
+            mojom::CoinType::ETH, false);
     ASSERT_TRUE(service_->AddUserAssetInternal(usdt_from_user_assets.Clone()));
 
     mojom::BlockchainTokenPtr usdt_from_request = mojom::BlockchainToken::New(
         "0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT", "", false, true,
         false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
-        "USDT", 18, true, "", "", chain_id, mojom::CoinType::ETH);
+        "USDT", 18, true, "", "", chain_id, mojom::CoinType::ETH, false);
 
     // Case 5: Suggested token exists in user asset list and is visible, does
     // not exist in BlockchainRegistry. Token should be in user asset list and
@@ -2525,7 +2525,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     mojom::BlockchainTokenPtr busd = mojom::BlockchainToken::New(
         "0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "", false,
         true, false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
-        "BUSD", 18, true, "", "", chain_id, mojom::CoinType::ETH);
+        "BUSD", 18, true, "", "", chain_id, mojom::CoinType::ETH, false);
     AddSuggestToken(busd.Clone(), busd.Clone(), false,
                     true /* run_switch_network */);
 
@@ -2533,7 +2533,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     mojom::BlockchainTokenPtr brb_from_request = mojom::BlockchainToken::New(
         "0x6B175474E89094C44Da98b954EedeAC495271d0A", "BRB", "", false, true,
         false, false, mojom::SPLTokenProgram::kUnsupported, false, false, "BRB",
-        6, true, "", "", chain_id, mojom::CoinType::ETH);
+        6, true, "", "", chain_id, mojom::CoinType::ETH, false);
     ASSERT_FALSE(service_->RemoveUserAsset(brb_from_request.Clone()));
     AddSuggestToken(brb_from_request.Clone(), brb_from_request.Clone(), false);
     token = get_user_asset(chain_id, brb_from_request->contract_address);
@@ -2568,7 +2568,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
       "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", false, true,
       false, false, mojom::SPLTokenProgram::kUnsupported, false, false, "COLOR",
-      18, true, "", "", "0x1", mojom::CoinType::ETH);
+      18, true, "", "", "0x1", mojom::CoinType::ETH, false);
   AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -2855,9 +2855,9 @@ TEST_F(BraveWalletServiceUnitTest, EnsureSelectedAccountForChain) {
   const char* new_password = "brave1234!";
   bool success;
   std::string error_message;
-  SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({kMnemonicDripCaution, false, 1}),
-                          ImportError::kNone, &success, &error_message);
+  SimulateOnGetImportInfo(
+      new_password, base::ok(ImportInfo({kMnemonicDripCaution, false, 1})),
+      &success, &error_message);
 
   auto accounts = std::move(keyring_service_->GetAllAccountsSync()->accounts);
   auto eth_account_id = accounts[0]->account_id->Clone();

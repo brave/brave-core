@@ -46,7 +46,9 @@ std::string NEVPNStatusToString(NEVPNStatus status) {
     case NEVPNStatusDisconnecting:
       return "NEVPNStatusDisconnecting";
     default:
-      NOTREACHED_IN_MIGRATION();
+      // We all handled for current |NEVPNStatus| above.
+      // but macOS sdk could be changed in the future.
+      break;
   }
   return "NEVPNStatusInvalid";
 }

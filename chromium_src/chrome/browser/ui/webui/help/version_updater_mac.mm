@@ -171,8 +171,8 @@ void SparkleVersionUpdater::UpdateStatus(NSDictionary* dictionary) {
       break;
 
     default:
-      NOTREACHED_IN_MIGRATION();
-      return;
+      // SparkleGlue only posts the above values.
+      NOTREACHED();
   }
 
   // If there are any detailed error messages being passed along by Keystone,

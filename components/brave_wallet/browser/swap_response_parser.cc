@@ -27,10 +27,6 @@ namespace brave_wallet {
 
 namespace zeroex {
 namespace {
-constexpr char kSwapValidationErrorCode[] = "100";
-constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
-constexpr char kTransferAmountExceedsAllowanceMessage[] =
-    "ERC20: transfer amount exceeds allowance";
 
 mojom::ZeroExFeePtr ParseZeroExFee(const base::Value& value) {
   if (value.is_none()) {
@@ -48,146 +44,220 @@ mojom::ZeroExFeePtr ParseZeroExFee(const base::Value& value) {
   }
 
   auto zero_ex_fee = mojom::ZeroExFee::New();
-  zero_ex_fee->fee_type = zero_ex_fee_value->fee_type;
-  zero_ex_fee->fee_token = zero_ex_fee_value->fee_token;
-  zero_ex_fee->fee_amount = zero_ex_fee_value->fee_amount;
-  zero_ex_fee->billing_type = zero_ex_fee_value->billing_type;
+  zero_ex_fee->token = zero_ex_fee_value->token;
+  zero_ex_fee->amount = zero_ex_fee_value->amount;
+  zero_ex_fee->type = zero_ex_fee_value->type;
 
   return zero_ex_fee;
+}
+
+mojom::ZeroExRoutePtr ParseRoute(const swap_responses::ZeroExRoute& value) {
+  auto route = mojom::ZeroExRoute::New();
+  for (const auto& fill_value : value.fills) {
+    auto fill = mojom::ZeroExRouteFill::New();
+    fill->from = fill_value.from;
+    fill->to = fill_value.to;
+    fill->source = fill_value.source;
+    fill->proportion_bps = fill_value.proportion_bps;
+    route->fills.push_back(std::move(fill));
+  }
+
+  return route;
+}
+
+mojom::ZeroExQuotePtr ParseQuote(
+    const swap_responses::ZeroExQuoteResponse& value) {
+  auto quote = mojom::ZeroExQuote::New();
+
+  if (value.buy_amount.has_value()) {
+    quote->buy_amount = value.buy_amount.value();
+  } else {
+    return nullptr;
+  }
+
+  if (value.buy_token.has_value()) {
+    quote->buy_token = value.buy_token.value();
+  } else {
+    return nullptr;
+  }
+
+  if (value.gas.has_value()) {
+    quote->gas = value.gas.value();
+  } else {
+    return nullptr;
+  }
+
+  if (value.gas_price.has_value()) {
+    quote->gas_price = value.gas_price.value();
+  } else {
+    return nullptr;
+  }
+
+  quote->liquidity_available = value.liquidity_available;
+
+  if (value.min_buy_amount.has_value()) {
+    quote->min_buy_amount = value.min_buy_amount.value();
+  } else {
+    return nullptr;
+  }
+
+  if (value.sell_amount.has_value()) {
+    quote->sell_amount = value.sell_amount.value();
+  } else {
+    return nullptr;
+  }
+
+  if (value.sell_token.has_value()) {
+    quote->sell_token = value.sell_token.value();
+  } else {
+    return nullptr;
+  }
+
+  if (value.total_network_fee.has_value()) {
+    quote->total_network_fee = value.total_network_fee.value();
+  } else {
+    return nullptr;
+  }
+
+  if (value.route.has_value()) {
+    quote->route = ParseRoute(value.route.value());
+  } else {
+    return nullptr;
+  }
+
+  if (value.fees.has_value()) {
+    auto fees = mojom::ZeroExFees::New();
+    if (auto zero_ex_fee = ParseZeroExFee(value.fees.value().zero_ex_fee);
+        zero_ex_fee) {
+      fees->zero_ex_fee = std::move(zero_ex_fee);
+    }
+    quote->fees = std::move(fees);
+  } else {
+    return nullptr;
+  }
+
+  return quote;
 }
 
 }  // namespace
 
 mojom::ZeroExQuotePtr ParseQuoteResponse(const base::Value& json_value,
-                                         bool expect_transaction_data) {
+                                         const std::string& chain_id) {
   // {
-  //   "price":"1916.27547998814058355",
-  //   "guaranteedPrice":"1935.438234788021989386",
-  //   "to":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-  //   "data":"...",
-  //   "value":"0",
-  //   "gas":"719000",
-  //   "estimatedGas":"719000",
-  //   "gasPrice":"26000000000",
-  //   "protocolFee":"0",
-  //   "minimumProtocolFee":"0",
-  //   "buyTokenAddress":"0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-  //   "sellTokenAddress":"0x6b175474e89094c44da98b954eedeac495271d0f",
-  //   "buyAmount":"1000000000000000000000",
-  //   "sellAmount":"1916275479988140583549706",
-  //   "sources":[...],
-  //   "allowanceTarget":"0xdef1c0ded9bec7f1a1670819833240f027b25eff",
-  //   "sellTokenToEthRate":"1900.44962824532464391",
-  //   "buyTokenToEthRate":"1",
-  //   "estimatedPriceImpact": "0.7232",
-  //   "sources": [
-  //     {
-  //       "name": "0x",
-  //       "proportion": "0",
-  //     },
-  //     {
-  //       "name": "Uniswap_V2",
-  //       "proportion": "1",
-  //     },
-  //     {
-  //       "name": "Curve",
-  //       "proportion": "0",
-  //     }
-  //   ],
+  //   "blockNumber": "20114692",
+  //   "buyAmount": "100037537",
+  //   "buyToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
   //   "fees": {
-  //     "zeroExFee": {
-  //       "feeType": "volume",
-  //       "feeToken": "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
-  //       "feeAmount": "148470027512868522",
-  //       "billingType": "on-chain"
+  //     "integratorFee": null,
+  //     "zeroExFee": null,
+  //     "gasFee": null
+  //   },
+  //   "issues": {
+  //     "allowance": {
+  //       "actual": "0",
+  //       "spender": "0x0000000000001ff3684f28c67538d4d072c22734"
+  //     },
+  //     "balance": {
+  //       "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  //       "actual": "0",
+  //       "expected": "100000000"
+  //     },
+  //     "simulationIncomplete": false,
+  //     "invalidSourcesPassed": []
+  //   },
+  //   "liquidityAvailable": true,
+  //   "minBuyAmount": "99037162",
+  //   "route": {
+  //     "fills": [
+  //       {
+  //         "from": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  //         "to": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+  //         "source": "SolidlyV3",
+  //         "proportionBps": "10000"
+  //       }
+  //     ],
+  //     "tokens": [
+  //       {
+  //         "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  //         "symbol": "USDC"
+  //       },
+  //       {
+  //         "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+  //         "symbol": "USDT"
+  //       }
+  //     ]
+  //   },
+  //   "sellAmount": "100000000",
+  //   "sellToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  //   "tokenMetadata": {
+  //     "buyToken": {
+  //       "buyTaxBps": "0",
+  //       "sellTaxBps": "0"
+  //     },
+  //     "sellToken": {
+  //       "buyTaxBps": "0",
+  //       "sellTaxBps": "0"
   //     }
-  //   }
+  //   },
+  //   "totalNetworkFee": "1393685870940000",
+  //   "transaction": {
+  //     "to": "0x7f6cee965959295cc64d0e6c00d99d6532d8e86b",
+  //     "data":
+  //     "0x1fff991f00000000000000000000000070a9f34f9b34c64957b9c401a97bfed35b95049e000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec70000000000000000000000000000000000000000000000000000000005e72fea00000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000001c00000000000000000000000000000000000000000000000000000000000000144c1fb425e0000000000000000000000007f6cee965959295cc64d0e6c00d99d6532d8e86b000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000000000000000000000000000000005f5e1000000000000000000000000000000000000006e898131631616b1779bad70bc17000000000000000000000000000000000000000000000000000000006670d06c00000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000041ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016438c9c147000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4800000000000000000000000000000000000000000000000000000000000027100000000000000000000000006146be494fee4c73540cb1c5f87536abf1452500000000000000000000000000000000000000000000000000000000000000004400000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000084c31b8d7a0000000000000000000000007f6cee965959295cc64d0e6c00d99d6532d8e86b00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000005f5e10000000000000000000000000000000000000000000000000000000001000276a40000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+  //     "gas": "288079",
+  //     "gasPrice": "4837860000",
+  //     "value": "0"
+  //   },
+  //   "zid": "0x111111111111111111111111"
   // }
 
   auto swap_response_value =
-      swap_responses::SwapResponse0x::FromValue(json_value);
+      swap_responses::ZeroExQuoteResponse::FromValue(json_value);
   if (!swap_response_value) {
     return nullptr;
   }
 
   auto swap_response = mojom::ZeroExQuote::New();
-  swap_response->price = swap_response_value->price;
 
-  if (expect_transaction_data) {
-    if (!swap_response_value->guaranteed_price) {
-      return nullptr;
-    }
-    swap_response->guaranteed_price = *swap_response_value->guaranteed_price;
-
-    if (!swap_response_value->to) {
-      return nullptr;
-    }
-    swap_response->to = *swap_response_value->to;
-
-    if (!swap_response_value->data) {
-      return nullptr;
-    }
-    swap_response->data = *swap_response_value->data;
+  if (!swap_response_value->liquidity_available) {
+    swap_response->liquidity_available = false;
+    return swap_response;
   }
 
-  swap_response->value = swap_response_value->value;
-  swap_response->gas = swap_response_value->gas;
-  swap_response->estimated_gas = swap_response_value->estimated_gas;
-  swap_response->gas_price = swap_response_value->gas_price;
-  swap_response->protocol_fee = swap_response_value->protocol_fee;
-  swap_response->minimum_protocol_fee =
-      swap_response_value->minimum_protocol_fee;
-  swap_response->buy_token_address = swap_response_value->buy_token_address;
-  swap_response->sell_token_address = swap_response_value->sell_token_address;
-  swap_response->buy_amount = swap_response_value->buy_amount;
-  swap_response->sell_amount = swap_response_value->sell_amount;
-  swap_response->allowance_target = swap_response_value->allowance_target;
-  swap_response->sell_token_to_eth_rate =
-      swap_response_value->sell_token_to_eth_rate;
-  swap_response->buy_token_to_eth_rate =
-      swap_response_value->buy_token_to_eth_rate;
-  swap_response->estimated_price_impact =
-      swap_response_value->estimated_price_impact;
-
-  for (const auto& source_value : swap_response_value->sources) {
-    swap_response->sources.push_back(
-        mojom::ZeroExSource::New(source_value.name, source_value.proportion));
+  swap_response = ParseQuote(swap_response_value.value());
+  if (!swap_response) {
+    return nullptr;
   }
 
-  auto fees = mojom::ZeroExFees::New();
-  if (auto zero_ex_fee = ParseZeroExFee(swap_response_value->fees.zero_ex_fee);
-      zero_ex_fee) {
-    fees->zero_ex_fee = std::move(zero_ex_fee);
-  }
-  swap_response->fees = std::move(fees);
+  swap_response->allowance_target =
+      GetZeroExAllowanceHolderAddress(chain_id).value_or("");
 
   return swap_response;
 }
 
-mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
-  // https://github.com/0xProject/0x-monorepo/blob/development/packages/json-schemas/schemas/relayer_api_error_response_schema.json
-  //
-  // {
-  // 	"code": "100",
-  // 	"reason": "Validation Failed",
-  // 	"validationErrors": [{
-  // 			"field": "sellAmount",
-  // 			"code": "1001",
-  // 			"reason": "should match pattern \"^\\d+$\""
-  // 		},
-  // 		{
-  // 			"field": "sellAmount",
-  // 			"code": "1001",
-  // 			"reason": "should be integer"
-  // 		},
-  // 		{
-  // 			"field": "sellAmount",
-  // 			"code": "1001",
-  // 			"reason": "should match some schema in anyOf"
-  // 		}
-  // 	]
-  // }
+mojom::ZeroExTransactionPtr ParseTransactionResponse(
+    const base::Value& json_value) {
+  auto swap_response_value =
+      swap_responses::ZeroExTransactionResponse::FromValue(json_value);
+  if (!swap_response_value) {
+    return nullptr;
+  }
 
+  auto transaction = mojom::ZeroExTransaction::New();
+  transaction->to = swap_response_value->transaction.to;
+  transaction->data = swap_response_value->transaction.data;
+  transaction->gas = swap_response_value->transaction.gas;
+  transaction->gas_price = swap_response_value->transaction.gas_price;
+  transaction->value = swap_response_value->transaction.value;
+
+  return transaction;
+}
+
+mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
+  // {
+  //    "code": "SWAP_VALIDATION_FAILED",
+  //    "message": "Validation Failed"
+  // }
   auto swap_error_response_value =
       swap_responses::ZeroExErrorResponse::FromValue(json_value);
   if (!swap_error_response_value) {
@@ -195,31 +265,8 @@ mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
   }
 
   auto result = mojom::ZeroExError::New();
-  result->code = swap_error_response_value->code;
-  result->reason = swap_error_response_value->reason;
-
-  if (swap_error_response_value->validation_errors) {
-    for (auto& error_item : *swap_error_response_value->validation_errors) {
-      result->validation_errors.emplace_back(mojom::ZeroExValidationError::New(
-          error_item.field, error_item.code, error_item.reason));
-    }
-  }
-  result->is_insufficient_liquidity = false;
-  if (result->code == kSwapValidationErrorCode) {
-    for (auto& item : result->validation_errors) {
-      if (item->reason == kInsufficientAssetLiquidity) {
-        result->is_insufficient_liquidity = true;
-      }
-    }
-  }
-
-  // This covers the case when an insufficient allowance can only be detected
-  // by the 0x Quote API, for example when swapping in ExactOut mode.
-  if (swap_error_response_value->values &&
-      base::Contains(swap_error_response_value->values->message,
-                     kTransferAmountExceedsAllowanceMessage)) {
-    result->is_insufficient_allowance = true;
-  }
+  result->name = swap_error_response_value->name;
+  result->message = swap_error_response_value->message;
 
   return result;
 }

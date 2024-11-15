@@ -12,7 +12,6 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -211,15 +210,9 @@ TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
 
 // Check Leo item is top-most item.
 TEST_F(SidebarModelTest, TopItemTest) {
-#if BUILDFLAG(ENABLE_AI_CHAT)
   const auto first_item = service()->items()[0];
   EXPECT_EQ(first_item.built_in_item_type,
             SidebarItem::BuiltInItemType::kChatUI);
-#else
-  const auto first_item = service()->items()[0];
-  EXPECT_EQ(first_item.built_in_item_type,
-            SidebarItem::BuiltInItemType::kReadingList);
-#endif
 }
 
 TEST(SidebarUtilTest, SidebarShowOptionsDefaultTest) {

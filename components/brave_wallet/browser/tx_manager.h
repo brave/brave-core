@@ -12,12 +12,12 @@
 #include <string>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-
-class PrefService;
 
 namespace brave_wallet {
 
@@ -30,9 +30,8 @@ class TxManager : public TxStateManager::Observer,
  public:
   TxManager(std::unique_ptr<TxStateManager> tx_state_manager,
             std::unique_ptr<BlockTracker> block_tracker,
-            TxService* tx_service,
-            KeyringService* keyring_service,
-            PrefService* prefs);
+            TxService& tx_service,
+            KeyringService& keyring_service);
   ~TxManager() override;
 
   using AddUnapprovedTransactionCallback =
@@ -74,14 +73,18 @@ class TxManager : public TxStateManager::Observer,
   virtual void UpdatePendingTransactions(
       const std::optional<std::string>& chain_id) = 0;
 
-  std::unique_ptr<TxStateManager> tx_state_manager_;
-  std::unique_ptr<BlockTracker> block_tracker_;
-  raw_ptr<TxService> tx_service_ = nullptr;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
-  raw_ptr<PrefService> prefs_ = nullptr;
-  std::set<std::string> pending_chain_ids_;
+  TxStateManager& tx_state_manager() { return *tx_state_manager_; }
+  const std::set<std::string>& pending_chain_ids() const {
+    return pending_chain_ids_;
+  }
+  BlockTracker& block_tracker() { return *block_tracker_; }
+  KeyringService& keyring_service() { return *keyring_service_; }
+  TxService& tx_service() { return *tx_service_; }
 
  private:
+  friend class AssetDiscoveryManagerUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
+
   virtual mojom::CoinType GetCoinType() const = 0;
 
   // TxStateManager::Observer
@@ -95,6 +98,12 @@ class TxManager : public TxStateManager::Observer,
 
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
+
+  std::unique_ptr<TxStateManager> tx_state_manager_;
+  std::unique_ptr<BlockTracker> block_tracker_;
+  const raw_ref<TxService> tx_service_;
+  const raw_ref<KeyringService> keyring_service_;
+  std::set<std::string> pending_chain_ids_;
 };
 
 }  // namespace brave_wallet

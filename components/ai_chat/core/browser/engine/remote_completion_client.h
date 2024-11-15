@@ -13,18 +13,29 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
+#include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
+namespace base {
+class Value;
+}  // namespace base
+template <class T>
+class scoped_refptr;
+
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace ai_chat {
+class AIChatCredentialManager;
+struct CredentialCacheEntry;
 
 using api_request_helper::APIRequestResult;
 

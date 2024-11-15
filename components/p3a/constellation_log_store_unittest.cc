@@ -42,7 +42,7 @@ class P3AConstellationLogStoreTest : public testing::Test {
       case MetricLogType::kExpress:
         return kExpressMaxEpochsToRetain;
     }
-    NOTREACHED_IN_MIGRATION();
+    NOTREACHED();
   }
 
   void UpdateSomeMessages(uint8_t epoch, size_t message_count) {

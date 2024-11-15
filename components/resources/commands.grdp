@@ -238,6 +238,10 @@
   <message name="IDS_IDC_IMPORT_SETTINGS">
     Import settings
   </message>
+
+  <message name="IDS_IDC_OPEN_FULL_PAGE_CHAT">
+    Open AI Chat
+  </message>
   <message name="IDS_IDC_EDIT_SEARCH_ENGINES">
     Edit search engines
   </message>
@@ -406,6 +410,9 @@
   <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_NEVER">
     Hide bookmark bar
   </message>
+  <message name="IDS_IDC_EXPORT_ALL_BOOKMARKS">
+    Export all bookmarks
+  </message>
   <message name="IDS_IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY">
     Toggle All bookmarks button visibility
   </message>
@@ -512,6 +519,9 @@
     <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
       Swap Tab Positions
     </message>
+    <message name="IDS_IDC_SHOW_APPS_PAGE" desc="The label of the 'Show Apps' menu item">
+      Show Apps
+    </message>
   </if>
   <if expr="not use_titlecase">
     <message name="IDS_IDC_COMMANDER">
@@ -528,6 +538,9 @@
     </message>
     <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
       Swap tab positions
+    </message>
+    <message name="IDS_IDC_SHOW_APPS_PAGE" desc="The label of the 'Show Apps' menu item">
+      Show apps
     </message>
   </if>
 </grit-part>

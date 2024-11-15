@@ -26,6 +26,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.MainThread;
@@ -38,6 +40,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistPreferenceUtils;
@@ -134,7 +138,6 @@ import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
-import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
@@ -156,6 +159,11 @@ import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesFragment;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesModel;
+import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesUtil;
+import org.chromium.chrome.browser.quick_search_engines.views.QuickSearchEnginesViewAdapter;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
@@ -190,9 +198,10 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.util.ImageUtils;
+import org.chromium.chrome.browser.util.KeyboardVisibilityHelper;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
-import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -210,6 +219,7 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -236,7 +246,9 @@ public abstract class BraveActivity extends ChromeActivity
                 BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
                 BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
                 MiscAndroidMetricsConnectionErrorHandler
-                        .MiscAndroidMetricsConnectionErrorHandlerDelegate {
+                        .MiscAndroidMetricsConnectionErrorHandlerDelegate,
+                QuickSearchEnginesCallback,
+                KeyboardVisibilityHelper.KeyboardVisibilityListener {
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
@@ -261,9 +273,7 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String BRAVE_WEBCOMPAT_INFO_WIKI_URL =
             "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
 
-    private static final int DAYS_1 = 1;
     private static final int DAYS_4 = 4;
-    private static final int DAYS_5 = 5;
     private static final int DAYS_7 = 7;
     private static final int DAYS_12 = 12;
 
@@ -273,7 +283,11 @@ public abstract class BraveActivity extends ChromeActivity
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
+    public static final String GOOGLE_SEARCH_ENGINE_KEYWORD = ":g";
+    public static final String YOUTUBE_SEARCH_ENGINE_KEYWORD = ":yt";
     public static final String BRAVE_SEARCH_ENGINE_KEYWORD = ":br";
+    public static final String BING_SEARCH_ENGINE_KEYWORD = ":b";
+    public static final String STARTPAGE_SEARCH_ENGINE_KEYWORD = ":sp";
 
     private static final boolean ENABLE_IN_APP_UPDATE =
             Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
@@ -318,6 +332,9 @@ public abstract class BraveActivity extends ChromeActivity
     private MiscAndroidMetricsConnectionErrorHandler mMiscAndroidMetricsConnectionErrorHandler;
     private AppUpdateManager mAppUpdateManager;
     private boolean mWalletBadgeVisible;
+    private boolean mSpoofCustomTab;
+
+    private View mQuickSearchEnginesView;
 
     /** Serves as a general exception for failed attempts to get BraveActivity. */
     public static class BraveActivityNotFoundException extends Exception {
@@ -668,9 +685,7 @@ public abstract class BraveActivity extends ChromeActivity
                                     // if the pending requests reach the end of the chain
                                     // without returning earlier.
                                     final Runnable openWalletPanelRunnable =
-                                            () -> {
-                                                getBraveToolbarLayout().showWalletPanel();
-                                            };
+                                            () -> getBraveToolbarLayout().showWalletPanel();
                                     maybeShowSignSolTransactionsRequestLayout(
                                             openWalletPanelRunnable);
                                 }
@@ -1006,7 +1021,6 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
@@ -1164,7 +1178,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         checkFingerPrintingOnUpgrade(isFirstInstall);
-        checkForVpnCallout(isFirstInstall);
+        checkForVpnCallout();
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
                 && BraveVpnPrefUtils.isSubscriptionPurchase()
@@ -1261,6 +1275,7 @@ public abstract class BraveActivity extends ChromeActivity
                                 .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
             checkAppUpdate();
         }
+        new KeyboardVisibilityHelper(BraveActivity.this, BraveActivity.this);
     }
 
     private void enableSearchSuggestions() {
@@ -1350,7 +1365,7 @@ public abstract class BraveActivity extends ChromeActivity
         BraveVpnUtils.openBraveVpnPlansActivity(this);
     }
 
-    private void checkForVpnCallout(boolean isFirstInstall) {
+    private void checkForVpnCallout() {
         String countryCode = Locale.getDefault().getCountry();
 
         if (!countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
@@ -1536,6 +1551,11 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    public void openQuickSearchEnginesSettings() {
+        SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
+        settingsLauncher.startSettings(this, QuickSearchEnginesFragment.class);
+    }
+
     public void openBravePlaylistSettings() {
         SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
         settingsLauncher.startSettings(this, BravePlaylistPreferences.class);
@@ -1613,14 +1633,6 @@ public abstract class BraveActivity extends ChromeActivity
             }
         }
     }
-
-    private BraveNotificationWarningDialog.DismissListener mCloseDialogListener =
-            new BraveNotificationWarningDialog.DismissListener() {
-                @Override
-                public void onDismiss() {
-                    checkForNotificationData();
-                }
-            };
 
     private void checkForNotificationData() {
         Intent notifIntent = getIntent();
@@ -1862,17 +1874,6 @@ public abstract class BraveActivity extends ChromeActivity
         } else {
             // Open a new tab.
             getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
-        }
-    }
-
-    public void updateDayZeroChanges() {
-        Tab currentTab = getActivityTab();
-        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
-        if (currentTab != null) {
-            layout.updateBraveShieldsButtonState(currentTab);
-            if (UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
-                TabUtils.openNewTab();
-            }
         }
     }
 
@@ -2495,5 +2496,115 @@ public abstract class BraveActivity extends ChromeActivity
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
         alertDialog.show();
+    }
+
+    /*
+     * Whether we want to pretend to be a custom tab. May be usefull to avoid certain patches,
+     * when we want to have the same behaviour as in custom tabs.
+     */
+    public void spoofCustomTab(boolean spoof) {
+        mSpoofCustomTab = spoof;
+    }
+
+    @Override
+    public boolean isCustomTab() {
+        if (mSpoofCustomTab) {
+            return true;
+        }
+
+        return super.isCustomTab();
+    }
+
+    public void showQuickActionSearchEnginesView(int keypadHeight) {
+        mQuickSearchEnginesView =
+                getLayoutInflater().inflate(R.layout.quick_serach_engines_view, null);
+        RecyclerView recyclerView =
+                (RecyclerView)
+                        mQuickSearchEnginesView.findViewById(
+                                R.id.quick_search_engines_recyclerview);
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(BraveActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        ImageView quickSearchEnginesSettings =
+                (ImageView)
+                        mQuickSearchEnginesView.findViewById(R.id.quick_search_engines_settings);
+        quickSearchEnginesSettings.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openQuickSearchEnginesSettings();
+                    }
+                });
+
+        List<QuickSearchEnginesModel> searchEngines =
+                QuickSearchEnginesUtil.getQuickSearchEnginesForView(getCurrentProfile());
+        QuickSearchEnginesModel leoQuickSearchEnginesModel =
+                new QuickSearchEnginesModel("", "", "", true);
+        searchEngines.add(0, leoQuickSearchEnginesModel);
+
+        QuickSearchEnginesViewAdapter adapter =
+                new QuickSearchEnginesViewAdapter(BraveActivity.this, searchEngines, this);
+        recyclerView.setAdapter(adapter);
+        if (mQuickSearchEnginesView.getParent() == null) {
+            WindowManager.LayoutParams params =
+                    new WindowManager.LayoutParams(
+                            WindowManager.LayoutParams.MATCH_PARENT,
+                            WindowManager.LayoutParams.WRAP_CONTENT,
+                            WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
+                            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            params.gravity = Gravity.BOTTOM;
+            params.y = keypadHeight; // Position the view above the keyboard
+
+            WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+            windowManager.addView(mQuickSearchEnginesView, params);
+        }
+    }
+
+    public void removeQuickActionSearchEnginesView() {
+        if (mQuickSearchEnginesView != null) {
+            WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+            windowManager.removeView(mQuickSearchEnginesView);
+        }
+    }
+
+    // QuickSearchCallback
+    @Override
+    public void onSearchEngineClick(int position, QuickSearchEnginesModel quickSearchEnginesModel) {
+        if (getActivityTab() == null) {
+            return;
+        }
+        String query = getBraveToolbarLayout().getLocationBarQuery();
+        if (position == 0) {
+            BraveLeoUtils.openLeoQuery(getActivityTab().getWebContents(), "", query, true);
+        } else {
+            LoadUrlParams loadUrlParams =
+                    new LoadUrlParams(
+                            quickSearchEnginesModel.getUrl().replace("{searchTerms}", query));
+            getActivityTab().loadUrl(loadUrlParams);
+        }
+        getBraveToolbarLayout().clearOmniboxFocus();
+    }
+
+    @Override
+    public void loadSearchEngineLogo(
+            ImageView logoView, QuickSearchEnginesModel quickSearchEnginesModel) {
+        ImageUtils.loadSearchEngineLogo(
+                getCurrentProfile(), logoView, quickSearchEnginesModel.getKeyword());
+    }
+
+    @Override
+    public void onKeyboardOpened(int keyboardHeight) {
+        if (QuickSearchEnginesUtil.getQuickSearchEnginesFeature()) {
+            showQuickActionSearchEnginesView(keyboardHeight);
+        }
+    }
+
+    @Override
+    public void onKeyboardClosed() {
+        if (QuickSearchEnginesUtil.getQuickSearchEnginesFeature()) {
+            removeQuickActionSearchEnginesView();
+        }
     }
 }

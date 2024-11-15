@@ -105,6 +105,13 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsGoogleSignInAllowExceptions",
        IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS},
 
+      {"siteSettingsBraveOpenAIChat",
+       IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT},
+      {"siteSettingsBraveOpenAIChatAsk",
+       IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_ASK},
+      {"siteSettingsBraveOpenAIChatBlock",
+       IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_BLOCK},
+
       {"siteSettingsLocalhostAccess",
        IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS},
       {"siteSettingsCategoryLocalhostAccess",
@@ -747,7 +754,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"settingsSelectValueYes", IDS_SETTINGS_SELECT_VALUE_YES},
       {"settingsSelectValueNo", IDS_SETTINGS_SELECT_VALUE_NO},
       {"settingsSelectValueAsk", IDS_SETTINGS_SELECT_VALUE_ASK},
-  };
+      {"braveShieldsSaveContactInfo",
+       IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL},
+      {"braveShieldsSaveContactInfoSublabel",
+       IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL_SUBLABEL}};
 
   html_source->AddLocalizedStrings(localized_strings);
   html_source->AddString("braveShieldsExampleTemplate", "example.com");

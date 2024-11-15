@@ -11,37 +11,52 @@
 
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 
-#include <memory>
+#include <array>
+#include <functional>
+#include <ios>
 #include <optional>
+#include <ostream>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 
+#include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/flat_tree.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
-#include "base/memory/ptr_util.h"
+#include "base/functional/callback.h"
+#include "base/logging.h"
+#include "base/numerics/safe_conversions.h"
+#include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/ai_chat/core/common/utils.h"
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 #include "brave/components/ai_chat/renderer/yt_util.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
-#include "net/base/url_util.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
-#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/mojom/script/script_evaluation_params.mojom-shared.h"
+#include "third_party/blink/public/platform/web_security_origin.h"
 #include "third_party/blink/public/platform/web_string.h"
+#include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_element.h"
+#include "third_party/blink/public/web/web_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
-#include "third_party/blink/public/web/web_node.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 #include "url/url_constants.h"
 #include "v8/include/v8-isolate.h"
+#include "v8/include/v8-local-handle.h"
 
 namespace ai_chat {
 
@@ -316,6 +331,25 @@ void PageContentExtractor::GetSearchSummarizerKey(
     return;
   }
   std::move(callback).Run(element.GetAttribute("content").Utf8());
+}
+
+void PageContentExtractor::GetOpenAIChatButtonNonce(
+    mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
+  auto element = render_frame()->GetWebFrame()->GetDocument().GetElementById(
+      "continue-with-leo");
+  if (element.IsNull() || !element.HasHTMLTagName("a")) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  GURL url(element.GetAttribute("href").Utf8());
+  std::string nonce = element.GetAttribute("data-nonce").Utf8();
+  if (!IsOpenAIChatButtonFromBraveSearchURL(url) || nonce.empty() ||
+      url.ref_piece() != nonce) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  std::move(callback).Run(nonce);
 }
 
 }  // namespace ai_chat

@@ -122,8 +122,6 @@ public class BuyVPNViewController: VPNSetupLoadingController {
 
     iapObserver.delegate = self
     buyVPNView.delegate = self
-
-    Preferences.VPN.popupShowed.value = true
   }
 
   public override func viewWillAppear(_ animated: Bool) {

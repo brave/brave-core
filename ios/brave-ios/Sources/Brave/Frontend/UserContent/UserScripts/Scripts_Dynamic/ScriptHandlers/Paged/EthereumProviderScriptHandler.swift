@@ -173,7 +173,7 @@ class EthereumProviderScriptHandler: TabContentScript {
 
       provider.send(
         method: sendPayload.method,
-        params: sendPayload.params ?? .init(listValue: []),
+        params: sendPayload.params?.listValue ?? .init([]),
         completion: handleResponse
       )
     case .isUnlocked:
