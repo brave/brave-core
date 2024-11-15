@@ -5,8 +5,8 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {RegisterStyleOverride} from '//resources/brave/polymer_overriding.js'
+import {html} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 RegisterStyleOverride(
   'certificate-manager-v2',
