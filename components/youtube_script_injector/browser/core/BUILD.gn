@@ -1,0 +1,30 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("core") {
+  output_name = "youtube_script_injector_browser_core"
+
+  defines = [ "IS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE_IMPL" ]
+
+  sources = [
+    "youtube_component_installer.cc",
+    "youtube_component_installer.h",
+    "youtube_rule.cc",
+    "youtube_rule.h",
+    "youtube_rule_registry.cc",
+    "youtube_rule_registry.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/youtube_script_injector/common",
+    "//brave/extensions:common",
+    "//components/component_updater",
+    "//crypto",
+    "//net",
+    "//url",
+  ]
+}

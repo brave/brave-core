@@ -30,6 +30,7 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/browser/content/psst_tab_helper.h"
+#include "brave/components/youtube_script_injector/browser/content/youtube_tab_helper.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -151,6 +152,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
   psst::PsstTabHelper::MaybeCreateForWebContents(
       web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  youtube_script_injector::YouTubeTabHelper::MaybeCreateForWebContents(
+      web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);    
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
