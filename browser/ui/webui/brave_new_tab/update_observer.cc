@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/common/pref_names.h"
 
 namespace brave_new_tab {
 
@@ -22,6 +24,11 @@ UpdateObserver::UpdateObserver(PrefService& pref_service) {
   AddPrefListener(NTPBackgroundPrefs::kPrefName, Source::kBackgroundPrefs);
   AddPrefListener(NTPBackgroundPrefs::kCustomImageListPrefName,
                   Source::kBackgroundPrefs);
+  AddPrefListener(brave_search_conversion::prefs::kShowNTPSearchBox,
+                  Source::kSearchPrefs);
+  AddPrefListener(prefs::kSearchSuggestEnabled, Source::kSearchPrefs);
+  AddPrefListener(brave_search_conversion::prefs::kDismissed,
+                  Source::kSearchPrefs);
 }
 
 UpdateObserver::~UpdateObserver() = default;

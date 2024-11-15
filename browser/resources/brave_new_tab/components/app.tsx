@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
+import { SearchBox } from './search/search_box'
 import { Background } from './background'
 import { BackgroundCaption } from './background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
@@ -26,7 +27,11 @@ export function App() {
       </button>
       <main>
         <div className='topsites-container' />
-        <div className='searchbox-container' />
+        <div className='searchbox-container'>
+          <SearchBox
+            onCustomizeSearchEngineList={() => setSettingsView('search')}
+          />
+        </div>
         <div className='background-caption-container'>
           <BackgroundCaption />
         </div>

@@ -12,10 +12,13 @@
 #include "chrome/common/webui_url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
+#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
 namespace content {
 class WebUI;
 }
+
+class RealboxHandler;
 
 namespace brave_new_tab {
 
@@ -28,8 +31,12 @@ class NewTabPageUI : public ui::MojoWebUIController {
   void BindInterface(
       mojo::PendingReceiver<mojom::NewTabPageHandler> pending_receiver);
 
+  void BindInterface(
+      mojo::PendingReceiver<searchbox::mojom::PageHandler> pending_reciever);
+
  private:
   std::unique_ptr<mojom::NewTabPageHandler> page_handler_;
+  std::unique_ptr<RealboxHandler> realbox_handler_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

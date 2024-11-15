@@ -71,6 +71,7 @@ export function defaultState(): NewTabState {
 export interface NewTabModel {
   getState: () => NewTabState
   addListener: (listener: (state: NewTabState) => void) => () => void
+  getPcdnImageURL: (url: string) => Promise<string>
   setBackgroundsEnabled: (enabled: boolean) => void
   setSponsoredImagesEnabled: (enabled: boolean) => void
   selectBackground: (type: BackgroundType, value: string) => void
@@ -83,6 +84,7 @@ export function defaultModel(): NewTabModel {
   return {
     getState() { return state },
     addListener() { return () => {} },
+    async  getPcdnImageURL(url) { return url },
     setBackgroundsEnabled(enabled) {},
     setSponsoredImagesEnabled(enabled) {},
     selectBackground(type, value) {},

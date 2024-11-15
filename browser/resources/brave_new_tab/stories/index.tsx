@@ -7,7 +7,9 @@ import * as React from 'react'
 
 import { LocaleContext } from '../components/locale_context'
 import { NewTabContext } from '../components/new_tab_context'
+import { SearchContext } from '../components/search_context'
 import { createNewTabModel } from './sb_new_tab_model'
+import { createSearchModel } from './sb_search_model'
 import { createLocale } from './sb_locale'
 import { App } from '../components/app'
 
@@ -20,9 +22,11 @@ export function NTPNext() {
   return (
     <LocaleContext locale={createLocale()}>
       <NewTabContext model={newTabModel}>
-        <div style={{ position: 'absolute', inset: 0 }}>
-          <App />
-        </div>
+        <SearchContext model={createSearchModel()}>
+          <div style={{ position: 'absolute', inset: 0 }}>
+            <App />
+          </div>
+        </SearchContext>
       </NewTabContext>
     </LocaleContext>
   )

@@ -12,6 +12,14 @@
     Use your own
   </message>
 
+  <message name="IDS_NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK">
+    Customize available engines
+  </message>
+
+  <message name="IDS_NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL" desc="Label for the list of search engines">
+    Enabled search engines
+  </message>
+
   <message name="IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL" desc="Gradient background colors title">
     Gradients
   </message>
@@ -24,12 +32,48 @@
     Refresh on every new tab
   </message>
 
+  <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT" desc="Placeholder text for when Brave is not the selected search engine">
+    Search the web
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT_BRAVE" desc="Placeholder text for when Brave is the selected search engine">
+    Ask Brave Search
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_CUSTOMIZE_ENGINE_LIST_TEXT" desc="Label for the customize list action">
+    Customize list
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_SETTINGS_TITLE" desc="Title for search settings">
+    Search
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_DISMISS_BUTTON_LABEL" desc="">
+    No thanks
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_ENABLE_BUTTON_LABEL" desc="">
+    Enable
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TEXT" desc="">
+    When you search, what you type will be sent to your search engine for better suggestions.
+  </message>
+
+  <message name="IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TITLE" desc="">
+    Enable search suggestions?
+  </message>
+
   <message name="IDS_NEW_TAB_SETTINGS_TITLE" desc="Title for settings dialog">
     Customize Dashboard
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL" desc="Text for settings background option">
     Show Background Images
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL" desc="Label for enabling the searchbox on the NTP">
+    Show search widget in new tabs
   </message>
 
   <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">
