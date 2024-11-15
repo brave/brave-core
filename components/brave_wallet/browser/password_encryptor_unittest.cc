@@ -47,8 +47,9 @@ TEST(PasswordEncryptorUnitTest, EncryptAndDecrypt) {
   const std::vector<uint8_t> nonce(12, 0xAB);
   auto ciphertext =
       encryptor->Encrypt(base::byte_span_from_cstring("bravo"), nonce);
-  EXPECT_EQ("bravo", base::as_string_view(
-                         base::span(*encryptor->Decrypt(ciphertext, nonce))));
+  auto decrypted = encryptor->Decrypt(ciphertext, nonce);
+  ASSERT_TRUE(decrypted);
+  EXPECT_EQ("bravo", base::as_string_view(base::span(*decrypted)));
 
   // nonce mismatch
   const std::vector<uint8_t> nonce_ff(12, 0xFF);
@@ -93,8 +94,9 @@ TEST(PasswordEncryptorUnitTest, EncryptToDictAndDecryptFromDict) {
     "nonce": "q6urq6urq6urq6ur"
   }
   )"));
-  EXPECT_EQ("bravo", base::as_string_view(base::span(
-                         *encryptor->DecryptFromDict(encrypted_dict))));
+  auto decrypted = encryptor->DecryptFromDict(encrypted_dict);
+  ASSERT_TRUE(decrypted);
+  EXPECT_EQ("bravo", base::as_string_view(base::span(*decrypted)));
 
   // nonce mismatch
   auto bad_nonce = encrypted_dict.Clone();
