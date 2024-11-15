@@ -1182,7 +1182,11 @@ String PageGraph::ToGraphML() const {
   xmlChar* xml_string;
   int size;
   xmlDocDumpMemoryEnc(graphml_doc, &xml_string, &size, "UTF-8");
-  auto graphml_string = String::FromUTF8(xml_string, size);
+  // SAFETY: unfortunately xmlDocDumpMemoryEnc is a C api that
+  // manages the buffer internally, so we have to rely on it for the
+  // pointer/size pair.
+  auto graphml_string = String::FromUTF8(base::as_bytes(UNSAFE_BUFFERS(
+      base::span(xml_string, base::checked_cast<size_t>(size)))));
   DCHECK(!graphml_string.empty());
 
   xmlFree(xml_string);
