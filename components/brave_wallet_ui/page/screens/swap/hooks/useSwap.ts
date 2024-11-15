@@ -1191,6 +1191,9 @@ export const useSwap = () => {
   const onChangeSwapProvider = useCallback(
     async (provider: BraveWallet.SwapProvider) => {
       setSelectedProvider(provider)
+      setQuoteErrorUnion(undefined)
+      setBackendError(undefined)
+      setQuoteUnion(undefined)
       setSelectedQuoteOptionId(undefined)
       await handleQuoteRefreshInternal({
         provider
