@@ -80,6 +80,8 @@ public final class BravePreferenceKeys {
 
     public static final String SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
 
+    public static final String OPEN_YT_IN_BRAVE_DIALOG = "open_yt_in_brave_dialog";
+
     public static final String BRAVE_QUICK_SEARCH_ENGINES = "quick_search_engines";
     public static final String BRAVE_QUICK_SEARCH_ENGINES_FEATURE = "quick_search_engines_feature";
 

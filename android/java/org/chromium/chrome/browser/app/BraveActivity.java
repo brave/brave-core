@@ -1282,8 +1282,11 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         if (!isFirstInstall
-                && !BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled()) {
+                && !BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled() && ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.OPEN_YT_IN_BRAVE_DIALOG, true)) {
             openYtInBraveDialog();
+            ChromeSharedPreferences.getInstance()
+                        .writeBoolean(BravePreferenceKeys.OPEN_YT_IN_BRAVE_DIALOG, false);
         }
 
         // Quick search engines views changes
