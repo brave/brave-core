@@ -154,6 +154,8 @@ EthSignTypedDataHelper::EncodeData(const std::string_view primary_type_name,
     return std::nullopt;
   }
   std::vector<uint8_t> result;
+  // 32 bytes for type hash and for each item in schema.
+  result.reserve(Eip712HashArray().size() * (1 + primary_type->size()));
 
   base::Extend(result, GetTypeHash(primary_type_name));
 
@@ -182,6 +184,7 @@ EthSignTypedDataHelper::EncodeData(const std::string_view primary_type_name,
       }
     }
   }
+
   return std::make_pair(result, std::move(sanitized_data));
 }
 
