@@ -1,18 +1,17 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index 9215e06fe9f1475607047127c17ee96f34caba68..cf7ffa9029e85ce7342745f9a4d21091530abff4 100644
+index 9215e06fe9f1475607047127c17ee96f34caba68..2b22f4833dfda9914451e4909be811f16112f63a 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-@@ -75,8 +75,7 @@ public class SiteSettingsCategory {
+@@ -75,7 +75,7 @@ public class SiteSettingsCategory {
          Type.TRACKING_PROTECTION,
          Type.FILE_EDITING,
          Type.JAVASCRIPT_OPTIMIZER,
 -        Type.NUM_ENTRIES
--    })
 +        Type.NUM_ENTRIES, Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN, Type.BRAVE_LOCALHOST_ACCESS
+     })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Type {
-         // All updates here must also be reflected in {@link #preferenceKey(int)
-@@ -115,9 +114,10 @@ public class SiteSettingsCategory {
+@@ -115,9 +115,10 @@ public class SiteSettingsCategory {
          int HAND_TRACKING = 31;
          int FILE_EDITING = 32;
          int JAVASCRIPT_OPTIMIZER = 33;
