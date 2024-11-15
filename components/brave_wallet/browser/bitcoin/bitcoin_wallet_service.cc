@@ -897,7 +897,6 @@ void BitcoinWalletService::GetUtxos(mojom::AccountIdPtr account_id,
 
   auto addresses = keyring_service().GetBitcoinAddresses(account_id);
   if (!addresses) {
-    NOTREACHED_IN_MIGRATION();
     std::move(callback).Run(base::unexpected(InternalErrorString()));
     return;
   }

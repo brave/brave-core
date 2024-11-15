@@ -581,7 +581,7 @@ void SolanaProviderImpl::OnTransactionStatusChanged(
         l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_ERROR),
         std::move(result));
   } else {
-    NOTREACHED_IN_MIGRATION();
+    NOTREACHED() << tx_status;
   }
   sign_and_send_tx_callbacks_.erase(tx_meta_id);
 }
@@ -774,14 +774,20 @@ void SolanaProviderImpl::OnConnect(
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
                             "");
-  } else if (error == RequestPermissionsError::kRequestInProgress) {
+    return;
+  }
+
+  if (error == RequestPermissionsError::kRequestInProgress) {
     std::move(callback).Run(
         mojom::SolanaProviderError::kResourceUnavailable,
         l10n_util::GetStringUTF8(
             IDS_WALLET_REQUESTED_RESOURCE_NOT_AVAILABLE_ERROR),
         "");
     delegate_->ShowPanel();
-  } else if (error == RequestPermissionsError::kNone) {
+    return;
+  }
+
+  if (error == RequestPermissionsError::kNone) {
     CHECK(allowed_accounts);
     if (allowed_accounts->size()) {
       // There should be only one account to be connected
@@ -809,9 +815,10 @@ void SolanaProviderImpl::OnConnect(
           mojom::SolanaProviderError::kUserRejectedRequest,
           l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
     }
-  } else {
-    NOTREACHED_IN_MIGRATION();
+    return;
   }
+
+  NOTREACHED() << error;
 }
 
 void SolanaProviderImpl::OnSignMessageRequestProcessed(

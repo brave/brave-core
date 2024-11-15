@@ -254,6 +254,8 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
     case mojom::CoinType::ZEC:
       histogram_name = kZecTransactionSentHistogramName;
       break;
+    default:
+      NOTREACHED() << coin;
   }
 
   CHECK(histogram_name);
@@ -304,6 +306,8 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
     case mojom::CoinType::ZEC:
       histogram_name = kZecActiveAccountHistogramName;
       break;
+    default:
+      NOTREACHED() << coin_type;
   }
 
   CHECK(histogram_name);
@@ -464,7 +468,7 @@ void BraveWalletP3A::OnTransactionStatusChanged(
       return;
     }
   } else {
-    return;
+    NOTREACHED() << tx_coin;
   }
   ReportTransactionSent(tx_coin, true);
 }

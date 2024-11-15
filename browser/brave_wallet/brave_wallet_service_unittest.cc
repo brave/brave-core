@@ -690,9 +690,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   }
 
   void SimulateOnGetImportInfo(const std::string& new_password,
-                               bool result,
-                               const ImportInfo& info,
-                               ImportError error,
+                               base::expected<ImportInfo, ImportError> info,
                                bool* success_out,
                                std::string* error_message_out) {
     // People import with a blank default keyring, so clear it out
@@ -708,7 +706,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
               }
               run_loop.Quit();
             }),
-        result, info, error);
+        info);
     run_loop.Run();
   }
 
@@ -2209,31 +2207,32 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   const char* new_password = "brave1234!";
   bool success;
   std::string error_message;
-  SimulateOnGetImportInfo(new_password, false, ImportInfo(),
-                          ImportError::kJsonError, &success, &error_message);
+  SimulateOnGetImportInfo(new_password,
+                          base::unexpected(ImportError::kJsonError), &success,
+                          &error_message);
   EXPECT_FALSE(success);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_JSON_ERROR));
 
-  SimulateOnGetImportInfo(new_password, false, ImportInfo(),
-                          ImportError::kPasswordError, &success,
-                          &error_message);
+  SimulateOnGetImportInfo(new_password,
+                          base::unexpected(ImportError::kPasswordError),
+                          &success, &error_message);
   EXPECT_FALSE(success);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_PASSWORD_ERROR));
 
-  SimulateOnGetImportInfo(new_password, false, ImportInfo(),
-                          ImportError::kInternalError, &success,
-                          &error_message);
+  SimulateOnGetImportInfo(new_password,
+                          base::unexpected(ImportError::kInternalError),
+                          &success, &error_message);
   EXPECT_FALSE(success);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_IMPORT_INTERNAL_ERROR));
 
   error_message.clear();
   const char* valid_mnemonic = kMnemonicDripCaution;
-  SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({valid_mnemonic, false, 3}),
-                          ImportError::kNone, &success, &error_message);
+  SimulateOnGetImportInfo(new_password,
+                          base::ok(ImportInfo({valid_mnemonic, false, 3})),
+                          &success, &error_message);
   EXPECT_TRUE(success);
   EXPECT_TRUE(error_message.empty());
   {
@@ -2257,9 +2256,9 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
       "balance rose almost area busy among bring hidden bind later capable "
       "pulp "
       "laundry";
-  SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({valid_legacy_mnemonic, true, 4}),
-                          ImportError::kNone, &success, &error_message);
+  SimulateOnGetImportInfo(
+      new_password, base::ok(ImportInfo({valid_legacy_mnemonic, true, 4})),
+      &success, &error_message);
   EXPECT_TRUE(success);
   EXPECT_TRUE(error_message.empty());
   {
@@ -2279,9 +2278,9 @@ TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   }
 
   const char* invalid_mnemonic = "not correct seed word";
-  SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({invalid_mnemonic, false, 2}),
-                          ImportError::kNone, &success, &error_message);
+  SimulateOnGetImportInfo(new_password,
+                          base::ok(ImportInfo({invalid_mnemonic, false, 2})),
+                          &success, &error_message);
   EXPECT_FALSE(success);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_MNEMONIC_ERROR));
@@ -2856,9 +2855,9 @@ TEST_F(BraveWalletServiceUnitTest, EnsureSelectedAccountForChain) {
   const char* new_password = "brave1234!";
   bool success;
   std::string error_message;
-  SimulateOnGetImportInfo(new_password, true,
-                          ImportInfo({kMnemonicDripCaution, false, 1}),
-                          ImportError::kNone, &success, &error_message);
+  SimulateOnGetImportInfo(
+      new_password, base::ok(ImportInfo({kMnemonicDripCaution, false, 1})),
+      &success, &error_message);
 
   auto accounts = std::move(keyring_service_->GetAllAccountsSync()->accounts);
   auto eth_account_id = accounts[0]->account_id->Clone();

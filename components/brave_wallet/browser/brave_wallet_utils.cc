@@ -243,7 +243,7 @@ std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
       entropy_size = 32;
       break;
     default:
-      NOTREACHED_IN_MIGRATION();
+      return nullptr;
   }
   DCHECK(IsValidEntropySize(entropy_size)) << entropy_size;
 
@@ -826,8 +826,7 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
     case mojom::CoinType::SOL:
       return kSolanaPrefKey;
   }
-  NOTREACHED_IN_MIGRATION() << coin;
-  return "";
+  NOTREACHED() << coin;
 }
 
 // DEPRECATED 01/2024. For migration only.

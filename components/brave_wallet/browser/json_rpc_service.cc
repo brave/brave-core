@@ -206,11 +206,10 @@ brave_wallet::mojom::ResolveMethod ToMojomResolveMethod(
     case ResolveMethodTypes::ENABLED:
       return ResolveMethod::kEnabled;
     case ResolveMethodTypes::DEPRECATED_DNS_OVER_HTTPS:
-      break;
+      return ResolveMethod::kDisabled;
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return ResolveMethod::kDisabled;
+  NOTREACHED() << static_cast<uint32_t>(method);
 }
 
 decentralized_dns::ResolveMethodTypes FromMojomResolveMethod(
@@ -224,8 +223,7 @@ decentralized_dns::ResolveMethodTypes FromMojomResolveMethod(
       return ResolveMethodTypes::ENABLED;
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return ResolveMethodTypes::DISABLED;
+  NOTREACHED() << method;
 }
 
 brave_wallet::mojom::ResolveMethod ToMojomEnsOffchainResolveMethod(
@@ -239,8 +237,7 @@ brave_wallet::mojom::ResolveMethod ToMojomEnsOffchainResolveMethod(
       return ResolveMethod::kEnabled;
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return ResolveMethod::kDisabled;
+  NOTREACHED() << static_cast<uint32_t>(method);
 }
 
 decentralized_dns::EnsOffchainResolveMethod FromMojomEnsOffchainResolveMethod(
@@ -254,8 +251,7 @@ decentralized_dns::EnsOffchainResolveMethod FromMojomEnsOffchainResolveMethod(
       return EnsOffchainResolveMethod::kEnabled;
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return EnsOffchainResolveMethod::kDisabled;
+  NOTREACHED() << method;
 }
 
 // Retrieves a custom network dict from the preferences based on the chain ID.
@@ -905,18 +901,18 @@ void JsonRpcService::GetBalance(const std::string& address,
     RequestInternal(eth::eth_getBalance(address, kEthereumBlockTagLatest), true,
                     network_url, std::move(internal_callback));
     return;
-  } else if (coin == mojom::CoinType::FIL) {
+  }
+
+  if (coin == mojom::CoinType::FIL) {
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnFilGetBalance,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback));
     RequestInternal(fil::getBalance(address), true, network_url,
                     std::move(internal_callback));
     return;
-  } else {
-    NOTREACHED_IN_MIGRATION();
   }
-  std::move(callback).Run("", mojom::ProviderError::kInternalError,
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  NOTREACHED() << coin;
 }
 
 void JsonRpcService::OnEthGetBalance(GetBalanceCallback callback,
@@ -1766,6 +1762,13 @@ void JsonRpcService::UnstoppableDomainsGetWalletAddr(
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  if (!(token->coin == mojom::CoinType::ETH ||
+        token->coin == mojom::CoinType::SOL ||
+        token->coin == mojom::CoinType::FIL)) {
+    std::move(callback).Run("", mojom::ProviderError::kSuccess, "");
     return;
   }
 

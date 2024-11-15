@@ -497,8 +497,8 @@ TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
 
   EXPECT_TRUE(AllCoinsTested());
 
-  EXPECT_DCHECK_DEATH(
-      GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
+  EXPECT_DEATH(GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)),
+               "Unknown CoinType value: 2016");
 }
 
 TEST(BraveWalletUtilsUnitTest, eTLDPlusOne) {

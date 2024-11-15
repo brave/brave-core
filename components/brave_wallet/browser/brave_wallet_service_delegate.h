@@ -12,6 +12,7 @@
 
 #include "base/functional/callback.h"
 #include "base/observer_list_types.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "url/origin.h"
@@ -27,7 +28,7 @@ class BraveWalletServiceDelegate {
   using IsExternalWalletInstalledCallback = base::OnceCallback<void(bool)>;
   using IsExternalWalletInitializedCallback = base::OnceCallback<void(bool)>;
   using GetImportInfoCallback =
-      base::OnceCallback<void(bool, ImportInfo, ImportError)>;
+      base::OnceCallback<void(base::expected<ImportInfo, ImportError>)>;
   using GetWebSitesWithPermissionCallback =
       mojom::BraveWalletService::GetWebSitesWithPermissionCallback;
   using ResetWebSitePermissionCallback =

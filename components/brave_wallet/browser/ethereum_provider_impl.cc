@@ -1181,7 +1181,7 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
         break;
       default:
-        NOTREACHED_IN_MIGRATION();
+        NOTREACHED() << error;
     }
   } else if (method == kRequestPermissionsMethod) {
     formed_response =

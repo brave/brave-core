@@ -12,7 +12,6 @@
 #include "base/check.h"
 #include "base/containers/span.h"
 #include "base/notimplemented.h"
-#include "base/notreached.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 
 namespace brave_wallet {
@@ -62,29 +61,29 @@ std::optional<std::vector<uint8_t>> BitcoinHDKeyring::SignMessage(
 
 std::string BitcoinHDKeyring::ImportAccount(
     base::span<const uint8_t> private_key) {
-  NOTREACHED_IN_MIGRATION();
+  NOTIMPLEMENTED();
   return "";
 }
 
 bool BitcoinHDKeyring::RemoveImportedAccount(const std::string& address) {
-  NOTREACHED_IN_MIGRATION();
+  NOTIMPLEMENTED();
   return false;
 }
 
 std::string BitcoinHDKeyring::GetDiscoveryAddress(size_t index) const {
-  NOTREACHED_IN_MIGRATION();
+  NOTIMPLEMENTED();
   return "";
 }
 
 std::vector<std::string> BitcoinHDKeyring::GetImportedAccountsForTesting()
     const {
-  NOTREACHED_IN_MIGRATION();
+  NOTIMPLEMENTED();
   return {};
 }
 
 std::string BitcoinHDKeyring::EncodePrivateKeyForExport(
     const std::string& address) {
-  NOTREACHED_IN_MIGRATION();
+  NOTIMPLEMENTED();
   return "";
 }
 
