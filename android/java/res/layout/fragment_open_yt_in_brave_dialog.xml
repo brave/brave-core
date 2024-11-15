@@ -6,6 +6,7 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="32dp"
@@ -13,14 +14,14 @@
     android:paddingHorizontal="24dp"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="130dp"
-        android:layout_height="92dp"
-        android:gravity="center_horizontal"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:contentDescription="@null"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/open_yt_in_brave"
-        android:contentDescription="@null"/>
+        app:lottie_loop="true" />
 
     <TextView
         android:layout_width="match_parent"

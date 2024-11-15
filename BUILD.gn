@@ -186,6 +186,8 @@ if (is_android) {
   android_assets("brave_file_assets") {
     sources = [
       "//brave/LICENSE.html",
+      "//brave/android/java/org/chromium/chrome/browser/lottie_animations/moving_ads_dark.json",
+      "//brave/android/java/org/chromium/chrome/browser/lottie_animations/moving_ads_light.json",
       "//brave/android/java/org/chromium/chrome/browser/ntp/ntp_news_optin_icon_animation.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/onboarding_ads.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/onboarding_ads_notification.json",
