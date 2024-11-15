@@ -108,6 +108,7 @@ interface Props {
   isLoadingBalances: boolean
   spotPriceRegistry: SpotPriceRegistry | undefined
   isLoadingSpotPrices: boolean
+  isShieldingAvailable: boolean | undefined
 }
 
 export const AccountListItem = ({
@@ -116,7 +117,8 @@ export const AccountListItem = ({
   tokenBalancesRegistry,
   spotPriceRegistry,
   isLoadingBalances,
-  isLoadingSpotPrices
+  isLoadingSpotPrices,
+  isShieldingAvailable
 }: Props) => {
   // redux
   const dispatch = useDispatch()
@@ -319,6 +321,7 @@ export const AccountListItem = ({
     const canShieldAccount =
       isZCashShieldedTransactionsEnabled &&
       account.accountId.coin === BraveWallet.CoinType.ZEC &&
+      isShieldingAvailable &&
       zCashAccountInfo &&
       !zCashAccountInfo.accountShieldBirthday
 
@@ -334,7 +337,12 @@ export const AccountListItem = ({
       options = options.filter((option) => option.id !== 'shield')
     }
     return options
-  }, [account, isZCashShieldedTransactionsEnabled, zCashAccountInfo])
+  }, [
+    account,
+    isZCashShieldedTransactionsEnabled,
+    isShieldingAvailable,
+    zCashAccountInfo
+  ])
 
   // render
   return (
