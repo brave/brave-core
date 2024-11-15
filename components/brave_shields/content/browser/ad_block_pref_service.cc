@@ -58,10 +58,12 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
   OnPreferenceChanged(prefs::kTwitterEmbedControlType);
   OnPreferenceChanged(prefs::kLinkedInEmbedControlType);
 
-  if (!prefs->HasPrefPath(prefs::kAdBlockDeveloperMode)) {
-    const std::string& custom_filters =
-        local_state->GetString(prefs::kAdBlockCustomFilters);
-    prefs->SetBoolean(prefs::kAdBlockDeveloperMode, !custom_filters.empty());
+  if (local_state) {  // Can be null in unit tests.
+    if (!prefs->HasPrefPath(prefs::kAdBlockDeveloperMode)) {
+      const std::string& custom_filters =
+          local_state->GetString(prefs::kAdBlockCustomFilters);
+      prefs->SetBoolean(prefs::kAdBlockDeveloperMode, !custom_filters.empty());
+    }
   }
   pref_change_registrar_->Add(
       prefs::kAdBlockDeveloperMode,
