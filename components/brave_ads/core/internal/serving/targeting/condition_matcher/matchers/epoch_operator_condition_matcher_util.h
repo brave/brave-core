@@ -10,6 +10,9 @@
 
 namespace brave_ads {
 
+// Returns true if the condition is an epoch operator.
+bool IsEpochOperator(std::string_view condition);
+
 // Matches a value against a condition using epoch operators. Supports equality,
 // greater than, greater than or equal, less than. and less than or equal
 // operators.

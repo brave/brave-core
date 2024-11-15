@@ -14,6 +14,16 @@ namespace brave_ads {
 class BraveAdsNumericalOperatorConditionMatcherUtilTest
     : public test::TestBase {};
 
+TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest, IsOperator) {
+  // Act & Assert
+  EXPECT_TRUE(IsNumericalOperator("[R=]:1"));
+}
+
+TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest, IsNotOperator) {
+  // Act & Assert
+  EXPECT_FALSE(IsNumericalOperator("[T=]:1"));
+}
+
 TEST_F(BraveAdsNumericalOperatorConditionMatcherUtilTest,
        DoNotMatchNonOperator) {
   // Act & Assert

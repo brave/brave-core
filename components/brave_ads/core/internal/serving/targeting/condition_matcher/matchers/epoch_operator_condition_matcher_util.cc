@@ -26,6 +26,11 @@ constexpr char kLessThanOrEqualOperatorConditionMatcherPrefix[] = "[T≤]:";
 
 }  // namespace
 
+bool IsEpochOperator(std::string_view condition) {
+  return base::MatchPattern(condition,
+                            kEpochOperatorConditionMatcherPrefixPattern);
+}
+
 bool MatchEpochOperator(const std::string_view value,
                         const std::string_view condition) {
   if (!base::MatchPattern(condition,
