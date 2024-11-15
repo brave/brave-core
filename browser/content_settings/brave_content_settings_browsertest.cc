@@ -115,8 +115,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsBrowserTest,
     if (!unchecked_inherit_in_incognito) {
       switch (info->incognito_behavior()) {
         case content_settings::ContentSettingsInfo::INHERIT_IN_INCOGNITO:
-          NOTREACHED_IN_MIGRATION();
-          break;
+          NOTREACHED();
         case content_settings::ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE:
           EXPECT_NE(info->GetInitialDefaultSetting(), CONTENT_SETTING_ALLOW)
               << "INHERIT_IF_LESS_PERMISSIVE setting should not default to "

@@ -360,11 +360,7 @@ std::optional<std::vector<uint8_t>> ExtractBytesFromTuple(Span data,
 
 std::optional<std::vector<uint8_t>>
 ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos) {
-  if (fixed_size == 0 || fixed_size > 32) {
-    NOTREACHED_IN_MIGRATION();
-    return std::nullopt;
-  }
-
+  CHECK(fixed_size > 0 && fixed_size <= 32);
   // Head contains bytes itself.
   auto head = ExtractHeadFromTuple(data, tuple_pos);
   if (!head) {

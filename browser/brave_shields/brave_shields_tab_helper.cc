@@ -10,6 +10,7 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -260,8 +261,8 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
     case ControlType::DEFAULT:
       break;
   }
-  NOTREACHED_IN_MIGRATION();
-  return CookieBlockMode::BLOCKED;
+  NOTREACHED() << "Unexpected value for control_type: "
+               << base::to_underlying(control_type);
 }
 
 HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {

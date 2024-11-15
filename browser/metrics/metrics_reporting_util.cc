@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/metrics/brave_metrics_service_accessor.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -17,7 +18,8 @@
 #include "components/version_info/channel.h"
 
 bool GetDefaultPrefValueForMetricsReporting() {
-  switch (chrome::GetChannel()) {
+  auto channel = chrome::GetChannel();
+  switch (channel) {
     case version_info::Channel::STABLE:
       return false;
     case version_info::Channel::BETA:    // fall through
@@ -26,10 +28,9 @@ bool GetDefaultPrefValueForMetricsReporting() {
       return true;
     case version_info::Channel::UNKNOWN:
       return false;
-    default:
-      NOTREACHED_IN_MIGRATION();
-      return false;
   }
+  NOTREACHED() << "Unexpected value for channel: "
+               << base::to_underlying(channel);
 }
 
 bool ShouldShowCrashReportPermissionAskDialog() {
