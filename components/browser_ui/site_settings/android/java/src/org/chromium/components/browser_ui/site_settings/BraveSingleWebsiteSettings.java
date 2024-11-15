@@ -25,6 +25,10 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
         switch (type) {
             case ContentSettingsType.AUTOPLAY:
                 return "autoplay_permission_list";
+            case ContentSettingsType.BRAVE_GOOGLE_SIGN_IN:
+                return "brave_google_sign_in";
+            case ContentSettingsType.BRAVE_LOCALHOST_ACCESS:
+                return "brave_localhost_access";
             default:
                 return (String)
                         BraveReflectionUtil.invokeMethod(
