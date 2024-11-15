@@ -14,8 +14,19 @@
 
 namespace TemplateURLPrepopulateData {
 
-extern const int kBraveCurrentDataVersion;
-extern const int kBraveFirstTrackedDataVersion;
+// IMPORTANT! Make sure to bump this value if you make changes to the
+// engines below or add/remove engines.
+inline constexpr int kBraveCurrentDataVersion = 30;
+
+// The version is important to increment because Chromium will cache the list
+// of search engines that are shown. When the version is incremented, Chromium
+// will conditionally merge changes from the new version of the list.
+//
+// For more info, see:
+// https://source.chromium.org/chromium/chromium/src/+/main:components/search_engines/util.cc;l=53-125;drc=17b1d05d2ccda19c3ebd903075227bc8e851acf0
+
+// DO NOT CHANGE THIS ONE. Used for backfilling kBraveDefaultSearchVersion.
+inline constexpr int kBraveFirstTrackedDataVersion = 6;
 
 // See comments on prepopulated engines ids in
 // components/search_engines/prepopulated_engines_schema.json above the

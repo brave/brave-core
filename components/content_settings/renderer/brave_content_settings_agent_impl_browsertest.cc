@@ -74,11 +74,11 @@ constexpr char kImageScript[] = R"(
   });
 )";
 
-const int kExpectedImageDataHashFarblingBalanced = 172;
-const int kExpectedImageDataHashFarblingOff = 0;
-const int kExpectedImageDataHashFarblingMaximum =
+constexpr int kExpectedImageDataHashFarblingBalanced = 172;
+constexpr int kExpectedImageDataHashFarblingOff = 0;
+constexpr int kExpectedImageDataHashFarblingMaximum =
     kExpectedImageDataHashFarblingBalanced;
-const int kExpectedImageDataHashFarblingBalancedGoogleCom = 182;
+constexpr int kExpectedImageDataHashFarblingBalancedGoogleCom = 182;
 
 constexpr char kEmptyCookie[] = "";
 

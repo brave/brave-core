@@ -31,12 +31,11 @@ namespace misc_metrics {
 
 namespace {
 
-constexpr const int kPagesLoadedBuckets[] = {0, 10, 50, 100, 500, 1000};
-constexpr const int kDomainsLoadedBuckets[] = {0, 4, 10, 30, 50, 100};
-constexpr const int kFailedHTTPSUpgradeBuckets[] = {0, 25, 50, 100, 300, 700};
-constexpr const int kBookmarkCountBuckets[] = {0,   5,    20,   100,
-                                               500, 1000, 5000, 10000};
-constexpr const int kFirstPageLoadTimeBuckets[] = {5, 10, 60, 240, 1440};
+constexpr int kPagesLoadedBuckets[] = {0, 10, 50, 100, 500, 1000};
+constexpr int kDomainsLoadedBuckets[] = {0, 4, 10, 30, 50, 100};
+constexpr int kFailedHTTPSUpgradeBuckets[] = {0, 25, 50, 100, 300, 700};
+constexpr int kBookmarkCountBuckets[] = {0, 5, 20, 100, 500, 1000, 5000, 10000};
+constexpr int kFirstPageLoadTimeBuckets[] = {5, 10, 60, 240, 1440};
 
 constexpr base::TimeDelta kReportInterval = base::Minutes(30);
 constexpr base::TimeDelta kInitReportDelay = base::Seconds(30);

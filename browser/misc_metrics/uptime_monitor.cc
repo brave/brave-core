@@ -23,7 +23,7 @@ constexpr base::TimeDelta kUsageTimeQueryInterval = base::Minutes(1);
 #endif
 constexpr base::TimeDelta kUsageTimeReportInterval = base::Days(1);
 
-const int kBrowserOpenTimeBuckets[] = {30, 60, 120, 180, 300, 420, 600};
+constexpr int kBrowserOpenTimeBuckets[] = {30, 60, 120, 180, 300, 420, 600};
 
 }  // namespace
 

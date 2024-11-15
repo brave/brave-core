@@ -35,7 +35,7 @@ using ::testing::_;
 namespace ai_chat {
 
 namespace {
-const int kTestingMaxAssociatedContentLength = 100;
+constexpr int kTestingMaxAssociatedContentLength = 100;
 }
 
 using ConversationEvent = ConversationAPIClient::ConversationEvent;

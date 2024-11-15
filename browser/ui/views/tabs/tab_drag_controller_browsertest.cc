@@ -71,7 +71,7 @@ IN_PROC_BROWSER_TEST_F(TabDragControllerTest,
   tab_strip->MaybeStartDrag(tab_group_header, mouse_pressed_event,
                             tab_strip->GetSelectionModel());
 
-  static const int kDragDistance = 20;
+  static constexpr int kDragDistance = 20;
   gfx::Point tab_group_drag_point(tab_group_header->width() + kDragDistance,
                                   tab_group_header->height() + kDragDistance);
   ui::MouseEvent mouse_dragged_event(

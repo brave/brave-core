@@ -25,11 +25,11 @@ constexpr base::TimeDelta kMaxEnabledCauseTriggerTime = base::Minutes(1);
 
 constexpr base::TimeDelta kReportInterval = base::Days(1);
 
-const int kTipsSentBuckets[] = {0, 1, 3};
+constexpr int kTipsSentBuckets[] = {0, 1, 3};
 
-const int kPanelCountBuckets[] = {5, 10, 50};
+constexpr int kPanelCountBuckets[] = {5, 10, 50};
 
-const int kRewardsPageViewCountBuckets[] = {2, 5, 10, 50};
+constexpr int kRewardsPageViewCountBuckets[] = {2, 5, 10, 50};
 
 }  // namespace
 

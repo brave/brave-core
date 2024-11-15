@@ -44,7 +44,7 @@ constexpr char kSponsoredNewTabsCreated[] =
     "brave.new_tab_page.p3a_sponsored_new_tabs_created";
 
 constexpr char kNewTabsCreatedHistogramName[] = "Brave.NTP.NewTabsCreated.3";
-const int kNewTabsCreatedMetricBuckets[] = {0, 1, 2, 3, 4, 8, 15};
+constexpr int kNewTabsCreatedMetricBuckets[] = {0, 1, 2, 3, 4, 8, 15};
 constexpr char kSponsoredNewTabsHistogramName[] =
     "Brave.NTP.SponsoredNewTabsCreated.2";
 constexpr int kSponsoredNewTabsBuckets[] = {0, 10, 20, 30, 40, 50};
