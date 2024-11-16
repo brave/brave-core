@@ -10,6 +10,9 @@
 
 namespace brave_ads {
 
+// Returns true if the condition is a numerical operator.
+bool IsNumericalOperator(std::string_view condition);
+
 // Matches a value against a condition using numerical operators. Supports
 // equality, greater than, greater than or equal, less than, less than or equal
 // and not equal operators.

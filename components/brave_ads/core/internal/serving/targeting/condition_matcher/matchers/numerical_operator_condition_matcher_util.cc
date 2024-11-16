@@ -27,6 +27,11 @@ constexpr char kLessThanOrEqualOperatorConditionMatcherPrefix[] = "[R≤]:";
 
 }  // namespace
 
+bool IsNumericalOperator(std::string_view condition) {
+  return base::MatchPattern(condition,
+                            kNumericalOperatorConditionMatcherPrefixPattern);
+}
+
 bool MatchNumericalOperator(const std::string_view value,
                             const std::string_view condition) {
   if (!base::MatchPattern(condition,
