@@ -93,22 +93,20 @@ bool ModelValidator::HasValidContextSize(
 
 // Static
 bool ModelValidator::IsValidEndpoint(const GURL& endpoint,
-                                     bool check_as_private_ip) {
+                                     std::optional<bool> check_as_private_ip) {
   // HTTPS and localhost URLs are always allowed.
   if (net::IsHTTPSOrLocalhostURL(endpoint)) {
     return true;
   }
 
-  // Scheme should be HTTP or HTTPS
-  if (!endpoint.SchemeIsHTTPOrHTTPS()) {
-    return false;
-  }
-
-  // If enabled, we'll permit certain private endpoints.
-  if (ai_chat::features::IsAllowPrivateIPsEnabled() || check_as_private_ip) {
-    VLOG(2) << "Evaluating private endpoint for model";
-    // If the endpoint is a private hostname, we will allow it.
-    return IsValidPrivateHost(endpoint) || IsValidPrivateIPAddress(endpoint);
+  // The following condition is only met when `true` is passed as check_as_private_ip
+  // or when the optional feature is enabled. Intentionally, it will not be met when
+  // `false` is passed as check_as_private_ip.
+  if (check_as_private_ip.value_or(ai_chat::features::IsAllowPrivateIPsEnabled())) {
+    if (IsValidPrivateHost(endpoint) || IsValidPrivateIPAddress(endpoint)) {
+      VLOG(2) << "Allowing private endpoint: " << endpoint.spec();
+      return true;
+    }
   }
 
   return false;
