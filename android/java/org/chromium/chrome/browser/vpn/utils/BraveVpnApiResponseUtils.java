@@ -1,14 +1,11 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.vpn.utils;
 
 import android.app.Activity;
-import android.text.TextUtils;
 import android.util.Pair;
 
 import androidx.lifecycle.LiveData;
@@ -66,15 +63,16 @@ public class BraveVpnApiResponseUtils {
             BraveVpnServerRegion braveVpnServerRegion =
                     BraveVpnUtils.getServerRegionForTimeZone(
                             jsonTimezones, TimeZone.getDefault().getID());
-            String regionFromTimeZone = braveVpnServerRegion.getRegionName();
-            if (TextUtils.isEmpty(regionFromTimeZone)) {
+            if (braveVpnServerRegion == null || braveVpnServerRegion.getRegionName().isEmpty()) {
                 BraveVpnUtils.showToast(
                         String.format(
                                 activity.getResources()
                                         .getString(R.string.couldnt_get_matching_timezone),
                                 TimeZone.getDefault().getID()));
+                BraveVpnUtils.dismissProgressDialog();
                 return;
             }
+            String regionFromTimeZone = braveVpnServerRegion.getRegionName();
             String regionForHostName = regionFromTimeZone;
             String regionPrecision = braveVpnServerRegion.getRegionPrecision();
 
