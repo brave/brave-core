@@ -108,20 +108,17 @@ std::vector<uint8_t> GetNetworkPrefix(bool is_testnet) {
 
 }  // namespace
 
-// static
-
-// static
 base::Value::Dict OrchardNote::ToValue() const {
   base::Value::Dict dict;
 
-  dict.Set("addr", base::HexEncode(addr.data(), addr.size()));
+  dict.Set("addr", base::HexEncode(addr));
   dict.Set("block_id", base::NumberToString(block_id));
-  dict.Set("nullifier", base::HexEncode(nullifier.data(), nullifier.size()));
+  dict.Set("nullifier", base::HexEncode(nullifier));
   dict.Set("amount", base::NumberToString(amount));
   dict.Set("orchard_commitment_tree_position",
            base::NumberToString(orchard_commitment_tree_position));
-  dict.Set("rho", base::HexEncode(rho.data(), rho.size()));
-  dict.Set("seed", base::HexEncode(seed.data(), seed.size()));
+  dict.Set("rho", base::HexEncode(rho));
+  dict.Set("seed", base::HexEncode(seed));
 
   return dict;
 }
@@ -163,7 +160,6 @@ std::optional<OrchardNote> OrchardNote::FromValue(
   return result;
 }
 
-// static
 base::Value::Dict OrchardInput::ToValue() const {
   base::Value::Dict dict;
 
@@ -294,13 +290,6 @@ OrchardShard::OrchardShard(const OrchardShard& other) = default;
 OrchardShard& OrchardShard::operator=(const OrchardShard& other) = default;
 OrchardShard::OrchardShard(OrchardShard&& other) = default;
 OrchardShard& OrchardShard::operator=(OrchardShard&& other) = default;
-
-OrchardCap::OrchardCap() = default;
-OrchardCap::~OrchardCap() = default;
-OrchardCap::OrchardCap(const OrchardCap& other) = default;
-OrchardCap& OrchardCap::operator=(const OrchardCap& other) = default;
-OrchardCap::OrchardCap(OrchardCap&& other) = default;
-OrchardCap& OrchardCap::operator=(OrchardCap&& other) = default;
 
 bool OutputZCashAddressSupported(const std::string& address, bool is_testnet) {
   auto decoded_address = DecodeZCashAddress(address);

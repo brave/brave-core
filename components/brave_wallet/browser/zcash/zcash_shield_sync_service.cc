@@ -155,6 +155,12 @@ void ZCashShieldSyncService::WorkOnTask() {
 }
 
 void ZCashShieldSyncService::GetOrCreateAccount() {
+  if (account_birthday_->value < kNu5BlockUpdate) {
+    error_ =
+        Error{ErrorCode::kFailedToInitAccount, "Wrong birthday block height"};
+    ScheduleWorkOnTask();
+    return;
+  }
   orchard_storage()
       .AsyncCall(&ZCashOrchardStorage::GetAccountMeta)
       .WithArgs(account_id_.Clone())
@@ -207,6 +213,12 @@ void ZCashShieldSyncService::OnAccountInit(
 
 void ZCashShieldSyncService::VerifyChainState(
     ZCashOrchardStorage::AccountMeta account_meta) {
+  if (account_meta.account_birthday < kNu5BlockUpdate) {
+    error_ = Error{ErrorCode::kFailedToRetrieveAccount,
+                   "Wrong birthday block height"};
+    ScheduleWorkOnTask();
+    return;
+  }
   if (!account_meta.latest_scanned_block_id) {
     latest_scanned_block_ = account_meta.account_birthday - 1;
     ScheduleWorkOnTask();

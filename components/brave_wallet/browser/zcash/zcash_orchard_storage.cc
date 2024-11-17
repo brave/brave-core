@@ -11,8 +11,8 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/to_vector.h"
 #include "base/files/file_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -64,7 +64,7 @@ base::expected<std::optional<OrchardShardRootHash>, std::string> ReadRootHash(
     return base::unexpected("Size error");
   }
   std::array<uint8_t, kOrchardShardTreeHashSize> result;
-  base::ranges::copy(v.begin(), v.end(), result.begin());
+  base::span(result).copy_from(v);
   return result;
 }
 
@@ -195,6 +195,7 @@ bool ZCashOrchardStorage::CreateSchema() {
                            "account_id TEXT NOT NULL,"
                            "cap_data BLOB NOT NULL)") &&
          transaction.Commit();
+  // TODO(cypt4): Add indexes
 }
 
 bool ZCashOrchardStorage::UpdateSchema() {
@@ -203,7 +204,7 @@ bool ZCashOrchardStorage::UpdateSchema() {
 }
 
 base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::RegisterAccount(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::RegisterAccount(const mojom::AccountIdPtr& account_id,
                                      uint32_t account_birthday_block) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -241,7 +242,7 @@ ZCashOrchardStorage::RegisterAccount(mojom::AccountIdPtr account_id,
 }
 
 base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetAccountMeta(mojom::AccountIdPtr account_id) {
+ZCashOrchardStorage::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -287,7 +288,7 @@ ZCashOrchardStorage::GetAccountMeta(mojom::AccountIdPtr account_id) {
 }
 
 std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::HandleChainReorg(
-    mojom::AccountIdPtr account_id,
+    const mojom::AccountIdPtr& account_id,
     uint32_t reorg_block_id,
     const std::string& reorg_block_hash) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -343,7 +344,8 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::HandleChainReorg(
 }
 
 base::expected<bool, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::ResetAccountSyncState(mojom::AccountIdPtr account_id) {
+ZCashOrchardStorage::ResetAccountSyncState(
+    const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -400,11 +402,11 @@ ZCashOrchardStorage::ResetAccountSyncState(mojom::AccountIdPtr account_id) {
                                   database_.GetErrorMessage()});
   }
 
-  return true;
+  return base::ok(true);
 }
 
 base::expected<std::vector<OrchardNoteSpend>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetNullifiers(mojom::AccountIdPtr account_id) {
+ZCashOrchardStorage::GetNullifiers(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -428,19 +430,23 @@ ZCashOrchardStorage::GetNullifiers(mojom::AccountIdPtr account_id) {
           Error{ErrorCode::kDbInitError, "Wrong database format"});
     }
     spend.block_id = block_id.value();
-    auto nullifier = resolve_note_spents.ColumnBlob(1);
-    base::ranges::copy(nullifier, spend.nullifier.begin());
+    auto nullifier_blob = resolve_note_spents.ColumnBlob(1);
+    if (nullifier_blob.size() != kOrchardNullifierSize) {
+      return base::unexpected(
+          Error{ErrorCode::kConsistencyError, "Consistency error"});
+    }
+    base::span(spend.nullifier).copy_from(nullifier_blob);
     result.push_back(std::move(spend));
   }
   if (!resolve_note_spents.Succeeded()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                   database_.GetErrorMessage()});
   }
-  return result;
+  return base::ok(std::move(result));
 }
 
 base::expected<std::vector<OrchardNote>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetSpendableNotes(mojom::AccountIdPtr account_id) {
+ZCashOrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -493,11 +499,11 @@ ZCashOrchardStorage::GetSpendableNotes(mojom::AccountIdPtr account_id) {
     note.addr = **addr;
     result.push_back(std::move(note));
   }
-  return result;
+  return base::ok(std::move(result));
 }
 
 std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::UpdateNotes(
-    mojom::AccountIdPtr account_id,
+    const mojom::AccountIdPtr& account_id,
     const std::vector<OrchardNote>& found_notes,
     const std::vector<OrchardNoteSpend>& found_nullifiers,
     const uint32_t latest_scanned_block,
@@ -581,7 +587,8 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::UpdateNotes(
 }
 
 base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetLatestShardIndex(mojom::AccountIdPtr account_id) {
+ZCashOrchardStorage::GetLatestShardIndex(
+    const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -598,21 +605,21 @@ ZCashOrchardStorage::GetLatestShardIndex(mojom::AccountIdPtr account_id) {
   resolve_max_shard_id.BindString(0, account_id->unique_key);
   if (resolve_max_shard_id.Step()) {
     if (resolve_max_shard_id.GetColumnType(0) == sql::ColumnType::kNull) {
-      return std::nullopt;
+      return base::ok(std::nullopt);
     }
     auto shard_index = ReadUint32(resolve_max_shard_id, 0);
     if (!shard_index) {
       return base::unexpected(
           Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
     }
-    return shard_index.value();
+    return base::ok(shard_index.value());
   }
 
-  return std::nullopt;
+  return base::ok(std::nullopt);
 }
 
-base::expected<std::optional<OrchardCap>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetCap(mojom::AccountIdPtr account_id) {
+base::expected<std::optional<OrchardShardTreeCap>, ZCashOrchardStorage::Error>
+ZCashOrchardStorage::GetCap(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -632,20 +639,17 @@ ZCashOrchardStorage::GetCap(mojom::AccountIdPtr account_id) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                     database_.GetErrorMessage()});
     }
-    return std::nullopt;
+    return base::ok(std::nullopt);
   }
 
-  OrchardCap result;
-  auto blob = resolve_cap.ColumnBlob(0);
-  result.data.reserve(blob.size());
-  base::ranges::copy(blob, std::back_inserter(result.data));
+  OrchardShardTreeCap result = base::ToVector(resolve_cap.ColumnBlob(0));
 
-  return result;
+  return base::ok(std::move(result));
 }
 
 base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutCap(
-    mojom::AccountIdPtr account_id,
-    OrchardCap cap) {
+    const mojom::AccountIdPtr& account_id,
+    OrchardShardTreeCap cap) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -658,7 +662,7 @@ base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutCap(
     return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction, ""});
   }
 
-  auto existing_cap = GetCap(account_id.Clone());
+  auto existing_cap = GetCap(account_id);
   if (!existing_cap.has_value()) {
     return base::unexpected(existing_cap.error());
   }
@@ -670,13 +674,13 @@ base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutCap(
                                               "(account_id, cap_data) "
                                               "VALUES (?, ?);"));
     stmnt.BindString(0, account_id->unique_key);
-    stmnt.BindBlob(1, cap.data);
+    stmnt.BindBlob(1, cap);
   } else {
     stmnt.Assign(database_.GetCachedStatement(
         SQL_FROM_HERE, "UPDATE " kShardTreeCap " "
                        "SET "
                        "cap_data = ? WHERE account_id = ?;"));
-    stmnt.BindBlob(0, cap.data);
+    stmnt.BindBlob(0, cap);
     stmnt.BindString(1, account_id->unique_key);
   }
 
@@ -690,12 +694,12 @@ base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutCap(
                                   database_.GetErrorMessage()});
   }
 
-  return true;
+  return base::ok(true);
 }
 
 base::expected<bool, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::UpdateSubtreeRoots(
-    mojom::AccountIdPtr account_id,
+    const mojom::AccountIdPtr& account_id,
     uint32_t start_index,
     std::vector<zcash::mojom::SubtreeRootPtr> roots) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -763,11 +767,11 @@ ZCashOrchardStorage::UpdateSubtreeRoots(
                                   database_.GetErrorMessage()});
   }
 
-  return true;
+  return base::ok(true);
 }
 
 base::expected<bool, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::TruncateShards(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::TruncateShards(const mojom::AccountIdPtr& account_id,
                                     uint32_t shard_index) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -799,11 +803,11 @@ ZCashOrchardStorage::TruncateShards(mojom::AccountIdPtr account_id,
                                   database_.GetErrorMessage()});
   }
 
-  return true;
+  return base::ok(true);
 }
 
 base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutShard(
-    mojom::AccountIdPtr account_id,
+    const mojom::AccountIdPtr& account_id,
     OrchardShard shard) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -812,7 +816,7 @@ base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutShard(
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  auto existing_shard = GetShard(account_id.Clone(), shard.address);
+  auto existing_shard = GetShard(account_id, shard.address);
   if (!existing_shard.has_value()) {
     return base::unexpected(existing_shard.error());
   }
@@ -872,11 +876,11 @@ base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutShard(
                                   database_.GetErrorMessage()});
   }
 
-  return true;
+  return base::ok(true);
 }
 
 base::expected<std::optional<OrchardShard>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetShard(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::GetShard(const mojom::AccountIdPtr& account_id,
                               OrchardShardAddress address) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -897,7 +901,7 @@ ZCashOrchardStorage::GetShard(mojom::AccountIdPtr account_id,
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                     database_.GetErrorMessage()});
     }
-    return std::nullopt;
+    return base::ok(std::nullopt);
   }
 
   auto hash = ReadRootHash(resolve_shard_statement, 0);
@@ -905,33 +909,31 @@ ZCashOrchardStorage::GetShard(mojom::AccountIdPtr account_id,
     return base::unexpected(Error{ErrorCode::kDbInitError, hash.error()});
   }
 
-  auto shard_data = resolve_shard_statement.ColumnBlob(1);
   auto shard = OrchardShard(address, hash.value(), std::vector<uint8_t>());
 
-  base::ranges::copy(shard_data, std::back_inserter(shard.shard_data));
+  shard.shard_data = base::ToVector(resolve_shard_statement.ColumnBlob(1));
 
-  return shard;
+  return base::ok(std::move(shard));
 }
 
 base::expected<std::optional<OrchardShard>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::LastShard(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::LastShard(const mojom::AccountIdPtr& account_id,
                                uint8_t shard_height) {
-  auto shard_index = GetLatestShardIndex(account_id.Clone());
+  auto shard_index = GetLatestShardIndex(account_id);
   if (!shard_index.has_value()) {
     return base::unexpected(shard_index.error());
   }
 
   if (!shard_index.value()) {
-    return std::nullopt;
+    return base::ok(std::nullopt);
   }
 
-  return GetShard(
-      account_id.Clone(),
-      OrchardShardAddress{shard_height, shard_index.value().value()});
+  return GetShard(account_id, OrchardShardAddress{shard_height,
+                                                  shard_index.value().value()});
 }
 
 base::expected<std::vector<OrchardShardAddress>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetShardRoots(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::GetShardRoots(const mojom::AccountIdPtr& account_id,
                                    uint8_t shard_level) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -960,11 +962,11 @@ ZCashOrchardStorage::GetShardRoots(mojom::AccountIdPtr account_id,
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement, ""});
   }
 
-  return result;
+  return base::ok(std::move(result));
 }
 
 base::expected<bool, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::AddCheckpoint(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
                                    uint32_t checkpoint_id,
                                    OrchardCheckpoint checkpoint) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -1035,8 +1037,7 @@ ZCashOrchardStorage::AddCheckpoint(mojom::AccountIdPtr account_id,
       return base::unexpected(
           Error{ErrorCode::kConsistencyError, "Consistency error"});
     }
-    auto marks_removed_result =
-        GetMarksRemoved(account_id.Clone(), checkpoint_id);
+    auto marks_removed_result = GetMarksRemoved(account_id, checkpoint_id);
     if (!marks_removed_result.has_value()) {
       return base::unexpected(marks_removed_result.error());
     }
@@ -1057,11 +1058,11 @@ ZCashOrchardStorage::AddCheckpoint(mojom::AccountIdPtr account_id,
                                   database_.GetErrorMessage()});
   }
 
-  return true;
+  return base::ok(true);
 }
 
 base::expected<size_t, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::CheckpointCount(mojom::AccountIdPtr account_id) {
+ZCashOrchardStorage::CheckpointCount(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1089,7 +1090,7 @@ ZCashOrchardStorage::CheckpointCount(mojom::AccountIdPtr account_id) {
 }
 
 base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::MinCheckpointId(mojom::AccountIdPtr account_id) {
+ZCashOrchardStorage::MinCheckpointId(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1108,19 +1109,19 @@ ZCashOrchardStorage::MinCheckpointId(mojom::AccountIdPtr account_id) {
       return base::unexpected(
           Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
     } else {
-      return std::nullopt;
+      return base::ok(std::nullopt);
     }
   }
 
   if (resolve_min_checkpoint_id.GetColumnType(0) == sql::ColumnType::kNull) {
-    return std::nullopt;
+    return base::ok(std::nullopt);
   } else {
     return ReadUint32(resolve_min_checkpoint_id, 0);
   }
 }
 
 base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::MaxCheckpointId(mojom::AccountIdPtr account_id) {
+ZCashOrchardStorage::MaxCheckpointId(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1138,19 +1139,19 @@ ZCashOrchardStorage::MaxCheckpointId(mojom::AccountIdPtr account_id) {
       return base::unexpected(
           Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
     } else {
-      return std::nullopt;
+      return base::ok(std::nullopt);
     }
   }
 
   if (resolve_max_checkpoint_id.GetColumnType(0) == sql::ColumnType::kNull) {
-    return std::nullopt;
+    return base::ok(std::nullopt);
   } else {
     return ReadUint32(resolve_max_checkpoint_id, 0);
   }
 }
 
 base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetCheckpointAtDepth(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::GetCheckpointAtDepth(const mojom::AccountIdPtr& account_id,
                                           uint32_t depth) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -1176,20 +1177,20 @@ ZCashOrchardStorage::GetCheckpointAtDepth(mojom::AccountIdPtr account_id,
       return base::unexpected(
           Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
     }
-    return std::nullopt;
+    return base::ok(std::nullopt);
   }
 
   auto value = ReadUint32(get_checkpoint_at_depth_statement, 0);
 
   if (!value) {
-    return std::nullopt;
+    return base::ok(std::nullopt);
   }
 
   return *value;
 }
 
 base::expected<std::optional<std::vector<uint32_t>>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetMarksRemoved(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::GetMarksRemoved(const mojom::AccountIdPtr& account_id,
                                      uint32_t checkpoint_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -1216,12 +1217,12 @@ ZCashOrchardStorage::GetMarksRemoved(mojom::AccountIdPtr account_id,
     result.push_back(*position);
   }
 
-  return result;
+  return base::ok(std::move(result));
 }
 
 base::expected<std::optional<OrchardCheckpointBundle>,
                ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetCheckpoint(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::GetCheckpoint(const mojom::AccountIdPtr& account_id,
                                    uint32_t checkpoint_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -1240,7 +1241,7 @@ ZCashOrchardStorage::GetCheckpoint(mojom::AccountIdPtr account_id,
   get_checkpoint_statement.BindInt64(0, checkpoint_id);
   get_checkpoint_statement.BindString(1, account_id->unique_key);
   if (!get_checkpoint_statement.Step()) {
-    return std::nullopt;
+    return base::ok(std::nullopt);
   }
   auto checkpoint_position =
       ReadCheckpointTreeState(get_checkpoint_statement, 0);
@@ -1276,7 +1277,7 @@ ZCashOrchardStorage::GetCheckpoint(mojom::AccountIdPtr account_id,
 }
 
 base::expected<std::vector<OrchardCheckpointBundle>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetCheckpoints(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::GetCheckpoints(const mojom::AccountIdPtr& account_id,
                                     size_t limit) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -1307,8 +1308,7 @@ ZCashOrchardStorage::GetCheckpoints(mojom::AccountIdPtr account_id,
     if (!checkpoint_position.has_value()) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement, ""});
     }
-    auto found_marks_removed =
-        GetMarksRemoved(account_id.Clone(), *checkpoint_id);
+    auto found_marks_removed = GetMarksRemoved(account_id, *checkpoint_id);
     if (!found_marks_removed.has_value()) {
       return base::unexpected(found_marks_removed.error());
     }
@@ -1321,13 +1321,14 @@ ZCashOrchardStorage::GetCheckpoints(mojom::AccountIdPtr account_id,
         *checkpoint_id, OrchardCheckpoint(checkpoint_position.value(),
                                           std::move(marks_removed))});
   }
-  return checkpoints;
+  return base::ok(std::move(checkpoints));
 }
 
 base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::GetMaxCheckpointedHeight(mojom::AccountIdPtr account_id,
-                                              uint32_t chain_tip_height,
-                                              uint32_t min_confirmations) {
+ZCashOrchardStorage::GetMaxCheckpointedHeight(
+    const mojom::AccountIdPtr& account_id,
+    uint32_t chain_tip_height,
+    uint32_t min_confirmations) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1352,7 +1353,7 @@ ZCashOrchardStorage::GetMaxCheckpointedHeight(mojom::AccountIdPtr account_id,
       return base::unexpected(
           Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
     } else {
-      return std::nullopt;
+      return base::ok(std::nullopt);
     }
   }
 
@@ -1363,11 +1364,11 @@ ZCashOrchardStorage::GetMaxCheckpointedHeight(mojom::AccountIdPtr account_id,
         Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
   }
 
-  return *value;
+  return base::ok(*value);
 }
 
 base::expected<bool, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::RemoveCheckpoint(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
                                       uint32_t checkpoint_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -1376,13 +1377,13 @@ ZCashOrchardStorage::RemoveCheckpoint(mojom::AccountIdPtr account_id,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  auto existing_checkpoint = GetCheckpoint(account_id.Clone(), checkpoint_id);
+  auto existing_checkpoint = GetCheckpoint(account_id, checkpoint_id);
   if (!existing_checkpoint.has_value()) {
     return base::unexpected(existing_checkpoint.error());
   }
 
   if (!existing_checkpoint.value()) {
-    return false;
+    return base::ok(false);
   }
 
   sql::Statement remove_checkpoint_by_id(database_.GetCachedStatement(
@@ -1407,11 +1408,11 @@ ZCashOrchardStorage::RemoveCheckpoint(mojom::AccountIdPtr account_id,
                                   database_.GetErrorMessage()});
   }
 
-  return true;
+  return base::ok(true);
 }
 
 base::expected<bool, ZCashOrchardStorage::Error>
-ZCashOrchardStorage::TruncateCheckpoints(mojom::AccountIdPtr account_id,
+ZCashOrchardStorage::TruncateCheckpoints(const mojom::AccountIdPtr& account_id,
                                          uint32_t checkpoint_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -1442,7 +1443,7 @@ ZCashOrchardStorage::TruncateCheckpoints(mojom::AccountIdPtr account_id,
                                   database_.GetErrorMessage()});
   }
 
-  return true;
+  return base::ok(true);
 }
 
 }  // namespace brave_wallet

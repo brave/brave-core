@@ -44,15 +44,14 @@ TEST_F(OrchardStorageTest, AccountMeta) {
                                               mojom::AccountKind::kDerived, 1);
 
   {
-    auto result = orchard_storage_->GetAccountMeta(account_id_1.Clone());
+    auto result = orchard_storage_->GetAccountMeta(account_id_1);
     EXPECT_FALSE(result.has_value());
   }
 
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100).has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_1, 100).has_value());
 
   {
-    auto result = orchard_storage_->GetAccountMeta(account_id_1.Clone());
+    auto result = orchard_storage_->GetAccountMeta(account_id_1);
     EXPECT_TRUE(result.has_value());
     EXPECT_EQ(result->account_birthday, 100u);
     EXPECT_FALSE(result->latest_scanned_block_id);
@@ -61,17 +60,15 @@ TEST_F(OrchardStorageTest, AccountMeta) {
 
   {
     // Failed to insert same account
-    EXPECT_EQ(orchard_storage_->RegisterAccount(account_id_1.Clone(), 200)
-                  .error()
-                  .error_code,
-              ZCashOrchardStorage::ErrorCode::kFailedToExecuteStatement);
+    EXPECT_EQ(
+        orchard_storage_->RegisterAccount(account_id_1, 200).error().error_code,
+        ZCashOrchardStorage::ErrorCode::kFailedToExecuteStatement);
   }
 
   // Insert second account
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_2.Clone(), 200).has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_2, 200).has_value());
   {
-    auto result = orchard_storage_->GetAccountMeta(account_id_2.Clone());
+    auto result = orchard_storage_->GetAccountMeta(account_id_2);
     EXPECT_TRUE(result.has_value());
     EXPECT_EQ(result->account_birthday, 200u);
     EXPECT_FALSE(result->latest_scanned_block_id);
@@ -87,10 +84,8 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 1);
 
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100).has_value());
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_2.Clone(), 100).has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_1, 100).has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_2, 100).has_value());
 
   // Update notes for account 1
   {
@@ -98,8 +93,7 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
     notes.push_back(GenerateMockOrchardNote(account_id_1, 101, 1));
     notes.push_back(GenerateMockOrchardNote(account_id_1, 105, 2));
 
-    orchard_storage_->UpdateNotes(account_id_1.Clone(), notes, {}, 200,
-                                  "hash200");
+    orchard_storage_->UpdateNotes(account_id_1, notes, {}, 200, "hash200");
   }
 
   // Update notes for account 2
@@ -109,14 +103,13 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
     notes.push_back(GenerateMockOrchardNote(account_id_2, 115, 2));
     notes.push_back(GenerateMockOrchardNote(account_id_2, 117, 3));
 
-    orchard_storage_->UpdateNotes(account_id_2.Clone(), notes, {}, 200,
-                                  "hash200");
+    orchard_storage_->UpdateNotes(account_id_2, notes, {}, 200, "hash200");
   }
 
   // Check account_1 spendable notes
   {
     auto account_1_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_1.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_1);
     EXPECT_EQ(2u, account_1_spendable_notes->size());
     SortByBlockId(*account_1_spendable_notes);
     EXPECT_EQ(account_1_spendable_notes.value()[0],
@@ -128,7 +121,7 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   // Check account_2 spendable notes
   {
     auto account_2_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_2.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_2);
     EXPECT_EQ(3u, account_2_spendable_notes->size());
     SortByBlockId(*account_2_spendable_notes);
     EXPECT_EQ(account_2_spendable_notes.value()[0],
@@ -149,8 +142,7 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
     spends.push_back(
         OrchardNoteSpend{203, GenerateMockNullifier(account_id_1, 1)});
 
-    orchard_storage_->UpdateNotes(account_id_1.Clone(), notes, spends, 300,
-                                  "hash300");
+    orchard_storage_->UpdateNotes(account_id_1, notes, spends, 300, "hash300");
   }
 
   // Update notes for account 2
@@ -165,14 +157,13 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
     spends.push_back(
         OrchardNoteSpend{233, GenerateMockNullifier(account_id_2, 3)});
 
-    orchard_storage_->UpdateNotes(account_id_2.Clone(), notes, spends, 300,
-                                  "hash300");
+    orchard_storage_->UpdateNotes(account_id_2, notes, spends, 300, "hash300");
   }
 
   // Check account_1 spendable notes
   {
     auto account_1_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_1.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_1);
     EXPECT_EQ(2u, account_1_spendable_notes->size());
     SortByBlockId(*account_1_spendable_notes);
     EXPECT_EQ(account_1_spendable_notes.value()[0],
@@ -184,7 +175,7 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   // Check account_2 spendable notes
   {
     auto account_2_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_2.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_2);
     EXPECT_EQ(2u, account_2_spendable_notes->size());
     SortByBlockId(*account_2_spendable_notes);
     EXPECT_EQ(account_2_spendable_notes.value()[0],
@@ -195,13 +186,13 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
 
   // Accounts meta updated
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
     EXPECT_EQ(account_meta->latest_scanned_block_id, 300u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash300");
   }
 
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
     EXPECT_EQ(account_meta->latest_scanned_block_id, 300u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash300");
   }
@@ -215,10 +206,8 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 1);
 
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100).has_value());
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_2.Clone(), 100).has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_1, 100).has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_2, 100).has_value());
 
   // Update notes for account 1
   {
@@ -237,8 +226,7 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
     spends.push_back(
         OrchardNoteSpend{103, GenerateMockNullifier(account_id_1, 3)});
 
-    orchard_storage_->UpdateNotes(account_id_1.Clone(), notes, spends, 450,
-                                  "hash450");
+    orchard_storage_->UpdateNotes(account_id_1, notes, spends, 450, "hash450");
   }
 
   // Update notes for account 2
@@ -257,35 +245,33 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
     spends.push_back(
         OrchardNoteSpend{333, GenerateMockNullifier(account_id_2, 3)});
 
-    orchard_storage_->UpdateNotes(account_id_2.Clone(), notes, spends, 500,
-                                  "hash500");
+    orchard_storage_->UpdateNotes(account_id_2, notes, spends, 500, "hash500");
   }
 
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
     EXPECT_EQ(account_meta->latest_scanned_block_id, 500u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash500");
     auto account_2_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_2.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_2);
     EXPECT_EQ(2u, account_2_spendable_notes->size());
-    auto account_2_nullifiers =
-        orchard_storage_->GetNullifiers(account_id_2.Clone());
+    auto account_2_nullifiers = orchard_storage_->GetNullifiers(account_id_2);
     EXPECT_EQ(2u, account_2_nullifiers->size());
   }
 
   // Call handle chain reorg so notes and spends with index > 300 will be
   // deleted
-  orchard_storage_->HandleChainReorg(account_id_2.Clone(), 300u, "hash300");
+  orchard_storage_->HandleChainReorg(account_id_2, 300u, "hash300");
 
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
     EXPECT_EQ(account_meta->latest_scanned_block_id, 300u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash300");
   }
 
   // Unused account is untouched
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
     EXPECT_EQ(account_meta->latest_scanned_block_id, 450u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash450");
   }
@@ -294,11 +280,10 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
   // Notes for account 1 should be untouched since reorg wasn't launched for
   // account_1
   {
-    auto account_1_nullifiers =
-        orchard_storage_->GetNullifiers(account_id_1.Clone());
+    auto account_1_nullifiers = orchard_storage_->GetNullifiers(account_id_1);
     EXPECT_EQ(2u, account_1_nullifiers->size());
     auto account_1_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_1.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_1);
     // Since we removed 2 nullifiers and 1 note there should be 3 spendable
     // notes
     EXPECT_EQ(3u, account_1_spendable_notes->size());
@@ -313,11 +298,10 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
 
   // Check account_2 spendable notes
   {
-    auto account_2_nullifiers =
-        orchard_storage_->GetNullifiers(account_id_2.Clone());
+    auto account_2_nullifiers = orchard_storage_->GetNullifiers(account_id_2);
     EXPECT_EQ(0u, account_2_nullifiers->size());
     auto account_2_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_2.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_2);
     // Since we removed 2 nullifiers and 1 note there should be 3 spendable
     // notes
     EXPECT_EQ(3u, account_2_spendable_notes->size());
@@ -330,10 +314,10 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
               GenerateMockOrchardNote(account_id_2, 213, 3));
   }
 
-  orchard_storage_->HandleChainReorg(account_id_1.Clone(), 0u, "hash0");
+  orchard_storage_->HandleChainReorg(account_id_1, 0u, "hash0");
   // Account 1 was reorged on 0
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
     EXPECT_EQ(account_meta->latest_scanned_block_id.value(), 0u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash.value(), "hash0");
   }
@@ -341,11 +325,10 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
   // Check account_1 spendable notes
   // Account 1 was reorged on 0 so no nullifiers and notes should exist.
   {
-    auto account_1_nullifiers =
-        orchard_storage_->GetNullifiers(account_id_1.Clone());
+    auto account_1_nullifiers = orchard_storage_->GetNullifiers(account_id_1);
     EXPECT_EQ(0u, account_1_nullifiers->size());
     auto account_1_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_1.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_1);
     EXPECT_EQ(0u, account_1_spendable_notes->size());
   }
 }

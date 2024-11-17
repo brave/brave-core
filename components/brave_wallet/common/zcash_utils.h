@@ -43,6 +43,8 @@ inline constexpr uint8_t kOrchardNoteRhoSize = 32;
 inline constexpr uint8_t kOrchardNoteRSeedSize = 32;
 inline constexpr uint8_t kOrchardSpendingKeySize = 32;
 inline constexpr size_t kOrchardCompleteBlockHashSize = 32u;
+// Block number where Orchard support was added
+inline constexpr size_t kNu5BlockUpdate = 1687104;
 
 using OrchardFullViewKey = std::array<uint8_t, kOrchardFullViewKeySize>;
 using OrchardMemo = std::array<uint8_t, kOrchardMemoSize>;
@@ -138,7 +140,7 @@ struct OrchardNoteWitness {
   ~OrchardNoteWitness();
   OrchardNoteWitness(const OrchardNoteWitness& other);
 
-  uint32_t position;
+  uint32_t position = 0;
   std::vector<OrchardMerkleHash> merkle_path;
   bool operator==(const OrchardNoteWitness& other) const = default;
 };
@@ -200,7 +202,7 @@ struct OrchardCheckpointBundle {
   bool operator==(const OrchardCheckpointBundle& other) const = default;
 
   // The block height serves as the checkpoint identifier.
-  uint32_t checkpoint_id;
+  uint32_t checkpoint_id = 0;
   OrchardCheckpoint checkpoint;
 };
 
@@ -214,17 +216,7 @@ struct OrchardShardAddress {
 
 // Top part of the shard tree from the root to the shard roots level
 // Used for optimization purposes in the shard tree crate.
-struct OrchardCap {
-  OrchardCap();
-  ~OrchardCap();
-
-  OrchardCap(const OrchardCap& other);
-  OrchardCap& operator=(const OrchardCap& other);
-  OrchardCap(OrchardCap&& other);
-  OrchardCap& operator=(OrchardCap&& other);
-
-  std::vector<uint8_t> data;
-};
+using OrchardShardTreeCap = std::vector<uint8_t>;
 
 // Subtree with root selected from the shard roots level.
 struct OrchardShard {
@@ -252,7 +244,7 @@ struct OrchardShard {
 
 struct OrchardCommitment {
   OrchardCommitmentValue cmu;
-  bool is_marked;
+  bool is_marked = false;
   std::optional<uint32_t> checkpoint_id;
 };
 
