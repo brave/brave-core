@@ -71,31 +71,22 @@ function Main() {
 
   const scrollPos = React.useRef({ isAtBottom: true })
 
-  if (aiChatContext.hasAcceptedAgreement) {
-    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.ConnectionIssue) {
-      currentErrorElement = (
-        <ErrorConnection
-          onRetry={conversationContext.retryAPIRequest}
-        />
-      )
-    }
-
-    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.RateLimitReached) {
-      currentErrorElement = (
-        <ErrorRateLimit />
-      )
-    }
-
-    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.ContextLimitReached) {
-      currentErrorElement = (
-        <ErrorConversationEnd />
-      )
-    }
-
-    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.InvalidEndpointURL) {
-      currentErrorElement = (
-        <ErrorInvalidEndpointURL />
-      )
+  // Determine which, if any, error message should be displayed
+  if (aiChatContext.hasAcceptedAgreement && conversationContext.apiHasError) {
+    switch (conversationContext.currentError) {
+      case mojom.APIError.ConnectionIssue:
+        currentErrorElement = <ErrorConnection
+          onRetry={conversationContext.retryAPIRequest} />
+        break
+      case mojom.APIError.RateLimitReached:
+        currentErrorElement = <ErrorRateLimit />
+        break
+      case mojom.APIError.ContextLimitReached:
+        currentErrorElement = <ErrorConversationEnd />
+        break
+      case mojom.APIError.InvalidEndpointURL:
+        currentErrorElement = <ErrorInvalidEndpointURL />
+        break
     }
   }
 
