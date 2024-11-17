@@ -99,10 +99,11 @@ bool ModelValidator::IsValidEndpoint(const GURL& endpoint,
     return true;
   }
 
-  // The following condition is only met when `true` is passed as check_as_private_ip
-  // or when the optional feature is enabled. Intentionally, it will not be met when
-  // `false` is passed as check_as_private_ip.
-  if (check_as_private_ip.value_or(ai_chat::features::IsAllowPrivateIPsEnabled())) {
+  // The following condition is only met when `true` is passed as
+  // check_as_private_ip or when the optional feature is enabled. Intentionally,
+  // it will not be met when `false` is passed as check_as_private_ip.
+  if (check_as_private_ip.value_or(
+          ai_chat::features::IsAllowPrivateIPsEnabled())) {
     if (IsValidPrivateHost(endpoint) || IsValidPrivateIPAddress(endpoint)) {
       VLOG(2) << "Allowing private endpoint: " << endpoint.spec();
       return true;

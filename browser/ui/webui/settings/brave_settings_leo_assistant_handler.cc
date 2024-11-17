@@ -158,8 +158,6 @@ void BraveLeoAssistantHandler::HandleValidateModelEndpoint(
                    !ai_chat::ModelValidator::IsValidEndpoint(
                        endpoint, std::optional<bool>(false)));
 
-                       VLOG(2) << "Results: " << response.DebugString();
-
   ResolveJavascriptCallback(args[0], response);
 }
 

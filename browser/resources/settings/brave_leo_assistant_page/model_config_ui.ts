@@ -216,12 +216,15 @@ export class ModelConfigUI extends ModelConfigUIBase {
   private checkEndpointValidity_() {
     const url = this.endpointUrl.trim()
     if (url !== '') {
-      sendWithPromise('validateModelEndpoint', { url }).then((response: any) => {
-        this.isUrlInvalid = !response.isValid
-        this.isValidAsPrivateEndpoint = response.isValidAsPrivateEndpoint
-        this.shouldShowUnsafeEndpointLabel = response.isValidDueToPrivateIPsFeature
-        this.invalidUrlErrorMessage = this.i18n('braveLeoAssistantEndpointError')
-      })
+      sendWithPromise('validateModelEndpoint', { url })
+        .then((response: any) => {
+          this.isUrlInvalid = !response.isValid
+          this.isValidAsPrivateEndpoint = response.isValidAsPrivateEndpoint
+          this.shouldShowUnsafeEndpointLabel =
+            response.isValidDueToPrivateIPsFeature
+          this.invalidUrlErrorMessage =
+            this.i18n('braveLeoAssistantEndpointError')
+        })
     }
   }
 
