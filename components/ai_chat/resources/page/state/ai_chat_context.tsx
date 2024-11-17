@@ -7,6 +7,7 @@ import * as React from 'react'
 import getAPI, * as mojom from '../api'
 import { loadTimeData } from '$web-common/loadTimeData'
 import { useNavigation } from '$web-common/navigation/Context'
+import { tabAssociatedChatId } from '../routes'
 
 export interface AIChatContext {
   visibleConversations: mojom.Conversation[]
@@ -132,7 +133,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren) {
     const checkExistsHandler = (params: { chatId: string }) => {
       // Special case the default conversation - it gets treated specially as
       // the chat is rebound as the tab navigates.
-      if (params.chatId === 'default') return
+      if (params.chatId === tabAssociatedChatId) return
 
       if (params.chatId && !context.visibleConversations.find(c => c.uuid === params.chatId)) {
         location.href = '/'

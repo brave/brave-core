@@ -7,7 +7,7 @@ import * as React from 'react'
 import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
 import * as API from '../api/'
 import { useAIChat } from './ai_chat_context'
-import { useSelectedConversation } from '../routes'
+import { tabAssociatedChatId, useSelectedConversation } from '../routes'
 import useIsConversationVisible from '../hooks/useIsConversationVisible'
 
 const MAX_INPUT_CHAR = 2000
@@ -314,7 +314,7 @@ function ConversationProviderInternal(props: React.PropsWithChildren<Conversatio
   const isVisible = useIsConversationVisible(context.conversationUuid)
   React.useEffect(() => {
     if (!isVisible) return
-    if (props.selectedConversationId === 'default') return
+    if (props.selectedConversationId === tabAssociatedChatId) return
     if (context.conversationUuid === props.selectedConversationId) return
     window.location.href = `/${context.conversationUuid}`
   }, [isVisible])
@@ -333,7 +333,7 @@ function ConversationProviderInternal(props: React.PropsWithChildren<Conversatio
 
     let totalCharLimit = 0
 
-    if ( options ) {
+    if (options) {
       totalCharLimit += options.longConversationWarningCharacterLimit ?? 0
       totalCharLimit += context.shouldSendPageContents
         ? options.maxAssociatedContentLength ?? 0
@@ -341,7 +341,7 @@ function ConversationProviderInternal(props: React.PropsWithChildren<Conversatio
     }
 
     return !hasDismissedLongConversationInfo
-           && chatHistoryCharTotal >= totalCharLimit
+      && chatHistoryCharTotal >= totalCharLimit
   }, [
     context.conversationHistory,
     context.currentModel,
@@ -516,13 +516,13 @@ export function ConversationContextProvider(
     }
 
     // Select a specific conversation
-    setConversationAPI(API.bindConversation(selectedConversation === "default"
+    setConversationAPI(API.bindConversation(selectedConversation === tabAssociatedChatId
       ? undefined
       : selectedConversation))
 
     // The default conversation changes as the associated tab navigates, so
     // listen for changes.
-    if (selectedConversation === 'default') {
+    if (selectedConversation === tabAssociatedChatId) {
       const onNewDefaultConversationListenerId =
         getAPI().UIObserver.onNewDefaultConversation.addListener(() => {
           setConversationAPI(API.bindConversation(undefined))

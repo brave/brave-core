@@ -27,7 +27,7 @@ std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
   auto web_view = std::make_unique<SidePanelWebUIViewT<AIChatUI>>(
       base::RepeatingClosure(), base::RepeatingClosure(),
       std::make_unique<WebUIContentsWrapperT<AIChatUI>>(
-          GURL(base::StrCat({kChatUIURL, "default"})), profile.get(),
+          GURL(base::StrCat({kChatUIURL, "tab"})), profile.get(),
           IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
           /*esc_closes_ui=*/false));
   web_view->ShowUI();

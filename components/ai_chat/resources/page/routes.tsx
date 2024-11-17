@@ -6,6 +6,8 @@
 import { useNavigation, useParams } from '$web-common/navigation/Context'
 import { useEffect } from 'react'
 
+export const tabAssociatedChatId = 'tab'
+
 export function useSelectedConversation() {
     return useParams().chatId
 }

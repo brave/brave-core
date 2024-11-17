@@ -12,7 +12,7 @@ import styles from './style.module.scss'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
-import { useSelectedConversation } from '../../routes'
+import { tabAssociatedChatId, useSelectedConversation } from '../../routes'
 
 const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.logo}>
   <Icon name='product-brave-leo' />
@@ -38,18 +38,18 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
   const conversationId = useSelectedConversation()
-  const isDefault = conversationId === 'default'
-  const showTitle = !isDefault || aiChatContext.isStandalone
+  const isTabAssociated = conversationId === tabAssociatedChatId
+  const showTitle = !isTabAssociated || aiChatContext.isStandalone
   const canShowFullScreenButton = aiChatContext.isHistoryEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
 
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.pageTitle}>
-          {!isDefault && !aiChatContext.isStandalone && <Button
+          {!isTabAssociated && !aiChatContext.isStandalone && <Button
             kind='plain-faint'
             fab
-            onClick={() => location.href = "/default"}
+            onClick={() => location.href = tabAssociatedChatId}
           >
             <Icon name='arrow-left' />
           </Button>}
