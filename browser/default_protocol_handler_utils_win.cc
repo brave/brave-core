@@ -150,7 +150,7 @@ std::wstring FormatUserChoiceString(std::wstring_view ext,
       L"User Choice set via Windows User Experience "
       L"{D18B6DD5-6124-4341-9318-804003BAFA0B}";
 
-  const std::wstring file_time_str = base::ASCIIToWide(base::StringPrintf(
+  const std::wstring file_time_str = base::ASCIIToWide(absl::StrFormat(
       "%08lx%08lx", file_time.dwHighDateTime, file_time.dwLowDateTime));
 
   std::wstring user_choice =

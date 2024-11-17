@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/strings/stringprintf.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -31,6 +30,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/navigation_handle_observer.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 namespace policy {
@@ -146,8 +146,8 @@ INSTANTIATE_TEST_SUITE_P(
     BraveRewardsPolicyTest,
     ::testing::Bool(),
     [](const testing::TestParamInfo<BraveRewardsPolicyTest::ParamType>& info) {
-      return base::StringPrintf("BraveRewards_%sByPolicy",
-                                info.param ? "Disabled" : "NotDisabled");
+      return absl::StrFormat("BraveRewards_%sByPolicy",
+                             info.param ? "Disabled" : "NotDisabled");
     });
 
 }  // namespace policy
