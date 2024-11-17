@@ -1675,18 +1675,15 @@ std::unique_ptr<net::test_server::HttpResponse> NoParamHandler(
   auto http_response = std::make_unique<net::test_server::BasicHttpResponse>();
   http_response->set_code(net::HttpStatusCode::HTTP_OK);
 
-  if (request_url.has_query()) {
-    // Should not happen, abort test
-    CHECK(false);
-    return nullptr;
-  } else {
-    std::string body =
-        "<html><head><script>window.success = "
-        "true;</script></head><body><p>test</p></body></html>";
-    http_response->set_content(body);
-    http_response->set_content_type("text/html");
-    return http_response;
-  }
+  // Should not happen, abort test
+  CHECK(!request_url.has_query());
+
+  std::string body =
+      "<html><head><script>window.success = "
+      "true;</script></head><body><p>test</p></body></html>";
+  http_response->set_content(body);
+  http_response->set_content_type("text/html");
+  return http_response;
 }
 
 // `$removeparam` should be respected for subresource requests

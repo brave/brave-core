@@ -115,7 +115,6 @@ int GetIntColumn(mojom::DBRecord* record, const int index) {
   }
 
   if (!record->fields.at(index)->is_int_value()) {
-    DCHECK(false);
     return 0;
   }
 
@@ -128,7 +127,6 @@ int64_t GetInt64Column(mojom::DBRecord* record, const int index) {
   }
 
   if (!record->fields.at(index)->is_int64_value()) {
-    DCHECK(false);
     return 0;
   }
 
@@ -141,7 +139,6 @@ double GetDoubleColumn(mojom::DBRecord* record, const int index) {
   }
 
   if (!record->fields.at(index)->is_double_value()) {
-    DCHECK(false);
     return 0.0;
   }
 
@@ -154,7 +151,6 @@ bool GetBoolColumn(mojom::DBRecord* record, const int index) {
   }
 
   if (!record->fields.at(index)->is_bool_value()) {
-    DCHECK(false);
     return false;
   }
 
@@ -167,7 +163,6 @@ std::string GetStringColumn(mojom::DBRecord* record, const int index) {
   }
 
   if (!record->fields.at(index)->is_string_value()) {
-    DCHECK(false);
     return "";
   }
 

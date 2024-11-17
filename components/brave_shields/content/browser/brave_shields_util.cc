@@ -193,11 +193,11 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
                   "wildcard content setting.";
 
 #if DCHECK_IS_ON()
-    DCHECK(false);
+    NOTREACHED();
 #else
     base::debug::DumpWithoutCrashing();
-#endif
     return;
+#endif
   }
 
   if (!primary_pattern.IsValid()) {
