@@ -67,6 +67,7 @@ brave_settings_non_web_component_files = [
   "brave_default_extensions_page/brave_default_extensions_browser_proxy.ts",
   "brave_new_tab_page/brave_new_tab_browser_proxy.ts",
   "brave_leo_assistant_page/brave_leo_assistant_browser_proxy.ts",
+  "brave_overrides/all_sites.ts",
   "brave_overrides/about_page.ts",
   "brave_overrides/autofill_page.ts",
   "brave_overrides/appearance_page.ts",
