@@ -60,6 +60,14 @@ export class ModelConfigUI extends ModelConfigUIBase {
         type: Boolean,
         value: false,
       },
+      shouldShowUnsafeEndpointModal: {
+        type: Boolean,
+        value: false,
+      },
+      shouldShowUnsafeEndpointLabel: {
+        type: Boolean,
+        value: false,
+      },
       invalidUrlErrorMessage: {
         type: String,
         value: ''
@@ -94,13 +102,28 @@ export class ModelConfigUI extends ModelConfigUIBase {
   modelItem: mojom.Model | null
   isEditing_: boolean
   isUrlInvalid: boolean
+  shouldShowUnsafeEndpointLabel: boolean
+  isValidAsPrivateEndpoint: boolean
+  shouldShowUnsafeEndpointModal: boolean
   invalidUrlErrorMessage: string
 
   override ready() {
     super.ready()
+    // If a user previously had --brave-ai-chat-allow-private-ips enabled, but
+    // now has it disabled, they should be notified of invalid endpoints
+    // immediately upon opening the config view of an impacted model. We should
+    // not wait for the user to make a change to the endpoint before informing
+    // them that the endpoint is no longer valid.
+    this.checkEndpointValidity_()
   }
 
-  handleClick_() {
+  async handleClick_() {
+    // If the user is attempting to use a private endpoint, we should show a
+    // modal warning instructing them to enable the optional feature in order
+    // to proceed
+    this.shouldShowUnsafeEndpointModal =
+      this.isUrlInvalid && this.isValidAsPrivateEndpoint
+
     if (!this.saveEnabled_()) {
       return
     }
@@ -157,29 +180,9 @@ export class ModelConfigUI extends ModelConfigUIBase {
     this.contextSize = parseInt(e.target.value, 10);
   }
 
-  onModelServerEndpointChange_(e: any) {
-    const target = e.target as HTMLInputElement
-    const url = target.value
-    this.endpointUrl = url
-
-    sendWithPromise('validateModelEndpoint', { url })
-      .then(({ isValid, isValidAsPrivateIp }) => {
-        if (isValid) {
-          // URL Is valid
-          this.isUrlInvalid = false
-          this.invalidUrlErrorMessage = ''
-        } else if (isValidAsPrivateIp) {
-          // URL would be valid as a private IP; inform the user
-          this.isUrlInvalid = true
-          this.invalidUrlErrorMessage =
-            this.i18n('braveLeoAssistantEndpointValidAsPrivateIp')
-        } else {
-          // URL is invalid
-          this.isUrlInvalid = true
-          this.invalidUrlErrorMessage =
-            this.i18n('braveLeoAssistantEndpointInvalidError')
-        }
-      })
+  async onModelServerEndpointChange_(e: any) {
+    this.endpointUrl = e.target.value
+    this.checkEndpointValidity_()
   }
 
   onModelApiKeyChange_(e: any) {
@@ -208,6 +211,18 @@ export class ModelConfigUI extends ModelConfigUIBase {
   private saveEnabled_() {
     // Make sure all required fields are filled
     return this.label && this.modelRequestName && this.endpointUrl && !this.isUrlInvalid
+  }
+
+  private checkEndpointValidity_() {
+    const url = this.endpointUrl.trim()
+    if (url !== '') {
+      sendWithPromise('validateModelEndpoint', { url }).then((response: any) => {
+        this.isUrlInvalid = !response.isValid
+        this.isValidAsPrivateEndpoint = response.isValidAsPrivateEndpoint
+        this.shouldShowUnsafeEndpointLabel = response.isValidDueToPrivateIPsFeature
+        this.invalidUrlErrorMessage = this.i18n('braveLeoAssistantEndpointError')
+      })
+    }
   }
 
   private onModelItemChange_(newValue: mojom.Model | null) {

@@ -99,15 +99,10 @@ class ModelListSection extends ModelListSectionBase {
         .addCustomModel(e.detail.modelConfig)
     }
 
-    if ([
-      OperationResult.InvalidUrl,
-      OperationResult.UrlValidAsPrivateEndpoint
-    ].includes(response.result)) {
+    if (response.result === OperationResult.InvalidUrl) {
       modelConfigElement.isUrlInvalid = true
       modelConfigElement.invalidUrlErrorMessage = this.i18n(
-        response.result === OperationResult.InvalidUrl
-          ? 'braveLeoAssistantEndpointError'
-          : 'braveLeoAssistantEndpointValidAsPrivateIp'
+        'braveLeoAssistantEndpointError'
       )
       return
     }

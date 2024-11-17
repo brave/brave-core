@@ -1413,8 +1413,17 @@ Leo AI. This action can't be undone.
   <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_INVALID_ERROR" desc="An error message when the url is invalid">
     You have entered an invalid URL. Please enter a valid URL.
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_VALID_AS_PRIVATE_IP" desc="An error message when the url is invalid, but would be valid as a private IP address">
-    If you would like to use a private IP address, you must first enable "Private IP Addresses for Custom Model Enpoints" via brave://flags/#brave-ai-chat-allow-private-ips
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_POTENTIALLY_UNSAFE_ERROR" desc="An error message when the url is potentially unsafe">
+    This endpoint is potentially unsafe.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_VALID_AS_PRIVATE_IP_1" desc="An error message title when the url is invalid, but would be valid as a private IP address">
+    Private IPs Not Allowed
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_VALID_AS_PRIVATE_IP_2" desc="Paragraph 1 of 2 for an error message when the url is invalid, but would be valid as a private IP address">
+    This address seems to be from a private network—like your router or a local server. Brave likes to play it safe and blocks these automatically, but you can turn it on if you're feeling confident!
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_VALID_AS_PRIVATE_IP_3" desc="Paragraph 2 of 2 for an error message when the url is invalid, but would be valid as a private IP address">
+    To proceed, visit brave://flags/, search for "brave-ai-chat-allow-private-ips," and enable the feature. Once enabled, you can use private network addresses in Leo settings.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_ADD_NEW_BUTTON_LABEL" desc="A label for a button that opens a panel with input forms for a user to add model">
     Add new model
