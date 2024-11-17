@@ -17,7 +17,7 @@ const routes = [
     '/{chatId}'
 ]
 
-export function Routes() {
+export function useRegisterRoutes() {
     const { addRoute, removeRoute } = useNavigation()
     useEffect(() => {
         for (const route of routes) {
@@ -30,6 +30,4 @@ export function Routes() {
             }
         }
     }, [])
-
-    return null
 }

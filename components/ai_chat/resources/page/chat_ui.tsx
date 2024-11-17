@@ -21,7 +21,6 @@ import {
 } from './state/conversation_context'
 import FullScreen from './components/full_page'
 import { NavigationContext } from '$web-common/navigation/Context'
-import { Routes } from './routes'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
@@ -32,7 +31,6 @@ function App() {
 
   return (
     <NavigationContext>
-      <Routes />
       <AIChatContextProvider>
         <ConversationContextProvider>
           <BraveCoreThemeProvider>

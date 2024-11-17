@@ -7,7 +7,7 @@ import * as React from 'react'
 import getAPI, * as mojom from '../api'
 import { loadTimeData } from '$web-common/loadTimeData'
 import { useNavigation } from '$web-common/navigation/Context'
-import { tabAssociatedChatId } from '../routes'
+import { tabAssociatedChatId, useRegisterRoutes } from '../routes'
 
 export interface AIChatContext {
   visibleConversations: mojom.Conversation[]
@@ -55,6 +55,8 @@ export const AIChatReactContext =
   React.createContext<AIChatContext>(defaultContext)
 
 export function AIChatContextProvider(props: React.PropsWithChildren) {
+  useRegisterRoutes()
+
   const [context, setContext] = React.useState<AIChatContext>(defaultContext)
   const [editingConversationId, setEditingConversationId] = React.useState<string | null>(null)
 
