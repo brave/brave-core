@@ -16,7 +16,8 @@ class RequestBlockingContentScriptHandler: TabContentScript {
     struct RequestBlockingDTOData: Decodable, Hashable {
       let resourceType: AdblockEngine.ResourceType
       let resourceURL: String
-      let sourceURL: String
+      let windowLocationHref: String
+      let windowOrigin: String
     }
 
     let securityToken: String
@@ -73,7 +74,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
       // Because javascript urls allow some characters that `URL` does not,
       // we use `NSURL(idnString: String)` to parse them
       guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
-      guard let sourceURL = NSURL(idnString: dto.data.sourceURL) as URL? else { return }
+      guard let windowOriginURL = NSURL(idnString: dto.data.windowOrigin) as URL? else { return }
       let isPrivateBrowsing = tab.isPrivate
 
       Task { @MainActor in
@@ -81,7 +82,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
         guard let domainURLString = domain.url else { return }
         let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
           requestURL: requestURL,
-          sourceURL: sourceURL,
+          sourceURL: windowOriginURL,
           resourceType: dto.data.resourceType,
           domain: domain
         )
@@ -92,8 +93,8 @@ class RequestBlockingContentScriptHandler: TabContentScript {
         // For subframes which may use different etld+1 than the main frame (example `reddit.com` and `redditmedia.com`)
         // We simply check the known subframeURLs on this page.
         guard
-          tab.url?.baseDomain == sourceURL.baseDomain
-            || self.tab?.currentPageData?.allSubframeURLs.contains(sourceURL) == true
+          tab.url?.baseDomain == windowOriginURL.baseDomain
+            || self.tab?.currentPageData?.allSubframeURLs.contains(windowOriginURL) == true
         else {
           replyHandler(shouldBlock, nil)
           return
