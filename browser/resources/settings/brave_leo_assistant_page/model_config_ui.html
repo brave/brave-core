@@ -76,11 +76,13 @@
 <template is="dom-if" if="[[shouldShowUnsafeEndpointModal]]">
   <cr-dialog show-close-button show-on-attach>
     <div slot="title">
-      <span class="dialog-title">$i18n{braveLeoAssistantEndpointValidAsPrivateIp_1}</span>
+      <span class="dialog-title">
+        $i18n{braveLeoAssistantEndpointValidAsPrivateIp_Title}
+      </span>
     </div>
     <div slot="body">
-      <p>$i18n{braveLeoAssistantEndpointValidAsPrivateIp_2}</p>
-      <p>$i18n{braveLeoAssistantEndpointValidAsPrivateIp_3}</p>
+      <p>$i18n{braveLeoAssistantEndpointValidAsPrivateIp_Body}</p>
+      <p>$i18n{braveLeoAssistantEndpointValidAsPrivateIp_Instructions}</p>
     </div>
   </cr-dialog>
 </template>
