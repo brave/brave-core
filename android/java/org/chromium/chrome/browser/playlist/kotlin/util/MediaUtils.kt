@@ -5,12 +5,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.util
+package org.chromium.chrome.browser.playlist.kotlin.util
 
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import com.brave.playlist.util.ConstantUtils.HLS_FILE_EXTENSION
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.HLS_FILE_EXTENSION
 import java.io.File
 import java.io.IOException
 import java.io.InputStream

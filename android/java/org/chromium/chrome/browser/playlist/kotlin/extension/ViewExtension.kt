@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.extension
+package org.chromium.chrome.browser.playlist.kotlin.extension
 
 import android.graphics.Color
 import android.graphics.LinearGradient
@@ -14,7 +14,7 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
 import android.view.View
 import android.view.ViewTreeObserver
-import com.brave.playlist.util.PlaylistUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 
 fun View.afterMeasured(f: View.() -> Unit) {
     viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {

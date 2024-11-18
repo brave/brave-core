@@ -5,6 +5,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.model
+package org.chromium.chrome.browser.playlist.kotlin.model
 
 data class CreatePlaylistModel(val newPlaylistId: String, val isMoveOrCopy: Boolean = false)

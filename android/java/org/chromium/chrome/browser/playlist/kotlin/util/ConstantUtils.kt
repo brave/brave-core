@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.util
+package org.chromium.chrome.browser.playlist.kotlin.util
 
 object ConstantUtils {
     const val PLAYLIST_ID = "playlist_id"

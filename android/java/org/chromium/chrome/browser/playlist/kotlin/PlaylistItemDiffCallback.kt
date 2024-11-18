@@ -5,10 +5,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist
+package org.chromium.chrome.browser.playlist.kotlin
 
 import androidx.recyclerview.widget.DiffUtil
-import com.brave.playlist.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 
 class PlaylistItemDiffCallback<T : Any> : DiffUtil.ItemCallback<T>() {
     override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {

@@ -5,21 +5,21 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.util
+package org.chromium.chrome.browser.playlist.kotlin.util
 
 import android.content.Context
 import android.view.View
 import androidx.fragment.app.FragmentManager
-import com.brave.playlist.R
-import com.brave.playlist.enums.PlaylistOptionsEnum
-import com.brave.playlist.listener.PlaylistItemOptionsListener
-import com.brave.playlist.listener.PlaylistOptionsListener
-import com.brave.playlist.model.PlaylistItemModel
-import com.brave.playlist.model.PlaylistItemOptionModel
-import com.brave.playlist.model.PlaylistModel
-import com.brave.playlist.model.PlaylistOptionsModel
-import com.brave.playlist.view.bottomsheet.PlaylistItemOptionsBottomSheet
-import com.brave.playlist.view.bottomsheet.PlaylistOptionsBottomSheet
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
+import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.PlaylistItemOptionsBottomSheet
+import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.PlaylistOptionsBottomSheet
 
 object MenuUtils {
     @JvmStatic

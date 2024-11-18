@@ -15,19 +15,18 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
 
-import com.brave.playlist.local_database.PlaylistRepository;
-import com.brave.playlist.model.HlsContentProgressModel;
-import com.brave.playlist.model.HlsContentQueueModel;
-import com.brave.playlist.model.PlaylistItemModel;
-import com.brave.playlist.playback_service.VideoPlaybackService;
-import com.brave.playlist.util.MediaUtils;
-import com.brave.playlist.util.PlaylistUtils;
-
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
+import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository;
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel;
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentQueueModel;
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel;
+import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
+import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils;
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
