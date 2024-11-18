@@ -109,6 +109,104 @@ std::vector<uint8_t> GetNetworkPrefix(bool is_testnet) {
 
 }  // namespace
 
+base::Value::Dict OrchardNote::ToValue() const {
+  base::Value::Dict dict;
+
+  dict.Set("addr", base::HexEncode(addr));
+  dict.Set("block_id", base::NumberToString(block_id));
+  dict.Set("nullifier", base::HexEncode(nullifier));
+  dict.Set("amount", base::NumberToString(amount));
+  dict.Set("orchard_commitment_tree_position",
+           base::NumberToString(orchard_commitment_tree_position));
+  dict.Set("rho", base::HexEncode(rho));
+  dict.Set("seed", base::HexEncode(seed));
+
+  return dict;
+}
+
+// static
+std::optional<OrchardNote> OrchardNote::FromValue(
+    const base::Value::Dict& value) {
+  OrchardNote result;
+  if (!ReadHexByteArrayTo<kOrchardRawBytesSize>(value, "addr", result.addr)) {
+    return std::nullopt;
+  }
+
+  if (!ReadUint32StringTo(value, "block_id", result.block_id)) {
+    return std::nullopt;
+  }
+
+  if (!ReadHexByteArrayTo<kOrchardNullifierSize>(value, "nullifier",
+                                                 result.nullifier)) {
+    return std::nullopt;
+  }
+
+  if (!ReadUint32StringTo(value, "amount", result.amount)) {
+    return std::nullopt;
+  }
+
+  if (!ReadUint32StringTo(value, "orchard_commitment_tree_position",
+                          result.orchard_commitment_tree_position)) {
+    return std::nullopt;
+  }
+
+  if (!ReadHexByteArrayTo<kOrchardNoteRhoSize>(value, "rho", result.rho)) {
+    return std::nullopt;
+  }
+
+  if (!ReadHexByteArrayTo<kOrchardNoteRSeedSize>(value, "seed", result.seed)) {
+    return std::nullopt;
+  }
+
+  return result;
+}
+
+base::Value::Dict OrchardInput::ToValue() const {
+  base::Value::Dict dict;
+
+  // Do not serialize witness ATM since it is calculated before post
+  dict.Set("note", note.ToValue());
+
+  return dict;
+}
+
+// static
+std::optional<OrchardInput> OrchardInput::FromValue(
+    const base::Value::Dict& value) {
+  OrchardInput result;
+
+  auto* note_dict = value.FindDict("note");
+  if (!note_dict) {
+    return std::nullopt;
+  }
+  auto note = OrchardNote::FromValue(*note_dict);
+  if (!note) {
+    return std::nullopt;
+  }
+
+  result.note = *note;
+
+  return result;
+}
+
+OrchardTreeState::OrchardTreeState() {}
+OrchardTreeState::~OrchardTreeState() {}
+OrchardTreeState::OrchardTreeState(const OrchardTreeState&) = default;
+
+OrchardNoteWitness::OrchardNoteWitness() = default;
+OrchardNoteWitness::~OrchardNoteWitness() = default;
+OrchardNoteWitness::OrchardNoteWitness(const OrchardNoteWitness& other) =
+    default;
+
+OrchardInput::OrchardInput() = default;
+OrchardInput::~OrchardInput() = default;
+OrchardInput::OrchardInput(const OrchardInput& other) = default;
+
+OrchardSpendsBundle::OrchardSpendsBundle() = default;
+OrchardSpendsBundle::~OrchardSpendsBundle() = default;
+OrchardSpendsBundle::OrchardSpendsBundle(const OrchardSpendsBundle& other) =
+    default;
+
 DecodedZCashAddress::DecodedZCashAddress() = default;
 DecodedZCashAddress::~DecodedZCashAddress() = default;
 DecodedZCashAddress::DecodedZCashAddress(const DecodedZCashAddress& other) =
@@ -154,6 +252,45 @@ std::optional<OrchardOutput> OrchardOutput::FromValue(
 
   return result;
 }
+
+OrchardCheckpoint::OrchardCheckpoint() {}
+OrchardCheckpoint::OrchardCheckpoint(CheckpointTreeState tree_state_position,
+                                     std::vector<uint32_t> marks_removed)
+    : tree_state_position(tree_state_position),
+      marks_removed(std::move(marks_removed)) {}
+OrchardCheckpoint::~OrchardCheckpoint() {}
+OrchardCheckpoint::OrchardCheckpoint(const OrchardCheckpoint& other) = default;
+OrchardCheckpoint& OrchardCheckpoint::operator=(
+    const OrchardCheckpoint& other) = default;
+OrchardCheckpoint::OrchardCheckpoint(OrchardCheckpoint&& other) = default;
+OrchardCheckpoint& OrchardCheckpoint::operator=(OrchardCheckpoint&& other) =
+    default;
+
+OrchardCheckpointBundle::OrchardCheckpointBundle(uint32_t checkpoint_id,
+                                                 OrchardCheckpoint checkpoint)
+    : checkpoint_id(checkpoint_id), checkpoint(std::move(checkpoint)) {}
+OrchardCheckpointBundle::~OrchardCheckpointBundle() {}
+OrchardCheckpointBundle::OrchardCheckpointBundle(
+    const OrchardCheckpointBundle& other) = default;
+OrchardCheckpointBundle& OrchardCheckpointBundle::operator=(
+    const OrchardCheckpointBundle& other) = default;
+OrchardCheckpointBundle::OrchardCheckpointBundle(
+    OrchardCheckpointBundle&& other) = default;
+OrchardCheckpointBundle& OrchardCheckpointBundle::operator=(
+    OrchardCheckpointBundle&& other) = default;
+
+OrchardShard::OrchardShard() {}
+OrchardShard::OrchardShard(OrchardShardAddress address,
+                           std::optional<OrchardShardRootHash> root_hash,
+                           std::vector<uint8_t> shard_data)
+    : address(std::move(address)),
+      root_hash(std::move(root_hash)),
+      shard_data(std::move(shard_data)) {}
+OrchardShard::~OrchardShard() = default;
+OrchardShard::OrchardShard(const OrchardShard& other) = default;
+OrchardShard& OrchardShard::operator=(const OrchardShard& other) = default;
+OrchardShard::OrchardShard(OrchardShard&& other) = default;
+OrchardShard& OrchardShard::operator=(OrchardShard&& other) = default;
 
 bool OutputZCashAddressSupported(const std::string& address, bool is_testnet) {
   auto decoded_address = DecodeZCashAddress(address);

@@ -71,6 +71,12 @@ struct CompactBlock {
   ChainMetadata chain_metadata;
 };
 
+struct SubtreeRoot {
+  array<uint8> root_hash;
+  array<uint8> complete_block_hash;
+  uint32 complete_block_height;
+};
+
 interface ZCashDecoder {
   ParseBlockID(string data) => (BlockID? value);
   ParseGetAddressUtxos(string data) => (GetAddressUtxosResponse? value);
