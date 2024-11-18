@@ -31,10 +31,6 @@ std::string ToHex(base::span<const uint8_t> data) {
 
 // Returns a hex string representation of a binary buffer. The returned hex
 // string will be in lower case, without the 0x prefix.
-std::string HexEncodeLower(const void* bytes, size_t size) {
-  return base::ToLowerASCII(base::HexEncode(bytes, size));
-}
-
 std::string HexEncodeLower(base::span<const uint8_t> bytes) {
   return base::ToLowerASCII(base::HexEncode(bytes));
 }
