@@ -55,12 +55,20 @@ TEST_F(BraveAdsConditionMatcherUtilTest, MatchEpochEqualOperatorCondition) {
 }
 
 TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchEpochEqualOperatorConditionForUnknownPrefPath) {
+  // Arrange
+  const ConditionMatcherMap condition_matchers = {
+      {"unknown_pref_path", "[T=]:0"}};
+
+  // Act & Assert
+  EXPECT_TRUE(MatchConditions(&pref_provider_, condition_matchers));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
        DoNotMatchEpochEqualOperatorConditionForUnknownPrefPath) {
   // Arrange
   const ConditionMatcherMap condition_matchers = {
-      {"unknown_pref_path", "[T=]:7"}};
-
-  AdvanceClockBy(base::Days(7) - base::Milliseconds(1));
+      {"unknown_pref_path", "[T=]:1"}};
 
   // Act & Assert
   EXPECT_FALSE(MatchConditions(&pref_provider_, condition_matchers));
@@ -89,7 +97,7 @@ TEST_F(BraveAdsConditionMatcherUtilTest, MatchNumericalEqualOperatorCondition) {
 }
 
 TEST_F(BraveAdsConditionMatcherUtilTest,
-       MatchNumericalhEqualOperatorConditionForUnknownPrefPath) {
+       MatchNumericalEqualOperatorConditionForUnknownPrefPath) {
   // Arrange
   const ConditionMatcherMap condition_matchers = {
       {"unknown_pref_path", "[R=]:0"}};
@@ -99,7 +107,7 @@ TEST_F(BraveAdsConditionMatcherUtilTest,
 }
 
 TEST_F(BraveAdsConditionMatcherUtilTest,
-       DoNotMatchNumericalhEqualOperatorConditionForUnknownPrefPath) {
+       DoNotMatchNumericalEqualOperatorConditionForUnknownPrefPath) {
   // Arrange
   const ConditionMatcherMap condition_matchers = {
       {"unknown_pref_path", "[R=]:1"}};
