@@ -8,7 +8,7 @@ import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.m
 import * as API from '../api/'
 import { useAIChat } from './ai_chat_context'
 import { isLeoModel } from '../model_utils'
-import { tabAssociatedChatId } from '../routes'
+import { tabAssociatedChatId } from '../state/ai_chat_active_chat_provider'
 import useIsConversationVisible from '../hooks/useIsConversationVisible'
 import { SelectedChatDetails } from './ai_chat_active_chat_provider'
 

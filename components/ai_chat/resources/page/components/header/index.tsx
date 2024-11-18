@@ -12,7 +12,7 @@ import styles from './style.module.scss'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
-import { tabAssociatedChatId, useSelectedConversation } from '../../routes'
+import { tabAssociatedChatId } from '../../state/ai_chat_active_chat_provider'
 
 const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.logo}>
   <Icon name='product-brave-leo' />
@@ -37,8 +37,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
     conversationContext.conversationHistory.length >= 1
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
-  const conversationId = useSelectedConversation()
-  const isTabAssociated = conversationId === tabAssociatedChatId
+  const isTabAssociated = conversationContext.conversationUuid === tabAssociatedChatId
   const showTitle = !isTabAssociated || aiChatContext.isStandalone
   const canShowFullScreenButton = aiChatContext.isHistoryEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
 
@@ -82,7 +81,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
                 <Icon name='expand' />
               </Button>}
             <FeatureButtonMenu {...props} />
-            { !aiChatContext.isStandalone &&
+            {!aiChatContext.isStandalone &&
               <Button
                 fab
                 kind='plain-faint'

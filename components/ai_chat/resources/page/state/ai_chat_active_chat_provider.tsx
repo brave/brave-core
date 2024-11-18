@@ -5,7 +5,10 @@
 
 import * as React from 'react'
 import getAPI, * as API from '../api'
-import { tabAssociatedChatId, useSelectedConversation } from '../routes'
+import { useRoute } from '$web-common/useRoute'
+import { useAIChat } from './ai_chat_context'
+
+export const tabAssociatedChatId = 'tab'
 
 export interface SelectedChatDetails {
   selectedConversationId: string | undefined
@@ -23,7 +26,10 @@ const updateSelectedConversation = (selectedId: string | undefined) => {
 export function ActiveChatProviderFromUrl(props: {
   children: Children
 }) {
-  const selectedConversationId = useSelectedConversation()
+  // Register the empty route, so we don't reload the page when navigating to '/'
+  useRoute('/')
+
+  const selectedConversationId = useRoute(`/{chatId}`)?.chatId
   return <ActiveChatProvider selectedConversationId={selectedConversationId} updateSelectedConversationId={updateSelectedConversation}>
     {props.children}
   </ActiveChatProvider>
@@ -34,6 +40,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
   updateSelectedConversationId: (selectedId: string | undefined) => void,
   children: Children
 }) {
+  const { visibleConversations } = useAIChat()
   const [conversationAPI, setConversationAPI] =
     React.useState<Pick<SelectedChatDetails, 'callbackRouter' | 'conversationHandler'>>()
 
@@ -79,6 +86,17 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
       conversationAPI?.conversationHandler.$.close()
     }
   }, [conversationAPI])
+
+  // Handle the case where a non-existent chat has been selected:
+  React.useEffect(() => {
+    // Special case the default conversation - it gets treated specially as
+    // the chat is rebound as the tab navigates.
+    if (selectedConversationId === tabAssociatedChatId) return
+
+    if (selectedConversationId && !visibleConversations.find(c => c.uuid === selectedConversationId)) {
+      updateSelectedConversationId(undefined)
+    }
+  }, [visibleConversations, selectedConversationId])
 
   return conversationAPI
     ? children(details as any)
