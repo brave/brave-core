@@ -31,8 +31,6 @@ int IOSChromeNetworkDelegate::OnBeforeURLRequest(
     net::URLRequest* request,
     net::CompletionOnceCallback callback,
     GURL* new_url) {
-  const auto result = IOSChromeNetworkDelegate_ChromiumImpl::OnBeforeURLRequest(
-      request, std::move(callback), new_url);
   ::AddBraveServicesKeyHeader(request);
-  return result;
+  return net::OK;
 }
