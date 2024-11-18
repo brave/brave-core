@@ -5,16 +5,16 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.fragment
+package org.chromium.chrome.browser.playlist.kotlin.fragment
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
-import com.brave.playlist.R
-import com.brave.playlist.model.PlaylistOnboardingModel
-import com.brave.playlist.util.ConstantUtils.ONBOARDING_MODEL
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.ONBOARDING_MODEL
 
 class PlaylistOnboardingSingleFragment : Fragment(R.layout.fragment_single_playlist_onboarding) {
 

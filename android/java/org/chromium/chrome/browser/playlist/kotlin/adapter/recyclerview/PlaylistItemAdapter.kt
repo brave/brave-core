@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.adapter.recyclerview
+package org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -17,12 +17,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import com.brave.playlist.R
-import com.brave.playlist.listener.PlaylistItemClickListener
-import com.brave.playlist.listener.StartDragListener
-import com.brave.playlist.model.HlsContentProgressModel
-import com.brave.playlist.model.PlaylistItemModel
-import com.brave.playlist.util.PlaylistUtils
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.StartDragListener
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
 

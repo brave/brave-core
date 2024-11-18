@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.slidingpanel
+package org.chromium.chrome.browser.playlist.kotlin.slidingpanel
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -27,7 +27,7 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.animation.Interpolator
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
-import com.brave.playlist.R
+import org.chromium.chrome.R
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.abs
 import kotlin.math.max

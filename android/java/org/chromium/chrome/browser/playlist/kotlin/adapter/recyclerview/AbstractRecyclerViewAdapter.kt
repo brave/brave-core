@@ -5,12 +5,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.adapter.recyclerview
+package org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview
 
 import android.view.View
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.brave.playlist.PlaylistItemDiffCallback
+import org.chromium.chrome.browser.playlist.kotlin.PlaylistItemDiffCallback
 import java.util.Collections
 
 abstract class AbstractRecyclerViewAdapter<M : Any, VH : AbstractRecyclerViewAdapter.AbstractViewHolder<M>> :

@@ -42,14 +42,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.ImageViewCompat;
 
-import com.brave.playlist.enums.PlaylistOptionsEnum;
-import com.brave.playlist.listener.PlaylistOnboardingActionClickListener;
-import com.brave.playlist.listener.PlaylistOptionsListener;
-import com.brave.playlist.model.PlaylistOptionsModel;
-import com.brave.playlist.model.SnackBarActionModel;
-import com.brave.playlist.util.ConstantUtils;
-import com.brave.playlist.util.PlaylistViewUtils;
-
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
@@ -84,6 +76,13 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum;
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener;
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener;
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel;
+import org.chromium.chrome.browser.playlist.kotlin.model.SnackBarActionModel;
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils;
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistViewUtils;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
