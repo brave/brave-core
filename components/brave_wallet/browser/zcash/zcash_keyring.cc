@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -72,7 +73,7 @@ std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkeyHash(
     return std::nullopt;
   }
 
-  return Hash160(hd_key_base->GetPublicKeyBytes());
+  return base::ToVector(Hash160(hd_key_base->GetPublicKeyBytes()));
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)

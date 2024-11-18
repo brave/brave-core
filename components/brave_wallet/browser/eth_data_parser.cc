@@ -266,10 +266,10 @@ std::optional<SquidSwapData> SquidDecodeCall(const base::Value::List& call) {
     return std::nullopt;
   }
 
-  std::vector<uint8_t> calldata(calldata_with_selector->begin() + 4,
-                                calldata_with_selector->end());
+  auto [selector_span, calldata] =
+      base::span(*calldata_with_selector).split_at(4);
 
-  auto selector = "0x" + HexEncodeLower(calldata_with_selector->data(), 4);
+  auto selector = ToHex(selector_span);
 
   if (selector == kSquidExactInputSingle) {
     // exactInputSingle((address tokenIn,
@@ -544,8 +544,9 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                            std::vector<std::string>(), nullptr);
   }
 
-  std::string selector = "0x" + HexEncodeLower(data.data(), 4);
-  std::vector<uint8_t> calldata(data.begin() + 4, data.end());
+  auto [selector_span, calldata] = base::span(data).split_at(4);
+
+  std::string selector = ToHex(selector_span);
   if (selector == kFilForwarderTransferSelector) {
     auto type = eth_abi::Tuple().AddTupleType(eth_abi::Bytes()).build();
     auto decoded = ABIDecode(type, calldata);
