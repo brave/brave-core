@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.view.bottomsheet
+package org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,18 +14,18 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.brave.playlist.PlaylistViewModel
-import com.brave.playlist.R
-import com.brave.playlist.adapter.recyclerview.PlaylistAdapter
-import com.brave.playlist.enums.PlaylistOptionsEnum
-import com.brave.playlist.extension.setTopCornersRounded
-import com.brave.playlist.fragment.AllPlaylistFragment
-import com.brave.playlist.fragment.NewPlaylistFragment
-import com.brave.playlist.listener.PlaylistClickListener
-import com.brave.playlist.model.MoveOrCopyModel
-import com.brave.playlist.model.PlaylistModel
-import com.brave.playlist.util.ConstantUtils
-import com.brave.playlist.util.PlaylistUtils
+import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistAdapter
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.extension.setTopCornersRounded
+import org.chromium.chrome.browser.playlist.kotlin.fragment.AllPlaylistFragment
+import org.chromium.chrome.browser.playlist.kotlin.fragment.NewPlaylistFragment
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
+import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView

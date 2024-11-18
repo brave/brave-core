@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.util
+package org.chromium.chrome.browser.playlist.kotlin.util
 
 import android.app.ActivityManager
 import android.content.Context
@@ -16,13 +16,13 @@ import android.util.TypedValue
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.brave.playlist.R
-import com.brave.playlist.activity.PlaylistMenuOnboardingActivity
-import com.brave.playlist.local_database.PlaylistRepository
-import com.brave.playlist.model.HlsContentProgressModel
-import com.brave.playlist.model.MoveOrCopyModel
-import com.brave.playlist.model.PlaylistItemModel
-import com.brave.playlist.model.PlaylistOnboardingModel
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistMenuOnboardingActivity
+import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
+import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
 
 object PlaylistUtils {
     private val TAG: String = "Playlist/"+this::class.java.simpleName

@@ -5,19 +5,19 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist
+package org.chromium.chrome.browser.playlist.kotlin
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.brave.playlist.model.CreatePlaylistModel
-import com.brave.playlist.model.HlsContentProgressModel
-import com.brave.playlist.model.MoveOrCopyModel
-import com.brave.playlist.model.PlaylistItemModel
-import com.brave.playlist.model.PlaylistItemOptionModel
-import com.brave.playlist.model.PlaylistModel
-import com.brave.playlist.model.PlaylistOptionsModel
-import com.brave.playlist.model.RenamePlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.CreatePlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
+import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
+import org.chromium.chrome.browser.playlist.kotlin.model.RenamePlaylistModel
 
 class PlaylistViewModel : ViewModel() {
     // Using Livedata for Playlist Data

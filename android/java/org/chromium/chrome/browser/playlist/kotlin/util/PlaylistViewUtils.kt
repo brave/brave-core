@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.util
+package org.chromium.chrome.browser.playlist.kotlin.util
 
 import android.util.TypedValue
 import android.view.Gravity
@@ -16,18 +16,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.transition.Slide
 import androidx.transition.TransitionManager
-import com.brave.playlist.R
-import com.brave.playlist.enums.PlaylistOptionsEnum
-import com.brave.playlist.extension.allowMoving
-import com.brave.playlist.interpolator.BraveBounceInterpolator
-import com.brave.playlist.listener.PlaylistOnboardingActionClickListener
-import com.brave.playlist.listener.PlaylistOptionsListener
-import com.brave.playlist.model.PlaylistOptionsModel
-import com.brave.playlist.model.SnackBarActionModel
-import com.brave.playlist.util.PlaylistPreferenceUtils.shouldShowOnboarding
-import com.brave.playlist.view.MovableImageButton
-import com.brave.playlist.view.PlaylistOnboardingPanel
-import com.brave.playlist.view.bottomsheet.PlaylistOptionsBottomSheet
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.extension.allowMoving
+import org.chromium.chrome.browser.playlist.kotlin.interpolator.BraveBounceInterpolator
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
+import org.chromium.chrome.browser.playlist.kotlin.model.SnackBarActionModel
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.shouldShowOnboarding
+import org.chromium.chrome.browser.playlist.kotlin.view.MovableImageButton
+import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistOnboardingPanel
+import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.PlaylistOptionsBottomSheet
 import com.google.android.material.snackbar.Snackbar
 
 @Suppress("unused")

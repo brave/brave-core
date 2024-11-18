@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.view
+package org.chromium.chrome.browser.playlist.kotlin.view
 
 import android.view.Gravity
 import android.view.View
@@ -16,13 +16,13 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.brave.playlist.R
-import com.brave.playlist.adapter.PlaylistOnboardingFragmentStateAdapter
-import com.brave.playlist.extension.addScrimBackground
-import com.brave.playlist.extension.afterMeasured
-import com.brave.playlist.extension.showOnboardingGradientBg
-import com.brave.playlist.listener.PlaylistOnboardingActionClickListener
-import com.brave.playlist.util.PlaylistUtils
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.adapter.PlaylistOnboardingFragmentStateAdapter
+import org.chromium.chrome.browser.playlist.kotlin.extension.addScrimBackground
+import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
+import org.chromium.chrome.browser.playlist.kotlin.extension.showOnboardingGradientBg
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

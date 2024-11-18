@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.listener
+package org.chromium.chrome.browser.playlist.kotlin.listener
 
 interface PlaylistOnboardingActionClickListener {
     fun onOnboardingActionClick() {}

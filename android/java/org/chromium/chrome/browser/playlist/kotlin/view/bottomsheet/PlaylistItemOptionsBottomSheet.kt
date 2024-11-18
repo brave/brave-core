@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.view.bottomsheet
+package org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,11 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.brave.playlist.R
-import com.brave.playlist.adapter.bottomsheet.PlaylistItemOptionsBottomSheetAdapter
-import com.brave.playlist.extension.setTopCornersRounded
-import com.brave.playlist.listener.PlaylistItemOptionsListener
-import com.brave.playlist.model.PlaylistItemOptionModel
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.adapter.bottomsheet.PlaylistItemOptionsBottomSheetAdapter
+import org.chromium.chrome.browser.playlist.kotlin.extension.setTopCornersRounded
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView

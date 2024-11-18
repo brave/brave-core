@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.extension
+package org.chromium.chrome.browser.playlist.kotlin.extension
 
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.shape.CornerFamily

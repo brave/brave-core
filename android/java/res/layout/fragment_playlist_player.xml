@@ -15,13 +15,13 @@
     android:keepScreenOn="true"
     android:orientation="vertical">
 
-    <com.brave.playlist.view.PlaylistToolbar
+    <org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
         android:id="@+id/playlistToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:optionButtonIcon="@drawable/ic_arrow_down_playlist" />
 
-    <com.brave.playlist.slidingpanel.BottomPanelLayout
+    <org.chromium.chrome.browser.playlist.kotlin.slidingpanel.BottomPanelLayout
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -311,6 +311,6 @@
 
         <include layout="@layout/player_bottom_view" />
 
-    </com.brave.playlist.slidingpanel.BottomPanelLayout>
+    </org.chromium.chrome.browser.playlist.kotlin.slidingpanel.BottomPanelLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

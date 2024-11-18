@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.playback_service
+package org.chromium.chrome.browser.playlist.kotlin.playback_service
 
 import android.app.PendingIntent
 import android.app.TaskStackBuilder
@@ -25,17 +25,17 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
-import com.brave.playlist.local_database.PlaylistRepository
-import com.brave.playlist.model.LastPlayedPositionModel
-import com.brave.playlist.model.PlaylistItemModel
-import com.brave.playlist.util.ConstantUtils
-import com.brave.playlist.util.MediaItemUtil
-import com.brave.playlist.util.PlaylistPreferenceUtils
-import com.brave.playlist.util.PlaylistPreferenceUtils.continuousListening
-import com.brave.playlist.util.PlaylistPreferenceUtils.rememberFilePlaybackPosition
-import com.brave.playlist.util.PlaylistPreferenceUtils.rememberListPlaybackPosition
-import com.brave.playlist.util.PlaylistPreferenceUtils.setLatestPlaylistItem
-import com.brave.playlist.util.PlaylistUtils
+import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
+import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.MediaItemUtil
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.continuousListening
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.rememberFilePlaybackPosition
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.rememberListPlaybackPosition
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.setLatestPlaylistItem
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import kotlinx.coroutines.CoroutineScope

@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.fragment
+package org.chromium.chrome.browser.playlist.kotlin.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -16,20 +16,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.brave.playlist.PlaylistViewModel
-import com.brave.playlist.R
-import com.brave.playlist.adapter.recyclerview.PlaylistAdapter
-import com.brave.playlist.adapter.recyclerview.RecentlyPlayedPlaylistAdapter
-import com.brave.playlist.enums.PlaylistOptionsEnum
-import com.brave.playlist.listener.PlaylistClickListener
-import com.brave.playlist.listener.PlaylistOptionsListener
-import com.brave.playlist.model.PlaylistModel
-import com.brave.playlist.model.PlaylistOptionsModel
-import com.brave.playlist.util.ConstantUtils
-import com.brave.playlist.util.ConstantUtils.DEFAULT_PLAYLIST
-import com.brave.playlist.util.PlaylistPreferenceUtils
-import com.brave.playlist.util.PlaylistPreferenceUtils.recentlyPlayedPlaylist
-import com.brave.playlist.view.PlaylistToolbar
+import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistAdapter
+import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.RecentlyPlayedPlaylistAdapter
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.DEFAULT_PLAYLIST
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.recentlyPlayedPlaylist
+import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.util.LinkedList
