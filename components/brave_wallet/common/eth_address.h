@@ -20,7 +20,7 @@ class EthAddress {
  public:
   // public key must be uncompressed and no header byte so its length is 64
   // bytes
-  static EthAddress FromPublicKey(const std::vector<uint8_t>& public_key);
+  static EthAddress FromPublicKey(base::span<const uint8_t> public_key);
   // input should be a valid address with 20 bytes hex representation starting
   // with 0x
   static EthAddress FromHex(const std::string& input);

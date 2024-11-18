@@ -8,7 +8,10 @@
 #include <optional>
 
 #include "base/base64.h"
+#include "base/containers/extend.h"
 #include "base/containers/span.h"
+#include "base/containers/to_vector.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -20,12 +23,11 @@ namespace {
 
 // Get the 32 byte message hash
 std::vector<uint8_t> GetMessageHash(base::span<const uint8_t> message) {
-  std::string prefix("\x19");
-  prefix += std::string("Ethereum Signed Message:\n" +
-                        base::NumberToString(message.size()));
+  std::string prefix = base::StrCat({"\x19", "Ethereum Signed Message:\n",
+                                     base::NumberToString(message.size())});
   std::vector<uint8_t> hash_input(prefix.begin(), prefix.end());
-  hash_input.insert(hash_input.end(), message.begin(), message.end());
-  return brave_wallet::KeccakHash(hash_input);
+  base::Extend(hash_input, message);
+  return base::ToVector(KeccakHash(hash_input));
 }
 
 }  // namespace
