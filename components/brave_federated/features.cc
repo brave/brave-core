@@ -14,31 +14,32 @@ namespace {
 
 constexpr char kFieldTrialParameterOperationalPatternsEnabled[] =
     "operational_patterns_enabled";
-const bool kDefaultOperationalPatternsEnabled = false;
+constexpr bool kDefaultOperationalPatternsEnabled = false;
 
 constexpr char kFieldTrialParameterCollectionIDLifetimeInSeconds[] =
     "collection_id_lifetime_in_seconds";
-const int kDefaultCollectionIdLifetimeInSeconds = 1 * base::Time::kHoursPerDay *
-                                                  base::Time::kMinutesPerHour *
-                                                  base::Time::kSecondsPerMinute;
+constexpr int kDefaultCollectionIdLifetimeInSeconds =
+    1 * base::Time::kHoursPerDay * base::Time::kMinutesPerHour *
+    base::Time::kSecondsPerMinute;
 
 constexpr char kFieldTrialParameterCollectionSlotSizeInSeconds[] =
     "collection_slot_size_in_seconds";
-const int kDefaultCollectionSlotSizeInSeconds =
+constexpr int kDefaultCollectionSlotSizeInSeconds =
     30 * base::Time::kSecondsPerMinute;
 
 constexpr char kFieldTrialParameterCollectionTimerIntervalInSeconds[] =
     "collection_timer_interval_in_seconds";
-const int kDefaultCollectionTimerIntervalInSeconds =
+constexpr int kDefaultCollectionTimerIntervalInSeconds =
     1 * base::Time::kSecondsPerMinute;
 
 constexpr char kFieldTrialParameterMockTaskDurationInSeconds[] =
     "mock_task_duration_in_seconds";
-const int kDefaultMockTaskDurationInSeconds = 2 * base::Time::kSecondsPerMinute;
+constexpr int kDefaultMockTaskDurationInSeconds =
+    2 * base::Time::kSecondsPerMinute;
 
 constexpr char kFieldTrialParameterMockCollectionRequests[] =
     "mock_collection_requests";
-const bool kDefaultMockCollectionRequests = false;
+constexpr bool kDefaultMockCollectionRequests = false;
 
 }  // namespace
 

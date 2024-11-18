@@ -44,8 +44,8 @@ namespace brave {
 namespace {
 
 // Both timeouts in seconds
-const int kMaxTimeoutForAdsServiceInit = 10;
-const int kMaxTimeoutPerLoadedURL = 30;
+constexpr int kMaxTimeoutForAdsServiceInit = 10;
+constexpr int kMaxTimeoutPerLoadedURL = 30;
 constexpr char kEmbeddedTestServerDirectory[] = "brave_ads";
 constexpr char kDomain[] = "search.brave.com";
 constexpr char kBraveSearchPath[] = "/search_result_ad_click.html";

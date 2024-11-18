@@ -53,7 +53,7 @@ namespace {
 // In particular:
 //   --ui-test-action-timeout: should be greater than |kMaxTimeoutPerLoadedURL|.
 //   --test-launcher-timeout: should be able to fit the total sum of timeouts.
-const int kMaxTimeoutPerLoadedURL = 30;
+constexpr int kMaxTimeoutPerLoadedURL = 30;
 
 void WaitForTimeout(int timeout) {
   base::test::ScopedRunLoopTimeout file_download_timeout(

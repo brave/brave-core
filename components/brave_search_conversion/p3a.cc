@@ -36,8 +36,8 @@ constexpr char kDDGBannerDTriggeredKey[] = "ddg_banner_d.triggered";
 
 constexpr char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
 
-const int kMaxStoredQueryCount = 41;
-const int kQueriesBeforeChurnBuckets[] = {0, 1, 2, 5, 10, 20, 40};
+constexpr int kMaxStoredQueryCount = 41;
+constexpr int kQueriesBeforeChurnBuckets[] = {0, 1, 2, 5, 10, 20, 40};
 
 const char* GetPromoShownKeyName(ConversionType type) {
   switch (type) {

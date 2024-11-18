@@ -14,7 +14,7 @@ class TabGroupStyle : public TabGroupStyle_ChromiumImpl {
  public:
   using TabGroupStyle_ChromiumImpl::TabGroupStyle_ChromiumImpl;
 
-  static const int kStrokeThicknessForVerticalTabs;
+  static constexpr int kStrokeThicknessForVerticalTabs = 4;
 
   bool TabGroupUnderlineShouldBeHidden() const override;
 

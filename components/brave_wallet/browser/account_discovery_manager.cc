@@ -18,7 +18,7 @@
 namespace brave_wallet {
 
 namespace {
-const int kDiscoveryAttempts = 20;
+constexpr int kDiscoveryAttempts = 20;
 
 std::string DiscoveredBitcoinAccountName(mojom::KeyringId keyring_id,
                                          uint32_t account_index) {

@@ -14,7 +14,7 @@
 namespace misc_metrics {
 
 namespace {
-const int kPercentBucketValues[] = {25, 50, 75};
+constexpr int kPercentBucketValues[] = {25, 50, 75};
 constexpr base::TimeDelta kReportUpdateInterval = base::Days(1);
 }  // namespace
 

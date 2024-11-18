@@ -20,7 +20,7 @@ namespace brave_ads {
 
 namespace {
 
-const int kAdsEnabledInstallationHourBuckets[] = {0, 11, 23, 71};
+constexpr int kAdsEnabledInstallationHourBuckets[] = {0, 11, 23, 71};
 
 }  // namespace
 

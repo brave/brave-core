@@ -36,7 +36,7 @@ namespace brave_wallet {
 
 namespace {
 
-const int kPbkdf2IterationsLegacy = 100000;
+constexpr int kPbkdf2IterationsLegacy = 100000;
 constexpr char kBackupCompleteDeprecated[] = "backup_complete";
 constexpr char kLegacyBraveWalletDeprecated[] = "legacy_brave_wallet";
 constexpr char kPasswordEncryptorSaltDeprecated[] = "password_encryptor_salt";

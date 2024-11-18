@@ -22,8 +22,8 @@ namespace misc_metrics {
 
 namespace {
 
-const int kOpenTabsBuckets[] = {1, 5, 10, 50};
-const int kGroupAndPinnedTabsBuckets[] = {2, 5};
+constexpr int kOpenTabsBuckets[] = {1, 5, 10, 50};
+constexpr int kGroupAndPinnedTabsBuckets[] = {2, 5};
 
 const char* GetHistogramNameForCountType(TabCountType count_type) {
   switch (count_type) {

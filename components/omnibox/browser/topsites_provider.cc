@@ -528,10 +528,6 @@ constexpr std::array<std::string_view, 502> kTopSites = {
 
 }  // namespace
 
-// As from autocomplete_provider.h:
-// Search Secondary Provider (suggestion)                              |  100++
-const int TopSitesProvider::kRelevance = 100;
-
 
 TopSitesProvider::TopSitesProvider(AutocompleteProviderClient* client)
     : AutocompleteProvider(AutocompleteProvider::TYPE_SEARCH), client_(client) {

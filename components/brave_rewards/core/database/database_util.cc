@@ -11,8 +11,8 @@
 
 namespace {
 
-const int kCurrentVersionNumber = 40;
-const int kCompatibleVersionNumber = 1;
+constexpr int kCurrentVersionNumber = 40;
+constexpr int kCompatibleVersionNumber = 1;
 
 }  // namespace
 

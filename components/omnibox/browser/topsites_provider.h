@@ -29,7 +29,8 @@ class TopSitesProvider : public AutocompleteProvider {
  private:
   ~TopSitesProvider() override;
 
-  static const int kRelevance;
+  // Search Secondary Provider (suggestion) |  100++
+  static constexpr int kRelevance = 100;
 
   void AddMatch(const std::u16string& match_string,
                 const ACMatchClassifications& styles);

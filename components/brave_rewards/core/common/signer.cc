@@ -14,16 +14,16 @@
 
 namespace {
 
-const uint8_t kHkdfSalt[] = {
+constexpr uint8_t kHkdfSalt[] = {
     126, 244, 99,  158, 51,  68,  253, 80,  133, 183, 51,  180, 77,
     62,  74,  252, 62,  106, 96,  125, 241, 110, 134, 87,  190, 208,
     158, 84,  125, 69,  246, 207, 162, 247, 107, 172, 37,  34,  53,
     246, 105, 20,  215, 5,   248, 154, 179, 191, 46,  17,  6,   72,
     210, 91,  10,  169, 145, 248, 22,  147, 117, 24,  105, 12};
 
-const int kSeedLength = 32;
+constexpr int kSeedLength = 32;
 
-const int kSaltLength = 64;
+constexpr int kSaltLength = 64;
 
 }  // namespace
 

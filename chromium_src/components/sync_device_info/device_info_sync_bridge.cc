@@ -42,7 +42,7 @@ namespace syncer {
 
 namespace {
 
-const int kFailedAttemtpsToAckDeviceDelete = 5;
+constexpr int kFailedAttemtpsToAckDeviceDelete = 5;
 
 std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
     const DeviceInfoSpecifics& specifics) {

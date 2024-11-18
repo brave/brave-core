@@ -232,8 +232,8 @@ SyncServiceCrypto* BraveSyncServiceImpl::GetCryptoForTests() {
 }
 
 namespace {
-const int kMaxPermanentlyDeleteSyncAccountAttempts = 5;
-const int kDelayBetweenDeleteSyncAccountAttemptsMsec = 500;
+constexpr int kMaxPermanentlyDeleteSyncAccountAttempts = 5;
+constexpr int kDelayBetweenDeleteSyncAccountAttemptsMsec = 500;
 }  // namespace
 
 void BraveSyncServiceImpl::OnAccountDeleted(
@@ -347,9 +347,9 @@ void BraveSyncServiceImpl::LocalDeviceAppeared() {
 
 namespace {
 // Typical cycle takes 30 sec, let's send P3A updates each ~30 minutes
-const int kCyclesBeforeUpdateP3AObjects = 60;
+constexpr int kCyclesBeforeUpdateP3AObjects = 60;
 // And Let's do the first update in ~5 minutes after sync start
-const int kCyclesBeforeFirstUpdatesP3A = 10;
+constexpr int kCyclesBeforeFirstUpdatesP3A = 10;
 }  // namespace
 
 void BraveSyncServiceImpl::OnSyncCycleCompleted(

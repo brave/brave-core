@@ -121,8 +121,8 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, OverriddenEngines) {
 // Verifies that the set of prepopulate data for each locale
 // doesn't contain entries with duplicate ids.
 TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
-  const int kCountryIds[] = {'D' << 8 | 'E', 'F' << 8 | 'R', 'U' << 8 | 'S',
-                             -1};
+  static constexpr int kCountryIds[] = {'D' << 8 | 'E', 'F' << 8 | 'R',
+                                        'U' << 8 | 'S', -1};
 
   for (int country_id : kCountryIds) {
     prefs_.SetInteger(kCountryIDAtInstall, country_id);

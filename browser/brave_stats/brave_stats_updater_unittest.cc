@@ -46,13 +46,13 @@ constexpr char kYesterday[] = "2018-06-21";
 constexpr char kToday[] = "2018-06-22";
 constexpr char kTomorrow[] = "2018-06-23";
 
-const int kLastWeek = 24;
-const int kThisWeek = 25;
-const int kNextWeek = 26;
+constexpr int kLastWeek = 24;
+constexpr int kThisWeek = 25;
+constexpr int kNextWeek = 26;
 
-const int kLastMonth = 5;
-const int kThisMonth = 6;
-const int kNextMonth = 7;
+constexpr int kLastMonth = 5;
+constexpr int kThisMonth = 6;
+constexpr int kNextMonth = 7;
 
 class BraveStatsUpdaterTest : public testing::Test {
  public:

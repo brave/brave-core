@@ -42,15 +42,15 @@ using sidebar::features::SidebarDefaultMode;
 
 constexpr base::TimeDelta kReportInterval = base::Hours(24);
 constexpr base::TimeDelta kReportDebounceDelay = base::Seconds(3);
-const int kChatCountBuckets[] = {1, 5, 10, 20, 50};
-const int kAvgPromptCountBuckets[] = {2, 5, 10, 20};
+constexpr int kChatCountBuckets[] = {1, 5, 10, 20, 50};
+constexpr int kAvgPromptCountBuckets[] = {2, 5, 10, 20};
 
 constexpr base::TimeDelta kPremiumCheckInterval = base::Days(1);
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 // Value -1 is added to buckets to add padding for the "less than 1% option"
-const int kOmniboxOpenBuckets[] = {-1, 0, 3, 5, 10, 25};
-const int kContextMenuUsageBuckets[] = {0, 1, 2, 5, 10, 20, 50};
+constexpr int kOmniboxOpenBuckets[] = {-1, 0, 3, 5, 10, 25};
+constexpr int kContextMenuUsageBuckets[] = {0, 1, 2, 5, 10, 20, 50};
 
 constexpr char kSummarizeActionKey[] = "summarize";
 constexpr char kExplainActionKey[] = "explain";

@@ -41,7 +41,7 @@ using net::test_server::HttpConnection;
 using net::test_server::HttpRequest;
 using net::test_server::HttpResponse;
 
-const int kEventSourcesPoolLimit = 250;
+constexpr int kEventSourcesPoolLimit = 250;
 
 constexpr char kEventSourcesOpenScript[] = R"(
   if (typeof sources === "undefined") {

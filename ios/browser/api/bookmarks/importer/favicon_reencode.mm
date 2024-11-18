@@ -11,8 +11,8 @@
 #import "base/compiler_specific.h"
 
 namespace gfx {
-  //FROM: ui/gfx/geometry/size.h
-  const int kFaviconSize = 16;
+// FROM: ui/gfx/geometry/size.h
+constexpr int kFaviconSize = 16;
 } // namespace gfx
 
 namespace importer {

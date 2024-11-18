@@ -40,13 +40,13 @@
 #endif  // BUILDFLAG(IS_MAC)
 
 // Perform finalization checks once a day.
-const int kFinalizationChecksFrequency = 60 * 60 * 24;
+constexpr int kFinalizationChecksFrequency = 60 * 60 * 24;
 
 // Report initialization once a day (after initial failure).
-const int kReportInitializationFrequency = 60 * 60 * 24;
+constexpr int kReportInitializationFrequency = 60 * 60 * 24;
 
 // Maximum size of the referral server response in bytes.
-const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
+constexpr int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 
 // Default promo code, used when no promoCode file exists on first
 // run.

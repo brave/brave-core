@@ -18,8 +18,6 @@
 #undef TabGroupStyle
 #undef TabGroupUnderline
 
-const int TabGroupStyle::kStrokeThicknessForVerticalTabs = 4;
-
 bool TabGroupStyle::TabGroupUnderlineShouldBeHidden() const {
   return false;
 }
