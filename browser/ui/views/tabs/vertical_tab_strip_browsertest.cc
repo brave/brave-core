@@ -405,7 +405,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
       browser_view()->GetExclusiveAccessManager()->fullscreen_controller();
   {
     auto observer = FullscreenNotificationObserver(browser());
-    fullscreen_controller->ToggleBrowserFullscreenMode();
+    fullscreen_controller->ToggleBrowserFullscreenMode(/*user_initiated=*/true);
     observer.Wait();
   }
 
@@ -418,7 +418,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
 
   {
     auto observer = FullscreenNotificationObserver(browser());
-    fullscreen_controller->ToggleBrowserFullscreenMode();
+    fullscreen_controller->ToggleBrowserFullscreenMode(/*user_initiated=*/true);
     observer.Wait();
   }
   ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
