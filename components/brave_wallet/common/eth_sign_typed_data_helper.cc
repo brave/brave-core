@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 
-#include <limits>
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -66,9 +65,9 @@ void EthSignTypedDataHelper::FindAllDependencyTypes(
     }
     const std::string* type = field.GetDict().FindString("type");
     if (type) {
-      auto type_split = base::SplitStringPiece(
+      const auto type_split = base::SplitStringPiece(
           *type, "[", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-      std::string lookup_type = *type;
+      std::string_view lookup_type = *type;
       if (type_split.size() == 2) {
         lookup_type = type_split[0];
       }
@@ -204,15 +203,14 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
     if (!value.is_list()) {
       return std::nullopt;
     }
-    auto type_split = base::SplitStringPiece(type, "[", base::KEEP_WHITESPACE,
-                                             base::SPLIT_WANT_ALL);
+    const auto type_split = base::SplitStringPiece(
+        type, "[", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
     if (type_split.size() != 2) {
       return std::nullopt;
     }
-    auto array_type = type_split[0];
     std::vector<uint8_t> array_result;
     for (const auto& item : value.GetList()) {
-      auto encoded_item = EncodeField(array_type, item);
+      auto encoded_item = EncodeField(type_split[0], item);
       if (!encoded_item) {
         return std::nullopt;
       }
