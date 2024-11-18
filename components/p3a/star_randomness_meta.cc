@@ -47,8 +47,8 @@ constexpr char kNextEpochTimePrefKey[] = "next_epoch_time";
 
 // A generous arbitrary limit, 128KB
 constexpr std::size_t kMaxInfoResponseSize = 128 * 1024;
-const int kRndInfoRetryInitialBackoffSeconds = 5;
-const int kRndInfoRetryMaxBackoffMinutes = 60;
+constexpr int kRndInfoRetryInitialBackoffSeconds = 5;
+constexpr int kRndInfoRetryMaxBackoffMinutes = 60;
 
 ::rust::Box<constellation::PPOPRFPublicKeyWrapper> DecodeServerPublicKey(
     const std::string* pk_base64) {

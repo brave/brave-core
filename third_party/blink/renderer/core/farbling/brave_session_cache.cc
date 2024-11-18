@@ -54,9 +54,9 @@ inline uint64_t lfsr_next(uint64_t v) {
 
 namespace brave {
 
-const char kBraveSessionToken[] = "brave_session_token";
-const char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
-const int kFarbledUserAgentMaxExtraSpaces = 5;
+constexpr char kBraveSessionToken[] = "brave_session_token";
+constexpr char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
+constexpr int kFarbledUserAgentMaxExtraSpaces = 5;
 
 // acceptable letters for generating random strings
 const char kLettersForRandomStrings[] =

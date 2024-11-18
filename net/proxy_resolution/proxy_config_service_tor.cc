@@ -116,7 +116,7 @@ std::string AnonymizationKeyToString(const NetworkAnonymizationKey& key) {
 
 }  // namespace
 
-const int kTorPasswordLength = 16;
+constexpr int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
 constexpr base::TimeDelta kTenMins = base::Minutes(10);
 

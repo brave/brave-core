@@ -25,8 +25,8 @@ namespace {
 #define kSpentNotesTable "spent_notes"
 #define kAccountMeta "account_meta"
 
-const int kEmptyDbVersionNumber = 1;
-const int kCurrentVersionNumber = 2;
+constexpr int kEmptyDbVersionNumber = 1;
+constexpr int kCurrentVersionNumber = 2;
 
 std::optional<uint32_t> ReadUint32(sql::Statement& statement, size_t index) {
   auto v = statement.ColumnInt64(index);

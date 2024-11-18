@@ -19,8 +19,6 @@
 #include "ui/native_theme/native_theme.h"
 
 // static
-const int RoundedSeparator::kThickness = 1;
-
 RoundedSeparator::RoundedSeparator() = default;
 
 RoundedSeparator::~RoundedSeparator() = default;

@@ -26,7 +26,7 @@ using net::features::kBraveFallbackDoHProviderEndpoint;
 
 namespace {
 
-const int kAutoSecureRequestsBuckets[] = {0, 5, 50, 90};
+constexpr int kAutoSecureRequestsBuckets[] = {0, 5, 50, 90};
 
 constexpr char kDohModeAutomatic[] = "automatic";
 constexpr char kDohModeSecure[] = "secure";

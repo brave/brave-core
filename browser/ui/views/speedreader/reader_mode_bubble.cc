@@ -29,14 +29,14 @@ namespace {
 
 constexpr int kBubbleWidth = 256;
 
-constexpr const int kBoxLayoutChildSpacing = 16;
-constexpr const int kToggleLineHeight = 18;
-constexpr const int kToggleFontSize = 14;
+constexpr int kBoxLayoutChildSpacing = 16;
+constexpr int kToggleLineHeight = 18;
+constexpr int kToggleFontSize = 14;
 
-constexpr const int kNotesFontSize = 12;
-constexpr const int kNotesLineHeight = 16;
+constexpr int kNotesFontSize = 12;
+constexpr int kNotesLineHeight = 16;
 
-constexpr const int kCornerRadius = 8;
+constexpr int kCornerRadius = 8;
 
 }  // anonymous namespace
 
