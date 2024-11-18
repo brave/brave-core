@@ -142,6 +142,12 @@ void BraveLeoAssistantHandler::HandleValidateModelEndpoint(
     const base::Value::List& args) {
   AllowJavascript();
 
+  if (args.size() < 2 || !args[1].is_dict()) {
+    // Expect the appropriate number and type of arguments, or reject
+    RejectJavascriptCallback(args[0], base::Value("Invalid arguments"));
+    return;
+  }
+
   const base::Value::Dict& dict = args[1].GetDict();
   GURL endpoint(*dict.FindString("url"));
 
