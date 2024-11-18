@@ -34,8 +34,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
-import org.chromium.chrome.browser.playlist.kotlin.enums.HlsContentStatus
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
 import org.chromium.chrome.browser.playlist.kotlin.listener.ItemInteractionListener
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
@@ -100,7 +98,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
 
     private lateinit var mEmptyView: View
     private lateinit var mPlaylistView: View
-    private var isFirstRun:Boolean = true
+    private var isFirstRun: Boolean = true
 
     private val mPlaylistRepository: PlaylistRepository by lazy {
         PlaylistRepository(requireContext())
@@ -291,7 +289,8 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
                             if (playlistItemModel.isCached && MediaUtils.isHlsFile(playlistItemModel.mediaPath) && !isDownloadQueueModelExists) {
                                 mPlaylistRepository.insertHlsContentQueueModel(
                                     HlsContentQueueModel(
-                                        playlistItemModel.id, HlsContentStatus.NOT_READY.name
+                                        playlistItemModel.id,
+                                        HlsContentQueueModel.HlsContentStatus.NOT_READY.name
                                     )
                                 )
                             }
@@ -424,7 +423,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
             val playlistOptionsEnumModel = PlaylistItemOptionModel(
                 requireContext().resources.getString(R.string.playlist_delete_item_offline_data),
                 R.drawable.ic_remove_offline_data_playlist,
-                PlaylistOptionsEnum.DELETE_ITEMS_OFFLINE_DATA,
+                PlaylistModel.PlaylistOptionsEnum.DELETE_ITEMS_OFFLINE_DATA,
                 playlistItemModel = it,
                 playlistId = mPlaylistModel.id
             )
@@ -512,13 +511,13 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
 
     override fun onPlaylistOptionClicked(playlistOptionsModel: PlaylistOptionsModel) {
         when (playlistOptionsModel.optionType) {
-            PlaylistOptionsEnum.EDIT_PLAYLIST -> {
+            PlaylistModel.PlaylistOptionsEnum.EDIT_PLAYLIST -> {
                 mPlaylistItemAdapter?.setEditMode(true)
                 mPlaylistToolbar.enableEditMode(true)
                 mIvPlaylistOptions.visibility = View.GONE
             }
 
-            PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS, PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS -> {
+            PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS, PlaylistModel.PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS -> {
                 mPlaylistItemAdapter?.getSelectedItems()?.let {
                     PlaylistUtils.moveOrCopyModel = MoveOrCopyModel(
                         playlistOptionsModel.optionType, "", it
@@ -529,16 +528,16 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
                 mIvPlaylistOptions.visibility = View.VISIBLE
             }
 
-            PlaylistOptionsEnum.RENAME_PLAYLIST -> {
+            PlaylistModel.PlaylistOptionsEnum.RENAME_PLAYLIST -> {
                 val newPlaylistFragment = NewPlaylistFragment.newInstance(
-                    PlaylistOptionsEnum.RENAME_PLAYLIST, mPlaylistModel
+                    PlaylistModel.PlaylistOptionsEnum.RENAME_PLAYLIST, mPlaylistModel
                 )
                 parentFragmentManager.beginTransaction()
                     .replace(android.R.id.content, newPlaylistFragment)
                     .addToBackStack(PlaylistFragment::class.simpleName).commit()
             }
 
-            PlaylistOptionsEnum.DELETE_PLAYLIST -> {
+            PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST -> {
                 mMediaBrowser?.stop()
                 if (activity is AppCompatActivity) (activity as AppCompatActivity).onBackPressedDispatcher.onBackPressed()
             }
@@ -551,19 +550,19 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
     }
 
     override fun onPlaylistItemOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
-        if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {
+        if (playlistItemOptionModel.optionType == PlaylistModel.PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {
             playlistItemOptionModel.playlistItemModel?.pageSource?.let {
                 PlaylistUtils.showSharingDialog(
                     requireContext(), it
                 )
             }
         } else {
-            if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM || playlistItemOptionModel.optionType == PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
+            if (playlistItemOptionModel.optionType == PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM || playlistItemOptionModel.optionType == PlaylistModel.PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
                 val moveOrCopyItems = ArrayList<PlaylistItemModel>()
                 playlistItemOptionModel.playlistItemModel?.let { moveOrCopyItems.add(it) }
                 PlaylistUtils.moveOrCopyModel =
                     MoveOrCopyModel(playlistItemOptionModel.optionType, "", moveOrCopyItems)
-            } else if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.DELETE_ITEMS_OFFLINE_DATA || playlistItemOptionModel.optionType == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
+            } else if (playlistItemOptionModel.optionType == PlaylistModel.PlaylistOptionsEnum.DELETE_ITEMS_OFFLINE_DATA || playlistItemOptionModel.optionType == PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
                 playlistItemOptionModel.playlistItemModel?.let { stopVideoPlayerOnDelete(it) }
             }
             mPlaylistViewModel.setPlaylistItemOption(playlistItemOptionModel)

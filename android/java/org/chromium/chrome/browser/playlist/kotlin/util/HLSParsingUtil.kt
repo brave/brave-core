@@ -22,7 +22,8 @@ import java.util.Queue
 @SuppressLint("UnsafeOptInUsageError")
 @Suppress("unused")
 object HLSParsingUtil {
-    private val TAG: String = "Playlist/"+this::class.java.simpleName
+    private val TAG: String = "Playlist/" + this::class.java.simpleName
+
     @JvmStatic
     fun getContentManifestUrl(
         context: Context,
@@ -43,7 +44,7 @@ object HLSParsingUtil {
             if (hlsParser != null && hlsParser is HlsMultivariantPlaylist) {
                 contentManifestUrl = hlsParser.variants[0].url.toString()
             }
-        } catch(ex:Exception) {
+        } catch (ex: Exception) {
             Log.e(TAG, ex.message.toString())
         }
         return contentManifestUrl

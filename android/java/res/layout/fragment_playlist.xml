@@ -50,7 +50,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
-                android:id="@+id/playlistToolbar"
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/hint_color"

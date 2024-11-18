@@ -76,9 +76,9 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum;
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener;
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener;
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel;
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel;
 import org.chromium.chrome.browser.playlist.kotlin.model.SnackBarActionModel;
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils;
@@ -673,15 +673,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 PlaylistOptionsModel playlistOptionsModel) {
                             try {
                                 if (playlistOptionsModel.getOptionType()
-                                        == PlaylistOptionsEnum.ADD_MEDIA) {
+                                        == PlaylistModel.PlaylistOptionsEnum.ADD_MEDIA) {
                                     addMediaToPlaylist(items);
                                 } else if (playlistOptionsModel.getOptionType()
-                                        == PlaylistOptionsEnum.OPEN_PLAYLIST) {
+                                        == PlaylistModel.PlaylistOptionsEnum.OPEN_PLAYLIST) {
                                     BraveActivity.getBraveActivity()
                                             .openPlaylistActivity(
                                                     getContext(), ConstantUtils.DEFAULT_PLAYLIST);
                                 } else if (playlistOptionsModel.getOptionType()
-                                        == PlaylistOptionsEnum.PLAYLIST_SETTINGS) {
+                                        == PlaylistModel.PlaylistOptionsEnum.PLAYLIST_SETTINGS) {
                                     BraveActivity.getBraveActivity().openBravePlaylistSettings();
                                 }
                             } catch (BraveActivity.BraveActivityNotFoundException e) {

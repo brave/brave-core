@@ -13,7 +13,7 @@ import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
 
 class PlaylistRepository(context: Context) {
     companion object {
-        val TAG: String = "Playlist/"+this::class.java.simpleName
+        val TAG: String = "Playlist/" + this::class.java.simpleName
     }
 
     private var mPlaylistItemModelDao: PlaylistItemModelDao? =

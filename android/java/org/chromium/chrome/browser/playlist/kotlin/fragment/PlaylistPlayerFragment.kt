@@ -44,7 +44,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
 import org.chromium.chrome.browser.playlist.kotlin.extension.dpToPx
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
@@ -153,7 +152,10 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
 
         mMainLayout.mSlideState = BottomPanelLayout.PanelState.COLLAPSED
         mTvVideoTitle.afterMeasured {
-            val availableHeight = Integer.min(mMainLayout.measuredHeight.minus(mLayoutPlayer.bottom), 190.dpToPx.toInt())
+            val availableHeight = Integer.min(
+                mMainLayout.measuredHeight.minus(mLayoutPlayer.bottom),
+                190.dpToPx.toInt()
+            )
             mMainLayout.panelHeight = availableHeight
         }
 
@@ -712,17 +714,17 @@ class PlaylistPlayerFragment : Fragment(R.layout.fragment_playlist_player), Play
     }
 
     override fun onPlaylistItemOptionClicked(playlistItemOptionModel: PlaylistItemOptionModel) {
-        if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {
+        if (playlistItemOptionModel.optionType == PlaylistModel.PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM) {
             playlistItemOptionModel.playlistItemModel?.pageSource?.let {
                 PlaylistUtils.showSharingDialog(
                     requireContext(), it
                 )
             }
         } else {
-            if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
+            if (playlistItemOptionModel.optionType == PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
                 mPlayerView.player?.stop()
                 if (activity is AppCompatActivity) (activity as AppCompatActivity).onBackPressedDispatcher.onBackPressed()
-            } else if (playlistItemOptionModel.optionType == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM || playlistItemOptionModel.optionType == PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
+            } else if (playlistItemOptionModel.optionType == PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM || playlistItemOptionModel.optionType == PlaylistModel.PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
                 val moveOrCopyItems = ArrayList<PlaylistItemModel>()
                 playlistItemOptionModel.playlistItemModel?.let { moveOrCopyItems.add(it) }
                 PlaylistUtils.moveOrCopyModel =
