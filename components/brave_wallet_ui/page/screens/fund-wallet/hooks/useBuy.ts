@@ -492,6 +492,23 @@ export const useBuy = () => {
     }
   }, [handleQuoteRefresh, timeUntilNextQuote, isFetchingQuotes])
 
+  useEffect(() => {
+    // Reset quotes and triggers a new fetch if state is reset
+    // back to defaults on the page.
+    if (
+      selectedAsset.currencyCode === DEFAULT_ASSET.currencyCode &&
+      ((hasQuoteError && quotes.length === 0) ||
+        (quotes.length !== 0 &&
+          quotes[0].destinationCurrencyCode !== selectedAsset.currencyCode)) &&
+      currencyCode === undefined &&
+      chainId === undefined
+    ) {
+      setQuotes([])
+      setHasQuoteError(false)
+      setTimeUntilNextQuote(undefined)
+    }
+  }, [selectedAsset, currencyCode, chainId, quotes, hasQuoteError])
+
   return {
     selectedAsset,
     selectedCurrency,
