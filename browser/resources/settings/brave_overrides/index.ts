@@ -12,6 +12,7 @@
 import './config.js'
 import { ContentSettingsTypes } from '../site_settings/constants.js'
 import './about_page.js'
+import './all_sites.js'
 import './autofill_page.js'
 import './appearance_page.js'
 import './basic_page.js'
