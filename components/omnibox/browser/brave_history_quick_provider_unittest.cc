@@ -115,6 +115,7 @@ class BraveHistoryQuickProviderTest : public testing::Test {
   }
 
   void TearDown() override {
+    ac_matches_.clear();
     provider_ = nullptr;
     client_.reset();
   }
@@ -242,9 +243,8 @@ class BraveHistoryQuickProviderTest : public testing::Test {
   base::ScopedTempDir history_dir_;
   std::unique_ptr<FakeAutocompleteProviderClient> client_;
 
-  ACMatches ac_matches_;  // The resulting matches after running RunTest.
-
   scoped_refptr<BraveHistoryQuickProvider> provider_;
+  ACMatches ac_matches_;  // The resulting matches after running RunTest.
 };
 
 BraveHistoryQuickProviderTest::SetShouldContain::SetShouldContain(
