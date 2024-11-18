@@ -61,19 +61,13 @@ class AdsServiceDelegate : public AdsService::Delegate {
                             const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
   void SnoozeScheduledCaptcha() override;
-  void Display(const message_center::Notification& notification) override;
-  void Close(const std::string& notification_id) override;
   void ShowNotificationAd(const std::string& id,
                           const std::u16string& title,
-                          const std::u16string& body) override;
-  void CloseNotificationAd(const std::string& id) override;
+                          const std::u16string& body,
+                          bool is_custom) override;
+  void CloseNotificationAd(const std::string& id, bool is_custom) override;
   void OpenNewTabWithUrl(const GURL& url) override;
-#if BUILDFLAG(IS_ANDROID)
-  void MaybeRegenerateNotification(const std::string& notification_id,
-                                   const GURL& service_worker_scope) override;
-#else
   bool IsFullScreenMode() override;
-#endif
 
   base::Value::Dict GetVirtualPrefs() override;
 
