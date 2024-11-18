@@ -654,7 +654,7 @@ void EthTxManager::OnPublishTransaction(const std::string& chain_id,
                                         const std::string& error_message) {
   std::unique_ptr<TxMeta> meta = tx_state_manager().GetTx(tx_meta_id);
   if (!meta) {
-    DCHECK(false) << "Transaction should be found";
+    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewProviderError(

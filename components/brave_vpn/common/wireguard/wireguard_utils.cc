@@ -36,10 +36,7 @@ namespace {
 std::string EncodeBase64(const std::vector<uint8_t>& in) {
   std::string res;
   size_t size = 0;
-  if (!EVP_EncodedLength(&size, in.size())) {
-    DCHECK(false);
-    return "";
-  }
+  CHECK(EVP_EncodedLength(&size, in.size()));
   std::vector<uint8_t> out(size);
   size_t numEncBytes = EVP_EncodeBlock(&out.front(), &in.front(), in.size());
   DCHECK_NE(numEncBytes, 0u);

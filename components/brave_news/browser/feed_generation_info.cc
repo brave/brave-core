@@ -285,12 +285,7 @@ mojom::FeedItemMetadataPtr FeedGenerationInfo::PickAndConsume(
   }
 
   auto index = maybe_index.value();
-  if (index >= articles.size()) {
-    DCHECK(false) << "|index| should never be outside the bounds of |articles| "
-                     "(index: "
-                  << index << ", articles.size(): " << articles.size();
-    return nullptr;
-  }
+  CHECK_LT(index, articles.size());
 
   auto [article, metadata] = std::move(articles[index]);
   articles.erase(articles.begin() + index);

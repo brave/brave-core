@@ -38,10 +38,8 @@ AcceleratorPrefManager::Accelerators GetAcceleratorsFromPref(
   const auto& accelerators = prefs->GetDict(pref);
   for (const auto [command_id, shortcuts] : accelerators) {
     int id;
-    if (!base::StringToInt(command_id, &id)) {
-      DCHECK(false) << "Failed to parse " << command_id << " as int";
-      continue;
-    }
+    CHECK(base::StringToInt(command_id, &id))
+        << "Failed to parse " << command_id << " as int";
 
     if (!base::Contains(command_ids, id)) {
       DVLOG(1) << "Found non-existent command_id " << id

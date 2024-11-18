@@ -257,12 +257,8 @@ std::string BraveSyncWorker::GetTimeLimitedWordsFromWords(
     const std::string& words) {
   DCHECK(!words.empty());
   auto generate_result = brave_sync::TimeLimitedWords::GenerateForNow(words);
-  if (generate_result.has_value()) {
-    return generate_result.value();
-  } else {
-    DCHECK(false);
-    return std::string();
-  }
+  CHECK(generate_result.has_value());
+  return generate_result.value();
 }
 
 std::string BraveSyncWorker::GetHexSeedFromQrCodeJson(const std::string& json) {

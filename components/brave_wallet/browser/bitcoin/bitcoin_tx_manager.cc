@@ -156,7 +156,7 @@ void BitcoinTxManager::ApproveTransaction(const std::string& tx_meta_id,
   std::unique_ptr<BitcoinTxMeta> meta =
       GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta) {
-    DCHECK(false) << "Transaction should be found";
+    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewBitcoinProviderError(
@@ -190,7 +190,7 @@ void BitcoinTxManager::ContinueApproveTransaction(
   std::unique_ptr<BitcoinTxMeta> meta =
       GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta) {
-    DCHECK(false) << "Transaction should be found";
+    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewBitcoinProviderError(

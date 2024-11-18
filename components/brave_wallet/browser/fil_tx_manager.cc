@@ -143,7 +143,7 @@ void FilTxManager::ApproveTransaction(const std::string& tx_meta_id,
                                       ApproveTransactionCallback callback) {
   std::unique_ptr<FilTxMeta> meta = GetFilTxStateManager().GetFilTx(tx_meta_id);
   if (!meta) {
-    DCHECK(false) << "Transaction should be found";
+    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewFilecoinProviderError(

@@ -12,6 +12,7 @@
 #include "base/command_line.h"
 #include "base/environment.h"
 #include "base/files/file_path.h"
+#include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/string_util.h"
 #include "base/test/launcher/test_result.h"
@@ -125,9 +126,8 @@ void TeamcityReporter::OnTestResult(const TestResult& result) {
       }
       break;
     case TestResult::TEST_SKIPPED:
-      CHECK(false) << "TEST_SKIPPED is unexpected. Please check "
+      NOTREACHED() << "TEST_SKIPPED is unexpected. Please check "
                       "AddTestResult() override.";
-      break;
   }
   test_suite_stage_ = TestSuiteStage::kTestHasResult;
 }

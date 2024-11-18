@@ -84,7 +84,7 @@ std::string GetContentSettingTypeString(ContentSettingsType type) {
 
 #undef TYPE_CASE
     default:
-      DCHECK(false);
+      NOTREACHED();
   }
 
   return type_string;

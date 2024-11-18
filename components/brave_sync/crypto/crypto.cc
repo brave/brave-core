@@ -132,11 +132,9 @@ std::string PassphraseFromBytes32(const std::vector<uint8_t>& bytes) {
   DCHECK_EQ(bytes.size(), (size_t)DEFAULT_SEED_SIZE);
   char* words = nullptr;
   std::string passphrase;
-  if (bip39_mnemonic_from_bytes(nullptr, bytes.data(), bytes.size(), &words) !=
-      WALLY_OK) {
-    CHECK(false) << "bip39_mnemonic_from_bytes failed";
-    return passphrase;
-  }
+  CHECK_EQ(
+      bip39_mnemonic_from_bytes(nullptr, bytes.data(), bytes.size(), &words),
+      WALLY_OK);
   passphrase = words;
   wally_free_string(words);
 

@@ -21,12 +21,12 @@ void SystemRequestHandler::RegisterOnBeforeSystemRequestCallback(
 network::ResourceRequest SystemRequestHandler::OnBeforeSystemRequest(
     const network::ResourceRequest& url_request) {
   if (!on_before_system_request_callback_) {
-    // Changing to DCHECK to avoid crash dump uploading as this is spamming our
-    // Backtrace system at the moment.
-    // Generally, if we get here, it means that `BraveBrowserProcessImpl::Init`
-    // hasn't been called yet and so we don't need to apply our filters in this
-    // case.
-    DCHECK(false);
+    // Changing to LOG(ERROR) to avoid crash dump uploading as this is spamming
+    // our Backtrace system at the moment. Generally, if we get here, it means
+    // that `BraveBrowserProcessImpl::Init` hasn't been called yet and so we
+    // don't need to apply our filters in this case.
+    LOG(ERROR) << "SystemRequestHandler::OnBeforeSystemRequest called before "
+                  "BraveBrowserProcessImpl::Init";
     return url_request;
   }
   return on_before_system_request_callback_.Run(url_request);
