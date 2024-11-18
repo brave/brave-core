@@ -25,7 +25,7 @@ import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
-
+import java.util.Locale
 
 class PlaylistItemAdapter(
     private val playlistItemClickListener: PlaylistItemClickListener?,
@@ -121,10 +121,10 @@ class PlaylistItemAdapter(
                         ((((duration / 1000) - milliseconds) / 1000 - seconds) / 60 - minutes) / 60
                     var durationText = ""
                     if (hours > 0) {
-                        durationText = durationText.plus(String.format("%02d:", hours))
+                        durationText = durationText.plus(String.format(Locale.getDefault(),"%02d:", hours))
                     }
-                    durationText = durationText.plus(String.format("%02d:", minutes))
-                    durationText = durationText.plus(String.format("%02d", seconds))
+                    durationText = durationText.plus(String.format(Locale.getDefault(),"%02d:", minutes))
+                    durationText = durationText.plus(String.format(Locale.getDefault(),"%02d", seconds))
                     tvMediaDuration.visibility = View.VISIBLE
                     tvMediaDuration.text = durationText
                 }

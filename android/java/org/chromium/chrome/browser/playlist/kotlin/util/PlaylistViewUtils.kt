@@ -17,13 +17,13 @@ import androidx.fragment.app.FragmentActivity
 import androidx.transition.Slide
 import androidx.transition.TransitionManager
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.extension.allowMoving
 import org.chromium.chrome.browser.playlist.kotlin.interpolator.BraveBounceInterpolator
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
 import org.chromium.chrome.browser.playlist.kotlin.model.SnackBarActionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.shouldShowOnboarding
 import org.chromium.chrome.browser.playlist.kotlin.view.MovableImageButton
 import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistOnboardingPanel
@@ -72,17 +72,17 @@ object PlaylistViewUtils {
                         PlaylistOptionsModel(
                             activity.getString(R.string.playlist_add_media),
                             R.drawable.ic_add_to_media,
-                            PlaylistOptionsEnum.ADD_MEDIA
+                            PlaylistModel.PlaylistOptionsEnum.ADD_MEDIA
                         ),
                         PlaylistOptionsModel(
                             activity.getString(R.string.playlist_open_playlist),
                             R.drawable.ic_open_playlist,
-                            PlaylistOptionsEnum.OPEN_PLAYLIST
+                            PlaylistModel.PlaylistOptionsEnum.OPEN_PLAYLIST
                         ),
                         PlaylistOptionsModel(
                             activity.getString(R.string.playlist_open_playlist_settings),
                             R.drawable.ic_playlist_settings,
-                            PlaylistOptionsEnum.PLAYLIST_SETTINGS
+                            PlaylistModel.PlaylistOptionsEnum.PLAYLIST_SETTINGS
                         )
                     ), playlistOptionsListener
                 ).show((activity as FragmentActivity).supportFragmentManager, null)

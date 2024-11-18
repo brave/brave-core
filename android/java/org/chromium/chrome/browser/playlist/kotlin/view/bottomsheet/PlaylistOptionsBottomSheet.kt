@@ -50,8 +50,8 @@ class PlaylistOptionsBottomSheet(
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         behavior.isDraggable = false
 
-        dialog?.window?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            ?.setBackgroundResource(android.R.color.transparent)
+//        dialog?.window?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+//            ?.setBackgroundResource(android.R.color.transparent)
     }
 
     override fun onPlaylistOptionClicked(playlistOptionsModel: PlaylistOptionsModel) {
