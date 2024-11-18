@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.model.CreatePlaylistModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
 import org.chromium.chrome.browser.playlist.kotlin.model.RenamePlaylistModel
@@ -30,7 +29,8 @@ class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
     private lateinit var mEtPlaylistName: AppCompatEditText
     private lateinit var mPlaylistToolbar: PlaylistToolbar
     private var mPlaylistModel: PlaylistModel? = null
-    private var mPlaylistOptionsEnum: PlaylistOptionsEnum = PlaylistOptionsEnum.NEW_PLAYLIST
+    private var mPlaylistOptionsEnum: PlaylistModel.PlaylistOptionsEnum =
+        PlaylistModel.PlaylistOptionsEnum.NEW_PLAYLIST
     private var mShouldMoveOrCopy: Boolean = false
 
     @Suppress("deprecation")
@@ -38,7 +38,8 @@ class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             mPlaylistModel = it.getParcelable(PLAYLIST_MODEL)
-            mPlaylistOptionsEnum = it.getSerializable(PLAYLIST_OPTION) as PlaylistOptionsEnum
+            mPlaylistOptionsEnum =
+                it.getSerializable(PLAYLIST_OPTION) as PlaylistModel.PlaylistOptionsEnum
             mShouldMoveOrCopy = it.getBoolean(SHOULD_MOVE_OR_COPY)
         }
     }
@@ -51,18 +52,18 @@ class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
         mEtPlaylistName.setText(mPlaylistModel?.name)
         mPlaylistToolbar = view.findViewById(R.id.playlistToolbar)
         mPlaylistToolbar.setToolbarTitle(
-            if (mPlaylistOptionsEnum == PlaylistOptionsEnum.NEW_PLAYLIST) getString(
+            if (mPlaylistOptionsEnum == PlaylistModel.PlaylistOptionsEnum.NEW_PLAYLIST) getString(
                 R.string.playlist_new_text
             ) else getString(R.string.playlist_rename_text)
         )
         mPlaylistToolbar.setActionText(
-            if (mPlaylistOptionsEnum == PlaylistOptionsEnum.NEW_PLAYLIST) getString(
+            if (mPlaylistOptionsEnum == PlaylistModel.PlaylistOptionsEnum.NEW_PLAYLIST) getString(
                 R.string.playlist_create_toolbar_text
             ) else getString(R.string.playlist_rename_text)
         )
 
         mPlaylistToolbar.setActionButtonClickListener(clickListener = {
-            if (mPlaylistOptionsEnum == PlaylistOptionsEnum.NEW_PLAYLIST) {
+            if (mPlaylistOptionsEnum == PlaylistModel.PlaylistOptionsEnum.NEW_PLAYLIST) {
                 if (!mEtPlaylistName.text.isNullOrEmpty()) {
                     mPlaylistViewModel.setCreatePlaylistOption(
                         CreatePlaylistModel(
@@ -104,7 +105,7 @@ class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
     companion object {
         @JvmStatic
         fun newInstance(
-            playlistOptionsEnum: PlaylistOptionsEnum,
+            playlistOptionsEnum: PlaylistModel.PlaylistOptionsEnum,
             playlistModel: PlaylistModel? = null,
             shouldMoveOrCopy: Boolean = false
         ) =

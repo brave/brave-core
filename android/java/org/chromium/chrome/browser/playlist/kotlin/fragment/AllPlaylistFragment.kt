@@ -20,7 +20,6 @@ import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistAdapter
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.RecentlyPlayedPlaylistAdapter
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
@@ -37,8 +36,9 @@ import java.util.LinkedList
 class AllPlaylistFragment : Fragment(R.layout.fragment_all_playlist), PlaylistOptionsListener,
     PlaylistClickListener {
     companion object {
-        val TAG: String = "Playlist/"+this::class.java.simpleName
+        val TAG: String = "Playlist/" + this::class.java.simpleName
     }
+
     private lateinit var mPlaylistViewModel: PlaylistViewModel
 
     private lateinit var mPlaylistToolbar: PlaylistToolbar
@@ -57,7 +57,7 @@ class AllPlaylistFragment : Fragment(R.layout.fragment_all_playlist), PlaylistOp
         mBtAddNewPlaylist = view.findViewById(R.id.btAddNewPlaylist)
         mBtAddNewPlaylist.setOnClickListener {
             val newPlaylistFragment = NewPlaylistFragment.newInstance(
-                PlaylistOptionsEnum.NEW_PLAYLIST
+                PlaylistModel.PlaylistOptionsEnum.NEW_PLAYLIST
             )
             parentFragmentManager
                 .beginTransaction()

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistAdapter
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.extension.setTopCornersRounded
 import org.chromium.chrome.browser.playlist.kotlin.fragment.AllPlaylistFragment
 import org.chromium.chrome.browser.playlist.kotlin.fragment.NewPlaylistFragment
@@ -100,7 +99,7 @@ class MoveOrCopyToPlaylistBottomSheet :
                     mMoveOrCopyModel.playlistItems
                 )
             val newPlaylistFragment = NewPlaylistFragment.newInstance(
-                PlaylistOptionsEnum.NEW_PLAYLIST,
+                PlaylistModel.PlaylistOptionsEnum.NEW_PLAYLIST,
                 shouldMoveOrCopy = true
             )
             parentFragmentManager

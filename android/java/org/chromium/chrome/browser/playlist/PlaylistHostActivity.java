@@ -26,7 +26,6 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.Playlist
 import org.chromium.chrome.browser.playlist.hls_content.HlsService;
 import org.chromium.chrome.browser.playlist.hls_content.HlsServiceImpl;
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel;
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum;
 import org.chromium.chrome.browser.playlist.kotlin.fragment.AllPlaylistFragment;
 import org.chromium.chrome.browser.playlist.kotlin.fragment.PlaylistFragment;
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener;
@@ -198,9 +197,10 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                 return;
                             }
                             if (moveOrCopyModel.getPlaylistOptionsEnum()
-                                            == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM
+                                            == PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM
                                     || moveOrCopyModel.getPlaylistOptionsEnum()
-                                            == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
+                                            == PlaylistModel.PlaylistOptionsEnum
+                                                    .MOVE_PLAYLIST_ITEMS) {
                                 for (PlaylistItemModel playlistItem :
                                         moveOrCopyModel.getPlaylistItems()) {
                                     mPlaylistService.moveItem(
@@ -234,15 +234,18 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                             if (mPlaylistService == null) {
                                 return;
                             }
-                            PlaylistOptionsEnum option = playlistOptionsModel.getOptionType();
-                            if (option == PlaylistOptionsEnum.DELETE_PLAYLIST) {
+                            PlaylistModel.PlaylistOptionsEnum option =
+                                    playlistOptionsModel.getOptionType();
+                            if (option == PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST) {
                                 if (playlistOptionsModel.getPlaylistModel() != null) {
                                     mPlaylistService.removePlaylist(
                                             playlistOptionsModel.getPlaylistModel().getId());
                                 }
-                            } else if (option == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS) {
                                 showMoveOrCopyPlaylistBottomSheet();
-                            } else if (option == PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS) {
                                 showMoveOrCopyPlaylistBottomSheet();
                             }
                         });
@@ -255,24 +258,31 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                             if (mPlaylistService == null) {
                                 return;
                             }
-                            PlaylistOptionsEnum option = playlistItemOption.getOptionType();
-                            if (option == PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM) {
+                            PlaylistModel.PlaylistOptionsEnum option =
+                                    playlistItemOption.getOptionType();
+                            if (option == PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM) {
                                 showMoveOrCopyPlaylistBottomSheet();
-                            } else if (option == PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.COPY_PLAYLIST_ITEM) {
                                 showMoveOrCopyPlaylistBottomSheet();
-                            } else if (option == PlaylistOptionsEnum.DELETE_ITEMS_OFFLINE_DATA) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum
+                                            .DELETE_ITEMS_OFFLINE_DATA) {
                                 mPlaylistService.removeLocalDataForItem(
                                         playlistItemOption.getPlaylistItemModel().getId());
                                 // Playlist item will be updated based on event
-                            } else if (option == PlaylistOptionsEnum.OPEN_IN_NEW_TAB) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.OPEN_IN_NEW_TAB) {
                                 openPlaylistInTab(
                                         false,
                                         playlistItemOption.getPlaylistItemModel().getPageSource());
-                            } else if (option == PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB) {
                                 openPlaylistInTab(
                                         true,
                                         playlistItemOption.getPlaylistItemModel().getPageSource());
-                            } else if (option == PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
+                            } else if (option
+                                    == PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM) {
                                 deleteHLSContent(playlistItemOption.getPlaylistItemModel().getId());
                                 mPlaylistService.removeItemFromPlaylist(
                                         playlistItemOption.getPlaylistId(),
@@ -418,7 +428,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
 
     @Override
     public void onPlaylistOptionClicked(PlaylistOptionsModel playlistOptionsModel) {
-        if (PlaylistOptionsEnum.DELETE_PLAYLIST == playlistOptionsModel.getOptionType()
+        if (PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST
+                        == playlistOptionsModel.getOptionType()
                 && mPlaylistService != null
                 && playlistOptionsModel.getPlaylistModel() != null) {
             mPlaylistService.removePlaylist(playlistOptionsModel.getPlaylistModel().getId());

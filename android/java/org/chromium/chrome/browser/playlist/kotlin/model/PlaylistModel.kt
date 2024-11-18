@@ -18,6 +18,35 @@ data class PlaylistModel(
     @SerializedName("items") var items: List<PlaylistItemModel>
 ) :
     Parcelable {
+
+    enum class PlaylistOptionsEnum {
+        //Playlist button options
+        ADD_MEDIA,
+        OPEN_PLAYLIST,
+        PLAYLIST_SETTINGS,
+
+        // Playlist options
+        EDIT_PLAYLIST,
+        RENAME_PLAYLIST,
+        DELETE_PLAYLIST,
+
+        // Playlist item options
+        MOVE_PLAYLIST_ITEM,
+        COPY_PLAYLIST_ITEM,
+        DELETE_ITEMS_OFFLINE_DATA,
+        SHARE_PLAYLIST_ITEM,
+        OPEN_IN_NEW_TAB,
+        OPEN_IN_PRIVATE_TAB,
+        DELETE_PLAYLIST_ITEM,
+
+        // Playlist multiple items options
+        MOVE_PLAYLIST_ITEMS,
+        COPY_PLAYLIST_ITEMS,
+
+        // Extra options
+        NEW_PLAYLIST
+    }
+
     companion object {
         @JvmField
         @Suppress("unused")
