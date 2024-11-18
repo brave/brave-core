@@ -155,6 +155,12 @@ void ZCashShieldSyncService::WorkOnTask() {
 }
 
 void ZCashShieldSyncService::GetOrCreateAccount() {
+  if (account_birthday_->value < kNu5BlockUpdate) {
+    error_ =
+        Error{ErrorCode::kFailedToInitAccount, "Wrong birthday block height"};
+    ScheduleWorkOnTask();
+    return;
+  }
   orchard_storage()
       .AsyncCall(&ZCashOrchardStorage::GetAccountMeta)
       .WithArgs(account_id_.Clone())
@@ -167,8 +173,9 @@ void ZCashShieldSyncService::OnGetAccountMeta(
         result) {
   if (result.has_value()) {
     account_meta_ = *result;
-    if (account_meta_->latest_scanned_block_id <
-        account_meta_->account_birthday) {
+    if (account_meta_->latest_scanned_block_id.value() &&
+        (account_meta_->latest_scanned_block_id.value() <
+         account_meta_->account_birthday)) {
       error_ = Error{ErrorCode::kFailedToRetrieveAccount, ""};
     }
     ScheduleWorkOnTask();
@@ -188,8 +195,7 @@ void ZCashShieldSyncService::OnGetAccountMeta(
 void ZCashShieldSyncService::InitAccount() {
   orchard_storage()
       .AsyncCall(&ZCashOrchardStorage::RegisterAccount)
-      .WithArgs(account_id_.Clone(), account_birthday_->value,
-                account_birthday_->hash)
+      .WithArgs(account_id_.Clone(), account_birthday_->value)
       .Then(base::BindOnce(&ZCashShieldSyncService::OnAccountInit,
                            weak_ptr_factory_.GetWeakPtr()));
 }
@@ -207,6 +213,17 @@ void ZCashShieldSyncService::OnAccountInit(
 
 void ZCashShieldSyncService::VerifyChainState(
     ZCashOrchardStorage::AccountMeta account_meta) {
+  if (account_meta.account_birthday < kNu5BlockUpdate) {
+    error_ = Error{ErrorCode::kFailedToRetrieveAccount,
+                   "Wrong birthday block height"};
+    ScheduleWorkOnTask();
+    return;
+  }
+  if (!account_meta.latest_scanned_block_id) {
+    latest_scanned_block_ = account_meta.account_birthday - 1;
+    ScheduleWorkOnTask();
+    return;
+  }
   // If block chain has removed blocks we already scanned then we need to handle
   // chain reorg.
   if (*chain_tip_block_ < account_meta.latest_scanned_block_id) {
@@ -218,7 +235,7 @@ void ZCashShieldSyncService::VerifyChainState(
   // Retrieve block info for last scanned block id to check whether block hash
   // is the same
   auto block_id = zcash::mojom::BlockID::New(
-      account_meta.latest_scanned_block_id, std::vector<uint8_t>());
+      account_meta.latest_scanned_block_id.value(), std::vector<uint8_t>());
   zcash_rpc().GetTreeState(
       chain_id_, std::move(block_id),
       base::BindOnce(
@@ -235,12 +252,13 @@ void ZCashShieldSyncService::OnGetTreeStateForChainVerification(
     return;
   }
   auto backend_block_hash = RevertHex(tree_state.value()->hash);
-  if (backend_block_hash != account_meta.latest_scanned_block_hash) {
+  if (backend_block_hash != account_meta.latest_scanned_block_hash.value()) {
     // Assume that chain reorg can't affect more than kChainReorgBlockDelta
     // blocks So we can just fallback on this number.
     uint32_t new_block_id =
-        account_meta.latest_scanned_block_id > kChainReorgBlockDelta
-            ? account_meta.latest_scanned_block_id - kChainReorgBlockDelta
+        account_meta.latest_scanned_block_id.value() > kChainReorgBlockDelta
+            ? account_meta.latest_scanned_block_id.value() -
+                  kChainReorgBlockDelta
             : 0;
     GetTreeStateForChainReorg(new_block_id);
     return;
@@ -388,7 +406,7 @@ void ZCashShieldSyncService::OnBlocksScanned(
 
 void ZCashShieldSyncService::UpdateNotes(
     const std::vector<OrchardNote>& found_notes,
-    const std::vector<OrchardNullifier>& notes_to_delete,
+    const std::vector<OrchardNoteSpend>& notes_to_delete,
     uint32_t latest_scanned_block,
     std::string latest_scanned_block_hash) {
   orchard_storage()

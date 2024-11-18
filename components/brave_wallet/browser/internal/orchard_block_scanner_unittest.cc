@@ -499,9 +499,9 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
       PrefixedHexStringToBytes(
           "0x1b32edbbe4d18f28876de262518ad31122701f8c0a52e98047a337876e7eea19")
           .value();
-  OrchardNullifier nf;
-  base::ranges::copy(nullifier_bytes, nf.nullifier.begin());
-  nf.block_id = 10;
+  OrchardNoteSpend spend;
+  base::ranges::copy(nullifier_bytes, spend.nullifier.begin());
+  spend.block_id = 10;
 
   action->nullifier = nullifier_bytes;
   action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize, 0);
@@ -529,7 +529,7 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
 
   EXPECT_TRUE(result.has_value());
   EXPECT_EQ(result.value().spent_notes.size(), 1u);
-  EXPECT_EQ(result.value().spent_notes[0], nf);
+  EXPECT_EQ(result.value().spent_notes[0], spend);
   EXPECT_EQ(result.value().discovered_notes.size(), 0u);
 }
 

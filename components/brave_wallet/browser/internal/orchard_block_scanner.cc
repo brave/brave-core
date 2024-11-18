@@ -10,7 +10,7 @@ namespace brave_wallet {
 OrchardBlockScanner::Result::Result() = default;
 
 OrchardBlockScanner::Result::Result(std::vector<OrchardNote> discovered_notes,
-                                    std::vector<OrchardNullifier> spent_notes)
+                                    std::vector<OrchardNoteSpend> spent_notes)
     : discovered_notes(std::move(discovered_notes)),
       spent_notes(std::move(spent_notes)) {}
 
@@ -31,7 +31,7 @@ base::expected<OrchardBlockScanner::Result, OrchardBlockScanner::ErrorCode>
 OrchardBlockScanner::ScanBlocks(
     std::vector<OrchardNote> known_notes,
     std::vector<zcash::mojom::CompactBlockPtr> blocks) {
-  std::vector<OrchardNullifier> found_nullifiers;
+  std::vector<OrchardNoteSpend> found_spends;
   std::vector<OrchardNote> found_notes;
 
   for (const auto& block : blocks) {
@@ -64,15 +64,15 @@ OrchardBlockScanner::ScanBlocks(
                          [&action_nullifier](const auto& v) {
                            return v.nullifier == action_nullifier;
                          }) != known_notes.end()) {
-          OrchardNullifier nullifier;
-          nullifier.block_id = block->height;
-          nullifier.nullifier = action_nullifier;
-          found_nullifiers.push_back(std::move(nullifier));
+          OrchardNoteSpend spend;
+          spend.block_id = block->height;
+          spend.nullifier = action_nullifier;
+          found_spends.push_back(std::move(spend));
         }
       }
     }
   }
-  return Result({std::move(found_notes), std::move(found_nullifiers)});
+  return Result({std::move(found_notes), std::move(found_spends)});
 }
 
 }  // namespace brave_wallet

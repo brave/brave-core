@@ -132,7 +132,8 @@ class ZCashShieldSyncServiceTest : public testing::Test {
     auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 0);
-    auto account_birthday = mojom::ZCashAccountShieldBirthday::New(100, "hash");
+    auto account_birthday =
+        mojom::ZCashAccountShieldBirthday::New(kNu5BlockUpdate + 100, "hash");
     OrchardFullViewKey fvk;
 
     sync_service_ = std::make_unique<ZCashShieldSyncService>(
@@ -172,24 +173,24 @@ class ZCashShieldSyncServiceTest : public testing::Test {
           OrchardBlockScanner::Result result;
           for (const auto& block : blocks) {
             // 3 notes in the blockchain
-            if (block->height == 105) {
+            if (block->height == kNu5BlockUpdate + 105) {
               result.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 1));
-            } else if (block->height == 205) {
+            } else if (block->height == kNu5BlockUpdate + 205) {
               result.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 2));
-            } else if (block->height == 305) {
+            } else if (block->height == kNu5BlockUpdate + 305) {
               result.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 3));
             }
 
             // First 2 notes are spent
-            if (block->height == 255) {
+            if (block->height == kNu5BlockUpdate + 255) {
               result.spent_notes.push_back(
-                  GenerateMockNullifier(account_id, block->height, 1));
-            } else if (block->height == 265) {
+                  GenerateMockNoteSpend(account_id, block->height, 1));
+            } else if (block->height == kNu5BlockUpdate + 265) {
               result.spent_notes.push_back(
-                  GenerateMockNullifier(account_id, block->height, 2));
+                  GenerateMockNoteSpend(account_id, block->height, 2));
             }
           }
           std::move(callback).Run(result);
@@ -236,8 +237,8 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(500u, std::vector<uint8_t>({})));
+            std::move(callback).Run(zcash::mojom::BlockID::New(
+                kNu5BlockUpdate + 500u, std::vector<uint8_t>({})));
           }));
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
@@ -281,8 +282,8 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+            std::move(callback).Run(zcash::mojom::BlockID::New(
+                kNu5BlockUpdate + 1000u, std::vector<uint8_t>({})));
           }));
 
   sync_service()->SetOrchardBlockScannerProxyForTesting(
@@ -298,21 +299,21 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             OrchardBlockScanner::Result result;
             for (const auto& block : blocks) {
               // 3 notes in the blockchain
-              if (block->height == 605) {
+              if (block->height == kNu5BlockUpdate + 605) {
                 result.discovered_notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 5));
-              } else if (block->height == 705) {
+              } else if (block->height == kNu5BlockUpdate + 705) {
                 result.discovered_notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 6));
-              } else if (block->height == 905) {
+              } else if (block->height == kNu5BlockUpdate + 905) {
                 result.discovered_notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 7));
               }
 
               // First 2 notes are spent
-              if (block->height == 855) {
+              if (block->height == kNu5BlockUpdate + 855) {
                 result.spent_notes.push_back(
-                    GenerateMockNullifier(account_id, block->height, 3));
+                    GenerateMockNoteSpend(account_id, block->height, 3));
               }
             }
             std::move(callback).Run(result);
@@ -343,8 +344,8 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1010u, std::vector<uint8_t>({})));
+            std::move(callback).Run(zcash::mojom::BlockID::New(
+                kNu5BlockUpdate + 1010u, std::vector<uint8_t>({})));
           }));
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
@@ -384,8 +385,8 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(950u, std::vector<uint8_t>({})));
+            std::move(callback).Run(zcash::mojom::BlockID::New(
+                kNu5BlockUpdate + 950u, std::vector<uint8_t>({})));
           }));
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
@@ -411,20 +412,21 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             OrchardBlockScanner::Result result;
             for (const auto& block : blocks) {
               // First block is the current chain tip - kChainReorgBlockDelta
-              EXPECT_GE(block->height, 950u - kChainReorgBlockDelta);
+              EXPECT_GE(block->height,
+                        kNu5BlockUpdate + 950u - kChainReorgBlockDelta);
               // Last block is the current chain tip
-              EXPECT_GE(950u, block->height);
+              EXPECT_GE(kNu5BlockUpdate + 950u, block->height);
 
               // Add a new note on height 900
-              if (block->height == 900) {
+              if (block->height == kNu5BlockUpdate + 900) {
                 result.discovered_notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 8));
               }
 
               // Add a nullifier for previous note
-              if (block->height == 905) {
+              if (block->height == kNu5BlockUpdate + 905) {
                 result.spent_notes.push_back(
-                    GenerateMockNullifier(account_id, block->height, 3));
+                    GenerateMockNoteSpend(account_id, block->height, 3));
               }
             }
             std::move(callback).Run(result);

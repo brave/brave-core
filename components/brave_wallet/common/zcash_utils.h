@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -35,10 +36,26 @@ inline constexpr size_t kOrchardCipherTextSize = 52u;
 inline constexpr size_t kOrchardMemoSize = 512u;
 inline constexpr uint64_t kZCashFullAmount =
     std::numeric_limits<uint64_t>::max();
+inline constexpr size_t kOrchardShardTreeHashSize = 32u;
+inline constexpr uint8_t kOrchardShardSubtreeHeight = 8;
+inline constexpr uint8_t kOrchardShardTreeHeight = 32;
+inline constexpr uint8_t kOrchardNoteRhoSize = 32;
+inline constexpr uint8_t kOrchardNoteRSeedSize = 32;
+inline constexpr uint8_t kOrchardSpendingKeySize = 32;
+inline constexpr size_t kOrchardCompleteBlockHashSize = 32u;
+// Block number where Orchard support was added
+inline constexpr size_t kNu5BlockUpdate = 1687104;
 
 using OrchardFullViewKey = std::array<uint8_t, kOrchardFullViewKeySize>;
 using OrchardMemo = std::array<uint8_t, kOrchardMemoSize>;
 using OrchardAddrRawPart = std::array<uint8_t, kOrchardRawBytesSize>;
+using OrchardRho = std::array<uint8_t, kOrchardNoteRhoSize>;
+using OrchardRseed = std::array<uint8_t, kOrchardNoteRSeedSize>;
+using OrchardMerkleHash = std::array<uint8_t, kOrchardShardTreeHashSize>;
+using OrchardNullifier = std::array<uint8_t, kOrchardNullifierSize>;
+using OrchardShardRootHash = std::array<uint8_t, kOrchardShardTreeHashSize>;
+using OrchardCommitmentValue = std::array<uint8_t, kOrchardCmxSize>;
+using OrchardSpendingKey = std::array<uint8_t, kOrchardSpendingKeySize>;
 
 // Reduce current scanning position on this value if reorg is found
 // All Zcash network participants basically assume rollbacks longer than 100
@@ -89,21 +106,163 @@ struct OrchardOutput {
 };
 
 // Structure describes note nullifier that marks some note as spent
-struct OrchardNullifier {
+struct OrchardNoteSpend {
   // Block id where spent nullifier was met
   uint32_t block_id = 0;
   std::array<uint8_t, kOrchardNullifierSize> nullifier;
 
-  bool operator==(const OrchardNullifier& other) const = default;
+  bool operator==(const OrchardNoteSpend& other) const = default;
 };
 
-// Structure describes found spendable note
+// Describes spendable note.
+// Spendable note contains related position
+// in the Orchard commitment tree, amount and data required
+// for costructing zk-proof for spending.
 struct OrchardNote {
+  OrchardAddrRawPart addr;
   uint32_t block_id = 0;
-  std::array<uint8_t, kOrchardNullifierSize> nullifier;
+  OrchardNullifier nullifier;
   uint32_t amount = 0;
+  uint32_t orchard_commitment_tree_position = 0;
+  OrchardRho rho;
+  OrchardRseed seed;
 
   bool operator==(const OrchardNote& other) const = default;
+  base::Value::Dict ToValue() const;
+  static std::optional<OrchardNote> FromValue(const base::Value::Dict& value);
+};
+
+// Note witness is a Merkle path in the Orchard commitment tree from the
+// note to the tree root according some selected anchor(selected right border in
+// the commitment tree).
+struct OrchardNoteWitness {
+  OrchardNoteWitness();
+  ~OrchardNoteWitness();
+  OrchardNoteWitness(const OrchardNoteWitness& other);
+
+  uint32_t position = 0;
+  std::vector<OrchardMerkleHash> merkle_path;
+  bool operator==(const OrchardNoteWitness& other) const = default;
+};
+
+// Data required for constructing note spending.
+struct OrchardInput {
+  OrchardInput();
+  ~OrchardInput();
+  OrchardInput(const OrchardInput& other);
+
+  OrchardNote note;
+  std::optional<OrchardNoteWitness> witness;
+
+  base::Value::Dict ToValue() const;
+  static std::optional<OrchardInput> FromValue(const base::Value::Dict& value);
+};
+
+// Bundle of Orchard inputs along with keys needed for signing.
+struct OrchardSpendsBundle {
+  OrchardSpendsBundle();
+  ~OrchardSpendsBundle();
+  OrchardSpendsBundle(const OrchardSpendsBundle& other);
+
+  OrchardSpendingKey sk;
+  OrchardFullViewKey fvk;
+  std::vector<OrchardInput> inputs;
+};
+
+// Leaf position of checkpoint.
+using CheckpointTreeState = std::optional<uint32_t>;
+
+// Checkpointed leafs are not pruned so they could be used
+// as anchors for building shielded transactions.
+// Last Orchard commitment in a block is used as a checkpoint.
+struct OrchardCheckpoint {
+  OrchardCheckpoint();
+  OrchardCheckpoint(CheckpointTreeState, std::vector<uint32_t>);
+  ~OrchardCheckpoint();
+  OrchardCheckpoint(const OrchardCheckpoint& other);
+  OrchardCheckpoint& operator=(const OrchardCheckpoint& other);
+  OrchardCheckpoint(OrchardCheckpoint&& other);
+  OrchardCheckpoint& operator=(OrchardCheckpoint&& other);
+
+  bool operator==(const OrchardCheckpoint& other) const = default;
+
+  CheckpointTreeState tree_state_position;
+  // List of note positions that were spent at this checkpoint.
+  std::vector<uint32_t> marks_removed;
+};
+
+struct OrchardCheckpointBundle {
+  OrchardCheckpointBundle(uint32_t checkpoint_id, OrchardCheckpoint);
+  ~OrchardCheckpointBundle();
+  OrchardCheckpointBundle(const OrchardCheckpointBundle& other);
+  OrchardCheckpointBundle& operator=(const OrchardCheckpointBundle& other);
+  OrchardCheckpointBundle(OrchardCheckpointBundle&& other);
+  OrchardCheckpointBundle& operator=(OrchardCheckpointBundle&& other);
+
+  bool operator==(const OrchardCheckpointBundle& other) const = default;
+
+  // The block height serves as the checkpoint identifier.
+  uint32_t checkpoint_id = 0;
+  OrchardCheckpoint checkpoint;
+};
+
+// Address of a subtree in the shard tree.
+struct OrchardShardAddress {
+  uint8_t level = 0;
+  uint32_t index = 0;
+
+  bool operator==(const OrchardShardAddress& other) const = default;
+};
+
+// Top part of the shard tree from the root to the shard roots level
+// Used for optimization purposes in the shard tree crate.
+using OrchardShardTreeCap = std::vector<uint8_t>;
+
+// Subtree with root selected from the shard roots level.
+struct OrchardShard {
+  OrchardShard();
+  OrchardShard(OrchardShardAddress shard_addr,
+               std::optional<OrchardShardRootHash> shard_hash,
+               std::vector<uint8_t> shard_data);
+  ~OrchardShard();
+
+  OrchardShard(const OrchardShard& other);
+  OrchardShard& operator=(const OrchardShard& other);
+  OrchardShard(OrchardShard&& other);
+  OrchardShard& operator=(OrchardShard&& other);
+
+  bool operator==(const OrchardShard& other) const = default;
+
+  // Subtree root address.
+  OrchardShardAddress address;
+  // Root hash exists only on completed shards.
+  std::optional<OrchardShardRootHash> root_hash;
+  std::vector<uint8_t> shard_data;
+  // Right-most position of the subtree leaf.
+  size_t subtree_end_height = 0;
+};
+
+struct OrchardCommitment {
+  OrchardCommitmentValue cmu;
+  bool is_marked = false;
+  std::optional<uint32_t> checkpoint_id;
+};
+
+// Compact representation of the Merkle tree on some point.
+// Since batch inserting may contain gaps between scan ranges we insert
+// frontier which allows to calculate node hashes and witnesses(merkle path from
+// leaf to the tree root) even when previous scan ranges are not completed.
+struct OrchardTreeState {
+  OrchardTreeState();
+  ~OrchardTreeState();
+  OrchardTreeState(const OrchardTreeState&);
+
+  // Tree state is linked to the end of some block.
+  uint32_t block_height = 0u;
+  // Number of leafs at the position.
+  uint32_t tree_size = 0u;
+  // https://docs.aztec.network/protocol-specs/l1-smart-contracts/frontier
+  std::vector<uint8_t> frontier;
 };
 
 bool OutputZCashAddressSupported(const std::string& address, bool is_testnet);

@@ -56,9 +56,14 @@ OrchardBlockDecoderImpl::ScanBlock(
       ::rust::Box<::brave_wallet::orchard::BatchOrchardDecodeBundle>
           result_bundle = decode_result->unwrap();
       for (size_t i = 0; i < result_bundle->size(); i++) {
-        result.emplace_back(OrchardNote(
-            {block->height, result_bundle->note_nullifier(full_view_key_, i),
-             result_bundle->note_value(i)}));
+        result.emplace_back(
+            OrchardNote({{},
+                         block->height,
+                         result_bundle->note_nullifier(full_view_key_, i),
+                         result_bundle->note_value(i),
+                         0,
+                         {},
+                         {}}));
       }
     } else {
       return std::nullopt;

@@ -148,7 +148,7 @@ class ZCashShieldSyncService {
                        base::expected<OrchardBlockScanner::Result,
                                       OrchardBlockScanner::ErrorCode> result);
   void UpdateNotes(const std::vector<OrchardNote>& found_notes,
-                   const std::vector<OrchardNullifier>& notes_to_delete,
+                   const std::vector<OrchardNoteSpend>& notes_to_delete,
                    uint32_t latest_scanned_block,
                    std::string latest_scanned_block_hash);
   void UpdateNotesComplete(uint32_t new_latest_scanned_block,
