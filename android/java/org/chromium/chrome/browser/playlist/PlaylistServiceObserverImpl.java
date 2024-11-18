@@ -5,12 +5,11 @@
 
 package org.chromium.chrome.browser.playlist;
 
-import com.brave.playlist.model.PlaylistItemModel;
-import com.brave.playlist.playback_service.VideoPlaybackService;
-import com.brave.playlist.util.ConstantUtils;
-import com.brave.playlist.util.MediaUtils;
-
 import org.chromium.chrome.browser.playlist.hls_content.HlsUtils;
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel;
+import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils;
+import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistItem;
