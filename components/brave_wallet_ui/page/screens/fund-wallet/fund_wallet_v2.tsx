@@ -102,7 +102,7 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
     selectedPaymentMethod,
     onSelectPaymentMethod,
     onSelectCountry,
-    isCreatingWidget,
+    isCreatingWidgetFor,
     onBuy,
     searchTerm,
     onSearch,
@@ -336,7 +336,9 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
                               filteredQuotes.length > 1 && index === 0
                             }
                             isOpenOverride={index === 0}
-                            isCreatingWidget={isCreatingWidget}
+                            isCreatingWidget={
+                              isCreatingWidgetFor === quote.serviceProvider
+                            }
                             onBuy={onBuy}
                             selectedAsset={selectedAsset}
                           />
