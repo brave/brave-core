@@ -433,8 +433,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // Load a page with an ad image, and make sure it is blocked by custom
 // filters.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
-  EnableDeveloperMode(true);
-
   UpdateAdBlockInstanceWithRules("");
 
   UpdateCustomAdBlockInstanceWithRules("*ad_banner.png");
@@ -452,8 +450,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByCustomBlocker) {
 // Load a page with an ad image, with a corresponding exception installed in
 // the custom filters, and make sure it is not blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultBlockCustomException) {
-  EnableDeveloperMode(true);
-
   UpdateAdBlockInstanceWithRules("*ad_banner.png");
   UpdateCustomAdBlockInstanceWithRules("@@ad_banner.png");
 
@@ -1784,8 +1780,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultNoRemoveparam) {
 // `$removeparam` should still be activated in default blocking mode if it comes
 // from custom filters
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_DefaultRemoveparamFromCustom) {
-  EnableDeveloperMode(true);
-
   DisableAggressiveMode();
 
   UpdateCustomAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
@@ -1846,8 +1840,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
 // The policy resulting from two of the same kind of directive will be the
 // union of both.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleMerging) {
-  EnableDeveloperMode(true);
-
   UpdateAdBlockInstanceWithRules(
       "||example.com^$csp=script-src 'nonce-abcdef' 'unsafe-eval' 'self'");
   UpdateCustomAdBlockInstanceWithRules(
@@ -2240,8 +2232,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
 // Test cosmetic filtering on elements added dynamically, using a rule from the
 // custom filters
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamicCustom) {
-  EnableDeveloperMode(true);
-
   ASSERT_TRUE(g_brave_browser_process->ad_block_service()
                   ->custom_filters_provider()
                   ->UpdateCustomFilters("##.blockme"));
@@ -2705,7 +2695,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // exception policy.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        CustomCosmeticFilteringOverridesImportant) {
-  EnableDeveloperMode(true);
   UpdateCustomAdBlockInstanceWithRules("###inline-block-important");
 
   GURL tab_url =
@@ -3016,8 +3005,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
 // Content Picker and the context menu are disabled for Android.
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
-  EnableDeveloperMode(true);
-
   const GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
   NavigateToURL(tab_url);

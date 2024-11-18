@@ -13,8 +13,9 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "url/gurl.h"
@@ -255,4 +256,19 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
   NavigateToURL(tab_url);
 
   EXPECT_EQ("default-script", EvalJs(web_contents(), "window.test"));
+}
+
+class AdblockGotCustomResourcesTest : public AdblockCustomResourcesTest {
+ public:
+  void SetUpLocalStatePrefService(PrefService* local_state) override {
+    local_state->SetString(brave_shields::prefs::kAdBlockCustomFilters,
+                           "custom");
+
+    AdblockCustomResourcesTest::SetUpLocalStatePrefService(local_state);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(AdblockGotCustomResourcesTest, DeveloperModeEnabled) {
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
+      brave_shields::prefs::kAdBlockDeveloperMode));
 }

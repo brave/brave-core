@@ -36,6 +36,10 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);
 
+  // Used in BraveAdBlockHandler and updates the manually edited custom filters
+  // only if developer mode is turned on.
+  bool UpdateCustomFiltersFromSettings(const std::string& custom_filters);
+
   // AdBlockFiltersProvider
   void LoadFilterSet(
       base::OnceCallback<void(
@@ -44,6 +48,8 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   std::string GetNameForDebugging() override;
 
  private:
+  void AppendCustomFilter(const std::string& filter);
+
   const raw_ptr<PrefService> local_state_;
   bool developer_mode_enabled_ = false;
 

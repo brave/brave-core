@@ -64,7 +64,7 @@ void AdBlockCustomFiltersProvider::CreateSiteExemption(
 
 std::string AdBlockCustomFiltersProvider::GetCustomFilters() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!local_state_ || !developer_mode_enabled_) {
+  if (!local_state_) {
     return std::string();
   }
   return local_state_->GetString(prefs::kAdBlockCustomFilters);
@@ -81,6 +81,14 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
   NotifyObservers(engine_is_default_);
 
   return true;
+}
+
+bool AdBlockCustomFiltersProvider::UpdateCustomFiltersFromSettings(
+    const std::string& custom_filters) {
+  if (!developer_mode_enabled_) {
+    return false;
+  }
+  return UpdateCustomFilters(custom_filters);
 }
 
 void AdBlockCustomFiltersProvider::LoadFilterSet(
