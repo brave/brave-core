@@ -163,6 +163,12 @@ RegisterPolymerTemplateModifications({
           solanaSettings.setAttribute(
               'label', loadTimeData.getString('siteSettingsSolana'))
         }
+        const adPersonalization = templateContent.querySelector('#adPersonalization')
+        if (!adPersonalization) {
+          console.error('[Brave Settings Overrides] Could not find adPersonalization element to hide')
+        } else {
+          adPersonalization.remove()
+        }
       }
     }
 
