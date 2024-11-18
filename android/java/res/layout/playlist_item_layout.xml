@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2023 The Brave Authors. All rights reserved.
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  ~ You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="10dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/thumbnailView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivMediaThumbnail"
+            android:layout_width="96dp"
+            android:layout_height="64dp"
+            android:scaleType="centerCrop" />
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/processing_progress_bar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:visibility="gone"
+        app:indicatorColor="@color/brave_theme_color"
+        app:indicatorSize="32dp"
+        app:layout_constraintBottom_toBottomOf="@id/thumbnailView"
+        app:layout_constraintLeft_toLeftOf="@id/thumbnailView"
+        app:layout_constraintRight_toRightOf="@id/thumbnailView"
+        app:layout_constraintTop_toTopOf="@id/thumbnailView"
+        app:trackColor="#CCFFFFFF" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivMediaSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="@id/thumbnailView"
+        app:layout_constraintTop_toTopOf="@id/thumbnailView"
+        app:srcCompat="@drawable/ic_check_circle_filled" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivMediaPlayingStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/thumbnailView"
+        app:layout_constraintLeft_toLeftOf="@id/thumbnailView"
+        app:layout_constraintRight_toRightOf="@id/thumbnailView"
+        app:layout_constraintTop_toTopOf="@id/thumbnailView"
+        app:srcCompat="@drawable/ic_playing_sound" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvMediaTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:text="@string/playlist_create_toolbar_text"
+        android:textColor="@color/playlist_text_color"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/layoutMediaStats"
+        app:layout_constraintEnd_toStartOf="@id/layout_options"
+        app:layout_constraintStart_toEndOf="@id/thumbnailView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutMediaStats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/layout_options"
+        app:layout_constraintStart_toEndOf="@id/thumbnailView"
+        app:layout_constraintTop_toBottomOf="@id/tvMediaTitle">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMediaFileSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/media_stats_color"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMediaDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/media_stats_color"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMediaDownloadProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/media_stats_color"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <FrameLayout
+        android:id="@+id/layout_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivDragMedia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_drag"
+            app:tint="@color/icon_tint" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivMediaOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_options_toolbar_playlist"
+            app:tint="@color/icon_tint" />
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
