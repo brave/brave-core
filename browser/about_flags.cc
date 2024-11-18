@@ -390,7 +390,7 @@
       },                                                                     \
       {                                                                      \
           "brave-ai-chat-allow-private-ips",                                 \
-          "Private IP Addresses for Custom Model Enpoints",                  \
+          "Private IP Addresses for Custom Model Endpoints",                 \
           "Permits the use of private IP addresses as model endpoint URLs",  \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                           \
           FEATURE_VALUE_TYPE(ai_chat::features::kAllowPrivateIPs),           \
