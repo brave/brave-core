@@ -180,7 +180,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
     this.contextSize = parseInt(e.target.value, 10);
   }
 
-  async onModelServerEndpointChange_(e: any) {
+  onModelServerEndpointChange_(e: any) {
     this.endpointUrl = e.target.value
     this.checkEndpointValidity_()
   }
