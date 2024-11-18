@@ -6,15 +6,26 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_ALLOWED_LISTS_H_
 #define BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_ALLOWED_LISTS_H_
 
+#include <array>
+#include <string_view>
+
+#include "base/containers/fixed_flat_set.h"
+
 namespace brave {
 
 // Before adding to this list, get approval from the security team.
-inline constexpr const char* kAllowedUrlProtocols[] = {
-    "chrome-extension", "chrome", "brave", "file", "data", "blob",
-};
+inline constexpr auto kAllowedUrlProtocols =
+    base::MakeFixedFlatSet<std::string_view>({
+        "chrome-extension",
+        "chrome",
+        "brave",
+        "file",
+        "data",
+        "blob",
+    });
 
 // Before adding to this list, get approval from the security team.
-inline constexpr const char* kAllowedUrlPrefixes[] = {
+inline constexpr auto kAllowedUrlPrefixes = std::to_array<std::string_view>({
     // allowed because it 307's to https://componentupdater.brave.com
     "https://componentupdater.brave.com/service/update2",
     "https://crxdownload.brave.com/crx/blobs/",
@@ -76,14 +87,14 @@ inline constexpr const char* kAllowedUrlPrefixes[] = {
     "https://safebrowsing.brave.com/",
     "https://static.brave.com/",
     "https://static1.brave.com/",
-};
+});
 
 // Before adding to this list, get approval from the security team.
-inline constexpr const char* kAllowedUrlPatterns[] = {
+inline constexpr auto kAllowedUrlPatterns = std::to_array<std::string_view>({
     // allowed because it's url for fetching super referral's mapping table
     "https://mobile-data.s3.brave.com/superreferrer/map-table.json",
     "https://mobile-data-dev.s3.brave.software/superreferrer/map-table.json",
-};
+});
 
 }  // namespace brave
 

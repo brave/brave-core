@@ -7,9 +7,11 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/values.h"
 #include "brave/browser/search_engines/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -26,6 +28,13 @@
 #include "components/search_engines/template_url_service.h"
 
 namespace brave {
+
+namespace {
+constexpr auto kTargetCountriesForEnableSearchSuggestionsByDefault =
+    base::MakeFixedFlatSet<std::string_view>({"AR", "AT", "BR", "CA", "DE",
+                                              "ES", "FR", "GB", "IN", "IT",
+                                              "MX", "US"});
+}
 
 void SetBraveAsDefaultPrivateSearchProvider(Profile* profile) {
   auto* prefs = profile->GetPrefs();
@@ -134,16 +143,10 @@ void PrepareSearchSuggestionsConfig(PrefService* local_state, bool first_run) {
 
   const std::string default_country_code =
       brave_l10n::GetDefaultISOCountryCodeString();
-  constexpr int kNumberOfTargetCountries = 12;
-  constexpr const char* kTargetCountriesForEnableSearchSuggestionsByDefault[] =
-      {"AR", "AT", "BR", "CA", "DE", "ES", "FR", "GB", "IN", "IT", "MX", "US"};
-  static_assert(
-      std::size(kTargetCountriesForEnableSearchSuggestionsByDefault) ==
-      kNumberOfTargetCountries);
 
   const bool enable_search_suggestions_default_value =
-      base::Contains(kTargetCountriesForEnableSearchSuggestionsByDefault,
-                     default_country_code);
+      kTargetCountriesForEnableSearchSuggestionsByDefault.count(
+          default_country_code);
 
   local_state->SetBoolean(kEnableSearchSuggestionsByDefault,
                           enable_search_suggestions_default_value);

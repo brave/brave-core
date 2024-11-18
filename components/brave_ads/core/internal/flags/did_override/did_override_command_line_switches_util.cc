@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/flags/did_override/did_override_command_line_switches_util.h"
 
+#include <array>
+#include <string_view>
+
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/ranges/algorithm.h"
@@ -12,7 +15,8 @@
 namespace brave_ads {
 
 namespace {
-constexpr const char* kSwitches[] = {"enable-automation"};
+constexpr auto kSwitches =
+    std::to_array<std::string_view>({"enable-automation"});
 }  // namespace
 
 bool DidOverrideCommandLineSwitches() {
@@ -20,11 +24,9 @@ bool DidOverrideCommandLineSwitches() {
   const base::CommandLine* const command_line =
       base::CommandLine::ForCurrentProcess();
 
-  return base::ranges::any_of(kSwitches,
-                              [command_line](const auto* const switch_string) {
-                                CHECK(switch_string);
-                                return command_line->HasSwitch(switch_string);
-                              });
+  return base::ranges::any_of(kSwitches, [command_line](auto switch_string) {
+    return command_line->HasSwitch(switch_string);
+  });
 }
 
 }  // namespace brave_ads
