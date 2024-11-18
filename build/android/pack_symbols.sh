@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-mkdir -p dist
+mkdir -p $1
 
 objects_to_compress="*.so apks lib.unstripped android_chrome_versions.txt"
 
@@ -19,4 +19,4 @@ if ls android_clang_*/lib.unstripped 1> /dev/null 2>&1; then
     objects_to_compress="${objects_to_compress} android_clang_*/lib.unstripped"
 fi
 
-tar -czvf $1 --ignore-failed-read ${objects_to_compress}
+tar -czvf $2 --ignore-failed-read ${objects_to_compress}
