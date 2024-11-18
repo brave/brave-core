@@ -7,17 +7,13 @@ import * as React from 'react'
 import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
 import * as API from '../api/'
 import { useAIChat } from './ai_chat_context'
-import { tabAssociatedChatId, useSelectedConversation } from '../routes'
+import { isLeoModel } from '../model_utils'
+import { tabAssociatedChatId } from '../routes'
 import useIsConversationVisible from '../hooks/useIsConversationVisible'
+import { SelectedChatDetails } from './ai_chat_active_chat_provider'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
-
-export interface ConversationContextProps {
-  conversationHandler: API.ConversationHandlerRemote
-  callbackRouter: API.ConversationUICallbackRouter
-  selectedConversationId: string | undefined
-}
 
 export interface CharCountContext {
   isCharLimitExceeded: boolean
@@ -153,7 +149,7 @@ export function useActionMenu(
 export const ConversationReactContext =
   React.createContext<ConversationContext>(defaultContext)
 
-function ConversationProviderInternal(props: React.PropsWithChildren<ConversationContextProps>) {
+export function ConversationContextProvider(props: React.PropsWithChildren<SelectedChatDetails>) {
   const [context, setContext] =
     React.useState<ConversationContext>(defaultContext)
 
@@ -316,8 +312,8 @@ function ConversationProviderInternal(props: React.PropsWithChildren<Conversatio
     if (!isVisible) return
     if (props.selectedConversationId === tabAssociatedChatId) return
     if (context.conversationUuid === props.selectedConversationId) return
-    window.location.href = `/${context.conversationUuid}`
-  }, [isVisible])
+    props.updateSelectedConversationId(context.conversationUuid)
+  }, [isVisible, props.updateSelectedConversationId])
 
   const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 
@@ -499,57 +495,6 @@ function ConversationProviderInternal(props: React.PropsWithChildren<Conversatio
       {props.children}
     </ConversationReactContext.Provider>
   )
-}
-
-export function ConversationContextProvider(
-  props: React.PropsWithChildren
-) {
-  const [conversationAPI, setConversationAPI] =
-    React.useState<Omit<ConversationContextProps, 'selectedConversationId'>>()
-
-  const selectedConversation = useSelectedConversation()
-  React.useEffect(() => {
-    // Handle creating a new conversation
-    if (!selectedConversation) {
-      setConversationAPI(API.newConversation())
-      return
-    }
-
-    // Select a specific conversation
-    setConversationAPI(API.bindConversation(selectedConversation === tabAssociatedChatId
-      ? undefined
-      : selectedConversation))
-
-    // The default conversation changes as the associated tab navigates, so
-    // listen for changes.
-    if (selectedConversation === tabAssociatedChatId) {
-      const onNewDefaultConversationListenerId =
-        getAPI().UIObserver.onNewDefaultConversation.addListener(() => {
-          setConversationAPI(API.bindConversation(undefined))
-        })
-
-      return () => {
-        getAPI().UIObserver.removeListener(onNewDefaultConversationListenerId)
-      }
-    }
-
-    // Satisfy linter
-    return undefined
-  }, [selectedConversation])
-
-  // Clean up bindings when not used anymore
-  React.useEffect(() => {
-    return () => {
-      conversationAPI?.callbackRouter.$.close()
-      conversationAPI?.conversationHandler.$.close()
-    }
-  }, [conversationAPI])
-
-  return conversationAPI
-    ? <ConversationProviderInternal selectedConversationId={selectedConversation} {...conversationAPI}>
-      {props.children}
-    </ConversationProviderInternal>
-    : null;
 }
 
 export function useConversation() {

@@ -21,6 +21,7 @@ import {
 } from './state/conversation_context'
 import FullScreen from './components/full_page'
 import { NavigationContext } from '$web-common/navigation/Context'
+import { ActiveChatProviderFromUrl } from './state/ai_chat_active_chat_provider'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
@@ -32,11 +33,13 @@ function App() {
   return (
     <NavigationContext>
       <AIChatContextProvider>
-        <ConversationContextProvider>
-          <BraveCoreThemeProvider>
-            <Content />
-          </BraveCoreThemeProvider>
-        </ConversationContextProvider>
+        <ActiveChatProviderFromUrl>
+          {(details) => <ConversationContextProvider {...details}>
+            <BraveCoreThemeProvider>
+              <Content />
+            </BraveCoreThemeProvider>
+          </ConversationContextProvider>}
+        </ActiveChatProviderFromUrl>
       </AIChatContextProvider>
     </NavigationContext>
   )

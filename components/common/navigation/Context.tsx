@@ -35,7 +35,7 @@ const getParamName = (part: string) => {
     return null
 }
 
-// Finds a matching route for a given URL - if found returns a tuple of 
+// Finds a matching route for a given URL - if found returns a tuple of
 // 1. The route (for looking up in the routes map)
 // 2. The list of callbacks for the given route
 // 3. The parsed parameters for the route.
