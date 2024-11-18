@@ -24,6 +24,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
+#include "ui/message_center/public/cpp/notification.h"
+#include "ui/message_center/public/cpp/notification_types.h"
+#include "ui/message_center/public/cpp/notifier_id.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
@@ -47,6 +50,7 @@ constexpr char kSkuOrderCreatedAtKey[] = "created_at";
 constexpr char kSkuOrderExpiresAtKey[] = "expires_at";
 constexpr char kSkuOrderLastPaidAtKey[] = "last_paid_at";
 constexpr char kSkuOrderStatusKey[] = "status";
+constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
 std::string StripSkuEnvironmentPrefix(const std::string& environment) {
   const size_t pos = environment.find(':');
@@ -221,46 +225,70 @@ void AdsServiceDelegate::SnoozeScheduledCaptcha() {
   adaptive_captcha_service_->SnoozeScheduledCaptcha();
 }
 
-void AdsServiceDelegate::Display(
-    const message_center::Notification& notification) {
-  // We cannot store a raw_ptr to NotificationDisplayService due to upstream
-  // browser tests changes NotificationDisplayService instance during test run
-  // which leads to dangling pointer errors.
-  GetNotificationDisplayService()->Display(NotificationHandler::Type::BRAVE_ADS,
-                                           notification, nullptr);
-}
-
-void AdsServiceDelegate::Close(const std::string& notification_id) {
-  // We cannot store a raw_ptr to NotificationDisplayService due to upstream
-  // browser tests changes NotificationDisplayService instance during test run
-  // which leads to dangling pointer errors.
-  GetNotificationDisplayService()->Close(NotificationHandler::Type::BRAVE_ADS,
-                                         notification_id);
-}
-
 void AdsServiceDelegate::ShowNotificationAd(const std::string& id,
                                             const std::u16string& title,
-                                            const std::u16string& body) {
-  notification_ad_platform_bridge_->ShowNotificationAd(
-      NotificationAd(id, title, body, nullptr));
-}
+                                            const std::u16string& body,
+                                            const bool is_custom) {
+  if (is_custom) {
+    notification_ad_platform_bridge_->ShowNotificationAd(
+        NotificationAd(id, title, body, nullptr));
+  } else {
+    message_center::RichNotificationData notification_data;
+    notification_data.context_message = u" ";
 
-void AdsServiceDelegate::CloseNotificationAd(const std::string& id) {
-  notification_ad_platform_bridge_->CloseNotificationAd(id);
-}
+    const GURL url = GURL(kNotificationAdUrlPrefix + id);
 
-#if BUILDFLAG(IS_ANDROID)
-void AdsServiceDelegate::MaybeRegenerateNotification(
-    const std::string& placement_id,
-    const GURL& url) {
-  BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
-      placement_id, url);
-}
-#else
-bool AdsServiceDelegate::IsFullScreenMode() {
-  return ::IsFullScreenMode();
-}
+    const std::unique_ptr<message_center::Notification> notification =
+        std::make_unique<message_center::Notification>(
+            message_center::NOTIFICATION_TYPE_SIMPLE, id, title, body,
+            ui::ImageModel(), std::u16string(), url,
+            message_center::NotifierId(
+                message_center::NotifierType::SYSTEM_COMPONENT,
+                "service.ads_service"),
+            notification_data, nullptr);
+
+#if !BUILDFLAG(IS_MAC) || defined(OFFICIAL_BUILD)
+    // `set_never_timeout` uses an XPC service which requires signing so for now
+    // we don't set this for macos dev builds
+    notification->set_never_timeout(true);
 #endif
+
+    // We cannot store a raw_ptr to NotificationDisplayService due to upstream
+    // browser tests changes NotificationDisplayService instance during test run
+    // which leads to dangling pointer errors.
+    GetNotificationDisplayService()->Display(
+        NotificationHandler::Type::BRAVE_ADS, *notification, nullptr);
+  }
+}
+
+void AdsServiceDelegate::CloseNotificationAd(const std::string& id,
+                                             const bool is_custom) {
+  if (is_custom) {
+    notification_ad_platform_bridge_->CloseNotificationAd(id);
+  } else {
+#if BUILDFLAG(IS_ANDROID)
+    const std::string brave_ads_url_prefix = kNotificationAdUrlPrefix;
+    const GURL url =
+        GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
+    BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
+        placement_id, url);
+#endif
+
+    // We cannot store a raw_ptr to NotificationDisplayService due to upstream
+    // browser tests changes NotificationDisplayService instance during test run
+    // which leads to dangling pointer errors.
+    GetNotificationDisplayService()->Close(NotificationHandler::Type::BRAVE_ADS,
+                                           id);
+  }
+}
+
+bool AdsServiceDelegate::IsFullScreenMode() {
+#if !BUILDFLAG(IS_ANDROID)
+  return ::IsFullScreenMode();
+#else
+  return true;
+#endif
+}
 
 base::Value::Dict AdsServiceDelegate::GetVirtualPrefs() {
   return base::Value::Dict()

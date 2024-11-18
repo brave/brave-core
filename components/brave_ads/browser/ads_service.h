@@ -21,7 +21,6 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "ui/message_center/public/cpp/notification.h"
 
 class GURL;
 
@@ -42,20 +41,13 @@ class AdsService : public KeyedService {
                                       const std::string& captcha_id) = 0;
     virtual void ClearScheduledCaptcha() = 0;
     virtual void SnoozeScheduledCaptcha() = 0;
-    virtual void Display(const message_center::Notification& notification) = 0;
-    virtual void Close(const std::string& notification_id) = 0;
     virtual void ShowNotificationAd(const std::string& id,
                                     const std::u16string& title,
-                                    const std::u16string& body) = 0;
-    virtual void CloseNotificationAd(const std::string& id) = 0;
+                                    const std::u16string& body,
+                                    bool is_custom) = 0;
+    virtual void CloseNotificationAd(const std::string& id, bool is_custom) = 0;
     virtual void OpenNewTabWithUrl(const GURL& url) = 0;
-#if BUILDFLAG(IS_ANDROID)
-    virtual void MaybeRegenerateNotification(
-        const std::string& notification_id,
-        const GURL& service_worker_scope) = 0;
-#else
     virtual bool IsFullScreenMode() = 0;
-#endif
 
     virtual base::Value::Dict GetVirtualPrefs() = 0;
   };
