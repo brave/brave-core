@@ -275,4 +275,13 @@
     <color name="schemes_primary">#c1c4ff</color>
     <color name="schemes_surface_container_highest">#303034</color>
     <color name="text_interactive">#7c91ff</color>
+
+    <!-- Playlist colors -->
+    <color name="playlist_background">#1E2029</color>
+    <color name="red_playlist">#FB542B</color>
+    <color name="icon_tint">#FFFFFF</color>
+    <color name="hint_color">#501E2029</color>
+    <color name="media_stats_color">#84889C</color>
+    <color name="playlist_text_color">#FFFFFF</color>
+    <color name="day_night_icon_color">#F0F2FF</color>
 </resources>
