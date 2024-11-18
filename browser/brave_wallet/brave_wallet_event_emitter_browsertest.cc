@@ -44,7 +44,7 @@ namespace {
 constexpr char kEmbeddedTestServerDirectory[] = "brave-wallet";
 
 std::string CheckForEventScript(const std::string& event_var) {
-  return base::StringPrintf(R"(
+  return absl::StrFormat(R"(
       new Promise(resolve => {
         const timer = setInterval(function () {
           if (%s) {
@@ -54,7 +54,7 @@ std::string CheckForEventScript(const std::string& event_var) {
         }, 100);
       });
     )",
-                            event_var.c_str());
+                         event_var);
 }
 
 }  // namespace

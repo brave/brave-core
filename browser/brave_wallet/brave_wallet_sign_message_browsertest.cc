@@ -127,7 +127,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
   }
   std::string GetSIWEMessage(const std::string& account,
                              const std::string& uri = "a.com") {
-    return base::StringPrintf(
+    return absl::StrFormat(
         "%s wants you to sign in with your Ethereum account:\n"
         "%s\n\n\n"
         "URI: %s\n"
@@ -135,8 +135,8 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
         "Chain ID: 1\n"
         "Nonce: 32891756\n"
         "Issued At: 2021-09-30T16:25:24Z)",
-        https_server()->GetOrigin("a.com").Serialize().c_str(), account.c_str(),
-        https_server()->GetURL(uri, "/sign_message.html").spec().c_str());
+        https_server()->GetOrigin("a.com").Serialize(), account,
+        https_server()->GetURL(uri, "/sign_message.html").spec());
   }
 
  protected:
@@ -164,11 +164,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
   UserGrantPermission(true);
   size_t request_index = 0;
   for (const std::string& method : methods_) {
-    ASSERT_TRUE(ExecJs(
-        web_contents(),
-        base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
-                           " '0xdeadbeef')",
-                           method.c_str())));
+    ASSERT_TRUE(
+        ExecJs(web_contents(),
+               base::StrCat({method,
+                             "('0x084DCb94038af1715963F149079cE011C4B22961',"
+                             " '0xdeadbeef')"})));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
@@ -192,11 +192,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
 
   size_t request_index = 0;
   for (const std::string& method : methods_) {
-    ASSERT_TRUE(ExecJs(
-        web_contents(),
-        base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
-                           " '0xdeadbeef')",
-                           method.c_str())));
+    ASSERT_TRUE(
+        ExecJs(web_contents(),
+               base::StrCat({method,
+                             "('0x084DCb94038af1715963F149079cE011C4B22961',"
+                             " '0xdeadbeef')"})));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(WaitForWalletBubble(web_contents()));
@@ -216,11 +216,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UnknownAddress) {
   CallEthereumEnable();
   UserGrantPermission(true);
   for (const std::string& method : methods_) {
-    ASSERT_TRUE(ExecJs(
-        web_contents(),
-        base::StringPrintf("%s('0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909',"
-                           " '0xdeadbeef')",
-                           method.c_str())));
+    ASSERT_TRUE(
+        ExecJs(web_contents(),
+               base::StrCat({method,
+                             "('0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909',"
+                             " '0xdeadbeef')"})));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_FALSE(
@@ -240,9 +240,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, InvalidAddressParam) {
   CallEthereumEnable();
   UserGrantPermission(true);
   for (const std::string& method : methods_) {
-    ASSERT_TRUE(ExecJs(web_contents(), base::StringPrintf("%s(null,"
-                                                          " '0xdeadbeef')",
-                                                          method.c_str())));
+    ASSERT_TRUE(ExecJs(web_contents(), base::StrCat({method,
+                                                     "(null,"
+                                                     " '0xdeadbeef')"})));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_FALSE(
@@ -262,11 +262,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, NoEthPermission) {
   CallEthereumEnable();
   UserGrantPermission(false);
   for (const std::string& method : methods_) {
-    ASSERT_TRUE(ExecJs(
-        web_contents(),
-        base::StringPrintf("%s('0x084DCb94038af1715963F149079cE011C4B22961',"
-                           " '0xdeadbeef')",
-                           method.c_str())));
+    ASSERT_TRUE(
+        ExecJs(web_contents(),
+               base::StrCat({method,
+                             "('0x084DCb94038af1715963F149079cE011C4B22961',"
+                             " '0xdeadbeef')"})));
     // Wait for EthereumProviderImpl::ContinueSignMessage
     base::RunLoop().RunUntilIdle();
     EXPECT_FALSE(
@@ -327,16 +327,14 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
                    << ", msg account:" << valid_case.msg_account);
       ASSERT_TRUE(ExecJs(
           web_contents(),
-          base::StringPrintf(
-              "%s('%s', '%s')", method.c_str(), valid_case.api_account.c_str(),
-              ToHex(GetSIWEMessage(valid_case.msg_account)).c_str())));
+          absl::StrFormat("%s('%s', '%s')", method, valid_case.api_account,
+                          ToHex(GetSIWEMessage(valid_case.msg_account)))));
       // uri has different origin
       ASSERT_TRUE(ExecJs(
           web_contents(),
-          base::StringPrintf(
-              "%s('%s', '%s')", method.c_str(), valid_case.api_account.c_str(),
-              ToHex(GetSIWEMessage(valid_case.msg_account, "www.a.com"))
-                  .c_str())));
+          absl::StrFormat(
+              "%s('%s', '%s')", method, valid_case.api_account,
+              ToHex(GetSIWEMessage(valid_case.msg_account, "www.a.com")))));
       // Wait for EthereumProviderImpl::ContinueSignMessage
       base::RunLoop().RunUntilIdle();
       EXPECT_TRUE(WaitForWalletBubble(web_contents()));

@@ -390,13 +390,13 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     UserGrantPermission(true);
     ASSERT_TRUE(ExecJs(
         web_contents(),
-        base::StringPrintf(
+        absl::StrFormat(
             "sendOrSignTransaction(%s, %s, '%s', "
             "'0x084DCb94038af1715963F149079cE011C4B22961', "
             "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11', '%s');",
             sign_only ? "true" : "false",
-            observer()->expect_eip1559_tx() ? "true" : "false",
-            test_method.c_str(), data.c_str())));
+            observer()->expect_eip1559_tx() ? "true" : "false", test_method,
+            data)));
     observer()->WaitForNewUnapprovedTx();
     base::RunLoop().RunUntilIdle();
     ASSERT_TRUE(
@@ -459,11 +459,11 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     UserGrantPermission(true);
     ASSERT_TRUE(
         ExecJs(web_contents(),
-               base::StringPrintf(
+               absl::StrFormat(
                    "sendOrSignTransaction(%s, false, '%s', "
                    "'0x084DCb94038af1715963F149079cE011C4B22961', "
                    "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');",
-                   sign_only ? "true" : "false", test_method.c_str())));
+                   sign_only ? "true" : "false", test_method)));
     observer()->WaitForNewUnapprovedTx();
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(
@@ -529,14 +529,13 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
     CallEthereumEnable();
     UserGrantPermission(true);
-    ASSERT_TRUE(
-        ExecJs(web_contents(),
-               base::StringPrintf(
-                   "sendOrSignTransaction(%s, false, '%s', "
-                   "'0x084DCb94038af1715963F149079cE011C4B22961', "
-                   "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11', "
-                   "'invalid');",
-                   sign_only ? "true" : "false", test_method.c_str())));
+    ASSERT_TRUE(ExecJs(
+        web_contents(),
+        absl::StrFormat("sendOrSignTransaction(%s, false, '%s', "
+                        "'0x084DCb94038af1715963F149079cE011C4B22961', "
+                        "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11', "
+                        "'invalid');",
+                        sign_only ? "true" : "false", test_method)));
 
     WaitForSendOrSignTransactionResultReady();
     EXPECT_EQ(EvalJs(web_contents(), "getSendOrSignTransactionError()")
@@ -774,11 +773,11 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, InvalidAddress) {
   for (bool sign_only : {true, false}) {
     ASSERT_TRUE(
         ExecJs(web_contents(),
-               base::StringPrintf(
-                   "sendOrSignTransaction(%s, false, 'request', "
+               content::JsReplace(
+                   "sendOrSignTransaction($1, false, 'request', "
                    "'0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909', "
                    "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');",
-                   sign_only ? "true" : "false")));
+                   sign_only)));
 
     WaitForSendOrSignTransactionResultReady();
     EXPECT_FALSE(
@@ -802,11 +801,11 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, NoEthPermission) {
   for (bool sign_only : {true, false}) {
     ASSERT_TRUE(
         ExecJs(web_contents(),
-               base::StringPrintf(
-                   "sendOrSignTransaction(%s, false, 'request', "
+               content::JsReplace(
+                   "sendOrSignTransaction($1, false, 'request', "
                    "'0x084DCb94038af1715963F149079cE011C4B22961', "
                    "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');",
-                   sign_only ? "true" : "false")));
+                   sign_only)));
 
     WaitForSendOrSignTransactionResultReady();
     EXPECT_FALSE(

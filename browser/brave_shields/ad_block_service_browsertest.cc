@@ -713,9 +713,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_WebSocketBlocking) {
 
   GURL ws_url = ws_server.GetURL("echo-with-no-extension");
 
-  EXPECT_EQ(false, EvalJs(contents,
-                          base::StringPrintf("checkWebsocketConnection(\"%s\")",
-                                             ws_url.spec().c_str())));
+  EXPECT_EQ(false,
+            EvalJs(contents, content::JsReplace("checkWebsocketConnection($1)",
+                                                ws_url.spec())));
 }
 
 // Load a page with an ad image which is matched by a filter in the additional
@@ -749,9 +749,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
   NavigateToURL(tab_url);
   content::WebContents* contents = web_contents();
   ASSERT_EQ(true,
-            EvalJs(contents, base::StringPrintf("setExpectations(1, 0, 0, 0);"
-                                                "addImage('%s')",
-                                                resource_url.spec().c_str())));
+            EvalJs(contents, content::JsReplace("setExpectations(1, 0, 0, 0);"
+                                                "addImage($1)",
+                                                resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
@@ -764,9 +764,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   NavigateToURL(tab_url);
   content::WebContents* contents = web_contents();
   ASSERT_EQ(true,
-            EvalJs(contents, base::StringPrintf("setExpectations(0, 1, 0, 0);"
-                                                "addImage('%s')",
-                                                resource_url.spec().c_str())));
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 0, 0);"
+                                                "addImage($1)",
+                                                resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
@@ -879,9 +879,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   NavigateToURL(tab_url);
   content::WebContents* contents = web_contents();
   EXPECT_EQ(true,
-            EvalJs(contents, base::StringPrintf("setExpectations(0, 0, 0, 1);"
-                                                "xhr('%s')",
-                                                resource_url.spec().c_str())));
+            EvalJs(contents, content::JsReplace("setExpectations(0, 0, 0, 1);"
+                                                "xhr($1)",
+                                                resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // Disable the list and ensure it is no longer applied
@@ -900,9 +900,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   }
 
   EXPECT_EQ(true,
-            EvalJs(contents, base::StringPrintf("setExpectations(0, 0, 1, 1);"
-                                                "xhr('%s')",
-                                                resource_url.spec().c_str())));
+            EvalJs(contents, content::JsReplace("setExpectations(0, 0, 1, 1);"
+                                                "xhr($1)",
+                                                resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   // Refresh the subscription and ensure that it gets updated
@@ -1060,10 +1060,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   // Image request to an unblocked first-party endpoint that is CNAME cloaked
   // with 1 alias. The alias has a matching rule, so the request should be
   // blocked.
-  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
-                                       "setExpectations(0, 1, 0, 0);"
-                                       "addImage('%s')",
-                                       direct_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 0, 0);"
+                                                "addImage($1)",
+                                                direct_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Note one resolution for the root document
   ASSERT_EQ(2ULL, inner_resolver->num_resolve());
@@ -1071,28 +1071,28 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked with
   // multiple intermediate aliases. The canonical alias has a matching rule, so
   // the request should be blocked.
-  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
-                                       "setExpectations(0, 1, 0, 1);"
-                                       "xhr('%s')",
-                                       chain_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 0, 1);"
+                                                "xhr($1)",
+                                                chain_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
   ASSERT_EQ(3ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
   // The canonical alias has no matching rule, so the request should be allowed.
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(0, 1, 1, 1);"
-                                            "xhr('%s')",
-                                            safe_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 1, 1);"
+                                                "xhr($1)",
+                                                safe_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 
   // XHR request directly to a blocked third-party endpoint.
   // The resolver should not be queried for this request.
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(0, 1, 1, 2);"
-                                            "xhr('%s')",
-                                            bad_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 1, 2);"
+                                                "xhr($1)",
+                                                bad_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 }
@@ -1144,10 +1144,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   // Image request to an unblocked first-party endpoint that is CNAME cloaked
   // with 1 alias. The alias has a matching rule, so the request should be
   // blocked.
-  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
-                                       "setExpectations(0, 1, 0, 0);"
-                                       "addImage('%s')",
-                                       direct_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 0, 0);"
+                                                "addImage($1)",
+                                                direct_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Note one resolution for the root document
   ASSERT_EQ(2ULL, inner_resolver->num_resolve());
@@ -1155,28 +1155,28 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked with
   // multiple intermediate aliases. The canonical alias has a matching rule, so
   // the request should be blocked.
-  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
-                                       "setExpectations(0, 1, 0, 1);"
-                                       "xhr('%s')",
-                                       chain_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 0, 1);"
+                                                "xhr($1)",
+                                                chain_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
   ASSERT_EQ(3ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
   // The canonical alias has no matching rule, so the request should be allowed.
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(0, 1, 1, 1);"
-                                            "xhr('%s')",
-                                            safe_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 1, 1);"
+                                                "xhr($1)",
+                                                safe_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 
   // XHR request directly to a blocked third-party endpoint.
   // The resolver should not be queried for this request.
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(0, 1, 1, 2);"
-                                            "xhr('%s')",
-                                            bad_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 1, 2);"
+                                                "xhr($1)",
+                                                bad_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(4ULL, inner_resolver->num_resolve());
 
@@ -1184,10 +1184,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   // The CNAME'd URL only matches a blocking rule.
   // The resolver should be queried for this request, and the resource should
   // not be blocked.
-  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
-                                       "setExpectations(0, 1, 2, 2);"
-                                       "xhr('%s')",
-                                       excepted_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 2, 2);"
+                                                "xhr($1)",
+                                                excepted_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 3ULL);
   ASSERT_EQ(5ULL, inner_resolver->num_resolve());
 }
@@ -1243,38 +1243,38 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
 
   // Image request to an unblocked first-party endpoint that is CNAME cloaked
   // with 1 alias. Nothing should be blocked.
-  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
-                                       "setExpectations(1, 0, 0, 0);"
-                                       "addImage('%s')",
-                                       direct_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(1, 0, 0, 0);"
+                                                "addImage($1)",
+                                                direct_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   // Note one resolution for the root document
   ASSERT_EQ(0ULL, inner_resolver->num_resolve());
 
   // Image request to an unblocked first-party endpoint that is CNAME cloaked
   // with multiple intermediate aliases. Nothing should be blocked.
-  ASSERT_EQ(true, EvalJs(contents, base::StringPrintf(
-                                       "setExpectations(2, 0, 0, 0);"
-                                       "addImage('%s')",
-                                       chain_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(2, 0, 0, 0);"
+                                                "addImage($1)",
+                                                chain_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   ASSERT_EQ(0ULL, inner_resolver->num_resolve());
 
   // XHR request to an unblocked first-party endpoint that is CNAME cloaked.
   // Nothing should be blocked.
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(2, 0, 1, 0);"
-                                            "xhr('%s')",
-                                            safe_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(2, 0, 1, 0);"
+                                                "xhr($1)",
+                                                safe_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   ASSERT_EQ(0ULL, inner_resolver->num_resolve());
 
   // XHR request directly to a blocked third-party endpoint. It should be
   // blocked, but the resolver still should not be queried.
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(2, 0, 1, 1);"
-                                            "xhr('%s')",
-                                            bad_resource_url.spec().c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, content::JsReplace("setExpectations(2, 0, 1, 1);"
+                                                "xhr($1)",
+                                                bad_resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   ASSERT_EQ(0ULL, inner_resolver->num_resolve());
 }
@@ -1288,9 +1288,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
   NavigateToURL(tab_url);
   content::WebContents* contents = web_contents();
   ASSERT_EQ(true,
-            EvalJs(contents, base::StringPrintf("setExpectations(0, 1, 0, 0);"
-                                                "addImage('%s')",
-                                                resource_url.spec().c_str())));
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 0, 0);"
+                                                "addImage($1)",
+                                                resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
@@ -1319,9 +1319,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, FrameSourceURL) {
 // Tags for social buttons work
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
   UpdateAdBlockInstanceWithRules(
-      base::StringPrintf("||example.com^$tag=%s",
-                         brave_shields::kFacebookEmbeds)
-          .c_str());
+      base::StrCat({"||example.com^$tag=", brave_shields::kFacebookEmbeds}));
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   g_brave_browser_process->ad_block_service()->EnableTag(
       brave_shields::kFacebookEmbeds, true);
@@ -1331,9 +1329,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
   NavigateToURL(tab_url);
   content::WebContents* contents = web_contents();
   ASSERT_EQ(true,
-            EvalJs(contents, base::StringPrintf("setExpectations(0, 1, 0, 0);"
-                                                "addImage('%s')",
-                                                resource_url.spec().c_str())));
+            EvalJs(contents, content::JsReplace("setExpectations(0, 1, 0, 0);"
+                                                "addImage($1)",
+                                                resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
@@ -1349,9 +1347,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
   NavigateToURL(tab_url);
   content::WebContents* contents = web_contents();
   ASSERT_EQ(true,
-            EvalJs(contents, base::StringPrintf("setExpectations(1, 0, 0, 0);"
-                                                "addImage('%s')",
-                                                resource_url.spec().c_str())));
+            EvalJs(contents, content::JsReplace("setExpectations(1, 0, 0, 0);"
+                                                "addImage($1)",
+                                                resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
@@ -1619,10 +1617,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
   const GURL resource_url =
       embedded_test_server()->GetURL("example.com", "/js_mock_me.js");
   ASSERT_EQ(true,
-            EvalJs(contents, base::StringPrintf(
-                                 "setExpectations(0, 0, 1, 0);"
-                                 "xhr_expect_content('%s', '%s');",
-                                 resource_url.spec().c_str(), noopjs.c_str())));
+            EvalJs(contents, absl::StrFormat("setExpectations(0, 0, 1, 0);"
+                                             "xhr_expect_content('%s', '%s');",
+                                             resource_url.spec(), noopjs)));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
@@ -1650,21 +1647,19 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
   const std::string noopjs = "(function() {\\n    \\'use strict\\';\\n})();\\n";
   const GURL resource_url_1 = embedded_test_server()->GetURL(
       "example.com", "/js_mock_me.js?block=true");
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(0, 0, 1, 0);"
-                                            "xhr_expect_content('%s', '%s');",
-                                            resource_url_1.spec().c_str(),
-                                            noopjs.c_str())));
+  ASSERT_EQ(true,
+            EvalJs(contents, absl::StrFormat("setExpectations(0, 0, 1, 0);"
+                                             "xhr_expect_content('%s', '%s');",
+                                             resource_url_1.spec(), noopjs)));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 
   const std::string actual_content = "testing\\n";
   const GURL resource_url_2 =
       embedded_test_server()->GetURL("example.com", "/js_mock_me.js");
-  ASSERT_EQ(true, EvalJs(contents,
-                         base::StringPrintf("setExpectations(0, 0, 2, 0);"
-                                            "xhr_expect_content('%s', '%s');",
-                                            resource_url_2.spec().c_str(),
-                                            actual_content.c_str())));
+  ASSERT_EQ(true, EvalJs(contents, absl::StrFormat(
+                                       "setExpectations(0, 0, 2, 0);"
+                                       "xhr_expect_content('%s', '%s');",
+                                       resource_url_2.spec(), actual_content)));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 

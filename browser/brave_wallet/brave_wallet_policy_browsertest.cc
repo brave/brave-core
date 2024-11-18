@@ -179,8 +179,8 @@ INSTANTIATE_TEST_SUITE_P(
     BraveWalletPolicyTest,
     ::testing::Bool(),
     [](const testing::TestParamInfo<BraveWalletPolicyTest::ParamType>& info) {
-      return base::StringPrintf("BraveWallet_%sByPolicy",
-                                info.param ? "Disabled" : "NotDisabled");
+      return absl::StrFormat("BraveWallet_%sByPolicy",
+                             info.param ? "Disabled" : "NotDisabled");
     });
 
 }  // namespace policy

@@ -205,8 +205,8 @@ INSTANTIATE_TEST_SUITE_P(
     AIChatPolicyTest,
     ::testing::Bool(),
     [](const testing::TestParamInfo<AIChatPolicyTest::ParamType>& info) {
-      return base::StringPrintf("AIChat_%sByPolicy",
-                                info.param ? "Enabled" : "NotEnabled");
+      return absl::StrFormat("AIChat_%sByPolicy",
+                             info.param ? "Enabled" : "NotEnabled");
     });
 
 INSTANTIATE_TEST_SUITE_P(
@@ -214,8 +214,8 @@ INSTANTIATE_TEST_SUITE_P(
     AIChatPolicyTestFeatureDisabled,
     ::testing::Bool(),
     [](const testing::TestParamInfo<AIChatPolicyTest::ParamType>& info) {
-      return base::StringPrintf("AIChat_%sByPolicy",
-                                info.param ? "Enabled" : "NotEnabled");
+      return absl::StrFormat("AIChat_%sByPolicy",
+                             info.param ? "Enabled" : "NotEnabled");
     });
 
 }  // namespace policy

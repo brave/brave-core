@@ -310,8 +310,8 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
 
   void SimulateHttpStatusCodePage(const int http_status_code) {
     const std::string relative_url =
-        base::StringPrintf("%s?%s=%d", kHandleRequestUrlPath,
-                           kHttpStatusCodeQueryKey, http_status_code);
+        absl::StrFormat("%s?%s=%d", kHandleRequestUrlPath,
+                        kHttpStatusCodeQueryKey, http_status_code);
     NavigateToURL(relative_url, /*has_user_gesture=*/true);
   }
 
@@ -398,7 +398,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
     http_response->set_code(*http_status_code);
 
     http_response->set_content_type("text/html");
-    const std::string http_status_code_page = base::StringPrintf(
+    const std::string http_status_code_page = absl::StrFormat(
         R"(
             <html>
               <head>
@@ -410,7 +410,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
                 %d (%s)
               </body>
             </html>)",
-        *http_status_code, http_response->reason().c_str());
+        *http_status_code, http_response->reason());
     http_response->set_content(http_status_code_page);
 
     return http_response;

@@ -71,7 +71,7 @@ constexpr char kScriptDefaultAPIGetValue[] = R"(
 )";
 
 std::string GetChromeFetchBackupResultsAvailScript() {
-  return base::StringPrintf(R"(
+  return absl::StrFormat(R"(
       new Promise(resolve => {
         setTimeout(function () {
           navigator.serviceWorker.addEventListener('message', msg => {
@@ -83,7 +83,7 @@ std::string GetChromeFetchBackupResultsAvailScript() {
         }, 200)
       });
     )",
-                            kBackupSearchContent);
+                         kBackupSearchContent);
 }
 
 std::string GetCookieFromJS(content::RenderFrameHost* frame) {

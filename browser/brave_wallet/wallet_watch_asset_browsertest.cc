@@ -129,12 +129,12 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserApprovedRequest) {
 
   size_t asset_num = GetUserAssets().size();
   for (size_t i = 0; i < methods_.size(); i++) {
-    ASSERT_TRUE(ExecJs(
-        web_contents(),
-        base::StringPrintf("wallet_watchAsset('%s', 'ERC20', '%s', '%s', %d)",
-                           methods_[i].c_str(), addresses_[i].c_str(),
-                           symbols_[i].c_str(), decimals_[i]),
-        content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
+    ASSERT_TRUE(
+        ExecJs(web_contents(),
+               content::JsReplace("wallet_watchAsset($1, 'ERC20', $2, $3, $4)",
+                                  methods_[i], addresses_[i], symbols_[i],
+                                  decimals_[i]),
+               content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
@@ -153,12 +153,12 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, UserRejectedRequest) {
 
   size_t asset_num = GetUserAssets().size();
   for (size_t i = 0; i < methods_.size(); i++) {
-    ASSERT_TRUE(ExecJs(
-        web_contents(),
-        base::StringPrintf("wallet_watchAsset('%s', 'ERC20', '%s', '%s', %d)",
-                           methods_[i].c_str(), addresses_[i].c_str(),
-                           symbols_[i].c_str(), decimals_[i]),
-        content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
+    ASSERT_TRUE(
+        ExecJs(web_contents(),
+               content::JsReplace("wallet_watchAsset($1, 'ERC20', $2, $3, $4)",
+                                  methods_[i], addresses_[i], symbols_[i],
+                                  decimals_[i]),
+               content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(
         brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents())
@@ -177,10 +177,9 @@ IN_PROC_BROWSER_TEST_F(WalletWatchAssetBrowserTest, InvalidTypeParam) {
 
   for (size_t i = 0; i < methods_.size(); i++) {
     EXPECT_EQ(EvalJs(web_contents(),
-                     base::StringPrintf(
-                         "wallet_watchAsset('%s', 'ERC721', '%s', '%s', %d)",
-                         methods_[i].c_str(), addresses_[i].c_str(),
-                         symbols_[i].c_str(), decimals_[i]))
+                     content::JsReplace(
+                         "wallet_watchAsset($1, 'ERC721', $2, $3, $4)",
+                         methods_[i], addresses_[i], symbols_[i], decimals_[i]))
                   .ExtractString(),
               "Asset of type 'ERC721' not supported");
   }

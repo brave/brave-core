@@ -67,8 +67,7 @@ INSTANTIATE_TEST_SUITE_P(
     AiChatThrottleUnitTest,
     ::testing::Bool(),
     [](const testing::TestParamInfo<AiChatThrottleUnitTest::ParamType>& info) {
-      return base::StringPrintf("History%s",
-                                info.param ? "Enabled" : "Disabled");
+      return base::StrCat({"History", info.param ? "Enabled" : "Disabled"});
     });
 
 TEST_P(AiChatThrottleUnitTest, CancelNavigationFromTab) {

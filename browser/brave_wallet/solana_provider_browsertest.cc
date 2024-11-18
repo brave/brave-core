@@ -631,16 +631,15 @@ class SolanaProviderTest : public InProcessBrowserTest {
   void CallSolanaSignMessage(const std::string& message,
                              const std::string& encoding) {
     CloseWalletBubble(web_contents());
-    ASSERT_TRUE(ExecJs(web_contents(),
-                       base::StringPrintf(R"(solanaSignMessage('%s', '%s'))",
-                                          message.c_str(), encoding.c_str())));
+    ASSERT_TRUE(ExecJs(
+        web_contents(),
+        content::JsReplace(R"(solanaSignMessage($1, $2))", message, encoding)));
   }
 
   void CallSolanaRequest(const std::string& json) {
     CloseWalletBubble(web_contents());
     ASSERT_TRUE(
-        ExecJs(web_contents(),
-               base::StringPrintf(R"(solanaRequest(%s))", json.c_str())));
+        ExecJs(web_contents(), absl::StrFormat(R"(solanaRequest(%s))", json)));
   }
 
   std::string GetSignMessageResult() {
@@ -656,17 +655,17 @@ class SolanaProviderTest : public InProcessBrowserTest {
     CloseWalletBubble(web_contents());
     const std::string script =
         pubkey.empty()
-            ? base::StringPrintf(
+            ? absl::StrFormat(
                   R"(%s solanaSignAndSendTransaction(%s, new Uint8Array([%s]),
                      %s))",
-                  g_provider_solana_web3_script->c_str(), v0 ? "true" : "false",
-                  unsigned_tx_array_string.c_str(), send_options_string.c_str())
-            : base::StringPrintf(
+                  *g_provider_solana_web3_script, v0 ? "true" : "false",
+                  unsigned_tx_array_string, send_options_string)
+            : absl::StrFormat(
                   R"(%s solanaSignAndSendTransaction(%s, new Uint8Array([%s]),
                      %s, "%s", new Uint8Array([%s])))",
-                  g_provider_solana_web3_script->c_str(), v0 ? "true" : "false",
-                  unsigned_tx_array_string.c_str(), send_options_string.c_str(),
-                  pubkey.c_str(), signature_array_string.c_str());
+                  *g_provider_solana_web3_script, v0 ? "true" : "false",
+                  unsigned_tx_array_string, send_options_string, pubkey,
+                  signature_array_string);
     ASSERT_TRUE(ExecJs(web_contents(), script));
   }
 
@@ -682,16 +681,15 @@ class SolanaProviderTest : public InProcessBrowserTest {
     CloseWalletBubble(web_contents());
     const std::string script =
         pubkey.empty()
-            ? base::StringPrintf(
+            ? absl::StrFormat(
                   R"(%s solanaSignTransaction(%s, new Uint8Array([%s])))",
-                  g_provider_solana_web3_script->c_str(), v0 ? "true" : "false",
-                  unsigned_tx_array_string.c_str())
-            : base::StringPrintf(
+                  *g_provider_solana_web3_script, v0 ? "true" : "false",
+                  unsigned_tx_array_string)
+            : absl::StrFormat(
                   R"(%s solanaSignTransaction(%s, new Uint8Array([%s]), "%s",
                      new Uint8Array([%s])))",
-                  g_provider_solana_web3_script->c_str(), v0 ? "true" : "false",
-                  unsigned_tx_array_string.c_str(), pubkey.c_str(),
-                  signature_array_string.c_str());
+                  *g_provider_solana_web3_script, v0 ? "true" : "false",
+                  unsigned_tx_array_string, pubkey, signature_array_string);
     ASSERT_TRUE(ExecJs(web_contents(), script));
   }
 
@@ -704,17 +702,17 @@ class SolanaProviderTest : public InProcessBrowserTest {
     CloseWalletBubble(web_contents());
     const std::string script =
         pubkey.empty()
-            ? base::StringPrintf(
+            ? absl::StrFormat(
                   R"(%s solanaSignAllTransactions(%s, new Uint8Array([%s]),
                      new Uint8Array([%s])))",
-                  g_provider_solana_web3_script->c_str(), v0 ? "true" : "false",
-                  unsigned_tx_array_str.c_str(), signed_tx_array_str.c_str())
-            : base::StringPrintf(
+                  *g_provider_solana_web3_script, v0 ? "true" : "false",
+                  unsigned_tx_array_str, signed_tx_array_str)
+            : absl::StrFormat(
                   R"(%s solanaSignAllTransactions(%s, new Uint8Array([%s]),
                      new Uint8Array([%s]), "%s", new Uint8Array([%s])))",
-                  g_provider_solana_web3_script->c_str(), v0 ? "true" : "false",
-                  unsigned_tx_array_str.c_str(), signed_tx_array_str.c_str(),
-                  pubkey.c_str(), signature_array_string.c_str());
+                  *g_provider_solana_web3_script, v0 ? "true" : "false",
+                  unsigned_tx_array_str, signed_tx_array_str, pubkey,
+                  signature_array_string);
     ASSERT_TRUE(ExecJs(web_contents(), script));
   }
 
@@ -1467,9 +1465,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   ASSERT_TRUE(IsSolanaConnected(web_contents()));
 
   // signMessage
-  CallSolanaRequest(base::StringPrintf(R"(
+  CallSolanaRequest(absl::StrFormat(R"(
     {method: "signMessage", params: { message: new Uint8Array([%s]) }})",
-                                       kEncodedMessage));
+                                    kEncodedMessage));
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
 
   brave_wallet_service_->NotifySignMessageRequestProcessed(true, 0, nullptr,
@@ -1478,9 +1476,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   EXPECT_EQ(GetRequestResult(), kExpectedEncodedSignature);
 
   // signTransaction
-  CallSolanaRequest(base::StringPrintf(R"(
+  CallSolanaRequest(absl::StrFormat(R"(
     {method: "signTransaction", params: { message: '%s' }})",
-                                       kEncodedUnsignedTxArrayStr));
+                                    kEncodedUnsignedTxArrayStr));
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   brave_wallet_service_->NotifySignSolTransactionsRequestProcessed(
       true, 0, {}, std::nullopt);
@@ -1491,10 +1489,9 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   auto observer = CreateObserver();
   const std::string send_options =
       R"({"maxRetries":1,"preflightCommitment":"confirmed","skipPreflight":true})";
-  CallSolanaRequest(base::StringPrintf(R"(
+  CallSolanaRequest(absl::StrFormat(R"(
     {method: "signAndSendTransaction", params: { message: '%s', options: %s }})",
-                                       kEncodedUnsignedTxArrayStr,
-                                       send_options.c_str()));
+                                    kEncodedUnsignedTxArrayStr, send_options));
   observer->WaitForNewUnapprovedTx();
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
   auto infos = GetAllTransactionInfo(account_0->account_id);
@@ -1509,8 +1506,8 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, Request) {
   EXPECT_EQ(GetRequestResult(), kEncodedSignature);
 
   // signAllTransactions
-  CallSolanaRequest(base::StringPrintf(R"(
-    {method: "signAllTransactions", params: { message: ['%s', '%s'] }})",
+  CallSolanaRequest(content::JsReplace(R"(
+    {method: "signAllTransactions", params: { message: [$1, $2] }})",
                                        kEncodedUnsignedTxArrayStr,
                                        kEncodedUnsignedTxArrayStr));
   EXPECT_TRUE(WaitForWalletBubble(web_contents()));
