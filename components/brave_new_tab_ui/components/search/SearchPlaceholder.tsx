@@ -42,11 +42,14 @@ const MenuButton = styled(Button)`
 `
 
 const PlaceholderContainer = styled.div`
+  align-self: center;
   position: relative;
   
   border-radius: ${searchBoxRadius};
   
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
+
+  max-width: calc(100vw - 24px);
   
   &:hover ${MenuContainer} {
     transition-delay: 0s;
