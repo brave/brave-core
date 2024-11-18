@@ -54,4 +54,7 @@
     <dimen name="new_tab_page_incognito_logo_size">42sp</dimen>
     <dimen name="new_tab_page_incognito_icon_size">32sp</dimen>
     <dimen name="search_engine_favicon_size">24dp</dimen>
+
+    <!-- Playlist dimens -->
+    <dimen name="playlist_toolbar_height">64dp</dimen>
 </resources>
