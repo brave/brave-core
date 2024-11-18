@@ -11,6 +11,7 @@ enum OperationResult {
   Success,
   InvalidUrl,
   InvalidContextSize,
+  // for use with the `brave-ai-chat-allow-private-ips` feature.
   UrlValidAsPrivateEndpoint,
 };
 
