@@ -17,7 +17,8 @@ import java.io.InputStream
 
 
 object MediaUtils {
-    private val TAG: String = "Playlist/"+this::class.java.simpleName
+    private val TAG: String = "Playlist/" + this::class.java.simpleName
+
     @JvmStatic
     @Suppress("unused")
     fun getFileSizeFromUri(context: Context, uri: Uri): Long {
@@ -33,13 +34,13 @@ object MediaUtils {
                 }
             }
         } catch (ex: Exception) {
-            Log.e(TAG, ::getFileSizeFromUri.name + " : "+  ex.message.toString())
+            Log.e(TAG, ::getFileSizeFromUri.name + " : " + ex.message.toString())
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close()
                 } catch (ex: IOException) {
-                    Log.e(TAG, ::getFileSizeFromUri.name + " : "+  ex.message.toString())
+                    Log.e(TAG, ::getFileSizeFromUri.name + " : " + ex.message.toString())
                 }
             }
         }
@@ -52,19 +53,19 @@ object MediaUtils {
         try {
             val file = File(filePath)
             data?.let { file.appendBytes(it) }
-        } catch (ex:Exception) {
-            Log.e(TAG, ::writeToFile.name + " : "+  ex.message.toString())
+        } catch (ex: Exception) {
+            Log.e(TAG, ::writeToFile.name + " : " + ex.message.toString())
         }
     }
 
     @JvmStatic
     @Suppress("unused")
-    fun isFileExist(filePath: String) : Boolean {
+    fun isFileExist(filePath: String): Boolean {
         return try {
             val file = File(filePath)
             file.exists()
-        } catch (ex:Exception) {
-            Log.e(TAG, ::writeToFile.name + " : "+  ex.message.toString())
+        } catch (ex: Exception) {
+            Log.e(TAG, ::writeToFile.name + " : " + ex.message.toString())
             false
         }
     }

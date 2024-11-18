@@ -7,10 +7,8 @@
 
 package org.chromium.chrome.browser.playlist.kotlin.model
 
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
-
 data class MoveOrCopyModel(
-    val playlistOptionsEnum: PlaylistOptionsEnum,
+    val playlistOptionsEnum: PlaylistModel.PlaylistOptionsEnum,
     val toPlaylistId: String,
     val playlistItems: List<PlaylistItemModel>
 )

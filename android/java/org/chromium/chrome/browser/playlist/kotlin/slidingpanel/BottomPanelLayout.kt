@@ -98,7 +98,7 @@ class BottomPanelLayout @JvmOverloads constructor(
                 ta.getDimensionPixelSize(R.styleable.BottomPanelLayout_panelHeight, -1)
             mScrollableViewResId =
                 ta.getResourceId(R.styleable.BottomPanelLayout_scrollableView, -1)
-            mSlideState = PanelState.values()[ta.getInt(
+            mSlideState = PanelState.entries.toTypedArray()[ta.getInt(
                 R.styleable.BottomPanelLayout_initialState,
                 DEFAULT_SLIDE_STATE.ordinal
             )]
@@ -167,7 +167,6 @@ class BottomPanelLayout @JvmOverloads constructor(
                 )
             } == true) {
             setAllChildrenVisible()
-            ViewCompat.postInvalidateOnAnimation(this)
         }
     }
 
@@ -248,7 +247,6 @@ class BottomPanelLayout @JvmOverloads constructor(
                 l.onPanelStateChanged(panel, previousState, newState)
             }
         }
-        sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED)
     }
 
     fun updateObscuredViewVisibility() {
@@ -724,7 +722,6 @@ class BottomPanelLayout @JvmOverloads constructor(
                 mDragHelper?.abort()
                 return
             }
-            ViewCompat.postInvalidateOnAnimation(this)
         }
     }
 

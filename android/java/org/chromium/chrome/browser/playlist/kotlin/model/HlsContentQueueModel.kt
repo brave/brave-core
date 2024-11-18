@@ -12,7 +12,6 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.chromium.chrome.browser.playlist.kotlin.enums.HlsContentStatus
 import com.google.gson.annotations.SerializedName
 
 @Entity
@@ -20,6 +19,12 @@ data class HlsContentQueueModel(
     @PrimaryKey @SerializedName("playlist_item_id") @ColumnInfo(name = "playlist_item_id") var playlistItemId: String,
     @SerializedName("hls_content_status") @ColumnInfo(name = "hls_content_status") var hlsContentStatus: String = HlsContentStatus.NOT_READY.name
 ) : Parcelable {
+    enum class HlsContentStatus {
+        @Suppress("unused")
+        READY,
+        NOT_READY
+    }
+
     companion object {
         @JvmField
         @Suppress("unused")

@@ -11,7 +11,6 @@ import android.content.Context
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import org.chromium.chrome.R
-import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
@@ -38,7 +37,7 @@ object MenuUtils {
                 PlaylistItemOptionModel(
                     context.resources.getString(R.string.playlist_move_item),
                     R.drawable.ic_move_media,
-                    PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM,
+                    PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEM,
                     playlistItemModel = playlistItemModel,
                     playlistId = playlistId
                 )
@@ -48,7 +47,7 @@ object MenuUtils {
             PlaylistItemOptionModel(
                 context.resources.getString(R.string.playlist_copy_item),
                 R.drawable.ic_copy_media,
-                PlaylistOptionsEnum.COPY_PLAYLIST_ITEM,
+                PlaylistModel.PlaylistOptionsEnum.COPY_PLAYLIST_ITEM,
                 playlistItemModel = playlistItemModel,
                 playlistId = playlistId
             )
@@ -57,7 +56,7 @@ object MenuUtils {
             PlaylistItemOptionModel(
                 context.resources.getString(R.string.playlist_share_item),
                 R.drawable.ic_share,
-                PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM,
+                PlaylistModel.PlaylistOptionsEnum.SHARE_PLAYLIST_ITEM,
                 playlistItemModel = playlistItemModel,
                 playlistId = playlistId
             )
@@ -66,7 +65,7 @@ object MenuUtils {
             PlaylistItemOptionModel(
                 context.resources.getString(R.string.playlist_open_in_new_tab),
                 R.drawable.ic_new_tab,
-                PlaylistOptionsEnum.OPEN_IN_NEW_TAB,
+                PlaylistModel.PlaylistOptionsEnum.OPEN_IN_NEW_TAB,
                 playlistItemModel = playlistItemModel,
                 playlistId = playlistId
             )
@@ -75,7 +74,7 @@ object MenuUtils {
             PlaylistItemOptionModel(
                 context.resources.getString(R.string.playlist_open_in_private_tab),
                 R.drawable.ic_private_tab,
-                PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB,
+                PlaylistModel.PlaylistOptionsEnum.OPEN_IN_PRIVATE_TAB,
                 playlistItemModel = playlistItemModel,
                 playlistId = playlistId
             )
@@ -84,7 +83,7 @@ object MenuUtils {
             PlaylistItemOptionModel(
                 context.resources.getString(R.string.playlist_delete_item),
                 R.drawable.ic_playlist_delete,
-                PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM,
+                PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST_ITEM,
                 playlistItemModel = playlistItemModel,
                 playlistId = playlistId
             )
@@ -106,12 +105,12 @@ object MenuUtils {
                 PlaylistOptionsModel(
                     view.resources.getString(R.string.playlist_move_item),
                     R.drawable.ic_move_media,
-                    PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS,
+                    PlaylistModel.PlaylistOptionsEnum.MOVE_PLAYLIST_ITEMS,
                     playlistItemModels = selectedItems
                 ), PlaylistOptionsModel(
                     view.resources.getString(R.string.playlist_copy_item),
                     R.drawable.ic_copy_media,
-                    PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS,
+                    PlaylistModel.PlaylistOptionsEnum.COPY_PLAYLIST_ITEMS,
                     playlistItemModels = selectedItems
                 )
             ), playlistOptionsListener
@@ -132,7 +131,7 @@ object MenuUtils {
             PlaylistOptionsModel(
                 context.resources.getString(R.string.playlist_edit_text),
                 R.drawable.ic_edit_playlist,
-                PlaylistOptionsEnum.EDIT_PLAYLIST,
+                PlaylistModel.PlaylistOptionsEnum.EDIT_PLAYLIST,
                 playlistModel = playlistModel
             )
         )
@@ -141,7 +140,7 @@ object MenuUtils {
                 PlaylistOptionsModel(
                     context.resources.getString(R.string.playlist_rename_text),
                     R.drawable.ic_rename_playlist,
-                    PlaylistOptionsEnum.RENAME_PLAYLIST,
+                    PlaylistModel.PlaylistOptionsEnum.RENAME_PLAYLIST,
                     playlistModel = playlistModel
                 )
             )
@@ -151,7 +150,7 @@ object MenuUtils {
                 PlaylistOptionsModel(
                     context.resources.getString(R.string.playlist_delete_playlist),
                     R.drawable.ic_playlist_delete,
-                    PlaylistOptionsEnum.DELETE_PLAYLIST,
+                    PlaylistModel.PlaylistOptionsEnum.DELETE_PLAYLIST,
                     playlistModel = playlistModel
                 )
             )

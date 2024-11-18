@@ -25,7 +25,7 @@ import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
 
 object PlaylistUtils {
-    private val TAG: String = "Playlist/"+this::class.java.simpleName
+    private val TAG: String = "Playlist/" + this::class.java.simpleName
 
     @JvmStatic
     lateinit var moveOrCopyModel: MoveOrCopyModel
@@ -145,9 +145,9 @@ object PlaylistUtils {
                     context, hlsServiceClass
                 )
             ) {
-                    context.startService(
-                        Intent(context, hlsServiceClass)
-                    )
+                context.startService(
+                    Intent(context, hlsServiceClass)
+                )
             }
         } catch (ex: Exception) {
             Log.e(TAG, "hlsServiceClass" + ex.message)
