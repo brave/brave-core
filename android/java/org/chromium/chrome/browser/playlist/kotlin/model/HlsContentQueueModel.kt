@@ -5,14 +5,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.model
+package org.chromium.chrome.browser.playlist.kotlin.model
 
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.brave.playlist.enums.HlsContentStatus
+import org.chromium.chrome.browser.playlist.kotlin.enums.HlsContentStatus
 import com.google.gson.annotations.SerializedName
 
 @Entity

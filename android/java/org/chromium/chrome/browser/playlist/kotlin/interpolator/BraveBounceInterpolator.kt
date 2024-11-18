@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.interpolator
+package org.chromium.chrome.browser.playlist.kotlin.interpolator
 
 import android.view.animation.Interpolator
 import kotlin.math.abs

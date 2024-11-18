@@ -13,7 +13,7 @@
     android:background="@drawable/ic_playlist_onboarding_bg"
     android:visibility="gone">
 
-    <com.brave.playlist.view.PlaylistToolbar
+    <org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
         android:id="@+id/playlistToolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/playlist_toolbar_height"

@@ -5,9 +5,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.model
+package org.chromium.chrome.browser.playlist.kotlin.model
 
-import com.brave.playlist.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
 
 data class PlaylistItemOptionModel(
     val optionTitle: String,

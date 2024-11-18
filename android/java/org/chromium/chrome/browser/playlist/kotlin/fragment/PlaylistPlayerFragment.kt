@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.fragment
+package org.chromium.chrome.browser.playlist.kotlin.fragment
 
 import android.annotation.SuppressLint
 import android.content.*
@@ -41,22 +41,22 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import androidx.mediarouter.app.MediaRouteButton
 import androidx.recyclerview.widget.RecyclerView
-import com.brave.playlist.PlaylistViewModel
-import com.brave.playlist.R
-import com.brave.playlist.adapter.recyclerview.PlaylistItemAdapter
-import com.brave.playlist.enums.PlaylistOptionsEnum
-import com.brave.playlist.extension.afterMeasured
-import com.brave.playlist.extension.dpToPx
-import com.brave.playlist.listener.PlaylistItemClickListener
-import com.brave.playlist.listener.PlaylistItemOptionsListener
-import com.brave.playlist.model.*
-import com.brave.playlist.playback_service.VideoPlaybackService
-import com.brave.playlist.slidingpanel.BottomPanelLayout
-import com.brave.playlist.util.ConstantUtils.DEFAULT_PLAYLIST
-import com.brave.playlist.util.ConstantUtils.PLAYLIST_MODEL
-import com.brave.playlist.util.MenuUtils
-import com.brave.playlist.util.PlaylistUtils
-import com.brave.playlist.view.PlaylistToolbar
+import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.PlaylistItemAdapter
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
+import org.chromium.chrome.browser.playlist.kotlin.extension.dpToPx
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickListener
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.model.*
+import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService
+import org.chromium.chrome.browser.playlist.kotlin.slidingpanel.BottomPanelLayout
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.DEFAULT_PLAYLIST
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.PLAYLIST_MODEL
+import org.chromium.chrome.browser.playlist.kotlin.util.MenuUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
+import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.material.card.MaterialCardView
 import com.google.common.util.concurrent.ListenableFuture

@@ -5,14 +5,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.local_database
+package org.chromium.chrome.browser.playlist.kotlin.local_database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.brave.playlist.model.HlsContentQueueModel
-import com.brave.playlist.model.LastPlayedPositionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentQueueModel
+import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
 
 @Database(
     entities = [LastPlayedPositionModel::class, HlsContentQueueModel::class],

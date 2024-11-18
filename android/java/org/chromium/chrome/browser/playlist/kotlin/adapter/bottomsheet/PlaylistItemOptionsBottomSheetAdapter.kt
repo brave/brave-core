@@ -5,17 +5,17 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.adapter.bottomsheet
+package org.chromium.chrome.browser.playlist.kotlin.adapter.bottomsheet
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import com.brave.playlist.R
-import com.brave.playlist.adapter.recyclerview.AbstractRecyclerViewAdapter
-import com.brave.playlist.listener.PlaylistItemOptionsListener
-import com.brave.playlist.model.PlaylistItemOptionModel
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.AbstractRecyclerViewAdapter
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
 
 class PlaylistItemOptionsBottomSheetAdapter(
     private val playlistItemOptionsListener: PlaylistItemOptionsListener

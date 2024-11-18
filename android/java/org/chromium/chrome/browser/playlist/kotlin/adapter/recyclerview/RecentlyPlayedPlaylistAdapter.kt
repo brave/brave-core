@@ -5,17 +5,17 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.adapter.recyclerview
+package org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import com.brave.playlist.R
-import com.brave.playlist.listener.PlaylistClickListener
-import com.brave.playlist.model.PlaylistModel
-import com.brave.playlist.util.ConstantUtils
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import com.bumptech.glide.Glide
 
 class RecentlyPlayedPlaylistAdapter(private val playlistClickListener: PlaylistClickListener?) :

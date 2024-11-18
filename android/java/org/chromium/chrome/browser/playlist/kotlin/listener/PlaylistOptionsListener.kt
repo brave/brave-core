@@ -5,9 +5,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.listener
+package org.chromium.chrome.browser.playlist.kotlin.listener
 
-import com.brave.playlist.model.PlaylistOptionsModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel
 
 interface PlaylistOptionsListener {
     fun onPlaylistOptionClicked(playlistOptionsModel: PlaylistOptionsModel) {}

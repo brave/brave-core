@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.local_database
+package org.chromium.chrome.browser.playlist.kotlin.local_database
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -13,8 +13,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.brave.playlist.model.HlsContentQueueModel
-import com.brave.playlist.model.LastPlayedPositionModel
+import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentQueueModel
+import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
 
 @Dao
 interface PlaylistItemModelDao {

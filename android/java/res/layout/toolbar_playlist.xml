@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/playlist_toolbar_height"
     android:background="@color/playlist_background"
-    tools:parentTag="com.brave.playlist.view.PlaylistToolbar">
+    tools:parentTag="org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutMainToolbar"

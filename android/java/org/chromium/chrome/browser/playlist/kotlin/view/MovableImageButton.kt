@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.view
+package org.chromium.chrome.browser.playlist.kotlin.view
 
 import android.content.Context
 import android.util.AttributeSet

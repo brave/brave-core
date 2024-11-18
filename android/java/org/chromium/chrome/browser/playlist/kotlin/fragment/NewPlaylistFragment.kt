@@ -5,7 +5,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package com.brave.playlist.fragment
+package org.chromium.chrome.browser.playlist.kotlin.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -14,16 +14,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.brave.playlist.PlaylistViewModel
-import com.brave.playlist.R
-import com.brave.playlist.enums.PlaylistOptionsEnum
-import com.brave.playlist.model.CreatePlaylistModel
-import com.brave.playlist.model.PlaylistModel
-import com.brave.playlist.model.RenamePlaylistModel
-import com.brave.playlist.util.ConstantUtils.PLAYLIST_MODEL
-import com.brave.playlist.util.ConstantUtils.PLAYLIST_OPTION
-import com.brave.playlist.util.ConstantUtils.SHOULD_MOVE_OR_COPY
-import com.brave.playlist.view.PlaylistToolbar
+import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
+import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum
+import org.chromium.chrome.browser.playlist.kotlin.model.CreatePlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.model.RenamePlaylistModel
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.PLAYLIST_MODEL
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.PLAYLIST_OPTION
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.SHOULD_MOVE_OR_COPY
+import org.chromium.chrome.browser.playlist.kotlin.view.PlaylistToolbar
 
 class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
     private lateinit var mPlaylistViewModel: PlaylistViewModel
