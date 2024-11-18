@@ -275,8 +275,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
 }
 
 void AdBlockServiceTest::EnableDeveloperMode(bool enabled) {
-  browser()->profile()->GetPrefs()->SetBoolean(
-      brave_shields::prefs::kAdBlockDeveloperMode, enabled);
+  profile()->GetPrefs()->SetBoolean(brave_shields::prefs::kAdBlockDeveloperMode,
+                                    enabled);
 }
 
 void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
