@@ -67,6 +67,15 @@ bool MatchConditions(const PrefProviderInterface* const pref_provider,
           return !value;
         }
 
+        if (IsEpochOperator(condition)) {
+          // Default to now if the pref path does not exist.
+          return MatchCondition(value.value_or(base::NumberToString(
+                                    base::Time::Now()
+                                        .ToDeltaSinceWindowsEpoch()
+                                        .InMicroseconds())),
+                                condition);
+        }
+
         if (IsNumericalOperator(condition)) {
           // Default to "0" if the pref path does not exist.
           return MatchCondition(value.value_or("0"), condition);
