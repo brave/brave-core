@@ -45,9 +45,8 @@ constexpr char16_t kDocumentBodyInnerTextJavaScript[] =
     u"document?.body?.innerText";
 
 std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
-  return base::StringPrintf("%d%d%d", id.frame_routing_id.child_id,
-                            id.frame_routing_id.frame_routing_id,
-                            id.delegate_id);
+  return absl::StrFormat("%d%d%d", id.frame_routing_id.child_id,
+                         id.frame_routing_id.frame_routing_id, id.delegate_id);
 }
 
 }  // namespace

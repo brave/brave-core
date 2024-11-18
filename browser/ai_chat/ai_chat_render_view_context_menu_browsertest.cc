@@ -109,18 +109,16 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
     // Select text in the element and create context menu to execute a rewrite
     // command.
     std::string selected_text =
-        content::EvalJs(web_contents, base::StringPrintf("select_all('%s')",
-                                                         element_id.c_str()))
+        content::EvalJs(web_contents,
+                        content::JsReplace("select_all($1)", element_id))
             .ExtractString();
     EXPECT_EQ(expected_selected_text, selected_text);
 
-    int x = content::EvalJs(
-                web_contents,
-                base::StringPrintf("getRectX('%s')", element_id.c_str()))
+    int x = content::EvalJs(web_contents,
+                            content::JsReplace("getRectX($1)", element_id))
                 .ExtractInt();
-    int y = content::EvalJs(
-                web_contents,
-                base::StringPrintf("getRectY('%s')", element_id.c_str()))
+    int y = content::EvalJs(web_contents,
+                            content::JsReplace("getRectY($1)", element_id))
                 .ExtractInt();
 
     RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
@@ -163,8 +161,8 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
 
     // Verify that the text is rewritten as expected.
     std::string updated_text =
-        content::EvalJs(web_contents, base::StringPrintf("get_text('%s')",
-                                                         element_id.c_str()))
+        content::EvalJs(web_contents,
+                        content::JsReplace("get_text($1)", element_id))
             .ExtractString();
     EXPECT_EQ(expected_updated_text, updated_text);
   }
