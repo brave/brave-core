@@ -132,7 +132,9 @@ export const useBuy = () => {
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>('US')
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<MeldPaymentMethod>(DEFAULT_PAYMENT_METHOD)
-  const [isCreatingWidget, setIsCreatingWidget] = useState(false)
+  const [isCreatingWidgetFor, setIsCreatingWidgetFor] = useState<
+    string | undefined
+  >(undefined)
   const [searchTerm, setSearchTerm] = useState<string>('')
 
   // Mutations
@@ -436,12 +438,12 @@ export const useBuy = () => {
       }
 
       try {
-        setIsCreatingWidget(true)
+        setIsCreatingWidgetFor(quote.serviceProvider)
         const { widget } = await createMeldBuyWidget({
           sessionData,
           customerData
         }).unwrap()
-        setIsCreatingWidget(false)
+        setIsCreatingWidgetFor(undefined)
 
         if (widget) {
           const { widgetUrl } = widget
@@ -449,7 +451,7 @@ export const useBuy = () => {
         }
       } catch (error) {
         console.error('createMeldBuyWidget failed', error)
-        setIsCreatingWidget(false)
+        setIsCreatingWidgetFor(undefined)
       }
     },
     [
@@ -520,7 +522,7 @@ export const useBuy = () => {
     onSelectCountry,
     onSelectPaymentMethod,
     onBuy,
-    isCreatingWidget,
+    isCreatingWidgetFor,
     searchTerm,
     onSearch: setSearchTerm,
     cryptoEstimate,
