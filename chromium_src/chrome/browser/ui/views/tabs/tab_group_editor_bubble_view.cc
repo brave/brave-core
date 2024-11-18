@@ -31,9 +31,9 @@ void MaybeRemoveFooter(TabGroupEditorBubbleView* bubble_view,
 
 }  // namespace
 
-#define CreateBubble(bubble_view)                       \
-  CreateBubble(bubble_view);                            \
-  MaybeRemoveFooter(bubble_view, bubble_view->footer_); \
+#define CreateBubble(bubble_view)                                           \
+  CreateBubble(bubble_view);                                                \
+  MaybeRemoveFooter(bubble_view, bubble_view->footer_.ExtractAsDangling()); \
   bubble_view->footer_ = nullptr
 
 #include "src/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.cc"
