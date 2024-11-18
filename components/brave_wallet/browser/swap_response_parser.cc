@@ -936,6 +936,7 @@ mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value) {
 namespace squid {
 
 namespace {
+constexpr char kNoTokenData[] = "Unable to fetch token data";
 
 std::optional<std::string> ChainIdToHex(const std::string& value) {
   std::optional<uint256_t> out = Base10ValueToUint256(value);
@@ -1149,6 +1150,8 @@ mojom::SquidErrorPtr ParseErrorResponse(const base::Value& json_value) {
   auto result = mojom::SquidError::New();
   result->message = value->message;
   result->type = ParseErrorType(value->type);
+  result->is_insufficient_liquidity =
+      base::Contains(result->message, kNoTokenData);
 
   return result;
 }

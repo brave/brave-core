@@ -1922,6 +1922,20 @@ TEST(SwapResponseParserUnitTest, ParseSquidErrorResponse) {
   ASSERT_TRUE(error);
   EXPECT_EQ(error->message, "The request is missing a required parameter.");
   EXPECT_EQ(error->type, mojom::SquidErrorType::kUnknownError);
+
+  json = R"(
+    {
+      "statusCode": "400",
+      "type": "BAD_REQUEST_ERROR",
+      "message": "Unable to fetch token data"
+    }
+  )";
+
+  error = squid::ParseErrorResponse(ParseJson(json));
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->type, mojom::SquidErrorType::kUnknownError);
+  EXPECT_EQ(error->message, "Unable to fetch token data");
+  EXPECT_TRUE(error->is_insufficient_liquidity);
 }
 
 TEST(SwapResponseParserUnitTest, ParseSquidQuoteResponse) {
