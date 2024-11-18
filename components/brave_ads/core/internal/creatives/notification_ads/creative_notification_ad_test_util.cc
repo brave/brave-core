@@ -21,7 +21,7 @@ CreativeNotificationAdList BuildCreativeNotificationAds(const int count) {
   for (int i = 0; i < count; ++i) {
     CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd(
         /*should_generate_random_uuids=*/true);
-    creative_ad.segment = UNSAFE_TODO(kSegments[i % std::size(kSegments)]);
+    creative_ad.segment = kSegments[i % kSegments.size()];
 
     creative_ads.push_back(creative_ad);
   }
