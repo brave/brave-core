@@ -156,20 +156,23 @@ class TopToolbarView: UIView, ToolbarProtocol {
       $0.size.greaterThanOrEqualTo(32)
     }
     $0.menu = .init(children: [
-      UIMenu(
-        options: [.singleSelection, .displayInline],
-        children: WidgetShortcut.eligibleButtonShortcuts.map { shortcut in
-          UIAction(
-            title: shortcut.displayString,
-            image: shortcut.image,
-            state: shortcut.rawValue == Preferences.General.toolbarShortcutButton.value
-              ? .on : .off,
-            handler: { _ in
-              Preferences.General.toolbarShortcutButton.value = shortcut.rawValue
-            }
-          )
-        }
-      ),
+      UIDeferredMenuElement.uncached { handler in
+        let options = UIMenu(
+          options: [.singleSelection, .displayInline],
+          children: WidgetShortcut.eligibleButtonShortcuts.map { shortcut in
+            UIAction(
+              title: shortcut.displayString,
+              image: shortcut.image,
+              state: shortcut.rawValue == Preferences.General.toolbarShortcutButton.value
+                ? .on : .off,
+              handler: { _ in
+                Preferences.General.toolbarShortcutButton.value = shortcut.rawValue
+              }
+            )
+          }
+        )
+        handler([options])
+      },
       UIMenu(
         options: .displayInline,
         children: [
