@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/android/jni_string.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNativeHelper_jni.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -60,7 +61,7 @@ void JNI_BraveAdsNativeHelper_ClearData(
     return;
   }
 
-  ads_service->ClearData();
+  ads_service->ClearData(/*intentional*/ base::DoNothing());
 }
 
 // static

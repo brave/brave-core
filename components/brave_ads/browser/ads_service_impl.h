@@ -229,7 +229,7 @@ class AdsServiceImpl final : public AdsService,
                               bool by_user) override;
   void OnNotificationAdClicked(const std::string& placement_id) override;
 
-  void ClearData() override;
+  void ClearData(base::OnceClosure callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
