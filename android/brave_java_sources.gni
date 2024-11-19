@@ -20,70 +20,6 @@ import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/safetynet/java_sources.gni")
 import("//brave/components/signin/public/android/java_sources.gni")
 
-brave_kotlin_sources = [
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/PlaylistItemDiffCallback.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/PlaylistViewModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistMenuOnboardingActivity.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/PlaylistOnboardingFragmentStateAdapter.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/bottomsheet/PlaylistItemOptionsBottomSheetAdapter.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/bottomsheet/PlaylistOptionsBottomSheetAdapter.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/recyclerview/AbstractRecyclerViewAdapter.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/recyclerview/PlaylistAdapter.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/recyclerview/PlaylistItemAdapter.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/recyclerview/RecentlyPlayedPlaylistAdapter.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/extension/MaterialCardViewExtension.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/extension/NumberExtension.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/extension/PopupWindowExtension.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/extension/ViewExtension.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/fragment/AllPlaylistFragment.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/fragment/NewPlaylistFragment.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/fragment/PlaylistFragment.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/fragment/PlaylistOnboardingSingleFragment.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/fragment/PlaylistPlayerFragment.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/interpolator/BraveBounceInterpolator.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/listener/ItemInteractionListener.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/listener/PlaylistClickListener.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/listener/PlaylistItemClickListener.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/listener/PlaylistItemOptionsListener.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/listener/PlaylistOnboardingActionClickListener.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/listener/PlaylistOptionsListener.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/listener/StartDragListener.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/local_database/PlaylistDatabase.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/local_database/PlaylistItemModelDao.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/local_database/PlaylistRepository.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/CreatePlaylistModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/HlsContentProgressModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/HlsContentQueueModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/LastPlayedPositionModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/MoveOrCopyModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistItemModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistItemOptionModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistOnboardingModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistOptionsModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/RenamePlaylistModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/SnackBarActionModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/playback_service/VideoPlaybackService.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/slidingpanel/BottomPanelLayout.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/slidingpanel/ScrollableViewHelper.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/slidingpanel/ViewDragHelper.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/util/ConstantUtils.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/util/HLSParsingUtil.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/util/MediaItemUtil.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/util/MediaUtils.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/util/MenuUtils.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/util/PlaylistItemGestureHelper.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/util/PlaylistPreferenceUtils.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/util/PlaylistUtils.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/util/PlaylistViewUtils.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/view/MovableImageButton.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/view/PlaylistOnboardingPanel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/view/PlaylistToolbar.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/view/bottomsheet/MoveOrCopyToPlaylistBottomSheet.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/view/bottomsheet/PlaylistItemOptionsBottomSheet.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/view/bottomsheet/PlaylistOptionsBottomSheet.kt",
-]
-
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
@@ -360,14 +296,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/partnercustomizations/CloseBraveManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/password_manager/settings/BraveExportFlow.java",
   "../../brave/android/java/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistHostActivity.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceObserverImpl.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistStreamingObserverImpl.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsServiceImpl.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/settings/BravePlaylistPreferences.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/settings/BravePlaylistResetPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettingsObserver.java",
@@ -589,7 +517,7 @@ brave_java_sources += brave_feed_java_sources
 brave_java_sources += brave_public_tab_management_java_sources
 brave_java_sources += brave_share_java_sources
 brave_java_sources += brave_app_billing_sources
-brave_java_sources += brave_kotlin_sources
+brave_java_sources += brave_playlist_sources
 
 brave_browser_ui_android_appmenu_internal_sources = [ "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java" ]
 
@@ -614,10 +542,11 @@ brave_java_base_sources = [
 
 brave_java_base_module_sources = [
   "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
-  "//brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsService.java",
   "//brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",
 ]
+
+brave_java_base_module_sources += brave_java_base_module_playlist_sources
 
 brave_java_base_module_deps = [
   "//brave/third_party/android_deps:com_wireguard_android_java",
