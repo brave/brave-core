@@ -115,6 +115,11 @@
       localFrame.width = 400;
       localFrame.height = 400;
       document.body.appendChild(localFrame);
+
+      const localFrameAd = document.createElement('test-local-frame-ad');
+      localFrameAd.id = "test-local-frame-ad";
+      localFrameAd.innerText = 'This should be hidden';
+      localFrame.contentDocument.body.appendChild(localFrameAd);
     };
     window.onload = onload;
     </script>
