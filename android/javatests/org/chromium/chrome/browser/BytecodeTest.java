@@ -1247,8 +1247,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/browser_ui/notifications/NotificationManagerProxyImpl",
-                        "org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl",
-                        Context.class));
+                        "org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl"));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/status/StatusMediator",
@@ -1475,7 +1474,9 @@ public class BytecodeTest {
                         LocationBarEmbedderUiOverrides.class,
                         View.class,
                         Supplier.class,
-                        OnLongClickListener.class));
+                        OnLongClickListener.class,
+                        BrowserControlsStateProvider.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
