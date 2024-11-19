@@ -85,7 +85,7 @@ class AdsService : public KeyedService {
   virtual void OnNotificationAdClicked(const std::string& placement_id) = 0;
 
   // Called to clear ads data.
-  virtual void ClearData() = 0;
+  virtual void ClearData(base::OnceClosure callback) = 0;
 
   // Called to add an ads observer.
   virtual void AddBatAdsObserver(

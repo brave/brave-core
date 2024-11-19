@@ -1152,9 +1152,10 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
       /*intentional*/ base::DoNothing());
 }
 
-void AdsServiceImpl::ClearData() {
+void AdsServiceImpl::ClearData(base::OnceClosure callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
   ShutdownClearDataAndMaybeRestart();
+  std::move(callback).Run();
 }
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {

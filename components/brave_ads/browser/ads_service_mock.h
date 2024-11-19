@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -99,7 +100,7 @@ class AdsServiceMock : public AdsService {
               GetAdHistory,
               (base::Time, base::Time, GetAdHistoryForUICallback));
 
-  MOCK_METHOD(void, ClearData, ());
+  MOCK_METHOD(void, ClearData, (base::OnceClosure));
 
   MOCK_METHOD(void,
               ToggleLikeAd,
