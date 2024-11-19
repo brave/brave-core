@@ -476,6 +476,7 @@ const preview: Meta<CustomArgs> = {
       }
 
       const aiChatContext: AIChatContext = {
+        initialized: true,
         editingConversationId: null,
         visibleConversations: CONVERSATIONS,
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
@@ -498,6 +499,7 @@ const preview: Meta<CustomArgs> = {
       const inputText = options.args.inputText
 
       const conversationContext: ConversationContext = {
+        isTabAssociated: true,
         conversationUuid: CONVERSATIONS[1].uuid,
         conversationHistory: options.args.hasConversation ? HISTORY : [],
         associatedContentInfo: siteInfo,

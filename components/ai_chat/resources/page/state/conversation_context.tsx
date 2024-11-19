@@ -320,10 +320,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren<Selec
     setPartialContext({ isTabAssociated: props.selectedConversationId === tabAssociatedChatId })
   }, [props.selectedConversationId])
 
-  React.useEffect(() => {
-    setPartialContext({ isTabAssociated: props.selectedConversationId === tabAssociatedChatId })
-  }, [props.selectedConversationId])
-
   const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 
   const shouldShowLongConversationInfo = React.useMemo(() => {

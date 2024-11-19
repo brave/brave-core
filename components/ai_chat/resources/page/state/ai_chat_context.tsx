@@ -18,6 +18,7 @@ export interface AIChatContext {
   isStandalone?: boolean
   isHistoryEnabled: boolean
   allActions: mojom.ActionGroup[]
+  initialized: boolean
   goPremium: () => void
   managePremium: () => void
   handleAgreeClick: () => void
@@ -39,6 +40,7 @@ const defaultContext: AIChatContext = {
   isMobile: Boolean(loadTimeData.getBoolean('isMobile')),
   isHistoryEnabled: Boolean(loadTimeData.getBoolean('isHistoryEnabled')),
   allActions: [],
+  initialized: false,
   goPremium: () => { },
   managePremium: () => { },
   handleAgreeClick: () => { },
@@ -78,7 +80,8 @@ export function AIChatContextProvider(props: React.PropsWithChildren) {
       setPartialContext({
         visibleConversations,
         allActions,
-        canShowPremiumPrompt
+        canShowPremiumPrompt,
+        initialized: true
       })
     }
 

@@ -44,7 +44,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
   updateSelectedConversationId: (selectedId: string | undefined) => void,
   children: Children
 }) {
-  const { visibleConversations } = useAIChat()
+  const { visibleConversations, initialized } = useAIChat()
   const [conversationAPI, setConversationAPI] =
     React.useState<Pick<SelectedChatDetails, 'callbackRouter' | 'conversationHandler'>>()
 
@@ -93,6 +93,10 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
 
   // Handle the case where a non-existent chat has been selected:
   React.useEffect(() => {
+    // We can't tell if an id is valid until we've loaded the list of visible
+    // conversations.
+    if (!initialized) return
+
     // Special case the default conversation - it gets treated specially as
     // the chat is rebound as the tab navigates.
     if (selectedConversationId === tabAssociatedChatId) return
@@ -100,7 +104,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     if (selectedConversationId && !visibleConversations.find(c => c.uuid === selectedConversationId)) {
       updateSelectedConversationId(undefined)
     }
-  }, [visibleConversations, selectedConversationId])
+  }, [visibleConversations, selectedConversationId, initialized])
 
   return conversationAPI
     ? children(details as any)
