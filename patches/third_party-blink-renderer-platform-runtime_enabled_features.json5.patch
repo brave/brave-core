@@ -35,6 +35,15 @@ index 021b4d87e7db2799bc31e60c48df4c1ab163be32..b30a151ec48edaa29b631e6c1c26e93c
      },
      // Killswitch. Remove after 1 or 2 stable releases.
      {
+@@ -3811,7 +3814,7 @@
+       // only <option>, <optgroup>, and <hr>.
+       // https://github.com/whatwg/html/issues/10310
+       name: "SelectParserRelaxation",
+-      status: "stable",
++      status: "experimental",
+       public: true,
+     },
+     {
 @@ -3837,6 +3840,7 @@
      {
        name: "Serial",
