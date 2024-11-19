@@ -12,5 +12,3 @@ mkdir -p "$1"
 shopt -s nullglob
 
 tar -czvf "$2" ./*.so apks android_clang_*/*.so android_clang_*/lib.unstripped lib.unstripped android_chrome_versions.txt
-
-shopt -u nullglob
