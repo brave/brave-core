@@ -908,8 +908,8 @@ extension PlayerModel {
     MPRemoteCommandCenter.shared().do {
       $0.skipBackwardCommand.preferredIntervals = [.init(value: seekInterval)]
       $0.skipForwardCommand.preferredIntervals = [.init(value: seekInterval)]
-      $0.seekBackwardCommand.isEnabled = itemQueue.first != selectedItem.id
-      $0.seekForwardCommand.isEnabled = itemQueue.last != selectedItem.id || repeatMode != .none
+      $0.previousTrackCommand.isEnabled = itemQueue.first != selectedItem.id
+      $0.nextTrackCommand.isEnabled = itemQueue.last != selectedItem.id || repeatMode != .none
       $0.changeRepeatModeCommand.currentRepeatType = repeatMode.repeatType
       $0.changeShuffleModeCommand.currentShuffleType = isShuffleEnabled ? .items : .off
       $0.changePlaybackRateCommand.supportedPlaybackRates = PlaybackSpeed.supportedSpeeds.map {
@@ -961,9 +961,12 @@ extension PlayerModel {
       center.skipForwardCommand,
       center.seekBackwardCommand,
       center.seekForwardCommand,
+      center.nextTrackCommand,
+      center.previousTrackCommand,
       center.changeRepeatModeCommand,
       center.changeShuffleModeCommand,
       center.changePlaybackRateCommand,
+      center.changePlaybackPositionCommand,
     ]
     cancellables.formUnion(
       commands.map {
@@ -992,12 +995,18 @@ extension PlayerModel {
         play()
       }
     case center.skipBackwardCommand:
+      let interval = (event as? MPSkipIntervalCommandEvent)?.interval ?? self.seekInterval
+      Task { await seek(to: currentTime - interval) }
+    case center.seekBackwardCommand:
       Task { await seekBackwards() }
     case center.skipForwardCommand:
-      Task { await seekForwards() }
-    case center.seekBackwardCommand:
-      Task { await playPreviousItem() }
+      let interval = (event as? MPSkipIntervalCommandEvent)?.interval ?? self.seekInterval
+      Task { await seek(to: currentTime + interval) }
     case center.seekForwardCommand:
+      Task { await seekForwards() }
+    case center.previousTrackCommand:
+      Task { await playPreviousItem() }
+    case center.nextTrackCommand:
       Task { await playNextItem() }
     case center.changeRepeatModeCommand:
       if let repeatType = (event as? MPChangeRepeatModeCommandEvent)?.repeatType,
@@ -1019,6 +1028,12 @@ extension PlayerModel {
       {
         Task(priority: .userInitiated) { @MainActor in
           playbackSpeed = supportedSpeed
+        }
+      }
+    case center.changePlaybackPositionCommand:
+      if let position = (event as? MPChangePlaybackPositionCommandEvent)?.positionTime {
+        Task(priority: .userInitiated) {
+          await seek(to: position, accurately: true)
         }
       }
     default:
