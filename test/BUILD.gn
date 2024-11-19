@@ -416,6 +416,7 @@ test("brave_unit_tests") {
       "//components/gcm_driver/gcm_delayed_task_controller_unittest.cc",
       "//components/gcm_driver/gcm_driver_desktop_unittest.cc",
       "//components/gcm_driver/gcm_driver_unittest.cc",
+      "//components/password_manager/core/browser/ui/weak_check_utility_unittest.cc",
 
       # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
       "//brave/browser/ui/brave_shields_data_controller_unittest.cc",
