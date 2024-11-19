@@ -91,7 +91,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @Nullable View baseChromeLayout,
             Supplier<Integer> bottomWindowPaddingSupplier,
             @Nullable OnLongClickListener onLongClickListener,
-            @Nullable BrowserControlsStateProvider browserControlsStateProvider) {
+            @Nullable BrowserControlsStateProvider browserControlsStateProvider,
+            boolean isToolbarPositionCustomizationEnabled) {
         super(
                 locationBarLayout,
                 autocompleteAnchorView,
@@ -125,7 +126,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                         bottomWindowPaddingSupplier.get()
                                 + (isBottomToolbarVisible() ? locationBarLayout.getHeight() : 0),
                 onLongClickListener,
-                browserControlsStateProvider);
+                browserControlsStateProvider,
+                isToolbarPositionCustomizationEnabled);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);
