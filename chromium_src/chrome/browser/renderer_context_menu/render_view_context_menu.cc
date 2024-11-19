@@ -22,6 +22,7 @@
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -70,15 +71,14 @@ namespace {
 
 AutocompleteMatch GetAutocompleteMatchForText(Profile* profile,
                                               const std::u16string& text) {
+  // `AutocompleteClassifierFactory` ultimately instantiates a
+  // `BraveAutocompleteSchemeClassifier` instance, as the substitution gets
+  // applied on the header for `ChromeAutocompleteSchemeClassifier`.
+  auto* classifier = AutocompleteClassifierFactory::GetForProfile(profile);
+  CHECK(classifier);
   AutocompleteMatch match;
-  AutocompleteClassifier classifier(
-      std::make_unique<AutocompleteController>(
-          std::make_unique<ChromeAutocompleteProviderClient>(profile),
-          AutocompleteClassifier::DefaultOmniboxProviders()),
-      std::make_unique<BraveAutocompleteSchemeClassifier>(profile));
-  classifier.Classify(text, false, false,
-                      metrics::OmniboxEventProto::INVALID_SPEC, &match, NULL);
-  classifier.Shutdown();
+  classifier->Classify(text, false, false,
+                       metrics::OmniboxEventProto::INVALID_SPEC, &match, NULL);
   return match;
 }
 
