@@ -104,18 +104,6 @@ void YouTubeTabHelper::DidFinishNavigation(
     return;
   }
 
-  should_process_ =
-      navigation_handle->GetRestoreType() == content::RestoreType::kNotRestored;
-}
-
-void YouTubeTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  DCHECK(youtube_rule_registry_);
-  // Make sure it gets reset.
-  bool should_process = should_process_;
-  should_process_ = false;
-  if (!should_process) {
-    return;
-  }
   auto url = web_contents()->GetLastCommittedURL();
 
   content::GlobalRenderFrameHostId render_frame_host_id =
