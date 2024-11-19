@@ -74,7 +74,6 @@ public class BravePlaylistPreferences extends ChromeBaseSettingsFragment
                                     mPlaylistService.resetAll();
                                     PlaylistRepository playlistRepository =
                                             new PlaylistRepository(getActivity());
-                                    playlistRepository.deleteAllLastPlayedPosition();
                                     playlistRepository.deleteAllHlsContentQueueModel();
                                     PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
                                 });
