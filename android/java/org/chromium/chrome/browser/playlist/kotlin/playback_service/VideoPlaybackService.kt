@@ -58,10 +58,6 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
     private val mScope = CoroutineScope(Job() + Dispatchers.IO)
     protected var mPlaylistService: PlaylistService? = null
 
-    /*private val mPlaylistRepository: PlaylistRepository by lazy {
-        PlaylistRepository(applicationContext)
-    }*/
-
     companion object {
         private lateinit var mPlayer: ExoPlayer
         var currentPlaylistId: String = ""
