@@ -59,11 +59,9 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
   // content::WebContentsObserver overrides
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void DocumentOnLoadCompletedInPrimaryMainFrame() override;
 
   const int32_t world_id_;
   const raw_ptr<YouTubeRuleRegistry> youtube_rule_registry_;  // NOT OWNED
-  bool should_process_ = false;
   // The remote used to send the script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
