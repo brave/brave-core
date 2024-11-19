@@ -753,7 +753,7 @@ class BottomPanelLayout @JvmOverloads constructor(
     }
 
     override fun generateLayoutParams(p: ViewGroup.LayoutParams): ViewGroup.LayoutParams {
-        return if (p is MarginLayoutParams) LayoutParams(p) else LayoutParams(p)
+        return LayoutParams(p)
     }
 
     override fun checkLayoutParams(p: ViewGroup.LayoutParams): Boolean {
