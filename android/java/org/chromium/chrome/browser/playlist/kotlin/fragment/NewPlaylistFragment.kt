@@ -15,7 +15,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel
-import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.kotlin.model.CreatePlaylistModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
 import org.chromium.chrome.browser.playlist.kotlin.model.RenamePlaylistModel

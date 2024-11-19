@@ -16,7 +16,7 @@ import android.util.TypedValue
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistMenuOnboardingActivity
 import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
 import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel

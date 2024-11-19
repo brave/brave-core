@@ -12,7 +12,7 @@ import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.viewpager2.widget.ViewPager2
-import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.PlaylistOnboardingFragmentStateAdapter
 import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
 import org.chromium.chrome.browser.playlist.kotlin.extension.showOnboardingGradientBg

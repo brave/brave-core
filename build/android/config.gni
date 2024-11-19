@@ -20,6 +20,7 @@ brave_android_manifest_includes = [
 ]
 
 brave_chrome_java_deps = [
+  "//brave/android/java/org/chromium/chrome/browser/playlist:playlist_java_sources",
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
   "//brave/browser/download/android:java",
   "//brave/browser/download/internal/android:java",
@@ -67,7 +68,6 @@ brave_chrome_java_deps = [
 ]
 
 brave_chrome_java_deps += brave_app_billing_deps
-brave_chrome_java_deps += brave_app_playlist_deps
 
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
@@ -87,6 +87,7 @@ brave_chrome_java_srcjar_deps = [
 ]
 
 brave_chrome_app_java_resources_deps = [
+  "//brave/android/java/org/chromium/chrome/browser/playlist:playlist_resources",
   "//brave/build/android:android_brave_strings_grd",
   "//brave/build/android:brave_java_xml_preprocess_resources",
 ]
@@ -120,7 +121,6 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletNativeUtils.java",
   "//brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
-  "//brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
   "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
   "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   "//brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",

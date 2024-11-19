@@ -27,7 +27,7 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.animation.Interpolator
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
-import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.R
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.abs
 import kotlin.math.max
@@ -753,7 +753,7 @@ class BottomPanelLayout @JvmOverloads constructor(
     }
 
     override fun generateLayoutParams(p: ViewGroup.LayoutParams): ViewGroup.LayoutParams {
-        return if (p is MarginLayoutParams) LayoutParams(p) else LayoutParams(p)
+        return LayoutParams(p)
     }
 
     override fun checkLayoutParams(p: ViewGroup.LayoutParams): Boolean {

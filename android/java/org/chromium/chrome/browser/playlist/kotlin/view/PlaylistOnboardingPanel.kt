@@ -16,7 +16,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
-import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.PlaylistOnboardingFragmentStateAdapter
 import org.chromium.chrome.browser.playlist.kotlin.extension.addScrimBackground
 import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
