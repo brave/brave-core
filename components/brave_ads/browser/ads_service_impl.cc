@@ -39,6 +39,7 @@
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/browser/user_engagement/ad_events/ad_event_cache_helper.h"
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -1179,16 +1180,28 @@ void AdsServiceImpl::GetStatementOfAccounts(
 
 void AdsServiceImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
-    MaybeServeInlineContentAdAsDictCallback callback) {
+    MaybeServeInlineContentAdCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(dimensions,
                                    /*inline_content_ad*/ std::nullopt);
   }
 
+  auto callback_wrapper = base::BindOnce(
+      [](MaybeServeInlineContentAdCallback callback,
+         const std::string& dimensions, std::optional<base::Value::Dict> dict) {
+        if (!dict) {
+          return std::move(callback).Run(dimensions,
+                                         /*inline_content_ad*/ std::nullopt);
+        }
+
+        std::move(callback).Run(dimensions, InlineContentAdFromValue(*dict));
+      },
+      std::move(callback));
+
   bat_ads_associated_remote_->MaybeServeInlineContentAd(
-      dimensions,
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-          std::move(callback), dimensions, /*inline_content_ad*/ std::nullopt));
+      dimensions, mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                      std::move(callback_wrapper), dimensions,
+                      /*inline_content_ad*/ std::nullopt));
 }
 
 void AdsServiceImpl::TriggerInlineContentAdEvent(

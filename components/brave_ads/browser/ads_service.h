@@ -107,7 +107,7 @@ class AdsService : public KeyedService {
   // `InlineContentAdInfo` containing the info for the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
-      MaybeServeInlineContentAdAsDictCallback callback) = 0;
+      MaybeServeInlineContentAdCallback callback) = 0;
 
   // Called when a user views or interacts with an inline content ad to trigger
   // a `mojom_ad_event_type` event for the specified `placement_id` and
