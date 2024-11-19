@@ -1700,7 +1700,7 @@ Are you sure you want to do this?
         Every day I save data by browsing the Web with Brave.
       </message>
       <message name="IDS_WATCH_YOUTUBE_NOT_ADS" desc="Open youtube in brave modal title">
-        Watch YouTube, Not Ads.
+        Watch YouTube, not Ads.
       </message>
       <message name="IDS_WATCH_YOUTUBE_NOT_ADS_TEXT" desc="Open youtube in brave modal text">
         Open YouTube links in Brave to block ads.

@@ -16,10 +16,11 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="92dp"
         android:gravity="center"
         android:contentDescription="@null"
+        android:adjustViewBounds="true"
         android:layout_gravity="center_horizontal"
         app:lottie_loop="true" />
 
@@ -29,6 +30,7 @@
         style="@style/HeadingH4"
         android:gravity="center_horizontal"
         android:text="@string/watch_youtube_not_ads"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         android:textColor="@color/shield_text_color"
         android:textStyle="bold" />
