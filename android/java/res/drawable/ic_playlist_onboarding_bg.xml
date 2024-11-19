@@ -1,0 +1,76 @@
+<!--
+  ~ Copyright (c) 2023 The Brave Authors. All rights reserved.
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  ~ You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="414dp"
+    android:height="897dp"
+    android:viewportWidth="414"
+    android:viewportHeight="897"
+    tools:ignore="VectorRaster">
+
+    <group>
+        <group
+            android:pivotX="207"
+            android:pivotY="448.5"
+            android:rotation="45"
+            android:scaleX="2.828"
+            android:scaleY="2.045"
+            android:translateX="0.5"
+            android:translateY="-0.106">
+
+            <path android:pathData="M0 0V897H414V0">
+
+                <aapt:attr name="android:fillColor">
+
+                    <gradient
+                        android:endX="350.5"
+                        android:endY="548.5"
+                        android:startX="103.5"
+                        android:startY="448.5"
+                        android:type="linear">
+
+                        <item
+                            android:color="#181820"
+                            android:offset="0" />
+
+                        <item
+                            android:color="#151520"
+                            android:offset="0.129" />
+
+                        <item
+                            android:color="#19114B"
+                            android:offset="0.311" />
+
+                        <item
+                            android:color="#270D77"
+                            android:offset="0.487" />
+
+                        <item
+                            android:color="#500985"
+                            android:offset="0.651" />
+
+                        <item
+                            android:color="#871288"
+                            android:offset="0.842" />
+
+                        <item
+                            android:color="#CA0C7F"
+                            android:offset="1" />
+
+                    </gradient>
+
+                </aapt:attr>
+
+            </path>
+
+        </group>
+
+    </group>
+
+</vector>
