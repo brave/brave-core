@@ -7,9 +7,11 @@
 #define BRAVE_CHROMIUM_SRC_BASE_DEBUG_ALIAS_H_
 
 #include <stdint.h>
-#include <string.h>
 
+#include "base/containers/span.h"
 #include "base/memory/raw_ptr_exclusion.h"
+#include "base/memory/stack_allocated.h"
+#include "base/ranges/algorithm.h"
 
 #include "src/base/debug/alias.h"  // IWYU pragma: export
 
@@ -18,13 +20,14 @@ namespace debug {
 
 template <typename T>
 class StackObjectCopy {
+  STACK_ALLOCATED();
+
  public:
   explicit StackObjectCopy(const T* original) {
     if (original) {
-      memcpy(static_cast<void*>(buffer_), static_cast<const void*>(original),
-             sizeof(T));
+      base::span(buffer_).copy_from(base::byte_span_from_ref(*original));
     } else {
-      memset(buffer_, 0, sizeof(T));
+      base::ranges::fill(buffer_, 0);
     }
   }
 
