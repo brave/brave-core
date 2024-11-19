@@ -3,11 +3,22 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-group("core") {
+static_library("browser") {
+  sources = [
+    "service/ads_service.cc",
+    "service/ads_service.h",
+    "service/ads_service_observer.h",
+  ]
+
   deps = [ "//brave/components/brave_ads/core/internal" ]
 
   public_deps = [
-    "//brave/components/brave_ads/core/browser",
+    "//base",
+    "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//components/keyed_service/core",
+    "//mojo/public/cpp/bindings",
+    "//url",
   ]
 }

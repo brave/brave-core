@@ -8,7 +8,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/run_loop.h"
-#include "brave/components/brave_ads/browser/ads_service_observer.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 
 namespace brave_ads {
 

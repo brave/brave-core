@@ -43,6 +43,7 @@ source_set("headers") {
     "prefs/pref_provider.h",
     "prefs/pref_provider_interface.h",
     "prefs/pref_registry.h",
+    "service/ads_service_callback.h",
     "serving/targeting/condition_matcher/condition_matcher_util.h",
     "targeting/geographical/subdivision/supported_subdivisions.h",
     "user_attention/user_idle_detection/user_idle_detection_feature.h",

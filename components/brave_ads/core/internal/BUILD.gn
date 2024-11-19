@@ -7,6 +7,7 @@ config("internal_config") {
   visibility = [
     ":*",
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/browser",
     "//brave/components/brave_ads/core/test:brave_ads_unit_tests",
   ]
 }
