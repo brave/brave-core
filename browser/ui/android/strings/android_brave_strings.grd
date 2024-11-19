@@ -3854,9 +3854,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PLAYLIST_OPEN_PLAYLIST_SETTINGS" desc="Open playlist settings menu item text">
       Open Playlist Settings
     </message>
-    <message name="IDS_PLAYLIST_HIDE_PLAYLIST_BUTTON" desc="Hide playlist menu item text">
-      Hide Playlist button
-    </message>
     <message name="IDS_PLAYLIST_TRY_IT" desc="Onboarding try it button text">
       Try it!
     </message>
@@ -3889,9 +3886,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_PLAYLIST_DELETE_ITEM" desc="Playlist menu text">
       Delete
-    </message>
-    <message name="IDS_PLAYLIST_TIME_TEXT" desc="Playlist duration time text" translateable="false">
-      <ph name="TIME_TEXT">%1$s</ph>:
     </message>
     <message name="IDS_PLAYLIST_PLEASE_SELECT_ITEMS" desc="Playlist select items error message text">
       Please select items first
