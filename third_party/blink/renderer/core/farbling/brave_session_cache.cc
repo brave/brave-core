@@ -144,7 +144,8 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
     return worker_or_worklet->ContentSettingsClient();
   }
 
-  base::debug::Alias(context);
+  base::debug::StackObjectCopy<ExecutionContext> context_copy(context);
+  base::debug::Alias(&context_copy);
   NOTREACHED() << "Unhandled ExecutionContext type";
 }
 
@@ -450,7 +451,9 @@ BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
           settings_client->GetBraveShieldsSettings(webcompat_content_settings);
       // https://github.com/brave/brave-browser/issues/41724 debug.
       if (!shields_settings) {
-        base::debug::Alias(settings_client);
+        base::debug::StackObjectCopy<blink::WebContentSettingsClient>
+            settings_client_copy(settings_client);
+        base::debug::Alias(&settings_client_copy);
         base::debug::DumpWithoutCrashing();
         return default_shields_settings_->farbling_level;
       }
