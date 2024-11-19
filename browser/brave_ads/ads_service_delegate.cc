@@ -271,7 +271,7 @@ void AdsServiceDelegate::CloseNotificationAd(const std::string& id,
     const GURL url =
         GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
     BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
-        placement_id, url);
+        id, url);
 #endif
 
     // We cannot store a raw_ptr to NotificationDisplayService due to upstream

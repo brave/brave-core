@@ -185,7 +185,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 - (BOOL)isServiceRunning {
   return adsClientNotifier != nil && adsService != nil &&
-         adsService->IsRunning();
+         adsService->IsInitialized();
 }
 
 + (BOOL)shouldAlwaysRunService {

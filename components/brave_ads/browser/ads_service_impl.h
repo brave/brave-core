@@ -94,9 +94,6 @@ class AdsServiceImpl final : public AdsService,
 
   ~AdsServiceImpl() override;
 
-  void AddObserver(AdsServiceObserver* observer) override;
-  void RemoveObserver(AdsServiceObserver* observer) override;
-
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;

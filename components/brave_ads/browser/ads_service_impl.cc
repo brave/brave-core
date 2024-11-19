@@ -232,18 +232,6 @@ AdsServiceImpl::AdsServiceImpl(
 
 AdsServiceImpl::~AdsServiceImpl() = default;
 
-void AdsServiceImpl::AddObserver(AdsServiceObserver* const observer) {
-  CHECK(observer);
-
-  observers_.AddObserver(observer);
-}
-
-void AdsServiceImpl::RemoveObserver(AdsServiceObserver* const observer) {
-  CHECK(observer);
-
-  observers_.RemoveObserver(observer);
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 bool AdsServiceImpl::IsBatAdsServiceBound() const {
