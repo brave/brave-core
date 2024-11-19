@@ -32,6 +32,13 @@ mojom::PlaylistPtr ConvertValueToPlaylist(
     const base::Value::Dict& items_dict);
 base::Value::Dict ConvertPlaylistToValue(const mojom::PlaylistPtr& playlist);
 
+#if BUILDFLAG(IS_ANDROID)
+mojom::HlsContentPtr ConvertValueToHlsContent(const base::Value::Dict& dict);
+
+base::Value::Dict ConvertHlsContentToValue(
+    const mojom::HlsContentPtr& hls_content);
+#endif  // BUILDFLAG(IS_ANDROID)
+
 }  // namespace playlist
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_TYPE_CONVERTER_H_
