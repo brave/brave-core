@@ -18,7 +18,6 @@
 #include "base/values.h"
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
-#include "brave/components/playlist/browser/playlist_streaming.h"
 #include "brave/components/playlist/browser/playlist_thumbnail_downloader.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -26,6 +25,7 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "brave/components/playlist/browser/playlist_streaming.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
@@ -112,16 +112,6 @@ class PlaylistService : public KeyedService,
   PlaylistService(const PlaylistService&) = delete;
   PlaylistService& operator=(const PlaylistService&) = delete;
 
-#if BUILDFLAG(IS_ANDROID)
-  mojo::PendingRemote<mojom::PlaylistService> MakeRemote();
-  void AddHlsContent(mojom::HlsContentPtr hls_content) override;
-  void GetAllHlsContent(GetAllHlsContentCallback callback) override;
-  std::vector<mojom::HlsContentPtr> GetAllHlsContent();
-  void GetFirstHlsContent(GetFirstHlsContentCallback callback) override;
-  mojom::HlsContentPtr GetFirstHlsContent();
-  void RemoveHlsContent(const std::string& playlist_item_id) override;
-#endif  // BUILDFLAG(IS_ANDROID)
-
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
 
   void DownloadThumbnail(const GURL& url,
@@ -175,9 +165,6 @@ class PlaylistService : public KeyedService,
   void UpdateItem(mojom::PlaylistItemPtr item) override;
   void UpdateItemLastPlayedPosition(const std::string& playlist_item_id,
                                     int32_t last_played_position) override;
-  void UpdateItemHlsMediaFilePath(const std::string& playlist_item_id,
-                                  const std::string& hls_media_file_path,
-                                  int64_t updated_file_size) override;
   void RecoverLocalDataForItem(
       const std::string& item_id,
       bool update_media_src_before_recovery,
@@ -207,6 +194,8 @@ class PlaylistService : public KeyedService,
 
   bool HasPlaylistItem(const std::string& id) const;
 
+#if BUILDFLAG(IS_ANDROID)
+  mojo::PendingRemote<mojom::PlaylistService> MakeRemote();
   void RequestStreamingQuery(
       const std::string& query_id,
       const std::string& url,
@@ -214,9 +203,19 @@ class PlaylistService : public KeyedService,
       mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) override;
   void ClearAllQueries() override;
   void CancelQuery(const std::string& query_id) override;
+  void UpdateItemHlsMediaFilePath(const std::string& playlist_item_id,
+                                  const std::string& hls_media_file_path,
+                                  int64_t updated_file_size) override;
+  void AddHlsContent(const std::string& playlist_item_id) override;
+  void GetAllHlsContent(GetAllHlsContentCallback callback) override;
+  std::vector<std::string> GetAllHlsContent();
+  void GetFirstHlsContent(GetFirstHlsContentCallback callback) override;
+  std::string GetFirstHlsContent();
+  void RemoveHlsContent(const std::string& playlist_item_id) override;
   void OnResponseStarted(const std::string& url, const int64_t content_length);
   void OnDataReceived(api_request_helper::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
+#endif  // BUILDFLAG(IS_ANDROID)
 
   bool playlist_enabled() const { return *enabled_pref_; }
 
@@ -373,13 +372,10 @@ class PlaylistService : public KeyedService,
   const base::FilePath base_dir_;
 
   mojo::RemoteSet<mojom::PlaylistServiceObserver> observers_;
-  mojo::Remote<mojom::PlaylistStreamingObserver> streaming_observer_;
 
   std::unique_ptr<PlaylistMediaFileDownloadManager>
       media_file_download_manager_;
   std::unique_ptr<PlaylistThumbnailDownloader> thumbnail_downloader_;
-
-  std::unique_ptr<PlaylistStreaming> playlist_streaming_;
 
   std::unique_ptr<PlaylistBackgroundWebContentses> background_web_contentses_;
 
@@ -394,6 +390,8 @@ class PlaylistService : public KeyedService,
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;
+  std::unique_ptr<PlaylistStreaming> playlist_streaming_;
+  mojo::Remote<mojom::PlaylistStreamingObserver> streaming_observer_;
 #endif  // BUILDFLAG(IS_ANDROID)
 
   base::WeakPtrFactory<PlaylistService> weak_factory_{this};

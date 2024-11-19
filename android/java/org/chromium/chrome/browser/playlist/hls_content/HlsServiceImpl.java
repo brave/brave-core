@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
@@ -20,17 +21,14 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
-import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository;
 import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel;
-import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentQueueModel;
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel;
-import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaUtils;
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 
 import java.util.Queue;
@@ -70,136 +68,105 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
-                    PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
-                    if (playlistRepository == null) {
+                    if (mPlaylistService == null) {
                         return;
                     }
-                    HlsContentQueueModel hlsContentQueueModel =
-                            playlistRepository.getFirstHlsContentQueueModel();
-                    if (hlsContentQueueModel == null || mPlaylistService == null) {
-                        return;
-                    }
-                    String playlistItemId = hlsContentQueueModel.getPlaylistItemId();
-                    mPlaylistService.getPlaylistItem(
-                            playlistItemId,
-                            playlistItem -> {
-                                if (playlistItem == null) {
-                                    PostTask.postTask(
-                                            TaskTraits.USER_VISIBLE_MAY_BLOCK,
-                                            () -> {
-                                                removeContentAndStartNextDownload(playlistItemId);
-                                            });
-                                }
-                                currentDownloadingPlaylistItemId = playlistItemId;
-                                HlsUtils.getManifestFile(
-                                        mContext,
-                                        mPlaylistService,
-                                        playlistItem,
-                                        new HlsUtils.HlsManifestDelegate() {
-                                            @Override
-                                            public void onHlsManifestCompleted(
-                                                    Queue<Segment> segmentsQueue) {
-                                                int total = segmentsQueue.size();
-                                                String hlsMediaFilePath =
-                                                        HlsUtils.getHlsMediaFilePath(playlistItem);
-                                                HlsUtils.deleteFileIfExist(hlsMediaFilePath);
-                                                HlsUtils.getHLSFile(
-                                                        mContext,
-                                                        mPlaylistService,
-                                                        playlistItem,
-                                                        segmentsQueue,
-                                                        new HlsUtils.HlsFileDelegate() {
-                                                            @Override
-                                                            public void onProgress(int sofar) {
-                                                                if (total > 0) {
-                                                                    PlaylistUtils
-                                                                            .updateHlsContentProgress(
-                                                                                    new HlsContentProgressModel(
-                                                                                            playlistItem
-                                                                                                    .id,
-                                                                                            (long)
-                                                                                                    total,
-                                                                                            (long)
-                                                                                                    sofar,
-                                                                                            String
-                                                                                                    .valueOf(
-                                                                                                            (sofar
-                                                                                                                            * 100)
-                                                                                                                    / total)));
-                                                                }
-                                                            }
 
-                                                            @Override
-                                                            public void onReady(String mediaPath) {
-                                                                PostTask.postTask(
-                                                                        TaskTraits
-                                                                                .BEST_EFFORT_MAY_BLOCK,
-                                                                        () -> {
-                                                                            long updatedFileSize =
-                                                                                    MediaUtils
-                                                                                            .getFileSizeFromUri(
-                                                                                                    mContext,
-                                                                                                    Uri
-                                                                                                            .parse(
-                                                                                                                    "file://"
-                                                                                                                            + mediaPath));
-                                                                            mPlaylistService
-                                                                                    .updateItemHlsMediaFilePath(
-                                                                                            playlistItem
-                                                                                                    .id,
-                                                                                            mediaPath,
-                                                                                            updatedFileSize);
-                                                                            addNewPlaylistItemModel(
-                                                                                    playlistItem
-                                                                                            .id);
-                                                                            removeContentAndStartNextDownload(
-                                                                                    playlistItem
-                                                                                            .id);
-                                                                        });
-                                                            }
+                    mPlaylistService.getFirstHlsContent(
+                            playlistItemId -> {
+                                if (TextUtils.isEmpty(playlistItemId)) {
+                                    return;
+                                }
+
+                                mPlaylistService.getPlaylistItem(
+                                        playlistItemId,
+                                        playlistItem -> {
+                                            if (playlistItem == null) {
+                                                PostTask.postTask(
+                                                        TaskTraits.USER_VISIBLE_MAY_BLOCK,
+                                                        () -> {
+                                                            removeContentAndStartNextDownload(
+                                                                    playlistItemId);
                                                         });
                                             }
+                                            currentDownloadingPlaylistItemId = playlistItemId;
+                                            getManifestFile(playlistItem);
                                         });
                             });
                 });
     }
 
+    private void getManifestFile(PlaylistItem playlistItem) {
+        HlsUtils.getManifestFile(
+                mContext,
+                mPlaylistService,
+                playlistItem,
+                new HlsUtils.HlsManifestDelegate() {
+                    @Override
+                    public void onHlsManifestCompleted(Queue<Segment> segmentsQueue) {
+                        String hlsMediaFilePath = HlsUtils.getHlsMediaFilePath(playlistItem);
+                        HlsUtils.deleteFileIfExist(hlsMediaFilePath);
+                        getHlsFile(playlistItem, segmentsQueue);
+                    }
+                });
+    }
+
+    private void getHlsFile(PlaylistItem playlistItem, Queue<Segment> segmentsQueue) {
+        int total = segmentsQueue.size();
+        HlsUtils.getHLSFile(
+                mContext,
+                mPlaylistService,
+                playlistItem,
+                segmentsQueue,
+                new HlsUtils.HlsFileDelegate() {
+                    @Override
+                    public void onProgress(int soFar) {
+                        if (total > 0) {
+                            PlaylistUtils.updateHlsContentProgress(
+                                    new HlsContentProgressModel(
+                                            playlistItem.id,
+                                            (long) total,
+                                            (long) soFar,
+                                            String.valueOf((soFar * 100) / total)));
+                        }
+                    }
+
+                    @Override
+                    public void onReady(String mediaPath) {
+                        PostTask.postTask(
+                                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                                () -> {
+                                    long updatedFileSize =
+                                            MediaUtils.getFileSizeFromUri(
+                                                    mContext, Uri.parse("file://" + mediaPath));
+                                    mPlaylistService.updateItemHlsMediaFilePath(
+                                            playlistItem.id, mediaPath, updatedFileSize);
+                                    addNewPlaylistItemModel(playlistItem.id);
+                                    removeContentAndStartNextDownload(playlistItem.id);
+                                });
+                    }
+                });
+    }
+
     private void removeContentAndStartNextDownload(String playlistItemId) {
-        PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
-        if (playlistRepository == null) {
-            return;
-        }
-        playlistRepository.deleteHlsContentQueueModel(playlistItemId);
+        mPlaylistService.removeHlsContent(playlistItemId);
         currentDownloadingPlaylistItemId = "";
-        if (playlistRepository.getFirstHlsContentQueueModel() != null) {
-            startHlsContentFromQueue();
-        } else {
-            getService().stopSelf();
-        }
+        mPlaylistService.getFirstHlsContent(
+                firstPlaylistItemId -> {
+                    if (!TextUtils.isEmpty(firstPlaylistItemId)) {
+                        startHlsContentFromQueue();
+                    } else {
+                        getService().stopSelf();
+                    }
+                });
     }
 
     private void addNewPlaylistItemModel(String playlistItemId) {
         mPlaylistService.getPlaylistItem(
                 playlistItemId,
                 playlistItem -> {
-                    PlaylistItemModel playlistItemModel =
-                            new PlaylistItemModel(
-                                    playlistItem.id,
-                                    "default",
-                                    playlistItem.name,
-                                    playlistItem.pageSource.url,
-                                    playlistItem.mediaPath.url,
-                                    playlistItem.hlsMediaPath.url,
-                                    playlistItem.mediaSource.url,
-                                    playlistItem.thumbnailPath.url,
-                                    playlistItem.author,
-                                    playlistItem.duration,
-                                    playlistItem.lastPlayedPosition,
-                                    playlistItem.mediaFileBytes,
-                                    playlistItem.cached,
-                                    false);
                     if (HlsUtils.isVideoPlaybackServiceRunning()) {
-                        VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
+                        // VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItem);
                     }
                 });
     }

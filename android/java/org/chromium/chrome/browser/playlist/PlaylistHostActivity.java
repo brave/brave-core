@@ -29,7 +29,6 @@ import org.chromium.chrome.browser.playlist.kotlin.PlaylistViewModel;
 import org.chromium.chrome.browser.playlist.kotlin.fragment.AllPlaylistFragment;
 import org.chromium.chrome.browser.playlist.kotlin.fragment.PlaylistFragment;
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener;
-import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository;
 import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel;
 import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel;
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel;
@@ -469,12 +468,12 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
-                    PlaylistRepository playlistRepository =
-                            new PlaylistRepository(PlaylistHostActivity.this);
-                    if (playlistRepository != null
-                            && playlistRepository.isHlsContentQueueModelExists(playlistItemId)) {
-                        playlistRepository.deleteHlsContentQueueModel(playlistItemId);
-                    }
+                    // PlaylistRepository playlistRepository =
+                    //         new PlaylistRepository(PlaylistHostActivity.this);
+                    // if (playlistRepository != null
+                    //         && playlistRepository.isHlsContentQueueModelExists(playlistItemId)) {
+                    //     playlistRepository.deleteHlsContentQueueModel(playlistItemId);
+                    // }
                     if (HlsServiceImpl.currentDownloadingPlaylistItemId.equals(playlistItemId)) {
                         HlsServiceImpl.currentDownloadingPlaylistItemId = "";
                         mPlaylistService.cancelQuery(playlistItemId);

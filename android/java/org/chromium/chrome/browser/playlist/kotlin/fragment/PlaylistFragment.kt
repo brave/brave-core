@@ -40,8 +40,6 @@ import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemClickLis
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.listener.StartDragListener
-import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
-import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentQueueModel
 import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
@@ -295,11 +293,11 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
                                 )
                             }
                         }
-                    } */
+                    }
                     if (isFirstRun) {
                         PlaylistUtils.checkAndStartHlsDownload(requireContext())
                         isFirstRun = false
-                    }
+                    } */
 
                     activity?.runOnUiThread {
                         if (totalFileSize > 0) {

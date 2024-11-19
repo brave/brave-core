@@ -85,6 +85,8 @@ struct PlaylistItem {
   // Playlists that contain this item. Could have multiple |Playlist| in case
   // user copied this item to another list.
   array<string> parents;
+  [EnableIf=is_android]
+  bool is_selected;
 };
 
 // Used by the web UI to bootstrap bidirectional communication.
@@ -127,8 +129,6 @@ interface PlaylistService {
   // actors that update the item.
   UpdateItem(PlaylistItem item);
   UpdateItemLastPlayedPosition(string playlist_item_id, int32 last_played_position);
-  UpdateItemHlsMediaFilePath(string playlist_item_id, string media_file_path,
-    int64 updated_file_size);
 
   // Try downloading media files again. Returns PlaylistItem after trying
   // recovery. If it succeeded, |cached| state of the return item would be true.
@@ -152,19 +152,28 @@ interface PlaylistService {
   // Removes all stored data and resets preferences to default values.
   ResetAll();
 
+  [EnableIf=is_android]
   RequestStreamingQuery(string query_id, string url,string method,
    pending_remote<PlaylistStreamingObserver> observer);
+
+  [EnableIf=is_android]
   ClearAllQueries();
+
+  [EnableIf=is_android]
   CancelQuery(string query_id);
 
   [EnableIf=is_android]
-  AddHlsContent(HlsContent hls_content);
+  UpdateItemHlsMediaFilePath(string playlist_item_id, string media_file_path,
+    int64 updated_file_size);
 
   [EnableIf=is_android]
-  GetAllHlsContent() => (array<HlsContent> hls_contents);
+  AddHlsContent(string playlist_item_id);
 
   [EnableIf=is_android]
-  GetFirstHlsContent() => (HlsContent hls_content);
+  GetAllHlsContent() => (array<string> hls_contents);
+
+  [EnableIf=is_android]
+  GetFirstHlsContent() => (string hls_content);
 
   [EnableIf=is_android]
   RemoveHlsContent(string playlist_item_id);
