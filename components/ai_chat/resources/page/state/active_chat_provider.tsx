@@ -17,12 +17,16 @@ export interface SelectedChatDetails {
   callbackRouter: API.ConversationUICallbackRouter
 }
 
-type Children = (details: SelectedChatDetails) => JSX.Element
 
 const updateSelectedConversation = (selectedId: string | undefined) => {
   window.location.href = `/${selectedId ?? ''}`
 }
 
+// Note: We render children using the RenderProps pattern, so we can provide
+// different strategies for deciding the ActiveConversation (such as from the
+// URL). This will be useful when we move the content into an iframe.
+// https://github.com/brave/brave-core/pull/26050#issuecomment-2418561971
+type Children = (details: SelectedChatDetails) => JSX.Element
 export function ActiveChatProviderFromUrl(props: {
   children: Children
 }) {
