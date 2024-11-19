@@ -468,12 +468,6 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 () -> {
-                    // PlaylistRepository playlistRepository =
-                    //         new PlaylistRepository(PlaylistHostActivity.this);
-                    // if (playlistRepository != null
-                    //         && playlistRepository.isHlsContentQueueModelExists(playlistItemId)) {
-                    //     playlistRepository.deleteHlsContentQueueModel(playlistItemId);
-                    // }
                     if (HlsServiceImpl.currentDownloadingPlaylistItemId.equals(playlistItemId)) {
                         HlsServiceImpl.currentDownloadingPlaylistItemId = "";
                         mPlaylistService.cancelQuery(playlistItemId);

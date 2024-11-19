@@ -98,10 +98,6 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
     private lateinit var mPlaylistView: View
     private var isFirstRun: Boolean = true
 
-    /* private val mPlaylistRepository: PlaylistRepository by lazy {
-        PlaylistRepository(requireContext())
-    } */
-
     private fun initializeBrowser() {
         mBrowserFuture =
             MediaBrowser.Builder(
@@ -279,25 +275,6 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
                             totalFileSize += it.mediaFileBytes
                         }
                     }
-                    /* mPlaylistModel.items.forEach { playlistItemModel ->
-                        if (!PlaylistUtils.isPlaylistItemCached(playlistItemModel)) {
-                            val isDownloadQueueModelExists =
-                                mPlaylistRepository.isHlsContentQueueModelExists(playlistItemModel.id)
-                                    ?: false
-                            if (playlistItemModel.isCached && MediaUtils.isHlsFile(playlistItemModel.mediaPath) && !isDownloadQueueModelExists) {
-                                mPlaylistRepository.insertHlsContentQueueModel(
-                                    HlsContentQueueModel(
-                                        playlistItemModel.id,
-                                        HlsContentQueueModel.HlsContentStatus.NOT_READY.name
-                                    )
-                                )
-                            }
-                        }
-                    }
-                    if (isFirstRun) {
-                        PlaylistUtils.checkAndStartHlsDownload(requireContext())
-                        isFirstRun = false
-                    } */
 
                     activity?.runOnUiThread {
                         if (totalFileSize > 0) {
