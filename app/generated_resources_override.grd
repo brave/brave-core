@@ -401,12 +401,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_win or is_linux">
         </if>
 
-      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Subtitle for the Notifications permission prompt, shown when a user clicks on a site's notifications permission request that is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
-        Most profiles block notifications from this site
-      </message>
-      <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Subtitle for the Geolocation permission prompt, shown when a user clicks on a site's geolocation permission request that is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
-        Most profiles block sharing precise location for this site
-      </message>
       <if expr="toolkit_views">
         </if>
 
