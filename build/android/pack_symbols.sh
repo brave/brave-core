@@ -7,8 +7,8 @@
 
 set -euo pipefail
 
-mkdir -p "$1"
+mkdir -p "${1:?}"
 
 shopt -s nullglob
 
-tar -czvf "$2" ./*.so apks android_clang_*/*.so android_clang_*/lib.unstripped lib.unstripped android_chrome_versions.txt
+tar -czvf "${2:?}" ./*.so apks android_clang_*/*.so android_clang_*/lib.unstripped lib.unstripped android_chrome_versions.txt
