@@ -237,7 +237,7 @@ class AdsServiceImpl final : public AdsService,
 
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
-      MaybeServeInlineContentAdAsDictCallback callback) override;
+      MaybeServeInlineContentAdCallback callback) override;
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

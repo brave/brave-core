@@ -31,6 +31,7 @@
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
@@ -620,8 +621,9 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
   }
   auto on_ad_received = base::BindOnce(
       [](GetDisplayAdCallback callback, const std::string& dimensions,
-         std::optional<base::Value::Dict> ad_data) {
-        if (!ad_data) {
+         const std::optional<brave_ads::InlineContentAdInfo>&
+             inline_content_ad) {
+        if (!inline_content_ad) {
           VLOG(1) << "GetDisplayAd: no ad";
           std::move(callback).Run(nullptr);
           return;
@@ -632,17 +634,15 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
         // receive and send to callback the actual typed mojom struct from
         // brave_ads?
         auto ad = mojom::DisplayAd::New();
-        ad->uuid = *ad_data->FindString("uuid");
-        ad->creative_instance_id = *ad_data->FindString("creativeInstanceId");
-        if (const auto* value = ad_data->FindString("ctaText")) {
-          ad->cta_text = *value;
-        }
-        ad->dimensions = *ad_data->FindString("dimensions");
-        ad->title = *ad_data->FindString("title");
-        ad->description = *ad_data->FindString("description");
-        ad->image = mojom::Image::NewPaddedImageUrl(
-            GURL(*ad_data->FindString("imageUrl")));
-        ad->target_url = GURL(*ad_data->FindString("targetUrl"));
+        ad->uuid = inline_content_ad->placement_id;
+        ad->creative_instance_id = inline_content_ad->creative_instance_id;
+        ad->cta_text = inline_content_ad->cta_text;
+        ad->dimensions = inline_content_ad->dimensions;
+        ad->title = inline_content_ad->title;
+        ad->description = inline_content_ad->description;
+        ad->image =
+            mojom::Image::NewPaddedImageUrl(inline_content_ad->image_url);
+        ad->target_url = inline_content_ad->target_url;
         std::move(callback).Run(std::move(ad));
       },
       std::move(callback));

@@ -54,7 +54,7 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(void,
               MaybeServeInlineContentAd,
-              (const std::string&, MaybeServeInlineContentAdAsDictCallback));
+              (const std::string&, MaybeServeInlineContentAdCallback));
   MOCK_METHOD(void,
               TriggerInlineContentAdEvent,
               (const std::string&,
