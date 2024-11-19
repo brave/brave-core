@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
@@ -19,6 +18,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

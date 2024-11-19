@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_CALLBACK_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_CALLBACK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVICE_ADS_SERVICE_CALLBACK_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVICE_ADS_SERVICE_CALLBACK_H_
 
 #include <optional>
 #include <string>
@@ -37,4 +37,4 @@ using ToggleReactionCallback = base::OnceCallback<void(bool success)>;
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_CALLBACK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_SERVICE_ADS_SERVICE_CALLBACK_H_
