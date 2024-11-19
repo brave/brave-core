@@ -35,7 +35,6 @@ import org.chromium.playlist.mojom.PlaylistService
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
 import org.chromium.chrome.browser.flags.ChromeFeatureList
-import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaItemUtil
@@ -59,9 +58,9 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
     private val mScope = CoroutineScope(Job() + Dispatchers.IO)
     protected var mPlaylistService: PlaylistService? = null
 
-    private val mPlaylistRepository: PlaylistRepository by lazy {
+    /*private val mPlaylistRepository: PlaylistRepository by lazy {
         PlaylistRepository(applicationContext)
-    }
+    }*/
 
     companion object {
         private lateinit var mPlayer: ExoPlayer

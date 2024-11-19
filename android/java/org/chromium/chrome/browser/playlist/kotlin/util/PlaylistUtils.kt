@@ -18,11 +18,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistMenuOnboardingActivity
-import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
 import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
 import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
+import org.chromium.chrome.browser.util.ServiceUtils
+import org.chromium.chrome.browser.playlist.hls_content.HlsService
 
 object PlaylistUtils {
     private val TAG: String = "Playlist/" + this::class.java.simpleName
@@ -137,17 +138,9 @@ object PlaylistUtils {
     @JvmStatic
     fun checkAndStartHlsDownload(context: Context) {
         try {
-            val playlistRepository = PlaylistRepository(context)
-            val hlsServiceClass =
-                Class.forName("org.chromium.chrome.browser.playlist.hls_content.HlsService")
-            if (playlistRepository.getAllHlsContentQueueModel()
-                    ?.isNotEmpty() == true && !isServiceRunning(
-                    context, hlsServiceClass
-                )
-            ) {
-                context.startService(
-                    Intent(context, hlsServiceClass)
-                )
+            val hlsServiceClass = HlsService::class.java
+            if (!ServiceUtils.isServiceRunning(context, hlsServiceClass)) {
+                context.startService(Intent(context, hlsServiceClass))
             }
         } catch (ex: Exception) {
             Log.e(TAG, "hlsServiceClass" + ex.message)

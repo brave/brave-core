@@ -455,6 +455,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/KeyboardVisibilityHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/LiveDataUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/ServiceUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/SharedPreferencesHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TouchDelegateComposite.java",
