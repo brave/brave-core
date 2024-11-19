@@ -171,14 +171,20 @@ void OAIAPIClient::OnQueryDataReceived(
 
   const base::Value::List* choices = result->GetDict().FindList("choices");
 
-  if (!choices) {
-    DVLOG(2) << "No choices list found in response.";
+  if (!choices || choices->empty()) {
+    VLOG(2) << "No choices list found in response, or it is empty.";
     return;
   }
 
   if (choices->front().is_dict()) {
     const base::Value::Dict* delta =
         choices->front().GetDict().FindDict("delta");
+
+    if (!delta) {
+      VLOG(2) << "No delta info found in first completion choice.";
+      return;
+    }
+
     const std::string* content = delta->FindString("content");
 
     if (content) {
