@@ -2639,10 +2639,15 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onKeyboardOpened(int keyboardHeight) {
-        if (getBraveToolbarLayout().isUrlBarFocused()
-                && !getBraveToolbarLayout().getLocationBarQuery().isEmpty()) {
-            showQuickActionSearchEnginesView(keyboardHeight);
-        }
+        runOnUiThread(
+                () -> {
+                    if (!isFinishing()
+                            && !isDestroyed()
+                            && getBraveToolbarLayout().isUrlBarFocused()
+                            && !getBraveToolbarLayout().getLocationBarQuery().isEmpty()) {
+                        showQuickActionSearchEnginesView(keyboardHeight);
+                    }
+                });
     }
 
     @Override
