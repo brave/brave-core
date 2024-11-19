@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/observer_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -64,8 +65,8 @@ class AdsService : public KeyedService {
 
   AdsService::Delegate* delegate() { return delegate_.get(); }
 
-  virtual void AddObserver(AdsServiceObserver* observer) = 0;
-  virtual void RemoveObserver(AdsServiceObserver* observer) = 0;
+  void AddObserver(AdsServiceObserver* observer);
+  void RemoveObserver(AdsServiceObserver* observer);
 
   // Returns true if a browser upgrade is required to serve ads.
   virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
@@ -297,6 +298,8 @@ class AdsService : public KeyedService {
 
  protected:
   std::unique_ptr<Delegate> delegate_;
+
+  base::ObserverList<AdsServiceObserver> observers_;
 };
 
 }  // namespace brave_ads

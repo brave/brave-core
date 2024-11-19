@@ -7,11 +7,25 @@
 
 #include <utility>
 
+#include "base/check.h"
+
 namespace brave_ads {
 
 AdsService::AdsService(std::unique_ptr<Delegate> delegate)
     : delegate_(std::move(delegate)) {}
 
 AdsService::~AdsService() = default;
+
+void AdsService::AddObserver(AdsServiceObserver* const observer) {
+  CHECK(observer);
+
+  observers_.AddObserver(observer);
+}
+
+void AdsService::RemoveObserver(AdsServiceObserver* const observer) {
+  CHECK(observer);
+
+  observers_.RemoveObserver(observer);
+}
 
 }  // namespace brave_ads

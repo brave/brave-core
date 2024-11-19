@@ -8,14 +8,15 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/threading/sequence_bound.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
-#include "components/keyed_service/core/keyed_service.h"
 
 class PrefService;
 
@@ -29,7 +30,7 @@ class Ads;
 class AdsClient;
 class Database;
 
-class AdsServiceImplIOS : public KeyedService {
+class AdsServiceImplIOS : public AdsService {
  public:
   explicit AdsServiceImplIOS(PrefService* prefs);
 
@@ -41,7 +42,7 @@ class AdsServiceImplIOS : public KeyedService {
 
   ~AdsServiceImplIOS() override;
 
-  bool IsRunning() const;
+  bool IsInitialized() const;
 
   void InitializeAds(const std::string& storage_path,
                      std::unique_ptr<AdsClient> ads_client,
@@ -51,27 +52,8 @@ class AdsServiceImplIOS : public KeyedService {
                      InitializeCallback callback);
   void ShutdownAds(ShutdownCallback callback);
 
-  void ClearData(base::OnceClosure callback);
-
   void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
                         RunDBTransactionCallback callback);
-
-  void GetStatementOfAccounts(GetStatementOfAccountsCallback callback);
-
-  void MaybeServeInlineContentAd(const std::string& dimensions,
-                                 MaybeServeInlineContentAdCallback callback);
-  void TriggerInlineContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::InlineContentAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
-
-  void TriggerNewTabPageAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
-
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback);
   void TriggerNotificationAdEvent(
@@ -79,22 +61,102 @@ class AdsServiceImplIOS : public KeyedService {
       mojom::NotificationAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback);
 
+  // AdsService:
+  bool IsBrowserUpgradeRequiredToServeAds() const override;
+
+  int64_t GetMaximumNotificationAdsPerHour() const override;
+
+  void OnNotificationAdShown(const std::string& placement_id) override;
+  void OnNotificationAdClosed(const std::string& placement_id,
+                              bool by_user) override;
+  void OnNotificationAdClicked(const std::string& placement_id) override;
+
+  void ClearData(base::OnceClosure callback) override;
+
+  void AddBatAdsObserver(mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
+                             bat_ads_observer_pending_remote) override;
+
+  void GetDiagnostics(GetDiagnosticsCallback callback) override;
+
+  void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
+
+  void MaybeServeInlineContentAd(
+      const std::string& dimensions,
+      MaybeServeInlineContentAdCallback callback) override;
+  void TriggerInlineContentAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::InlineContentAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) override;
+
+  std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAdForDisplay()
+      override;
+  void PrefetchNewTabPageAd() override;
+  void OnFailedToPrefetchNewTabPageAd(
+      const std::string& placement_id,
+      const std::string& creative_instance_id) override;
+  void TriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::NewTabPageAdEventType mojom_ad_event_type,
+      TriggerAdEventCallback callback) override;
+
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
       mojom::PromotedContentAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
+      TriggerAdEventCallback callback) override;
 
   void MaybeGetSearchResultAd(const std::string& placement_id,
-                              MaybeGetSearchResultAdCallback callback);
+                              MaybeGetSearchResultAdCallback callback) override;
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
+      TriggerAdEventCallback callback) override;
 
   void PurgeOrphanedAdEventsForType(
       mojom::AdType mojom_ad_type,
-      PurgeOrphanedAdEventsForTypeCallback callback);
+      PurgeOrphanedAdEventsForTypeCallback callback) override;
+
+  void GetAdHistory(base::Time from_time,
+                    base::Time to_time,
+                    GetAdHistoryForUICallback callback) override;
+
+  void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
+                    ToggleReactionCallback callback) override;
+  void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
+                       ToggleReactionCallback callback) override;
+  void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
+                         ToggleReactionCallback callback) override;
+  void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
+                            ToggleReactionCallback callback) override;
+  void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
+                    ToggleReactionCallback callback) override;
+  void ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
+                                   ToggleReactionCallback callback) override;
+
+  void NotifyTabTextContentDidChange(int32_t tab_id,
+                                     const std::vector<GURL>& redirect_chain,
+                                     const std::string& text) override;
+  void NotifyTabHtmlContentDidChange(int32_t tab_id,
+                                     const std::vector<GURL>& redirect_chain,
+                                     const std::string& html) override;
+  void NotifyTabDidStartPlayingMedia(int32_t tab_id) override;
+  void NotifyTabDidStopPlayingMedia(int32_t tab_id) override;
+  void NotifyTabDidChange(int32_t tab_id,
+                          const std::vector<GURL>& redirect_chain,
+                          bool is_new_navigation,
+                          bool is_restoring,
+                          bool is_visible) override;
+  void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
+  void NotifyDidCloseTab(int32_t tab_id) override;
+
+  void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
+
+  void NotifyBrowserDidBecomeActive() override;
+  void NotifyBrowserDidResignActive() override;
+
+  void NotifyDidSolveAdaptiveCaptcha() override;
 
  private:
   // KeyedService:
