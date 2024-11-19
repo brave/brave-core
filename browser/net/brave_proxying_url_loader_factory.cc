@@ -467,12 +467,9 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
     for (auto& set_header : set_headers) {
       std::optional<std::string> header_value =
           request_.headers.GetHeader(set_header);
-      if (header_value) {
-        pending_follow_redirect_params_->modified_headers.SetHeader(
-            set_header, *header_value);
-      } else {
-        NOTREACHED_IN_MIGRATION();
-      }
+      CHECK(header_value);
+      pending_follow_redirect_params_->modified_headers.SetHeader(
+          set_header, *header_value);
     }
 
     if (target_loader_.is_bound()) {

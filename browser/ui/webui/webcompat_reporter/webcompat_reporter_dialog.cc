@@ -75,8 +75,7 @@ WebcompatReporterDialogDelegate::~WebcompatReporterDialogDelegate() = default;
 ui::mojom::ModalType WebcompatReporterDialogDelegate::GetDialogModalType()
     const {
   // Not used, returning dummy value.
-  NOTREACHED_IN_MIGRATION();
-  return ui::mojom::ModalType::kWindow;
+  NOTREACHED();
 }
 
 std::u16string WebcompatReporterDialogDelegate::GetDialogTitle() const {
