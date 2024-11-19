@@ -841,6 +841,7 @@ enum SquidErrorType {
 struct SquidError {
   string message;
   SquidErrorType type;
+  bool is_insufficient_liquidity;
 };
 
 union SquidTransactionUnion {
