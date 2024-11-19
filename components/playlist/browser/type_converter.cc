@@ -83,13 +83,6 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
   // DO NOT ADD MORE
 }
 
-bool IsHlsContentValueMalformed(const base::Value::Dict& dict) {
-  bool isMalformed = !dict.contains(kHlsContentPlaylistItemIDKey) ||
-                     !dict.contains(kIsPreparedKey);
-  return isMalformed;
-  // DO NOT ADD MORE
-}
-
 void MigratePlaylistOrder(const base::Value::Dict& playlists,
                           base::Value::List& order) {
   base::flat_set<std::string> missing_ids;
@@ -212,6 +205,12 @@ base::Value::Dict ConvertPlaylistToValue(const mojom::PlaylistPtr& playlist) {
 }
 
 #if BUILDFLAG(IS_ANDROID)
+bool IsHlsContentValueMalformed(const base::Value::Dict& dict) {
+  bool isMalformed = !dict.contains(kHlsContentPlaylistItemIDKey) ||
+                     !dict.contains(kIsPreparedKey);
+  return isMalformed;
+}
+
 mojom::HlsContentPtr ConvertValueToHlsContent(const base::Value::Dict& dict) {
   DCHECK(!IsHlsContentValueMalformed(dict));
 
