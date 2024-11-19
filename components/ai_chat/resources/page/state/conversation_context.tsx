@@ -4,13 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
 import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
-import usePromise from '$web-common/usePromise'
 import * as API from '../api/'
-import { useAIChat } from './ai_chat_context'
 import { isLeoModel } from '../model_utils'
 import { loadTimeData } from '$web-common/loadTimeData'
+import { useAIChat } from './ai_chat_context'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -126,10 +124,8 @@ export const getFirstValidAction = (actionList: mojom.ActionGroup[]) =>
 
 export function useActionMenu(
   filter: string,
-  getActions: () => Promise<mojom.ActionGroup[]>
+  actionList: mojom.ActionGroup[]
 ) {
-  const { result: actionList = [] } = usePromise(getActions, [])
-
   return React.useMemo(() => {
     const reg = new RegExp(/^\/\w+/)
 
@@ -309,8 +305,7 @@ export function ConversationContextProvider(
       })
   }, [context.conversationUuid, context.faviconCacheKey])
 
-  const actionList = useActionMenu(context.inputText, () =>
-    Promise.resolve(aiChatContext.allActions)
+  const actionList = useActionMenu(context.inputText, aiChatContext.allActions
   )
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
