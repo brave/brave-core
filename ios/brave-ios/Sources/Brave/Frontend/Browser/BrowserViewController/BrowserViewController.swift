@@ -2171,7 +2171,12 @@ public class BrowserViewController: UIViewController {
     let request: URLRequest?
     if let url = url {
       // If only empty tab present, the url will open in existing tab
-      if tabManager.isBrowserEmptyForCurrentMode {
+      // We also need to respect private browsing mode when opening URLs directly.
+      // If the only tab open is NTP, AND the private mode matches that of the tab request,
+      // only then we can open the tab directly.
+      if tabManager.isBrowserEmptyForCurrentMode
+        && tabManager.privateBrowsingManager.isPrivateBrowsing == isPrivate
+      {
         finishEditingAndSubmit(url)
         return
       }
