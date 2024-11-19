@@ -594,6 +594,9 @@ void PlaylistService::UpdateItemHlsMediaFilePath(
       {url::kFileScheme, url::kStandardSchemeSeparator, hls_media_file_path}));
   item->media_file_bytes = updated_file_size;
   UpdateItem(std::move(item));
+  for (auto& observer : observers_) {
+    observer->OnItemCached(item.Clone());
+  }
 }
 
 void PlaylistService::CreatePlaylist(mojom::PlaylistPtr playlist,
@@ -1117,6 +1120,43 @@ mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
   mojo::PendingRemote<mojom::PlaylistService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
+}
+
+void PlaylistService::AddHlsContent(mojom::HlsContentPtr hls_content) {
+  LOG(ERROR) << "playlist" << hls_content->playlist_item_id;
+  ScopedDictPrefUpdate hls_content_update(prefs_, kHlsContentsPref);
+  hls_content_update->Set(hls_content->playlist_item_id,
+                          ConvertHlsContentToValue(hls_content));
+}
+
+void PlaylistService::GetFirstHlsContent(GetFirstHlsContentCallback callback) {
+  std::move(callback).Run(GetFirstHlsContent());
+}
+
+mojom::HlsContentPtr PlaylistService::GetFirstHlsContent() {
+  std::vector<mojom::HlsContentPtr> hls_contents = GetAllHlsContent();
+  if (hls_contents.empty()) {
+    LOG(ERROR) << __func__ << " No Hlscontent found";
+    return nullptr;
+  }
+  return hls_contents.front().Clone();
+}
+
+void PlaylistService::GetAllHlsContent(GetAllHlsContentCallback callback) {
+  std::move(callback).Run(GetAllHlsContent());
+}
+
+std::vector<mojom::HlsContentPtr> PlaylistService::GetAllHlsContent() {
+  std::vector<mojom::HlsContentPtr> hls_contents;
+  for (const auto it : prefs_->GetDict(kHlsContentsPref)) {
+    hls_contents.push_back(ConvertValueToHlsContent(it.second.GetDict()));
+  }
+  return hls_contents;
+}
+
+void PlaylistService::RemoveHlsContent(const std::string& playlist_item_id) {
+  ScopedDictPrefUpdate hls_contents(prefs_, kHlsContentsPref);
+  hls_contents->Remove(playlist_item_id);
 }
 #endif  // BUILDFLAG(IS_ANDROID)
 

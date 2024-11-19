@@ -56,6 +56,9 @@ inline constexpr char kPlaylistUsedSecondDay[] =
 inline constexpr char kPlaylistUsageWeeklyStorage[] =
     "brave.playlist.usage_weekly_storage";
 
+// Pref to save hls content for android
+inline constexpr char kHlsContentsPref[] = "brave.playlist.hls_contents";
+
 }  // namespace playlist
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PREF_NAMES_H_

@@ -48,6 +48,12 @@ constexpr char kPlaylistItemLastPlayedPositionKey[] = "lastPlayedPosition";
 constexpr char kPlaylistItemParentKey[] = "parent";
 constexpr char kPlaylistItemMediaFileBytesKey[] = "mediaFileBytes";
 
+#if BUILDFLAG(IS_ANDROID)
+// Keys for HlsContent's base:Dict
+constexpr char kHlsContentPlaylistItemIDKey[] = "playlistItemId";
+constexpr char kIsPreparedKey[] = "isPrepared";
+#endif  // BUILDFLAG(IS_ANDROID)
+
 }  // namespace
 
 bool IsItemValueMalformed(const base::Value::Dict& dict) {
@@ -73,6 +79,13 @@ bool IsItemValueMalformed(const base::Value::Dict& dict) {
   // Added 2023 Dec.
   isMalformed = isMalformed || !dict.contains(kPlaylistItemHlsMediaFilePathKey);
 #endif  // BUILDFLAG(IS_ANDROID)
+  return isMalformed;
+  // DO NOT ADD MORE
+}
+
+bool IsHlsContentValueMalformed(const base::Value::Dict& dict) {
+  bool isMalformed = !dict.contains(kHlsContentPlaylistItemIDKey) ||
+                     !dict.contains(kIsPreparedKey);
   return isMalformed;
   // DO NOT ADD MORE
 }
@@ -197,5 +210,27 @@ base::Value::Dict ConvertPlaylistToValue(const mojom::PlaylistPtr& playlist) {
   value.Set(kPlaylistItemsKey, std::move(item_ids));
   return value;
 }
+
+#if BUILDFLAG(IS_ANDROID)
+mojom::HlsContentPtr ConvertValueToHlsContent(const base::Value::Dict& dict) {
+  DCHECK(!IsHlsContentValueMalformed(dict));
+
+  auto hls_content = mojom::HlsContent::New();
+  hls_content->playlist_item_id =
+      *dict.FindString(kHlsContentPlaylistItemIDKey);
+  hls_content->is_prepared = *dict.FindBool(kIsPreparedKey);
+  return hls_content;
+}
+
+base::Value::Dict ConvertHlsContentToValue(
+    const mojom::HlsContentPtr& hls_content) {
+  base::Value::Dict hls_content_value =
+      base::Value::Dict()
+          .Set(kHlsContentPlaylistItemIDKey, hls_content->playlist_item_id)
+          .Set(kIsPreparedKey, hls_content->is_prepared);
+
+  return hls_content_value;
+}
+#endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace playlist
