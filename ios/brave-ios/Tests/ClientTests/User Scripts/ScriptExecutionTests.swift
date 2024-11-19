@@ -186,12 +186,13 @@ final class ScriptExecutionTests: XCTestCase {
     viewController.loadViewIfNeeded()
     viewController.add(userScript: RequestBlockingContentScriptHandler.userScript!)
 
+    // Inject script with XMLHttpRequest into each frame (main frame, about:blank)
     let testURL = Bundle.module.url(forResource: "request-blocking-tests", withExtension: "js")!
     let source = try String(contentsOf: testURL)
     let testScript = WKUserScript(
       source: source,
       injectionTime: .atDocumentEnd,
-      forMainFrameOnly: true,
+      forMainFrameOnly: false,
       in: RequestBlockingContentScriptHandler.scriptSandbox
     )
     viewController.add(userScript: testScript)

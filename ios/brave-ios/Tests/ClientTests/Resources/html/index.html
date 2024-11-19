@@ -105,5 +105,18 @@
         </div>
       </div>
     </div>
+    
+    <h1>Test Local Frames</h1>
+    <script>
+    const onload = () => {
+      const localFrame = document.createElement('iframe');
+      localFrame.id = 'local-iframe';
+      localFrame.src = 'about:blank';
+      localFrame.width = 400;
+      localFrame.height = 400;
+      document.body.appendChild(localFrame);
+    };
+    window.onload = onload;
+    </script>
   </body>
 </html>
