@@ -25,6 +25,7 @@ export interface ConversationContext extends CharCountContext {
   conversationUuid?: string
   conversationHistory: mojom.ConversationTurn[]
   associatedContentInfo?: mojom.SiteInfo
+  isTabAssociated: boolean
   allModels: mojom.Model[]
   currentModel?: mojom.Model
   suggestedQuestions: string[]
@@ -83,6 +84,7 @@ const defaultContext: ConversationContext = {
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
+  isTabAssociated: false,
   setCurrentModel: () => { },
   switchToBasicModel: () => { },
   generateSuggestedQuestions: () => { },
@@ -314,6 +316,14 @@ export function ConversationContextProvider(props: React.PropsWithChildren<Selec
     if (context.conversationUuid === props.selectedConversationId) return
     props.updateSelectedConversationId(context.conversationUuid)
   }, [isVisible, props.updateSelectedConversationId])
+
+  React.useEffect(() => {
+    setPartialContext({ isTabAssociated: props.selectedConversationId === tabAssociatedChatId })
+  }, [props.selectedConversationId])
+
+  React.useEffect(() => {
+    setPartialContext({ isTabAssociated: props.selectedConversationId === tabAssociatedChatId })
+  }, [props.selectedConversationId])
 
   const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 

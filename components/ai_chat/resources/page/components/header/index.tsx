@@ -37,15 +37,14 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
     conversationContext.conversationHistory.length >= 1
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
-  const isTabAssociated = conversationContext.conversationUuid === tabAssociatedChatId
-  const showTitle = !isTabAssociated || aiChatContext.isStandalone
+  const showTitle = !conversationContext.isTabAssociated || aiChatContext.isStandalone
   const canShowFullScreenButton = aiChatContext.isHistoryEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
 
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.pageTitle}>
-          {!isTabAssociated && !aiChatContext.isStandalone && <Button
+          {!conversationContext.isTabAssociated && !aiChatContext.isStandalone && <Button
             kind='plain-faint'
             fab
             onClick={() => location.href = tabAssociatedChatId}
