@@ -179,9 +179,7 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Values(
         // Legacy scenarios
         EndpointTestParams{"https://valid-url.com", true, true},
-        EndpointTestParams{"http://invalid-url.com", false, false},
         EndpointTestParams{"https://localhost:8080", true, true},
-        EndpointTestParams{"invalid-url", false, false},
         EndpointTestParams{"https://", false, false},
         EndpointTestParams{"https://search.brave.com/search?q=foo", true, true},
         // Localhost
@@ -203,22 +201,13 @@ INSTANTIATE_TEST_SUITE_P(
         EndpointTestParams{"http://[fc00::1]", true, false},
         EndpointTestParams{"https://[fe80::1]", true, true},
         EndpointTestParams{"https://[fc00::1]", true, true},
-        // Hostnames ending with .local
-        EndpointTestParams{"http://example.local", true, false},
-        EndpointTestParams{"https://example.local", true, true},
-        EndpointTestParams{"http://subdomain.example.local", true, false},
         // Public IP Addresses
         EndpointTestParams{"http://8.8.8.8", false, false},
         EndpointTestParams{"https://8.8.8.8", true, true},
         EndpointTestParams{"http://1.2.3.4", false, false},
-        // Case Sensitivity
-        EndpointTestParams{"http://example.LOCAL", true, false},
-        EndpointTestParams{"http://example.LoCaL", true, false},
-        EndpointTestParams{"https://example.LoCaL", true, true},
         // Invalid Addresses
         EndpointTestParams{"http://999.999.999.999", false, false},
         EndpointTestParams{"http://invalid-url", false, false},
-        EndpointTestParams{"http://.local", false, false},
         // Edge Cases - Boundary IPs
         EndpointTestParams{"http://192.168.0.0", true, false},
         EndpointTestParams{"http://192.168.255.255", true, false},

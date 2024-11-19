@@ -18,24 +18,6 @@ class GURL;
 namespace ai_chat {
 
 namespace {
-bool IsValidPrivateHost(const GURL& endpoint) {
-  std::string host = endpoint.host();
-
-  // Ensure the hostname is valid (non-empty and doesn't start with a dot)
-  if (host.empty() || host.front() == '.') {
-    return false;
-  }
-
-  std::string lower_host = base::ToLowerASCII(host);
-
-  // Check if the host ends with ".local"
-  if (base::EndsWith(lower_host, ".local", base::CompareCase::SENSITIVE)) {
-    return true;
-  }
-
-  return false;
-}
-
 bool IsValidPrivateIPAddress(const GURL& endpoint) {
   net::IPAddress ip_address;
   // Extract the host
@@ -104,7 +86,7 @@ bool ModelValidator::IsValidEndpoint(const GURL& endpoint,
   // it will not be met when `false` is passed as check_as_private_ip.
   if (check_as_private_ip.value_or(
           ai_chat::features::IsAllowPrivateIPsEnabled())) {
-    if (IsValidPrivateHost(endpoint) || IsValidPrivateIPAddress(endpoint)) {
+    if (IsValidPrivateIPAddress(endpoint)) {
       VLOG(2) << "Allowing private endpoint: " << endpoint.spec();
       return true;
     }
