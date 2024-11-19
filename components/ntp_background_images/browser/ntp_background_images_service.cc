@@ -73,14 +73,15 @@ std::string HandleComponentData(const base::FilePath& installed_dir) {
   if (json_path.empty()) {
     // NTP sponsored component should have photo.json always but anything can
     // happen outside of browser. Handle it gracefully instead of crash.
-    DVLOG(2) << __func__ << ": Can't find valid manifest file in "
-             << installed_dir;
+    VLOG(6) << "Cannot find valid NTP Images component manifest file in: "
+            << installed_dir;
     return contents;
   }
 
   bool success = base::ReadFileToString(json_path, &contents);
   if (!success || contents.empty()) {
-    DVLOG(2) << __func__ << ": cannot read json file " << json_path;
+    VLOG(6) << "Cannot read NTP Images component manifest file at: "
+            << json_path;
     return contents;
   }
 
@@ -121,8 +122,9 @@ void NTPBackgroundImagesService::Init() {
           switches::kNTPSponsoredImagesDataPathForTesting));
   if (!forced_local_path.empty()) {
     test_data_used_ = true;
-    DVLOG(2) << __func__ << ": NTP SI test data will be loaded"
-             << " from local path at: " << forced_local_path.LossyDisplayName();
+    DVLOG(6)
+        << "NTP Sponsored Images test data will be loaded from local path at: "
+        << forced_local_path.LossyDisplayName();
     OnSponsoredComponentReady(false, forced_local_path);
   } else {
     RegisterBackgroundImagesComponent();
@@ -142,9 +144,9 @@ void NTPBackgroundImagesService::Init() {
             switches::kNTPSuperReferralDataPathForTesting));
     if (!forced_local_path_super_referral.empty()) {
       test_data_used_ = true;
-      DVLOG(2) << __func__ << ": NTP SR test data will be loaded"
-               << " from local path at: "
-               << forced_local_path_super_referral.LossyDisplayName();
+      DVLOG(6)
+          << "NTP Super Referral test data will be loaded from local path at: "
+          << forced_local_path_super_referral.LossyDisplayName();
       OnSponsoredComponentReady(false, forced_local_path_super_referral);
     } else {
       CheckSuperReferralComponent();
@@ -166,7 +168,7 @@ void NTPBackgroundImagesService::CheckNTPSIComponentUpdateIfNeeded() {
 
 void NTPBackgroundImagesService::CheckImagesComponentUpdate(
     const std::string& component_id) {
-  DVLOG(2) << __func__ << ": Check NTP Images component update";
+  VLOG(6) << "Checking for updates to the NTP Sponsored Images component";
 
   last_update_check_time_ = base::Time::Now();
   si_update_check_timer_.Start(
@@ -177,7 +179,7 @@ void NTPBackgroundImagesService::CheckImagesComponentUpdate(
 }
 
 void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
-  DVLOG(2) << __func__ << ": Start NTP BI component";
+  VLOG(6) << "Registering NTP Background Images component";
   RegisterNTPBackgroundImagesComponent(
       component_update_service_,
       base::BindRepeating(&NTPBackgroundImagesService::OnComponentReady,
@@ -189,8 +191,8 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 
   const auto data = GetSponsoredImagesComponentData(country_code);
   if (!data) {
-    DVLOG(2) << __func__ << ": Not support NTP SI component for "
-             << country_code;
+    VLOG(6) << "NTP Sponsored Images component is not supported in "
+            << country_code;
     return;
   }
 
@@ -204,7 +206,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   }
   sponsored_images_component_id_ = data->component_id.data();
 
-  DVLOG(2) << __func__ << ": Start NTP SI component";
+  VLOG(6) << "Registering NTP Sponsored Images component";
   RegisterNTPSponsoredImagesComponent(
       component_update_service_, data->component_base64_public_key.data(),
       data->component_id.data(),
@@ -238,7 +240,7 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     const std::string cached_data = local_pref_->GetString(
         prefs::kNewTabPageCachedSuperReferralComponentData);
     if (!cached_data.empty()) {
-      DVLOG(2) << __func__ << ": Initialized SR Data from cache.";
+      DVLOG(6) << "Initialize Super Referral Data from cache.";
       sr_images_data_ = std::make_unique<NTPSponsoredImagesData>(
           cached_data, sr_installed_dir_);
     }
@@ -275,9 +277,8 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
         !local_pref_->GetBoolean(
             prefs::kNewTabPageGetInitialSRComponentInProgress)) {
       MarkThisInstallIsNotSuperReferralForever();
-      DVLOG(2) << __func__ << ": Cached SR Info is clean and Referral Service"
-                           << " is not in initial state."
-                           << " Mark this is not SR install.";
+      DVLOG(6) << "Cached Super Referral Info is clean and Referral Service is "
+                  "in initial state. Mark this is not Super Referral install.";
       return;
     }
 
@@ -305,15 +306,15 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     }
   }
 
-  DVLOG(2) << __func__ << ": This has invalid component info.";
-  DVLOG(2) << __func__ << ": In this case, this install is campaign ended super"
-                       << " referral, default referral or non super referral.";
+  DVLOG(6) << "This has invalid component info. In this case, this install is "
+              "campaign ended super referral, default referral or non super "
+              "referral.";
 #endif  // BUILDFLAG(IS_IOS)
 }
 
 void NTPBackgroundImagesService::MonitorReferralPromoCodeChange() {
 #if !BUILDFLAG(IS_IOS)
-  DVLOG(2) << __func__ << ": Monitor referral promo code change";
+  DVLOG(6) << "Monitor for referral promo code change";
 
   pref_change_registrar_.Add(
       kReferralPromoCode,
@@ -327,18 +328,16 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
 #if !BUILDFLAG(IS_IOS)
   DCHECK_EQ(kReferralPromoCode, pref_name);
   const std::string new_referral_code = GetReferralPromoCode();
-  DVLOG(2) << __func__ << ": Got referral promo code: "
-                       << new_referral_code;
+  DVLOG(6) << "Got referral promo code: " << new_referral_code;
   DCHECK(!new_referral_code.empty());
   if (brave::BraveReferralsService::IsDefaultReferralCode(new_referral_code)) {
-    DVLOG(2) << __func__ << ": This has default referral promo code.";
+    DVLOG(6) << "This has default referral promo code.";
     MarkThisInstallIsNotSuperReferralForever();
     return;
   }
 
-  DVLOG(2) << __func__ << ": This has non default referral promo code."
-                       << " Let's check this code is super referral or not"
-                       << " after downloading mapping table.";
+  DVLOG(6) << "This has non default referral promo code. Let's check this code "
+              "is super referral or not after downloading mapping table.";
   DownloadSuperReferralMappingTable();
 #endif
 }
@@ -348,7 +347,7 @@ void NTPBackgroundImagesService::OnCountryCodePrefChanged() {
 }
 
 void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
-  DVLOG(2) << __func__ << ": Register NTP SR component";
+  DVLOG(6) << "Registering NTP Super Referral component";
 
   std::string public_key;
   std::string id;
@@ -374,7 +373,7 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
 }
 
 void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
-  DVLOG(2) << __func__ << ": Try to download super referral mapping table.";
+  DVLOG(6) << "Try to download super referral mapping table.";
 
   if (!component_update_service_)
     return;
@@ -392,8 +391,7 @@ void NTPBackgroundImagesService::OnMappingTableComponentReady(
   if (!local_pref_->FindPreference(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)->
               IsDefaultValue()) {
-    DVLOG(2) << __func__
-             << ": We don't need to handle mapping table update now.";
+    DVLOG(6) << "We don't need to handle mapping table update now.";
     return;
   }
 
@@ -407,7 +405,7 @@ void NTPBackgroundImagesService::OnMappingTableComponentReady(
 void NTPBackgroundImagesService::OnGetMappingTableData(
     const std::string& json_string) {
   if (json_string.empty()) {
-    DVLOG(2) << __func__ << ": Mapping table is empty.";
+    DVLOG(6) << "Mapping table is empty.";
     return;
   }
 
@@ -415,21 +413,20 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
       base::JSONReader::Read(json_string);
 
   if (!mapping_table_value) {
-    DVLOG(2) << __func__ << ": has invalid mapping table.";
+    DVLOG(6) << "Mapping table is invalid.";
     return;
   }
 
   if (!mapping_table_value->is_dict()) {
-    DVLOG(2) << __func__ << ": Mapping table is empty.";
+    DVLOG(6) << "Mapping table is empty.";
     return;
   }
 
-  DVLOG(2) << __func__ << ": Downloaded valid mapping table.";
+  DVLOG(6) << "Downloaded valid mapping table.";
 
   if (base::Value::Dict* value =
           mapping_table_value->GetDict().FindDict(GetReferralPromoCode())) {
-    DVLOG(2) << __func__
-             << ": This is super referral. Cache SR's referral code";
+    DVLOG(6) << "This is super referral. Cache SR's referral code";
     initial_sr_component_info_ = std::move(*value);
     RegisterSuperReferralComponent();
     local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralCode,
@@ -437,7 +434,7 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
     return;
   }
 
-  DVLOG(2) << __func__ << ": This is non super referral.";
+  DVLOG(6) << "This is non super referral.";
   MarkThisInstallIsNotSuperReferralForever();
 }
 
@@ -496,7 +493,7 @@ void NTPBackgroundImagesService::OnComponentReady(
     const base::FilePath& installed_dir) {
   bi_installed_dir_ = installed_dir;
 
-  DVLOG(2) << __func__ << ": NTP BI Component is ready";
+  VLOG(6) << "NTP Background Images component is ready";
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
@@ -518,13 +515,13 @@ void NTPBackgroundImagesService::OnGetComponentJsonData(
 void NTPBackgroundImagesService::OnSponsoredComponentReady(
     bool is_super_referral,
     const base::FilePath& installed_dir) {
-  if (is_super_referral)
+  if (is_super_referral) {
+    DVLOG(6) << "NTP Super Referral component is ready";
     sr_installed_dir_ = installed_dir;
-  else
+  } else {
+    VLOG(6) << "NTP Sponsored Images component is ready";
     si_installed_dir_ = installed_dir;
-
-  DVLOG(2) << __func__ << (is_super_referral ? ": NPT SR Component is ready"
-                                             : ": NTP SI Component is ready");
+  }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
@@ -557,7 +554,7 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
   }
 
   if (is_super_referral && !sr_images_data_->IsValid()) {
-    DVLOG(2) << __func__ << ": NTP SR campaign ends.";
+    DVLOG(6) << "NTP Super Referral campaign ends.";
     UnRegisterSuperReferralComponent();
     MarkThisInstallIsNotSuperReferralForever();
     return;
@@ -595,7 +592,7 @@ void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
   const auto& value =
       local_pref_->GetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo);
   const std::string sr_component_id = *value.FindString(kComponentIDKey);
-  DVLOG(2) << __func__ << ": Unregister NTP SR component";
+  DVLOG(6) << "Unregister NTP Super Referral component";
   component_update_service_->UnregisterComponent(sr_component_id);
 }
 
