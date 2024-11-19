@@ -25,8 +25,17 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
+import org.chromium.base.BraveFeatureList
+import org.chromium.base.BravePreferenceKeys
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
+import org.chromium.playlist.mojom.PlaylistService
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
+import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
+import org.chromium.chrome.browser.flags.ChromeFeatureList
 import org.chromium.chrome.browser.playlist.kotlin.local_database.PlaylistRepository
-import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaItemUtil
@@ -44,10 +53,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @UnstableApi
-class VideoPlaybackService : MediaLibraryService(),
+class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
     MediaLibraryService.MediaLibrarySession.Callback, Player.Listener {
     private lateinit var mMediaLibrarySession: MediaLibrarySession
     private val mScope = CoroutineScope(Job() + Dispatchers.IO)
+    protected var mPlaylistService: PlaylistService? = null
 
     private val mPlaylistRepository: PlaylistRepository by lazy {
         PlaylistRepository(applicationContext)
@@ -103,8 +113,29 @@ class VideoPlaybackService : MediaLibraryService(),
 
     override fun onCreate() {
         super.onCreate()
+        initPlaylistService()
         initializeSessionAndPlayer()
         lastSavedPositionTimer()
+    }
+
+    override fun onConnectionError(mojoException : MojoException) {
+        mPlaylistService?.close()
+        mPlaylistService = null
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                && ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
+            initPlaylistService()
+        }
+    }
+
+    private fun initPlaylistService() {
+        if (mPlaylistService != null) {
+            mPlaylistService = null;
+        }
+        mPlaylistService =
+                PlaylistServiceFactoryAndroid.getInstance()
+                        .getPlaylistService(
+                                ProfileManager.getLastUsedRegularProfile(), this)
     }
 
     private fun initializeSessionAndPlayer() {
@@ -147,6 +178,8 @@ class VideoPlaybackService : MediaLibraryService(),
         mPlayer.release()
         clearListener()
         cancelLastSavedPositionTimer()
+        mPlaylistService?.close()
+        mPlaylistService = null
         super.onDestroy()
     }
 
@@ -223,8 +256,7 @@ class VideoPlaybackService : MediaLibraryService(),
         mScope.launch {
             if (PlaylistPreferenceUtils.defaultPrefs(applicationContext).rememberFilePlaybackPosition) {
                 mediaItem.mediaId.let {
-                    val lastPlayedPositionModel = LastPlayedPositionModel(it, currentPosition)
-                    mPlaylistRepository.insertLastPlayedPosition(lastPlayedPositionModel)
+                    mPlaylistService?.updateItemLastPlayedPosition(it, currentPosition.toInt())
                 }
             }
         }

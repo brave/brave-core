@@ -75,7 +75,6 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
                                     mPlaylistService.resetAll();
                                     PlaylistRepository playlistRepository =
                                             new PlaylistRepository(getActivity());
-                                    playlistRepository.deleteAllLastPlayedPosition();
                                     playlistRepository.deleteAllHlsContentQueueModel();
                                     PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
                                     getActivity()

@@ -14,19 +14,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentQueueModel
-import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
 
 @Dao
 interface PlaylistItemModelDao {
-    @Query("SELECT * FROM LastPlayedPositionModel WHERE playlist_item_id = :playlistItemId LIMIT 1")
-    fun getLastPlayedPositionByPlaylistItemId(playlistItemId: String): LastPlayedPositionModel
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertLastPlayedPosition(vararg lastPlayedPositionModel: LastPlayedPositionModel)
-
-    @Query("DELETE FROM LastPlayedPositionModel")
-    fun deleteAllLastPlayedPosition()
-
     // HlsContent queue models
     @Query("SELECT * FROM HlsContentQueueModel")
     fun getAllHlsContentQueueModel(): List<HlsContentQueueModel>

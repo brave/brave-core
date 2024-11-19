@@ -12,10 +12,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentQueueModel
-import org.chromium.chrome.browser.playlist.kotlin.model.LastPlayedPositionModel
 
 @Database(
-    entities = [LastPlayedPositionModel::class, HlsContentQueueModel::class],
+    entities = [HlsContentQueueModel::class],
     version = 1,
     exportSchema = true,
     // For future migrations

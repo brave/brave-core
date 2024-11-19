@@ -53,7 +53,6 @@ playlist_kotlin_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/CreatePlaylistModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/HlsContentProgressModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/HlsContentQueueModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/LastPlayedPositionModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/MoveOrCopyModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistItemModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistItemOptionModel.kt",

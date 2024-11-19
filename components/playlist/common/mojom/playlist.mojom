@@ -114,8 +114,8 @@ interface PlaylistService {
   // would be better to gurantee the data consistency. We have many concurrent
   // actors that update the item.
   UpdateItem(PlaylistItem item);
-  UpdateItemLastPlayedPosition(string id, int32 last_played_position);
-  UpdateItemHlsMediaFilePath(string id, string media_file_path,
+  UpdateItemLastPlayedPosition(string playlist_item_id, int32 last_played_position);
+  UpdateItemHlsMediaFilePath(string playlist_item_id, string media_file_path,
     int64 updated_file_size);
 
   // Try downloading media files again. Returns PlaylistItem after trying
