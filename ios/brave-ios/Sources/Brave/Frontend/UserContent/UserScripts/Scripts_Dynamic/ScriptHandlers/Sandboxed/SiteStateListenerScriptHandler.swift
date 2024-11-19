@@ -13,6 +13,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
   struct MessageDTO: Decodable {
     struct MessageDTOData: Decodable, Hashable {
       let windowURL: String
+      let windowOriginURL: String
     }
 
     let data: MessageDTOData
@@ -66,7 +67,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
       let data = try JSONSerialization.data(withJSONObject: message.body)
       let dto = try JSONDecoder().decode(MessageDTO.self, from: data)
 
-      guard let frameURL = URL(string: dto.data.windowURL) else {
+      guard let frameURL = URL(string: dto.data.windowOriginURL) else {
         return
       }
 
