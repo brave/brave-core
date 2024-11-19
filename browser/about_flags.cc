@@ -452,6 +452,16 @@
                    FEATURE_VALUE_TYPE(kExtensionsManifestV2),               \
                }))
 
+#define BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                 \
+  EXPAND_FEATURE_ENTRIES({                                              \
+      "brave-adblock-custom-scriptlets",                                \
+      "Brave Adblock Custom Scriptlets",                                \
+      "Allows adding custom scriptlets from settings",                  \
+      kOsDesktop | kOsAndroid,                                          \
+      FEATURE_VALUE_TYPE(                                               \
+          brave_shields::features::kCosmeticFilteringCustomScriptlets), \
+  })
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -994,6 +1004,7 @@
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
+  BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                              \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

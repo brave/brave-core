@@ -581,7 +581,7 @@
     Developer mode
   </message>
   <message name="IDS_BRAVE_ADBLOCK_DEVELOPER_MODE_DESC" desc="Label for custom scriptlets lists section">
-    Allows to add custom filtering rules and scriptlets
+    Allow adding custom filters and scriptlets
   </message>
   <message name="IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS_LIST_LABEL" desc="Label for custom scriptlets lists section">
     Custom scriptlets
