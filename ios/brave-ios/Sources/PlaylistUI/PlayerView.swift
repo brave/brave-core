@@ -258,6 +258,7 @@ extension PlayerView {
             }
             .buttonStyle(.playbackControl)
           }
+          .contentShape(.rect)
           .tint(Color(braveSystemName: .iconInteractive))
         }
       }
