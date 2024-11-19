@@ -12,7 +12,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
-import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.ONBOARDING_MODEL
 

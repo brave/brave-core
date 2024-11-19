@@ -13,7 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.bottomsheet.PlaylistItemOptionsBottomSheetAdapter
 import org.chromium.chrome.browser.playlist.kotlin.extension.setTopCornersRounded
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener

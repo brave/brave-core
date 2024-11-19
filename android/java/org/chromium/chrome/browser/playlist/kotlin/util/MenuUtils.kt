@@ -10,7 +10,7 @@ package org.chromium.chrome.browser.playlist.kotlin.util
 import android.content.Context
 import android.view.View
 import androidx.fragment.app.FragmentManager
-import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
