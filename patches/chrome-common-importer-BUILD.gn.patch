@@ -1,0 +1,10 @@
+diff --git a/chrome/common/importer/BUILD.gn b/chrome/common/importer/BUILD.gn
+index a64ef03ece1748adf2042bb21c5f82f73d7b79a4..bb8e75e9fa08e42cd78c779ac4a199244562b359 100644
+--- a/chrome/common/importer/BUILD.gn
++++ b/chrome/common/importer/BUILD.gn
+@@ -122,4 +122,5 @@ source_set("importer") {
+     "//ui/base",
+     "//url",
+   ]
++  import("//brave/common/importer/sources.gni") deps += brave_common_importer_deps
+ }

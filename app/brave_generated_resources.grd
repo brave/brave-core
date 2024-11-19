@@ -1105,10 +1105,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_IMPORT_FROM_EDGE" desc="browser combo box: Microsoft Edge Legacy">
         Microsoft Edge Legacy
       </message>
-
       <message name="IDS_IMPORTED_FROM_BOOKMARK_FOLDER" desc="Name for bookmark panel folder imported from another browser">
         Imported from <ph name="BROWSER_NAME">$1<ex>Chrome</ex></ph>.
       </message>
+      <!-- These strings below are used by the Chromium importer. Chromium only
+           builds the importer on Desktop, but Brave also has the importer - and
+           builds the code - on Android. In Chromium's generated_resources.grd
+           this strings are under `<if expr="not is_android">`. To avoid
+           patching generated_resources.grd we add these strings to our own
+           string here, but with the opposite <if..> - just for Android.-->
+      <if expr="is_android">
+        <message name="IDS_IMPORT_FROM_FIREFOX" desc="browser combo box: Mozilla Firefox">
+          Mozilla Firefox
+        </message>
+        <message name="IDS_IMPORT_FROM_ICEWEASEL" desc="browser combo box: Iceweasel">
+          Iceweasel
+        </message>
+      </if>
 
       <!-- Vertical tab strip -->
       <if expr="toolkit_views">
