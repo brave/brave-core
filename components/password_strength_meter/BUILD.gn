@@ -1,0 +1,18 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(!is_android)
+
+# component("password_strength_meter") {
+static_library("password_strength_meter") {
+  defines = [ "IS_PASSWORD_STRENGTH_METER_IMPL" ]
+
+  sources = [
+    "password_strength_meter.cc",
+    "password_strength_meter.h",
+  ]
+
+  deps = [ "//third_party/zxcvbn-cpp" ]
+}
