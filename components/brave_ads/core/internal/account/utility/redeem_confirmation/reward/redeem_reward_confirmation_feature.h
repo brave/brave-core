@@ -16,7 +16,7 @@ BASE_DECLARE_FEATURE(kRedeemRewardConfirmationFeature);
 
 inline constexpr base::FeatureParam<base::TimeDelta> kFetchPaymentTokenAfter{
     &kRedeemRewardConfirmationFeature, "fetch_payment_token_after",
-    base::Seconds(15)};
+    base::Seconds(3)};
 
 }  // namespace brave_ads
 

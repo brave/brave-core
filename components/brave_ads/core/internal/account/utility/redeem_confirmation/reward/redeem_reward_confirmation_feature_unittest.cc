@@ -39,7 +39,7 @@ TEST(BraveAdsRedeemRewardConfirmationFeatureTest, FetchPaymentTokenAfter) {
 TEST(BraveAdsRedeemRewardConfirmationFeatureTest,
      DefaultFetchPaymentTokenAfter) {
   // Act & Assert
-  EXPECT_EQ(base::Seconds(15), kFetchPaymentTokenAfter.Get());
+  EXPECT_EQ(base::Seconds(3), kFetchPaymentTokenAfter.Get());
 }
 
 TEST(BraveAdsRedeemRewardConfirmationFeatureTest,
@@ -49,7 +49,7 @@ TEST(BraveAdsRedeemRewardConfirmationFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kRedeemRewardConfirmationFeature);
 
   // Act & Assert
-  EXPECT_EQ(base::Seconds(15), kFetchPaymentTokenAfter.Get());
+  EXPECT_EQ(base::Seconds(3), kFetchPaymentTokenAfter.Get());
 }
 
 }  // namespace brave_ads
