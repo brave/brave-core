@@ -124,33 +124,11 @@ android_aar_prebuilt("com_google_android_play_core_java") {
 android_aar_prebuilt("androidx_media3_media3_exoplayer_hls_java") {
   aar_path =
       "libs/androidx_media3_media3_exoplayer_hls/media3-exoplayer-hls-1.2.0.aar"
-  deps = [ ":androidx_room_room_common_java" ]
-  info_path = "libs/androidx_media3_media3_exoplayer_hls/androidx_media3_media3_exoplayer_hls.info"
-}
-
-java_prebuilt("androidx_room_room_common_java") {
-  jar_path = "libs/androidx_room_room_common/room-common-2.6.1.jar"
-  output_name = "androidx_room_room_common"
-  supports_android = true
-}
-
-android_aar_prebuilt("androidx_room_room_runtime_java") {
-  aar_path = "libs/androidx_room_room_runtime/room-runtime-2.6.1.aar"
   deps = [
-    ":androidx_sqlite_sqlite_framework_java",
-    ":androidx_sqlite_sqlite_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_media3_media3_exoplayer_java",
   ]
-  info_path = "libs/androidx_room_room_runtime/androidx_room_room_runtime.info"
-}
-
-android_aar_prebuilt("androidx_sqlite_sqlite_java") {
-  aar_path = "libs/androidx_sqlite_sqlite/sqlite-2.4.0.aar"
-  info_path = "libs/androidx_sqlite_sqlite/androidx_sqlite_sqlite.info"
-}
-
-android_aar_prebuilt("androidx_sqlite_sqlite_framework_java") {
-  aar_path = "libs/androidx_sqlite_sqlite_framework/sqlite-framework-2.4.0.aar"
-  info_path = "libs/androidx_sqlite_sqlite_framework/androidx_sqlite_sqlite_framework.info"
+  info_path = "libs/androidx_media3_media3_exoplayer_hls/androidx_media3_media3_exoplayer_hls.info"
 }
 
 android_aar_prebuilt("com_google_android_play_integrity_java") {
