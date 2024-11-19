@@ -79,29 +79,29 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, NavigatorPluginsAreFarbled) {
   brave_shields::ScopedStableFarblingTokensForTesting
       scoped_stable_farbling_tokens{1};
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  auto eval_result = content::EvalJs(contents(), kGetPluginsAsStringScript);
-  EXPECT_EQ(eval_result,
+  auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);
+  EXPECT_EQ(plugins_str,
             "Online PDF Viewer, HqVxgvf, 4cOuf2jw, Browser com.adobe.pdf ");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
                        PRE_FarblingTokenIsKeptAfterRestart) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  auto eval_result = content::EvalJs(contents(), kGetPluginsAsStringScript);
-  EXPECT_NE(eval_result, "");
+  auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);
+  EXPECT_NE(plugins_str, "");
   // Write the current plugins list to a file in the profile directory.
   base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath temp_dir = browser()->profile()->GetPath();
   base::FilePath output_file = temp_dir.AppendASCII(kNavigatorPluginsFilename);
-  std::string result = eval_result.ExtractString();
+  std::string result = plugins_str.ExtractString();
   base::WriteFile(output_file, result);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
                        FarblingTokenIsKeptAfterRestart) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  auto eval_result = content::EvalJs(contents(), kGetPluginsAsStringScript);
-  EXPECT_NE(eval_result, "");
+  auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);
+  EXPECT_NE(plugins_str, "");
   // Read the plugins list from a file in the profile directory.
   base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath temp_dir = browser()->profile()->GetPath();
@@ -109,7 +109,7 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
   std::string expected;
   EXPECT_TRUE(base::ReadFileToString(input_file, &expected));
   // Compare the plugins list from the previous launch.
-  EXPECT_EQ(eval_result, expected);
+  EXPECT_EQ(plugins_str, expected);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
@@ -169,11 +169,11 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, CheckBetweenTwoProfiles) {
   auto* profile_1 = browser()->profile();
-  CHECK(profile_1);
+  ASSERT_TRUE(profile_1);
 
   // Create another profile.
   ProfileManager* profile_manager = g_browser_process->profile_manager();
-  CHECK(profile_manager);
+  ASSERT_TRUE(profile_manager);
   base::FilePath dest_path = profile_manager->user_data_dir();
   dest_path = dest_path.Append(FILE_PATH_LITERAL("Profile2"));
   Profile* profile_2 = nullptr;
@@ -181,9 +181,9 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, CheckBetweenTwoProfiles) {
     base::ScopedAllowBlockingForTesting allow_blocking;
     profile_2 = profile_manager->GetProfile(dest_path);
   }
-  CHECK(profile_2);
+  ASSERT_TRUE(profile_2);
   auto* browser_2 = CreateBrowser(profile_2);
-  CHECK(browser_2);
+  ASSERT_TRUE(browser_2);
 
   auto* brave_farbling_service_profile_1 =
       brave::BraveFarblingServiceFactory::GetForProfile(profile_1);
