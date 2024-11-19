@@ -73,6 +73,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_THIRD_PARTY_COOKIES = "third_party_cookies";
     private static final String PREF_SECURITY_SECTION = "security_section";
     private static final String PREF_PRIVACY_GUIDE = "privacy_guide";
+    private static final String PREF_JAVASCRIPT_OPTIMIZER = "javascript_optimizer";
 
     // brave Prefs
     private static final String PREF_BRAVE_SHIELDS_GLOBALS_SECTION =
@@ -154,6 +155,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_SNS,
         PREF_REQUEST_OTR,
         PREF_SECURE_DNS,
+        PREF_JAVASCRIPT_OPTIMIZER,
         PREF_BLOCK_COOKIE_CONSENT_NOTICES,
         PREF_BLOCK_SWITCH_TO_APP_NOTICES,
         PREF_DO_NOT_TRACK,
