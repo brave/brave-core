@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { BraveAccountBrowserProxyImpl } from './brave_account_browser_proxy.js';
 import { CrLitElement, css, html } from '//resources/lit/v3_0/lit.rollup.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
@@ -147,9 +148,12 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
 
   protected onCreatePasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.passwordStrength = this.requirements.filter(
-      requirement => requirement[1] = requirement[0].test(this.password)
-    ).length / this.requirements.length * 100
+    this.browserProxy_.getPasswordStrength(this.password).then(
+      passwordStrength => this.passwordStrength = passwordStrength
+    )
+    // this.passwordStrength = this.requirements.filter(
+    //   requirement => requirement[1] = requirement[0].test(this.password)
+    // ).length / this.requirements.length * 100
   }
 
   protected onConfirmPasswordInput(detail: { value: string }) {
@@ -214,6 +218,7 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
       this.i18n('braveAccountPasswordStrengthMeterTooltipLengthRequirement')
     ]
   ]
+  browserProxy_ = BraveAccountBrowserProxyImpl.getInstance()
 }
 
 declare global {
