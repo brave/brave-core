@@ -11,9 +11,9 @@
 #include <string>
 
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/browser/ads_service_callback.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 namespace brave_ads {
 

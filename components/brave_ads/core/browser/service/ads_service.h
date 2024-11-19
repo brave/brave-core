@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_H_
 
 #include <cstdint>
 #include <memory>
@@ -12,16 +12,16 @@
 #include <string>
 #include <vector>
 
+#include "base/observer_list.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/browser/ads_service_callback.h"
-#include "brave/components/brave_ads/browser/ads_service_observer.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "ui/message_center/public/cpp/notification.h"
 
 class GURL;
 
@@ -42,20 +42,13 @@ class AdsService : public KeyedService {
                                       const std::string& captcha_id) = 0;
     virtual void ClearScheduledCaptcha() = 0;
     virtual void SnoozeScheduledCaptcha() = 0;
-    virtual void Display(const message_center::Notification& notification) = 0;
-    virtual void Close(const std::string& notification_id) = 0;
     virtual void ShowNotificationAd(const std::string& id,
                                     const std::u16string& title,
-                                    const std::u16string& body) = 0;
-    virtual void CloseNotificationAd(const std::string& id) = 0;
+                                    const std::u16string& body,
+                                    bool is_custom) = 0;
+    virtual void CloseNotificationAd(const std::string& id, bool is_custom) = 0;
     virtual void OpenNewTabWithUrl(const GURL& url) = 0;
-#if BUILDFLAG(IS_ANDROID)
-    virtual void MaybeRegenerateNotification(
-        const std::string& notification_id,
-        const GURL& service_worker_scope) = 0;
-#else
     virtual bool IsFullScreenMode() = 0;
-#endif
 
     virtual base::Value::Dict GetVirtualPrefs() = 0;
   };
@@ -72,8 +65,8 @@ class AdsService : public KeyedService {
 
   AdsService::Delegate* delegate() { return delegate_.get(); }
 
-  virtual void AddObserver(AdsServiceObserver* observer) = 0;
-  virtual void RemoveObserver(AdsServiceObserver* observer) = 0;
+  void AddObserver(AdsServiceObserver* observer);
+  void RemoveObserver(AdsServiceObserver* observer);
 
   // Returns true if a browser upgrade is required to serve ads.
   virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
@@ -93,7 +86,7 @@ class AdsService : public KeyedService {
   virtual void OnNotificationAdClicked(const std::string& placement_id) = 0;
 
   // Called to clear ads data.
-  virtual void ClearData() = 0;
+  virtual void ClearData(base::OnceClosure callback) = 0;
 
   // Called to add an ads observer.
   virtual void AddBatAdsObserver(
@@ -115,7 +108,7 @@ class AdsService : public KeyedService {
   // `InlineContentAdInfo` containing the info for the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
-      MaybeServeInlineContentAdAsDictCallback callback) = 0;
+      MaybeServeInlineContentAdCallback callback) = 0;
 
   // Called when a user views or interacts with an inline content ad to trigger
   // a `mojom_ad_event_type` event for the specified `placement_id` and
@@ -305,8 +298,10 @@ class AdsService : public KeyedService {
 
  protected:
   std::unique_ptr<Delegate> delegate_;
+
+  base::ObserverList<AdsServiceObserver> observers_;
 };
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_H_

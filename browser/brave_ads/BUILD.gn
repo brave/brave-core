@@ -74,6 +74,7 @@ source_set("impl") {
     "//chrome/common:constants",
     "//components/keyed_service/content",
     "//ui/gfx",
+    "//ui/message_center/public/cpp",
   ]
 
   if (toolkit_views) {

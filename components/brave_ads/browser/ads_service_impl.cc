@@ -30,7 +30,6 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
-#include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
 #include "brave/components/brave_ads/browser/analytics/p3a/notification_ad.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
@@ -39,6 +38,8 @@
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/browser/user_engagement/ad_events/ad_event_cache_helper.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
+#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -70,9 +71,6 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "ui/message_center/public/cpp/notification.h"
-#include "ui/message_center/public/cpp/notification_types.h"
-#include "ui/message_center/public/cpp/notifier_id.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -81,7 +79,6 @@ namespace {
 
 constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 
-constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 constexpr char kClearDataHistogramName[] = "Brave.Ads.ClearData";
 
 int ResourceBundleId(const std::string& name) {
@@ -234,18 +231,6 @@ AdsServiceImpl::AdsServiceImpl(
 }
 
 AdsServiceImpl::~AdsServiceImpl() = default;
-
-void AdsServiceImpl::AddObserver(AdsServiceObserver* const observer) {
-  CHECK(observer);
-
-  observers_.AddObserver(observer);
-}
-
-void AdsServiceImpl::RemoveObserver(AdsServiceObserver* const observer) {
-  CHECK(observer);
-
-  observers_.RemoveObserver(observer);
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -1156,9 +1141,10 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
       /*intentional*/ base::DoNothing());
 }
 
-void AdsServiceImpl::ClearData() {
+void AdsServiceImpl::ClearData(base::OnceClosure callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
   ShutdownClearDataAndMaybeRestart();
+  std::move(callback).Run();
 }
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
@@ -1182,16 +1168,28 @@ void AdsServiceImpl::GetStatementOfAccounts(
 
 void AdsServiceImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
-    MaybeServeInlineContentAdAsDictCallback callback) {
+    MaybeServeInlineContentAdCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(dimensions,
                                    /*inline_content_ad*/ std::nullopt);
   }
 
+  auto callback_wrapper = base::BindOnce(
+      [](MaybeServeInlineContentAdCallback callback,
+         const std::string& dimensions, std::optional<base::Value::Dict> dict) {
+        if (!dict) {
+          return std::move(callback).Run(dimensions,
+                                         /*inline_content_ad*/ std::nullopt);
+        }
+
+        std::move(callback).Run(dimensions, InlineContentAdFromValue(*dict));
+      },
+      std::move(callback));
+
   bat_ads_associated_remote_->MaybeServeInlineContentAd(
-      dimensions,
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-          std::move(callback), dimensions, /*inline_content_ad*/ std::nullopt));
+      dimensions, mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                      std::move(callback_wrapper), dimensions,
+                      /*inline_content_ad*/ std::nullopt));
 }
 
 void AdsServiceImpl::TriggerInlineContentAdEvent(
@@ -1498,11 +1496,7 @@ void AdsServiceImpl::IsBrowserActive(IsBrowserActiveCallback callback) {
 
 void AdsServiceImpl::IsBrowserInFullScreenMode(
     IsBrowserInFullScreenModeCallback callback) {
-#if !BUILDFLAG(IS_ANDROID)
   std::move(callback).Run(delegate_->IsFullScreenMode());
-#else
-  std::move(callback).Run(true);
-#endif
 }
 
 void AdsServiceImpl::CanShowNotificationAds(
@@ -1519,67 +1513,25 @@ void AdsServiceImpl::CanShowNotificationAdsWhileBrowserIsBackgrounded(
 void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
   const NotificationAdInfo ad = NotificationAdFromValue(dict);
 
-  if (ShouldShowCustomNotificationAds()) {
-    std::u16string title;
-    if (base::IsStringUTF8(ad.title)) {
-      title = base::UTF8ToUTF16(ad.title);
-    }
-
-    std::u16string body;
-    if (base::IsStringUTF8(ad.body)) {
-      body = base::UTF8ToUTF16(ad.body);
-    }
-
-    delegate_->ShowNotificationAd(ad.placement_id, title, body);
-  } else {
-    std::u16string title;
-    if (base::IsStringUTF8(ad.title)) {
-      title = base::UTF8ToUTF16(ad.title);
-    }
-
-    std::u16string body;
-    if (base::IsStringUTF8(ad.body)) {
-      body = base::UTF8ToUTF16(ad.body);
-    }
-
-    message_center::RichNotificationData notification_data;
-    notification_data.context_message = u" ";
-
-    const GURL url = GURL(kNotificationAdUrlPrefix + ad.placement_id);
-
-    const std::unique_ptr<message_center::Notification> notification =
-        std::make_unique<message_center::Notification>(
-            message_center::NOTIFICATION_TYPE_SIMPLE, ad.placement_id, title,
-            body, ui::ImageModel(), std::u16string(), url,
-            message_center::NotifierId(
-                message_center::NotifierType::SYSTEM_COMPONENT,
-                "service.ads_service"),
-            notification_data, nullptr);
-
-#if !BUILDFLAG(IS_MAC) || defined(OFFICIAL_BUILD)
-    // `set_never_timeout` uses an XPC service which requires signing so for now
-    // we don't set this for macos dev builds
-    notification->set_never_timeout(true);
-#endif
-
-    delegate_->Display(*notification);
+  std::u16string title;
+  if (base::IsStringUTF8(ad.title)) {
+    title = base::UTF8ToUTF16(ad.title);
   }
+
+  std::u16string body;
+  if (base::IsStringUTF8(ad.body)) {
+    body = base::UTF8ToUTF16(ad.body);
+  }
+
+  delegate_->ShowNotificationAd(ad.placement_id, title, body,
+                                ShouldShowCustomNotificationAds());
 
   StartNotificationAdTimeOutTimer(ad.placement_id);
 }
 
 void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
-  if (ShouldShowCustomNotificationAds()) {
-    delegate_->CloseNotificationAd(placement_id);
-  } else {
-#if BUILDFLAG(IS_ANDROID)
-    const std::string brave_ads_url_prefix = kNotificationAdUrlPrefix;
-    const GURL url =
-        GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
-    delegate_->MaybeRegenerateNotification(placement_id, url);
-#endif
-    delegate_->Close(placement_id);
-  }
+  delegate_->CloseNotificationAd(placement_id,
+                                 ShouldShowCustomNotificationAds());
 }
 
 void AdsServiceImpl::CacheAdEventForInstanceId(

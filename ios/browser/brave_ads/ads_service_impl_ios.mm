@@ -15,6 +15,7 @@
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notimplemented.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -36,7 +37,8 @@ constexpr char kAdsDatabaseFilename[] = "Ads.db";
 }  // namespace
 
 AdsServiceImplIOS::AdsServiceImplIOS(PrefService* prefs)
-    : prefs_(prefs),
+    : AdsService(/*delegate=*/nullptr),
+      prefs_(prefs),
       database_queue_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
@@ -45,7 +47,7 @@ AdsServiceImplIOS::AdsServiceImplIOS(PrefService* prefs)
 
 AdsServiceImplIOS::~AdsServiceImplIOS() = default;
 
-bool AdsServiceImplIOS::IsRunning() const {
+bool AdsServiceImplIOS::IsInitialized() const {
   return !!ads_;
 }
 
@@ -56,7 +58,9 @@ void AdsServiceImplIOS::InitializeAds(
     mojom::BuildChannelInfoPtr mojom_build_channel,
     mojom::WalletInfoPtr mojom_wallet,
     InitializeCallback callback) {
-  CHECK(!IsRunning());
+  if (IsInitialized()) {
+    return std::move(callback).Run(/*success=*/false);
+  }
 
   storage_path_ = base::FilePath(storage_path);
   ads_client_ = std::move(ads_client);
@@ -68,11 +72,68 @@ void AdsServiceImplIOS::InitializeAds(
 }
 
 void AdsServiceImplIOS::ShutdownAds(ShutdownCallback callback) {
-  CHECK(IsRunning());
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success=*/false);
+  }
 
   ads_->Shutdown(base::BindOnce(&AdsServiceImplIOS::ShutdownAdsCallback,
                                 weak_ptr_factory_.GetWeakPtr(),
                                 std::move(callback)));
+}
+
+void AdsServiceImplIOS::RunDBTransaction(
+    mojom::DBTransactionInfoPtr mojom_db_transaction,
+    RunDBTransactionCallback callback) {
+  database_.AsyncCall(&brave_ads::Database::RunDBTransaction)
+      .WithArgs(std::move(mojom_db_transaction))
+      .Then(std::move(callback));
+}
+
+void AdsServiceImplIOS::MaybeGetNotificationAd(
+    const std::string& placement_id,
+    MaybeGetNotificationAdCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*ad*/ std::nullopt);
+  }
+
+  ads_->MaybeGetNotificationAd(placement_id, std::move(callback));
+}
+
+void AdsServiceImplIOS::TriggerNotificationAdEvent(
+    const std::string& placement_id,
+    mojom::NotificationAdEventType mojom_ad_event_type,
+    TriggerAdEventCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  ads_->TriggerNotificationAdEvent(placement_id, mojom_ad_event_type,
+                                   std::move(callback));
+}
+
+bool AdsServiceImplIOS::IsBrowserUpgradeRequiredToServeAds() const {
+  return false;
+}
+
+int64_t AdsServiceImplIOS::GetMaximumNotificationAdsPerHour() const {
+  NOTIMPLEMENTED() << "Not used on iOS.";
+  return 0;
+}
+
+void AdsServiceImplIOS::OnNotificationAdShown(
+    const std::string& /*placement_id*/) {
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::OnNotificationAdClosed(
+    const std::string& /*placement_id*/,
+    const bool /*by_user*/) {
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::OnNotificationAdClicked(
+    const std::string& /*placement_id*/) {
+  NOTIMPLEMENTED() << "Not used on iOS.";
 }
 
 void AdsServiceImplIOS::ClearData(base::OnceClosure callback) {
@@ -84,17 +145,25 @@ void AdsServiceImplIOS::ClearData(base::OnceClosure callback) {
                              std::move(callback)));
 }
 
-void AdsServiceImplIOS::RunDBTransaction(
-    mojom::DBTransactionInfoPtr mojom_db_transaction,
-    RunDBTransactionCallback callback) {
-  database_.AsyncCall(&brave_ads::Database::RunDBTransaction)
-      .WithArgs(std::move(mojom_db_transaction))
-      .Then(std::move(callback));
+void AdsServiceImplIOS::AddBatAdsObserver(
+    mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
+    /*bat_ads_observer_pending_remote*/) {
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::GetDiagnostics(GetDiagnosticsCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*diagnostics*/ std::nullopt);
+  }
+
+  ads_->GetDiagnostics(std::move(callback));
 }
 
 void AdsServiceImplIOS::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
-  CHECK(IsRunning());
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*statement*/ nullptr);
+  }
 
   ads_->GetStatementOfAccounts(std::move(callback));
 }
@@ -102,7 +171,10 @@ void AdsServiceImplIOS::GetStatementOfAccounts(
 void AdsServiceImplIOS::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
-  CHECK(IsRunning());
+  if (!IsInitialized()) {
+    return std::move(callback).Run(dimensions,
+                                   /*inline_content_ad*/ std::nullopt);
+  }
 
   ads_->MaybeServeInlineContentAd(dimensions, std::move(callback));
 }
@@ -110,49 +182,65 @@ void AdsServiceImplIOS::MaybeServeInlineContentAd(
 void AdsServiceImplIOS::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    mojom::InlineContentAdEventType mojom_ad_event_type,
+    const mojom::InlineContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK(IsRunning());
+  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
+
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
                                     mojom_ad_event_type, std::move(callback));
 }
 
+void AdsServiceImplIOS::PrefetchNewTabPageAd() {
+  // TODO(https://github.com/brave/brave-browser/issues/39703): Unify iOS new
+  // tab takeover ad serving
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+std::optional<NewTabPageAdInfo>
+AdsServiceImplIOS::MaybeGetPrefetchedNewTabPageAdForDisplay() {
+  // TODO(https://github.com/brave/brave-browser/issues/39703): Unify iOS new
+  // tab takeover ad serving
+  NOTIMPLEMENTED() << "Not used on iOS.";
+  return std::nullopt;
+}
+
+void AdsServiceImplIOS::OnFailedToPrefetchNewTabPageAd(
+    const std::string& /*placement_id*/,
+    const std::string& /*creative_instance_id*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/39703): Unify iOS new
+  // tab takeover ad serving
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
 void AdsServiceImplIOS::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    mojom::NewTabPageAdEventType mojom_ad_event_type,
+    const mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK(IsRunning());
+  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
+
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                  mojom_ad_event_type, std::move(callback));
 }
 
-void AdsServiceImplIOS::MaybeGetNotificationAd(
-    const std::string& placement_id,
-    MaybeGetNotificationAdCallback callback) {
-  CHECK(IsRunning());
-
-  ads_->MaybeGetNotificationAd(placement_id, std::move(callback));
-}
-
-void AdsServiceImplIOS::TriggerNotificationAdEvent(
-    const std::string& placement_id,
-    mojom::NotificationAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  CHECK(IsRunning());
-
-  ads_->TriggerNotificationAdEvent(placement_id, mojom_ad_event_type,
-                                   std::move(callback));
-}
-
 void AdsServiceImplIOS::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    mojom::PromotedContentAdEventType mojom_ad_event_type,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK(IsRunning());
+  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
+
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
                                       mojom_ad_event_type, std::move(callback));
@@ -161,27 +249,184 @@ void AdsServiceImplIOS::TriggerPromotedContentAdEvent(
 void AdsServiceImplIOS::MaybeGetSearchResultAd(
     const std::string& placement_id,
     MaybeGetSearchResultAdCallback callback) {
-  CHECK(IsRunning());
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*mojom_creative_ad*/ {});
+  }
 
   ads_->MaybeGetSearchResultAd(placement_id, std::move(callback));
 }
 
 void AdsServiceImplIOS::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    mojom::SearchResultAdEventType mojom_ad_event_type,
+    const mojom::SearchResultAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
-  CHECK(IsRunning());
+  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
+
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   ads_->TriggerSearchResultAdEvent(std::move(mojom_creative_ad),
                                    mojom_ad_event_type, std::move(callback));
 }
 
 void AdsServiceImplIOS::PurgeOrphanedAdEventsForType(
-    mojom::AdType mojom_ad_type,
+    const mojom::AdType mojom_ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
-  CHECK(IsRunning());
+  CHECK(mojom::IsKnownEnumValue(mojom_ad_type));
+
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
 
   ads_->PurgeOrphanedAdEventsForType(mojom_ad_type, std::move(callback));
+}
+
+void AdsServiceImplIOS::GetAdHistory(const base::Time from_time,
+                                     const base::Time to_time,
+                                     GetAdHistoryForUICallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*ad_history*/ std::nullopt);
+  }
+
+  ads_->GetAdHistory(from_time, to_time, std::move(callback));
+}
+
+void AdsServiceImplIOS::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
+                                     ToggleReactionCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  ads_->ToggleLikeAd(std::move(mojom_reaction), std::move(callback));
+}
+
+void AdsServiceImplIOS::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
+                                        ToggleReactionCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  ads_->ToggleDislikeAd(std::move(mojom_reaction), std::move(callback));
+}
+
+void AdsServiceImplIOS::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
+                                          ToggleReactionCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  ads_->ToggleLikeSegment(std::move(mojom_reaction), std::move(callback));
+}
+
+void AdsServiceImplIOS::ToggleDislikeSegment(
+    mojom::ReactionInfoPtr mojom_reaction,
+    ToggleReactionCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  ads_->ToggleDislikeSegment(std::move(mojom_reaction), std::move(callback));
+}
+
+void AdsServiceImplIOS::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
+                                     ToggleReactionCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  ads_->ToggleSaveAd(std::move(mojom_reaction), std::move(callback));
+}
+
+void AdsServiceImplIOS::ToggleMarkAdAsInappropriate(
+    mojom::ReactionInfoPtr mojom_reaction,
+    ToggleReactionCallback callback) {
+  if (!IsInitialized()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  ads_->ToggleMarkAdAsInappropriate(std::move(mojom_reaction),
+                                    std::move(callback));
+}
+
+void AdsServiceImplIOS::NotifyTabTextContentDidChange(
+    const int32_t /*tab_id*/,
+    const std::vector<GURL>& /*redirect_chain*/,
+    const std::string& /*text*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::NotifyTabHtmlContentDidChange(
+    const int32_t /*tab_id*/,
+    const std::vector<GURL>& /*redirect_chain*/,
+    const std::string& /*html*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::NotifyTabDidStartPlayingMedia(
+    const int32_t /*tab_id*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::NotifyTabDidStopPlayingMedia(const int32_t /*tab_id*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::NotifyTabDidChange(
+    const int32_t /*tab_id*/,
+    const std::vector<GURL>& /*redirect_chain*/,
+    const bool /*is_new_navigation*/,
+    const bool /*is_restoring*/,
+    const bool /*is_visible*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::NotifyTabDidLoad(const int32_t /*tab_id*/,
+                                         const int /*http_status_code*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::NotifyDidCloseTab(const int32_t /*tab_id*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::NotifyUserGestureEventTriggered(
+    const int32_t /*page_transition_type*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::NotifyBrowserDidBecomeActive() {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::NotifyBrowserDidResignActive() {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
+}
+
+void AdsServiceImplIOS::NotifyDidSolveAdaptiveCaptcha() {
+  // TODO(https://github.com/brave/brave-browser/issues/42373): Utilize
+  // AdsClientNotifier in AdsServiceImplIOS
+  NOTIMPLEMENTED() << "Not used on iOS.";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -192,7 +437,7 @@ void AdsServiceImplIOS::Shutdown() {
 }
 
 void AdsServiceImplIOS::InitializeAds(InitializeCallback callback) {
-  CHECK(!IsRunning());
+  CHECK(!IsInitialized());
 
   InitializeDatabase();
 
@@ -237,7 +482,7 @@ void AdsServiceImplIOS::ClearAdsData(base::OnceClosure callback,
   }
 
   // Ensure the Brave Ads service is stopped before clearing data.
-  CHECK(!IsRunning());
+  CHECK(!IsInitialized());
 
   database_queue_->PostTaskAndReply(
       FROM_HERE,
