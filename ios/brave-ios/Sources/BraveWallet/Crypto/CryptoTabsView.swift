@@ -147,8 +147,11 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       tabBarController.tabBar.standardAppearance = appearance
       tabBarController.tabBar.scrollEdgeAppearance = appearance
     })
-    .onChange(of: cryptoStore.viewActivityToggle) { _ in
-      selectedTab = .activity
+    .onChange(of: cryptoStore.shortcutTab) { tab in
+      if let tab {
+        selectedTab = tab
+        cryptoStore.shortcutTab = nil
+      }
     }
     .overlay(
       alignment: .bottomTrailing,

@@ -93,7 +93,7 @@ public struct CryptoView: View {
                   dismissAction()
                 },
                 onViewInActivity: {
-                  store.viewActivityToggle.toggle()
+                  store.shortcutTab = .activity
                 }
               )
               .onDisappear {
@@ -392,7 +392,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
                 cryptoStore.isPresentingPendingRequest = false
               },
               onViewInActivity: {
-                cryptoStore.viewActivityToggle.toggle()
+                cryptoStore.shortcutTab = .activity
               }
             )
             .onDisappear {

@@ -567,9 +567,12 @@ struct WalletPanelView: View {
       Color(.braveGroupedBackground)
         .ignoresSafeArea()
     )
-    .onChange(of: cryptoStore.viewActivityToggle) { _ in
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-        presentWalletWithContext(.default(.activity))
+    .onChange(of: cryptoStore.shortcutTab) { tab in
+      if let tab {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+          presentWalletWithContext(.default(tab))
+          cryptoStore.shortcutTab = nil
+        }
       }
     }
     .onChange(of: cryptoStore.pendingRequest) { newValue in

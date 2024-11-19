@@ -97,7 +97,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       }
     }
   }
-  @Published var viewActivityToggle: Bool = false
+  @Published var shortcutTab: CryptoTab?
   /// The origin of the active tab (if applicable). Used for fetching/selecting network for the DApp origin.
   public var origin: URLOrigin? {
     didSet {

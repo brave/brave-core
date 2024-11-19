@@ -1053,7 +1053,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         unapprovedTxs[safe: newIndex]?.id ?? unapprovedTxs.first?.id ?? ""
     } else {
       if activeTransactionId == txInfo.id {
-        activeParsedTransaction.transaction = txInfo
+        updateTransaction(
+          with: txInfo,
+          shouldFetchCurrentAllowance: false,
+          shouldFetchGasTokenBalance: false
+        )
         activeTxStatus = txInfo.txStatus
       }
     }
