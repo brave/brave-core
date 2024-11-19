@@ -9,8 +9,7 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "base/logging.h"
-#include "brave/components/password_strength_meter/password_strength_meter.h"
+#include "components/password_manager/core/browser/ui/weak_check_utility.h"
 
 BraveAccountHandler::BraveAccountHandler() = default;
 
@@ -30,6 +29,5 @@ void BraveAccountHandler::GetPasswordStrength(const base::Value::List& args) {
 
   AllowJavascript();
   ResolveJavascriptCallback(
-      args[0],
-      base::Value(password_strength_meter::GetPasswordStrength(*password)));
+      args[0], base::Value(password_manager::GetPasswordStrength(*password)));
 }
