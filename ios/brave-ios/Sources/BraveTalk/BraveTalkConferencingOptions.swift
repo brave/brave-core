@@ -16,10 +16,10 @@ extension JitsiMeetConferenceOptions {
     Self.fromBuilder { builder in
       builder.room = room
       builder.token = token
-      if host == "talk.brave.com" {
-        builder.serverURL = URL(string: "https://8x8.vc")
-      } else {
+      if host == "talk.brave.software" {
         builder.serverURL = URL(string: "https://stage.8x8.vc")
+      } else {
+        builder.serverURL = URL(string: "https://8x8.vc")
       }
       builder.setFeatureFlag("calendar.enabled", withBoolean: false)
       builder.setFeatureFlag("resolution", withValue: 360)
