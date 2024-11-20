@@ -26,10 +26,21 @@ jobs:
           target_ver="$(chromium_ver "${GITHUB_BASE_REF:?}")"
 
           status() { echo "::${1:?}::${2:?}"; echo "$2" >>"${GITHUB_STEP_SUMMARY:?}"; }
+          has_label() { gh pr view "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" --json labels -q '.labels[].name'|grep -qxF chromium-version-mismatch; }
           label() { gh pr edit "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" "--${1:?}-label" chromium-version-mismatch >/dev/null; }
+
+          comment() {
+              local -r comment="Chromium major version is behind target branch ($pr_ver vs $target_ver). Please rebase."
+              gh pr comment "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" -b "${comment:?}"
+          }
+
           success() { status notice "${1:?}: CI ✅ | Merge ✅"; label remove; }
+
           failure() {
-              case "${1:?}" in runci) ci=✅; label remove;; *) ci=🚫; label add;; esac
+              case "${1:?}" in
+                  runci) ci=✅; label remove;;
+                  *) has_label || comment; ci=🚫; label add;;
+              esac
               status error "${2:?}: CI $ci | Merge 🚫"
               status error "Please rebase."
               exit 2
