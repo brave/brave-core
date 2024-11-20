@@ -55,7 +55,7 @@ class ButtonToast: Toast {
 
     self.toastView.snp.makeConstraints { make in
       make.left.right.height.equalTo(self)
-      self.animationConstraint = make.top.equalTo(self).offset(ButtonToastUX.toastHeight).constraint
+      self.animationConstraint = make.top.equalTo(self.snp.bottom).constraint
     }
 
     self.snp.makeConstraints { make in

@@ -54,7 +54,7 @@ class Toast: UIView {
       UIView.animate(
         withDuration: SimpleToastUX.toastAnimationDuration,
         animations: {
-          self.animationConstraint?.update(offset: 0)
+          self.animationConstraint?.update(offset: -self.bounds.height)
           self.layoutIfNeeded()
         },
         completion: { finished in
@@ -83,7 +83,7 @@ class Toast: UIView {
     UIView.animate(
       withDuration: duration,
       animations: {
-        self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
+        self.animationConstraint?.update(offset: 0)
         self.layoutIfNeeded()
       },
       completion: { finished in
