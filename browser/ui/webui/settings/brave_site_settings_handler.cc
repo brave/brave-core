@@ -9,6 +9,7 @@
 
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/ui/webui/settings/site_settings_helper.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -38,8 +39,9 @@ void BraveSiteSettingsHandler::RegisterMessages() {
 bool BraveSiteSettingsHandler::IsPatternValidForBraveContentType(
     ContentSettingsType content_type,
     const std::string& pattern_string) {
-  if (content_type != ContentSettingsType::BRAVE_SHIELDS)
+  if (content_type != ContentSettingsType::BRAVE_SHIELDS) {
     return true;
+  }
   return (pattern_string.find('*') == std::string::npos);
 }
 
@@ -64,6 +66,19 @@ void BraveSiteSettingsHandler::HandleIsPatternValidForType(
   }
 
   SiteSettingsHandler::HandleIsPatternValidForType(args);
+}
+
+void BraveSiteSettingsHandler::RemoveNonModelData(
+    const std::vector<url::Origin>& origins) {
+  SiteSettingsHandler::RemoveNonModelData(origins);
+
+  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(profile_);
+  for (const auto& origin : origins) {
+    const auto& url = origin.GetURL();
+    // base::Value() is a default value which removes the setting internally.
+    settings_map->SetWebsiteSettingDefaultScope(
+        url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA, base::Value());
+  }
 }
 
 }  // namespace settings

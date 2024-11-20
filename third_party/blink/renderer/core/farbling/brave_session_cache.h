@@ -45,8 +45,7 @@ enum FarbleKey : uint64_t {
 typedef absl::randen_engine<uint64_t> FarblingPRNG;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
-    ExecutionContext* context,
-    bool require_filled_content_settings_rules = false);
+    ExecutionContext* context);
 CORE_EXPORT BraveFarblingLevel
 GetBraveFarblingLevelFor(ExecutionContext* context,
                          ContentSettingsType webcompat_settings_type,
@@ -98,14 +97,12 @@ class CORE_EXPORT BraveSessionCache final
   }
 
  private:
-  uint64_t session_key_;
-  uint8_t domain_key_[32];
+  void PerturbPixelsInternal(const unsigned char* data, size_t size);
+
   WTF::HashMap<FarbleKey, int> farbled_integers_;
-  BraveFarblingLevel farbling_level_;
+  brave_shields::mojom::ShieldsSettingsPtr default_shields_settings_;
   std::optional<blink::BraveAudioFarblingHelper> audio_farbling_helper_;
   WTF::HashMap<ContentSettingsType, BraveFarblingLevel> farbling_levels_;
-
-  void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };
 
 }  // namespace brave

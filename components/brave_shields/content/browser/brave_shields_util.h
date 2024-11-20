@@ -166,6 +166,7 @@ ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map);
 
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
                                       const GURL& primary_url);
+base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
 
 }  // namespace brave_shields
 

@@ -79,8 +79,7 @@ class BraveContentSettingsAgentImpl
   FRIEND_TEST_ALL_PREFIXES(BraveContentSettingsAgentImplAutoplayBrowserTest,
                            AutoplayAllowedByDefault);
 
-  bool IsBraveShieldsDown(const blink::WebFrame* frame,
-                          const GURL& secondary_url);
+  bool IsBraveShieldsDown(const GURL& primary_url, const GURL& secondary_url);
 
   bool IsScriptTemporarilyAllowed(const GURL& script_url);
 

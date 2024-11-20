@@ -15,6 +15,7 @@ enum FarblingLevel {
 
 struct ShieldsSettings {
   FarblingLevel farbling_level;
+  mojo_base.mojom.Token farbling_token;
   array<string> origins_to_allow_scripts;
   bool reduce_language;
 };

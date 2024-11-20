@@ -21,6 +21,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/renderer_configuration.mojom.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -294,11 +295,15 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
                 ->GetLastCommittedURL()
           : navigation_handle->GetURL();
 
+  HostContentSettingsMap* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
   const brave_shields::mojom::FarblingLevel farbling_level =
-      brave_shields::GetFarblingLevel(
-          HostContentSettingsMapFactory::GetForProfile(
-              rfh->GetBrowserContext()),
-          primary_url);
+      brave_shields::GetFarblingLevel(host_content_settings_map, primary_url);
+  const base::Token farbling_token =
+      farbling_level != brave_shields::mojom::FarblingLevel::OFF
+          ? brave_shields::GetFarblingToken(host_content_settings_map,
+                                            primary_url)
+          : base::Token();
 
   PrefService* pref_service =
       user_prefs::UserPrefs::Get(rfh->GetBrowserContext());
@@ -306,7 +311,7 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   mojo::AssociatedRemote<brave_shields::mojom::BraveShields> agent;
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&agent);
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
-      farbling_level, allowed_scripts_,
+      farbling_level, farbling_token, allowed_scripts_,
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service)));
 }
 

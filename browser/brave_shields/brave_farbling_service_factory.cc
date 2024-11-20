@@ -7,6 +7,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 
@@ -32,14 +33,17 @@ BraveFarblingServiceFactory::BraveFarblingServiceFactory()
               .WithRegular(ProfileSelection::kOwnInstance)
               .WithGuest(ProfileSelection::kOwnInstance)
               .WithSystem(ProfileSelection::kNone)
-              .Build()) {}
+              .Build()) {
+  DependsOn(HostContentSettingsMapFactory::GetInstance());
+}
 
 BraveFarblingServiceFactory::~BraveFarblingServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
 BraveFarblingServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return std::make_unique<BraveFarblingService>();
+  return std::make_unique<BraveFarblingService>(
+      HostContentSettingsMapFactory::GetForProfile(context));
 }
 
 }  // namespace brave

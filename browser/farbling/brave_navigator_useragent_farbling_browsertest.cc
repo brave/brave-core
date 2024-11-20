@@ -221,11 +221,11 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // test known values
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   auto max_ua_b = EvalJs(contents(), kUserAgentScript);
-  EXPECT_EQ(default_ua_b + "    ", max_ua_b);
+  EXPECT_EQ(default_ua_b + "   ", max_ua_b);
   BlockFingerprinting(domain_z);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
   auto max_ua_z = EvalJs(contents(), kUserAgentScript);
-  EXPECT_EQ(default_ua_z + "  ", max_ua_z);
+  EXPECT_EQ(default_ua_z + " ", max_ua_z);
 
   // test that web workers also inherit the farbled user agent
   // (farbling level is still maximum)

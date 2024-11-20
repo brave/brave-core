@@ -70,7 +70,7 @@
 -CookieControlsContentViewTrackingProtectionUnitTest.CreateManagedSectionForCookieSettingEnforcement
 -CookieControlsContentViewTrackingProtectionUnitTest.CreateManagedSectionForPolicyEnforcement
 -CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithEnforcementByCookieSetting
--CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithProtectionsOff 
+-CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithProtectionsOff
 -CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithProtectionsOn
 -CookieControlsUserBypassTrackingProtectionUiTest.DisplayEyeIconWhenActFeaturesNotEnforced
 -CookieControlsUserBypassTrackingProtectionUiTest.DoesNotDisplayEyeIconWhenActFeaturesAreEnforced
@@ -555,6 +555,7 @@
 # GetUkmSourceId override.
 -All/SiteSettingsHandlerTest.NotificationPermissionRevokeUkm/*
 -All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/*
+-SiteSettingsHandlerTest.NotificationPermissionRevokeUkm
 
 # This test fails because we replace WebUI chrome:// scheme with brave://
 -ChromeURLsTest.ContainsConfigURLs
@@ -670,6 +671,9 @@
 # for regular and guest profiles.
 -BrowserFeaturePromoController*
 -NewTabPageFeaturePromoHelperTest.*
+
+# zoom_level.display_name is "(Brave error pages)"
+-SiteSettingsHandlerTest.ZoomLevels
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -1010,10 +1014,6 @@
 -SitePermissionsHelperUnitTest.*
 -SitePermissionsHelperWithUserHostControlsUnitTest.DowngradingFromAllSitesToOnClickAppliesUserPermittedSites
 -SideSearchTabContentsHelperTest.*
--SiteSettingsCounterTest.*
--SiteSettingsHandlerInfobarTest.*
--SiteSettingsHandlerTest.*
--SiteSettingsHelperTest.*
 -StartupBrowserPolicyUnitTest.*
 -StartupTabProviderTest.*
 -StateStoreTest.ClearAll

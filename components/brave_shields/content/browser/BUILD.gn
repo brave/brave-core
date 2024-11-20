@@ -82,3 +82,15 @@ static_library("browser") {
     "//url",
   ]
 }
+
+static_library("test_support") {
+  testonly = true
+  sources = [
+    "brave_shields_test_utils.cc",
+    "brave_shields_test_utils.h",
+  ]
+  deps = [
+    ":browser",
+    "//base",
+  ]
+}

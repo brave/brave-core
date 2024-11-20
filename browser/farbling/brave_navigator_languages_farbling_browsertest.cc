@@ -9,10 +9,8 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -41,7 +39,6 @@ using content::TitleWatcher;
 
 namespace {
 constexpr char kNavigatorLanguagesScript[] = "navigator.languages.toString()";
-const uint64_t kTestingSessionToken = 12345;
 }  // namespace
 
 class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
@@ -71,10 +68,6 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-
-    brave::BraveFarblingServiceFactory::GetForProfile(browser()->profile())
-        ->set_session_tokens_for_testing(kTestingSessionToken);
-
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.ServeFilesFromDirectory(test_data_dir);
@@ -266,9 +259,9 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   // Farbling level: default
   // HTTP Accept-Language header should be farbled by domain.
   SetFingerprintingDefault(domain_b);
-  SetExpectedHTTPAcceptLanguage("la;q=0.7");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   SetExpectedHTTPAcceptLanguage("la;q=0.8");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
+  SetExpectedHTTPAcceptLanguage("la;q=0.5");
   SetFingerprintingDefault(domain_d);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
 
@@ -294,9 +287,9 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   // Farbling level: default
   // HTTP Accept-Language header should be farbled by domain.
   SetFingerprintingDefault(domain_b);
-  SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.7");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.8");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
+  SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.5");
   SetFingerprintingDefault(domain_d);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
 
@@ -331,7 +324,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   // even if fetch originated from a service worker.
   SetFingerprintingDefault(domain_b);
   SetAcceptLanguages("zh-HK,zh,la");
-  SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.7");
+  SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.8");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b_sw));
   std::u16string expected_title(u"LOADED");
   TitleWatcher watcher(web_contents(), expected_title);

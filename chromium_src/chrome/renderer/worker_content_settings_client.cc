@@ -51,52 +51,36 @@ WorkerContentSettingsClient_BraveImpl::Clone() {
 brave_shields::mojom::ShieldsSettingsPtr
 WorkerContentSettingsClient_BraveImpl::GetBraveShieldsSettings(
     ContentSettingsType webcompat_settings_type) {
-  ContentSetting setting = CONTENT_SETTING_DEFAULT;
-  if (content_setting_rules_) {
-    const GURL& primary_url = top_frame_origin_.GetURL();
-    for (const auto& rule : content_setting_rules_->brave_shields_rules) {
-      if (rule.primary_pattern.Matches(primary_url)) {
-        setting = rule.GetContentSetting();
-        break;
-      }
-    }
-    if (setting == CONTENT_SETTING_BLOCK) {
-      // Brave Shields is down
-      setting = CONTENT_SETTING_ALLOW;
-    } else {
-      // Brave Shields is up, so check fingerprinting rules
-      setting = brave_shields::GetBraveFPContentSettingFromRules(
-          content_setting_rules_->fingerprinting_rules, primary_url);
-    }
-    if (setting != CONTENT_SETTING_ALLOW) {
-      auto webcompat_setting =
-          brave_shields::GetBraveWebcompatContentSettingFromRules(
-              content_setting_rules_->webcompat_rules, primary_url,
-              webcompat_settings_type);
-      if (webcompat_setting == CONTENT_SETTING_ALLOW) {
-        setting = CONTENT_SETTING_ALLOW;
-      }
-    }
-  }
+  const GURL& primary_url = top_frame_origin_.GetURL();
 
   brave_shields::mojom::FarblingLevel farbling_level =
-      brave_shields::mojom::FarblingLevel::BALANCED;
-  if (setting == CONTENT_SETTING_BLOCK) {
-    farbling_level = brave_shields::mojom::FarblingLevel::MAXIMUM;
-  } else if (setting == CONTENT_SETTING_ALLOW) {
-    farbling_level = brave_shields::mojom::FarblingLevel::OFF;
-  } else {
-    farbling_level = brave_shields::mojom::FarblingLevel::BALANCED;
+      shields_settings_ ? shields_settings_->farbling_level
+                        : brave_shields::mojom::FarblingLevel::OFF;
+  if (content_setting_rules_ && shields_settings_ &&
+      shields_settings_->farbling_level !=
+          brave_shields::mojom::FarblingLevel::OFF &&
+      webcompat_settings_type != ContentSettingsType::BRAVE_WEBCOMPAT_NONE) {
+    auto webcompat_setting =
+        brave_shields::GetBraveWebcompatContentSettingFromRules(
+            content_setting_rules_->webcompat_rules, primary_url,
+            webcompat_settings_type);
+    if (webcompat_setting == CONTENT_SETTING_ALLOW) {
+      farbling_level = brave_shields::mojom::FarblingLevel::OFF;
+    }
   }
 
+  DVLOG(1) << "farbling_level=" << farbling_level << " @ " << primary_url;
   if (shields_settings_) {
     auto shields_settings = shields_settings_.Clone();
     shields_settings->farbling_level = farbling_level;
     return shields_settings;
   } else {
+    // This should not happen now, but send dumps for now if that's the case in
+    // some scenario.
     DCHECK(!HasContentSettingsRules());
+    base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
-        farbling_level, std::vector<std::string>(), false);
+        farbling_level, base::Token(), std::vector<std::string>(), false);
   }
 }
 

@@ -10,6 +10,13 @@
 namespace blink {
 
 LocalFrame* DOMWindow::GetDisconnectedFrame() const {
+  // IncumbentDOMWindow is safe to call only when an active v8 context is
+  // present.
+  if (auto* isolate = v8::Isolate::TryGetCurrent();
+      !isolate || !isolate->InContext()) {
+    return nullptr;
+  }
+
   v8::Isolate* isolate = window_proxy_manager_->GetIsolate();
   LocalDOMWindow* accessing_window = IncumbentDOMWindow(isolate);
   LocalFrame* accessing_frame = accessing_window->GetFrame();
