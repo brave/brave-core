@@ -20,10 +20,10 @@ export interface SelectedChatDetails {
 
 export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   selectedConversationId: undefined,
-  updateSelectedConversationId: () => {},
+  updateSelectedConversationId: () => { },
   callbackRouter: undefined!,
   conversationHandler: undefined!,
-  newConversation: () => {}
+  newConversation: () => { }
 })
 
 
@@ -55,6 +55,9 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     ...conversationAPI,
     selectedConversationId,
     updateSelectedConversationId,
+    newConversation: () => {
+      setConversationAPI(API.newConversation())
+    }
   }), [selectedConversationId, updateSelectedConversationId, conversationAPI])
 
   React.useEffect(() => {
