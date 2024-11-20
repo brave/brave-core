@@ -44,6 +44,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/CrossPromotionalModalDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/DormantUsersEngagementDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/InternetConnection.java",
+  "../../brave/android/java/org/chromium/chrome/browser/OpenYtInBraveDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/QRCodeShareDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/accessibility/settings/BraveAccessibilitySettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
