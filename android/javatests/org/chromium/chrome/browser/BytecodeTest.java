@@ -1579,6 +1579,7 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         ObservableSupplierImpl.class,
+                        OneshotSupplierImpl.class,
                         int.class,
                         Supplier.class,
                         AppMenuDelegate.class,
