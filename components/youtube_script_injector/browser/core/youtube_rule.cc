@@ -22,10 +22,8 @@
 namespace {
 
 // youtube.json keys
-// constexpr char kInclude[] = "include";
-// constexpr char kExclude[] = "exclude";
 constexpr char kVersion[] = "version";
-constexpr char kPolicyScript[] = "policy_script";
+constexpr char kFeatureScript[] = "feature_script";
 
 constexpr char kYouTubeUrl[] = "https://youtube.com";
 
@@ -59,26 +57,20 @@ namespace youtube_script_injector {
 YouTubeRule::YouTubeRule() = default;
 YouTubeRule::~YouTubeRule() = default;
 YouTubeRule::YouTubeRule(const YouTubeRule& other) {
-  // include_pattern_set_ = other.include_pattern_set_.Clone();
-  // exclude_pattern_set_ = other.exclude_pattern_set_.Clone();
-  policy_script_path_ = other.policy_script_path_;
+  feature_script_path_ = other.feature_script_path_;
   version_ = other.version_;
 }
 
 // static
 void YouTubeRule::RegisterJSONConverter(
     base::JSONValueConverter<YouTubeRule>* converter) {
-  // converter->RegisterCustomValueField<extensions::URLPatternSet>(
-  //     kInclude, &YouTubeRule::include_pattern_set_, GetURLPatternSetFromValue);
-  // converter->RegisterCustomValueField<extensions::URLPatternSet>(
-  //     kExclude, &YouTubeRule::exclude_pattern_set_, GetURLPatternSetFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
-      kPolicyScript, &YouTubeRule::policy_script_path_, GetFilePathFromValue);
+      kFeatureScript, &YouTubeRule::feature_script_path_, GetFilePathFromValue);
   converter->RegisterIntField(kVersion, &YouTubeRule::version_);
 }
 
 // static
-std::optional<std::vector<YouTubeRule>> YouTubeRule::ParseRules(
+std::optional<YouTubeRule> YouTubeRule::ParseRules(
     const std::string& contents) {
   if (contents.empty()) {
     return std::nullopt;
@@ -88,17 +80,14 @@ std::optional<std::vector<YouTubeRule>> YouTubeRule::ParseRules(
     VLOG(1) << "YouTubeRule::ParseRules: invalid JSON";
     return std::nullopt;
   }
-  std::vector<YouTubeRule> rules;
+
+  YouTubeRule rule = YouTubeRule();
   base::JSONValueConverter<YouTubeRule> converter;
-  for (base::Value& it : root->GetList()) {
-    YouTubeRule rule = YouTubeRule();
-    if (!converter.Convert(it, &rule)) {
-      VLOG(1) << "YouTubeRule::ParseRules: invalid rule";
-      continue;
-    }
-    rules.emplace_back(rule);
+  if (!converter.Convert(*root, &rule)) {
+    VLOG(1) << "YouTubeRule::ParseRules: invalid rule";
+    return std::nullopt;
   }
-  return rules;
+  return rule;
 }
 
 bool YouTubeRule::IsYouTubeDomain(const GURL& url) const {
@@ -110,20 +99,5 @@ bool YouTubeRule::IsYouTubeDomain(const GURL& url) const {
 
   return false;
 }
-
-// bool YouTubeRule::ShouldInsertScript(const GURL& url) const {
-//   // If URL matches an explicitly excluded pattern, this rule does not
-//   // apply.
-//   if (exclude_pattern_set_.MatchesURL(url)) {
-//     return false;
-//   }
-//   // If URL does not match an explicitly included pattern, this rule does not
-//   // apply.
-//   if (!include_pattern_set_.MatchesURL(url)) {
-//     return false;
-//   }
-
-//   return true;
-// }
 
 }  // namespace youtube_script_injector
