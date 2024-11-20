@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/youtube_script_injector/browser/core/youtube_rule.h"
+#include "brave/components/youtube_script_injector/browser/core/youtube_json.h"
 
 #include <memory>
 #include <optional>
@@ -24,6 +24,8 @@ namespace {
 // youtube.json keys
 constexpr char kVersion[] = "version";
 constexpr char kFeatureScript[] = "feature_script";
+// TODO
+// constexpr char kFullScreenScript[] = "fullscreen_script";
 
 constexpr char kYouTubeUrl[] = "https://youtube.com";
 
@@ -54,43 +56,43 @@ bool GetFilePathFromValue(const base::Value* value, base::FilePath* result) {
 
 namespace youtube_script_injector {
 
-YouTubeRule::YouTubeRule() = default;
-YouTubeRule::~YouTubeRule() = default;
-YouTubeRule::YouTubeRule(const YouTubeRule& other) {
+YouTubeJson::YouTubeJson() = default;
+YouTubeJson::~YouTubeJson() = default;
+YouTubeJson::YouTubeJson(const YouTubeJson& other) {
   feature_script_path_ = other.feature_script_path_;
   version_ = other.version_;
 }
 
 // static
-void YouTubeRule::RegisterJSONConverter(
-    base::JSONValueConverter<YouTubeRule>* converter) {
+void YouTubeJson::RegisterJSONConverter(
+    base::JSONValueConverter<YouTubeJson>* converter) {
   converter->RegisterCustomValueField<base::FilePath>(
-      kFeatureScript, &YouTubeRule::feature_script_path_, GetFilePathFromValue);
-  converter->RegisterIntField(kVersion, &YouTubeRule::version_);
+      kFeatureScript, &YouTubeJson::feature_script_path_, GetFilePathFromValue);
+  converter->RegisterIntField(kVersion, &YouTubeJson::version_);
 }
 
 // static
-std::optional<YouTubeRule> YouTubeRule::ParseRules(
+std::optional<YouTubeJson> YouTubeJson::ParseJson(
     const std::string& contents) {
   if (contents.empty()) {
     return std::nullopt;
   }
   std::optional<base::Value> root = base::JSONReader::Read(contents);
   if (!root) {
-    VLOG(1) << "YouTubeRule::ParseRules: invalid JSON";
+    VLOG(1) << "YouTubeJson::ParseJson: invalid JSON";
     return std::nullopt;
   }
 
-  YouTubeRule rule = YouTubeRule();
-  base::JSONValueConverter<YouTubeRule> converter;
+  YouTubeJson rule = YouTubeJson();
+  base::JSONValueConverter<YouTubeJson> converter;
   if (!converter.Convert(*root, &rule)) {
-    VLOG(1) << "YouTubeRule::ParseRules: invalid rule";
+    VLOG(1) << "YouTubeJson::YouTubeJson: invalid rule";
     return std::nullopt;
   }
   return rule;
 }
 
-bool YouTubeRule::IsYouTubeDomain(const GURL& url) const {
+bool YouTubeJson::IsYouTubeDomain(const GURL& url) const {
   if (net::registry_controlled_domains::SameDomainOrHost(
           url, GURL(kYouTubeUrl),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
