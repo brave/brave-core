@@ -534,7 +534,7 @@ public final class PlayerModel: ObservableObject {
     itemQueue = queue
   }
 
-  @MainActor func playPreviousItem() async {
+  @MainActor func playPreviousItem(restartingPlayback: Bool) async {
     guard let currentItem = selectedItem,
       let currentItemIndex = itemQueue.firstIndex(of: currentItem.id)
     else {
@@ -552,7 +552,7 @@ public final class PlayerModel: ObservableObject {
     selectedItemID = itemQueue[currentItemIndex - 1]
 
     await self.prepareToPlaySelectedItem(
-      initialOffset: seekToInitialTimestamp,
+      initialOffset: restartingPlayback ? 0 : seekToInitialTimestamp,
       playImmediately: true
     )
   }
@@ -582,7 +582,7 @@ public final class PlayerModel: ObservableObject {
     return itemQueue[currentItemIndex + 1]
   }
 
-  @MainActor func playNextItem() async {
+  @MainActor func playNextItem(restartingPlayback: Bool) async {
     pause()
 
     let nextItemID = self.nextItemID
@@ -597,7 +597,7 @@ public final class PlayerModel: ObservableObject {
       // able to set the player item at all due to an error meaning controls wouldn't work anyways
       self.selectedItemID = nextItemID
       await prepareToPlaySelectedItem(
-        initialOffset: seekToInitialTimestamp,
+        initialOffset: restartingPlayback ? 0 : seekToInitialTimestamp,
         playImmediately: true
       )
     }
@@ -670,7 +670,7 @@ public final class PlayerModel: ObservableObject {
       } catch {
         if isPictureInPictureActive {
           // Can't show any error in PiP, so skip to the next item
-          await playNextItem()
+          await playNextItem(restartingPlayback: false)
         } else {
           let reason: PlayerModelError.Reason = {
             if let error = error as? PlaylistMediaStreamer.PlaybackError {
@@ -682,7 +682,7 @@ public final class PlayerModel: ObservableObject {
             reason: reason,
             handler: { [weak self] in
               Task {
-                await self?.playNextItem()
+                await self?.playNextItem(restartingPlayback: false)
               }
             }
           )
@@ -748,7 +748,7 @@ public final class PlayerModel: ObservableObject {
           self.sleepTimerCondition = nil
         } else {
           Task {
-            await self.playNextItem()
+            await self.playNextItem(restartingPlayback: true)
           }
         }
       }
@@ -996,9 +996,9 @@ extension PlayerModel {
     case center.skipForwardCommand:
       Task { await seekForwards() }
     case center.seekBackwardCommand:
-      Task { await playPreviousItem() }
+      Task { await playPreviousItem(restartingPlayback: true) }
     case center.seekForwardCommand:
-      Task { await playNextItem() }
+      Task { await playNextItem(restartingPlayback: true) }
     case center.changeRepeatModeCommand:
       if let repeatType = (event as? MPChangeRepeatModeCommandEvent)?.repeatType,
         let repeatMode = RepeatMode(repeatType: repeatType)

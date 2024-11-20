@@ -214,7 +214,7 @@ extension PlayerView {
           .disabled(model.duration.isIndefinite)
           Button {
             Task {
-              await model.playNextItem()
+              await model.playNextItem(restartingPlayback: true)
             }
           } label: {
             Label(Strings.Playlist.accessibilityNextItem, braveSystemImage: "leo.next.outline")
