@@ -25,7 +25,6 @@ namespace {
 constexpr char kInclude[] = "include";
 constexpr char kExclude[] = "exclude";
 constexpr char kVersion[] = "version";
-constexpr char kTestScript[] = "test_script";
 constexpr char kPolicyScript[] = "policy_script";
 
 bool GetURLPatternSetFromValue(const base::Value* value,
@@ -60,7 +59,6 @@ YouTubeRule::~YouTubeRule() = default;
 YouTubeRule::YouTubeRule(const YouTubeRule& other) {
   include_pattern_set_ = other.include_pattern_set_.Clone();
   exclude_pattern_set_ = other.exclude_pattern_set_.Clone();
-  test_script_path_ = other.test_script_path_;
   policy_script_path_ = other.policy_script_path_;
   version_ = other.version_;
 }
@@ -72,8 +70,6 @@ void YouTubeRule::RegisterJSONConverter(
       kInclude, &YouTubeRule::include_pattern_set_, GetURLPatternSetFromValue);
   converter->RegisterCustomValueField<extensions::URLPatternSet>(
       kExclude, &YouTubeRule::exclude_pattern_set_, GetURLPatternSetFromValue);
-  converter->RegisterCustomValueField<base::FilePath>(
-      kTestScript, &YouTubeRule::test_script_path_, GetFilePathFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
       kPolicyScript, &YouTubeRule::policy_script_path_, GetFilePathFromValue);
   converter->RegisterIntField(kVersion, &YouTubeRule::version_);
