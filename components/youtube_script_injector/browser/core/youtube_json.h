@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE_YOUTUBE_RULE_H_
-#define BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE_YOUTUBE_RULE_H_
+#ifndef BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE_YOUTUBE_JSON_H_
+#define BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE_YOUTUBE_JSON_H_
 
 #include <memory>
 #include <optional>
@@ -29,34 +29,25 @@ struct MatchedRule {
 };
 
 // Format of the youtube.json file:
-// [
-//   {
-//     "include": [
-//       "https://twitter.com/*"
-//     ],
-//     "exclude": [
-//     ],
-//     "version": 1,
-//     "policy_script": "twitter/policy.js"
-//   }, ...
-// ]
-// Note that "policy_script" gives a path
-// relative to the component under scripts/
-// This class describes a single rule in the youtube.json file.
-class YouTubeRule {
+// {
+//   "version": 1,
+//   "feature_script": "keep-playing-audio.js"
+// }
+// Note that "feature_script" gives a path
+// relative to the component under scripts directory.
+class YouTubeJson {
  public:
-  YouTubeRule();
-  ~YouTubeRule();
-  YouTubeRule(const YouTubeRule& other);  // needed for std::vector<YouTubeRule>
+  YouTubeJson();
+  ~YouTubeJson();
+  YouTubeJson(const YouTubeJson& other);  // needed for std::optional<YouTubeJson>
 
   // Registers the mapping between JSON field names and the members in this
   // class.
   static void RegisterJSONConverter(
-      base::JSONValueConverter<YouTubeRule>* converter);
+      base::JSONValueConverter<YouTubeJson>* converter);
 
-  // Parse the youtube.json file contents into a vector of YouTubeRule.
-  static std::optional<YouTubeRule> ParseRules(
-      const std::string& contents);
+  // Parse the youtube.json file contents into an optional YouTubeJson.
+  static std::optional<YouTubeJson> ParseJson(const std::string& contents);
   // Check if this rule matches the given URL.
   // bool ShouldInsertScript(const GURL& url) const;
   bool IsYouTubeDomain(const GURL& url) const;
@@ -66,8 +57,6 @@ class YouTubeRule {
   int GetVersion() const { return version_; }
 
  private:
-  // extensions::URLPatternSet include_pattern_set_;
-  // extensions::URLPatternSet exclude_pattern_set_;
   // This is a path (not content) relative to the component under scripts/.
   base::FilePath feature_script_path_;
   // Used for checking if the last inserted script is the latest version.
@@ -76,4 +65,4 @@ class YouTubeRule {
 
 }  // namespace youtube_script_injector
 
-#endif  // BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE_YOUTUBE_RULE_H_
+#endif  // BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE_YOUTUBE_JSON_H_

@@ -11,7 +11,7 @@
 #include "base/component_export.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/youtube_script_injector/browser/core/youtube_rule.h"
+#include "brave/components/youtube_script_injector/browser/core/youtube_json.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
@@ -22,7 +22,7 @@
 
 namespace youtube_script_injector {
 
-class YouTubeRuleRegistry;
+class YouTubeRegistry;
 
 // Used to inject JS scripts into the page.
 class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
@@ -50,7 +50,7 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
       content::NavigationHandle* navigation_handle) override;
 
   const int32_t world_id_;
-  const raw_ptr<YouTubeRuleRegistry> youtube_rule_registry_;  // NOT OWNED
+  const raw_ptr<YouTubeRegistry> youtube_registry_;  // NOT OWNED
   // The remote used to send the script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
