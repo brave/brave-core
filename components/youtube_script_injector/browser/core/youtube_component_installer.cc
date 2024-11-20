@@ -31,11 +31,9 @@ namespace {
 //  |_ manifest.json
 //  |_ youtube.json
 //  |_ scripts/
-//    |_ twitter/
-//        |_ test.js
+//    |_ keep-playing-audio/
 //        |_ policy.js
-//    |_ linkedin/
-//        |_ test.js
+//    |_ set-fullscreen/
 //        |_ policy.js
 // See youtube_rule.cc for the format of youtube.json.
 

@@ -24,7 +24,6 @@ namespace youtube_script_injector {
 
 // Holds the loaded script text when a rule is matched.
 struct MatchedRule {
-  std::string test_script;
   std::string policy_script;
   int version;
 };
@@ -38,11 +37,10 @@ struct MatchedRule {
 //     "exclude": [
 //     ],
 //     "version": 1,
-//     "test_script": "twitter/test.js",
 //     "policy_script": "twitter/policy.js"
 //   }, ...
 // ]
-// Note that "test_script" and "policy_script" give paths
+// Note that "policy_script" gives a path
 // relative to the component under scripts/
 // This class describes a single rule in the youtube.json file.
 class YouTubeRule {
@@ -64,15 +62,13 @@ class YouTubeRule {
 
   // Getters.
   const base::FilePath& GetPolicyScript() const { return policy_script_path_; }
-  const base::FilePath& GetTestScript() const { return test_script_path_; }
   int GetVersion() const { return version_; }
 
  private:
   extensions::URLPatternSet include_pattern_set_;
   extensions::URLPatternSet exclude_pattern_set_;
-  // These are paths (not contents!) relative to the component under scripts/.
+  // This is a path (not content) relative to the component under scripts/.
   base::FilePath policy_script_path_;
-  base::FilePath test_script_path_;
   // Used for checking if the last inserted script is the latest version.
   int version_;
 };

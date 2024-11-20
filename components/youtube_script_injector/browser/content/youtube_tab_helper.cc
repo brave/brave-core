@@ -47,28 +47,10 @@ YouTubeTabHelper::YouTubeTabHelper(content::WebContents* web_contents,
 
 YouTubeTabHelper::~YouTubeTabHelper() = default;
 
-void YouTubeTabHelper::OnTestScriptResult(
-    const std::string& policy_script,
-    const content::GlobalRenderFrameHostId& render_frame_host_id,
-    base::Value value) {
-  if (value.GetIfBool().value_or(false)) {
-    InsertScriptInPage(render_frame_host_id, policy_script, base::DoNothing());
-  }
-}
-
-void YouTubeTabHelper::InsertTestScript(
-    const content::GlobalRenderFrameHostId& render_frame_host_id,
-    MatchedRule rule) {
-  InsertScriptInPage(render_frame_host_id, rule.test_script,
-                     base::BindOnce(&YouTubeTabHelper::OnTestScriptResult,
-                                    weak_factory_.GetWeakPtr(),
-                                    rule.policy_script, render_frame_host_id));
-}
-
 void YouTubeTabHelper::InsertScriptInPage(
     const content::GlobalRenderFrameHostId& render_frame_host_id,
-    const std::string& script,
-    content::RenderFrameHost::JavaScriptResultCallback cb) {
+    MatchedRule rule) {
+  // InsertScriptInPage(render_frame_host_id, rule.policy_script);
   content::RenderFrameHost* render_frame_host =
       content::RenderFrameHost::FromID(render_frame_host_id);
 
@@ -78,9 +60,9 @@ void YouTubeTabHelper::InsertScriptInPage(
           web_contents()->GetPrimaryMainFrame()->GetGlobalId()) {
     GetRemote(render_frame_host)
         ->RequestAsyncExecuteScript(
-            world_id_, base::UTF8ToUTF16(script),
+            world_id_, base::UTF8ToUTF16(rule.policy_script),
             blink::mojom::UserActivationOption::kDoNotActivate,
-            blink::mojom::PromiseResultOption::kAwait, std::move(cb));
+            blink::mojom::PromiseResultOption::kAwait, base::DoNothing());
   } else {
     VLOG(2) << "render_frame_host is invalid.";
     return;
@@ -110,7 +92,7 @@ void YouTubeTabHelper::DidFinishNavigation(
       web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 
   youtube_rule_registry_->CheckIfMatch(
-      url, base::BindOnce(&YouTubeTabHelper::InsertTestScript,
+      url, base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
                           weak_factory_.GetWeakPtr(), render_frame_host_id));
 }
 

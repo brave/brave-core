@@ -42,14 +42,12 @@ std::string ReadFile(const base::FilePath& file_path) {
 }
 
 MatchedRule CreateMatchedRule(const base::FilePath& component_path,
-                              const base::FilePath& test_script_path,
                               const base::FilePath& policy_script_path,
                               const int version) {
   auto prefix = base::FilePath(component_path).Append(kScriptsDir);
-  auto test_script = ReadFile(base::FilePath(prefix).Append(test_script_path));
   auto policy_script =
       ReadFile(base::FilePath(prefix).Append(policy_script_path));
-  return {test_script, policy_script, version};
+  return {policy_script, version};
 }
 
 }  // namespace
@@ -75,7 +73,7 @@ void YouTubeRuleRegistry::CheckIfMatch(
       base::ThreadPool::PostTaskAndReplyWithResult(
           FROM_HERE, {base::MayBlock()},
           base::BindOnce(&CreateMatchedRule, component_path_,
-                         rule.GetTestScript(), rule.GetPolicyScript(),
+                         rule.GetPolicyScript(),
                          rule.GetVersion()),
           std::move(cb));
       // Only ever find one matching rule.
