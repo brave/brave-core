@@ -58,15 +58,16 @@ class YouTubeRule {
   static std::optional<std::vector<YouTubeRule>> ParseRules(
       const std::string& contents);
   // Check if this rule matches the given URL.
-  bool ShouldInsertScript(const GURL& url) const;
+  // bool ShouldInsertScript(const GURL& url) const;
+  bool IsYouTubeDomain(const GURL& url) const;
 
   // Getters.
   const base::FilePath& GetPolicyScript() const { return policy_script_path_; }
   int GetVersion() const { return version_; }
 
  private:
-  extensions::URLPatternSet include_pattern_set_;
-  extensions::URLPatternSet exclude_pattern_set_;
+  // extensions::URLPatternSet include_pattern_set_;
+  // extensions::URLPatternSet exclude_pattern_set_;
   // This is a path (not content) relative to the component under scripts/.
   base::FilePath policy_script_path_;
   // Used for checking if the last inserted script is the latest version.

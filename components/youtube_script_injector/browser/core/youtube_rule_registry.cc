@@ -69,7 +69,7 @@ void YouTubeRuleRegistry::CheckIfMatch(
     const GURL& url,
     base::OnceCallback<void(MatchedRule)> cb) const {
   for (const YouTubeRule& rule : rules_) {
-    if (rule.ShouldInsertScript(url)) {
+    if (rule.IsYouTubeDomain(url)) {
       base::ThreadPool::PostTaskAndReplyWithResult(
           FROM_HERE, {base::MayBlock()},
           base::BindOnce(&CreateMatchedRule, component_path_,
