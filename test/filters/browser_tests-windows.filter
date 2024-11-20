@@ -5,6 +5,10 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# This test fails because the product name is Brave instead of Chromium -
+# hardcoded in the test.
+-CrashClientUploadInfoTest.GetClientProductInfo
+
 # This test fails because we override PrivacySandboxSettings and
 # IsPrivacySandboxRestricted in IsPrivacySandboxRestricted c'tor causes a
 # different code path that triggers a DCHECK in ProfileManager::RemoveKeepAlive.
@@ -78,7 +82,6 @@
 -Enabled/NetworkServiceSandboxEnabledTest.IsRespected/0
 -Enabled/RendererAppContainerEnabledTest.IsRespected/0
 -ExtensionInstalledBubbleViewsBrowserTest.*
--FedCmAccountSelectionViewBrowserTest.*
 -FencedFrameFileSystemAccessBrowserTest/FencedFrameFileSystemAccessBrowserTest.*
 -FileSystemAccessBrowserSlowLoadTest.*
 -FileSystemAccessBrowserTestForWebUI.*
