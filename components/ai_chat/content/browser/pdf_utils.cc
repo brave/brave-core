@@ -35,64 +35,6 @@ ui::AXNode* FindPdfRoot(const ui::AXNode* start_node) {
   return nullptr;
 }
 
-#if BUILDFLAG(ENABLE_PDF)
-ui::AXNode* FindOcrResultBeginBanner(const ui::AXNode* start_node) {
-  if (!start_node) {
-    return nullptr;
-  }
-  for (const auto& node : start_node->GetAllChildren()) {
-    if (node->GetStringAttribute(ax::mojom::StringAttribute::kName) ==
-            l10n_util::GetStringUTF8(IDS_PDF_OCR_RESULT_BEGIN) &&
-        node->GetParent()->GetRole() == ax::mojom::Role::kBanner) {
-      return node->GetParent();
-    }
-    ui::AXNode* result = FindOcrResultBeginBanner(node);
-    if (result) {
-      return result;
-    }
-  }
-  return nullptr;
-}
-
-bool IsOcrResultEndContentInfo(const ui::AXNode* node) {
-  if (!node) {
-    return false;
-  }
-  if (node->GetRole() == ax::mojom::Role::kContentInfo &&
-      node->GetChildCount() == 1u &&
-      node->GetFirstChild()->GetStringAttribute(
-          ax::mojom::StringAttribute::kName) ==
-          l10n_util::GetStringUTF8(IDS_PDF_OCR_RESULT_END)) {
-    return true;
-  }
-  return false;
-}
-#endif
-
-std::optional<std::string> GetOcrResult(const ui::AXNode* start_node) {
-#if BUILDFLAG(ENABLE_PDF)
-  if (!start_node) {
-    return std::nullopt;
-  }
-  const auto* ocr_result_begin_banner = FindOcrResultBeginBanner(start_node);
-  if (!ocr_result_begin_banner) {
-    return std::nullopt;
-  }
-  std::string result;
-  ui::AXNode* node = ocr_result_begin_banner->GetNextSibling();
-  while (node && !IsOcrResultEndContentInfo(node)) {
-    base::StrAppend(
-        &result,
-        {node->GetTextContentUTF8(),
-         IsOcrResultEndContentInfo(node->GetNextSibling()) ? "" : "\n"});
-    node = node->GetNextSibling();
-  }
-  return result;
-#else
-  return std::nullopt;
-#endif
-}
-
 }  // namespace
 
 bool IsPdf(content::WebContents* web_contents) {
@@ -132,9 +74,7 @@ bool IsPdfLoaded(const ui::AXNode* pdf_root) {
   const auto& name =
       pdf_root->GetChildAtIndex(0)->GetChildAtIndex(0)->GetStringAttribute(
           ax::mojom::StringAttribute::kName);
-  if (name == l10n_util::GetStringUTF8(IDS_PDF_OCR_IN_PROGRESS) ||
-      name == l10n_util::GetStringUTF8(IDS_PDF_LOADING_TO_A11Y_TREE) ||
-      name == l10n_util::GetStringUTF8(IDS_PDF_OCR_FEATURE_ALERT)) {
+  if (name == l10n_util::GetStringUTF8(IDS_PDF_LOADING_TO_A11Y_TREE)) {
     return false;
   }
 #endif
@@ -153,10 +93,8 @@ std::string ExtractPdfContent(const ui::AXNode* pdf_root) {
   for (auto it = children.cbegin() + 1; it != children.cend(); ++it) {
     const ui::AXNode* node = *it;
     if (node->GetRole() == ax::mojom::Role::kRegion) {
-      auto ocr_result = GetOcrResult(node);
-      base::StrAppend(&pdf_content,
-                      {ocr_result ? *ocr_result : node->GetTextContentUTF8(),
-                       it == children.cend() - 1 ? "" : "\n"});
+      base::StrAppend(&pdf_content, {node->GetTextContentUTF8(),
+                                     it == children.cend() - 1 ? "" : "\n"});
     }
   }
   return pdf_content;
