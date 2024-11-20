@@ -129,10 +129,10 @@ const ConversionUrlPatternsTable: React.FC<{ data: AdsInternal[] }> = React.memo
 
   const tableColumnOrder = [URL_PATTERN_TABLE_COLUMN, EXPIRES_AT_TABLE_COLUMN];
 
-  const uniqueTableRows = React.useMemo(() => {
+  const uniqueTableRows = () => {
     return Array.from(new Set(data.map(item => JSON.stringify(item))))
       .map(item => JSON.parse(item));
-  }, [data]);
+  };
 
   return (
     <Table>
@@ -144,7 +144,7 @@ const ConversionUrlPatternsTable: React.FC<{ data: AdsInternal[] }> = React.memo
         </tr>
       </thead>
       <tbody>
-        {uniqueTableRows.map((row, index) => (
+        {uniqueTableRows().map((row, index) => (
           <tr key={index}>
             {tableColumnOrder.map((header) => (
               <td key={header}>
