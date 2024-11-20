@@ -15,21 +15,23 @@ export interface SelectedChatDetails {
   updateSelectedConversationId: (conversationId: string | undefined) => void
   conversationHandler: API.ConversationHandlerRemote
   callbackRouter: API.ConversationUICallbackRouter
+  newConversation: () => void
 }
+
+export const ActiveChatContext = React.createContext<SelectedChatDetails>({
+  selectedConversationId: undefined,
+  updateSelectedConversationId: () => {},
+  callbackRouter: undefined!,
+  conversationHandler: undefined!,
+  newConversation: () => {}
+})
 
 
 const updateSelectedConversation = (selectedId: string | undefined) => {
   window.location.href = `/${selectedId ?? ''}`
 }
 
-// Note: We render children using the RenderProps pattern, so we can provide
-// different strategies for deciding the ActiveConversation (such as from the
-// URL). This will be useful when we move the content into an iframe.
-// https://github.com/brave/brave-core/pull/26050#issuecomment-2418561971
-type Children = (details: SelectedChatDetails) => JSX.Element
-export function ActiveChatProviderFromUrl(props: {
-  children: Children
-}) {
+export function ActiveChatProviderFromUrl(props: React.PropsWithChildren) {
   // Register the empty route, so we don't reload the page when navigating to '/'
   useRoute('/')
 
@@ -39,11 +41,12 @@ export function ActiveChatProviderFromUrl(props: {
   </ActiveChatProvider>
 }
 
-function ActiveChatProvider({ children, selectedConversationId, updateSelectedConversationId }: {
+export const useActiveChat = () => React.useContext(ActiveChatContext)
+
+function ActiveChatProvider({ children, selectedConversationId, updateSelectedConversationId }: React.PropsWithChildren<{
   selectedConversationId: string | undefined
   updateSelectedConversationId: (selectedId: string | undefined) => void,
-  children: Children
-}) {
+}>) {
   const { visibleConversations, initialized } = useAIChat()
   const [conversationAPI, setConversationAPI] =
     React.useState<Pick<SelectedChatDetails, 'callbackRouter' | 'conversationHandler'>>()
@@ -106,7 +109,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     }
   }, [visibleConversations, selectedConversationId, initialized])
 
-  return conversationAPI
-    ? children(details as any)
-    : null
+  return <ActiveChatContext.Provider value={details as any}>
+    {conversationAPI && children}
+  </ActiveChatContext.Provider>
 }

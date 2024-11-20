@@ -32,11 +32,11 @@ function App() {
   return (
     <AIChatContextProvider>
       <ActiveChatProviderFromUrl>
-        {(details) => <ConversationContextProvider {...details}>
+        <ConversationContextProvider>
           <BraveCoreThemeProvider>
             <Content />
           </BraveCoreThemeProvider>
-        </ConversationContextProvider>}
+        </ConversationContextProvider>
       </ActiveChatProviderFromUrl>
     </AIChatContextProvider>
   )

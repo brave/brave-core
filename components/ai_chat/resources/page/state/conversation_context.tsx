@@ -8,7 +8,7 @@ import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.m
 import * as API from '../api/'
 import { useAIChat } from './ai_chat_context'
 import { isLeoModel } from '../model_utils'
-import { tabAssociatedChatId , SelectedChatDetails } from './active_chat_provider'
+import { tabAssociatedChatId, useActiveChat } from './active_chat_provider'
 import useIsConversationVisible from '../hooks/useIsConversationVisible'
 
 const MAX_INPUT_CHAR = 2000
@@ -150,11 +150,11 @@ export function useActionMenu(
 export const ConversationReactContext =
   React.createContext<ConversationContext>(defaultContext)
 
-export function ConversationContextProvider(props: React.PropsWithChildren<SelectedChatDetails>) {
+export function ConversationContextProvider(props: React.PropsWithChildren) {
   const [context, setContext] =
     React.useState<ConversationContext>(defaultContext)
 
-  const { conversationHandler, callbackRouter } = props
+  const { conversationHandler, callbackRouter, selectedConversationId, updateSelectedConversationId } = useActiveChat()
 
   const [
     hasDismissedLongConversationInfo,
@@ -311,14 +311,14 @@ export function ConversationContextProvider(props: React.PropsWithChildren<Selec
   const isVisible = useIsConversationVisible(context.conversationUuid)
   React.useEffect(() => {
     if (!isVisible) return
-    if (props.selectedConversationId === tabAssociatedChatId) return
-    if (context.conversationUuid === props.selectedConversationId) return
-    props.updateSelectedConversationId(context.conversationUuid)
-  }, [isVisible, props.updateSelectedConversationId])
+    if (selectedConversationId === tabAssociatedChatId) return
+    if (context.conversationUuid === selectedConversationId) return
+    updateSelectedConversationId(context.conversationUuid)
+  }, [isVisible, updateSelectedConversationId])
 
   React.useEffect(() => {
-    setPartialContext({ isTabAssociated: props.selectedConversationId === tabAssociatedChatId })
-  }, [props.selectedConversationId])
+    setPartialContext({ isTabAssociated: selectedConversationId === tabAssociatedChatId })
+  }, [selectedConversationId])
 
   const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 
