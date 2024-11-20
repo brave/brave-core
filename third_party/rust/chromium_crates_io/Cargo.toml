@@ -136,7 +136,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/lazy_static-1.5.0
 package = "lazy_static"
 
 [patch.crates-io.libc_v0_2]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/libc-0.2.162"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/libc-0.2.164"
 package = "libc"
 
 [patch.crates-io.log_v0_4]
@@ -196,15 +196,15 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/semver-1.0.23"
 package = "semver"
 
 [patch.crates-io.serde_derive_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_derive-1.0.214"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_derive-1.0.215"
 package = "serde_derive"
 
 [patch.crates-io.serde_json_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_json-1.0.132"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_json-1.0.133"
 package = "serde_json"
 
 [patch.crates-io.serde_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/serde-1.0.214"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde-1.0.215"
 package = "serde"
 
 [patch.crates-io.static_assertions_v0_1]
