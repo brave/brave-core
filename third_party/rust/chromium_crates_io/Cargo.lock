@@ -1295,7 +1295,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "libc"
-version = "0.2.162"
+version = "0.2.164"
 
 [[package]]
 name = "libm"
@@ -2059,7 +2059,7 @@ version = "1.0.23"
 
 [[package]]
 name = "serde"
-version = "1.0.214"
+version = "1.0.215"
 dependencies = [
  "serde_derive",
 ]
@@ -2074,7 +2074,7 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.214"
+version = "1.0.215"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2094,7 +2094,7 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.132"
+version = "1.0.133"
 dependencies = [
  "itoa 1.0.11",
  "memchr",
