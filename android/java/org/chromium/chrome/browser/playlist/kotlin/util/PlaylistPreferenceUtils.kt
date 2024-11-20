@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -31,46 +31,61 @@ object PlaylistPreferenceUtils {
     var SharedPreferences.recentlyPlayedPlaylist
         get() = getString(RECENTLY_PLAYED_PLAYLIST, "")
         set(value) {
-            edit { it.putString(RECENTLY_PLAYED_PLAYLIST, value) }
+            edit {
+                it.putString(RECENTLY_PLAYED_PLAYLIST, value)
+            }
         }
 
     private var SharedPreferences.addMediaCount
         get() = getInt(ADD_MEDIA_COUNT, -1)
         set(value) {
-            edit { it.putInt(ADD_MEDIA_COUNT, value) }
+            edit {
+                it.putInt(ADD_MEDIA_COUNT, value)
+            }
         }
 
     var SharedPreferences.shouldShowOnboarding
         get() = getBoolean(SHOULD_SHOW_PLAYLIST_ONBOARDING, true)
         set(value) {
-            edit { it.putBoolean(SHOULD_SHOW_PLAYLIST_ONBOARDING, value) }
+            edit {
+                it.putBoolean(SHOULD_SHOW_PLAYLIST_ONBOARDING, value)
+            }
         }
 
     fun SharedPreferences.getLatestPlaylistItem(key: String): String? = getString(key, "")
 
     fun SharedPreferences.setLatestPlaylistItem(key: String, value: String) {
-        edit { it.putString(key, value) }
+        edit {
+            it.putString(key, value)
+        }
     }
 
     var SharedPreferences.rememberFilePlaybackPosition
         get() = getBoolean(REMEMBER_FILE_PLAYBACK_POSITION, true)
         set(value) {
-            edit { it.putBoolean(REMEMBER_FILE_PLAYBACK_POSITION, value) }
+            edit {
+                it.putBoolean(REMEMBER_FILE_PLAYBACK_POSITION, value)
+            }
         }
 
     var SharedPreferences.rememberListPlaybackPosition
         get() = getBoolean(REMEMBER_LIST_PLAYBACK_POSITION, false)
         set(value) {
-            edit { it.putBoolean(REMEMBER_LIST_PLAYBACK_POSITION, value) }
+            edit {
+                it.putBoolean(REMEMBER_LIST_PLAYBACK_POSITION, value)
+            }
         }
 
     var SharedPreferences.continuousListening
         get() = getBoolean(CONTINUOUS_LISTENING, true)
         set(value) {
-            edit { it.putBoolean(CONTINUOUS_LISTENING, value) }
+            edit {
+                it.putBoolean(CONTINUOUS_LISTENING, value)
+            }
         }
 
     @JvmStatic
+    @Suppress("unused")
     fun resetPlaylistPrefs(context: Context) {
         defaultPrefs(context).apply {
             recentlyPlayedPlaylist = ""

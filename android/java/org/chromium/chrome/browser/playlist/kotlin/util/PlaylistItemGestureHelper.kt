@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -22,12 +22,11 @@ import androidx.recyclerview.widget.ItemTouchHelper.START
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
-
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.AbstractRecyclerViewAdapter
 import org.chromium.chrome.browser.playlist.kotlin.listener.ItemInteractionListener
-
 import kotlin.math.min
+
 
 class PlaylistItemGestureHelper<VH : AbstractRecyclerViewAdapter.AbstractViewHolder<M>, M : Any>(
     context: Context,
