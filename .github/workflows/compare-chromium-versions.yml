@@ -30,7 +30,7 @@ jobs:
           label() { gh pr edit "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" "--${1:?}-label" chromium-version-mismatch >/dev/null; }
 
           comment() {
-              local -r comment="Chromium major version is behind target branch ($pr_ver vs $target_ver)"
+              local -r comment="Chromium major version is behind target branch ($pr_ver vs $target_ver). Please rebase."
               gh pr comment "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" -b "${comment:?}"
           }
 
