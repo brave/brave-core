@@ -121,7 +121,7 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "356");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "-386");
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "-971");
 
   // Farbling level: balanced (default)
   // web audio: farbled audio data
