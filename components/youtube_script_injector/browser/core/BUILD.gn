@@ -11,10 +11,10 @@ component("core") {
   sources = [
     "youtube_component_installer.cc",
     "youtube_component_installer.h",
-    "youtube_rule.cc",
-    "youtube_rule.h",
-    "youtube_rule_registry.cc",
-    "youtube_rule_registry.h",
+    "youtube_json.cc",
+    "youtube_json.h",
+    "youtube_registry.cc",
+    "youtube_registry.h",
   ]
 
   deps = [
