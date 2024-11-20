@@ -10,3 +10,30 @@ buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [ "BRAVE_ENABLE_UPDATER=$brave_enable_updater" ]
 }
+
+if (is_win) {
+  action("BraveAdmx") {
+    script = "brand_google_admx.py"
+    inputs = [ script ]
+    sources = [ "//chrome/updater/enterprise/win/google/google.admx" ]
+    outputs = [ "$root_build_dir/BraveAdmx/brave.admx" ]
+    args = [
+      rebase_path(sources[0]),
+      rebase_path(outputs[0])
+    ]
+  }
+  action("BraveUpdateAdmx") {
+    deps = [ "//chrome/updater/enterprise/win/google:GoogleUpdateAdmxGenerate" ]
+    sources = [
+      "$root_build_dir/GoogleUpdateAdmx/GoogleUpdate.admx",
+      "$root_build_dir/GoogleUpdateAdmx/en-US/GoogleUpdate.adml"
+    ]
+    outputs = [
+      "$root_build_dir/BraveUpdateAdmx/GoogleUpdate.admx",
+      "$root_build_dir/BraveUpdateAdmx/en-US/GoogleUpdate.adml"
+    ]
+    script = "brand_group_policy_template.py"
+    inputs = [ script ]
+    args = sources + outputs
+  }
+}
