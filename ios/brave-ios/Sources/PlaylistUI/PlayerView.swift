@@ -38,12 +38,17 @@ struct PlayerView: View {
     }
   }
 
+  private var isVideoAmbianceBackgroundEnabled: Bool {
+    !isFullScreen && playerModel.isPlayerInForeground
+      && !ProcessInfo.processInfo.isLowPowerModeEnabled
+  }
+
   var body: some View {
     VideoPlayerLayout(aspectRatio: isFullScreen ? nil : 16 / 9) {
       VideoPlayer(playerLayer: playerModel.playerLayer)
     }
     .background {
-      if !isFullScreen {
+      if isVideoAmbianceBackgroundEnabled {
         VideoAmbianceBackground(playerModel: playerModel)
           .transition(.opacity.animation(.snappy))
           .opacity(playerModel.isPlaying ? 1 : 0.5)
@@ -296,7 +301,8 @@ extension PlayerView {
       .buttonStyle(.playbackControl)
       .tint(Color(braveSystemName: .textPrimary))
       .backgroundStyle(Color.white.opacity(0.2))
-      .task(priority: .low) {
+      .task(id: model.isPlayerInForeground, priority: .low) {
+        if !model.isPlayerInForeground { return }
         self.currentTime = model.currentTime
         for await currentTime in model.currentTimeStream {
           self.currentTime = currentTime
