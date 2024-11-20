@@ -8,8 +8,11 @@ import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
 import styles from './alerts.module.scss'
+import { useActiveChat } from '../../state/active_chat_provider'
 
 function ErrorConversationEnd() {
+  const { newConversation } = useActiveChat()
+
   return (
     <div className={styles.alert}>
       <Alert
@@ -20,7 +23,7 @@ function ErrorConversationEnd() {
         <Button
           slot='actions'
           kind='plain-faint'
-          onClick={() => location.href = "/"}
+          onClick={newConversation}
         >
           {getLocale('menuNewChat')}
         </Button>

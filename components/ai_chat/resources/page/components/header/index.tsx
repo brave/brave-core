@@ -12,7 +12,7 @@ import styles from './style.module.scss'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
-import { tabAssociatedChatId } from '../../state/active_chat_provider'
+import { tabAssociatedChatId, useActiveChat } from '../../state/active_chat_provider'
 
 const Logo = ({ isPremium }: { isPremium: boolean }) => <div className={styles.logo}>
   <Icon name='product-brave-leo' />
@@ -32,7 +32,7 @@ const openFullPageButtonLabel = getLocale('openFullPageLabel')
 export const ConversationHeader = React.forwardRef(function (props: FeatureButtonMenuProps, ref: React.Ref<HTMLDivElement>) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
-
+  const { newConversation } = useActiveChat()
   const shouldDisplayEraseAction = !aiChatContext.isStandalone &&
     conversationContext.conversationHistory.length >= 1
 
@@ -64,7 +64,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
                 kind='plain-faint'
                 aria-label={newChatButtonLabel}
                 title={newChatButtonLabel}
-                onClick={() => location.href = "/"}
+                onClick={newConversation}
               >
                 <Icon name={aiChatContext.isHistoryEnabled ? 'edit-box' : 'erase'} />
               </Button>
@@ -102,6 +102,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
 export function NavigationHeader() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
+  const { newConversation } = useActiveChat()
 
   const canStartNewConversation = conversationContext.conversationHistory.length >= 1
     && aiChatContext.hasAcceptedAgreement
@@ -119,7 +120,7 @@ export function NavigationHeader() {
             kind='plain-faint'
             aria-label={newChatButtonLabel}
             title={newChatButtonLabel}
-            onClick={() => location.href = "/"}
+            onClick={newConversation}
           >
             <Icon name='edit-box' />
           </Button>

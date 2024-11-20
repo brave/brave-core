@@ -9,12 +9,14 @@ import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
 import { useConversation } from '../../state/conversation_context'
 import styles from './alerts.module.scss'
+import { useActiveChat } from '../../state/active_chat_provider'
 
 export default function LongConversationInfo() {
   const context = useConversation()
+  const {newConversation} = useActiveChat()
 
   const handleClearChat = () => {
-    location.href = "/"
+    newConversation()
     context.dismissLongConversationInfo()
   }
 
