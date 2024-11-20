@@ -155,7 +155,7 @@ extension BrowserViewController {
       }
 
       // Add Brave-Leo options only in normal browsing
-      if !privateBrowsingManager.isPrivateBrowsing {
+      if !privateBrowsingManager.isPrivateBrowsing && FeatureList.kAIChat.enabled {
         MenuItemFactory.button(for: .leo) { [unowned self] in
           self.popToBVC()
           self.openBraveLeo()
@@ -357,7 +357,9 @@ extension BrowserViewController {
           }
 
           // Add Brave-Leo options only in normal browsing
-          if !browserViewController.tabManager.privateBrowsingManager.isPrivateBrowsing {
+          if !browserViewController.tabManager.privateBrowsingManager.isPrivateBrowsing
+            && FeatureList.kAIChat.enabled
+          {
             MenuItemButton(
               icon: Image(braveSystemName: "leo.product.brave-leo"),
               title: Strings.leoMenuItem
@@ -373,6 +375,20 @@ extension BrowserViewController {
           ) {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
+          }
+          MenuItemButton(
+            icon: Image(braveSystemName: "leo.shred.data"),
+            title: Strings.Shields.shredSiteData
+          ) {
+            browserViewController.dismiss(animated: true) {
+              guard let tab = self.browserViewController.tabManager.selectedTab,
+                let url = tab.url
+              else { return }
+              let alert = UIAlertController.shredDataAlert(url: url) { _ in
+                self.browserViewController.shredData(for: url, in: tab)
+              }
+              browserViewController.present(alert, animated: true)
+            }
           }
           NightModeMenuButton(dismiss: {
             browserViewController.dismiss(animated: true)

@@ -171,8 +171,6 @@
 <translation id="8510478288840333677">Anunțați-i pe dezvoltatorii Brave că acest site nu funcționează corect cu Scuturi:</translation>
 <translation id="3110968385867124099">Această pagină nu poate fi raportată deoarece nu a fost furnizată prin HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Această pagină este o pagină web locală și nu este eligibilă pentru raportare.</translation>
-<translation id="3645455863322075098">Această pagină este o pagină de eroare și nu este eligibilă pentru raportare.</translation>
-<translation id="105644511106871142">Vă mulțumim pentru că ne ajutați să îmbunătățim Brave pentru toți. Acest raport va trimite doar informațiile necesare pentru noi pentru a remedia acest site.</translation>
 <translation id="6476216365964140603">Detalii suplimentare (opțional)</translation>
 <translation id="6145852496180774737">Contactați-mă la: (opțional)</translation>
 <translation id="7616645803364270729">Email, Twitter etc.</translation>
@@ -646,6 +644,12 @@
 <translation id="7924320838799747606">Soldul dvs.</translation>
 <translation id="2870560284913253234">Site</translation>
 <translation id="7751260505918304024">Afișați-le pe toate</translation>
+<translation id="4114667046481794032">Suma contribuției</translation>
+<translation id="3253225298092156258">Indisponibil(ă)</translation>
+<translation id="7550470870580166294">Fonduri insuficiente</translation>
+<translation id="1166682575529520472">Lunar</translation>
+<translation id="7138678301420049075">Altceva</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">cont</translation>
 <translation id="4822132585477111396">ID lanț</translation>
 <translation id="3269475789479462358">domeniu</translation>
@@ -748,7 +752,6 @@
 <translation id="6517332033658428773">Verificați schimbul</translation>
 <translation id="8692596799753687794">Alegeți furnizorul de oferte</translation>
 <translation id="463712644600982655">Fiecare agregator furnizează oferte folosind lichidități din propriul API. Aceștia colectează informații privind prețurile de la diverse schimburi și oferă prețuri pe baza acestor date.</translation>
-<translation id="3253225298092156258">Indisponibil(ă)</translation>
 <translation id="473775607612524610">Actualizează</translation>
 <translation id="4389658703251593158">Această asociere nu este acceptată de <ph name="PROVIDER_NAME"/></translation>
 <translation id="1176173785350238153">Schimbați furnizorul</translation>
@@ -996,6 +999,8 @@
 <translation id="793994607260936590">prima</translation>
 <translation id="4709524402122994378">tranzacții</translation>
 <translation id="4591079278963448049">Contul de token asociat nu există încă. O sumă mică de SOL va fi cheltuită pentru a-l crea și finanța.</translation>
+<translation id="3240773103344793224">A fost solicitată schimbarea proprietății contului</translation>
+<translation id="8041423758956015568">Această tranzacție va transfera proprietatea contului către un nou program. Acțiunea este ireversibilă și poate duce la pierderea fondurilor.</translation>
 <translation id="1426320910664514906">Limită gas</translation>
 <translation id="1229774280326250926">Gaz Premium</translation>
 <translation id="148169246131967347">Plafon taxă gaz</translation>
@@ -1217,10 +1222,9 @@
 <translation id="5722321409991816187">Afișați NFT-urile spam</translation>
 <translation id="2588752742385122166">Setări portofoliu</translation>
 <translation id="7662492121143629144">Toate conturile</translation>
+<translation id="8845001906332463065">Obține asistență</translation>
 <translation id="6954150712710630841">Tranzacție trimisă</translation>
-<translation id="905855245798176174">Tranzacția a fost trimisă cu succes rețelei și așteaptă confirmare.</translation>
 <translation id="619697073289995370">Tranzacție semnată</translation>
-<translation id="7493732383203109611">Tranzacția a fost semnată și va fi trimisă spre rețea de DApp</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> au fost returnați în portofelul dvs.</translation>
 <translation id="4577432071459867390">Tranzacție eșuată</translation>
 <translation id="4359235192593147041">Tranzacția a eșuat din cauza unei încercări de a transfera o sumă prea mare. Creșteți toleranța de transferuri pentru a reuși să tranzacționați sume mai mari.</translation>
@@ -1607,7 +1611,6 @@
 <translation id="1472675084647422956">Arată mai multe</translation>
 <translation id="4522570452068850558">Detalii</translation>
 <translation id="7144878232160441200">Reîncearcă</translation>
-<translation id="7138678301420049075">Altceva</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="3745016858329272300">Informații generale</translation>
 <translation id="4045404575593562245">Evenimente control Tor</translation>
@@ -1685,7 +1688,6 @@ other {# surse}
 <translation id="7056969230130642253">Sunteți la zi</translation>
 <translation id="7292242212818928219">Conținut nou disponibil. Reîncărcați?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Comenzi rapide</translation>
 <translation id="7481312909269577407">Înainte</translation>
 <translation id="1272079795634619415">Oprește</translation>
 <translation id="302781076327338683">Reîncărcați prin omiterea memoriei cache</translation>
@@ -1841,6 +1843,7 @@ other {# surse}
 <translation id="1130188644637295274">Deschideți în vizualizare divizată</translation>
 <translation id="6459036216700972269">Anulați divizarea filelor</translation>
 <translation id="4235382917338421035">Schimbă poziția filelor</translation>
+<translation id="4144468798716165316">Comenzi rapide</translation>
 <translation id="3617523374417810198">Vizualizare divizată nouă</translation>
 <translation id="8571323456914890254">Deschideți în vizualizare divizată</translation>
 <translation id="5329136173514538969">Anulați divizarea filelor</translation>
@@ -1902,7 +1905,6 @@ other {# surse}
 <translation id="1691256669639196606">Gestionați abonamentul</translation>
 <translation id="2304783958703511257">Setări avansate</translation>
 <translation id="3037594989275592390">Modele de limbaj</translation>
-<translation id="6637015365469044269">Faceți upgrade acum</translation>
 <translation id="5543505256451301851">Încercați gratuit pentru 7 zile</translation>
 <translation id="849535826888024304">Limita ratei de răspunsuri a fost atinsă</translation>
 <translation id="2252128900328632803">Ai atins limita maximă a nivelului Leo. Beneficiază de o rată de răspuns mai ridicată abonându-te la Premium sau încearcă din nou mai târziu.</translation>
@@ -1913,7 +1915,7 @@ other {# surse}
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /lună</translation>
 <translation id="5151923271944811339">Comutați la modelul gratuit</translation>
 <translation id="5474757891469990756">Dezlănțuiți întreaga putere a lui Leo cu Premium:</translation>
-<translation id="5552332211527367850">Acces prioritar la modele puternice cu diverse competențe</translation>
+<translation id="3453542753968940696">Acces prioritar la modele puternice cu diverse competențe.</translation>
 <translation id="5031778211368112461">Accesați modele mai bine adaptate sarcinilor creative și generării de conținut.</translation>
 <translation id="298783097210745222">Obțineți răspunsuri mai precise în cadrul unor conversații nuanțate.</translation>
 <translation id="4314705522985583059">Atingeți limite de nivel mai înalt pentru conversațiile lungi.</translation>

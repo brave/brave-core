@@ -21,8 +21,7 @@ UntrustedLedgerUI::UntrustedLedgerUI(content::WebUI* web_ui)
   auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kUntrustedLedgerURL);
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_LEDGER_BRIDGE_HTML);
-  untrusted_source->AddResourcePaths(UNSAFE_TODO(
-      base::make_span(kLedgerBridgeGenerated, kLedgerBridgeGeneratedSize)));
+  untrusted_source->AddResourcePaths(base::span(kLedgerBridgeGenerated));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   untrusted_source->OverrideContentSecurityPolicy(

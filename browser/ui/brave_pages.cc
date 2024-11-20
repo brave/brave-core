@@ -75,13 +75,10 @@ void ShowBraveWalletOnboarding(Browser* browser) {
 void ShowBraveWalletAccountCreation(Browser* browser,
                                     brave_wallet::mojom::CoinType coin_type) {
   // Only solana is supported.
-  if (coin_type == brave_wallet::mojom::CoinType::SOL) {
-    ShowSingletonTabOverwritingNTP(
-        browser,
-        GURL(base::StrCat({kBraveUIWalletAccountCreationURL, "Solana"})));
-  } else {
-    NOTREACHED_IN_MIGRATION();
-  }
+  CHECK(coin_type == brave_wallet::mojom::CoinType::SOL);
+  ShowSingletonTabOverwritingNTP(
+      browser,
+      GURL(base::StrCat({kBraveUIWalletAccountCreationURL, "Solana"})));
 }
 
 void ShowExtensionSettings(Browser* browser) {

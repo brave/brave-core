@@ -497,7 +497,7 @@ TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
 
   EXPECT_TRUE(AllCoinsTested());
 
-  EXPECT_DCHECK_DEATH(
+  EXPECT_NOTREACHED_DEATH(
       GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
 }
 

@@ -6,18 +6,31 @@
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
 
 #include <algorithm>
+#include <cmath>
+#include <ios>
+#include <ostream>
+#include <string_view>
+#include <type_traits>
+#include <utility>
 
+#include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/containers/span.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/hash/hash.h"
+#include "base/location.h"
 #include "base/logging.h"
-#include "base/memory/ptr_util.h"
-#include "base/metrics/histogram_functions.h"
+#include "base/metrics/histogram_functions_internal_overloads.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/task/bind_post_task.h"
 #include "base/timer/elapsed_timer.h"
-#include "third_party/tflite/src/tensorflow/lite/core/api/op_resolver.h"
+#include "cc/port/statusor.h"
+#include "cc/task/text/text_embedder.h"
+#include "tensorflow_lite_support/cc/task/core/proto/base_options.pb.h"
+#include "tensorflow_lite_support/cc/task/core/proto/external_file.pb.h"
+#include "tensorflow_lite_support/cc/task/text/proto/text_embedder_options.pb.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/utils/text_op_resolver.h"
 
 using TFLiteTextEmbedder = tflite::task::text::TextEmbedder;

@@ -159,20 +159,9 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
           }
         ),
         .boolRow(
-          title: "VPN Callout Shown",
-          detailText: "Flag determining if VPN callout is shown to user.",
-          toggleValue: Preferences.FullScreenCallout.vpnPromotionCalloutCompleted.value,
-          valueChange: {
-            if $0 {
-              let status = $0
-              Preferences.FullScreenCallout.vpnPromotionCalloutCompleted.value = status
-            }
-          }
-        ),
-        .boolRow(
           title: "Rewards Callout Shown",
           detailText: "Flag determining if Rewards callout is shown to user.",
-          toggleValue: Preferences.FullScreenCallout.vpnPromotionCalloutCompleted.value,
+          toggleValue: Preferences.FullScreenCallout.rewardsCalloutCompleted.value,
           valueChange: {
             if $0 {
               let status = $0

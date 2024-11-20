@@ -1,0 +1,55 @@
+[package]
+name = "fvm_shared"
+description = "Filecoin Virtual Machine shared types and functions"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+repository.workspace = true
+authors = ["ChainSafe Systems <info@chainsafe.io>", "Protocol Labs", "Filecoin Core Devs"]
+
+[dependencies]
+blake2b_simd = { workspace = true }
+thiserror = { workspace = true }
+num-traits = { workspace = true }
+num-derive = { workspace = true }
+lazy_static = { workspace = true }
+cid = { workspace = true, features = ["serde-codec", "std"] }
+unsigned-varint = { workspace = true }
+anyhow = { workspace = true }
+fvm_ipld_encoding = { workspace = true }
+serde = { workspace = true, default-features = false }
+serde_tuple = { workspace = true }
+arbitrary = { workspace = true, optional = true, features = ["derive"] }
+quickcheck = { workspace = true, optional = true }
+
+num-bigint = "0.4"
+num-integer = "0.1"
+data-encoding = "2.4.0"
+data-encoding-macro = "0.1.13"
+bitflags = { version = "2.3.3", features = ["serde"] }
+
+## non-wasm dependencies; these dependencies and the respective code is
+## only activated through non-default features, which the Kernel enables, but
+## not the actors.
+filecoin-proofs-api = { version = "18", default-features = false, optional = true }
+libsecp256k1 = { workspace = true, optional = true }
+bls-signatures = { workspace = true, default-features = false, optional = true }
+
+[dev-dependencies]
+rand = { workspace = true }
+serde_json = { workspace = true }
+multihash-codetable = { workspace = true, features = ["sha2", "sha3", "ripemd"] }
+quickcheck_macros = { workspace = true }
+coverage-helper = { workspace = true }
+fvm_shared = { path = ".", features = ["arb"] }
+rand_chacha = { workspace = true }
+rusty-fork = { version = "0.3.0", default-features = false }
+
+[features]
+default = []
+crypto = ["libsecp256k1", "blst", "proofs"]
+proofs = ["filecoin-proofs-api"]
+secp256k1 = ["libsecp256k1"]
+blst = ["bls-signatures/blst"]
+testing = []
+arb = ["arbitrary", "dep:quickcheck", "num-bigint/quickcheck", "cid/arb"]

@@ -8,17 +8,17 @@
 #include <string>
 #include <utility>
 
-#include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/resources/grit/brave_news_internals_generated_map.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 
-BraveNewsInternalsUI::BraveNewsInternalsUI(content::WebUI* web_ui,
-                                           const std::string& host)
-    : content::WebUIController(web_ui) {
+BraveNewsInternalsUI::BraveNewsInternalsUI(
+    content::WebUI* web_ui,
+    const std::string& host,
+    brave_news::BraveNewsController* controller)
+    : content::WebUIController(web_ui), controller_(controller) {
   auto* source = CreateAndAddWebUIDataSource(
       web_ui, host, kBraveNewsInternalsGenerated,
       kBraveNewsInternalsGeneratedSize, IDR_BRAVE_NEWS_INTERNALS_HTML);
@@ -30,24 +30,18 @@ WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewsInternalsUI)
 
 void BraveNewsInternalsUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
-  auto* profile = Profile::FromWebUI(web_ui());
-  auto* controller =
-      brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile);
-  if (!controller) {
+  if (!controller_) {
     return;
   }
 
-  controller->Bind(std::move(receiver));
+  controller_->Bind(std::move(receiver));
 }
 
 void BraveNewsInternalsUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsInternals> receiver) {
-  auto* profile = Profile::FromWebUI(web_ui());
-  auto* controller =
-      brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile);
-  if (!controller) {
+  if (!controller_) {
     return;
   }
 
-  controller->Bind(std::move(receiver));
+  controller_->Bind(std::move(receiver));
 }

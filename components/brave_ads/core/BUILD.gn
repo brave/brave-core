@@ -6,5 +6,8 @@
 group("core") {
   deps = [ "//brave/components/brave_ads/core/internal" ]
 
-  public_deps = [ "//brave/components/brave_ads/core/public:headers" ]
+  public_deps = [
+    "//brave/components/brave_ads/core/browser",
+    "//brave/components/brave_ads/core/public:headers",
+  ]
 }

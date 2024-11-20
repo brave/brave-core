@@ -21,8 +21,8 @@ namespace brave_wallet {
 
 inline constexpr size_t kEncryptorNonceSize = 12;
 inline constexpr size_t kEncryptorSaltSize = 32;
-inline const int kPbkdf2Iterations = 310000;
-inline const int kPbkdf2KeySize = 256;
+inline constexpr int kPbkdf2Iterations = 310000;
+inline constexpr int kPbkdf2KeySize = 256;
 
 // Use password derived key to encrypt/decrypt using AES-256-GCM
 class PasswordEncryptor {

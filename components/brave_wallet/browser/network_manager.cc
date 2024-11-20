@@ -642,8 +642,7 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
     case mojom::CoinType::SOL:
       return kSolanaPrefKey;
   }
-  NOTREACHED_IN_MIGRATION() << coin;
-  return "";
+  NOTREACHED() << coin;
 }
 
 const base::Value::List* GetCustomNetworksList(PrefService* prefs,
@@ -770,8 +769,8 @@ mojom::NetworkInfoPtr NetworkManager::GetKnownChain(const std::string& chain_id,
     }
     return nullptr;
   }
-  NOTREACHED_IN_MIGRATION();
-  return nullptr;
+
+  NOTREACHED() << coin;
 }
 
 mojom::NetworkInfoPtr NetworkManager::GetCustomChain(
@@ -907,7 +906,7 @@ bool NetworkManager::KnownChainExists(const std::string& chain_id,
       }
     }
   } else {
-    NOTREACHED_IN_MIGRATION() << coin;
+    NOTREACHED() << coin;
   }
   return false;
 }
@@ -961,7 +960,7 @@ GURL NetworkManager::GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
     return GetPolygonMainnet()->rpc_endpoints.front();
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 // static
@@ -1013,8 +1012,7 @@ std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllKnownChains(
     return result;
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return result;
+  NOTREACHED() << coin;
 }
 
 GURL NetworkManager::GetNetworkURL(const std::string& chain_id,
@@ -1145,7 +1143,6 @@ std::string GetKnownNetworkId(mojom::CoinType coin,
   if (coin == mojom::CoinType::ZEC) {
     return GetKnownZecNetworkId(chain_id);
   }
-  NOTREACHED_IN_MIGRATION() << coin;
   return "";
 }
 
@@ -1291,18 +1288,19 @@ std::string NetworkManager::GetCurrentChainId(
       return chain_id_from_prefs;
     }
   }
-  if (coin == mojom::CoinType::ETH) {
-    return mojom::kMainnetChainId;
-  } else if (coin == mojom::CoinType::SOL) {
-    return mojom::kSolanaMainnet;
-  } else if (coin == mojom::CoinType::FIL) {
-    return mojom::kFilecoinMainnet;
-  } else if (coin == mojom::CoinType::BTC) {
-    return mojom::kBitcoinMainnet;
-  } else if (coin == mojom::CoinType::ZEC) {
-    return mojom::kZCashMainnet;
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      return mojom::kMainnetChainId;
+    case mojom::CoinType::SOL:
+      return mojom::kSolanaMainnet;
+    case mojom::CoinType::FIL:
+      return mojom::kFilecoinMainnet;
+    case mojom::CoinType::BTC:
+      return mojom::kBitcoinMainnet;
+    case mojom::CoinType::ZEC:
+      return mojom::kZCashMainnet;
   }
-  NOTREACHED_NORETURN() << coin;
+  NOTREACHED() << coin;
 }
 
 bool NetworkManager::SetCurrentChainId(mojom::CoinType coin,

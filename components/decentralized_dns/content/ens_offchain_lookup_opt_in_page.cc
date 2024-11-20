@@ -56,13 +56,13 @@ void EnsOffchainLookupOptInPage::CommandReceived(const std::string& command) {
     case security_interstitials::CMD_DONT_PROCEED:
       static_cast<EnsOffchainLookupInterstitialControllerClient*>(controller())
           ->DontProceed();
-      break;
+      return;
     case security_interstitials::CMD_PROCEED:
       controller()->Proceed();
-      break;
-    default:
-      NOTREACHED_IN_MIGRATION() << "Unsupported command: " << command;
+      return;
   }
+
+  NOTREACHED() << "Unsupported command: " << command;
 }
 
 void EnsOffchainLookupOptInPage::PopulateInterstitialStrings(

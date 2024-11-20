@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 23
+  |
+1 | trailing-us-oct = 0o1_
+  |                       ^
+invalid octal integer
+expected digit

@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">Ipaalam sa mga developer ng Brave na hindi gumagana nang maayos sa Shields ang site na ito:</translation>
 <translation id="3110968385867124099">Hind mare-report ang page na ito dahil hindi ito na-serve sa HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Isang lokal na web page ang page na ito at hindi karapat-dapat na i-report.</translation>
-<translation id="3645455863322075098">Isang error page ang page na ito at hindi karapat-dapat na i-report.</translation>
-<translation id="105644511106871142">Salamat sa tulong mo para gawing mas maganda ang Brave para sa lahat. Magpapadala lang ng kinakailangang impormasyon ang report na ito para maayos namin ang site na ito.</translation>
+<translation id="8740275226259417070">Isa itong page ng error. Hindi ito mare-report bilang sirang site.</translation>
+<translation id="6806248680442980382">Salamat sa pagtulong na mas pagandahin ang Brave para sa lahat. Ang impormasyon lang na kailangan namin para ayusin ng site na ito ang makikita sa report na ito.</translation>
 <translation id="6476216365964140603">Mga karagdagang detalye (opsyonal)</translation>
 <translation id="6145852496180774737">Makipag-ugnayan sa akin sa: (opsyonal)</translation>
 <translation id="7616645803364270729">Email, Twitter, atbp.</translation>
@@ -461,6 +461,8 @@
 <translation id="6318437367327684789">magpakailanman</translation>
 <translation id="8797999629784150206">Puwede mong baguhin ang iyong <ph name="SITE_PERMISSIONS"/> anumang oras. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">pahintulot sa site</translation>
+<translation id="7222371875290545057">Payagan ang pagbubukas sa Brave ng mga pakikipag-usap sa Leo AI?</translation>
+<translation id="1518915449477235311">Payagan ang <ph name="URL"/> na buksan sa Brave ang mga pakikipag-usap sa Leo AI?</translation>
 <translation id="4355784577209159847">Pahintulutan ang paggamit ng third-party cookies para sa legacy sa Google Sign-In</translation>
 <translation id="5770656036486891920">Gustong gumamit ng <ph name="URL"/> ng third-party na cookies para sa legacy na Pag-sign In sa Google</translation>
 <translation id="6053826678715267477">Payagan ang access sa mga resource ng localhost</translation>
@@ -693,6 +695,26 @@
 <translation id="957921474773060718">Susunod na pag-ambag:</translation>
 <translation id="351973834053818251">Nauulit na mga Pag-ambag</translation>
 <translation id="7751260505918304024">Ipakita lahat</translation>
+<translation id="2894334939992402676">Matuto pa tungkol sa mga paraan ng pagbibigay ng kontribusyon</translation>
+<translation id="4114667046481794032">Halaga ng kontribusyon</translation>
+<translation id="2628057126110572782">Kasalukuyang tumatanggap lang ang creator na ito ng mga kontribusyon sa pamamagitan ng mga sumusunod na pamamaraan:</translation>
+<translation id="7396847690567283204">Balanse ng Rewards</translation>
+<translation id="3253225298092156258">Hindi available</translation>
+<translation id="8028314716653189513">Piliin ang paraang gusto mong gamitin para magbigay ng kontribusyon sa Brave Software:</translation>
+<translation id="4094286757932277327">Custodial wallet</translation>
+<translation id="1511998469385905184">Puwede mong subukan ulit sa ibang pagkakataon.</translation>
+<translation id="7550470870580166294">Hindi Sapat ang Pondo</translation>
+<translation id="7020972866926315918">Mukhang naka-log out ka sa <ph name="PROVIDER"/> para sa Brave Rewards. Mag-log in ulit para magpatuloy.</translation>
+<translation id="1166682575529520472">Buwanan</translation>
+<translation id="7138678301420049075">Iba pa</translation>
+<translation id="2134931506717037391">Magpadala ng <ph name="AMOUNT"/> BAT</translation>
+<translation id="4791565605790056151">Ipinapadala ang kontribusyon</translation>
+<translation id="8251969358165471584">Web3 Wallet</translation>
+<translation id="7160424977552599351">Gamitin ang iyong Web3 wallet</translation>
+<translation id="6369571967625114920">Hindi pa available ang Mga Pribadong Ad ng Brave sa iyong rehiyon.</translation>
+<translation id="5309155375926073606">Oo, gusto ko ring magbigay ng kontribusyon sa Brave Search at mag-opt in sa <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">Magbigay ng anonymous na data sa paghahanap at pag-browse para pahusayin ang Brave Search gamit ang Web Discovery Project. Ganap itong open-source.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">account</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">domain</translation>
@@ -795,7 +817,6 @@
 <translation id="6517332033658428773">Suriin ang swap</translation>
 <translation id="8692596799753687794">Piliin ang provider ng quote</translation>
 <translation id="463712644600982655">Nagbibigay ang bawat aggregator ng mga quote sa pamamagitan ng paggamit ng liquidity ng API nito. Nangangalap sila ng impormasyon tungkol sa presyo mula sa iba't ibang exchange at nag-aalok ng mga presyong batay sa data na ito.</translation>
-<translation id="3253225298092156258">Hindi available</translation>
 <translation id="473775607612524610">I-update</translation>
 <translation id="4389658703251593158">Hindi sinusuportahan ang pair na ito ng <ph name="PROVIDER_NAME"/></translation>
 <translation id="1176173785350238153">Baguhin ang provider</translation>
@@ -1055,6 +1076,8 @@
 <translation id="793994607260936590">una</translation>
 <translation id="4709524402122994378">mga transaksyon</translation>
 <translation id="4591079278963448049">Hindi pa umiiral ang nauugnay na token account. May kaunting SOL na gagastusin para magawa at mapondohan ito.</translation>
+<translation id="3240773103344793224">Hiniling ang pagpapalit ng pagmamay-ari sa account</translation>
+<translation id="8041423758956015568">Ire-reassign ng transaksyong ito ang pagmamay-ari sa account sa isang bagong program. Hindi mababawi ang pagkilos na ito at posible itong magresulta sa pagkawala ng mga pondo.</translation>
 <translation id="1426320910664514906">Limitasyon sa Gas</translation>
 <translation id="1229774280326250926">Premium na Gasolina</translation>
 <translation id="148169246131967347">Cap sa Bayarin sa Gasolina</translation>
@@ -1276,10 +1299,25 @@
 <translation id="5722321409991816187">Ipakita ang mga spam na NFT</translation>
 <translation id="2588752742385122166">Mga setting ng portfolio</translation>
 <translation id="7662492121143629144">Lahat ng account</translation>
+<translation id="8845001906332463065">Humingi ng tulong</translation>
+<translation id="6248202915200795128">Mas matagal kaysa sa inaasahan?</translation>
+<translation id="5417904796609871601">I-view sa aktibidad</translation>
+<translation id="8915839655070878476">Ligtas mong madi-dismiss ang window na ito.</translation>
+<translation id="7020017785602386950">Ipinapadala ang <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> sa <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212">Ipinadala ang <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> sa account na <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269">Pinapalitan ang <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ng <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> sa <ph name="NETWORK"/></translation>
+<translation id="312867981877298982">Ipinadala ang halagang <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> sa iyong account <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189">Bini-bridge ang <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> sa <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042">Hindi magawang <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
+<translation id="6990756606864308319">Nagkaroon ng error sa pagsubok na <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> sa <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
+<translation id="6449575669814542383">Inaaprubahan ang <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> sa <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">Gagawa ng bagong transaksyon para kanselahin ang iyong kasalukuyang transaksyon.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} pang transaksyon ang nakabinbin.}
+      other {{PENDING_TRANSACTIONS} pang transaksyon ang nakabinbin.}
+    }</translation>
 <translation id="6954150712710630841">Naisumite ang transaksyon</translation>
-<translation id="905855245798176174">Naipadala na ang transaksyon sa network at hinihintay ang pagkumpirma.</translation>
 <translation id="619697073289995370">Napirmahan na ang transaksyon</translation>
-<translation id="7493732383203109611">Pinirmahan na ang transaksyon at ipapadala sa network sa pamamagitan ng DApp</translation>
 <translation id="3183790760060544368">Ibinalik ang <ph name="VALUE"/> sa iyong wallet</translation>
 <translation id="4577432071459867390">Hindi nagawa ang transaksyon</translation>
 <translation id="4359235192593147041">Hindi nagawa ang transaksyon dahil sa malaking pagtaas ng presyo. Taasan ang tolerance sa slippage para magtagumpay ang mas malaking pagtaas ng presyo.</translation>
@@ -1710,7 +1748,6 @@
 <translation id="1958146856582208323">Ilipat ang token</translation>
 <translation id="3550219298671597013">Ilipat ang NFT</translation>
 <translation id="8043066678623588950">I-forward ang FIL</translation>
-<translation id="7138678301420049075">Iba pa</translation>
 <translation id="8703556909820882288">Paglilipat ng na-compres na NFT</translation>
 <translation id="2713141960460256091">Lagdaan at Ipadala ang transaksyon ng DApp</translation>
 <translation id="6387730345715997739">Lagdaan ang Transaksyon ng DApp</translation>
@@ -1792,7 +1829,6 @@
 <translation id="7056969230130642253">Masyado kayong nakapokus</translation>
 <translation id="7292242212818928219">Available ang bagong content. I-reload?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Mga mabilisang command</translation>
 <translation id="7481312909269577407">Sumulong</translation>
 <translation id="1272079795634619415">Huminto</translation>
 <translation id="302781076327338683">I-reload ang pag-bypass ng cache</translation>
@@ -1945,10 +1981,12 @@
 <translation id="1344005710343072293">Ginagamit na ang kumbinasyong ito para sa <ph name="COMMAND"/>. Mao-override ang shortcut na iyon kapag na-save ito.</translation>
 <translation id="831931573200952705">Ginagamit ang kumbinasyong ito para sa <ph name="COMMAND"/> at hindi puwedeng baguhin.</translation>
 <translation id="3537006124004887164">Ginagamit ang kumbinasyong ito para sa <ph name="COMMAND"/> at hindi puwedeng baguhin. Subukang baguhin ito sa pamamagitan ng `Mga Shortcut sa App` sa Mga Setting ng System.</translation>
+<translation id="8536713137312218707">Mga Mabilisang Command</translation>
 <translation id="712598284361781729">Bagong Split View</translation>
 <translation id="1130188644637295274">Buksan sa Split View</translation>
 <translation id="6459036216700972269">I-unsplit ang Mga Tab</translation>
 <translation id="4235382917338421035">Pagpalitin ang Mga Posisyon ng Tab</translation>
+<translation id="4144468798716165316">Mga mabilisang command</translation>
 <translation id="3617523374417810198">Bagong split view</translation>
 <translation id="8571323456914890254">Buksan sa split view</translation>
 <translation id="5329136173514538969">I-unsplit ang mga tab</translation>
@@ -2011,7 +2049,6 @@
 <translation id="1691256669639196606">Pamahalaan subscription</translation>
 <translation id="2304783958703511257">Mga Advanced na Setting</translation>
 <translation id="3037594989275592390">Mga model ng wika</translation>
-<translation id="6637015365469044269">Mag-upgrade ngayon</translation>
 <translation id="5543505256451301851">Subukan nang 7 araw nang libre</translation>
 <translation id="849535826888024304">Naabot na ang limitasyon ng rate ng pagtugon</translation>
 <translation id="2252128900328632803">Naabot na ninyo ang limitasyon sa rate para sa Leo. Mag-unlock ng mas mataas na rate ng pagtugon sa pamamagitan ng pag-subscribe sa Premium, o subukan ulit maya-maya.</translation>
@@ -2022,7 +2059,7 @@
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /buwan</translation>
 <translation id="5151923271944811339">Lumipat sa libreng model</translation>
 <translation id="5474757891469990756">Palabasin ang buong kakayahan ng Leo sa pamamagitan ng Premium:</translation>
-<translation id="5552332211527367850">Priyoridad na access sa mahuhusay na model na may iba't ibang kakayahan</translation>
+<translation id="3453542753968940696">Priyoridad na access sa mahuhusay na model na may iba't ibang kakayahan.</translation>
 <translation id="5031778211368112461">Ma-access ang mga model na mas akma para sa malilikhaing gawain at pagbuo ng content.</translation>
 <translation id="298783097210745222">Makakuha ng mga mas tumpak na sagot para sa mga mas nuanced na pag-uusap.</translation>
 <translation id="4314705522985583059">Makakuha ng mas matataas na limitasyon sa rate para sa mas mahahabang pag-uusap.</translation>
@@ -2051,6 +2088,7 @@
 <translation id="8712637175834984815">Nakuha ko</translation>
 <translation id="1093419424466417703">Masyadong mahaba ang page para kay Leo. Puwedeng mawala ang ilang konteksto mula sa pag-uusap. Nabasa ni Leo ang <ph name="PERCENTAGE"/> ng nilalaman ng page.</translation>
 <translation id="2186990448773134544">Pinino ang content ng page sa pamamagitan ng pagkuha sa pinakamakabuluhang impormasyon mula sa page dahil masyadong mahaba sa Leo.</translation>
+<translation id="5140068729857132378">Hinahanap ang mga nauugnay na bahagi ng web page...</translation>
 <translation id="4370698775470316661">Masyadong mahaba ang usapang ito at hindi na puwedeng magpatuloy. May ibang mga model na available kung saan mas may kakayanan si Leo na panatilihin ang katumpakan para sa mas mahabang mga pag-uusap.</translation>
 <translation id="5719170755629028558">Pagpapahusay ng sagot mo gamit ang Brave Search...</translation>
 <translation id="5794962229997281366">Mas mahusay na paghahanap ng sagot para sa <ph name="SEARCH_TERMS"/>.</translation>

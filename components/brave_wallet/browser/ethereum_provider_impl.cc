@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
@@ -685,7 +686,7 @@ void EthereumProviderImpl::SignTypedMessage(
       mojom::SignDataUnion::NewEthSignTypedData(std::move(eth_sign_typed_data));
 
   SignMessageInternal(account_id, std::move(sign_data),
-                      std::move(message_to_sign), std::move(callback),
+                      base::ToVector(message_to_sign), std::move(callback),
                       std::move(id));
 }
 
@@ -1181,7 +1182,7 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
         break;
       default:
-        NOTREACHED_IN_MIGRATION();
+        NOTREACHED() << error;
     }
   } else if (method == kRequestPermissionsMethod) {
     formed_response =

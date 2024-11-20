@@ -19,7 +19,7 @@ class RoundedSeparator : public views::View {
 
  public:
   // The separator's thickness in dip.
-  static const int kThickness;
+  static constexpr int kThickness = 1;
 
   RoundedSeparator();
   RoundedSeparator(const RoundedSeparator&) = delete;

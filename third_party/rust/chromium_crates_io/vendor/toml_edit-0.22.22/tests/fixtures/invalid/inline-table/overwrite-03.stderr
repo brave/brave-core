@@ -1,0 +1,5 @@
+TOML parse error at line 2, column 1
+  |
+2 | a.b = 2
+  | ^
+dotted key `a` attempted to extend non-table type (inline table)

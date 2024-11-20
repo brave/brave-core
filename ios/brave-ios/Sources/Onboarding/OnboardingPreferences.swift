@@ -69,12 +69,6 @@ extension Preferences {
       default: false
     )
 
-    /// Whether the vpn promotion callout is shown.
-    public static let vpnPromotionCalloutCompleted = Option<Bool>(
-      key: "fullScreenCallout.full-screen-vpn-callout-completed",
-      default: false
-    )
-
     /// Whether the rewards callout is shown.
     public static let rewardsCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-rewards-callout-completed",

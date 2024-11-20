@@ -18,7 +18,7 @@
 namespace brave_wallet {
 
 namespace {
-const int kDiscoveryAttempts = 20;
+constexpr int kDiscoveryAttempts = 20;
 
 std::string DiscoveredBitcoinAccountName(mojom::KeyringId keyring_id,
                                          uint32_t account_index) {
@@ -104,7 +104,6 @@ void AccountDiscoveryManager::AddDiscoveryAccount(
   auto addr = keyring_service_->GetDiscoveryAddress(
       context->keyring_id, context->discovery_account_index);
   if (!addr) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -132,7 +131,7 @@ void AccountDiscoveryManager::AddDiscoveryAccount(
                        weak_ptr_factory_.GetWeakPtr(), std::move(context)));
 
   } else {
-    NOTREACHED_IN_MIGRATION();
+    NOTREACHED() << context->coin_type;
   }
 }
 

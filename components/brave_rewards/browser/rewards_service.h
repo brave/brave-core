@@ -14,6 +14,7 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
@@ -129,6 +130,9 @@ class RewardsService : public KeyedService {
       GetAvailableCountriesCallback callback) const = 0;
 
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
+
+  using FetchUICardsCallback = mojom::RewardsEngine::FetchUICardsCallback;
+  virtual void FetchUICards(FetchUICardsCallback callback) = 0;
 
   virtual void GetActivityInfoList(const uint32_t start,
                                    const uint32_t limit,

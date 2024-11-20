@@ -313,4 +313,9 @@
       initWithFeature:&security_interstitials::features::kHttpsOnlyMode];
 }
 
++ (Feature*)kBlockAllCookiesToggle {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBlockAllCookiesToggle];
+}
+
 @end

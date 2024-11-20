@@ -657,6 +657,13 @@
               brave_shields::features::kCosmeticFilteringSyncLoad),            \
       },                                                                       \
       {                                                                        \
+          "block-all-cookies-toggle",                                          \
+          "If the feature flag is on, we show the Block all Cookies toggle",   \
+          "If the feature flag is on, we show the Block all Cookies toggle",   \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBlockAllCookiesToggle), \
+      },                                                                       \
+      {                                                                        \
           "brave-super-referral",                                              \
           "Enable Brave Super Referral",                                       \
           "Use custom theme for Brave Super Referral",                         \

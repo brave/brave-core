@@ -295,7 +295,7 @@ namespace extensions {
 // of the prepopulated set where we run tests.
 // TODO(crbug.com/1500526): Update the test to fix the country in such a way
 // that we have more control on what is in the prepopulated set or not.
-const int kTestExtensionPrepopulatedId = 83;
+constexpr int kTestExtensionPrepopulatedId = 83;
 // TemplateURLData with search engines settings from test extension manifest.
 // chrome/test/data/extensions/settings_override/manifest.json
 std::unique_ptr<TemplateURLData> TestExtensionSearchEngine(Profile* profile) {

@@ -96,7 +96,7 @@ const CLSID& GetBraveVpnWireguardServiceClsid() {
       return kBraveDevelopmentWireguardServiceCLSID;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 const IID& GetBraveVpnWireguardServiceIid() {
@@ -117,7 +117,7 @@ std::wstring GetBraveVpnWireguardServiceDisplayName() {
       return L"Brave Development Vpn Wireguard Service";
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 std::wstring GetBraveVpnWireguardServiceDescription() {
@@ -144,7 +144,7 @@ std::wstring GetBraveVpnWireguardTunnelServiceName() {
       return kBraveDevelopmentWireguardTunnelServiceName;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 base::FilePath GetBraveVPNWireguardServiceExecutablePath(

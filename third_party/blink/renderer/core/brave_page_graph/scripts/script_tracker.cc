@@ -67,7 +67,7 @@ NodeScriptLocal* ScriptTracker::AddScriptNode(v8::Isolate* isolate,
                            script_data.code.Ascii().c_str(), 256);
       base::debug::Alias(&script_data_copy);
       base::debug::Alias(&cached_script_data_copy);
-      CHECK(false) << "Script data mismatch" << " isolate: " << script_key.first
+      NOTREACHED() << "Script data mismatch" << " isolate: " << script_key.first
                    << " script id: " << script_key.second;
     }
     return it->value;

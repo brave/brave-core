@@ -2171,7 +2171,12 @@ public class BrowserViewController: UIViewController {
     let request: URLRequest?
     if let url = url {
       // If only empty tab present, the url will open in existing tab
-      if tabManager.isBrowserEmptyForCurrentMode {
+      // We also need to respect private browsing mode when opening URLs directly.
+      // If the only tab open is NTP, AND the private mode matches that of the tab request,
+      // only then we can open the tab directly.
+      if tabManager.isBrowserEmptyForCurrentMode
+        && tabManager.privateBrowsingManager.isPrivateBrowsing == isPrivate
+      {
         finishEditingAndSubmit(url)
         return
       }
@@ -3666,6 +3671,18 @@ extension BrowserViewController {
   }
 
   func openBraveLeo(with query: String? = nil) {
+    if !FeatureList.kAIChat.enabled {
+      let alert = UIAlertController(
+        title: Strings.AIChat.leoDisabledMessageTitle,
+        message: Strings.AIChat.leoDisabledMessageDescription,
+        preferredStyle: .alert
+      )
+      let action = UIAlertAction(title: Strings.OKString, style: .default)
+      alert.addAction(action)
+      present(alert, animated: true)
+      return
+    }
+
     let webView = (query == nil) ? tabManager.selectedTab?.webView : nil
 
     let model = AIChatViewModel(

@@ -80,7 +80,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   // Send the query to the AIChat's backend.
   ai_chat::mojom::ConversationTurnPtr turn =
       ai_chat::mojom::ConversationTurn::New(
-          ai_chat::mojom::CharacterType::HUMAN,
+          std::nullopt, ai_chat::mojom::CharacterType::HUMAN,
           ai_chat::mojom::ActionType::QUERY,
           ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
           base::UTF16ToUTF8(query) /* text */, std::nullopt /* selected_text */,

@@ -382,3 +382,15 @@ struct SolanaAccountBalance {
   string amount;
   uint8 decimals;
 };
+
+struct UICardItem {
+  string title;
+  string description;
+  string url;
+  string thumbnail;
+};
+
+struct UICard {
+  string name;
+  array<UICardItem> items;
+};

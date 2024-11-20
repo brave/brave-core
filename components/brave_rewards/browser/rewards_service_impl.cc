@@ -1108,6 +1108,13 @@ void RewardsServiceImpl::GetRewardsParameters(
       base::BindOnce(&OnGetRewardsParameters, std::move(callback)));
 }
 
+void RewardsServiceImpl::FetchUICards(FetchUICardsCallback callback) {
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback), std::nullopt);
+  }
+  engine_->FetchUICards(std::move(callback));
+}
+
 void RewardsServiceImpl::OnGetRewardsParameters(
     GetRewardsParametersCallback callback,
     mojom::RewardsParametersPtr parameters) {
@@ -2070,7 +2077,7 @@ void RewardsServiceImpl::OnExternalWalletLoginStarted(
     auto cookie = net::CanonicalCookie::CreateSanitizedCookie(
         url, key, value, /*domain=*/"", url.path(),
         /*creation_time=*/now, expiration_time, /*last_access_time=*/now,
-        /*secure=*/true, /*httponly=*/false, net::CookieSameSite::STRICT_MODE,
+        /*secure=*/true, /*http_only=*/false, net::CookieSameSite::STRICT_MODE,
         net::COOKIE_PRIORITY_DEFAULT, /*partition_key=*/std::nullopt,
         /*status=*/nullptr);
 

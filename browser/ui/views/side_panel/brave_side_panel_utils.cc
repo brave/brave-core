@@ -22,10 +22,7 @@ namespace {
 
 std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
     base::WeakPtr<Profile> profile) {
-  if (!profile) {
-    NOTREACHED_NORETURN();
-  }
-
+  CHECK(profile);
   auto web_view = std::make_unique<SidePanelWebUIViewT<AIChatUI>>(
       base::RepeatingClosure(), base::RepeatingClosure(),
       std::make_unique<WebUIContentsWrapperT<AIChatUI>>(

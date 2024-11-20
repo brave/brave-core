@@ -231,18 +231,19 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
      DoNotExtractIfMissingRequiredCreativeAdProperties) {
-  static constexpr const char* const kRequiredCreativeAdPropertyNames[] = {
-      kCreativeAdPlacementIdPropertyName,
-      kCreativeAdCreativeInstanceIdPropertyName,
-      kCreativeAdCreativeSetIdPropertyName,
-      kCreativeAdCampaignIdPropertyName,
-      kCreativeAdAdvertiserIdPropertyName,
-      kCreativeAdHeadlineTextPropertyName,
-      kCreativeAdDescriptionPropertyName,
-      kCreativeAdLandingPagePropertyName,
-      kCreativeAdRewardsValuePropertyName};
+  static constexpr auto kRequiredCreativeAdPropertyNames =
+      std::to_array<std::string_view>(
+          {kCreativeAdPlacementIdPropertyName,
+           kCreativeAdCreativeInstanceIdPropertyName,
+           kCreativeAdCreativeSetIdPropertyName,
+           kCreativeAdCampaignIdPropertyName,
+           kCreativeAdAdvertiserIdPropertyName,
+           kCreativeAdHeadlineTextPropertyName,
+           kCreativeAdDescriptionPropertyName,
+           kCreativeAdLandingPagePropertyName,
+           kCreativeAdRewardsValuePropertyName});
 
-  for (const char* const property_name : kRequiredCreativeAdPropertyNames) {
+  for (auto property_name : kRequiredCreativeAdPropertyNames) {
     const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
         test::CreativeSearchResultAdMojomWebPageEntities(
             /*excluded_property_names=*/{property_name});
@@ -341,13 +342,12 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
      DoNotExtractIfMissingRequiredCreativeSetConversionProperties) {
-  static constexpr const char* const
-      kRequiredCreativeSetConversionPropertyNames[] = {
-          kCreativeSetConversionUrlPatternPropertyName,
-          kCreativeSetConversionObservationWindowPropertyName};
+  static constexpr auto kRequiredCreativeSetConversionPropertyNames =
+      std::to_array<std::string_view>(
+          {kCreativeSetConversionUrlPatternPropertyName,
+           kCreativeSetConversionObservationWindowPropertyName});
 
-  for (const char* const property_name :
-       kRequiredCreativeSetConversionPropertyNames) {
+  for (auto property_name : kRequiredCreativeSetConversionPropertyNames) {
     const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
         test::CreativeSearchResultAdMojomWebPageEntities(
             /*excluded_property_names=*/{property_name});
@@ -369,12 +369,11 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
      ExtractIfMissingOptionalCreativeSetConversionProperties) {
-  static constexpr const char* const
-      kOptionalCreativeSetConversionPropertyNames[] = {
-          kCreativeSetConversionAdvertiserPublicKeyPropertyName};
+  static constexpr auto kOptionalCreativeSetConversionPropertyNames =
+      std::to_array<std::string_view>(
+          {kCreativeSetConversionAdvertiserPublicKeyPropertyName});
 
-  for (const char* const property_name :
-       kOptionalCreativeSetConversionPropertyNames) {
+  for (auto property_name : kOptionalCreativeSetConversionPropertyNames) {
     const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
         test::CreativeSearchResultAdMojomWebPageEntities(
             /*excluded_property_names=*/{property_name});

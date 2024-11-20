@@ -133,8 +133,6 @@ inline constexpr char kDefaultBrowserLaunchingCount[] =
     "brave.default_browser.launching_count";
 
 // deprecated
-inline constexpr char kNewTabPageShowTopSites[] =
-    "brave.new_tab_page.show_top_sites";
 inline constexpr char kOtherBookmarksMigrated[] =
     "brave.other_bookmarks_migrated";
 

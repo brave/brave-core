@@ -18,7 +18,7 @@
 namespace brave_rewards::internal {
 namespace database {
 
-const size_t kBatchLimit = 999;
+inline constexpr size_t kBatchLimit = 999;
 
 void BindNull(mojom::DBCommand* command, const int index);
 

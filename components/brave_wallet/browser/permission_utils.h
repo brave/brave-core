@@ -9,6 +9,7 @@
 #include <optional>
 #include <queue>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -25,13 +26,12 @@ namespace brave_wallet {
 /**
  * Add wallet addresses to the origin of the website asking wallet
  * permission in a format as https://old_origin{addr=address1&addr=address2}
- * and return it. Return true if successful; return false if caller passes
+ * and return it. Return origin if successful; return nullopt if caller passes
  * invalid old_origin or empty addresses.
  */
-bool GetConcatOriginFromWalletAddresses(
+std::optional<url::Origin> GetConcatOriginFromWalletAddresses(
     const url::Origin& old_origin,
-    const std::vector<std::string>& addresses,
-    url::Origin* new_origin);
+    const std::vector<std::string>& addresses);
 
 /**
  * Parse the overwritten requesting origins from wallet permission
@@ -61,13 +61,12 @@ bool ParseRequestingOrigin(permissions::RequestType type,
 
 /**
  * Given old_origin, adding account info to its host part and return as
- * new_origin. If type != kBraveEthereum, there would be separater like
+ * new_origin. If type != kBraveEthereum, there would be separator like
  * https://origin__BrG4...
  */
-bool GetSubRequestOrigin(permissions::RequestType type,
-                         const url::Origin& old_origin,
-                         const std::string& account,
-                         url::Origin* new_origin);
+std::optional<url::Origin> GetSubRequestOrigin(permissions::RequestType type,
+                                               const url::Origin& old_origin,
+                                               std::string_view account);
 
 /**
  * Given accounts, and origin, return the WebUI URL for connecting with site

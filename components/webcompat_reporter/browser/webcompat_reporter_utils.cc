@@ -36,4 +36,8 @@ bool NeedsToGetComponentInfo(std::string_view component_id) {
   return base::Contains(kComponentIds, component_id);
 }
 
+std::string BoolToString(bool value) {
+  return value ? "true" : "false";
+}
+
 }  // namespace webcompat_reporter

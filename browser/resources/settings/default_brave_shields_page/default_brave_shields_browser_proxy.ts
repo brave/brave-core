@@ -73,6 +73,19 @@ export interface DefaultBraveShieldsBrowserProxy {
    * @param {Boolean} value name.
    */
   setForgetFirstPartyStorageEnabled(value: boolean): void
+
+  /**
+   * @param {string} value name.
+   */
+  setContactInfoSaveFlag(value: boolean): void
+  /**
+   * @return {!Promise<boolean>}
+   */
+  getContactInfoSaveFlag(): Promise<boolean>
+  /**
+   * @return {!Promise<boolean>}
+   */
+  getHideBlockAllCookieTogle(): Promise<boolean>
 }
 
 export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsBrowserProxy {
@@ -151,9 +164,26 @@ export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsB
     chrome.send('setForgetFirstPartyStorageEnabled', [value])
   }
 
+  /** @override */
+  setContactInfoSaveFlag (value: boolean) {
+    chrome.send('setContactInfoSaveFlag', [value])
+  }
+
+  /** @override */
+  getContactInfoSaveFlag () {
+    return sendWithPromise('getContactInfoSaveFlag')
+  }
+
+  /** @override */
+  getHideBlockAllCookieTogle () {
+    return sendWithPromise('getHideBlockAllCookieTogle')
+  }
+
   static getInstance(): DefaultBraveShieldsBrowserProxy {
     return instance || (instance = new DefaultBraveShieldsBrowserProxyImpl())
   }
+
+
 }
 
 let instance: DefaultBraveShieldsBrowserProxy|null = null

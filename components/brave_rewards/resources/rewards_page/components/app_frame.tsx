@@ -71,7 +71,7 @@ function NavList() {
             getString('navigationExploreLabel'))
         }
       </li>
-      <li>
+      <li className='creators'>
         {
           renderLink(
             routes.creators,

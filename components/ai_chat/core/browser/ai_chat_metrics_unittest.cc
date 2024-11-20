@@ -5,15 +5,19 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 
+#include <stddef.h>
+
 #include <limits>
-#include <memory>
+#include <string>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 
-#include "base/memory/raw_ptr.h"
+#include "base/numerics/clamped_math.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -346,11 +350,19 @@ TEST_F(AIChatMetricsUnitTest, MostUsedEntryPoint) {
       kMostUsedEntryPointHistogramName,
       static_cast<int>(EntryPoint::kToolbarButton), 1);
 
-  task_environment_.FastForwardBy(base::Days(7));
-  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 10);
+  for (size_t i = 0; i < 4; i++) {
+    ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kBraveSearch);
+  }
+
+  histogram_tester_.ExpectBucketCount(
+      kMostUsedEntryPointHistogramName,
+      static_cast<int>(EntryPoint::kBraveSearch), 1);
 
   task_environment_.FastForwardBy(base::Days(7));
-  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 10);
+  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 14);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 14);
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)

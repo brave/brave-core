@@ -54,11 +54,7 @@ std::optional<brave_wallet::mojom::CoinType> ToCoinType(
     return std::nullopt;
   }
   auto result = static_cast<brave_wallet::mojom::CoinType>(*val);
-  if (result != brave_wallet::mojom::CoinType::ETH &&
-      result != brave_wallet::mojom::CoinType::FIL &&
-      result != brave_wallet::mojom::CoinType::SOL &&
-      result != brave_wallet::mojom::CoinType::BTC &&
-      result != brave_wallet::mojom::CoinType::ZEC) {
+  if (!brave_wallet::mojom::IsKnownEnumValue(result)) {
     return std::nullopt;
   }
   return result;

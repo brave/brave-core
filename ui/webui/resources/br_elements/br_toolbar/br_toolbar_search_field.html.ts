@@ -16,11 +16,11 @@ export function getHtml(this: BraveToolbarSearchField) {
       type="checkbox" />
     <div class="page-search_content" title="${this.label}">
       <label class="page-search_label" @mousedown="${this.labelMouseDown_}" for="pageSearchToggle">
-        <leo-icon name="search"/></leo-icon>
+        <leo-icon name="search"></leo-icon>
       </label>
       <div class="page-search_box">
         <label mousedown="${this.labelMouseDown_}" class="page-search_close-button" for="pageSearchToggle">
-          <leo-icon name="close"/></leo-icon>
+          <leo-icon name="close"></leo-icon>
         </label>
         <input id="searchInput"
             class="page-search_text"

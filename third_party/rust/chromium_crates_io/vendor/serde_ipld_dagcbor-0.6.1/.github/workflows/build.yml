@@ -1,0 +1,53 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+        toolchain: [stable]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Cache Dependencies & Build Outputs
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          components: rustfmt, clippy
+
+      - name: Check Code Format
+        run: cargo fmt --all -- --check
+
+      - name: Code lint with default features
+        run: cargo clippy --all-targets --workspace -- -D warnings
+
+      - name: Code lint without default features
+        run: cargo clippy --all-targets --workspace --no-default-features -- -D warnings
+
+      - name: Code lint with all features
+        run: cargo clippy --all-targets --workspace --all-features -- -D warnings
+
+      - name: Test with default features
+        run: cargo test --all-targets --workspace
+
+      - name: Test without default features
+        run: cargo test --all-targets --workspace --no-default-features
+
+      - name: Test with all features
+        run: cargo test --all-targets --workspace --all-features
+
+      - name: Test no-cid-as-bytes feature
+        run: cargo test --all-targets --workspace --features no-cid-as-bytes

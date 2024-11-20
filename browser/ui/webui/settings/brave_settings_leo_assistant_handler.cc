@@ -10,10 +10,13 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -141,13 +144,20 @@ void BraveLeoAssistantHandler::HandleGetLeoIconVisibility(
 
 void BraveLeoAssistantHandler::HandleResetLeoData(
     const base::Value::List& args) {
-  auto* service = sidebar::SidebarServiceFactory::GetForProfile(profile_);
+  auto* sidebar_service =
+      sidebar::SidebarServiceFactory::GetForProfile(profile_);
 
-  ShowLeoAssistantIconVisibleIfNot(service);
-  profile_->GetPrefs()->ClearPref(ai_chat::prefs::kLastAcceptedDisclaimer);
-  g_brave_browser_process->process_misc_metrics()
-      ->ai_chat_metrics()
-      ->RecordReset();
+  ShowLeoAssistantIconVisibleIfNot(sidebar_service);
+
+  ai_chat::AIChatService* service =
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);
+  if (!service) {
+    return;
+  }
+  service->DeleteConversations();
+  if (profile_) {
+    ai_chat::SetUserOptedIn(profile_->GetPrefs(), false);
+  }
 
   AllowJavascript();
 }

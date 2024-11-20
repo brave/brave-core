@@ -214,15 +214,6 @@
 /* The accessibility hint spoken when focused on the main shields toggle */
 "BraveShieldsToggleHint" = "轻击两次即可切换 Brave Shields";
 
-/* Sync page title */
-"BraveSync" = "同步";
-
-/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
-"BraveSyncInternalsTitle" = "内部同步";
-
-/* Sync settings welcome */
-"BraveSyncWelcome" = "首先，您需要在所有计划同步的设备上安装 Brave。要将它们链接在一起，请启动同步链，您将使用该同步链将所有设备安全地链接在一起。";
-
 /* The name of the feature */
 "bravetalk.braveTalkTitle" = "Brave 通话";
 
@@ -460,12 +451,6 @@
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "关闭所有%i标签";
 
-/* Code words input help */
-"CodeWordInputHelp" = "在下方表单输入向您提供的同步链码。";
-
-/* Code words section title */
-"CodeWords" = "密语";
-
 /* Text to choose for downloading a file (example: saving an image to phone) */
 "CommonDownload" = "下载";
 
@@ -480,12 +465,6 @@
 
 /* Settings item for clearing cookies and site data */
 "Cookies" = "Cookie 和站点数据";
-
-/* Copied action complete title */
-"Copied" = "已复制！";
-
-/* Copied codewords title */
-"CopiedToClipboard" = "已复制到剪切板中！";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "将应用信息复制到剪切板中。";
@@ -504,9 +483,6 @@
 
 /* Copy Tabs info to clipboard action sheet action. */
 "copyTabsDebugToClipboard" = "将选项卡信息复制到剪贴板。";
-
-/* Copy codewords title */
-"CopyToClipboard" = "复制到剪切板";
 
 /* Copy rewards internals info for support */
 "CopyWalletSupportInfo" = "复制支持信息";
@@ -634,9 +610,6 @@
 /* Label for the button used to delete the current login. */
 "DeleteLoginButtonTitle" = "删除";
 
-/* Sync device settings page title. */
-"Devices" = "同步链上的设备";
-
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "设备 %1$@ （%2$@）";
 
@@ -702,12 +675,6 @@
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "启用下拉刷新";
-
-/* Sync enter code words */
-"EnterCodeWords" = "输入密语";
-
-/* Enter sync code words below */
-"EnterCodeWordsBelow" = "请在下面输入密语";
 
 /* Description for new folder popup */
 "EnterFolderName" = "输入文件夹名称";
@@ -838,9 +805,6 @@
 /* No comment provided by engineer. */
 "GoogleSafeBrowsingUsingWebKitDescription" = "安全浏览可以防范已知危险的网站。[了解更多](%@)";
 
-/* Grand camera access */
-"GrantCameraAccess" = "启用摄像头";
-
 /* Context menu item for hiding link previews */
 "HideLinkPreviewsActionTitle" = "隐藏链接预览";
 
@@ -891,9 +855,6 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "付款请求中的详细信息无效";
-
-/* Generic error message for when the sync code is invalid */
-"InvalidSyncCodeDescription" = "無效的同步代碼，請檢查並再試一次。";
 
 /* History tableview section header */
 "LastMonth" = "上个月";
@@ -1018,9 +979,6 @@
 /* Context menu item for opening a new private browsing window */
 "NewPrivateWindowTitle" = "新增無痕式視窗";
 
-/* New sync code button title */
-"NewSyncCode" = "启动新的同步链";
-
 /* New Tab title */
 "NewTab" = "新标签页";
 
@@ -1044,12 +1002,6 @@
 
 /* The information title displayed when there is no search reault found */
 "noSearchResultsfound" = "找不到搜索结果。";
-
-/* Error message for when the sync code does not have the correct amount of words */
-"NotEnoughWordsDescription" = "输入所有文字并重试。";
-
-/* Error title for when the sync code does not have the correct amount of words */
-"NotEnoughWordsTitle" = "字数不足";
 
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "自动将 NPR 链接重定向到其基于文本的版本（位于 text.npr.org）。";
@@ -1467,9 +1419,6 @@
 
 /* Title for the web-page zoom level view */
 "pagezoom.zoomView.text" = "页面缩放";
-
-/* Sync pair device settings section title */
-"Pair" = "配对";
 
 /* Title for passwords menu item */
 "PasswordsMenuItem" = "密码";
@@ -2047,9 +1996,6 @@
 /* Default engine for private search. */
 "PrivateTabSearch" = "隐私标签页";
 
-/* QR Code section title */
-"QRCode" = "二维码";
-
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "快速搜索引擎";
 
@@ -2184,9 +2130,6 @@
 
 /* Setting title for option to automatically redirect a url to another url */
 "redditRedirectFooter" = "自动将 Reddit 链接重定向到旧界面（位于 old.reddit.com）。要强制使用新的 Reddit 界面，请改用 new.reddit.com。";
-
-/* Action button for removing sync device. */
-"RemoveDevice" = "移除";
 
 /* Button to remove a favorite */
 "RemoveFavorite" = "移出收藏";
@@ -2499,12 +2442,6 @@
 
 /* Setting to enable the built-in password manager */
 "SaveLogins" = "保存登录";
-
-/* Scan sync code title */
-"Scan" = "扫描";
-
-/* Scan sync code button title */
-"ScanSyncCode" = "我有一个同步代码";
 
 /* individual blocking statistic title */
 "ScriptsBlocked" = "脚本已被拦截";
@@ -2902,9 +2839,6 @@
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "显示书签";
 
-/* Show code words instead */
-"ShowCodeWords" = "显示码字代替";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "显示下载";
 
@@ -2953,8 +2887,29 @@
 /* Title of alert that seeks permission from user to suppress future JS alerts */
 "SuppressAlertsActionTitle" = "抑制警报";
 
-/* Sync settings section title */
-"Sync" = "同步";
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "添加新的设备";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "添加计算机";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "同步链二维码";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "在另一部行动装置上，浏览到「设定」面板中的「同步」，并点选「扫描同步代码」按钮。使用相机扫描下方的二维码。\n\n请将此代码视为密码。如果他人取得此代码，将能读取及修改您同步的资料。";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "输入新的同步代码";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "\"在您的裝置上，浏览到「设定」面板中的「同步」，并点选「%@」按钮。输入下方显示的同步链代码字组。\n\n请将此代码视为密码。如果他人取得此代码，将能读取及修改您同步的资料。";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "输入密语";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "添加平板电脑或手机";
 
 /* Message of the popup if bookmark export succeeds. */
 "sync.bookmarksExportPopupSuccessMessage" = "成功导出书签";
@@ -2972,190 +2927,257 @@
 "sync.bookmarksImportPopupSuccessMessage" = "已成功导入书签";
 
 /* Alert description for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorDescription" = "同步设备";
+"sync.chainAccountDeletionErrorDescription" = "同步设备";
 
 /* Alert title for error while deleting sync chain */
-"sync.syncChainAccountDeletionErrorTitle" = "同步设备";
+"sync.chainAccountDeletionErrorTitle" = "同步设备";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertDescription" = "无法加入此同步链。帐户已删除。";
+"sync.chainAlreadyDeletedAlertDescription" = "无法加入此同步链。帐户已删除。";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.syncChainAlreadyDeletedAlertTitle" = "同步设备";
+"sync.chainAlreadyDeletedAlertTitle" = "同步设备";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "选择设备类型";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "选择要同步到的设备类型。";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "代碼已過期。請點選下方按鈕來產生新代碼。";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "分钟";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "小时";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "秒";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "这个零时代码于接下来 %@內有效。";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "小时";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "秒";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "在下方表单输入向您提供的同步链码。";
+
+/* Code words section title */
+"sync.codeWords" = "密语";
+
+/* Computer device button title */
+"sync.computerDevice" = "计算机";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.syncConfigurationInformationText" = "管理要在设备间同步的信息。这些设置仅会影响此设备。";
+"sync.configurationInformationText" = "管理要在设备间同步的信息。这些设置仅会影响此设备。";
 
-/* Title for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccount" = "删除 Sync 帐户";
+/* Copied action complete title */
+"sync.copied" = "已复制！";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "已复制到剪切板中！";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "复制到剪切板";
+
+/* Delete Sync Account cell title for button.
+   Title for Alert used action Delete Sync Account. */
+"sync.deleteAccount" = "删除 Sync 帐户";
+
+/* "Title for Alert used action Delete Sync Account." */
+"sync.deleteAccountAlertTitle" = "删除 Sync 帐户";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "若删除您的账户将删除 Brave 服务器上的加密数据，并禁用您的所有连接设备上的同步功能。";
+"sync.deleteAccountAlertDescriptionPart1" = "若删除您的账户将删除 Brave 服务器上的加密数据，并禁用您的所有连接设备上的同步功能。";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart2" = "但是，将不会删除本地存储在这些设备上的数据。";
+"sync.deleteAccountAlertDescriptionPart2" = "但是，将不会删除本地存储在这些设备上的数据。";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "代码可能创建于使用较低版本 Brave 的设备。请在您的设备上将 Brave 更新至最新版本，再创建同步代码。";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "擷取同步鏈中的裝置時發生錯誤。";
+
+/* Sync device settings page title. */
+"sync.devices" = "同步链上的设备";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "同步鏈中的裝置";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "输入密语";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "请在下面输入密语";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "此同步码已过期，请生成一个新的同步码重试。";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "抱歉，出错了";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "启用摄像头";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "同步代理当前处于脱机状态或无法连接。请稍后再试。";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "同步通信错误";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "内部同步";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "無效的同步代碼，請檢查並再試一次。";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "注意：您應確認您認得上方清單中的每個裝置。同步鏈中的裝置可能會收到個人資料，如密碼和瀏覽記錄。";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "裝置確認";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "您已達同步鏈中允許的裝置數量上限 (10 個)。請移除裝置以繼續操作。";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "裝置上限";
+
+/* New sync code button title */
+"sync.newSyncCode" = "启动新的同步链";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "检查您的网络连接并重试。";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "无法连接到同步";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "输入所有文字并重试。";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "字数不足";
+
+/* Sync pair device settings section title */
+"sync.pair" = "配对";
+
+/* QR Code section title */
+"sync.qrCode" = "二维码";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "在所有设备上，本地设备数据将保持不变。同步链中的其他设备将保持同步。";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "确定在同步链中移除%@吗？";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "移除";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "移除设备";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "设备";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "当前同步的数据将保留，但 Brave 的同步缓存中的所有数据将删除。您将需要启动一个新的同步链来再次同步设备数据。";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "删除同步链";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "移除%@将删除同步链。";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "从同步链中删除设备将不清除设备中先前同步的数据。";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "确定在同步链中移除%@吗？";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "移除此设备";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "此设备将与同步组断开连接，不再接收或发送同步数据。所有现有数据将保留在设备上。";
+
+/* Scan sync code title */
+"sync.scan" = "扫描";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "我有一个同步代码";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "要将设备添加到同步链或切换密码同步，必须先在设备上设置密码。";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "设置密码";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "下面的设备列表包括同步链中的所有设备。可以从任何其他设备管理每个设备。";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "同步设置";
+
+/* Show code words instead */
+"sync.showCodeWords" = "显示码字代替";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "我将使用摄像头...";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart3" = "一旦删除即永久删除，资料将无法复原。如果您决定再次使用 Sync，您将需要建立新帐户，并逐一重新新增每台设备。";
 
-/* The message displayed in alert when a there is a problem with fetching devices */
-"sync.syncDeviceFetchErrorAlertDescription" = "摘取同步链中的装置时发生错误。";
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "设备&设置";
 
-/* The message displayed in alert when a list of devices will be shown */
-"sync.syncDevicesInSyncChainTitle" = "同步链中的装置";
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "要移除此设备吗？";
 
-/* A warning when user adds more than 5 device to sync chain */
-"sync.syncJoinChainCodewordsWarning" = "注意：您应确认您认得上方清单中的每个装置。同步链中的装置可能会收到个人资料，如密码和浏览记录。";
+/* Sync settings section title */
+"sync.syncTitle" = "同步";
 
-/* Title for alert error for device confirmation */
-"sync.syncJoinChainWarningTitle" = "确认裝置";
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "未成功";
 
-/* The message displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorDescription" = "您已达到同步链中允许的装置上限（10 个）。请移除装置以继续操作。";
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "平板电脑或手机";
 
-/* The warning displayed in alert when the maxmium of devices is reached */
-"sync.syncMaximumDeviceReachedErrorTitle" = "裝置上限";
+/* This device cell */
+"sync.thisDevice" = "此设备";
 
-/* The message displayed in alert when a user needs to set a passcode */
-"sync.syncSetPasscodeAlertDescription" = "要将设备添加到同步链或切换密码同步，必须先在设备上设置密码。";
+/* Sync to existing device */
+"sync.toDevice" = "同步到设备";
 
-/* The title displayed in alert when a user needs to set passcode */
-"sync.syncSetPasscodeAlertTitle" = "设置密码";
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "使用现有已同步设备打开 Brave 设置，并浏览至“设置”>“同步”。选择“添加设备”，然后扫描屏幕上显示的码。";
 
-/* Title for Sync Settings Toggle Header */
-"sync.syncSettingsTitle" = "同步设置";
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "无法同步此设备";
 
-/* Add New Device cell button. */
-"SyncAddAnotherDevice" = "添加新的设备";
+/* Sync Alert */
+"sync.unableToConnectDescription" = "无法加入同步组。请检查输入的文字并重试。";
 
-/* Add a Computer title */
-"SyncAddComputerTitle" = "添加计算机";
-
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "同步链二维码";
-
-/* Sync add device description */
-"SyncAddDeviceScanDescription" = "在另一部行动装置上，浏览到「设定」面板中的「同步」，并点选「扫描同步代码」按钮。使用相机扫描下方的二维码。\n\n请将此代码视为密码。如果他人取得此代码，将能读取及修改您同步的资料。";
-
-/* Add device to sync with code words */
-"SyncAddDeviceWords" = "输入新的同步代码";
-
-/* Sync add device description */
-"SyncAddDeviceWordsDescription" = "\"在您的裝置上，浏览到「设定」面板中的「同步」，并点选「%@」按钮。输入下方显示的同步链代码字组。\n\n请将此代码视为密码。如果他人取得此代码，将能读取及修改您同步的资料。";
-
-/* Add device to sync with code words navigation title */
-"SyncAddDeviceWordsTitle" = "输入密语";
-
-/* Add Tablet or phone title */
-"SyncAddTabletOrPhoneTitle" = "添加平板电脑或手机";
-
-/* Choose device type for sync */
-"SyncChooseDevice" = "选择设备类型";
-
-/* Header for device choosing screen. */
-"SyncChooseDeviceHeader" = "选择要同步到的设备类型。";
-
-/* Error title explaining the sync code is expired and it must be genrated all over again. */
-"SyncCodeExpirationTitleLabel" = "代碼已過期。請點選下方按鈕來產生新代碼。";
-
-/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"SyncCodeTimeRemainingTitleLabel" = "这个零时代码于接下来 %@內有效。";
-
-/* Computer device button title */
-"SyncComputerDevice" = "计算机";
-
-/* Delete Sync Account cell title for button. */
-"SyncDeleteAccount" = "删除 Sync 帐户";
+/* Sync Alert */
+"sync.unableToConnectTitle" = "无法连接";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "代码可能创建于使用较低版本 Brave 的设备。请在您的设备上将 Brave 更新至最新版本，再创建同步代码。";
+"sync.validForTooLongError" = "此代码无效。请检查您设备上的时间和时区设置是否正确。";
 
-/* Sync you browser settings across devices. */
-"SyncDevices" = "设备&设置";
+/* Sync settings welcome */
+"sync.welcome" = "首先，您需要在所有计划同步的设备上安装 Brave。要将它们链接在一起，请启动同步链，您将使用该同步链将所有设备安全地链接在一起。";
 
-/* Sync Error message for when the sync code is expired */
-"syncExpiredError" = "此同步码已过期，请生成一个新的同步码重试。";
-
-/* Generic Sync Error Description */
-"syncGenericError" = "抱歉，出错了";
+/* Word count title */
+"sync.wordCount" = "字数：%i";
 
 /* Folder name for where bookmarks are imported into when the root folder is not empty. */
 "SyncImportFolderName" = "导入的书签";
-
-/* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "同步代理当前处于脱机状态或无法连接。请稍后再试。";
-
-/* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "同步通信错误";
-
-/* No internet connection alert body. */
-"SyncNoConnectionBody" = "检查您的网络连接并重试。";
-
-/* No internet connection alert title. */
-"SyncNoConnectionTitle" = "无法连接到同步";
-
-/* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "在所有设备上，本地设备数据将保持不变。同步链中的其他设备将保持同步。";
-
-/* Title for removing the current device from Sync */
-"SyncRemoveCurrentDeviceTitle" = "确定在同步链中移除%@吗？";
-
-/* Remove device button for action sheet. */
-"SyncRemoveDeviceAction" = "移除设备";
-
-/* Default name for a device */
-"SyncRemoveDeviceDefaultName" = "设备";
-
-/* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "当前同步的数据将保留，但 Brave 的同步缓存中的所有数据将删除。您将需要启动一个新的同步链来再次同步设备数据。";
-
-/* Button name for removing last device from Sync */
-"SyncRemoveLastDeviceRemoveButtonName" = "删除同步链";
-
-/* Title for removing last device from Sync */
-"SyncRemoveLastDeviceTitle" = "移除%@将删除同步链。";
-
-/* Message for removing other device from Sync */
-"SyncRemoveOtherDeviceMessage" = "从同步链中删除设备将不清除设备中先前同步的数据。";
-
-/* Title for removing other device from Sync */
-"SyncRemoveOtherDeviceTitle" = "确定在同步链中移除%@吗？";
-
-/* Sync remove device. */
-"SyncRemoveThisDevice" = "移除此设备";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestion" = "要移除此设备吗？";
-
-/* Sync remove device? */
-"SyncRemoveThisDeviceQuestionDesc" = "此设备将与同步组断开连接，不再接收或发送同步数据。所有现有数据将保留在设备上。";
-
-/* Header title for Sync settings */
-"SyncSettingsHeader" = "下面的设备列表包括同步链中的所有设备。可以从任何其他设备管理每个设备。";
-
-/* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "我将使用摄像头...";
-
-/* Tablet or phone button title */
-"SyncTabletOrMobileDevice" = "平板电脑或手机";
-
-/* This device cell */
-"SyncThisDevice" = "此设备";
-
-/* Sync to existing device */
-"SyncToDevice" = "同步到设备";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "使用现有已同步设备打开 Brave 设置，并浏览至“设置”>“同步”。选择“添加设备”，然后扫描屏幕上显示的码。";
-
-/* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "无法同步此设备";
-
-/* No comment provided by engineer. */
-"SyncUnsuccessful" = "未成功";
-
-/* Sync Error Description */
-"syncValidForTooLongError" = "此代码无效。请检查您设备上的时间和时区设置是否正确。";
 
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "关闭";
@@ -3484,12 +3506,6 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "开启搜索建议功能？";
 
-/* Sync Alert */
-"UnableToConnectDescription" = "无法加入同步组。请检查输入的文字并重试。";
-
-/* Sync Alert */
-"UnableToConnectTitle" = "无法连接";
-
 /* No comment provided by engineer. */
 "UnlockButtonTitle" = "解锁";
 
@@ -3699,9 +3715,6 @@
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "小部件";
-
-/* Word count title */
-"WordCount" = "字数：%i";
 
 /* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
 "yearAbbreviation" = "年";

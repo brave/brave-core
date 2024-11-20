@@ -7,13 +7,11 @@
 
 #include "base/feature_override.h"
 
-namespace history_clusters {
-namespace features {
+namespace history_clusters::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kOnDeviceClustering, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOnDeviceClusteringKeywordFiltering, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace features
-}  // namespace history_clusters
+}  // namespace history_clusters::features

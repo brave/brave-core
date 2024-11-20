@@ -480,7 +480,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
                              const std::string& account,
                              const std::string& uri,
                              const std::string& network) {
-    return base::StringPrintf(
+    return absl::StrFormat(
         "%s wants you to sign in with your Ethereum account:\n"
         "%s\n\n\n"
         "URI: %s\n"
@@ -488,7 +488,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
         "Chain ID: %s\n"
         "Nonce: 32891756\n"
         "Issued At: 2021-09-30T16:25:24Z)",
-        domain.c_str(), account.c_str(), uri.c_str(), network.c_str());
+        domain, account, uri, network);
   }
 
   void SignMessageHardware(
@@ -1713,7 +1713,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageWithTypedDataStructure) {
   CreateWallet();
   auto account_0 = GetAccountUtils().EnsureEthAccount(0);
   for (const auto& method : {"personal_sign", "eth_sign"}) {
-    std::string request_payload_json = base::StringPrintf(
+    std::string request_payload_json = absl::StrFormat(
         R"({"id":1, "jsonrpc:": "2.0", "method": "%s",
           "params": ["%s", "{
             \"types\": {
@@ -1749,7 +1749,7 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageWithTypedDataStructure) {
               \"contents\": \"Hello, Bob!\"
             }
           }"]})",
-        method, account_0->address.c_str());
+        method, account_0->address);
     std::optional<base::Value> request_payload = base::JSONReader::Read(
         request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                   base::JSONParserOptions::JSON_PARSE_RFC);
@@ -2235,10 +2235,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
   std::string second_subscription = *response.second.GetIfString();
 
   // The first unsubscribe should not stop the block tracker
-  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+  request_payload_json = absl::StrFormat(R"({"id":1,"jsonrpc:": "2.0",
                               "method":"eth_unsubscribe",
                               "params": ["%s"]})",
-                                            first_subscription.c_str());
+                                         first_subscription);
   request_payload = base::JSONReader::Read(
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
@@ -2249,10 +2249,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
   EXPECT_TRUE(provider_->eth_block_tracker_.IsRunning(chain_id));
 
   // The second unsubscribe should stop the block tracker
-  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+  request_payload_json = absl::StrFormat(R"({"id":1,"jsonrpc:": "2.0",
                               "method":"eth_unsubscribe",
                               "params": ["%s"]})",
-                                            second_subscription.c_str());
+                                         second_subscription);
   request_payload = base::JSONReader::Read(
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
@@ -2332,10 +2332,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
   std::string second_subscription = *response.second.GetIfString();
 
   // The first unsubscribe should not stop the block tracker
-  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+  request_payload_json = absl::StrFormat(R"({"id":1,"jsonrpc:": "2.0",
                               "method":"eth_unsubscribe",
                               "params": ["%s"]})",
-                                            first_subscription.c_str());
+                                         first_subscription);
   request_payload = base::JSONReader::Read(
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
@@ -2343,10 +2343,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
   EXPECT_TRUE(provider_->eth_logs_tracker_.IsRunning());
 
   // The second unsubscribe should stop the block tracker
-  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+  request_payload_json = absl::StrFormat(R"({"id":1,"jsonrpc:": "2.0",
                               "method":"eth_unsubscribe",
                               "params": ["%s"]})",
-                                            second_subscription.c_str());
+                                         second_subscription);
   request_payload = base::JSONReader::Read(
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
@@ -2407,10 +2407,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
   EXPECT_EQ(*address, "0x91");
 
   // The first unsubscribe should not stop the block tracker
-  request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
+  request_payload_json = absl::StrFormat(R"({"id":1,"jsonrpc:": "2.0",
                               "method":"eth_unsubscribe",
                               "params": ["%s"]})",
-                                            subscription.c_str());
+                                         subscription);
   request_payload = base::JSONReader::Read(
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
@@ -2419,8 +2419,8 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogsFiltered) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, Web3ClientVersion) {
-  std::string expected_version = base::StringPrintf(
-      "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
+  std::string expected_version = absl::StrFormat(
+      "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber());
   std::string version;
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;

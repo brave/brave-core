@@ -336,9 +336,7 @@ class BraveWalletService : public KeyedService,
       const std::string& new_password,
       base::OnceCallback<void(bool, const std::optional<std::string>&)>
           callback,
-      bool result,
-      ImportInfo info,
-      ImportError error);
+      base::expected<ImportInfo, ImportError> info);
   void OnGetEthNftStandard(mojom::BlockchainTokenPtr token,
                            AddUserAssetCallback callback,
                            const std::optional<std::string>& standard,

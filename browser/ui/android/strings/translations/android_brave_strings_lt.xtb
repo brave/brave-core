@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Dėkojame, kad naudojate „Brave“</translation>
 <translation id="4117451092682672487">Privatumas. Paprastai.</translation>
 <translation id="7909375417585209817">Naudojant „Brave“ kaip numatytąją naršyklę, kiekviena paspausta nuoroda atveriama su „Brave“ privatumo apsauga.</translation>
+<translation id="3737878115109582442">Pridėti paieškos valdiklį</translation>
+<translation id="6199413390010319240">Turėkite „Brave“ po ranka, kad galėtumėte greičiau tyrinėti žiniatinklį.</translation>
+<translation id="4338600611020922010">Įtraukti į pagrindinį ekraną</translation>
 <translation id="7370959926683925817">Blokuokite reklamą. Išsaugokite duomenis. Kasdien.</translation>
 <translation id="7281027579943912834">Kai „Brave“ yra numatytoji naršyklė, kiekviena paliesta nuoroda bus apsaugota nuo reklamos. Kiekvienas puslapis, vaizdo įrašas ir srautas.</translation>
 <translation id="5148943178722443958">Padėkite tobulinti „Brave“.</translation>
@@ -487,7 +490,11 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="9055546041146396417">Jei ši svetainė atrodo neveikianti, pabandykite nuleisti skydus.</translation>
 <translation id="1209739344687072997">Pranešti apie neveikiančią svetainę</translation>
 <translation id="8510478288840333677">Praneškite „Brave“ kūrėjams, kad ši svetainė neveikia tinkamai su skydais:</translation>
-<translation id="5429200298326665264">Pastaba: šios svetainės adresas bus pateiktas su „Brave“ versijos numeriu ir jūsų IP adresu (kuris nebus laikomas).</translation>
+<translation id="1653405824851871276">Dėkojame, kad padedate tobulinti „Brave“ visiems. Šioje ataskaitoje bus pateikta tik ta informacija, kuri mums reikalinga interneto svetainei pataisyti. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Sužinokite daugiau.</translation>
+<translation id="8740275226259417070">Tai klaidos puslapis. Apie jį negalima pranešti kaip apie neveikiančią interneto svetainę.</translation>
+<translation id="721949491455392748">Pridėti esamo puslapio ekrano kopiją</translation>
+<translation id="8459191579769999214">Žiūrėti ekrano kopiją</translation>
 <translation id="5299848999918506028">Dėkojame!</translation>
 <translation id="76550953340008122">Dėkojame, kad pranešėte „Brave“ kūrėjams, jog su šia svetaine kažkas negerai. Pasistengsime ją sutvarkyti!</translation>
 <translation id="650318023204990401">Išplėstiniai valdikliai</translation>
@@ -666,6 +673,8 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="6284218950354553099">Automatiškai siųsti „Brave“ kasdienio naudojimo signalą</translation>
 <translation id="2181060149810222381">Šis inkognito signalas leidžia „Brave“ įvertinti aktyvius naudotojus.</translation>
 <translation id="6725413948756358325">Paskyros pavadinimas</translation>
+<translation id="3240773103344793224">Prašoma pakeisti paskyros savininką</translation>
+<translation id="8041423758956015568">Šia operacija paskyros nuosavybė bus perleista naujai programai. Šis veiksmas yra negrįžtamas ir dėl jo gali būti prarastos lėšos.</translation>
 <translation id="6062431965141524986">Importuodami savo privatųjį raktą, galite susikurti papildomą sąskaitą.</translation>
 <translation id="3952797765659730604">Įveskite, įklijuokite ar importuokite savo privačiojo rakto eilutės failą arba JSON.</translation>
 <translation id="569068482611873351">Importuoti...</translation>
@@ -732,7 +741,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="5747552184818312860">Galioja iki</translation>
 <translation id="1656814355341174523">Tvarkyti prenumeratą</translation>
 <translation id="1919008675977575793">Serveris</translation>
-<translation id="4812684235631257312">Pagrindinis kompiuteris</translation>
 <translation id="5646376287012673985">Vieta</translation>
 <translation id="8375573361134671513">Nustatyti konfigūraciją iš naujo</translation>
 <translation id="850405162932416400">VPN pagalbos tarnyba</translation>
@@ -759,6 +767,8 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="5431902940483264007">Optimalus</translation>
 <translation id="6527596624419285047">Naudokite geriausią prieinamą serverį</translation>
 <translation id="6789157560111825412">Prieinami serveriai</translation>
+<translation id="5823953367746119927">Serverio regionas</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/> serveris</translation>
 <translation id="4397083831618200686">Pasirinkite sutrikimą</translation>
 <translation id="6687228121145903051">Negalima prisijungti prie VPN (kita klaida)</translation>
 <translation id="9184988385244077767">Prisijungus nėra interneto ryšio</translation>
@@ -1083,8 +1093,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="622372328961630111">Automatiškai į piniginę pridėkite savo NFT, naudodamiesi trečiųjų šalių API. <ph name="BEGIN_LINK_1"/> Sužinoti daugiau. <ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Adresų paieškos lentelės paskyra:</translation>
 <translation id="7659483790930268440">Adresų paieškos lentelės sąrašas:</translation>
-<translation id="4932733599132424254">Data</translation>
-<translation id="346505172740911461">Rinkos kaina</translation>
 <translation id="5494920125229734069">Pasirinkti viską</translation>
 <translation id="6129027151000961048">„Leo“</translation>
 <translation id="8613144770663526433">Prisijunkite naudodami „Brave“ piniginę</translation>
@@ -1099,6 +1107,8 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6165101586663336913">Iš naujo nustatę „Leo“ asistentą, ateityje turėsite pasirinkti, kad norite naudoti „Leo“, taip pat bus išvalyta jūsų pokalbių istorija. Išvalius jūsų pokalbių istoriją, bus pašalinti visi ankstesni jūsų pokalbiai su „Leo“. Šio veiksmo atšaukti negalima.</translation>
 <translation id="3692772534525889713">Susiekite savo „Play Store“ pirkinį su savo „Brave“ paskyra, kad galėtumėte naudotis „Brave Leo“ kitais įrenginiais.</translation>
 <translation id="73236265316873967">„Leo Premium“</translation>
+<translation id="1028627582482425924">Vieni metai</translation>
+<translation id="2985392169397572983">GERIAUSIA VERTĖ</translation>
 <translation id="1166682575529520472">Kas mėnesį</translation>
 <translation id="451189393813405346">Klausti „Leo“</translation>
 <translation id="7322560193401221004">Prisiminti failo atkūrimo poziciją</translation>
@@ -1167,7 +1177,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2389665228467129817">Kalbėkitės ilgiau</translation>
 <translation id="4314705522985583059">Gaukite didesnius tarifų limitus ilgesniems pokalbiams.</translation>
 <translation id="6365289557497555234">Visos prenumeratos atnaujinamos automatiškai, bet jas galima bet kada nutraukti iki atnaujinimo.</translation>
-<translation id="6637015365469044269">Naujinkite dabar</translation>
+<translation id="5543505256451301851">Išbandykite 7 dienas nemokamai</translation>
 <translation id="614530507403667291">Numatytasis naujų pokalbių modelis</translation>
 <translation id="4071849832011229600">Numatytasis modelis</translation>
 <translation id="4185473179105062442">Gaukite BAT tiesiogiai į privataus saugojimo kriptoadresą</translation>

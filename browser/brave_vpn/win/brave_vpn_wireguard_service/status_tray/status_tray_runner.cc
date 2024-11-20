@@ -67,7 +67,7 @@ int GetStatusIconTooltip(brave_vpn::mojom::ConnectionState state) {
       return IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 int GetStatusTrayIcon(brave_vpn::mojom::ConnectionState state) {
@@ -89,7 +89,7 @@ int GetStatusTrayIcon(brave_vpn::mojom::ConnectionState state) {
                         : IDR_BRAVE_VPN_TRAY_DARK_ERROR;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 }  // namespace

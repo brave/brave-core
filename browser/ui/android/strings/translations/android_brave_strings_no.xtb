@@ -233,6 +233,9 @@
 <translation id="7207456302801184289">Velkommen til Brave</translation>
 <translation id="4117451092682672487">Personvern. Helt enkelt.</translation>
 <translation id="7909375417585209817">Med Brave som standard åpnes alle linker du trykker på, med Braves personvernbeskyttelser.</translation>
+<translation id="3737878115109582442">Legg til søkewidgeten</translation>
+<translation id="6199413390010319240">Ha Brave for hånden for å utforske nettet raskere.</translation>
+<translation id="4338600611020922010">Legg til på Hjem-skjermen</translation>
 <translation id="7370959926683925817">Blokker reklame. Spar data. Hver dag.</translation>
 <translation id="7281027579943912834">Med Brave som standard, vil hver lenke du trykker på få Braves reklameblokkering. Alle sider, videoer og strømminger.</translation>
 <translation id="5148943178722443958">Bidra til å gjøre Brave bedre.</translation>
@@ -483,7 +486,11 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="9055546041146396417">Hvis denne siden ikke ser ut til å fungere, prøv uten Shields.</translation>
 <translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="8510478288840333677">Gi utviklerne av Brave beskjed om at dette nettstedet ikke fungerer skikkelig med Shields:</translation>
-<translation id="5429200298326665264">Merk: denne nettstedsadressen blir innsendt med ditt Brave-versjonsnummer og din IP-adresse (som ikke vil bli oppbevart).</translation>
+<translation id="1653405824851871276">Takk for at du bidrar til med å gjøre Brave bedre for alle. Denne rapporten sender bare informasjonen som kreves for at vi skal kunne fikse dette nettstedet. <ph name="LEARN_MORE"/></translation>
+<translation id="8759753423332885148">Finn ut mer.</translation>
+<translation id="8740275226259417070">Dette er en feilside. Den kan ikke rapporteres inn som en ødelagt nettside.</translation>
+<translation id="721949491455392748">Inkluder skjermbilde av den gjeldende siden</translation>
+<translation id="8459191579769999214">Se skjermbilde</translation>
 <translation id="5299848999918506028">Takk skal du ha!</translation>
 <translation id="76550953340008122">Takk for at du ga beskjed til utviklerne av Brave om at noe er galt med dette nettstedet. Vi skal gjøre vårt beste for å rette det!</translation>
 <translation id="650318023204990401">Avanserte kontroller</translation>
@@ -662,6 +669,8 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="6284218950354553099">Automatisk ping dagsforbruk til Brave</translation>
 <translation id="2181060149810222381">Denne private pingen lar Brave beregne aktive brukere.</translation>
 <translation id="6725413948756358325">Kontonavn</translation>
+<translation id="3240773103344793224">Endring av kontoeierskap er forespurt</translation>
+<translation id="8041423758956015568">Denne transaksjonen overdrar eierskapet av kontoen til et nytt program. Handlingen kan ikke angres, og det kan føre til at midler på kontoen går tapt.</translation>
 <translation id="6062431965141524986">Du kan opprette en sekundær konto ved å importere den personlige nøkkelen din.</translation>
 <translation id="3952797765659730604">Skriv inn, lim inn eller importer din personlige nøkkelstrengfil eller JSON</translation>
 <translation id="569068482611873351">Importer …</translation>
@@ -728,7 +737,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="5747552184818312860">Utløper</translation>
 <translation id="1656814355341174523">Administrer abonnement</translation>
 <translation id="1919008675977575793">Server</translation>
-<translation id="4812684235631257312">Vert</translation>
 <translation id="5646376287012673985">Sted</translation>
 <translation id="8375573361134671513">Tilbakestill konfigurasjon</translation>
 <translation id="850405162932416400">VPN-støtte</translation>
@@ -755,6 +763,8 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="5431902940483264007">Optimalt</translation>
 <translation id="6527596624419285047">Bruk den beste tilgjengelige serveren</translation>
 <translation id="6789157560111825412">Tilgjengelige servere</translation>
+<translation id="5823953367746119927">Serverregion</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/>-server</translation>
 <translation id="4397083831618200686">Velg problem</translation>
 <translation id="6687228121145903051">Kan ikke koble til VPN-nettverket (annen feil)</translation>
 <translation id="9184988385244077767">Ikke internett når tilkoblet</translation>
@@ -1079,8 +1089,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="622372328961630111">Legg automatisk til NFT-ene du eier, i lommeboken ved hjelp av tredjeparts-API-er. <ph name="BEGIN_LINK_1"/>Les mer.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Address Lookup Table-konto:</translation>
 <translation id="7659483790930268440">Address Lookup Table-indeks:</translation>
-<translation id="4932733599132424254">Dato</translation>
-<translation id="346505172740911461">Markedspris</translation>
 <translation id="5494920125229734069">Velg alle</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Logg på med Brave-lommeboken</translation>
@@ -1095,6 +1103,8 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="6165101586663336913">Tilbakestilling av Leo-assistenten vil kreve at du velger å bruke Leo i fremtiden, og vil også slette chatloggen din. Sletting av chatloggen vil slette alle tidligere samtaler med Leo. Denne handlingen kan ikke angres.</translation>
 <translation id="3692772534525889713">Knytt Play Store-kjøpet til Brave-kontoen din for å bruke Brave Leo på andre enheter.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">Ett år</translation>
+<translation id="2985392169397572983">MEST FOR PENGENE</translation>
 <translation id="1166682575529520472">Månedlig</translation>
 <translation id="451189393813405346">Spør Leo</translation>
 <translation id="7322560193401221004">Husk hvor du var i avspillingen</translation>
@@ -1163,7 +1173,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="2389665228467129817">Ha lengre samtaler</translation>
 <translation id="4314705522985583059">Utvid samtalegrensene.</translation>
 <translation id="6365289557497555234">Alle abonnementer fornyes automatisk, men kan\nkanselleres når som helst før de fornyes.</translation>
-<translation id="6637015365469044269">Oppgrader nå</translation>
+<translation id="5543505256451301851">Prøv syv dager gratis</translation>
 <translation id="614530507403667291">Standardmodell for nye samtaler</translation>
 <translation id="4071849832011229600">Standardmodellen</translation>
 <translation id="4185473179105062442">Motta BAT direkte på en egenstyrt kryptoadresse</translation>

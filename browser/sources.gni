@@ -26,7 +26,6 @@ import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/notifications/sources.gni")
-import("//brave/browser/ntp_background/sources.gni")
 import("//brave/browser/onboarding/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
@@ -38,6 +37,7 @@ import("//brave/browser/search_engines/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/sync/sources.gni")
 import("//brave/browser/themes/sources.gni")
+import("//brave/browser/ui/config.gni")
 import("//brave/browser/url_sanitizer/sources.gni")
 import("//brave/browser/web_discovery/sources.gni")
 import("//brave/browser/webcompat_reporter/sources.gni")
@@ -133,7 +133,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
-  "//brave/browser/search",
+  "//brave/browser/ntp_background",
   "//brave/browser/skus",
   "//brave/browser/sync",
   "//brave/browser/themes",
@@ -197,9 +197,11 @@ brave_chrome_browser_deps = [
   "//brave/components/localhost_permission",
   "//brave/components/ntp_background_images/browser",
   "//brave/components/ntp_background_images/buildflags",
+  "//brave/components/ntp_background_images/common",
   "//brave/components/ntp_tiles",
   "//brave/components/p3a",
   "//brave/components/p3a:buildflags",
+  "//brave/components/p3a_utils",
   "//brave/components/playlist/common/buildflags",
   "//brave/components/privacy_sandbox",
   "//brave/components/psst/browser/content",
@@ -286,6 +288,7 @@ if (!is_android) {
 
   brave_chrome_browser_deps += [
     "//brave/browser/ui/ai_chat",
+    "//brave/browser/ui/webui/brave_news_internals",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
     "//components/feed/mojom:mojo_bindings",
@@ -390,6 +393,7 @@ if (is_android) {
     "//brave/browser/android/safe_browsing:buildflags",
     "//brave/browser/brave_ads/android",
     "//brave/browser/download/android:jni_headers",
+    "//brave/browser/ntp_background/android",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//chrome/android:jni_headers",
@@ -527,7 +531,6 @@ brave_chrome_browser_sources += brave_browser_misc_metrics_sources
 brave_chrome_browser_sources += brave_browser_net_sources
 brave_chrome_browser_sources += brave_browser_new_tab_sources
 brave_chrome_browser_sources += brave_browser_notifications_sources
-brave_chrome_browser_sources += brave_browser_ntp_background_sources
 brave_chrome_browser_sources += brave_browser_perf_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_playlist_sources
@@ -560,7 +563,6 @@ brave_chrome_browser_deps += brave_browser_misc_metrics_deps
 brave_chrome_browser_deps += brave_browser_net_deps
 brave_chrome_browser_deps += brave_browser_new_tab_deps
 brave_chrome_browser_deps += brave_browser_notifications_deps
-brave_chrome_browser_deps += brave_browser_ntp_background_deps
 brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_playlist_deps
@@ -575,6 +577,10 @@ brave_chrome_browser_deps += brave_browser_web_discovery_deps
 brave_chrome_browser_deps += brave_browser_webcompat_reporter_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_prefs_deps
+
+brave_chrome_browser_ui_allow_circular_includes_from = [ "//brave/browser/ui" ]
+brave_chrome_browser_ui_allow_circular_includes_from +=
+    brave_ui_allow_circular_includes_from
 
 brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/ui",

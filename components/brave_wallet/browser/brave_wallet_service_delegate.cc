@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/notreached.h"
+#include "base/types/expected.h"
 
 namespace brave_wallet {
 
@@ -32,7 +32,7 @@ void BraveWalletServiceDelegate::GetImportInfoFromExternalWallet(
     const std::string& password,
     GetImportInfoCallback callback) {
   NOTIMPLEMENTED();
-  std::move(callback).Run(false, ImportInfo(), ImportError::kInternalError);
+  std::move(callback).Run(base::unexpected(ImportError::kInternalError));
 }
 
 bool BraveWalletServiceDelegate::AddPermission(mojom::CoinType coin,

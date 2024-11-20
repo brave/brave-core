@@ -392,20 +392,20 @@ void Unblinded::OnProcessTokens(
   }
 
   bool final_publisher = false;
-  for (auto publisher = contribution->publishers.begin();
-       publisher != contribution->publishers.end(); publisher++) {
-    if ((*publisher)->total_amount == (*publisher)->contributed_amount) {
+  size_t index = 0;
+  for (const auto& publisher : contribution->publishers) {
+    if (publisher->total_amount == publisher->contributed_amount) {
       continue;
     }
 
-    if (std::next(publisher) == contribution->publishers.end()) {
+    if (contribution->publishers.size() == ++index) {
       final_publisher = true;
     }
 
     std::vector<mojom::UnblindedToken> token_list;
     double current_amount = 0.0;
     for (auto& item : unblinded_tokens) {
-      if (current_amount >= (*publisher)->total_amount) {
+      if (current_amount >= publisher->total_amount) {
         break;
       }
 
@@ -413,13 +413,8 @@ void Unblinded::OnProcessTokens(
       token_list.push_back(item);
     }
 
-    auto redeem_callback = base::BindOnce(
-        &Unblinded::TokenProcessed, weak_factory_.GetWeakPtr(),
-        contribution->contribution_id, (*publisher)->publisher_key,
-        final_publisher, std::move(callback));
-
     credential::CredentialsRedeem redeem;
-    redeem.publisher_key = (*publisher)->publisher_key;
+    redeem.publisher_key = publisher->publisher_key;
     redeem.type = contribution->type;
     redeem.processor = contribution->processor;
     redeem.token_list = token_list;
@@ -427,7 +422,11 @@ void Unblinded::OnProcessTokens(
 
     if (redeem.processor == mojom::ContributionProcessor::UPHOLD ||
         redeem.processor == mojom::ContributionProcessor::GEMINI) {
-      credentials_sku_.RedeemTokens(redeem, std::move(redeem_callback));
+      credentials_sku_.RedeemTokens(
+          redeem, base::BindOnce(
+                      &Unblinded::TokenProcessed, weak_factory_.GetWeakPtr(),
+                      contribution->contribution_id, publisher->publisher_key,
+                      final_publisher, std::move(callback)));
       return;
     }
   }

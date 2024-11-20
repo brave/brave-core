@@ -171,8 +171,8 @@
 <translation id="8510478288840333677">Hívja fel a Brave fejlesztőinek figyelmét arra, hogy ez az oldal nem működik megfelelően a Shieldsel:</translation>
 <translation id="3110968385867124099">Ez az oldal nem jelenthető, mert nem HTTP/HTTPS protokollon keresztül került kiszolgálásra.</translation>
 <translation id="7907023135990310743">Ez az oldal egy helyi weboldal, és nem lehet jelenteni.</translation>
-<translation id="3645455863322075098">Ez az oldal egy hibaoldal, és nem lehet jelenteni.</translation>
-<translation id="105644511106871142">Köszönjük, hogy segít a Brave továbbfejlesztésében. Ebben a jelentésben csak az oldal javításához számunkra szükséges információk lesznek elküldve.</translation>
+<translation id="8740275226259417070">Ez egy hibaoldal. Nem jelenthető nem működő oldalként.</translation>
+<translation id="6806248680442980382">Köszönjük, hogy segít a Brave továbbfejlesztésében. Ebben a jelentésben csak az oldal javításához számunkra szükséges információk szerepelnek.</translation>
 <translation id="6476216365964140603">További részletek (opcionális)</translation>
 <translation id="6145852496180774737">Kapcsolatba léphetnek velem itt: (opcionális)</translation>
 <translation id="7616645803364270729">E-mailben, Twitteren stb.</translation>
@@ -461,6 +461,8 @@
 <translation id="6318437367327684789">örökre</translation>
 <translation id="8797999629784150206">A <ph name="SITE_PERMISSIONS"/> bármikor megváltoztathatod. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">oldal engedélye</translation>
+<translation id="7222371875290545057">Engedélyezi a Leo AI-beszélgetések megnyitását a Brave-ben?</translation>
+<translation id="1518915449477235311">Engedélyezi a(z) <ph name="URL"/> számára a Leo AI-beszélgetések megnyitását a Brave-ben?</translation>
 <translation id="4355784577209159847">Harmadik féltől származó cookie-k használatának engedélyezése a régi Google-bejelentkezéshez</translation>
 <translation id="5770656036486891920">A(z) <ph name="URL"/> harmadik féltől származó cookie-kat szeretne használni a régi Google-bejelentkezéshez</translation>
 <translation id="6053826678715267477">A localhost-erőforrásokhoz való hozzáférés engedélyezése</translation>
@@ -670,7 +672,7 @@
 <translation id="7924320838799747606">Egyenleg</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/> pénztárca</translation>
 <translation id="3175337080016717494">Kifizetési számla</translation>
-<translation id="453760933181416879">Ugrás a saját fiókra</translation>
+<translation id="453760933181416879">Ugrás a saját számlára</translation>
 <translation id="8290994471756102241">Kijelentkezett</translation>
 <translation id="8414447476773253869">Az egyenleg megtekintéséhez jelentkezzen be a következőbe: <ph name="PROVIDER"/></translation>
 <translation id="615483366383024791">Kifizetési számla</translation>
@@ -679,7 +681,7 @@
 <translation id="6708522254106492579">Legfeljebb <ph name="AMOUNT"/> BAT</translation>
 <translation id="7666058404763778706">Weboldalak és tartalomkészítők támogatásának automatikus módja attól függően, hogy mennyi időt tölt el az általuk nyújtott tartalommal.</translation>
 <translation id="4319242254058427792">Az automatikus hozzájárulás le van tiltva</translation>
-<translation id="1091835891554961609">Az Ön által felkeresett, ellenőrzött készítők itt fognak megjelenni böngészéskor.</translation>
+<translation id="1091835891554961609">Az Ön által látogatott, ellenőrzött tartalomkészítők itt fognak megjelenni böngészéskor.</translation>
 <translation id="7714706530499503523">Az automatikus hozzájárulás automatikus havi hozzájárulásokat küld a Brave által ellenőrzött készítőknek az alapján, hogy mennyi időt tölt el az általuk nyújtott tartalommal.</translation>
 <translation id="2358028754328876971">Hogyan működik az automatikus hozzájárulás?</translation>
 <translation id="2870560284913253234">Webhely</translation>
@@ -690,6 +692,26 @@
 <translation id="957921474773060718">Következő hozzájárulás:</translation>
 <translation id="351973834053818251">Ismétlődő hozzájárulások</translation>
 <translation id="7751260505918304024">Összes megjelenítése</translation>
+<translation id="2894334939992402676">További tudnivalók a hozzájárulási módszerekről</translation>
+<translation id="4114667046481794032">Hozzájárulás összege</translation>
+<translation id="2628057126110572782">Ez az alkotó jelenleg csak az alábbi módszereken keresztül fogad el hozzájárulásokat:</translation>
+<translation id="7396847690567283204">Jutalmak egyenlege</translation>
+<translation id="3253225298092156258">Nem áll rendelkezésre</translation>
+<translation id="8028314716653189513">Válassza ki a módszert, amelyet használni kíván a Brave szoftverhez való hozzájáruláshoz:</translation>
+<translation id="4094286757932277327">Letéti pénztárca</translation>
+<translation id="1511998469385905184">Megpróbálhatja újra később.</translation>
+<translation id="7550470870580166294">Nincs fedezet</translation>
+<translation id="7020972866926315918">Úgy tűnik, ki van jelentkezve a következőből: <ph name="PROVIDER"/> a Brave-jutalmakban. Jelentkezzen be újra a folytatáshoz.</translation>
+<translation id="1166682575529520472">Havonta</translation>
+<translation id="7138678301420049075">Egyéb</translation>
+<translation id="2134931506717037391"><ph name="AMOUNT"/> BAT küldése</translation>
+<translation id="4791565605790056151">Hozzájárulás küldése</translation>
+<translation id="8251969358165471584">Web3-pénztárca</translation>
+<translation id="7160424977552599351">Használja Web3-pénztárcáját</translation>
+<translation id="6369571967625114920">A Brave privát hirdetések még nem érhetők el az Ön régiójában.</translation>
+<translation id="5309155375926073606">Igen, szeretnék hozzájárulni a Brave-kereséshez is, és részt veszek a <ph name="LINK_BEGIN"/>Web Discovery Projektben<ph name="LINK_END"/>.</translation>
+<translation id="7285849890826812669">Szolgáltasson névtelen keresési és böngészési adatokat, hogy pontosabbá tegye a Brave Search-öt  a Web Discovery Projekttel. Teljes mértékben nyílt forráskódú.</translation>
+<translation id="4174337572777167894">Web Discovery projekt</translation>
 <translation id="7090992647511817643">fiók</translation>
 <translation id="4822132585477111396">Lánc azonosítója</translation>
 <translation id="3269475789479462358">domain</translation>
@@ -792,7 +814,6 @@
 <translation id="6517332033658428773">Csere áttekintése</translation>
 <translation id="8692596799753687794">Árajánlat benyújtójának kiválasztása</translation>
 <translation id="463712644600982655">Minden aggregátor az API-jából tud árajánlatokat adni a likviditását felhasználva. Az árakra vonatkozó információkat több tőzsdéről gyűjtik össze, és ezek alapján az adatok alapján ajánlanak árat.</translation>
-<translation id="3253225298092156258">Nem áll rendelkezésre</translation>
 <translation id="473775607612524610">Frissítés</translation>
 <translation id="4389658703251593158">Ezt a párosítást nem támogatja a szolgáltató (<ph name="PROVIDER_NAME"/>)</translation>
 <translation id="1176173785350238153">Szolgáltató megváltoztatása</translation>
@@ -1052,6 +1073,8 @@
 <translation id="793994607260936590">első</translation>
 <translation id="4709524402122994378">tranzakciók</translation>
 <translation id="4591079278963448049">A kapcsolódó tokenszámla még nem létezik. Ennek létrehozására és fenntartására egy kisebb SOL összeg lesz felhasználva.</translation>
+<translation id="3240773103344793224">Fiók tulajdonjogának átruházása kérve</translation>
+<translation id="8041423758956015568">Ez a tranzakció átruházza a fiók tulajdonjogát egy új programnak. Ez a művelet nem visszafordítható, és pénzeszközök elvesztését eredményezheti.</translation>
 <translation id="1426320910664514906">Gáz határértéke</translation>
 <translation id="1229774280326250926">Gas prémium</translation>
 <translation id="148169246131967347">Gas díj plafonérték</translation>
@@ -1273,10 +1296,25 @@
 <translation id="5722321409991816187">Spam NFT-k mutatása</translation>
 <translation id="2588752742385122166">Portfólióbeállítások</translation>
 <translation id="7662492121143629144">Összes fiók</translation>
+<translation id="8845001906332463065">Segítség kérése</translation>
+<translation id="6248202915200795128">Tovább tart, mint várta?</translation>
+<translation id="5417904796609871601">Megtekintés tevékenységben</translation>
+<translation id="8915839655070878476">Biztonságosan elhagyhatja ezt az ablakot.</translation>
+<translation id="7020017785602386950"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> elküldése a következőnek: <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="4003625688926111212"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> elküldve a következő fióknak: <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="3068919369514041269"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> átváltása a következőre: <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/> a következőn: <ph name="NETWORK"/></translation>
+<translation id="312867981877298982"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> összeg hozzá lett adva a fiókjához: <ph name="ACCOUNT_BEFORE"/><ph name="ACCOUNT"/><ph name="ACCOUNT_AFTER"/></translation>
+<translation id="2653273412609139189"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> áthidalása a következőre: <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="1795341197087004042">Nem sikerült a következő: <ph name="SEND_SWAP_OR_BRIDGE"/></translation>
+<translation id="6990756606864308319">Hiba történt a következő megkísérlésekor: <ph name="SEND_SWAP_OR_BRIDGE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> a következőre: <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
+<translation id="6449575669814542383"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> jóváhagyása a következőre: <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
+<translation id="8036159955043245753">Új tranzakció lesz létrehozva a meglévő tranzakció törléséhez.</translation>
+<translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
+      =1 {{PENDING_TRANSACTIONS} további tranzakció folyamatban.}
+      other {{PENDING_TRANSACTIONS} további tranzakció folyamatban.}
+    }</translation>
 <translation id="6954150712710630841">Tranzakció elküldve</translation>
-<translation id="905855245798176174">A tranzakció sikeresen el lett küldve a hálózatra, és megerősítésre vár.</translation>
 <translation id="619697073289995370">Tranzakció aláírva</translation>
-<translation id="7493732383203109611">A tranzakció alá lett írva, és el lesz küldve a hálózatnak a DAppon keresztül</translation>
 <translation id="3183790760060544368"><ph name="VALUE"/> visszakerült a pénztárcájába</translation>
 <translation id="4577432071459867390">A tranzakció meghiúsult</translation>
 <translation id="4359235192593147041">A tranzakció nagy mértékű ármozgás miatt meghiúsult. A nagyobb ármozgás esetén végzett tranzakciók sikere érdekében állítson be nagyobb csúszási toleranciát.</translation>
@@ -1707,7 +1745,6 @@
 <translation id="1958146856582208323">Tokenátutalás</translation>
 <translation id="3550219298671597013">NFT átvitele</translation>
 <translation id="8043066678623588950">FIL továbbítása</translation>
-<translation id="7138678301420049075">Egyéb</translation>
 <translation id="8703556909820882288">Tömörített NFT-átvitel</translation>
 <translation id="2713141960460256091">DApp-tranzakció aláírása és elküldése</translation>
 <translation id="6387730345715997739">DApp-tranzakció aláírása</translation>
@@ -1789,7 +1826,6 @@
 <translation id="7056969230130642253">Mindennel naprakész</translation>
 <translation id="7292242212818928219">Új tartalom érhető el. Újratölti az oldalt?</translation>
 <translation id="3924145049010392604">Meta</translation>
-<translation id="4144468798716165316">Gyorsparancsok</translation>
 <translation id="7481312909269577407">Előre</translation>
 <translation id="1272079795634619415">Leállítás</translation>
 <translation id="302781076327338683">Újratöltés a gyorsítótár megkerülésével</translation>
@@ -1942,10 +1978,12 @@
 <translation id="1344005710343072293">Ezt a kombinációt a következőre használja a rendszer: <ph name="COMMAND"/>. A mentéssel felülírja ezt a billentyűparancsot.</translation>
 <translation id="831931573200952705">Ezt a kombinációt a következőre használja a rendszer:<ph name="COMMAND"/>, és nem módosítható.</translation>
 <translation id="3537006124004887164">Ezt a kombinációt a következőre használja a rendszer:<ph name="COMMAND"/>, és nem módosítható. a módosítást próbálja a rendszerbeállítások `Alkalmazások gyorsparancs'-nál.</translation>
+<translation id="8536713137312218707">Gyorsparancsok</translation>
 <translation id="712598284361781729">Új osztott nézet</translation>
 <translation id="1130188644637295274">Megnyitás osztott nézetben</translation>
 <translation id="6459036216700972269">Lapok felosztásának visszavonása</translation>
 <translation id="4235382917338421035">Lappozíciók cseréje</translation>
+<translation id="4144468798716165316">Gyorsparancsok</translation>
 <translation id="3617523374417810198">Új osztott nézet</translation>
 <translation id="8571323456914890254">Megnyitás osztott nézetben</translation>
 <translation id="5329136173514538969">Lapok felosztásának visszavonása</translation>
@@ -2008,7 +2046,6 @@
 <translation id="1691256669639196606">Előfizetés kezelése</translation>
 <translation id="2304783958703511257">Speciális beállítások</translation>
 <translation id="3037594989275592390">Nyelvmodellek</translation>
-<translation id="6637015365469044269">Fejlesztés most</translation>
 <translation id="5543505256451301851">Ingyenes kipróbálás 7 napig</translation>
 <translation id="849535826888024304">Elérte a válaszgyakorisági korlátot</translation>
 <translation id="2252128900328632803">Elérte a Leo gyakorisági korlátját. Oldja fel a magasabb válaszadási arányt a Prémium-előfizetéssel, vagy hamarosan próbálja újra.</translation>
@@ -2019,7 +2056,7 @@
 <translation id="8556044455877152001"><ph name="PRICE_VALUE"/> USD/hó</translation>
 <translation id="5151923271944811339">Váltás az ingyenes modellre</translation>
 <translation id="5474757891469990756">Engedje szabadjára a Leóban rejlő teljes potenciált a Prémiummal:</translation>
-<translation id="5552332211527367850">Elsőbbségi hozzáférés a hatékonyabb, különböző képességekkel rendelkező modellekhez</translation>
+<translation id="3453542753968940696">Kiemelt hozzáférés a különböző képességekkel rendelkező, nagy teljesítményű modellekhez.</translation>
 <translation id="5031778211368112461">Férjen hozzá olyan modellekhez, amelyek alkalmasabbak a kreatív feladatokra és a tartalomgyártásra.</translation>
 <translation id="298783097210745222">Kapjon pontosabb válaszokat az árnyaltabb beszélgetések érdekében.</translation>
 <translation id="4314705522985583059">Szerezzen magasabb határétékeket a hosszabb beszélgetések érdekében.</translation>
@@ -2048,6 +2085,7 @@
 <translation id="8712637175834984815">Sikerült</translation>
 <translation id="1093419424466417703">Ez az oldal túl hosszú Leo számára. A kontextus egy része hiányozni fog a beszélgetésből. Leo ennyit tudott elolvasni az oldal tartalmából: <ph name="PERCENTAGE"/>.</translation>
 <translation id="2186990448773134544">Az oldal tartalma finomítva lett a legrelevánsabb információk kivonatolása révén, mert az oldal tartalma túl hosszú volt a Leo számára.</translation>
+<translation id="5140068729857132378">A weboldal releváns részeinek keresése...</translation>
 <translation id="4370698775470316661">Ez a beszélgetés túl hosszúra nyúlt, és nem folytatható. Más modellek alkalmazásával a Leo képes lehet megőrizni a pontosságát a hosszabb beszélgetések esetében.</translation>
 <translation id="5719170755629028558">Válasz kibővítése a Brave-kereséssel...</translation>
 <translation id="5794962229997281366">Továbbfejlesztett válaszkeresés a következőhöz: <ph name="SEARCH_TERMS"/>.</translation>

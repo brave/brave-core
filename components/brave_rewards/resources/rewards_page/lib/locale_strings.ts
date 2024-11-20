@@ -32,7 +32,6 @@ export type StringKey =
   'adsSettingsAdTypeTitle' |
   'adsSettingsAdViewsTitle' |
   'adsSettingsButtonLabel' |
-  'adsSettingsEarningsLabel' |
   'adsSettingsPayoutDateLabel' |
   'adsSettingsTotalAdsLabel' |
   'adsSettingsNewsOffTooltip' |
@@ -91,6 +90,8 @@ export type StringKey =
   'captchaSolvedTitle' |
   'captchaSupportButtonLabel' |
   'closeButtonLabel' |
+  'communityTitle' |
+  'connectedAdsViewedText' |
   'connectAccountSubtext' |
   'connectAccountText' |
   'connectButtonLabel' |
@@ -140,10 +141,9 @@ export type StringKey =
   'countrySelectText' |
   'doneButtonLabel' |
   'earningsAdsReceivedText' |
-  'earningsEstimateText' |
-  'earningsRangeTooltip' |
   'helpButtonLabel' |
   'learnMoreLink' |
+  'merchStoreTitle' |
   'moreButtonLabel' |
   'navigationCreatorsLabel' |
   'navigationExploreLabel' |
@@ -206,6 +206,8 @@ export type StringKey =
   'tosUpdateRequiredText' |
   'tosUpdateRequiredTitle' |
   'unconnectedAdsViewedText' |
+  'viewAllLink' |
+  'viewStoreLink' |
   'wdpCheckboxLabel' |
   'wdpOptInText' |
   'wdpOptInTitle'

@@ -5,27 +5,40 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 
+#include <compare>
 #include <optional>
+#include <ostream>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
-#include "base/base64.h"
-#include "base/i18n/time_formatting.h"
+#include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/json/values_util.h"
+#include "base/numerics/clamped_math.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "base/value_iterators.h"
+#include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
+#include "url/url_canon.h"
 #include "url/url_util.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "base/base64.h"
+#include "base/json/json_writer.h"
+#endif  // BUILDFLAG(IS_ANDROID)
 
 namespace {
 

@@ -611,7 +611,7 @@ extension Strings {
       )
     public static let deleteAccountAlertTitle =
       NSLocalizedString(
-        "sync.deleteAccount",
+        "sync.deleteAccountAlertTitle",
         tableName: "BraveShared",
         bundle: .module,
         value: "Delete Sync Account",

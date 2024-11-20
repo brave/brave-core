@@ -144,9 +144,8 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
       break;
   }
 
-  NOTREACHED_NORETURN()
-      << "Asked for a panel Id from a sidebar item which could "
-         "not have a panel Id.";
+  NOTREACHED() << "Asked for a panel Id from a sidebar item which could "
+                  "not have a panel Id.";
 }
 
 std::optional<BuiltInItemType> BuiltInItemTypeFromSidePanelId(

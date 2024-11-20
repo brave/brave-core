@@ -203,4 +203,9 @@ export const style = scoped.css`
       }
     }
   }
+
+  /* The "creators" tab is not yet implemented. */
+  li.creators {
+    display: none;
+  }
 `

@@ -587,6 +587,18 @@ void BraveBrowserView::UpdateSearchTabsButtonState() {
 
 BraveBrowserView::~BraveBrowserView() {
   tab_cycling_event_handler_.reset();
+  // Removes the bubble from the browser, as it uses the `ToolbarView` as an
+  // archor, and that leaves a dangling reference once the `TopContainerView` is
+  // destroyed before all `SupportsUserData` is cleared.
+  if (brave_shields::CookieListOptInBubbleHost::FromBrowser(browser_.get())) {
+    brave_shields::CookieListOptInBubbleHost::RemoveFromBrowser(browser_.get());
+  }
+
+  // Same as above.
+  if (brave_rewards::TipPanelBubbleHost::FromBrowser(browser_.get())) {
+    brave_rewards::TipPanelBubbleHost::RemoveFromBrowser(browser_.get());
+  }
+
   DCHECK(!tab_cycling_event_handler_);
 }
 
