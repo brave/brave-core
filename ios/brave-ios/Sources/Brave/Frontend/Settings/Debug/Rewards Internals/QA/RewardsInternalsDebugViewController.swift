@@ -136,15 +136,7 @@ class RewardsInternalsDebugViewController: TableViewController {
               self.navigationController?.pushViewController(controller, animated: true)
             },
             accessory: .disclosureIndicator
-          ),
-          Row(
-            text: "Auto-Contribute",
-            selection: { [unowned self] in
-              let controller = RewardsInternalsAutoContributeController(rewardsAPI: self.rewardsAPI)
-              self.navigationController?.pushViewController(controller, animated: true)
-            },
-            accessory: .disclosureIndicator
-          ),
+          )
         ]
       )
     )

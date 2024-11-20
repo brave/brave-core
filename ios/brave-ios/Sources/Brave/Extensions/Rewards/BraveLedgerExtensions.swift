@@ -29,29 +29,6 @@ extension BraveRewardsAPI {
     return now >= deadlineDate
   }
 
-  public func listAutoContributePublishers(
-    _ completion: @escaping (_ publishers: [BraveCore.BraveRewards.PublisherInfo]) -> Void
-  ) {
-    let filter: BraveCore.BraveRewards.ActivityInfoFilter = {
-      let sort = BraveCore.BraveRewards.ActivityInfoFilterOrderPair().then {
-        $0.propertyName = "percent"
-        $0.ascending = false
-      }
-      let filter = BraveCore.BraveRewards.ActivityInfoFilter().then {
-        $0.id = ""
-        $0.excluded = .filterAllExceptExcluded
-        $0.percent = 1  // exclude 0% sites.
-        $0.orderBy = [sort]
-        $0.nonVerified = false
-        $0.reconcileStamp = 0
-      }
-      return filter
-    }()
-    self.listActivityInfo(fromStart: 0, limit: 0, filter: filter) { list in
-      completion(list)
-    }
-  }
-
   // MARK: -
 
   /// Creates the ledger wallet and fetches wallet properties and balances
@@ -68,7 +45,6 @@ extension BraveRewardsAPI {
 
       self.setMinimumVisitDuration(8)
       self.setMinimumNumberOfVisits(1)
-      self.setContributionAmount(Double.greatestFiniteMagnitude)
 
       let group = DispatchGroup()
       var success = true

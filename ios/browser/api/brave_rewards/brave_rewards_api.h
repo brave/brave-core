@@ -180,10 +180,6 @@ OBJC_EXPORT
 - (void)setMinimumVisitDuration:(int)minimumVisitDuration;
 /// The minimum number of visits before a publisher is added
 - (void)setMinimumNumberOfVisits:(int)minimumNumberOfVisits;
-/// The auto-contribute amount
-- (void)setContributionAmount:(double)contributionAmount;
-/// Whether or not the user will automatically contribute
-- (void)setAutoContributeEnabled:(bool)autoContributeEnabled;
 /// A custom user agent for network operations on rewards
 @property(nonatomic, copy, nullable) NSString* customUserAgent;
 

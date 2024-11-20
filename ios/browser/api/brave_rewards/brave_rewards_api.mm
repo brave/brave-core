@@ -780,12 +780,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }];
 }
 
-- (void)setContributionAmount:(double)contributionAmount {
-}
-
-- (void)setAutoContributeEnabled:(bool)autoContributeEnabled {
-}
-
 - (void)setBooleanState:(const std::string&)name
                   value:(bool)value
                callback:(brave_rewards::mojom::RewardsEngineClient::

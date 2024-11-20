@@ -52,8 +52,6 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     }
   }
 
-  private var supportedListCount: Int = 0
-
   init(tab: Tab, rewards: BraveRewards) {
     self.browserTab = tab
     self.rewards = rewards
@@ -95,15 +93,10 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       } else {
         self.rewardsView.publisherView.isHidden = true
       }
-      rewardsAPI.listAutoContributePublishers { [weak self] list in
-        guard let self = self else { return }
-        self.supportedListCount = list.count
-        self.rewardsView.statusView.setVisibleStatus(
-          status: list.isEmpty ? .rewardsOnNoCount : .rewardsOn,
-          animated: false
-        )
-        self.rewardsView.statusView.countView.countLabel.text = "\(list.count)"
-      }
+      self.rewardsView.statusView.setVisibleStatus(
+        status: .rewardsOn,
+        animated: false
+      )
     }
 
     if let displayName = publisher?.attributedDisplayName(
@@ -177,7 +170,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
         isOn ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody
       if rewardsView.rewardsToggle.isOn {
         rewardsView.statusView.setVisibleStatus(
-          status: supportedListCount > 0 ? .rewardsOn : .rewardsOnNoCount
+          status: .rewardsOn
         )
       } else {
         rewardsView.statusView.setVisibleStatus(status: .rewardsOff)
