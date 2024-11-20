@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index c13e3198bdced21e8b88307ea9d7a07fb1ea9468..b9a260dbe66145c8c440a08bcc71d634ab774068 100644
+index 8eeba4b9b452dac372202ab39ee43bd99ba1a5e6..bec456dc9a01229ae00706bd18df1a7dfa3d4926 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -247,6 +247,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
@@ -10,7 +10,7 @@ index c13e3198bdced21e8b88307ea9d7a07fb1ea9468..b9a260dbe66145c8c440a08bcc71d634
  };
  
  static_assert(
-@@ -508,6 +509,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -507,6 +508,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -18,7 +18,7 @@ index c13e3198bdced21e8b88307ea9d7a07fb1ea9468..b9a260dbe66145c8c440a08bcc71d634
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -522,6 +524,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -521,6 +523,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -26,7 +26,7 @@ index c13e3198bdced21e8b88307ea9d7a07fb1ea9468..b9a260dbe66145c8c440a08bcc71d634
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -697,6 +700,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -695,6 +698,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -34,7 +34,7 @@ index c13e3198bdced21e8b88307ea9d7a07fb1ea9468..b9a260dbe66145c8c440a08bcc71d634
      case ProviderType::kWebuiAllowlistProvider:
        return SiteSettingSource::kAllowlist;
      case ProviderType::kPolicyProvider:
-@@ -723,6 +727,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -720,6 +724,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  
  std::string ProviderToDefaultSettingSourceString(const ProviderType provider) {
    switch (provider) {

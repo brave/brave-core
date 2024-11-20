@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/item_list.ts b/chrome/browser/resources/extensions/item_list.ts
-index 7504fd84328f685eba76ba68e96ee8788aca412d..4a6326d988652f72df1a923dcec79118a731a60c 100644
+index 6f56fabeb936f8a747a9ef0988fc6bdefc745622..530dca5f5d8a44702046728276511bc8e10f4419 100644
 --- a/chrome/browser/resources/extensions/item_list.ts
 +++ b/chrome/browser/resources/extensions/item_list.ts
 @@ -18,6 +18,7 @@ import type {ExtensionsItemElement, ItemDelegate} from './item.js';

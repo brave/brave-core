@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/history_item.ts b/chrome/browser/resources/history/history_item.ts
-index 0349af62bc595150b87232f899b978a6eb4b56a1..f4b115e5819443cf64af6d507b9f90996faaf524 100644
+index e4d05d936ff198633691ab5fc871683a1f8dcfb0..e7da86a54fc022ac467285c6507cbd91e8f9b8c1 100644
 --- a/chrome/browser/resources/history/history_item.ts
 +++ b/chrome/browser/resources/history/history_item.ts
 @@ -10,6 +10,7 @@ import 'chrome://resources/cr_elements/cr_icon/cr_icon.js';

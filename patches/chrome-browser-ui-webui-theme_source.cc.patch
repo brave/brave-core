@@ -2,7 +2,7 @@ diff --git a/chrome/browser/ui/webui/theme_source.cc b/chrome/browser/ui/webui/t
 index 1d418a88bbdeed350fde7de134ea1dcc0dc517f3..107e0beb15423416a2d3fc9463003f2e0209bc2f 100644
 --- a/chrome/browser/ui/webui/theme_source.cc
 +++ b/chrome/browser/ui/webui/theme_source.cc
-@@ -137,7 +137,7 @@ void ThemeSource::StartDataRequest(
+@@ -128,7 +128,7 @@ void ThemeSource::StartDataRequest(
    int resource_id = -1;
    if (parsed_path == "current-channel-logo") {
      switch (chrome::GetChannel()) {

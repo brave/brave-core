@@ -1,8 +1,8 @@
 diff --git a/third_party/lit/v3_0/BUILD.gn b/third_party/lit/v3_0/BUILD.gn
-index 5136460fca37be70bd4b91bcda0b986b762f707f..d2e83b8d273c276dfa4ad26ad35fcac4b5898a52 100644
+index 1096ee31218d27722bdd575b0e126ed6edd6581a..8867a06f7813fb3024916a293f5f71b711b907e4 100644
 --- a/third_party/lit/v3_0/BUILD.gn
 +++ b/third_party/lit/v3_0/BUILD.gn
-@@ -82,6 +82,7 @@ ts_library("build_ts") {
+@@ -89,6 +89,7 @@ ts_library("build_ts") {
      "//ui/webui/resources/cr_components/most_visited:build_ts",
      "//ui/webui/resources/cr_components/theme_color_picker:build_ts",
      "//ui/webui/resources/cr_elements:build_ts",
@@ -10,7 +10,7 @@ index 5136460fca37be70bd4b91bcda0b986b762f707f..d2e83b8d273c276dfa4ad26ad35fcac4
    ]
    composite = true
    in_files = [
-@@ -160,6 +161,7 @@ ts_library("build_ts") {
+@@ -172,6 +173,7 @@ ts_library("build_ts") {
              "${node_modules}/@lit/reactive-element/reactive-element.d.ts",
              target_gen_dir),
    ]
