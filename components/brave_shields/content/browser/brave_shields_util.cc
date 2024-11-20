@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 
-#include <memory>
+#include <utility>
 
+#include "base/containers/span.h"
 #include "base/feature_list.h"
+#include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
@@ -37,6 +39,10 @@
 using content::Referrer;
 
 namespace brave_shields {
+
+// Used for stable farbling token generation in tests when is set to non-zero.
+// Non-anonymous to be accesible from ":test_support" target.
+uint32_t g_stable_farbling_tokens_seed = 0;
 
 namespace {
 
@@ -138,6 +144,31 @@ class BraveCookieRules {
   ContentSetting general_setting_ = CONTENT_SETTING_DEFAULT;
   ContentSetting first_party_setting_ = CONTENT_SETTING_DEFAULT;
 };
+
+base::Value::Dict GetShieldsMetadata(HostContentSettingsMap* map,
+                                     const GURL& url) {
+  auto shields_metadata_value = map->GetWebsiteSetting(
+      url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA);
+  if (auto* shields_metadata_dict = shields_metadata_value.GetIfDict()) {
+    return std::move(*shields_metadata_dict);
+  }
+  return base::Value::Dict();
+}
+
+void SetShieldsMetadata(HostContentSettingsMap* map,
+                        const GURL& url,
+                        base::Value::Dict shields_metadata) {
+  map->SetWebsiteSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA,
+      base::Value(std::move(shields_metadata)));
+}
+
+base::Token CreateStableFarblingToken(const GURL& url) {
+  const uint32_t high = base::PersistentHash(url.host_piece()) +
+                        g_stable_farbling_tokens_seed - 1;
+  const uint32_t low = base::PersistentHash(base::byte_span_from_ref(high));
+  return base::Token(high, low);
+}
 
 }  // namespace
 
@@ -893,6 +924,10 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
 
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
                                       const GURL& primary_url) {
+  if (!base::FeatureList::IsEnabled(features::kBraveFarbling)) {
+    return brave_shields::mojom::FarblingLevel::OFF;
+  }
+
   const bool shields_up = GetBraveShieldsEnabled(map, primary_url);
   if (!shields_up) {
     return brave_shields::mojom::FarblingLevel::OFF;
@@ -909,6 +944,32 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
     case ControlType::DEFAULT:
       return brave_shields::mojom::FarblingLevel::BALANCED;
   }
+}
+
+base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
+  base::Token token;
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return token;
+  }
+
+  // Get the farbling token from the Shields metadata.
+  auto shields_metadata = GetShieldsMetadata(map, url);
+  if (auto* farbling_token = shields_metadata.FindString("farbling_token")) {
+    token = base::Token::FromString(*farbling_token).value_or(base::Token());
+  }
+
+  // If the farbling token is not set or failed to parse, generate a new one.
+  if (token.is_zero()) {
+    if (!g_stable_farbling_tokens_seed) {
+      token = base::Token::CreateRandom();
+    } else {
+      token = CreateStableFarblingToken(url);
+    }
+    shields_metadata.Set("farbling_token", token.ToString());
+    SetShieldsMetadata(map, url, std::move(shields_metadata));
+  }
+
+  return token;
 }
 
 }  // namespace brave_shields

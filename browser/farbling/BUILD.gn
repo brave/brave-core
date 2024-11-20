@@ -11,7 +11,7 @@ if (!is_android) {
     sources = [
       "brave_dark_mode_fingerprint_protection_browsertest.cc",
       "brave_enumeratedevices_farbling_browsertest.cc",
-      "brave_farbling_based_on_profiles_browsertest.cc",
+      "brave_farbling_browsertest.cc",
       "brave_font_whitelist_browsertest.cc",
       "brave_navigator_devicememory_farbling_browsertest.cc",
       "brave_navigator_hardwareconcurrency_farbling_browsertest.cc",
@@ -34,6 +34,7 @@ if (!is_android) {
       "//brave/common:common",
       "//brave/components/brave_component_updater/browser:browser",
       "//brave/components/brave_shields/content/browser",
+      "//brave/components/brave_shields/content/browser:test_support",
       "//brave/components/brave_shields/core/common",
       "//brave/components/constants",
       "//brave/components/webcompat/core/common",

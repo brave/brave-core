@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -74,11 +75,9 @@ constexpr char kImageScript[] = R"(
   });
 )";
 
-constexpr int kExpectedImageDataHashFarblingBalanced = 172;
+constexpr int kExpectedImageDataHashFarblingBalanced = 208;
 constexpr int kExpectedImageDataHashFarblingOff = 0;
-constexpr int kExpectedImageDataHashFarblingMaximum =
-    kExpectedImageDataHashFarblingBalanced;
-constexpr int kExpectedImageDataHashFarblingBalancedGoogleCom = 182;
+constexpr int kExpectedImageDataHashFarblingBalancedGoogleCom = 212;
 
 constexpr char kEmptyCookie[] = "";
 
@@ -121,7 +120,12 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
  public:
   BraveContentSettingsAgentImplBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitAndEnableFeature(net::features::kBraveEphemeralStorage);
+    feature_list_.InitWithFeatures(
+        {
+            brave_shields::features::kBraveShowStrictFingerprintingMode,
+            webcompat::features::kBraveWebcompatExceptionsService,
+        },
+        {});
   }
 
   void SetUpOnMainThread() override {
@@ -487,15 +491,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
             content::EvalJs(contents(), kGetImageDataScript));
 }
 
-class BraveContentSettingsAgentImplV2BrowserTest
-    : public BraveContentSettingsAgentImplBrowserTest {
- public:
-  void SetUp() override { BraveContentSettingsAgentImplBrowserTest::SetUp(); }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
-
 // This test currently fails on Linux platforms due to an upstream bug when
 // SwANGLE is used, see upstream bug at http://crbug.com/1192632.
 #if BUILDFLAG(IS_LINUX)
@@ -503,7 +498,7 @@ class BraveContentSettingsAgentImplV2BrowserTest
 #else
 #define MAYBE_WebGLReadPixels WebGLReadPixels
 #endif
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        MAYBE_WebGLReadPixels) {
   std::string origin = "a.test";
   std::string path = "/webgl/readpixels.html";
@@ -527,37 +522,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "0");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
-                       FarbleGetImageData) {
-  // Farbling should be default when kBraveFingerprintingV2 is enabled
-  // because it uses a different content setting
-  NavigateToPageWithIframe();
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
-            content::EvalJs(contents(), kGetImageDataScript));
-
-  // Farbling should be maximum if fingerprinting is blocked via content
-  // settings and kBraveFingerprintingV2 is enabled
-  BlockFingerprinting();
-  NavigateToPageWithIframe();
-  EXPECT_EQ(kExpectedImageDataHashFarblingMaximum,
-            content::EvalJs(contents(), kGetImageDataScript));
-
-  // Farbling should be balanced if fingerprinting is default via
-  // content settings and kBraveFingerprintingV2 is enabled
-  SetFingerprintingDefault();
-  NavigateToPageWithIframe();
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
-            content::EvalJs(contents(), kGetImageDataScript));
-
-  // Farbling should be off if fingerprinting is allowed via
-  // content settings and kBraveFingerprintingV2 is enabled
-  AllowFingerprinting();
-  NavigateToPageWithIframe();
-  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
-            content::EvalJs(contents(), kGetImageDataScript));
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        CanvasIsPointInPath) {
   // Farbling level: maximum
   // Canvas isPointInPath(): blocked

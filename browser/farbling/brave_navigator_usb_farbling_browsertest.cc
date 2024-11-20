@@ -301,7 +301,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUsbFarblingBrowserTest,
 
   // Call getDevices again. The fake device is still included, but now its
   // serial number is farbled.
-  EXPECT_EQ(content::ListValueOf("dt9mTRQnb057d1a0"),
+  EXPECT_EQ(content::ListValueOf("7Co7GLs9e2bVSRQn"),
             EvalJs(web_contents(), kGetDevicesScript));
 
   // Do it all again, but on a different domain.
@@ -309,7 +309,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUsbFarblingBrowserTest,
   GURL url_z = https_server()->GetURL(domain_z, "/simple.html");
   SetFingerprintingDefault(domain_z);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
-  EXPECT_EQ("Qv2Eh368mTRQv26G", EvalJs(web_contents(), kRequestDeviceScript));
+  EXPECT_EQ("wYMGiwgvf2jwgvfu", EvalJs(web_contents(), kRequestDeviceScript));
 
   // Reload once more with farbling at default but enable a webcompat exception.
   SetFingerprintingDefault(domain_b);
