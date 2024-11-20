@@ -8,17 +8,18 @@ Subject: [PATCH] disable autocfg probe
  1 file changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/third_party/rust/chromium_crates_io/vendor/num-bigint-0.3.3/build.rs b/third_party/rust/chromium_crates_io/vendor/num-bigint-0.3.3/build.rs
-index 3daed5e8d33..300d71643ad 100644
+index 3daed5e8d33..0ef8fea1b3b 100644
 --- a/third_party/rust/chromium_crates_io/vendor/num-bigint-0.3.3/build.rs
 +++ b/third_party/rust/chromium_crates_io/vendor/num-bigint-0.3.3/build.rs
-@@ -11,23 +11,26 @@ fn main() {
+@@ -10,6 +10,7 @@ fn main() {
+     if u64_digit {
          autocfg::emit("u64_digit");
      }
-     let ac = autocfg::new();
 +/*
+     let ac = autocfg::new();
      let std = if ac.probe_sysroot_crate("std") {
          "std"
-     } else {
+@@ -17,17 +18,19 @@ fn main() {
          "core"
      };
      if ac.probe_path(&format!("{}::convert::TryFrom", std)) {
@@ -26,7 +27,7 @@ index 3daed5e8d33..300d71643ad 100644
          autocfg::emit("has_try_from");
 -    }
 +//  }
- 
+
      if let Ok(target_arch) = env::var("CARGO_CFG_TARGET_ARCH") {
          if target_arch == "x86_64" || target_arch == "x86" {
              let digit = if u64_digit { "u64" } else { "u32" };
@@ -42,7 +43,6 @@ index 3daed5e8d33..300d71643ad 100644
 +//          }
          }
      }
- 
--- 
-2.38.1
 
+--
+2.47.0
