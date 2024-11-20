@@ -1,8 +1,8 @@
 diff --git a/ui/views/accessibility/accessibility_paint_checks.cc b/ui/views/accessibility/accessibility_paint_checks.cc
-index 97f92310782792e22592ff8d76b58df5fe90e651..76418cee28053fec05b43218e7b93e239f6229cf 100644
+index 7ad2cc95c05f22e502ec2ad737e85f3a32bcc3c6..89f86277a895af1c5abaa11f5552866cbb517244 100644
 --- a/ui/views/accessibility/accessibility_paint_checks.cc
 +++ b/ui/views/accessibility/accessibility_paint_checks.cc
-@@ -33,6 +33,7 @@ void RunAccessibilityPaintChecks(View* view) {
+@@ -32,6 +32,7 @@ void RunAccessibilityPaintChecks(View* view) {
    // some additional fields are processed and set there.
    ui::AXNodeData node_data;
    view->GetViewAccessibility().GetAccessibleNodeData(&node_data);

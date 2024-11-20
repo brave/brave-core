@@ -1,8 +1,8 @@
 diff --git a/components/version_ui/resources/about_version.css b/components/version_ui/resources/about_version.css
-index 6b753d716b55d14f73b9538909648428b5b2407c..185db4fc607bc27c67e39129ea0cc8a170a34621 100644
+index 839526405ef3f4b0c313811635b1555a5b254a1c..498f855311b6f46e9c016670e26bfcc11ccedfd9 100644
 --- a/components/version_ui/resources/about_version.css
 +++ b/components/version_ui/resources/about_version.css
-@@ -135,3 +135,5 @@ body {
+@@ -138,3 +138,5 @@ body {
    position: fixed;
    width: 1px;
  }

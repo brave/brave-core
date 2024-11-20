@@ -1,5 +1,5 @@
 diff --git a/content/browser/loader/reconnectable_url_loader_factory.cc b/content/browser/loader/reconnectable_url_loader_factory.cc
-index b82384b549b8a9a8c33d5b0d6d5f6409492db599..115fc81b67e1dc0b5bc416fdf086ee2f756ec142 100644
+index 1a82d44aade7d4c2648d9f8a370cbee97fc4163c..f52909192d834fefc7fc41987bbe922679056cf5 100644
 --- a/content/browser/loader/reconnectable_url_loader_factory.cc
 +++ b/content/browser/loader/reconnectable_url_loader_factory.cc
 @@ -10,6 +10,7 @@
