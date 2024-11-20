@@ -5,6 +5,8 @@
 
 static_library("browser") {
   sources = [
+    "internals/ads_internals_handler.cc",
+    "internals/ads_internals_handler.h",
     "service/ads_service.cc",
     "service/ads_service.h",
     "service/ads_service_observer.h",
@@ -16,8 +18,10 @@ static_library("browser") {
     "//base",
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_rewards/common",
     "//brave/components/services/bat_ads/public/interfaces",
     "//components/keyed_service/core",
+    "//components/prefs",
     "//mojo/public/cpp/bindings",
     "//url",
   ]

@@ -10,14 +10,13 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
-#include "brave/components/brave_ads/core/public/ads_service/ads_service_callback.h"
+#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 class PrefService;
 

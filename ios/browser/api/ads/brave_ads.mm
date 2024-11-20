@@ -1685,9 +1685,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
     return completion();
   }
 
-  adsService->ClearData(base::BindOnce(^() {
-    completion();
-  }));
+  adsService->ClearData(base::IgnoreArgs<bool>(base::BindOnce(completion)));
 }
 
 #pragma mark - Ads client notifier

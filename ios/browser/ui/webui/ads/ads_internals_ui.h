@@ -6,31 +6,20 @@
 #ifndef BRAVE_IOS_BROWSER_UI_WEBUI_ADS_ADS_INTERNALS_UI_H_
 #define BRAVE_IOS_BROWSER_UI_WEBUI_ADS_ADS_INTERNALS_UI_H_
 
-#include <optional>
-#include <string>
-
 #include "base/memory/weak_ptr.h"
-#include "base/values.h"
+#include "brave/components/brave_ads/core/browser/internals/ads_internals_handler.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "components/prefs/pref_change_registrar.h"
-#include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
 
 // MARK: - BASED ON: brave/browser/ui/webui/ads_internals/ads_internals_ui.h
 
-namespace brave_ads {
-class AdsServiceImplIOS;
-}  // namespace brave_ads
+namespace web {
+class WebUIIOS;
+}  // namespace web
 
-// TODO(https://github.com/brave/brave-browser/issues/42303): Unify this
-// implementation with the original AdsInternalsUI class for Desktop and
-// Android.
-class AdsInternalsUI : public web::WebUIIOSController,
-                       bat_ads::mojom::AdsInternals {
+class AdsInternalsUI : public web::WebUIIOSController {
  public:
   AdsInternalsUI(web::WebUIIOS* const web_ui, const GURL& url);
 
@@ -46,28 +35,7 @@ class AdsInternalsUI : public web::WebUIIOSController,
       mojo::PendingReceiver<bat_ads::mojom::AdsInternals> pending_receiver);
 
  private:
-  // bat_ads::mojom::AdsInternals:
-  void GetAdsInternals(GetAdsInternalsCallback callback) override;
-  void ClearAdsData(ClearAdsDataCallback callback) override;
-  void CreateAdsInternalsPageHandler(
-      mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage> page) override;
-
-  void GetInternalsCallback(GetAdsInternalsCallback callback,
-                            std::optional<base::Value::List> value);
-
-  void OnPrefChanged(const std::string& path);
-  void UpdateBraveRewardsEnabled();
-
-  const raw_ptr<brave_ads::AdsServiceImplIOS> ads_service_ =
-      nullptr;  // Not owned.
-
-  const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
-
-  mojo::Receiver<bat_ads::mojom::AdsInternals> receiver_{this};
-
-  mojo::Remote<bat_ads::mojom::AdsInternalsPage> page_;
-
-  PrefChangeRegistrar pref_change_registrar_;
+  AdsInternalsHandler handler_;
 
   base::WeakPtrFactory<AdsInternalsUI> weak_ptr_factory_{this};
 };

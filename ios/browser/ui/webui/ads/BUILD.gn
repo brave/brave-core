@@ -15,33 +15,22 @@ source_set("ads") {
 
   deps = [
     "//brave/components/brave_ads/browser/resources:generated_resources",
-    "//brave/components/brave_ads/core",
-    "//brave/components/brave_rewards/common",
     "//brave/components/constants",
-    "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",
     "//brave/ios/browser/brave_ads",
     "//components/prefs",
     "//components/resources",
-    "//ios/chrome/browser/shared/model/application_context",
-    "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/shared/model/profile",
-    "//ios/chrome/browser/shared/ui/util:util",
-    "//ios/web",
-    "//ios/web:resources",
-    "//ios/web/public",
-    "//ios/web/public/js_messaging",
     "//ios/web/public/webui",
-    "//ios/web/webui",
-    "//mojo/public/cpp/bindings",
-    "//mojo/public/js:resources",
     "//ui/base",
-    "//ui/base/clipboard",
   ]
 
   public_deps = [
-    "//brave/components/brave_ads/core/mojom",
+    "//base",
+    "//brave/components/brave_ads/core",
     "//brave/components/services/bat_ads/public/interfaces",
-    "//mojo/public/mojom/base",
+    "//ios/web/public",
+    "//mojo/public/cpp/bindings",
+    "//url",
   ]
 }
