@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/webui/certificate_manager/certificate_manager_ui.h"
 
+#include "chrome/browser/ui/webui/certificate_manager/client_cert_sources.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 namespace {
