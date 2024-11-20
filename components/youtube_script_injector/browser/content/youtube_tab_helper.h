@@ -37,21 +37,10 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
 
  private:
   YouTubeTabHelper(content::WebContents*, const int32_t world_id);
-  // Called to insert both test script and policy script.
+  // Called to insert the YouTube script into the page.
   void InsertScriptInPage(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
-      const std::string& script,
-      content::RenderFrameHost::JavaScriptResultCallback cb);
-  // Used to insert a YouTube test script into the page.
-  // The result is used to determine whether to insert the policy
-  // script in |OnTestScriptResult|.
-  void InsertTestScript(
-      const content::GlobalRenderFrameHostId& render_frame_host_id,
       MatchedRule rule);
-  void OnTestScriptResult(
-      const std::string& policy_script,
-      const content::GlobalRenderFrameHostId& render_frame_host_id,
-      base::Value value);
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
       content::RenderFrameHost* rfh);
   friend class content::WebContentsUserData<YouTubeTabHelper>;
