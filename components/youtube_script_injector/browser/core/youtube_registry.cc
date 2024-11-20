@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/youtube_script_injector/browser/core/youtube_rule_registry.h"
+#include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 
 #include <memory>
 #include <string>
@@ -18,7 +18,7 @@
 #include "base/logging.h"
 #include "base/memory/singleton.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/youtube_script_injector/browser/core/youtube_rule.h"
+#include "brave/components/youtube_script_injector/browser/core/youtube_json.h"
 #include "brave/components/youtube_script_injector/common/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
@@ -53,45 +53,45 @@ MatchedRule CreateMatchedRule(const base::FilePath& component_path,
 }  // namespace
 
 // static
-YouTubeRuleRegistry* YouTubeRuleRegistry::GetInstance() {
+YouTubeRegistry* YouTubeRegistry::GetInstance() {
   // Check if feature flag is enabled.
   if (!base::FeatureList::IsEnabled(youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
     return nullptr;
   }
-  return base::Singleton<YouTubeRuleRegistry>::get();
+  return base::Singleton<YouTubeRegistry>::get();
 }
 
-YouTubeRuleRegistry::YouTubeRuleRegistry() = default;
+YouTubeRegistry::YouTubeRegistry() = default;
 
-YouTubeRuleRegistry::~YouTubeRuleRegistry() = default;
+YouTubeRegistry::~YouTubeRegistry() = default;
 
-void YouTubeRuleRegistry::CheckIfMatch(
+void YouTubeRegistry::CheckIfMatch(
     const GURL& url,
     base::OnceCallback<void(MatchedRule)> cb) const {
-  if (rule_ && rule_->IsYouTubeDomain(url)) {
+  if (json_ && json_->IsYouTubeDomain(url)) {
     base::ThreadPool::PostTaskAndReplyWithResult(
         FROM_HERE, {base::MayBlock()},
         base::BindOnce(&CreateMatchedRule, component_path_,
-                       rule_->GetFeatureScript(),
-                       rule_->GetVersion()),
+                       json_->GetFeatureScript(),
+                       json_->GetVersion()),
         std::move(cb));
   }
 }
 
-void YouTubeRuleRegistry::LoadRules(const base::FilePath& path) {
+void YouTubeRegistry::LoadScripts(const base::FilePath& path) {
   SetComponentPath(path);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.Append(kJsonFile)),
-      base::BindOnce(&YouTubeRuleRegistry::OnLoadRules,
+      base::BindOnce(&YouTubeRegistry::OnLoadScripts,
                      weak_factory_.GetWeakPtr()));
 }
 
-void YouTubeRuleRegistry::OnLoadRules(const std::string& contents) {
-  rule_ = YouTubeRule::ParseRules(contents);
+void YouTubeRegistry::OnLoadScripts(const std::string& contents) {
+  json_ = YouTubeJson::ParseJson(contents);
 }
 
-void YouTubeRuleRegistry::SetComponentPath(const base::FilePath& path) {
+void YouTubeRegistry::SetComponentPath(const base::FilePath& path) {
   component_path_ = path;
 }
 
