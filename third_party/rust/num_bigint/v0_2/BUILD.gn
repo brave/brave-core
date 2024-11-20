@@ -51,5 +51,10 @@ cargo_crate("lib") {
   }
   if (epoch != "0.2") {
     build_script_outputs = [ "radix_bases.rs" ]
+  } else {
+    rustflags = [
+      "--cfg",
+      "has_i128",
+    ]
   }
 }

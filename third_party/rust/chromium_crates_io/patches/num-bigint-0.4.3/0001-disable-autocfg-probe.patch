@@ -8,17 +8,18 @@ Subject: [PATCH] disable autocfg probe
  1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/third_party/rust/chromium_crates_io/vendor/num-bigint-0.4.3/build.rs b/third_party/rust/chromium_crates_io/vendor/num-bigint-0.4.3/build.rs
-index 3daed5e8d33..d77a9fbc777 100644
+index 3daed5e8d33..37bf985cb20 100644
 --- a/third_party/rust/chromium_crates_io/vendor/num-bigint-0.4.3/build.rs
 +++ b/third_party/rust/chromium_crates_io/vendor/num-bigint-0.4.3/build.rs
-@@ -11,23 +11,25 @@ fn main() {
+@@ -10,6 +10,7 @@ fn main() {
+     if u64_digit {
          autocfg::emit("u64_digit");
      }
-     let ac = autocfg::new();
 +/*
+     let ac = autocfg::new();
      let std = if ac.probe_sysroot_crate("std") {
          "std"
-     } else {
+@@ -17,17 +18,18 @@ fn main() {
          "core"
      };
      if ac.probe_path(&format!("{}::convert::TryFrom", std)) {
@@ -40,7 +41,6 @@ index 3daed5e8d33..d77a9fbc777 100644
 +//          }
          }
      }
- 
--- 
-2.38.1
 
+--
+2.47.0

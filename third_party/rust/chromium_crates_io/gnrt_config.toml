@@ -297,6 +297,8 @@ if (target_cpu == "arm64" || target_cpu == "x64") {
 }
 if (epoch != "0.2") {
   build_script_outputs = [ "radix_bases.rs" ]
+} else {
+  rustflags = [ "--cfg", "has_i128" ]
 }
 ''' }
 
