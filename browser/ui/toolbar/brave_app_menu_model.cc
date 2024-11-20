@@ -318,8 +318,8 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
   }
 #endif
 
-  if (auto index =
-          more_tools_menu_model->GetIndexOfCommandId(IDC_TASK_MANAGER)) {
+  if (auto index = more_tools_menu_model->GetIndexOfCommandId(
+          IDC_TASK_MANAGER_APP_MENU)) {
     more_tools_menu_model->InsertItemWithStringIdAt(*index, IDC_DEV_TOOLS,
                                                     IDS_DEV_TOOLS);
   }
@@ -381,7 +381,8 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     // item. Otherwise, remove separator and item both.
     DCHECK_EQ(ui::MenuModel::TYPE_SEPARATOR,
               more_tools_model->GetTypeAt((*index) - 1));
-    if (!more_tools_model->GetIndexOfCommandId(IDC_TASK_MANAGER).has_value()) {
+    if (!more_tools_model->GetIndexOfCommandId(IDC_TASK_MANAGER_APP_MENU)
+             .has_value()) {
       more_tools_model->RemoveItemAt((*index) - 1);
     } else {
       more_tools_model->RemoveItemAt(*index);
