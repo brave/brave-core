@@ -1,0 +1,81 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.notice {
+  position: relative;
+  border-radius: var(--leo-radius-m);
+  background-color: var(--leo-color-container-highlight);
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  overflow: hidden;;
+
+  h4 {
+    margin: 0 0 4px 0;
+    font: var(--leo-font-heading-h4);
+  }
+  p {
+    margin: 0 0 4px 0;
+    font: var(--leo-font-default-regular);
+  }
+}
+
+.illustration {
+  flex: 0 0 auto;
+  width: 40%;
+  max-width: 260px;
+  background-color: var(--leo-color-orange-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3%;
+
+  svg {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.content {
+  flex-grow: 1;
+  padding: 16px;
+
+  h4 {
+    display: block;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    // width of close button, make sure no overlap
+    padding-right: 20px;
+  }
+
+  a {
+    font: var(--leo-font-default-link);
+    color: var(--leo-color-text-secondary);
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+@container (width < 362px) {
+  .notice {
+    flex-direction: column;
+  }
+  .illustration {
+    max-width: none;
+    width: auto;
+    padding: 3%;
+    height: 136px;
+    svg {
+      max-width: 260px;
+      height: 100%;
+      width: auto;
+    }
+  }
+}

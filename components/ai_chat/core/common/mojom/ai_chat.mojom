@@ -300,8 +300,17 @@ struct ActionGroup {
 };
 
 interface Service {
-  // User opts-in to the feature at a profile level
+  // Gets the current state of any agreements or notices that can or need to be
+  // shown to the user.
+  GetNoticesState() =>
+      (bool has_accepted_agreement,
+       bool is_storage_notice_dismissed,
+       bool can_show_premium_prompt);
+
+  // Profile-level acknowledgements
   MarkAgreementAccepted();
+  DismissStorageNotice();
+  DismissPremiumPrompt();
 
   // Get metadata for non-archived conversations
   GetVisibleConversations() => (array<Conversation> conversations);
@@ -311,11 +320,6 @@ interface Service {
 
   // Current status of subscription
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
-
-  // Premium prompt is only shown conditionally (e.g. the user hasn't dismissed
-  // it and it's been some time since the user started using the feature).
-  GetCanShowPremiumPrompt() => (bool can_show);
-  DismissPremiumPrompt();
 
   DeleteConversation(string id);
   RenameConversation(string id, string new_name);
