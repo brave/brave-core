@@ -185,7 +185,7 @@ class PlayerModelTests: CoreDataTestCase {
     XCTAssertEqual(playerModel.itemQueue.first, itemsIDs.first)
     XCTAssertEqual(playerModel.selectedItemID, itemsIDs.first)
 
-    await playerModel.playNextItem()
+    await playerModel.playNextItem(restartingPlayback: false)
 
     XCTAssertEqual(playerModel.selectedItemID, itemsIDs[1])
   }
@@ -211,7 +211,7 @@ class PlayerModelTests: CoreDataTestCase {
     XCTAssertEqual(playerModel.selectedItemID, items[9].id)
     XCTAssertFalse(playerModel.canPlayNextItem)
 
-    await playerModel.playNextItem()
+    await playerModel.playNextItem(restartingPlayback: false)
 
     // Playing the final item doesn't deselect the item, just pauses it.
     XCTAssertEqual(playerModel.selectedItemID, items[9].id)
@@ -232,12 +232,12 @@ class PlayerModelTests: CoreDataTestCase {
     XCTAssertEqual(playerModel.itemQueue.first, itemsIDs.first)
     XCTAssertEqual(playerModel.selectedItemID, itemsIDs.first)
 
-    await playerModel.playNextItem()
+    await playerModel.playNextItem(restartingPlayback: false)
 
     XCTAssertEqual(playerModel.selectedItemID, itemsIDs.first)
     XCTAssertTrue(playerModel.canPlayNextItem)
 
-    await playerModel.playNextItem()
+    await playerModel.playNextItem(restartingPlayback: false)
 
     XCTAssertEqual(playerModel.selectedItemID, itemsIDs.first)
   }
@@ -263,12 +263,12 @@ class PlayerModelTests: CoreDataTestCase {
     XCTAssertEqual(playerModel.selectedItemID, items[8].id)
     XCTAssertTrue(playerModel.canPlayNextItem)
 
-    await playerModel.playNextItem()
+    await playerModel.playNextItem(restartingPlayback: false)
 
     XCTAssertEqual(playerModel.selectedItemID, items[9].id)
     XCTAssertTrue(playerModel.canPlayNextItem)
 
-    await playerModel.playNextItem()
+    await playerModel.playNextItem(restartingPlayback: false)
 
     XCTAssertEqual(playerModel.selectedItemID, items.first?.id)
   }
@@ -290,7 +290,7 @@ class PlayerModelTests: CoreDataTestCase {
     await playerModel.seek(to: 1, accurately: true)
     XCTAssertNotEqual(playerModel.currentTime, 0)
 
-    await playerModel.playPreviousItem()
+    await playerModel.playPreviousItem(restartingPlayback: false)
     XCTAssertEqual(playerModel.selectedItemID, itemsIDs.first)
     XCTAssertEqual(playerModel.currentTime, 0)
   }
@@ -315,7 +315,7 @@ class PlayerModelTests: CoreDataTestCase {
 
     XCTAssertEqual(playerModel.selectedItemID, items[1].id)
 
-    await playerModel.playPreviousItem()
+    await playerModel.playPreviousItem(restartingPlayback: false)
     XCTAssertEqual(playerModel.selectedItemID, items.first?.id)
   }
 
@@ -386,6 +386,78 @@ class PlayerModelTests: CoreDataTestCase {
     XCTAssertEqual(playerModel.selectedItemID, items[1].id)
     // Initial item takes precedence
     XCTAssertEqual(playerModel.currentTime, initialItemOffset)
+  }
+
+  /// Tests that restarting playback when playing the next item correctly resets that item's
+  /// initial playback position to 0
+  @MainActor func testRestartingPlaybackOfNextItemWithLastPlayedOffset() async throws {
+    let folder = try await addFolder()
+    await addMockItems(count: 10, to: folder)
+
+    Preferences.Playlist.playbackLeftOff.value = true
+
+    let items = PlaylistItem.getItems(parentFolder: folder)
+    await withCheckedContinuation { continuation in
+      items[1].lastPlayedOffset = 3
+      PlaylistItem.updateItem(.init(item: items[1])) {
+        continuation.resume()
+      }
+    }
+
+    let playerModel = PlayerModel(
+      mediaStreamer: nil,
+      initialPlaybackInfo: .init(
+        itemUUID: try XCTUnwrap(items[0].uuid),
+        timestamp: 0
+      )
+    )
+    playerModel.selectedFolderID = folder.id
+    await playerModel.prepareItemQueue()
+
+    XCTAssertEqual(playerModel.selectedItemID, items[0].id)
+
+    await playerModel.playNextItem(restartingPlayback: true)
+
+    XCTAssertEqual(playerModel.selectedItemID, items[1].id)
+    // Restarting playback when playing next item should set it to 0 despite `lastPlayedOffset`
+    // being set to 3
+    XCTAssertEqual(playerModel.currentTime, 0, accuracy: 0.01)
+  }
+
+  /// Tests that restarting playback when playing the previous item correctly resets that item's
+  /// initial playback position to 0
+  @MainActor func testRestartingPlaybackOfPreviousItemWithLastPlayedOffset() async throws {
+    let folder = try await addFolder()
+    await addMockItems(count: 10, to: folder)
+
+    Preferences.Playlist.playbackLeftOff.value = true
+
+    let items = PlaylistItem.getItems(parentFolder: folder)
+    await withCheckedContinuation { continuation in
+      items[0].lastPlayedOffset = 3
+      PlaylistItem.updateItem(.init(item: items[0])) {
+        continuation.resume()
+      }
+    }
+
+    let playerModel = PlayerModel(
+      mediaStreamer: nil,
+      initialPlaybackInfo: .init(
+        itemUUID: try XCTUnwrap(items[1].uuid),
+        timestamp: 0
+      )
+    )
+    playerModel.selectedFolderID = folder.id
+    await playerModel.prepareItemQueue()
+
+    XCTAssertEqual(playerModel.selectedItemID, items[1].id)
+
+    await playerModel.playPreviousItem(restartingPlayback: true)
+
+    XCTAssertEqual(playerModel.selectedItemID, items[0].id)
+    // Restarting playback when playing previous item should set it to 0 despite `lastPlayedOffset`
+    // being set to 3
+    XCTAssertEqual(playerModel.currentTime, 0, accuracy: 0.01)
   }
 
   // MARK: - Playback
@@ -498,5 +570,51 @@ class PlayerModelTests: CoreDataTestCase {
 
     XCTAssertTrue(playerModel.isPlaying)
     XCTAssertEqual(playerModel.selectedItemID, playerModel.itemQueue.first)
+  }
+
+  /// Tests that when playback ends on one item the next item's initial start position is from the
+  /// beginning even when the user pref to remember last play time is enabled
+  @MainActor func testResetPlaybackOnNextItemPlaying() async throws {
+    let folder = try await addFolder()
+    await addMockItems(count: 10, to: folder)
+
+    Preferences.Playlist.playbackLeftOff.value = true
+
+    let items = PlaylistItem.getItems(parentFolder: folder)
+    await withCheckedContinuation { continuation in
+      items[1].lastPlayedOffset = 3
+      PlaylistItem.updateItem(.init(item: items[1])) {
+        continuation.resume()
+      }
+    }
+
+    let playerModel = PlayerModel(mediaStreamer: nil, initialPlaybackInfo: nil)
+    playerModel.selectedFolderID = folder.id
+    await playerModel.prepareItemQueue()
+    XCTAssertEqual(playerModel.selectedItemID, playerModel.itemQueue.first)
+
+    defer {
+      playerModel.stop()
+    }
+
+    // Required for the player to actually play immediately in unit tests
+    playerModel.playerLayer.player?.automaticallyWaitsToMinimizeStalling = false
+
+    XCTAssertFalse(playerModel.isPlaying)
+    playerModel.play()
+    XCTAssertTrue(playerModel.isPlaying)
+
+    let didPlayToEndTime = expectation(
+      forNotification: AVPlayerItem.didPlayToEndTimeNotification,
+      object: nil
+    )
+    await playerModel.seek(to: try XCTUnwrap(playerModel.duration.seconds) - 0.1, accurately: true)
+    await fulfillment(of: [didPlayToEndTime], timeout: 1)
+
+    playerModel.pause()
+    try await Task.sleep(seconds: 0.1)
+
+    XCTAssertEqual(playerModel.selectedItemID, items[1].id)
+    XCTAssertEqual(playerModel.currentTime, 0, accuracy: 0.1)
   }
 }
