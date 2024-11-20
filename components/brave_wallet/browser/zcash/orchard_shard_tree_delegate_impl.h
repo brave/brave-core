@@ -10,24 +10,25 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_orchard_storage.h"
-#include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "brave/components/brave_wallet/common/orchard_shard_tree_delegate.h"
 
 namespace brave_wallet {
 
 class OrchardShardTreeDelegateImpl : public OrchardShardTreeDelegate {
  public:
-  OrchardShardTreeDelegateImpl(mojom::AccountIdPtr account_id,
+  OrchardShardTreeDelegateImpl(const mojom::AccountIdPtr& account_id,
                                scoped_refptr<ZCashOrchardStorage> storage);
   ~OrchardShardTreeDelegateImpl() override;
 
-  base::expected<std::optional<OrchardShardTreeCap>, Error> GetCap() const override;
-  base::expected<bool, Error> PutCap(OrchardShardTreeCap cap) override;
+  base::expected<std::optional<OrchardShardTreeCap>, Error> GetCap()
+      const override;
+  base::expected<bool, Error> PutCap(const OrchardShardTreeCap& cap) override;
   base::expected<bool, Error> Truncate(uint32_t block_height) override;
   base::expected<std::optional<uint32_t>, Error> GetLatestShardIndex()
       const override;
-  base::expected<bool, Error> PutShard(OrchardShard shard) override;
+  base::expected<bool, Error> PutShard(const OrchardShard& shard) override;
   base::expected<std::optional<OrchardShard>, Error> GetShard(
-      OrchardShardAddress address) const override;
+      const OrchardShardAddress& address) const override;
   base::expected<std::optional<OrchardShard>, Error> LastShard(
       uint8_t shard_height) const override;
   base::expected<size_t, Error> CheckpointCount() const override;
@@ -43,16 +44,15 @@ class OrchardShardTreeDelegateImpl : public OrchardShardTreeDelegate {
       size_t limit) const override;
   base::expected<bool, Error> AddCheckpoint(
       uint32_t id,
-      OrchardCheckpoint checkpoint) override;
+      const OrchardCheckpoint& checkpoint) override;
   base::expected<bool, Error> TruncateCheckpoints(
       uint32_t checkpoint_id) override;
   base::expected<bool, Error> RemoveCheckpoint(uint32_t checkpoint_id) override;
-  base::expected<bool, Error> RemoveCheckpointAt(uint32_t depth) override;
   base::expected<std::vector<OrchardShardAddress>, Error> GetShardRoots(
       uint8_t shard_level) const override;
   base::expected<bool, Error> UpdateCheckpoint(
       uint32_t id,
-      OrchardCheckpoint checkpoint) override;
+      const OrchardCheckpoint& checkpoint) override;
 
  private:
   mojom::AccountIdPtr account_id_;

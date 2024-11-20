@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde_impl.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
 
 #include <memory>
 #include <utility>
@@ -15,9 +15,9 @@ namespace brave_wallet::orchard {
 
 class TestingBuilderImpl : public OrchardDecodedBlocksBundle::TestingBuilder {
  public:
-  TestingBuilderImpl() {}
+  TestingBuilderImpl() = default;
 
-  ~TestingBuilderImpl() override {}
+  ~TestingBuilderImpl() override = default;
 
   void SetPriorTreeState(
       const ::brave_wallet::OrchardTreeState& tree_state) override {
@@ -68,7 +68,7 @@ OrchardDecodedBlocksBundleImpl::GetDiscoveredNotes() {
   std::vector<OrchardNote> result;
 
   for (size_t i = 0; i < batch_decode_result_->size(); i++) {
-    result.emplace_back(OrchardNote({
+    result.push_back(OrchardNote{
         batch_decode_result_->note_addr(i),
         batch_decode_result_->note_block_height(i),
         batch_decode_result_->note_nullifier(i),
@@ -76,7 +76,7 @@ OrchardDecodedBlocksBundleImpl::GetDiscoveredNotes() {
         batch_decode_result_->note_commitment_tree_position(i),
         batch_decode_result_->note_rho(i),
         batch_decode_result_->note_rseed(i),
-    }));
+    });
   }
 
   return result;

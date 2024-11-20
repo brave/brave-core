@@ -16,8 +16,6 @@ namespace brave_wallet::orchard {
 
 class OrchardShardTreeImpl : public OrchardShardTree {
  public:
-  explicit OrchardShardTreeImpl(
-      rust::Box<OrchardShardTreeBundle> orcard_shard_tree);
   ~OrchardShardTreeImpl() override;
 
   bool TruncateToCheckpoint(uint32_t checkpoint_id) override;
@@ -30,7 +28,10 @@ class OrchardShardTreeImpl : public OrchardShardTree {
       uint32_t checkpoint) override;
 
  private:
-  ::rust::Box<OrchardShardTreeBundle> orcard_shard_tree_;
+  friend class OrchardShardTree;
+  explicit OrchardShardTreeImpl(
+      rust::Box<OrchardShardTreeBundle> orcard_shard_tree);
+  ::rust::Box<OrchardShardTreeBundle> orhcard_shard_tree_;
 };
 
 }  // namespace brave_wallet::orchard

@@ -25,7 +25,7 @@ class ZCashOrchardStorage;
 class ZCashRpc;
 class ZCashWalletService;
 
-// ZCashScanService downloads and scans blockchain blocks to find
+// ZCashShieldSyncService downloads and scans blockchain blocks to find
 // spendable notes related to the account.
 // Provided full view key allows to decode orchard compact actions
 // related to the account.

@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
 
 namespace brave_wallet::orchard {
 

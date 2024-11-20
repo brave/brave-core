@@ -47,8 +47,8 @@ source_set("orchard_impl") {
     "extended_spending_key_impl.h",
     "orchard_block_decoder_impl.cc",
     "orchard_block_decoder_impl.h",
-    "orchard_decoded_blocks_bunde_impl.cc",
-    "orchard_decoded_blocks_bunde_impl.h",
+    "orchard_decoded_blocks_bundle_impl.cc",
+    "orchard_decoded_blocks_bundle_impl.h",
     "orchard_shard_tree_impl.cc",
     "orchard_shard_tree_impl.h",
 

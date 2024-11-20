@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_shard_tree_manager.h"
 
-#include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
+#include "brave/components/brave_wallet/common/orchard_shard_tree_delegate.h"
 
 namespace brave_wallet {
 
@@ -36,26 +37,29 @@ OrchardShardTreeManager::OrchardShardTreeManager(
   orchard_shard_tree_ = std::move(shard_tree);
 }
 
-OrchardShardTreeManager::~OrchardShardTreeManager() {}
+OrchardShardTreeManager::~OrchardShardTreeManager() = default;
 
 bool OrchardShardTreeManager::InsertCommitments(
-    OrchardBlockScanner::Result result) {
+    OrchardBlockScanner::Result&& result) {
   return orchard_shard_tree_->ApplyScanResults(
       std::move(result.scanned_blocks));
 }
 
 base::expected<std::vector<OrchardInput>, std::string>
-OrchardShardTreeManager::CalculateWitness(std::vector<OrchardInput> notes,
-                                          uint32_t checkpoint_position) {
+OrchardShardTreeManager::CalculateWitness(
+    const std::vector<OrchardInput>& notes,
+    uint32_t checkpoint_position) {
+  std::vector<OrchardInput> result;
   for (auto& input : notes) {
     auto witness = orchard_shard_tree_->CalculateWitness(
         input.note.orchard_commitment_tree_position, checkpoint_position);
     if (!witness.has_value()) {
       return base::unexpected(witness.error());
     }
-    input.witness = witness.value();
+    result.push_back(input);
+    result.back().witness = witness.value();
   }
-  return notes;
+  return base::ok(std::move(result));
 }
 
 bool OrchardShardTreeManager::Truncate(uint32_t checkpoint) {

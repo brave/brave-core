@@ -22,7 +22,7 @@ std::optional<size_t> OrchardBundleManager::random_seed_for_testing_ =
 // static
 std::unique_ptr<OrchardBundleManager> OrchardBundleManager::Create(
     base::span<const uint8_t> tree_state,
-    const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs) {
+    const std::vector<OrchardOutput>& orchard_outputs) {
   if (orchard_outputs.empty()) {
     return nullptr;
   }

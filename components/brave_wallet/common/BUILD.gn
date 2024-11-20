@@ -69,6 +69,12 @@ static_library("common") {
     "zcash_utils.cc",
     "zcash_utils.h",
   ]
+  if (enable_orchard) {
+    sources += [
+      "orchard_shard_tree_delegate.cc",
+      "orchard_shard_tree_delegate.h",
+    ]
+  }
   deps = [
     ":buildflags",
     ":common_constants",

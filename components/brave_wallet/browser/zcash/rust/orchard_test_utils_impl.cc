@@ -12,9 +12,9 @@
 
 namespace brave_wallet::orchard {
 
-OrchardTestUtilsImpl::OrchardTestUtilsImpl() {}
+OrchardTestUtilsImpl::OrchardTestUtilsImpl() = default;
 
-OrchardTestUtilsImpl::~OrchardTestUtilsImpl() {}
+OrchardTestUtilsImpl::~OrchardTestUtilsImpl() = default;
 
 OrchardCommitmentValue OrchardTestUtilsImpl::CreateMockCommitmentValue(
     uint32_t position,
@@ -24,7 +24,7 @@ OrchardCommitmentValue OrchardTestUtilsImpl::CreateMockCommitmentValue(
 
 // static
 std::unique_ptr<OrchardTestUtils> OrchardTestUtils::Create() {
-  return base::WrapUnique(new OrchardTestUtilsImpl());
+  return std::make_unique<OrchardTestUtilsImpl>();
 }
 
 }  // namespace brave_wallet::orchard

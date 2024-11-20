@@ -10,8 +10,9 @@
 #include <vector>
 
 #include "base/memory/ptr_util.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde_impl.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet::orchard {
@@ -24,6 +25,7 @@ OrchardBlockDecoderImpl::~OrchardBlockDecoderImpl() = default;
 std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
     const ::brave_wallet::OrchardTreeState& tree_state,
     const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks) {
+  base::AssertLongCPUWorkAllowed();
   ::rust::Vec<orchard::OrchardCompactAction> orchard_actions;
   for (const auto& block : blocks) {
     bool block_has_orchard_action = false;
@@ -58,7 +60,7 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
     }
   }
 
-  ::brave_wallet::orchard::ShardTreeState prior_tree_state;
+  ShardTreeState prior_tree_state;
   prior_tree_state.block_height = tree_state.block_height;
   prior_tree_state.tree_size = tree_state.tree_size;
 
@@ -73,9 +75,8 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
   if (decode_result->is_ok()) {
     return base::WrapUnique<OrchardDecodedBlocksBundle>(
         new OrchardDecodedBlocksBundleImpl(decode_result->unwrap()));
-  } else {
-    return nullptr;
   }
+  return nullptr;
 }
 
 // static

@@ -8,19 +8,20 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde.h"
-#include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
+#include "brave/components/brave_wallet/common/orchard_shard_tree_delegate.h"
 
 namespace brave_wallet::orchard {
 
 class OrchardShardTree {
  public:
-  virtual ~OrchardShardTree() {}
+  virtual ~OrchardShardTree() = default;
 
+  // Truncates commitment tree to the provided checkpoint position;
   virtual bool TruncateToCheckpoint(uint32_t checkpoint_id) = 0;
 
+  // Applies previously decoded blocks to the commitment tree.
   virtual bool ApplyScanResults(
       std::unique_ptr<OrchardDecodedBlocksBundle> commitments) = 0;
 

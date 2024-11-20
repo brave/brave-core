@@ -13,27 +13,40 @@
 
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
-#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 
+class OrchardShardTreeDelegate;
+namespace orchard {
+class OrchardShardTree;
+}  // namespace orchard
+
+// Presents Orchard commitment tree.
+// Provides methods for inserting leafs to the tree and
+// calculating witness information for specified leaf positions.
 class OrchardShardTreeManager {
  public:
-  OrchardShardTreeManager(
+  explicit OrchardShardTreeManager(
       std::unique_ptr<::brave_wallet::orchard::OrchardShardTree> shard_tree);
   ~OrchardShardTreeManager();
-  bool InsertCommitments(OrchardBlockScanner::Result commitments);
+  // Inserts leafs extracted from the provided scan result.
+  bool InsertCommitments(OrchardBlockScanner::Result&& commitments);
+  // Calculates witness(merkle path to the tree root) for the provided
+  // set of notes.
+  // Checkpoint is also provided as an achor(selected right-most border of the
+  // tree).
   base::expected<std::vector<OrchardInput>, std::string> CalculateWitness(
-      std::vector<OrchardInput> notes,
+      const std::vector<OrchardInput>& notes,
       uint32_t checkpoint_position);
+  // Truncates tree including specified checkpoint.
+  // Needed for chain reorg cases.
   bool Truncate(uint32_t checkpoint);
-  base::expected<bool, std::string> VerifyCheckpoint();
 
+  // Creates shard tree size of 32.
   static std::unique_ptr<OrchardShardTreeManager> Create(
       std::unique_ptr<OrchardShardTreeDelegate> delegate);
 
-  // Creates shard tree size of 8 for testing
+  // Creates shard tree size of 8 for testing.
   static std::unique_ptr<OrchardShardTreeManager> CreateForTesting(
       std::unique_ptr<OrchardShardTreeDelegate> delegate);
 

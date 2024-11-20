@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
 
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde.h"
+#include "base/threading/thread_restrictions.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
 
 namespace brave_wallet {
 
@@ -33,8 +34,10 @@ OrchardBlockScanner::~OrchardBlockScanner() = default;
 
 base::expected<OrchardBlockScanner::Result, OrchardBlockScanner::ErrorCode>
 OrchardBlockScanner::ScanBlocks(
-    OrchardTreeState tree_state,
-    std::vector<zcash::mojom::CompactBlockPtr> blocks) {
+    const OrchardTreeState& tree_state,
+    const std::vector<zcash::mojom::CompactBlockPtr>& blocks) {
+  base::AssertLongCPUWorkAllowed();
+
   std::unique_ptr<orchard::OrchardDecodedBlocksBundle> result =
       decoder_->ScanBlocks(tree_state, blocks);
   if (!result) {

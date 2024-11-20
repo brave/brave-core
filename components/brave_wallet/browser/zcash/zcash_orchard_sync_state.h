@@ -17,50 +17,57 @@
 
 namespace brave_wallet {
 
+// Represents the persisted synchronization state for the Zcash blockchain.
+// The synchronization state includes account-specific information regarding
+// spendable and spent notes, sync progress, and the state of the Orchard
+// commitment tree, which is used to sign notes for spending.
 class ZCashOrchardSyncState {
  public:
   explicit ZCashOrchardSyncState(base::FilePath path_to_database);
   ~ZCashOrchardSyncState();
 
   base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
-  RegisterAccount(mojom::AccountIdPtr account_id,
+  RegisterAccount(const mojom::AccountIdPtr& account_id,
                   uint64_t account_birthday_block);
 
   base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
-  GetAccountMeta(mojom::AccountIdPtr account_id);
+  GetAccountMeta(const mojom::AccountIdPtr& account_id);
 
   std::optional<ZCashOrchardStorage::Error> HandleChainReorg(
-      mojom::AccountIdPtr account_id,
+      const mojom::AccountIdPtr& account_id,
       uint32_t reorg_block_id,
       const std::string& reorg_block_hash);
 
   base::expected<std::vector<OrchardNote>, ZCashOrchardStorage::Error>
-  GetSpendableNotes(mojom::AccountIdPtr account_id);
+  GetSpendableNotes(const mojom::AccountIdPtr& account_id);
 
   base::expected<std::vector<OrchardNoteSpend>, ZCashOrchardStorage::Error>
-  GetNullifiers(mojom::AccountIdPtr account_id);
+  GetNullifiers(const mojom::AccountIdPtr& account_id);
 
   std::optional<ZCashOrchardStorage::Error> UpdateNotes(
-      mojom::AccountIdPtr account_id,
+      const mojom::AccountIdPtr& account_id,
       OrchardBlockScanner::Result block_scanner_results,
       const uint32_t latest_scanned_block,
       const std::string& latest_scanned_block_hash);
 
+  // Clears sync data related to the account except it's birthday.
   base::expected<bool, ZCashOrchardStorage::Error> ResetAccountSyncState(
-      mojom::AccountIdPtr account_id);
+      const mojom::AccountIdPtr& account_id);
+
+  // Drops underlying database.
   void ResetDatabase();
 
   base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
-  GetLatestShardIndex(mojom::AccountIdPtr account_id);
+  GetLatestShardIndex(const mojom::AccountIdPtr& account_id);
 
   base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
-  GetMaxCheckpointedHeight(mojom::AccountIdPtr account_id,
+  GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
                            uint32_t chain_tip_height,
                            size_t min_confirmations);
 
   base::expected<std::vector<OrchardInput>, ZCashOrchardStorage::Error>
-  CalculateWitnessForCheckpoint(mojom::AccountIdPtr account_id,
-                                std::vector<OrchardInput> notes,
+  CalculateWitnessForCheckpoint(const mojom::AccountIdPtr& account_id,
+                                const std::vector<OrchardInput>& notes,
                                 uint32_t checkpoint_position);
 
  private:

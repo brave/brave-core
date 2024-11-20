@@ -7,116 +7,110 @@
 
 namespace brave_wallet {
 
-namespace {
-
-OrchardShardTreeDelegate::Error From(ZCashOrchardStorage::Error) {
-  return OrchardShardTreeDelegate::Error::kStorageError;
-}
-
-}  // namespace
-
 OrchardShardTreeDelegateImpl::OrchardShardTreeDelegateImpl(
-    mojom::AccountIdPtr account_id,
+    const mojom::AccountIdPtr& account_id,
     scoped_refptr<ZCashOrchardStorage> storage)
-    : account_id_(std::move(account_id)), storage_(storage) {}
+    : account_id_(account_id.Clone()), storage_(storage) {}
 
 OrchardShardTreeDelegateImpl::~OrchardShardTreeDelegateImpl() {}
 
-base::expected<std::optional<OrchardShardTreeCap>, OrchardShardTreeDelegate::Error>
+base::expected<std::optional<OrchardShardTreeCap>,
+               OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::GetCap() const {
-  auto result = storage_->GetCap(account_id_.Clone());
+  auto result = storage_->GetCap(account_id_);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(*result);
 }
 
 base::expected<bool, OrchardShardTreeDelegate::Error>
-OrchardShardTreeDelegateImpl::PutCap(OrchardShardTreeCap cap) {
-  auto result = storage_->PutCap(account_id_.Clone(), cap);
+OrchardShardTreeDelegateImpl::PutCap(const OrchardShardTreeCap& cap) {
+  auto result = storage_->PutCap(account_id_, cap);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return *result;
 }
 
 base::expected<bool, OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::Truncate(uint32_t block_height) {
-  auto result = storage_->TruncateShards(account_id_.Clone(), block_height);
+  auto result = storage_->TruncateShards(account_id_, block_height);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return *result;
 }
 
 base::expected<std::optional<uint32_t>, OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::GetLatestShardIndex() const {
-  auto result = storage_->GetLatestShardIndex(account_id_.Clone());
+  auto result = storage_->GetLatestShardIndex(account_id_);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return *result;
 }
 
 base::expected<bool, OrchardShardTreeDelegate::Error>
-OrchardShardTreeDelegateImpl::PutShard(OrchardShard shard) {
-  auto result = storage_->PutShard(account_id_.Clone(), shard);
+OrchardShardTreeDelegateImpl::PutShard(const OrchardShard& shard) {
+  auto result = storage_->PutShard(account_id_, shard);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return *result;
 }
 
 base::expected<std::optional<OrchardShard>, OrchardShardTreeDelegate::Error>
-OrchardShardTreeDelegateImpl::GetShard(OrchardShardAddress address) const {
-  auto result = storage_->GetShard(account_id_.Clone(), address);
+OrchardShardTreeDelegateImpl::GetShard(
+    const OrchardShardAddress& address) const {
+  auto result = storage_->GetShard(account_id_, address);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(*result);
 }
 
 base::expected<std::optional<OrchardShard>, OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::LastShard(uint8_t shard_height) const {
-  auto result = storage_->LastShard(account_id_.Clone(), shard_height);
+  auto result = storage_->LastShard(account_id_, shard_height);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(*result);
 }
 
 base::expected<size_t, OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::CheckpointCount() const {
-  auto result = storage_->CheckpointCount(account_id_.Clone());
+  auto result = storage_->CheckpointCount(account_id_);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return *result;
 }
 
 base::expected<std::optional<uint32_t>, OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::MinCheckpointId() const {
-  auto result = storage_->MinCheckpointId(account_id_.Clone());
+  auto result = storage_->MinCheckpointId(account_id_);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(result.value());
 }
 
 base::expected<std::optional<uint32_t>, OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::MaxCheckpointId() const {
-  auto result = storage_->MaxCheckpointId(account_id_.Clone());
+  auto result = storage_->MaxCheckpointId(account_id_);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(result.value());
 }
 
 base::expected<std::optional<uint32_t>, OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::GetCheckpointAtDepth(uint32_t depth) const {
-  auto result = storage_->GetCheckpointAtDepth(account_id_.Clone(), depth);
+  auto result = storage_->GetCheckpointAtDepth(account_id_, depth);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(result.value());
 }
@@ -124,9 +118,9 @@ OrchardShardTreeDelegateImpl::GetCheckpointAtDepth(uint32_t depth) const {
 base::expected<std::optional<OrchardCheckpointBundle>,
                OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::GetCheckpoint(uint32_t checkpoint_id) const {
-  auto result = storage_->GetCheckpoint(account_id_.Clone(), checkpoint_id);
+  auto result = storage_->GetCheckpoint(account_id_, checkpoint_id);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(result.value());
 }
@@ -134,60 +128,56 @@ OrchardShardTreeDelegateImpl::GetCheckpoint(uint32_t checkpoint_id) const {
 base::expected<std::vector<OrchardCheckpointBundle>,
                OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::GetCheckpoints(size_t limit) const {
-  auto result = storage_->GetCheckpoints(account_id_.Clone(), limit);
+  auto result = storage_->GetCheckpoints(account_id_, limit);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(result.value());
 }
 
 base::expected<bool, OrchardShardTreeDelegate::Error>
-OrchardShardTreeDelegateImpl::AddCheckpoint(uint32_t id,
-                                            OrchardCheckpoint checkpoint) {
-  auto result = storage_->AddCheckpoint(account_id_.Clone(), id, checkpoint);
+OrchardShardTreeDelegateImpl::AddCheckpoint(
+    uint32_t id,
+    const OrchardCheckpoint& checkpoint) {
+  auto result = storage_->AddCheckpoint(account_id_, id, checkpoint);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(result.value());
 }
 
 base::expected<bool, OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::TruncateCheckpoints(uint32_t checkpoint_id) {
-  auto result =
-      storage_->TruncateCheckpoints(account_id_.Clone(), checkpoint_id);
+  auto result = storage_->TruncateCheckpoints(account_id_, checkpoint_id);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(result.value());
 }
 
 base::expected<bool, OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::RemoveCheckpoint(uint32_t checkpoint_id) {
-  auto result = storage_->RemoveCheckpoint(account_id_.Clone(), checkpoint_id);
+  auto result = storage_->RemoveCheckpoint(account_id_, checkpoint_id);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(result.value());
-}
-
-base::expected<bool, OrchardShardTreeDelegateImpl::Error>
-OrchardShardTreeDelegateImpl::RemoveCheckpointAt(uint32_t depth) {
-  return false;
 }
 
 base::expected<std::vector<OrchardShardAddress>,
                OrchardShardTreeDelegate::Error>
 OrchardShardTreeDelegateImpl::GetShardRoots(uint8_t shard_level) const {
-  auto result = storage_->GetShardRoots(account_id_.Clone(), shard_level);
+  auto result = storage_->GetShardRoots(account_id_, shard_level);
   if (!result.has_value()) {
-    return base::unexpected(From(result.error()));
+    return base::unexpected(OrchardShardTreeDelegate::Error::kStorageError);
   }
   return std::move(result.value());
 }
 
 base::expected<bool, OrchardShardTreeDelegate::Error>
-OrchardShardTreeDelegateImpl::UpdateCheckpoint(uint32_t id,
-                                               OrchardCheckpoint checkpoint) {
+OrchardShardTreeDelegateImpl::UpdateCheckpoint(
+    uint32_t id,
+    const OrchardCheckpoint& checkpoint) {
   auto get_checkpoint_result = GetCheckpoint(id);
   if (!get_checkpoint_result.has_value()) {
     return base::unexpected(get_checkpoint_result.error());

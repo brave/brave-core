@@ -100,10 +100,6 @@ macro_rules! impl_result {
                 }
             }
 
-            // Unfortunately cxx doesn't support passing $r by value here so
-            // we have to clone the inner value instead of passing ownership
-            // This is not really a big deal because eventually we want to
-            // replace this with mojo which would serialize this anyway
             fn unwrap(self: &mut $r) -> Box<$t> {
                 Box::new((self.0.as_mut().unwrap()).take().unwrap())
             }
@@ -459,20 +455,17 @@ mod ffi {
             tree: &mut ShardTreeShard) -> ShardStoreStatusCode;
         fn PutShard(
             &self,
-
             tree: &ShardTreeShard) -> ShardStoreStatusCode;
         fn GetShardRoots(
             &self, into: &mut Vec<ShardTreeAddress>, shard_level: u8) -> ShardStoreStatusCode;
         fn Truncate(
             &self,
-
             address: &ShardTreeAddress) -> ShardStoreStatusCode;
         fn GetCap(
             &self,
             into: &mut ShardTreeCap) -> ShardStoreStatusCode;
         fn PutCap(
             &self,
-
             tree: &ShardTreeCap) -> ShardStoreStatusCode;
         fn MinCheckpointId(
             &self, into: &mut u32) -> ShardStoreStatusCode;
@@ -480,12 +473,10 @@ mod ffi {
             &self, into: &mut u32) -> ShardStoreStatusCode;
         fn AddCheckpoint(
             &self,
-
             checkpoint_id: u32,
             checkpoint: &ShardTreeCheckpoint) -> ShardStoreStatusCode;
         fn UpdateCheckpoint(
             &self,
-
             checkpoint_id: u32,
             checkpoint: &ShardTreeCheckpoint) -> ShardStoreStatusCode;
         fn CheckpointCount(
@@ -502,11 +493,9 @@ mod ffi {
             into: &mut ShardTreeCheckpoint) -> ShardStoreStatusCode;
         fn RemoveCheckpoint(
             &self,
-
             checkpoint_id: u32) -> ShardStoreStatusCode;
         fn TruncateCheckpoint(
             &self,
-
             checkpoint_id: u32) -> ShardStoreStatusCode;
         fn GetCheckpoints(
             &self,

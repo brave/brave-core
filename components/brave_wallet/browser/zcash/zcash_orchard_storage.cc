@@ -13,6 +13,7 @@
 
 #include "base/containers/to_vector.h"
 #include "base/files/file_util.h"
+#include "base/threading/scoped_blocking_call.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -76,8 +77,8 @@ ZCashOrchardStorage::AccountMeta::AccountMeta(const AccountMeta&) = default;
 ZCashOrchardStorage::AccountMeta& ZCashOrchardStorage::AccountMeta::operator=(
     const AccountMeta&) = default;
 
-ZCashOrchardStorage::ZCashOrchardStorage(base::FilePath path_to_database)
-    : db_file_path_(std::move(path_to_database)) {
+ZCashOrchardStorage::ZCashOrchardStorage(const base::FilePath& path_to_database)
+    : db_file_path_(path_to_database) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
@@ -137,6 +138,9 @@ bool ZCashOrchardStorage::CreateOrUpdateDatabase() {
 }
 
 bool ZCashOrchardStorage::CreateSchema() {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
+
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   sql::Transaction transaction(&database_);
@@ -206,6 +210,8 @@ bool ZCashOrchardStorage::UpdateSchema() {
 base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::RegisterAccount(const mojom::AccountIdPtr& account_id,
                                      uint32_t account_birthday_block) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -243,6 +249,8 @@ ZCashOrchardStorage::RegisterAccount(const mojom::AccountIdPtr& account_id,
 
 base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -291,6 +299,8 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::HandleChainReorg(
     const mojom::AccountIdPtr& account_id,
     uint32_t reorg_block_id,
     const std::string& reorg_block_hash) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
@@ -346,6 +356,8 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::HandleChainReorg(
 base::expected<bool, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::ResetAccountSyncState(
     const mojom::AccountIdPtr& account_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -407,6 +419,8 @@ ZCashOrchardStorage::ResetAccountSyncState(
 
 base::expected<std::vector<OrchardNoteSpend>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetNullifiers(const mojom::AccountIdPtr& account_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -447,6 +461,8 @@ ZCashOrchardStorage::GetNullifiers(const mojom::AccountIdPtr& account_id) {
 
 base::expected<std::vector<OrchardNote>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -508,6 +524,8 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::UpdateNotes(
     const std::vector<OrchardNoteSpend>& found_nullifiers,
     const uint32_t latest_scanned_block,
     const std::string& latest_scanned_block_hash) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
@@ -589,6 +607,8 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardStorage::UpdateNotes(
 base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetLatestShardIndex(
     const mojom::AccountIdPtr& account_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -620,6 +640,8 @@ ZCashOrchardStorage::GetLatestShardIndex(
 
 base::expected<std::optional<OrchardShardTreeCap>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetCap(const mojom::AccountIdPtr& account_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -649,7 +671,9 @@ ZCashOrchardStorage::GetCap(const mojom::AccountIdPtr& account_id) {
 
 base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutCap(
     const mojom::AccountIdPtr& account_id,
-    OrchardShardTreeCap cap) {
+    const OrchardShardTreeCap& cap) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -701,7 +725,9 @@ base::expected<bool, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::UpdateSubtreeRoots(
     const mojom::AccountIdPtr& account_id,
     uint32_t start_index,
-    std::vector<zcash::mojom::SubtreeRootPtr> roots) {
+    const std::vector<zcash::mojom::SubtreeRootPtr>& roots) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -773,6 +799,8 @@ ZCashOrchardStorage::UpdateSubtreeRoots(
 base::expected<bool, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::TruncateShards(const mojom::AccountIdPtr& account_id,
                                     uint32_t shard_index) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -808,7 +836,9 @@ ZCashOrchardStorage::TruncateShards(const mojom::AccountIdPtr& account_id,
 
 base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutShard(
     const mojom::AccountIdPtr& account_id,
-    OrchardShard shard) {
+    const OrchardShard& shard) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -881,7 +911,9 @@ base::expected<bool, ZCashOrchardStorage::Error> ZCashOrchardStorage::PutShard(
 
 base::expected<std::optional<OrchardShard>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetShard(const mojom::AccountIdPtr& account_id,
-                              OrchardShardAddress address) {
+                              const OrchardShardAddress& address) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -919,6 +951,10 @@ ZCashOrchardStorage::GetShard(const mojom::AccountIdPtr& account_id,
 base::expected<std::optional<OrchardShard>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::LastShard(const mojom::AccountIdPtr& account_id,
                                uint8_t shard_height) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   auto shard_index = GetLatestShardIndex(account_id);
   if (!shard_index.has_value()) {
     return base::unexpected(shard_index.error());
@@ -935,6 +971,8 @@ ZCashOrchardStorage::LastShard(const mojom::AccountIdPtr& account_id,
 base::expected<std::vector<OrchardShardAddress>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetShardRoots(const mojom::AccountIdPtr& account_id,
                                    uint8_t shard_level) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -968,7 +1006,9 @@ ZCashOrchardStorage::GetShardRoots(const mojom::AccountIdPtr& account_id,
 base::expected<bool, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
                                    uint32_t checkpoint_id,
-                                   OrchardCheckpoint checkpoint) {
+                                   const OrchardCheckpoint& checkpoint) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1063,6 +1103,8 @@ ZCashOrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
 
 base::expected<size_t, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::CheckpointCount(const mojom::AccountIdPtr& account_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1091,6 +1133,8 @@ ZCashOrchardStorage::CheckpointCount(const mojom::AccountIdPtr& account_id) {
 
 base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::MinCheckpointId(const mojom::AccountIdPtr& account_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1122,6 +1166,8 @@ ZCashOrchardStorage::MinCheckpointId(const mojom::AccountIdPtr& account_id) {
 
 base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::MaxCheckpointId(const mojom::AccountIdPtr& account_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1153,6 +1199,8 @@ ZCashOrchardStorage::MaxCheckpointId(const mojom::AccountIdPtr& account_id) {
 base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetCheckpointAtDepth(const mojom::AccountIdPtr& account_id,
                                           uint32_t depth) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1192,6 +1240,8 @@ ZCashOrchardStorage::GetCheckpointAtDepth(const mojom::AccountIdPtr& account_id,
 base::expected<std::optional<std::vector<uint32_t>>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetMarksRemoved(const mojom::AccountIdPtr& account_id,
                                      uint32_t checkpoint_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1224,6 +1274,8 @@ base::expected<std::optional<OrchardCheckpointBundle>,
                ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetCheckpoint(const mojom::AccountIdPtr& account_id,
                                    uint32_t checkpoint_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1279,6 +1331,8 @@ ZCashOrchardStorage::GetCheckpoint(const mojom::AccountIdPtr& account_id,
 base::expected<std::vector<OrchardCheckpointBundle>, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::GetCheckpoints(const mojom::AccountIdPtr& account_id,
                                     size_t limit) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1329,6 +1383,8 @@ ZCashOrchardStorage::GetMaxCheckpointedHeight(
     const mojom::AccountIdPtr& account_id,
     uint32_t chain_tip_height,
     uint32_t min_confirmations) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1370,6 +1426,8 @@ ZCashOrchardStorage::GetMaxCheckpointedHeight(
 base::expected<bool, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
                                       uint32_t checkpoint_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {
@@ -1414,6 +1472,8 @@ ZCashOrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
 base::expected<bool, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::TruncateCheckpoints(const mojom::AccountIdPtr& account_id,
                                          uint32_t checkpoint_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!EnsureDbInit()) {

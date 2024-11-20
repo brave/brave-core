@@ -15,6 +15,7 @@
 #include "base/thread_annotations.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/orchard_shard_tree_delegate.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "sql/database.h"
@@ -79,7 +80,7 @@ class ZCashOrchardStorage : public base::RefCounted<ZCashOrchardStorage> {
     std::string message;
   };
 
-  explicit ZCashOrchardStorage(base::FilePath path_to_database);
+  explicit ZCashOrchardStorage(const base::FilePath& path_to_database);
 
   base::expected<AccountMeta, Error> RegisterAccount(
       const mojom::AccountIdPtr& account_id,
@@ -116,7 +117,7 @@ class ZCashOrchardStorage : public base::RefCounted<ZCashOrchardStorage> {
   base::expected<std::optional<OrchardShardTreeCap>, Error> GetCap(
       const mojom::AccountIdPtr& account_id);
   base::expected<bool, Error> PutCap(const mojom::AccountIdPtr& account_id,
-                                     OrchardShardTreeCap cap);
+                                     const OrchardShardTreeCap& cap);
 
   base::expected<bool, Error> TruncateShards(
       const mojom::AccountIdPtr& account_id,
@@ -124,10 +125,10 @@ class ZCashOrchardStorage : public base::RefCounted<ZCashOrchardStorage> {
   base::expected<std::optional<uint32_t>, Error> GetLatestShardIndex(
       const mojom::AccountIdPtr& account_id);
   base::expected<bool, Error> PutShard(const mojom::AccountIdPtr& account_id,
-                                       OrchardShard shard);
+                                       const OrchardShard& shard);
   base::expected<std::optional<OrchardShard>, Error> GetShard(
       const mojom::AccountIdPtr& account_id,
-      OrchardShardAddress address);
+      const OrchardShardAddress& address);
   base::expected<std::optional<OrchardShard>, Error> LastShard(
       const mojom::AccountIdPtr& account_id,
       uint8_t shard_height);
@@ -154,7 +155,7 @@ class ZCashOrchardStorage : public base::RefCounted<ZCashOrchardStorage> {
   base::expected<bool, Error> AddCheckpoint(
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id,
-      OrchardCheckpoint checkpoint);
+      const OrchardCheckpoint& checkpoint);
   base::expected<std::vector<OrchardCheckpointBundle>, Error> GetCheckpoints(
       const mojom::AccountIdPtr& account_id,
       size_t limit);
@@ -168,14 +169,13 @@ class ZCashOrchardStorage : public base::RefCounted<ZCashOrchardStorage> {
   base::expected<bool, Error> UpdateSubtreeRoots(
       const mojom::AccountIdPtr& account_id,
       uint32_t start_index,
-      std::vector<zcash::mojom::SubtreeRootPtr> roots);
+      const std::vector<zcash::mojom::SubtreeRootPtr>& roots);
   base::expected<std::vector<OrchardShardAddress>, Error> GetShardRoots(
       const mojom::AccountIdPtr& account_id,
       uint8_t shard_level);
 
  private:
   friend class base::RefCounted<ZCashOrchardStorage>;
-
   ~ZCashOrchardStorage();
 
   bool EnsureDbInit();

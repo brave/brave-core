@@ -435,7 +435,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
               if (block->height == kNu5BlockUpdate + 905) {
                 result.found_spends.push_back(OrchardNoteSpend{
                     block->height, GenerateMockNullifier(account_id, 3)});
-             }
+              }
             }
             std::move(callback).Run(std::move(result));
           })));

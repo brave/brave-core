@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/components/brave_wallet/browser/zcash/rust/cxx/src/shard_store.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bunde_impl.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
 
 namespace brave_wallet::orchard {
 
@@ -16,14 +16,15 @@ bool OrchardTestingShardTreeImpl::ApplyScanResults(
     std::unique_ptr<OrchardDecodedBlocksBundle> commitments) {
   auto* bundle_impl =
       static_cast<OrchardDecodedBlocksBundleImpl*>(commitments.get());
-  return orcard_shard_tree_->insert_commitments(bundle_impl->GetDecodeBundle());
+  return orchard_shard_tree_->insert_commitments(
+      bundle_impl->GetDecodeBundle());
 }
 
 base::expected<OrchardNoteWitness, std::string>
 OrchardTestingShardTreeImpl::CalculateWitness(
     uint32_t note_commitment_tree_position,
     uint32_t checkpoint) {
-  auto result = orcard_shard_tree_->calculate_witness(
+  auto result = orchard_shard_tree_->calculate_witness(
       note_commitment_tree_position, checkpoint);
   if (!result->is_ok()) {
     return base::unexpected(result->error_message().c_str());
@@ -41,12 +42,12 @@ OrchardTestingShardTreeImpl::CalculateWitness(
 }
 
 bool OrchardTestingShardTreeImpl::TruncateToCheckpoint(uint32_t checkpoint_id) {
-  return orcard_shard_tree_->truncate(checkpoint_id);
+  return orchard_shard_tree_->truncate(checkpoint_id);
 }
 
 OrchardTestingShardTreeImpl::OrchardTestingShardTreeImpl(
     rust::Box<OrchardTestingShardTreeBundle> orcard_shard_tree)
-    : orcard_shard_tree_(std::move(orcard_shard_tree)) {}
+    : orchard_shard_tree_(std::move(orcard_shard_tree)) {}
 
 OrchardTestingShardTreeImpl::~OrchardTestingShardTreeImpl() {}
 
