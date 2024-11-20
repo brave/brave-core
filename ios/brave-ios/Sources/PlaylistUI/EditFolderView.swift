@@ -57,7 +57,7 @@ struct EditFolderView: View {
           )
         }
         .onMove { indexSet, offset in
-          PlaylistManager.shared.reorderItems(fromOffsets: indexSet, toOffset: offset)
+          PlaylistItem.reorderItems(in: folder, fromOffsets: indexSet, toOffset: offset)
         }
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
