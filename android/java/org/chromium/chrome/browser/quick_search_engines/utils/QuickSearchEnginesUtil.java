@@ -28,6 +28,8 @@ import java.util.Map;
 public class QuickSearchEnginesUtil {
     private static final String YOUTUBE_SEARCH_ENGINE_URL =
             "https://www.youtube.com/results?search_query={searchTerms}";
+    private static final String GOOGLE_SEARCH_ENGINE_URL =
+            "https://www.google.com/search?q={searchTerms}";
 
     public static void saveSearchEnginesIntoPref(
             Map<String, QuickSearchEnginesModel> searchEnginesMap) {
@@ -71,12 +73,13 @@ public class QuickSearchEnginesUtil {
                         : new LinkedHashMap<String, QuickSearchEnginesModel>();
         for (TemplateUrl templateUrl : templateUrls) {
             if (!searchEnginesMap.containsKey(templateUrl.getKeyword())) {
+                String url =
+                        BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(templateUrl.getKeyword())
+                                ? GOOGLE_SEARCH_ENGINE_URL
+                                : templateUrl.getURL();
                 QuickSearchEnginesModel quickSearchEnginesModel =
                         new QuickSearchEnginesModel(
-                                templateUrl.getShortName(),
-                                templateUrl.getKeyword(),
-                                templateUrl.getURL(),
-                                true);
+                                templateUrl.getShortName(), templateUrl.getKeyword(), url, true);
                 searchEnginesMap.put(templateUrl.getKeyword(), quickSearchEnginesModel);
                 if (BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(templateUrl.getKeyword())
                         && !searchEnginesMap.containsKey(
