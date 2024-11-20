@@ -42,7 +42,6 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
   @State private var isShowingBackup: Bool = false
   @State private var isShowingAddAccount: Bool = false
   @State private var fetchedPendingRequestsThisSession: Bool = false
-  @State private var selectedTab: CryptoTab = .portfolio
 
   @Environment(\.walletActionDestination)
   private var walletActionDestination: Binding<WalletActionDestination?>
@@ -50,13 +49,11 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
   init(
     cryptoStore: CryptoStore,
     keyringStore: KeyringStore,
-    toolbarDismissContent: DismissContent,
-    selectedTab: CryptoTab
+    toolbarDismissContent: DismissContent
   ) {
     self.cryptoStore = cryptoStore
     self.keyringStore = keyringStore
     self.toolbarDismissContent = toolbarDismissContent
-    self._selectedTab = .init(initialValue: selectedTab)
   }
 
   private var isConfirmationButtonVisible: Bool {
@@ -67,7 +64,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
   }
 
   var body: some View {
-    TabView(selection: $selectedTab) {
+    TabView(selection: $cryptoStore.selectedTab) {
       NavigationView {
         PortfolioView(
           cryptoStore: cryptoStore,
@@ -147,12 +144,6 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       tabBarController.tabBar.standardAppearance = appearance
       tabBarController.tabBar.scrollEdgeAppearance = appearance
     })
-    .onChange(of: cryptoStore.shortcutTab) { tab in
-      if let tab {
-        selectedTab = tab
-        cryptoStore.shortcutTab = nil
-      }
-    }
     .overlay(
       alignment: .bottomTrailing,
       content: {
@@ -202,13 +193,13 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
     )
     .sheet(isPresented: $isShowingMainMenu) {
       MainMenuView(
-        selectedTab: selectedTab,
+        selectedTab: cryptoStore.selectedTab,
         isShowingSettings: Binding(
           get: {
-            self.isTabShowingSettings[selectedTab, default: false]
+            self.isTabShowingSettings[cryptoStore.selectedTab, default: false]
           },
           set: { isActive, _ in
-            self.isTabShowingSettings[selectedTab] = isActive
+            self.isTabShowingSettings[cryptoStore.selectedTab] = isActive
           }
         ),
         isShowingBackup: $isShowingBackup,
@@ -272,7 +263,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
 
   @ToolbarContentBuilder private var sharedToolbarItems: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
-      if selectedTab == .portfolio {
+      if cryptoStore.selectedTab == .portfolio {
         Button {
           cryptoStore.isPresentingAssetSearch = true
         } label: {

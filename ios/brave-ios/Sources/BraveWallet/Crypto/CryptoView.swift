@@ -93,7 +93,7 @@ public struct CryptoView: View {
                   dismissAction()
                 },
                 onViewInActivity: {
-                  store.shortcutTab = .activity
+                  store.selectedTab = .activity
                 }
               )
               .onDisappear {
@@ -338,8 +338,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
     CryptoTabsView(
       cryptoStore: cryptoStore,
       keyringStore: keyringStore,
-      toolbarDismissContent: toolbarDismissContent,
-      selectedTab: selectedTab
+      toolbarDismissContent: toolbarDismissContent
     )
     .background(
       Color.clear
@@ -392,7 +391,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
                 cryptoStore.isPresentingPendingRequest = false
               },
               onViewInActivity: {
-                cryptoStore.shortcutTab = .activity
+                cryptoStore.selectedTab = .activity
               }
             )
             .onDisappear {
