@@ -66,7 +66,7 @@ export const CreateAccountOptions = (options: {
       fixedNetwork: BraveWallet.BITCOIN_MAINNET,
       coin: BraveWallet.CoinType.BTC,
       icon: getNetworkLogo(BraveWallet.BITCOIN_MAINNET, 'BTC'),
-      chainIcons: []
+      chainIcons: ['btc-color']
     })
     if (
       isNetworkVisible(BraveWallet.CoinType.BTC, BraveWallet.BITCOIN_TESTNET)
@@ -79,7 +79,7 @@ export const CreateAccountOptions = (options: {
         fixedNetwork: BraveWallet.BITCOIN_TESTNET,
         coin: BraveWallet.CoinType.BTC,
         icon: getNetworkLogo(BraveWallet.BITCOIN_TESTNET, 'BTC'),
-        chainIcons: []
+        chainIcons: ['btc-color']
       })
     }
   }
