@@ -27,8 +27,6 @@
     </if>
   <if expr="not chromeos_ash">
     </if>
-  <if expr="chromeos_lacros">
-    </if>
   <if expr="is_win or is_linux or is_macosx">
     </if>
   <if expr="is_win or is_linux">
@@ -170,8 +168,6 @@
   <if expr="not chromeos_ash">
     </if>
   <if expr="not is_chromeos">
-    </if>
-  <if expr="chromeos_lacros">
     </if>
 
   <if expr="is_win and _google_chrome">

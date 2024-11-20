@@ -261,9 +261,6 @@
   <message name="IDS_SETTINGS_SUGGEST_PREF" desc="The label of the checkbox to enable/disable sending omnibox input to the user's default search engine to get additional suggestions.">
     Improve search suggestions
   </message>
-  <message name="IDS_SETTINGS_DRIVE_SUGGEST_PREF" desc="The label of the checkbox to enable/disable sending omnibox input to Google Drive to get suggestions for documents and other items in Drive.">
-    Show Google Drive suggestions
-  </message>
 
   <!-- Sync Accounts page (used by the <settings-sync-account-control> element) -->
   <message name="IDS_SETTINGS_PEOPLE_SIGNED_IN_TO_ACCOUNT" desc="The text displayed to the user that the profile is currently signed in to a specific account.">
@@ -349,9 +346,6 @@
   </message>
 
   <!-- Sync page (strings used by the <settings-sync-page> element) -->
-  <message name="IDS_SETTINGS_PASSWORDS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing passwords between multiple browser instances.">
-    Passwords
-  </message>
   <message name="IDS_SETTINGS_PASSWORDS_AND_PASSKEYS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing passwords and passkey metadata (i.e. their username and sites) between multiple browser instances. See the glossary for a definition of 'passkey', do not translate 'passkey' as 'password'.">
     Passwords and passkeys
   </message>
