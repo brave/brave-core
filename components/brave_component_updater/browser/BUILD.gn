@@ -17,6 +17,8 @@ component("browser") {
     "brave_component_updater_delegate.h",
     "brave_on_demand_updater.cc",
     "brave_on_demand_updater.h",
+    "component_contents_verifier.cc",
+    "component_contents_verifier.h",
     "dat_file_util.cc",
     "dat_file_util.h",
     "features.cc",
@@ -35,6 +37,7 @@ component("browser") {
     "//components/prefs",
     "//components/update_client",
     "//crypto",
+    "//extensions/buildflags",
   ]
 }
 

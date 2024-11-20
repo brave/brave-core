@@ -7,12 +7,13 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -104,7 +105,7 @@ void AdBlockComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::Value::Dict manifest) {
-  ready_callback_.Run(path);
+  ready_callback_.Run(std::move(path));
 }
 
 bool AdBlockComponentInstallerPolicy::VerifyInstallation(
@@ -147,16 +148,25 @@ void OnRegistered(const std::string& component_id) {
 
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
-    OnComponentReadyCallback callback) {
+    OnSecureComponentReadyCallback callback) {
   // In test, |cus| could be nullptr.
   if (!cus) {
     return;
   }
 
+  auto on_ready = base::BindRepeating(
+      [](OnSecureComponentReadyCallback callback, const base::FilePath& path) {
+        auto accessor =
+            brave_component_updater::ComponentContentsVerifier::GetInstance()
+                ->GetContentsAccessor(path);
+        callback.Run(std::move(accessor));
+      },
+      std::move(callback));
+
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<AdBlockComponentInstallerPolicy>(
           kAdBlockResourceComponentBase64PublicKey, kAdBlockResourceComponentId,
-          kAdBlockResourceComponentName, callback));
+          kAdBlockResourceComponentName, std::move(on_ready)));
   installer->Register(
       cus, base::BindOnce(&OnRegistered, kAdBlockResourceComponentId));
 }

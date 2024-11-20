@@ -189,19 +189,6 @@ bool AdBlockComponentServiceManager::IsFilterListAvailable(
   return catalog_entry != filter_list_catalog_.end();
 }
 
-base::FilePath AdBlockComponentServiceManager::GetFilterSetPath(
-    const std::string& uuid) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(!uuid.empty());
-  auto it = component_filters_providers_.find(uuid);
-
-  if (it == component_filters_providers_.end()) {
-    return base::FilePath();
-  }
-
-  return it->second->GetFilterSetPath();
-}
-
 bool AdBlockComponentServiceManager::IsFilterListEnabled(
     const std::string& uuid) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

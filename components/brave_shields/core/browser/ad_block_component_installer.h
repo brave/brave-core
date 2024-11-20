@@ -6,10 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_COMPONENT_INSTALLER_H_
 
+#include <memory>
 #include <string>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
+#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -18,11 +20,14 @@ class ComponentUpdateService;
 namespace brave_shields {
 
 using OnComponentReadyCallback =
-    base::RepeatingCallback<void(const base::FilePath& install_path)>;
+    base::RepeatingCallback<void(const base::FilePath&)>;
+
+using OnSecureComponentReadyCallback = base::RepeatingCallback<void(
+    scoped_refptr<brave_component_updater::ComponentContentsAccessor>)>;
 
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
-    OnComponentReadyCallback callback);
+    OnSecureComponentReadyCallback callback);
 
 void RegisterAdBlockFilterListCatalogComponent(
     component_updater::ComponentUpdateService* cus,
