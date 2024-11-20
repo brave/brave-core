@@ -94,7 +94,6 @@ WDKeywordsResult InitKeywordResult(
   WDKeywordsResult kwResult;
   kwResult.metadata.builtin_keyword_data_version =
       TemplateURLPrepopulateData::GetDataVersion(prefs);
-  kwResult.default_search_provider_id = 2;
   kwResult.keywords = local_turls;
   return kwResult;
 }
