@@ -13,6 +13,9 @@
   <message name="IDS_SETTINGS_ACCESSIBILITY_ADDITIONAL_FEATURES_TITLE" desc="In the settings tab, the title of a link that adds additional accessibility features not found in the built-in settings.">
     Find more accessibility tools in the Web Store
   </message>
+  <message name="IDS_SETTINGS_AUDIO_INPUT_BEAMFORMING_DESCRIPTION" desc="In Device Settings, the description of the beamforming effect under the input section in audio settings subpage.">
+    Beamforming mic so the profile using the Chromebook sounds clear.
+  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_USERS_RESTRICT_SIGNIN_DESCRIPTION" desc="Description for the setting for restricting sign in to specific users.">
     You can limit sign-in to certain users. This removes the "Add profile" option on the sign-in screen. You can also remove current users.
   </message>

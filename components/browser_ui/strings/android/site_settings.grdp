@@ -77,6 +77,12 @@
   <message name="IDS_WEBSITE_SETTINGS_FEDERATED_IDENTITY" desc="Title for Third-Party Sign In settings, which control whether websites can access browser third-party sign in API.">
     Third-party sign-in
   </message>
+  <message name="IDS_WEBSITE_SETTINGS_FILE_SYSTEM_WRITE_GUARD_TITLE" desc="Title of the permission to edit files [CHAR_LIMIT=32]">
+    File editing
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_FILE_SYSTEM_REVOKE_GRANT_TEXT" desc="Text to show when a file edit grant is revoked">
+    Removed site's access to file
+  </message>
   <message name="IDS_HAND_TRACKING_PERMISSION_TITLE" desc="Title of the permission to use Hand tracking [CHAR_LIMIT=32]">
     Hand tracking
   </message>
@@ -559,9 +565,6 @@
   <message name="IDS_WEBSITE_SETTINGS_THIRD_PARTY_COOKIES_PAGE_ADD_ALLOW_EXCEPTION_DESCRIPTION" desc="The description of a dialog box. Dialog to add a third-party cookie exception to allow a site">
     Allow a site to use third-party cookies
   </message>
-  <message name="IDS_WEBSITE_SETTINGS_THIRD_PARTY_COOKIES_PAGE_ADD_BLOCK_EXCEPTION_DESCRIPTION" desc="The description of a dialog box. Dialog to add a third-party cookie exception to block a site">
-    Don't allow a site to use third-party cookies
-  </message>
   <message name="IDS_WEBSITE_SETTINGS_THIRD_PARTY_COOKIES_PAGE_BLOCK_RADIO_SUB_LABEL_RWS_ENABLED" desc="* 'related sites': These words reference a new feature that's part of the Privacy Sandbox project (see details below). What are 'related sites'? ** Brave will limit how much information 2 sites can share about a user. ** But there are legitimate purposes for sharing information about a user between 2 domains. ** For example, a company might have 2 sites, www.showBiz-music.com and www.showBiz-films.com. The company showBiz might want to keep users signed in across these sites. ** Brave is launching a new service that allows companies to define groups of related sites. The number of sites in a group is limited to just a few. ** 'related sites' is referring to this new feature. As a counter example, www.some-shoe-store.com and www.a-different-shoe-store.com aren't considered 'related' in this context even though both sites sell shoes. * So this sentence, 'Related sites can still...' explains to the user that there is an exception to the 'Block third-party cookies' option they chose. That exception exists because the use has previously chosen to enable 'Related sites'.">
     Some features may not work. Related sites can still use third-party cookies.
   </message>
@@ -657,6 +660,13 @@
     When on, sites can show sign-in prompts. When off, sites can't show sign-in prompts.
   </message>
 
+  <!-- File editing -->
+  <message name="IDS_WEBSITE_SETTINGS_FILE_EDITING_GRANTS_CATEGORY" desc="The headline above the list of files that a website can view or edit.">
+    Files this site can view or edit
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_FILE_EDITING_GRANT_REVOKE" desc="Content description for the button that revokes a file editing grant.">
+    Delete file editing grant? <ph name="FILE">%1$s<ex>file.txt</ex></ph>
+  </message>
 
   <!-- Hand Tracking -->
   <message name="IDS_WEBSITE_SETTINGS_CATEGORY_HAND_TRACKING_ASK" desc="Summary text explaining that sites need to ask for permission before using hand tracking and that it is the recommended setting.">
