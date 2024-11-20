@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.adapter.recyclerview.AbstractRecyclerViewAdapter
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistItemOptionsListener
@@ -20,13 +21,15 @@ import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemOptionModel
 class PlaylistItemOptionsBottomSheetAdapter(
     private val playlistItemOptionsListener: PlaylistItemOptionsListener
 ) :
-    AbstractRecyclerViewAdapter<PlaylistItemOptionModel, PlaylistItemOptionsBottomSheetAdapter.PlaylistItemOptionsViewHolder>() {
+    AbstractRecyclerViewAdapter<
+        PlaylistItemOptionModel,
+        PlaylistItemOptionsBottomSheetAdapter.PlaylistItemOptionsViewHolder
+    >() {
 
     class PlaylistItemOptionsViewHolder(
         view: View,
         private val playlistItemOptionsListener: PlaylistItemOptionsListener
-    ) :
-        AbstractViewHolder<PlaylistItemOptionModel>(view) {
+    ) : AbstractViewHolder<PlaylistItemOptionModel>(view) {
         private val optionView: View
         private val ivOptionIcon: AppCompatImageView
         private val tvOptionTitle: AppCompatTextView
@@ -50,8 +53,9 @@ class PlaylistItemOptionsBottomSheetAdapter(
         parent: ViewGroup,
         viewType: Int
     ): PlaylistItemOptionsViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_playlist_options_bottom_sheet, parent, false)
+        val view =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_playlist_options_bottom_sheet, parent, false)
         return PlaylistItemOptionsViewHolder(view, playlistItemOptionsListener)
     }
 }

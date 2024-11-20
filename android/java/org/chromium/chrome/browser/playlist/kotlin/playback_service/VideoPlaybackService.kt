@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -25,17 +25,18 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
+
+import com.google.common.util.concurrent.Futures
+import com.google.common.util.concurrent.ListenableFuture
+
 import org.chromium.base.BraveFeatureList
 import org.chromium.base.BravePreferenceKeys
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
-import org.chromium.playlist.mojom.PlaylistService
-import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
-import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
+import org.chromium.base.ContextUtils
+import org.chromium.base.task.PostTask
+import org.chromium.base.task.TaskTraits
+import org.chromium.chrome.R
 import org.chromium.chrome.browser.flags.ChromeFeatureList
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
+import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
 import org.chromium.chrome.browser.playlist.kotlin.util.MediaItemUtil
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils
@@ -44,27 +45,20 @@ import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.rememberListPlaybackPosition
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils.setLatestPlaylistItem
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
-import com.google.common.util.concurrent.Futures
-import com.google.common.util.concurrent.ListenableFuture
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
-import org.chromium.mojo.bindings.ConnectionErrorHandler;
-import org.chromium.mojo.system.MojoException;
-import org.chromium.playlist.mojom.PlaylistService
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences
-import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid
-import org.chromium.base.ContextUtils
-import org.chromium.base.Log
+import org.chromium.chrome.browser.profiles.ProfileManager
+import org.chromium.mojo.bindings.ConnectionErrorHandler
+import org.chromium.mojo.system.MojoException
+import org.chromium.playlist.mojom.PlaylistItem
+import org.chromium.playlist.mojom.PlaylistService
 
 @UnstableApi
-class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
-    MediaLibraryService.MediaLibrarySession.Callback, Player.Listener {
+class VideoPlaybackService :
+    MediaLibraryService(),
+    ConnectionErrorHandler,
+    MediaLibraryService.MediaLibrarySession.Callback,
+    Player.Listener {
     private lateinit var mMediaLibrarySession: MediaLibrarySession
-    private val mScope = CoroutineScope(Job() + Dispatchers.IO)
     protected var mPlaylistService: PlaylistService? = null
 
     companion object {
@@ -72,7 +66,9 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
         var currentPlaylistId: String = ""
 
         private val mutableCurrentPlayingItem = MutableLiveData<String>()
-        val currentPlayingItem: LiveData<String> get() = mutableCurrentPlayingItem
+        val currentPlayingItem: LiveData<String>
+            get() = mutableCurrentPlayingItem
+
         private fun setCurrentPlayingItem(currentPlayingItemId: String) {
             mutableCurrentPlayingItem.value = currentPlayingItemId
         }
@@ -80,39 +76,40 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
         private var mediaItemsInPlayer: ArrayList<MediaItem> = ArrayList()
 
         fun addNewPlaylistItemModel(newPlaylistItem: PlaylistItem) {
-            Log.e("playlist", "addNewPlaylistItemModel 1");
             if (ConstantUtils.DEFAULT_PLAYLIST == currentPlaylistId) {
-                Log.e("playlist", "addNewPlaylistItemModel 2");
-                val mediaItem = MediaItemUtil.buildMediaItem(
-                    newPlaylistItemModel,
-                    newPlaylistItemModel.playlistId,
-                    newPlaylistItemModel.name, // TODO update playlist name here
-                )
+                val mediaItem =
+                    MediaItemUtil.buildMediaItem(
+                        newPlaylistItem,
+                        ConstantUtils.DEFAULT_PLAYLIST,
+                        ContextUtils.getApplicationContext()
+                            .resources
+                            .getString(
+                                R.string.playlist_play_later
+                            ),
+                    )
                 mediaItemsInPlayer.add(mediaItem)
                 mPlayer.addMediaItem(mediaItem)
             }
         }
 
         fun removePlaylistItemModel(playlistItemId: String) {
-            Log.e("playlist", "removePlaylistItemModel 1");
             mediaItemsInPlayer.forEachIndexed { index, mediaItem ->
-                if (mediaItem.mediaId == playlistItemModelId && mediaItem.mediaId != currentPlaylistId) {
+                if (mediaItem.mediaId == playlistItemId && mediaItem.mediaId != currentPlaylistId) {
                     mPlayer.removeMediaItem(index)
                     mediaItemsInPlayer.removeAt(index)
                 }
             }
         }
 
-        fun reorderPlaylistItemModel(playlistItemList : List<PlaylistItem>) {
-            Log.e("playlist", "reorderPlaylistItemModel 1");
+        fun reorderPlaylistItemModel(playlistItemList: List<PlaylistItem>) {
             mediaItemsInPlayer.forEachIndexed { oldIndex, mediaItem ->
-               val newIndex = playlistItemModelList.indexOfFirst{ it.id == mediaItem.mediaId }
+                val newIndex = playlistItemList.indexOfFirst { it.id == mediaItem.mediaId }
                 mPlayer.moveMediaItem(oldIndex, newIndex)
             }
         }
 
-        fun getMediaItemIndex(playlistItemId : String) : Int {
-            return mediaItemsInPlayer.indexOfFirst{ it.mediaId == playlistItemId }
+        fun getMediaItemIndex(playlistItemId: String): Int {
+            return mediaItemsInPlayer.indexOfFirst { it.mediaId == playlistItemId }
         }
     }
 
@@ -123,48 +120,55 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
         lastSavedPositionTimer()
     }
 
-    override fun onConnectionError(mojoException : MojoException) {
+    override fun onConnectionError(mojoException: MojoException) {
         mPlaylistService?.close()
         mPlaylistService = null
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
-                && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
+        if (
+            ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST) &&
+                ChromeSharedPreferences.getInstance()
+                    .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)
+        ) {
             initPlaylistService()
         }
     }
 
     private fun initPlaylistService() {
         if (mPlaylistService != null) {
-            mPlaylistService = null;
+            mPlaylistService = null
         }
         mPlaylistService =
-                PlaylistServiceFactoryAndroid.getInstance()
-                        .getPlaylistService(
-                                ProfileManager.getLastUsedRegularProfile(), this)
+            PlaylistServiceFactoryAndroid.getInstance()
+                .getPlaylistService(ProfileManager.getLastUsedRegularProfile(), this)
     }
 
     private fun initializeSessionAndPlayer() {
         val dataSourceFactory = DataSource.Factory { FileDataSource.Factory().createDataSource() }
         val mediaSourceFactory = ProgressiveMediaSource.Factory(dataSourceFactory)
-        mPlayer = ExoPlayer.Builder(this)
-            .setMediaSourceFactory(mediaSourceFactory)
-            .setHandleAudioBecomingNoisy(true).setWakeMode(C.WAKE_MODE_LOCAL)
-            .setAudioAttributes(AudioAttributes.DEFAULT, true).build()
+        mPlayer =
+            ExoPlayer.Builder(this)
+                .setMediaSourceFactory(mediaSourceFactory)
+                .setHandleAudioBecomingNoisy(true)
+                .setWakeMode(C.WAKE_MODE_LOCAL)
+                .setAudioAttributes(AudioAttributes.DEFAULT, true)
+                .build()
         mPlayer.addListener(this)
 
-        mMediaLibrarySession = MediaLibrarySession.Builder(this, mPlayer, this)
-            .setSessionActivity(buildPendingIntent())
-            .build()
+        mMediaLibrarySession =
+            MediaLibrarySession.Builder(this, mPlayer, this)
+                .setSessionActivity(buildPendingIntent())
+                .build()
     }
 
     private fun buildPendingIntent(): PendingIntent {
-        val intent = PlaylistUtils.playlistNotificationIntent(
-            applicationContext
-        )
-        val pendingIntent = TaskStackBuilder.create(this).run {
-            addNextIntent(intent)
-            getPendingIntent(0, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-        }
+        val intent = PlaylistUtils.playlistNotificationIntent(applicationContext)
+        val pendingIntent =
+            TaskStackBuilder.create(this).run {
+                addNextIntent(intent)
+                getPendingIntent(
+                    0,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            }
         return pendingIntent
     }
 
@@ -183,6 +187,7 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
         mPlayer.release()
         clearListener()
         cancelLastSavedPositionTimer()
+
         mPlaylistService?.close()
         mPlaylistService = null
         super.onDestroy()
@@ -193,13 +198,17 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
         controller: MediaSession.ControllerInfo,
         mediaItems: List<MediaItem>
     ): ListenableFuture<List<MediaItem>> {
-        // We need to use URI from requestMetaData because of https://github.com/androidx/media/issues/282
-        val updatedMediaItems: List<MediaItem> = mediaItems.map { mediaItem ->
-            MediaItem.Builder().setMediaId(mediaItem.mediaId)
-                .setRequestMetadata(mediaItem.requestMetadata)
-                .setMediaMetadata(mediaItem.mediaMetadata)
-                .setUri(mediaItem.requestMetadata.mediaUri).build()
-        }
+        // We need to use URI from requestMetaData because of
+        // https://github.com/androidx/media/issues/282
+        val updatedMediaItems: List<MediaItem> =
+            mediaItems.map { mediaItem ->
+                MediaItem.Builder()
+                    .setMediaId(mediaItem.mediaId)
+                    .setRequestMetadata(mediaItem.requestMetadata)
+                    .setMediaMetadata(mediaItem.mediaMetadata)
+                    .setUri(mediaItem.requestMetadata.mediaUri)
+                    .build()
+            }
         mediaItemsInPlayer.clear()
         mediaItemsInPlayer.addAll(updatedMediaItems)
         return Futures.immediateFuture(updatedMediaItems)
@@ -207,14 +216,15 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
 
     // Last saved position timer
     private var mLastSavedPositionHandler: Handler? = null
-    private val mSavePositionRunnableCode: Runnable = object : Runnable {
-        override fun run() {
-            if (mPlayer.isPlaying) {
-                mPlayer.currentMediaItem?.let { saveLastPosition(it, mPlayer.currentPosition) }
+    private val mSavePositionRunnableCode: Runnable =
+        object : Runnable {
+            override fun run() {
+                if (mPlayer.isPlaying) {
+                    mPlayer.currentMediaItem?.let { saveLastPosition(it, mPlayer.currentPosition) }
+                }
+                mLastSavedPositionHandler?.postDelayed(this, 2000)
             }
-            mLastSavedPositionHandler?.postDelayed(this, 2000)
         }
-    }
 
     private fun lastSavedPositionTimer() {
         mLastSavedPositionHandler = Handler(mPlayer.applicationLooper)
@@ -224,7 +234,6 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
     private fun cancelLastSavedPositionTimer() {
         mLastSavedPositionHandler?.removeCallbacks(mSavePositionRunnableCode)
     }
-
 
     // Player callbacks
     override fun onPlaybackStateChanged(playbackState: @Player.State Int) {
@@ -250,18 +259,22 @@ class VideoPlaybackService : MediaLibraryService(), ConnectionErrorHandler,
         if (playbackState == PlaybackState.STATE_PLAYING) {
             val size = mPlayer.mediaItemCount
             val previousItemIndex =
-                if (mPlayer.currentMediaItemIndex in 1 until size) (mPlayer.currentMediaItemIndex - 1) else mPlayer.currentMediaItemIndex
+                if (mPlayer.currentMediaItemIndex in 1 until size)
+                    (mPlayer.currentMediaItemIndex - 1)
+                else mPlayer.currentMediaItemIndex
             saveLastPosition(mPlayer.getMediaItemAt(previousItemIndex), 0)
             updateCurrentlyPlayedItem()
         }
     }
 
-
-    private fun saveLastPosition(mediaItem: MediaItem, currentPosition: Long) {
-        mScope.launch {
+    private fun saveLastPosition(
+        mediaItem: MediaItem,
+        @Suppress("UNUSED_PARAMETER") currentPosition: Long
+    ) {
+        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK) {
             if (PlaylistPreferenceUtils.defaultPrefs(applicationContext).rememberFilePlaybackPosition) {
-                mediaItem.mediaId.let {
-                    mPlaylistService?.updateItemLastPlayedPosition(it, currentPosition.toInt())
+                mediaItem.mediaId.let { mediaId ->
+                    mPlaylistService?.updateItemLastPlayedPosition(mediaId, currentPosition.toInt())
                 }
             }
         }

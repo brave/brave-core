@@ -146,7 +146,6 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
-import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
 import org.chromium.chrome.browser.playlist.kotlin.activity.AllPlaylistActivity;
 import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistActivity;
 import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
@@ -1528,7 +1527,6 @@ public abstract class BraveActivity extends ChromeActivity
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
         } else if (shouldHandlePlaylistActivity) {
-            // openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
             openAllPlaylistActivity();
         }
     }
@@ -1700,13 +1698,14 @@ public abstract class BraveActivity extends ChromeActivity
                     true);
         }
     }
-    
+
     private void checkForNotificationData() {
         Intent notifIntent = getIntent();
         if (notifIntent != null
                 && notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE)
                         != null) {
-            String notificationType = notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
+            String notificationType =
+                    notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
             switch (notificationType) {
                 case RetentionNotificationUtil.HOUR_3:
                 case RetentionNotificationUtil.HOUR_24:

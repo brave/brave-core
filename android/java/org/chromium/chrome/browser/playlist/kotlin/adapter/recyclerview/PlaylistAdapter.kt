@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -12,18 +12,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+
+import com.bumptech.glide.Glide
+
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
-import org.chromium.playlist.mojom.Playlist
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
-import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils.DEFAULT_PLAYLIST
-import com.bumptech.glide.Glide
+import org.chromium.playlist.mojom.Playlist
 
 class PlaylistAdapter(private val playlistClickListener: PlaylistClickListener?) :
     AbstractRecyclerViewAdapter<Playlist, PlaylistAdapter.AllPlaylistViewHolder>() {
 
-    inner class AllPlaylistViewHolder(view: View) :
-        AbstractViewHolder<Playlist>(view) {
+    inner class AllPlaylistViewHolder(view: View) : AbstractViewHolder<Playlist>(view) {
         private val ivPlaylistThumbnail: AppCompatImageView
         private val ivNewPlaylistThumbnail: AppCompatImageView
         private val tvPlaylistTitle: AppCompatTextView
@@ -57,16 +57,16 @@ class PlaylistAdapter(private val playlistClickListener: PlaylistClickListener?)
                     itemView.context.getString(R.string.playlist_number_items, model.items.size)
             }
             tvPlaylistTitle.text =
-                if (model.id == DEFAULT_PLAYLIST) itemView.context.resources.getString(R.string.playlist_play_later) else model.name
-            itemView.setOnClickListener {
-                playlistClickListener?.onPlaylistClick(model)
-            }
+                if (model.id == ConstantUtils.DEFAULT_PLAYLIST)
+                    itemView.context.resources.getString(R.string.playlist_play_later)
+                else model.name
+            itemView.setOnClickListener { playlistClickListener?.onPlaylistClick(model) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllPlaylistViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_playlist, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_playlist, parent, false)
         return AllPlaylistViewHolder(view)
     }
 }

@@ -24,9 +24,8 @@ playlist_kotlin_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/NewPlaylistActivity.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistActivity.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistBaseActivity.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistPlayerActivity.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/PlaylistViewModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistMenuOnboardingActivity.kt",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/activity/PlaylistPlayerActivity.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/PlaylistOnboardingFragmentStateAdapter.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/bottomsheet/PlaylistItemOptionsBottomSheetAdapter.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/adapter/bottomsheet/PlaylistOptionsBottomSheetAdapter.kt",
@@ -38,6 +37,7 @@ playlist_kotlin_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/extension/NumberExtension.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/extension/PopupWindowExtension.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/extension/ViewExtension.kt",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/fragment/PlaylistOnboardingSingleFragment.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/interpolator/BraveBounceInterpolator.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/listener/ItemInteractionListener.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/listener/PlaylistClickListener.kt",
@@ -49,9 +49,7 @@ playlist_kotlin_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/CreatePlaylistModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/HlsContentProgressModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/MoveOrCopyModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistItemModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistItemOptionModel.kt",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistOnboardingModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/PlaylistOptionsModel.kt",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/model/RenamePlaylistModel.kt",
@@ -78,7 +76,6 @@ playlist_kotlin_sources = [
 ]
 
 playlist_java_sources = [
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistHostActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceObserverImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistStreamingObserverImpl.java",

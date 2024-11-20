@@ -3860,9 +3860,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PLAYLIST_COPY_ITEM" desc="Copy button text">
       Copy
     </message>
-    <message name="IDS_PLAYLIST_DELETE_ITEM_OFFLINE_DATA" desc="Playlist menu text">
-      Delete item's offline data
-    </message>
     <message name="IDS_PLAYLIST_SHARE_ITEM" desc="Playlist menu text">
       Share
     </message>
