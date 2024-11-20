@@ -10,7 +10,6 @@ import SwiftUI
 import UIKit
 
 private struct SearchResultAdClickedInfoBarUX {
-  static let toastHeight: CGFloat = 100.0
   static let toastPadding: CGFloat = 10.0
   static let toastCloseButtonWidth: CGFloat = 20.0
   static let toastLabelFont = UIFont.preferredFont(forTextStyle: .subheadline)
@@ -45,7 +44,7 @@ class SearchResultAdClickedInfoBar: Toast, UITextViewDelegate {
     addSubview(toastView)
     toastView.snp.makeConstraints { make in
       make.left.right.height.equalTo(self)
-      self.animationConstraint = make.top.equalTo(self).offset(SimpleToastUX.toastHeight).constraint
+      self.animationConstraint = make.top.equalTo(self.snp.bottom).constraint
     }
   }
 

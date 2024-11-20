@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
@@ -23,8 +24,6 @@
 namespace brave_ads {
 
 namespace {
-
-constexpr int kIconSize = 20;
 
 constexpr char kLearnMoreUrl[] =
     "https://search.brave.com/help/conversion-reporting";
@@ -48,9 +47,8 @@ void CreativeSearchResultAdClickedInfoBarDelegate::Create(
   if (!infobar_manager) {
     return;
   }
-  infobar_manager->AddInfoBar(
-      CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
-          new CreativeSearchResultAdClickedInfoBarDelegate())));
+  infobar_manager->AddInfoBar(CreateConfirmInfoBar(
+      std::make_unique<CreativeSearchResultAdClickedInfoBarDelegate>()));
 }
 
 CreativeSearchResultAdClickedInfoBarDelegate::
@@ -65,8 +63,12 @@ CreativeSearchResultAdClickedInfoBarDelegate::GetIdentifier() const {
 }
 
 ui::ImageModel CreativeSearchResultAdClickedInfoBarDelegate::GetIcon() const {
+#if BUILDFLAG(IS_ANDROID)
+  return ui::ImageModel();
+#else
   return ui::ImageModel::FromVectorIcon(vector_icons::kProductIcon,
-                                        ui::kColorIcon, kIconSize);
+                                        ui::kColorIcon, /*icon_size=*/20);
+#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 std::u16string CreativeSearchResultAdClickedInfoBarDelegate::GetMessageText()
