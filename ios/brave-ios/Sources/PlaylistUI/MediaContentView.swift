@@ -171,7 +171,8 @@ extension MediaContentView {
           }
         }
       }
-      .task(priority: .low) {
+      .task(id: model.isPlayerInForeground, priority: .low) {
+        if !model.isPlayerInForeground { return }
         self.currentTime = model.currentTime
         for await currentTime in model.currentTimeStream {
           self.currentTime = currentTime
