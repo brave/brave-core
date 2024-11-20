@@ -46,7 +46,10 @@ action("create_symbol_archive") {
   shell_script = "//brave/build/android/pack_symbols.sh"
 
   deps = [ "//brave/build/android:brave" ]
-  archive_name = "$root_out_dir/dist/Default$target_cpu$target_android_base.tar"
+
+  archive_dir_path = "$root_out_dir/dist"
+  archive_file_name = "Default$target_cpu$target_android_base.tar"
+  archive_file_path = "$archive_dir_path/$archive_file_name"
 
   inputs = [
     script,
@@ -54,10 +57,10 @@ action("create_symbol_archive") {
     brave_android_output,
   ]
 
-  outputs = [ archive_name ]
-
+  outputs = [ archive_file_path ]
   args = [
     rebase_path(shell_script, root_build_dir),
-    rebase_path(archive_name, root_out_dir),
+    rebase_path(archive_dir_path, root_out_dir),
+    rebase_path(archive_file_path, root_out_dir),
   ]
 }
