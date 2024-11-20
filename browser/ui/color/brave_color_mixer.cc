@@ -116,14 +116,31 @@ void AddOmniboxHoverSelect(ui::ColorMixer& mixer) {
 void AddBraveVpnColorMixer(ui::ColorProvider* provider,
                            const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
+  if (key.custom_theme) {
+    mixer[kColorBraveVpnButtonIconConnected] = {PickSimilarColorToToolbar(
+        key, mixer, mixer.GetResultColor(nala::kColorPrimitiveGreen50),
+        mixer.GetResultColor(nala::kColorPrimitiveGreen60))};
+    mixer[kColorBraveVpnButtonIconDisconnected] = {PickSimilarColorToToolbar(
+        key, mixer, mixer.GetResultColor(nala::kColorPrimitiveNeutral30),
+        mixer.GetResultColor(nala::kColorPrimitiveNeutral80))};
+    mixer[kColorBraveVpnButtonIconError] = {PickSimilarColorToToolbar(
+        key, mixer, mixer.GetResultColor(nala::kColorPrimitiveRed60),
+        mixer.GetResultColor(nala::kColorPrimitiveRed50))};
+    mixer[kColorBraveVpnButtonErrorBackgroundNormal] = {
+        PickSimilarColorToToolbar(
+            key, mixer, mixer.GetResultColor(nala::kColorPrimitiveRed95),
+            mixer.GetResultColor(nala::kColorPrimitiveRed15))};
+  } else {
+    mixer[kColorBraveVpnButtonIconConnected] = {
+        nala::kColorSystemfeedbackSuccessIcon};
+    mixer[kColorBraveVpnButtonIconDisconnected] = {nala::kColorIconDefault};
+    mixer[kColorBraveVpnButtonIconError] = {
+        nala::kColorSystemfeedbackErrorIcon};
+    mixer[kColorBraveVpnButtonErrorBackgroundNormal] = {
+        nala::kColorSystemfeedbackErrorBackground};
+  }
 
-  mixer[kColorBraveVpnButtonIconConnected] = {
-      nala::kColorSystemfeedbackSuccessIcon};
-  mixer[kColorBraveVpnButtonIconDisconnected] = {nala::kColorIconDefault};
-  mixer[kColorBraveVpnButtonIconError] = {nala::kColorSystemfeedbackErrorIcon};
   mixer[kColorBraveVpnButtonBackgroundNormal] = {kColorToolbar};
-  mixer[kColorBraveVpnButtonErrorBackgroundNormal] = {
-      nala::kColorSystemfeedbackErrorBackground};
 }
 #endif
 
