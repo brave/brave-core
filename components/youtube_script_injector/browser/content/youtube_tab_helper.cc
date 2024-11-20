@@ -12,8 +12,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
-#include "brave/components/youtube_script_injector/browser/core/youtube_rule.h"
-#include "brave/components/youtube_script_injector/browser/core/youtube_rule_registry.h"
+#include "brave/components/youtube_script_injector/browser/core/youtube_json.h"
+#include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 #include "brave/components/youtube_script_injector/common/features.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/browser_context.h"
@@ -41,8 +41,8 @@ YouTubeTabHelper::YouTubeTabHelper(content::WebContents* web_contents,
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<YouTubeTabHelper>(*web_contents),
       world_id_(world_id),
-      youtube_rule_registry_(YouTubeRuleRegistry::GetInstance()) {
-  DCHECK(youtube_rule_registry_);
+      youtube_registry_(YouTubeRegistry::GetInstance()) {
+  DCHECK(youtube_registry_);
 }
 
 YouTubeTabHelper::~YouTubeTabHelper() = default;
@@ -91,7 +91,7 @@ void YouTubeTabHelper::DidFinishNavigation(
   content::GlobalRenderFrameHostId render_frame_host_id =
       web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 
-  youtube_rule_registry_->CheckIfMatch(
+  youtube_registry_->CheckIfMatch(
       url, base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
                           weak_factory_.GetWeakPtr(), render_frame_host_id));
 }

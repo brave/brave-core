@@ -16,7 +16,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/youtube_script_injector/browser/core/youtube_rule_registry.h"
+#include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 #include "brave/components/youtube_script_injector/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -31,11 +31,9 @@ namespace {
 //  |_ manifest.json
 //  |_ youtube.json
 //  |_ scripts/
-//    |_ keep-playing-audio/
-//        |_ policy.js
-//    |_ set-fullscreen/
-//        |_ policy.js
-// See youtube_rule.cc for the format of youtube.json.
+//    |_ keep-playing-audio.js
+//    |_ fullscreen.js
+// See youtube_json.cc for the format of youtube.json.
 
 constexpr size_t kHashSize = 32;
 constexpr char kYouTubeComponentName[] =
@@ -114,7 +112,7 @@ void YouTubeComponentInstallerPolicy::OnCustomUninstall() {}
 void YouTubeComponentInstallerPolicy::ComponentReady(const base::Version& version,
                                                   const base::FilePath& path,
                                                   base::Value::Dict manifest) {
-  YouTubeRuleRegistry::GetInstance()->LoadRules(path);
+  YouTubeRegistry::GetInstance()->LoadScripts(path);
 }
 
 bool YouTubeComponentInstallerPolicy::VerifyInstallation(
