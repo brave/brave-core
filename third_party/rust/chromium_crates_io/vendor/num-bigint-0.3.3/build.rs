@@ -10,8 +10,8 @@ fn main() {
     if u64_digit {
         autocfg::emit("u64_digit");
     }
-    let ac = autocfg::new();
 /*
+    let ac = autocfg::new();
     let std = if ac.probe_sysroot_crate("std") {
         "std"
     } else {
