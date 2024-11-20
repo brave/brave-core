@@ -126,7 +126,6 @@ extension BrowserViewController {
     // Update defaults
     rewardsAPI.setMinimumVisitDuration(8)
     rewardsAPI.setMinimumNumberOfVisits(1)
-    rewardsAPI.setContributionAmount(Double.greatestFiniteMagnitude)
 
     // Create rewards observer
     let rewardsObserver = RewardsObserver(rewardsAPI: rewardsAPI)
