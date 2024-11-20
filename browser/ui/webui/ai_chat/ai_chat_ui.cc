@@ -79,13 +79,6 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
         str.name, brave_l10n::GetLocalizedResourceUTF16String(str.id));
   }
 
-  base::Time last_accepted_disclaimer =
-      profile_->GetOriginalProfile()->GetPrefs()->GetTime(
-          ai_chat::prefs::kLastAcceptedDisclaimer);
-
-  untrusted_source->AddBoolean("hasAcceptedAgreement",
-                               !last_accepted_disclaimer.is_null());
-
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   constexpr bool kIsMobile = true;
 #else
@@ -95,11 +88,6 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   untrusted_source->AddBoolean("isMobile", kIsMobile);
   untrusted_source->AddBoolean("isHistoryEnabled",
                                ai_chat::features::IsAIChatHistoryEnabled());
-
-  untrusted_source->AddBoolean(
-      "hasUserDismissedPremiumPrompt",
-      profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(
-          ai_chat::prefs::kUserDismissedPremiumPrompt));
 
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

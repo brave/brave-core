@@ -273,6 +273,15 @@
   <message name="IDS_CHAT_UI_LEARN_MORE" desc="Link text to learn more about a feature">
     Learn more
   </message>
+  <message name="IDS_CHAT_UI_CLOSE_NOTICE" desc="Label for button which closes a notice">
+    Close this notice
+  </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_TITLE" desc="Title for the notice about conversation history">
+    Conversation history
+  </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history">
+    Leo will now remember your previous conversations so you can go back to them. They are stored privately on your device, and you can delete them any time.
+  </message>
   <message name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
     General purpose chat
   </message>

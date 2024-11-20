@@ -389,12 +389,14 @@ const SITE_INFO: mojom.SiteInfo = {
 }
 
 type CustomArgs = {
+  initialized: boolean
   currentErrorState: keyof typeof mojom.APIError
   model: string
   inputText: string
   hasConversation: boolean
   hasSuggestedQuestions: boolean
   hasSiteInfo: boolean
+  isStorageNoticeDismissed: boolean
   canShowPremiumPrompt: boolean
   hasAcceptedAgreement: boolean
   isPremiumModel: boolean
@@ -410,10 +412,12 @@ type CustomArgs = {
 }
 
 const args: CustomArgs = {
+  initialized: true,
   inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
   hasConversation: true,
   hasSuggestedQuestions: true,
   hasSiteInfo: true,
+  isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
   hasAcceptedAgreement: true,
   isPremiumModel: false,
@@ -476,13 +480,14 @@ const preview: Meta<CustomArgs> = {
       }
 
       const aiChatContext: AIChatContext = {
-        initialized: true,
+        initialized: options.args.initialized,
         editingConversationId: null,
         visibleConversations: CONVERSATIONS,
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
         isPremiumUser: options.args.isPremiumUser,
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
+        isStorageNoticeDismissed: options.args.isStorageNoticeDismissed,
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         isMobile: options.args.isMobile,
         isHistoryEnabled: options.args.isHistoryEnabled,
@@ -491,6 +496,7 @@ const preview: Meta<CustomArgs> = {
         goPremium: () => {},
         managePremium: () => {},
         handleAgreeClick: () => {},
+        dismissStorageNotice: () => {},
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},
         setEditingConversationId: () => {}

@@ -135,14 +135,14 @@ class AIChatService : public KeyedService,
       base::OnceClosure open_ai_chat);
 
   // mojom::Service
+  void GetNoticesState(GetNoticesStateCallback callback) override;
   void MarkAgreementAccepted() override;
+  void DismissStorageNotice() override;
+  void DismissPremiumPrompt() override;
   void GetVisibleConversations(
       GetVisibleConversationsCallback callback) override;
   void GetActionMenuList(GetActionMenuListCallback callback) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
-  void GetCanShowPremiumPrompt(
-      GetCanShowPremiumPromptCallback callback) override;
-  void DismissPremiumPrompt() override;
   void DeleteConversation(const std::string& id) override;
   void RenameConversation(const std::string& id,
                           const std::string& new_name) override;

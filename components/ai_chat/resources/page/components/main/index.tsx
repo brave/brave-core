@@ -18,6 +18,7 @@ import ErrorConversationEnd from '../alerts/error_conversation_end'
 import ErrorInvalidEndpointURL from '../alerts/error_invalid_endpoint_url'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import LongConversationInfo from '../alerts/long_conversation_info'
+import NoticeConversationStorage from '../notices/notice_conversation_storage'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import ConversationEntries from '../conversation_entries'
 import ConversationsList from '../conversations_list'
@@ -50,6 +51,7 @@ function Main() {
     !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
     !conversationContext.apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
+    !aiChatContext.isStorageNoticeDismissed && // Don't show premium prompt and storage notice
     aiChatContext.canShowPremiumPrompt &&
     conversationContext.associatedContentInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
@@ -203,6 +205,12 @@ function Main() {
           {currentErrorElement && (
             <div className={styles.promptContainer}>{currentErrorElement}</div>
           )}
+          {
+            aiChatContext.hasAcceptedAgreement && !aiChatContext.isStorageNoticeDismissed &&
+            <div className={styles.promptContainer}>
+              <NoticeConversationStorage />
+            </div>
+          }
           {
             shouldShowPremiumSuggestionForModel && (
               <div className={styles.promptContainer}>
