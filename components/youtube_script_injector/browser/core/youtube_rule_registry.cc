@@ -68,17 +68,13 @@ YouTubeRuleRegistry::~YouTubeRuleRegistry() = default;
 void YouTubeRuleRegistry::CheckIfMatch(
     const GURL& url,
     base::OnceCallback<void(MatchedRule)> cb) const {
-  for (const YouTubeRule& rule : rules_) {
-    if (rule.IsYouTubeDomain(url)) {
-      base::ThreadPool::PostTaskAndReplyWithResult(
-          FROM_HERE, {base::MayBlock()},
-          base::BindOnce(&CreateMatchedRule, component_path_,
-                         rule.GetPolicyScript(),
-                         rule.GetVersion()),
-          std::move(cb));
-      // Only ever find one matching rule.
-      return;
-    }
+  if (rule_ && rule_->IsYouTubeDomain(url)) {
+    base::ThreadPool::PostTaskAndReplyWithResult(
+        FROM_HERE, {base::MayBlock()},
+        base::BindOnce(&CreateMatchedRule, component_path_,
+                       rule_->GetFeatureScript(),
+                       rule_->GetVersion()),
+        std::move(cb));
   }
 }
 
@@ -91,16 +87,12 @@ void YouTubeRuleRegistry::LoadRules(const base::FilePath& path) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void YouTubeRuleRegistry::SetComponentPath(const base::FilePath& path) {
-  component_path_ = path;
+void YouTubeRuleRegistry::OnLoadRules(const std::string& contents) {
+  rule_ = YouTubeRule::ParseRules(contents);
 }
 
-void YouTubeRuleRegistry::OnLoadRules(const std::string& contents) {
-  auto parsed_rules = YouTubeRule::ParseRules(contents);
-  if (!parsed_rules) {
-    return;
-  }
-  rules_ = std::move(parsed_rules.value());
+void YouTubeRuleRegistry::SetComponentPath(const base::FilePath& path) {
+  component_path_ = path;
 }
 
 }  // namespace youtube_script_injector

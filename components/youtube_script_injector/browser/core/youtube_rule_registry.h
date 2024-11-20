@@ -50,7 +50,7 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRuleRegistry
   void SetComponentPath(const base::FilePath& path);
 
   base::FilePath component_path_;
-  std::vector<YouTubeRule> rules_;
+  std::optional<YouTubeRule> rule_;
 
   base::WeakPtrFactory<YouTubeRuleRegistry> weak_factory_{this};
 
