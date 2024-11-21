@@ -389,6 +389,13 @@
           FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),         \
       },                                                                     \
       {                                                                      \
+          "brave-ai-chat-allow-private-ips",                                 \
+          "Private IP Addresses for Custom Model Endpoints",                 \
+          "Permits the use of private IP addresses as model endpoint URLs",  \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                           \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAllowPrivateIPs),           \
+      },                                                                     \
+      {                                                                      \
           "brave-ai-chat-open-leo-from-brave-search",                        \
           "Open Leo AI Chat from Brave Search",                              \
           "Enables opening Leo AI Chat from Brave Search",                   \

@@ -56,6 +56,14 @@ bool IsPageContentRefineEnabled() {
   return base::FeatureList::IsEnabled(features::kPageContentRefine);
 }
 
+BASE_FEATURE(kAllowPrivateIPs,
+             "AllowPrivateIPs",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAllowPrivateIPsEnabled() {
+  return base::FeatureList::IsEnabled(features::kAllowPrivateIPs);
+}
+
 BASE_FEATURE(kOpenAIChatFromBraveSearch,
              "OpenAIChatFromBraveSearch",
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)

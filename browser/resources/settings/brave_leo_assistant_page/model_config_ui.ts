@@ -6,6 +6,7 @@
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
+import { sendWithPromise } from 'chrome://resources/js/cr.js'
 import type { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
@@ -59,6 +60,14 @@ export class ModelConfigUI extends ModelConfigUIBase {
         type: Boolean,
         value: false,
       },
+      shouldShowUnsafeEndpointModal: {
+        type: Boolean,
+        value: false,
+      },
+      shouldShowUnsafeEndpointLabel: {
+        type: Boolean,
+        value: false,
+      },
       invalidUrlErrorMessage: {
         type: String,
         value: ''
@@ -93,13 +102,28 @@ export class ModelConfigUI extends ModelConfigUIBase {
   modelItem: mojom.Model | null
   isEditing_: boolean
   isUrlInvalid: boolean
+  shouldShowUnsafeEndpointLabel: boolean
+  isValidAsPrivateEndpoint: boolean
+  shouldShowUnsafeEndpointModal: boolean
   invalidUrlErrorMessage: string
 
   override ready() {
     super.ready()
+    // If a user previously had --brave-ai-chat-allow-private-ips enabled, but
+    // now has it disabled, they should be notified of invalid endpoints
+    // immediately upon opening the config view of an impacted model. We should
+    // not wait for the user to make a change to the endpoint before informing
+    // them that the endpoint is no longer valid.
+    this.checkEndpointValidity_()
   }
 
-  handleClick_() {
+  async handleClick_() {
+    // If the user is attempting to use a private endpoint, we should show a
+    // modal warning instructing them to enable the optional feature in order
+    // to proceed
+    this.shouldShowUnsafeEndpointModal =
+      this.isUrlInvalid && this.isValidAsPrivateEndpoint
+
     if (!this.saveEnabled_()) {
       return
     }
@@ -158,19 +182,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
 
   onModelServerEndpointChange_(e: any) {
     this.endpointUrl = e.target.value
-
-    // We need to check if the URL is valid because sending bad URL will cause
-    // renderer to crash. This is mainly due to mojo IPC not being able to
-    // handle bad URLs properly for |mojomUrl| type
-    try {
-      new URL(e.target.value)
-      this.isUrlInvalid = false
-    } catch {
-      this.isUrlInvalid = true
-      this.invalidUrlErrorMessage = this.i18n(
-        'braveLeoAssistantEndpointInvalidError'
-      )
-    }
+    this.checkEndpointValidity_()
   }
 
   onModelApiKeyChange_(e: any) {
@@ -199,6 +211,21 @@ export class ModelConfigUI extends ModelConfigUIBase {
   private saveEnabled_() {
     // Make sure all required fields are filled
     return this.label && this.modelRequestName && this.endpointUrl && !this.isUrlInvalid
+  }
+
+  private checkEndpointValidity_() {
+    const url = this.endpointUrl.trim()
+    if (url !== '') {
+      sendWithPromise('validateModelEndpoint', { url })
+        .then((response: any) => {
+          this.isUrlInvalid = !response.isValid
+          this.isValidAsPrivateEndpoint = response.isValidAsPrivateEndpoint
+          this.shouldShowUnsafeEndpointLabel =
+            response.isValidDueToPrivateIPsFeature
+          this.invalidUrlErrorMessage =
+            this.i18n('braveLeoAssistantEndpointError')
+        })
+    }
   }
 
   private onModelItemChange_(newValue: mojom.Model | null) {
