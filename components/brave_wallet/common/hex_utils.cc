@@ -9,13 +9,13 @@
 #include <optional>
 
 #include "base/compiler_specific.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 
 namespace brave_wallet {
 
-std::string ToHex(const std::string& data) {
+std::string ToHex(std::string_view data) {
   if (data.empty()) {
     return "0x0";
   }
@@ -36,7 +36,7 @@ std::string HexEncodeLower(base::span<const uint8_t> bytes) {
 }
 
 // Determines if the passed in hex string is valid
-bool IsValidHexString(const std::string& hex_input) {
+bool IsValidHexString(std::string_view hex_input) {
   if (hex_input.length() < 2) {
     return false;
   }
@@ -53,7 +53,7 @@ bool IsValidHexString(const std::string& hex_input) {
 
 // Pads a hex encoded parameter to 32-bytes
 // i.e. 64 hex characters.
-bool PadHexEncodedParameter(const std::string& hex_input, std::string* out) {
+bool PadHexEncodedParameter(std::string_view hex_input, std::string* out) {
   if (!out) {
     return false;
   }
@@ -64,18 +64,18 @@ bool PadHexEncodedParameter(const std::string& hex_input, std::string* out) {
     *out = hex_input;
     return true;
   }
-  std::string hex_substr = hex_input.substr(2);
+  std::string_view hex_substr = hex_input.substr(2);
   size_t padding_len = 64 - hex_substr.length();
   std::string padding(padding_len, '0');
 
-  *out = "0x" + padding + hex_substr;
+  *out = base::StrCat({"0x", padding, hex_substr});
   return true;
 }
 
 // Takes 2 inputs prefixed by 0x and combines them into an output with a single
 // 0x. For example 0x1 and 0x2 would return 0x12
-bool ConcatHexStrings(const std::string& hex_input1,
-                      const std::string& hex_input2,
+bool ConcatHexStrings(std::string_view hex_input1,
+                      std::string_view hex_input2,
                       std::string* out) {
   if (!out) {
     return false;
@@ -83,7 +83,7 @@ bool ConcatHexStrings(const std::string& hex_input1,
   if (!IsValidHexString(hex_input1) || !IsValidHexString(hex_input2)) {
     return false;
   }
-  *out = hex_input1 + hex_input2.substr(2);
+  *out = base::StrCat({hex_input1, hex_input2.substr(2)});
   return true;
 }
 
@@ -111,7 +111,7 @@ bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
   return true;
 }
 
-bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
+bool HexValueToUint256(std::string_view hex_input, uint256_t* out) {
   if (!out) {
     return false;
   }
@@ -131,7 +131,7 @@ bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
   return true;
 }
 
-bool HexValueToInt256(const std::string& hex_input, int256_t* out) {
+bool HexValueToInt256(std::string_view hex_input, int256_t* out) {
   if (!out) {
     return false;
   }
@@ -162,7 +162,7 @@ std::string Uint256ValueToHex(uint256_t input) {
   return "0x" + result;
 }
 
-bool PrefixedHexStringToBytes(const std::string& input,
+bool PrefixedHexStringToBytes(std::string_view input,
                               std::vector<uint8_t>* bytes) {
   CHECK(bytes);
   bytes->clear();
@@ -174,7 +174,7 @@ bool PrefixedHexStringToBytes(const std::string& input,
     DCHECK_EQ(input, "0x");
     return true;
   }
-  std::string hex_substr = input.substr(2);
+  std::string hex_substr = std::string(input.substr(2));
   if (hex_substr.length() % 2 == 1) {
     hex_substr = "0" + hex_substr;
   }
@@ -185,7 +185,7 @@ bool PrefixedHexStringToBytes(const std::string& input,
 }
 
 std::optional<std::vector<uint8_t>> PrefixedHexStringToBytes(
-    const std::string& input) {
+    std::string_view input) {
   std::vector<uint8_t> result;
   if (!PrefixedHexStringToBytes(input, &result)) {
     return std::nullopt;
