@@ -135,6 +135,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
         IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_TITLE},
        {"noticeConversationHistoryBody",
         IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY},
+       {"noticeConversationHistoryEmpty",
+        IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_EMPTY},
        {"leoSettingsTooltipLabel", IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL},
        {"summarizePageButtonLabel", IDS_CHAT_UI_SUMMARIZE_PAGE},
        {"welcomeGuideTitle", IDS_CHAT_UI_WELCOME_GUIDE_TITLE},

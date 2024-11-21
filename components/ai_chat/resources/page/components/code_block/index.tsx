@@ -4,17 +4,16 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-
-import styles from './style.module.scss'
-import { getLocale } from '@brave/brave-ui'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
 import hljsStyle from 'react-syntax-highlighter/dist/esm/styles/hljs/ir-black'
 import cpp from 'react-syntax-highlighter/dist/esm/languages/hljs/cpp'
 import javascript from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript'
 import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python'
 import json from 'react-syntax-highlighter/dist/esm/languages/hljs/json'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
+import styles from './style.module.scss'
 
 SyntaxHighlighter.registerLanguage('cpp', cpp)
 SyntaxHighlighter.registerLanguage('javascript', javascript)
