@@ -16,7 +16,6 @@
 #include "net/http/http_byte_range.h"
 #include "services/network/public/cpp/parsed_headers.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace content {
 namespace {
@@ -32,20 +31,8 @@ void RangeDataAvailable(
     base::ElapsedTimer url_request_elapsed_timer,
     URLDataSource::RangeDataResult result);
 
-network::mojom::URLResponseHeadPtr UseContentLengthFromHeaders(
-    network::mojom::URLResponseHeadPtr headers) {
-  if (auto content_length = headers->headers->GetContentLength();
-      content_length != -1) {
-    headers->content_length = content_length;
-  }
-  return headers;
-}
-
 }  // namespace
 }  // namespace content
-
-#define OnReceiveResponse(headers, ...) \
-  OnReceiveResponse(UseContentLengthFromHeaders(headers), __VA_ARGS__)
 
 #define GotDataCallback                                                       \
   GotDataCallback unused_callback;                                            \
@@ -65,7 +52,6 @@ network::mojom::URLResponseHeadPtr UseContentLengthFromHeaders(
 #include "src/content/browser/webui/web_ui_url_loader_factory.cc"
 
 #undef GotDataCallback
-#undef OnReceiveResponse
 
 namespace content {
 namespace {
