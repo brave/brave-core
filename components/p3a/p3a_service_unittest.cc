@@ -44,7 +44,7 @@ constexpr char kTestP3AJsonHost[] = "https://p3a-json.brave.com";
 constexpr char kTestP2AJsonHost[] = "https://p2a-json.brave.com";
 constexpr char kTestP3ACreativeHost[] = "https://p3a-creative.brave.com";
 
-constexpr char kTestEphemeralMetric[] = "Brave.Wallet.UsageWeekly";
+constexpr char kTestEphemeralMetric[] = "Brave.AIChat.UsageWeekly";
 
 }  // namespace
 
@@ -289,8 +289,7 @@ TEST_F(P3AServiceTest, MAYBE_UpdateLogsAndSendSlow) {
   SetUpP3AService();
 
   std::vector<std::string> test_histograms(
-      {"Brave.Accessibility.DisplayZoomEnabled",
-       std::string(kTestExampleMetric)});
+      {"Brave.Core.ProfileCount", std::string(kTestExampleMetric)});
 
   p3a_service_->RegisterDynamicMetric(kTestExampleMetric, MetricLogType::kSlow);
 
