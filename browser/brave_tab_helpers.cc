@@ -30,7 +30,6 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/browser/content/psst_tab_helper.h"
-#include "brave/components/youtube_script_injector/browser/content/youtube_tab_helper.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -49,6 +48,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/android/background_video/background_video_playback_tab_helper.h"
+#include "brave/components/youtube_script_injector/browser/content/youtube_tab_helper.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -109,6 +109,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
 #if BUILDFLAG(IS_ANDROID)
   BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
+  youtube_script_injector::YouTubeTabHelper::MaybeCreateForWebContents(
+    web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL); 
 #else
   // Add tab helpers here unless they are intended for android too
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
