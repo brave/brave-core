@@ -84,10 +84,6 @@ class SharedPinnedTabService : public KeyedService,
   void OnProfileWillBeDestroyed(Profile* profile) override;
 
  private:
-  void CacheWebContentsIfNeeded(
-      Browser* browser,
-      std::vector<std::unique_ptr<tabs::TabModel>> pinned_tabs);
-
   void OnTabAdded(TabStripModel* tab_strip_model,
                   const TabStripModelChange::Insert* insert);
   void OnTabMoved(TabStripModel* tab_strip_model,
