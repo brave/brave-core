@@ -12,6 +12,7 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { getLocale } from '$web-common/locale'
 import getAPI from '../../api'
 import { useConversation } from '../../state/conversation_context'
+import Alert from '@brave/leo/react/alert'
 
 interface SimpleInputProps {
   text?: string
@@ -116,6 +117,14 @@ export default function ConversationsList(props: ConversationsListProps) {
     <>
       <div className={styles.scroller}>
         <nav className={styles.nav}>
+          {aiChatContext.visibleConversations.length === 0 &&
+          <Alert type='info'>
+            <Icon name='history' slot='icon' />
+            <div slot='title'>{getLocale('noticeConversationHistoryTitle')}</div>
+            {getLocale('noticeConversationHistoryEmpty')}
+          </Alert>
+          }
+          {aiChatContext.visibleConversations.length > 0 &&
           <ol>
             {aiChatContext.visibleConversations.map(item => {
               return (
@@ -154,6 +163,7 @@ export default function ConversationsList(props: ConversationsListProps) {
               )
             })}
           </ol>
+          }
         </nav>
       </div>
     </>

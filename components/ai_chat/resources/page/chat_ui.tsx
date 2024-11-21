@@ -5,21 +5,18 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { initLocale } from 'brave-ui'
 import { setIconBasePath } from '@brave/leo/react/icon'
-
-import '$web-components/app.global.scss'
 import '@brave/leo/tokens/css/variables.css'
-
+import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
-import { loadTimeData } from '$web-common/loadTimeData'
 import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
 import { AIChatContextProvider, useAIChat } from './state/ai_chat_context'
-import Main from './components/main'
 import {
   ConversationContextProvider
 } from './state/conversation_context'
+import Main from './components/main'
 import FullScreen from './components/full_page'
+import Loading from './components/loading'
 import { ActiveChatProviderFromUrl } from './state/active_chat_context'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
@@ -48,8 +45,8 @@ function App() {
 function Content() {
   const aiChatContext = useAIChat()
 
-  if (aiChatContext.isStandalone === undefined) {
-    return <div>loading...</div>
+  if (!aiChatContext.initialized || aiChatContext.isStandalone === undefined) {
+    return <Loading />
   }
 
   if (!aiChatContext.isStandalone) {
@@ -60,7 +57,6 @@ function Content() {
 }
 
 function initialize() {
-  initLocale(loadTimeData.data_)
   const root = createRoot(document.getElementById('mountPoint')!)
   root.render(<App />)
 }

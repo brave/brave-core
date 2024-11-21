@@ -27,7 +27,8 @@
 }
 
 .aside {
-  width: 340px;
+  --navigation-width: 340px;
+  width: var(--navigation-width);
   height: 100%;
   overflow: hidden;
   background: var(--leo-color-page-background);

@@ -282,6 +282,9 @@
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history">
     Leo will now remember your previous conversations so you can go back to them. They are stored privately on your device, and you can delete them any time.
   </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_EMPTY" desc="Main text for a notice that the conversation list is empty">
+    Your conversation history will appear here once you start a conversation.
+  </message>
   <message name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
     General purpose chat
   </message>
