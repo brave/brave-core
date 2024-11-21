@@ -460,8 +460,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   } else if (settingsKeyInput == "showBraveTalk") {
     settingsKey = kNewTabPageShowBraveTalk;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  } else if (settings_key_input == "showBraveVPN") {
-    settings_key = kNewTabPageShowBraveVPN;
+  } else if (settingsKeyInput == "showBraveVPN") {
+    settingsKey = kNewTabPageShowBraveVPN;
 #endif
   } else if (settingsKeyInput == "showSearchBox") {
     settingsKey = brave_search_conversion::prefs::kShowNTPSearchBox;
