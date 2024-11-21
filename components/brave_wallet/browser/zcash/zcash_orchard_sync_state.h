@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/sequence_checker.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_shard_tree_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_orchard_storage.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -57,30 +58,20 @@ class ZCashOrchardSyncState {
   // Drops underlying database.
   void ResetDatabase();
 
-  base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
-  GetLatestShardIndex(const mojom::AccountIdPtr& account_id);
-
-  base::expected<std::optional<uint32_t>, ZCashOrchardStorage::Error>
-  GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
-                           uint32_t chain_tip_height,
-                           size_t min_confirmations);
-
   base::expected<std::vector<OrchardInput>, ZCashOrchardStorage::Error>
   CalculateWitnessForCheckpoint(const mojom::AccountIdPtr& account_id,
                                 const std::vector<OrchardInput>& notes,
                                 uint32_t checkpoint_position);
 
  private:
-  void OverrideShardTreeManagerForTesting(
-      const mojom::AccountIdPtr& account_id,
-      std::unique_ptr<OrchardShardTreeManager> manager);
-
-  OrchardShardTreeManager* GetOrCreateShardTreeManager(
+  OrchardShardTreeManager& GetOrCreateShardTreeManager(
       const mojom::AccountIdPtr& account_id);
 
   scoped_refptr<ZCashOrchardStorage> storage_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<OrchardShardTreeManager>>
       shard_tree_managers_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 }  // namespace brave_wallet

@@ -77,16 +77,4 @@ OrchardBlockScanner::ScanBlocks(
       {std::move(found_notes), std::move(found_spends), std::move(result)});
 }
 
-// static
-OrchardBlockScanner::Result OrchardBlockScanner::CreateResultForTesting(
-    const OrchardTreeState& tree_state,
-    const std::vector<OrchardCommitment>& commitments) {
-  auto builder = orchard::OrchardDecodedBlocksBundle::CreateTestingBuilder();
-  for (const auto& commitment : commitments) {
-    builder->AddCommitment(commitment);
-  }
-  builder->SetPriorTreeState(tree_state);
-  return Result{{}, {}, builder->Complete()};
-}
-
 }  // namespace brave_wallet

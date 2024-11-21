@@ -8,12 +8,29 @@
 
 #include <memory>
 
-#include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "brave/components/brave_wallet/common/orchard_shard_tree_delegate.h"
 
 namespace brave_wallet::orchard {
 
+class OrchardDecodedBlocksBundle;
+
 class OrchardTestUtils {
  public:
+  // Builder is used in tests to create OrchardDecodedBlocksBundle with mocked
+  // commitments
+  class TestingBuilder {
+   public:
+    TestingBuilder() = default;
+    virtual ~TestingBuilder() = default;
+    virtual void AddCommitment(
+        const ::brave_wallet::OrchardCommitment& commitment) = 0;
+    virtual void SetPriorTreeState(
+        const ::brave_wallet::OrchardTreeState& tree_state) = 0;
+    virtual std::unique_ptr<OrchardDecodedBlocksBundle> Complete() = 0;
+  };
+
+  static std::unique_ptr<TestingBuilder> CreateTestingBuilder();
+
   virtual ~OrchardTestUtils() = default;
 
   virtual OrchardCommitmentValue CreateMockCommitmentValue(uint32_t position,

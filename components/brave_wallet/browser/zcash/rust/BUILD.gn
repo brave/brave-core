@@ -17,6 +17,35 @@ group("rust") {
   deps = [ ":orchard_impl" ]
 }
 
+group("test_support") {
+  visibility =
+      [ "//brave/components/brave_wallet/browser/internal:test_support" ]
+
+  public_deps = [ ":test_support_headers" ]
+  deps = [ ":test_support_impl" ]
+}
+
+source_set("test_support_headers") {
+  visibility = [ ":*" ]
+  sources = [ "orchard_test_utils.h" ]
+
+  public_deps = [ ":orchard_headers" ]
+}
+
+source_set("test_support_impl") {
+  visibility = [ ":test_support" ]
+  sources = [
+    "orchard_test_utils_impl.cc",
+    "orchard_test_utils_impl.h",
+  ]
+
+  deps = [
+    ":orchard_impl",
+    ":rust_lib",
+    ":test_support_headers",
+  ]
+}
+
 source_set("orchard_headers") {
   visibility = [ ":*" ]
 
@@ -24,9 +53,8 @@ source_set("orchard_headers") {
     "authorized_orchard_bundle.h",
     "extended_spending_key.h",
     "orchard_block_decoder.h",
-    "orchard_decoded_blocks_bunde.h",
+    "orchard_decoded_blocks_bundle.h",
     "orchard_shard_tree.h",
-    "orchard_test_utils.h",
     "unauthorized_orchard_bundle.h",
   ]
 
@@ -38,7 +66,10 @@ source_set("orchard_headers") {
 }
 
 source_set("orchard_impl") {
-  visibility = [ ":rust" ]
+  visibility = [
+    ":rust",
+    ":test_support_impl",
+  ]
 
   sources = [
     "authorized_orchard_bundle_impl.cc",
@@ -51,10 +82,6 @@ source_set("orchard_impl") {
     "orchard_decoded_blocks_bundle_impl.h",
     "orchard_shard_tree_impl.cc",
     "orchard_shard_tree_impl.h",
-
-    # TODO(cypt4) : Extract to rust tests target
-    "orchard_test_utils_impl.cc",
-    "orchard_test_utils_impl.h",
     "orchard_testing_shard_tree_impl.cc",
     "orchard_testing_shard_tree_impl.h",
     "unauthorized_orchard_bundle_impl.cc",
@@ -82,7 +109,10 @@ source_set("shard_store") {
 }
 
 rust_static_library("rust_lib") {
-  visibility = [ ":orchard_impl" ]
+  visibility = [
+    ":orchard_impl",
+    ":test_support_impl",
+  ]
 
   crate_name = "zcash"
   crate_root = "lib.rs"

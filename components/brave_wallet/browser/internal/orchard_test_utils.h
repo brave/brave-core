@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_test_utils.h"
 
 namespace brave_wallet {
@@ -16,6 +17,11 @@ class OrchardTestUtils {
  public:
   OrchardTestUtils();
   ~OrchardTestUtils();
+
+  // static
+  static OrchardBlockScanner::Result CreateResultForTesting(
+      const OrchardTreeState& tree_state,
+      const std::vector<OrchardCommitment>& commitments);
 
   OrchardCommitmentValue CreateMockCommitmentValue(uint32_t position,
                                                    uint32_t rseed);

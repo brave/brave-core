@@ -36,6 +36,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_orchard_sync_state.h"
 #endif
 
@@ -328,9 +329,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   auto update_notes_callback = base::BindLambdaForTesting(
       [](std::optional<ZCashOrchardStorage::Error>) {});
 
-  OrchardBlockScanner::Result result =
-      OrchardBlockScanner::CreateResultForTesting(
-          OrchardTreeState(), std::vector<OrchardCommitment>());
+  OrchardBlockScanner::Result result = OrchardTestUtils::CreateResultForTesting(
+      OrchardTreeState(), std::vector<OrchardCommitment>());
   result.discovered_notes = std::vector<OrchardNote>({note});
 
   sync_state()
@@ -417,9 +417,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
   auto update_notes_callback = base::BindLambdaForTesting(
       [](std::optional<ZCashOrchardStorage::Error>) {});
 
-  OrchardBlockScanner::Result result =
-      OrchardBlockScanner::CreateResultForTesting(
-          OrchardTreeState(), std::vector<OrchardCommitment>());
+  OrchardBlockScanner::Result result = OrchardTestUtils::CreateResultForTesting(
+      OrchardTreeState(), std::vector<OrchardCommitment>());
   result.discovered_notes = std::vector<OrchardNote>({note});
 
   sync_state()

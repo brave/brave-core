@@ -93,8 +93,8 @@ TEST_F(OrchardShardTreeTest, CheckpointsPruned) {
         false, checkpoint));
   }
   OrchardTreeState orchard_tree_state;
-  auto result = OrchardBlockScanner::CreateResultForTesting(orchard_tree_state,
-                                                            commitments);
+  auto result =
+      OrchardTestUtils::CreateResultForTesting(orchard_tree_state, commitments);
 
   tree_manager()->InsertCommitments(std::move(result));
 
@@ -142,8 +142,8 @@ TEST_F(OrchardShardTreeTest, InsertWithFrontier) {
       test_utils()->CreateMockCommitmentValue(52, kDefaultCommitmentSeed),
       false, std::nullopt));
 
-  auto result = OrchardBlockScanner::CreateResultForTesting(prior_tree_state,
-                                                            commitments);
+  auto result =
+      OrchardTestUtils::CreateResultForTesting(prior_tree_state, commitments);
   tree_manager()->InsertCommitments(std::move(result));
 
   {
@@ -189,7 +189,7 @@ TEST_F(OrchardShardTreeTest, Checkpoint_WithMarked) {
 
   OrchardTreeState tree_state;
   auto result =
-      OrchardBlockScanner::CreateResultForTesting(tree_state, commitments);
+      OrchardTestUtils::CreateResultForTesting(tree_state, commitments);
   tree_manager()->InsertCommitments(std::move(result));
 
   {
@@ -228,7 +228,7 @@ TEST_F(OrchardShardTreeTest, MinCheckpoint) {
   }
   OrchardTreeState tree_state;
   auto result =
-      OrchardBlockScanner::CreateResultForTesting(tree_state, commitments);
+      OrchardTestUtils::CreateResultForTesting(tree_state, commitments);
   tree_manager()->InsertCommitments(std::move(result));
 
   EXPECT_EQ(10u, storage()->CheckpointCount(account_id()).value());
@@ -250,7 +250,7 @@ TEST_F(OrchardShardTreeTest, MaxCheckpoint) {
         false, 1u));
     OrchardTreeState tree_state;
     auto result =
-        OrchardBlockScanner::CreateResultForTesting(tree_state, commitments);
+        OrchardTestUtils::CreateResultForTesting(tree_state, commitments);
     tree_manager()->InsertCommitments(std::move(result));
   }
 
@@ -269,7 +269,7 @@ TEST_F(OrchardShardTreeTest, MaxCheckpoint) {
     tree_state.block_height = 1;
     tree_state.tree_size = 6;
     auto result =
-        OrchardBlockScanner::CreateResultForTesting(tree_state, commitments);
+        OrchardTestUtils::CreateResultForTesting(tree_state, commitments);
     tree_manager()->InsertCommitments(std::move(result));
   }
 
@@ -288,7 +288,7 @@ TEST_F(OrchardShardTreeTest, MaxCheckpoint) {
     tree_state.block_height = 2;
     tree_state.tree_size = 11;
     auto result =
-        OrchardBlockScanner::CreateResultForTesting(tree_state, commitments);
+        OrchardTestUtils::CreateResultForTesting(tree_state, commitments);
     tree_manager()->InsertCommitments(std::move(result));
   }
 
@@ -316,8 +316,8 @@ TEST_F(OrchardShardTreeTest, NoWitnessOnNonMarked) {
       test_utils()->CreateMockCommitmentValue(4, kDefaultCommitmentSeed), false,
       std::nullopt));
 
-  auto result = OrchardBlockScanner::CreateResultForTesting(OrchardTreeState(),
-                                                            commitments);
+  auto result =
+      OrchardTestUtils::CreateResultForTesting(OrchardTreeState(), commitments);
   tree_manager()->InsertCommitments(std::move(result));
 
   {
@@ -347,8 +347,8 @@ TEST_F(OrchardShardTreeTest, NoWitnessOnWrongCheckpoint) {
       test_utils()->CreateMockCommitmentValue(4, kDefaultCommitmentSeed), false,
       std::nullopt));
 
-  auto result = OrchardBlockScanner::CreateResultForTesting(OrchardTreeState(),
-                                                            commitments);
+  auto result =
+      OrchardTestUtils::CreateResultForTesting(OrchardTreeState(), commitments);
   tree_manager()->InsertCommitments(std::move(result));
 
   {
@@ -383,8 +383,8 @@ TEST_F(OrchardShardTreeTest, TruncateTree) {
       }
     }
 
-    auto result = OrchardBlockScanner::CreateResultForTesting(
-        OrchardTreeState(), commitments);
+    auto result = OrchardTestUtils::CreateResultForTesting(OrchardTreeState(),
+                                                           commitments);
     tree_manager()->InsertCommitments(std::move(result));
   }
 
@@ -409,7 +409,7 @@ TEST_F(OrchardShardTreeTest, TruncateTree) {
     // Truncate was on position 5, so 5 elements left in the tre
     tree_state.tree_size = 5;
     auto result =
-        OrchardBlockScanner::CreateResultForTesting(tree_state, commitments);
+        OrchardTestUtils::CreateResultForTesting(tree_state, commitments);
     tree_manager()->InsertCommitments(std::move(result));
   }
 
@@ -460,8 +460,8 @@ TEST_F(OrchardShardTreeTest, TruncateTreeWrongCheckpoint) {
       test_utils()->CreateMockCommitmentValue(4, kDefaultCommitmentSeed), false,
       std::nullopt));
 
-  auto result = OrchardBlockScanner::CreateResultForTesting(OrchardTreeState(),
-                                                            commitments);
+  auto result =
+      OrchardTestUtils::CreateResultForTesting(OrchardTreeState(), commitments);
   tree_manager()->InsertCommitments(std::move(result));
 
   EXPECT_FALSE(tree_manager()->Truncate(2));
@@ -486,8 +486,8 @@ TEST_F(OrchardShardTreeTest, SimpleInsert) {
       test_utils()->CreateMockCommitmentValue(4, kDefaultCommitmentSeed), false,
       std::nullopt));
 
-  auto result = OrchardBlockScanner::CreateResultForTesting(OrchardTreeState(),
-                                                            commitments);
+  auto result =
+      OrchardTestUtils::CreateResultForTesting(OrchardTreeState(), commitments);
   tree_manager()->InsertCommitments(std::move(result));
 
   {

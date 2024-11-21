@@ -44,7 +44,10 @@ if (enable_orchard) {
       "orchard_test_utils.cc",
       "orchard_test_utils.h",
     ]
-    deps = [ "//brave/components/brave_wallet/browser/zcash/rust" ]
+    deps = [
+      ":orchard_bundle",
+      "//brave/components/brave_wallet/browser/zcash/rust:test_support",
+    ]
   }
 
   source_set("orchard_bundle") {

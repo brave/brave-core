@@ -350,7 +350,7 @@ OrchardShardTreeImpl::~OrchardShardTreeImpl() {}
 // static
 std::unique_ptr<OrchardShardTree> OrchardShardTree::Create(
     std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate) {
-  auto shard_tree_result = ::brave_wallet::orchard::create_shard_tree(
+  auto shard_tree_result = create_shard_tree(
       std::make_unique<ShardTreeDelegate>(std::move(delegate)));
   if (!shard_tree_result->is_ok()) {
     return nullptr;

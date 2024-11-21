@@ -53,10 +53,6 @@ class OrchardBlockScanner {
       const OrchardTreeState& tree_state,
       const std::vector<zcash::mojom::CompactBlockPtr>& blocks);
 
-  static Result CreateResultForTesting(
-      const OrchardTreeState& tree_state,
-      const std::vector<OrchardCommitment>& commitments);
-
  private:
   std::unique_ptr<orchard::OrchardBlockDecoder> decoder_;
 };
