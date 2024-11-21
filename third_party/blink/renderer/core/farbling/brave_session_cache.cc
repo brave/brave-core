@@ -144,7 +144,7 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
     return worker_or_worklet->ContentSettingsClient();
   }
 
-  base::debug::Alias(context);
+  DEBUG_ALIAS_FOR_OBJECT(context_alias, context);
   NOTREACHED() << "Unhandled ExecutionContext type";
 }
 
