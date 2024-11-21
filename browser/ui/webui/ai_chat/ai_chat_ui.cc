@@ -21,6 +21,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
@@ -116,21 +117,26 @@ void AIChatUI::BindInterface(
   if (embedder_) {
     embedder_->ShowUI();
   }
-
+  // Get the WebContents which SidePanel mode should be associated with
   content::WebContents* web_contents = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
   Browser* browser =
       ai_chat::GetBrowserForWebContents(web_ui()->GetWebContents());
-  if (!browser) {
-    return;
+  if (browser) {
+    TabStripModel* tab_strip_model = browser->tab_strip_model();
+    if (tab_strip_model) {
+      // If this WebUI is a main tab, we never want to be associated with
+      // the active tab
+      if (tab_strip_model->GetIndexOfWebContents(web_ui()->GetWebContents()) ==
+          TabStripModel::kNoTab) {
+        web_contents = tab_strip_model->GetActiveWebContents();
+      }
+    }
   }
-
-  TabStripModel* tab_strip_model = browser->tab_strip_model();
-  DCHECK(tab_strip_model);
-  web_contents = tab_strip_model->GetActiveWebContents();
 #else
   web_contents = GetActiveWebContents(profile_);
 #endif
+  // Don't associate with the WebUI's WebContents
   if (web_contents == web_ui()->GetWebContents()) {
     web_contents = nullptr;
   }
