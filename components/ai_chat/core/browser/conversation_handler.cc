@@ -1177,6 +1177,10 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
   if (!is_page_associated) {
     suggestions_.clear();
     suggestion_generation_status_ = mojom::SuggestionGenerationStatus::None;
+    if (!chat_history_.empty()) {
+      return;
+    }
+
     suggestions_.emplace_back(STARTER_PROMPT(MEMO));
     suggestions_.emplace_back(STARTER_PROMPT(INTERVIEW));
     suggestions_.emplace_back(STARTER_PROMPT(STUDY_PLAN));
