@@ -644,24 +644,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }];
 }
 
-- (void)fetchAutoContributeProperties:
-    (void (^)(BraveRewardsAutoContributeProperties* _Nullable properties))
-        completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetAutoContributeProperties(base::BindOnce(
-        ^(brave_rewards::mojom::AutoContributePropertiesPtr props) {
-          auto properties =
-              props.get() != nullptr
-                  ? [[BraveRewardsAutoContributeProperties alloc]
-                        initWithAutoContributePropertiesPtr:std::move(props)]
-                  : nil;
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(properties);
-          });
-        }));
-  }];
-}
-
 #pragma mark - Reporting
 
 - (void)setSelectedTabId:(UInt32)selectedTabId {
@@ -795,18 +777,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 - (void)setMinimumNumberOfVisits:(int)minimumNumberOfVisits {
   [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->SetPublisherMinVisits(minimumNumberOfVisits);
-  }];
-}
-
-- (void)setContributionAmount:(double)contributionAmount {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->SetAutoContributionAmount(contributionAmount);
-  }];
-}
-
-- (void)setAutoContributeEnabled:(bool)autoContributeEnabled {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->SetAutoContributeEnabled(autoContributeEnabled);
   }];
 }
 
@@ -1004,12 +974,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
     (brave_rewards::mojom::RewardsEngineClient::GetClientCountryCodeCallback)
         callback {
   std::move(callback).Run("");
-}
-
-- (void)isAutoContributeSupportedForClient:
-    (brave_rewards::mojom::RewardsEngineClient::
-         IsAutoContributeSupportedForClientCallback)callback {
-  std::move(callback).Run(true);
 }
 
 #pragma mark - Notifications

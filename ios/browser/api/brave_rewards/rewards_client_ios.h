@@ -102,8 +102,6 @@ class RewardsClientIOS : public brave_rewards::mojom::RewardsEngineClient {
                         const std::vector<std::string>& args,
                         ShowNotificationCallback callback) override;
   void GetClientCountryCode(GetClientCountryCodeCallback callback) override;
-  void IsAutoContributeSupportedForClient(
-      IsAutoContributeSupportedForClientCallback callback) override;
   void GetClientInfo(GetClientInfoCallback callback) override;
   void ReconcileStampReset() override;
   void RunDBTransaction(brave_rewards::mojom::DBTransactionPtr transaction,

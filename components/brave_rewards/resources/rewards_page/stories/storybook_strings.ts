@@ -6,18 +6,6 @@
 import { StringKey } from '../lib/locale_strings'
 
 export const localeStrings: { [K in StringKey]: string }  = {
-  acAmountLabel: 'You will send',
-  acAmountText: 'Up to $1 BAT',
-  acAttentionLabel: 'Attention',
-  acDisabledText: 'An automatic way to support websites and content creators, based on how much time you spend on their content.',
-  acDisabledTitle: 'Auto-Contribute is disabled',
-  acEmptyListText: 'Verified creators that you visit will appear here as you browse.',
-  acInfoText: 'Auto-contribute automatically sends monthly contributions to creators verified with Brave, based on how much time you spend on their content.',
-  acInfoTitle: 'How does Auto-Contribute work?',
-  acNextContributionLabel: 'Next contribution date',
-  acSiteCountLabel: 'Sites viewed',
-  acSiteLabel: 'Site',
-  acTitle: 'Auto-Contribute',
   adsBrowserUpgradeRequiredText: 'Your browser needs to be updated to continue seeing ads.',
   adsHistoryButtonLabel: '30-day Ads History',
   adsHistoryMarkInappropriateLabel: 'Mark as inappropriate',
@@ -147,8 +135,6 @@ export const localeStrings: { [K in StringKey]: string }  = {
   navigationExploreLabel: 'Explore',
   navigationHomeLabel: 'Home',
   newBadgeText: 'NEW',
-  notificationAutoContributeCompletedText: 'You\'ve contributed $1.',
-  notificationAutoContributeCompletedTitle: 'Auto-Contribute',
   notificationWalletDisconnectedAction: 'Log in again',
   notificationWalletDisconnectedText: 'This happens from time to time to keep your $1 account secure. While logged out, you will continue to receive payouts, but won\'t be able to see your balance or send contributions from your $1 account.',
   notificationWalletDisconnectedTitle: 'You are logged out',

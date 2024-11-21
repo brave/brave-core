@@ -36,12 +36,7 @@ function createHost(): Host {
     loading: false,
     requestedView: null,
     rewardsEnabled: true,
-    settings: {
-      autoContributeEnabled: true,
-      autoContributeAmount: 5
-    },
     options: {
-      autoContributeAmounts: [1, 5, 10, 15],
       externalWalletRegions: new Map([
         ['uphold', { allow: ['US'], block: [] }],
         ['gemini', { allow: [], block: ['US'] }]
@@ -49,10 +44,7 @@ function createHost(): Host {
       vbatDeadline: Date.parse('2023-01-01T00:00:00-05:00'),
       vbatExpired: false
     },
-    adaptiveCaptchaInfo: null && {
-      url: '',
-      status: 'pending'
-    },
+    adaptiveCaptchaInfo: null,
     externalWalletProviders: ['uphold', 'gemini', 'solana'],
     balance: optional(10.2),
     exchangeInfo: {
@@ -76,7 +68,6 @@ function createHost(): Host {
       icon: 'https://brave.com/static-assets/images/brave-favicon.png',
       platform: null,
       attentionScore: 0.17,
-      autoContributeEnabled: true,
       monthlyTip: 5,
       supportedWalletProviders: ['uphold']
     },
@@ -93,13 +84,7 @@ function createHost(): Host {
       oneTimeTips: -2,
       monthlyTips: -19
     },
-    notifications: [
-      {
-        type: 'monthly-tip-completed',
-        id: '1',
-        timeStamp: Date.now() - 100
-      }
-    ] && [],
+    notifications: [],
     availableCountries: ['US'],
     defaultCountry: 'US',
     declaredCountry: 'US',
@@ -124,18 +109,6 @@ function createHost(): Host {
         declaredCountry: 'US'
       })
       return Promise.resolve('success')
-    },
-
-    setIncludeInAutoContribute(enabled) {
-      const { publisherInfo } = stateManager.getState()
-      if (publisherInfo) {
-        stateManager.update({
-          publisherInfo: {
-            ...publisherInfo,
-            autoContributeEnabled: enabled
-          }
-        })
-      }
     },
 
     openAdaptiveCaptchaSupport() {

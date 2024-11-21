@@ -79,10 +79,6 @@ class RewardsPageHandler::UpdateObserver
         UpdateSource::kAds);
     AddPrefListener(brave_ads::prefs::kOptedInToSearchResultAds,
                     UpdateSource::kAds);
-    AddPrefListener(prefs::kAutoContributeEnabled, UpdateSource::kRewards);
-    AddPrefListener(prefs::kAutoContributeAmount, UpdateSource::kRewards);
-    AddPrefListener(prefs::kMinVisitTime, UpdateSource::kRewards);
-    AddPrefListener(prefs::kMinVisits, UpdateSource::kRewards);
     AddPrefListener(brave_news::prefs::kBraveNewsOptedIn, UpdateSource::kAds);
     AddPrefListener(brave_news::prefs::kNewTabPageShowToday,
                     UpdateSource::kAds);
@@ -379,59 +375,6 @@ void RewardsPageHandler::RemoveRecurringContribution(
   std::move(callback).Run();
 }
 
-void RewardsPageHandler::GetAutoContributeSettings(
-    GetAutoContributeSettingsCallback callback) {
-  auto country_code = rewards_service_->GetCountryCode();
-  if (!IsAutoContributeSupportedForCountry(country_code)) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  auto settings = mojom::AutoContributeSettings::New();
-  settings->enabled = prefs_->GetBoolean(prefs::kAutoContributeEnabled);
-  settings->amount = prefs_->GetDouble(prefs::kAutoContributeAmount);
-  settings->next_auto_contribute_date =
-      static_cast<double>(prefs_->GetUint64(prefs::kNextReconcileStamp) * 1000);
-
-  std::move(callback).Run(std::move(settings));
-}
-
-void RewardsPageHandler::GetAutoContributeSites(
-    GetAutoContributeSitesCallback callback) {
-  auto filter = mojom::ActivityInfoFilter::New();
-  filter->order_by.push_back(
-      mojom::ActivityInfoFilterOrderPair::New("ai.percent", false));
-  filter->min_duration = prefs_->GetInteger(prefs::kMinVisitTime);
-  filter->reconcile_stamp = prefs_->GetUint64(prefs::kNextReconcileStamp);
-  filter->excluded = mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
-  filter->percent = 1;
-  filter->min_visits = prefs_->GetInteger(prefs::kMinVisits);
-
-  rewards_service_->GetActivityInfoList(0, 0, std::move(filter),
-                                        std::move(callback));
-}
-
-void RewardsPageHandler::SetAutoContributeEnabled(
-    bool enabled,
-    SetAutoContributeEnabledCallback callback) {
-  rewards_service_->SetAutoContributeEnabled(enabled);
-  std::move(callback).Run();
-}
-
-void RewardsPageHandler::SetAutoContributeAmount(
-    double amount,
-    SetAutoContributeAmountCallback callback) {
-  rewards_service_->SetAutoContributionAmount(amount);
-  std::move(callback).Run();
-}
-
-void RewardsPageHandler::RemoveAutoContributeSite(
-    const std::string& creator_id,
-    RemoveAutoContributeSiteCallback callback) {
-  rewards_service_->SetPublisherExclude(creator_id, true);
-  std::move(callback).Run();
-}
-
 void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
   auto settings = mojom::AdsSettings::New();
 
@@ -642,9 +585,6 @@ void RewardsPageHandler::GetRewardsNotifications(
   for (auto [_, value] : notification_service->GetAllNotifications()) {
     std::optional<mojom::RewardsNotificationType> type;
     switch (value.type_) {
-      case RewardsNotificationService::REWARDS_NOTIFICATION_AUTO_CONTRIBUTE:
-        type = mojom::RewardsNotificationType::kAutoContribute;
-        break;
       case RewardsNotificationService::REWARDS_NOTIFICATION_TIPS_PROCESSED:
         type = mojom::RewardsNotificationType::kTipsProcessed;
         break;

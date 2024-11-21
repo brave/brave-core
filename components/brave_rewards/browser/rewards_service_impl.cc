@@ -325,10 +325,6 @@ void RewardsServiceImpl::Init(
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
   profile_pref_change_registrar_.Init(prefs_);
   profile_pref_change_registrar_.Add(
-      prefs::kAutoContributeEnabled,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
       brave_ads::prefs::kOptedInToNotificationAds,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
@@ -344,15 +340,6 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
 }
 
 void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
-  if (key == prefs::kAutoContributeEnabled) {
-    if (prefs_->GetBoolean(prefs::kAutoContributeEnabled)) {
-      StartEngineProcessIfNecessary();
-    }
-    // Must check for connected external wallet before recording
-    // AC state.
-    RecordBackendP3AStats();
-  }
-
   if (key == ntp_background_images::prefs::
                  kNewTabPageShowSponsoredImagesBackgroundImage ||
       key == brave_ads::prefs::kOptedInToNotificationAds ||
@@ -368,10 +355,9 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
 }
 
 void RewardsServiceImpl::CheckPreferences() {
-  if (prefs_->GetBoolean(prefs::kAutoContributeEnabled) ||
-      prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds)) {
-    // If the user has enabled Ads or AC, but the "enabled" pref is missing, set
-    // the "enabled" pref to true.
+  if (prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds)) {
+    // If the user has enabled Ads, but the "enabled" pref is missing, set the
+    // "enabled" pref to true.
     if (!prefs_->GetUserPrefValue(prefs::kEnabled)) {
       prefs_->SetBoolean(prefs::kEnabled, true);
     }
@@ -477,7 +463,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
       self->GetEnvironment(base::BindOnce(on_get_environment, self));
 
       // After successfully creating a Rewards wallet for the first time,
-      // automatically enable Ads and AC.
+      // automatically enable Ads.
       if (!self->prefs_->GetBoolean(prefs::kEnabled)) {
         self->prefs_->SetBoolean(prefs::kEnabled, true);
         self->prefs_->SetString(prefs::kUserVersion,
@@ -489,17 +475,6 @@ void RewardsServiceImpl::CreateRewardsWallet(
         self->prefs_->SetInteger(
             prefs::kTosVersion,
             RewardsParametersFromPrefs(*(self->prefs_))->tos_version);
-
-        // Fetch the user's balance before turning on AC. We don't want to
-        // automatically turn on AC if for some reason the user has a current
-        // balance, as this could result in unintentional BAT transfers.
-        auto on_balance = [](base::WeakPtr<RewardsServiceImpl> self,
-                             mojom::BalancePtr balance) {
-          if (self && balance && balance->total == 0) {
-            self->SetAutoContributeEnabled(true);
-          }
-        };
-        self->FetchBalance(base::BindOnce(on_balance, self));
       }
 
       // Notify observers that the Rewards wallet has been created.
@@ -821,26 +796,12 @@ void RewardsServiceImpl::OnEngineInitialized(mojom::Result result) {
   }
 }
 
-void RewardsServiceImpl::IsAutoContributeSupported(
-    base::OnceCallback<void(bool)> callback) {
-  IsAutoContributeSupportedForClient(std::move(callback));
-}
-
-void RewardsServiceImpl::GetAutoContributeProperties(
-    GetAutoContributePropertiesCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), nullptr);
-  }
-
-  engine_->GetAutoContributeProperties(std::move(callback));
-}
-
 void RewardsServiceImpl::OnReconcileComplete(
     mojom::Result result,
     mojom::ContributionInfoPtr contribution) {
   if (result == mojom::Result::OK &&
       contribution->type == mojom::RewardsType::RECURRING_TIP) {
-    MaybeShowNotificationTipsPaid();
+    ShowNotificationTipsPaid();
   }
 
   if (result == mojom::Result::OK) {
@@ -1346,12 +1307,6 @@ void RewardsServiceImpl::GetClientCountryCode(
   std::move(callback).Run(GetCountryCode());
 }
 
-void RewardsServiceImpl::IsAutoContributeSupportedForClient(
-    IsAutoContributeSupportedForClientCallback callback) {
-  const auto country_code = GetCountryCode();
-  std::move(callback).Run(IsAutoContributeSupportedForCountry(country_code));
-}
-
 void RewardsServiceImpl::GetPublisherMinVisitTime(
     GetPublisherMinVisitTimeCallback callback) {
   if (!Connected()) {
@@ -1385,31 +1340,6 @@ void RewardsServiceImpl::SetPublisherMinVisits(int visits) const {
   }
 
   engine_->SetPublisherMinVisits(visits);
-}
-
-void RewardsServiceImpl::SetAutoContributionAmount(const double amount) const {
-  if (!Connected()) {
-    return;
-  }
-
-  engine_->SetAutoContributionAmount(amount);
-}
-
-void RewardsServiceImpl::GetAutoContributeEnabled(
-    GetAutoContributeEnabledCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), false);
-  }
-
-  engine_->GetAutoContributeEnabled(std::move(callback));
-}
-
-void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
-  if (!Connected()) {
-    return;
-  }
-
-  engine_->SetAutoContributeEnabled(enabled);
 }
 
 void RewardsServiceImpl::OnGetBalanceReport(
@@ -1492,15 +1422,6 @@ void RewardsServiceImpl::OnPanelPublisherInfo(mojom::Result result,
   for (auto& observer : observers_) {
     observer.OnPanelPublisherInfo(this, result, info.get(), tab_id);
   }
-}
-
-void RewardsServiceImpl::GetAutoContributionAmount(
-    GetAutoContributionAmountCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), 0);
-  }
-
-  engine_->GetAutoContributionAmount(std::move(callback));
 }
 
 void RewardsServiceImpl::FetchFavIcon(const std::string& url,
@@ -1750,16 +1671,7 @@ RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
   return notification_service_.get();
 }
 
-void RewardsServiceImpl::MaybeShowNotificationTipsPaid() {
-  GetAutoContributeEnabled(base::BindOnce(
-      &RewardsServiceImpl::ShowNotificationTipsPaid,
-      AsWeakPtr()));
-}
-
-void RewardsServiceImpl::ShowNotificationTipsPaid(bool ac_enabled) {
-  if (ac_enabled)
-    return;
-
+void RewardsServiceImpl::ShowNotificationTipsPaid() {
   RewardsNotificationService::RewardsNotificationArgs args;
   notification_service_->AddNotification(
       RewardsNotificationService::REWARDS_NOTIFICATION_TIPS_PROCESSED, args,
@@ -2178,8 +2090,8 @@ void RewardsServiceImpl::OnRecordBackendP3AExternalWallet(
   }
 
   if (!wallet || wallet->status != mojom::WalletStatus::kConnected) {
-    // Do not report "tips sent" and "auto-contribute" enabled metrics if user
-    // does not have a custodial account linked.
+    // Do not report "tips sent" enabled metrics if user does not have a
+    // custodial account linked.
     p3a::RecordNoWalletCreatedForAllMetrics();
     return;
   }
@@ -2224,18 +2136,11 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
   }
 
   p3a::RecordTipsSent(tip_count);
-
-  GetAutoContributeEnabled(base::BindOnce(
-      &RewardsServiceImpl::OnRecordBackendP3AStatsAC, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::OnRecordBackendP3AStatsRecurringTips(
     std::vector<mojom::PublisherInfoPtr> list) {
   p3a::RecordRecurringTipConfigured(!list.empty());
-}
-
-void RewardsServiceImpl::OnRecordBackendP3AStatsAC(bool ac_enabled) {
-  p3a::RecordAutoContributionsState(ac_enabled);
 }
 
 mojom::Environment RewardsServiceImpl::GetDefaultServerEnvironment() {

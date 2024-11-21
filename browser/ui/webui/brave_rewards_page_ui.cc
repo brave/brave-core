@@ -147,13 +147,7 @@ class RewardsDOMHandler
   void ToggleFlaggedAd(const base::Value::List& args);
   void OnToggleFlaggedAd(const bool success);
   void SaveAdsSetting(const base::Value::List& args);
-  void OnGetContributionAmount(double amount);
-  void OnIsAutoContributeSupported(bool is_ac_supported);
-  void OnGetAutoContributeProperties(
-      brave_rewards::mojom::AutoContributePropertiesPtr properties);
   void OnGetReconcileStamp(uint64_t reconcile_stamp);
-  void OnAutoContributePropsReady(
-      brave_rewards::mojom::AutoContributePropertiesPtr properties);
   void GetStatement(const base::Value::List& args);
   void GetStatementOfAccounts();
   void OnGetStatementOfAccounts(brave_ads::mojom::StatementInfoPtr statement);
@@ -629,10 +623,6 @@ void RewardsDOMHandler::OnGetRewardsParameters(
 
   if (parameters) {
     rate = parameters->rate;
-    auto_contribute_choice = parameters->auto_contribute_choice;
-    for (double const& item : parameters->auto_contribute_choices) {
-      auto_contribute_choices.Append(item);
-    }
     for (const auto& [key, value] : parameters->payout_status) {
       payout_status.Set(key, value);
     }
@@ -683,27 +673,19 @@ void RewardsDOMHandler::OnRewardsInitialized(
 }
 
 void RewardsDOMHandler::IsAutoContributeSupported(const base::Value::List&) {
-  if (!rewards_service_) {
-    return;
-  }
-
   AllowJavascript();
-
-  rewards_service_->IsAutoContributeSupported(
-      base::BindOnce(&RewardsDOMHandler::OnIsAutoContributeSupported,
-                     weak_factory_.GetWeakPtr()));
+  CallJavascriptFunction("brave_rewards.onIsAutoContributeSupported",
+                         base::Value(false));
 }
 
 void RewardsDOMHandler::GetAutoContributeProperties(
     const base::Value::List& args) {
-  if (!rewards_service_)
-    return;
-
   AllowJavascript();
-
-  rewards_service_->GetAutoContributeProperties(
-      base::BindOnce(&RewardsDOMHandler::OnGetAutoContributeProperties,
-                     weak_factory_.GetWeakPtr()));
+  base::Value::Dict values;
+  values.Set("enabledContribute", false);
+  values.Set("contributionMinTime", 0);
+  values.Set("contributionMinVisits", 0);
+  CallJavascriptFunction("brave_rewards.autoContributeProperties", values);
 }
 
 void RewardsDOMHandler::BeginExternalWalletLogin(
@@ -740,27 +722,6 @@ void RewardsDOMHandler::ReconnectExternalWallet(const base::Value::List& args) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnIsAutoContributeSupported(bool is_ac_supported) {
-  if (IsJavascriptAllowed()) {
-    CallJavascriptFunction("brave_rewards.onIsAutoContributeSupported",
-                           base::Value(is_ac_supported));
-  }
-}
-
-void RewardsDOMHandler::OnGetAutoContributeProperties(
-    brave_rewards::mojom::AutoContributePropertiesPtr properties) {
-  if (!IsJavascriptAllowed() || !properties)
-    return;
-
-  base::Value::Dict values;
-  values.Set("enabledContribute", properties->enabled_contribute);
-  values.Set("contributionMinTime",
-             static_cast<int>(properties->contribution_min_time));
-  values.Set("contributionMinVisits", properties->contribution_min_visits);
-
-  CallJavascriptFunction("brave_rewards.autoContributeProperties", values);
-}
-
 void RewardsDOMHandler::OnGetReconcileStamp(uint64_t reconcile_stamp) {
   if (IsJavascriptAllowed()) {
     std::string stamp = std::to_string(reconcile_stamp);
@@ -774,29 +735,6 @@ void RewardsDOMHandler::GetReconcileStamp(const base::Value::List& args) {
     rewards_service_->GetReconcileStamp(base::BindOnce(
         &RewardsDOMHandler::OnGetReconcileStamp, weak_factory_.GetWeakPtr()));
   }
-}
-
-void RewardsDOMHandler::OnAutoContributePropsReady(
-    brave_rewards::mojom::AutoContributePropertiesPtr properties) {
-  if (!properties) {
-    return;
-  }
-
-  auto filter = brave_rewards::mojom::ActivityInfoFilter::New();
-  auto pair = brave_rewards::mojom::ActivityInfoFilterOrderPair::New(
-      "ai.percent", false);
-  filter->order_by.push_back(std::move(pair));
-  filter->min_duration = properties->contribution_min_time;
-  filter->reconcile_stamp = properties->reconcile_stamp;
-  filter->excluded =
-      brave_rewards::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
-  filter->percent = 1;
-  filter->min_visits = properties->contribution_min_visits;
-
-  rewards_service_->GetActivityInfoList(
-      0, 0, std::move(filter),
-      base::BindOnce(&RewardsDOMHandler::OnPublisherList,
-                     weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::GetExcludedSites(const base::Value::List& args) {
@@ -820,48 +758,7 @@ void RewardsDOMHandler::OnExcludedSitesChanged(
   CallJavascriptFunction("brave_rewards.excludedSiteChanged");
 }
 
-void RewardsDOMHandler::SaveSetting(const base::Value::List& args) {
-  CHECK_EQ(2U, args.size());
-  AllowJavascript();
-
-  if (rewards_service_) {
-    const std::string key = args[0].GetString();
-    const std::string value = args[1].GetString();
-
-    if (key == "contributionMonthly") {
-      double double_value = 0;
-      if (!base::StringToDouble(value, &double_value)) {
-        LOG(ERROR) << "Auto contribution amount not a double";
-        return;
-      }
-      rewards_service_->SetAutoContributionAmount(double_value);
-    }
-
-    if (key == "contributionMinTime") {
-      int int_value;
-      if (!base::StringToInt(value, &int_value)) {
-        LOG(ERROR) << "Min time was not converted to int";
-        return;
-      }
-
-      rewards_service_->SetPublisherMinVisitTime(int_value);
-    }
-
-    if (key == "contributionMinVisits") {
-      int int_value;
-      if (!base::StringToInt(value, &int_value)) {
-        LOG(ERROR) << "Min visits was not converted to int";
-        return;
-      }
-
-      rewards_service_->SetPublisherMinVisits(int_value);
-    }
-
-    if (key == "enabledContribute") {
-      rewards_service_->SetAutoContributeEnabled(value == "true");
-    }
-  }
-}
+void RewardsDOMHandler::SaveSetting(const base::Value::List& args) {}
 
 void RewardsDOMHandler::ExcludePublisher(const base::Value::List& args) {
   CHECK_EQ(1U, args.size());
@@ -939,21 +836,10 @@ void RewardsDOMHandler::OnExcludedSiteList(
   CallJavascriptFunction("brave_rewards.excludedList", publishers);
 }
 
-void RewardsDOMHandler::OnGetContributionAmount(double amount) {
-  if (IsJavascriptAllowed()) {
-    CallJavascriptFunction("brave_rewards.contributionAmount",
-                           base::Value(amount));
-  }
-}
-
 void RewardsDOMHandler::GetAutoContributionAmount(
     const base::Value::List& args) {
-  if (rewards_service_) {
-    AllowJavascript();
-    rewards_service_->GetAutoContributionAmount(
-        base::BindOnce(&RewardsDOMHandler::OnGetContributionAmount,
-                       weak_factory_.GetWeakPtr()));
-  }
+  AllowJavascript();
+  CallJavascriptFunction("brave_rewards.contributionAmount", base::Value(0));
 }
 
 void RewardsDOMHandler::OnReconcileComplete(
@@ -1050,15 +936,7 @@ void RewardsDOMHandler::GetOneTimeTips(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::GetContributionList(const base::Value::List& args) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-
-  rewards_service_->GetAutoContributeProperties(
-      base::BindOnce(&RewardsDOMHandler::OnAutoContributePropsReady,
-                     weak_factory_.GetWeakPtr()));
+  OnPublisherList({});
 }
 
 void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
