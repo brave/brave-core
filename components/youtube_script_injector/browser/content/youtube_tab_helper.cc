@@ -12,6 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
+#include "brave/build/android/jni_headers/BackgroundVideoPlaybackTabHelper_jni.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_json.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 #include "brave/components/youtube_script_injector/common/features.h"
@@ -48,9 +49,7 @@ YouTubeTabHelper::YouTubeTabHelper(content::WebContents* web_contents,
 YouTubeTabHelper::~YouTubeTabHelper() = default;
 
 void YouTubeTabHelper::InsertScriptInPage(
-    const content::GlobalRenderFrameHostId& render_frame_host_id,
-    MatchedRule rule) {
-  // InsertScriptInPage(render_frame_host_id, rule.policy_script);
+    const content::GlobalRenderFrameHostId& render_frame_host_id, MatchedRule rule) {
   content::RenderFrameHost* render_frame_host =
       content::RenderFrameHost::FromID(render_frame_host_id);
 
@@ -60,7 +59,7 @@ void YouTubeTabHelper::InsertScriptInPage(
           web_contents()->GetPrimaryMainFrame()->GetGlobalId()) {
     GetRemote(render_frame_host)
         ->RequestAsyncExecuteScript(
-            world_id_, base::UTF8ToUTF16(rule.policy_script),
+            world_id_, base::UTF8ToUTF16(rule.feature_script),
             blink::mojom::UserActivationOption::kDoNotActivate,
             blink::mojom::PromiseResultOption::kAwait, base::DoNothing());
   } else {
@@ -97,5 +96,56 @@ void YouTubeTabHelper::DidFinishNavigation(
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeTabHelper);
-
 }  // namespace youtube_script_injector
+
+namespace chrome {
+namespace android {
+
+void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jweb_contents) {
+      LOG(ERROR) << "SIMONE - Fullscreen script activated.";
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
+
+  // Get the YouTubeTabHelper instance
+      youtube_script_injector::YouTubeTabHelper* helper = youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
+      if (!helper) {
+        return;
+      }
+
+  // Injecting this script to make youtube video fullscreen on landscape mode.
+    constexpr const char16_t script[] =
+        uR"js(if(!document.fullscreenElement) {
+           var fullscreenBtn =
+             document.getElementsByClassName('fullscreen-icon');
+           if(fullscreenBtn && fullscreenBtn.length > 0) {
+              fullscreenBtn[0].click();
+           } else {
+             var moviePlayer = document.getElementById('movie_player');
+             if (moviePlayer) {
+                 moviePlayer.click();
+             }
+             setTimeout(() => {
+                 var fullscreenBtn =
+                   document.getElementsByClassName('fullscreen-icon');
+                 if(fullscreenBtn && fullscreenBtn.length > 0) {
+                    fullscreenBtn[0].click();
+                 }
+             }, 50);
+           }
+        } )js";
+    helper->GetRemote(web_contents->GetPrimaryMainFrame())
+        ->RequestAsyncExecuteScript(
+            helper->GetWorldId(), script,
+            blink::mojom::UserActivationOption::kActivate,
+            blink::mojom::PromiseResultOption::kAwait, base::DoNothing());
+}
+
+jboolean JNI_BackgroundVideoPlaybackTabHelper_IsPlayingMedia(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jweb_contents) {
+  return false;
+}
+}  // namespace android
+}  // namespace chrome

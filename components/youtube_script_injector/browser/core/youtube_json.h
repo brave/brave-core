@@ -24,7 +24,8 @@ namespace youtube_script_injector {
 
 // Holds the loaded script text when a rule is matched.
 struct MatchedRule {
-  std::string policy_script;
+  std::string feature_script;
+  // std::string fullscreen_script;
   int version;
 };
 
@@ -54,11 +55,13 @@ class YouTubeJson {
 
   // Getters.
   const base::FilePath& GetFeatureScript() const { return feature_script_path_; }
+  const base::FilePath& GetFullscreenScript() const { return fullscreen_script_path_; }
   int GetVersion() const { return version_; }
 
  private:
-  // This is a path (not content) relative to the component under scripts/.
+  // Thesse are paths (not contents) relative to the component under scripts/.
   base::FilePath feature_script_path_;
+  base::FilePath fullscreen_script_path_;
   // Used for checking if the last inserted script is the latest version.
   int version_;
 };
