@@ -16,10 +16,6 @@ export default function NoticeConversationStorage() {
 
   const noticeElementRef = React.useRef<HTMLDivElement>(null)
 
-  const handleDismissStorageNotice = () => {
-    aiChatContext.dismissStorageNotice()
-  }
-
   // Dismiss the notice for future loads after 4 seconds of being visible
   React.useEffect(() => {
     if (!noticeElementRef.current) {
@@ -27,7 +23,7 @@ export default function NoticeConversationStorage() {
     }
 
     const visibilityTimer = new VisibilityTimer(
-      handleDismissStorageNotice,
+      aiChatContext.markStorageNoticeViewed,
       4000,
       noticeElementRef.current
     )
@@ -66,7 +62,7 @@ export default function NoticeConversationStorage() {
         kind='plain-faint'
         fab
         title={getLocale('closeNotice')}
-        onClick={handleDismissStorageNotice}
+        onClick={aiChatContext.dismissStorageNotice}
       >
         <Icon name='close' />
       </Button>

@@ -26,7 +26,7 @@ export default function FullScreen() {
 
   const initAsideAnimation = React.useCallback((node: HTMLElement | null) => {
     if (!node) return
-    const open = { width: '340px', opacity: 1 }
+    const open = { width: 'var(--navigation-width)', opacity: 1 }
     const close = { width: '0px', opacity: 0 }
     const animationOptions: KeyframeAnimationOptions = {
       duration: 200,
