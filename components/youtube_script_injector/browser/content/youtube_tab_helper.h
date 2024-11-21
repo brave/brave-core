@@ -35,14 +35,17 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
   YouTubeTabHelper(const YouTubeTabHelper&) = delete;
   YouTubeTabHelper& operator=(const YouTubeTabHelper&) = delete;
 
+  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
+      content::RenderFrameHost* rfh);
+
+  int32_t GetWorldId() const { return world_id_; }
+
  private:
   YouTubeTabHelper(content::WebContents*, const int32_t world_id);
   // Called to insert the YouTube script into the page.
   void InsertScriptInPage(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       MatchedRule rule);
-  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
-      content::RenderFrameHost* rfh);
   friend class content::WebContentsUserData<YouTubeTabHelper>;
 
   // content::WebContentsObserver overrides
