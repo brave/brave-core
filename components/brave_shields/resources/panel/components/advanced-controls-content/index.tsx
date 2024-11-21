@@ -38,12 +38,25 @@ const httpsUpgradeModeOptions = [
 ]
 
 function GlobalSettings () {
+  // Focus on page if it is already open, otherwise open a new tab
+  const focusOrCreateTab = (url: string) => {
+    chrome.tabs.query({ url }, (tabs) => {
+      if (tabs.length) {
+        if (tabs[0].id !== undefined) {
+          chrome.tabs.update(tabs[0].id, { active: true });
+        }
+      } else {
+        chrome.tabs.create({ url, active: true });
+      }
+    });
+  };
+
   const onAdBlockListsClick = () => {
-    chrome.tabs.create({ url: 'chrome://settings/shields/filters', active: true })
+    focusOrCreateTab('chrome://settings/shields/filters')
   }
 
   const onSettingsClick = () => {
-    chrome.tabs.create({ url: 'chrome://settings/shields', active: true })
+    focusOrCreateTab('chrome://settings/shields')
   }
 
   return (
