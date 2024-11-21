@@ -37,18 +37,18 @@ KeccakHashArray KeccakHash(base::span<const uint8_t> input) {
   return result;
 }
 
-std::string GetFunctionHash(const std::string& input) {
+std::string GetFunctionHash(std::string_view input) {
   return ToHex(GetFunctionHashBytes4(input));
 }
 
-eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input) {
+eth_abi::Bytes4 GetFunctionHashBytes4(std::string_view input) {
   eth_abi::Bytes4 bytes_result;
   base::span(bytes_result)
       .copy_from(base::span(KeccakHash(base::as_byte_span(input))).first<4>());
   return bytes_result;
 }
 
-eth_abi::Bytes32 Namehash(const std::string& name) {
+eth_abi::Bytes32 Namehash(std::string_view name) {
   eth_abi::Bytes32 hash = {};
   auto labels = SplitStringPiece(name, ".", base::KEEP_WHITESPACE,
                                  base::SPLIT_WANT_NONEMPTY);

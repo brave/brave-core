@@ -8,6 +8,7 @@
 
 #include <array>
 #include <string>
+#include <string_view>
 
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "crypto/sha2.h"
@@ -25,13 +26,13 @@ KeccakHashArray KeccakHash(base::span<const uint8_t> input);
 
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')
-std::string GetFunctionHash(const std::string& input);
-eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input);
+std::string GetFunctionHash(std::string_view input);
+eth_abi::Bytes4 GetFunctionHashBytes4(std::string_view input);
 
 // Implement namehash algorithm based on EIP-137 spec.
 // Used for converting domain names in the classic format (ex: brave.crypto) to
 // an ERC-721 token for ENS and Unstoppable Domains.
-eth_abi::Bytes32 Namehash(const std::string& name);
+eth_abi::Bytes32 Namehash(std::string_view name);
 
 // sha256(sha256(input))
 SHA256HashArray DoubleSHA256Hash(base::span<const uint8_t> input);
