@@ -7,6 +7,7 @@
 
 #include <cstdlib>
 #include <optional>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -36,7 +37,7 @@ namespace brave_wallet {
 
 namespace {
 
-std::optional<bool> GetEip1559ForKnownChain(const std::string& chain_id_lwr) {
+std::optional<bool> GetEip1559ForKnownChain(std::string_view chain_id_lwr) {
   static base::NoDestructor<base::flat_map<std::string_view, bool>> values([] {
     base::flat_map<std::string_view, bool> values({
         {mojom::kMainnetChainId, true},  //
@@ -66,7 +67,7 @@ constexpr char kGanacheLocalhostURL[] = "http://localhost:7545/";
 constexpr char kSolanaLocalhostURL[] = "http://localhost:8899/";
 constexpr char kFilecoinLocalhostURL[] = "http://localhost:1234/rpc/v0";
 
-const std::string GetChainSubdomain(const std::string& chain_id) {
+const std::string GetChainSubdomain(std::string_view chain_id) {
   static base::NoDestructor<base::flat_map<std::string, std::string>>
       subdomains({// EVM chains
                   {mojom::kMainnetChainId, "ethereum-mainnet"},
@@ -91,7 +92,7 @@ const std::string GetChainSubdomain(const std::string& chain_id) {
   return "";
 }
 
-std::optional<GURL> GetURLForKnownChainId(const std::string& chain_id) {
+std::optional<GURL> GetURLForKnownChainId(std::string_view chain_id) {
   auto subdomain = brave_wallet::GetChainSubdomain(chain_id);
   if (subdomain.empty()) {
     return std::nullopt;
@@ -723,7 +724,7 @@ NetworkManager::NetworkManager(PrefService* prefs) : prefs_(prefs) {}
 NetworkManager::~NetworkManager() = default;
 
 // static
-mojom::NetworkInfoPtr NetworkManager::GetKnownChain(const std::string& chain_id,
+mojom::NetworkInfoPtr NetworkManager::GetKnownChain(std::string_view chain_id,
                                                     mojom::CoinType coin) {
   if (coin == mojom::CoinType::ETH) {
     for (const auto* network : GetKnownEthNetworks()) {
@@ -773,10 +774,8 @@ mojom::NetworkInfoPtr NetworkManager::GetKnownChain(const std::string& chain_id,
   NOTREACHED() << coin;
 }
 
-mojom::NetworkInfoPtr NetworkManager::GetCustomChain(
-
-    const std::string& chain_id,
-    mojom::CoinType coin) {
+mojom::NetworkInfoPtr NetworkManager::GetCustomChain(std::string_view chain_id,
+                                                     mojom::CoinType coin) {
   const base::Value::List* custom_list = GetCustomNetworksList(prefs_, coin);
   if (!custom_list) {
     return nullptr;
@@ -792,7 +791,7 @@ mojom::NetworkInfoPtr NetworkManager::GetCustomChain(
   return nullptr;
 }
 
-mojom::NetworkInfoPtr NetworkManager::GetChain(const std::string& chain_id,
+mojom::NetworkInfoPtr NetworkManager::GetChain(std::string_view chain_id,
                                                mojom::CoinType coin) {
   if (chain_id.empty()) {
     return nullptr;
@@ -810,7 +809,7 @@ mojom::NetworkInfoPtr NetworkManager::GetChain(const std::string& chain_id,
 }
 
 // DEPRECATED 04/2024
-std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
+std::string GetInfuraSubdomainForKnownChainId(std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   if (kInfuraSubdomains.contains(chain_id_lower)) {
     return kInfuraSubdomains.at(chain_id_lower);
@@ -819,7 +818,7 @@ std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
 }
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id) {
+std::string GetSolanaSubdomainForKnownChainId(std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   if (kSolanaSubdomains.contains(chain_id_lower)) {
     return kSolanaSubdomains.at(chain_id_lower);
@@ -828,7 +827,7 @@ std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id) {
 }
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id) {
+std::string GetFilecoinSubdomainForKnownChainId(std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   if (kFilecoinSubdomains.contains(chain_id_lower)) {
     return kFilecoinSubdomains.at(chain_id_lower);
@@ -837,7 +836,7 @@ std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id) {
 }
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetBitcoinSubdomainForKnownChainId(const std::string& chain_id) {
+std::string GetBitcoinSubdomainForKnownChainId(std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   if (kBitcoinSubdomains.contains(chain_id_lower)) {
     return kBitcoinSubdomains.at(chain_id_lower);
@@ -846,7 +845,7 @@ std::string GetBitcoinSubdomainForKnownChainId(const std::string& chain_id) {
 }
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetZCashSubdomainForKnownChainId(const std::string& chain_id) {
+std::string GetZCashSubdomainForKnownChainId(std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   if (kZCashSubdomains.contains(chain_id_lower)) {
     return kZCashSubdomains.at(chain_id_lower);
@@ -873,7 +872,7 @@ std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllCustomChains(
   return result;
 }
 
-bool NetworkManager::KnownChainExists(const std::string& chain_id,
+bool NetworkManager::KnownChainExists(std::string_view chain_id,
                                       mojom::CoinType coin) {
   if (coin == mojom::CoinType::ETH) {
     for (const auto* network : GetKnownEthNetworks()) {
@@ -911,7 +910,7 @@ bool NetworkManager::KnownChainExists(const std::string& chain_id,
   return false;
 }
 
-bool NetworkManager::CustomChainExists(const std::string& custom_chain_id,
+bool NetworkManager::CustomChainExists(std::string_view custom_chain_id,
                                        mojom::CoinType coin) {
   const base::Value::List* custom_list = GetCustomNetworksList(prefs_, coin);
   if (!custom_list) {
@@ -953,7 +952,7 @@ std::vector<std::string> NetworkManager::CustomChainsExist(
 }
 
 // static
-GURL NetworkManager::GetUnstoppableDomainsRpcUrl(const std::string& chain_id) {
+GURL NetworkManager::GetUnstoppableDomainsRpcUrl(std::string_view chain_id) {
   if (chain_id == mojom::kMainnetChainId) {
     return GetEthMainnet()->rpc_endpoints.front();
   } else if (chain_id == mojom::kPolygonMainnetChainId) {
@@ -1015,7 +1014,7 @@ std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllKnownChains(
   NOTREACHED() << coin;
 }
 
-GURL NetworkManager::GetNetworkURL(const std::string& chain_id,
+GURL NetworkManager::GetNetworkURL(std::string_view chain_id,
                                    mojom::CoinType coin) {
   if (auto custom_chain = GetCustomChain(chain_id, coin)) {
     return GetActiveEndpointUrl(*custom_chain);
@@ -1040,7 +1039,7 @@ std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllChains() {
 }
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetKnownEthNetworkId(const std::string& chain_id) {
+std::string GetKnownEthNetworkId(std::string_view chain_id) {
   auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id);
   if (!subdomain.empty()) {
     return subdomain;
@@ -1064,7 +1063,7 @@ std::string GetKnownEthNetworkId(const std::string& chain_id) {
 }
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetKnownSolNetworkId(const std::string& chain_id) {
+std::string GetKnownSolNetworkId(std::string_view chain_id) {
   auto subdomain = GetSolanaSubdomainForKnownChainId(chain_id);
   if (!subdomain.empty()) {
     return subdomain;
@@ -1085,7 +1084,7 @@ std::string GetKnownSolNetworkId(const std::string& chain_id) {
 }
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetKnownFilNetworkId(const std::string& chain_id) {
+std::string GetKnownFilNetworkId(std::string_view chain_id) {
   auto subdomain = GetFilecoinSubdomainForKnownChainId(chain_id);
   if (!subdomain.empty()) {
     return subdomain;
@@ -1106,7 +1105,7 @@ std::string GetKnownFilNetworkId(const std::string& chain_id) {
 }
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetKnownBtcNetworkId(const std::string& chain_id) {
+std::string GetKnownBtcNetworkId(std::string_view chain_id) {
   auto subdomain = GetBitcoinSubdomainForKnownChainId(chain_id);
   if (!subdomain.empty()) {
     return subdomain;
@@ -1116,7 +1115,7 @@ std::string GetKnownBtcNetworkId(const std::string& chain_id) {
 }
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetKnownZecNetworkId(const std::string& chain_id) {
+std::string GetKnownZecNetworkId(std::string_view chain_id) {
   auto subdomain = GetZCashSubdomainForKnownChainId(chain_id);
   if (!subdomain.empty()) {
     return subdomain;
@@ -1126,8 +1125,7 @@ std::string GetKnownZecNetworkId(const std::string& chain_id) {
 }
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetKnownNetworkId(mojom::CoinType coin,
-                              const std::string& chain_id) {
+std::string GetKnownNetworkId(mojom::CoinType coin, std::string_view chain_id) {
   if (coin == mojom::CoinType::ETH) {
     return GetKnownEthNetworkId(chain_id);
   }
@@ -1148,9 +1146,8 @@ std::string GetKnownNetworkId(mojom::CoinType coin,
 
 // DEPRECATED 01/2024. For migration only.
 // static
-std::string NetworkManager::GetNetworkId_DEPRECATED(
-    mojom::CoinType coin,
-    const std::string& chain_id) {
+std::string NetworkManager::GetNetworkId_DEPRECATED(mojom::CoinType coin,
+                                                    std::string_view chain_id) {
   if (chain_id.empty()) {
     return "";
   }
@@ -1161,7 +1158,7 @@ std::string NetworkManager::GetNetworkId_DEPRECATED(
   }
 
   if (coin == mojom::CoinType::ETH) {
-    return chain_id;
+    return std::string(chain_id);
   }
 
   return "";
@@ -1171,7 +1168,7 @@ std::string NetworkManager::GetNetworkId_DEPRECATED(
 // static
 std::optional<std::string> NetworkManager::GetChainIdByNetworkId_DEPRECATED(
     const mojom::CoinType& coin,
-    const std::string& network_id) {
+    std::string_view network_id) {
   if (network_id.empty()) {
     return std::nullopt;
   }
@@ -1185,7 +1182,7 @@ std::optional<std::string> NetworkManager::GetChainIdByNetworkId_DEPRECATED(
 
 std::optional<bool> NetworkManager::IsEip1559Chain(
 
-    const std::string& chain_id) {
+    std::string_view chain_id) {
   auto chain_id_lwr = base::ToLowerASCII(chain_id);
   if (auto is_eip_1559 = prefs_->GetDict(kBraveWalletEip1559CustomChains)
                              .FindBool(chain_id_lwr)) {
@@ -1194,7 +1191,7 @@ std::optional<bool> NetworkManager::IsEip1559Chain(
   return GetEip1559ForKnownChain(chain_id_lwr);
 }
 
-void NetworkManager::SetEip1559ForCustomChain(const std::string& chain_id,
+void NetworkManager::SetEip1559ForCustomChain(std::string_view chain_id,
                                               std::optional<bool> is_eip1559) {
   auto chain_id_lwr = base::ToLowerASCII(chain_id);
   ScopedDictPrefUpdate update(prefs_, kBraveWalletEip1559CustomChains);
@@ -1211,7 +1208,7 @@ void NetworkManager::AddCustomNetwork(const mojom::NetworkInfo& chain) {
       ->Append(NetworkInfoToValue(chain));
 }
 
-void NetworkManager::RemoveCustomNetwork(const std::string& chain_id,
+void NetworkManager::RemoveCustomNetwork(std::string_view chain_id,
                                          mojom::CoinType coin) {
   ScopedDictPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
   base::Value::List* list = update->FindList(GetPrefKeyForCoinType(coin));
@@ -1253,7 +1250,7 @@ std::vector<std::string> NetworkManager::GetHiddenNetworks(
 }
 
 void NetworkManager::AddHiddenNetwork(mojom::CoinType coin,
-                                      const std::string& chain_id) {
+                                      std::string_view chain_id) {
   ScopedDictPrefUpdate update(prefs_, kBraveWalletHiddenNetworks);
   base::Value::List* list = update->EnsureList(GetPrefKeyForCoinType(coin));
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
@@ -1263,7 +1260,7 @@ void NetworkManager::AddHiddenNetwork(mojom::CoinType coin,
 }
 
 void NetworkManager::RemoveHiddenNetwork(mojom::CoinType coin,
-                                         const std::string& chain_id) {
+                                         std::string_view chain_id) {
   ScopedDictPrefUpdate update(prefs_, kBraveWalletHiddenNetworks);
   base::Value::List* list = update->FindList(GetPrefKeyForCoinType(coin));
   if (!list) {
@@ -1305,7 +1302,7 @@ std::string NetworkManager::GetCurrentChainId(
 
 bool NetworkManager::SetCurrentChainId(mojom::CoinType coin,
                                        const std::optional<url::Origin>& origin,
-                                       const std::string& chain_id) {
+                                       std::string_view chain_id) {
   // We cannot switch to an unknown chain_id
   if (!KnownChainExists(chain_id, coin) && !CustomChainExists(chain_id, coin)) {
     return false;

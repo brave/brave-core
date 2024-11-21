@@ -23,13 +23,13 @@ class EthAddress {
   static EthAddress FromPublicKey(base::span<const uint8_t> public_key);
   // input should be a valid address with 20 bytes hex representation starting
   // with 0x
-  static EthAddress FromHex(const std::string& input);
+  static EthAddress FromHex(std::string_view input);
   static EthAddress FromBytes(base::span<const uint8_t> bytes);
   static EthAddress ZeroAddress();
-  static bool IsValidAddress(const std::string& input);
+  static bool IsValidAddress(std::string_view input);
   static std::optional<std::string> ToEip1191ChecksumAddress(
-      const std::string& address,
-      const std::string& chain_id);
+      std::string_view address,
+      std::string_view chain_id);
 
   EthAddress();
   EthAddress(const EthAddress& other);
