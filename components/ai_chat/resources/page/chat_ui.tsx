@@ -24,6 +24,9 @@ import { ActiveChatProviderFromUrl } from './state/active_chat_context'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
+// Make sure we're fetching data as early as possible
+getAPI()
+
 function App() {
   React.useEffect(() => {
     document.getElementById('mountPoint')?.classList.add('loaded')

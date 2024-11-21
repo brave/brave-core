@@ -205,10 +205,10 @@ void AIChatUIPageHandler::CloseUI() {
 #endif
 }
 
-void AIChatUIPageHandler::SetChatUI(
-    mojo::PendingRemote<mojom::ChatUI> chat_ui) {
+void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
+                                    SetChatUICallback callback) {
   chat_ui_.Bind(std::move(chat_ui));
-  chat_ui_->SetInitialData(active_chat_tab_helper_ == nullptr);
+  std::move(callback).Run(active_chat_tab_helper_ == nullptr);
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
