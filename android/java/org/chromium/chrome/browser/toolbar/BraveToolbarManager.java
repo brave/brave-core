@@ -374,7 +374,8 @@ public class BraveToolbarManager extends ToolbarManager {
                     () -> {
                         mTabModelSelector
                                 .getModel(mIncognitoStateProvider.isIncognitoSelected())
-                                .closeTabs(TabClosureParams.closeAllTabs().build());
+                                .getTabRemover()
+                                .closeTabs(TabClosureParams.closeAllTabs().build(), false);
                     };
 
             assert (mActivity instanceof ChromeActivity);
