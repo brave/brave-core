@@ -274,15 +274,16 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
-void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
+std::optional<blink::BraveAudioFarblingHelper>
+BraveSessionCache::GetAudioFarblingHelper() {
+  const auto audio_farbling_level =
+      GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO);
+  if (audio_farbling_level == BraveFarblingLevel::OFF) {
+    return std::nullopt;
+  }
   if (!audio_farbling_helper_) {
     // This call is only expensive the first time; afterwards it returns
     // a cached value:
-    const auto audio_farbling_level =
-        GetBraveFarblingLevel(ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO);
-    if (audio_farbling_level == BraveFarblingLevel::OFF) {
-      return;
-    }
     const uint64_t fudge = default_shields_settings_->farbling_token.high();
     const double fudge_factor = 0.99 + ((fudge / maxUInt64AsDouble) / 100);
     const uint64_t seed = default_shields_settings_->farbling_token.low();
@@ -290,7 +291,14 @@ void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
         fudge_factor, seed,
         audio_farbling_level == BraveFarblingLevel::MAXIMUM);
   }
-  audio_farbling_helper_->FarbleAudioChannel(dst, count);
+  return audio_farbling_helper_;
+}
+
+void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
+  const auto& audio_farbling_helper = GetAudioFarblingHelper();
+  if (audio_farbling_helper) {
+    audio_farbling_helper->FarbleAudioChannel(dst, count);
+  }
 }
 
 void BraveSessionCache::PerturbPixels(const unsigned char* data, size_t size) {

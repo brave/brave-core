@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Web Audio farbling test</title>
+</head>
+<body>
+<script type="module">
+// Testing code adapted from PoC in https://hackerone.com/reports/2846851
+
+const sumArray = (arr) => arr.reduce((sum, val) => sum + val, 0);
+
+async function analyzeAudio() {
+  const context = new OfflineAudioContext(1, 44100, 44100);
+
+  const osc = context.createOscillator();
+  const gain = context.createGain();
+
+  osc.type = 'sawtooth';
+  osc.frequency.value = 440;
+
+  gain.gain.value = 0.5;
+
+  const analyser = context.createAnalyser();
+  analyser.fftSize = 256;
+
+  osc.connect(gain);
+  gain.connect(analyser);
+  analyser.connect(context.destination);
+
+  osc.start();
+  await context.startRendering();
+
+  const floatFreq = new Float32Array(analyser.frequencyBinCount);
+  analyser.getFloatFrequencyData(floatFreq);
+  // Round off enough that we don't fail due to differences in arithmetic
+  // implementation:
+  return Math.round(sumArray(floatFreq) / 10);
+}
+
+async function runTest() {
+  const result = await analyzeAudio();
+  document.title = result;
+}
+
+await runTest();
+
+</script>
+</body>
+</html>

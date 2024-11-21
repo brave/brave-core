@@ -58,6 +58,7 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
 
     top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
     farbling_url_ = embedded_test_server()->GetURL("a.com", "/farbling.html");
+    farbling2_url_ = embedded_test_server()->GetURL("a.com", "/farbling2.html");
     copy_from_channel_url_ =
         embedded_test_server()->GetURL("a.com", "/copyFromChannel.html");
   }
@@ -65,6 +66,8 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
   const GURL& copy_from_channel_url() { return copy_from_channel_url_; }
 
   const GURL& farbling_url() { return farbling_url_; }
+
+  const GURL& farbling2_url() { return farbling2_url_; }
 
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
@@ -93,6 +96,7 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
   GURL top_level_page_url_;
   GURL copy_from_channel_url_;
   GURL farbling_url_;
+  GURL farbling2_url_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
@@ -116,17 +120,26 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "356");
 
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "-971");
+
   // Farbling level: balanced (default)
   // web audio: farbled audio data
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "7920");
 
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "-1032");
+
   // Farbling level: off
   // web audio: original audio data
   AllowFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "8000");
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "-1031");
 
   // Farbling level: balanced (default), but webcompat exception enabled
   // web audio: original audio data
@@ -136,4 +149,7 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
                                      true, farbling_url(), nullptr);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "8000");
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
+  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "-1031");
 }
