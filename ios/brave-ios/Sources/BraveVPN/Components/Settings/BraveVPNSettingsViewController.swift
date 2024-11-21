@@ -406,7 +406,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       return
     }
 
-    let vpnRegionListView = BraveVPNRegionListView { [weak self] region in
+    let vpnRegionListView = BraveVPNRegionListView { [weak self] _ in
       let controller = PopupViewController(
         rootView: BraveVPNRegionConfirmationView(
           country: BraveVPN.serverLocationDetailed.country,

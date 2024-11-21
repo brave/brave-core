@@ -53,7 +53,7 @@ extension BrowserViewController {
         settingTitleEnabled: false,
         regionSelectAction: { [unowned menuController] in
           let vpnRegionListView = BraveVPNRegionListView(
-            onServerRegionSet: { region in
+            onServerRegionSet: { _ in
               let controller = PopupViewController(
                 rootView: BraveVPNRegionConfirmationView(
                   country: BraveVPN.serverLocationDetailed.country,
@@ -118,9 +118,9 @@ extension BrowserViewController {
 
       // Region Button is populated including the details for privacy feature menu
       RegionMenuButton(
-        regionSelectAction: {
+        regionSelectAction: { [unowned menuController] in
           let vpnRegionListView = BraveVPNRegionListView(
-            onServerRegionSet: { region in
+            onServerRegionSet: { _ in
               let controller = PopupViewController(
                 rootView: BraveVPNRegionConfirmationView(
                   country: BraveVPN.serverLocationDetailed.country,
