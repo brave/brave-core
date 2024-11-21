@@ -33,11 +33,13 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
   YouTubeRegistry& operator=(const YouTubeRegistry&) = delete;
   ~YouTubeRegistry();
   static YouTubeRegistry* GetInstance();  // singleton
-  // Returns the matched YouTube script injector rule, if any.
-  void CheckIfMatch(const GURL& url,
-                    base::OnceCallback<void(MatchedRule)> cb) const;
+  // Returns the YouTube script if the domain matches.
+  void ApplyScriptOnlyOnYouTubeDomain(const GURL& url,
+                    const base::FilePath& script_path,
+                    base::OnceCallback<void(std::string)> cb) const;
   // Given a path to youtube.json, loads the scripts from the file into memory.
   void LoadScripts(const base::FilePath& path);
+  const std::optional<YouTubeJson>& GetJson() const { return json_; }
 
  private:
   YouTubeRegistry();

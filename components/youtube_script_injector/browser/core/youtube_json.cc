@@ -24,24 +24,9 @@ namespace {
 // youtube.json keys
 constexpr char kVersion[] = "version";
 constexpr char kFeatureScript[] = "feature_script";
-// TODO
-// constexpr char kFullScreenScript[] = "fullscreen_script";
+constexpr char kFullScreenScript[] = "fullscreen_script";
 
 constexpr char kYouTubeUrl[] = "https://youtube.com";
-
-// bool GetURLPatternSetFromValue(const base::Value* value,
-//                                extensions::URLPatternSet* result) {
-//   if (!value->is_list()) {
-//     return false;
-//   }
-//   std::string error;
-//   bool valid = result->Populate(value->GetList(), URLPattern::SCHEME_HTTPS,
-//                                 false, &error);
-//   if (!valid) {
-//     DVLOG(1) << error;
-//   }
-//   return valid;
-// }
 
 bool GetFilePathFromValue(const base::Value* value, base::FilePath* result) {
   if (!value->is_string()) {
@@ -60,6 +45,7 @@ YouTubeJson::YouTubeJson() = default;
 YouTubeJson::~YouTubeJson() = default;
 YouTubeJson::YouTubeJson(const YouTubeJson& other) {
   feature_script_path_ = other.feature_script_path_;
+  fullscreen_script_path_ = other.fullscreen_script_path_;
   version_ = other.version_;
 }
 
@@ -68,6 +54,8 @@ void YouTubeJson::RegisterJSONConverter(
     base::JSONValueConverter<YouTubeJson>* converter) {
   converter->RegisterCustomValueField<base::FilePath>(
       kFeatureScript, &YouTubeJson::feature_script_path_, GetFilePathFromValue);
+  converter->RegisterCustomValueField<base::FilePath>(
+      kFullScreenScript, &YouTubeJson::fullscreen_script_path_, GetFilePathFromValue);
   converter->RegisterIntField(kVersion, &YouTubeJson::version_);
 }
 
