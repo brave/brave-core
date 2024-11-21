@@ -7,6 +7,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/timer/elapsed_timer.h"
+#include "base/types/optional_util.h"
 #include "content/browser/loader/keep_alive_url_loader_service.h"
 #include "content/browser/service_worker/service_worker_single_script_update_checker.h"
 #include "content/browser/service_worker/service_worker_updated_script_loader.h"
@@ -46,19 +47,19 @@ network::mojom::URLResponseHeadPtr UseContentLengthFromHeaders(
 #define OnReceiveResponse(headers, ...) \
   OnReceiveResponse(UseContentLengthFromHeaders(headers), __VA_ARGS__)
 
-#define GotDataCallback                                                     \
-  GotDataCallback unused_callback;                                          \
-  if (range.has_value() &&                                                  \
-      source->source()->SupportsRangeRequests(request.url)) {               \
-    URLDataSource::GotRangeDataCallback callback = base::BindOnce(          \
-        RangeDataAvailable, request.url, std::move(resource_response),      \
-        replacements, replace_in_js, base::RetainedRef(source),             \
-        std::move(client_remote), range,                                    \
-        std::move(url_request_elapsed_timer));                              \
-    source->source()->StartRangeDataRequest(request.url, wc_getter, *range, \
-                                            std::move(callback));           \
-    return;                                                                 \
-  }                                                                         \
+#define GotDataCallback                                                       \
+  GotDataCallback unused_callback;                                            \
+  if (range_or_error.has_value() &&                                           \
+      source->source()->SupportsRangeRequests(request.url)) {                 \
+    URLDataSource::GotRangeDataCallback callback = base::BindOnce(            \
+        RangeDataAvailable, request.url, std::move(resource_response),        \
+        replacements, replace_in_js, base::RetainedRef(source),               \
+        std::move(client_remote), base::OptionalFromExpected(range_or_error), \
+        std::move(url_request_elapsed_timer));                                \
+    source->source()->StartRangeDataRequest(                                  \
+        request.url, wc_getter, range_or_error.value(), std::move(callback)); \
+    return;                                                                   \
+  }                                                                           \
   URLDataSource::GotDataCallback
 
 #include "src/content/browser/webui/web_ui_url_loader_factory.cc"
