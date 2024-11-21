@@ -13,6 +13,9 @@ import {
 
 // Utils
 import { getLocale } from '$web-common/locale'
+import {
+  getCoinFromTxDataUnion //
+} from '../../../../utils/network-utils'
 
 // Components
 import {
@@ -52,6 +55,7 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
   const isSwap = isSwapTransaction(transaction)
   const isERC20Approval =
     transaction.txType === BraveWallet.TransactionType.ERC20Approve
+  const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
 
   // Memos
   const statusIconName = React.useMemo(() => {
@@ -89,7 +93,7 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
           fullWidth={true}
           padding='0px 24px'
         >
-          {showSpeedUpAlert ? (
+          {txCoinType === BraveWallet.CoinType.ETH && showSpeedUpAlert ? (
             <SpeedUpAlert />
           ) : (
             <VerticalSpace space='114px' />
