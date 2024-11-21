@@ -29,12 +29,19 @@ class StackObjectCopy {
     if (original) {
       // SAFETY: `original` is a valid pointer to a T object, and `kSize` is the
       // size of T.
+      //
+      // Can't use `byte_span_from_ref` because `T` might be an abstract class.
       auto original_object_memory = UNSAFE_BUFFERS(
-          base::make_span(reinterpret_cast<const uint8_t*>(original), kSize));
-      base::span(buffer_).copy_from(std::move(original_object_memory));
+          make_span(reinterpret_cast<const uint8_t*>(original), kSize));
+      span(buffer_).copy_from(std::move(original_object_memory));
     } else {
-      base::ranges::fill(buffer_, 0);
+      ranges::fill(buffer_, 0);
     }
+  }
+
+  ~StackObjectCopy() {
+    // Ensure the class isn't optimized away before destruction.
+    Alias(buffer_);
   }
 
   StackObjectCopy(const StackObjectCopy&) = delete;
@@ -42,10 +49,13 @@ class StackObjectCopy {
 
  private:
   constexpr static size_t kSize = sizeof(T);
+  constexpr static size_t kMinSize = 128;
 
   alignas(T) uint8_t buffer_[kSize];
   RAW_PTR_EXCLUSION const T* const typed_view_ =
       reinterpret_cast<const T*>(buffer_);
+  // Prevent the class from being optimized down to a register value.
+  const uint8_t padding_[kSize >= kMinSize ? 0 : kMinSize - kSize] = {};
 };
 
 }  // namespace base::debug
