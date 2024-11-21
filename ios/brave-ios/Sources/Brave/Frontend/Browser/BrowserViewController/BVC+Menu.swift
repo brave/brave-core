@@ -51,10 +51,24 @@ extension BrowserViewController {
       // Region Button is populated without current selected detail title for features menu
       RegionMenuButton(
         settingTitleEnabled: false,
-        regionSelectAction: {
-          let vc = UIHostingController(
-            rootView: BraveVPNRegionListView()
+        regionSelectAction: { [unowned menuController] in
+          let vpnRegionListView = BraveVPNRegionListView(
+            onServerRegionSet: { region in
+              let controller = PopupViewController(
+                rootView: BraveVPNRegionConfirmationView(
+                  country: BraveVPN.serverLocationDetailed.country,
+                  city: BraveVPN.serverLocationDetailed.city,
+                  countryISOCode: BraveVPN.serverLocation.isoCode
+                ),
+                isDismissable: true
+              )
+              menuController.present(controller, animated: true)
+              Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+                controller.dismiss(animated: true)
+              }
+            }
           )
+          let vc = UIHostingController(rootView: vpnRegionListView)
           vc.title = Strings.VPN.vpnRegionListServerScreenTitle
 
           (self.presentedViewController as? MenuViewController)?
@@ -105,9 +119,23 @@ extension BrowserViewController {
       // Region Button is populated including the details for privacy feature menu
       RegionMenuButton(
         regionSelectAction: {
-          let vc = UIHostingController(
-            rootView: BraveVPNRegionListView()
+          let vpnRegionListView = BraveVPNRegionListView(
+            onServerRegionSet: { region in
+              let controller = PopupViewController(
+                rootView: BraveVPNRegionConfirmationView(
+                  country: BraveVPN.serverLocationDetailed.country,
+                  city: BraveVPN.serverLocationDetailed.city,
+                  countryISOCode: BraveVPN.serverLocation.isoCode
+                ),
+                isDismissable: true
+              )
+              menuController.present(controller, animated: true)
+              Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+                controller.dismiss(animated: true)
+              }
+            }
           )
+          let vc = UIHostingController(rootView: vpnRegionListView)
           vc.title = Strings.VPN.vpnRegionListServerScreenTitle
 
           (self.presentedViewController as? MenuViewController)?

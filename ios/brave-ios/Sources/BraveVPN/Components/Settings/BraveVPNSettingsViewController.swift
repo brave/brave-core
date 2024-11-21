@@ -406,7 +406,21 @@ public class BraveVPNSettingsViewController: TableViewController {
       return
     }
 
-    let vc = UIHostingController(rootView: BraveVPNRegionListView())
+    let vpnRegionListView = BraveVPNRegionListView { [weak self] region in
+      let controller = PopupViewController(
+        rootView: BraveVPNRegionConfirmationView(
+          country: BraveVPN.serverLocationDetailed.country,
+          city: BraveVPN.serverLocationDetailed.city,
+          countryISOCode: BraveVPN.serverLocation.isoCode
+        ),
+        isDismissable: true
+      )
+      self?.present(controller, animated: true)
+      Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+        controller.dismiss(animated: true)
+      }
+    }
+    let vc = UIHostingController(rootView: vpnRegionListView)
     vc.title = Strings.VPN.vpnRegionListServerScreenTitle
     navigationController?.pushViewController(vc, animated: true)
   }
