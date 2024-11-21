@@ -59,7 +59,7 @@ OBJC_EXPORT
 
 - (void)modifyConversation:(NSUInteger)turnId newText:(NSString*)newText;
 
-- (void)getCanShowPremiumPrompt:(void (^_Nullable)(bool))completion;
+- (void)getNoticesState:(void (^_Nullable)(bool, bool, bool))completion;
 
 - (void)dismissPremiumPrompt;
 @end
