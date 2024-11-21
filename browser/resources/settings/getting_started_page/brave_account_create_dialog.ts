@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { BraveAccountBrowserProxyImpl } from './brave_account_browser_proxy.js'
 import { CrLitElement, css, html } from '//resources/lit/v3_0/lit.rollup.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js';
+import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 
 class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
   static get is() {
@@ -19,6 +20,7 @@ class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
         align-items: center;
         display: flex;
         justify-content: space-between;
+        width: 100%;
       }
 
       :host([category=Weak]) {
@@ -108,7 +110,7 @@ customElements.define(
  * 'settings-brave-account-create-dialog'...
  */
 
-export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitElement) {
+export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   static get is() {
     return 'settings-brave-account-create-dialog'
   }
@@ -147,9 +149,9 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
 
   protected onCreatePasswordInput(detail: { value: string }) {
     this.password = detail.value
-    this.passwordStrength = this.requirements.filter(
-      requirement => requirement[1] = requirement[0].test(this.password)
-    ).length / this.requirements.length * 100
+    this.browserProxy.getPasswordStrength(this.password).then(
+      (passwordStrength: number) => this.passwordStrength = passwordStrength
+    )
   }
 
   protected onConfirmPasswordInput(detail: { value: string }) {
@@ -187,33 +189,7 @@ export class SettingsBraveAccountCreateDialogElement extends I18nMixinLit(CrLitE
   protected password: string = ''
   protected passwordConfirmation: string = ''
   protected passwordStrength: number = 0
-  protected requirements: Array<[RegExp, boolean, string]> = [
-    [
-      /[a-z]/,
-      false,
-      this.i18n('braveAccountPasswordStrengthMeterTooltipLowercaseRequirement')
-    ],
-    [
-      /[A-Z]/,
-      false,
-      this.i18n('braveAccountPasswordStrengthMeterTooltipUppercaseRequirement')
-    ],
-    [
-      /[0-9]/,
-      false,
-      this.i18n('braveAccountPasswordStrengthMeterTooltipNumberRequirement')
-    ],
-    [
-      /[^a-zA-Z0-9]/,
-      false,
-      this.i18n('braveAccountPasswordStrengthMeterTooltipSpecialCharacterRequirement')
-    ],
-    [
-      /^.{5,}$/,
-      false,
-      this.i18n('braveAccountPasswordStrengthMeterTooltipLengthRequirement')
-    ]
-  ]
+  browserProxy = BraveAccountBrowserProxyImpl.getInstance()
 }
 
 declare global {

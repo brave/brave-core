@@ -44,22 +44,8 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
           </leo-icon>
           <div slot="errors" class="dropdown ${this.passwordStrength !== 0 ? 'visible' : ''}"
                              id="password-dropdown">
-            <leo-tooltip mode="default"
-                         mouseleaveTimeout="0"
-                         placement="bottom">
-              <password-strength-meter strength=${this.passwordStrength}>
-              </password-strength-meter>
-              <div slot="content">
-                $i18n{braveAccountPasswordStrengthMeterTooltipTitle}
-                ${this.requirements.map(([_, met, text]) => html`
-                  <div class="requirement">
-                    <leo-icon name=${met ? 'check-circle-outline' : 'close-circle'}>
-                    </leo-icon>
-                    ${text}
-                  </div>`
-                )}
-              </div>
-            </leo-tooltip>
+            <password-strength-meter strength=${this.passwordStrength}>
+            </password-strength-meter>
           </div>
         </leo-input>
         <leo-input placeholder="$i18n{braveAccountConfirmPasswordInputPlaceholder}"

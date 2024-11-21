@@ -56,30 +56,6 @@ leo-input:not(:focus):has(> .red) {
   z-index: 1;
 }
 
-leo-tooltip {
-  --leo-tooltip-padding: 0px;
-  width: 100%;
-}
-
-leo-tooltip > [slot=content] {
-  padding: var(--leo-spacing-l);
-  /* width: calc(var(--cr-dialog-width) - 2 * var(--leo-spacing-2xl) - 2 * var(--leo-spacing-l)); */
-}
-
-.requirement {
-  align-items: center;
-  display: flex;
-  gap: 8px;
-}
-
-leo-icon[name=check-circle-outline] {
-  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
-}
-
-leo-icon[name=close-circle] {
-  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
-}
-
 #password-confirmation-dropdown {
   --height: 18px;
   --leo-icon-size: 16px;
