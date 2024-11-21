@@ -222,8 +222,8 @@
                                             base::SysNSStringToUTF8(newText));
 }
 
-- (void)getCanShowPremiumPrompt:(void (^_Nullable)(bool))completion {
-  service_->GetCanShowPremiumPrompt(base::BindOnce(completion));
+- (void)getNoticesState:(void (^_Nullable)(bool, bool, bool))completion {
+  service_->GetNoticesState(base::BindOnce(completion));
 }
 
 - (void)dismissPremiumPrompt {
