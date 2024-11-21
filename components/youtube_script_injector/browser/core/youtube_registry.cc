@@ -45,9 +45,9 @@ MatchedRule CreateMatchedRule(const base::FilePath& component_path,
                               const base::FilePath& policy_script_path,
                               const int version) {
   auto prefix = base::FilePath(component_path).Append(kScriptsDir);
-  auto policy_script =
+  auto feature_script =
       ReadFile(base::FilePath(prefix).Append(policy_script_path));
-  return {policy_script, version};
+  return {feature_script, version};
 }
 
 }  // namespace
