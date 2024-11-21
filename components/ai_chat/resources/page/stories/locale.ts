@@ -16,6 +16,8 @@ provideStrings({
   pageContentWarning: 'Disconnect to stop sending this page content to Leo, and start a new conversation',
   errorNetworkLabel: 'There was a network issue connecting to Leo, check your connection and try again.',
   errorRateLimit: 'You\'ve reached the premium rate limit. Please try again in a few hours.',
+  braveLeoAssistantEndpointInvalidError: 'The endpoint URL is invalid. Please check the URL and try again.',
+  braveLeoAssistantEndpointValidAsPrivateIp: 'If you would like to use a private IP address, you must first enable "Private IP Addresses for Custom Model Enpoints" via brave://flags/#brave-ai-chat-allow-private-ips',
   retryButtonLabel: 'Retry',
   learnMore: 'Learn more',
   dismissButtonLabel: 'Dismiss',

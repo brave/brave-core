@@ -16,7 +16,9 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -86,6 +88,11 @@ void BraveLeoAssistantHandler::RegisterMessages() {
       "resetLeoData",
       base::BindRepeating(&BraveLeoAssistantHandler::HandleResetLeoData,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "validateModelEndpoint",
+      base::BindRepeating(
+          &BraveLeoAssistantHandler::HandleValidateModelEndpoint,
+          base::Unretained(this)));
 }
 
 void BraveLeoAssistantHandler::OnJavascriptAllowed() {
@@ -129,6 +136,35 @@ void BraveLeoAssistantHandler::HandleToggleLeoIcon(
   if (!ShowLeoAssistantIconVisibleIfNot(service)) {
     HideLeoAssistantIconIfNot(service);
   }
+}
+
+void BraveLeoAssistantHandler::HandleValidateModelEndpoint(
+    const base::Value::List& args) {
+  AllowJavascript();
+
+  if (args.size() < 2 || !args[1].is_dict()) {
+    // Expect the appropriate number and type of arguments, or reject
+    RejectJavascriptCallback(args[0], base::Value("Invalid arguments"));
+    return;
+  }
+
+  const base::Value::Dict& dict = args[1].GetDict();
+  GURL endpoint(*dict.FindString("url"));
+
+  base::Value::Dict response;
+
+  const bool is_valid = ai_chat::ModelValidator::IsValidEndpoint(endpoint);
+
+  response.Set("isValid", is_valid);
+  response.Set("isValidAsPrivateEndpoint",
+               ai_chat::ModelValidator::IsValidEndpoint(
+                   endpoint, std::optional<bool>(true)));
+  response.Set("isValidDueToPrivateIPsFeature",
+               is_valid && ai_chat::features::IsAllowPrivateIPsEnabled() &&
+                   !ai_chat::ModelValidator::IsValidEndpoint(
+                       endpoint, std::optional<bool>(false)));
+
+  ResolveJavascriptCallback(args[0], response);
 }
 
 void BraveLeoAssistantHandler::HandleGetLeoIconVisibility(
