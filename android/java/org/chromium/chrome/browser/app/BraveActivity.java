@@ -1845,7 +1845,7 @@ public abstract class BraveActivity extends ChromeActivity
             Tab tab = tabModel.getTabAt(index);
             if (tab != null) {
                 tab.setClosing(true);
-                tabModel.closeTabs(TabClosureParams.closeTab(tab).build());
+                tabModel.getTabRemover().closeTabs(TabClosureParams.closeTab(tab).build(), false);
             }
         }
     }
