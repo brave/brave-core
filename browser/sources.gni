@@ -501,7 +501,6 @@ brave_chrome_browser_public_deps = [
   "//brave/browser:browser_process",
   "//brave/components/brave_sync:constants",
   "//brave/components/variations",
-  "//components/guest_view/buildflags",
 ]
 
 if (is_mac) {
