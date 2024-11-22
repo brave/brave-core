@@ -47,7 +47,7 @@ namespace brave_wallet {
 
 // DEPRECATED 01/2024. For migration only.
 std::optional<mojom::CoinType> GetCoinTypeFromPrefKey_DEPRECATED(
-    const std::string& key);
+    std::string_view key);
 
 namespace {
 

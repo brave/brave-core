@@ -54,9 +54,9 @@ namespace brave_wallet {
 
 TEST(BraveWalletUtilsUnitTest, Mnemonic) {
   const struct {
-    const char* entropy;
-    const char* mnemonic;
-    const char* seed;
+    base::cstring_view entropy;
+    base::cstring_view mnemonic;
+    base::cstring_view seed;
   } cases[] = {
       {"00000000000000000000000000000000", kMnemonicAbandonAbandon,
        "c55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a69"
@@ -217,13 +217,13 @@ TEST(BraveWalletUtilsUnitTest, Mnemonic) {
 }
 
 TEST(BraveWalletUtilsUnitTest, MnemonicToSeedAndEntropy) {
-  const char* valid_mnemonic =
+  const char valid_mnemonic[] =
       "kingdom possible coast island six arrow fluid spell chunk loud glue "
       "street";
-  const char* invalid_mnemonic1 =
+  const char invalid_mnemonic1[] =
       "lingdom possible coast island six arrow fluid spell chunk loud glue "
       "street";
-  const char* invalid_mnemonic2 =
+  const char invalid_mnemonic2[] =
       "kingdom possible coast island six arrow fluid spell chunk loud glue";
   EXPECT_NE(MnemonicToSeed(valid_mnemonic, ""), nullptr);
   EXPECT_NE(MnemonicToEntropy(valid_mnemonic), nullptr);

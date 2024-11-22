@@ -13,10 +13,10 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -100,7 +100,7 @@ mojom::BlockchainTokenPtr NetworkToNativeToken(
 // static
 std::optional<std::string> GetUserAssetAddress(const std::string& address,
                                                mojom::CoinType coin,
-                                               const std::string& chain_id) {
+                                               std::string_view chain_id) {
   if (address.empty()) {  // native asset
     return address;
   }
@@ -200,15 +200,15 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy) {
 }
 
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
-    const std::string& mnemonic,
-    const std::string& passphrase) {
+    base::cstring_view mnemonic,
+    std::string_view passphrase) {
   if (!IsValidMnemonic(mnemonic)) {
     return nullptr;
   }
 
   std::unique_ptr<std::vector<uint8_t>> seed =
       std::make_unique<std::vector<uint8_t>>(64);
-  const std::string salt = "mnemonic" + passphrase;
+  const std::string salt = base::StrCat({"mnemonic", passphrase});
   int rv = PKCS5_PBKDF2_HMAC(mnemonic.data(), mnemonic.length(),
                              reinterpret_cast<const uint8_t*>(salt.data()),
                              salt.length(), 2048, EVP_sha512(), seed->size(),
@@ -217,7 +217,7 @@ std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
 }
 
 std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
-    const std::string& mnemonic) {
+    base::cstring_view mnemonic) {
   if (!IsValidMnemonic(mnemonic)) {
     return nullptr;
   }
@@ -259,7 +259,7 @@ std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
   return entropy;
 }
 
-bool IsValidMnemonic(const std::string& mnemonic) {
+bool IsValidMnemonic(base::cstring_view mnemonic) {
   if (bip39_mnemonic_validate(nullptr, mnemonic.c_str()) != WALLY_OK) {
     LOG(ERROR) << __func__ << ": Invalid mnemonic: " << mnemonic;
     return false;
@@ -267,7 +267,7 @@ bool IsValidMnemonic(const std::string& mnemonic) {
   return true;
 }
 
-bool EncodeString(const std::string& input, std::string* output) {
+bool EncodeString(std::string_view input, std::string* output) {
   if (!base::IsStringUTF8(input)) {
     return false;
   }
@@ -347,9 +347,7 @@ bool EncodeStringArray(const std::vector<std::string>& input,
   return true;
 }
 
-bool DecodeString(size_t offset,
-                  const std::string& input,
-                  std::string* output) {
+bool DecodeString(size_t offset, std::string_view input, std::string* output) {
   if (!output->empty()) {
     return false;
   }
@@ -358,7 +356,8 @@ bool DecodeString(size_t offset,
   uint256_t count = 0;
   size_t len = 64;
   if (offset + len > input.size() ||
-      !HexValueToUint256("0x" + input.substr(offset, len), &count)) {
+      !HexValueToUint256(base::StrCat({"0x", input.substr(offset, len)}),
+                         &count)) {
     return false;
   }
 
@@ -522,7 +521,7 @@ void SetDefaultSolanaWallet(PrefService* prefs,
   prefs->SetInteger(kDefaultSolanaWallet, static_cast<int>(default_wallet));
 }
 
-void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency) {
+void SetDefaultBaseCurrency(PrefService* prefs, std::string_view currency) {
   prefs->SetString(kDefaultBaseCurrency, currency);
 }
 
@@ -531,7 +530,7 @@ std::string GetDefaultBaseCurrency(PrefService* prefs) {
 }
 
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
-                                  const std::string& cryptocurrency) {
+                                  std::string_view cryptocurrency) {
   prefs->SetString(kDefaultBaseCryptocurrency, cryptocurrency);
 }
 
@@ -540,7 +539,7 @@ std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
 }
 
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
-    const std::string& chain_id) {
+    std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   if (kUnstoppableDomainsProxyReaderContractAddressMap.contains(
           chain_id_lower)) {
@@ -549,7 +548,7 @@ std::string GetUnstoppableDomainsProxyReaderContractAddress(
   return "";
 }
 
-std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
+std::string GetEnsRegistryContractAddress(std::string_view chain_id) {
   std::string chain_id_lower = base::ToLowerASCII(chain_id);
   DCHECK_EQ(chain_id_lower, mojom::kMainnetChainId);
   return kEnsRegistryContractAddress;
@@ -580,9 +579,9 @@ std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs) {
 
 mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
                                        mojom::CoinType coin,
-                                       const std::string& chain_id,
-                                       const std::string& address,
-                                       const std::string& token_id,
+                                       std::string_view chain_id,
+                                       std::string_view address,
+                                       std::string_view token_id,
                                        bool is_erc721,
                                        bool is_erc1155,
                                        bool is_shielded) {
@@ -831,7 +830,7 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
 
 // DEPRECATED 01/2024. For migration only.
 std::optional<mojom::CoinType> GetCoinTypeFromPrefKey_DEPRECATED(
-    const std::string& key) {
+    std::string_view key) {
   if (key == kEthereumPrefKey) {
     return mojom::CoinType::ETH;
   } else if (key == kFilecoinPrefKey) {
@@ -864,15 +863,15 @@ std::string GenerateRandomHexString() {
 // Returns a string used for web3_clientVersion in the form of
 // Brave/v[version]
 std::string GetWeb3ClientVersion() {
-  return base::StringPrintf(
-      "BraveWallet/v%s", version_info::GetBraveChromiumVersionNumber().c_str());
+  return base::StrCat(
+      {"BraveWallet/v", version_info::GetBraveChromiumVersionNumber()});
 }
 
 std::string WalletInternalErrorMessage() {
   return l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
 }
 
-mojom::BlockchainTokenPtr GetBitcoinNativeToken(const std::string& chain_id) {
+mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id) {
   auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::BTC);
   CHECK(network);
 
@@ -888,7 +887,7 @@ mojom::BlockchainTokenPtr GetBitcoinNativeToken(const std::string& chain_id) {
   return result;
 }
 
-mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id) {
+mojom::BlockchainTokenPtr GetZcashNativeToken(std::string_view chain_id) {
   auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::ZEC);
   CHECK(network);
 
@@ -900,7 +899,7 @@ mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id) {
 }
 
 mojom::BlockchainTokenPtr GetZcashNativeShieldedToken(
-    const std::string& chain_id) {
+    std::string_view chain_id) {
   auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::ZEC);
   CHECK(network);
 

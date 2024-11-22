@@ -45,7 +45,7 @@ EthAddress EthAddress::FromPublicKey(base::span<const uint8_t> public_key) {
 }
 
 // static
-EthAddress EthAddress::FromHex(const std::string& input) {
+EthAddress EthAddress::FromHex(std::string_view input) {
   if (!IsValidAddress(input)) {
     return EthAddress();
   }
@@ -73,7 +73,7 @@ EthAddress EthAddress::ZeroAddress() {
 }
 
 // static
-bool EthAddress::IsValidAddress(const std::string& input) {
+bool EthAddress::IsValidAddress(std::string_view input) {
   if (!IsValidHexString(input)) {
     VLOG(1) << __func__ << ": input is not a valid hex representation";
     return false;
@@ -91,8 +91,8 @@ std::string EthAddress::ToHex() const {
 
 // static
 std::optional<std::string> EthAddress::ToEip1191ChecksumAddress(
-    const std::string& address,
-    const std::string& chain_id) {
+    std::string_view address,
+    std::string_view chain_id) {
   if (address.empty()) {
     return "";
   }

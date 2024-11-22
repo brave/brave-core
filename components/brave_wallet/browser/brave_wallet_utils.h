@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/strings/cstring_view.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
@@ -34,18 +35,18 @@ std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy);
 // If allocation failed, it would return nullptr. Otherwise 512 bits seed will
 // be returned.
 std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
-    const std::string& mnemonic,
-    const std::string& passphrase = "");
+    base::cstring_view mnemonic,
+    std::string_view passphrase = "");
 // This is mainly used for restoring legacy brave crypto wallet
 std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
-    const std::string& mnemonic);
-bool IsValidMnemonic(const std::string& mnemonic);
+    base::cstring_view mnemonic);
+bool IsValidMnemonic(base::cstring_view mnemonic);
 
-bool EncodeString(const std::string& input, std::string* output);
+bool EncodeString(std::string_view input, std::string* output);
 bool EncodeStringArray(const std::vector<std::string>& input,
                        std::string* output);
 
-bool DecodeString(size_t offset, const std::string& input, std::string* output);
+bool DecodeString(size_t offset, std::string_view input, std::string* output);
 
 // Updates preferences for when the wallet is unlocked.
 // This is done in a utils function instead of in the KeyringService
@@ -71,21 +72,21 @@ void SetDefaultSolanaWallet(PrefService* prefs,
                             mojom::DefaultWallet default_wallet);
 mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs);
 mojom::DefaultWallet GetDefaultSolanaWallet(PrefService* prefs);
-void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency);
+void SetDefaultBaseCurrency(PrefService* prefs, std::string_view currency);
 std::string GetDefaultBaseCurrency(PrefService* prefs);
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
-                                  const std::string& cryptocurrency);
+                                  std::string_view cryptocurrency);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
-    const std::string& chain_id);
-std::string GetEnsRegistryContractAddress(const std::string& chain_id);
+    std::string_view chain_id);
+std::string GetEnsRegistryContractAddress(std::string_view chain_id);
 
 mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
                                        mojom::CoinType coin,
-                                       const std::string& chain_id,
-                                       const std::string& address,
-                                       const std::string& token_id,
+                                       std::string_view chain_id,
+                                       std::string_view address,
+                                       std::string_view token_id,
                                        bool is_erc721,
                                        bool is_erc1155,
                                        bool is_shielded);
@@ -129,10 +130,10 @@ std::string GenerateRandomHexString();
 
 std::string WalletInternalErrorMessage();
 
-mojom::BlockchainTokenPtr GetBitcoinNativeToken(const std::string& chain_id);
-mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id);
+mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id);
+mojom::BlockchainTokenPtr GetZcashNativeToken(std::string_view chain_id);
 mojom::BlockchainTokenPtr GetZcashNativeShieldedToken(
-    const std::string& chain_id);
+    std::string_view chain_id);
 
 mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatus(
     PrefService* prefs);
