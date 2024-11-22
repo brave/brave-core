@@ -16,6 +16,7 @@
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/global_routing_id.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "url/gurl.h"
 
 namespace content {
 class RenderFrameHost;
@@ -55,10 +56,10 @@ class CreatorDetectionScriptInjector {
   using DetectCreatorCallback = base::OnceCallback<void(std::optional<Result>)>;
 
   // Runs the creator detection routine initialized by `MaybeInjectScript` and
-  // asynchrounously returns the detection result. Return `nullopt` if the
+  // asynchrounously returns the detection result. Returns `nullopt` if the
   // detection routine was not invoked (e.g. because Rewards is not enabled or
   // because there is no script for this page). Returns a `Result` with empty
-  // fields if there is not creator associated with the current page. Note that
+  // fields if there is no creator associated with the current page. Note that
   // any of the `Result` fields may be empty if the detection script was unable
   // to gather that information from the page.
   void DetectCreator(content::RenderFrameHost* rfh,
@@ -69,10 +70,16 @@ class CreatorDetectionScriptInjector {
 
   void ExecuteScript(std::string_view script, ExecuteScriptCallback callback);
 
-  void OnCreatorDetected(DetectCreatorCallback callback, base::Value value);
+  void OnDetectionCancelled(DetectCreatorCallback callback);
+
+  void OnCreatorDetected(DetectCreatorCallback callback,
+                         uint64_t request_id,
+                         base::Value value);
 
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> injector_;
   content::GlobalRenderFrameHostToken injector_host_token_;
+  GURL last_detection_url_;
+  uint64_t current_request_id_ = 0;
   base::WeakPtrFactory<CreatorDetectionScriptInjector> weak_factory_{this};
 };
 
