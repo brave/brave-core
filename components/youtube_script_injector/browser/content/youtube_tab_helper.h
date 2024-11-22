@@ -45,7 +45,7 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
   // Called to insert the YouTube script into the page.
   void InsertScriptInPage(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
-      MatchedRule rule);
+      std::string script);
   friend class content::WebContentsUserData<YouTubeTabHelper>;
 
   // content::WebContentsObserver overrides

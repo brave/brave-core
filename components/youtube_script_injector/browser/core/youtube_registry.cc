@@ -41,13 +41,11 @@ std::string ReadFile(const base::FilePath& file_path) {
   return contents;
 }
 
-MatchedRule CreateMatchedRule(const base::FilePath& component_path,
-                              const base::FilePath& policy_script_path,
-                              const int version) {
+std::string ExtractScript(const base::FilePath& component_path,
+                              const base::FilePath& script_path) {
   auto prefix = base::FilePath(component_path).Append(kScriptsDir);
-  auto feature_script =
-      ReadFile(base::FilePath(prefix).Append(policy_script_path));
-  return {feature_script, version};
+  auto script = ReadFile(base::FilePath(prefix).Append(script_path));
+  return script;
 }
 
 }  // namespace
@@ -65,15 +63,15 @@ YouTubeRegistry::YouTubeRegistry() = default;
 
 YouTubeRegistry::~YouTubeRegistry() = default;
 
-void YouTubeRegistry::CheckIfMatch(
+void YouTubeRegistry::ApplyScriptOnlyOnYouTubeDomain(
     const GURL& url,
-    base::OnceCallback<void(MatchedRule)> cb) const {
+    const base::FilePath& script_path,
+    base::OnceCallback<void(std::string)> cb) const {
   if (json_ && json_->IsYouTubeDomain(url)) {
     base::ThreadPool::PostTaskAndReplyWithResult(
         FROM_HERE, {base::MayBlock()},
-        base::BindOnce(&CreateMatchedRule, component_path_,
-                       json_->GetFeatureScript(),
-                       json_->GetVersion()),
+        base::BindOnce(&ExtractScript, component_path_,
+                       script_path),
         std::move(cb));
   }
 }
