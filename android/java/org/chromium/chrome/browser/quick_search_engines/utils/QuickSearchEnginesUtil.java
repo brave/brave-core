@@ -16,6 +16,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesModel;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
+import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.util.SharedPreferencesHelper;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -57,6 +58,17 @@ public class QuickSearchEnginesUtil {
                 .readBoolean(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES_FEATURE, true);
     }
 
+    public static void setPreviousDSE(String dseKeyword) {
+        ChromeSharedPreferences.getInstance()
+                .writeString(
+                        BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES_PREVIOUS_DSE, dseKeyword);
+    }
+
+    public static String getPreviousDSE() {
+        return ChromeSharedPreferences.getInstance()
+                .readString(BravePreferenceKeys.BRAVE_QUICK_SEARCH_ENGINES_PREVIOUS_DSE, "");
+    }
+
     private static Map<String, QuickSearchEnginesModel> getQuickSearchEngines(Profile profile) {
         TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(profile);
         List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
@@ -71,33 +83,66 @@ public class QuickSearchEnginesUtil {
                 getQuickSearchEnginesFromPref() != null
                         ? getQuickSearchEnginesFromPref()
                         : new LinkedHashMap<String, QuickSearchEnginesModel>();
-        for (TemplateUrl templateUrl : templateUrls) {
-            if (!searchEnginesMap.containsKey(templateUrl.getKeyword())) {
-                String url =
-                        BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(templateUrl.getKeyword())
-                                ? GOOGLE_SEARCH_ENGINE_URL
-                                : templateUrl.getURL();
-                QuickSearchEnginesModel quickSearchEnginesModel =
-                        new QuickSearchEnginesModel(
-                                templateUrl.getShortName(), templateUrl.getKeyword(), url, true);
-                searchEnginesMap.put(templateUrl.getKeyword(), quickSearchEnginesModel);
-                if (BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(templateUrl.getKeyword())
-                        && !searchEnginesMap.containsKey(
-                                BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD)) {
-                    addYtQuickSearchEnginesModel(searchEnginesMap);
-                }
-            }
-        }
-        if (!searchEnginesMap.containsKey(BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD)) {
-            addYtQuickSearchEnginesModel(searchEnginesMap);
+        if (getPreviousDSE().isEmpty()) {
+            setPreviousDSE(defaultSearchEngineTemplateUrl.getShortName());
         }
 
+        if (!defaultSearchEngineTemplateUrl.getShortName().equals(getPreviousDSE())) {
+            Map<String, QuickSearchEnginesModel> defaultSearchEnginesMap =
+                    new LinkedHashMap<String, QuickSearchEnginesModel>();
+            TemplateUrl previousDSETemplateUrl =
+                    BraveSearchEngineUtils.getTemplateUrlByShortName(profile, getPreviousDSE());
+            if (searchEnginesMap.containsKey(previousDSETemplateUrl.getKeyword())) {
+                searchEnginesMap.remove(previousDSETemplateUrl.getKeyword());
+            }
+            removeDefaultSearchEngine(searchEnginesMap, defaultSearchEngineTemplateUrl);
+            addSearchEngines(defaultSearchEnginesMap, previousDSETemplateUrl);
+            defaultSearchEnginesMap.putAll(searchEnginesMap);
+            searchEnginesMap = defaultSearchEnginesMap;
+            setPreviousDSE(defaultSearchEngineTemplateUrl.getShortName());
+        } else {
+            for (TemplateUrl templateUrl : templateUrls) {
+                if (!searchEnginesMap.containsKey(templateUrl.getKeyword())) {
+                    addSearchEngines(searchEnginesMap, templateUrl);
+                    if (BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(templateUrl.getKeyword())
+                            && !searchEnginesMap.containsKey(
+                                    BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD)) {
+                        addYtQuickSearchEnginesModel(searchEnginesMap);
+                    }
+                }
+            }
+            if (!searchEnginesMap.containsKey(BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD)) {
+                addYtQuickSearchEnginesModel(searchEnginesMap);
+            }
+            removeDefaultSearchEngine(searchEnginesMap, defaultSearchEngineTemplateUrl);
+        }
+        saveSearchEnginesIntoPref(searchEnginesMap);
+        return searchEnginesMap;
+    }
+
+    private static void removeDefaultSearchEngine(
+            Map<String, QuickSearchEnginesModel> searchEnginesMap,
+            TemplateUrl defaultSearchEngineTemplateUrl) {
         if (searchEnginesMap.containsKey(defaultSearchEngineTemplateUrl.getKeyword())) {
             searchEnginesMap.remove(defaultSearchEngineTemplateUrl.getKeyword());
         }
+    }
 
-        saveSearchEnginesIntoPref(searchEnginesMap);
-        return searchEnginesMap;
+    private static void addSearchEngines(
+            Map<String, QuickSearchEnginesModel> searchEnginesMap,
+            TemplateUrl searchEngineTemplateUrl) {
+        String url =
+                BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(
+                                searchEngineTemplateUrl.getKeyword())
+                        ? GOOGLE_SEARCH_ENGINE_URL
+                        : searchEngineTemplateUrl.getURL();
+        QuickSearchEnginesModel quickSearchEnginesModel =
+                new QuickSearchEnginesModel(
+                        searchEngineTemplateUrl.getShortName(),
+                        searchEngineTemplateUrl.getKeyword(),
+                        url,
+                        true);
+        searchEnginesMap.put(searchEngineTemplateUrl.getKeyword(), quickSearchEnginesModel);
     }
 
     private static void addYtQuickSearchEnginesModel(
