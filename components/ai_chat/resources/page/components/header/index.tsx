@@ -38,7 +38,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
   const showTitle = !isTabAssociated || aiChatContext.isStandalone
-  const canShowFullScreenButton = aiChatContext.isHistoryEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
+  const canShowFullScreenButton = aiChatContext.isHistoryFeatureEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
 
   return (
     <div className={styles.header} ref={ref}>
@@ -66,7 +66,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
                 title={newChatButtonLabel}
                 onClick={createNewConversation}
               >
-                <Icon name={aiChatContext.isHistoryEnabled ? 'edit-box' : 'erase'} />
+                <Icon name={aiChatContext.isHistoryFeatureEnabled ? 'edit-box' : 'erase'} />
               </Button>
             )}
             {canShowFullScreenButton &&

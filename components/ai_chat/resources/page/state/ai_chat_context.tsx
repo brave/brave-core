@@ -10,6 +10,7 @@ export type AIChatContext = mojom.UIState & {
   goPremium: () => void
   managePremium: () => void
   handleAgreeClick: () => void
+  enableStoragePref: () => void
   markStorageNoticeViewed: () => void
   dismissStorageNotice: () => void
   dismissPremiumPrompt: () => void
@@ -26,6 +27,7 @@ const defaultContext: AIChatContext = {
   goPremium: () => { },
   managePremium: () => { },
   handleAgreeClick: () => { },
+  enableStoragePref: () => { },
   markStorageNoticeViewed: () => { },
   dismissStorageNotice: () => { },
   dismissPremiumPrompt: () => { },
@@ -74,6 +76,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren) {
       })
       Service.dismissStorageNotice()
     },
+    enableStoragePref: () => Service.enableStoragePref(),
     dismissPremiumPrompt: () => Service.dismissPremiumPrompt(),
     userRefreshPremiumSession: () => UIHandler.refreshPremiumSession(),
     handleAgreeClick: () => Service.markAgreementAccepted(),

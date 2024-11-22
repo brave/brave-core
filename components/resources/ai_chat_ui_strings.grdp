@@ -285,6 +285,15 @@
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_EMPTY" desc="Main text for a notice that the conversation list is empty">
     Your conversation history will appear here once you start a conversation.
   </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_TITLE_DISABLED_PREF" desc="Title for a notice that the conversation history preference is disabled">
+    History is disabled
+  </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF" desc="Main text for a notice that the conversation history preference is disabled">
+    In order to view and search your previous conversations with Leo, you need to enable conversation history.
+  </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF_BUTTON" desc="Button label to enable conversation history preference">
+    Enable
+  </message>
   <message name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
     General purpose chat
   </message>

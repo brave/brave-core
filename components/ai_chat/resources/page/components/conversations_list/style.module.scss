@@ -11,6 +11,11 @@
   max-width: 680px;
   margin: 0 auto;
 
+  // In case we have multiple notices or notices + conversations
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+
   ol {
     list-style: none;
     padding: 0;
