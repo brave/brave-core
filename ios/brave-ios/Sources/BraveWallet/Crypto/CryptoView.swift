@@ -77,11 +77,12 @@ public struct CryptoView: View {
         if let store = walletStore.cryptoStore {
           Group {
             switch presentingContext {
-            case .`default`:
+            case .`default`(let selectedTab):
               CryptoContainerView(
                 keyringStore: keyringStore,
                 cryptoStore: store,
-                toolbarDismissContent: dismissButtonToolbarContents
+                toolbarDismissContent: dismissButtonToolbarContents,
+                selectedTab: selectedTab
               )
             case .pendingRequests:
               RequestContainerView(
@@ -90,6 +91,9 @@ public struct CryptoView: View {
                 toolbarDismissContent: dismissButtonToolbarContents,
                 onDismiss: {
                   dismissAction()
+                },
+                onViewInActivity: {
+                  store.selectedTab = .activity
                 }
               )
               .onDisappear {
@@ -315,6 +319,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
   var keyringStore: KeyringStore
   @ObservedObject var cryptoStore: CryptoStore
   var toolbarDismissContent: DismissContent
+  var selectedTab: CryptoTab
   @ToolbarContentBuilder
   // This toolbar content is for `PendingRequestView` which is presented on top of full screen wallet
   private var pendingRequestToolbarDismissContent: some ToolbarContent {
@@ -384,6 +389,9 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
               toolbarDismissContent: pendingRequestToolbarDismissContent,
               onDismiss: {
                 cryptoStore.isPresentingPendingRequest = false
+              },
+              onViewInActivity: {
+                cryptoStore.selectedTab = .activity
               }
             )
             .onDisappear {

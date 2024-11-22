@@ -350,7 +350,7 @@ struct WalletPanelView: View {
 
   private var fullscreenButton: some View {
     Button {
-      presentWalletWithContext(.default)
+      presentWalletWithContext(.default(.portfolio))
     } label: {
       Image(systemName: "arrow.up.left.and.arrow.down.right")
         .foregroundColor(Color(.braveLabel))
@@ -567,6 +567,11 @@ struct WalletPanelView: View {
       Color(.braveGroupedBackground)
         .ignoresSafeArea()
     )
+    .onChange(of: cryptoStore.selectedTab) { tab in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        presentWalletWithContext(.default(tab))
+      }
+    }
     .onChange(of: cryptoStore.pendingRequest) { newValue in
       if newValue != nil {
         // Slight delay to allow dismissal of unlock modal before presenting pending request modal.

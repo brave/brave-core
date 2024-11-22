@@ -15,6 +15,7 @@ struct PendingTransactionView: View {
   let keyringStore: KeyringStore
   @Binding var isShowingGas: Bool
   @Binding var isShowingAdvancedSettings: Bool
+  @Binding var isTxSubmitting: Bool
 
   var onDismiss: () -> Void
 
@@ -493,7 +494,10 @@ struct PendingTransactionView: View {
       Label(Strings.Wallet.rejectTransactionButtonTitle, systemImage: "xmark")
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    Button {
+    .disabled(isTxSubmitting)
+    WalletLoadingButton(
+      isLoading: isTxSubmitting
+    ) {
       Task {
         await confirmationStore.confirm(
           transaction: confirmationStore.activeParsedTransaction.transaction
@@ -610,6 +614,7 @@ struct PendingTransactionView_Previews: PreviewProvider {
       keyringStore: .previewStore,
       isShowingGas: .constant(false),
       isShowingAdvancedSettings: .constant(false),
+      isTxSubmitting: .constant(false),
       onDismiss: {}
     )
   }

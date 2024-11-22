@@ -75,6 +75,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       if isTxSubmitting == true, activeTxStatus != .approved {
         isTxSubmitting = false
       }
+      if activeTxStatus == .submitted || activeTxStatus == .signed || activeTxStatus == .error {
+        closeTxStatusStore()
+        activeTxStatusStore = openActiveTxStatusStore()
+      }
     }
   }
   /// Indicates Tx is being submitted. This value will be set to `true` after users click `Confirm` button
@@ -84,6 +88,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
   /// All transactions with any kind of status of all the accounts for all supported keyrings
   @Published var allTxs: [BraveWallet.TransactionInfo] = []
+
+  /// A `TransactionStatusStore` for the active displayed transaction once it has been submitted
+  @Published var activeTxStatusStore: TransactionStatusStore?
+  @Published var isShowingActiveTxStatus: Bool = false
+
   /// This is a list of all unpproved transactions iterated through all the accounts for all supported keyrings
   var unapprovedTxs: [BraveWallet.TransactionInfo] {
     return allTxs.filter { $0.txStatus == .unapproved }
@@ -100,8 +109,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       $0.maximumFractionDigits = 6
     }
 
+  /// Warning: Do not read active tx status from this object, since this is a computed value from `allTxs`
+  /// Please use `activeTxStatus`
   private var activeTransaction: BraveWallet.TransactionInfo {
-    unapprovedTxs.first(where: { $0.id == activeTransactionId }) ?? (unapprovedTxs.first ?? .init())
+    allTxs.first(where: { $0.id == activeTransactionId }) ?? (allTxs.first ?? .init())
   }
 
   private(set) var activeParsedTransaction: ParsedTransaction = .init()
@@ -174,6 +185,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private var txServiceObserver: TxServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
 
+  private var cancelTxMap: [BraveWallet.TransactionInfo: [BraveWallet.TransactionInfo]] = [:]
+
   var isObserving: Bool {
     txServiceObserver != nil && walletServiceObserver != nil
   }
@@ -213,7 +226,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   func tearDown() {
     txServiceObserver = nil
     walletServiceObserver = nil
-    txDetailsStore?.tearDown()
+    activeTxStatusStore?.tearDown()
   }
 
   func setupObservers() {
@@ -221,8 +234,12 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     self.assetManager.addUserAssetDataObserver(self)
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
-      _onNewUnapprovedTx: { _ in
-        // won't have any new unapproved tx being added if you on tx confirmation panel
+      _onNewUnapprovedTx: { [weak self] txInfo in
+        guard let self else { return }
+        // TODO: we should only have two cases
+        // 1. a new unapproved tx created for cancelling tx
+        // 2. a new unapproved tx created for speed up tx
+        self.onUnapprovedTxAdded(txInfo)
       },
       _onUnapprovedTxUpdated: { [weak self] txInfo in
         self?.onUnapprovedTxUpdated(txInfo)
@@ -348,35 +365,21 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     }
   }
 
-  private var txDetailsStore: TransactionDetailsStore?
-  func activeTxDetailsStore() -> TransactionDetailsStore {
-    let tx = allTxs.first { $0.id == activeTransactionId } ?? activeParsedTransaction.transaction
-    let parsedTransaction: ParsedTransaction?
-    if activeParsedTransaction.transaction.id == tx.id {
-      parsedTransaction = activeParsedTransaction
-    } else {
-      parsedTransaction = nil
-    }
-    let txDetailsStore = TransactionDetailsStore(
-      transaction: tx,
-      parsedTransaction: parsedTransaction,
+  func openActiveTxStatusStore() -> TransactionStatusStore {
+    let txStatusStore = TransactionStatusStore(
+      activeTxStatus: activeTxStatus,
+      activeTxParsed: activeParsedTransaction,
+      txProviderError: transactionProviderErrorRegistry[activeTransactionId],
       keyringService: keyringService,
-      walletService: walletService,
       rpcService: rpcService,
-      assetRatioService: assetRatioService,
-      blockchainRegistry: blockchainRegistry,
-      txService: txService,
-      solanaTxManagerProxy: solTxManagerProxy,
-      ipfsApi: ipfsApi,
-      userAssetManager: assetManager
+      txService: txService
     )
-    self.txDetailsStore = txDetailsStore
-    return txDetailsStore
+    return txStatusStore
   }
 
-  func closeTxDetailsStore() {
-    self.txDetailsStore?.tearDown()
-    self.txDetailsStore = nil
+  func closeTxStatusStore() {
+    self.activeTxStatusStore?.tearDown()
+    self.activeTxStatusStore = nil
   }
 
   private func clearTrasactionInfoBeforeUpdate() {
@@ -872,7 +875,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       let allNetworks = await rpcService.allNetworks().filter({ $0.coin == coin })
       allNetworksForCoin[coin] = allNetworks
     }
-    return await txService.pendingTransactions(
+    return await txService.allTransactions(
       networksForCoin: allNetworksForCoin,
       for: allAccounts
     )
@@ -908,6 +911,16 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       chainId: transaction.chainId,
       txMetaId: transaction.id
     )
+  }
+
+  @MainActor func cancelActiveTx() async -> Bool {
+    let (success, metaId, errMsg) = await txService.speedupOrCancelTransaction(
+      coinType: activeParsedTransaction.transaction.coin,
+      chainId: activeParsedTransaction.transaction.chainId,
+      txMetaId: activeParsedTransaction.transaction.id,
+      cancel: true
+    )
+    return success
   }
 
   func updateGasFeeAndLimits(
@@ -1038,9 +1051,37 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         unapprovedTxs[safe: newIndex]?.id ?? unapprovedTxs.first?.id ?? ""
     } else {
       if activeTransactionId == txInfo.id {
+        updateTransaction(
+          with: txInfo,
+          shouldFetchCurrentAllowance: false,
+          shouldFetchGasTokenBalance: false
+        )
         activeTxStatus = txInfo.txStatus
       }
     }
+  }
+
+  func onUnapprovedTxAdded(_ txInfo: BraveWallet.TransactionInfo) {
+    Task { @MainActor in
+      activeTransactionId = txInfo.id
+      await prepare()
+    }
+  }
+
+  func isActiveTxCancelling() -> BraveWallet.TransactionInfo? {
+    if cancelTxMap.keys.contains(where: { $0.id == activeTransactionId }) {
+      return nil
+    }
+    var toCancelTx: BraveWallet.TransactionInfo?
+    for (key, value) in cancelTxMap {
+      if value.contains(where: { tx in
+        tx.id == activeTransactionId
+      }) {
+        toCancelTx = key
+        break
+      }
+    }
+    return toCancelTx
   }
 }
 
