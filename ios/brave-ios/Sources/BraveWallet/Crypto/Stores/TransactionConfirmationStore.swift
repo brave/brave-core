@@ -914,14 +914,12 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   }
 
   @MainActor func cancelActiveTx() async -> Bool {
-    print("DEBUG - looking for tx(\(activeParsedTransaction.transaction.id))")
     let (success, metaId, errMsg) = await txService.speedupOrCancelTransaction(
       coinType: activeParsedTransaction.transaction.coin,
       chainId: activeParsedTransaction.transaction.chainId,
       txMetaId: activeParsedTransaction.transaction.id,
       cancel: true
     )
-    print("DEBUG - cancel active tx(\(metaId)): \(success ? "successful" : "failed (\(errMsg))")")
     return success
   }
 
