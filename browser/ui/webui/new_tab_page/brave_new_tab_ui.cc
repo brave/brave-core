@@ -110,7 +110,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 
   source->AddBoolean("vpnWidgetSupported",
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-                     brave_vpn::IsBraveVPNFeatureEnabled()
+                     brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())
 #else
                      false
 #endif
