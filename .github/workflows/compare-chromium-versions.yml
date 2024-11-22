@@ -16,6 +16,7 @@ jobs:
       PR_SHA: ${{ github.event.pull_request.head.sha }}
     steps:
       - name: Check if CI and merge are allowed based on the Chromium version in the target branch
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: |
           shopt -s inherit_errexit
           set -eEo pipefail
