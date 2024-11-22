@@ -265,8 +265,8 @@ std::string SignAndSendTransactionScript(std::string_view args) {
 
 std::string SignMessageScript(std::string_view args) {
   std::vector<uint8_t> signature(brave_wallet::kSolanaSignatureSize);
-  EXPECT_TRUE(brave_wallet::Base58Decode(std::string(kTestSignature),
-                                         &signature, signature.size()));
+  EXPECT_TRUE(
+      brave_wallet::Base58Decode(kTestSignature, &signature, signature.size()));
   const std::string signature_str = VectorToArrayString(signature);
   const std::string expected_result =
       absl::StrFormat(R"({ publicKey: "%s", signature: new Uint8Array([%s])})",

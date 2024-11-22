@@ -11,7 +11,6 @@
 #include <string_view>
 #include <vector>
 
-#include "base/types/optional_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"

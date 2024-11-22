@@ -40,15 +40,15 @@ using testing::Not;
 namespace brave_wallet {
 
 // DEPRECATED 01/2024. For migration only.
-std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
-std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id);
-std::string GetBitcoinSubdomainForKnownChainId(const std::string& chain_id);
-std::string GetZCashSubdomainForKnownChainId(const std::string& chain_id);
-std::string GetKnownEthNetworkId(const std::string& chain_id);
-std::string GetKnownSolNetworkId(const std::string& chain_id);
-std::string GetKnownFilNetworkId(const std::string& chain_id);
-std::string GetKnownBtcNetworkId(const std::string& chain_id);
-std::string GetKnownZecNetworkId(const std::string& chain_id);
+std::string GetSolanaSubdomainForKnownChainId(std::string_view chain_id);
+std::string GetFilecoinSubdomainForKnownChainId(std::string_view chain_id);
+std::string GetBitcoinSubdomainForKnownChainId(std::string_view chain_id);
+std::string GetZCashSubdomainForKnownChainId(std::string_view chain_id);
+std::string GetKnownEthNetworkId(std::string_view chain_id);
+std::string GetKnownSolNetworkId(std::string_view chain_id);
+std::string GetKnownFilNetworkId(std::string_view chain_id);
+std::string GetKnownBtcNetworkId(std::string_view chain_id);
+std::string GetKnownZecNetworkId(std::string_view chain_id);
 
 class NetworkManagerUnitTest : public testing::Test {
  public:
