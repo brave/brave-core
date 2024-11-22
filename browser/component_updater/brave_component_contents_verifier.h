@@ -6,10 +6,21 @@
 #ifndef BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_CONTENTS_VERIFIER_H_
 #define BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_CONTENTS_VERIFIER_H_
 
+#include "base/memory/scoped_refptr.h"
+#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
+
+namespace base {
+class FilePath;
+}
+
 namespace component_updater {
+
+scoped_refptr<brave_component_updater::ComponentContentsAccessor>
+CreateComponentContentsAccessor(bool with_verifier,
+                                const base::FilePath& component_root);
 
 void SetupComponentContentsVerifier();
 
-}
+}  // namespace component_updater
 
 #endif  // BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_CONTENTS_VERIFIER_H_

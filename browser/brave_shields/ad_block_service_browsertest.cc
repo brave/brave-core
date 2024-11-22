@@ -24,6 +24,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/component_updater/brave_component_contents_verifier.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
@@ -246,7 +247,10 @@ void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
   brave_shields::AdBlockService* service =
       g_brave_browser_process->ad_block_service();
 
-  service->default_resource_provider()->OnComponentReady(component_path);
+  static_cast<brave_shields::AdBlockDefaultResourceProvider*>(
+      service->resource_provider())
+      ->OnComponentReady(component_updater::CreateComponentContentsAccessor(
+          false, component_path));
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
