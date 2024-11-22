@@ -112,10 +112,8 @@ void RewardsTabHelper::DidFinishNavigation(
     return;
   }
 
-  auto& url = navigation_handle->GetURL();
-
   if (!navigation_handle->IsSameDocument()) {
-    auto id = GetPublisherIdFromURL(url);
+    auto id = GetPublisherIdFromURL(navigation_handle->GetURL());
     SetPublisherIdForTab(id ? *id : "");
     MaybeSavePublisherInfo();
     rewards_service_->OnUnload(tab_id_);
@@ -123,19 +121,10 @@ void RewardsTabHelper::DidFinishNavigation(
         navigation_handle->GetRenderFrameHost());
   }
 
-  // Only invoke creator detection if the URL has changed.
-  if (url != last_detection_url_) {
-    last_detection_url_ = url;
-
-    // Store the current navigation ID so that we can determine if the async
-    // result corresponds to this navigation.
-    detection_navigation_id_ = navigation_handle->GetNavigationId();
-
-    creator_detection_.DetectCreator(
-        navigation_handle->GetRenderFrameHost(),
-        base::BindOnce(&RewardsTabHelper::OnCreatorDetected,
-                       base::Unretained(this), detection_navigation_id_));
-  }
+  creator_detection_.DetectCreator(
+      navigation_handle->GetRenderFrameHost(),
+      base::BindOnce(&RewardsTabHelper::OnCreatorDetected,
+                     base::Unretained(this)));
 }
 
 void RewardsTabHelper::ResourceLoadComplete(
@@ -224,9 +213,8 @@ void RewardsTabHelper::MaybeSavePublisherInfo() {
 }
 
 void RewardsTabHelper::OnCreatorDetected(
-    int64_t navigation_id,
     std::optional<CreatorDetectionScriptInjector::Result> result) {
-  if (!result || navigation_id != detection_navigation_id_) {
+  if (!result) {
     return;
   }
 

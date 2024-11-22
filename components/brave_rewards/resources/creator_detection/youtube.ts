@@ -120,6 +120,16 @@ initializeDetector(() => {
       }
     }
 
+    if (currentPathType === 'channel' || currentPathType === 'channel-name') {
+      let header = document.querySelector<HTMLElement>('#page-header')
+      if (header) {
+        let matches = header.innerText.match(/@[\w]+/)
+        if (matches && matches.length > 0) {
+          return matches[0]
+        }
+      }
+    }
+
     return ''
   }
 

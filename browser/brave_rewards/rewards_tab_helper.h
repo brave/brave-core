@@ -88,7 +88,6 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
   void MaybeSavePublisherInfo();
 
   void OnCreatorDetected(
-      int64_t navigation_id,
       std::optional<CreatorDetectionScriptInjector::Result> result);
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -101,8 +100,6 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
   raw_ptr<RewardsService> rewards_service_ = nullptr;
   base::ObserverList<Observer> observer_list_;
   std::string publisher_id_;
-  GURL last_detection_url_;
-  int64_t detection_navigation_id_ = 0;
   CreatorDetectionScriptInjector creator_detection_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

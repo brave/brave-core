@@ -99,6 +99,7 @@ void CreatorDetectionScriptInjector::MaybeInjectScript(
     content::RenderFrameHost* rfh) {
   injector_.reset();
   injector_host_token_ = content::GlobalRenderFrameHostToken();
+  last_detection_url_ = GURL();
 
   if (!rfh) {
     return;
@@ -120,17 +121,28 @@ void CreatorDetectionScriptInjector::MaybeInjectScript(
 void CreatorDetectionScriptInjector::DetectCreator(
     content::RenderFrameHost* rfh,
     DetectCreatorCallback callback) {
+  // Return asynchronously with `nullopt` if `rfh` is invalid or was not
+  // previously set up via `MaybeInjectScript`, or if the previous call was for
+  // the same URL.
   if (!rfh || rfh->GetGlobalFrameToken() != injector_host_token_ ||
-      !injector_.is_bound()) {
-    std::move(callback).Run(std::nullopt);
+      !injector_.is_bound() ||
+      rfh->GetLastCommittedURL() == last_detection_url_) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(&CreatorDetectionScriptInjector::OnDetectionCancelled,
+                       weak_factory_.GetWeakPtr(), std::move(callback)));
     return;
   }
+
+  last_detection_url_ = rfh->GetLastCommittedURL();
+  ++current_request_id_;
 
   // Call the detection function set up by the detection script.
   ExecuteScript(
       "braveRewards.detectCreator()",
       base::BindOnce(&CreatorDetectionScriptInjector::OnCreatorDetected,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback),
+                     current_request_id_));
 }
 
 void CreatorDetectionScriptInjector::ExecuteScript(
@@ -143,9 +155,21 @@ void CreatorDetectionScriptInjector::ExecuteScript(
       blink::mojom::PromiseResultOption::kAwait, std::move(callback));
 }
 
+void CreatorDetectionScriptInjector::OnDetectionCancelled(
+    DetectCreatorCallback callback) {
+  std::move(callback).Run(std::nullopt);
+}
+
 void CreatorDetectionScriptInjector::OnCreatorDetected(
     DetectCreatorCallback callback,
+    uint64_t request_id,
     base::Value value) {
+  // Return `nullopt` if this result was for a previous request.
+  if (request_id != current_request_id_) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
   Result result;
   if (auto* dict = value.GetIfDict()) {
     if (auto* id = dict->FindString("id")) {

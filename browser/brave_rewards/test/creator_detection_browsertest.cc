@@ -372,6 +372,18 @@ IN_PROC_BROWSER_TEST_F(CreatorDetectionBrowserTest, YouTubeDetection) {
   }
 
   {
+    // Page reload.
+    TestFuture<std::string> future;
+    TabHelperObserver observer(GetRewardsTabHelper(), future.GetCallback());
+    auto* web_contents = chrome_test_utils::GetActiveWebContents(this);
+    web_contents->GetController().Reload(content::ReloadType::NORMAL, true);
+    EXPECT_TRUE(WaitForLoadStop(web_contents));
+    WaitForTimeout();
+    EXPECT_EQ(GetRewardsTabHelper().GetPublisherIdForTab(),
+              "youtube#channel:987654321");
+  }
+
+  {
     // Same-document navigation via `history.pushState`.
     TestFuture<std::string> future;
     TabHelperObserver observer(GetRewardsTabHelper(), future.GetCallback());
