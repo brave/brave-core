@@ -77,8 +77,8 @@ class HighlightJS {
         return processAttributedString(string, preferredFont: preferredFont)
       }
 
-      // Fallback to Apple's parser.
-      let styledCode = "<style>\(theme)</style><pre><code class='hljs'>\(code)</code></pre>"
+      // Fallback to Apple's parser. - Temporarily disabled due to crash: https://github.com/brave/brave-browser/issues/42443
+      /*let styledCode = "<style>\(theme)</style><pre><code class='hljs'>\(code)</code></pre>"
 
       if let data = styledCode.data(using: .utf8),
         let string = try? NSMutableAttributedString(
@@ -91,7 +91,7 @@ class HighlightJS {
         )
       {
         return processAttributedString(string, preferredFont: preferredFont)
-      }
+      }*/
     }
 
     return nil
