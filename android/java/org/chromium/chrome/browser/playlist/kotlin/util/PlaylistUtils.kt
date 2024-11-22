@@ -104,7 +104,7 @@ object PlaylistUtils {
 
     fun loadPlaylistImage(imageView:ImageView, imagePath:String, placeholderRes: Int) {
         PostTask.postTask(TaskTraits.UI_DEFAULT) {
-            val imgFile = File(imagePath)
+            val imgFile = File(imagePath.replace("file://", ""))
             if (imgFile.exists()) {
                 val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
                 imageView.setImageBitmap(bitmap)
