@@ -13,11 +13,10 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 
-import com.bumptech.glide.Glide
-
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 import org.chromium.playlist.mojom.Playlist
 
 class RecentlyPlayedPlaylistAdapter(private val playlistClickListener: PlaylistClickListener?) :
@@ -42,12 +41,7 @@ class RecentlyPlayedPlaylistAdapter(private val playlistClickListener: PlaylistC
 
         override fun onBind(position: Int, model: Playlist) {
             if (model.items.isNotEmpty() && model.items[0].thumbnailPath.url.isNotEmpty()) {
-                Glide.with(itemView.context)
-                    .asBitmap()
-                    .placeholder(R.drawable.ic_playlist_item_placeholder)
-                    .error(R.drawable.ic_playlist_item_placeholder)
-                    .load(model.items[0].thumbnailPath.url)
-                    .into(ivPlaylistCover)
+                PlaylistUtils.loadPlaylistImage(ivPlaylistCover, model.items[0].thumbnailPath.url, R.drawable.ic_playlist_item_placeholder)
             } else {
                 ivPlaylistCover.setImageResource(R.drawable.ic_playlist_item_placeholder)
             }

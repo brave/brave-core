@@ -25,7 +25,6 @@ import androidx.media3.session.SessionToken
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-import com.bumptech.glide.Glide
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -311,11 +310,7 @@ class PlaylistActivity :
                         Formatter.formatShortFileSize(this@PlaylistActivity, totalFileSize)
                 }
 
-                Glide.with(this@PlaylistActivity)
-                    .load(playlist.items[0].thumbnailPath.url)
-                    .placeholder(R.drawable.ic_playlist_placeholder)
-                    .error(R.drawable.ic_playlist_placeholder)
-                    .into(mIvPlaylistCover)
+                PlaylistUtils.loadPlaylistImage(mIvPlaylistCover, playlist.items[0].thumbnailPath.url, R.drawable.ic_playlist_placeholder);
 
                 mTvTotalMediaCount.text =
                     getString(R.string.playlist_number_items, mPlaylist.items.size)
