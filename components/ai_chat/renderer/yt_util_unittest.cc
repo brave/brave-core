@@ -129,25 +129,25 @@ TEST(YTCaptionTrackTest, FallbackToFirst) {
   EXPECT_EQ(result.value(), "http://example.com/caption_de.vtt");
 }
 
-TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_NonJson) {
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrlNonJson) {
   std::string body = "\x89PNG\x0D\x0A\x1A\x0A";
   auto result = ParseAndChooseCaptionTrackUrl(body);
   EXPECT_FALSE(result.has_value());
 }
 
-TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_EmptyJson) {
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrlEmptyJson) {
   std::string body = "[]";
   auto result = ParseAndChooseCaptionTrackUrl(body);
   EXPECT_FALSE(result.has_value());
 }
 
-TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_InvalidJson) {
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrlInvalidJson) {
   std::string body = "{";
   auto result = ParseAndChooseCaptionTrackUrl(body);
   EXPECT_FALSE(result.has_value());
 }
 
-TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_ValidNonYTJson) {
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrlValidNonYTJson) {
   std::string body = R"({
         "captions": []
     })";
@@ -155,7 +155,7 @@ TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_ValidNonYTJson) {
   EXPECT_FALSE(result.has_value());
 }
 
-TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_ValidYTJson) {
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrlValidYTJson) {
   std::string body = R"({
     "captions": {
       "playerCaptionsTracklistRenderer": {
@@ -172,7 +172,7 @@ TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_ValidYTJson) {
   EXPECT_EQ(result.value(), "https://www.example.com/caption1");
 }
 
-TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_ValidNoStructure) {
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrlValidNoStructure) {
   // Not the correct structure
   std::string body = R"([
         {

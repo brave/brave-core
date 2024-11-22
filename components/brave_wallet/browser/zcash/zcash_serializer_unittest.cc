@@ -138,7 +138,7 @@ TEST(ZCashSerializerTest, HashTxIn) {
 }
 
 // https://zcashblockexplorer.com/transactions/360d056309669faf0d7937f41581418be5e46b04e2cea0a7b14261d7bff1d825/raw
-TEST(ZCashSerializerTest, TxId_TransparentOnly) {
+TEST(ZCashSerializerTest, TxIdTransparentOnly) {
   ZCashTransaction tx;
 
   tx.set_expiry_height(2283846);

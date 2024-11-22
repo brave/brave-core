@@ -21,7 +21,7 @@ using base::test::ParseJson;
 
 namespace brave_wallet {
 
-TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
+TEST(MeldIntegrationResponseParserUnitTest, ParseServiceProvider) {
   std::string json(R"([
   {
     "serviceProvider": "BANXA",
@@ -143,7 +143,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
   EXPECT_FALSE(ParseServiceProviders(ParseJson(json)));
 }
 
-TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
+TEST(MeldIntegrationResponseParserUnitTest, ParseMeldErrorResponse) {
   std::string json(R"({
     "code": "BAD_REQUEST",
     "message": "Bad request",
@@ -177,7 +177,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
   EXPECT_EQ(errors->size(), static_cast<size_t>(1));
 }
 
-TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
+TEST(MeldIntegrationResponseParserUnitTest, ParseCryptoQuotes) {
   std::string json(R"({"quotes": [{
       "transactionType": "CRYPTO_PURCHASE",
       "sourceAmount": "50",
@@ -237,7 +237,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
   EXPECT_TRUE(quotes_result.value().empty());
 }
 
-TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
+TEST(MeldIntegrationResponseParserUnitTest, ParsePaymentMethods) {
   std::string json(R"([
   {
     "paymentMethod": "ACH",
@@ -311,7 +311,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
   EXPECT_FALSE(ParsePaymentMethods(ParseJson(json)));
 }
 
-TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
+TEST(MeldIntegrationResponseParserUnitTest, ParseFiatCurrencies) {
   std::string json(R"([
   {
     "currencyCode": "AFN",
@@ -344,7 +344,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
   EXPECT_FALSE(ParseFiatCurrencies(ParseJson(json)));
 }
 
-TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
+TEST(MeldIntegrationResponseParserUnitTest, ParseCryptoCurrencies) {
   std::string json(R"([
   {
     "currencyCode": "USDT_KCC",
@@ -388,7 +388,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
   EXPECT_FALSE(ParseCryptoCurrencies(ParseJson(json)));
 }
 
-TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
+TEST(MeldIntegrationResponseParserUnitTest, ParseCountries) {
   std::string json(R"([
   {
     "countryCode": "AF",
@@ -441,7 +441,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
   EXPECT_FALSE(ParseCountries(ParseJson(json)));
 }
 
-TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoWidgetCreate) {
+TEST(MeldIntegrationResponseParserUnitTest, ParseCryptoWidgetCreate) {
   std::string json(R"({
     "id": "WXDpzmm2cNmtJWLDHgu1GT",
     "externalSessionId": "test_session_id",

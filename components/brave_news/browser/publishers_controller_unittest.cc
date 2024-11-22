@@ -201,7 +201,7 @@ TEST_F(BraveNewsPublishersControllerTest, CanGetPublisherByFeedUrl) {
 }
 
 TEST_F(BraveNewsPublishersControllerTest,
-       PublisherInDefaultLocaleIsPreferred_PreferredFirst) {
+       PublisherInDefaultLocaleIsPreferredPreferredFirst) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
         "publisher_id": "111",
@@ -249,7 +249,7 @@ TEST_F(BraveNewsPublishersControllerTest,
 }
 
 TEST_F(BraveNewsPublishersControllerTest,
-       PublisherInDefaultLocaleIsPreferred_PreferredLast) {
+       PublisherInDefaultLocaleIsPreferredPreferredLast) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
         "publisher_id": "111",
@@ -298,7 +298,7 @@ TEST_F(BraveNewsPublishersControllerTest,
   EXPECT_EQ("222", publisher->publisher_id);
 }
 
-TEST_F(BraveNewsPublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
+TEST_F(BraveNewsPublishersControllerTest, NoPreferredLocaleReturnsFirstMatch) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
         "publisher_id": "111",

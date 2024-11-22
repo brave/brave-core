@@ -67,7 +67,7 @@ TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringArrayResponse) {
   EXPECT_THAT(*decoded, testing::ElementsAreArray({"one", "two", "three"}));
 }
 
-TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringArrayResponse_Empty) {
+TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringArrayResponseEmpty) {
   auto json = MakeJsonRpcStringArrayResponse({});
 
   auto* expected =
@@ -176,7 +176,7 @@ TEST(JsonRpcServiceTestUtils,
   EXPECT_EQ(decoded, "0x3a2f3f7aab82d69036763cfd3f755975f84496e6");
 }
 
-TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringResponse_Empty) {
+TEST(JsonRpcServiceTestUtils, MakeJsonRpcStringResponseEmpty) {
   auto json = MakeJsonRpcStringResponse("");
 
   auto* expected =

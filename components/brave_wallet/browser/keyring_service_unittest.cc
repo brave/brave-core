@@ -474,7 +474,7 @@ class KeyringServiceUnitTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
 };  // namespace brave_wallet
 
-TEST_F(KeyringServiceUnitTest, CreateWallet_DoubleCall) {
+TEST_F(KeyringServiceUnitTest, CreateWalletDoubleCall) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::CreateWalletCallback> callback1;
@@ -2300,7 +2300,7 @@ TEST_F(KeyringServiceUnitTest, GetSetAutoLockMinutes) {
   observer.WaitAndVerify();
 }
 
-TEST_F(KeyringServiceUnitTest, SetAccountName_HardwareAccounts) {
+TEST_F(KeyringServiceUnitTest, SetAccountNameHardwareAccounts) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
   ASSERT_TRUE(CreateWallet(&service, "brave"));
@@ -3948,7 +3948,7 @@ TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {
   }
 }
 
-TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes_ZCashDisabled) {
+TEST_F(KeyringServiceUnitTest, GetOrchardRawBytesZCashDisabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndDisableFeature(features::kBraveWalletZCashFeature);
 

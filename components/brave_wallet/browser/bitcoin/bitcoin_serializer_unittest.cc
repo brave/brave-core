@@ -174,7 +174,7 @@ TEST(BitcoinSerializer, SerializeSignedTransaction) {
   EXPECT_EQ(BitcoinSerializer::CalcTransactionVBytes(tx, false), 160u);
 }
 
-TEST(BitcoinSerializer, AddressToScriptPubkey_BitcoinCoreTestVectors) {
+TEST(BitcoinSerializer, AddressToScriptPubkeyBitcoinCoreTestVectors) {
   std::string file_contents;
   ASSERT_TRUE(base::ReadFileToString(
       base::PathService::CheckedGet(base::DIR_GEN_TEST_DATA_ROOT)

@@ -358,7 +358,7 @@ OrchardShard CreateShard(size_t index, size_t level) {
 
 }  // namespace
 
-TEST_F(OrchardStorageTest, InsertSubtreeRoots_BlockHashConflict) {
+TEST_F(OrchardStorageTest, InsertSubtreeRootsBlockHashConflict) {
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                             mojom::KeyringId::kZCashMainnet,
                                             mojom::AccountKind::kDerived, 0);
@@ -663,7 +663,7 @@ TEST_F(OrchardStorageTest, CheckpointAtPosition) {
       orchard_storage_->GetCheckpointAtDepth(account_id.Clone(), 5).value());
 }
 
-TEST_F(OrchardStorageTest, TruncateCheckpoints_OutOfBoundary) {
+TEST_F(OrchardStorageTest, TruncateCheckpointsOutOfBoundary) {
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                             mojom::KeyringId::kZCashMainnet,
                                             mojom::AccountKind::kDerived, 0);
@@ -827,7 +827,7 @@ TEST_F(OrchardStorageTest, AddSameCheckpoint) {
   }
 }
 
-TEST_F(OrchardStorageTest, AddChekpoint_ErrorOnConflict) {
+TEST_F(OrchardStorageTest, AddChekpointErrorOnConflict) {
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                             mojom::KeyringId::kZCashMainnet,
                                             mojom::AccountKind::kDerived, 0);

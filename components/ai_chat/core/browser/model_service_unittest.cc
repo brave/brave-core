@@ -130,7 +130,7 @@ TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey) {
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-claude-sonnet");
 }
 
-TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKey_OnlyOnce) {
+TEST_F(ModelServiceTest, MigrateOldClaudeDefaultModelKeyOnlyOnce) {
   // Set default to the old key for claude
   pref_service_.SetString("brave.ai_chat.default_model_key",
                           "chat-claude-instant");
@@ -161,7 +161,7 @@ TEST_F(ModelServiceTestWithDifferentPremiumModel,
 }
 
 TEST_F(ModelServiceTestWithDifferentPremiumModel,
-       MigrateToPremiumDefaultModel_UserModified) {
+       MigrateToPremiumDefaultModelUserModified) {
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-leo-expanded");
   EXPECT_CALL(*observer_,
               OnDefaultModelChanged("chat-leo-expanded", "chat-basic"))
@@ -174,8 +174,7 @@ TEST_F(ModelServiceTestWithDifferentPremiumModel,
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
-TEST_F(ModelServiceTestWithSamePremiumModel,
-       MigrateToPremiumDefaultModel_None) {
+TEST_F(ModelServiceTestWithSamePremiumModel, MigrateToPremiumDefaultModelNone) {
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-leo-expanded");
   EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
   GetService()->OnPremiumStatus(mojom::PremiumStatus::Active);
@@ -222,7 +221,7 @@ TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
             kAPIKey);
 }
 
-TEST_F(ModelServiceTest, ChangeDefaultModelKey_GoodKey) {
+TEST_F(ModelServiceTest, ChangeDefaultModelKeyGoodKey) {
   GetService()->SetDefaultModelKey("chat-basic");
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
   EXPECT_CALL(*observer_,
@@ -233,7 +232,7 @@ TEST_F(ModelServiceTest, ChangeDefaultModelKey_GoodKey) {
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
-TEST_F(ModelServiceTest, ChangeDefaultModelKey_IncorrectKey) {
+TEST_F(ModelServiceTest, ChangeDefaultModelKeyIncorrectKey) {
   GetService()->SetDefaultModelKey("chat-basic");
   EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
   EXPECT_CALL(*observer_, OnDefaultModelChanged(_, _)).Times(0);
@@ -243,7 +242,7 @@ TEST_F(ModelServiceTest, ChangeDefaultModelKey_IncorrectKey) {
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
-TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_CustomModel) {
+TEST_F(ModelServiceTest, SetAssociatedContentLengthMetricsCustomModel) {
   // Setup a custom model with no valid context size
   mojom::CustomModelOptionsPtr custom_options =
       mojom::CustomModelOptions::New();
@@ -276,7 +275,7 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_CustomModel) {
             expected_warning_limit);
 }
 
-TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_ValidContextSize) {
+TEST_F(ModelServiceTest, SetAssociatedContentLengthMetricsValidContextSize) {
   // Setup a custom model with a valid context size
   static constexpr size_t kContextSize = 5000;
   mojom::CustomModelOptionsPtr custom_options =
@@ -315,7 +314,7 @@ TEST_F(ModelServiceTest, SetAssociatedContentLengthMetrics_ValidContextSize) {
 }
 
 TEST_F(ModelServiceTest,
-       CalcuateMaxAssociatedContentLengthForModel_CustomModel) {
+       CalcuateMaxAssociatedContentLengthForModelCustomModel) {
   // Setup a custom model with a valid context size
   mojom::CustomModelOptionsPtr custom_options =
       mojom::CustomModelOptions::New();
@@ -339,7 +338,7 @@ TEST_F(ModelServiceTest,
   EXPECT_EQ(max_content_length, expected_content_length);
 }
 
-TEST_F(ModelServiceTest, CalcuateMaxAssociatedContentLengthForModel_LeoModel) {
+TEST_F(ModelServiceTest, CalcuateMaxAssociatedContentLengthForModelLeoModel) {
   // Setup a leo model with predefined page content length
   static constexpr size_t expected_content_length = 10'000;
 

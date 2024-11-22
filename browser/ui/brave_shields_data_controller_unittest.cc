@@ -108,7 +108,7 @@ class BraveShieldsDataControllerTest : public testing::Test {
   std::unique_ptr<TestingProfileManager> profile_manager_;
 };
 
-TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {
+TEST_F(BraveShieldsDataControllerTest, SetAdBlockModeForOrigin1) {
   auto* controller = GetShieldsDataController();
   SetLastCommittedUrl(GURL("http://brave.com"));
 
@@ -172,7 +172,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {
             CONTENT_SETTING_ALLOW);
 }
 
-TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_2) {
+TEST_F(BraveShieldsDataControllerTest, SetAdBlockModeForOrigin2) {
   auto* controller = GetShieldsDataController();
   SetLastCommittedUrl(GURL("http://brave.com"));
 
@@ -236,7 +236,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_2) {
             CONTENT_SETTING_ALLOW);
 }
 
-TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_3) {
+TEST_F(BraveShieldsDataControllerTest, SetAdBlockModeForOrigin3) {
   auto* controller = GetShieldsDataController();
   SetLastCommittedUrl(GURL("http://brave.com"));
 
@@ -300,7 +300,7 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_3) {
             CONTENT_SETTING_BLOCK);
 }
 
-TEST_F(BraveShieldsDataControllerTest, GetAdBlockMode_ForOrigin) {
+TEST_F(BraveShieldsDataControllerTest, GetAdBlockModeForOrigin) {
   auto* controller = GetShieldsDataController();
   SetLastCommittedUrl(GURL("http://brave.com"));
 
@@ -328,7 +328,7 @@ TEST_F(BraveShieldsDataControllerTest, GetAdBlockMode_ForOrigin) {
   EXPECT_EQ(controller->GetAdBlockMode(), AdBlockMode::AGGRESSIVE);
 }
 
-TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
+TEST_F(BraveShieldsDataControllerTest, ObserverOnShieldsEnabledChangedTest) {
   // Set url for default web contents.
   SetLastCommittedUrl(GURL("http://brave.com"));
 

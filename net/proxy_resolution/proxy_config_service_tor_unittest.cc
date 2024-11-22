@@ -234,7 +234,7 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   EXPECT_TRUE(info.is_empty());
 }
 
-TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization_Subresources) {
+TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorizationSubresources) {
   const GURL site_url1("https://brave.com/");
   const GURL site_url2("https://bravesoftware.com/");  // subresource
   const GURL site_url3("https://brave.software.com/");

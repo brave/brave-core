@@ -187,7 +187,7 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo) {
             Uint256ValueToHex(tx1559->gas_estimation().base_fee_per_gas));
 }
 
-TEST(EthTxMetaUnitTest, ToTransactionInfo_FinalRecipientTest) {
+TEST(EthTxMetaUnitTest, ToTransactionInfoFinalRecipientTest) {
   auto eth_account_id =
       MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
                     mojom::AccountKind::kDerived,

@@ -115,7 +115,7 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
   std::unique_ptr<EngineConsumerConversationAPI> engine_;
 };
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEventsBasicMessage) {
   // Although these tests should likely only be testing the
   // EngineConsumerConversationAPI class, we also include testing some
   // functionality of the very related ConversationAPIClient class. Whilst
@@ -167,7 +167,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEventsWithSelectedText) {
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
     {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
@@ -210,7 +210,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
-       GenerateEvents_HistoryWithSelectedText) {
+       GenerateEventsHistoryWithSelectedText) {
   // Tests events building from history with selected text and new query without
   // selected text but with page association.
   EngineConsumer::ConversationHistory history;
@@ -265,7 +265,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEventsRewrite) {
   std::string expected_events = R"([
     {"role": "user", "type": "userText", "content": "Hello World"},
     {"role": "user", "type": "requestRewrite", "content": "Use a funny tone"}
@@ -291,7 +291,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEventsModifyReply) {
   // Tests events building from history with modified agent reply.
   EngineConsumer::ConversationHistory history;
   history.push_back(mojom::ConversationTurn::New(
@@ -368,7 +368,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_EarlyReturn) {
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEventsEarlyReturn) {
   EngineConsumer::ConversationHistory history;
   auto* mock_api_client = GetMockConversationAPIClient();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -403,7 +403,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_EarlyReturn) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEventsSummarizePage) {
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "This is a sample page content."},
     {"role": "user", "type": "requestSummary", "content": ""}

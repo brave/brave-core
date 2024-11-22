@@ -321,7 +321,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
   FetchPageContent(FROM_HERE, "");
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchSearchQuerySummary_NoMetaTag) {
+IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchSearchQuerySummaryNoMetaTag) {
   // Test when meta tag is not present, should return null result.
   NavigateURL(https_server_.GetURL("search.brave.com", "/search?q=query"));
   FetchSearchQuerySummary(FROM_HERE, std::nullopt);

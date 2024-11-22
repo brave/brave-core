@@ -842,7 +842,7 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage) {
   EXPECT_EQ(requests[3]->sign_data->get_solana_sign_data()->message, "BRAVE");
 }
 
-TEST_F(SolanaProviderImplUnitTest, SignMessage_Hardware) {
+TEST_F(SolanaProviderImplUnitTest, SignMessageHardware) {
   mojom::SolanaProviderError error;
   std::string error_message;
   auto mock_hw_sig = mojom::EthereumSignatureBytes::New(
@@ -961,7 +961,7 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs) {
   EXPECT_EQ(signed_txs, std::vector<std::vector<uint8_t>>());
 }
 
-TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs_Hardware) {
+TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIsHardware) {
   CreateWallet();
   auto added_hw_account = AddHardwareAccount(kHardwareAccountAddr);
   SetSelectedAccount(added_hw_account->account_id);

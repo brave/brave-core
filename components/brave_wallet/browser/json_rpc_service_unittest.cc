@@ -2653,7 +2653,7 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(JsonRpcServiceUnitTest, Request_BadHeaderValues) {
+TEST_F(JsonRpcServiceUnitTest, RequestBadHeaderValues) {
   std::string request =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_blockNumber\n\","
       "\"params\":"
@@ -3325,7 +3325,7 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
   }
 };
 
-TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddrPolygonNetworkError) {
   base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback,
               Run("", mojom::ProviderError::kInternalError,
@@ -3363,7 +3363,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonResult) {
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddrPolygonResult) {
   base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback, Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
   SetEthResponse("javajobs.crypto", "");
@@ -3387,7 +3387,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonResult) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnet) {
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddrFallbackToEthMainnet) {
   base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback, Run(k0x8aaD44Addr, mojom::ProviderError::kSuccess, ""));
   SetEthResponse("brad.crypto", k0x8aaD44Addr);
@@ -3397,7 +3397,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnet) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnetError) {
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddrFallbackToEthMainnetError) {
   base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback,
               Run("", mojom::ProviderError::kInternalError,
@@ -3409,7 +3409,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnetError) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_InvalidDomain) {
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddrInvalidDomain) {
   base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback,
               Run("", mojom::ProviderError::kInvalidParams,
@@ -3420,7 +3420,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_InvalidDomain) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_ManyCalls) {
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddrManyCalls) {
   base::MockCallback<GetWalletAddrCallback> callback1;
   EXPECT_CALL(callback1,
               Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
@@ -3463,7 +3463,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_ManyCalls) {
   testing::Mock::VerifyAndClearExpectations(&callback3);
 }
 
-TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddrMultipleKeys) {
   base::MockCallback<GetWalletAddrCallback> callback;
   EXPECT_CALL(callback, Run("ethaddr1", mojom::ProviderError::kSuccess, ""));
 
@@ -3504,7 +3504,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
+TEST_F(UnstoppableDomainsUnitTest, ResolveDnsPolygonNetworkError) {
   base::MockCallback<ResolveDnsCallback> callback;
   EXPECT_CALL(callback,
               Run(std::optional<GURL>(), mojom::ProviderError::kInternalError,
@@ -3542,7 +3542,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
+TEST_F(UnstoppableDomainsUnitTest, ResolveDnsPolygonResult) {
   base::MockCallback<ResolveDnsCallback> callback;
   EXPECT_CALL(callback, Run(std::optional<GURL>("https://brave.com"),
                             mojom::ProviderError::kSuccess, ""));
@@ -3569,7 +3569,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
+TEST_F(UnstoppableDomainsUnitTest, ResolveDnsFallbackToEthMainnet) {
   base::MockCallback<ResolveDnsCallback> callback;
   EXPECT_CALL(
       callback,
@@ -3592,7 +3592,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
+TEST_F(UnstoppableDomainsUnitTest, ResolveDnsFallbackToEthMainnetError) {
   base::MockCallback<ResolveDnsCallback> callback;
   EXPECT_CALL(callback,
               Run(std::optional<GURL>(), mojom::ProviderError::kInternalError,
@@ -3613,7 +3613,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(UnstoppableDomainsUnitTest, ResolveDns_InvalidDomain) {
+TEST_F(UnstoppableDomainsUnitTest, ResolveDnsInvalidDomain) {
   base::MockCallback<ResolveDnsCallback> callback;
   EXPECT_CALL(callback,
               Run(std::optional<GURL>(), mojom::ProviderError::kInvalidParams,
@@ -3623,7 +3623,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_InvalidDomain) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
+TEST_F(UnstoppableDomainsUnitTest, ResolveDnsManyCalls) {
   base::MockCallback<ResolveDnsCallback> callback1;
   EXPECT_CALL(callback1, Run(std::optional<GURL>("https://brave.com"),
                              mojom::ProviderError::kSuccess, ""));
@@ -5922,7 +5922,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddrSubdomain) {
   json_rpc_service_->SetEnsOffchainLookupResolveMethod(
       mojom::ResolveMethod::kEnabled);
 
@@ -5933,7 +5933,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain_NoEnsip10Support) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddrSubdomainNoEnsip10Support) {
   json_rpc_service_->SetEnsOffchainLookupResolveMethod(
       mojom::ResolveMethod::kEnabled);
 
@@ -5948,7 +5948,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain_NoEnsip10Support) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoResolver) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddrNoResolver) {
   json_rpc_service_->SetEnsOffchainLookupResolveMethod(
       mojom::ResolveMethod::kEnabled);
 
@@ -5960,7 +5960,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoResolver) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddrNoEnsip10Support) {
   json_rpc_service_->SetEnsOffchainLookupResolveMethod(
       mojom::ResolveMethod::kEnabled);
 
@@ -5974,7 +5974,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support_GoOffchain) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddrNoEnsip10SupportGoOffchain) {
   json_rpc_service_->SetEnsOffchainLookupResolveMethod(
       mojom::ResolveMethod::kEnabled);
 
@@ -5990,7 +5990,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support_GoOffchain) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Gateway500Error) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddrGateway500Error) {
   json_rpc_service_->SetEnsOffchainLookupResolveMethod(
       mojom::ResolveMethod::kEnabled);
 
@@ -6005,7 +6005,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Gateway500Error) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_GatewayNoRecord) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddrGatewayNoRecord) {
   json_rpc_service_->SetEnsOffchainLookupResolveMethod(
       mojom::ResolveMethod::kEnabled);
 
@@ -6020,7 +6020,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_GatewayNoRecord) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Consent) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddrConsent) {
   EXPECT_EQ(
       decentralized_dns::EnsOffchainResolveMethod::kAsk,
       decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
@@ -6080,7 +6080,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Subdomain) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHashSubdomain) {
   decentralized_dns::SetEnsOffchainResolveMethod(
       local_state_prefs(),
       decentralized_dns::EnsOffchainResolveMethod::kEnabled);
@@ -6092,7 +6092,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Subdomain) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Subdomain_NoEnsip10Support) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHashSubdomainNoEnsip10Support) {
   // Turning off Ensip-10 support for resolver so addr(bytes32) is called.
   ensip10_support_handler_->DisableSupport();
 
@@ -6109,7 +6109,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Subdomain_NoEnsip10Support) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoResolver) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHashNoResolver) {
   decentralized_dns::SetEnsOffchainResolveMethod(
       local_state_prefs(),
       decentralized_dns::EnsOffchainResolveMethod::kEnabled);
@@ -6123,7 +6123,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoResolver) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoEnsip10Support) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHashNoEnsip10Support) {
   decentralized_dns::SetEnsOffchainResolveMethod(
       local_state_prefs(),
       decentralized_dns::EnsOffchainResolveMethod::kEnabled);
@@ -6139,8 +6139,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoEnsip10Support) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest,
-       GetContentHash_NoEnsip10Support_GoOffchain) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHashNoEnsip10Support_GoOffchain) {
   decentralized_dns::SetEnsOffchainResolveMethod(
       local_state_prefs(),
       decentralized_dns::EnsOffchainResolveMethod::kEnabled);
@@ -6158,7 +6157,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest,
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Gateway500Error) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHashGateway500Error) {
   decentralized_dns::SetEnsOffchainResolveMethod(
       local_state_prefs(),
       decentralized_dns::EnsOffchainResolveMethod::kEnabled);
@@ -6175,7 +6174,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Gateway500Error) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_GatewayNoRecord) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHashGatewayNoRecord) {
   decentralized_dns::SetEnsOffchainResolveMethod(
       local_state_prefs(),
       decentralized_dns::EnsOffchainResolveMethod::kEnabled);
@@ -6192,7 +6191,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_GatewayNoRecord) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Consent) {
+TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHashConsent) {
   EXPECT_EQ(
       decentralized_dns::EnsOffchainResolveMethod::kAsk,
       decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
@@ -6437,7 +6436,7 @@ class SnsJsonRpcServiceUnitTest : public JsonRpcServiceUnitTest {
   std::unique_ptr<JsonRpcEndpointHandler> json_rpc_endpoint_handler_;
 };
 
-TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
+TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddrNftOwner) {
   // Has nft for domain. Return nft owner.
   base::MockCallback<JsonRpcService::SnsGetSolAddrCallback> callback;
   EXPECT_CALL(callback, Run(NftOwnerAddress().ToBase58(),
@@ -6471,7 +6470,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
+TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddrDomainOwner) {
   DisableV2Handlers();  // Legacy v1 records test.
   mint_address_handler_->Disable();
   sol_record_v1_address_handler_->Disable();
@@ -6501,7 +6500,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
+TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddrSolRecordOwner) {
   DisableV2Handlers();  // Legacy v1 records test.
   mint_address_handler_->Disable();
 
@@ -6537,7 +6536,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record) {
+TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddrV2Record) {
   mint_address_handler_->Disable();
 
   // No nft, has sol v2 record. Return address from SOLv2 record.
@@ -6562,7 +6561,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_StalenessCheck) {
+TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddrV2RecordStalenessCheck) {
   mint_address_handler_->Disable();
 
   // Return address from SOLv2 record by default.
@@ -6629,7 +6628,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_StalenessCheck) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_RoaCheck) {
+TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddrV2RecordRoaCheck) {
   mint_address_handler_->Disable();
 
   // Return address from SOLv2 record by default.
@@ -6696,7 +6695,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_V2Record_RoaCheck) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_UrlValue) {
+TEST_F(SnsJsonRpcServiceUnitTest, ResolveHostUrlValue) {
   DisableV2Handlers();  // Legacy v1 records test.
 
   base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
@@ -6716,7 +6715,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_UrlValue) {
   url_record_v1_address_handler_->FailWithTimeout(false);
 }
 
-TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
+TEST_F(SnsJsonRpcServiceUnitTest, ResolveHostIpfsValue) {
   DisableV2Handlers();  // Legacy v1 records test.
 
   url_record_v1_address_handler_->Disable();
@@ -6748,7 +6747,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records) {
+TEST_F(SnsJsonRpcServiceUnitTest, ResolveHostV2Records) {
   base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
 
   // Test with nft disabled as domain owner is used as staleness id by default
@@ -6874,7 +6873,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_StalenessCheck) {
+TEST_F(SnsJsonRpcServiceUnitTest, ResolveHostV2RecordsStalenessCheck) {
   base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
   // Test with nft disabled as domain owner is used as staleness id by default
   // in tests.
@@ -6944,7 +6943,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_StalenessCheck) {
   WaitAndVerify(&callback);
 }
 
-TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_V2Records_NetworkError) {
+TEST_F(SnsJsonRpcServiceUnitTest, ResolveHostV2RecordsNetworkError) {
   base::MockCallback<JsonRpcService::SnsResolveHostCallback> callback;
   // Test with nft disabled as domain owner is used as staleness id by default
   // in tests.

@@ -1974,7 +1974,7 @@ TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks) {
   }
 }
 
-TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks_NoList) {
+TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworksNoList) {
   // Note: The testing profile has already performed the prefs migration by the
   // time this test runs, so undo its effects here for testing purposes
   ASSERT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultHiddenNetworksVersion),
@@ -2955,7 +2955,7 @@ TEST_F(BraveWalletServiceUnitTest, ConvertFEVMToFVMAddress) {
   }
 }
 
-TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSol) {
+TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddressEthFilSol) {
   SetupWallet();
 
   std::vector<mojom::AccountInfoPtr> accounts;
@@ -2977,7 +2977,7 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSol) {
   }
 }
 
-TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Btc) {
+TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddressBtc) {
   SetupWallet();
 
   auto btc_account = GetAccountUtils().EnsureBtcAccount(0);

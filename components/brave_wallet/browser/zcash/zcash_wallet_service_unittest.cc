@@ -349,7 +349,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
+TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShieldedFeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
@@ -647,7 +647,7 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
   }
 }
 
-TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
+TEST_F(ZCashWalletServiceUnitTest, AddressDiscoveryFromPrefs) {
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
@@ -951,7 +951,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
 // Disabled on android due timeout failures
 #if !BUILDFLAG(IS_ANDROID)
 
-TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
+TEST_F(ZCashWalletServiceUnitTest, ShieldFundsFailsOnNetworkError) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));

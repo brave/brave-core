@@ -21,7 +21,7 @@ class SplitViewLocationBarModelDelegateUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
 };
 
-TEST_F(SplitViewLocationBarModelDelegateUnitTest, ShouldDisplayURL_NewTabPage) {
+TEST_F(SplitViewLocationBarModelDelegateUnitTest, ShouldDisplayURLNewTabPage) {
   TestingProfile testing_profile;
   content::TestWebContentsFactory web_contents_factory;
   content::WebContents* web_contents =

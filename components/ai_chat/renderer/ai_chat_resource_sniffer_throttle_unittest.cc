@@ -301,7 +301,7 @@ TEST_F(AIChatResourceSnifferThrottleTest, DoesNotThrottleNonHTTP) {
                          "wss://www.youtube.com/youtubei/v1/player?example")));
 }
 
-TEST_F(AIChatResourceSnifferThrottleTest, Body_NonJson) {
+TEST_F(AIChatResourceSnifferThrottleTest, BodyNonJson) {
   // AIChatResourceSnifferThrottle doesn't parse the json as an optimization
   // since it might not get used until an AIChat conversation message is about
   // to be sent, so any body content should be passed to the delegate, we don't
@@ -313,7 +313,7 @@ TEST_F(AIChatResourceSnifferThrottleTest, Body_NonJson) {
   InterceptBodyRequestFor(body);
 }
 
-TEST_F(AIChatResourceSnifferThrottleTest, Body_ValidYTJson) {
+TEST_F(AIChatResourceSnifferThrottleTest, BodyValidYTJson) {
   std::string body = R"({
     "captions": {
       "playerCaptionsTracklistRenderer": {

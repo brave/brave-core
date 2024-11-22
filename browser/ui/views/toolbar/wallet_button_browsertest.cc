@@ -76,7 +76,7 @@ class WalletButtonBrowserUITest : public DialogBrowserTest {
 };
 
 // Invokes a wallet panel bubble.
-IN_PROC_BROWSER_TEST_F(WalletButtonBrowserUITest, InvokeUi_default) {
+IN_PROC_BROWSER_TEST_F(WalletButtonBrowserUITest, InvokeUidefault) {
   ShowAndVerifyUi();
 }
 

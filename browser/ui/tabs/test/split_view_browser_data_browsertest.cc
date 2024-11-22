@@ -42,7 +42,7 @@ class SplitViewBrowserDataBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, TileTabs_AddsTile) {
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, TileTabsAddsTile) {
   auto* tab_1 = CreateTabModel();
   auto* tab_2 = CreateTabModel();
   EXPECT_FALSE(data().IsTabTiled(tab_1->GetHandle()));
@@ -54,7 +54,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, TileTabs_AddsTile) {
   EXPECT_TRUE(data().IsTabTiled(tab_2->GetHandle()));
 }
 
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, BreakTile_RemovesTile) {
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserDataBrowserTest, BreakTileRemovesTile) {
   auto* tab_1 = CreateTabModel();
   auto* tab_2 = CreateTabModel();
   data().TileTabs({.first = tab_1->GetHandle(), .second = tab_2->GetHandle()});

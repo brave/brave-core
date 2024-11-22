@@ -28,7 +28,7 @@ constexpr char kAddress2[] = "t1MmQ8PGfRygwhSK6qyianhMtb5tixuK8ZS";
 
 }  // namespace
 
-TEST(ZCashTransaction, Outpoint_Value) {
+TEST(ZCashTransaction, OutpointValue) {
   ZCashTransaction::Outpoint outpoint;
   outpoint.index = 123;
   base::HexStringToSpan(kTxid1, outpoint.txid);
@@ -40,7 +40,7 @@ TEST(ZCashTransaction, Outpoint_Value) {
   EXPECT_EQ(parsed->txid, outpoint.txid);
 }
 
-TEST(ZCashTransaction, TxInput_Value) {
+TEST(ZCashTransaction, TxInputValue) {
   ZCashTransaction::TxInput input;
   input.utxo_address = kAddress1;
   input.utxo_outpoint.index = 123;
@@ -59,7 +59,7 @@ TEST(ZCashTransaction, TxInput_Value) {
   EXPECT_EQ(parsed->script_pub_key, input.script_pub_key);
 }
 
-TEST(ZCashTransaction, TxInput_FromRpcUtxo) {
+TEST(ZCashTransaction, TxInputFromRpcUtxo) {
   std::vector<uint8_t> tx_id;
   base::HexStringToBytes(
       "F80875BFAA0726FADC0068CCA851F3252762670DF345E6C7A483FE841AF98E98",
@@ -81,7 +81,7 @@ TEST(ZCashTransaction, TxInput_FromRpcUtxo) {
   EXPECT_EQ(input->n_sequence, 0xffffffff);
 }
 
-TEST(ZCashTransaction, TxOutput_Value) {
+TEST(ZCashTransaction, TxOutputValue) {
   ZCashTransaction::TxOutput output;
   output.address = kAddress2;
   output.script_pubkey.assign({0, 1, 2, 7});

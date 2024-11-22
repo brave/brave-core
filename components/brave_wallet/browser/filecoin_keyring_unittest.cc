@@ -159,7 +159,7 @@ TEST(FilecoinKeyring, ImportFilecoinBLS) {
                   .empty());
 }
 
-TEST(FilecoinKeyring, fil_private_key_public_key) {
+TEST(FilecoinKeyring, FilPrivateKeyPublicKey) {
   std::string private_key_hex =
       "6a4b3d3f3ccb3676e34e16bc07a9371dede3a037def6114e79e51705f823723f";
   EXPECT_EQ(base::HexEncode(GetPublicKey(private_key_hex)),

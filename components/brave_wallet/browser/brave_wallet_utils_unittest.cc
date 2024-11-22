@@ -637,7 +637,7 @@ TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureEnabled) {
+TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssetsFeatureEnabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
@@ -669,7 +669,7 @@ TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureEnabled) {
   }
 }
 
-TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureDisabled) {
+TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssetsFeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,

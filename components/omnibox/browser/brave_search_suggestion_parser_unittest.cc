@@ -10,7 +10,7 @@
 #include "components/omnibox/browser/autocomplete_scheme_classifier.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-TEST(BraveSearchSuggestionParser, ParseSuggestResults_EmptyRootList) {
+TEST(BraveSearchSuggestionParser, ParseSuggestResultsEmptyRootList) {
   base::Value::List root_list;
   AutocompleteInput input;
   bool is_keyword_result = false;
@@ -20,7 +20,7 @@ TEST(BraveSearchSuggestionParser, ParseSuggestResults_EmptyRootList) {
                                             &results));
 }
 
-TEST(BraveSearchSuggestionParser, ParseSuggestResults_EntityType) {
+TEST(BraveSearchSuggestionParser, ParseSuggestResultsEntityType) {
   base::Value::Dict suggestion;
   suggestion.Set("is_entity", base::Value(true));
   suggestion.Set("q", base::Value("helldivers 2"));
@@ -70,7 +70,7 @@ TEST(BraveSearchSuggestionParser, ParseSuggestResults_EntityType) {
             result.entity_info().annotation());
 }
 
-TEST(BraveSearchSuggestionParser, ParseSuggestResults_NonEntityType) {
+TEST(BraveSearchSuggestionParser, ParseSuggestResultsNonEntityType) {
   base::Value::Dict suggestion;
   suggestion.Set("is_entity", base::Value(false));
   suggestion.Set("q", base::Value("1+2+3+4+...+n formula"));
@@ -101,7 +101,7 @@ TEST(BraveSearchSuggestionParser, ParseSuggestResults_NonEntityType) {
   EXPECT_FALSE(result.entity_info().has_annotation());
 }
 
-TEST(BraveSearchSuggestionParser, ParseSuggestResults_FilterSVGImage) {
+TEST(BraveSearchSuggestionParser, ParseSuggestResultsFilterSVGImage) {
   base::Value::Dict suggestion;
   suggestion.Set("is_entity", base::Value(true));
   suggestion.Set("q", base::Value("helldivers 2"));

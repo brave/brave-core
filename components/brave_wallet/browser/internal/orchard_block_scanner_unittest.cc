@@ -379,7 +379,7 @@ TEST(OrchardBlockScannerTest, WrongInput) {
 }
 
 // Case when note is spent in the same scanning batch where it is was received
-TEST(OrchardBlockScanner, FoundKnownNullifiers_SameBatch) {
+TEST(OrchardBlockScanner, FoundKnownNullifiersSameBatch) {
   auto scanner = OrchardBlockScanner(OrchardFullViewKey(
       {0x74, 0x0b, 0xbe, 0x5d, 0x05, 0x80, 0xb2, 0xca, 0xd4, 0x30, 0x18,
        0x0d, 0x02, 0xcc, 0x12, 0x8b, 0x9a, 0x14, 0x0d, 0x5e, 0x07, 0xc1,

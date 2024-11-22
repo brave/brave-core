@@ -24,7 +24,7 @@ class CrashReportPermissionAskDialogTest : public DialogBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(CrashReportPermissionAskDialogTest, InvokeUi_Dialog) {
+IN_PROC_BROWSER_TEST_F(CrashReportPermissionAskDialogTest, InvokeUiDialog) {
   // When reporting is disabled, crash report permission ask dialog is launched.
   g_browser_process->local_state()->SetBoolean(
       metrics::prefs::kMetricsReportingEnabled, false);

@@ -196,7 +196,7 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForAIChat) {
   }
 }
 
-TEST_F(BraveRenderViewContextMenuTest, MenuForAIChat_PWA) {
+TEST_F(BraveRenderViewContextMenuTest, MenuForAIChatPWA) {
   content::ContextMenuParams params = CreateSelectedTextParams(u"hello");
 
   GetPrefs()->SetBoolean(ai_chat::prefs::kBraveAIChatContextMenuEnabled, true);

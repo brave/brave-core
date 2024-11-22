@@ -83,7 +83,7 @@ TEST_F(BraveContentsLayoutManagerUnitTest,
   EXPECT_EQ(contents_container().size(), contents_view().size());
 }
 
-TEST_F(BraveContentsLayoutManagerUnitTest, Size_SecondaryContentsViewVisible) {
+TEST_F(BraveContentsLayoutManagerUnitTest, SizeSecondaryContentsViewVisible) {
   // Given secondary web view is visible
   secondary_contents_view().SetVisible(true);
 

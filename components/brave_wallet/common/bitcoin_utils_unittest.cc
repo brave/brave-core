@@ -117,7 +117,7 @@ TEST(BitcoinUtilsUnitTest, Bip0173TestVectors2) {
 }
 
 // https://github.com/sparrowwallet/drongo/blob/9ae1f68dc42529085edcc8c10d9bcfdbf9639448/src/test/java/com/sparrowwallet/drongo/address/AddressTest.java#L12
-TEST(BitcoinUtilsUnitTest, DecodeBitcoinAddress_SparrowWalletTestVectors) {
+TEST(BitcoinUtilsUnitTest, DecodeBitcoinAddressSparrowWalletTestVectors) {
   std::optional<DecodedBitcoinAddress> decoded;
 
   auto decoded1 =
@@ -212,7 +212,7 @@ TEST(BitcoinUtilsUnitTest, DecodeBitcoinAddress_SparrowWalletTestVectors) {
   EXPECT_TRUE(decoded12->testnet);
 }
 
-TEST(BitcoinUtilsUnitTest, DecodeBitcoinAddress_BitcoinCoreTestVectors) {
+TEST(BitcoinUtilsUnitTest, DecodeBitcoinAddressBitcoinCoreTestVectors) {
   // Bitcoin-core test vectors are effectively covered by
   // BitcoinSerializer.AddressToScriptPubkey_BitcoinCoreTestVectors
   SUCCEED();

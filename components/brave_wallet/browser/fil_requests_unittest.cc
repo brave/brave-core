@@ -24,7 +24,7 @@ void CompareJSONs(const std::string& request_string,
 }
 }  // namespace
 
-TEST(FilRequestUnitTest, getBalance) {
+TEST(FilRequestUnitTest, GetBalance) {
   CompareJSONs(fil::getBalance("t1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza"),
                R"({
                  "id": 1,
@@ -36,7 +36,7 @@ TEST(FilRequestUnitTest, getBalance) {
                })");
 }
 
-TEST(FilRequestUnitTest, getTransactionCount) {
+TEST(FilRequestUnitTest, GetTransactionCount) {
   CompareJSONs(
       fil::getTransactionCount("t1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza"),
       R"({
@@ -78,7 +78,7 @@ TEST(FilRequestUnitTest, estimateGas) {
               })");
 }
 
-TEST(FilRequestUnitTest, estimateGas_WhenSendToFEVM) {
+TEST(FilRequestUnitTest, EstimateGasWhenSendToFEVM) {
   CompareJSONs(
       fil::getEstimateGas("from_address",
                           "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
@@ -109,19 +109,19 @@ TEST(FilRequestUnitTest, estimateGas_WhenSendToFEVM) {
               })");
 }
 
-TEST(FilRequestUnitTest, getChainHead) {
+TEST(FilRequestUnitTest, GetChainHead) {
   EXPECT_EQ(fil::getChainHead(),
             "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"Filecoin.ChainHead\","
             "\"params\":[]}");
 }
-TEST(FilRequestUnitTest, getStateSearchMsgLimited) {
+TEST(FilRequestUnitTest, GetStateSearchMsgLimited) {
   EXPECT_EQ(fil::getStateSearchMsgLimited("cid", UINT64_MAX),
             "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"Filecoin."
             "StateSearchMsgLimited\",\"params\":[{\"/\":\"cid\"}," +
                 std::to_string(UINT64_MAX) + "]}");
 }
 
-TEST(FilRequestUnitTest, getSendTransaction_WhenSendToFEVM) {
+TEST(FilRequestUnitTest, GetSendTransactionWhenSendToFEVM) {
   auto send = fil::getSendTransaction(R"({
     "Message": {
         "From": "from",
@@ -168,7 +168,7 @@ TEST(FilRequestUnitTest, getSendTransaction_WhenSendToFEVM) {
               })");
 }
 
-TEST(FilRequestUnitTest, getSendTransaction) {
+TEST(FilRequestUnitTest, GetSendTransaction) {
   auto send = fil::getSendTransaction(R"({
     "Message": {
         "From": "from",

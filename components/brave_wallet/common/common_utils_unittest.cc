@@ -381,7 +381,7 @@ TEST(CommonUtils, MakeAccountId) {
   EXPECT_TRUE(AllKeyringsTested());
 }
 
-TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
+TEST(CommonUtils, MakeIndexBasedAccountIdBTC) {
   auto id = *MakeIndexBasedAccountId(mojom::CoinType::BTC,
                                      mojom::KeyringId::kBitcoin84,
                                      mojom::AccountKind::kDerived, 123);
@@ -448,7 +448,7 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
   EXPECT_TRUE(AllKeyringsTested());
 }
 
-TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
+TEST(CommonUtils, MakeIndexBasedAccountIdZEC) {
   auto id = *MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                      mojom::KeyringId::kZCashMainnet,
                                      mojom::AccountKind::kDerived, 123);

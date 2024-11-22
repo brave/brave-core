@@ -192,7 +192,7 @@ class ConversationAPIUnitTest : public testing::Test {
   std::optional<CredentialCacheEntry> credential_ = std::nullopt;
 };
 
-TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
+TEST_F(ConversationAPIUnitTest, PerformRequestPremiumHeaders) {
   // Tests the request building part of the ConversationAPIClient:
   //  - headers are set correctly when premium credentials are available
   //  - ConversationEvent is correctly formatted into JSON
@@ -339,7 +339,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
+TEST_F(ConversationAPIUnitTest, PerformRequestNonPremium) {
   // Performs the same test as Premium, verifying that nothing else changes
   // apart from request headers (and request url).
   // Tests the request building part of the ConversationAPIClient:

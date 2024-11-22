@@ -168,7 +168,7 @@ class TranslateManagerTest : public ::testing::Test {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-TEST_F(TranslateManagerTest, CanManuallyTranslate_WithoutAPIKey) {
+TEST_F(TranslateManagerTest, CanManuallyTranslateWithoutAPIKey) {
   const std::string api_key = ::google_apis::GetAPIKey();
   ::google_apis::SetAPIKeyForTesting("dummytoken");
   EXPECT_FALSE(::google_apis::HasAPIKeyConfigured());
@@ -188,7 +188,7 @@ TEST_F(TranslateManagerTest, CanManuallyTranslate_WithoutAPIKey) {
   ::google_apis::SetAPIKeyForTesting(api_key);
 }
 
-TEST_F(TranslateManagerTest, CanManuallyTranslate_WithAPIKey) {
+TEST_F(TranslateManagerTest, CanManuallyTranslateWithAPIKey) {
   const std::string api_key = ::google_apis::GetAPIKey();
   ::google_apis::SetAPIKeyForTesting("notdummytoken");
   EXPECT_TRUE(::google_apis::HasAPIKeyConfigured());

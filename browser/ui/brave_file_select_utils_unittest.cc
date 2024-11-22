@@ -11,7 +11,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
-TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitle_InSyncWithUpstream) {
+TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleInSyncWithUpstream) {
   constexpr struct Case {
     // The name of the test case.
     const char* case_name;
@@ -102,7 +102,7 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitle_InSyncWithUpstream) {
   }
 }
 
-TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Open) {
+TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelectOpen) {
   constexpr struct Case {
     // The name of the test case.
     const char* case_name;
@@ -205,7 +205,7 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Open) {
   }
 }
 
-TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Save) {
+TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelectSave) {
   constexpr struct Case {
     // The name of the test case.
     const char* case_name;

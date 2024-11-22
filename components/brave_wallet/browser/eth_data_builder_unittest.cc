@@ -42,7 +42,7 @@ TEST(EthCallDataBuilderTest, Transfer) {
       "0f0000000000000000000000000000000000000000000000000de0b6b3a7640000");
 }
 
-TEST(EthCallDataBuilderTest, BalanceOf_erc20) {
+TEST(EthCallDataBuilderTest, BalanceOferc20) {
   std::string data;
   BalanceOf("0x4e02f254184E904300e0775E4b8eeCB1", &data);
   ASSERT_EQ(data,
@@ -141,7 +141,7 @@ TEST(EthCallDataBuilderTest, SafeTransferFrom) {
             "0000000000000000000000000000000000000000000000000000000000000000");
 }
 
-TEST(EthCallDataBuilderTest, BalanceOf_erc1155) {
+TEST(EthCallDataBuilderTest, BalanceOferc1155) {
   std::string data;
   uint256_t token_id;
   ASSERT_TRUE(HexValueToUint256("0x1", &token_id));
@@ -240,7 +240,7 @@ TEST(EthCallDataBuilderTest, GetMany) {
             "697066732e72656469726563745f646f6d61696e2e76616c7565000000000000");
 }
 
-TEST(EthCallDataBuilderTest, GetWalletAddr_ETH) {
+TEST(EthCallDataBuilderTest, GetWalletAddrETH) {
   {
     auto call = GetWalletAddr("test.crypto", mojom::CoinType::ETH, "ETH",
                               mojom::kMainnetChainId);
@@ -296,7 +296,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_ETH) {
   }
 }
 
-TEST(EthCallDataBuilderTest, GetWalletAddr_SOL) {
+TEST(EthCallDataBuilderTest, GetWalletAddrSOL) {
   {
     auto call = GetWalletAddr("test.crypto", mojom::CoinType::SOL, "SOL",
                               mojom::kSolanaMainnet);
@@ -350,7 +350,7 @@ TEST(EthCallDataBuilderTest, GetWalletAddr_SOL) {
   }
 }
 
-TEST(EthCallDataBuilderTest, GetWalletAddr_FIL) {
+TEST(EthCallDataBuilderTest, GetWalletAddrFIL) {
   {
     auto call = GetWalletAddr("test.crypto", mojom::CoinType::FIL, "FIL",
                               mojom::kFilecoinMainnet);

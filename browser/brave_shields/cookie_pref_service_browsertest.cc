@@ -57,7 +57,7 @@ class CookiePrefServiceTest : public PlatformBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(CookiePrefServiceTest, CookieControlType_Preference) {
+IN_PROC_BROWSER_TEST_F(CookiePrefServiceTest, CookieControlTypePreference) {
   // Initial state
   auto setting = brave_shields::GetCookieControlType(
       content_settings(), cookie_settings().get(), GURL());

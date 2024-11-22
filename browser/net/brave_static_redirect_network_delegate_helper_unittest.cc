@@ -111,7 +111,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRXDownload) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1_http) {
+TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1http) {
   const GURL url(
       "http://dl.google.com/release2/chrome_component/AJ4r388iQSJq_4819/"
       "4819_all_crl-set-5934829738003798040.data.crx3");
@@ -126,7 +126,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1_http) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2_http) {
+TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2http) {
   const GURL url(
       "http://r2---sn-8xgp1vo-qxoe.gvt1.com/edgedl/release2/"
       "chrome_component/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040"
@@ -142,7 +142,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2_http) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3_http) {
+TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3http) {
   const GURL url(
       "http://www.google.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
@@ -158,7 +158,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3_http) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet5_http) {
+TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet5http) {
   const GURL url(
       "http://www.google.com/dl/release2/chrome_component/"
       "cxpsjblnoxgjoqggdsbvujtof4_58/"
@@ -177,7 +177,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet5_http) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRXDownload_http) {
+TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRXDownloadhttp) {
   const GURL url(
       "http://clients2.googleusercontent.com/crx/blobs/QgAAAC6zw0qH2DJtn"
       "Xe8Z7rUJP1RM6lX7kVcwkQ56ujmG3AWYOAkxoNnIdnEBUz_"

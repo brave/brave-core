@@ -166,7 +166,7 @@ TEST_F(AssociatedContentDriverUnitTest,
   testing::Mock::VerifyAndClearExpectations(associated_content_driver_.get());
 }
 
-TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoKey) {
+TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContentNoKey) {
   ON_CALL(*associated_content_driver_, GetPageURL)
       .WillByDefault(
           testing::Return(GURL("https://search.brave.com/search?q=test")));
@@ -182,7 +182,7 @@ TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoKey) {
   testing::Mock::VerifyAndClearExpectations(associated_content_driver_.get());
 }
 
-TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContent_NoResult) {
+TEST_F(AssociatedContentDriverUnitTest, GetStagedEntriesFromContentNoResult) {
   SetSearchQuerySummaryInterceptor(true);
   ON_CALL(*associated_content_driver_, GetPageURL)
       .WillByDefault(

@@ -29,6 +29,6 @@ class BraveVPNPanelControllerTest : public DialogBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveVPNPanelControllerTest, InvokeUi_Dialog) {
+IN_PROC_BROWSER_TEST_F(BraveVPNPanelControllerTest, InvokeUiDialog) {
   ShowAndVerifyUi();
 }

@@ -46,7 +46,7 @@ TEST_F(RewardsGeminiPostRecipientIdTest, ServerOK) {
   EXPECT_EQ(id, "60f9be89-ada7-486d-9cef-f6d3a10886d7");
 }
 
-TEST_F(RewardsGeminiPostRecipientIdTest, ServerOK_Unverified) {
+TEST_F(RewardsGeminiPostRecipientIdTest, ServerOKUnverified) {
   auto response = mojom::UrlResponse::New();
   response->status_code = 200;
   response->body = R"({

@@ -108,7 +108,7 @@ TEST_F(RewardsDatabaseMigrationTest, SchemaCheck) {
   EXPECT_EQ(GetDB()->GetSchema(), expected_schema);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_4_ActivityInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration4ActivityInfo) {
   DatabaseMigration::SetTargetVersionForTesting(4);
   InitializeDatabaseAtVersion(3);
   InitializeEngine();
@@ -131,7 +131,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_4_ActivityInfo) {
   EXPECT_EQ(list.at(1)->visits, 5u);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_5_ActivityInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration5ActivityInfo) {
   DatabaseMigration::SetTargetVersionForTesting(5);
   InitializeDatabaseAtVersion(4);
   InitializeEngine();
@@ -157,7 +157,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_5_ActivityInfo) {
   EXPECT_EQ(list.at(2)->visits, 3u);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_6_ActivityInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration6ActivityInfo) {
   DatabaseMigration::SetTargetVersionForTesting(6);
   InitializeDatabaseAtVersion(5);
   InitializeEngine();
@@ -207,7 +207,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_6_ActivityInfo) {
   EXPECT_EQ(list.at(2)->reconcile_stamp, 1553423066u);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_8_PendingContribution) {
+TEST_F(RewardsDatabaseMigrationTest, Migration8PendingContribution) {
   DatabaseMigration::SetTargetVersionForTesting(8);
   InitializeDatabaseAtVersion(7);
   InitializeEngine();
@@ -230,7 +230,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_8_PendingContribution) {
             static_cast<int>(mojom::RewardsType::ONE_TIME_TIP));
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_11_ContributionInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration11ContributionInfo) {
   DatabaseMigration::SetTargetVersionForTesting(11);
   InitializeDatabaseAtVersion(10);
   InitializeEngine();
@@ -274,7 +274,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_11_ContributionInfo) {
   EXPECT_EQ(ac_sql.ColumnDouble(6), 0.0);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_12_ContributionInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration12ContributionInfo) {
   DatabaseMigration::SetTargetVersionForTesting(12);
   InitializeDatabaseAtVersion(11);
   InitializeEngine();
@@ -301,14 +301,14 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_12_ContributionInfo) {
   EXPECT_FALSE(info_sql.Step());
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_13_Promotion) {
+TEST_F(RewardsDatabaseMigrationTest, Migration13Promotion) {
   DatabaseMigration::SetTargetVersionForTesting(13);
   InitializeDatabaseAtVersion(12);
   InitializeEngine();
   EXPECT_EQ(CountTableRows("promotion"), 1);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_14_UnblindedToken) {
+TEST_F(RewardsDatabaseMigrationTest, Migration14UnblindedToken) {
   DatabaseMigration::SetTargetVersionForTesting(14);
   InitializeDatabaseAtVersion(13);
   InitializeEngine();
@@ -343,7 +343,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_14_UnblindedToken) {
   EXPECT_EQ(promotion_sql.ColumnDouble(0), 1.25);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_16_ContributionInfo) {
+TEST_F(RewardsDatabaseMigrationTest, Migration16ContributionInfo) {
   DatabaseMigration::SetTargetVersionForTesting(16);
   InitializeDatabaseAtVersion(15);
   InitializeEngine();
@@ -366,7 +366,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_16_ContributionInfo) {
   EXPECT_EQ(list.at(4), 1583310925);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_18_Promotion) {
+TEST_F(RewardsDatabaseMigrationTest, Migration18Promotion) {
   DatabaseMigration::SetTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
   InitializeEngine();
@@ -395,7 +395,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_18_Promotion) {
   EXPECT_EQ(status.at(1), 4);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_18_CredsBatch) {
+TEST_F(RewardsDatabaseMigrationTest, Migration18CredsBatch) {
   DatabaseMigration::SetTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
   InitializeEngine();
@@ -447,7 +447,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_18_CredsBatch) {
   EXPECT_EQ(static_cast<int>(creds_database.status), 2);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_18_UnblindedToken) {
+TEST_F(RewardsDatabaseMigrationTest, Migration18UnblindedToken) {
   DatabaseMigration::SetTargetVersionForTesting(18);
   InitializeDatabaseAtVersion(17);
   InitializeEngine();
@@ -473,7 +473,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_18_UnblindedToken) {
   EXPECT_EQ(expires_at, 1640995200ul);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
+TEST_F(RewardsDatabaseMigrationTest, Migration21ContributionInfoPublishers) {
   DatabaseMigration::SetTargetVersionForTesting(21);
   InitializeDatabaseAtVersion(20);
   InitializeEngine();
@@ -515,7 +515,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_21_ContributionInfoPublishers) {
   EXPECT_EQ(list.at(3)->contributed_amount, 1.0);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_23_ContributionQueue) {
+TEST_F(RewardsDatabaseMigrationTest, Migration23ContributionQueue) {
   DatabaseMigration::SetTargetVersionForTesting(23);
   InitializeDatabaseAtVersion(22);
   InitializeEngine();
@@ -560,7 +560,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_23_ContributionQueue) {
   EXPECT_EQ(queue_publisher.amount_percent, 456.0);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_24_ContributionQueue) {
+TEST_F(RewardsDatabaseMigrationTest, Migration24ContributionQueue) {
   DatabaseMigration::SetTargetVersionForTesting(24);
   InitializeDatabaseAtVersion(23);
   InitializeEngine();
@@ -590,7 +590,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_24_ContributionQueue) {
   EXPECT_EQ(contribution_queue.completed_at, 0u);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_26_UnblindedTokens) {
+TEST_F(RewardsDatabaseMigrationTest, Migration26UnblindedTokens) {
   DatabaseMigration::SetTargetVersionForTesting(26);
   InitializeDatabaseAtVersion(25);
   InitializeEngine();
@@ -669,7 +669,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_26_UnblindedTokens) {
   EXPECT_EQ(token->redeem_type, mojom::RewardsType::ONE_TIME_TIP);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_27_UnblindedTokens) {
+TEST_F(RewardsDatabaseMigrationTest, Migration27UnblindedTokens) {
   DatabaseMigration::SetTargetVersionForTesting(27);
   InitializeDatabaseAtVersion(26);
   InitializeEngine();
@@ -703,7 +703,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_27_UnblindedTokens) {
   EXPECT_EQ(reserved_at, 0ul);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
+TEST_F(RewardsDatabaseMigrationTest, Migration28ServerPublisherInfoCleared) {
   DatabaseMigration::SetTargetVersionForTesting(28);
   InitializeDatabaseAtVersion(27);
   InitializeEngine();
@@ -726,14 +726,14 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_28_ServerPublisherInfoCleared) {
   }
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_30_NonJapan) {
+TEST_F(RewardsDatabaseMigrationTest, Migration30NonJapan) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
   InitializeEngine();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 1);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_30_Japan) {
+TEST_F(RewardsDatabaseMigrationTest, Migration30Japan) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
   mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
@@ -743,21 +743,21 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_30_Japan) {
   EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_31) {
+TEST_F(RewardsDatabaseMigrationTest, Migration31) {
   DatabaseMigration::SetTargetVersionForTesting(31);
   InitializeDatabaseAtVersion(30);
   InitializeEngine();
   EXPECT_TRUE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_32_NonJapan) {
+TEST_F(RewardsDatabaseMigrationTest, Migration32NonJapan) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
   InitializeEngine();
   EXPECT_EQ(CountTableRows("balance_report_info"), 1);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_32_Japan) {
+TEST_F(RewardsDatabaseMigrationTest, Migration32Japan) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
   mojom::RewardsEngineClientAsyncWaiter(&client()).SetStringState(
@@ -766,28 +766,28 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_32_Japan) {
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_33) {
+TEST_F(RewardsDatabaseMigrationTest, Migration33) {
   DatabaseMigration::SetTargetVersionForTesting(33);
   InitializeDatabaseAtVersion(32);
   InitializeEngine();
   EXPECT_FALSE(GetDB()->DoesColumnExist("pending_contribution", "processor"));
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_34) {
+TEST_F(RewardsDatabaseMigrationTest, Migration34) {
   DatabaseMigration::SetTargetVersionForTesting(34);
   InitializeDatabaseAtVersion(33);
   InitializeEngine();
   EXPECT_TRUE(GetDB()->DoesColumnExist("promotion", "claimable_until"));
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_35) {
+TEST_F(RewardsDatabaseMigrationTest, Migration35) {
   DatabaseMigration::SetTargetVersionForTesting(35);
   InitializeDatabaseAtVersion(34);
   InitializeEngine();
   EXPECT_FALSE(GetDB()->DoesTableExist("server_publisher_amounts"));
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_36) {
+TEST_F(RewardsDatabaseMigrationTest, Migration36) {
   DatabaseMigration::SetTargetVersionForTesting(36);
   InitializeDatabaseAtVersion(35);
   InitializeEngine();
@@ -798,14 +798,14 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_36) {
   EXPECT_EQ(sql.ColumnInt64(0), 0);
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_37) {
+TEST_F(RewardsDatabaseMigrationTest, Migration37) {
   DatabaseMigration::SetTargetVersionForTesting(37);
   InitializeDatabaseAtVersion(36);
   InitializeEngine();
   EXPECT_TRUE(GetDB()->DoesTableExist("external_transactions"));
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_38) {
+TEST_F(RewardsDatabaseMigrationTest, Migration38) {
   DatabaseMigration::SetTargetVersionForTesting(38);
   InitializeDatabaseAtVersion(37);
   InitializeEngine();
@@ -813,14 +813,14 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_38) {
       GetDB()->DoesColumnExist("recurring_donation", "next_contribution_at"));
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_39) {
+TEST_F(RewardsDatabaseMigrationTest, Migration39) {
   DatabaseMigration::SetTargetVersionForTesting(39);
   InitializeDatabaseAtVersion(38);
   InitializeEngine();
   EXPECT_TRUE(GetDB()->DoesColumnExist("server_publisher_banner", "web3_url"));
 }
 
-TEST_F(RewardsDatabaseMigrationTest, Migration_40) {
+TEST_F(RewardsDatabaseMigrationTest, Migration40) {
   DatabaseMigration::SetTargetVersionForTesting(40);
   InitializeDatabaseAtVersion(39);
   InitializeEngine();

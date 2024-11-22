@@ -357,7 +357,7 @@ INSTANTIATE_TEST_SUITE_P(
                                 info.param ? "Enabled" : "Disabled");
     });
 
-TEST_P(AIChatServiceUnitTest, ConversationLifecycle_NoMessages) {
+TEST_P(AIChatServiceUnitTest, ConversationLifecycleNoMessages) {
   // Shouldn't get any visible conversations when no conversations have messages
   EXPECT_CALL(*client_, OnConversationListChanged(testing::IsEmpty()))
       .Times(testing::AnyNumber());
@@ -387,7 +387,7 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_NoMessages) {
   task_environment_.RunUntilIdle();
 }
 
-TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
+TEST_P(AIChatServiceUnitTest, ConversationLifecycleWithMessages) {
   // Should have these combinations at some point
   EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(0)))
       .Times(testing::AtLeast(1));
@@ -492,7 +492,7 @@ TEST_P(AIChatServiceUnitTest, GetOrCreateConversationHandlerForContent) {
 }
 
 TEST_P(AIChatServiceUnitTest,
-       GetOrCreateConversationHandlerForContent_DisallowedScheme) {
+       GetOrCreateConversationHandlerForContentDisallowedScheme) {
   NiceMock<MockAssociatedContent> associated_content{};
   // Disallowed scheme to be associated with a conversation
   ON_CALL(associated_content, GetURL())
@@ -519,7 +519,7 @@ TEST_P(AIChatServiceUnitTest,
   run_loop.Run();
 }
 
-TEST_P(AIChatServiceUnitTest, GetConversation_AfterRestart) {
+TEST_P(AIChatServiceUnitTest, GetConversationAfterRestart) {
   auto history = CreateSampleChatHistory(1u);
   std::string uuid;
   {
@@ -560,7 +560,7 @@ TEST_P(AIChatServiceUnitTest, GetConversation_AfterRestart) {
   }
 }
 
-TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
+TEST_P(AIChatServiceUnitTest, MaybeInitStorageDisableStoragePref) {
   // This test is only relevant when history feature is enabled initially
   if (!IsAIChatHistoryEnabled()) {
     return;
@@ -605,7 +605,7 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
   ExpectVisibleConversationsSize(FROM_HERE, 0);
 }
 
-TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
+TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntriesNoPermission) {
   NiceMock<MockAssociatedContent> associated_content{};
   ConversationHandler* conversation =
       ai_chat_service_->CreateConversationHandlerForContent(
@@ -688,7 +688,7 @@ TEST_P(AIChatServiceUnitTest, DeleteConversations) {
   ExpectVisibleConversationsSize(FROM_HERE, 0);
 }
 
-TEST_P(AIChatServiceUnitTest, DeleteConversations_TimeRange) {
+TEST_P(AIChatServiceUnitTest, DeleteConversationsTimeRange) {
   // Create conversations, call DeleteConversations and verify all conversations
   // are deleted, whether a client is connected or not.
   ConversationHandler* conversation_handler1 = CreateConversation();

@@ -78,7 +78,7 @@ class SolanaInstructionDecoderTest : public testing::Test {
   }
 };
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemCreateAccount) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemCreateAccount) {
   TestSystemInstruction(
       {0,   0,   0,   0,   16,  39, 0,   0,   0,   0,   0,   0,   100,
        0,   0,   0,   0,   0,   0,  0,   6,   221, 246, 225, 215, 101,
@@ -90,7 +90,7 @@ TEST_F(SolanaInstructionDecoderTest, Decode_SystemCreateAccount) {
        {"owner_program", mojom::kSolanaTokenProgramId}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemAssign) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemAssign) {
   TestSystemInstruction(
       {1,   0,   0,   0,   6,   221, 246, 225, 215, 101, 161, 147,
        217, 203, 225, 70,  206, 235, 121, 172, 28,  180, 133, 237,
@@ -99,13 +99,13 @@ TEST_F(SolanaInstructionDecoderTest, Decode_SystemAssign) {
       {{"owner_program", mojom::kSolanaTokenProgramId}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemTransfer) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemTransfer) {
   TestSystemInstruction({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0},
                         mojom::SolanaSystemInstruction::kTransfer,
                         {{"lamports", "10000000"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemCreateAccountWithSeed) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemCreateAccountWithSeed) {
   TestSystemInstruction(
       {3,   0,   0,   0,   179, 10,  45,  120, 165, 79,  23,  213, 130,
        206, 38,  194, 56,  107, 31,  15,  105, 52,  170, 204, 201, 218,
@@ -123,18 +123,18 @@ TEST_F(SolanaInstructionDecoderTest, Decode_SystemCreateAccountWithSeed) {
        {"owner_program", mojom::kSolanaTokenProgramId}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemAdvanceNonceAccount) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemAdvanceNonceAccount) {
   TestSystemInstruction(
       {4, 0, 0, 0}, mojom::SolanaSystemInstruction::kAdvanceNonceAccount, {});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemWithdrawNonceAccount) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemWithdrawNonceAccount) {
   TestSystemInstruction({5, 0, 0, 0, 16, 39, 0, 0, 0, 0, 0, 0},
                         mojom::SolanaSystemInstruction::kWithdrawNonceAccount,
                         {{"lamports", "10000"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemInitializeNonceAccount) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemInitializeNonceAccount) {
   TestSystemInstruction(
       {6,   0,   0,   0,   161, 51,  89,  91, 115, 210, 217, 212,
        76,  159, 171, 200, 40,  150, 157, 70, 197, 71,  24,  44,
@@ -143,7 +143,7 @@ TEST_F(SolanaInstructionDecoderTest, Decode_SystemInitializeNonceAccount) {
       {{"authority", kPubkey1}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemAuthorizeNonceAccount) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemAuthorizeNonceAccount) {
   TestSystemInstruction(
       {7,   0,   0,  0,   179, 10,  45,  120, 165, 79, 23,  213,
        130, 206, 38, 194, 56,  107, 31,  15,  105, 52, 170, 204,
@@ -152,13 +152,13 @@ TEST_F(SolanaInstructionDecoderTest, Decode_SystemAuthorizeNonceAccount) {
       {{"new_authority", kPubkey2}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemAllocate) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemAllocate) {
   TestSystemInstruction({8, 0, 0, 0, 16, 39, 0, 0, 0, 0, 0, 0},
                         mojom::SolanaSystemInstruction::kAllocate,
                         {{"space", "10000"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemAllocateWithSeed) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemAllocateWithSeed) {
   TestSystemInstruction(
       {9,   0,   0,   0,   161, 51,  89,  91,  115, 210, 217, 212, 76,  159,
        171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209, 108, 143, 4,
@@ -174,7 +174,7 @@ TEST_F(SolanaInstructionDecoderTest, Decode_SystemAllocateWithSeed) {
        {"owner_program", mojom::kSolanaTokenProgramId}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemAssignWithSeed) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemAssignWithSeed) {
   TestSystemInstruction(
       {10,  0,   0,   0,   161, 51,  89,  91,  115, 210, 217, 212, 76,
        159, 171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209, 108,
@@ -189,7 +189,7 @@ TEST_F(SolanaInstructionDecoderTest, Decode_SystemAssignWithSeed) {
        {"owner_program", mojom::kSolanaTokenProgramId}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_SystemTransferWithSeed) {
+TEST_F(SolanaInstructionDecoderTest, DecodeSystemTransferWithSeed) {
   TestSystemInstruction(
       {11,  0,  0,   0,   160, 134, 1,   0,   0,   0,   0,   0,   9,
        0,   0,  0,   0,   0,   0,   0,   84,  69,  83,  84,  32,  83,
@@ -202,7 +202,7 @@ TEST_F(SolanaInstructionDecoderTest, Decode_SystemTransferWithSeed) {
        {"from_owner_program", mojom::kSolanaTokenProgramId}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenInitializeMint) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenInitializeMint) {
   TestTokenInstruction(
       {0,   9,   161, 51,  89,  91,  115, 210, 217, 212, 76,  159, 171, 200,
        40,  150, 157, 70,  197, 71,  24,  44,  209, 108, 143, 4,   58,  251,
@@ -234,34 +234,34 @@ TEST_F(SolanaInstructionDecoderTest, Decode_TokenInitializeMint) {
       {{"decimals", "9"}, {"mint_authority", kPubkey1}}, true);
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenInitializeAccount) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenInitializeAccount) {
   TestTokenInstruction({1}, mojom::SolanaTokenInstruction::kInitializeAccount,
                        {});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenInitializeMultisig) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenInitializeMultisig) {
   TestTokenInstruction({2, 2},
                        mojom::SolanaTokenInstruction::kInitializeMultisig,
                        {{"num_of_signers", "2"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenTransfer) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenTransfer) {
   TestTokenInstruction({3, 160, 134, 1, 0, 0, 0, 0, 0},
                        mojom::SolanaTokenInstruction::kTransfer,
                        {{"amount", "100000"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenApprove) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenApprove) {
   TestTokenInstruction({4, 160, 134, 1, 0, 0, 0, 0, 0},
                        mojom::SolanaTokenInstruction::kApprove,
                        {{"amount", "100000"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenRevoke) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenRevoke) {
   TestTokenInstruction({5}, mojom::SolanaTokenInstruction::kRevoke, {});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenSetAuthority) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenSetAuthority) {
   TestTokenInstruction(
       {6,   1,  1,   179, 10,  45,  120, 165, 79, 23,  213, 130,
        206, 38, 194, 56,  107, 31,  15,  105, 52, 170, 204, 201,
@@ -281,55 +281,55 @@ TEST_F(SolanaInstructionDecoderTest, Decode_TokenSetAuthority) {
                        {{"authority_type", "1"}}, true);
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenMintTo) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenMintTo) {
   TestTokenInstruction({7, 16, 39, 0, 0, 0, 0, 0, 0},
                        mojom::SolanaTokenInstruction::kMintTo,
                        {{"amount", "10000"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenBurn) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenBurn) {
   TestTokenInstruction({8, 232, 3, 0, 0, 0, 0, 0, 0},
                        mojom::SolanaTokenInstruction::kBurn,
                        {{"amount", "1000"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenCloseAccount) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenCloseAccount) {
   TestTokenInstruction({9}, mojom::SolanaTokenInstruction::kCloseAccount, {});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenFreezeAccount) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenFreezeAccount) {
   TestTokenInstruction({10}, mojom::SolanaTokenInstruction::kFreezeAccount, {});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenThawAccount) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenThawAccount) {
   TestTokenInstruction({11}, mojom::SolanaTokenInstruction::kThawAccount, {});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TransferChecked) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTransferChecked) {
   TestTokenInstruction({12, 100, 0, 0, 0, 0, 0, 0, 0, 9},
                        mojom::SolanaTokenInstruction::kTransferChecked,
                        {{"amount", "100"}, {"decimals", "9"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_ApproveChecked) {
+TEST_F(SolanaInstructionDecoderTest, DecodeApproveChecked) {
   TestTokenInstruction({13, 232, 3, 0, 0, 0, 0, 0, 0, 8},
                        mojom::SolanaTokenInstruction::kApproveChecked,
                        {{"amount", "1000"}, {"decimals", "8"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_MintToChecked) {
+TEST_F(SolanaInstructionDecoderTest, DecodeMintToChecked) {
   TestTokenInstruction({14, 160, 134, 1, 0, 0, 0, 0, 0, 9},
                        mojom::SolanaTokenInstruction::kMintToChecked,
                        {{"amount", "100000"}, {"decimals", "9"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_BurnChecked) {
+TEST_F(SolanaInstructionDecoderTest, DecodeBurnChecked) {
   TestTokenInstruction({15, 100, 0, 0, 0, 0, 0, 0, 0, 9},
                        mojom::SolanaTokenInstruction::kBurnChecked,
                        {{"amount", "100"}, {"decimals", "9"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_InitializeAccount2) {
+TEST_F(SolanaInstructionDecoderTest, DecodeInitializeAccount2) {
   TestTokenInstruction({16,  179, 10,  45,  120, 165, 79,  23,  213, 130, 206,
                         38,  194, 56,  107, 31,  15,  105, 52,  170, 204, 201,
                         218, 15,  234, 163, 176, 140, 194, 226, 39,  121, 169},
@@ -337,11 +337,11 @@ TEST_F(SolanaInstructionDecoderTest, Decode_InitializeAccount2) {
                        {{"owner", kPubkey2}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_TokenSyncNative) {
+TEST_F(SolanaInstructionDecoderTest, DecodeTokenSyncNative) {
   TestTokenInstruction({17}, mojom::SolanaTokenInstruction::kSyncNative, {});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_InitializeAccount3) {
+TEST_F(SolanaInstructionDecoderTest, DecodeInitializeAccount3) {
   TestTokenInstruction({18,  179, 10,  45,  120, 165, 79,  23,  213, 130, 206,
                         38,  194, 56,  107, 31,  15,  105, 52,  170, 204, 201,
                         218, 15,  234, 163, 176, 140, 194, 226, 39,  121, 169},
@@ -349,13 +349,13 @@ TEST_F(SolanaInstructionDecoderTest, Decode_InitializeAccount3) {
                        {{"owner", kPubkey2}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_InitializeMultisig2) {
+TEST_F(SolanaInstructionDecoderTest, DecodeInitializeMultisig2) {
   TestTokenInstruction({19, 2},
                        mojom::SolanaTokenInstruction::kInitializeMultisig2,
                        {{"num_of_signers", "2"}});
 }
 
-TEST_F(SolanaInstructionDecoderTest, Decode_InitializeMint2) {
+TEST_F(SolanaInstructionDecoderTest, DecodeInitializeMint2) {
   TestTokenInstruction(
       {20,  9,   161, 51,  89,  91,  115, 210, 217, 212, 76,  159, 171, 200,
        40,  150, 157, 70,  197, 71,  24,  44,  209, 108, 143, 4,   58,  251,

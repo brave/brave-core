@@ -48,13 +48,13 @@ class AutofillExperimentsTest : public testing::Test {
   std::unique_ptr<LogManager> log_manager_;
 };
 
-TEST_F(AutofillExperimentsTest, IsCardUploadEnabled_FeatureEnabled) {
+TEST_F(AutofillExperimentsTest, IsCardUploadEnabledFeatureEnabled) {
   scoped_feature_list_.InitAndEnableFeature(features::kAutofillUpstream);
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
 }
 
-TEST_F(AutofillExperimentsTest, IsCardUploadEnabled_FeatureDisabled) {
+TEST_F(AutofillExperimentsTest, IsCardUploadEnabledFeatureDisabled) {
   scoped_feature_list_.InitAndDisableFeature(features::kAutofillUpstream);
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
@@ -62,7 +62,7 @@ TEST_F(AutofillExperimentsTest, IsCardUploadEnabled_FeatureDisabled) {
 
 TEST_F(
     AutofillExperimentsTest,
-    IsCardUploadEnabled_TransportSyncDoesNotHaveAutofillProfileActiveDataType) {
+    IsCardUploadEnabledTransportSyncDoesNotHaveAutofillProfileActiveDataType) {
   scoped_feature_list_.InitWithFeatures(
       /*enabled_features=*/{features::kAutofillUpstream},
       /*disabled_features=*/{});
@@ -82,14 +82,14 @@ TEST_F(
       AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
 }
 
-TEST_F(AutofillExperimentsTest, IsCardUploadEnabled_UserEmailWithGoogleDomain) {
+TEST_F(AutofillExperimentsTest, IsCardUploadEnabledUserEmailWithGoogleDomain) {
   scoped_feature_list_.InitAndEnableFeature(features::kAutofillUpstream);
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));
 }
 
 TEST_F(AutofillExperimentsTest,
-       IsCardUploadEnabled_UserEmailWithNonGoogleDomainIfExperimentEnabled) {
+       IsCardUploadEnabledUserEmailWithNonGoogleDomainIfExperimentEnabled) {
   scoped_feature_list_.InitWithFeatures({features::kAutofillUpstream}, {});
   EXPECT_FALSE(IsCreditCardUploadEnabled(
       AutofillMetrics::PaymentsSigninState::kSignedInAndSyncFeatureEnabled));

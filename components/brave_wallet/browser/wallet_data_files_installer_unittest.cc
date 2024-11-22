@@ -254,7 +254,7 @@ TEST_F(WalletDataFilesInstallerUnitTest,
   RunUntilIdle();
 }
 
-TEST_F(WalletDataFilesInstallerUnitTest, OnDemandInstallAndParsing_EmptyPath) {
+TEST_F(WalletDataFilesInstallerUnitTest, OnDemandInstallAndParsingEmptyPath) {
   EXPECT_CALL(*updater(), RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));

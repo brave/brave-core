@@ -30,7 +30,7 @@ constexpr char kAddress2[] = "tb1qva8clyftt2fstawn5dy0nvrfmygpzulf3lwulm";
 
 }  // namespace
 
-TEST(BitcoinTransaction, Outpoint_Value) {
+TEST(BitcoinTransaction, OutpointValue) {
   BitcoinTransaction::Outpoint outpoint;
   outpoint.index = 123;
   base::HexStringToSpan(kTxid1, outpoint.txid);
@@ -42,7 +42,7 @@ TEST(BitcoinTransaction, Outpoint_Value) {
   EXPECT_EQ(parsed->txid, outpoint.txid);
 }
 
-TEST(BitcoinTransaction, TxInput_Value) {
+TEST(BitcoinTransaction, TxInputValue) {
   BitcoinTransaction::TxInput input;
   input.utxo_address = kAddress1;
   input.utxo_outpoint.index = 123;
@@ -72,7 +72,7 @@ TEST(BitcoinTransaction, TxInput_Value) {
   ASSERT_FALSE(parsed->raw_outpoint_tx);
 }
 
-TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
+TEST(BitcoinTransaction, TxInputFromRpcUtxo) {
   const std::string rpc_utxo_json = R"(
     {
       "txid": "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98",
@@ -104,7 +104,7 @@ TEST(BitcoinTransaction, TxInput_FromRpcUtxo) {
   EXPECT_EQ(input->n_sequence(), 0xfffffffd);
 }
 
-TEST(BitcoinTransaction, TxOutput_Value) {
+TEST(BitcoinTransaction, TxOutputValue) {
   BitcoinTransaction::TxOutput output;
   output.address = kAddress2;
   output.script_pubkey.assign({0, 1, 2, 7});

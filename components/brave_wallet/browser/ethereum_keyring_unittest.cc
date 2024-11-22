@@ -243,7 +243,7 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
   EXPECT_TRUE(keyring.ImportAccount(private_key).empty());
 }
 
-TEST(EthereumKeyringUnitTest, GetPublicKeyFromX25519_XSalsa20_Poly1305) {
+TEST(EthereumKeyringUnitTest, GetPublicKeyFromX25519XSalsa20Poly1305) {
   EthereumKeyring keyring(*MnemonicToSeed(kMnemonic));
   auto address = keyring.AddNewHDAccount()->address;
   std::string public_encryption_key;
@@ -260,7 +260,7 @@ TEST(EthereumKeyringUnitTest, GetPublicKeyFromX25519_XSalsa20_Poly1305) {
       "", &public_encryption_key));
 }
 
-TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20_Poly1305) {
+TEST(EthereumKeyringUnitTest, DecryptCipherFromX25519_XSalsa20Poly1305) {
   EthereumKeyring keyring(*MnemonicToSeed(kMnemonic));
 
   // pub encryption key:

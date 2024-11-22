@@ -204,7 +204,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
             ImportError::kPasswordError);
 }
 
-TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_10K_Iterations) {
+TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo10KIterations) {
   auto info = SimulateGetImportInfo("brave4ever", valid_data_10K);
   ASSERT_TRUE(info.has_value());
   EXPECT_EQ(info->mnemonic, kMnemonicDripCaution);
@@ -212,7 +212,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_10K_Iterations) {
   EXPECT_EQ(info->number_of_accounts, 1u);
 }
 
-TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_600K_Iterations) {
+TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo600KIterations) {
   auto info = SimulateGetImportInfo("12345qwert", valid_data_600K);
   ASSERT_TRUE(info.has_value());
   EXPECT_EQ(info->mnemonic,
@@ -222,7 +222,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_600K_Iterations) {
   EXPECT_EQ(info->number_of_accounts, 1u);
 }
 
-TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_UTF8Mnemonic) {
+TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoUTF8Mnemonic) {
   auto info =
       SimulateGetImportInfo("brave4ever", valid_data_with_utf8_mnemonic);
   ASSERT_TRUE(info.has_value());
