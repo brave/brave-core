@@ -22,8 +22,8 @@ class GURL;
 
 namespace youtube_script_injector {
 
-// Holds the loaded script text when a rule is matched.
-struct MatchedRule {
+// Holds the loaded scripts imported from youtube.json paths.
+struct ImportedScripts {
   std::string feature_script;
   // std::string fullscreen_script;
   int version;
@@ -33,8 +33,9 @@ struct MatchedRule {
 // {
 //   "version": 1,
 //   "feature_script": "keep-playing-audio.js"
+//   "fullscreen_script": "fullescreen.js"
 // }
-// Note that "feature_script" gives a path
+// Note that "feature_script" and "fullscreen_script" give a path
 // relative to the component under scripts directory.
 class YouTubeJson {
  public:

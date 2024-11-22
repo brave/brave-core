@@ -49,7 +49,7 @@ YouTubeTabHelper::YouTubeTabHelper(content::WebContents* web_contents,
 YouTubeTabHelper::~YouTubeTabHelper() = default;
 
 void YouTubeTabHelper::InsertScriptInPage(
-    const content::GlobalRenderFrameHostId& render_frame_host_id, MatchedRule rule) {
+    const content::GlobalRenderFrameHostId& render_frame_host_id, std::string script) {
   content::RenderFrameHost* render_frame_host =
       content::RenderFrameHost::FromID(render_frame_host_id);
 
@@ -59,7 +59,7 @@ void YouTubeTabHelper::InsertScriptInPage(
           web_contents()->GetPrimaryMainFrame()->GetGlobalId()) {
     GetRemote(render_frame_host)
         ->RequestAsyncExecuteScript(
-            world_id_, base::UTF8ToUTF16(rule.feature_script),
+            world_id_, base::UTF8ToUTF16(script),
             blink::mojom::UserActivationOption::kDoNotActivate,
             blink::mojom::PromiseResultOption::kAwait, base::DoNothing());
   } else {
@@ -79,9 +79,12 @@ YouTubeTabHelper::GetRemote(content::RenderFrameHost* rfh) {
 
 void YouTubeTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
+
+  const std::optional<YouTubeJson>& json = youtube_registry_->GetJson();
   if (!navigation_handle->IsInPrimaryMainFrame() ||
       !navigation_handle->HasCommitted() ||
-      navigation_handle->IsSameDocument()) {
+      navigation_handle->IsSameDocument() ||
+      !json) {
     return;
   }
 
@@ -90,8 +93,8 @@ void YouTubeTabHelper::DidFinishNavigation(
   content::GlobalRenderFrameHostId render_frame_host_id =
       web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 
-  youtube_registry_->CheckIfMatch(
-      url, base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
+  youtube_registry_->ApplyScriptOnlyOnYouTubeDomain(
+      url, json->GetFeatureScript(), base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
                           weak_factory_.GetWeakPtr(), render_frame_host_id));
 }
 
