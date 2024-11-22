@@ -120,7 +120,7 @@ struct LeoPlayingSoundView: View {
       .onReceive(
         Timer.publish(every: 0.3, on: .main, in: .default).autoconnect(),
         perform: { _ in
-          if !isAnimating { return }
+          if !isAnimating || UIApplication.shared.applicationState == .background { return }
           randomizeBarHeights()
         }
       )
