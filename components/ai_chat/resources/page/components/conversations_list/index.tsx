@@ -13,6 +13,7 @@ import { getLocale } from '$web-common/locale'
 import getAPI from '../../api'
 import { useConversation } from '../../state/conversation_context'
 import Alert from '@brave/leo/react/alert'
+import Button from '@brave/leo/react/button'
 
 interface SimpleInputProps {
   text?: string
@@ -117,8 +118,20 @@ export default function ConversationsList(props: ConversationsListProps) {
     <>
       <div className={styles.scroller}>
         <nav className={styles.nav}>
-          {aiChatContext.visibleConversations.length === 0 &&
-          <Alert type='info'>
+          {!aiChatContext.isStoragePrefEnabled &&
+          <Alert type='notice'>
+            <Icon name='history' slot='icon' />
+            <div slot='title'>{getLocale('noticeConversationHistoryTitleDisabledPref')}</div>
+            {getLocale('noticeConversationHistoryDisabledPref')}
+            <div slot='actions'>
+              <Button kind='outline' onClick={aiChatContext.enableStoragePref}>
+                {getLocale('noticeConversationHistoryDisabledPrefButton')}
+              </Button>
+            </div>
+          </Alert>
+          }
+          {aiChatContext.isStoragePrefEnabled && aiChatContext.visibleConversations.length === 0 &&
+          <Alert type='notice'>
             <Icon name='history' slot='icon' />
             <div slot='title'>{getLocale('noticeConversationHistoryTitle')}</div>
             {getLocale('noticeConversationHistoryEmpty')}

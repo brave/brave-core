@@ -8,19 +8,21 @@ export * from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js
 import { debounce } from '$web-common/debounce'
 import { loadTimeData } from '$web-common/loadTimeData'
 
-// State that is owned by this class because
+// State that is owned by this class because it is global to the UI
+// (loadTimeData / Service / UIHandler).
 export interface UIState {
   initialized: boolean
   isStandalone?: boolean
   visibleConversations: mojom.Conversation[]
   hasAcceptedAgreement: boolean
+  isStoragePrefEnabled: boolean
   isPremiumStatusFetching: boolean
   isPremiumUser: boolean
   isPremiumUserDisconnected: boolean
   isStorageNoticeDismissed: boolean
   canShowPremiumPrompt?: boolean
   isMobile: boolean
-  isHistoryEnabled: boolean
+  isHistoryFeatureEnabled: boolean
   allActions: mojom.ActionGroup[]
 }
 
@@ -28,13 +30,14 @@ export const defaultUIState: UIState = {
   initialized: false,
   visibleConversations: [],
   hasAcceptedAgreement: false,
+  isStoragePrefEnabled: false,
   isPremiumStatusFetching: true,
   isPremiumUser: false,
   isPremiumUserDisconnected: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: undefined,
   isMobile: Boolean(loadTimeData.getBoolean('isMobile')),
-  isHistoryEnabled: Boolean(loadTimeData.getBoolean('isHistoryEnabled')),
+  isHistoryFeatureEnabled: Boolean(loadTimeData.getBoolean('isHistoryEnabled')),
   allActions: [],
 }
 
@@ -70,7 +73,7 @@ class API {
     this.getInitialState()
     this.updateCurrentPremiumStatus()
 
-    if (this.UIState.isHistoryEnabled) {
+    if (this.UIState.isHistoryFeatureEnabled) {
       this.Observer.onConversationListChanged.addListener(
         (conversations: mojom.Conversation[]) => {
           this.setPartialUIState({
@@ -84,6 +87,13 @@ class API {
       this.setPartialUIState({
         hasAcceptedAgreement: true
       })
+    )
+
+    this.Observer.onStoragePrefChanged.addListener((isStoragePrefEnabled: boolean) => {
+        this.setPartialUIState({
+          isStoragePrefEnabled
+        })
+      }
     )
 
     // Since there is no browser-side event for premium status changing,
@@ -124,7 +134,8 @@ class API {
     const [
       { conversations: visibleConversations },
       { actionList: allActions },
-      { canShowPremiumPrompt, isStorageNoticeDismissed, hasAcceptedAgreement }
+      { canShowPremiumPrompt, isStoragePrefEnabled,
+        isStorageNoticeDismissed, hasAcceptedAgreement }
     ] = await Promise.all([
       this.Service.getVisibleConversations(),
       this.Service.getActionMenuList(),
@@ -133,6 +144,7 @@ class API {
     this.setPartialUIState({
       initialized: true,
       hasAcceptedAgreement,
+      isStoragePrefEnabled,
       isStorageNoticeDismissed,
       visibleConversations,
       allActions,

@@ -170,7 +170,7 @@ export default function FeatureMenu(props: Props) {
           </div>
         </leo-menu-item>
       )}
-      {!aiChatContext.isStandalone && aiChatContext.isHistoryEnabled && (
+      {!aiChatContext.isStandalone && aiChatContext.isHistoryFeatureEnabled && (
         <>
           <leo-menu-item
             onClick={() => props.setIsConversationsListOpen?.(true)}

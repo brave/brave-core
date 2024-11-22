@@ -304,11 +304,13 @@ interface Service {
   // shown to the user.
   GetNoticesState() =>
       (bool has_accepted_agreement,
+       bool is_storage_pref_enabled,
        bool is_storage_notice_dismissed,
        bool can_show_premium_prompt);
 
   // Profile-level acknowledgements
   MarkAgreementAccepted();
+  EnableStoragePref();
   DismissStorageNotice();
   DismissPremiumPrompt();
 
@@ -336,6 +338,7 @@ interface Service {
 
 interface ServiceObserver {
   OnConversationListChanged(array<Conversation> conversations);
+  OnStoragePrefChanged(bool is_storage_pref_enabled);
   OnAgreementAccepted();
 };
 

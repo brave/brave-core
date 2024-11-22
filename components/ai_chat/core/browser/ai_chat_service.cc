@@ -362,6 +362,10 @@ void AIChatService::MaybeInitStorage() {
                                weak_ptr_factory_.GetWeakPtr()));
     }
   }
+  // notify clients
+  for (auto& remote : observer_remotes_) {
+    remote->OnStoragePrefChanged(IsAIChatHistoryEnabled());
+  }
 }
 
 void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor,
@@ -559,12 +563,19 @@ void AIChatService::GetNoticesState(GetNoticesStateCallback callback) {
       !last_accepted_disclaimer.is_null() &&
       last_accepted_disclaimer < base::Time::Now() - base::Days(1);
 
-  std::move(callback).Run(is_user_opted_in, has_user_dismissed_storage_notice,
+  bool is_storage_enabled = profile_prefs_->GetBoolean(prefs::kStorageEnabled);
+
+  std::move(callback).Run(is_user_opted_in, is_storage_enabled,
+                          has_user_dismissed_storage_notice,
                           can_show_premium_prompt);
 }
 
 void AIChatService::MarkAgreementAccepted() {
   SetUserOptedIn(profile_prefs_, true);
+}
+
+void AIChatService::EnableStoragePref() {
+  profile_prefs_->SetBoolean(prefs::kStorageEnabled, true);
 }
 
 void AIChatService::DismissStorageNotice() {

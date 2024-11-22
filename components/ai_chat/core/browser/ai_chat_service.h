@@ -137,6 +137,7 @@ class AIChatService : public KeyedService,
   // mojom::Service
   void GetNoticesState(GetNoticesStateCallback callback) override;
   void MarkAgreementAccepted() override;
+  void EnableStoragePref() override;
   void DismissStorageNotice() override;
   void DismissPremiumPrompt() override;
   void GetVisibleConversations(

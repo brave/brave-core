@@ -401,6 +401,7 @@ type CustomArgs = {
   isStorageNoticeDismissed: boolean
   canShowPremiumPrompt: boolean
   hasAcceptedAgreement: boolean
+  isStoragePrefEnabled: boolean
   isPremiumModel: boolean
   isPremiumUser: boolean
   isPremiumUserDisconnected: boolean
@@ -422,6 +423,7 @@ const args: CustomArgs = {
   hasSiteInfo: true,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
+  isStoragePrefEnabled: true,
   hasAcceptedAgreement: true,
   isPremiumModel: false,
   isPremiumUser: true,
@@ -486,6 +488,7 @@ const preview: Meta<CustomArgs> = {
         initialized: options.args.initialized,
         editingConversationId: null,
         visibleConversations: options.args.hasConversationListItems ? CONVERSATIONS : [],
+        isStoragePrefEnabled: options.args.isStoragePrefEnabled,
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
         isPremiumUser: options.args.isPremiumUser,
@@ -493,12 +496,13 @@ const preview: Meta<CustomArgs> = {
         isStorageNoticeDismissed: options.args.isStorageNoticeDismissed,
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         isMobile: options.args.isMobile,
-        isHistoryEnabled: options.args.isHistoryEnabled,
+        isHistoryFeatureEnabled: options.args.isHistoryEnabled,
         isStandalone: options.args.isStandalone,
         allActions: ACTIONS_LIST,
         goPremium: () => {},
         managePremium: () => {},
         handleAgreeClick: () => {},
+        enableStoragePref: () => {},
         markStorageNoticeViewed: () => {},
         dismissStorageNotice: () => {},
         dismissPremiumPrompt: () => {},
