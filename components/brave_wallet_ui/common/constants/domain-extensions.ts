@@ -39,6 +39,14 @@ export const supportedUDExtensions = [
   '.austin',
   '.bitget',
   '.wrkx',
+  ".bald",
+  ".benji",
+  ".chomp",
+  ".dream",
+  ".ethermail",
+  ".lfg",
+  ".propykeys",
+  ".smobler",
 ]
 export const allSupportedExtensions = [
   ...supportedENSExtensions,
