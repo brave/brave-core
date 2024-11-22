@@ -67,10 +67,8 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
   base::ranges::copy(tree_state.frontier,
                      std::back_inserter(prior_tree_state.frontier));
 
-  ::rust::Box<::brave_wallet::orchard::BatchOrchardDecodeBundleResult>
-      decode_result = ::brave_wallet::orchard::batch_decode(
-          full_view_key_, std::move(prior_tree_state),
-          std::move(orchard_actions));
+  ::rust::Box<BatchOrchardDecodeBundleResult> decode_result = batch_decode(
+      full_view_key_, std::move(prior_tree_state), std::move(orchard_actions));
 
   if (decode_result->is_ok()) {
     return base::WrapUnique<OrchardDecodedBlocksBundle>(

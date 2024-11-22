@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ORCHARD_SHARD_TREE_DELEGATE_H_
 
 #include <optional>
+#include <vector>
 
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
@@ -29,6 +30,7 @@ struct OrchardCheckpoint {
 
   bool operator==(const OrchardCheckpoint& other) const = default;
 
+  // Leaf position of the checkpoint.
   CheckpointTreeState tree_state_position;
   // List of note positions that were spent at this checkpoint.
   std::vector<uint32_t> marks_removed;
@@ -108,8 +110,9 @@ struct OrchardTreeState {
   std::vector<uint8_t> frontier;
 };
 
-// Describes the interface for a persistent storage system utilized by the shard
-// tree. See
+// Describes the interface for a browser-layer persistent storage system
+// utilized by the shard tree. Utilized by rust-wrapper layer to allow calls
+// from rust code to the browser-layer.
 class OrchardShardTreeDelegate {
  public:
   enum Error { kStorageError = 0 };

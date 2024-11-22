@@ -5,14 +5,16 @@
 
 #include "brave/components/brave_wallet/browser/zcash/orchard_shard_tree_delegate_impl.h"
 
+#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_storage.h"
+
 namespace brave_wallet {
 
 OrchardShardTreeDelegateImpl::OrchardShardTreeDelegateImpl(
     const mojom::AccountIdPtr& account_id,
-    scoped_refptr<ZCashOrchardStorage> storage)
+    ZCashOrchardStorage& storage)
     : account_id_(account_id.Clone()), storage_(storage) {}
 
-OrchardShardTreeDelegateImpl::~OrchardShardTreeDelegateImpl() {}
+OrchardShardTreeDelegateImpl::~OrchardShardTreeDelegateImpl() = default;
 
 base::expected<std::optional<OrchardShardTreeCap>,
                OrchardShardTreeDelegate::Error>

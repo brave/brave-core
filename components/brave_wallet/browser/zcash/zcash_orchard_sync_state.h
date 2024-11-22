@@ -67,7 +67,7 @@ class ZCashOrchardSyncState {
   OrchardShardTreeManager& GetOrCreateShardTreeManager(
       const mojom::AccountIdPtr& account_id);
 
-  scoped_refptr<ZCashOrchardStorage> storage_;
+  std::unique_ptr<ZCashOrchardStorage> storage_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<OrchardShardTreeManager>>
       shard_tree_managers_;
 

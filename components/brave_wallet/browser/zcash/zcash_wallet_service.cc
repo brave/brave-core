@@ -175,7 +175,7 @@ void ZCashWalletService::StartShieldSync(mojom::AccountIdPtr account_id,
 
     shield_sync_services_[account_id.Clone()] =
         std::make_unique<ZCashShieldSyncService>(
-            this, account_id, account_birthday, fvk.value(),
+            *zcash_rpc_, sync_state_, account_id, account_birthday, fvk.value(),
             weak_ptr_factory_.GetWeakPtr());
 
     shield_sync_services_[account_id.Clone()]->StartSyncing();

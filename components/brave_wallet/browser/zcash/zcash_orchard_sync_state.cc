@@ -16,7 +16,7 @@ namespace brave_wallet {
 
 ZCashOrchardSyncState::ZCashOrchardSyncState(base::FilePath path_to_database) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  storage_ = base::MakeRefCounted<ZCashOrchardStorage>(path_to_database);
+  storage_ = std::make_unique<ZCashOrchardStorage>(path_to_database);
 }
 
 ZCashOrchardSyncState::~ZCashOrchardSyncState() = default;
@@ -25,8 +25,9 @@ OrchardShardTreeManager& ZCashOrchardSyncState::GetOrCreateShardTreeManager(
     const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (shard_tree_managers_.find(account_id) == shard_tree_managers_.end()) {
-    shard_tree_managers_[account_id.Clone()] = OrchardShardTreeManager::Create(
-        std::make_unique<OrchardShardTreeDelegateImpl>(account_id, storage_));
+    shard_tree_managers_[account_id.Clone()] =
+        OrchardShardTreeManager::Create(base::WrapUnique(
+            new OrchardShardTreeDelegateImpl(account_id, *storage_)));
   }
   auto* manager = shard_tree_managers_[account_id.Clone()].get();
   CHECK(manager);

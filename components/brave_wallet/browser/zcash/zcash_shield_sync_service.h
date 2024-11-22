@@ -75,7 +75,8 @@ class ZCashShieldSyncService {
   };
 
   ZCashShieldSyncService(
-      ZCashWalletService* zcash_wallet_service,
+      ZCashRpc& zcash_rpc,
+      base::SequenceBound<ZCashOrchardSyncState>& zcash_orchard_sync_state,
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashAccountShieldBirthdayPtr& account_birthday,
       const std::array<uint8_t, kOrchardFullViewKeySize>& fvk,
@@ -160,7 +161,8 @@ class ZCashShieldSyncService {
   std::optional<Error> error() { return error_; }
 
   // Params
-  raw_ptr<ZCashWalletService> zcash_wallet_service_ = nullptr;  // Owns this
+  raw_ref<ZCashRpc> zcash_rpc_;
+  raw_ref<base::SequenceBound<ZCashOrchardSyncState>> zcash_orchard_sync_state_;
   mojom::AccountIdPtr account_id_;
   // Birthday of the account will be used to resolve initial scan range.
   mojom::ZCashAccountShieldBirthdayPtr account_birthday_;

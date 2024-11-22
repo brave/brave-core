@@ -10,6 +10,9 @@ specific_include_rules = {
   ],
   "orchard_decoded_blocks_bunde_impl.h": [
     "+third_party/rust/cxx/v1/cxx.h",
-  ]
+  ],
+  "shard_tree_delegate.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
 }
 

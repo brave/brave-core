@@ -329,7 +329,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   auto update_notes_callback = base::BindLambdaForTesting(
       [](std::optional<ZCashOrchardStorage::Error>) {});
 
-  OrchardBlockScanner::Result result = OrchardTestUtils::CreateResultForTesting(
+  OrchardBlockScanner::Result result = CreateResultForTesting(
       OrchardTreeState(), std::vector<OrchardCommitment>());
   result.discovered_notes = std::vector<OrchardNote>({note});
 
@@ -417,7 +417,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
   auto update_notes_callback = base::BindLambdaForTesting(
       [](std::optional<ZCashOrchardStorage::Error>) {});
 
-  OrchardBlockScanner::Result result = OrchardTestUtils::CreateResultForTesting(
+  OrchardBlockScanner::Result result = CreateResultForTesting(
       OrchardTreeState(), std::vector<OrchardCommitment>());
   result.discovered_notes = std::vector<OrchardNote>({note});
 

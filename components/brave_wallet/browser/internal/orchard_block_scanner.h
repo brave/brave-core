@@ -23,7 +23,7 @@ namespace brave_wallet {
 // spendable notes related to the account.
 class OrchardBlockScanner {
  public:
-  enum class ErrorCode { kInputError, kDecoderError };
+  enum class ErrorCode { kInputError, kDiscoveredNotesError, kDecoderError };
 
   struct Result {
     Result();

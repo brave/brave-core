@@ -7,28 +7,18 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_TEST_UTILS_H_
 
 #include <memory>
+#include <vector>
 
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_test_utils.h"
 
 namespace brave_wallet {
 
-class OrchardTestUtils {
- public:
-  OrchardTestUtils();
-  ~OrchardTestUtils();
+OrchardBlockScanner::Result CreateResultForTesting(
+    const OrchardTreeState& tree_state,
+    const std::vector<OrchardCommitment>& commitments);
 
-  // static
-  static OrchardBlockScanner::Result CreateResultForTesting(
-      const OrchardTreeState& tree_state,
-      const std::vector<OrchardCommitment>& commitments);
-
-  OrchardCommitmentValue CreateMockCommitmentValue(uint32_t position,
-                                                   uint32_t rseed);
-
- private:
-  std::unique_ptr<orchard::OrchardTestUtils> orchard_test_utils_impl_;
-};
+OrchardCommitmentValue CreateMockCommitmentValue(uint32_t position,
+                                                 uint32_t rseed);
 
 }  // namespace brave_wallet
 

@@ -41,17 +41,17 @@ OrchardBlockScanner::ScanBlocks(
   std::unique_ptr<orchard::OrchardDecodedBlocksBundle> result =
       decoder_->ScanBlocks(tree_state, blocks);
   if (!result) {
-    DVLOG(1) << "Failed to parse block range.";
     return base::unexpected(ErrorCode::kInputError);
   }
 
-  if (!result->GetDiscoveredNotes()) {
-    DVLOG(1) << "Failed to resolve discovered notes.";
-    return base::unexpected(ErrorCode::kInputError);
+  std::optional<std::vector<OrchardNote>> found_notes =
+      result->GetDiscoveredNotes();
+
+  if (!found_notes) {
+    return base::unexpected(ErrorCode::kDiscoveredNotesError);
   }
 
   std::vector<OrchardNoteSpend> found_spends;
-  std::vector<OrchardNote> found_notes = result->GetDiscoveredNotes().value();
 
   for (const auto& block : blocks) {
     for (const auto& tx : block->vtx) {
@@ -61,20 +61,19 @@ OrchardBlockScanner::ScanBlocks(
           return base::unexpected(ErrorCode::kInputError);
         }
 
-        OrchardNoteSpend spend;
         // Nullifier is a public information about some note being spent.
-        // Here we are trying to find a known spendable notes which nullifier
-        // matches nullifier from the processed transaction.
-
-        base::ranges::copy(orchard_action->nullifier, spend.nullifier.begin());
+        // Here we are collecting nullifiers from the blocks to check them
+        // later.
+        OrchardNoteSpend spend;
+        base::span(spend.nullifier).copy_from(orchard_action->nullifier);
         spend.block_id = block->height;
         found_spends.push_back(std::move(spend));
       }
     }
   }
 
-  return Result(
-      {std::move(found_notes), std::move(found_spends), std::move(result)});
+  return Result({std::move(found_notes.value()), std::move(found_spends),
+                 std::move(result)});
 }
 
 }  // namespace brave_wallet

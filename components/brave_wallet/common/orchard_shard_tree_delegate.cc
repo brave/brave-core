@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/orchard_shard_tree_delegate.h"
 
+#include <utility>
+
 namespace brave_wallet {
 
 OrchardTreeState::OrchardTreeState() = default;

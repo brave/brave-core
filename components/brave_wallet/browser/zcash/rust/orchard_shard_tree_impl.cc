@@ -12,8 +12,8 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/cxx/src/shard_store.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/shard_tree_delegate.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 

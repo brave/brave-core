@@ -443,7 +443,7 @@ mod ffi {
     }
 
     unsafe extern "C++" {
-        include!("brave/components/brave_wallet/browser/zcash/rust/cxx/src/shard_store.h");
+        include!("brave/components/brave_wallet/browser/zcash/rust/shard_tree_delegate.h");
 
         type ShardTreeDelegate;
 

@@ -63,12 +63,14 @@ void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
 }
 
 ZCashShieldSyncService::ZCashShieldSyncService(
-    ZCashWalletService* zcash_wallet_service,
+    ZCashRpc& zcash_rpc,
+    base::SequenceBound<ZCashOrchardSyncState>& zcash_orchard_sync_state,
     const mojom::AccountIdPtr& account_id,
     const mojom::ZCashAccountShieldBirthdayPtr& account_birthday,
     const OrchardFullViewKey& fvk,
     base::WeakPtr<Observer> observer)
-    : zcash_wallet_service_(zcash_wallet_service),
+    : zcash_rpc_(zcash_rpc),
+      zcash_orchard_sync_state_(zcash_orchard_sync_state),
       account_id_(account_id.Clone()),
       account_birthday_(account_birthday.Clone()),
       observer_(std::move(observer)) {
@@ -438,12 +440,12 @@ uint32_t ZCashShieldSyncService::GetSpendableBalance() {
 }
 
 ZCashRpc& ZCashShieldSyncService::zcash_rpc() {
-  return zcash_wallet_service_->zcash_rpc();
+  return zcash_rpc_.get();
 }
 
 base::SequenceBound<ZCashOrchardSyncState>&
 ZCashShieldSyncService::sync_state() {
-  return zcash_wallet_service_->sync_state();
+  return zcash_orchard_sync_state_.get();
 }
 
 }  // namespace brave_wallet

@@ -34,10 +34,7 @@ source_set("test_support_headers") {
 
 source_set("test_support_impl") {
   visibility = [ ":test_support" ]
-  sources = [
-    "orchard_test_utils_impl.cc",
-    "orchard_test_utils_impl.h",
-  ]
+  sources = [ "orchard_test_utils_impl.cc" ]
 
   deps = [
     ":orchard_impl",
@@ -99,7 +96,7 @@ source_set("orchard_impl") {
 
 source_set("shard_store") {
   visibility = [ ":*" ]
-  sources = [ "cxx/src/shard_store.h" ]
+  sources = [ "shard_tree_delegate.h" ]
 
   public_deps = [
     "//base",

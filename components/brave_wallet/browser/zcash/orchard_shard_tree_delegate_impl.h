@@ -9,15 +9,15 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_storage.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_wallet/common/orchard_shard_tree_delegate.h"
 
 namespace brave_wallet {
 
+class ZCashOrchardStorage;
+
 class OrchardShardTreeDelegateImpl : public OrchardShardTreeDelegate {
  public:
-  OrchardShardTreeDelegateImpl(const mojom::AccountIdPtr& account_id,
-                               scoped_refptr<ZCashOrchardStorage> storage);
   ~OrchardShardTreeDelegateImpl() override;
 
   base::expected<std::optional<OrchardShardTreeCap>, Error> GetCap()
@@ -55,8 +55,12 @@ class OrchardShardTreeDelegateImpl : public OrchardShardTreeDelegate {
       const OrchardCheckpoint& checkpoint) override;
 
  private:
+  friend class OrchardShardTreeTest;
+  friend class ZCashOrchardSyncState;
+  OrchardShardTreeDelegateImpl(const mojom::AccountIdPtr& account_id,
+                               ZCashOrchardStorage& storage);
   mojom::AccountIdPtr account_id_;
-  scoped_refptr<ZCashOrchardStorage> storage_;
+  raw_ref<ZCashOrchardStorage> storage_;  // Owned by ZCashOrchardSyncState
 };
 
 }  // namespace brave_wallet

@@ -3,22 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_test_utils_impl.h"
-
 #include <memory>
 
 #include "base/check_is_test.h"
 #include "base/memory/ptr_util.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_test_utils.h"
 
 namespace brave_wallet::orchard {
 
-class TestingBuilderImpl : public OrchardTestUtils::TestingBuilder {
+class TestingDecodedBundleBuilderImpl : public TestingDecodedBundleBuilder {
  public:
-  TestingBuilderImpl() = default;
+  TestingDecodedBundleBuilderImpl() = default;
 
-  ~TestingBuilderImpl() override = default;
+  ~TestingDecodedBundleBuilderImpl() override = default;
 
   void SetPriorTreeState(
       const ::brave_wallet::OrchardTreeState& tree_state) override {
@@ -58,26 +57,15 @@ class TestingBuilderImpl : public OrchardTestUtils::TestingBuilder {
   ShardTreeLeafs leafs_;
 };
 
-// static
-std::unique_ptr<OrchardTestUtils::TestingBuilder>
-OrchardTestUtils::CreateTestingBuilder() {
+std::unique_ptr<TestingDecodedBundleBuilder>
+CreateTestingDecodedBundleBuilder() {
   CHECK_IS_TEST();
-  return base::WrapUnique<TestingBuilder>(new TestingBuilderImpl());
+  return std::make_unique<TestingDecodedBundleBuilderImpl>();
 }
 
-OrchardTestUtilsImpl::OrchardTestUtilsImpl() = default;
-
-OrchardTestUtilsImpl::~OrchardTestUtilsImpl() = default;
-
-OrchardCommitmentValue OrchardTestUtilsImpl::CreateMockCommitmentValue(
-    uint32_t position,
-    uint32_t rseed) {
+OrchardCommitmentValue CreateMockCommitmentValue(uint32_t position,
+                                                 uint32_t rseed) {
   return create_mock_commitment(position, rseed);
-}
-
-// static
-std::unique_ptr<OrchardTestUtils> OrchardTestUtils::Create() {
-  return std::make_unique<OrchardTestUtilsImpl>();
 }
 
 }  // namespace brave_wallet::orchard
