@@ -337,7 +337,7 @@ public final class PlayerModel: ObservableObject {
     return .init { [weak self] continuation in
       guard let self else { return }
       let timeObserver = player.addCancellablePeriodicTimeObserver(
-        forInterval: 100,
+        forInterval: 150,
         queue: .global()
       ) { [weak self] time in
         guard let self,
@@ -368,6 +368,8 @@ public final class PlayerModel: ObservableObject {
       }
     }
   }
+
+  @MainActor @Published public var isPlayerInForeground: Bool = true
 
   // MARK: - Picture in Picture
 
@@ -780,6 +782,9 @@ public final class PlayerModel: ObservableObject {
       queue: .main
     ) { [weak self] _ in
       guard let self else { return }
+      MainActor.assumeIsolated {
+        self.isPlayerInForeground = false
+      }
       if isPictureInPictureActive || !isPlaying {
         return
       }
@@ -793,6 +798,9 @@ public final class PlayerModel: ObservableObject {
       queue: .main
     ) { [weak self] _ in
       guard let self else { return }
+      MainActor.assumeIsolated {
+        self.isPlayerInForeground = true
+      }
       if isPictureInPictureActive || playerLayer.player != nil {
         return
       }
