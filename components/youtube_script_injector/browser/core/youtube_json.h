@@ -50,8 +50,6 @@ class YouTubeJson {
 
   // Parse the youtube.json file contents into an optional YouTubeJson.
   static std::optional<YouTubeJson> ParseJson(const std::string& contents);
-  // Check if this rule matches the given URL.
-  // bool ShouldInsertScript(const GURL& url) const;
   bool IsYouTubeDomain(const GURL& url) const;
 
   // Getters.
