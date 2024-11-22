@@ -332,43 +332,6 @@ public final class PlayerModel: ObservableObject {
     return item.presentationSize.width / item.presentationSize.height
   }
 
-  /// A stream that yields downsampled thumbnails of the item currently playing.
-  var videoAmbianceImageStream: AsyncStream<UIImage> {
-    return .init { [weak self] continuation in
-      guard let self else { return }
-      let timeObserver = player.addCancellablePeriodicTimeObserver(
-        forInterval: 150,
-        queue: .global()
-      ) { [weak self] time in
-        guard let self,
-          self.videoDecorationOutput.hasNewPixelBuffer(forItemTime: time),
-          let buffer = self.videoDecorationOutput.copyPixelBuffer(
-            forItemTime: time,
-            itemTimeForDisplay: nil
-          )
-        else {
-          DispatchQueue.main.async {
-            continuation.yield(.init())
-          }
-          return
-        }
-        let ciImage = CIImage(cvPixelBuffer: buffer)
-          .transformed(by: .init(scaleX: 0.1, y: 0.1), highQualityDownsample: false)
-        if let cgImage = CIContext().createCGImage(ciImage, from: ciImage.extent) {
-          let uiImage = UIImage(cgImage: cgImage)
-          DispatchQueue.main.async {
-            continuation.yield(uiImage)
-          }
-        }
-      }
-      // Should be tied to the View, but adding one extra killswitch
-      self.cancellables.insert(timeObserver)
-      continuation.onTermination = { _ in
-        timeObserver.cancel()
-      }
-    }
-  }
-
   @MainActor @Published public var isPlayerInForeground: Bool = true
 
   // MARK: - Picture in Picture
@@ -709,15 +672,11 @@ public final class PlayerModel: ObservableObject {
   // MARK: -
 
   private let player: AVPlayer = .init()
-  private let videoDecorationOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: [
-    kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
-  ])
   private var currentItem: AVPlayerItem? {
     player.currentItem
   }
   nonisolated private func updateCurrentItem(_ item: AVPlayerItem?) async {
     player.replaceCurrentItem(with: item)
-    item?.add(videoDecorationOutput)
     await MainActor.run {
       setupPlayerItemKeyPathObservation()
       updateSystemPlayer()
@@ -804,15 +763,7 @@ public final class PlayerModel: ObservableObject {
       if isPictureInPictureActive || playerLayer.player != nil {
         return
       }
-      // There is a bug in iOS that breaks restoring an AVPlayer to an AVPlayerLayer while its
-      // playing in the background, so we have to first pause it before restoring it and resume
-      // playback after.
-      let isPlayingDurationRestoration = isPlaying
-      pause()
       playerLayer.player = player
-      if isPlayingDurationRestoration {
-        play()
-      }
     }
 
     cancellables.formUnion([
