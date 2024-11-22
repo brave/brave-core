@@ -597,6 +597,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             seedWordsReceived(mCodephrase, SyncInputType.NEW);
         } else if (mMobileButton == v) {
             setAddMobileDeviceLayout();
+            selectAddMobileTab();
         } else if (mLaptopButton == v) {
             setAddLaptopLayout();
             selectAddLaptopTab();
@@ -713,6 +714,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     private void selectAddLaptopTab() {
         mTabLayout.getTabAt(1).select();
+    }
+
+    private void selectAddMobileTab() {
+        mTabLayout.getTabAt(0).select();
     }
 
     void generateNewCodeWords() {
