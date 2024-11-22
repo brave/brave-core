@@ -1,0 +1,13 @@
+diff --git a/ui/accessibility/accessibility_features.cc b/ui/accessibility/accessibility_features.cc
+index e265c2d964a20c00003bfbb5ee8640ba42d1ea7f..9f79da8b69b93916728e3223d4b761d624babe26 100644
+--- a/ui/accessibility/accessibility_features.cc
++++ b/ui/accessibility/accessibility_features.cc
+@@ -54,7 +54,7 @@ bool IsAccessibilityPruneRedundantInlineConnectivityEnabled() {
+ 
+ BASE_FEATURE(kImageDescriptionsAlternateRouting,
+              "ImageDescriptionsAlternateRouting",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ bool IsImageDescriptionsAlternateRoutingEnabled() {
+   return base::FeatureList::IsEnabled(
+       ::features::kImageDescriptionsAlternateRouting);
