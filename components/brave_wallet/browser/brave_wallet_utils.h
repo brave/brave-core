@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/strings/cstring_view.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -43,7 +44,9 @@ std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
 bool IsValidMnemonic(base::cstring_view mnemonic);
 
 bool EncodeString(std::string_view input, std::string* output);
-bool EncodeStringArray(const std::vector<std::string>& input,
+bool EncodeStringArray(base::span<const std::string> input,
+                       std::string* output);
+bool EncodeStringArray(base::span<const std::string_view> input,
                        std::string* output);
 
 bool DecodeString(size_t offset, std::string_view input, std::string* output);
