@@ -889,7 +889,13 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
       },
       "userPublicKey": "mockPubKey",
       "dynamicComputeUnitLimit": true,
-      "prioritizationFeeLamports": "auto"
+      "prioritizationFeeLamports": {
+        "priorityLevelWithMaxLamports": {
+          "priorityLevel": "high",
+          "maxLamports": 4000000,
+          "global": false
+        }
+      }
     })");
 
   // OK: Jupiter transaction params with feeAccount
@@ -943,7 +949,13 @@ TEST(SwapRequestHelperUnitTest, EncodeJupiterTransactionParams) {
       },
       "userPublicKey": "mockPubKey",
       "dynamicComputeUnitLimit": true,
-      "prioritizationFeeLamports": "auto"
+      "prioritizationFeeLamports": {
+        "priorityLevelWithMaxLamports": {
+          "priorityLevel": "high",
+          "maxLamports": 4000000,
+          "global": false
+        }
+      }
     })";
   expected_params_value = ParseJson(expected_params);
   ASSERT_NE(encoded_params, std::nullopt);
