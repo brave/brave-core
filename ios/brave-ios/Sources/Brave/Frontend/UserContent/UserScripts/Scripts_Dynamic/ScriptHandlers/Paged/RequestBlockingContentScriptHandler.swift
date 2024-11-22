@@ -16,7 +16,6 @@ class RequestBlockingContentScriptHandler: TabContentScript {
     struct RequestBlockingDTOData: Decodable, Hashable {
       let resourceType: AdblockEngine.ResourceType
       let resourceURL: String
-      let windowLocationHref: String
       let windowOrigin: String
     }
 

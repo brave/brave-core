@@ -15,7 +15,6 @@ import os.log
 class CosmeticFiltersScriptHandler: TabContentScript {
   struct CosmeticFiltersDTO: Decodable {
     struct CosmeticFiltersDTOData: Decodable, Hashable {
-      let windowLocationHref: String
       let windowOrigin: String
       let ids: [String]
       let classes: [String]

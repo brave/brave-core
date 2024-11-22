@@ -15,7 +15,6 @@ import os.log
 class URLPartinessScriptHandler: TabContentScript {
   struct PartinessDTO: Decodable {
     struct PartinessDTOData: Decodable, Hashable {
-      let windowLocationHref: String
       let windowOrigin: String
       let urls: [String]
     }

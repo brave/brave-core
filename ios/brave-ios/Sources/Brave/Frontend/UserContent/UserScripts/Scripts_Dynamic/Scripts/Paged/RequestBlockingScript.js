@@ -24,7 +24,6 @@ window.__firefox__.execute(function($) {
       "securityToken": SECURITY_TOKEN,
       "data": {
         resourceURL: resourceURL.href,
-        windowLocationHref: window.location.href,
         windowOrigin: window.origin,
         resourceType: 'xmlhttprequest'
       }
