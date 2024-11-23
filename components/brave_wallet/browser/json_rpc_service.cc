@@ -1700,8 +1700,7 @@ void JsonRpcService::UnstoppableDomainsResolveDns(
     return;
   }
 
-  auto data = unstoppable_domains::GetMany(unstoppable_domains::GetRecordKeys(),
-                                           domain);
+  auto data = unstoppable_domains::GetMany(domain);
   if (!data) {
     std::move(callback).Run(
         std::nullopt, mojom::ProviderError::kInvalidParams,

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 
-#include "base/no_destructor.h"
+#include "base/containers/span.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 
 namespace brave_wallet::unstoppable_domains {
@@ -21,21 +21,13 @@ enum RecordKeys {
   kKeyCount,
 };
 
-// See
-// https://docs.unstoppabledomains.com/developer-toolkit/resolve-domains-browser/browser-resolution-algorithm/
-// for more details.
-constexpr const char* kRecordKeys[] = {
-    "dweb.ipfs.hash", "ipfs.html.value",      "dns.A",
-    "dns.AAAA",       "browser.redirect_url", "ipfs.redirect_domain.value",
-};
-
 static_assert(std::size(kRecordKeys) ==
                   static_cast<size_t>(RecordKeys::kKeyCount),
               "Size should match between RecordKeys and kRecordKeys.");
 }  // namespace
 
-GURL ResolveUrl(const std::vector<std::string>& response) {
-  if (response.size() != GetRecordKeys().size()) {
+GURL ResolveUrl(base::span<const std::string> response) {
+  if (response.size() != kRecordKeys.size()) {
     return GURL();
   }
 
@@ -62,12 +54,6 @@ GURL ResolveUrl(const std::vector<std::string>& response) {
   }
 
   return GURL();
-}
-
-const std::vector<std::string>& GetRecordKeys() {
-  static base::NoDestructor<std::vector<std::string>> keys(
-      std::begin(kRecordKeys), std::end(kRecordKeys));
-  return *keys;
 }
 
 }  // namespace brave_wallet::unstoppable_domains

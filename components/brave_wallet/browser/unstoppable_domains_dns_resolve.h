@@ -6,15 +6,27 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_UNSTOPPABLE_DOMAINS_DNS_RESOLVE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_UNSTOPPABLE_DOMAINS_DNS_RESOLVE_H_
 
+#include <array>
 #include <string>
-#include <vector>
 
+#include "base/containers/span.h"
 #include "url/gurl.h"
 
 namespace brave_wallet::unstoppable_domains {
 
-const std::vector<std::string>& GetRecordKeys();
-GURL ResolveUrl(const std::vector<std::string>& response);
+// See
+// https://docs.unstoppabledomains.com/developer-toolkit/resolve-domains-browser/browser-resolution-algorithm/
+// for more details.
+inline constexpr auto kRecordKeys = std::to_array<std::string_view>({
+    "dweb.ipfs.hash",
+    "ipfs.html.value",
+    "dns.A",
+    "dns.AAAA",
+    "browser.redirect_url",
+    "ipfs.redirect_domain.value",
+});
+
+GURL ResolveUrl(base::span<const std::string> response);
 
 }  // namespace brave_wallet::unstoppable_domains
 

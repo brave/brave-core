@@ -11,7 +11,9 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
@@ -95,8 +97,12 @@ namespace unstoppable_domains {
 inline constexpr uint8_t kGetManySelector[] = {0x1b, 0xd8, 0xcc, 0x1a};
 
 // Get mutiple record values mapped with keys of the target domain.
-std::optional<std::string> GetMany(const std::vector<std::string>& keys,
-                                   std::string_view domain);
+// Keys are defaulted to `unstoppable_domains::RecordKeys` as this is the only
+// value that is used in production, with the argument only being provided for
+// tests.
+std::optional<std::string> GetMany(
+    std::string_view domain,
+    base::span<const std::string_view> keys = unstoppable_domains::kRecordKeys);
 
 std::vector<std::string> MakeEthLookupKeyList(std::string_view symbol,
                                               std::string_view chain_id);

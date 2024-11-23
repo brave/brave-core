@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
@@ -313,8 +314,8 @@ std::vector<uint8_t> SupportsInterface(eth_abi::Span4 interface) {
 
 namespace unstoppable_domains {
 
-std::optional<std::string> GetMany(const std::vector<std::string>& keys,
-                                   std::string_view domain) {
+std::optional<std::string> GetMany(std::string_view domain,
+                                   base::span<const std::string_view> keys) {
   const std::string function_hash =
       GetFunctionHash("getMany(string[],uint256)");
 

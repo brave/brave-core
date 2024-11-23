@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
@@ -169,6 +170,55 @@ bool ValidateAndFixAssetAddress(mojom::BlockchainTokenPtr& token) {
   return false;
 }
 
+template <typename StringType>
+bool EncodeStringArrayInternal(base::span<const StringType> input,
+                               std::string* output) {
+  // Write count of elements.
+  bool success = PadHexEncodedParameter(
+      Uint256ValueToHex(static_cast<uint256_t>(input.size())), output);
+  if (!success) {
+    return false;
+  }
+
+  // Write offsets to array elements.
+  size_t data_offset = input.size() * 32;  // Offset to first element.
+  std::string encoded_offset;
+  success =
+      PadHexEncodedParameter(Uint256ValueToHex(data_offset), &encoded_offset);
+  if (!success) {
+    return false;
+  }
+  *output += encoded_offset.substr(2);
+
+  for (size_t i = 1; i < input.size(); i++) {
+    // Offset for ith element =
+    //     offset for i-1th + 32 * (count for i-1th) +
+    //     32 * ceil(i-1th.size() / 32.0) (length of encoding for i-1th).
+    std::string encoded_offset_for_element;
+    size_t rows = std::ceil(input[i - 1].size() / 32.0);
+    data_offset += (rows + 1) * 32;
+
+    success = PadHexEncodedParameter(Uint256ValueToHex(data_offset),
+                                     &encoded_offset_for_element);
+    if (!success) {
+      return false;
+    }
+    *output += encoded_offset_for_element.substr(2);
+  }
+
+  // Write count and encoding for array elements.
+  for (const auto& entry : input) {
+    std::string encoded_string;
+    success = EncodeString(entry, &encoded_string);
+    if (!success) {
+      return false;
+    }
+    *output += encoded_string.substr(2);
+  }
+
+  return true;
+}
+
 }  // namespace
 
 bool IsEndpointUsingBraveWalletProxy(const GURL& url) {
@@ -299,52 +349,14 @@ bool EncodeString(std::string_view input, std::string* output) {
   return true;
 }
 
-bool EncodeStringArray(const std::vector<std::string>& input,
+bool EncodeStringArray(base::span<const std::string> input,
                        std::string* output) {
-  // Write count of elements.
-  bool success = PadHexEncodedParameter(
-      Uint256ValueToHex(static_cast<uint256_t>(input.size())), output);
-  if (!success) {
-    return false;
-  }
+  return EncodeStringArrayInternal(input, output);
+}
 
-  // Write offsets to array elements.
-  size_t data_offset = input.size() * 32;  // Offset to first element.
-  std::string encoded_offset;
-  success =
-      PadHexEncodedParameter(Uint256ValueToHex(data_offset), &encoded_offset);
-  if (!success) {
-    return false;
-  }
-  *output += encoded_offset.substr(2);
-
-  for (size_t i = 1; i < input.size(); i++) {
-    // Offset for ith element =
-    //     offset for i-1th + 32 * (count for i-1th) +
-    //     32 * ceil(i-1th.size() / 32.0) (length of encoding for i-1th).
-    std::string encoded_offset_for_element;
-    size_t rows = std::ceil(input[i - 1].size() / 32.0);
-    data_offset += (rows + 1) * 32;
-
-    success = PadHexEncodedParameter(Uint256ValueToHex(data_offset),
-                                     &encoded_offset_for_element);
-    if (!success) {
-      return false;
-    }
-    *output += encoded_offset_for_element.substr(2);
-  }
-
-  // Write count and encoding for array elements.
-  for (const auto& entry : input) {
-    std::string encoded_string;
-    success = EncodeString(entry, &encoded_string);
-    if (!success) {
-      return false;
-    }
-    *output += encoded_string.substr(2);
-  }
-
-  return true;
+bool EncodeStringArray(base::span<const std::string_view> input,
+                       std::string* output) {
+  return EncodeStringArrayInternal(input, output);
 }
 
 bool DecodeString(size_t offset, std::string_view input, std::string* output) {
