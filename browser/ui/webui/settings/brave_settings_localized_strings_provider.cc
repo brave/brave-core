@@ -84,6 +84,9 @@ constexpr char16_t kBlockAllCookiesLearnMoreUrl[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Block-all-cookies-global-Shields-setting";
 
+constexpr char16_t kLeoPrivacyPolicyURL[] =
+    u"https://brave.com/privacy/browser/#brave-leo";
+
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
   webui::LocalizedString localized_strings[] = {
@@ -521,6 +524,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_LABEL},
       {"braveLeoAssistantShowInContextMenuDesc",
        IDS_SETTINGS_LEO_ASSISTANT_SHOW_IN_CONTEXT_MENU_DESC},
+      {"braveLeoAssistantTabFocusLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_TAB_FOCUS_LABEL},
       {"braveLeoAssistantHistoryPreferenceLabel",
        IDS_SETTINGS_LEO_ASSISTANT_HISTORY_PREFERENCE_LABEL},
       {"braveLeoAssistantHistoryPreferenceConfirm",
@@ -941,6 +946,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString(
       "braveLeoAssistantInputDefaultContextSize",
       base::NumberToString16(ai_chat::kDefaultCustomModelContextSize));
+
+  html_source->AddString(
+      "braveLeoAssistantTabFocusDesc",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_TAB_FOCUS_DESC,
+                                 kLeoPrivacyPolicyURL));
+
+  html_source->AddString("braveLeoAssistanPrivacyPolicyURL",
+                         kLeoPrivacyPolicyURL);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);

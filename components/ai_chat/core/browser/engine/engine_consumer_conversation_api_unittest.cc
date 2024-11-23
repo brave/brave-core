@@ -430,4 +430,11 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+TEST_F(EngineConsumerConversationAPIUnitTest, Test) {
+  std::string json = R"(["1", "2", "5", "6", "7"])";
+  auto value = base::JSONReader::Read(json, base::JSON_PARSE_RFC, 2);
+  EXPECT_TRUE(value.has_value());
+  LOG(ERROR) << *value;
+}
+
 }  // namespace ai_chat

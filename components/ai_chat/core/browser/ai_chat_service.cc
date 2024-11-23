@@ -897,8 +897,12 @@ bool AIChatService::IsPremiumStatus() {
 }
 
 std::unique_ptr<EngineConsumer> AIChatService::GetDefaultAIEngine() {
-  return model_service_->GetEngineForModel(model_service_->GetDefaultModelKey(),
-                                           url_loader_factory_,
+  return GetEngineForModel(model_service_->GetDefaultModelKey());
+}
+
+std::unique_ptr<EngineConsumer> AIChatService::GetEngineForModel(
+    const std::string& model_key) {
+  return model_service_->GetEngineForModel(model_key, url_loader_factory_,
                                            credential_manager_.get());
 }
 

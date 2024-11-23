@@ -90,6 +90,7 @@ void SkusServiceImpl::PrepareCredentialsPresentation(
     const std::string& domain,
     const std::string& path,
     mojom::SkusService::PrepareCredentialsPresentationCallback callback) {
+  LOG(ERROR) << __FUNCTION__ << domain << path;
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   PostTaskWithSDK(

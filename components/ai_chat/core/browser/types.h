@@ -17,6 +17,15 @@ struct SearchQuerySummary {
   bool operator==(const SearchQuerySummary& other) const = default;
 };
 
+struct Tab {
+  std::string id;
+  std::string title;
+  std::string url;
+
+  Tab(const std::string& id, const std::string& title, const std::string& url)
+      : id(id), title(title), url(url) {}
+};
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TYPES_H_

@@ -1,0 +1,87 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #css_wrapper_metadata_end */
+
+#brave-tab-focus {
+  font-family: Arial, sans-serif;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.topic-input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.topic-input:focus {
+  border-color: #0078d4;
+  box-shadow: 0 0 5px rgba(0, 120, 212, 0.5);
+}
+
+.action-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  color: white;
+  background-color: #0078d4;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.action-button:hover {
+  background-color: #005bb5;
+}
+
+div > cr-button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #0078d4;
+  background-color: white;
+  border: 1px solid #0078d4;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+div > cr-button:hover {
+  background-color: #f0f8ff;
+}
+
+div > cr-button:active {
+  background-color: #e6f4ff;
+}

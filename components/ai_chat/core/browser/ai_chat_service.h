@@ -166,6 +166,8 @@ class AIChatService : public KeyedService,
   bool IsAIChatHistoryEnabled();
 
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
+  std::unique_ptr<EngineConsumer> GetEngineForModel(
+      const std::string& model_key);
 
   AIChatCredentialManager* GetCredentialManagerForTesting() {
     return credential_manager_.get();

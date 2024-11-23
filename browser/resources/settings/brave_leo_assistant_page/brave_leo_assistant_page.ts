@@ -192,6 +192,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       window.open(this.manageUrl_, "_self", "noopener noreferrer")
     }
 
+    openLeoPrivacyPolicy_() {
+      window.open(loadTimeData.getString('braveLeoAssistanPrivacyPolicyURL'), "_blank", "noopener noreferrer")
+    }
+
     private onStorageEnabledChange_(event: Event) {
       const target = event.target
       assert(target instanceof SettingsToggleButtonElement);
