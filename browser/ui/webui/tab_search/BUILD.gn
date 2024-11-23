@@ -1,0 +1,28 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = []
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_navigator_params_headers",
+    "//chrome/test",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+    "//ui/base",
+  ]
+
+  if (!is_android) {
+    sources += [ "tab_search_page_handler_browsertest.cc" ]
+  }
+}

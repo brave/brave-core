@@ -11,18 +11,23 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/numerics/clamped_math.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace ai_chat {
 
@@ -30,6 +35,9 @@ namespace {
 
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
+
+constexpr size_t kChunkSize = 75;
+constexpr char kStrArrPattern[] = R"((\[.+?\]))";
 
 }  // namespace
 
@@ -47,6 +55,57 @@ EngineConsumerConversationAPI::~EngineConsumerConversationAPI() = default;
 
 void EngineConsumerConversationAPI::ClearAllQueries() {
   api_->ClearAllQueries();
+}
+
+// static
+base::expected<std::vector<std::string>, mojom::APIError>
+EngineConsumerConversationAPI::GetStrArrFromResponses(
+    std::vector<EngineConsumer::GenerationResult>& results) {
+  std::vector<std::string> str_arr;
+  mojom::APIError error = mojom::APIError::None;
+  for (auto& result : results) {
+    // Fail the operation if server returns an error, such as rate limiting.
+    // On the other hand, ignore the result which cannot be parsed as expected.
+    if (!result.has_value()) {
+      error = result.error();
+      break;
+    }
+
+    // Skip empty results.
+    if (result->empty()) {
+      continue;
+    }
+
+    // Remove newline characters from the result.
+    base::ReplaceChars(*result, "\n", "", &result.value());
+    std::string strArr = "";
+    if (!RE2::PartialMatch(*result, kStrArrPattern, &strArr)) {
+      continue;
+    }
+    auto value = base::JSONReader::Read(strArr, base::JSON_PARSE_RFC);
+    if (!value) {
+      continue;
+    }
+
+    auto* list = value->GetIfList();
+    if (!list) {
+      continue;
+    }
+
+    for (const auto& item : *list) {
+      auto* str = item.GetIfString();
+      if (!str || str->empty()) {
+        continue;
+      }
+      str_arr.push_back(*str);
+    }
+  }
+
+  if (error != mojom::APIError::None) {
+    return base::unexpected(error);
+  }
+
+  return str_arr;
 }
 
 void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
@@ -181,6 +240,103 @@ EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
   event.type = is_video ? ConversationEventType::VideoTranscript
                         : ConversationEventType::PageText;
   return event;
+}
+
+void EngineConsumerConversationAPI::DedupeTopics(
+    base::expected<std::vector<std::string>, mojom::APIError> topics_result,
+    GetSuggestedTopicsCallback callback) {
+  if (!topics_result.has_value() || topics_result->empty()) {
+    std::move(callback).Run(topics_result);
+    return;
+  }
+
+  base::Value::List topic_list;
+  for (const auto& topic : *topics_result) {
+    topic_list.Append(topic);
+  }
+  std::vector<ConversationEvent> conversation;
+  conversation.push_back({mojom::CharacterType::HUMAN,
+                          ConversationEventType::DedupeTopics,
+                          base::WriteJson(topic_list).value_or(std::string())});
+  api_->PerformRequest(
+      std::move(conversation), "" /* selected_language */,
+      base::NullCallback() /* data_received_callback */,
+      base::BindOnce(
+          [](GetSuggestedTopicsCallback callback,
+             EngineConsumer::GenerationResult result) {
+            // Return deduped topics from the response.
+            std::vector<EngineConsumer::GenerationResult> results = {result};
+            std::move(callback).Run(
+                EngineConsumerConversationAPI::GetStrArrFromResponses(results));
+          },
+          std::move(callback)));
+}
+
+void EngineConsumerConversationAPI::ProcessTabChunks(
+    const std::vector<Tab>& tabs,
+    ConversationEventType event_type,
+    base::OnceCallback<void(std::vector<GenerationResult>)> merge_callback,
+    const std::string& topic) {
+  CHECK(event_type == ConversationEventType::GetSuggestedTopicsForFocusTabs ||
+        event_type == ConversationEventType::GetFocusTabsForTopic);
+
+  // Split tab into chunks of 75
+  size_t num_chunks = (tabs.size() + kChunkSize - 1) / kChunkSize;
+  const auto barrier_callback = base::BarrierCallback<GenerationResult>(
+      num_chunks, std::move(merge_callback));
+
+  for (size_t chunk = 0; chunk < num_chunks; ++chunk) {
+    base::Value::List tab_value_list;
+    for (size_t i = chunk * kChunkSize;
+         i < std::min((chunk + 1) * kChunkSize, tabs.size()); ++i) {
+      tab_value_list.Append(base::Value::Dict()
+                                .Set("id", tabs[i].id)
+                                .Set("title", tabs[i].title)
+                                .Set("url", tabs[i].url));
+    }
+
+    std::vector<ConversationEvent> conversation;
+    conversation.push_back(
+        {mojom::CharacterType::HUMAN, event_type,
+         base::WriteJson(tab_value_list).value_or(std::string()), topic});
+
+    api_->PerformRequest(std::move(conversation), "" /* selected_language */,
+                         base::NullCallback() /* data_received_callback */,
+                         barrier_callback /* data_completed_callback */);
+  }
+}
+
+void EngineConsumerConversationAPI::MergeSuggestTopicsResults(
+    GetSuggestedTopicsCallback callback,
+    std::vector<GenerationResult> results) {
+  // Merge the result and send another request to dedupe topics.
+  DedupeTopics(GetStrArrFromResponses(results), std::move(callback));
+}
+
+void EngineConsumerConversationAPI::GetSuggestedTopics(
+    const std::vector<Tab>& tabs,
+    GetSuggestedTopicsCallback callback) {
+  ProcessTabChunks(
+      tabs, ConversationEventType::GetSuggestedTopicsForFocusTabs,
+      base::BindOnce(&EngineConsumerConversationAPI::MergeSuggestTopicsResults,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
+      "" /* topic */);
+}
+
+void EngineConsumerConversationAPI::GetFocusTabs(
+    const std::vector<Tab>& tabs,
+    const std::string& topic,
+    EngineConsumer::GetFocusTabsCallback callback) {
+  ProcessTabChunks(
+      tabs, ConversationEventType::GetFocusTabsForTopic,
+      base::BindOnce(
+          [&](EngineConsumer::GetFocusTabsCallback callback,
+              std::vector<GenerationResult> results) {
+            // Merge the results and call callback with tab IDs or error.
+            std::move(callback).Run(GetStrArrFromResponses(results));
+          },
+          std::move(callback)),
+      topic);
 }
 
 }  // namespace ai_chat

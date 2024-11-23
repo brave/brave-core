@@ -76,7 +76,34 @@ class EngineConsumerConversationAPI : public EngineConsumer {
   ConversationAPIClient* GetAPIForTesting() { return api_.get(); }
   void UpdateModelOptions(const mojom::ModelOptions& options) override {}
 
+  void GetSuggestedTopics(const std::vector<Tab>& tabs,
+                          GetSuggestedTopicsCallback callback) override;
+  void GetFocusTabs(const std::vector<Tab>& tabs,
+                    const std::string& topic,
+                    GetFocusTabsCallback callback) override;
+
+  // A helper function to extract vector of strings from the responses.
+  static base::expected<std::vector<std::string>, mojom::APIError>
+  GetStrArrFromResponses(
+      std::vector<EngineConsumer::GenerationResult>& results);
+
  private:
+  // Processes the tab chunks and sends the merge callback with the results.
+  // Used by GetSuggestedTopics and GetFocusTabs where the tabs are split into
+  // chunks and processed.
+  void ProcessTabChunks(
+      const std::vector<Tab>& tabs,
+      ConversationAPIClient::ConversationEventType event_type,
+      base::OnceCallback<void(std::vector<GenerationResult>)> merge_callback,
+      const std::string& topic);
+
+  void MergeSuggestTopicsResults(GetSuggestedTopicsCallback callback,
+                                 std::vector<GenerationResult> results);
+
+  void DedupeTopics(
+      base::expected<std::vector<std::string>, mojom::APIError> topics_result,
+      GetSuggestedTopicsCallback callback);
+
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);
