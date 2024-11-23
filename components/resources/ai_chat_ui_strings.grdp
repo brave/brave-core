@@ -280,7 +280,7 @@
     Conversation history
   </message>
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history">
-    Leo will now remember your previous conversations so you can go back to them. They are stored privately on your device, and you can delete them any time.
+    Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.
   </message>
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_EMPTY" desc="Main text for a notice that the conversation list is empty">
     Your conversation history will appear here once you start a conversation.
@@ -289,7 +289,7 @@
     History is disabled
   </message>
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF" desc="Main text for a notice that the conversation history preference is disabled">
-    In order to view and search your previous conversations with Leo, you need to enable conversation history.
+    In order to view your previous conversations with Leo, you need to enable conversation history.
   </message>
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF_BUTTON" desc="Button label to enable conversation history preference">
     Enable
