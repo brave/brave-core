@@ -4,6 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .main {
+  --conversation-content-margin: 24px;
+  --conversation-content-max-width: calc(680px + calc(var(--conversation-content-margin) * 2));
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -16,30 +18,39 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 680px;
+  max-width: var(--conversation-content-max-width);
   margin: 0 auto;
-  padding: 0 8px 8px 8px;
-}
-
-.conversationContent {
-  width: 100%;
-  max-width: 680px;
-  margin: 0 auto;
+  padding: 0 var(--conversation-content-margin) 8px var(--conversation-content-margin);
 }
 
 .scroller {
+  --scrollbar-width: 6px;
   overflow: auto;
+  scrollbar-gutter: stable;
   height: 100%;
   padding-bottom: 16px;
 
   &::-webkit-scrollbar {
-    width: 6px;
+    width: var(--scrollbar-width);
   }
 
   &::-webkit-scrollbar-thumb {
     background: var(--leo-color-neutral-20);
     border-radius: var(--leo-spacing-m);
   }
+}
+
+.conversationContent {
+  margin: 0 auto;
+  width: 100%;
+  max-width: var(--conversation-content-max-width);
+  // Adjust padding to account for scrollbar width so content lines up with
+  // input area which is outside of the scroller.
+  padding:
+    0
+    calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2)
+    0
+    calc(var(--conversation-content-margin) + var(--scrollbar-width) / 2);
 }
 
 .flushBottom {
@@ -96,7 +107,7 @@
 }
 
 .promptContainer {
-  margin: 24px;
+  margin: var(--conversation-content-margin) 0;
   container-type: inline-size;
 }
 
