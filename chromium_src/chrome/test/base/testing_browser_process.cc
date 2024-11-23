@@ -7,30 +7,4 @@
 
 #include "brave/test/base/testing_brave_browser_process.h"
 
-#define TestingBrowserProcess TestingBrowserProcess_ChromiumImpl
 #include "src/chrome/test/base/testing_browser_process.cc"
-#undef TestingBrowserProcess
-
-// static
-void TestingBrowserProcess::CreateInstance() {
-  TestingBrowserProcess_ChromiumImpl::CreateInstance();
-  TestingBraveBrowserProcess::CreateInstance();
-}
-
-// static
-void TestingBrowserProcess::DeleteInstance() {
-  TestingBrowserProcess_ChromiumImpl::DeleteInstance();
-  TestingBraveBrowserProcess::DeleteInstance();
-}
-
-// static
-void TestingBrowserProcess::TearDownAndDeleteInstance() {
-  TestingBrowserProcess_ChromiumImpl::TearDownAndDeleteInstance();
-  TestingBraveBrowserProcess::TearDownAndDeleteInstance();
-}
-
-// static
-TestingBrowserProcess* TestingBrowserProcess::GetGlobal() {
-  return static_cast<TestingBrowserProcess*>(
-      TestingBrowserProcess_ChromiumImpl::GetGlobal());
-}
