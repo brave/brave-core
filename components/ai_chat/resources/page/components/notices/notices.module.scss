@@ -12,28 +12,20 @@
   flex-direction: row;
   align-items: stretch;
   overflow: hidden;;
-
-  h4 {
-    margin: 0 0 4px 0;
-    font: var(--leo-font-heading-h4);
-  }
-  p {
-    margin: 0 0 4px 0;
-    font: var(--leo-font-default-regular);
-  }
+  color: var(--leo-color-text-secondary);
 }
 
 .illustration {
   flex: 0 0 auto;
   width: 40%;
   max-width: 260px;
-  background-color: var(--leo-color-orange-20);
+  background-color: #FF815C;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 3%;
 
-  svg {
+  img {
     width: 100%;
     height: auto;
   }
@@ -44,16 +36,24 @@
   padding: 16px;
 
   h4 {
+    margin: 0 0 4px 0;
+    // width of close button, make sure no overlap
+    padding-right: 20px;
     display: block;
     overflow: hidden;
     overflow-wrap: break-word;
-    // width of close button, make sure no overlap
-    padding-right: 20px;
+    font: var(--leo-font-heading-h4);
+    color: var(--leo-color-text-primary);
+  }
+
+  p {
+    margin: 0 0 4px 0;
+    font: var(--leo-font-default-regular);
   }
 
   a {
     font: var(--leo-font-default-link);
-    color: var(--leo-color-text-secondary);
+    color: inherit;
   }
 }
 
@@ -63,7 +63,7 @@
   right: 16px;
 }
 
-@container (width < 362px) {
+@container (width < 410px) {
   .notice {
     flex-direction: column;
   }
@@ -72,10 +72,11 @@
     width: auto;
     padding: 3%;
     height: 136px;
-    svg {
-      max-width: 260px;
-      height: 100%;
+    img {
       width: auto;
+      max-width: 260px;
+      height: auto;
+      max-height: 100%;
     }
   }
 }
