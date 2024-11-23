@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -153,7 +154,7 @@ void BraveWaybackMachineTabHelper::SetWaybackState(WaybackState state) {
 
 bool BraveWaybackMachineTabHelper::ShouldCheckWaybackMachine(
     int response_code) const {
-  static base::flat_set<int> responses = {
+  static constexpr auto responses = base::MakeFixedFlatSet<int>({
       net::HTTP_NOT_FOUND,              // 404
       net::HTTP_REQUEST_TIMEOUT,        // 408
       net::HTTP_GONE,                   // 410
@@ -169,9 +170,9 @@ bool BraveWaybackMachineTabHelper::ShouldCheckWaybackMachine(
       524,                              // A Timeout Occurred
       525,                              // SSL Handshake Failed
       526                               // Invalid SSL Certificate
-  };
+  });
 
-  return responses.find(response_code) != responses.end();
+  return responses.contains(response_code);
 }
 
 void BraveWaybackMachineTabHelper::OnWaybackEnabledChanged(
