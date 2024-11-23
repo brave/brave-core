@@ -79,7 +79,6 @@ import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.Playlist
 import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity;
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener;
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener;
-import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel;
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel;
 import org.chromium.chrome.browser.playlist.kotlin.model.SnackBarActionModel;
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils;

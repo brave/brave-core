@@ -32,6 +32,8 @@ import com.google.common.util.concurrent.ListenableFuture
 import org.chromium.base.BraveFeatureList
 import org.chromium.base.BravePreferenceKeys
 import org.chromium.base.ContextUtils
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.flags.ChromeFeatureList
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid

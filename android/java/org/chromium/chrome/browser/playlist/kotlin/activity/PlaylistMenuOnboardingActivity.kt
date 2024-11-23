@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity
 import org.chromium.chrome.browser.playlist.kotlin.adapter.PlaylistOnboardingFragmentStateAdapter
 import org.chromium.chrome.browser.playlist.kotlin.extension.afterMeasured
 import org.chromium.chrome.browser.playlist.kotlin.extension.showOnboardingGradientBg

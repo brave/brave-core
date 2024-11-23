@@ -126,7 +126,7 @@ class PlaylistActivity :
         mEmptyView = findViewById(R.id.empty_view)
         mPlaylistView = findViewById(R.id.playlist_view)
 
-        mPlaylistToolbar = findViewById(R.id.playlistToolbar)
+        mPlaylistToolbar = findViewById(R.id.toolbar)
 
         mRvPlaylist = findViewById(R.id.rvPlaylists)
         mTvTotalMediaCount = findViewById(R.id.tvTotalMediaCount)

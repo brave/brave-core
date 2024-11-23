@@ -966,7 +966,6 @@ brave_java_resources = [
   "java/res/layout/fragment_link_subscription_dialog.xml",
   "java/res/layout/fragment_onboarding_network_selection.xml",
   "java/res/layout/fragment_onboarding_v2.xml",
-  "java/res/layout/fragment_open_yt_in_brave_dialog.xml",
   "java/res/layout/fragment_qr_code_share.xml",
   "java/res/layout/fragment_quick_search.xml",
   "java/res/layout/fragment_recovery_phrase.xml",

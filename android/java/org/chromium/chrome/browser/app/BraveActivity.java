@@ -148,6 +148,7 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.kotlin.activity.AllPlaylistActivity;
 import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistActivity;
+import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils;
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils;
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils;
@@ -1680,7 +1681,6 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-
     private void checkPlaylistAction() {
         if (getIntent() != null
                 && !TextUtils.isEmpty(getIntent().getAction())
@@ -1689,9 +1689,7 @@ public abstract class BraveActivity extends ChromeActivity
                 return;
             }
             openPlaylistActivity(
-                    BraveActivity.this,
-                    VideoPlaybackService.Companion.getCurrentPlaylistId(),
-                    true);
+                    BraveActivity.this, VideoPlaybackService.Companion.getCurrentPlaylistId());
         }
     }
 

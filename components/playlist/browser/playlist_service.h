@@ -195,6 +195,7 @@ class PlaylistService : public KeyedService,
   bool HasPlaylistItem(const std::string& id) const;
 
 #if BUILDFLAG(IS_ANDROID)
+  mojo::PendingRemote<mojom::PlaylistService> MakeRemote();
   void RequestStreamingQuery(
       const std::string& query_id,
       const std::string& url,
