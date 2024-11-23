@@ -199,6 +199,10 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::RequestSummary, "requestSummary"},
            {ConversationEventType::RequestSuggestedActions,
             "requestSuggestedActions"},
+           {ConversationEventType::GetSuggestedTopicsForFocusTabs,
+            "suggestFocusTopics"},
+           {ConversationEventType::DedupeTopics, "dedupeFocusTopics"},
+           {ConversationEventType::GetFocusTabsForTopic, "classifyTabs"},
            {ConversationEventType::SuggestedActions, "suggestedActions"}});
 
   base::Value::List events;
@@ -216,6 +220,11 @@ base::Value::List ConversationEventsToList(
     event_dict.Set("type", type_it->second);
 
     event_dict.Set("content", event.content);
+
+    if (event.type == ConversationEventType::GetFocusTabsForTopic) {
+      event_dict.Set("topic", event.topic);
+    }
+
     events.Append(std::move(event_dict));
   }
   return events;
@@ -255,6 +264,7 @@ ConversationAPIClient::ConversationAPIClient(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager)
     : model_name_(model_name), credential_manager_(credential_manager) {
+  LOG(ERROR) << __FUNCTION__ << model_name;
   CHECK(!model_name_.empty());
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
       GetNetworkTrafficAnnotationTag(), url_loader_factory);
@@ -325,6 +335,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   const std::string request_body = CreateJSONRequestBody(
       std::move(conversation), selected_language, is_sse_enabled);
 
+  LOG(ERROR) << is_sse_enabled << " " << request_body << " " << premium_enabled;
   base::flat_map<std::string, std::string> headers;
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
   headers.emplace(digest_header.first, digest_header.second);

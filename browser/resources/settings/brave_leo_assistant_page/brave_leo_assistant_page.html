@@ -52,6 +52,12 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   label="$i18n{braveLeoAssistantShowInContextMenuLabel}"
   sub-label="$i18n{braveLeoAssistantShowInContextMenuDesc}">
 </settings-toggle-button>
+<settings-toggle-button class="cr-row hr"
+  pref="{{prefs.brave.ai_chat.tab_focus_enabled}}"
+  label="$i18n{braveLeoAssistantTabFocusLabel}"
+  sub-label-with-link="$i18n{braveLeoAssistantTabFocusDesc}"
+  on-sub-label-link-clicked="openLeoPrivacyPolicy_">
+</settings-toggle-button>
 <div class="settings-box">
   <div class="flex cr-padded-text">
     <div>$i18n{braveLeoAssistantModelSelectionLabel}</div>

@@ -35,7 +35,9 @@ using ::testing::_;
 namespace ai_chat {
 
 namespace {
+
 constexpr int kTestingMaxAssociatedContentLength = 100;
+constexpr size_t kChunkSize = 75;
 }
 
 using ConversationEvent = ConversationAPIClient::ConversationEvent;
@@ -428,6 +430,420 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+std::pair<std::vector<Tab>, std::vector<std::string>>
+GetMockTabsAndExpectedTabsJsonString(size_t num_tabs) {
+  size_t num_chunks = (num_tabs + kChunkSize - 1) / kChunkSize;
+  std::vector<Tab> tabs;
+  std::vector<std::string> tabs_json_strings;
+  for (size_t i = 0; i < num_chunks; i++) {
+    std::string tabs_json_string = "[";
+    size_t start_suffix = i * kChunkSize;
+    for (size_t j = start_suffix;
+         j < std::min(kChunkSize + start_suffix, num_tabs); j++) {
+      std::string id = base::StrCat({"id", std::to_string(j)});
+      std::string title = base::StrCat({"title", std::to_string(j)});
+      std::string url =
+          base::StrCat({"https://www.example", std::to_string(j), ".com"});
+      tabs.push_back({id, title, url});
+      base::StrAppend(&tabs_json_string,
+                      {R"({\"id\":\")", id, R"(\",\"title\":\")", title,
+                       R"(\",\"url\":\")", url, R"(\"},)"});
+    }
+
+    if (!tabs_json_string.empty() && tabs_json_string.back() == ',') {
+      tabs_json_string.pop_back();  // Remove comma
+    }
+    base::StrAppend(&tabs_json_string, {"]"});
+    tabs_json_strings.push_back(tabs_json_string);
+  }
+  return {tabs, tabs_json_strings};
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
+  auto [tabs, tabs_json_strings] =
+      GetMockTabsAndExpectedTabsJsonString(2 * kChunkSize);
+  ASSERT_EQ(tabs.size(), 2 * kChunkSize);
+  ASSERT_EQ(tabs_json_strings.size(), 2u);
+
+  std::string expected_events1 = R"([
+    {"role": "user", "type": "suggestFocusTopics", "content": ")" +
+                                 tabs_json_strings[0] + R"("}])";
+  std::string expected_events2 = R"([
+    {"role": "user", "type": "suggestFocusTopics", "content": ")" +
+                                 tabs_json_strings[1] + R"("}])";
+  std::string expected_events3 = R"([
+    {"role": "user", "type": "dedupeFocusTopics", "content": "[\"topic1\",\"topic2\",\"topic3\",\"topic7\",\"topic3\",\"topic4\",\"topic5\",\"topic6\"]"}])";
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .Times(3)
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events1).c_str());
+        std::move(callback).Run(
+            "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", \"topic7\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events2).c_str());
+        std::move(callback).Run(
+            "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", \"topic6\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events3).c_str());
+        std::move(callback).Run(
+            "{ \"topics\": [\"topic1\", \"topic3\", \"topic4\", \"topic5\", "
+            "\"topic7\"] }");
+      });
+
+  engine_->GetSuggestedTopics(
+      tabs,
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result,
+                  std::vector<std::string>(
+                      {"topic1", "topic3", "topic4", "topic5", "topic7"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Any server error during getting suggested topics or get dudupe topics
+  // would fail the request.
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .Times(2)
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events1).c_str());
+        std::move(callback).Run(
+            "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", \"topic7\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events2).c_str());
+        std::move(callback).Run(
+            base::unexpected(mojom::APIError::RateLimitReached));
+      });
+  engine_->GetSuggestedTopics(
+      tabs, base::BindLambdaForTesting(
+                [&](base::expected<std::vector<std::string>, mojom::APIError>
+                        result) {
+                  ASSERT_FALSE(result.has_value());
+                  EXPECT_EQ(result.error(), mojom::APIError::RateLimitReached);
+                }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .Times(3)
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events1).c_str());
+        std::move(callback).Run(
+            "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", \"topic7\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events2).c_str());
+        std::move(callback).Run(
+            "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", \"topic6\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events3).c_str());
+        std::move(callback).Run(
+            base::unexpected(mojom::APIError::RateLimitReached));
+      });
+  engine_->GetSuggestedTopics(
+      tabs, base::BindLambdaForTesting(
+                [&](base::expected<std::vector<std::string>, mojom::APIError>
+                        result) {
+                  ASSERT_FALSE(result.has_value());
+                  EXPECT_EQ(result.error(), mojom::APIError::RateLimitReached);
+                }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // GetSuggestedTopics response with unexpected structure would be skipped.
+  std::string expected_events3_skipped_invalid_response = R"([
+    {"role": "user", "type": "dedupeFocusTopics", "content": "[\"topic1\",\"topic2\",\"topic3\",\"topic7\"]"}])";
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .Times(3)
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events1).c_str());
+        std::move(callback).Run(
+            "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", \"topic7\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events2).c_str());
+        std::move(callback).Run("not well structured");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(
+                         expected_events3_skipped_invalid_response)
+                         .c_str());
+        std::move(callback).Run(
+            "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", \"topic7\"] }");
+      });
+  engine_->GetSuggestedTopics(
+      tabs,
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result, std::vector<std::string>(
+                               {"topic1", "topic2", "topic3", "topic7"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Test dedupe response is not well structured.
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .Times(3)
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events1).c_str());
+        std::move(callback).Run(
+            "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", \"topic7\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events2).c_str());
+        std::move(callback).Run(
+            "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", \"topic6\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events3).c_str());
+        std::move(callback).Run("{ \"topics\": \"not an array of strings\" }");
+      });
+  engine_->GetSuggestedTopics(
+      tabs, base::BindLambdaForTesting(
+                [&](base::expected<std::vector<std::string>, mojom::APIError>
+                        result) {
+                  ASSERT_TRUE(result.has_value());
+                  EXPECT_EQ(*result, std::vector<std::string>());
+                }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
+  // Get two full chunks of tabs for testing.
+  auto [tabs, tabs_json_strings] =
+      GetMockTabsAndExpectedTabsJsonString(2 * kChunkSize);
+  ASSERT_EQ(tabs.size(), 2 * kChunkSize);
+  ASSERT_EQ(tabs_json_strings.size(), 2u);
+
+  std::string expected_events1 = R"([
+    {"role": "user", "type": "classifyTabs", "content": ")" +
+                                 tabs_json_strings[0] +
+                                 R"(", "topic": "test_topic"}
+  ])";
+  std::string expected_events2 = R"([
+    {"role": "user", "type": "classifyTabs", "content": ")" +
+                                 tabs_json_strings[1] +
+                                 R"(", "topic": "test_topic"}
+  ])";
+
+  auto* mock_api_client = GetMockConversationAPIClient();
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .Times(2)
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events1).c_str());
+        std::move(callback).Run("{ \"tab_ids\": [\"id1\", \"id2\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events2).c_str());
+        std::move(callback).Run("{ \"tab_ids\": [\"id75\", \"id76\"] }");
+      });
+
+  engine_->GetFocusTabs(
+      tabs, "test_topic",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result,
+                  std::vector<std::string>({"id1", "id2", "id75", "id76"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Test 1 full chunk of tabs and 1 partial chunk of tabs.
+  auto [tabs2, tabs_json_strings2] =
+      GetMockTabsAndExpectedTabsJsonString(kChunkSize + 5);
+  ASSERT_EQ(tabs2.size(), kChunkSize + 5);
+  ASSERT_EQ(tabs_json_strings2.size(), 2u);
+
+  expected_events1 = R"([
+    {"role": "user", "type": "classifyTabs", "content": ")" +
+                     tabs_json_strings2[0] + R"(", "topic": "test_topic2"}
+  ])";
+  expected_events2 = R"([
+    {"role": "user", "type": "classifyTabs", "content": ")" +
+                     tabs_json_strings2[1] + R"(", "topic": "test_topic2"}
+  ])";
+
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .Times(2)
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events1).c_str());
+        std::move(callback).Run("{ \"tab_ids\": [\"id3\", \"id5\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        EXPECT_EQ(conversation.size(), 1u);
+        EXPECT_STREQ(mock_api_client->GetEventsJson(conversation).c_str(),
+                     FormatComparableEventsJson(expected_events2).c_str());
+        std::move(callback).Run("{ \"tab_ids\": [\"id75\", \"id76\"] }");
+      });
+
+  engine_->GetFocusTabs(
+      tabs2, "test_topic2",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result,
+                  std::vector<std::string>({"id3", "id5", "id75", "id76"}));
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Any server error would fail the request.
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .Times(2)
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        std::move(callback).Run("{ \"tab_ids\": [\"id3\", \"id5\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        std::move(callback).Run(
+            base::unexpected(mojom::APIError::RateLimitReached));
+      });
+
+  engine_->GetFocusTabs(
+      tabs2, "test_topic2",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_FALSE(result.has_value());
+        EXPECT_EQ(result.error(), mojom::APIError::RateLimitReached);
+      }));
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+
+  // Entry with unexpected structure would be skipped.
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .Times(2)
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        std::move(callback).Run("{ \"tab_ids\": [\"id3\", \"id5\"] }");
+      })
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        std::move(callback).Run("I don't follow human instructions.");
+      });
+
+  engine_->GetFocusTabs(
+      tabs2, "test_topic2",
+      base::BindLambdaForTesting([&](base::expected<std::vector<std::string>,
+                                                    mojom::APIError> result) {
+        ASSERT_TRUE(result.has_value());
+        EXPECT_EQ(*result, std::vector<std::string>({"id3", "id5"}));
+      }));
+
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+// TODO: Add test for StrArr parsing util func to cover all rsp cases.
+TEST_F(EngineConsumerConversationAPIUnitTest, Test) {
+  /*
+  std::string json = R"(["1", "2", "5", "6", "7"])";
+  auto value = base::JSONReader::Read(json, base::JSON_PARSE_RFC, 2);
+  EXPECT_TRUE(value.has_value());
+  LOG(ERROR) << *value;
+  */
+  // base::Value::List list;
+  // list.Append(base::Value::Dict().Set("id", "1").Set("title",
+  // "title1").Set("url", "url1")); EXPECT_EQ("", base::WriteJson(list));
 }
 
 }  // namespace ai_chat

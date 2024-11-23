@@ -52,6 +52,17 @@ class MockEngineConsumer : public EngineConsumer {
 
   MOCK_METHOD(void, ClearAllQueries, (), (override));
 
+  MOCK_METHOD(void,
+              GetSuggestedTopics,
+              (const std::vector<Tab>&, GetSuggestedTopicsCallback),
+              (override));
+  MOCK_METHOD(void,
+              GetFocusTabs,
+              (const std::vector<Tab>&,
+               const std::string&,
+               GetFocusTabsCallback),
+              (override));
+
   bool SupportsDeltaTextResponses() const override {
     return supports_delta_text_responses_;
   }

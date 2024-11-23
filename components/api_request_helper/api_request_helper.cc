@@ -401,6 +401,7 @@ void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
 void APIRequestHelper::URLLoaderHandler::OnDataReceived(
     std::string_view string_piece,
     base::OnceClosure resume) {
+  LOG(ERROR) << "OnDataReceived" << string_piece;
   DVLOG(2) << "[[" << __func__ << "]]" << " Chunk received";
   if (is_sse_) {
     ParseSSE(string_piece);
@@ -420,6 +421,7 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
 }
 
 void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
+  LOG(ERROR) << "OnComplete" << success;
   DCHECK(result_callback_);
   VLOG(1) << "[[" << __func__ << "]]"
           << " Response completed\n";
@@ -446,6 +448,9 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
     const std::unique_ptr<std::string> response_body) {
   VLOG(1) << "[[" << __func__ << "]]"
           << " Response received\n";
+  if (response_body) {
+    LOG(ERROR) << "OnResponse" << *response_body;
+  }
   DCHECK(result_callback_);
   // This shouldn't be called on a request with multiple decoding operations,
   // otherwise we need to modify this to use data_chunk_parsed_callback_.

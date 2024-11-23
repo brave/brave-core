@@ -76,7 +76,24 @@ class EngineConsumerConversationAPI : public EngineConsumer {
   ConversationAPIClient* GetAPIForTesting() { return api_.get(); }
   void UpdateModelOptions(const mojom::ModelOptions& options) override {}
 
+  void GetSuggestedTopics(const std::vector<Tab>& tabs,
+                          GetSuggestedTopicsCallback callback) override;
+  void GetFocusTabs(const std::vector<Tab>& tabs,
+                    const std::string& topic,
+                    GetFocusTabsCallback callback) override;
+
  private:
+  void ProcessTabChunks(
+      const std::vector<Tab>& tabs,
+      ConversationAPIClient::ConversationEventType event_type,
+      base::OnceCallback<void(std::vector<GenerationResult>)> merge_callback,
+      const std::string& topic);
+
+  void MergeSuggestTopicsResults(GetSuggestedTopicsCallback callback,
+                                 std::vector<GenerationResult> results);
+  void DedupeTopics(
+      base::expected<std::vector<std::string>, mojom::APIError> topics_result,
+      GetSuggestedTopicsCallback callback);
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);

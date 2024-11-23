@@ -98,4 +98,10 @@ bool IsPageContextEnabledInitially() {
   return base::FeatureList::IsEnabled(features::kPageContextEnabledInitially);
 }
 
+BASE_FEATURE(kTabFocus, "TabFocus", base::FEATURE_ENABLED_BY_DEFAULT);
+
+bool IsTabFocusEnabled() {
+  return base::FeatureList::IsEnabled(features::kTabFocus);
+}
+
 }  // namespace ai_chat::features
