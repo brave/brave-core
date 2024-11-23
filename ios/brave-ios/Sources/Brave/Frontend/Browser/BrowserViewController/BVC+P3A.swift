@@ -416,7 +416,7 @@ extension BrowserViewController {
   func maybeRecordBraveSearchDailyUsage(url: URL) {
     let braveSearchHost = "search.brave.com"
     let braveSearchPath = "/search"
-    if url.host() != braveSearchHost || url.path() != braveSearchPath {
+    if url.host != braveSearchHost || url.path != braveSearchPath {
       return
     }
     UmaHistogramBoolean("Brave.Search.BraveDaily", true)
