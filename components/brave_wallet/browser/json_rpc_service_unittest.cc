@@ -3177,10 +3177,11 @@ class UDGetManyCallHandler : public EthCallHandler {
         eth_abi::TupleEncoder().AddStringArray(result_strings));
   }
 
-  void AddItem(const std::string& domain,
-               const std::string& key,
-               const std::string& value) {
-    items_.push_back(Item{domain, key, value});
+  void AddItem(std::string_view domain,
+               std::string_view key,
+               std::string_view value) {
+    items_.push_back(
+        Item{std::string(domain), std::string(key), std::string(value)});
   }
 
   void Reset() {
@@ -3637,24 +3638,24 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
                               "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"),
           mojom::ProviderError::kSuccess, ""));
 
-  auto& keys = unstoppable_domains::GetRecordKeys();
-  ASSERT_EQ(6u, keys.size());
+  ASSERT_EQ(6u, unstoppable_domains::kRecordKeys.size());
   // This will resolve brave.crypto requests.
   eth_mainnet_getmany_call_handler_->AddItem(
-      "brave.crypto", keys[0],
+      "brave.crypto", unstoppable_domains::kRecordKeys[0],
       "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
-  eth_mainnet_getmany_call_handler_->AddItem("brave.crypto", keys[5],
-                                             "https://brave.com");
-  polygon_getmany_call_handler_->AddItem("brave.crypto", keys[5],
-                                         "https://brave.com");
+  eth_mainnet_getmany_call_handler_->AddItem(
+      "brave.crypto", unstoppable_domains::kRecordKeys[5], "https://brave.com");
+  polygon_getmany_call_handler_->AddItem(
+      "brave.crypto", unstoppable_domains::kRecordKeys[5], "https://brave.com");
 
   // This will resolve brave.x requests.
   polygon_getmany_call_handler_->AddItem(
-      "brave.x", keys[0], "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
-  polygon_getmany_call_handler_->AddItem("brave.x", keys[5],
-                                         "https://brave.com");
-  eth_mainnet_getmany_call_handler_->AddItem("brave.x", keys[5],
-                                             "https://brave.com");
+      "brave.x", unstoppable_domains::kRecordKeys[0],
+      "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
+  polygon_getmany_call_handler_->AddItem(
+      "brave.x", unstoppable_domains::kRecordKeys[5], "https://brave.com");
+  eth_mainnet_getmany_call_handler_->AddItem(
+      "brave.x", unstoppable_domains::kRecordKeys[5], "https://brave.com");
 
   EXPECT_EQ(0, eth_mainnet_getmany_call_handler_->calls_number());
   EXPECT_EQ(0, polygon_getmany_call_handler_->calls_number());
