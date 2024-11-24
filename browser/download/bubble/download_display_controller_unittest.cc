@@ -10,9 +10,11 @@
 #include "chrome/browser/download/bubble/download_display_controller.h"
 
 #include "base/command_line.h"
+#include "base/containers/adapters.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "chrome/browser/download/bubble/download_bubble_display_info.h"
 #include "chrome/browser/download/bubble/download_bubble_ui_controller.h"
@@ -252,12 +254,10 @@ class MockDownloadBubbleUpdateService : public DownloadBubbleUpdateService {
   void AddModel(ModelType type) { model_types_.push_back(type); }
 
   void RemoveLastDownload() {
-    for (auto reverse_it = model_types_.rbegin();
-         reverse_it != model_types_.rend(); ++reverse_it) {
-      if (*reverse_it == ModelType::kDownloadItem) {
-        model_types_.erase(std::next(reverse_it).base());
-        break;
-      }
+    auto it = base::ranges::find(base::Reversed(model_types_),
+                                 ModelType::kDownloadItem);
+    if (it != model_types_.rend()) {
+      model_types_.erase(std::prev(it.base()));
     }
   }
 

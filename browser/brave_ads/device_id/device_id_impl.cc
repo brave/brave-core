@@ -14,10 +14,12 @@
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/types/zip.h"
 #include "content/public/browser/browser_thread.h"
 #include "crypto/hmac.h"
 
@@ -177,10 +179,11 @@ constexpr bool HasNoSubmaskingOnInvalidAddresses() {
   if constexpr (kInvalidMacAddresses.size() < 2u) {
     return true;
   }
-  for (auto it = std::cbegin(kInvalidMacAddresses);
-       it != std::cend(kInvalidMacAddresses) - 1; ++it) {
-    auto next = std::next(it)->mask();
-    if (it->mask() == next.first(std::min(it->mask().size(), next.size()))) {
+
+  const auto next_in_range = base::span(kInvalidMacAddresses).subspan<1u>();
+  for (const auto [it, next] : base::zip(kInvalidMacAddresses, next_in_range)) {
+    if (it.mask() ==
+        next.mask().first(std::min(it.mask().size(), next.mask().size()))) {
       return false;
     }
   }
