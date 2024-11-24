@@ -8,17 +8,29 @@ import Button from "@brave/leo/react/button";
 import { useConversation } from "../../state/conversation_context";
 import styles from './style.module.scss'
 
-export default function SuggestedQuestion({ question }: { question: string }) {
-  const context = useConversation()
-  const handleQuestionSubmit = (question: string) => {
-    context.conversationHandler?.submitHumanConversationEntry(question)
-  }
+export function SuggestedQuestion({ question }: { question: string }) {
+    const context = useConversation()
+    return <SuggestionButton
+        onClick={() => context.conversationHandler?.submitHumanConversationEntry(question)}
+    >
+        <span className={styles.buttonText}>{question}</span>
+    </SuggestionButton>
+}
 
-  return <Button
-    kind='outline'
-    size='small'
-    onClick={() => handleQuestionSubmit(question)}
-    isDisabled={context.shouldDisableUserInput}>
-    <span className={styles.buttonText}>{question}</span>
-  </Button>
+export function SuggestionButton({ onClick, children, isLoading }: React.PropsWithChildren<{ onClick: () => void, isLoading?: boolean }>) {
+    const context = useConversation()
+    return <Button
+        kind='outline'
+        size='small'
+        onClick={onClick}
+        isDisabled={context.shouldDisableUserInput}
+        isLoading={isLoading}
+        className={styles.suggestion}>
+        <div className={styles.container}>
+            <div className={styles.icon}>
+                💬
+            </div>
+            {children}
+        </div>
+    </Button>
 }

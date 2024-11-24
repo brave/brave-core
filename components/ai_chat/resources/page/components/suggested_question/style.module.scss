@@ -3,9 +3,35 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+.suggestion {
+  --leo-button-color: var(--leo-color-neutral-40);
+  --leo-button-padding: 3px var(--leo-spacing-s) 3px 0;
+  --leo-button-radius: var(--leo-radius-m);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  
+  gap: var(--leo-spacing-l);
+  width: min(640px, calc(100cqw - 120px));
+}
+
+.icon {
+  height: 32px;
+  width: 32px;
+  background: var(--leo-color-neutral-10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--leo-radius-s);
+  flex-shrink: 0;
+}
+
 .buttonText {
   display: flex;
   align-items: flex-start;
   text-align: left;
+  color: var(--leo-color-text-secondary);
   font: var(--leo-font-default-regular);
 }

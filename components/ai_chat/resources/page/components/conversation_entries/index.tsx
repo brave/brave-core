@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import classnames from '$web-common/classnames'
-import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import useLongPress from '$web-common/useLongPress'
 import * as mojom from '../../api'
@@ -23,7 +22,7 @@ import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
 import { useConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
-import SuggestedQuestion from '../suggested_question'
+import { SuggestedQuestion, SuggestionButton } from '../suggested_question'
 
 const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.CanGenerate,
@@ -249,19 +248,14 @@ function ConversationEntries(props: ConversationEntriesProps) {
             {SUGGESTION_STATUS_SHOW_BUTTON.includes(
               conversationContext.suggestionStatus
             ) && conversationContext.shouldSendPageContents && (
-                <Button
+                <SuggestionButton
                   onClick={() => conversationContext.generateSuggestedQuestions()}
-                  // isDisabled={context.suggestionStatus === mojom.SuggestionGenerationStatus.IsGenerating}
-                  isLoading={
-                    conversationContext.suggestionStatus ===
-                    mojom.SuggestionGenerationStatus.IsGenerating
-                  }
-                  kind='outline'
+                  isLoading={conversationContext.suggestionStatus === mojom.SuggestionGenerationStatus.IsGenerating}
                 >
                   <span className={styles.buttonText}>
                     {getLocale('suggestQuestionsLabel')}
                   </span>
-                </Button>
+                </SuggestionButton>
               )}
           </div>
         </div>
