@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/strings/stringprintf.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -47,13 +48,14 @@ class BraveContentSettingsBrowserTest : public InProcessBrowserTest {
       ContentSettingsType content_type,
       ContentSetting current_setting,
       ContentSetting incognito_default_setting) {
-    const ContentSettingsType kOffTheRecordAwareTypes[] = {
-        ContentSettingsType::NOTIFICATIONS,
-        ContentSettingsType::PROTECTED_MEDIA_IDENTIFIER,
-        ContentSettingsType::IDLE_DETECTION,
-        ContentSettingsType::BRAVE_HTTPS_UPGRADE,
-    };
-    if (base::Contains(kOffTheRecordAwareTypes, content_type)) {
+    static constexpr auto kOffTheRecordAwareTypes =
+        base::MakeFixedFlatSet<ContentSettingsType>({
+            ContentSettingsType::NOTIFICATIONS,
+            ContentSettingsType::PROTECTED_MEDIA_IDENTIFIER,
+            ContentSettingsType::IDLE_DETECTION,
+            ContentSettingsType::BRAVE_HTTPS_UPGRADE,
+        });
+    if (kOffTheRecordAwareTypes.contains(content_type)) {
       return current_setting;
     }
     return incognito_default_setting;

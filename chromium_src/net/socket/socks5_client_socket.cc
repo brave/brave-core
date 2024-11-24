@@ -18,6 +18,8 @@ namespace net {
 
 namespace {
 
+constexpr size_t kSOCKSAuthUsernamePasswordResponseLen = 2;
+
 HostPortPair ToLegacyDestinationEndpoint(
     const TransportSocketParams::Endpoint& endpoint) {
   if (absl::holds_alternative<url::SchemeHostPort>(endpoint)) {
@@ -78,8 +80,6 @@ uint8_t SOCKS5ClientSocketAuth::auth_method() {
     return 0x00;
   return 0x02;
 }
-
-static const size_t kSOCKSAuthUsernamePasswordResponseLen = 2;
 
 int SOCKS5ClientSocketAuth::Authenticate(
     int rv,

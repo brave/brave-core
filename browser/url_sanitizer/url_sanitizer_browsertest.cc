@@ -27,7 +27,7 @@
 
 namespace {
 
-constexpr const char kYoutubeRules[] = R"json(
+constexpr char kYoutubeRules[] = R"json(
     [{
         "include": [
             "*://youtu.be/*",
@@ -47,7 +47,7 @@ constexpr const char kYoutubeRules[] = R"json(
     }]
   )json";
 
-constexpr const char kYoutubePermissions[] = R"json(
+constexpr char kYoutubePermissions[] = R"json(
     {
       "js_api": [ "*://*.youtube.com/*" ]
     }
@@ -160,7 +160,7 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
 
       auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
-      constexpr const char kClickButton[] =
+      static constexpr char kClickButton[] =
           R"js(
             (function() {
               const button = document.getElementById('$1');

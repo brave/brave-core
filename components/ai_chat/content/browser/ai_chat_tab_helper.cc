@@ -287,7 +287,7 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
     CheckPDFA11yTree();
     return;
   }
-  if (base::Contains(kPrintPreviewRetrievalHosts, GetPageURL().host_piece())) {
+  if (kPrintPreviewRetrievalHosts.contains(GetPageURL().host_piece())) {
     // Get content using a printing / OCR mechanism, instead of
     // directly from the source, if available.
     DVLOG(1) << __func__ << " print preview url";

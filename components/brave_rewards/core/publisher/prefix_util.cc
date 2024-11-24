@@ -10,9 +10,6 @@
 
 namespace brave_rewards::internal::publisher {
 
-const size_t kMinPrefixSize = 4;
-const size_t kMaxPrefixSize = 32;
-
 std::string GetHashPrefixRaw(const std::string& publisher_key,
                              size_t prefix_size) {
   DCHECK(!publisher_key.empty());

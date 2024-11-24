@@ -22,19 +22,19 @@
 
 namespace {
 // Used only for exact matches.
-static const double kMaxScore = 1.0;
+constexpr double kMaxScore = 1.0;
 // When needle is a prefix of haystack.
-static const double kPrefixScore = .99;
+constexpr double kPrefixScore = .99;
 // When a heuristic determines that the match should score highly,
 // but it is *not* an exact match or prefix.
-static const double kVeryHighScore = .95;
+constexpr double kVeryHighScore = .95;
 
 // Max haystack size in UTF-16 units for the dynamic programming algorithm.
 // Haystacks longer than this are scored by ConsecutiveMatchWithGaps.
-static constexpr size_t kMaxHaystack = 1024;
+constexpr size_t kMaxHaystack = 1024;
 // Max needle size in UTF-16 units for the dynamic programming algorithm.
 // Needles longer than this are scored by ConsecutiveMatchWithGaps
-static constexpr size_t kMaxNeedle = 16;
+constexpr size_t kMaxNeedle = 16;
 
 struct MatchRecord {
   MatchRecord(int start, int end, int length, bool is_boundary, int gap_before)
@@ -58,9 +58,9 @@ double ScoreForMatches(const std::vector<MatchRecord>& matches,
   // |base_score| is the maximum per match, so total should not exceed 1.0.
   const double base_score = 1.0 / needle_size;
   const double gap_penalty = 1.0 / haystack_size;
-  static const double kRegularMultiplier = .5;
-  static const double kWordBoundaryMultiplier = .8;
-  static const double kInitialMultiplier = 1.0;
+  static constexpr double kRegularMultiplier = .5;
+  static constexpr double kWordBoundaryMultiplier = .8;
+  static constexpr double kInitialMultiplier = 1.0;
   double score = 0;
 
   for (size_t i = 0; i < matches.size(); i++) {

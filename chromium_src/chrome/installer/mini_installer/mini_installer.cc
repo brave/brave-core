@@ -44,7 +44,7 @@
 namespace mini_installer {
 
 namespace {
-const size_t kStandardReferralCodeLen = 6;
+constexpr size_t kStandardReferralCodeLen = 6;
 }  // namespace
 
 // Coverts a string in place to uppercase

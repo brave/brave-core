@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "chrome/browser/ui/extensions/icon_with_badge_image_source.h"
+#include "third_party/skia/include/core/SkColor.h"
 
 namespace gfx {
 class Canvas;
@@ -17,8 +18,8 @@ class Rect;
 
 namespace brave {
 
-extern const SkColor kBadgeNotificationBG;
-extern const SkColor kBadgeTextColor;
+inline constexpr SkColor kBadgeNotificationBG = SkColorSetRGB(0xfb, 0x54, 0x2b);
+inline constexpr SkColor kBadgeTextColor = SK_ColorWHITE;
 
 // The purpose of this subclass is to:
 // - Paint the BraveAction badge in a custom location and with a different size

@@ -20,10 +20,10 @@ namespace brave_ads {
 
 namespace {
 
-bool ShouldAllowHeader(const std::string& header) {
-  static const auto kAllowedHeaders = base::MakeFixedFlatSet<std::string_view>(
-      {"accept", "content-type", "digest", "signature"});
+constexpr auto kAllowedHeaders = base::MakeFixedFlatSet<std::string_view>(
+    {"accept", "content-type", "digest", "signature"});
 
+bool ShouldAllowHeader(const std::string& header) {
   return base::ranges::any_of(kAllowedHeaders,
                               [&header](const std::string_view allowed_header) {
                                 return header.starts_with(allowed_header);

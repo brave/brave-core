@@ -15,7 +15,7 @@ struct TestParams {
   const char* account_name;
 };
 
-static const TestParams kTestVectors[] = {
+constexpr TestParams kTestVectors[] = {
     {
         nullptr,
         "Brave Safe Storage",
