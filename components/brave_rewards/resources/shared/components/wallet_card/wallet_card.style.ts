@@ -26,6 +26,7 @@ export const statusIndicator = styled.div`
 export const earnings = styled.div`
   font-size: 11px;
   line-height: 16px;
+  visibility: hidden;
 `
 
 export const earningsHeader = styled.div`

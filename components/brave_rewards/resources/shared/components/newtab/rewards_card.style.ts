@@ -193,7 +193,7 @@ export const needsBrowserUpdateContentBody = styled.div`
 
 export const earningsHeader = styled.div`
   margin: 24px 0 8px;
-  display: flex;
+  display: none;
   align-items: center;
   gap: 5px;
 `
@@ -270,7 +270,7 @@ export const manageAds = styled.div.attrs({ 'data-theme': 'light' })`
 `
 
 export const earningsDisplay = styled.div`
-  display: flex;
+  display: none;
   align-items: center;
   gap: 8px;
   font-family: Poppins;
