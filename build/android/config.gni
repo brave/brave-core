@@ -134,4 +134,5 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
   "//brave/browser/brave_ads/android/java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
   "//brave/components/safetynet/java/org/chromium/chrome/browser/util/SafetyNetCheck.java",
+  "//brave/android/java/org/chromium/chrome/browser/cosmetic_filters/BraveCosmeticFiltersUtils.java",
 ]

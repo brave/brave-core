@@ -19,6 +19,7 @@
     margin-bottom: 5px;
     background-color: #fff;
     border-radius: .1em;
+    display: none;
   }
 
   #rules-box>textarea {
@@ -34,9 +35,9 @@
 
   section {
     color-scheme: light only;
-    background-color: #eee;
+    background-color: #000000;
     border: 1px solid #aaa;
-    border-radius: .1em;
+    border-radius: .6em;
     bottom: 4px;
     box-sizing: border-box;
     min-width: 24em;
@@ -48,19 +49,30 @@
   }
 
   section input {
-    width: 50%;
+    width: calc(100% - 4px);
   }
 
   #buttons {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
+  }
+
+  #main-buttons {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-bottom: 6px;
   }
 
   button {
-    background-color: #ccc;
+    background-color: #c0c4fe;
     cursor: pointer;
     padding: 4px 6px;
-    margin: 0 0 0 2px;
+    margin: 0 2px 0 2px;
+    border-radius: .4em;
+    flex-grow: 1;
+    border-width: 0px;
   }
 
   svg {
@@ -77,10 +89,18 @@
     fill: rgba(0, 0, 0, 0.5);
   }
 
+  #slider-container {
+    padding-bottom: 4px;
+  }
   .target {
     stroke: #FF6200;
-    stroke-width: 0.5px;
+    stroke-width: 2px;
     fill: rgba(255, 130, 63, 0.25);
+  }
+  .marked-target {
+    stroke: #3d39c8;
+    stroke-width: 2px;
+    fill: rgba(121, 116, 224, 0.25);
   }
 </style>
 <svg xmlns="http://www.w3.org/2000/svg" id="picker-ui">
@@ -96,13 +116,16 @@
     <textarea></textarea>
   </div>
   <div>
-    <div>
+    <div id="slider-container">
       <input id="sliderSpecificity" type="range" min="0" max="4" value="4">
     </div>
     <div id="buttons">
-      <button id="btnCreate">Create</button>
-      <button id="btnManage">Manage filters</button>
-      <button id="btnQuit" >Quit</button>
+		<div id="main-buttons">
+	      <button id="btnCreate">Block</button>
+    	  <button id="btnManage">Manage filters</button>
+      	  <button id="btnShowRulesBox">Show rules</button>
+		</div>
+      <button id="btnQuit" >Cancel</button>
     </div>
   </div>
 </section>

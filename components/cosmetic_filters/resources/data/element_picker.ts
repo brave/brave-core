@@ -10,15 +10,6 @@ let shadowRoot: ShadowRoot | null
 const api = {
   cosmeticFilterCreate: (selector: string) => {
     cf_worker.addSiteCosmeticFilter(selector)
-
-    const styleId = 'brave-content-picker-style'
-    let style = document.getElementById(styleId)
-    if (!style) {
-      style = document.createElement('style')
-      style.id = styleId
-      document.head.appendChild(style)
-    }
-    style.innerText += `${selector} {display: none !important;}`
   },
   cosmeticFilterManage: () => {
     cf_worker.manageCustomFilters()
@@ -284,7 +275,8 @@ const elementPickerOnKeydown = (event: KeyboardEvent): void => {
 }
 
 const elementPickerViewportChanged = () => {
-  recalculateAndSendTargets(targetedElems)
+  endLongPress()
+  recalculateAndSendTargets(null)
 }
 
 const quitElementPicker = () => {
@@ -340,7 +332,7 @@ const attachElementPicker = () => {
 
   // Setup listeners to assist element picker
   document.addEventListener('keydown', elementPickerOnKeydown, true)
-  document.addEventListener('resize', elementPickerViewportChanged)
+  window.addEventListener('resize', elementPickerViewportChanged)
   document.addEventListener('scroll', elementPickerViewportChanged)
 
   return shadowRoot
@@ -353,6 +345,57 @@ interface TargetRect {
   height: number
 }
 
+class Target {
+  element: Element
+  rectElem: Element
+  isMarked: boolean
+  coord: TargetRect
+
+  constructor (elem: Element) {
+    this.element = elem
+    this.isMarked = false
+    this.coord = targetRectFromElement(this.element)
+  }
+
+  forceRecalcCoords() {
+    this.coord = targetRectFromElement(this.element)
+  }
+}
+
+class TargetsCollection {
+  targets: Target[] = []
+  
+  reset(elems: Element[]) {
+    this.targets.length = 0
+    elems.forEach((elem: Element) => {
+      this.targets.push(new Target(elem))
+    });
+  }
+
+  toggleElementMark(rectElem: Element): boolean | null {
+    const targetToMark = this.targets.find(t => t.rectElem === rectElem)
+    if (targetToMark) {
+      targetToMark.isMarked = !targetToMark.isMarked
+      return targetToMark.isMarked
+    }
+    return null
+  }
+
+  getXpathsForMarked(): string[] {
+    const markedTargets = this.targets.filter(t => t.isMarked)
+    return markedTargets.map((el) => getElementXpath(el.element))
+      .filter((item): item is string => item !== null)
+  }
+
+  forceRecalcCoords() {
+    this.targets.forEach(t => t.forceRecalcCoords())
+  }
+
+  size() {
+    return this.targets.length
+  }
+}
+
 const targetRectFromElement = (elem: Element): TargetRect => {
   const rect = elem.getBoundingClientRect()
   return {
@@ -363,13 +406,88 @@ const targetRectFromElement = (elem: Element): TargetRect => {
   }
 }
 
+let pressTimer: ReturnType<typeof setTimeout>;
 let lastHoveredElem: HTMLElement | null = null
-let targetedElems: Element[] = []
+const targetedElems = new TargetsCollection
 
-const recalculateAndSendTargets = (elems: Element[]) => {
-  targetedElems = elems
-  const coords = elems.map((e: Element) => targetRectFromElement(e))
-  highlightElements(coords)
+const endLongPress = () => {
+  clearTimeout(pressTimer); // Clear the timer if the user releases early
+}
+
+const recalculateAndSendTargets = (elems: Element[] | null) => {
+  if(elems) {
+    targetedElems.reset(elems)
+  } else {
+    targetedElems.forceRecalcCoords()
+  }
+
+  highlightElements()
+}
+
+const hideByCssSelector = (selector: string) => {
+  const styleId = 'brave-content-picker-style'
+  let style = document.getElementById(styleId)
+  if (!style) {
+    style = document.createElement('style')
+    style.id = styleId
+    document.head.appendChild(style)
+  }
+  style.innerText += `${selector} {display: none !important;}`
+}
+
+const hideByXPath = (xpath: string): void => {
+  const hideStyle: Partial<CSSStyleDeclaration> = {
+    display: 'none'
+  }
+  const result = document.evaluate(
+      xpath, 
+      document, 
+      null, 
+      XPathResult.ORDERED_NODE_ITERATOR_TYPE, 
+      null
+  );
+
+  let node: Node | null = result.iterateNext();
+
+  while (node) {
+      if (node instanceof HTMLElement) {
+          Object.assign(node.style, hideStyle);
+      }
+      node = result.iterateNext();
+  }
+}
+
+const getElementXpath = (element: Element): string | null => {
+  if (!(element instanceof Element)) {
+    return null
+  }
+
+  const getXPathSegment = (el: Element): string => {
+      const tagName = el.tagName.toLowerCase();
+
+      if (!el.parentElement) {
+          return `/${tagName}`
+      }
+
+      const siblings = Array.from(el.parentElement.children).filter(
+          (sibling) => sibling.tagName === el.tagName
+      );
+      if (siblings.length === 1) {
+          return `/${tagName}`
+      }
+
+      const index = siblings.indexOf(el) + 1
+      return `/${tagName}[${index}]`
+  };
+
+  const segments: string[] = []
+
+  while (element) {
+      segments.unshift(getXPathSegment(element))
+      element = element.parentElement!
+  }
+
+  return segments.join('')
 }
 
 const onTargetSelected = (selected: Element | null, index: number): string => {
@@ -399,9 +517,13 @@ const onTargetSelected = (selected: Element | null, index: number): string => {
   let i = 0
   for (; i < selectorBuilders.length; i++) {
     const b = selectorBuilders[i]
-    if ((mask & SpecificityFlags.Id) && b.hasId ||
-        document.querySelectorAll(b.toString(mask)).length === 1) {
-      break
+    try {
+      if ((mask & SpecificityFlags.Id) && b.hasId ||
+          document.querySelectorAll(b.toString(mask)).length === 1) {
+        break
+      }
+    } catch {
+      continue
     }
   }
   const selector = selectorBuilders
@@ -424,7 +546,9 @@ const elementPickerUserSelectedTarget = (specificity: number) => {
   if (lastHoveredElem instanceof HTMLElement) {
     const selector = onTargetSelected(lastHoveredElem, specificity)
     if (selector !== '') {
-      recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+      try {
+        recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+      } catch {}
     }
     return {
       isValid: selector !== '',
@@ -439,12 +563,27 @@ const elementPickerUserSelectedTarget = (specificity: number) => {
 
 const elementPickerUserModifiedRule = (selector: string) => {
   if (selector.length > 0) {
-    recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+    try {
+      recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+    } catch {}
   }
 }
 
+const isSelectedElementChecked = (elem: HTMLElement) => {
+  if (!elem) {
+    return false
+  }
+  return elem.classList.contains('marked-target')
+}
+
 const launchElementPicker = (root: ShadowRoot) => {
+  const isAndroid = /(android)/i.test(navigator.userAgent)
   let hasSelectedTarget = false
+
+  const btnShowRulesBox = root.getElementById('btnShowRulesBox')
+  if (isAndroid && btnShowRulesBox) {
+    btnShowRulesBox.style.display = 'none'
+  }
 
   root.addEventListener(
     'keydown',
@@ -463,6 +602,9 @@ const launchElementPicker = (root: ShadowRoot) => {
   svg.addEventListener(
     'mousemove',
     (event) => {
+      if (isAndroid) {
+        return
+      }
       if (!hasSelectedTarget) {
         elementPickerHoverCoordsChanged(event.clientX, event.clientY)
       }
@@ -488,9 +630,10 @@ const launchElementPicker = (root: ShadowRoot) => {
     hasSelectedTarget = true
     togglePopup(true)
   })
-  const section = root.querySelector('section')!
+
+  const section = root.querySelector('section')!  
   const togglePopup = (show: boolean) => {
-    section.setAttribute('style', `opacity : ${show ? '1' : '0.2'}`)
+    section.style.setProperty('opacity', show ? '1' : '0.2')
   }
 
   const slider = root.getElementById('sliderSpecificity') as HTMLInputElement
@@ -499,11 +642,13 @@ const launchElementPicker = (root: ShadowRoot) => {
     const { isValid, selector } = elementPickerUserSelectedTarget(
       parseInt(slider.value),
     )
+
+    hasSelectedTarget = isValid
+    togglePopup(isValid)
     if (isValid) {
-      hasSelectedTarget = true
-      togglePopup(true)
-      // disable hovering new elements
       rulesTextArea.value = selector
+    } else {
+      slider.value = '4'
     }
   }
 
@@ -511,23 +656,85 @@ const launchElementPicker = (root: ShadowRoot) => {
     dispatchSelect()
   })
 
-  svg.addEventListener('click', () => {
-    if (hasSelectedTarget) {
-      // We are already previewing a target. We'll interpet another click
-      // as the user wanting back control of the UI.
-      hasSelectedTarget = false
-      slider.value = '5'
-      togglePopup(false)
+  const doubleOrLongClickEventHandler = (event: MouseEvent | TouchEvent) => {
+    
+    let elem: Element | null = null
+    if (event instanceof MouseEvent) {
+      elem = elementFromFrameCoords(event.clientX, event.clientY)
+    } else if (event instanceof TouchEvent){
+      const touch = event.touches[0];
+      elem = elementFromFrameCoords(touch.clientX, touch.clientY)
+    }
+
+    if (elem) {
+      recalculateAndSendTargets([elem])
+      lastHoveredElem = elem as HTMLElement
+    }
+
+    dispatchSelect()
+  }
+
+  const oneClickEventHandler = (sourceEvent: MouseEvent) => {
+    const clickedElement = sourceEvent.target as HTMLElement
+    if (!clickedElement || !hasSelectedTarget) {
       return
     }
-    dispatchSelect()
-  })
+    
+    if (targetedElems.toggleElementMark(clickedElement) === null) {
+      hasSelectedTarget = false
+      slider.value = '4'
+      togglePopup(false)
+      targetedElems.targets.length = 0
+      highlightElements()
+      return
+    }
+
+    if (!isSelectedElementChecked(clickedElement)) {
+      clickedElement.classList.add('marked-target')
+      clickedElement.classList.remove('target')
+    } else {
+      clickedElement.classList.remove('marked-target')
+      clickedElement.classList.add('target')
+    }
+  }
+
+  const startLongPress = (event: MouseEvent | TouchEvent) => {
+    pressTimer = setTimeout(() => {
+        doubleOrLongClickEventHandler(event)
+    }, 800);
+  }
+
+  if (isAndroid) {
+    svg.addEventListener('mousedown', startLongPress)
+    svg.addEventListener('mouseup', endLongPress)
+    svg.addEventListener('mouseleave', endLongPress)
+
+    svg.addEventListener('touchstart', startLongPress)
+    svg.addEventListener('touchend', endLongPress)
+    svg.addEventListener('touchcancel', endLongPress)
+  } else {
+    svg.addEventListener('dblclick', doubleOrLongClickEventHandler)
+  }
+
+  svg.addEventListener('click', oneClickEventHandler)
 
   const createButton = root.getElementById('btnCreate')!
   createButton.addEventListener('click', () => {
+    const selectedXpaths = targetedElems.getXpathsForMarked()
+    if(selectedXpaths && selectedXpaths.length > 0) {
+      for(const expr of selectedXpaths) {
+        const rule = `:xpath(${expr})`
+        api.cosmeticFilterCreate(rule)
+        hideByXPath(expr)
+      }
+      quitElementPicker()
+      return
+    }
+
     const selector = rulesTextArea.value.trim()
     if (selector.length > 0) {
       api.cosmeticFilterCreate(selector)
+      hideByCssSelector(selector)
       quitElementPicker()
     }
   })
@@ -540,36 +747,67 @@ const launchElementPicker = (root: ShadowRoot) => {
   const manageButton = root.getElementById('btnManage')!
   manageButton.addEventListener('click', () => {
     api.cosmeticFilterManage();
+    quitElementPicker()
   })
+
+  const toggleDisplay = (target: HTMLElement | null, trigger: HTMLElement | null) => {
+    if(!target || !trigger){
+      return 
+    } 
+    trigger.addEventListener('click', e => {
+      if (target.style.display != 'block') {
+        target.style.display = 'block'
+        trigger.textContent = 'Hide rules'
+      } else {
+        target.style.display = 'none'
+        trigger.textContent = 'Show rules'
+      }
+    })
+  }
+  const rulesBox = root.getElementById('rules-box')!
+  const showRulesButton = root.getElementById('btnShowRulesBox')!
+  toggleDisplay(rulesBox, showRulesButton)
 }
 
-const highlightElements = (coords: TargetRect[]) => {
+const highlightElements = () => {
   if (!shadowRoot) return
   const svg = shadowRoot.getElementById('picker-ui')!
   const svgMask = shadowRoot.getElementById('highlight-mask')!
 
-  // // Delete old element targeting rectangles and their corresponding masks
-  const oldMask = svg.querySelectorAll('.mask')
-  for (const old of oldMask) {
-    old.remove()
-  }
+  svg.querySelectorAll('.mask').forEach(el => el.remove());
 
-  for (const rect of coords) {
-    // Add the mask to the SVG definition so the dark background is removed
+  const svgMaskFragment = document.createDocumentFragment();
+  const svgFragment = document.createDocumentFragment();
+
+  const createMaskElement = (): SVGRectElement => {
     const mask = document.createElementNS(NSSVG, 'rect')
     mask.classList.add('mask')
-    mask.setAttribute('x', rect.x.toString())
-    mask.setAttribute('y', rect.y.toString())
-    mask.setAttribute('width', rect.width.toString())
-    mask.setAttribute('height', rect.height.toString())
-    svgMask.appendChild(mask)
+    mask.rx.baseVal.value = 10
+    mask.setAttribute('px', '10px')
+    mask.setAttribute('stroke-linejoin', 'round')
+    return mask
+  }
+
+  for (const target of targetedElems.targets) {
+    // Add the mask to the SVG definition so the dark background is removed
+    const mask = createMaskElement()
+    mask.x.baseVal.value = target.coord.x;
+    mask.y.baseVal.value = target.coord.y;
+    mask.width.baseVal.value = target.coord.width;
+    mask.height.baseVal.value = target.coord.height;
+    mask.rx.baseVal.value = 10;
+    svgMaskFragment.appendChild(mask)
 
     // Use the same element, but add the target class which turns the
     // target rectangle orange
-    const braveTargetingArea = mask.cloneNode() as SVGRectElement
-    braveTargetingArea.classList.add('target')
-    svg.appendChild(braveTargetingArea)
+    const targetingArea = mask.cloneNode(false) as SVGRectElement
+    targetingArea.classList.add(target.isMarked ? 'marked-target' : 'target')
+    target.rectElem = targetingArea
+
+    svgFragment.appendChild(targetingArea)
   }
+  svgMask.appendChild(svgMaskFragment)
+  svg.appendChild(svgFragment)
 }
 
 const active = document.getElementById('brave-element-picker')

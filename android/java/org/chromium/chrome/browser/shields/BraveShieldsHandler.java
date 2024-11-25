@@ -44,6 +44,7 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.cosmetic_filters.BraveCosmeticFiltersUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -744,6 +745,16 @@ public class BraveShieldsHandler
         } else {
             fingerprintingSwitchLayout.setVisibility(View.GONE);
         }
+
+        TextView blockElementsText = mSecondaryLayout.findViewById(R.id.brave_shields_block_element_text);
+        blockElementsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideBraveShieldsMenu();
+                Tab currentActiveTab = mIconFetcher.getTab();
+                BraveCosmeticFiltersUtils.launchContentPickerForWebContent(currentActiveTab);
+            }
+        });
     }
 
     private void setUpAboutLayout() {

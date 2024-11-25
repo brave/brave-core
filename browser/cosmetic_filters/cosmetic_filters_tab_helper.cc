@@ -17,6 +17,8 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_pages.h"
 #include "chrome/browser/ui/browser_finder.h"
+#else
+#include "brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace cosmetic_filters {
@@ -85,7 +87,7 @@ void CosmeticFiltersTabHelper::ManageCustomFilters() {
     brave::ShowBraveAdblock(browser);
   }
 #else   // !BUILDFLAG(IS_ANDROID)
-  NOTIMPLEMENTED();
+  ShowCustomFilterSettings();
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
