@@ -125,6 +125,7 @@ export function Panel () {
           balance={balance}
           externalWallet={externalWallet}
           providerPayoutStatus={providerPayoutStatus}
+          adsReceivedThisMonth={earningsInfo.adsReceivedThisMonth}
           minEarningsThisMonth={earningsInfo.minEarningsThisMonth}
           maxEarningsThisMonth={earningsInfo.maxEarningsThisMonth}
           minEarningsLastMonth={earningsInfo.minEarningsLastMonth}

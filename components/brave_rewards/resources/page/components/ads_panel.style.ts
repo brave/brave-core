@@ -73,6 +73,10 @@ export const paymentStatus = styled.div`
   }
 `
 
+export const earningsRow = styled.div`
+  display: none;
+`
+
 export const earnings = styled.span`
   color: #495057;
 `

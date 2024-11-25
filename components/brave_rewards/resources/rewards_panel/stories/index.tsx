@@ -52,6 +52,7 @@ function createHost(): Host {
       currency: 'USD'
     },
     earningsInfo: {
+      adsReceivedThisMonth: 0,
       minEarningsThisMonth: 1.2,
       maxEarningsThisMonth: 2.1,
       minEarningsLastMonth: 2.0,

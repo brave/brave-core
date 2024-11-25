@@ -24,6 +24,7 @@ export interface ExchangeInfo {
 
 export interface EarningsInfo {
   nextPaymentDate: number
+  adsReceivedThisMonth: number
   minEarningsThisMonth: number
   maxEarningsThisMonth: number
   minEarningsLastMonth: number
