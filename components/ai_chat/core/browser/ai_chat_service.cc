@@ -637,20 +637,13 @@ void AIChatService::MaybeUnloadConversation(
 
   bool has_history = conversation_handler->HasAnyHistory();
 
-  // Without the history feature enabled, we can keep the conversation in memory
-  // until there is no active content and chat history. Without an associated
-  // content there will be no way to ask for the conversation. If history is
-  // enabled then we can load from storage if the conversation is requested
-  // again.
-  if (!IsAIChatHistoryEnabled() &&
-      conversation_handler->IsAssociatedContentAlive() && has_history) {
-    return;
-  }
-
-  // With the history feature enabled, only unload if there is no request in
-  // progress.
-  if (IsAIChatHistoryEnabled() && has_history &&
-      conversation_handler->IsRequestInProgress()) {
+  // We can keep a conversation with history in memory until there is no active
+  // content.
+  // TODO(petemill): With the history feature enabled, we should unload (if
+  // there is no request in progress). However, we can only do this when
+  // GetOrCreateConversationHandlerForContent allows a callback so that it
+  // can provide an answer after loading the conversation content from storage.
+  if (conversation_handler->IsAssociatedContentAlive() && has_history) {
     return;
   }
 
@@ -833,7 +826,9 @@ void AIChatService::OnConversationTitleChanged(ConversationHandler* handler,
   }
 }
 
-void AIChatService::OnAssociatedContentDestroyed(ConversationHandler* handler) {
+void AIChatService::OnAssociatedContentDestroyed(ConversationHandler* handler,
+                                                 int content_id) {
+  content_conversations_.erase(content_id);
   MaybeUnloadConversation(handler);
 }
 

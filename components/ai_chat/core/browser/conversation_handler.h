@@ -169,7 +169,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnSelectedLanguageChanged(
         ConversationHandler* handler,
         const std::string& selected_language) {}
-    virtual void OnAssociatedContentDestroyed(ConversationHandler* handler) {}
+    virtual void OnAssociatedContentDestroyed(ConversationHandler* handler,
+                                              int content_id) {}
   };
 
   ConversationHandler(
