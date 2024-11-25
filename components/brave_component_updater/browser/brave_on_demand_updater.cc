@@ -35,7 +35,7 @@ BraveOnDemandUpdater::RegisterOnDemandUpdater(
 void BraveOnDemandUpdater::EnsureInstalled(
     const std::string& id,
     component_updater::Callback callback) {
-  if(on_demand_updater_) {
+  if (on_demand_updater_) {
     on_demand_updater_->EnsureInstalled(id, std::move(callback));
   }
 }

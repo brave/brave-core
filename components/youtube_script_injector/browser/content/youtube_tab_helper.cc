@@ -28,17 +28,19 @@ namespace youtube_script_injector {
 
 // static
 void YouTubeTabHelper::MaybeCreateForWebContents(content::WebContents* contents,
-                                              const int32_t world_id) {
+                                                 const int32_t world_id) {
   if (contents->GetBrowserContext()->IsOffTheRecord() ||
-      !base::FeatureList::IsEnabled(youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
+      !base::FeatureList::IsEnabled(
+          youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
     return;
   }
 
-  youtube_script_injector::YouTubeTabHelper::CreateForWebContents(contents, world_id);
+  youtube_script_injector::YouTubeTabHelper::CreateForWebContents(contents,
+                                                                  world_id);
 }
 
 YouTubeTabHelper::YouTubeTabHelper(content::WebContents* web_contents,
-                             const int32_t world_id)
+                                   const int32_t world_id)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<YouTubeTabHelper>(*web_contents),
       world_id_(world_id),
@@ -52,7 +54,7 @@ void YouTubeTabHelper::InsertScriptInPage(
     const content::GlobalRenderFrameHostId& render_frame_host_id,
     blink::mojom::UserActivationOption activation,
     std::string script) {
-// Early return if script is empty.
+  // Early return if script is empty.
   if (script.empty()) {
     VLOG(2) << "Script is empty, skipping injection.";
     return;
@@ -66,8 +68,7 @@ void YouTubeTabHelper::InsertScriptInPage(
           web_contents()->GetPrimaryMainFrame()->GetGlobalId()) {
     GetRemote(render_frame_host)
         ->RequestAsyncExecuteScript(
-            world_id_, base::UTF8ToUTF16(script),
-            activation,
+            world_id_, base::UTF8ToUTF16(script), activation,
             blink::mojom::PromiseResultOption::kDoNotWait, base::DoNothing());
   } else {
     VLOG(2) << "render_frame_host is invalid.";
@@ -84,16 +85,16 @@ YouTubeTabHelper::GetRemote(content::RenderFrameHost* rfh) {
   return script_injector_remote_;
 }
 
-const std::optional<YouTubeJson>& YouTubeTabHelper::GetJson() const { return youtube_registry_->GetJson(); }
+const std::optional<YouTubeJson>& YouTubeTabHelper::GetJson() const {
+  return youtube_registry_->GetJson();
+}
 
 void YouTubeTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-
   const std::optional<YouTubeJson>& json = youtube_registry_->GetJson();
   if (!navigation_handle->IsInPrimaryMainFrame() ||
       !navigation_handle->HasCommitted() ||
-      navigation_handle->IsSameDocument() ||
-      !json) {
+      navigation_handle->IsSameDocument() || !json) {
     return;
   }
 
@@ -106,8 +107,10 @@ void YouTubeTabHelper::DidFinishNavigation(
       web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 
   youtube_registry_->LoadScriptFromPath(
-      url, json->GetFeatureScript(), base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
-                          weak_factory_.GetWeakPtr(), render_frame_host_id, blink::mojom::UserActivationOption::kDoNotActivate));
+      url, json->GetFeatureScript(),
+      base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
+                     weak_factory_.GetWeakPtr(), render_frame_host_id,
+                     blink::mojom::UserActivationOption::kDoNotActivate));
 }
 
 void YouTubeTabHelper::MediaStartedPlaying(
@@ -149,7 +152,8 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
       content::WebContents::FromJavaWebContents(jweb_contents);
 
   // Get the YouTubeTabHelper instance
-  youtube_script_injector::YouTubeTabHelper* helper = youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
+  youtube_script_injector::YouTubeTabHelper* helper =
+      youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
   if (!helper || !helper->GetJson()) {
     return;
   }
@@ -161,21 +165,22 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
 
   auto url = web_contents->GetLastCommittedURL();
   registry->LoadScriptFromPath(
-      url,
-      helper->GetJson()->GetFullscreenScript(),
-      base::BindOnce(&youtube_script_injector::YouTubeTabHelper::InsertScriptInPage,
-                          helper->GetWeakPtr(),
-                          web_contents->GetPrimaryMainFrame()->GetGlobalId(),
-                          blink::mojom::UserActivationOption::kActivate));
+      url, helper->GetJson()->GetFullscreenScript(),
+      base::BindOnce(
+          &youtube_script_injector::YouTubeTabHelper::InsertScriptInPage,
+          helper->GetWeakPtr(),
+          web_contents->GetPrimaryMainFrame()->GetGlobalId(),
+          blink::mojom::UserActivationOption::kActivate));
 }
 
 jboolean JNI_BackgroundVideoPlaybackTabHelper_IsPlayingMedia(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jweb_contents) {
-      content::WebContents* web_contents =
-          content::WebContents::FromJavaWebContents(jweb_contents);
-      auto* helper = youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
-      return helper ? helper->IsMediaPlaying() : false;
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
+  auto* helper =
+      youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
+  return helper ? helper->IsMediaPlaying() : false;
 }
 }  // namespace android
 }  // namespace chrome

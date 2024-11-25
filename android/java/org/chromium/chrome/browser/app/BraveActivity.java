@@ -62,8 +62,6 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
-import org.chromium.chrome.browser.BackgroundVideoPlaybackTabHelper;
-import org.chromium.url.GURL;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -95,6 +93,7 @@ import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BackgroundVideoPlaybackTabHelper;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
@@ -235,6 +234,7 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
+import org.chromium.url.GURL;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -547,8 +547,7 @@ public abstract class BraveActivity extends ChromeActivity
                 && isYTVideoUrl(currentTab.getUrl())
                 && !isInPictureInPictureMode()
                 && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            BackgroundVideoPlaybackTabHelper.setFullscreen(
-                    currentTab.getWebContents());
+            BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
         }
     }
 

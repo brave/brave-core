@@ -53,13 +53,13 @@ void YouTubeJson::RegisterJSONConverter(
   converter->RegisterCustomValueField<base::FilePath>(
       kFeatureScript, &YouTubeJson::feature_script_path_, GetFilePathFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
-      kFullScreenScript, &YouTubeJson::fullscreen_script_path_, GetFilePathFromValue);
+      kFullScreenScript, &YouTubeJson::fullscreen_script_path_,
+      GetFilePathFromValue);
   converter->RegisterIntField(kVersion, &YouTubeJson::version_);
 }
 
 // static
-std::optional<YouTubeJson> YouTubeJson::ParseJson(
-    const std::string& contents) {
+std::optional<YouTubeJson> YouTubeJson::ParseJson(const std::string& contents) {
   if (contents.empty()) {
     return std::nullopt;
   }
