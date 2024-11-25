@@ -14,15 +14,13 @@
     android:paddingHorizontal="24dp"
     android:orientation="vertical">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
+    <ImageView
         android:layout_width="130dp"
         android:layout_height="92dp"
         android:gravity="center"
         android:contentDescription="@null"
         android:adjustViewBounds="true"
-        android:layout_gravity="center_horizontal"
-        app:lottie_loop="true" />
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="match_parent"
