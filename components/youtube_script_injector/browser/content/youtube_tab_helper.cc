@@ -52,7 +52,7 @@ void YouTubeTabHelper::InsertScriptInPage(
     const content::GlobalRenderFrameHostId& render_frame_host_id,
     blink::mojom::UserActivationOption activation,
     std::string script) {
-// Early return if script is empty
+// Early return if script is empty.
   if (script.empty()) {
     VLOG(2) << "Script is empty, skipping injection.";
     return;
@@ -110,6 +110,19 @@ void YouTubeTabHelper::DidFinishNavigation(
                           weak_factory_.GetWeakPtr(), render_frame_host_id, blink::mojom::UserActivationOption::kDoNotActivate));
 }
 
+void YouTubeTabHelper::MediaStartedPlaying(
+    const MediaPlayerInfo& /*video_type*/,
+    const content::MediaPlayerId& id) {
+  is_media_playing_ = true;
+}
+
+void YouTubeTabHelper::MediaStoppedPlaying(
+    const MediaPlayerInfo& /*video_type*/,
+    const content::MediaPlayerId& id,
+    WebContentsObserver::MediaStoppedReason /*reason*/) {
+  is_media_playing_ = false;
+}
+
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeTabHelper);
 }  // namespace youtube_script_injector
 
@@ -149,7 +162,10 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
 jboolean JNI_BackgroundVideoPlaybackTabHelper_IsPlayingMedia(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jweb_contents) {
-  return false;
+      content::WebContents* web_contents =
+          content::WebContents::FromJavaWebContents(jweb_contents);
+      auto* helper = youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
+      return helper ? helper->IsMediaPlaying() : false;
 }
 }  // namespace android
 }  // namespace chrome
