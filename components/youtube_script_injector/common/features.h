@@ -11,7 +11,8 @@
 
 namespace youtube_script_injector::features {
 
-COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_COMMON) BASE_DECLARE_FEATURE(kBraveYouTubeScriptInjector);
+COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_COMMON)
+BASE_DECLARE_FEATURE(kBraveYouTubeScriptInjector);
 
 }  // namespace youtube_script_injector::features
 

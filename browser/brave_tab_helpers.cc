@@ -110,7 +110,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if BUILDFLAG(IS_ANDROID)
   BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
   youtube_script_injector::YouTubeTabHelper::MaybeCreateForWebContents(
-    web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL); 
+      web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #else
   // Add tab helpers here unless they are intended for android too
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
