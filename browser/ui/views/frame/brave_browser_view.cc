@@ -44,8 +44,6 @@
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #include "brave/browser/ui/views/split_view/split_view.h"
-#include "brave/browser/ui/views/split_view/split_view_location_bar.h"
-#include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -650,13 +648,6 @@ void BraveBrowserView::AddedToWidget() {
 
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());
-  }
-
-  if (secondary_location_bar_widget_) {
-    CHECK(secondary_location_bar_);
-    secondary_location_bar_widget_->Init(
-        SplitViewLocationBar::GetWidgetInitParams(
-            GetWidget()->GetNativeView(), secondary_location_bar_.get()));
   }
 
   if (split_view_) {

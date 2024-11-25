@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/split_view/split_view.h"
 
-#include <memory>
 #include <utility>
 
 #include "brave/browser/ui/brave_browser.h"
@@ -14,6 +13,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
+#include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/devtools/devtools_window.h"
@@ -206,6 +206,16 @@ void SplitView::Layout(PassKey key) {
   browser_view->NotifyDialogPositionRequiresUpdate();
 }
 
+void SplitView::AddedToWidget() {
+  secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
+      browser_->profile()->GetPrefs(), secondary_contents_container_);
+  secondary_location_bar_widget_ = std::make_unique<views::Widget>();
+
+  secondary_location_bar_widget_->Init(
+      SplitViewLocationBar::GetWidgetInitParams(GetWidget()->GetNativeView(),
+                                                secondary_location_bar_.get()));
+}
+
 void SplitView::OnTileTabs(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
@@ -374,6 +384,7 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
     if (secondary_contents_web_view_->web_contents() != contents) {
       secondary_contents_web_view_->SetWebContents(nullptr);
       secondary_contents_web_view_->SetWebContents(contents);
+      secondary_location_bar_->SetWebContents(contents);
     }
 
     secondary_contents_container_->SetVisible(true);
@@ -382,6 +393,7 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
     GetSplitViewLayoutManager()->show_main_web_contents_at_tail(
         second_tile_is_active_web_contents);
   } else {
+    secondary_location_bar_->SetWebContents(nullptr);
     secondary_contents_web_view_->SetWebContents(nullptr);
     secondary_devtools_web_view_->SetWebContents(nullptr);
     secondary_contents_container_->SetVisible(false);

@@ -59,7 +59,6 @@ class ContentsLayoutManager;
 class SidebarContainerView;
 class SidePanelEntry;
 class SplitView;
-class SplitViewLocationBar;
 class VerticalTabStripWidgetDelegateView;
 class ViewShadow;
 class WalletButton;
@@ -219,9 +218,6 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<ViewShadow> contents_shadow_;
 
   raw_ptr<SplitView> split_view_ = nullptr;
-
-  std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
-  std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 
   PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<commands::AcceleratorService,

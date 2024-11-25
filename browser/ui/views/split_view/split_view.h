@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_
 
+#include <memory>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
@@ -31,6 +32,7 @@ class Browser;
 class ContentsWebView;
 class DevToolsContentsResizingStrategy;
 class SplitViewLayoutManager;
+class SplitViewLocationBar;
 class SplitViewSeparator;
 
 // Contains a pair of contents container view.
@@ -88,6 +90,7 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   // views::View:
   void OnThemeChanged() override;
   void Layout(PassKey) override;
+  void AddedToWidget() override;
 
   // SplitViewBrowserDataObserver:
   void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
@@ -96,6 +99,7 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
 
  private:
   friend class SplitViewBrowserTest;
+  friend class SplitViewLocationBarBrowserTest;
 
   void DidSwapActiveWebContents(bool need_to_reset_fast_resize,
                                 content::WebContents* old_contents,
@@ -122,6 +126,9 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   raw_ptr<ContentsWebView> secondary_contents_web_view_ = nullptr;
 
   raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
+
+  std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
+  std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 
   base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
       split_view_observation_{this};
