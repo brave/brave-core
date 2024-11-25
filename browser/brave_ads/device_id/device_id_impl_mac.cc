@@ -205,9 +205,7 @@ std::string GetMacAddress(
     result = IORegistryEntryGetParentEntry(service, kIOServicePlane, &parent);
     if (result == KERN_SUCCESS) {
       const base::mac::ScopedIOObject<io_object_t> scoped_parent(parent);
-      const bool keep_going =
-          processor.ProcessNetworkController(scoped_parent.get());
-      if (!keep_going) {
+      if (!processor.ProcessNetworkController(scoped_parent.get())) {
         break;
       }
     }

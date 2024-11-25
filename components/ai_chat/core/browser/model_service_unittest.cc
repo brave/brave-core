@@ -191,11 +191,11 @@ TEST_F(ModelServiceTest, ChangeOldDefaultKey) {
 }
 
 TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
-  static const char kRequestName[] = "request_name";
-  static const char kModelSystemPrompt[] = "model_system_prompt";
+  static constexpr char kRequestName[] = "request_name";
+  static constexpr char kModelSystemPrompt[] = "model_system_prompt";
   static const GURL kEndpoint = GURL("http://brave.com");
-  static const char kAPIKey[] = "foo_api_key";
-  static const char kDisplayName[] = "Custom display name";
+  static constexpr char kAPIKey[] = "foo_api_key";
+  static constexpr char kDisplayName[] = "Custom display name";
 
   {
     mojom::ModelPtr model = mojom::Model::New();

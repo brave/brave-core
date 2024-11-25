@@ -25,12 +25,6 @@ namespace profiles {
 
 struct IconResourceInfo;
 
-#if !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_ANDROID)
-constexpr size_t kBraveDefaultAvatarIconsCount = 34;
-#else
-  constexpr size_t kBraveDefaultAvatarIconsCount = 0;
-#endif
-
 const IconResourceInfo* GetBraveDefaultAvatarIconResourceInfo(
       size_t chromium_index);
 

@@ -6,11 +6,13 @@
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr_exclusion.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
@@ -35,25 +37,23 @@ namespace brave_shields {
 namespace {
 
 typedef struct ListDefaultOverrideConstants {
-  const raw_ref<const base::Feature> feature;
-  const char* list_uuid;
+  RAW_PTR_EXCLUSION const base::Feature& feature;
+  std::string_view list_uuid;
 } ListDefaultOverrideConstants;
 
-const ListDefaultOverrideConstants kCookieListConstants{
-    .feature = raw_ref<const base::Feature>(kBraveAdblockCookieListDefault),
+constexpr ListDefaultOverrideConstants kCookieListConstants{
+    .feature = kBraveAdblockCookieListDefault,
     .list_uuid = kCookieListUuid};
 
-const ListDefaultOverrideConstants kMobileNotificationsListConstants{
-    .feature = raw_ref<const base::Feature>(
-        kBraveAdblockMobileNotificationsListDefault),
+constexpr ListDefaultOverrideConstants kMobileNotificationsListConstants{
+    .feature = kBraveAdblockMobileNotificationsListDefault,
     .list_uuid = kMobileNotificationsListUuid};
 
-const ListDefaultOverrideConstants kExperimentalListConstants{
-    .feature =
-        raw_ref<const base::Feature>(kBraveAdblockExperimentalListDefault),
+constexpr ListDefaultOverrideConstants kExperimentalListConstants{
+    .feature = kBraveAdblockExperimentalListDefault,
     .list_uuid = kExperimentalListUuid};
 
-const ListDefaultOverrideConstants kOverrideConstants[3] = {
+constexpr ListDefaultOverrideConstants kOverrideConstants[] = {
     kCookieListConstants, kMobileNotificationsListConstants,
     kExperimentalListConstants};
 
@@ -217,7 +217,7 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   // Apply feature overrides from Griffin without overriding user preference
   for (const auto& constants : kOverrideConstants) {
     if (uuid == constants.list_uuid &&
-        base::FeatureList::IsEnabled(*constants.feature) && !list_touched) {
+        base::FeatureList::IsEnabled(constants.feature) && !list_touched) {
       return true;
     }
   }

@@ -42,7 +42,7 @@ class AdBlockServiceTest;
 
 namespace brave_shields {
 
-extern const uint16_t kSubscriptionDefaultExpiresHours;
+inline constexpr uint16_t kSubscriptionDefaultExpiresHours = 7 * 24;
 
 struct SubscriptionInfo {
   SubscriptionInfo();

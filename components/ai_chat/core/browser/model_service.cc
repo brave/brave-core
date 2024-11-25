@@ -50,16 +50,16 @@
 namespace ai_chat {
 class AIChatCredentialManager;
 
-inline constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
-inline constexpr char kCustomModelsList[] = "brave.ai_chat.custom_models";
 namespace {
-inline constexpr char kCustomModelItemLabelKey[] = "label";
-inline constexpr char kCustomModelItemModelKey[] = "model_request_name";
-inline constexpr char kCustomModelContextSizeKey[] = "context_size";
-inline constexpr char kCustomModelSystemPromptKey[] = "model_system_prompt";
-inline constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
-inline constexpr char kCustomModelItemApiKey[] = "api_key";
-inline constexpr char kCustomModelItemKey[] = "key";
+constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
+constexpr char kCustomModelsList[] = "brave.ai_chat.custom_models";
+constexpr char kCustomModelItemLabelKey[] = "label";
+constexpr char kCustomModelItemModelKey[] = "model_request_name";
+constexpr char kCustomModelContextSizeKey[] = "context_size";
+constexpr char kCustomModelSystemPromptKey[] = "model_system_prompt";
+constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
+constexpr char kCustomModelItemApiKey[] = "api_key";
+constexpr char kCustomModelItemKey[] = "key";
 
 // When adding new models, especially for display, make sure to add the UI
 // strings to ai_chat_ui_strings.grdp and ai_chat/core/constants.cc.

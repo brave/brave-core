@@ -361,8 +361,9 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
   GetTranslateManager()->TranslatePage("es", "en", true);
   WaitUntilPageTranslated();
 
-  const char kTestURL[] = "https://translate.google.com/something.svg";
-  const char kTestSvg[] = R"(
+  static constexpr char kTestURL[] =
+      "https://translate.google.com/something.svg";
+  static constexpr char kTestSvg[] = R"(
     <svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"></svg>
   )";
 
@@ -382,7 +383,7 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
   EXPECT_EQ("https://translate.brave.com/something.svg",
             EvalTranslateJs(do_xhr_and_get_final_url));
 
-  const char kLoadImageTemplate[] = R"(
+  static constexpr char kLoadImageTemplate[] = R"(
     new Promise((resolve) => {
       let p = new Image();
       p.onload = () => resolve(true);

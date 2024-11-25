@@ -109,7 +109,7 @@ class OkButton : public views::LabelButton {
   OkButton& operator=(const OkButton&) = delete;
 
   void UpdateBackgroundColor() override {
-    static constexpr const auto kBgColor =
+    static constexpr auto kBgColor =
         std::to_array<std::array<const SkColor, ButtonState::STATE_COUNT>>(
             {{
                  // Light theme.

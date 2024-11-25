@@ -432,7 +432,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
       tab_helper()->PageDistillState()));
   // Change content on the page.
-  constexpr const char kChangeContent[] =
+  static constexpr char kChangeContent[] =
       R"js(
         document.querySelector('meta[property="og:title"]').content =
             'Title was changed by javascript'
@@ -445,7 +445,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
       tab_helper()->PageDistillState()));
 
   // Check title on the distilled page.
-  constexpr const char kCheckContent[] =
+  static constexpr char kCheckContent[] =
       R"js(
         !!document.getElementById('brave_speedreader_style') &&
         (document.title === 'Title was changed by javascript')
@@ -462,7 +462,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEncoding) {
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   ClickReaderButton();
 
-  constexpr const char kCheckText[] =
+  static constexpr char kCheckText[] =
       R"js( document.querySelector('#par-to-check').innerText.length )js";
   EXPECT_EQ(92, content::EvalJs(ActiveWebContents(), kCheckText,
                                 content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
@@ -571,7 +571,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   NavigateToPageSynchronously(kTestPageReadable);
   auto* web_contents = ActiveWebContents();
 
-  constexpr const char kCheckNoApiInMainWorld[] =
+  static constexpr char kCheckNoApiInMainWorld[] =
       R"js(
         document.speedreader === undefined
       )js";
@@ -579,7 +579,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS)
                   .ExtractBool());
 
-  constexpr const char kClickLinkAndGetTitle[] =
+  static constexpr char kClickLinkAndGetTitle[] =
       R"js(
     (function() {
       // element id is hardcoded in extractor.rs
@@ -614,7 +614,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
   NavigateToPageSynchronously(kTestPageSimple);
   auto* web_contents = ActiveWebContents();
 
-  constexpr const char kCheckNoElement[] =
+  static constexpr char kCheckNoElement[] =
       R"js(
         document.getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e') == null
       )js";
@@ -624,7 +624,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
 
-  constexpr const char kCheckNoApi[] =
+  static constexpr char kCheckNoApi[] =
       R"js(
         document.speedreader === undefined
       )js";
@@ -644,7 +644,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
   NavigateToPageSynchronously(kTestPageReadable);
 
   auto GetDataAttribute = [](const std::string& attr) {
-    constexpr const char kGetDataAttribute[] =
+    static constexpr char kGetDataAttribute[] =
         R"js(
           document.documentElement.getAttribute('$1')
         )js";
@@ -706,7 +706,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
   auto GetDataAttribute = [](const std::string& attr) {
-    constexpr const char kGetDataAttribute[] =
+    static constexpr char kGetDataAttribute[] =
         R"js(
           document.documentElement.getAttribute('$1')
         )js";
@@ -731,7 +731,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 
   auto WaitElement = [&](content::WebContents* contents,
                          const std::string& elem) {
-    constexpr const char kWaitElement[] =
+    static constexpr char kWaitElement[] =
         R"js(
           (!!document.getElementById('$1'))
         )js";
@@ -749,7 +749,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
   };
 
   auto Click = [&](content::WebContents* contents, const std::string& id) {
-    constexpr const char kClick[] =
+    static constexpr char kClick[] =
         R"js(
           document.getElementById('$1').click()
         )js";
@@ -837,7 +837,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
                            ->reader_mode_toolbar_view_.get();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
 
-  constexpr const char kGetLang[] = R"js( navigator.languages.toString() )js";
+  static constexpr char kGetLang[] = R"js( navigator.languages.toString() )js";
   EXPECT_EQ("en-US,ja,en-CA,fr-CA",
             content::EvalJs(toolbar, kGetLang).ExtractString());
 }
@@ -913,7 +913,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
 
     NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
 
-    constexpr const char kCheckNoMaliciousContent[] = R"js(
+    static constexpr char kCheckNoMaliciousContent[] = R"js(
       !document.getElementById('malicious1') &&
       !document.querySelector('meta[http-equiv="undefinedHttpEquiv"]')
     )js";
@@ -955,7 +955,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspInBody) {
 
   NavigateToPageSynchronously(kTestCSPInBodyPage,
                               WindowOpenDisposition::CURRENT_TAB);
-  constexpr const char kCheckCsp[] = R"js(
+  static constexpr char kCheckCsp[] = R"js(
     document.querySelectorAll('meta[content="CSP in body"]').length === 0
   )js";
 

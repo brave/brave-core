@@ -300,7 +300,6 @@ static_library("internal") {
     "ads_client/ads_client_pref_provider.h",
     "ads_client/ads_client_util.cc",
     "ads_client/ads_client_util.h",
-    "ads_constants.cc",
     "ads_core/ads_core.cc",
     "ads_core/ads_core.h",
     "ads_core/ads_core_util.cc",
