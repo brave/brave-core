@@ -38,7 +38,7 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
                     const base::FilePath& script_path,
                     base::OnceCallback<void(std::string)> cb) const;
   // Given a path to youtube.json, loads the scripts from the file into memory.
-  void LoadScripts(const base::FilePath& path);
+  void LoadJson(const base::FilePath& path);
   const std::optional<YouTubeJson>& GetJson() const { return json_; }
   bool IsYouTubeDomain(const GURL& url) const;
 
@@ -46,9 +46,9 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
   YouTubeRegistry();
 
   // These methods are also called by YouTubeTabHelperBrowserTest.
-  // Given contents of youtube.json, loads the scripts from the file into memory.
+  // Given contents of youtube.json, loads the Json scripts from files into memory.
   // Called by |LoadJson| after the file is read.
-  void OnLoadScripts(const std::string& data);
+  void OnLoadJson(const std::string& data);
   // Sets the component path used to resolve the paths to the scripts.
   void SetComponentPath(const base::FilePath& path);
 
