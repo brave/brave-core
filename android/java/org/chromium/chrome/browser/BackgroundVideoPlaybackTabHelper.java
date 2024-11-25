@@ -13,18 +13,18 @@ import org.chromium.content_public.browser.WebContents;
 @JNINamespace("chrome::android")
 public class BackgroundVideoPlaybackTabHelper {
 
-   public static void setFullscreen(WebContents webContents) {
-      BackgroundVideoPlaybackTabHelperJni.get().setFullscreen(webContents);
-   }
+    public static void setFullscreen(WebContents webContents) {
+        BackgroundVideoPlaybackTabHelperJni.get().setFullscreen(webContents);
+    }
 
-   public static boolean isPlayingMedia(WebContents webContents) {
-      return BackgroundVideoPlaybackTabHelperJni.get().isPlayingMedia(webContents);
-   }
+    public static boolean isPlayingMedia(WebContents webContents) {
+        return BackgroundVideoPlaybackTabHelperJni.get().isPlayingMedia(webContents);
+    }
 
-   @NativeMethods
-   interface Natives {
-      void setFullscreen(WebContents webContents);
+    @NativeMethods
+    interface Natives {
+        void setFullscreen(WebContents webContents);
 
-      boolean isPlayingMedia(WebContents webContents);
-   }
+        boolean isPlayingMedia(WebContents webContents);
+    }
 }

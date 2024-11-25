@@ -36,8 +36,7 @@ namespace {
 // See youtube_json.cc for the format of youtube.json.
 
 constexpr size_t kHashSize = 32;
-constexpr char kYouTubeComponentName[] =
-    "Brave YouTube Injector";
+constexpr char kYouTubeComponentName[] = "Brave YouTube Injector";
 constexpr char kYouTubeComponentId[] = "lhhcaamjbmbijmjbnnodjaknblkiagon";
 constexpr char kYouTubeComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAphUFFHyK+"
@@ -55,9 +54,10 @@ class YouTubeComponentInstallerPolicy
  public:
   YouTubeComponentInstallerPolicy();
 
-  YouTubeComponentInstallerPolicy(const YouTubeComponentInstallerPolicy&) = delete;
-  YouTubeComponentInstallerPolicy& operator=(const YouTubeComponentInstallerPolicy&) =
+  YouTubeComponentInstallerPolicy(const YouTubeComponentInstallerPolicy&) =
       delete;
+  YouTubeComponentInstallerPolicy& operator=(
+      const YouTubeComponentInstallerPolicy&) = delete;
 
   // component_updater::ComponentInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
@@ -84,15 +84,16 @@ class YouTubeComponentInstallerPolicy
 };
 
 YouTubeComponentInstallerPolicy::YouTubeComponentInstallerPolicy()
-    : component_id_(kYouTubeComponentId), component_name_(kYouTubeComponentName) {
+    : component_id_(kYouTubeComponentId),
+      component_name_(kYouTubeComponentName) {
   // Generate hash from public key.
   std::string decoded_public_key;
   base::Base64Decode(kYouTubeComponentBase64PublicKey, &decoded_public_key);
   crypto::SHA256HashString(decoded_public_key, component_hash_, kHashSize);
 }
 
-bool YouTubeComponentInstallerPolicy::SupportsGroupPolicyEnabledComponentUpdates()
-    const {
+bool YouTubeComponentInstallerPolicy::
+    SupportsGroupPolicyEnabledComponentUpdates() const {
   return true;
 }
 
@@ -109,9 +110,10 @@ YouTubeComponentInstallerPolicy::OnCustomInstall(
 
 void YouTubeComponentInstallerPolicy::OnCustomUninstall() {}
 
-void YouTubeComponentInstallerPolicy::ComponentReady(const base::Version& version,
-                                                  const base::FilePath& path,
-                                                  base::Value::Dict manifest) {
+void YouTubeComponentInstallerPolicy::ComponentReady(
+    const base::Version& version,
+    const base::FilePath& path,
+    base::Value::Dict manifest) {
   YouTubeRegistry::GetInstance()->LoadJson(path);
 }
 
@@ -125,7 +127,8 @@ base::FilePath YouTubeComponentInstallerPolicy::GetRelativeInstallDir() const {
   return base::FilePath::FromUTF8Unsafe(component_id_);
 }
 
-void YouTubeComponentInstallerPolicy::GetHash(std::vector<uint8_t>* hash) const {
+void YouTubeComponentInstallerPolicy::GetHash(
+    std::vector<uint8_t>* hash) const {
   hash->assign(component_hash_, UNSAFE_TODO(component_hash_ + kHashSize));
 }
 
@@ -143,7 +146,9 @@ bool YouTubeComponentInstallerPolicy::IsBraveComponent() const {
 }
 
 void RegisterYouTubeComponent(component_updater::ComponentUpdateService* cus) {
-  if (!base::FeatureList::IsEnabled(youtube_script_injector::features::kBraveYouTubeScriptInjector) || !cus) {
+  if (!base::FeatureList::IsEnabled(
+          youtube_script_injector::features::kBraveYouTubeScriptInjector) ||
+      !cus) {
     // In test, |cus| could be nullptr.
     return;
   }

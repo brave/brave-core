@@ -34,7 +34,8 @@ class YouTubeJson {
  public:
   YouTubeJson();
   ~YouTubeJson();
-  YouTubeJson(const YouTubeJson& other);  // needed for std::optional<YouTubeJson>
+  YouTubeJson(
+      const YouTubeJson& other);  // needed for std::optional<YouTubeJson>
 
   // Registers the mapping between JSON field names and the members in this
   // class.
@@ -45,8 +46,12 @@ class YouTubeJson {
   static std::optional<YouTubeJson> ParseJson(const std::string& contents);
 
   // Getters.
-  const base::FilePath& GetFeatureScript() const { return feature_script_path_; }
-  const base::FilePath& GetFullscreenScript() const { return fullscreen_script_path_; }
+  const base::FilePath& GetFeatureScript() const {
+    return feature_script_path_;
+  }
+  const base::FilePath& GetFullscreenScript() const {
+    return fullscreen_script_path_;
+  }
   int GetVersion() const { return version_; }
 
  private:

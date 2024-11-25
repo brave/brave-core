@@ -11,8 +11,8 @@
 #include "base/component_export.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/youtube_script_injector/browser/core/youtube_json.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
+#include "brave/components/youtube_script_injector/browser/core/youtube_json.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/media_player_id.h"
@@ -49,6 +49,7 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
   base::WeakPtr<YouTubeTabHelper> GetWeakPtr() {
     return weak_factory_.GetWeakPtr();
   }
+
  private:
   YouTubeTabHelper(content::WebContents*, const int32_t world_id);
   friend class content::WebContentsUserData<YouTubeTabHelper>;
