@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 brave_net_sources = [
+  "//brave/net/decentralized_dns/constants.cc",
   "//brave/net/decentralized_dns/constants.h",
   "//brave/net/http/partitioned_host_state_map.cc",
   "//brave/net/http/partitioned_host_state_map.h",

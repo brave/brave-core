@@ -6,21 +6,25 @@
 #ifndef BRAVE_NET_DECENTRALIZED_DNS_CONSTANTS_H_
 #define BRAVE_NET_DECENTRALIZED_DNS_CONSTANTS_H_
 
+#include <optional>
+#include <string>
+#include <string_view>
+
+#include "net/base/net_export.h"
+
 namespace decentralized_dns {
 
-inline constexpr const char* kUnstoppableDomains[] = {
-    ".crypto",     ".x",          ".nft",     ".dao",         ".wallet",
-    ".blockchain", ".bitcoin",    ".zil",     ".altimist",    ".anime",
-    ".klever",     ".manga",      ".polygon", ".unstoppable", ".pudgy",
-    ".tball",      ".stepn",      ".secret",  ".raiin",       ".pog",
-    ".clay",       ".metropolis", ".witg",    ".ubu",         ".kryptic",
-    ".farms",      ".dfz",        ".kresus",  ".binanceus",   ".austin",
-    ".bitget",     ".wrkx"};
+inline constexpr std::string_view kEthDomain = ".eth";
+inline constexpr std::string_view kDNSForEthDomain = ".eth.link";
+inline constexpr std::string_view kSolDomain = ".sol";
 
-inline constexpr char kEthDomain[] = ".eth";
-inline constexpr char kDNSForEthDomain[] = ".eth.link";
+// Checks if a given host ends with the suffix of an unstoppable domain, e.g.
+// foo.crypto. Returns a reference to the domain entry.
+NET_EXPORT std::optional<std::string_view> GetUnstoppableDomainSuffix(
+    std::string_view host);
 
-inline constexpr char kSolDomain[] = ".sol";
+// Returns a full list of unstoppable domain suffixes separated by commas.
+NET_EXPORT std::string GetUnstoppableDomainSuffixFullList();
 
 }  // namespace decentralized_dns
 

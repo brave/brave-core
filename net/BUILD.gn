@@ -8,6 +8,7 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "base/brave_host_port_pair_unittest.cc",
+    "decentralized_dns/constants_unittest.cc",
     "http/partitioned_host_state_map_unittest.cc",
     "http/transport_security_state_unittest.cc",
   ]

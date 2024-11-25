@@ -5,6 +5,9 @@
 
 #include "brave/components/p3a/histograms_braveizer.h"
 
+#include <array>
+#include <string>
+
 #include "base/functional/bind.h"
 #include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_macros.h"
@@ -17,13 +20,13 @@ namespace {
 
 // Please keep this list sorted and synced with |DoHistogramBravezation|.
 // clang-format off
-constexpr const char* kBravezationHistograms[] = {
+constexpr auto kBravezationHistograms = std::to_array<std::string_view>({
     "DefaultBrowser.State",
     "Extensions.LoadExtension",
     "Tabs.TabCount",
     "Tabs.TabCountPerLoad",
     "Tabs.WindowCount",
-};
+});
 // clang-format on
 
 }  // namespace
@@ -40,11 +43,11 @@ HistogramsBraveizer::HistogramsBraveizer() = default;
 HistogramsBraveizer::~HistogramsBraveizer() = default;
 
 void HistogramsBraveizer::InitCallbacks() {
-  for (const char* histogram_name : kBravezationHistograms) {
+  for (std::string_view histogram_name : kBravezationHistograms) {
     histogram_sample_callbacks_.push_back(
         std::make_unique<
             base::StatisticsRecorder::ScopedHistogramSampleObserver>(
-            histogram_name,
+            std::string(histogram_name),
             base::BindRepeating(&HistogramsBraveizer::DoHistogramBravetization,
                                 this)));
   }

@@ -32,23 +32,21 @@ int LookupSuffixInReversedSet(base::span<const uint8_t> graph,
   // omnibox, it will be parsed as OmniboxInputType::URL input type instead of
   // OmniboxInputType::UNKNOWN, The first entry in the autocomplete list will be
   // URL instead of search.
-  for (auto* unstoppable_domain : decentralized_dns::kUnstoppableDomains) {
-    if (host.ends_with(unstoppable_domain)) {
-      *suffix_length = strlen(unstoppable_domain) - 1;
-      return kDafsaFound;
-    }
+  if (auto domain = decentralized_dns::GetUnstoppableDomainSuffix(host)) {
+    *suffix_length = domain->size() - 1;
+    return kDafsaFound;
   }
   if (host.ends_with(decentralized_dns::kEthDomain)) {
-    *suffix_length = strlen(decentralized_dns::kEthDomain) - 1;
+    *suffix_length = decentralized_dns::kEthDomain.size() - 1;
     return kDafsaFound;
   }
   if (host.ends_with(decentralized_dns::kSolDomain)) {
-    *suffix_length = strlen(decentralized_dns::kSolDomain) - 1;
+    *suffix_length = decentralized_dns::kSolDomain.size() - 1;
     return kDafsaFound;
   }
 
   if (include_private && host.ends_with(decentralized_dns::kDNSForEthDomain)) {
-    *suffix_length = strlen(decentralized_dns::kDNSForEthDomain) - 1;
+    *suffix_length = decentralized_dns::kDNSForEthDomain.size() - 1;
     return kDafsaFound;
   }
 

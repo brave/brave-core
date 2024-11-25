@@ -79,15 +79,6 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
   const std::u16string sol_domain = base::ASCIIToUTF16(std::string(kSolDomain));
   const std::u16string eth_domain = base::ASCIIToUTF16(std::string(kEthDomain));
 
-  std::u16string unstoppable_domains;
-  for (auto* const domain : kUnstoppableDomains) {
-    unstoppable_domains =
-        base::StrCat({unstoppable_domains, base::ASCIIToUTF16(domain), u", "});
-  }
-  if (!unstoppable_domains.empty()) {
-    unstoppable_domains.resize(unstoppable_domains.size() - 2);
-  }
-
   if (IsUnstoppableDomainsTLD(request_url_.host_piece())) {
     load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
                                        IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
@@ -99,7 +90,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
         base::ReplaceStringPlaceholders(
             brave_l10n::GetLocalizedResourceUTF16String(
                 IDS_UNSTOPPABLE_DOMAINS_AND_ENS_OPT_IN_PRIMARY_PARAGRAPH),
-            {infura, unstoppable_domains,
+            {infura, base::ASCIIToUTF16(GetUnstoppableDomainSuffixFullList()),
              brave_l10n::GetLocalizedResourceUTF16String(
                  IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE),
              infura_tou, infura_privacy_policy},
