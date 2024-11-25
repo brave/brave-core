@@ -15,8 +15,6 @@ import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.util.SafetyNetCheck;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.content_public.browser.BrowserStartupController;
 
@@ -47,22 +45,15 @@ public class BraveUpgradeJobIntentServiceImpl extends BraveUpgradeJobIntentServi
                                             BraveRewardsNativeWorker braveRewardsNativeWorker =
                                                     BraveRewardsNativeWorker.getInstance();
                                             if (braveRewardsNativeWorker != null
-                                                    && braveRewardsNativeWorker.isSupported()
-                                                    && BravePrefServiceBridge.getInstance()
-                                                            .getSafetynetCheckFailed()) {
+                                                    && braveRewardsNativeWorker.isSupported()) {
                                                 Callback<Boolean> callback =
                                                         value -> {
                                                             if (value == null
                                                                     || !value.booleanValue()) {
                                                                 return;
                                                             }
-                                                            // Reset flag and update UI
-                                                            BravePrefServiceBridge.getInstance()
-                                                                    .setSafetynetCheckFailed(false);
                                                             TabUtils.enableRewardsButton();
                                                         };
-                                                // Re-perform safetynet check
-                                                SafetyNetCheck.updateSafetynetStatus(callback);
                                             }
                                         }
 
