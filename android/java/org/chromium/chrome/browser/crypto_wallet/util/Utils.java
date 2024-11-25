@@ -1218,13 +1218,9 @@ public class Utils {
         if (chromeActivity == null) {
             chromeActivity = BraveActivity.getChromeTabbedActivity();
         }
-        if (chromeActivity == null) {
+        if (chromeActivity == null || !chromeActivity.areTabModelsInitialized()) {
             return ProfileManager.getLastUsedRegularProfile(); // Last resort
         }
-        if (!chromeActivity.areTabModelsInitialized()) {
-            return ProfileManager.getLastUsedRegularProfile();
-        }
-
         return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
     }
 
