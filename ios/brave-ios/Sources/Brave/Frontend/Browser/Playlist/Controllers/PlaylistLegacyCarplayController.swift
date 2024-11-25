@@ -825,7 +825,7 @@ extension PlaylistLegacyCarplayController {
     let cacheState = PlaylistManager.shared.state(for: item.tagId)
     if cacheState != .invalid {
       if let index = PlaylistManager.shared.index(of: item.tagId),
-        let asset = PlaylistManager.shared.assetAtIndex(index)
+        let asset = PlaylistManager.shared.assetAtIndexSynchronous(index)
       {
 
         do {
