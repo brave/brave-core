@@ -1273,7 +1273,7 @@ if (is_android) {
       "//chrome/browser/back_press/android:java",
       "//chrome/browser/browser_controls/android:java",
       "//chrome/browser/contextmenu:java",
-      "//chrome/browser/data_sharing:tab_group_ui_java",
+      "//chrome/browser/data_sharing:data_sharing_public_java",
       "//chrome/browser/feed/android:java",
       "//chrome/browser/flags:java",
       "//chrome/browser/fullscreen/android:java",
