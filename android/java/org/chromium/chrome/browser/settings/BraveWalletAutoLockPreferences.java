@@ -39,7 +39,7 @@ public class BraveWalletAutoLockPreferences
 
         setOnPreferenceClickListener(this);
 
-        InitKeyringService();
+        initKeyringService();
     }
 
     @Override
@@ -117,10 +117,10 @@ public class BraveWalletAutoLockPreferences
     public void onConnectionError(MojoException e) {
         mKeyringService.close();
         mKeyringService = null;
-        InitKeyringService();
+        initKeyringService();
     }
 
-    private void InitKeyringService() {
+    private void initKeyringService() {
         if (mKeyringService != null) {
             return;
         }

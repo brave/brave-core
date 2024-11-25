@@ -38,7 +38,7 @@ public class BraveSyncDevices {
     }
 
     public BraveSyncDevices() {
-        Init();
+        init();
     }
 
     @CalledByNative
@@ -47,7 +47,7 @@ public class BraveSyncDevices {
         mNativeBraveSyncDevicesAndroid = nativePtr;
     }
 
-    private void Init() {
+    private void init() {
         if (mNativeBraveSyncDevicesAndroid == 0) {
             BraveSyncDevicesJni.get().init(BraveSyncDevices.this);
         }
@@ -112,7 +112,7 @@ public class BraveSyncDevices {
         public String mGuid;
     }
 
-    public ArrayList<SyncDeviceInfo> GetSyncDeviceList() {
+    public ArrayList<SyncDeviceInfo> getSyncDeviceList() {
         ArrayList<SyncDeviceInfo> deviceList = new ArrayList<SyncDeviceInfo>();
         String json =
                 BraveSyncDevicesJni.get().getSyncDeviceListJson(mNativeBraveSyncDevicesAndroid);
@@ -121,7 +121,7 @@ public class BraveSyncDevices {
         try {
             JSONObject result = new JSONObject(json);
             JSONArray devices = result.getJSONArray("devices");
-            Log.i(TAG, "GetSyncDeviceList devices length is " + devices.length());
+            Log.i(TAG, "getSyncDeviceList devices length is " + devices.length());
             for (int i = 0; i < devices.length(); i++) {
                 SyncDeviceInfo deviceInfo = new SyncDeviceInfo();
                 JSONObject device = devices.getJSONObject(i);
@@ -135,14 +135,14 @@ public class BraveSyncDevices {
                 deviceList.add(deviceInfo);
             }
         } catch (JSONException e) {
-            Log.e(TAG, "GetSyncDeviceList JSONException error " + e);
+            Log.e(TAG, "getSyncDeviceList JSONException error " + e);
         } catch (IllegalStateException e) {
-            Log.e(TAG, "GetSyncDeviceList IllegalStateException error " + e);
+            Log.e(TAG, "getSyncDeviceList IllegalStateException error " + e);
         }
         return deviceList;
     }
 
-    public void DeleteDevice(String deviceGuid) {
+    public void deleteDevice(String deviceGuid) {
         BraveSyncDevicesJni.get().deleteDevice(mNativeBraveSyncDevicesAndroid, deviceGuid);
     }
 

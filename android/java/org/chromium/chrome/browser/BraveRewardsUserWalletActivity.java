@@ -70,10 +70,10 @@ public class BraveRewardsUserWalletActivity
 
         switch (status) {
             case WalletStatus.CONNECTED:
-                txtUserStatus.setText(BraveRewardsExternalWallet.WalletStatusToString(status));
+                txtUserStatus.setText(BraveRewardsExternalWallet.walletStatusToString(status));
                 break;
             case WalletStatus.LOGGED_OUT:
-                txtUserStatus.setText(BraveRewardsExternalWallet.WalletStatusToString(status));
+                txtUserStatus.setText(BraveRewardsExternalWallet.walletStatusToString(status));
                 break;
             case UNDEFINED_WALLET_STATUS:
                 finish();

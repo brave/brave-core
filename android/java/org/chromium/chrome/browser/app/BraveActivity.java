@@ -929,7 +929,7 @@ public abstract class BraveActivity extends ChromeActivity
     public void onBrowsingDataCleared() {}
 
     @Override
-    public void OnCheckDefaultResume() {
+    public void onCheckDefaultResume() {
         mIsDefaultCheckOnResume = true;
     }
 
@@ -974,7 +974,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         // Disable FRE for arm64 builds where ChromeActivity is the one that
         // triggers FRE instead of ChromeLauncherActivity on arm32 build.
-        BraveHelper.DisableFREDRP();
+        BraveHelper.disableFREDRP();
     }
 
     @Override
@@ -2206,10 +2206,10 @@ public abstract class BraveActivity extends ChromeActivity
             dialog.setCanceledOnTouchOutside(false);
             if (dbUtil.performDbExportOnStart()) {
                 dbUtil.setPerformDbExportOnStart(false);
-                dbUtil.ExportRewardsDb(dialog);
+                dbUtil.exportRewardsDb(dialog);
             } else if (dbUtil.performDbImportOnStart() && !dbUtil.dbImportFile().isEmpty()) {
                 dbUtil.setPerformDbImportOnStart(false);
-                dbUtil.ImportRewardsDb(dialog, dbUtil.dbImportFile());
+                dbUtil.importRewardsDb(dialog, dbUtil.dbImportFile());
             }
             dbUtil.cleanUpDbOperationRequest();
         }
