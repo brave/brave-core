@@ -22,6 +22,7 @@
 namespace autofill {
 
 namespace {
+
 bool IsPrivateProfile(content::WebContents* web_contents) {
   if (!web_contents) {
     return false;
@@ -76,3 +77,20 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
   if (0) std::unique_ptr<autofill::ChromeAutofillClient> dummy(
 #include "src/chrome/browser/ui/autofill/chrome_autofill_client.cc"
 #undef WrapUnique
+
+namespace autofill {
+
+AutofillOptimizationGuide*
+ChromeAutofillClient::GetAutofillOptimizationGuide_Unused() const {
+  return nullptr;
+}
+
+bool ChromeAutofillClient::IsAutofillEnabled_Unused() const {
+  return false;
+}
+
+bool ChromeAutofillClient::IsAutocompleteEnabled_Unused() const {
+  return false;
+}
+
+}  // namespace autofill
