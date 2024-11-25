@@ -499,4 +499,26 @@ class PlayerModelTests: CoreDataTestCase {
     XCTAssertTrue(playerModel.isPlaying)
     XCTAssertEqual(playerModel.selectedItemID, playerModel.itemQueue.first)
   }
+
+  @MainActor func testDurationAvailableOnLoad() async throws {
+    let folder = try await addFolder()
+    await addMockItems(count: 1, to: folder)
+
+    let items = PlaylistItem.getItems(parentFolder: folder)
+
+    let playerModel = PlayerModel(mediaStreamer: nil, initialPlaybackInfo: nil)
+    playerModel.selectedFolderID = folder.id
+    playerModel.selectedItemID = items[0].id
+    // Required for the player to actually play immediately in unit tests
+    playerModel.playerLayer.player?.automaticallyWaitsToMinimizeStalling = false
+    await playerModel.prepareToPlaySelectedItem(initialOffset: 0, playImmediately: false)
+
+    let status = playerModel.playerForTesting.currentItem?.asset.status(of: .duration)
+    switch status {
+    case .loaded:
+      break
+    default:
+      XCTFail("Duration should already be loaded, but is currently \(String(describing: status))")
+    }
+  }
 }
