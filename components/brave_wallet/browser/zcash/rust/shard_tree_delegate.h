@@ -16,12 +16,19 @@ class OrchardShardTreeDelegate;
 
 namespace brave_wallet::orchard {
 
-enum class ShardStoreStatusCode : uint32_t;
 struct ShardTreeShard;
+struct ShardTreeCap;
 struct ShardTreeAddress;
 struct ShardTreeCheckpoint;
-struct ShardTreeCap;
-struct ShardTreeCheckpointBundle;
+
+struct BoolResultWrapper;
+struct CheckpointBundleResultWrapper;
+struct CheckpointCountResultWrapper;
+struct CheckpointIdResultWrapper;
+struct CheckpointsResultWrapper;
+struct ShardRootsResultWrapper;
+struct ShardTreeCapResultWrapper;
+struct ShardTreeShardResultWrapper;
 
 class ShardTreeDelegate {
  public:
@@ -29,38 +36,32 @@ class ShardTreeDelegate {
       std::unique_ptr<OrchardShardTreeDelegate> delegate);
   ~ShardTreeDelegate();
 
-  ShardStoreStatusCode LastShard(ShardTreeShard& into,
-                                 uint8_t shard_level) const;
-  ShardStoreStatusCode PutShard(const ShardTreeShard& tree) const;
-  ShardStoreStatusCode GetShard(const ShardTreeAddress& addr,
-                                ShardTreeShard& tree) const;
-  ShardStoreStatusCode GetShardRoots(
-
-      ::rust::Vec<ShardTreeAddress>& into,
-      uint8_t shard_level) const;
-  ShardStoreStatusCode Truncate(const ShardTreeAddress& address) const;
-  ShardStoreStatusCode GetCap(ShardTreeCap& into) const;
-  ShardStoreStatusCode PutCap(const ShardTreeCap& tree) const;
-  ShardStoreStatusCode MinCheckpointId(uint32_t& into) const;
-  ShardStoreStatusCode MaxCheckpointId(uint32_t& into) const;
-  ShardStoreStatusCode AddCheckpoint(
+  ::rust::Box<ShardTreeShardResultWrapper> LastShard(uint8_t shard_level) const;
+  ::rust::Box<BoolResultWrapper> PutShard(const ShardTreeShard& tree) const;
+  ::rust::Box<ShardTreeShardResultWrapper> GetShard(
+      const ShardTreeAddress& addr) const;
+  ::rust::Box<ShardRootsResultWrapper> GetShardRoots(uint8_t shard_level) const;
+  ::rust::Box<BoolResultWrapper> Truncate(
+      const ShardTreeAddress& address) const;
+  ::rust::Box<ShardTreeCapResultWrapper> GetCap() const;
+  ::rust::Box<BoolResultWrapper> PutCap(const ShardTreeCap& tree) const;
+  ::rust::Box<CheckpointIdResultWrapper> MinCheckpointId() const;
+  ::rust::Box<CheckpointIdResultWrapper> MaxCheckpointId() const;
+  ::rust::Box<BoolResultWrapper> AddCheckpoint(
       uint32_t checkpoint_id,
       const ShardTreeCheckpoint& checkpoint) const;
-  ShardStoreStatusCode CheckpointCount(size_t& into) const;
-  ShardStoreStatusCode CheckpointAtDepth(
-      size_t depth,
-      uint32_t& into_checkpoint_id,
-      ShardTreeCheckpoint& into_checpoint) const;
-  ShardStoreStatusCode GetCheckpoint(uint32_t checkpoint_id,
-                                     ShardTreeCheckpoint& into) const;
-  ShardStoreStatusCode UpdateCheckpoint(
+  ::rust::Box<CheckpointCountResultWrapper> CheckpointCount() const;
+  ::rust::Box<CheckpointBundleResultWrapper> CheckpointAtDepth(
+      size_t depth) const;
+  ::rust::Box<CheckpointBundleResultWrapper> GetCheckpoint(
+      uint32_t checkpoint_id) const;
+  ::rust::Box<BoolResultWrapper> UpdateCheckpoint(
       uint32_t checkpoint_id,
       const ShardTreeCheckpoint& checkpoint) const;
-  ShardStoreStatusCode RemoveCheckpoint(uint32_t checkpoint_id) const;
-  ShardStoreStatusCode TruncateCheckpoint(uint32_t checkpoint_id) const;
-  ShardStoreStatusCode GetCheckpoints(
-      size_t limit,
-      ::rust::Vec<ShardTreeCheckpointBundle>& into) const;
+  ::rust::Box<BoolResultWrapper> RemoveCheckpoint(uint32_t checkpoint_id) const;
+  ::rust::Box<BoolResultWrapper> TruncateCheckpoint(
+      uint32_t checkpoint_id) const;
+  ::rust::Box<CheckpointsResultWrapper> GetCheckpoints(size_t limit) const;
 
  private:
   std::unique_ptr<OrchardShardTreeDelegate> delegate_;

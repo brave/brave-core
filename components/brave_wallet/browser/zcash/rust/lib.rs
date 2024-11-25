@@ -66,7 +66,6 @@ use crate::ffi::{
     OrchardOutput,
     OrchardSpend,
     ShardTreeDelegate,
-    ShardStoreStatusCode,
     ShardTreeAddress,
     ShardTreeCap,
     ShardTreeCheckpoint,
@@ -248,13 +247,6 @@ mod ffi {
         commitments: Vec<ShardTreeLeaf>
     }
 
-    #[repr(u32)]
-    enum ShardStoreStatusCode {
-        Ok = 0,
-        None = 1,
-        Error = 2
-    }
-
     #[derive(Default)]
     struct ShardTreeAddress {
         level: u8,
@@ -303,6 +295,15 @@ mod ffi {
         type BatchOrchardDecodeBundleResult;
         type OrchardTestingShardTreeBundleResult;
         type OrchardShardTreeBundleResult;
+
+        type ShardTreeShardResultWrapper;
+        type BoolResultWrapper;
+        type ShardTreeCapResultWrapper;
+        type CheckpointIdResultWrapper;
+        type CheckpointBundleResultWrapper;
+        type CheckpointCountResultWrapper;
+        type CheckpointsResultWrapper;
+        type ShardRootsResultWrapper;
 
         // OsRng is used
         fn create_orchard_bundle(
@@ -440,6 +441,33 @@ mod ffi {
             prior_tree_state: ShardTreeState,
             commitments: ShardTreeLeafs) -> Box<BatchOrchardDecodeBundleResult>;
 
+        fn wrap_shard_tree_shard(item: ShardTreeShard) -> Box<ShardTreeShardResultWrapper>;
+        fn wrap_shard_tree_error()-> Box<ShardTreeShardResultWrapper>;
+        fn wrap_shard_tree_none()-> Box<ShardTreeShardResultWrapper>;
+
+        fn wrap_bool(item : bool) -> Box<BoolResultWrapper>;
+        fn wrap_bool_error() -> Box<BoolResultWrapper>;
+
+        fn wrap_shard_tree_cap(item :ShardTreeCap) -> Box<ShardTreeCapResultWrapper>;
+        fn wrap_shard_tree_cap_error() -> Box<ShardTreeCapResultWrapper>;
+        fn wrap_shard_tree_cap_none() -> Box<ShardTreeCapResultWrapper>;
+
+        fn wrap_checkpoint_id(item : u32) -> Box<CheckpointIdResultWrapper>;
+        fn wrap_checkpoint_id_error() -> Box<CheckpointIdResultWrapper>;
+        fn wrap_checkpoint_id_none() -> Box<CheckpointIdResultWrapper>;
+
+        fn wrap_checkpoint_bundle(item: ShardTreeCheckpointBundle) -> Box<CheckpointBundleResultWrapper>;
+        fn wrap_checkpoint_bundle_error() -> Box<CheckpointBundleResultWrapper>;
+        fn wrap_checkpoint_bundle_none() -> Box<CheckpointBundleResultWrapper>;
+
+        fn wrap_checkpoint_count(item: usize) -> Box<CheckpointCountResultWrapper>;
+        fn wrap_checkpoint_count_error() -> Box<CheckpointCountResultWrapper>;
+
+        fn wrap_checkpoints(item: Vec<ShardTreeCheckpointBundle>) -> Box<CheckpointsResultWrapper>;
+        fn wrap_checkpoints_error() -> Box<CheckpointsResultWrapper>;
+
+        fn wrap_shard_tree_roots(item: Vec<ShardTreeAddress>) -> Box<ShardRootsResultWrapper>;
+        fn wrap_shard_roots_error() -> Box<ShardRootsResultWrapper>;
     }
 
     unsafe extern "C++" {
@@ -448,59 +476,52 @@ mod ffi {
         type ShardTreeDelegate;
 
         fn LastShard(
-            &self, into: &mut ShardTreeShard, shard_level: u8) -> ShardStoreStatusCode;
+            &self, shard_level: u8) -> Box<ShardTreeShardResultWrapper>;
         fn GetShard(
             &self,
-            addr: &ShardTreeAddress,
-            tree: &mut ShardTreeShard) -> ShardStoreStatusCode;
+            addr: &ShardTreeAddress)-> Box<ShardTreeShardResultWrapper>;
         fn PutShard(
             &self,
-            tree: &ShardTreeShard) -> ShardStoreStatusCode;
+            tree: &ShardTreeShard) ->  Box<BoolResultWrapper>;
         fn GetShardRoots(
-            &self, into: &mut Vec<ShardTreeAddress>, shard_level: u8) -> ShardStoreStatusCode;
+            &self, shard_level: u8) -> Box<ShardRootsResultWrapper>;
         fn Truncate(
             &self,
-            address: &ShardTreeAddress) -> ShardStoreStatusCode;
+            address: &ShardTreeAddress) ->  Box<BoolResultWrapper>;
         fn GetCap(
-            &self,
-            into: &mut ShardTreeCap) -> ShardStoreStatusCode;
+            &self) -> Box<ShardTreeCapResultWrapper>;
         fn PutCap(
             &self,
-            tree: &ShardTreeCap) -> ShardStoreStatusCode;
+            tree: &ShardTreeCap) -> Box<BoolResultWrapper>;
         fn MinCheckpointId(
-            &self, into: &mut u32) -> ShardStoreStatusCode;
+            &self) -> Box<CheckpointIdResultWrapper>;
         fn MaxCheckpointId(
-            &self, into: &mut u32) -> ShardStoreStatusCode;
+            &self) -> Box<CheckpointIdResultWrapper>;
         fn AddCheckpoint(
             &self,
             checkpoint_id: u32,
-            checkpoint: &ShardTreeCheckpoint) -> ShardStoreStatusCode;
+            checkpoint: &ShardTreeCheckpoint) -> Box<BoolResultWrapper>;
         fn UpdateCheckpoint(
             &self,
             checkpoint_id: u32,
-            checkpoint: &ShardTreeCheckpoint) -> ShardStoreStatusCode;
+            checkpoint: &ShardTreeCheckpoint) -> Box<BoolResultWrapper>;
         fn CheckpointCount(
-            &self,
-            into: &mut usize) -> ShardStoreStatusCode;
+            &self) -> Box<CheckpointCountResultWrapper>;
         fn CheckpointAtDepth(
             &self,
-            depth: usize,
-            into_checkpoint_id: &mut u32,
-            into_checkpoint: &mut ShardTreeCheckpoint) -> ShardStoreStatusCode;
+            depth: usize) -> Box<CheckpointBundleResultWrapper>;
         fn GetCheckpoint(
             &self,
-            checkpoint_id: u32,
-            into: &mut ShardTreeCheckpoint) -> ShardStoreStatusCode;
+            checkpoint_id: u32) -> Box<CheckpointBundleResultWrapper>;
         fn RemoveCheckpoint(
             &self,
-            checkpoint_id: u32) -> ShardStoreStatusCode;
+            checkpoint_id: u32) -> Box<BoolResultWrapper>;
         fn TruncateCheckpoint(
             &self,
-            checkpoint_id: u32) -> ShardStoreStatusCode;
+            checkpoint_id: u32) -> Box<BoolResultWrapper>;
         fn GetCheckpoints(
             &self,
-            limit: usize,
-            into: &mut Vec<ShardTreeCheckpointBundle>) -> ShardStoreStatusCode;
+            limit: usize) -> Box<CheckpointsResultWrapper>;
     }
 
 }
@@ -635,6 +656,104 @@ impl_result!(BatchOrchardDecodeBundle, BatchOrchardDecodeBundleResult, BatchOrch
 impl_result!(OrchardShardTreeBundle, OrchardShardTreeBundleResult, OrchardShardTreeBundleValue);
 impl_result!(OrchardTestingShardTreeBundle, OrchardTestingShardTreeBundleResult, OrchardTestingShardTreeBundleValue);
 impl_result!(OrchardWitnessBundle, OrchardWitnessBundleResult, OrchardWitnessBundleValue);
+
+// Shard store interface results
+struct ShardTreeShardResultWrapper(Result<Option<ShardTreeShard>, Error>);
+struct BoolResultWrapper(Result<bool, Error>);
+struct ShardTreeCapResultWrapper(Result<Option<ShardTreeCap>, Error>);
+struct CheckpointIdResultWrapper(Result<Option<u32>, Error>);
+struct CheckpointBundleResultWrapper(Result<Option<ShardTreeCheckpointBundle>, Error>);
+struct CheckpointsResultWrapper(Result<Vec<ShardTreeCheckpointBundle>, Error>);
+struct ShardRootsResultWrapper(Result<Vec<ShardTreeAddress>, Error>);
+struct CheckpointCountResultWrapper(Result<usize, Error>);
+
+// ShardTreeShard bundle results
+fn wrap_shard_tree_shard(item: ShardTreeShard) -> Box<ShardTreeShardResultWrapper> {
+    Box::new(ShardTreeShardResultWrapper(Ok(Option::Some(item))))
+}
+
+fn wrap_shard_tree_error()-> Box<ShardTreeShardResultWrapper> {
+    Box::new(ShardTreeShardResultWrapper(Err(Error::ShardStoreError)))
+}
+
+fn wrap_shard_tree_none()-> Box<ShardTreeShardResultWrapper> {
+    Box::new(ShardTreeShardResultWrapper(Ok(Option::None)))
+}
+
+// Bool results
+fn wrap_bool(item : bool) -> Box<BoolResultWrapper> {
+    Box::new(BoolResultWrapper(Ok(item)))
+}
+
+fn wrap_bool_error() -> Box<BoolResultWrapper> {
+    Box::new(BoolResultWrapper(Err(Error::ShardStoreError)))
+}
+
+// Shard tree cap results
+fn wrap_shard_tree_cap(item :ShardTreeCap) -> Box<ShardTreeCapResultWrapper> {
+    Box::new(ShardTreeCapResultWrapper(Ok(Some(item))))
+}
+
+fn wrap_shard_tree_cap_error() -> Box<ShardTreeCapResultWrapper> {
+    Box::new(ShardTreeCapResultWrapper(Err(Error::ShardStoreError)))
+}
+
+fn wrap_shard_tree_cap_none() -> Box<ShardTreeCapResultWrapper> {
+    Box::new(ShardTreeCapResultWrapper(Ok(Option::None)))
+}
+
+// CheckpointId results
+fn wrap_checkpoint_id(item : u32) -> Box<CheckpointIdResultWrapper> {
+    Box::new(CheckpointIdResultWrapper(Ok(Option::Some(item))))
+}
+
+fn wrap_checkpoint_id_error() -> Box<CheckpointIdResultWrapper> {
+    Box::new(CheckpointIdResultWrapper(Err(Error::ShardStoreError)))
+}
+
+fn wrap_checkpoint_id_none() -> Box<CheckpointIdResultWrapper> {
+    Box::new(CheckpointIdResultWrapper(Ok(Option::None)))
+}
+
+// Checkpoint bundle result
+fn wrap_checkpoint_bundle(item: ShardTreeCheckpointBundle) -> Box<CheckpointBundleResultWrapper> {
+    Box::new(CheckpointBundleResultWrapper(Ok(Option::Some(item))))
+}
+
+fn wrap_checkpoint_bundle_error() -> Box<CheckpointBundleResultWrapper> {
+    Box::new(CheckpointBundleResultWrapper(Err(Error::ShardStoreError)))
+}
+
+fn wrap_checkpoint_bundle_none() -> Box<CheckpointBundleResultWrapper> {
+    Box::new(CheckpointBundleResultWrapper(Ok(Option::None)))
+}
+
+// Checkpoint count results
+fn wrap_checkpoint_count(item: usize) -> Box<CheckpointCountResultWrapper> {
+    Box::new(CheckpointCountResultWrapper(Ok(item)))
+}
+
+fn wrap_checkpoint_count_error() -> Box<CheckpointCountResultWrapper> {
+    Box::new(CheckpointCountResultWrapper(Err(Error::ShardStoreError)))
+}
+
+// Checkpoints results
+fn wrap_checkpoints(item: Vec<ShardTreeCheckpointBundle>) -> Box<CheckpointsResultWrapper> {
+    Box::new(CheckpointsResultWrapper(Ok(item)))
+}
+
+fn wrap_checkpoints_error() -> Box<CheckpointsResultWrapper> {
+    Box::new(CheckpointsResultWrapper(Err(Error::ShardStoreError)))
+}
+
+// Shard roots results
+fn wrap_shard_tree_roots(item: Vec<ShardTreeAddress>) -> Box<ShardRootsResultWrapper> {
+    Box::new(ShardRootsResultWrapper(Ok(item)))
+}
+
+fn wrap_shard_roots_error() -> Box<ShardRootsResultWrapper> {
+    Box::new(ShardRootsResultWrapper(Err(Error::ShardStoreError)))
+}
 
 fn generate_orchard_extended_spending_key_from_seed(
     bytes: &[u8]
@@ -1250,82 +1369,82 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         &self,
         addr: Address,
     ) -> Result<Option<LocatedPrunableTree<Self::H>>, Self::Error> {
-        let mut into = ShardTreeShard::default();
-        let result = self.delegate.GetShard(
-            &ShardTreeAddress::try_from(&addr).map_err(|_| Error::ShardStoreError)?,
-            &mut into);
-        if result == ShardStoreStatusCode::Ok {
-            let tree = LocatedPrunableTree::<H>::try_from(&into)?;
-            return Ok(Some(tree));
-        } else if result == ShardStoreStatusCode::None {
-            return Ok(Option::None);
-        } else {
+        let result = *self.delegate.GetShard(
+            &ShardTreeAddress::try_from(&addr).map_err(|_| Error::ShardStoreError)?);
+        if result.0.is_err() {
             return Err(Error::ShardStoreError);
+        }
+        match result.0.unwrap() {
+            Some(shard) => {
+                let tree = LocatedPrunableTree::<H>::try_from(&shard)?;
+                return Ok(Some(tree));
+            },
+            None => {
+                return Ok(Option::None);
+            }
         }
     }
 
     fn last_shard(&self) -> Result<Option<LocatedPrunableTree<Self::H>>, Self::Error> {
-        let mut into = ShardTreeShard::default();
-        let result =
-            self.delegate.LastShard(&mut into, SHARD_HEIGHT);
-        if result == ShardStoreStatusCode::Ok {
-            let tree = LocatedPrunableTree::<H>::try_from(&into)?;
-            return Ok(Some(tree));
-        } else if result == ShardStoreStatusCode::None {
-            return Ok(Option::None);
-        } else {
+        let result : ShardTreeShardResultWrapper = *self.delegate.LastShard(SHARD_HEIGHT);
+        if result.0.is_err() {
             return Err(Error::ShardStoreError);
+        }
+        match result.0.unwrap() {
+            Some(shard) => {
+                let tree = LocatedPrunableTree::<H>::try_from(&shard)?;
+                return Ok(Some(tree));
+            },
+            None => {
+                return Ok(Option::None);
+            }
         }
     }
 
     fn put_shard(&mut self, subtree: LocatedPrunableTree<Self::H>) -> Result<(), Self::Error> {
         let shard = ShardTreeShard::try_from(&subtree).map_err(|_| Error::ShardStoreError)?;
         let result =
-            self.delegate.PutShard(&shard);
-        if result == ShardStoreStatusCode::Ok {
-          return Ok(());
+            *self.delegate.PutShard(&shard);
+        if result.0.is_err() {
+          return Err(Error::ShardStoreError);
         }
-        return Err(Error::ShardStoreError);
+        Ok(())
     }
 
     fn get_shard_roots(&self) -> Result<Vec<Address>, Self::Error> {
-        let mut input : Vec<ShardTreeAddress> = vec![];
-        let result = self.delegate.GetShardRoots(&mut input, SHARD_HEIGHT);
-        if result == ShardStoreStatusCode::Ok {
-          return Ok(input.into_iter().map(|res| {
-            Address::from_parts(res.level.into(), res.index.into())
-          }).collect())
-        } else if result == ShardStoreStatusCode::None {
-          return Ok(vec![])
-        } else {
-          return Err(Error::ShardStoreError)
+        let result = *self.delegate.GetShardRoots(SHARD_HEIGHT);
+        if result.0.is_err() {
+            return Err(Error::ShardStoreError);
         }
+        return Ok(result.0.unwrap().into_iter().map(
+            |addr| Address::from_parts(addr.level.into(), addr.index.into())).collect());
     }
 
     fn truncate(&mut self, from: Address) -> Result<(), Self::Error> {
         let result =
-            self.delegate.Truncate(
+            *self.delegate.Truncate(
           &ShardTreeAddress::try_from(&from).map_err(|_| Error::ShardStoreError)?);
-        if result == ShardStoreStatusCode::Ok || result == ShardStoreStatusCode::None {
-          return Ok(());
-        } else {
+        if result.0.is_err() {
           return Err(Error::ShardStoreError)
         }
+        Ok(())
     }
 
     fn get_cap(&self) -> Result<PrunableTree<Self::H>, Self::Error> {
-        let mut input = ShardTreeCap::default();
-        let result =
-            self.delegate.GetCap(&mut input);
+        let result = *self.delegate.GetCap();
 
-        if result == ShardStoreStatusCode::Ok {
-            let tree = PrunableTree::<H>::try_from(&input)?;
-            return Ok(tree)
-        } else
-        if result == ShardStoreStatusCode::None {
-            return Ok(PrunableTree::empty());
-        } else {
+        if result.0.is_err() {
             return Err(Error::ShardStoreError);
+        }
+
+        match result.0.unwrap() {
+            Some(cap) => {
+                let tree = PrunableTree::<H>::try_from(&cap)?;
+                return Ok(tree)
+            },
+            None => {
+                return Ok(PrunableTree::empty());
+            }
         }
     }
 
@@ -1333,35 +1452,41 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         let mut result_cap = ShardTreeCap::default();
         write_shard(&mut result_cap.data, &cap).map_err(|_| Error::ShardStoreError)?;
 
-        let result =
-        self.delegate.PutCap(&result_cap);
-        if result == ShardStoreStatusCode::Ok {
-            return Ok(());
+        let result = *self.delegate.PutCap(&result_cap);
+        if result.0.is_err() {
+          return Err(Error::ShardStoreError);
         }
-        return Err(Error::ShardStoreError);
+        Ok(())
     }
 
     fn min_checkpoint_id(&self) -> Result<Option<Self::CheckpointId>, Self::Error> {
-        let mut input : u32 = 0;
-        let result =
-            self.delegate.MinCheckpointId(&mut input);
-        if result == ShardStoreStatusCode::Ok {
-            return Ok(Some(input.into()));
-        } else if result == ShardStoreStatusCode::None {
-            return Ok(Option::None);
+        let result = *self.delegate.MinCheckpointId();
+        if result.0.is_err() {
+            return Err(Error::ShardStoreError);
         }
-        return Err(Error::ShardStoreError);
+        match result.0.unwrap() {
+            Some(checkpoint_id) => {
+                return Ok(Some(checkpoint_id.into()));
+            },
+            None => {
+                return Ok(Option::None);
+            }
+        }
     }
 
     fn max_checkpoint_id(&self) -> Result<Option<Self::CheckpointId>, Self::Error> {
-        let mut input : u32 = 0;
-        let result = self.delegate.MaxCheckpointId(&mut input);
-        if result == ShardStoreStatusCode::Ok {
-            return Ok(Some(input.into()));
-        } else if result == ShardStoreStatusCode::None {
-            return Ok(Option::None);
+        let result = *self.delegate.MaxCheckpointId();
+        if result.0.is_err() {
+            return Err(Error::ShardStoreError);
         }
-        return Err(Error::ShardStoreError);
+        match result.0.unwrap() {
+            Some(checkpoint_id) => {
+                return Ok(Some(checkpoint_id.into()));
+            },
+            None => {
+                return Ok(Option::None);
+            }
+        }
     }
 
     fn add_checkpoint(
@@ -1370,80 +1495,79 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
         checkpoint: Checkpoint,
     ) -> Result<(), Self::Error> {
         let ffi_checkpoint_id : u32 = checkpoint_id.try_into().map_err(|_| Error::ShardStoreError)?;
-        let result = self.delegate.AddCheckpoint(
+        let result = *self.delegate.AddCheckpoint(
             ffi_checkpoint_id,
             &ShardTreeCheckpoint::try_from(&checkpoint)?);
-        if result == ShardStoreStatusCode::Ok {
-          return Ok(());
+        if result.0.is_err() {
+          return Err(Error::ShardStoreError);
         }
-        return Err(Error::ShardStoreError);
+        Ok(())
     }
 
     fn checkpoint_count(&self) -> Result<usize, Self::Error> {
-        let mut input : usize = 0;
-        let result = self.delegate.CheckpointCount(&mut input);
-        if result == ShardStoreStatusCode::Ok {
-            return Ok(input.into());
-        } else if result == ShardStoreStatusCode::None {
-            return Ok(0);
+        let result = *self.delegate.CheckpointCount();
+        if result.0.is_err() {
+            return Err(Error::ShardStoreError);
         }
-        return Err(Error::ShardStoreError);
+        Ok(result.0.unwrap())
     }
 
     fn get_checkpoint_at_depth(
         &self,
         checkpoint_depth: usize,
     ) -> Result<Option<(Self::CheckpointId, Checkpoint)>, Self::Error> {
-        let mut input_checkpoint_id : u32 = 0;
-        let mut input_checkpoint : ShardTreeCheckpoint = ShardTreeCheckpoint::default();
+        let result = *self.delegate.CheckpointAtDepth(
+            checkpoint_depth);
 
-        let result = self.delegate.CheckpointAtDepth(
-            checkpoint_depth,
-            &mut input_checkpoint_id,
-            &mut input_checkpoint);
-
-        if result == ShardStoreStatusCode::Ok {
-            return Ok(Some((BlockHeight::from(input_checkpoint_id), Checkpoint::from(&input_checkpoint))));
-        } else if result == ShardStoreStatusCode::None {
-            return Ok(Option::None);
+        if result.0.is_err() {
+            return Err(Error::ShardStoreError);
         }
-        return Ok(Option::None);
+
+        match result.0.unwrap() {
+            Some(checkpoint_bundle) => {
+                return Ok(Some((BlockHeight::from(checkpoint_bundle.checkpoint_id), Checkpoint::from(&checkpoint_bundle.checkpoint))));
+            },
+            None => {
+                return Ok(Option::None);
+            }
+        }
     }
 
     fn get_checkpoint(
         &self,
         checkpoint_id: &Self::CheckpointId,
     ) -> Result<Option<Checkpoint>, Self::Error> {
-        let mut input_checkpoint : ShardTreeCheckpoint = ShardTreeCheckpoint::default();
-
-        let result = self.delegate.GetCheckpoint(
-            (*checkpoint_id).into(),
-            &mut input_checkpoint);
-
-        if result == ShardStoreStatusCode::Ok {
-            return Ok(Some(Checkpoint::from(&input_checkpoint)));
-        } else if result == ShardStoreStatusCode::None {
-            return Ok(Option::None);
+        let result = *self.delegate.GetCheckpoint(
+            (*checkpoint_id).into());
+        
+        if result.0.is_err() {
+            return Err(Error::ShardStoreError);
         }
-        return Ok(Option::None);
+
+        match result.0.unwrap() {
+            Some(checkpoint) => {
+                return Ok(Some(Checkpoint::from(&checkpoint.checkpoint)));
+            },
+            None => {
+                return Ok(Option::None);
+            }
+        }
     }
 
     fn with_checkpoints<F>(&mut self, limit: usize, mut callback: F) -> Result<(), Self::Error>
     where
         F: FnMut(&Self::CheckpointId, &Checkpoint) -> Result<(), Self::Error>,
     {
-        let mut into : Vec<ShardTreeCheckpointBundle> = vec![];
-        let result = self.delegate.GetCheckpoints(limit, &mut into);
-        if result == ShardStoreStatusCode::Ok {
-            for item in into {
-                let checkpoint = Checkpoint::from(&item.checkpoint);
-                callback(&BlockHeight::from(item.checkpoint_id), &checkpoint).map_err(|_| Error::ShardStoreError)?;
-            }
-            return Ok(())
-        } else if result == ShardStoreStatusCode::None {
-            return Ok(())
+        let result = *self.delegate.GetCheckpoints(limit);
+        if result.0.is_err() {
+            return Err(Error::ShardStoreError);
         }
-        Err(Error::ShardStoreError)
+
+        for item in result.0.unwrap() {
+            let checkpoint = Checkpoint::from(&item.checkpoint);
+            callback(&BlockHeight::from(item.checkpoint_id), &checkpoint).map_err(|_| Error::ShardStoreError)?;
+        }
+        return Ok(())
     }
 
     fn update_checkpoint_with<F>(
@@ -1454,52 +1578,45 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     where
         F: Fn(&mut Checkpoint) -> Result<(), Self::Error>,
     {
-        let mut input_checkpoint = ShardTreeCheckpoint::default();
         let result_get_checkpoint =
-            self.delegate.GetCheckpoint((*checkpoint_id).into(), &mut input_checkpoint);
-        if result_get_checkpoint == ShardStoreStatusCode::Ok {
-            return Ok(true);
-        } else if result_get_checkpoint == ShardStoreStatusCode::None {
+            self.delegate.GetCheckpoint((*checkpoint_id).into());
+        if result_get_checkpoint.0.is_err() {
+            return Err(Error::ShardStoreError);
+        }
+        if result_get_checkpoint.0.as_ref().unwrap().is_none() {
             return Ok(false);
         }
 
-        let mut checkpoint = Checkpoint::from(&input_checkpoint);
+        let mut checkpoint = Checkpoint::from(&result_get_checkpoint.0.unwrap().unwrap().checkpoint);
 
         update(&mut checkpoint).map_err(|_| Error::ShardStoreError)?;
         let result_update_checkpoint =
-        self.delegate.UpdateCheckpoint(
+        *self.delegate.UpdateCheckpoint(
                 (*checkpoint_id).into(), &ShardTreeCheckpoint::try_from(&checkpoint)?);
-        if result_update_checkpoint == ShardStoreStatusCode::Ok {
-            return Ok(true);
-        } else if result_update_checkpoint == ShardStoreStatusCode::None {
-            return Ok(false);
+        if result_update_checkpoint.0.is_err() {
+            return Err(Error::ShardStoreError);
         }
-        return Err(Error::ShardStoreError);
+
+        Ok(result_update_checkpoint.0.unwrap())
     }
 
     fn remove_checkpoint(&mut self, checkpoint_id: &Self::CheckpointId) -> Result<(), Self::Error> {
-        let result =
-        self.delegate.RemoveCheckpoint((*checkpoint_id).into());
-        if result == ShardStoreStatusCode::Ok {
-            return Ok(());
-        } else if result == ShardStoreStatusCode::None {
-            return Ok(());
+        let result = *self.delegate.RemoveCheckpoint((*checkpoint_id).into());
+        if result.0.is_err() {
+          return Err(Error::ShardStoreError);
         }
-        return Err(Error::ShardStoreError);
+        Ok(())
     }
 
     fn truncate_checkpoints(
         &mut self,
         checkpoint_id: &Self::CheckpointId,
     ) -> Result<(), Self::Error> {
-        let result =
-        self.delegate.TruncateCheckpoint ((*checkpoint_id).into());
-        if result == ShardStoreStatusCode::Ok {
-            return Ok(());
-        } else if result == ShardStoreStatusCode::None {
-            return Ok(());
+        let result = *self.delegate.TruncateCheckpoint ((*checkpoint_id).into());
+        if result.0.is_err() {
+          return Err(Error::ShardStoreError);
         }
-        return Err(Error::ShardStoreError);
+        Ok(())
     }
 }
 
