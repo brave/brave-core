@@ -467,21 +467,16 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithContent) {
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
   auto client2 = CreateConversationClient(conversation_with_content);
   DisconnectConversationClient(client2.get());
+  // Disconnecting all clients should keep the handler in memory until
+  // the content is destroyed.
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+  ExpectVisibleConversationsSize(FROM_HERE, 1u);
+  associated_content.DisassociateWithConversations("", false);
 
   if (IsAIChatHistoryEnabled()) {
-    // Disconnecting all clients should delete the handler until because it
-    // can be reloaded from storage.
-    EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
-    ExpectVisibleConversationsSize(FROM_HERE, 1u);
-    associated_content.DisassociateWithConversations("", false);
     EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
     ExpectVisibleConversationsSize(FROM_HERE, 1u);
   } else {
-    // Disconnecting all clients should keep the handler in memory until
-    // the content is destroyed.
-    EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
-    ExpectVisibleConversationsSize(FROM_HERE, 1u);
-    associated_content.DisassociateWithConversations("", false);
     EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 0u);
     ExpectVisibleConversationsSize(FROM_HERE, 0u);
   }

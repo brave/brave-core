@@ -390,6 +390,9 @@ void ConversationHandler::OnAssociatedContentDestroyed(
   // fetch. It may be populated later, e.g. through back navigation.
   // If this conversation is allowed to be associated with content, we can keep
   // using our current cached content.
+  auto content_id = associated_content_delegate_
+                        ? associated_content_delegate_->GetContentId()
+                        : -1;
   DisassociateContentDelegate();
   if (!chat_history_.empty() && should_send_page_contents_ &&
       metadata_->associated_content &&
@@ -403,7 +406,7 @@ void ConversationHandler::OnAssociatedContentDestroyed(
   OnAssociatedContentInfoChanged();
   // Notify observers
   for (auto& observer : observers_) {
-    observer.OnAssociatedContentDestroyed(this);
+    observer.OnAssociatedContentDestroyed(this, content_id);
   }
 }
 

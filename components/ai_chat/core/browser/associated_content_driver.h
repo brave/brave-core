@@ -145,6 +145,12 @@ class AssociatedContentDriver
       ConversationHandler::GetStagedEntriesCallback callback,
       int64_t navigation_id,
       api_request_helper::APIRequestResult result);
+
+  // Let all conversations using this content know that the content
+  // has been destroyed or changed to represent different content (e.g. a
+  // navigation).
+  void DisassociateWithConversations();
+
   static std::optional<std::vector<SearchQuerySummary>>
   ParseSearchQuerySummaryResponse(const base::Value& value);
 
