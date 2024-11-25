@@ -37,11 +37,11 @@ std::string GetServicesDomainForSwitchValue(std::string env_from_switch) {
 }
 
 bool IsValidSwitchValue(std::string value) {
-  static const auto kAllowedSwitchValues =
+  static constexpr auto kAllowedSwitchValues =
       base::MakeFixedFlatSet<std::string_view>(
           {kBraveServicesSwitchValueDev, kBraveServicesSwitchValueStaging,
            kBraveServicesSwitchValueProduction});
-  return base::Contains(kAllowedSwitchValues, value);
+  return kAllowedSwitchValues.contains(value);
 }
 
 void MaybeWarnSwitchValue(std::string key, std::string value) {

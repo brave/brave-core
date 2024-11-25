@@ -48,9 +48,6 @@ EthereumRemoteClientService::EthereumRemoteClientService(
 
 EthereumRemoteClientService::~EthereumRemoteClientService() = default;
 
-const size_t EthereumRemoteClientService::kNonceByteLength = 12;
-const size_t EthereumRemoteClientService::kSeedByteLength = 32;
-
 // Returns 32 bytes of output from HKDF-SHA256.
 // This is done so that ethereum-remote-client never actually directly has
 // access to the master seed, but it does have a deterministic seed.

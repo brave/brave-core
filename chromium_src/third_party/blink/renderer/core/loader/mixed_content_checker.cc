@@ -27,8 +27,7 @@ String GetHost(const KURL& obj) {
 
 template <typename T>
 bool IsOnion(const T& obj) {
-  constexpr const char kOnion[] = ".onion";
-  return GetHost(obj).EndsWith(kOnion) &&
+  return GetHost(obj).EndsWith(".onion") &&
          (obj.Protocol() == url::kHttpsScheme ||
           obj.Protocol() == url::kHttpScheme ||
           obj.Protocol() == url::kWsScheme ||

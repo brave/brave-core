@@ -33,7 +33,7 @@ struct ResourceRequest;
 namespace ai_chat {
 
 namespace {
-constexpr const char kYouTubePlayerAPIPath[] = "/youtubei/v1/player";
+constexpr char kYouTubePlayerAPIPath[] = "/youtubei/v1/player";
 }
 
 AIChatResourceSniffer::AIChatResourceSniffer(

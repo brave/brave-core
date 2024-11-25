@@ -11,8 +11,8 @@
 namespace brave_rewards::internal {
 namespace publisher {
 
-extern const size_t kMinPrefixSize;
-extern const size_t kMaxPrefixSize;
+inline constexpr size_t kMinPrefixSize = 4;
+inline constexpr size_t kMaxPrefixSize = 32;
 
 // Returns a hash prefix for the specified publisher key
 std::string GetHashPrefixRaw(const std::string& publisher_key,
