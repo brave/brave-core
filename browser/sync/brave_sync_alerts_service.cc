@@ -6,7 +6,7 @@
 #include "brave/browser/sync/brave_sync_alerts_service.h"
 
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
-#include "brave/components/sync/service/brave_sync_service_impl.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -19,13 +19,10 @@
 #include "chrome/browser/ui/browser.h"
 #endif
 
-using syncer::BraveSyncServiceImpl;
-
 BraveSyncAlertsService::BraveSyncAlertsService(Profile* profile)
     : profile_(profile) {
   if (SyncServiceFactory::IsSyncAllowed(profile)) {
-    BraveSyncServiceImpl* service = static_cast<BraveSyncServiceImpl*>(
-        SyncServiceFactory::GetForProfile(profile_));
+    syncer::SyncService* service = SyncServiceFactory::GetForProfile(profile_);
 
     if (service) {
       DCHECK(!sync_service_observer_.IsObservingSource(service));

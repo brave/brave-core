@@ -123,7 +123,7 @@ class BraveTabContainer : public TabContainerImpl,
 
   base::flat_set<Tab*> closing_tabs_;
 
-  raw_ptr<TabDragContext> drag_context_;
+  raw_ptr<TabDragContextBase> drag_context_;
 
   // A pointer storing the global tab style to be used.
   const raw_ptr<const TabStyle> tab_style_;
