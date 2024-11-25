@@ -431,8 +431,9 @@ Config.prototype.buildArgs = function () {
     generate_about_credits: true,
   }
 
+  const danglingPtrEnabledPlatforms = ['android', 'linux']
 
-  if (this.getTargetOS() !== 'linux') {
+  if (!danglingPtrEnabledPlatforms.includes(this.getTargetOS())) {
     // We explicitly disabled the check for certain other OSes, while leaving
     // it as whatever is the default on the ones we've managed to get the
     // detector properly running.
