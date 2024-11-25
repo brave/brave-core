@@ -176,9 +176,23 @@ public class PlaylistManager: NSObject {
     return nil
   }
 
-  public func assetAtIndex(_ index: Int) -> AVURLAsset? {
+  @available(*, deprecated, renamed: "assetAtIndex(_:)", message: "Use async version")
+  public func assetAtIndexSynchronous(_ index: Int) -> AVURLAsset? {
     if let item = itemAtIndex(index) {
-      return asset(for: item.tagId, mediaSrc: item.src)
+      return assetSynchronous(for: item.tagId, mediaSrc: item.src)
+    }
+    return nil
+  }
+
+  public func assetAtIndex(_ index: Int) async -> AVURLAsset? {
+    let data: (tagId: String, src: String)? = await MainActor.run {
+      if let item = itemAtIndex(index) {
+        return (item.tagId, item.src)
+      }
+      return nil
+    }
+    if let data = data {
+      return await asset(for: data.tagId, mediaSrc: data.src)
     }
     return nil
   }
@@ -224,13 +238,28 @@ public class PlaylistManager: NSObject {
     }
   }
 
+  @available(*, deprecated, renamed: "downloadState(for:)", message: "Use async version")
   public func state(for itemId: String) -> PlaylistDownloadManager.DownloadState {
     if downloadManager.downloadTask(for: itemId) != nil {
       return .inProgress
     }
 
-    if let assetUrl = downloadManager.localAsset(for: itemId)?.url {
+    if let assetUrl = downloadManager.localAssetSynchronous(for: itemId)?.url {
       if FileManager.default.fileExists(atPath: assetUrl.path) {
+        return .downloaded
+      }
+    }
+
+    return .invalid
+  }
+
+  public func downloadState(for itemId: String) async -> PlaylistDownloadManager.DownloadState {
+    if downloadManager.downloadTask(for: itemId) != nil {
+      return .inProgress
+    }
+
+    if let assetUrl = await downloadManager.localAsset(for: itemId)?.url {
+      if await AsyncFileManager.default.fileExists(atPath: assetUrl.path) {
         return .downloaded
       }
     }
@@ -241,7 +270,7 @@ public class PlaylistManager: NSObject {
   @available(iOS, deprecated)
   public func sizeOfDownloadedItemSynchronous(for itemId: String) -> String? {
     var isDirectory: ObjCBool = false
-    if let asset = downloadManager.localAsset(for: itemId),
+    if let asset = downloadManager.localAssetSynchronous(for: itemId),
       FileManager.default.fileExists(atPath: asset.url.path, isDirectory: &isDirectory)
     {
 
@@ -651,12 +680,25 @@ public class PlaylistManager: NSObject {
 }
 
 extension PlaylistManager {
-  private func asset(for itemId: String, mediaSrc: String) -> AVURLAsset {
+  @available(*, deprecated, renamed: "asset(for:mediaSrc:)", message: "Use async version")
+  private func assetSynchronous(for itemId: String, mediaSrc: String) -> AVURLAsset {
     if let task = downloadManager.downloadTask(for: itemId) {
       return task.asset
     }
 
-    if let asset = downloadManager.localAsset(for: itemId) {
+    if let asset = downloadManager.localAssetSynchronous(for: itemId) {
+      return asset
+    }
+
+    return AVURLAsset(url: URL(string: mediaSrc)!, options: AVAsset.defaultOptions)
+  }
+
+  private func asset(for itemId: String, mediaSrc: String) async -> AVURLAsset {
+    if let task = downloadManager.downloadTask(for: itemId) {
+      return task.asset
+    }
+
+    if let asset = await downloadManager.localAsset(for: itemId) {
       return asset
     }
 
@@ -733,6 +775,12 @@ extension PlaylistManager {
     item: PlaylistInfo,
     _ completion: @escaping (TimeInterval?) -> Void
   ) {
+    Task { @MainActor in
+      completion(await fetchAssetDuration(item: item))
+    }
+  }
+
+  @MainActor private func fetchAssetDuration(item: PlaylistInfo) async -> TimeInterval? {
     let tolerance: Double = 0.00001
     let distance = abs(item.duration.distance(to: 0.0))
 
@@ -740,29 +788,26 @@ extension PlaylistManager {
     if item.duration.isInfinite
       || abs(item.duration.distance(to: TimeInterval.greatestFiniteMagnitude)) < tolerance
     {
-      completion(TimeInterval.infinity)
-      return
+      return TimeInterval.infinity
     }
 
     // If the database duration is 0.0
     if distance >= tolerance {
       // Return the database duration
-      completion(item.duration)
-      return
+      return item.duration
     }
 
     // Attempt to retrieve the duration from the Asset file
     let asset: AVURLAsset
     if item.src.isEmpty || item.pageSrc.isEmpty {
-      if let index = index(of: item.tagId), let urlAsset = assetAtIndex(index) {
+      if let index = index(of: item.tagId), let urlAsset = await assetAtIndex(index) {
         asset = urlAsset
       } else {
         // Return the database duration
-        completion(item.duration)
-        return
+        return item.duration
       }
     } else {
-      asset = self.asset(for: item.tagId, mediaSrc: item.src)
+      asset = await self.asset(for: item.tagId, mediaSrc: item.src)
     }
 
     // Accessing tracks blocks the main-thread if not already loaded
@@ -776,11 +821,10 @@ extension PlaylistManager {
           ?? asset.tracks(withMediaType: .audio).first
       {
         if track.timeRange.duration.isIndefinite {
-          completion(TimeInterval.infinity)
+          return TimeInterval.infinity
         } else {
-          completion(track.timeRange.duration.seconds)
+          return track.timeRange.duration.seconds
         }
-        return
       }
     }
 
@@ -790,86 +834,49 @@ extension PlaylistManager {
     if durationStatus == .loaded {
       // If it's live/indefinite
       if asset.duration.isIndefinite {
-        completion(TimeInterval.infinity)
-        return
+        return TimeInterval.infinity
       }
 
       // If it's a valid duration
       if abs(asset.duration.seconds.distance(to: 0.0)) >= tolerance {
-        completion(asset.duration.seconds)
-        return
+        return asset.duration.seconds
       }
     }
 
     switch Reach().connectionStatus() {
     case .offline, .unknown:
-      completion(item.duration)  // Return the database duration
-      return
+      return item.duration  // Return the database duration
     case .online:
       break
     }
 
+    assetInformation.append(PlaylistAssetFetcher(itemId: item.tagId, asset: asset))
     // We can't get the duration synchronously so we need to let the AVAsset load the media item
     // and hopefully we get a valid duration from that.
-    DispatchQueue.global(qos: .userInitiated).async {
-      asset.loadValuesAsynchronously(forKeys: ["playable", "tracks", "duration"]) {
-        var error: NSError?
-        let trackStatus = asset.statusOfValue(forKey: "tracks", error: &error)
-        if let error = error {
-          Logger.module.error("AVAsset.statusOfValue error occurred: \(error.localizedDescription)")
-        }
-
-        let durationStatus = asset.statusOfValue(forKey: "tracks", error: &error)
-        if let error = error {
-          Logger.module.error("AVAsset.statusOfValue error occurred: \(error.localizedDescription)")
-        }
-
-        if trackStatus == .cancelled || durationStatus == .cancelled {
-          Logger.module.error("Asset Duration Fetch Cancelled")
-
-          DispatchQueue.main.async {
-            completion(nil)
-          }
-          return
-        }
-
-        if trackStatus == .failed && durationStatus == .failed, let error = error {
-          if error.code == NSURLErrorNoPermissionsToReadFile {
-            // Media item is expired.. permission is denied
-            Logger.module.debug("Playlist Media Item Expired: \(item.pageSrc)")
-
-            DispatchQueue.main.async {
-              completion(nil)
-            }
-          } else {
-            Logger.module.error(
-              "An unknown error occurred while attempting to fetch track and duration information: \(error.localizedDescription)"
-            )
-
-            DispatchQueue.main.async {
-              completion(nil)
-            }
-          }
-
-          return
-        }
-
+    return await Task.detached {
+      do {
+        let (_, loadedTracks, loadedDuration) = try await asset.load(
+          .isPlayable,
+          .tracks,
+          .duration
+        )
         var duration: CMTime = .zero
-        if trackStatus == .loaded {
-          if let track = asset.tracks(withMediaType: .video).first
-            ?? asset.tracks(withMediaType: .audio).first
+        if case .loaded = asset.status(of: .tracks) {
+          if let track = loadedTracks.first(where: { $0.mediaType == .video })
+            ?? loadedTracks.first(where: { $0.mediaType == .audio })
           {
             duration = track.timeRange.duration
           } else {
-            duration = asset.duration
+            duration = loadedDuration
           }
-        } else if durationStatus == .loaded {
-          duration = asset.duration
+        } else {
+          duration = loadedDuration
         }
 
-        DispatchQueue.main.async {
+        // Jump back to main for CoreData
+        return await Task { @MainActor in
           if duration.isIndefinite {
-            completion(TimeInterval.infinity)
+            return TimeInterval.infinity
           } else if abs(duration.seconds.distance(to: 0.0)) > tolerance {
             let newItem = PlaylistInfo(
               name: item.name,
@@ -889,20 +896,32 @@ extension PlaylistManager {
             if PlaylistItem.itemExists(uuid: item.tagId)
               || PlaylistItem.itemExists(pageSrc: item.pageSrc)
             {
-              PlaylistItem.updateItem(newItem) {
-                completion(duration.seconds)
+              await withCheckedContinuation { continuation in
+                PlaylistItem.updateItem(newItem) {
+                  continuation.resume()
+                }
               }
+              return duration.seconds
             } else {
-              completion(duration.seconds)
+              return duration.seconds
             }
           } else {
-            completion(duration.seconds)
+            return duration.seconds
           }
+        }.value
+      } catch {
+        if (error as NSError).code == NSURLErrorNoPermissionsToReadFile {
+          // Media item is expired.. permission is denied
+          await MainActor.run {
+            // Have to jump to main due to access of CoreData
+            Logger.module.debug("Playlist Media Item Expired: \(item.pageSrc)")
+          }
+        } else {
+          Logger.module.error("Failed to load asset details: \(error.localizedDescription)")
         }
+        return nil
       }
-    }
-
-    assetInformation.append(PlaylistAssetFetcher(itemId: item.tagId, asset: asset))
+    }.value
   }
 }
 

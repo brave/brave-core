@@ -127,16 +127,7 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  var duration: ItemDuration {
-    guard let duration = player.currentItem?.asset.duration else { return .unknown }
-    if !duration.isValid {
-      return .unknown
-    }
-    if duration.isIndefinite {
-      return .indefinite
-    }
-    return .seconds(duration.seconds)
-  }
+  @Published private(set) var duration: ItemDuration = .unknown
 
   var currentTimeStream: AsyncStream<TimeInterval> {
     return .init { [weak self] continuation in
@@ -610,6 +601,7 @@ public final class PlayerModel: ObservableObject {
     playImmediately: Bool
   ) async {
     guard let item = selectedItem else { return }
+    duration = .unknown
     var playerItemToReplace: AVPlayerItem?
     if let cachedData = item.cachedData {
       if let cachedDataURL = await PlaylistItem.resolvingCachedData(cachedData) {
@@ -657,6 +649,12 @@ public final class PlayerModel: ObservableObject {
     }
     let resumeFromLastTimePlayed = Preferences.Playlist.playbackLeftOff.value
     if let playerItem = playerItemToReplace {
+      if let (_, _, duration) = try? await playerItem.asset.load(.isPlayable, .tracks, .duration) {
+        self.duration = itemDurationForAssetDuration(duration)
+      }
+      if playImmediately {
+        pause()
+      }
       await updateCurrentItem(playerItem)
       if let initialOffset {
         await seek(to: initialOffset, accurately: true)
@@ -667,6 +665,16 @@ public final class PlayerModel: ObservableObject {
         play()
       }
     }
+  }
+
+  private func itemDurationForAssetDuration(_ duration: CMTime) -> ItemDuration {
+    if !duration.isValid {
+      return .unknown
+    }
+    if duration.isIndefinite {
+      return .indefinite
+    }
+    return .seconds(duration.seconds)
   }
 
   // MARK: -
@@ -1029,6 +1037,10 @@ extension PlayerModel.RepeatMode {
     case .all: return .all
     }
   }
+}
+
+extension PlayerModel {
+  var playerForTesting: AVPlayer { player }
 }
 
 #if DEBUG

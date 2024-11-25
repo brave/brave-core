@@ -155,10 +155,10 @@ struct PlaylistSidebarList: View {
       }
     }
     .frame(maxWidth: .infinity, alignment: .leading)
-    .onAppear {
+    .task {
       for item in items {
         guard let uuid = item.uuid else { continue }
-        downloadStates[uuid] = PlaylistManager.shared.state(for: uuid)
+        downloadStates[uuid] = await PlaylistManager.shared.downloadState(for: uuid)
       }
     }
     .onReceive(PlaylistManager.shared.downloadStateChanged) { output in
