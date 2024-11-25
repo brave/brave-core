@@ -66,10 +66,6 @@ static_library("content") {
   ]
 
   public_deps = [ "//brave/components/brave_rewards/core/engine:headers" ]
-
-  if (is_android) {
-    deps += [ "//brave/components/safetynet:android" ]
-  }
 }
 
 source_set("testutil") {

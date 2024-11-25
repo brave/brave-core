@@ -44,10 +44,7 @@ static_library("browser") {
       "android_brave_referrer.h",
     ]
 
-    deps += [
-      ":jni_headers",
-      "//brave/components/safetynet:android",
-    ]
+    deps += [ ":jni_headers" ]
   }
 }
 
