@@ -50,7 +50,8 @@ export class ModelConfigUI extends ModelConfigUIBase {
         value: ''
       },
       endpointUrl: {
-        type: String
+        type: String,
+        value: ''
       },
       apiKey: {
         type: String,
