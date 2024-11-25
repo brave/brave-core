@@ -129,7 +129,7 @@ public struct AIChatAdvancedSettingsView: View {
     }
 
     // No order found
-    return "None"
+    return Strings.AIChat.subscriptionNoneTitle
   }
 
   private var expirationDateTitle: String {

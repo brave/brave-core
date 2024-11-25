@@ -537,6 +537,13 @@ extension Strings {
       value: "Premium Subscription",
       comment: "Title showing premium subscription - not determined monthly por yearly"
     )
+    public static let subscriptionNoneTitle = NSLocalizedString(
+      "aichat.subscriptionNoneTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "None",
+      comment: "Title showing the user has no subscription."
+    )
     public static let advancedSettingsAutocompleteTitle = NSLocalizedString(
       "aichat.advancedSettingsAutocompleteTitle",
       tableName: "BraveLeo",

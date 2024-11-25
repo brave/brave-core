@@ -101,13 +101,13 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   }
 
   var inAppPurchasedProductType: BraveStoreProduct? {
-    if storeSDK.leoSubscriptionStatus != nil {
-      for product in storeSDK.purchasedProducts.all {
-        if product.id == BraveStoreProduct.leoMonthly.rawValue {
+    if let status = storeSDK.leoSubscriptionStatus {
+      if case .verified(let transaction) = status.transaction {
+        if transaction.productID == BraveStoreProduct.leoMonthly.rawValue {
           return .leoMonthly
         }
 
-        if product.id == BraveStoreProduct.leoYearly.rawValue {
+        if transaction.productID == BraveStoreProduct.leoYearly.rawValue {
           return .leoYearly
         }
       }
