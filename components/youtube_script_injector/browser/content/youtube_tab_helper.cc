@@ -123,6 +123,19 @@ void YouTubeTabHelper::MediaStoppedPlaying(
   is_media_playing_ = false;
 }
 
+// bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
+//   PrefService* prefs =
+//       static_cast<Profile*>(contents->GetBrowserContext())->GetPrefs();
+
+//   if (!base::FeatureList::IsEnabled(
+//           ::preferences::features::kBraveBackgroundVideoPlayback) &&
+//       !prefs->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
+//     return false;
+//   }
+
+//   return true;
+// }
+
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeTabHelper);
 }  // namespace youtube_script_injector
 
