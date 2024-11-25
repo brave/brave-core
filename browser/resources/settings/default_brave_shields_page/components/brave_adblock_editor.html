@@ -49,6 +49,7 @@
 <div>
   <div class="editor-box">
     <textarea
+      disabled="[[!prefs.brave.ad_block.developer_mode.value]]"
       type="text"
       spellcheck="false"
       class="textbox"
@@ -56,7 +57,9 @@
       value="{{value}}">
     </textarea>
   </div>
-  <cr-button on-click="handleSave_">
+  <cr-button
+    on-click="handleSave_"
+    disabled="[[!prefs.brave.ad_block.developer_mode.value]]">
     $i18n{adblockSaveChangesButtonLabel}
   </cr-button>
 </div>

@@ -325,19 +325,21 @@
   on-settings-boolean-control-change="onDeveloperModeChange_">
 </settings-toggle-button>
 
-<template is="dom-if" if="[[prefs.brave.ad_block.developer_mode.value]]">
-  <div class="settings-box">
-    <div class="flex">
-      <div class="label shields-primary-title">
-        $i18n{adblockCustomFiltersLabel}
-      </div>
-      <div class="label secondary shields-secondary-title" inner-h-t-m-l="[[getStringHtml_('adblockCustomFiltersDesc', 'https://support.brave.com/hc/en-us/articles/6449369961741')]]"></div>
-      <adblock-filter-editor
-        value="{{customFilters_}}"
-        on-save="handleSave_"
-      ></adblock-filter-editor>
+<div class="settings-box">
+  <div class="flex">
+    <div class="label shields-primary-title">
+      $i18n{adblockCustomFiltersLabel}
     </div>
+    <div class="label secondary shields-secondary-title" inner-h-t-m-l="[[getStringHtml_('adblockCustomFiltersDesc', 'https://support.brave.com/hc/en-us/articles/6449369961741')]]"></div>
+    <adblock-filter-editor
+      prefs="{{prefs}}"
+      value="{{customFilters_}}"
+      on-save="handleSave_"
+    ></adblock-filter-editor>
   </div>
+</div>
+
+<template is="dom-if" if="[[prefs.brave.ad_block.developer_mode.value]]">
   <template is="dom-if" if="[[cosmeticFilteringCustomScriptletsEnabled_]]">
     <div class="settings-box">
       <div class="flex">
