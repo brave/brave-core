@@ -102,7 +102,7 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
                                 content::WebContents* new_contents);
 
   tabs::TabHandle GetActiveTabHandle() const;
-  bool IsActiveWebContentsTiled(const SplitViewBrowserData::Tile& tile) const;
+  bool IsActiveWebContentsTiled(const TabTile& tile) const;
   void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
                                 content::WebContents* new_contents);
   void UpdateContentsWebViewVisual();

@@ -64,7 +64,6 @@ class SplitViewLayoutManager : public views::FillLayout,
   raw_ptr<views::View> secondary_contents_container_ = nullptr;
   raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
 
-
   int split_view_size_delta_ = 0;
   int ongoing_split_view_size_delta_ = 0;
 

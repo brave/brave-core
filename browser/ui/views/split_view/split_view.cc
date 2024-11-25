@@ -15,7 +15,7 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
-#include "brave/ui/color/leo/colors.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -208,7 +208,7 @@ void SplitView::Layout(PassKey key) {
   browser_view->NotifyDialogPositionRequiresUpdate();
 }
 
-void SplitView::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
+void SplitView::OnTileTabs(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }
@@ -224,7 +224,7 @@ void SplitView::OnDidBreakTile(const SplitViewBrowserData::Tile& tile) {
   UpdateContentsWebViewVisual();
 }
 
-void SplitView::OnSwapTabsInTile(const SplitViewBrowserData::Tile& tile) {
+void SplitView::OnSwapTabsInTile(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }
@@ -240,8 +240,7 @@ tabs::TabHandle SplitView::GetActiveTabHandle() const {
   return model->GetTabHandleAt(model->active_index());
 }
 
-bool SplitView::IsActiveWebContentsTiled(
-    const SplitViewBrowserData::Tile& tile) const {
+bool SplitView::IsActiveWebContentsTiled(const TabTile& tile) const {
   auto active_tab_handle = GetActiveTabHandle();
   return tile.first == active_tab_handle || tile.second == active_tab_handle;
 }

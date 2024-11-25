@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/ui/views/split_view/split_view.h"
+
 #include <utility>
 
 #include "base/run_loop.h"
@@ -13,7 +15,6 @@
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
-#include "brave/browser/ui/views/split_view/split_view.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -53,9 +54,7 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
     return *browser_view().split_view_->secondary_devtools_web_view();
   }
 
-  SplitView& split_view() {
-    return *browser_view().split_view_;
-  }
+  SplitView& split_view() { return *browser_view().split_view_; }
 
   TabStripModel& tab_strip_model() { return *(browser()->tab_strip_model()); }
 
@@ -66,8 +65,10 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
                        SplitViewContainsContentsContainer) {
   EXPECT_EQ(browser_view().contents_container()->parent(), &split_view());
-  EXPECT_EQ(static_cast<BraveBrowserViewLayout*>(browser_view().GetLayoutManager())->contents_container(),
-            &split_view());
+  EXPECT_EQ(
+      static_cast<BraveBrowserViewLayout*>(browser_view().GetLayoutManager())
+          ->contents_container(),
+      &split_view());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
@@ -75,16 +76,16 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
   secondary_contents_view().SetVisible(true);
   secondary_dev_tools().SetVisible(true);
   std::vector<views::View*> panes;
-  static_cast<views::WidgetDelegate*>(
-      &browser_view())->GetAccessiblePanes(&panes);
+  static_cast<views::WidgetDelegate*>(&browser_view())
+      ->GetAccessiblePanes(&panes);
   EXPECT_TRUE(base::Contains(panes, &secondary_contents_view()));
   EXPECT_TRUE(base::Contains(panes, &secondary_dev_tools()));
 
   secondary_contents_view().SetVisible(false);
   secondary_dev_tools().SetVisible(false);
   panes.clear();
-  static_cast<views::WidgetDelegate*>(
-      &browser_view())->GetAccessiblePanes(&panes);
+  static_cast<views::WidgetDelegate*>(&browser_view())
+      ->GetAccessiblePanes(&panes);
   EXPECT_FALSE(base::Contains(panes, &secondary_contents_view()));
   EXPECT_FALSE(base::Contains(panes, &secondary_dev_tools()));
 }
@@ -205,8 +206,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewSizeDelta) {
   brave::NewSplitViewForTab(browser());
 
   // When size delta is set
-  auto* split_view_layout_manager = static_cast<SplitViewLayoutManager*>(
-      split_view().GetLayoutManager());
+  auto* split_view_layout_manager =
+      static_cast<SplitViewLayoutManager*>(split_view().GetLayoutManager());
   constexpr int kSizeDelta = 100;
   split_view_layout_manager->set_split_view_size_delta(kSizeDelta);
 
