@@ -145,20 +145,17 @@ namespace android {
 void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jweb_contents) {
-  LOG(ERROR) << "SIMONE - Fullscreen script activated.";
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
 
   // Get the YouTubeTabHelper instance
   youtube_script_injector::YouTubeTabHelper* helper = youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
   if (!helper || !helper->GetJson()) {
-    LOG(ERROR) << "SIMONE - Bad JSON.";
     return;
   }
 
   auto* registry = youtube_script_injector::YouTubeRegistry::GetInstance();
   if (!registry) {
-    LOG(ERROR) << "SIMONE - Bad registry.";
     return;
   }
 
