@@ -22,6 +22,7 @@ class HostContentSettingsMap;
 
 namespace brave_shields {
 class AdBlockService;
+class AdBlockResourceProvider;
 class FilterListCatalogEntry;
 }  // namespace brave_shields
 
@@ -47,6 +48,8 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   void AddNewRules(const std::string& rules,
                    uint8_t permission_mask = 0,
                    bool first_party_protections = false);
+  brave_shields::AdBlockResourceProvider* IntsallDefaultAdBlockResources(
+      const base::FilePath& component_path);
   void UpdateAdBlockResources(const std::string& resources);
   void UpdateAdBlockInstanceWithRules(const std::string& rules);
   void EnableDeveloperMode(bool enabled);
