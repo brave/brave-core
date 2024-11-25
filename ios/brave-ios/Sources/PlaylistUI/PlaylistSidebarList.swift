@@ -5,6 +5,7 @@
 
 import BraveShared
 import Data
+import DesignSystem
 import Foundation
 import Playlist
 import Strings
@@ -17,11 +18,7 @@ struct PlaylistSidebarList: View {
   var isPlaying: Bool
   var onPlaylistUpdated: () -> Void
 
-  @Environment(\.openTabURL) private var openTabURL
   @FetchRequest private var items: FetchedResults<PlaylistItem>
-  private typealias PlaylistItemUUID = String
-  @State private var downloadStates: [PlaylistItemUUID: PlaylistDownloadManager.DownloadState] = [:]
-  @State private var downloadProgress: [PlaylistItemUUID: Double] = [:]
 
   init(
     folders: [PlaylistFolder],
@@ -45,137 +42,23 @@ struct PlaylistSidebarList: View {
   }
 
   var body: some View {
-    LazyVStack(alignment: .leading, spacing: 0) {
+    LazyVStack(spacing: 0) {
       if items.isEmpty {
-        // FIXME: Would be better as an overaly on the ScrollView itself, so it could grow to the height of the drawer but would have to get the PlaylistDrawerScrollView out of PlaylistSplitView somehow
         PlaylistSidebarContentUnavailableView()
-      } else {
-        ForEach(items) { item in
-          Button {
-            selectedItemID = item.id
-          } label: {
-            PlaylistItemView(
-              title: item.name,
-              assetURL: URL(string: item.mediaSrc),
-              pageURL: URL(string: item.pageSrc),
-              duration: .init(item.duration),
-              isSelected: selectedItemID == item.id,
-              isPlaying: isPlaying,
-              downloadState: {
-                if let uuid = item.uuid, let state = downloadStates[uuid] {
-                  if state == .downloaded {
-                    return .completed
-                  }
-                  if state == .inProgress {
-                    // PlaylistDownloadManager reports percent as 0...100 not 0...1
-                    let percentCompleted = downloadProgress[uuid, default: 0.0] / 100.0
-                    return .downloading(percentComplete: percentCompleted)
-                  }
-                }
-                if let cachedData = item.cachedData, !cachedData.isEmpty {
-                  return .completed
-                }
-                return nil
-              }()
-            )
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-          }
-          .onAppear {
-            // FIXME: Move this logic out of the UI and into PlaylistManager on item add
-            // This is currently how the current UI functions but it would be better not to do it
-            PlaylistManager.shared.getAssetDuration(item: .init(item: item)) { _ in }
-          }
-          .contextMenu {
-            if let cachedData = item.cachedData, !cachedData.isEmpty {
-              Button {
-                Task { @MainActor in
-                  await PlaylistManager.shared.deleteCache(item: .init(item: item))
-                  if let uuid = item.uuid {
-                    downloadStates.removeValue(forKey: uuid)
-                  }
-                }
-              } label: {
-                Label(Strings.Playlist.removeOfflineData, braveSystemImage: "leo.cloud.off")
-              }
-            } else {
-              Button {
-                PlaylistManager.shared.download(item: .init(item: item))
-              } label: {
-                Label(Strings.Playlist.saveOfflineData, braveSystemImage: "leo.cloud.download")
-              }
-            }
-            Divider()
-            if let url = URL(string: item.pageSrc) {
-              Button {
-                openTabURL(url)
-              } label: {
-                Label(Strings.Playlist.openInNewTab, braveSystemImage: "leo.plus.add")
-              }
-              Button {
-                openTabURL(url, privateMode: true)
-              } label: {
-                Label(
-                  Strings.Playlist.openInNewPrivateTab,
-                  braveSystemImage: "leo.product.private-window"
-                )
-              }
-              ShareLink(item: url) {
-                Label(Strings.Playlist.share, braveSystemImage: "leo.share.macos")
-              }
-              Divider()
-            }
-            if folders.count > 1 {
-              Picker(
-                selection: Binding(
-                  get: { selectedFolderID },
-                  set: {
-                    PlaylistItem.moveItems(items: [item.objectID], to: $0) {
-                      onPlaylistUpdated()
-                    }
-                  }
-                )
-              ) {
-                ForEach(folders, id: \.objectID) { folder in
-                  Label(folder.title ?? "", braveSystemImage: "leo.product.playlist")
-                    .tag(folder.id)
-                }
-              } label: {
-                Label(Strings.Playlist.moveMenuItemTitle, braveSystemImage: "leo.folder.exchange")
-              }
-              .pickerStyle(.menu)
-            }
-            Button(role: .destructive) {
-              Task {
-                await PlaylistManager.shared.delete(item: .init(item: item))
-                if selectedItemID == item.id {
-                  selectedItemID = nil
-                }
-                onPlaylistUpdated()
-              }
-            } label: {
-              Label(Strings.Playlist.deleteItem, braveSystemImage: "leo.trash")
-            }
-          }
-        }
       }
+      PlaylistItemList(
+        items: Array(items),
+        folders: folders,
+        selectedFolderID: selectedFolderID,
+        selectedItemID: $selectedItemID,
+        isPlaying: isPlaying,
+        onItemSelected: { item in
+          selectedItemID = item.id
+        },
+        onPlaylistUpdated: onPlaylistUpdated
+      )
     }
     .frame(maxWidth: .infinity, alignment: .leading)
-    .task {
-      for item in items {
-        guard let uuid = item.uuid else { continue }
-        downloadStates[uuid] = await PlaylistManager.shared.downloadState(for: uuid)
-      }
-    }
-    .onReceive(PlaylistManager.shared.downloadStateChanged) { output in
-      downloadStates[output.id] = output.state
-      if output.state == .downloaded, let item = items.first(where: { $0.uuid == output.id }) {
-        PlaylistManager.shared.getAssetDuration(item: .init(item: item)) { _ in }
-      }
-    }
-    .onReceive(PlaylistManager.shared.downloadProgressUpdated) { output in
-      downloadProgress[output.id] = output.percentComplete
-    }
   }
 }
 

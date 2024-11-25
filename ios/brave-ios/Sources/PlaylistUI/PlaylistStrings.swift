@@ -358,5 +358,30 @@ extension Strings {
       comment:
         "A label read by VoiceOver accessibility technology that indicates the button will toggle AirPlay"
     )
+    static let searchTitle = NSLocalizedString(
+      "playlist.searchTitle",
+      bundle: .module,
+      value: "Search",
+      comment: "A placeholder string shown in the search bar"
+    )
+    static let emptySearchQueryTitle = NSLocalizedString(
+      "playlist.emptySearchQueryTitle",
+      bundle: .module,
+      value: "Search Media",
+      comment: "A title shown when no search query is entered in the search bar on the search page"
+    )
+    static let emptySearchQuerySubtitle = NSLocalizedString(
+      "playlist.emptySearchQuerySubtitle",
+      bundle: .module,
+      value: "Start typing to search your saved audios and videos",
+      comment:
+        "A subtitle shown when no search query is entered in the search bar on the search page"
+    )
+    static let noSearchResultsFoundTitle = NSLocalizedString(
+      "playlist.noSearchResultsFoundTitle",
+      bundle: .module,
+      value: "No Results Found",
+      comment: "A title shown when a search query has yielded no results"
+    )
   }
 }
