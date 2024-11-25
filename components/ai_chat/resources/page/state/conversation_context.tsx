@@ -472,7 +472,7 @@ export function ConversationContextProvider(
     shouldShowLongPageWarning,
     dismissLongConversationInfo: () =>
       setHasDismissedLongConversationInfo(true),
-    retryAPIRequest: conversationHandler.retryAPIRequest,
+    retryAPIRequest: () => conversationHandler.retryAPIRequest(),
     handleResetError,
     // Experimentally don't cache model key locally, browser should notify of model change quickly
     setCurrentModel: (model) => conversationHandler.changeModel(model.key),
