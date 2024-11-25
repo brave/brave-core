@@ -49,7 +49,14 @@ YouTubeTabHelper::YouTubeTabHelper(content::WebContents* web_contents,
 YouTubeTabHelper::~YouTubeTabHelper() = default;
 
 void YouTubeTabHelper::InsertScriptInPage(
-    const content::GlobalRenderFrameHostId& render_frame_host_id, std::string script) {
+    const content::GlobalRenderFrameHostId& render_frame_host_id,
+    blink::mojom::UserActivationOption activation,
+    std::string script) {
+// Early return if script is empty
+  if (script.empty()) {
+    VLOG(2) << "Script is empty, skipping injection.";
+    return;
+  }
   content::RenderFrameHost* render_frame_host =
       content::RenderFrameHost::FromID(render_frame_host_id);
 
@@ -60,8 +67,8 @@ void YouTubeTabHelper::InsertScriptInPage(
     GetRemote(render_frame_host)
         ->RequestAsyncExecuteScript(
             world_id_, base::UTF8ToUTF16(script),
-            blink::mojom::UserActivationOption::kDoNotActivate,
-            blink::mojom::PromiseResultOption::kAwait, base::DoNothing());
+            activation,
+            blink::mojom::PromiseResultOption::kDoNotWait, base::DoNothing());
   } else {
     VLOG(2) << "render_frame_host is invalid.";
     return;
@@ -77,6 +84,8 @@ YouTubeTabHelper::GetRemote(content::RenderFrameHost* rfh) {
   return script_injector_remote_;
 }
 
+const std::optional<YouTubeJson>& YouTubeTabHelper::GetJson() const { return youtube_registry_->GetJson(); }
+
 void YouTubeTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
 
@@ -89,13 +98,16 @@ void YouTubeTabHelper::DidFinishNavigation(
   }
 
   auto url = web_contents()->GetLastCommittedURL();
+  if (!youtube_registry_->IsYouTubeDomain(url)) {
+    return;
+  }
 
   content::GlobalRenderFrameHostId render_frame_host_id =
       web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 
-  youtube_registry_->ApplyScriptOnlyOnYouTubeDomain(
+  youtube_registry_->LoadScriptFromPath(
       url, json->GetFeatureScript(), base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
-                          weak_factory_.GetWeakPtr(), render_frame_host_id));
+                          weak_factory_.GetWeakPtr(), render_frame_host_id, blink::mojom::UserActivationOption::kDoNotActivate));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeTabHelper);
@@ -107,42 +119,31 @@ namespace android {
 void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jweb_contents) {
-      LOG(ERROR) << "SIMONE - Fullscreen script activated.";
+  LOG(ERROR) << "SIMONE - Fullscreen script activated.";
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
 
   // Get the YouTubeTabHelper instance
-      youtube_script_injector::YouTubeTabHelper* helper = youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
-      if (!helper) {
-        return;
-      }
+  youtube_script_injector::YouTubeTabHelper* helper = youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
+  if (!helper || !helper->GetJson()) {
+    LOG(ERROR) << "SIMONE - Bad JSON.";
+    return;
+  }
 
-  // Injecting this script to make youtube video fullscreen on landscape mode.
-    constexpr const char16_t script[] =
-        uR"js(if(!document.fullscreenElement) {
-           var fullscreenBtn =
-             document.getElementsByClassName('fullscreen-icon');
-           if(fullscreenBtn && fullscreenBtn.length > 0) {
-              fullscreenBtn[0].click();
-           } else {
-             var moviePlayer = document.getElementById('movie_player');
-             if (moviePlayer) {
-                 moviePlayer.click();
-             }
-             setTimeout(() => {
-                 var fullscreenBtn =
-                   document.getElementsByClassName('fullscreen-icon');
-                 if(fullscreenBtn && fullscreenBtn.length > 0) {
-                    fullscreenBtn[0].click();
-                 }
-             }, 50);
-           }
-        } )js";
-    helper->GetRemote(web_contents->GetPrimaryMainFrame())
-        ->RequestAsyncExecuteScript(
-            helper->GetWorldId(), script,
-            blink::mojom::UserActivationOption::kActivate,
-            blink::mojom::PromiseResultOption::kAwait, base::DoNothing());
+  auto* registry = youtube_script_injector::YouTubeRegistry::GetInstance();
+  if (!registry) {
+    LOG(ERROR) << "SIMONE - Bad registry.";
+    return;
+  }
+
+  auto url = web_contents->GetLastCommittedURL();
+  registry->LoadScriptFromPath(
+      url,
+      helper->GetJson()->GetFullscreenScript(),
+      base::BindOnce(&youtube_script_injector::YouTubeTabHelper::InsertScriptInPage,
+                          helper->GetWeakPtr(),
+                          web_contents->GetPrimaryMainFrame()->GetGlobalId(),
+                          blink::mojom::UserActivationOption::kActivate));
 }
 
 jboolean JNI_BackgroundVideoPlaybackTabHelper_IsPlayingMedia(
