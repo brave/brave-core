@@ -19,6 +19,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "base/threading/thread_restrictions.h"
@@ -239,6 +240,32 @@ base::FilePath AdBlockServiceTest::MakeTestDataCopy(
   temp_dirs_.push_back(std::move(dir));
 
   return temp_path.Append(source_location.BaseName());
+}
+
+brave_shields::AdBlockResourceProvider*
+AdBlockServiceTest::IntsallDefaultAdBlockResources(
+    const base::FilePath& component_path) {
+  brave_shields::AdBlockService* service =
+      g_brave_browser_process->ad_block_service();
+  auto* resource_provider =
+      static_cast<brave_shields::AdBlockDefaultResourceProvider*>(
+          service->resource_provider());
+  base::RunLoop run_loop;
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindLambdaForTesting([&component_path]() {
+        return component_updater::CreateComponentContentsAccessor(
+            true, component_path);
+      }),
+      base::BindLambdaForTesting(
+          [resource_provider, &run_loop](
+              scoped_refptr<brave_component_updater::ComponentContentsAccessor>
+                  accessor) {
+            resource_provider->OnComponentReady(std::move(accessor));
+            run_loop.Quit();
+          }));
+  run_loop.Run();
+  return resource_provider;
 }
 
 void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
@@ -1601,6 +1628,43 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Custom1pBlocking) {
                          "setExpectations(0, 2, 0, 0);"
                          "addImage('https://thirdparty.com/ad_banner.png')"));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
+}
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#define MAYBE_SafeResourcesComponentAccess SafeResourcesComponentAccess
+#else
+#define MAYBE_SafeResourcesComponentAccess DISABLED_SafeResourcesComponentAccess
+#endif
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_SafeResourcesComponentAccess) {
+  const auto components_path =
+      GetTestDataDir().AppendASCII("adblock-components");
+  {
+    auto* resource_provider = IntsallDefaultAdBlockResources(
+        components_path.AppendASCII("resources_ok"));
+    base::RunLoop run_loop;
+    resource_provider->LoadResources(
+        base::BindLambdaForTesting([&run_loop](const std::string& resources) {
+          constexpr const char kExpectedResources[] =
+              "[{\"name\":\"brave-fix.js\",\"aliases\":[],\"kind\":{\"mime\":"
+              "\"application/javascript\"}]";
+          EXPECT_EQ(kExpectedResources, resources);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  {
+    auto* resource_provider = IntsallDefaultAdBlockResources(
+        components_path.AppendASCII("resources_corrupted"));
+    base::RunLoop run_loop;
+    resource_provider->LoadResources(
+        base::BindLambdaForTesting([&run_loop](const std::string& resources) {
+          constexpr const char kExpectedResources[] = "[]";
+          EXPECT_EQ(kExpectedResources, resources);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
 }
 
 // Load a page with a script which uses a redirect data URL.
