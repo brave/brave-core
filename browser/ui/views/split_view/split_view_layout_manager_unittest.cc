@@ -15,7 +15,6 @@
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
 #include "chrome/test/base/testing_profile.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class SplitViewLayoutManagerUnitTest : public BrowserWithTestWindowTest {

@@ -8,10 +8,7 @@
 
 #include "brave/browser/ui/views/split_view/split_view_separator_delegate.h"
 #include "ui/views/layout/fill_layout.h"
-#include "ui/views/layout/layout_manager_base.h"
 
-class BraveBrowserView;
-class SplitViewBrowserData;
 class SplitViewSeparator;
 
 class SplitViewLayoutManager : public views::FillLayout,
@@ -24,17 +21,6 @@ class SplitViewLayoutManager : public views::FillLayout,
                          views::View* secondary_contents_container,
                          SplitViewSeparator* split_view_separator);
   ~SplitViewLayoutManager() override;
-
-  void set_browser_view(BraveBrowserView* browser_view) {
-    browser_view_ = browser_view;
-  }
-
-  void SetSplitViewSeparator(SplitViewSeparator* split_view_separator);
-
-  void set_split_view_browser_data(
-      SplitViewBrowserData* split_view_browser_data) {
-    split_view_browser_data_ = split_view_browser_data;
-  }
 
   int split_view_size_delta() const { return split_view_size_delta_; }
   void set_split_view_size_delta(int delta) { split_view_size_delta_ = delta; }
@@ -55,10 +41,6 @@ class SplitViewLayoutManager : public views::FillLayout,
 
  private:
   friend class SplitViewLayoutManagerUnitTest;
-
-  raw_ptr<BraveBrowserView> browser_view_ = nullptr;
-
-  raw_ptr<SplitViewBrowserData> split_view_browser_data_ = nullptr;
 
   raw_ptr<views::View> contents_container_ = nullptr;
   raw_ptr<views::View> secondary_contents_container_ = nullptr;

@@ -88,8 +88,6 @@ SplitView::SplitView(Browser* browser,
       split_view_separator_));
 
   auto* split_view_browser_data = SplitViewBrowserData::FromBrowser(browser);
-  GetSplitViewLayoutManager()->set_split_view_browser_data(
-      split_view_browser_data);
   split_view_observation_.Observe(split_view_browser_data);
 }
 
