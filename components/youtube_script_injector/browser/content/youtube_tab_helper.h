@@ -39,13 +39,17 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
       content::RenderFrameHost* rfh);
 
   int32_t GetWorldId() const { return world_id_; }
-
- private:
-  YouTubeTabHelper(content::WebContents*, const int32_t world_id);
-  // Called to insert the YouTube script into the page.
+  const std::optional<YouTubeJson>& GetJson() const;
+  // Called to insert a YouTube script into the page.
   void InsertScriptInPage(
       const content::GlobalRenderFrameHostId& render_frame_host_id,
+      blink::mojom::UserActivationOption activation,
       std::string script);
+  base::WeakPtr<YouTubeTabHelper> GetWeakPtr() {
+    return weak_factory_.GetWeakPtr();
+  }
+ private:
+  YouTubeTabHelper(content::WebContents*, const int32_t world_id);
   friend class content::WebContentsUserData<YouTubeTabHelper>;
 
   // content::WebContentsObserver overrides

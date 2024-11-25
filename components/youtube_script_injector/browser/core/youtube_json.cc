@@ -26,8 +26,6 @@ constexpr char kVersion[] = "version";
 constexpr char kFeatureScript[] = "feature_script";
 constexpr char kFullScreenScript[] = "fullscreen_script";
 
-constexpr char kYouTubeUrl[] = "https://youtube.com";
-
 bool GetFilePathFromValue(const base::Value* value, base::FilePath* result) {
   if (!value->is_string()) {
     return false;
@@ -78,16 +76,6 @@ std::optional<YouTubeJson> YouTubeJson::ParseJson(
     return std::nullopt;
   }
   return rule;
-}
-
-bool YouTubeJson::IsYouTubeDomain(const GURL& url) const {
-  if (net::registry_controlled_domains::SameDomainOrHost(
-          url, GURL(kYouTubeUrl),
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-    return true;
-  }
-
-  return false;
 }
 
 }  // namespace youtube_script_injector
