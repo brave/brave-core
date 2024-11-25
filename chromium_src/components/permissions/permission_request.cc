@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/strings/grit/components_strings.h"
@@ -161,18 +162,18 @@ PermissionRequest::GetDialogAnnotatedMessageText(
 #endif
 
 bool PermissionRequest::SupportsLifetime() const {
-  const RequestType kExcludedTypes[] = {RequestType::kDiskQuota,
-                                        RequestType::kMultipleDownloads,
+  static constexpr auto kExcludedTypes = base::MakeFixedFlatSet<RequestType>(
+      {RequestType::kDiskQuota, RequestType::kMultipleDownloads,
 #if BUILDFLAG(IS_ANDROID)
-                                        RequestType::kProtectedMediaIdentifier,
+       RequestType::kProtectedMediaIdentifier,
 #else
     RequestType::kRegisterProtocolHandler,
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_WIDEVINE)
-                                        RequestType::kWidevine
+       RequestType::kWidevine
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
-  };
-  return !base::Contains(kExcludedTypes, request_type());
+      });
+  return !kExcludedTypes.contains(request_type());
 }
 
 void PermissionRequest::SetLifetime(std::optional<base::TimeDelta> lifetime) {

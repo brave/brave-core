@@ -20,9 +20,10 @@
 
 namespace brave_vpn {
 
-static const UINT kStatusIconMessage = WM_APP + 1;
-
 namespace {
+
+constexpr UINT kStatusIconMessage = WM_APP + 1;
+
 const base::FilePath::CharType kBraveVpnTaskbarMessageName[] =
     FILE_PATH_LITERAL("TaskbarCreated");
 

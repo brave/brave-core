@@ -27,7 +27,7 @@
 namespace ai_chat {
 namespace {
 
-static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
+constexpr auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
 
 }  // namespace
@@ -158,7 +158,7 @@ void AIChatService::MaybeAssociateContentWithConversation(
     base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
         associated_content) {
   if (associated_content &&
-      base::Contains(kAllowedSchemes, associated_content->GetURL().scheme())) {
+      kAllowedSchemes.contains(associated_content->GetURL().scheme())) {
     conversation->SetAssociatedContentDelegate(associated_content);
   }
   // Record that this is the latest conversation for this content. Even

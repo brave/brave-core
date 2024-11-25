@@ -108,21 +108,22 @@ class OkButton : public views::LabelButton {
   OkButton& operator=(const OkButton&) = delete;
 
   void UpdateBackgroundColor() override {
-    constexpr SkColor kBgColor[][ButtonState::STATE_COUNT] = {
-        {
-            // Light theme.
-            SkColorSetRGB(0x4E, 0x32, 0xEE),  // normal
-            SkColorSetRGB(0x32, 0x2F, 0xB4),  // hover
-            SkColorSetRGB(0x4E, 0x32, 0xEE),  // focused
-            SkColorSetRGB(0xAC, 0xAF, 0xBB)   // disabled
-        },
-        {
-            // Dark theme.
-            SkColorSetRGB(0x4E, 0x32, 0xEE),  // normal
-            SkColorSetRGB(0x87, 0x84, 0xF4),  // hover
-            SkColorSetRGB(0x4E, 0x32, 0xEE),  // focused
-            SkColorSetRGB(0x58, 0x5C, 0x6D),  // disabled
-        }};
+    static constexpr auto kBgColor =
+        std::to_array<std::array<const SkColor, ButtonState::STATE_COUNT>>(
+            {{
+                 // Light theme.
+                 SkColorSetRGB(0x4E, 0x32, 0xEE),  // normal
+                 SkColorSetRGB(0x32, 0x2F, 0xB4),  // hover
+                 SkColorSetRGB(0x4E, 0x32, 0xEE),  // focused
+                 SkColorSetRGB(0xAC, 0xAF, 0xBB)   // disabled
+             },
+             {
+                 // Dark theme.
+                 SkColorSetRGB(0x4E, 0x32, 0xEE),  // normal
+                 SkColorSetRGB(0x87, 0x84, 0xF4),  // hover
+                 SkColorSetRGB(0x4E, 0x32, 0xEE),  // focused
+                 SkColorSetRGB(0x58, 0x5C, 0x6D),  // disabled
+             }});
 
     const int theme =
         ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();

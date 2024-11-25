@@ -123,7 +123,8 @@ class BraveNetworkAuditSearchAdTest : public InProcessBrowserTest {
     // Brave search
     // The test simulation has a pattern https://search.brave.com:<port>
     // port is changed dynamically
-    const char kAllowedBraveSearchTemplate[] = "https://search.brave.com:%s/";
+    static constexpr char kAllowedBraveSearchTemplate[] =
+        "https://search.brave.com:%s/";
     allowed_prefixes.push_back(
         base::StringPrintf(kAllowedBraveSearchTemplate, port.c_str()));
     VerifyNetworkAuditLog(net_log_path_, audit_results_path_, allowed_prefixes);

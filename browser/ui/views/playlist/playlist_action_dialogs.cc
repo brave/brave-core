@@ -304,7 +304,7 @@ PlaylistNewPlaylistDialog::PlaylistNewPlaylistDialog(
     playlist::PlaylistService* service)
     : service_(service) {
   thumbnail_provider_ = std::make_unique<ThumbnailProvider>(*service_);
-  const auto kSpacing = 24;
+  static constexpr int kSpacing = 24;
   SetBorder(views::CreateEmptyBorder(gfx::Insets(kSpacing)));
   SetLayoutManager(std::make_unique<views::BoxLayout>(
                        views::BoxLayout::Orientation::kVertical, gfx::Insets(),

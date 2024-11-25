@@ -10,7 +10,7 @@
 
 namespace {
 
-const char kBraveCRSLearnMoreLink[] =
+constexpr char kBraveCRSLearnMoreLink[] =
     "https://github.com/brave/brave-browser/wiki/TLS-Policy#root-store";
 
 }  // namespace

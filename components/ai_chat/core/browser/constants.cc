@@ -306,14 +306,4 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList() {
 
   return action_list;
 }
-
-const base::fixed_flat_set<std::string_view, 1> kPrintPreviewRetrievalHosts =
-    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
-                                             {
-                                                 "docs.google.com",
-                                             });
-
-constexpr char kLeoModelSupportUrl[] =
-    "https://support.brave.com/hc/en-us/categories/"
-    "20990938292237-Brave-Leo";
 }  // namespace ai_chat

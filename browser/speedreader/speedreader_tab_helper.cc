@@ -458,7 +458,7 @@ void SpeedreaderTabHelper::OnReadingStart(content::WebContents* web_contents) {
     return;
   }
 
-  constexpr const char16_t kReading[] =
+  static constexpr char16_t kReading[] =
       uR"js( speedreaderUtils.setTtsReadingState($1) )js";
 
   const auto script = base::ReplaceStringPlaceholders(
@@ -481,7 +481,7 @@ void SpeedreaderTabHelper::OnReadingProgress(content::WebContents* web_contents,
       web_contents != this->web_contents()) {
     return;
   }
-  constexpr const char16_t kHighlight[] =
+  static constexpr char16_t kHighlight[] =
       uR"js( speedreaderUtils.highlightText($1, $2, $3) )js";
 
   const auto script = base::ReplaceStringPlaceholders(
@@ -551,7 +551,7 @@ void SpeedreaderTabHelper::OnResult(
 
 void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
                                                 const std::string& value) {
-  constexpr const char16_t kSetAttribute[] =
+  static constexpr char16_t kSetAttribute[] =
       uR"js(
     (function() {
       const attribute = '$1'

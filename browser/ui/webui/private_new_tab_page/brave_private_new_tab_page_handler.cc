@@ -27,7 +27,7 @@
 #endif
 
 namespace {
-constexpr const auto kStuckPeriod = base::Seconds(45);
+constexpr auto kStuckPeriod = base::Seconds(45);
 }
 
 BravePrivateNewTabPageHandler::BravePrivateNewTabPageHandler(

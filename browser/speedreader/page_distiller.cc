@@ -51,7 +51,7 @@ void PageDistiller::GetTextToSpeak(TextToSpeechContentCallback callback) {
     return std::move(callback).Run(base::Value());
   }
 
-  constexpr const char16_t kGetTextToSpeak[] =
+  static constexpr char16_t kGetTextToSpeak[] =
       uR"js( speedreaderUtils.extractTextToSpeak() )js";
 
   web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
@@ -77,10 +77,10 @@ void PageDistiller::StartDistill(DistillContentCallback callback) {
     return std::move(callback).Run(false, {});
   }
 
-  constexpr const char16_t kGetDocumentSource[] =
+  static constexpr char16_t kGetDocumentSource[] =
       uR"js( document.documentElement.outerHTML )js";
 
-  constexpr const char16_t kGetBodySource[] =
+  static constexpr char16_t kGetBodySource[] =
       uR"js( document.body.outerHTML )js";
 
   web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(

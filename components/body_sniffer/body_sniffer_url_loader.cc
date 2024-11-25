@@ -20,7 +20,7 @@
 
 namespace body_sniffer {
 
-constexpr const uint32_t kReadBufferSize = 64 * 1024;
+constexpr uint32_t kReadBufferSize = 64 * 1024;
 
 // static
 std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
