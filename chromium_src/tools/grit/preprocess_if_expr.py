@@ -8,6 +8,8 @@ import os
 import shutil
 import glob
 
+from brave_chromium_utils import get_chromium_src_override
+
 
 def purge_overrides(out_folder):
     """Deletes all overridden upstream files from the preprocess directory - we
@@ -39,19 +41,13 @@ def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
 
 def get_brave_overrides(in_folder, in_files):
     """Gets all the overrides we have in brave-core for this target"""
-    root_folder = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', '..'))
-    override_root_folder = os.path.join(root_folder, 'brave', 'chromium_src')
-
     override_files = []
     for file in in_files:
-        in_file = os.path.join(in_folder,
-                               file).replace(root_folder, override_root_folder)
+        in_file = get_chromium_src_override(os.path.join(in_folder, file))
         if os.path.exists(in_file):
             override_files.append(file)
 
-    return (in_folder.replace(root_folder,
-                              override_root_folder), override_files)
+    return (get_chromium_src_override(in_folder), override_files)
 
 
 @override_utils.override_function(globals())
@@ -67,8 +63,7 @@ def main(original_function, argv):
         process_file(in_path, input_file)
 
     (override_root_folder,
-     overrides) = override_files = get_brave_overrides(in_folder,
-                                                       args.in_files)
+     overrides) = get_brave_overrides(in_folder, args.in_files)
     if len(overrides) != 0:
         for override_file in overrides:
             maybe_keep_upstream_version(override_root_folder, out_folder,

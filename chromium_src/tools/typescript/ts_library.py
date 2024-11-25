@@ -17,6 +17,12 @@ def is_gen_brave_dir(out_dir):
 
 
 @override_utils.override_function(globals())
+def _write_tsconfig_json(original_function, gen_dir, tsconfig, tsconfig_file):
+    tsconfig['include'] = ["preprocessed/**/*-chromium*.ts"]
+    original_function(gen_dir, tsconfig, tsconfig_file)
+
+
+@override_utils.override_function(globals())
 def main(original_function, argv):
     # Parse only the arguments used by this override
     parser = argparse.ArgumentParser()
