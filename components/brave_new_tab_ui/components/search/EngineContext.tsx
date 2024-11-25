@@ -16,7 +16,7 @@ interface Engine {
 
 const EngineContext = React.createContext<Engine>({
   setLastSearchEngine: () => { },
-  lastSearchEngine: '',
+  lastSearchEngine: braveSearchHost,
   engineConfig: {},
   setEngineConfig: () => { },
 })
@@ -53,8 +53,10 @@ export function EngineContextProvider(props: React.PropsWithChildren<{}>) {
 
     // If the last search engine we used has been disabled or doesn't exist in the config, return the first enabled
     // one, or Brave Search.
-    if (!last || !config[last]) {
-      return Object.keys(config).find(key => config[key]) ?? braveSearchHost
+    // Note: The key for `Google` is the empty string which is falsey so we need
+    // to check for undefined here.
+    if (last === undefined || config[last] === undefined) {
+      return Object.keys(config).find(key => config[key] !== undefined) ?? braveSearchHost
     }
 
     return last
