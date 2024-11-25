@@ -1221,6 +1221,9 @@ public class Utils {
         if (chromeActivity == null) {
             return ProfileManager.getLastUsedRegularProfile(); // Last resort
         }
+        if (!chromeActivity.areTabModelsInitialized()) {
+            return ProfileManager.getLastUsedRegularProfile();
+        }
 
         return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
     }

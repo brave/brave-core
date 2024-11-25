@@ -428,13 +428,15 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         return Integer.toString(currentTime.get(Calendar.YEAR));
     }
 
-  public static Tab currentActiveChromeTabbedActivityTab() {
-      ChromeTabbedActivity activity = BraveRewardsHelper.getChromeTabbedActivity();
-      if (activity == null || activity.getTabModelSelector() == null) {
-          return null;
-      }
-      return activity.getActivityTab();
-  }
+    public static Tab currentActiveChromeTabbedActivityTab() {
+        ChromeTabbedActivity activity = BraveRewardsHelper.getChromeTabbedActivity();
+        if (activity == null
+                || !activity.areTabModelsInitialized()
+                || activity.getTabModelSelector() == null) {
+            return null;
+        }
+        return activity.getActivityTab();
+    }
 
     /**
      * @param fadeout: can be null

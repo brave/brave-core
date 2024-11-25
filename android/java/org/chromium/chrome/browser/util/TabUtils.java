@@ -193,7 +193,7 @@ public class TabUtils {
     }
 
     private static void openNewTab(BraveActivity braveActivity, boolean isIncognito) {
-        if (braveActivity == null) return;
+        if (braveActivity == null || !braveActivity.areTabModelsInitialized()) return;
         braveActivity.getTabModelSelector().getModel(isIncognito).commitAllTabClosures();
         braveActivity.getTabCreator(isIncognito).launchNtp();
     }
@@ -211,12 +211,17 @@ public class TabUtils {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
             if (braveActivity.getTabModelSelector() != null
+                    && braveActivity.areTabModelsInitialized()
                     && braveActivity.getActivityTab() != null) {
-                braveActivity.getTabModelSelector().openNewTab(new LoadUrlParams(url),
-                        BraveTabUiFeatureUtilities.isBraveTabGroupsEnabled()
-                                ? TabLaunchType.FROM_LONGPRESS_BACKGROUND_IN_GROUP
-                                : TabLaunchType.FROM_LONGPRESS_BACKGROUND,
-                        braveActivity.getActivityTab(), isIncognito);
+                braveActivity
+                        .getTabModelSelector()
+                        .openNewTab(
+                                new LoadUrlParams(url),
+                                BraveTabUiFeatureUtilities.isBraveTabGroupsEnabled()
+                                        ? TabLaunchType.FROM_LONGPRESS_BACKGROUND_IN_GROUP
+                                        : TabLaunchType.FROM_LONGPRESS_BACKGROUND,
+                                braveActivity.getActivityTab(),
+                                isIncognito);
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openUrlInNewTabInBackground " + e);
