@@ -74,7 +74,20 @@ std::optional<std::string> EncodeTransactionParams(
 
   tx_params.Set("userPublicKey", params.user_public_key);
   tx_params.Set("dynamicComputeUnitLimit", true);
-  tx_params.Set("prioritizationFeeLamports", "auto");
+
+  // Ref:
+  // https://station.jup.ag/docs/apis/landing-transactions#an-example-of-how-jupiter-estimates-priority-fees
+  base::Value::Dict priority_level_with_max_lamports;
+  priority_level_with_max_lamports.Set("maxLamports", 4000000);
+  priority_level_with_max_lamports.Set("global", false);
+  priority_level_with_max_lamports.Set("priorityLevel", "high");
+
+  base::Value::Dict prioritization_fee_lamports;
+  prioritization_fee_lamports.Set("priorityLevelWithMaxLamports",
+                                  std::move(priority_level_with_max_lamports));
+
+  tx_params.Set("prioritizationFeeLamports",
+                std::move(prioritization_fee_lamports));
 
   base::Value::Dict quote;
   quote.Set("inputMint", params.quote->input_mint);
