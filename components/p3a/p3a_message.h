@@ -35,17 +35,16 @@ class MessageMetainfo {
 
   const std::string& GetCountryCodeForNormalMetrics() const;
 
-  std::string platform;
-  std::string version;
-  std::string channel;
-  base::Time date_of_install;
-  base::Time date_of_survey;
-  int woi;  // Week of install. Remove this occasionally and extract from above.
-  std::string country_code_from_timezone;
-  std::string country_code_from_locale;
-  std::string country_code_from_locale_raw;
-  // May contain 'none', a 'BRV'-prefixed refcode, or 'other'.
-  std::string ref;
+  const std::string& platform() const { return platform_; }
+  const std::string& channel() const { return channel_; }
+  const std::string& version() const { return version_; }
+  const std::string& country_code_from_locale_raw() const {
+    return country_code_from_locale_raw_;
+  }
+  const std::string& ref() const { return ref_; }
+  base::Time date_of_install() const { return date_of_install_; }
+  base::Time date_of_survey() const { return date_of_survey_; }
+  int woi() const { return woi_; }
 
  private:
   // Used to report major/minor version numbers to reduce amount of
@@ -58,6 +57,19 @@ class MessageMetainfo {
   // maximize STAR recovery rate for the country code & week of install
   // attributes.
   void MaybeStripCountry();
+
+  std::string platform_;
+  std::string version_;
+  std::string channel_;
+  base::Time date_of_install_;
+  base::Time date_of_survey_;
+  int woi_;  // Week of install. Remove this occasionally and extract from
+             // above.
+  std::string country_code_from_timezone_;
+  std::string country_code_from_locale_;
+  std::string country_code_from_locale_raw_;
+  // May contain 'none', a 'BRV'-prefixed refcode, or 'other'.
+  std::string ref_;
 
   raw_ptr<PrefService, DanglingUntriaged> local_state_ = nullptr;
 };
