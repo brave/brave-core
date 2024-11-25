@@ -22,13 +22,6 @@ class GURL;
 
 namespace youtube_script_injector {
 
-// Holds the loaded scripts imported from youtube.json paths.
-struct ImportedScripts {
-  std::string feature_script;
-  // std::string fullscreen_script;
-  int version;
-};
-
 // Format of the youtube.json file:
 // {
 //   "version": 1,
@@ -50,7 +43,6 @@ class YouTubeJson {
 
   // Parse the youtube.json file contents into an optional YouTubeJson.
   static std::optional<YouTubeJson> ParseJson(const std::string& contents);
-  bool IsYouTubeDomain(const GURL& url) const;
 
   // Getters.
   const base::FilePath& GetFeatureScript() const { return feature_script_path_; }

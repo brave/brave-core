@@ -31,6 +31,8 @@ namespace {
 const base::FilePath::CharType kJsonFile[] = FILE_PATH_LITERAL("youtube.json");
 const base::FilePath::CharType kScriptsDir[] = FILE_PATH_LITERAL("scripts");
 
+constexpr char kYouTubeUrl[] = "https://youtube.com";
+
 std::string ReadFile(const base::FilePath& file_path) {
   std::string contents;
   bool success = base::ReadFileToString(file_path, &contents);
@@ -63,17 +65,21 @@ YouTubeRegistry::YouTubeRegistry() = default;
 
 YouTubeRegistry::~YouTubeRegistry() = default;
 
-void YouTubeRegistry::ApplyScriptOnlyOnYouTubeDomain(
+void YouTubeRegistry::LoadScriptFromPath(
     const GURL& url,
     const base::FilePath& script_path,
     base::OnceCallback<void(std::string)> cb) const {
-  if (json_ && json_->IsYouTubeDomain(url)) {
-    base::ThreadPool::PostTaskAndReplyWithResult(
-        FROM_HERE, {base::MayBlock()},
-        base::BindOnce(&ExtractScript, component_path_,
-                       script_path),
-        std::move(cb));
-  }
+
+    if (script_path.empty()) {
+      std::move(cb).Run("");
+      return;
+    }
+
+      base::ThreadPool::PostTaskAndReplyWithResult(
+          FROM_HERE, {base::MayBlock()},
+          base::BindOnce(&ExtractScript, component_path_,
+                         script_path),
+          std::move(cb));
 }
 
 void YouTubeRegistry::LoadScripts(const base::FilePath& path) {
@@ -91,6 +97,16 @@ void YouTubeRegistry::OnLoadScripts(const std::string& contents) {
 
 void YouTubeRegistry::SetComponentPath(const base::FilePath& path) {
   component_path_ = path;
+}
+
+bool YouTubeRegistry::IsYouTubeDomain(const GURL& url) const {
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          url, GURL(kYouTubeUrl),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    return true;
+  }
+
+  return false;
 }
 
 }  // namespace youtube_script_injector
