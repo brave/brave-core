@@ -11,7 +11,7 @@ export const localeStrings = {
   rewardsConnectAccount: 'Connect account',
   rewardsConnectAccountText: '$1Ready to start earning?$2 Connect an account so we have a place to send your earnings.',
   rewardsContinue: 'Continue',
-  rewardsEarningsTitle: 'Earnings so far',
+  rewardsEarningsTitle: 'Ads seen this month',
   rewardsEarningInfoText: 'This reflects your estimated earnings range for Brave Ads this month.',
   rewardsHowDoesItWork: 'How does it work?',
   rewardsLearnMore: 'Learn more',
