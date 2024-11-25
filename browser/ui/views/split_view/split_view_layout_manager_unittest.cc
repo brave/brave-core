@@ -6,18 +6,13 @@
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 
 #include <memory>
-#include <utility>
 
-#include "base/memory/ptr_util.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
-#include "chrome/test/base/browser_with_test_window_test.h"
-#include "chrome/test/base/testing_profile.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-class SplitViewLayoutManagerUnitTest : public BrowserWithTestWindowTest {
+class SplitViewLayoutManagerUnitTest : public testing::Test {
  public:
   SplitViewLayoutManagerUnitTest()
       : scoped_feature_(tabs::features::kBraveSplitView) {}
@@ -34,8 +29,6 @@ class SplitViewLayoutManagerUnitTest : public BrowserWithTestWindowTest {
 
   // testing::Test:
   void SetUp() override {
-    BrowserWithTestWindowTest::SetUp();
-
     split_view_ = std::make_unique<views::View>();
     split_view_->SetSize(gfx::Size(300, 200));
     contents_container_ =
@@ -43,18 +36,12 @@ class SplitViewLayoutManagerUnitTest : public BrowserWithTestWindowTest {
     secondary_contents_container_ =
         split_view_->AddChildView(std::make_unique<views::View>());
     split_view_separator_ = split_view_->AddChildView(
-        std::make_unique<SplitViewSeparator>(browser()));
+        std::make_unique<SplitViewSeparator>(nullptr));
 
     layout_manager_ =
         split_view_->SetLayoutManager(std::make_unique<SplitViewLayoutManager>(
             contents_container_, secondary_contents_container_,
             split_view_separator_));
-  }
-
-  void TearDown() override {
-    split_view_.reset();
-
-    BrowserWithTestWindowTest::TearDown();
   }
 
  private:
