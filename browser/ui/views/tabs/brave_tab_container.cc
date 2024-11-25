@@ -58,7 +58,7 @@ BraveTabContainer::BraveTabContainer(
                        drag_context,
                        tab_slot_controller,
                        scroll_contents_view),
-      drag_context_(static_cast<TabDragContext*>(drag_context)),
+      drag_context_(drag_context),
       tab_style_(TabStyle::Get()),
       controller_(controller) {
   auto* browser = tab_slot_controller_->GetBrowser();
@@ -138,7 +138,9 @@ gfx::Size BraveTabContainer::CalculatePreferredSize(
   const int tab_count = tabs_view_model_.view_size();
   int height = 0;
   if (bounds_animator_.IsAnimating() && tab_count &&
-      !drag_context_->GetDragController()->IsActive()) {
+      !static_cast<TabDragContext*>(drag_context_.get())
+           ->GetDragController()
+           ->IsActive()) {
     // When removing a tab in the middle of tabs, the last tab's current bottom
     // could be greater than ideal bounds bottom.
     height = tabs_view_model_.view_at(tab_count - 1)->bounds().bottom();
