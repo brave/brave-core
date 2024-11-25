@@ -43,6 +43,7 @@ std::string ReadFile(const base::FilePath& file_path) {
   return contents;
 }
 
+// Extract full script from file path.
 std::string ExtractScript(const base::FilePath& component_path,
                               const base::FilePath& script_path) {
   auto prefix = base::FilePath(component_path).Append(kScriptsDir);
@@ -82,16 +83,16 @@ void YouTubeRegistry::LoadScriptFromPath(
           std::move(cb));
 }
 
-void YouTubeRegistry::LoadScripts(const base::FilePath& path) {
+void YouTubeRegistry::LoadJson(const base::FilePath& path) {
   SetComponentPath(path);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.Append(kJsonFile)),
-      base::BindOnce(&YouTubeRegistry::OnLoadScripts,
+      base::BindOnce(&YouTubeRegistry::OnLoadJson,
                      weak_factory_.GetWeakPtr()));
 }
 
-void YouTubeRegistry::OnLoadScripts(const std::string& contents) {
+void YouTubeRegistry::OnLoadJson(const std::string& contents) {
   json_ = YouTubeJson::ParseJson(contents);
 }
 

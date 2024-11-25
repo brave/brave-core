@@ -112,7 +112,7 @@ void YouTubeComponentInstallerPolicy::OnCustomUninstall() {}
 void YouTubeComponentInstallerPolicy::ComponentReady(const base::Version& version,
                                                   const base::FilePath& path,
                                                   base::Value::Dict manifest) {
-  YouTubeRegistry::GetInstance()->LoadScripts(path);
+  YouTubeRegistry::GetInstance()->LoadJson(path);
 }
 
 bool YouTubeComponentInstallerPolicy::VerifyInstallation(
