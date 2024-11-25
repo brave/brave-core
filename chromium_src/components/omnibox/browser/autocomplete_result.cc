@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/omnibox/browser/open_here_action.h"
 #include "components/omnibox/common/omnibox_features.h"
 
@@ -18,27 +19,11 @@
 
 #undef ConvertOpenTabMatches
 
-// Move match to |index|.
-void AutocompleteResult::ReorderMatch(const ACMatches::iterator& it,
-                                      int index) {
-  DCHECK_LT(index, static_cast<int>(size()));
-  const bool move_to_end = (index < 0);
-  const auto pos = move_to_end ? std::prev(end()) : std::next(begin(), index);
-  // If |match| is already at the desired position, there's nothing to do.
-  if (it == pos) {
-    return;
-  }
-
-  // Rotate |match| to be at the desired position.
-  if (pos < it) {
-    std::rotate(pos, it, std::next(it));
-  } else {
-    std::rotate(it, std::next(it), std::next(pos));
-  }
-}
-
-void AutocompleteResult::RemoveMatch(const ACMatches::iterator& it) {
-  matches_.erase(it);
+void AutocompleteResult::RemoveAllMatchesNotOfType(
+    AutocompleteProvider::Type type) {
+  std::erase_if(matches_, [type](const AutocompleteMatch& match) {
+    return match.provider->type() != type;
+  });
 }
 
 void AutocompleteResult::ConvertOpenTabMatches(

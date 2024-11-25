@@ -368,8 +368,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateTopicBlock(
 
   // Make sure we don't reuse the topic by excluding it from our span.
   feed_generation_info.topics() =
-      base::make_span(std::next(feed_generation_info.topics().begin()),
-                      feed_generation_info.topics().end());
+      base::span(feed_generation_info.topics()).subspan(1u);
 
   std::vector<mojom::FeedItemV2Ptr> items;
   items.push_back(mojom::FeedItemV2::NewCluster(std::move(result)));
@@ -426,14 +425,13 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
   std::vector<mojom::FeedItemV2Ptr> result;
   if (!suggested_publisher_ids.empty()) {
     size_t preferred_count = 3;
-    auto count = std::min(preferred_count, suggested_publisher_ids.size());
+    size_t count = std::min(preferred_count, suggested_publisher_ids.size());
     std::vector<std::string> suggestions(
         suggested_publisher_ids.begin(),
         suggested_publisher_ids.begin() + count);
 
     info.suggested_publisher_ids() =
-        base::make_span(std::next(suggested_publisher_ids.begin(), count),
-                        suggested_publisher_ids.end());
+        base::span(suggested_publisher_ids).subspan(count);
 
     DVLOG(1) << "Generating publisher suggestions (discover)";
     result.push_back(mojom::FeedItemV2::NewDiscover(

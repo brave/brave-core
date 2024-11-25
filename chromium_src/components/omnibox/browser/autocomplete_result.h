@@ -6,9 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_RESULT_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_RESULT_H_
 
-#define SortAndCull                                       \
-  ReorderMatch(const ACMatches::iterator& it, int index); \
-  void RemoveMatch(const ACMatches::iterator& it);        \
+#include "base/ranges/algorithm.h"
+
+#define SortAndCull                                           \
+  Unused();                                                   \
+  void RemoveAllMatchesNotOfType(AutocompleteProvider::Type); \
+  template <typename UnaryPredicate>                          \
+  void MoveMatchToBeLast(UnaryPredicate predicate) {          \
+    if (auto it = base::ranges::find_if(matches_, predicate); \
+        it != matches_.end()) {                               \
+      std::rotate(it, std::next(it), matches_.end());         \
+    }                                                         \
+  }                                                           \
   void SortAndCull
 
 #define ConvertOpenTabMatches                                        \

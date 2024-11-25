@@ -51,23 +51,9 @@ void MaybeShowCommands(AutocompleteResult* result,
     return;
   }
 
-  uint32_t seen_commands = 0;
-
-  // Move all the commands to the top of the Omnibox suggestions.
-  for (uint32_t i = 0; i < result->size(); ++i) {
-    auto* match = result->match_at(i);
-    if (match->provider->type() != AutocompleteProvider::TYPE_BRAVE_COMMANDER) {
-      continue;
-    }
-
-    result->ReorderMatch(result->begin() + i, seen_commands++);
-  }
-
-  // Remove all results after the commands.
-  for (auto it = result->end() - 1; it >= result->begin() + seen_commands;
-       --it) {
-    result->RemoveMatch(it);
-  }
+  // At this point all commands are moved to the top, and everything else is
+  // discarded.
+  result->RemoveAllMatchesNotOfType(AutocompleteProvider::TYPE_BRAVE_COMMANDER);
 #endif
 }
 
@@ -95,19 +81,9 @@ void MaybeAddLeoProvider(AutocompleteController::Providers& providers,
 void MaybeShowLeoMatch(AutocompleteResult* result) {
   DCHECK(result);
 
-  if (result->size() == 0) {
-    return;
-  }
-
-  ACMatches::iterator leo_match =
-      base::ranges::find_if(*result, &LeoProvider::IsMatchFromLeoProvider);
-  if (leo_match == result->end()) {
-    return;
-  }
-
   // Regardless of the relevance score, we want to show the Leo match at the
   // bottom. But could be followed by Brave Search promotion.
-  result->ReorderMatch(leo_match, -1);
+  result->MoveMatchToBeLast(&LeoProvider::IsMatchFromLeoProvider);
 }
 
 }  // namespace
