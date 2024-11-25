@@ -19,7 +19,7 @@ RegisterStyleOverride(
         background-color: var(--leo-color-page-background) !important;
         box-shadow: none !important;
     }
-    slot {
+    slot:has(:not(settings-safety-hub-page)) {
         box-shadow: var(--leo-effect-elevation-01) !important;
         background-color: var(--leo-color-container-background) !important;
         border-radius: var(--leo-radius-m) !important;
