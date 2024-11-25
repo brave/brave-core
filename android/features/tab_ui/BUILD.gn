@@ -17,7 +17,7 @@ android_library("java") {
     "//chrome/browser/android/lifecycle:java",
     "//chrome/browser/browser_controls/android:java",
     "//chrome/browser/commerce/merchant_viewer/android:java",
-    "//chrome/browser/data_sharing:tab_group_ui_java",
+    "//chrome/browser/data_sharing:data_sharing_public_java",
     "//chrome/browser/flags:java",
     "//chrome/browser/preferences:java",
     "//chrome/browser/profiles/android:java",
