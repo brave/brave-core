@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/run_loop.h"
+#include "base/test/run_until.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -139,8 +139,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
   tab_strip_model().ActivateTabAt(2);
 
   // Then, the secondary web view should become hidden
-  base::RunLoop().RunUntilIdle();
-  EXPECT_FALSE(secondary_contents_container().GetVisible());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !secondary_contents_container().GetVisible(); }));
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
@@ -159,8 +159,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
   tab_strip_model().ActivateTabAt(0);
 
   // Then, the secondary web view should show up
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(secondary_contents_container().GetVisible());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return secondary_contents_container().GetVisible(); }));
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
