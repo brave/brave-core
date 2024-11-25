@@ -16,31 +16,31 @@
         android:key="private_search_engine"
         android:order="2"
         android:title="@string/prefs_private_search_engine"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesFragment"
+        android:key="quick_search_engine"
+        android:order="3"
+        android:title="@string/quick_search_engines_with_hyphen"/>
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="show_autocomplete_in_address_bar"
         android:title="@string/show_autocomplete_in_address_bar"
         android:summary="@string/show_autocomplete_in_address_bar_summary"
-        android:order="3"
+        android:order="4"
         android:persistent="false"/>
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="search_suggestions"
         android:title="@string/show_search_suggestions_title"
         android:summary="@string/improve_search_suggestions_summary"
         android:persistent="false"
-        android:order="4"/>
+        android:order="5"/>
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="autocomplete_top_sites"
-        android:order="5"
+        android:order="6"
         android:title="@string/autocomplete_top_sites_title"
         android:persistent="false"/>
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave.other_search_engines_enabled"
-        android:order="6"
+        android:order="7"
         android:title="@string/index_other_search_engines_title"
         android:summary="@string/index_other_search_engines_text" />
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesFragment"
-        android:key="quick_search_engine"
-        android:order="7"
-        android:title="@string/quick_search_engines_with_hyphen"/>
 </PreferenceScreen>

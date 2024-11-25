@@ -17,11 +17,14 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +37,7 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -163,7 +167,7 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesFragment;
 import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesModel;
-import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesUtil;
+import org.chromium.chrome.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
 import org.chromium.chrome.browser.quick_search_engines.views.QuickSearchEnginesViewAdapter;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
@@ -286,6 +290,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
 
+    public static final String GOOGLE_SEARCH_ENGINE_KEYWORD = ":g";
+    public static final String YOUTUBE_SEARCH_ENGINE_KEYWORD = ":yt";
     public static final String BRAVE_SEARCH_ENGINE_KEYWORD = ":br";
     public static final String BING_SEARCH_ENGINE_KEYWORD = ":b";
     public static final String STARTPAGE_SEARCH_ENGINE_KEYWORD = ":sp";
@@ -1276,7 +1282,41 @@ public abstract class BraveActivity extends ChromeActivity
                                 .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
             checkAppUpdate();
         }
+
+        // Quick search engines views changes
         new KeyboardVisibilityHelper(BraveActivity.this, BraveActivity.this);
+        AppCompatEditText urlBar = findViewById(R.id.url_bar);
+        if (urlBar != null) {
+            urlBar.addTextChangedListener(
+                    new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(
+                                CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(
+                                CharSequence query, int start, int before, int count) {
+                            if (query.toString().isEmpty()) {
+                                removeQuickActionSearchEnginesView();
+                            } else {
+                                if (getBraveToolbarLayout().isUrlBarFocused()) {
+                                    View rootView = findViewById(android.R.id.content);
+                                    Rect r = new Rect();
+                                    rootView.getWindowVisibleDisplayFrame(r);
+                                    int screenHeight = rootView.getRootView().getHeight();
+                                    int visibleHeight = r.bottom;
+                                    int heightDifference = screenHeight - visibleHeight;
+                                    showQuickActionSearchEnginesView(heightDifference);
+                                } else {
+                                    removeQuickActionSearchEnginesView();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {}
+                    });
+        }
     }
 
     private void enableSearchSuggestions() {
@@ -2525,6 +2565,10 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void showQuickActionSearchEnginesView(int keypadHeight) {
+        if (mQuickSearchEnginesView != null
+                || !QuickSearchEnginesUtil.getQuickSearchEnginesFeature()) {
+            return;
+        }
         mQuickSearchEnginesView =
                 getLayoutInflater().inflate(R.layout.quick_serach_engines_view, null);
         RecyclerView recyclerView =
@@ -2552,6 +2596,10 @@ public abstract class BraveActivity extends ChromeActivity
                 new QuickSearchEnginesModel("", "", "", true);
         searchEngines.add(0, leoQuickSearchEnginesModel);
 
+        QuickSearchEnginesModel defaultQuickSearchEnginesModel =
+                QuickSearchEnginesUtil.getDefaultSearchEngine(getCurrentProfile());
+        searchEngines.add(1, defaultQuickSearchEnginesModel);
+
         QuickSearchEnginesViewAdapter adapter =
                 new QuickSearchEnginesViewAdapter(BraveActivity.this, searchEngines, this);
         recyclerView.setAdapter(adapter);
@@ -2572,9 +2620,10 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void removeQuickActionSearchEnginesView() {
-        if (mQuickSearchEnginesView != null) {
+        if (mQuickSearchEnginesView != null && mQuickSearchEnginesView.getParent() != null) {
             WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
             windowManager.removeView(mQuickSearchEnginesView);
+            mQuickSearchEnginesView = null;
         }
     }
 
@@ -2605,15 +2654,19 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onKeyboardOpened(int keyboardHeight) {
-        if (QuickSearchEnginesUtil.getQuickSearchEnginesFeature()) {
-            showQuickActionSearchEnginesView(keyboardHeight);
-        }
+        runOnUiThread(
+                () -> {
+                    if (!isFinishing()
+                            && !isDestroyed()
+                            && getBraveToolbarLayout().isUrlBarFocused()
+                            && !getBraveToolbarLayout().getLocationBarQuery().isEmpty()) {
+                        showQuickActionSearchEnginesView(keyboardHeight);
+                    }
+                });
     }
 
     @Override
     public void onKeyboardClosed() {
-        if (QuickSearchEnginesUtil.getQuickSearchEnginesFeature()) {
-            removeQuickActionSearchEnginesView();
-        }
+        removeQuickActionSearchEnginesView();
     }
 }
