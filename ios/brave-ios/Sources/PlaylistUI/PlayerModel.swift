@@ -332,42 +332,7 @@ public final class PlayerModel: ObservableObject {
     return item.presentationSize.width / item.presentationSize.height
   }
 
-  /// A stream that yields downsampled thumbnails of the item currently playing.
-  var videoAmbianceImageStream: AsyncStream<UIImage> {
-    return .init { [weak self] continuation in
-      guard let self else { return }
-      let timeObserver = player.addCancellablePeriodicTimeObserver(
-        forInterval: 100,
-        queue: .global()
-      ) { [weak self] time in
-        guard let self,
-          self.videoDecorationOutput.hasNewPixelBuffer(forItemTime: time),
-          let buffer = self.videoDecorationOutput.copyPixelBuffer(
-            forItemTime: time,
-            itemTimeForDisplay: nil
-          )
-        else {
-          DispatchQueue.main.async {
-            continuation.yield(.init())
-          }
-          return
-        }
-        let ciImage = CIImage(cvPixelBuffer: buffer)
-          .transformed(by: .init(scaleX: 0.1, y: 0.1), highQualityDownsample: false)
-        if let cgImage = CIContext().createCGImage(ciImage, from: ciImage.extent) {
-          let uiImage = UIImage(cgImage: cgImage)
-          DispatchQueue.main.async {
-            continuation.yield(uiImage)
-          }
-        }
-      }
-      // Should be tied to the View, but adding one extra killswitch
-      self.cancellables.insert(timeObserver)
-      continuation.onTermination = { _ in
-        timeObserver.cancel()
-      }
-    }
-  }
+  @MainActor @Published public var isPlayerInForeground: Bool = true
 
   // MARK: - Picture in Picture
 
@@ -707,15 +672,11 @@ public final class PlayerModel: ObservableObject {
   // MARK: -
 
   private let player: AVPlayer = .init()
-  private let videoDecorationOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: [
-    kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
-  ])
   private var currentItem: AVPlayerItem? {
     player.currentItem
   }
   nonisolated private func updateCurrentItem(_ item: AVPlayerItem?) async {
     player.replaceCurrentItem(with: item)
-    item?.add(videoDecorationOutput)
     await MainActor.run {
       setupPlayerItemKeyPathObservation()
       updateSystemPlayer()
@@ -780,6 +741,9 @@ public final class PlayerModel: ObservableObject {
       queue: .main
     ) { [weak self] _ in
       guard let self else { return }
+      MainActor.assumeIsolated {
+        self.isPlayerInForeground = false
+      }
       if isPictureInPictureActive || !isPlaying {
         return
       }
@@ -793,18 +757,13 @@ public final class PlayerModel: ObservableObject {
       queue: .main
     ) { [weak self] _ in
       guard let self else { return }
+      MainActor.assumeIsolated {
+        self.isPlayerInForeground = true
+      }
       if isPictureInPictureActive || playerLayer.player != nil {
         return
       }
-      // There is a bug in iOS that breaks restoring an AVPlayer to an AVPlayerLayer while its
-      // playing in the background, so we have to first pause it before restoring it and resume
-      // playback after.
-      let isPlayingDurationRestoration = isPlaying
-      pause()
       playerLayer.player = player
-      if isPlayingDurationRestoration {
-        play()
-      }
     }
 
     cancellables.formUnion([
@@ -908,8 +867,8 @@ extension PlayerModel {
     MPRemoteCommandCenter.shared().do {
       $0.skipBackwardCommand.preferredIntervals = [.init(value: seekInterval)]
       $0.skipForwardCommand.preferredIntervals = [.init(value: seekInterval)]
-      $0.seekBackwardCommand.isEnabled = itemQueue.first != selectedItem.id
-      $0.seekForwardCommand.isEnabled = itemQueue.last != selectedItem.id || repeatMode != .none
+      $0.previousTrackCommand.isEnabled = itemQueue.first != selectedItem.id
+      $0.nextTrackCommand.isEnabled = itemQueue.last != selectedItem.id || repeatMode != .none
       $0.changeRepeatModeCommand.currentRepeatType = repeatMode.repeatType
       $0.changeShuffleModeCommand.currentShuffleType = isShuffleEnabled ? .items : .off
       $0.changePlaybackRateCommand.supportedPlaybackRates = PlaybackSpeed.supportedSpeeds.map {
@@ -961,9 +920,12 @@ extension PlayerModel {
       center.skipForwardCommand,
       center.seekBackwardCommand,
       center.seekForwardCommand,
+      center.nextTrackCommand,
+      center.previousTrackCommand,
       center.changeRepeatModeCommand,
       center.changeShuffleModeCommand,
       center.changePlaybackRateCommand,
+      center.changePlaybackPositionCommand,
     ]
     cancellables.formUnion(
       commands.map {
@@ -992,12 +954,18 @@ extension PlayerModel {
         play()
       }
     case center.skipBackwardCommand:
+      let interval = (event as? MPSkipIntervalCommandEvent)?.interval ?? self.seekInterval
+      Task { await seek(to: currentTime - interval) }
+    case center.seekBackwardCommand:
       Task { await seekBackwards() }
     case center.skipForwardCommand:
-      Task { await seekForwards() }
-    case center.seekBackwardCommand:
-      Task { await playPreviousItem() }
+      let interval = (event as? MPSkipIntervalCommandEvent)?.interval ?? self.seekInterval
+      Task { await seek(to: currentTime + interval) }
     case center.seekForwardCommand:
+      Task { await seekForwards() }
+    case center.previousTrackCommand:
+      Task { await playPreviousItem() }
+    case center.nextTrackCommand:
       Task { await playNextItem() }
     case center.changeRepeatModeCommand:
       if let repeatType = (event as? MPChangeRepeatModeCommandEvent)?.repeatType,
@@ -1019,6 +987,12 @@ extension PlayerModel {
       {
         Task(priority: .userInitiated) { @MainActor in
           playbackSpeed = supportedSpeed
+        }
+      }
+    case center.changePlaybackPositionCommand:
+      if let position = (event as? MPChangePlaybackPositionCommandEvent)?.positionTime {
+        Task(priority: .userInitiated) {
+          await seek(to: position, accurately: true)
         }
       }
     default:

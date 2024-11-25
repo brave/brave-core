@@ -97,6 +97,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       }
     }
   }
+  /// The current selected tab of Brave Wallet with initial value `.portfolio`
+  @Published var selectedTab: CryptoTab = .portfolio
   /// The origin of the active tab (if applicable). Used for fetching/selecting network for the DApp origin.
   public var origin: URLOrigin? {
     didSet {

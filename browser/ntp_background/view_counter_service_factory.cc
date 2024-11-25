@@ -12,7 +12,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"

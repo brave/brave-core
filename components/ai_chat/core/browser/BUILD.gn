@@ -10,6 +10,8 @@ static_library("browser") {
   sources = [
     "ai_chat_credential_manager.cc",
     "ai_chat_credential_manager.h",
+    "ai_chat_database.cc",
+    "ai_chat_database.h",
     "ai_chat_feedback_api.cc",
     "ai_chat_feedback_api.h",
     "ai_chat_metrics.cc",
@@ -85,6 +87,8 @@ static_library("browser") {
     "//components/component_updater",
     "//components/component_updater:component_updater_paths",
     "//components/keyed_service/core",
+    "//components/os_crypt/async/browser",
+    "//components/os_crypt/async/common",
     "//components/os_crypt/sync:os_crypt",
     "//components/prefs",
     "//components/update_client",
@@ -93,6 +97,7 @@ static_library("browser") {
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
+    "//sql",
     "//third_party/abseil-cpp:absl",
     "//third_party/re2",
     "//ui/base",
@@ -125,6 +130,7 @@ if (!is_ios) {
     testonly = true
     sources = [
       "ai_chat_credential_manager_unittest.cc",
+      "ai_chat_database_unittest.cc",
       "ai_chat_metrics_unittest.cc",
       "ai_chat_service_unittest.cc",
       "associated_content_driver_unittest.cc",
@@ -160,6 +166,7 @@ if (!is_ios) {
       "//brave/components/skus/common:mojom",
       "//components/component_updater:component_updater_paths",
       "//components/component_updater:test_support",
+      "//components/os_crypt/async/browser:test_support",
       "//components/os_crypt/sync:test_support",
       "//components/prefs:test_support",
       "//components/sync_preferences:test_support",
@@ -168,6 +175,7 @@ if (!is_ios) {
       "//services/data_decoder/public/cpp:test_support",
       "//services/network:test_support",
       "//services/network/public/cpp:cpp",
+      "//sql:test_support",
       "//testing/gtest:gtest",
     ]
   }
@@ -180,12 +188,18 @@ source_set("test_support") {
     "engine/mock_engine_consumer.h",
     "engine/mock_remote_completion_client.cc",
     "engine/mock_remote_completion_client.h",
+    "mock_conversation_handler_observer.cc",
+    "mock_conversation_handler_observer.h",
+    "test_utils.cc",
+    "test_utils.h",
   ]
 
   deps = [
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common/mojom",
     "//services/network/public/cpp",
     "//testing/gmock",
+    "//testing/gtest",
   ]
 }
 

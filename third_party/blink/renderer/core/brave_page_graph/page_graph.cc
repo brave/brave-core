@@ -26,6 +26,7 @@
 #include "base/debug/stack_trace.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/no_destructor.h"
+#include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/values.h"
 #include "brave/components/brave_page_graph/common/features.h"
@@ -1197,11 +1198,8 @@ NodeHTML* PageGraph::GetHTMLNode(const DOMNodeId node_id) const {
     return element_node_it->value;
   }
   auto text_node_it = text_nodes_.find(node_id);
-  if (text_node_it != text_nodes_.end()) {
-    return text_node_it->value;
-  }
-  CHECK(false) << "HTMLNode not found: " << node_id;
-  return nullptr;
+  CHECK(text_node_it != text_nodes_.end()) << "HTMLNode not found: " << node_id;
+  return text_node_it->value;
 }
 
 NodeHTMLElement* PageGraph::GetHTMLElementNode(
@@ -1242,17 +1240,14 @@ NodeHTMLElement* PageGraph::GetHTMLElementNode(
 
   // If a node is not found at this point, then something is wrong and there
   // might be another edge case we need to handle.
-  CHECK(false) << "HTMLElementNode not found: " << node_id;
-  return nullptr;
+  NOTREACHED() << "HTMLElementNode not found: " << node_id;
 }
 
 NodeHTMLText* PageGraph::GetHTMLTextNode(const DOMNodeId node_id) const {
   auto text_node_it = text_nodes_.find(node_id);
-  if (text_node_it != text_nodes_.end()) {
-    return text_node_it->value;
-  }
-  CHECK(false) << "HTMLTextNode not found: " << node_id;
-  return nullptr;
+  CHECK(text_node_it != text_nodes_.end())
+      << "HTMLTextNode not found: " << node_id;
+  return text_node_it->value;
 }
 
 bool PageGraph::RegisterCurrentlyConstructedNode(blink::Node* node) {

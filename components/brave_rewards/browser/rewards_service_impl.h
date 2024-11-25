@@ -154,8 +154,6 @@ class RewardsServiceImpl final : public RewardsService,
                  const GURL& first_party_url,
                  const GURL& referrer) override;
   void GetReconcileStamp(GetReconcileStampCallback callback) override;
-  void GetAutoContributeEnabled(
-      GetAutoContributeEnabledCallback callback) override;
   void GetPublisherMinVisitTime(
       GetPublisherMinVisitTimeCallback callback) override;
   void GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) override;
@@ -170,8 +168,6 @@ class RewardsServiceImpl final : public RewardsService,
                                    const std::string& url,
                                    const std::string& favicon_url,
                                    const std::string& publisher_blob) override;
-  void GetAutoContributionAmount(
-      GetAutoContributionAmountCallback callback) override;
   void GetPublisherBanner(const std::string& publisher_id,
                           GetPublisherBannerCallback callback) override;
   void OnPublisherBanner(GetPublisherBannerCallback callback,
@@ -192,12 +188,6 @@ class RewardsServiceImpl final : public RewardsService,
 
   mojom::RewardsEngineOptionsPtr HandleFlags(const RewardsFlags& flags);
 
-  void IsAutoContributeSupported(
-      base::OnceCallback<void(bool)> callback) override;
-
-  void GetAutoContributeProperties(
-      GetAutoContributePropertiesCallback callback) override;
-
   void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
   void RefreshPublisher(const std::string& publisher_key,
                         RefreshPublisherCallback callback) override;
@@ -215,8 +205,6 @@ class RewardsServiceImpl final : public RewardsService,
 
   const RewardsNotificationService::RewardsNotificationsMap&
     GetAllNotifications() override;
-
-  void SetAutoContributionAmount(const double amount) const override;
 
   void IsPublisherRegistered(const std::string& publisher_id,
                              base::OnceCallback<void(bool)> callback) override;
@@ -266,8 +254,6 @@ class RewardsServiceImpl final : public RewardsService,
       const std::string& provider,
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback callback) override;
-
-  void SetAutoContributeEnabled(bool enabled) override;
 
   void GetAllContributions(GetAllContributionsCallback callback) override;
 
@@ -344,8 +330,7 @@ class RewardsServiceImpl final : public RewardsService,
       brave_wallet::mojom::SolanaProviderError error,
       const std::string& error_message);
 
-  void MaybeShowNotificationTipsPaid();
-  void ShowNotificationTipsPaid(bool ac_enabled);
+  void ShowNotificationTipsPaid();
 
   void OnSetPublisherExclude(const std::string& publisher_key,
                              const bool exclude,
@@ -449,9 +434,6 @@ class RewardsServiceImpl final : public RewardsService,
 
   void GetClientCountryCode(GetClientCountryCodeCallback callback) override;
 
-  void IsAutoContributeSupportedForClient(
-      IsAutoContributeSupportedForClientCallback callback) override;
-
   void PublisherListNormalized(
       std::vector<mojom::PublisherInfoPtr> list) override;
 
@@ -501,8 +483,6 @@ class RewardsServiceImpl final : public RewardsService,
       std::vector<mojom::ContributionInfoPtr> list);
   void OnRecordBackendP3AStatsRecurringTips(
       std::vector<mojom::PublisherInfoPtr> list);
-
-  void OnRecordBackendP3AStatsAC(bool ac_enabled);
 
   void OnGetBalanceReport(GetBalanceReportCallback callback,
                           const mojom::Result result,

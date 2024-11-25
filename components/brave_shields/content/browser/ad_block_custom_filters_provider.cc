@@ -25,7 +25,7 @@ void AddDATBufferToFilterSet(uint8_t permission_mask,
 
 // Custom filters get all permissions granted, i.e. all bits of the mask set,
 // i.e. the maximum possible uint8_t.
-const uint8_t kCustomFiltersPermissionLevel = UINT8_MAX;
+constexpr uint8_t kCustomFiltersPermissionLevel = UINT8_MAX;
 
 }  // namespace
 

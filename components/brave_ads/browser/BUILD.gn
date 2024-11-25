@@ -10,9 +10,6 @@ static_library("browser") {
     "ad_units/notification_ad/custom_notification_ad_constants.h",
     "ad_units/notification_ad/custom_notification_ad_feature.cc",
     "ad_units/notification_ad/custom_notification_ad_feature.h",
-    "ads_service.cc",
-    "ads_service.h",
-    "ads_service_observer.h",
     "analytics/p2a/p2a.cc",
     "analytics/p2a/p2a.h",
     "analytics/p2a/p2a_constants.h",
@@ -84,7 +81,6 @@ static_library("browser") {
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//ui/base",
-    "//ui/message_center/public/cpp",
   ]
 
   public_deps += [

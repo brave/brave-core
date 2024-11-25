@@ -22,8 +22,7 @@
 
 namespace {
 // https://chrome.google.com/webstore/detail/snowflake/mafpmfcccpbjnhfhjnllmmalhifmlcie
-constexpr const char kSnowflakeExtensionId[] =
-    "mafpmfcccpbjnhfhjnllmmalhifmlcie";
+constexpr char kSnowflakeExtensionId[] = "mafpmfcccpbjnhfhjnllmmalhifmlcie";
 }  // namespace
 
 class SnowflakeWebstoreInstaller final

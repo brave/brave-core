@@ -301,13 +301,6 @@ void TestRewardsEngineClient::GetClientCountryCode(
   GetStringState(state::kDeclaredGeo, std::move(callback));
 }
 
-void TestRewardsEngineClient::IsAutoContributeSupportedForClient(
-    IsAutoContributeSupportedForClientCallback callback) {
-  const auto country_code =
-      mojom::RewardsEngineClientAsyncWaiter(this).GetClientCountryCode();
-  std::move(callback).Run(country_code != "JP" && country_code != "IN");
-}
-
 void TestRewardsEngineClient::GetLegacyWallet(
     GetLegacyWalletCallback callback) {
   std::move(callback).Run("");

@@ -8,13 +8,13 @@
 #include <memory>
 #include <tuple>
 
+#include "base/test/task_environment.h"
+#include "base/token.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
-
-namespace {
-const uint64_t kTestSessionToken = 123456789;
-const uint64_t kAnotherTestSessionToken = 45678;
-}  // namespace
 
 class BraveFarblingServiceTest : public testing::Test {
  public:
@@ -24,26 +24,31 @@ class BraveFarblingServiceTest : public testing::Test {
   ~BraveFarblingServiceTest() override = default;
 
   void SetUp() override {
-    farbling_service_ = std::make_unique<brave::BraveFarblingService>();
-    farbling_service_->set_session_tokens_for_testing(kTestSessionToken);
+    HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
+    settings_map_ = new HostContentSettingsMap(
+        &prefs_, false /* is_off_the_record */, false /* store_last_modified */,
+        false /* restore_session */, false /* should_record_metrics */);
+    farbling_service_ =
+        std::make_unique<brave::BraveFarblingService>(settings_map_.get());
   }
+
+  void TearDown() override { settings_map_->ShutdownOnUIThread(); }
 
   brave::BraveFarblingService* farbling_service() {
     return farbling_service_.get();
   }
 
- private:
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+  scoped_refptr<HostContentSettingsMap> settings_map_;
   std::unique_ptr<brave::BraveFarblingService> farbling_service_;
 };
 
-TEST_F(BraveFarblingServiceTest, SessionTokens) {
-  EXPECT_EQ(farbling_service()->session_token(), kTestSessionToken);
-}
-
 TEST_F(BraveFarblingServiceTest, PRNGKnownValues) {
   const std::array<std::tuple<GURL, uint64_t>, 2> test_cases = {
-      std::make_tuple<>(GURL("http://a.com"), 16188622623906601575UL),
-      std::make_tuple<>(GURL("http://b.com"), 10059331952077172763UL),
+      std::make_tuple<>(GURL("http://a.com"), 10450951993123491723UL),
+      std::make_tuple<>(GURL("http://b.com"), 2581208260237394178UL),
   };
   for (const auto& c : test_cases) {
     brave::FarblingPRNG prng;
@@ -54,10 +59,9 @@ TEST_F(BraveFarblingServiceTest, PRNGKnownValues) {
 }
 
 TEST_F(BraveFarblingServiceTest, PRNGKnownValuesDifferentSeeds) {
-  farbling_service()->set_session_tokens_for_testing(kAnotherTestSessionToken);
   const std::array<std::tuple<GURL, uint64_t>, 2> test_cases = {
-      std::make_tuple<>(GURL("http://a.com"), 6565599272117158152UL),
-      std::make_tuple<>(GURL("http://b.com"), 10499595974068024348UL),
+      std::make_tuple<>(GURL("http://a.com"), 10450951993123491723UL),
+      std::make_tuple<>(GURL("http://b.com"), 2581208260237394178UL),
   };
   for (const auto& c : test_cases) {
     brave::FarblingPRNG prng;
@@ -84,4 +88,19 @@ TEST_F(BraveFarblingServiceTest, InvalidDomains) {
     EXPECT_FALSE(
         farbling_service()->MakePseudoRandomGeneratorForURL(url, &prng));
   }
+}
+
+TEST_F(BraveFarblingServiceTest, ShieldsDown) {
+  const GURL url("http://a.com");
+  brave_shields::SetBraveShieldsEnabled(settings_map_.get(), false, url);
+  brave::FarblingPRNG prng;
+  EXPECT_FALSE(farbling_service()->MakePseudoRandomGeneratorForURL(url, &prng));
+}
+
+TEST_F(BraveFarblingServiceTest, FingerprintingAllowed) {
+  const GURL url("http://a.com");
+  brave_shields::SetFingerprintingControlType(
+      settings_map_.get(), brave_shields::ControlType::ALLOW, url);
+  brave::FarblingPRNG prng;
+  EXPECT_FALSE(farbling_service()->MakePseudoRandomGeneratorForURL(url, &prng));
 }

@@ -17,7 +17,7 @@ std::array<uint8_t, kOrchardNullifierSize> GenerateMockNullifier(
     const mojom::AccountIdPtr& account_id,
     uint8_t seed);
 
-OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
+OrchardNoteSpend GenerateMockNoteSpend(const mojom::AccountIdPtr& account_id,
                                        uint32_t block_id,
                                        uint8_t seed);
 

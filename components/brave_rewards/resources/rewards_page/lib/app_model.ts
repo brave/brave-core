@@ -38,9 +38,6 @@ export interface AppModel {
   getAdsHistory: () => Promise<AdsHistoryItem[]>
   setAdLikeStatus: (id: string, status: AdLikeStatus) => Promise<void>
   setAdInappropriate: (id: string, value: boolean) => Promise<void>
-  setAutoContributeEnabled: (enabled: boolean) => Promise<void>
-  setAutoContributeAmount: (amount: number) => Promise<void>
-  removeAutoContributeSite: (id: string) => Promise<void>
   removeRecurringContribution: (id: string) => Promise<void>
   sendContribution:
     (creatorID: string, amount: number, recurring: boolean) => Promise<boolean>
@@ -93,12 +90,6 @@ export function defaultModel(): AppModel {
     async setAdLikeStatus(id, status) {},
 
     async setAdInappropriate(id, value) {},
-
-    async setAutoContributeEnabled(enabled) {},
-
-    async setAutoContributeAmount(amount) {},
-
-    async removeAutoContributeSite(id) {},
 
     async removeRecurringContribution(id) {},
 

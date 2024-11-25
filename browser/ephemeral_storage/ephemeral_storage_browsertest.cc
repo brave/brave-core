@@ -418,7 +418,7 @@ void EphemeralStorageBrowserTest::SetCookieSetting(
 
 // Helper to load easy-to-use Indexed DB API.
 void EphemeralStorageBrowserTest::LoadIndexedDbHelper(RenderFrameHost* host) {
-  const char kLoadIndexMinScript[] =
+  static constexpr char kLoadIndexMinScript[] =
       "new Promise((resolve) => {"
       "  const script = document.createElement('script');"
       "  script.onload = () => {"
@@ -1028,7 +1028,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
                            frames[site_b_tab2][4]}},
   };
 
-  const char kTestMessage[] = "msg";
+  static constexpr char kTestMessage[] = "msg";
   for (const auto& test_case : kTestCases) {
     // RenderFrameHosts that were expected to sent something or receive
     // something. The set is used to skip RFHs in "expect received nothing"

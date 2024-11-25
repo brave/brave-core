@@ -247,6 +247,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
 
   // Leo Assistant pref
+  (*s_brave_allowlist)[ai_chat::prefs::kStorageEnabled] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveChatAutocompleteProviderEnabled] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatContextMenuEnabled] =

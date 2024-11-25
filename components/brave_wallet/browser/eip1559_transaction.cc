@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/containers/to_vector.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -289,7 +290,7 @@ std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(uint256_t chain_id,
 
   const std::string rlp_msg = RLPEncode(base::Value(std::move(list)));
   result.insert(result.end(), rlp_msg.begin(), rlp_msg.end());
-  return hash ? KeccakHash(result) : result;
+  return hash ? base::ToVector(KeccakHash(result)) : result;
 }
 
 std::string Eip1559Transaction::GetSignedTransaction() const {

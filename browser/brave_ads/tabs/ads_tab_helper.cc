@@ -10,7 +10,7 @@
 #include "base/containers/contains.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -45,9 +45,8 @@ constexpr char16_t kDocumentBodyInnerTextJavaScript[] =
     u"document?.body?.innerText";
 
 std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
-  return base::StringPrintf("%d%d%d", id.frame_routing_id.child_id,
-                            id.frame_routing_id.frame_routing_id,
-                            id.delegate_id);
+  return absl::StrFormat("%d%d%d", id.frame_routing_id.child_id,
+                         id.frame_routing_id.frame_routing_id, id.delegate_id);
 }
 
 }  // namespace

@@ -22,10 +22,10 @@
 #include "extensions/browser/extension_system.h"
 
 namespace {
-constexpr const char kNoScriptId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
-constexpr const char kUBlockId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
-constexpr const char kUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
-constexpr const char kAdGuardId[] = "gfggjaccafhcbfogfkogggoepomehbjl";
+constexpr char kNoScriptId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
+constexpr char kUBlockId[] = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
+constexpr char kUMatrixId[] = "ogfcmafjalglgifnmanfmnieipoejdcf";
+constexpr char kAdGuardId[] = "gfggjaccafhcbfogfkogggoepomehbjl";
 }  // namespace
 
 BASE_FEATURE(kExtensionsManifestV2,

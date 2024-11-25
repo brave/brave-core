@@ -31,9 +31,6 @@
                android:text="@string/currently_used_search_engines"
                android:textColor="@color/schemes_primary"/>
 
-          <include layout="@layout/quick_search_settings_item"
-               android:id="@+id/default_search_engine_layout" />
-
           <androidx.recyclerview.widget.RecyclerView
                android:id="@+id/quick_search_settings_recyclerview"
                android:layout_width="match_parent"

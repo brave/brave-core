@@ -31,6 +31,9 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"aboutDescription_3", IDS_CHAT_UI_ABOUT_DESCRIPTION_3},
        {"placeholderLabel", IDS_CHAT_UI_PLACEHOLDER_LABEL},
        {"pageContentWarning", IDS_CHAT_UI_PAGE_CONTENT_WARNING},
+       {"customModelInvalidEndpoint", IDS_CUSTOM_MODEL_ENDPOINT_INVALID_ERROR},
+       {"customModelModifyConfigurationLabel",
+        IDS_CHAT_UI_MODIFY_CONFIGURATION_LABEL},
        {"errorNetworkLabel", IDS_CHAT_UI_ERROR_NETWORK},
        {"errorRateLimit", IDS_CHAT_UI_ERROR_RATE_LIMIT},
        {"retryButtonLabel", IDS_CHAT_UI_RETRY_BUTTON_LABEL},
@@ -311,14 +314,4 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList() {
 
   return action_list;
 }
-
-const base::fixed_flat_set<std::string_view, 1> kPrintPreviewRetrievalHosts =
-    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
-                                             {
-                                                 "docs.google.com",
-                                             });
-
-constexpr char kLeoModelSupportUrl[] =
-    "https://support.brave.com/hc/en-us/categories/"
-    "20990938292237-Brave-Leo";
 }  // namespace ai_chat

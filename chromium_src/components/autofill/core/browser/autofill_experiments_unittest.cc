@@ -37,9 +37,9 @@ class AutofillExperimentsTest : public testing::Test {
   bool IsCreditCardUploadEnabled(
       const std::string& user_country,
       const AutofillMetrics::PaymentsSigninState signin_state_for_metrics) {
-    return autofill::IsCreditCardUploadEnabled(&sync_service_, user_country,
-                                               signin_state_for_metrics,
-                                               log_manager_.get());
+    return autofill::IsCreditCardUploadEnabled(
+        &sync_service_, pref_service_, user_country, signin_state_for_metrics,
+        log_manager_.get());
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;

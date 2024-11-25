@@ -135,13 +135,12 @@ void RankerModelLoaderImplTest::InitModel(const GURL& model_url,
 
 RankerModelStatus RankerModelLoaderImplTest::ValidateModel(
     const RankerModel& model) {
-  NOTREACHED_IN_MIGRATION();
-  return RankerModelStatus::OK;
+  NOTREACHED();
 }
 
 void RankerModelLoaderImplTest::OnModelAvailable(
     std::unique_ptr<RankerModel> model) {
-  NOTREACHED_IN_MIGRATION();
+  NOTREACHED();
 }
 
 }  // namespace

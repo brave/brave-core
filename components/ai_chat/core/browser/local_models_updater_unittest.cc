@@ -30,7 +30,7 @@ constexpr base::FilePath::CharType kComponentInstallDir[] =
     FILE_PATH_LITERAL("AIChatLocalModels");
 constexpr base::FilePath::CharType kDeprecatedComponentInstallDir[] =
     FILE_PATH_LITERAL("LeoLocalModels");
-constexpr const char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
+constexpr char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
 }  // namespace
 
 class LocalModelsUpdaterUnitTest : public testing::Test {

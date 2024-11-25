@@ -100,19 +100,6 @@ void WalletProvider::OnFetchBalance(
   std::move(callback).Run(mojom::Result::OK, available);
 }
 
-void WalletProvider::TransferFunds(double amount,
-                                   const std::string& address,
-                                   const std::string& contribution_id,
-                                   ResultCallback callback) {
-  if (!transfer_) {
-    engine_->LogError(FROM_HERE)
-        << WalletType() << " does not support contributions";
-    return std::move(callback).Run(mojom::Result::FAILED);
-  }
-
-  transfer_->Run(contribution_id, address, amount, std::move(callback));
-}
-
 void WalletProvider::BeginLogin(BeginExternalWalletLoginCallback callback) {
   CHECK(connect_wallet_);
   auto params = mojom::ExternalWalletLoginParams::New();

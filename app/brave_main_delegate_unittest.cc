@@ -15,7 +15,7 @@
 #include "components/variations/variations_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-const char kBraveOriginTrialsPublicKey[] =
+constexpr char kBraveOriginTrialsPublicKey[] =
     "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
     "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
 

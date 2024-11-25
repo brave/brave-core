@@ -503,7 +503,7 @@ TEST_P(InstallStaticUtilTest, GetToastActivatorClsid) {
   EXPECT_EQ(GetToastActivatorClsid(),
             kToastActivatorClsids[std::get<0>(GetParam())]);
 
-  const int kCLSIDSize = 39;
+  constexpr int kCLSIDSize = 39;
   wchar_t clsid_str[kCLSIDSize];
   ASSERT_EQ(::StringFromGUID2(GetToastActivatorClsid(), clsid_str, kCLSIDSize),
             kCLSIDSize);

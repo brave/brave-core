@@ -16,7 +16,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_provider.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -44,7 +44,7 @@ constexpr char kSponsoredNewTabsCreated[] =
     "brave.new_tab_page.p3a_sponsored_new_tabs_created";
 
 constexpr char kNewTabsCreatedHistogramName[] = "Brave.NTP.NewTabsCreated.3";
-const int kNewTabsCreatedMetricBuckets[] = {0, 1, 2, 3, 4, 8, 15};
+constexpr int kNewTabsCreatedMetricBuckets[] = {0, 1, 2, 3, 4, 8, 15};
 constexpr char kSponsoredNewTabsHistogramName[] =
     "Brave.NTP.SponsoredNewTabsCreated.2";
 constexpr int kSponsoredNewTabsBuckets[] = {0, 10, 20, 30, 40, 50};

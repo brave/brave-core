@@ -97,12 +97,9 @@ declare namespace chrome.braveRewards {
   const onPublisherData: {
     addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
   }
-  const includeInAutoContribution: (publisherKey: string, exclude: boolean) => {}
   const getRewardsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsAccountStatement: (callback: (success: boolean, adsAccountStatement: NewTab.AdsAccountStatement) => void) => {}
   const getWalletExists: (callback: (exists: boolean) => void) => {}
-  const setAutoContributeEnabled: (enabled: boolean) => {}
-  const getACEnabled: (callback: (enabled: boolean) => void) => {}
   const onPublisherListNormalized: {
     addListener: (callback: (properties: RewardsExtension.PublisherNormalized[]) => void) => void
   }
@@ -179,13 +176,6 @@ declare namespace chrome.braveRewards {
   ) => void
 
   const updateScheduledCaptchaResult: (result: boolean) => void
-
-  interface RewardsPrefs {
-    autoContributeEnabled: boolean
-    autoContributeAmount: number
-  }
-
-  const getPrefs: (callback: (prefs: RewardsPrefs) => void) => void
 }
 
 declare namespace chrome.braveTalk {

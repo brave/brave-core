@@ -83,12 +83,9 @@ void SafetyNetCheckRunner::jobFinished(SafetyNetCheck* finished_job) {
     [finished_job] (const std::unique_ptr<SafetyNetCheck>& job) {
       return static_cast<bool>(job.get() == finished_job);
     });
-  if (it != jobs_.end()) {
-    jobs_.erase(it);
-  } else {
-    DCHECK(false)
-        << "SafetyNetCheck code is obsolete and should not be called anymore";
-  }
+  CHECK(it != jobs_.end())
+      << "SafetyNetCheck code is obsolete and should not be called anymore";
+  jobs_.erase(it);
 }
 
 }  // namespace safetynet_check

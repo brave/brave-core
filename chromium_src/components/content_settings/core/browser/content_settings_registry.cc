@@ -333,6 +333,15 @@ void ContentSettingsRegistry::BraveInit() {
                ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
     }
   }
+
+  website_settings_registry_->Register(
+      ContentSettingsType::BRAVE_SHIELDS_METADATA,
+      brave_shields::kBraveShieldsMetadata, base::Value(),
+      WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::REQUESTING_SCHEMEFUL_SITE_ONLY_SCOPE,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID,
+      WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
 }
 
 }  // namespace content_settings

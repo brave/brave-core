@@ -60,8 +60,6 @@ export interface AdsHistoryItem {
 }
 
 export interface RewardsParameters {
-  autoContributeChoices: number[]
-  autoContributeChoice: number
   tipChoices: number[]
   rate: number
   walletProviderRegions: Record<string, { allow: string[], block: string[] }>
@@ -113,18 +111,6 @@ export interface CreatorInfo {
   supportedWalletProviders: ExternalWalletProvider[]
 }
 
-export interface AutoContributeEntry {
-  site: CreatorSite
-  attention: number
-}
-
-export interface AutoContributeInfo {
-  enabled: boolean
-  amount: number
-  nextAutoContributeDate: number
-  entries: AutoContributeEntry[]
-}
-
 export interface RecurringContribution {
   site: CreatorSite
   amount: number
@@ -164,7 +150,6 @@ export interface AppState {
   tosUpdateRequired: boolean
   selfCustodyInviteDismissed: boolean
   adsInfo: AdsInfo | null
-  autoContributeInfo: AutoContributeInfo | null
   recurringContributions: RecurringContribution[]
   rewardsParameters: RewardsParameters | null
   currentCreator: CreatorInfo | null
@@ -190,7 +175,6 @@ export function defaultState(): AppState {
     tosUpdateRequired: false,
     selfCustodyInviteDismissed: false,
     adsInfo: null,
-    autoContributeInfo: null,
     recurringContributions: [],
     rewardsParameters: null,
     currentCreator: null,

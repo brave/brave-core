@@ -27,25 +27,18 @@ void SortBraveSearchPromotionMatch(AutocompleteResult* result) {
   if (result->size() == 0)
     return;
 
-  ACMatches::iterator brave_search_conversion_match =
-      base::ranges::find_if(*result, IsBraveSearchPromotionMatch);
-
-  // Early return when |result| doesn't include promotion match.
-  if (brave_search_conversion_match == result->end())
-    return;
-
   // If first match is not from search query with default provider,
   // it means there are better matches from other providers.
   // In this case, remove the promotion match from |result|.
   // NOTE: SEARCH_WHAT_YOU_TYPED : The input is a search query (with the
   // default engine).
   if (result->begin()->type != AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED) {
-    result->RemoveMatch(brave_search_conversion_match);
+    result->EraseMatchesWhere(IsBraveSearchPromotionMatch);
     return;
   }
 
   // Put banner type match at last.
-  result->ReorderMatch(brave_search_conversion_match, -1);
+  result->MoveMatchToBeLast(IsBraveSearchPromotionMatch);
 }
 
 bool IsBraveSearchPromotionMatch(const AutocompleteMatch& match) {

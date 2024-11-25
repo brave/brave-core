@@ -694,11 +694,17 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
   const brave_shields::mojom::FarblingLevel farbling_level =
       brave_shields::GetFarblingLevel(
           HostContentSettingsMapFactory::GetForProfile(browser_context), url);
+  const base::Token farbling_token =
+      farbling_level != brave_shields::mojom::FarblingLevel::OFF
+          ? brave_shields::GetFarblingToken(
+                HostContentSettingsMapFactory::GetForProfile(browser_context),
+                url)
+          : base::Token();
 
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 
   return brave_shields::mojom::ShieldsSettings::New(
-      farbling_level, std::vector<std::string>(),
+      farbling_level, farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
 }
 
@@ -887,9 +893,6 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
   std::string process_type =
       command_line->GetSwitchValueASCII(switches::kProcessType);
   if (process_type == switches::kRendererProcess) {
-    uint64_t session_token =
-        12345;  // the kinda thing an idiot would have on his luggage
-
     // Command line parameters from the browser process are propagated to the
     // renderers *after* ContentBrowserClient::AppendExtraCommandLineSwitches()
     // is called from RenderProcessHostImpl::AppendRendererCommandLine(). This
@@ -898,25 +901,10 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
     const base::CommandLine& browser_command_line =
         *base::CommandLine::ForCurrentProcess();
     if (!browser_command_line.HasSwitch(switches::kTestType)) {
-      content::RenderProcessHost* process =
-          content::RenderProcessHost::FromID(child_process_id);
-      Profile* profile =
-          process ? Profile::FromBrowserContext(process->GetBrowserContext())
-                  : nullptr;
-      if (profile) {
-        auto* brave_farbling_service =
-            brave::BraveFarblingServiceFactory::GetForProfile(profile);
-        if (brave_farbling_service) {
-          session_token = brave_farbling_service->session_token();
-        }
-      }
       if (command_line->HasSwitch(switches::kEnableIsolatedWebAppsInRenderer)) {
         command_line->RemoveSwitch(switches::kEnableIsolatedWebAppsInRenderer);
       }
     }
-
-    command_line->AppendSwitchASCII("brave_session_token",
-                                    base::NumberToString(session_token));
 
     // Switches to pass to render processes.
     static const char* const kSwitchNames[] = {

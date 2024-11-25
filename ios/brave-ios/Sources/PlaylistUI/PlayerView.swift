@@ -42,14 +42,6 @@ struct PlayerView: View {
     VideoPlayerLayout(aspectRatio: isFullScreen ? nil : 16 / 9) {
       VideoPlayer(playerLayer: playerModel.playerLayer)
     }
-    .background {
-      if !isFullScreen {
-        VideoAmbianceBackground(playerModel: playerModel)
-          .transition(.opacity.animation(.snappy))
-          .opacity(playerModel.isPlaying ? 1 : 0.5)
-          .animation(.default, value: playerModel.isPlaying)
-      }
-    }
     .allowsHitTesting(false)
     // For some reason this is required or the status bar breaks when touching anything on the
     // screen on an iPad...
@@ -258,6 +250,7 @@ extension PlayerView {
             }
             .buttonStyle(.playbackControl)
           }
+          .contentShape(.rect)
           .tint(Color(braveSystemName: .iconInteractive))
         }
       }
@@ -295,35 +288,11 @@ extension PlayerView {
       .buttonStyle(.playbackControl)
       .tint(Color(braveSystemName: .textPrimary))
       .backgroundStyle(Color.white.opacity(0.2))
-      .task(priority: .low) {
+      .task(id: model.isPlayerInForeground, priority: .low) {
+        if !model.isPlayerInForeground { return }
         self.currentTime = model.currentTime
         for await currentTime in model.currentTimeStream {
           self.currentTime = currentTime
-        }
-      }
-    }
-  }
-}
-
-struct VideoAmbianceBackground: View {
-  var playerModel: PlayerModel
-
-  @State private var videoAmbianceDecorationImage: UIImage?
-
-  var body: some View {
-    VStack {
-      if let videoAmbianceDecorationImage {
-        Image(uiImage: videoAmbianceDecorationImage)
-          .resizable()
-          .blur(radius: 30)
-          .id(videoAmbianceDecorationImage)
-          .transition(.opacity)
-      }
-    }
-    .task(priority: .medium) {
-      for await image in playerModel.videoAmbianceImageStream {
-        withAnimation {
-          videoAmbianceDecorationImage = image.size == .zero ? nil : image
         }
       }
     }

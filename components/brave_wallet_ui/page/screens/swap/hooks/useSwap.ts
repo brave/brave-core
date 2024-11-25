@@ -971,39 +971,9 @@ export const useSwap = () => {
         return
       }
 
-      const fromAmountWeiWrapped = new Amount(fromAmount).multiplyByDecimals(
-        fromToken.decimals
-      )
-      if (fromAmountWeiWrapped.gt(fromAssetBalance)) {
-        return 'insufficientBalance'
-      }
-
-      if (feesWrapped.gt(nativeAssetBalance)) {
-        return 'insufficientFundsForGas'
-      }
-
-      if (
-        !fromToken.contractAddress &&
-        fromAmountWeiWrapped.plus(feesWrapped).gt(fromAssetBalance)
-      ) {
-        return 'insufficientFundsForGas'
-      }
-
       // No quote-based validations to perform when backend error is set.
       if (backendError) {
         return 'unknownError'
-      }
-
-      // EVM specific validations
-      if (
-        (quoteUnion?.zeroExQuote ||
-          quoteUnion?.lifiQuote ||
-          quoteUnion?.squidQuote) &&
-        fromToken.coin === BraveWallet.CoinType.ETH &&
-        fromToken.contractAddress &&
-        !hasAllowance
-      ) {
-        return 'insufficientAllowance'
       }
 
       // 0x specific validations
@@ -1037,6 +1007,44 @@ export const useSwap = () => {
           BraveWallet.LiFiErrorCode.kNotFoundError
           ? 'insufficientLiquidity'
           : 'unknownError'
+      }
+
+      if (quoteErrorUnion?.squidError) {
+        if (quoteErrorUnion.squidError.isInsufficientLiquidity) {
+          return 'insufficientLiquidity'
+        }
+
+        return 'unknownError'
+      }
+
+      const fromAmountWeiWrapped = new Amount(fromAmount).multiplyByDecimals(
+        fromToken.decimals
+      )
+      if (fromAmountWeiWrapped.gt(fromAssetBalance)) {
+        return 'insufficientBalance'
+      }
+
+      if (feesWrapped.gt(nativeAssetBalance)) {
+        return 'insufficientFundsForGas'
+      }
+
+      if (
+        !fromToken.contractAddress &&
+        fromAmountWeiWrapped.plus(feesWrapped).gt(fromAssetBalance)
+      ) {
+        return 'insufficientFundsForGas'
+      }
+
+      // EVM specific validations
+      if (
+        (quoteUnion?.zeroExQuote ||
+          quoteUnion?.lifiQuote ||
+          quoteUnion?.squidQuote) &&
+        fromToken.coin === BraveWallet.CoinType.ETH &&
+        fromToken.contractAddress &&
+        !hasAllowance
+      ) {
+        return 'insufficientAllowance'
       }
 
       return undefined
@@ -1183,6 +1191,9 @@ export const useSwap = () => {
   const onChangeSwapProvider = useCallback(
     async (provider: BraveWallet.SwapProvider) => {
       setSelectedProvider(provider)
+      setQuoteErrorUnion(undefined)
+      setBackendError(undefined)
+      setQuoteUnion(undefined)
       setSelectedQuoteOptionId(undefined)
       await handleQuoteRefreshInternal({
         provider
@@ -1323,6 +1334,17 @@ export const useSwap = () => {
     isFetchingQuote,
     selectedQuoteOptionId
   ])
+
+  useEffect(() => {
+    // Reset selectedProvider to Auto if no tokens are selected
+    if (!fromToken && !toToken) {
+      setSelectingFromOrTo(undefined)
+      setFromAmount('')
+      setToAmount('')
+      reset()
+      setSelectedProvider(BraveWallet.SwapProvider.kAuto)
+    }
+  }, [fromToken, toToken, reset])
 
   return {
     fromAccount,

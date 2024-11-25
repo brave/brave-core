@@ -26,7 +26,7 @@ class OrchardBlockScanner {
   struct Result {
     Result();
     Result(std::vector<OrchardNote> discovered_notes,
-           std::vector<OrchardNullifier> spent_notes);
+           std::vector<OrchardNoteSpend> spent_notes);
     Result(const Result&);
     Result& operator=(const Result&);
     ~Result();
@@ -34,7 +34,7 @@ class OrchardBlockScanner {
     // New notes have been discovered
     std::vector<OrchardNote> discovered_notes;
     // Nullifiers for the previously discovered notes
-    std::vector<OrchardNullifier> spent_notes;
+    std::vector<OrchardNoteSpend> spent_notes;
   };
 
   explicit OrchardBlockScanner(const OrchardFullViewKey& full_view_key);

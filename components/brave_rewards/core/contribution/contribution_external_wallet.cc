@@ -71,8 +71,8 @@ void ContributionExternalWallet::ContributionInfo(
   }
 
   if (contribution->type == mojom::RewardsType::AUTO_CONTRIBUTE) {
-    engine_->contribution()->SKUAutoContribution(
-        contribution->contribution_id, wallet->type, std::move(callback));
+    engine_->LogError(FROM_HERE) << "AC is disabled";
+    std::move(callback).Run(mojom::Result::FAILED);
     return;
   }
 

@@ -393,6 +393,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
+    public boolean isUrlBarFocused() {
+        if (getLocationBar() instanceof BraveLocationBarCoordinator) {
+            return ((BraveLocationBarCoordinator) getLocationBar()).isUrlBarFocused();
+        }
+        return false;
+    }
+
     @Override
     public void onConnectionError(MojoException e) {
         if (isPlaylistEnabledByPrefsAndFlags()) {
@@ -1275,11 +1282,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         Context context = getContext();
         String countryCode = Locale.getDefault().getCountry();
         try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
             if (hasFocus
                     && PackageUtils.isFirstInstall(context)
-                    && BraveActivity.getBraveActivity().getActivityTab() != null
-                    && UrlUtilities.isNtpUrl(
-                            BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
+                    && braveActivity.getActivityTab() != null
+                    && UrlUtilities.isNtpUrl(braveActivity.getActivityTab().getUrl().getSpec())
                     && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
                     && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
                     && !BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS.contains(countryCode)) {
@@ -1287,7 +1294,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 searchActivityIntent.setAction(Intent.ACTION_VIEW);
                 context.startActivity(searchActivityIntent);
             }
-
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onUrlFocusChange " + e);
         }

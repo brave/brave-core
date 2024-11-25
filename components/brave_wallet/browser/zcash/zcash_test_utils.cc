@@ -10,26 +10,30 @@
 
 namespace brave_wallet {
 
-std::array<uint8_t, kOrchardNullifierSize> GenerateMockNullifier(
-    const mojom::AccountIdPtr& account_id,
-    uint8_t seed) {
+OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
+                                       uint8_t seed) {
   std::array<uint8_t, kOrchardNullifierSize> nullifier;
   nullifier.fill(seed);
   nullifier[0] = account_id->account_index;
   return nullifier;
 }
 
-OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
+OrchardNoteSpend GenerateMockNoteSpend(const mojom::AccountIdPtr& account_id,
                                        uint32_t block_id,
                                        uint8_t seed) {
-  return OrchardNullifier{block_id, GenerateMockNullifier(account_id, seed)};
+  return OrchardNoteSpend{block_id, GenerateMockNullifier(account_id, seed)};
 }
 
 OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
                                     uint32_t block_id,
                                     uint8_t seed) {
-  return OrchardNote{block_id, GenerateMockNullifier(account_id, seed),
-                     static_cast<uint32_t>(seed * 10)};
+  return OrchardNote{{},
+                     block_id,
+                     GenerateMockNullifier(account_id, seed),
+                     static_cast<uint32_t>(seed * 10),
+                     0,
+                     {},
+                     {}};
 }
 
 void SortByBlockId(std::vector<OrchardNote>& vec) {

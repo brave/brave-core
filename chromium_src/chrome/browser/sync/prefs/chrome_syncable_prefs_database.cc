@@ -50,7 +50,7 @@ enum {
 }  // namespace brave_syncable_prefs_ids
 
 const auto& BraveSyncablePreferences() {
-  static const auto kBraveSyncablePrefsAllowList = base::MakeFixedFlatMap<
+  static constexpr auto kBraveSyncablePrefsAllowList = base::MakeFixedFlatMap<
       std::string_view, sync_preferences::SyncablePrefMetadata>({
       {"profile.content_settings.exceptions.braveShields",
        {brave_syncable_prefs_ids::kProfileContentSettingsExceptionsBraveShields,

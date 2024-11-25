@@ -44,41 +44,35 @@ TEST_F(OrchardStorageTest, AccountMeta) {
                                               mojom::AccountKind::kDerived, 1);
 
   {
-    auto result = orchard_storage_->GetAccountMeta(account_id_1.Clone());
+    auto result = orchard_storage_->GetAccountMeta(account_id_1);
     EXPECT_FALSE(result.has_value());
   }
 
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100, "hash")
-          .has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_1, 100).has_value());
 
   {
-    auto result = orchard_storage_->GetAccountMeta(account_id_1.Clone());
+    auto result = orchard_storage_->GetAccountMeta(account_id_1);
     EXPECT_TRUE(result.has_value());
     EXPECT_EQ(result->account_birthday, 100u);
-    EXPECT_EQ(result->latest_scanned_block_id, 100u);
-    EXPECT_EQ(result->latest_scanned_block_hash, "hash");
+    EXPECT_FALSE(result->latest_scanned_block_id);
+    EXPECT_FALSE(result->latest_scanned_block_hash);
   }
 
   {
     // Failed to insert same account
     EXPECT_EQ(
-        orchard_storage_->RegisterAccount(account_id_1.Clone(), 200, "hash")
-            .error()
-            .error_code,
+        orchard_storage_->RegisterAccount(account_id_1, 200).error().error_code,
         ZCashOrchardStorage::ErrorCode::kFailedToExecuteStatement);
   }
 
   // Insert second account
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_2.Clone(), 200, "hash")
-          .has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_2, 200).has_value());
   {
-    auto result = orchard_storage_->GetAccountMeta(account_id_2.Clone());
+    auto result = orchard_storage_->GetAccountMeta(account_id_2);
     EXPECT_TRUE(result.has_value());
     EXPECT_EQ(result->account_birthday, 200u);
-    EXPECT_EQ(result->latest_scanned_block_id, 200u);
-    EXPECT_EQ(result->latest_scanned_block_hash, "hash");
+    EXPECT_FALSE(result->latest_scanned_block_id);
+    EXPECT_FALSE(result->latest_scanned_block_hash);
   }
 }
 
@@ -90,12 +84,8 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 1);
 
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100, "hash")
-          .has_value());
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_2.Clone(), 100, "hash")
-          .has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_1, 100).has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_2, 100).has_value());
 
   // Update notes for account 1
   {
@@ -103,8 +93,7 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
     notes.push_back(GenerateMockOrchardNote(account_id_1, 101, 1));
     notes.push_back(GenerateMockOrchardNote(account_id_1, 105, 2));
 
-    orchard_storage_->UpdateNotes(account_id_1.Clone(), notes, {}, 200,
-                                  "hash200");
+    orchard_storage_->UpdateNotes(account_id_1, notes, {}, 200, "hash200");
   }
 
   // Update notes for account 2
@@ -114,14 +103,13 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
     notes.push_back(GenerateMockOrchardNote(account_id_2, 115, 2));
     notes.push_back(GenerateMockOrchardNote(account_id_2, 117, 3));
 
-    orchard_storage_->UpdateNotes(account_id_2.Clone(), notes, {}, 200,
-                                  "hash200");
+    orchard_storage_->UpdateNotes(account_id_2, notes, {}, 200, "hash200");
   }
 
   // Check account_1 spendable notes
   {
     auto account_1_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_1.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_1);
     EXPECT_EQ(2u, account_1_spendable_notes->size());
     SortByBlockId(*account_1_spendable_notes);
     EXPECT_EQ(account_1_spendable_notes.value()[0],
@@ -133,7 +121,7 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   // Check account_2 spendable notes
   {
     auto account_2_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_2.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_2);
     EXPECT_EQ(3u, account_2_spendable_notes->size());
     SortByBlockId(*account_2_spendable_notes);
     EXPECT_EQ(account_2_spendable_notes.value()[0],
@@ -147,34 +135,35 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   // Update notes for account 1
   {
     std::vector<OrchardNote> notes;
-    std::vector<OrchardNullifier> nullifiers;
+    std::vector<OrchardNoteSpend> spends;
 
     // Add 1 note, spend 1 note
     notes.push_back(GenerateMockOrchardNote(account_id_1, 201, 3));
-    nullifiers.push_back(GenerateMockNullifier(account_id_1, 203, 1));
+    spends.push_back(
+        OrchardNoteSpend{203, GenerateMockNullifier(account_id_1, 1)});
 
-    orchard_storage_->UpdateNotes(account_id_1.Clone(), notes, nullifiers, 300,
-                                  "hash300");
+    orchard_storage_->UpdateNotes(account_id_1, notes, spends, 300, "hash300");
   }
 
   // Update notes for account 2
   {
     std::vector<OrchardNote> notes;
-    std::vector<OrchardNullifier> nullifiers;
+    std::vector<OrchardNoteSpend> spends;
 
     // Add 1 note, spend 2 notes
     notes.push_back(GenerateMockOrchardNote(account_id_2, 211, 4));
-    nullifiers.push_back(GenerateMockNullifier(account_id_2, 222, 2));
-    nullifiers.push_back(GenerateMockNullifier(account_id_2, 233, 3));
+    spends.push_back(
+        OrchardNoteSpend{222, GenerateMockNullifier(account_id_2, 2)});
+    spends.push_back(
+        OrchardNoteSpend{233, GenerateMockNullifier(account_id_2, 3)});
 
-    orchard_storage_->UpdateNotes(account_id_2.Clone(), notes, nullifiers, 300,
-                                  "hash300");
+    orchard_storage_->UpdateNotes(account_id_2, notes, spends, 300, "hash300");
   }
 
   // Check account_1 spendable notes
   {
     auto account_1_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_1.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_1);
     EXPECT_EQ(2u, account_1_spendable_notes->size());
     SortByBlockId(*account_1_spendable_notes);
     EXPECT_EQ(account_1_spendable_notes.value()[0],
@@ -186,7 +175,7 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   // Check account_2 spendable notes
   {
     auto account_2_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_2.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_2);
     EXPECT_EQ(2u, account_2_spendable_notes->size());
     SortByBlockId(*account_2_spendable_notes);
     EXPECT_EQ(account_2_spendable_notes.value()[0],
@@ -197,13 +186,13 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
 
   // Accounts meta updated
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
     EXPECT_EQ(account_meta->latest_scanned_block_id, 300u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash300");
   }
 
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
     EXPECT_EQ(account_meta->latest_scanned_block_id, 300u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash300");
   }
@@ -217,17 +206,13 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 1);
 
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_1.Clone(), 100, "hash")
-          .has_value());
-  EXPECT_TRUE(
-      orchard_storage_->RegisterAccount(account_id_2.Clone(), 100, "hash")
-          .has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_1, 100).has_value());
+  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_2, 100).has_value());
 
   // Update notes for account 1
   {
     std::vector<OrchardNote> notes;
-    std::vector<OrchardNullifier> nullifiers;
+    std::vector<OrchardNoteSpend> spends;
 
     // Add 4 notes, spend 2 notes
     notes.push_back(GenerateMockOrchardNote(account_id_1, 101, 1));
@@ -236,17 +221,18 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
     notes.push_back(GenerateMockOrchardNote(account_id_1, 104, 4));
     notes.push_back(GenerateMockOrchardNote(account_id_1, 304, 5));
 
-    nullifiers.push_back(GenerateMockNullifier(account_id_1, 102, 2));
-    nullifiers.push_back(GenerateMockNullifier(account_id_1, 103, 3));
+    spends.push_back(
+        OrchardNoteSpend{102, GenerateMockNullifier(account_id_1, 2)});
+    spends.push_back(
+        OrchardNoteSpend{103, GenerateMockNullifier(account_id_1, 3)});
 
-    orchard_storage_->UpdateNotes(account_id_1.Clone(), notes, nullifiers, 450,
-                                  "hash450");
+    orchard_storage_->UpdateNotes(account_id_1, notes, spends, 450, "hash450");
   }
 
   // Update notes for account 2
   {
     std::vector<OrchardNote> notes;
-    std::vector<OrchardNullifier> nullifiers;
+    std::vector<OrchardNoteSpend> spends;
 
     // Add 4 notes, spend 2 notes
     notes.push_back(GenerateMockOrchardNote(account_id_2, 211, 1));
@@ -254,38 +240,38 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
     notes.push_back(GenerateMockOrchardNote(account_id_2, 213, 3));
     notes.push_back(GenerateMockOrchardNote(account_id_2, 414, 4));
 
-    nullifiers.push_back(GenerateMockNullifier(account_id_2, 322, 2));
-    nullifiers.push_back(GenerateMockNullifier(account_id_2, 333, 3));
+    spends.push_back(
+        OrchardNoteSpend{322, GenerateMockNullifier(account_id_2, 2)});
+    spends.push_back(
+        OrchardNoteSpend{333, GenerateMockNullifier(account_id_2, 3)});
 
-    orchard_storage_->UpdateNotes(account_id_2.Clone(), notes, nullifiers, 500,
-                                  "hash500");
+    orchard_storage_->UpdateNotes(account_id_2, notes, spends, 500, "hash500");
   }
 
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
     EXPECT_EQ(account_meta->latest_scanned_block_id, 500u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash500");
     auto account_2_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_2.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_2);
     EXPECT_EQ(2u, account_2_spendable_notes->size());
-    auto account_2_nullifiers =
-        orchard_storage_->GetNullifiers(account_id_2.Clone());
+    auto account_2_nullifiers = orchard_storage_->GetNullifiers(account_id_2);
     EXPECT_EQ(2u, account_2_nullifiers->size());
   }
 
   // Call handle chain reorg so notes and spends with index > 300 will be
   // deleted
-  orchard_storage_->HandleChainReorg(account_id_2.Clone(), 300u, "hash300");
+  orchard_storage_->HandleChainReorg(account_id_2, 300u, "hash300");
 
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
     EXPECT_EQ(account_meta->latest_scanned_block_id, 300u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash300");
   }
 
   // Unused account is untouched
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1.Clone());
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
     EXPECT_EQ(account_meta->latest_scanned_block_id, 450u);
     EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash450");
   }
@@ -294,11 +280,10 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
   // Notes for account 1 should be untouched since reorg wasn't launched for
   // account_1
   {
-    auto account_1_nullifiers =
-        orchard_storage_->GetNullifiers(account_id_1.Clone());
+    auto account_1_nullifiers = orchard_storage_->GetNullifiers(account_id_1);
     EXPECT_EQ(2u, account_1_nullifiers->size());
     auto account_1_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_1.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_1);
     // Since we removed 2 nullifiers and 1 note there should be 3 spendable
     // notes
     EXPECT_EQ(3u, account_1_spendable_notes->size());
@@ -313,11 +298,10 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
 
   // Check account_2 spendable notes
   {
-    auto account_2_nullifiers =
-        orchard_storage_->GetNullifiers(account_id_2.Clone());
+    auto account_2_nullifiers = orchard_storage_->GetNullifiers(account_id_2);
     EXPECT_EQ(0u, account_2_nullifiers->size());
     auto account_2_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_2.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_2);
     // Since we removed 2 nullifiers and 1 note there should be 3 spendable
     // notes
     EXPECT_EQ(3u, account_2_spendable_notes->size());
@@ -330,24 +314,610 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
               GenerateMockOrchardNote(account_id_2, 213, 3));
   }
 
-  orchard_storage_->HandleChainReorg(account_id_1.Clone(), 0u, "hash0");
+  orchard_storage_->HandleChainReorg(account_id_1, 0u, "hash0");
   // Account 1 was reorged on 0
   {
-    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1.Clone());
-    EXPECT_EQ(account_meta->latest_scanned_block_id, 0u);
-    EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash0");
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
+    EXPECT_EQ(account_meta->latest_scanned_block_id.value(), 0u);
+    EXPECT_EQ(account_meta->latest_scanned_block_hash.value(), "hash0");
   }
 
   // Check account_1 spendable notes
   // Account 1 was reorged on 0 so no nullifiers and notes should exist.
   {
-    auto account_1_nullifiers =
-        orchard_storage_->GetNullifiers(account_id_1.Clone());
+    auto account_1_nullifiers = orchard_storage_->GetNullifiers(account_id_1);
     EXPECT_EQ(0u, account_1_nullifiers->size());
     auto account_1_spendable_notes =
-        orchard_storage_->GetSpendableNotes(account_id_1.Clone());
+        orchard_storage_->GetSpendableNotes(account_id_1);
     EXPECT_EQ(0u, account_1_spendable_notes->size());
   }
+}
+
+TEST_F(OrchardStorageTest, Shards) {}
+
+namespace {
+
+zcash::mojom::SubtreeRootPtr CreateSubtreeRoot(size_t level, size_t index) {
+  zcash::mojom::SubtreeRootPtr root = zcash::mojom::SubtreeRoot::New();
+  root->root_hash = std::vector<uint8_t>(kOrchardShardTreeHashSize, index);
+  root->complete_block_hash =
+      std::vector<uint8_t>(kOrchardCompleteBlockHashSize, index);
+  root->complete_block_height = 0;
+  return root;
+}
+
+OrchardShard CreateShard(size_t index, size_t level) {
+  OrchardShard orchard_shard;
+  orchard_shard.root_hash = OrchardShardRootHash();
+  orchard_shard.root_hash->fill(static_cast<uint8_t>(index));
+  orchard_shard.address.index = index;
+  orchard_shard.address.level = level;
+  orchard_shard.shard_data = std::vector<uint8_t>({0, 0, 0, 0});
+  return orchard_shard;
+}
+
+}  // namespace
+
+TEST_F(OrchardStorageTest, InsertSubtreeRoots_BlockHashConflict) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  std::vector<zcash::mojom::SubtreeRootPtr> level_1_roots;
+  level_1_roots.push_back(CreateSubtreeRoot(9, 0));
+  level_1_roots.push_back(CreateSubtreeRoot(9, 0));
+  EXPECT_FALSE(
+      orchard_storage_
+          ->UpdateSubtreeRoots(account_id.Clone(), 0, std::move(level_1_roots))
+          .has_value());
+}
+
+TEST_F(OrchardStorageTest, InsertSubtreeRoots) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  {
+    std::vector<zcash::mojom::SubtreeRootPtr> level_1_roots;
+    for (uint32_t i = 0; i < 10; i++) {
+      level_1_roots.push_back(CreateSubtreeRoot(9, i));
+    }
+    EXPECT_TRUE(orchard_storage_
+                    ->UpdateSubtreeRoots(account_id.Clone(), 0,
+                                         std::move(level_1_roots))
+                    .value());
+  }
+
+  {
+    std::vector<OrchardShardAddress> level_1_addrs;
+    for (uint32_t i = 0; i < 10; i++) {
+      level_1_addrs.push_back(OrchardShardAddress{9, i});
+    }
+    auto result = orchard_storage_->GetShardRoots(account_id.Clone(), 9);
+
+    EXPECT_EQ(result.value(), level_1_addrs);
+  }
+}
+
+TEST_F(OrchardStorageTest, TruncateSubtreeRoots) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  {
+    std::vector<zcash::mojom::SubtreeRootPtr> level_1_roots;
+    for (int i = 0; i < 10; i++) {
+      level_1_roots.push_back(CreateSubtreeRoot(1, i));
+    }
+    EXPECT_TRUE(orchard_storage_
+                    ->UpdateSubtreeRoots(account_id.Clone(), 0,
+                                         std::move(level_1_roots))
+                    .value());
+  }
+
+  EXPECT_TRUE(orchard_storage_->TruncateShards(account_id.Clone(), 5).value());
+  {
+    std::vector<OrchardShardAddress> addresses_after_truncate;
+    for (uint32_t i = 0; i < 5; i++) {
+      addresses_after_truncate.push_back(OrchardShardAddress{1, i});
+    }
+    auto result = orchard_storage_->GetShardRoots(account_id.Clone(), 1);
+    EXPECT_EQ(result.value(), addresses_after_truncate);
+  }
+}
+
+TEST_F(OrchardStorageTest, TruncateShards) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  {
+    for (uint32_t i = 0; i < 10; i++) {
+      EXPECT_TRUE(
+          orchard_storage_->PutShard(account_id.Clone(), CreateShard(i, 1))
+              .value());
+    }
+  }
+
+  EXPECT_TRUE(orchard_storage_->TruncateShards(account_id.Clone(), 5).value());
+  for (uint32_t i = 0; i < 5; i++) {
+    EXPECT_EQ(CreateShard(i, 1),
+              **(orchard_storage_->GetShard(account_id.Clone(),
+                                            OrchardShardAddress(1, i))));
+  }
+
+  EXPECT_EQ(std::nullopt, *(orchard_storage_->GetShard(
+                              account_id.Clone(), OrchardShardAddress(1, 6))));
+}
+
+TEST_F(OrchardStorageTest, ShardOverridesSubtreeRoot) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  {
+    std::vector<zcash::mojom::SubtreeRootPtr> level_1_roots;
+    for (uint32_t i = 0; i < 10; i++) {
+      level_1_roots.push_back(CreateSubtreeRoot(1, i));
+    }
+    EXPECT_TRUE(orchard_storage_
+                    ->UpdateSubtreeRoots(account_id.Clone(), 0,
+                                         std::move(level_1_roots))
+                    .value());
+  }
+
+  // Update existing shard
+  OrchardShard new_shard;
+  new_shard.root_hash = OrchardShardRootHash();
+  new_shard.address.index = 5;
+  new_shard.address.level = 1;
+  new_shard.root_hash->fill(5);
+  new_shard.shard_data = std::vector<uint8_t>({5, 5, 5, 5});
+  EXPECT_TRUE(
+      orchard_storage_->PutShard(account_id.Clone(), new_shard).value());
+
+  auto result =
+      orchard_storage_->GetShard(account_id.Clone(), OrchardShardAddress{1, 5});
+  EXPECT_EQ(*result.value(), new_shard);
+}
+
+TEST_F(OrchardStorageTest, InsertShards) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  EXPECT_EQ(std::nullopt,
+            orchard_storage_->GetLatestShardIndex(account_id.Clone()).value());
+  EXPECT_EQ(
+      std::nullopt,
+      orchard_storage_->GetShard(account_id.Clone(), OrchardShardAddress{1, 0})
+          .value());
+  EXPECT_EQ(std::nullopt,
+            orchard_storage_->LastShard(account_id.Clone(), 1).value());
+
+  {
+    std::vector<zcash::mojom::SubtreeRootPtr> level_1_roots;
+    for (uint32_t i = 0; i < 10; i++) {
+      level_1_roots.push_back(CreateSubtreeRoot(1, i));
+    }
+    EXPECT_TRUE(orchard_storage_
+                    ->UpdateSubtreeRoots(account_id.Clone(), 0,
+                                         std::move(level_1_roots))
+                    .value());
+  }
+
+  OrchardShard new_shard;
+  new_shard.root_hash = OrchardShardRootHash();
+  new_shard.address.index = 11;
+  new_shard.address.level = 1;
+  new_shard.root_hash->fill(11);
+  new_shard.shard_data = std::vector<uint8_t>({1, 1, 1, 1});
+
+  EXPECT_TRUE(
+      orchard_storage_->PutShard(account_id.Clone(), new_shard).value());
+
+  {
+    auto result = orchard_storage_->GetShard(account_id.Clone(),
+                                             OrchardShardAddress{1, 11});
+    EXPECT_EQ(*result.value(), new_shard);
+  }
+
+  {
+    for (uint32_t i = 0; i < 10; i++) {
+      auto result = orchard_storage_->GetShard(account_id.Clone(),
+                                               OrchardShardAddress{1, i});
+      auto root = CreateSubtreeRoot(1, i);
+      EXPECT_EQ(std::vector<uint8_t>(std::begin(*result.value()->root_hash),
+                                     std::end(*result.value()->root_hash)),
+                root->root_hash);
+    }
+  }
+
+  EXPECT_EQ(11u, orchard_storage_->GetLatestShardIndex(account_id.Clone())
+                     .value()
+                     .value());
+  EXPECT_EQ(new_shard,
+            orchard_storage_->LastShard(account_id.Clone(), 1).value());
+}
+
+TEST_F(OrchardStorageTest, RemoveChekpoint) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  OrchardCheckpoint checkpoint1;
+  checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
+  checkpoint1.tree_state_position = 4;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 1, checkpoint1)
+          .value());
+
+  OrchardCheckpoint checkpoint2;
+  checkpoint2.marks_removed = std::vector<uint32_t>({4, 5, 6});
+  checkpoint2.tree_state_position = std::nullopt;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 2, checkpoint2)
+          .value());
+
+  EXPECT_TRUE(
+      orchard_storage_->RemoveCheckpoint(account_id.Clone(), 1).value());
+  EXPECT_EQ(std::nullopt,
+            orchard_storage_->GetCheckpoint(account_id.Clone(), 1).value());
+  EXPECT_EQ(
+      OrchardCheckpointBundle(2, checkpoint2),
+      orchard_storage_->GetCheckpoint(account_id.Clone(), 2).value().value());
+  // Unexisting checkpoint.
+  EXPECT_FALSE(
+      orchard_storage_->RemoveCheckpoint(account_id.Clone(), 3).value());
+}
+
+TEST_F(OrchardStorageTest, CheckpointId) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  EXPECT_EQ(std::nullopt,
+            orchard_storage_->MinCheckpointId(account_id.Clone()).value());
+  EXPECT_EQ(std::nullopt,
+            orchard_storage_->MaxCheckpointId(account_id.Clone()).value());
+
+  OrchardCheckpoint checkpoint1;
+  checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
+  checkpoint1.tree_state_position = 4;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 1, checkpoint1)
+          .value());
+
+  OrchardCheckpoint checkpoint2;
+  checkpoint2.marks_removed = std::vector<uint32_t>({1, 2, 3});
+  checkpoint2.tree_state_position = 2;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 2, checkpoint2)
+          .value());
+
+  OrchardCheckpoint checkpoint3;
+  checkpoint3.marks_removed = std::vector<uint32_t>({5});
+  checkpoint3.tree_state_position = 3;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 3, checkpoint3)
+          .value());
+
+  OrchardCheckpoint checkpoint4;
+  checkpoint4.marks_removed = std::vector<uint32_t>();
+  checkpoint4.tree_state_position = std::nullopt;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 4, checkpoint4)
+          .value());
+
+  EXPECT_EQ(1, orchard_storage_->MinCheckpointId(account_id.Clone()).value());
+  EXPECT_EQ(4, orchard_storage_->MaxCheckpointId(account_id.Clone()).value());
+}
+
+TEST_F(OrchardStorageTest, CheckpointAtPosition) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  OrchardCheckpoint checkpoint1;
+  checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
+  checkpoint1.tree_state_position = 4;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 1, checkpoint1)
+          .value());
+  OrchardCheckpoint checkpoint2;
+  checkpoint2.marks_removed = std::vector<uint32_t>({4, 5, 6});
+  checkpoint2.tree_state_position = 4;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 2, checkpoint2)
+          .value());
+  OrchardCheckpoint checkpoint3;
+  checkpoint3.marks_removed = std::vector<uint32_t>({7, 8, 9});
+  checkpoint3.tree_state_position = 4;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 3, checkpoint3)
+          .value());
+
+  EXPECT_EQ(1u, orchard_storage_->GetCheckpointAtDepth(account_id.Clone(), 2)
+                    .value()
+                    .value());
+  EXPECT_EQ(
+      std::nullopt,
+      orchard_storage_->GetCheckpointAtDepth(account_id.Clone(), 5).value());
+}
+
+TEST_F(OrchardStorageTest, TruncateCheckpoints_OutOfBoundary) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  OrchardCheckpoint checkpoint1;
+  checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
+  checkpoint1.tree_state_position = 4;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 1, checkpoint1)
+          .value());
+
+  EXPECT_TRUE(
+      orchard_storage_->TruncateCheckpoints(account_id.Clone(), 3).value());
+
+  EXPECT_EQ(
+      OrchardCheckpointBundle(1, checkpoint1),
+      orchard_storage_->GetCheckpoint(account_id.Clone(), 1).value().value());
+}
+
+TEST_F(OrchardStorageTest, TruncateCheckpoints) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  OrchardCheckpoint checkpoint1;
+  checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
+  checkpoint1.tree_state_position = 4;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 1, checkpoint1)
+          .value());
+
+  OrchardCheckpoint checkpoint2;
+  checkpoint2.marks_removed = std::vector<uint32_t>({1, 2, 3});
+  checkpoint2.tree_state_position = 2;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 2, checkpoint2)
+          .value());
+
+  OrchardCheckpoint checkpoint3;
+  checkpoint3.marks_removed = std::vector<uint32_t>({5});
+  checkpoint3.tree_state_position = 3;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 3, checkpoint3)
+          .value());
+
+  OrchardCheckpoint checkpoint4;
+  checkpoint4.marks_removed = std::vector<uint32_t>();
+  checkpoint4.tree_state_position = std::nullopt;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 4, checkpoint4)
+          .value());
+
+  EXPECT_TRUE(
+      orchard_storage_->TruncateCheckpoints(account_id.Clone(), 3).value());
+
+  EXPECT_EQ(
+      OrchardCheckpointBundle(1, checkpoint1),
+      orchard_storage_->GetCheckpoint(account_id.Clone(), 1).value().value());
+  EXPECT_EQ(
+      OrchardCheckpointBundle(2, checkpoint2),
+      orchard_storage_->GetCheckpoint(account_id.Clone(), 2).value().value());
+  EXPECT_EQ(std::nullopt,
+            orchard_storage_->GetCheckpoint(account_id.Clone(), 3).value());
+  EXPECT_EQ(std::nullopt,
+            orchard_storage_->GetCheckpoint(account_id.Clone(), 4).value());
+}
+
+TEST_F(OrchardStorageTest, AddCheckpoint) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  OrchardCheckpoint checkpoint1;
+  checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
+  checkpoint1.tree_state_position = 4;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 1, checkpoint1)
+          .value());
+  OrchardCheckpoint checkpoint2;
+  checkpoint2.marks_removed = std::vector<uint32_t>({4, 5, 6});
+  checkpoint2.tree_state_position = std::nullopt;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 2, checkpoint2)
+          .value());
+  OrchardCheckpoint checkpoint3;
+  checkpoint3.marks_removed = std::vector<uint32_t>();
+  checkpoint3.tree_state_position = 4;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 3, checkpoint3)
+          .value());
+
+  EXPECT_EQ(
+      OrchardCheckpointBundle(1, checkpoint1),
+      orchard_storage_->GetCheckpoint(account_id.Clone(), 1).value().value());
+  EXPECT_EQ(
+      OrchardCheckpointBundle(2, checkpoint2),
+      orchard_storage_->GetCheckpoint(account_id.Clone(), 2).value().value());
+  EXPECT_EQ(
+      OrchardCheckpointBundle(3, checkpoint3),
+      orchard_storage_->GetCheckpoint(account_id.Clone(), 3).value().value());
+}
+
+TEST_F(OrchardStorageTest, AddSameCheckpoint) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+  {
+    OrchardCheckpoint checkpoint;
+    checkpoint.marks_removed = std::vector<uint32_t>({1, 2, 3});
+    checkpoint.tree_state_position = 4;
+    EXPECT_TRUE(
+        orchard_storage_->AddCheckpoint(account_id.Clone(), 1, checkpoint)
+            .value());
+    EXPECT_TRUE(
+        orchard_storage_->AddCheckpoint(account_id.Clone(), 1, checkpoint)
+            .value());
+
+    EXPECT_EQ(
+        OrchardCheckpointBundle(1, checkpoint),
+        orchard_storage_->GetCheckpoint(account_id.Clone(), 1).value().value());
+  }
+
+  {
+    OrchardCheckpoint checkpoint;
+    checkpoint.marks_removed = std::vector<uint32_t>({1, 2, 3});
+    checkpoint.tree_state_position = std::nullopt;
+    EXPECT_TRUE(
+        orchard_storage_->AddCheckpoint(account_id.Clone(), 2, checkpoint)
+            .value());
+    EXPECT_TRUE(
+        orchard_storage_->AddCheckpoint(account_id.Clone(), 2, checkpoint)
+            .value());
+
+    EXPECT_EQ(
+        OrchardCheckpointBundle(2, checkpoint),
+        orchard_storage_->GetCheckpoint(account_id.Clone(), 2).value().value());
+  }
+
+  {
+    OrchardCheckpoint checkpoint;
+    checkpoint.marks_removed = std::vector<uint32_t>();
+    checkpoint.tree_state_position = std::nullopt;
+    EXPECT_TRUE(
+        orchard_storage_->AddCheckpoint(account_id.Clone(), 3, checkpoint)
+            .value());
+    EXPECT_TRUE(
+        orchard_storage_->AddCheckpoint(account_id.Clone(), 3, checkpoint)
+            .value());
+
+    EXPECT_EQ(
+        OrchardCheckpointBundle(3, checkpoint),
+        orchard_storage_->GetCheckpoint(account_id.Clone(), 3).value().value());
+  }
+}
+
+TEST_F(OrchardStorageTest, AddChekpoint_ErrorOnConflict) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  OrchardCheckpoint checkpoint1;
+  checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
+  checkpoint1.tree_state_position = 4;
+  EXPECT_TRUE(
+      orchard_storage_->AddCheckpoint(account_id.Clone(), 1, checkpoint1)
+          .value());
+
+  OrchardCheckpoint checkpoint_different_marks_removed = checkpoint1;
+  checkpoint_different_marks_removed.marks_removed =
+      std::vector<uint32_t>({1, 2});
+  EXPECT_FALSE(orchard_storage_
+                   ->AddCheckpoint(account_id.Clone(), 1,
+                                   checkpoint_different_marks_removed)
+                   .has_value());
+
+  OrchardCheckpoint checkpoint_different_position1 = checkpoint1;
+  checkpoint_different_position1.tree_state_position = 7;
+  EXPECT_FALSE(
+      orchard_storage_
+          ->AddCheckpoint(account_id.Clone(), 1, checkpoint_different_position1)
+          .has_value());
+
+  OrchardCheckpoint checkpoint_different_position2 = checkpoint1;
+  checkpoint_different_position2.tree_state_position = std::nullopt;
+  EXPECT_FALSE(
+      orchard_storage_
+          ->AddCheckpoint(account_id.Clone(), 1, checkpoint_different_position2)
+          .has_value());
+
+  EXPECT_EQ(
+      OrchardCheckpointBundle(1, checkpoint1),
+      orchard_storage_->GetCheckpoint(account_id.Clone(), 1).value().value());
+}
+
+TEST_F(OrchardStorageTest, ResetAccountSyncState) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  EXPECT_TRUE(
+      orchard_storage_->RegisterAccount(account_id.Clone(), 100).has_value());
+
+  // Update notes for account 1
+  {
+    std::vector<OrchardNote> notes;
+    std::vector<OrchardNoteSpend> spends;
+
+    notes.push_back(GenerateMockOrchardNote(account_id, 101, 1));
+    notes.push_back(GenerateMockOrchardNote(account_id, 105, 2));
+
+    spends.push_back(
+        OrchardNoteSpend{322, GenerateMockNullifier(account_id, 2)});
+    spends.push_back(
+        OrchardNoteSpend{333, GenerateMockNullifier(account_id, 3)});
+
+    orchard_storage_->UpdateNotes(account_id.Clone(), notes, spends, 200,
+                                  "hash200");
+  }
+
+  {
+    OrchardCheckpoint checkpoint;
+    checkpoint.marks_removed = std::vector<uint32_t>();
+    checkpoint.tree_state_position = std::nullopt;
+    EXPECT_TRUE(
+        orchard_storage_->AddCheckpoint(account_id.Clone(), 3, checkpoint)
+            .value());
+  }
+
+  EXPECT_TRUE(
+      orchard_storage_->ResetAccountSyncState(account_id.Clone()).value());
+
+  {
+    auto account_meta = orchard_storage_->GetAccountMeta(account_id.Clone());
+    EXPECT_FALSE(account_meta->latest_scanned_block_id);
+    EXPECT_FALSE(account_meta->latest_scanned_block_hash);
+  }
+
+  EXPECT_EQ(
+      0u,
+      orchard_storage_->GetCheckpoints(account_id.Clone(), 100).value().size());
+  EXPECT_EQ(
+      0u,
+      orchard_storage_->GetSpendableNotes(account_id.Clone()).value().size());
+  EXPECT_EQ(0u,
+            orchard_storage_->GetNullifiers(account_id.Clone()).value().size());
 }
 
 }  // namespace brave_wallet

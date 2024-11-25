@@ -39,6 +39,7 @@
 #include "components/permissions/permission_request_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/test/test_web_contents.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -1065,10 +1066,9 @@ TEST_F(SolanaProviderImplUnitTest, Request) {
   // no params for non connect and disconnect
   for (const std::string& method : {"signTransaction", "signAndSendTransaction",
                                     "signAllTransactions", "signMessage"}) {
-    result = Request(
-        base::StringPrintf(R"({method: "%s", params: {}})", method.c_str()),
-        mojom::SolanaProviderError::kParsingError,
-        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+    result = Request(content::JsReplace(R"({method: $1, params: {}})", method),
+                     mojom::SolanaProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     EXPECT_TRUE(result.empty());
   }
 
@@ -1091,10 +1091,9 @@ TEST_F(SolanaProviderImplUnitTest, Request) {
         })";
 
     // errors should be propagated
-    result =
-        Request(base::StringPrintf(json, method.c_str(), kEncodedSerializedMsg),
-                mojom::SolanaProviderError::kUnauthorized,
-                l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+    result = Request(absl::StrFormat(json, method, kEncodedSerializedMsg),
+                     mojom::SolanaProviderError::kUnauthorized,
+                     l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
     EXPECT_TRUE(result.empty());
   }
 }

@@ -102,35 +102,6 @@ void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
   test_util::WaitForAutoContributeVisitTime();
 
   LoadRewardsPage();
-
-  auto* contents = browser_->tab_strip_model()->GetActiveWebContents();
-
-  // Ensure that we are on the Rewards page.
-  EXPECT_EQ(contents->GetLastCommittedURL().host_piece(), "rewards");
-
-  // Ensure that the AC box is displayed.
-  test_util::WaitForElementToAppear(contents,
-                                    "[data-test-id=auto-contribute-panel]");
-
-  // Ensure that the AC sites table is displayed.
-  test_util::WaitForElementToAppear(contents,
-                                    "[data-test-id=auto-contribute-table]");
-
-  if (verified) {
-    // Make sure site appears in auto-contribute table
-    test_util::WaitForElementToEqual(
-        contents, "[data-test-id='ac_link_" + publisher + "']", publisher);
-
-    // A verified site has two images associated with it, the site's
-    // favicon and the verified icon
-    content::EvalJsResult js_result = EvalJs(
-        contents,
-        "document.querySelectorAll(\"[data-test-id='ac_link_" + publisher +
-            "'] [data-test-id=verified-icon]\").length === 1;",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_TRUE(js_result.ExtractBool());
-  }
 }
 
 void RewardsBrowserTestContextHelper::LoadURL(GURL url) {
