@@ -37,15 +37,14 @@ std::string ReadFile(const base::FilePath& file_path) {
   std::string contents;
   bool success = base::ReadFileToString(file_path, &contents);
   if (!success || contents.empty()) {
-    VLOG(2) << "ReadFile: cannot "
-            << "read file " << file_path;
+    VLOG(2) << "ReadFile: cannot " << "read file " << file_path;
   }
   return contents;
 }
 
 // Extract full script from file path.
 std::string ExtractScript(const base::FilePath& component_path,
-                              const base::FilePath& script_path) {
+                          const base::FilePath& script_path) {
   auto prefix = base::FilePath(component_path).Append(kScriptsDir);
   auto script = ReadFile(base::FilePath(prefix).Append(script_path));
   return script;
@@ -56,7 +55,8 @@ std::string ExtractScript(const base::FilePath& component_path,
 // static
 YouTubeRegistry* YouTubeRegistry::GetInstance() {
   // Check if feature flag is enabled.
-  if (!base::FeatureList::IsEnabled(youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
+  if (!base::FeatureList::IsEnabled(
+          youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
     return nullptr;
   }
   return base::Singleton<YouTubeRegistry>::get();
@@ -70,17 +70,15 @@ void YouTubeRegistry::LoadScriptFromPath(
     const GURL& url,
     const base::FilePath& script_path,
     base::OnceCallback<void(std::string)> cb) const {
+  if (script_path.empty()) {
+    std::move(cb).Run("");
+    return;
+  }
 
-    if (script_path.empty()) {
-      std::move(cb).Run("");
-      return;
-    }
-
-      base::ThreadPool::PostTaskAndReplyWithResult(
-          FROM_HERE, {base::MayBlock()},
-          base::BindOnce(&ExtractScript, component_path_,
-                         script_path),
-          std::move(cb));
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&ExtractScript, component_path_, script_path),
+      std::move(cb));
 }
 
 void YouTubeRegistry::LoadJson(const base::FilePath& path) {
@@ -88,8 +86,7 @@ void YouTubeRegistry::LoadJson(const base::FilePath& path) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFile, path.Append(kJsonFile)),
-      base::BindOnce(&YouTubeRegistry::OnLoadJson,
-                     weak_factory_.GetWeakPtr()));
+      base::BindOnce(&YouTubeRegistry::OnLoadJson, weak_factory_.GetWeakPtr()));
 }
 
 void YouTubeRegistry::OnLoadJson(const std::string& contents) {

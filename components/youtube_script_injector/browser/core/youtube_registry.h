@@ -35,8 +35,8 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
   static YouTubeRegistry* GetInstance();  // singleton
   // Returns the YouTube script content from a given path.
   void LoadScriptFromPath(const GURL& url,
-                    const base::FilePath& script_path,
-                    base::OnceCallback<void(std::string)> cb) const;
+                          const base::FilePath& script_path,
+                          base::OnceCallback<void(std::string)> cb) const;
   // Given a path to youtube.json, loads the scripts from the file into memory.
   void LoadJson(const base::FilePath& path);
   const std::optional<YouTubeJson>& GetJson() const { return json_; }
@@ -46,8 +46,8 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
   YouTubeRegistry();
 
   // These methods are also called by YouTubeTabHelperBrowserTest.
-  // Given contents of youtube.json, loads the Json scripts from files into memory.
-  // Called by |LoadJson| after the file is read.
+  // Given contents of youtube.json, loads the Json scripts from files into
+  // memory. Called by |LoadJson| after the file is read.
   void OnLoadJson(const std::string& data);
   // Sets the component path used to resolve the paths to the scripts.
   void SetComponentPath(const base::FilePath& path);
@@ -59,8 +59,10 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
 
   // Needed for testing private methods in YouTubeTabHelperBrowserTest.
   FRIEND_TEST_ALL_PREFIXES(YouTubeTabHelperBrowserTest, NoMatch);
-  FRIEND_TEST_ALL_PREFIXES(YouTubeTabHelperBrowserTest, RuleMatchTestScriptFalse);
-  FRIEND_TEST_ALL_PREFIXES(YouTubeTabHelperBrowserTest, RuleMatchTestScriptTrue);
+  FRIEND_TEST_ALL_PREFIXES(YouTubeTabHelperBrowserTest,
+                           RuleMatchTestScriptFalse);
+  FRIEND_TEST_ALL_PREFIXES(YouTubeTabHelperBrowserTest,
+                           RuleMatchTestScriptTrue);
   friend class YouTubeTabHelperBrowserTest;
 
   friend struct base::DefaultSingletonTraits<YouTubeRegistry>;
