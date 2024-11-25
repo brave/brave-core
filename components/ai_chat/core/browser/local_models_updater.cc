@@ -25,8 +25,8 @@ constexpr base::FilePath::CharType kComponentInstallDir[] =
     FILE_PATH_LITERAL("AIChatLocalModels");
 constexpr base::FilePath::CharType kDeprecatedComponentInstallDir[] =
     FILE_PATH_LITERAL("LeoLocalModels");
-constexpr const char kComponentName[] = "Leo Local Models Updater";
-constexpr const char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
+constexpr char kComponentName[] = "Leo Local Models Updater";
+constexpr char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
 constexpr uint8_t kPublicKeySHA256[32] = {
     0x49, 0x74, 0x99, 0xc0, 0xe0, 0xe7, 0xf6, 0x7d, 0x1b, 0x23, 0x29,
     0x8b, 0xd3, 0xa0, 0xd6, 0x54, 0xb6, 0xc3, 0x23, 0x87, 0x75, 0xec,
@@ -49,9 +49,6 @@ base::FilePath GetDeprecatedComponentDir() {
 }
 
 }  // namespace
-
-constexpr const char kUniversalQAModelName[] =
-    "universal_sentence_encoder_qa_with_metadata.tflite";
 
 LocalModelsComponentInstallerPolicy::
     LocalModelsComponentInstallerPolicy() = default;

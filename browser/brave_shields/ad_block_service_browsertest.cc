@@ -109,7 +109,8 @@ using brave_shields::features::kCosmeticFilteringJsPerformance;
 namespace {
 void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
                             const std::string& selector) {
-  const char kTemplate[] = R"(waitCSSSelector($1, 'display', 'none'))";
+  static constexpr char kTemplate[] =
+      R"(waitCSSSelector($1, 'display', 'none'))";
 
   ASSERT_TRUE(
       EvalJs(target, content::JsReplace(kTemplate, selector)).ExtractBool());
@@ -3005,7 +3006,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
   const GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
   NavigateToURL(tab_url);
-  const char kPickerIsInjected[] =
+  static constexpr char kPickerIsInjected[] =
       "document.getElementById('brave-element-picker') != null";
   ASSERT_FALSE(
       content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
@@ -3079,7 +3080,7 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
   void AddDivsWithDynamicClasses(const content::ToRenderFrameHost& target,
                                  int start_number,
                                  int end_number) const {
-    const char kTemplate[] = R"(
+    static constexpr char kTemplate[] = R"(
     for (let i = $1; i <= $2; i++) {
       const e = document.createElement('div');
       e.className = 'div-class-' + i;

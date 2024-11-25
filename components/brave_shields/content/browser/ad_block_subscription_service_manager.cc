@@ -34,13 +34,11 @@
 
 namespace brave_shields {
 
-constexpr uint16_t kSubscriptionDefaultExpiresHours = 7 * 24;
-
 base::TimeDelta* g_testing_subscription_retry_interval = nullptr;
 
 namespace {
 
-const uint16_t kSubscriptionMaxExpiresHours = 14 * 24;
+constexpr uint16_t kSubscriptionMaxExpiresHours = 14 * 24;
 constexpr base::TimeDelta kListRetryInterval = base::Hours(1);
 constexpr base::TimeDelta kListCheckInitialDelay = base::Minutes(1);
 

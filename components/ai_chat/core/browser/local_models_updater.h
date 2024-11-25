@@ -18,7 +18,8 @@ class ComponentUpdateService;
 
 namespace ai_chat {
 
-extern const char kUniversalQAModelName[];
+inline constexpr char kUniversalQAModelName[] =
+    "universal_sentence_encoder_qa_with_metadata.tflite";
 
 class LocalModelsComponentInstallerPolicy
     : public ::component_updater::ComponentInstallerPolicy {
