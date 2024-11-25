@@ -364,7 +364,6 @@ class Target {
 
 class TargetsCollection {
   targets: Target[] = []
-  
   reset(elems: Element[]) {
     this.targets.length = 0
     elems.forEach((elem: Element) => {
@@ -440,10 +439,10 @@ const hideByXPath = (xpath: string): void => {
     display: 'none'
   }
   const result = document.evaluate(
-      xpath, 
-      document, 
-      null, 
-      XPathResult.ORDERED_NODE_ITERATOR_TYPE, 
+      xpath,
+      document,
+      null,
+      XPathResult.ORDERED_NODE_ITERATOR_TYPE,
       null
   );
 
@@ -547,7 +546,8 @@ const elementPickerUserSelectedTarget = (specificity: number) => {
     const selector = onTargetSelected(lastHoveredElem, specificity)
     if (selector !== '') {
       try {
-        recalculateAndSendTargets(Array.from(document.querySelectorAll(selector)))
+        recalculateAndSendTargets(
+          Array.from(document.querySelectorAll(selector)))
       } catch {}
     }
     return {
@@ -631,7 +631,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     togglePopup(true)
   })
 
-  const section = root.querySelector('section')!  
+  const section = root.querySelector('section')!
   const togglePopup = (show: boolean) => {
     section.style.setProperty('opacity', show ? '1' : '0.2')
   }
@@ -657,7 +657,6 @@ const launchElementPicker = (root: ShadowRoot) => {
   })
 
   const doubleOrLongClickEventHandler = (event: MouseEvent | TouchEvent) => {
-    
     let elem: Element | null = null
     if (event instanceof MouseEvent) {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
@@ -679,7 +678,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     if (!clickedElement || !hasSelectedTarget) {
       return
     }
-    
+
     if (targetedElems.toggleElementMark(clickedElement) === null) {
       hasSelectedTarget = false
       slider.value = '4'
@@ -750,12 +749,13 @@ const launchElementPicker = (root: ShadowRoot) => {
     quitElementPicker()
   })
 
-  const toggleDisplay = (target: HTMLElement | null, trigger: HTMLElement | null) => {
+  const toggleDisplay = (target: HTMLElement | null,
+    trigger: HTMLElement | null) => {
     if(!target || !trigger){
-      return 
-    } 
+      return
+    }
     trigger.addEventListener('click', e => {
-      if (target.style.display != 'block') {
+      if (target.style.display !== 'block') {
         target.style.display = 'block'
         trigger.textContent = 'Hide rules'
       } else {

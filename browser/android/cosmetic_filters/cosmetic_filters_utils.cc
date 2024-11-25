@@ -21,7 +21,7 @@ static jboolean JNI_BraveCosmeticFiltersUtils_LaunchContentPickerForWebContent(
   }
 
   CosmeticFiltersTabHelper::LaunchContentPicker(web_contents);
-  
+
   return true;
 }
 

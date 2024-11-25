@@ -5,25 +5,17 @@
 
 package org.chromium.chrome.browser.cosmetic_filters;
 
+import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
-import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.content_public.browser.WebContents;
-import org.jni_zero.CalledByNative;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.settings.BraveLeoPreferences;
-import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
-import org.chromium.components.browser_ui.settings.SettingsNavigation;
-
-import android.app.Activity;
-import android.content.Context;
-
 import org.chromium.base.Log;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.tab.Tab;
 
 @JNINamespace("cosmetic_filters")
 public class BraveCosmeticFiltersUtils {
-    private static final String TAG = "BraveCosmeticFiltersUtils";
+    private static final String TAG = "CosmeticFiltersUtils";
 
     public static boolean launchContentPickerForWebContent(Tab tab) {
         return BraveCosmeticFiltersUtilsJni.get().launchContentPickerForWebContent(tab);
@@ -31,7 +23,7 @@ public class BraveCosmeticFiltersUtils {
 
     @CalledByNative
     public static void showCustomFilterSettings() {
-         try {
+        try {
             BraveActivity.getBraveActivity().openBraveCreateCustomFiltersSettings();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "open create custom filter settings" + e);

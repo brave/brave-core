@@ -17,11 +17,10 @@ brave_browser_cosmetic_filters_deps = [
 ]
 
 if (is_android) {
-  brave_browser_cosmetic_filters_sources +=
-      [ 
-        "//brave/browser/android/cosmetic_filters/cosmetic_filters_utils.cc",
-        "//brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h"
-      ]
+  brave_browser_cosmetic_filters_sources += [
+    "//brave/browser/android/cosmetic_filters/cosmetic_filters_utils.cc",
+    "//brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h",
+  ]
 
   brave_browser_cosmetic_filters_deps += [ "//brave/build/android:jni_headers" ]
 }
