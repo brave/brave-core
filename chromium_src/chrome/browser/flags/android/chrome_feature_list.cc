@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_override.h"
-#include "brave/browser/android/background_video/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -21,6 +20,7 @@
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/components/webcompat/core/common/features.h"
+#include "brave/components/youtube_script_injector/common/features.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
@@ -47,6 +47,7 @@
     &download::features::kParallelDownloading,                          \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
     &brave_rewards::features::kNewRewardsUIFeature,                     \
+    &youtube_script_injector::features::kBraveYouTubeScriptInjector,    \
     &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
     &speedreader::kSpeedreaderFeature,                                  \
