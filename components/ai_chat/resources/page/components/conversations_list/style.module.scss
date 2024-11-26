@@ -22,8 +22,11 @@
 }
 
 .navItem {
+  all: unset;
+
+  display: block;
+
   font: var(--leo-font-default-regular);
-  width: 100%;
   padding: var(--leo-spacing-l) var(--leo-spacing-xl);
   border-radius: 8px;
   position: relative;

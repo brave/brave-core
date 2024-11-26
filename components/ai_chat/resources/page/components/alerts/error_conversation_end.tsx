@@ -7,11 +7,11 @@ import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
-import { useAIChat } from '../../state/ai_chat_context'
 import styles from './alerts.module.scss'
+import { useActiveChat } from '../../state/active_chat_context'
 
-function ErrorConversationEnd () {
-  const aiChatContext = useAIChat()
+function ErrorConversationEnd() {
+  const { createNewConversation } = useActiveChat()
 
   return (
     <div className={styles.alert}>
@@ -23,9 +23,9 @@ function ErrorConversationEnd () {
         <Button
           slot='actions'
           kind='plain-faint'
-          onClick={() => { aiChatContext.onNewConversation() }}
+          onClick={createNewConversation}
         >
-            {getLocale('menuNewChat')}
+          {getLocale('menuNewChat')}
         </Button>
       </Alert>
     </div>
