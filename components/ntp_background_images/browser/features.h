@@ -34,6 +34,11 @@ inline constexpr base::FeatureParam<int> kCountToBrandedWallpaper{
 inline constexpr base::FeatureParam<base::TimeDelta> kResetCounterAfter{
     &kBraveNTPBrandedWallpaper, "reset_counter_after", base::Days(1)};
 
+inline constexpr base::FeatureParam<base::TimeDelta>
+    kSponsoredImagesUpdateCheckAfter{&kBraveNTPBrandedWallpaper,
+                                     "sponsored_images_update_check_after",
+                                     base::Minutes(15)};
+
 }  // namespace features
 }  // namespace ntp_background_images
 
