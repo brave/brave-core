@@ -163,6 +163,10 @@ public struct AIChatAdvancedSettingsView: View {
       return dateFormatter.string(from: date)
     }
 
+    if let expiryDate = viewModel.inAppPurchaseSubscriptionExpiryDate {
+      return dateFormatter.string(from: expiryDate)
+    }
+
     // Display the info from SkusSDK
     if let expiryDate = viewModel.skuOrderExpirationDate {
       return dateFormatter.string(from: expiryDate)
