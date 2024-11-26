@@ -80,27 +80,27 @@ public class BraveWalletProviderDelegateImplHelper {
     }
 
     @CalledByNative
-    public static void ShowAccountCreation(@CoinType.EnumType int coinType) {
+    public static void showAccountCreation(@CoinType.EnumType int coinType) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showAccountCreation(coinType);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "ShowAccountCreation " + e);
+            Log.e(TAG, "showAccountCreation " + e);
         }
     }
 
-    public static void IsSolanaConnected(
+    public static void isSolanaConnected(
             WebContents webContents, String account, Callbacks.Callback1<Boolean> callback) {
         Callback<Boolean> callbackWrapper =
                 result -> {
                     callback.call(result);
                 };
         BraveWalletProviderDelegateImplHelperJni.get()
-                .IsSolanaConnected(webContents, account, callbackWrapper);
+                .isSolanaConnected(webContents, account, callbackWrapper);
     }
 
     @NativeMethods
     interface Natives {
-        void IsSolanaConnected(WebContents webContents, String account, Callback<Boolean> callback);
+        void isSolanaConnected(WebContents webContents, String account, Callback<Boolean> callback);
     }
 }

@@ -107,7 +107,7 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setOldHttpsUpgradesCount(profile, count);
     }
 
-    public boolean GetBooleanForContentSetting(int content_type) {
+    public boolean getBooleanForContentSetting(int content_type) {
         return BravePrefServiceBridgeJni.get().getBooleanForContentSetting(content_type);
     }
 

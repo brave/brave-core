@@ -83,7 +83,7 @@
     </module>
     <module name="MethodName">
         <property name="id" value="MethodNameCheck"/>
-        <property name="severity" value="warning"/>
+        <property name="severity" value="error"/>
         <property name="format" value="^(([a-z][a-zA-Z0-9_]*)|(__constructor__))$"/>
         <message key="name.invalidPattern" value="Method names should start with a lower case letter (e.g. getWidth())"/>
     </module>

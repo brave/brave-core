@@ -65,7 +65,7 @@ public class BraveShieldsScreenshotUtil {
 
         private void onPostExecute(byte[] pngBytes) {
             assert ThreadUtils.runningOnUiThread();
-            mCallback.OnScreenshotReady(pngBytes);
+            mCallback.onScreenshotReady(pngBytes);
         }
     }
 
@@ -98,7 +98,7 @@ public class BraveShieldsScreenshotUtil {
             }
 
             if (isRetryCounterOver()) {
-                mCallback.OnScreenshotReady(null);
+                mCallback.onScreenshotReady(null);
                 return;
             }
 
@@ -116,7 +116,7 @@ public class BraveShieldsScreenshotUtil {
     }
 
     public interface BraveShieldsScreenshotUtilCallback {
-        void OnScreenshotReady(@Nullable byte[] pngBytes);
+        void onScreenshotReady(@Nullable byte[] pngBytes);
     }
 
     public BraveShieldsScreenshotUtil(

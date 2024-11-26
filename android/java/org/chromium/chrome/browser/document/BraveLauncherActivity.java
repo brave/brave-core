@@ -20,6 +20,6 @@ public class BraveLauncherActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         BottomToolbarConfiguration.isBottomToolbarEnabled();
-        BraveHelper.DisableFREDRP();
+        BraveHelper.disableFREDRP();
     }
 }

@@ -41,7 +41,7 @@ void ShowWalletOnboarding(content::WebContents*) {
 void ShowAccountCreation(content::WebContents*,
                          brave_wallet::mojom::CoinType coin_type) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveWalletProviderDelegateImplHelper_ShowAccountCreation(
+  Java_BraveWalletProviderDelegateImplHelper_showAccountCreation(
       env, static_cast<int>(coin_type));
 }
 
