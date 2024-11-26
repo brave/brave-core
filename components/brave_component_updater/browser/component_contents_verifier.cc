@@ -11,50 +11,37 @@
 #include "base/check_is_test.h"
 #include "base/files/file_util.h"
 #include "base/no_destructor.h"
-#include "extensions/buildflags/buildflags.h"
+#include "base/task/thread_pool.h"
 
 namespace brave_component_updater {
-
-base::expected<std::string, ComponentContentsAccessor::Error>
-ComponentContentsAccessor::ReadFileToString(
-    const base::FilePath& relative_path) {
-  std::string contents;
-  if (!base::ReadFileToString(GetComponentRoot().Append(relative_path),
-                              &contents)) {
-    return base::unexpected(Error::kFileReadFailed);
-  }
-  if (!VerifyContents(relative_path, base::as_byte_span(contents))) {
-    return base::unexpected(Error::kInvalidSignature);
-  }
-
-  return base::ok(std::move(contents));
-}
-
-base::expected<std::vector<uint8_t>, ComponentContentsAccessor::Error>
-ComponentContentsAccessor::ReadFileToBytes(
-    const base::FilePath& relative_path) {
-  auto contents =
-      base::ReadFileToBytes(GetComponentRoot().Append(relative_path));
-  if (!contents) {
-    return base::unexpected(Error::kFileReadFailed);
-  }
-  if (!VerifyContents(relative_path, base::as_byte_span(*contents))) {
-    return base::unexpected(Error::kInvalidSignature);
-  }
-
-  return base::ok(*std::move(contents));
-}
 
 std::string ComponentContentsAccessor::GetFileAsString(
     const base::FilePath& relative_path,
     const std::string& default_value) {
-  return ReadFileToString(relative_path).value_or(default_value);
+  std::string contents;
+  if (!base::ReadFileToString(GetComponentRoot().Append(relative_path),
+                              &contents)) {
+    return default_value;
+  }
+  if (!VerifyContents(relative_path, base::as_byte_span(contents))) {
+    return default_value;
+  }
+
+  return contents;
 }
 
 std::vector<uint8_t> ComponentContentsAccessor::GetFileAsBytes(
     const base::FilePath& relative_path,
     const std::vector<uint8_t>& default_value) {
-  return ReadFileToBytes(relative_path).value_or(default_value);
+  auto contents =
+      base::ReadFileToBytes(GetComponentRoot().Append(relative_path));
+  if (!contents) {
+    return default_value;
+  }
+  if (!VerifyContents(relative_path, base::as_byte_span(*contents))) {
+    return default_value;
+  }
+  return std::move(*contents);
 }
 
 ComponentContentsVerifier::ComponentContentsVerifier() = default;
@@ -75,12 +62,14 @@ ComponentContentsVerifier* ComponentContentsVerifier::GetInstance() {
   return instance.get();
 }
 
-// Must be called on the MAY_BLOCK sequence.
-scoped_refptr<ComponentContentsAccessor>
-ComponentContentsVerifier::GetContentsAccessor(
-    const base::FilePath& component_root) {
+void ComponentContentsVerifier::CreateContentsAccessor(
+    const base::FilePath& component_root,
+    base::OnceCallback<void(scoped_refptr<ComponentContentsAccessor>)>
+        on_created) {
   CHECK(cca_factory_);
-  return cca_factory_.Run(component_root);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(cca_factory_, component_root), std::move(on_created));
 }
 
 }  // namespace brave_component_updater

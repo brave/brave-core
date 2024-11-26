@@ -36,11 +36,6 @@ class ComponentContentsAccessor
   virtual bool VerifyContents(const base::FilePath& relative_path,
                               base::span<const uint8_t> contents) = 0;
 
-  base::expected<std::string, Error> ReadFileToString(
-      const base::FilePath& relative_path);
-  base::expected<std::vector<uint8_t>, Error> ReadFileToBytes(
-      const base::FilePath& relative_path);
-
   std::string GetFileAsString(const base::FilePath& relative_path,
                               const std::string& default_value);
   std::vector<uint8_t> GetFileAsBytes(
@@ -61,9 +56,10 @@ class ComponentContentsVerifier {
   static void Setup(ComponentContentsAccessorFactory cca_factory);
   static ComponentContentsVerifier* GetInstance();
 
-  // Must be called on the MAY_BLOCK sequence.
-  scoped_refptr<ComponentContentsAccessor> GetContentsAccessor(
-      const base::FilePath& component_root);
+  void CreateContentsAccessor(
+      const base::FilePath& component_root,
+      base::OnceCallback<void(scoped_refptr<ComponentContentsAccessor>)>
+          on_created);
 
  private:
   friend base::NoDestructor<ComponentContentsVerifier>;
