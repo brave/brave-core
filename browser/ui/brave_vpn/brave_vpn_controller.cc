@@ -25,9 +25,11 @@ void BraveVPNController::OpenVPNAccountPage() {
   auto* browser = browser_view_->browser();
   auto* profile = browser->profile();
   auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
-  const auto url =
-      brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment());
-  ShowSingletonTab(browser, GURL(url));
+  auto url =
+      GURL(brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment()));
+  GURL::Replacements replacements;
+  replacements.SetQueryStr("intent=checkout&product=vpn");
+  ShowSingletonTab(browser, url.ReplaceComponents(replacements));
 }
 
 BraveBrowserView* BraveVPNController::GetBraveBrowserView() {
