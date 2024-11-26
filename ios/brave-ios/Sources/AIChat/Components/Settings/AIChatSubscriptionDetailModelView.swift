@@ -156,7 +156,7 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
     return false
   }
 
-  var isSubscriptionStatusLoading: Bool {
+  var isSubscriptionStatusLoaded: Bool {
     return storeSDK.leoSubscriptionStatus?.state != nil || credentialSummary != nil
   }
 
