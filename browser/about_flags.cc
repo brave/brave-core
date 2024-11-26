@@ -71,8 +71,8 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/android/background_video/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
+#include "brave/components/youtube_script_injector/common/features.h"
 #else
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
@@ -297,16 +297,15 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                \
+#define BRAVE_YOUTUBE_SCRIPT_INJECTOR                                          \
   EXPAND_FEATURE_ENTRIES({                                                     \
-      "brave-background-video-playback",                                       \
-      "Background video playback",                                             \
+      "brave-youtube-script-injector",                                         \
+      "Youtube script injector",                                               \
       "Enables play audio from video in background when tab is not active or " \
-      "device screen is turned off. Try to switch to desktop mode if this "    \
-      "feature is not working.",                                               \
+      "device screen is turned off.",                                          \
       kOsAndroid,                                                              \
       FEATURE_VALUE_TYPE(                                                      \
-          preferences::features::kBraveBackgroundVideoPlayback),               \
+          youtube_script_injector::features::kBraveYouTubeScriptInjector),     \
   })
 #define BRAVE_SAFE_BROWSING_ANDROID                                           \
   EXPAND_FEATURE_ENTRIES({                                                    \
@@ -318,7 +317,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
 #else
-#define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
+#define BRAVE_YOUTUBE_SCRIPT_INJECTOR
 #define BRAVE_SAFE_BROWSING_ANDROID
 #endif  // BUILDFLAG(IS_ANDROID)
 
@@ -1047,7 +1046,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
   BRAVE_MODULE_FILENAME_PATCH                                                  \
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
-  BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
+  BRAVE_YOUTUBE_SCRIPT_INJECTOR                                                \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
