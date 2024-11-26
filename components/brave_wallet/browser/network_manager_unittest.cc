@@ -417,10 +417,10 @@ TEST_F(NetworkManagerUnitTest, GetNetworkURLForKnownChains) {
   // GetNetworkURL for these known chains should resolve to brave subdomain.
   base::flat_set<std::string> known_chains = {
       brave_wallet::mojom::kMainnetChainId,
+      brave_wallet::mojom::kBaseMainnetChainId,
       brave_wallet::mojom::kPolygonMainnetChainId,
       brave_wallet::mojom::kBnbSmartChainMainnetChainId,
       brave_wallet::mojom::kOptimismMainnetChainId,
-      brave_wallet::mojom::kAuroraMainnetChainId,
       brave_wallet::mojom::kAvalancheMainnetChainId,
       brave_wallet::mojom::kSepoliaChainId};
 

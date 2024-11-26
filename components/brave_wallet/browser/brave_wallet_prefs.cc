@@ -297,6 +297,10 @@ void RegisterProfilePrefsForMigration(
 
   // Added 08/2024
   registry->RegisterBooleanPref(kBraveWalletIsSPLTokenProgramMigrated, false);
+
+  // Added 11/2024
+  registry->RegisterBooleanPref(kBraveWalletCustomNetworksAuroraMainnetMigrated,
+                                false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -359,6 +363,10 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 07/2024 to set active ETH chain to Sepolia if Goerli is selected.
   BraveWalletService::MigrateGoerliNetwork(prefs);
+
+  // Added 11/2024 to set active ETH chain to Aurora mainnet if Aurora is
+  // selected.
+  BraveWalletService::MigrateAuroraMainnetAsCustomNetwork(prefs);
 }
 
 }  // namespace brave_wallet
