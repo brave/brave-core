@@ -98,7 +98,7 @@ std::vector<GURL> BraveConfigurator::PingUrl() const {
 }
 
 std::string BraveConfigurator::GetProdId() const {
-  return std::string();
+  return "BraveComponentUpdater";
 }
 
 base::Version BraveConfigurator::GetBrowserVersion() const {
