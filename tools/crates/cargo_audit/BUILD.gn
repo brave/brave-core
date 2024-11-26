@@ -1,0 +1,30 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/tools/crates/cargo_audit/sources.gni")
+import("//brave/tools/crates/sources.gni")
+
+action("build_cargo_audit") {
+  script = "//build/gn_run_binary.py"
+
+  cargo_audit_src = "v0_21/crate"
+
+  inputs = [
+    cargo_exe,
+    "$cargo_audit_src/Cargo.lock",
+  ]
+
+  outputs = [ cargo_audit_exe ]
+
+  args = [
+    rebase_path(cargo_exe),
+    "build",
+    "--release",
+    "--manifest-path",
+    rebase_path("$cargo_audit_src/Cargo.toml"),
+    "--target-dir",
+    rebase_path(cargo_audit_target_dir),
+  ]
+}
