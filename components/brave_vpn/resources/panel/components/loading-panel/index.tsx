@@ -44,7 +44,7 @@ function LoadingPanel() {
           tooltip={getLocale('braveVpnSettingsTooltip')}
           onClick={handleSettingsButtonClick}
         />
-        <PanelHeader title={getLocale('braveVpnMainPanelTitle')} />
+        <PanelHeader title={getLocale('braveVpn')} />
         <S.Status>
           <S.LoadingIcon />
           <S.PanelDesc>{getLocale('braveVpnLoading')}</S.PanelDesc>

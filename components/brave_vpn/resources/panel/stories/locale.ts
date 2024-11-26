@@ -5,8 +5,7 @@
 import { provideStrings } from '../../../../../.storybook/locale'
 
 provideStrings({
-  braveVpn: 'Brave Firewall + VPN',
-  braveVpnMainPanelTitle: 'Firewall + VPN',
+  braveVpn: 'Brave VPN',
   braveVpnConnect: 'Connect',
   braveVpnConnecting: 'Connecting',
   braveVpnConnected: 'Connected',
@@ -30,7 +29,6 @@ provideStrings({
   braveVpnReconnectAutomatically: 'Reconnect automatically',
   braveVpnContactSupport: 'Contact technical support',
   braveVpnAbout: 'About',
-  braveVpnErrorPanelHeader: 'Firewall + VPN',
   braveVpnErrorPanelBackButtonAriaLabel: 'Go to main',
   braveVpnFeature1: 'Extra privacy & security online',
   braveVpnFeature2: 'Hide your IP & change your location',
