@@ -34,6 +34,7 @@ import org.jni_zero.CalledByNative;
 
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -41,6 +42,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
 import org.chromium.components.favicon.IconType;
 import org.chromium.components.favicon.LargeIconBridge;
@@ -428,13 +430,20 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         return Integer.toString(currentTime.get(Calendar.YEAR));
     }
 
-  public static Tab currentActiveChromeTabbedActivityTab() {
-      ChromeTabbedActivity activity = BraveRewardsHelper.getChromeTabbedActivity();
-      if (activity == null || activity.getTabModelSelector() == null) {
-          return null;
-      }
-      return activity.getActivityTab();
-  }
+    public static Tab currentActiveChromeTabbedActivityTab() {
+        ChromeTabbedActivity activity = BraveRewardsHelper.getChromeTabbedActivity();
+        if (activity == null) {
+            return null;
+        }
+
+        ObservableSupplier<TabModelSelector> supplier = activity.getTabModelSelectorSupplier();
+        TabModelSelector selector = supplier.get();
+        if (selector == null) {
+            return null;
+        }
+
+        return activity.getActivityTab();
+    }
 
     /**
      * @param fadeout: can be null

@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkUtils;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.components.bookmarks.BookmarkId;
@@ -194,7 +195,13 @@ public class TabUtils {
 
     private static void openNewTab(BraveActivity braveActivity, boolean isIncognito) {
         if (braveActivity == null) return;
-        braveActivity.getTabModelSelector().getModel(isIncognito).commitAllTabClosures();
+
+        ObservableSupplier<TabModelSelector> supplier = braveActivity.getTabModelSelectorSupplier();
+        TabModelSelector selector = supplier.get();
+        if (selector == null) {
+            return;
+        }
+        selector.getModel(isIncognito).commitAllTabClosures();
         braveActivity.getTabCreator(isIncognito).launchNtp();
     }
 
@@ -210,13 +217,19 @@ public class TabUtils {
     public static void openUrlInNewTabInBackground(boolean isIncognito, String url) {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
-            if (braveActivity.getTabModelSelector() != null
-                    && braveActivity.getActivityTab() != null) {
-                braveActivity.getTabModelSelector().openNewTab(new LoadUrlParams(url),
+
+            ObservableSupplier<TabModelSelector> supplier =
+                    braveActivity.getTabModelSelectorSupplier();
+            TabModelSelector selector = supplier.get();
+
+            if (selector != null && braveActivity.getActivityTab() != null) {
+                selector.openNewTab(
+                        new LoadUrlParams(url),
                         BraveTabUiFeatureUtilities.isBraveTabGroupsEnabled()
                                 ? TabLaunchType.FROM_LONGPRESS_BACKGROUND_IN_GROUP
                                 : TabLaunchType.FROM_LONGPRESS_BACKGROUND,
-                        braveActivity.getActivityTab(), isIncognito);
+                        braveActivity.getActivityTab(),
+                        isIncognito);
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openUrlInNewTabInBackground " + e);
