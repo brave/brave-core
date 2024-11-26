@@ -120,15 +120,15 @@ export default function ConversationsList(props: ConversationsListProps) {
             {aiChatContext.visibleConversations.map(item => {
               return (
                 <li key={item.uuid}>
-                  <div
+                  <a
                     className={classnames({
                       [styles.navItem]: true,
                       [styles.navItemActive]: item.uuid === conversationContext.conversationUuid
                     })}
                     onClick={() => {
-                      aiChatContext.onSelectConversationUuid(item.uuid)
                       props.setIsConversationsListOpen?.(false)
                     }}
+                    href={`/${item.uuid}`}
                   >
                     {item.uuid === aiChatContext.editingConversationId ? (
                       <div className={styles.editibleTitle}>
@@ -149,7 +149,7 @@ export default function ConversationsList(props: ConversationsListProps) {
                         onDelete={() => getAPI().Service.deleteConversation(item.uuid)}
                       />
                     )}
-                  </div>
+                  </a>
                 </li>
               )
             })}

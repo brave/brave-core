@@ -12,9 +12,12 @@ import ConversationsList from '../conversations_list'
 import { NavigationHeader } from '../header'
 import Main from '../main'
 import styles from './style.module.scss'
+import { useActiveChat } from '../../state/active_chat_context'
 
 export default function FullScreen() {
   const aiChatContext = useAIChat()
+  const { createNewConversation } = useActiveChat()
+
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
   const isSmall = useMediaQuery('(max-width: 1024px)')
@@ -90,19 +93,19 @@ export default function FullScreen() {
     <div className={styles.fullscreen}>
       <div className={styles.left}>
         <div className={styles.controls}>
-              <Button
-              fab
-              kind='plain-faint'
-              onClick={toggleAside}
-              >
-              <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
-              </Button>
+          <Button
+            fab
+            kind='plain-faint'
+            onClick={toggleAside}
+          >
+            <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
+          </Button>
           {!isNavigationRendered && (
             <>
               <Button
                 fab
                 kind='plain-faint'
-                onClick={aiChatContext.onNewConversation}
+                onClick={createNewConversation}
               >
                 <Icon name='edit-box' />
               </Button>
