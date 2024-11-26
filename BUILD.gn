@@ -7,6 +7,7 @@ import(
     "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/allowlist.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/tools/crates/sources.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
 import("//chrome/browser/buildflags.gni")
@@ -608,37 +609,6 @@ if (is_mac) {
   }
 }
 
-cargo_audit_target_dir = "$root_build_dir/cargo_audit"
-cargo_audit_exe = "$cargo_audit_target_dir/release/cargo-audit"
-cargo_audit_src = "//brave/tools/crates/cargo_audit/v0_21/crate"
-if (host_os == "win") {
-  cargo_audit_exe += ".exe"
-}
-
-action("build_cargo_audit") {
-  script = "//build/gn_run_binary.py"
-
-  cargo_exe = "//third_party/rust-toolchain/bin/cargo"
-  if (host_os == "win") {
-    cargo_exe += ".exe"
-  }
-
-  inputs = [
-    cargo_exe,
-    "$cargo_audit_src/Cargo.lock",
-  ]
-  outputs = [ cargo_audit_exe ]
-  args = [
-    rebase_path(cargo_exe),
-    "build",
-    "--release",
-    "--manifest-path",
-    rebase_path("$cargo_audit_src/Cargo.toml"),
-    "--target-dir",
-    rebase_path(cargo_audit_target_dir),
-  ]
-}
-
 action("audit_deps") {
   script = "//brave/script/audit_deps.py"
 
@@ -653,7 +623,7 @@ action("audit_deps") {
     args += [ "--audit_dev_deps" ]
   }
 
-  deps = [ ":build_cargo_audit" ]
+  deps = [ "//brave/tools/crates:build_cargo_audit" ]
 }
 
 if (is_redirect_cc_build) {
