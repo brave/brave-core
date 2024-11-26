@@ -146,9 +146,6 @@
 -LensDesktopNTPSearchEnabledPolicyTest.LensSearchButtonHidden
 -NewTabPageNavigationThrottleFencedFrameTest.FencedFrameDoesNotResetNewTabStartTime
 -NotificationPermissionBrowserTest.NonPersistentNotificationThirdPartyCountMetricTest # Histogram does not exist
--OffscreenApiTest.*
--OffscreenDocumentBrowserTest.*
--OffscreenDocumentManagerBrowserTest.*
 -OpenWindowFromNTPBrowserTest.TransferFromNTPCreateNewTab # not InstantProcess
 -PageViewportInLCPTest.FullSizeImageInIframe
 -PasswordDialogViewTest.PopupAccountChooserWithMultipleCredentialsReturnEmpty

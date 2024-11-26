@@ -52,6 +52,9 @@ brave_shields::mojom::ShieldsSettingsPtr
 WorkerContentSettingsClient_BraveImpl::GetBraveShieldsSettings(
     ContentSettingsType webcompat_settings_type) {
   const GURL& primary_url = top_frame_origin_.GetURL();
+  if (!primary_url.SchemeIsHTTPOrHTTPS()) {
+    return brave_shields::mojom::ShieldsSettings::New();
+  }
 
   brave_shields::mojom::FarblingLevel farbling_level =
       shields_settings_ ? shields_settings_->farbling_level
@@ -78,6 +81,8 @@ WorkerContentSettingsClient_BraveImpl::GetBraveShieldsSettings(
     // This should not happen now, but send dumps for now if that's the case in
     // some scenario.
     DCHECK(!HasContentSettingsRules());
+    // Trigger a crash in DCHECK-enabled builds.
+    DCHECK(false);
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
         farbling_level, base::Token(), std::vector<std::string>(), false);
