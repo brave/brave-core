@@ -15,7 +15,8 @@ export interface SelectedChatDetails {
   updateSelectedConversationId: (conversationId: string | undefined) => void
   conversationHandler: API.ConversationHandlerRemote
   callbackRouter: API.ConversationUICallbackRouter
-  newConversation: () => void
+  createNewConversation: () => void,
+  isTabAssociated: boolean
 }
 
 export const ActiveChatContext = React.createContext<SelectedChatDetails>({
@@ -23,7 +24,8 @@ export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   updateSelectedConversationId: () => { },
   callbackRouter: undefined!,
   conversationHandler: undefined!,
-  newConversation: () => { }
+  createNewConversation: () => { },
+  isTabAssociated: false,
 })
 
 
@@ -55,9 +57,10 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     ...conversationAPI,
     selectedConversationId,
     updateSelectedConversationId,
-    newConversation: () => {
+    createNewConversation: () => {
       setConversationAPI(API.newConversation())
-    }
+    },
+    isTabAssociated: selectedConversationId === tabAssociatedChatId
   }), [selectedConversationId, updateSelectedConversationId, conversationAPI])
 
   React.useEffect(() => {

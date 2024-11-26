@@ -9,14 +9,14 @@ import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
 import { useConversation } from '../../state/conversation_context'
 import styles from './alerts.module.scss'
-import { useActiveChat } from '../../state/active_chat_provider'
+import { useActiveChat } from '../../state/active_chat_context'
 
 export default function LongConversationInfo() {
   const context = useConversation()
-  const {newConversation} = useActiveChat()
+  const {createNewConversation } = useActiveChat()
 
   const handleClearChat = () => {
-    newConversation()
+    createNewConversation()
     context.dismissLongConversationInfo()
   }
 

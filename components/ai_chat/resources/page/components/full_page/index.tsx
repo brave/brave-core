@@ -12,11 +12,11 @@ import ConversationsList from '../conversations_list'
 import { NavigationHeader } from '../header'
 import Main from '../main'
 import styles from './style.module.scss'
-import { useActiveChat } from '../../state/active_chat_provider'
+import { useActiveChat } from '../../state/active_chat_context'
 
 export default function FullScreen() {
   const aiChatContext = useAIChat()
-  const { newConversation } = useActiveChat()
+  const { createNewConversation } = useActiveChat()
 
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
@@ -105,7 +105,7 @@ export default function FullScreen() {
               <Button
                 fab
                 kind='plain-faint'
-                onClick={newConversation}
+                onClick={createNewConversation}
               >
                 <Icon name='edit-box' />
               </Button>

@@ -20,7 +20,7 @@ import {
   ConversationContextProvider
 } from './state/conversation_context'
 import FullScreen from './components/full_page'
-import { ActiveChatProviderFromUrl } from './state/active_chat_provider'
+import { ActiveChatProviderFromUrl } from './state/active_chat_context'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 

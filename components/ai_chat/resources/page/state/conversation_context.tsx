@@ -8,7 +8,7 @@ import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.m
 import * as API from '../api/'
 import { useAIChat } from './ai_chat_context'
 import { isLeoModel } from '../model_utils'
-import { tabAssociatedChatId, useActiveChat } from './active_chat_provider'
+import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
 import useIsConversationVisible from '../hooks/useIsConversationVisible'
 
 const MAX_INPUT_CHAR = 2000
@@ -24,7 +24,6 @@ export interface ConversationContext extends CharCountContext {
   conversationUuid?: string
   conversationHistory: mojom.ConversationTurn[]
   associatedContentInfo?: mojom.SiteInfo
-  isTabAssociated: boolean
   allModels: mojom.Model[]
   currentModel?: mojom.Model
   suggestedQuestions: string[]
@@ -83,7 +82,6 @@ const defaultContext: ConversationContext = {
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
-  isTabAssociated: false,
   setCurrentModel: () => { },
   switchToBasicModel: () => { },
   generateSuggestedQuestions: () => { },
@@ -315,10 +313,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     if (context.conversationUuid === selectedConversationId) return
     updateSelectedConversationId(context.conversationUuid)
   }, [isVisible, updateSelectedConversationId])
-
-  React.useEffect(() => {
-    setPartialContext({ isTabAssociated: selectedConversationId === tabAssociatedChatId })
-  }, [selectedConversationId])
 
   const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 
