@@ -56,6 +56,13 @@ public class DarkReaderScriptHandler: TabContentScript {
 
   /// Enables DarkReader
   static func enable(for webView: WKWebView) {
+    // This is needed to ensure that CORS fetches work correctly, otherwise you get this error:
+    // "Embedded Dark Reader cannot access a cross-origin resource"
+    webView.evaluateSafeJavaScript(
+      functionName: "DarkReader.setFetchMethod(window.fetch)",
+      contentWorld: Self.scriptSandbox,
+      asFunction: false
+    )
     webView.evaluateSafeJavaScript(
       functionName: "DarkReader.enable",
       args: configuration.isEmpty ? [] : [configuration],
@@ -75,6 +82,13 @@ public class DarkReaderScriptHandler: TabContentScript {
   /// - Parameter enabled - If true, automatically listens for system's dark-mode vs. light-mode. If false, disables listening.
   static func auto(enabled: Bool = true, for webView: WKWebView) {
     if enabled {
+      // This is needed to ensure that CORS fetches work correctly, otherwise you get this error:
+      // "Embedded Dark Reader cannot access a cross-origin resource"
+      webView.evaluateSafeJavaScript(
+        functionName: "DarkReader.setFetchMethod(window.fetch)",
+        contentWorld: Self.scriptSandbox,
+        asFunction: false
+      )
       webView.evaluateSafeJavaScript(
         functionName: "DarkReader.auto",
         args: configuration.isEmpty ? [] : [configuration],
@@ -93,7 +107,7 @@ public class DarkReaderScriptHandler: TabContentScript {
     Preferences.General.nightModeEnabled.value = enabled
 
     for tab in tabManager.allTabs {
-      if let fetchedTabURL = tab.fetchedURL, !fetchedTabURL.isNightModeBlockedURL {
+      if let fetchedTabURL = tab.fetchedURL {
         tab.nightMode = enabled
       }
     }
