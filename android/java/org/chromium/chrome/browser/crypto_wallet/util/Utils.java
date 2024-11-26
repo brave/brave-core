@@ -53,6 +53,7 @@ import org.chromium.base.Callbacks;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.AccountId;
@@ -77,6 +78,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActiv
 import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.widget.Toast;
@@ -1222,7 +1224,13 @@ public class Utils {
             return ProfileManager.getLastUsedRegularProfile(); // Last resort
         }
 
-        return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
+        ObservableSupplier<TabModelSelector> supplier =
+                chromeActivity.getTabModelSelectorSupplier();
+        TabModelSelector selector = supplier.get();
+        if (selector == null) {
+            return ProfileManager.getLastUsedRegularProfile();
+        }
+        return selector.getModel(isIncognito).getProfile();
     }
 
     public static String formatErc721TokenTitle(String title, String id) {
