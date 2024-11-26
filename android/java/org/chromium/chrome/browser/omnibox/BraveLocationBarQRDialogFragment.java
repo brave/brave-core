@@ -191,6 +191,9 @@ public class BraveLocationBarQRDialogFragment
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        if (isRemoving() || isDetached()) {
+            return;
+        }
 
         // Checks the orientation of the screen
         if (newConfig.orientation != Configuration.ORIENTATION_UNDEFINED

@@ -69,6 +69,10 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                 new ComponentCallbacks() {
                     @Override
                     public void onConfigurationChanged(Configuration newConfig) {
+                        if (mActivity != null
+                                && (mActivity.isFinishing() || mActivity.isDestroyed())) {
+                            return;
+                        }
                         maybeUpdateBottomMarginForContainerView();
                     }
 

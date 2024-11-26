@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.hub;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
@@ -39,6 +40,12 @@ public class BraveHubToolbarView extends HubToolbarView {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Context context = getContext();
+        if (context instanceof Activity
+                && (((Activity) context).isFinishing() || ((Activity) context).isDestroyed())) {
+            return;
+        }
         updateButtonsVisibility();
     }
 

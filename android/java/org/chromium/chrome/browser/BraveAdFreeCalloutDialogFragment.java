@@ -31,6 +31,9 @@ public class BraveAdFreeCalloutDialogFragment extends BraveDialogFragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        if (isRemoving() || isDetached()) {
+            return;
+        }
         checkForImageView();
     }
 
