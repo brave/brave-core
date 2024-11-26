@@ -213,7 +213,8 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   public static func reorderItems(
     in folder: PlaylistFolder,
     fromOffsets indexSet: IndexSet,
-    toOffset offset: Int
+    toOffset offset: Int,
+    completion: (() -> Void)? = nil
   ) {
     let frc = PlaylistItem.frc(parentFolder: folder)
     try? frc.performFetch()
@@ -231,6 +232,10 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         try frc.managedObjectContext.save()
       } catch {
         Logger.module.error("\(error.localizedDescription)")
+      }
+
+      DispatchQueue.main.async {
+        completion?()
       }
     }
   }
@@ -540,7 +545,11 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     }
   }
 
-  public static func moveItems(items: [NSManagedObjectID], to folderUUID: String?) {
+  public static func moveItems(
+    items: [NSManagedObjectID],
+    to folderUUID: String?,
+    completion: (() -> Void)? = nil
+  ) {
     DataController.perform { context in
       var folder: PlaylistFolder?
       if let folderUUID = folderUUID {
@@ -553,6 +562,10 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       playlistItems.forEach {
         $0.playlistFolder = folder
         folder?.playlistItems?.insert($0)
+      }
+
+      DispatchQueue.main.async {
+        completion?()
       }
     }
   }
