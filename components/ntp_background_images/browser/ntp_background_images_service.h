@@ -140,7 +140,8 @@ class NTPBackgroundImagesService {
   bool IsValidSuperReferralComponentInfo(
       const base::Value::Dict& component_info) const;
 
-  void CheckImagesComponentUpdate(const std::string& component_id);
+  void ScheduleNextSponsoredImagesComponentUpdate();
+  void CheckSponsoredImagesComponentUpdate(const std::string& component_id);
 
   // virtual for test.
   virtual void CheckSuperReferralComponent();

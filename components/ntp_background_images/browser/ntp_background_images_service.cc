@@ -14,16 +14,17 @@
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/l10n/common/country_code_util.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_update_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "brave/components/ntp_background_images/browser/switches.h"
@@ -38,13 +39,10 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #endif
 
-using brave_component_updater::BraveOnDemandUpdater;
-
 namespace ntp_background_images {
 
 namespace {
 
-constexpr base::TimeDelta kSIComponentUpdateCheckInterval = base::Minutes(15);
 constexpr char kNTPManifestFile[] = "photo.json";
 constexpr char kNTPSRMappingTableFile[] = "mapping-table.json";
 
@@ -161,21 +159,30 @@ void NTPBackgroundImagesService::CheckNTPSIComponentUpdateIfNeeded() {
 
   // If previous update check is missed, do update check now.
   if (base::Time::Now() - last_update_check_time_ >
-      kSIComponentUpdateCheckInterval) {
+      features::kSponsoredImagesUpdateCheckAfter.Get()) {
     si_update_check_callback_.Run();
   }
 }
 
-void NTPBackgroundImagesService::CheckImagesComponentUpdate(
+void NTPBackgroundImagesService::ScheduleNextSponsoredImagesComponentUpdate() {
+  const base::Time next_update_check_time =
+      base::Time::Now() + features::kSponsoredImagesUpdateCheckAfter.Get();
+  si_update_check_timer_.Start(FROM_HERE, next_update_check_time,
+                               base::BindOnce(si_update_check_callback_));
+
+  VLOG(6)
+      << "Scheduled update check for NTP Sponsored Images component with ID "
+      << sponsored_images_component_id_.value() << " at "
+      << base::TimeFormatFriendlyDateAndTime(next_update_check_time);
+}
+
+void NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate(
     const std::string& component_id) {
-  VLOG(6) << "Checking for updates to the NTP Sponsored Images component";
-
   last_update_check_time_ = base::Time::Now();
-  si_update_check_timer_.Start(
-      FROM_HERE, last_update_check_time_ + kSIComponentUpdateCheckInterval,
-      base::BindOnce(si_update_check_callback_));
 
-  BraveOnDemandUpdater::GetInstance()->EnsureInstalled(component_id);
+  CheckAndUpdateSponsoredImagesComponent(component_id);
+
+  ScheduleNextSponsoredImagesComponentUpdate();
 }
 
 void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
@@ -218,13 +225,12 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   // By default, browser check update status every 5 hours.
   // However, this background interval is too long for SI. Use 15mins interval.
   si_update_check_callback_ = base::BindRepeating(
-      &NTPBackgroundImagesService::CheckImagesComponentUpdate,
+      &NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate,
       base::Unretained(this), data->component_id.data());
 
   last_update_check_time_ = base::Time::Now();
-  si_update_check_timer_.Start(
-      FROM_HERE, last_update_check_time_ + kSIComponentUpdateCheckInterval,
-      base::BindOnce(si_update_check_callback_));
+
+  ScheduleNextSponsoredImagesComponentUpdate();
 }
 
 void NTPBackgroundImagesService::CheckSuperReferralComponent() {
