@@ -31,7 +31,7 @@ class SolanaKeyring : public HDKeyring {
 
   std::optional<AddedAccountInfo> AddNewHDAccount() override;
   void RemoveLastHDAccount() override;
-  std::string ImportAccount(base::span<const uint8_t> keypair) override;
+  std::string ImportAccount(base::span<const uint8_t> payload) override;
   bool RemoveImportedAccount(const std::string& address) override;
 
   std::string EncodePrivateKeyForExport(const std::string& address) override;

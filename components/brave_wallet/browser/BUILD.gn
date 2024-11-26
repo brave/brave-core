@@ -434,8 +434,6 @@ source_set("hd_keyring") {
     "//brave/components/filecoin/rs:rust_lib",
     "//crypto",
   ]
-
-  public_deps = [ "//brave/components/brave_wallet/rust:rust_lib" ]
 }
 
 source_set("transaction") {

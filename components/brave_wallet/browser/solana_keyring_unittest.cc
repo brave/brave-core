@@ -95,7 +95,8 @@ TEST(SolanaKeyringUnitTest, ImportAccount) {
 
   std::vector<uint8_t> private_key;
   ASSERT_TRUE(base::HexStringToBytes(
-      "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7",
+      "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7"
+      "a4b2856bfec510abab89753fac1ac0e1112364e7d250545963f135f2a33188ed",
       &private_key));
   keyring.ImportAccount(private_key);
   EXPECT_EQ(keyring.GetImportedAccountsForTesting().size(), 1u);

@@ -8,47 +8,55 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/rust/lib.rs.h"
 
 namespace brave_wallet {
 
-// This class implement basic EdDSA over ed25519 functionality of bip32-ed25519
+constexpr size_t kEd25519SecretKeySize = 32;
+constexpr size_t kEd25519PublicKeySize = 32;
+constexpr size_t kEd25519KeypairSize =
+    kEd25519SecretKeySize + kEd25519PublicKeySize;
+constexpr size_t kEd25519ChainCodeSize = 32;
+constexpr size_t kEd25519SignatureSize = 64;
+
+// This class implements basic EdDSA over ed25519 functionality of SLIP-0010
 // spec with 32 bytes private key and only allows private key derivation with
 // hardened index.
+// https://github.com/satoshilabs/slips/blob/master/slip-0010.md
 class HDKeyEd25519 {
  public:
-  HDKeyEd25519(std::string path,
-               rust::Box<Ed25519DalekExtendedSecretKeyResult>);
+  HDKeyEd25519();
   ~HDKeyEd25519();
   HDKeyEd25519(const HDKeyEd25519&) = delete;
   HDKeyEd25519& operator=(const HDKeyEd25519&) = delete;
 
-  static std::unique_ptr<HDKeyEd25519> GenerateFromSeed(
-      base::span<const uint8_t> seed);
-  static std::unique_ptr<HDKeyEd25519> GenerateFromPrivateKey(
-      base::span<const uint8_t> private_key);
+  static std::unique_ptr<HDKeyEd25519> GenerateFromSeedAndPath(
+      base::span<const uint8_t> seed,
+      std::string_view hd_path);
+  static std::unique_ptr<HDKeyEd25519> GenerateFromKeyPair(
+      base::span<const uint8_t, kEd25519KeypairSize> key_pair);
 
-  std::string GetPath() const;
   std::unique_ptr<HDKeyEd25519> DeriveHardenedChild(uint32_t index);
 
-  // If path contains normal index, nullptr will be returned
-  std::unique_ptr<HDKeyEd25519> DeriveChildFromPath(const std::string& path);
-  std::vector<uint8_t> Sign(base::span<const uint8_t> msg);
-  bool VerifyForTesting(base::span<const uint8_t> msg,
-                        base::span<const uint8_t> sig);
+  std::array<uint8_t, kEd25519SignatureSize> Sign(
+      base::span<const uint8_t> msg);
 
-  std::vector<uint8_t> GetPrivateKeyBytes() const;
-  std::vector<uint8_t> GetPublicKeyBytes() const;
+  base::span<const uint8_t, kEd25519SecretKeySize> GetPrivateKeyAsSpan() const
+      LIFETIME_BOUND;
+  base::span<const uint8_t, kEd25519PublicKeySize> GetPublicKeyAsSpan() const
+      LIFETIME_BOUND;
 
   std::string GetBase58EncodedPublicKey() const;
   std::string GetBase58EncodedKeypair() const;
 
  private:
-  std::string path_;
-  rust::Box<Ed25519DalekExtendedSecretKeyResult> private_key_;
+  HDKeyEd25519(base::span<const uint8_t> key, base::span<const uint8_t> data);
+
+  std::unique_ptr<HDKeyEd25519> DeriveChild(uint32_t index);
+
+  std::array<uint8_t, kEd25519KeypairSize> key_pair_ = {};
+  std::array<uint8_t, kEd25519ChainCodeSize> chain_code_ = {};
 };
 
 }  // namespace brave_wallet

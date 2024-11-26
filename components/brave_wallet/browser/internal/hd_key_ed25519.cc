@@ -8,52 +8,63 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/logging.h"
-#include "base/notreached.h"
-#include "base/strings/strcat.h"
+#include "base/containers/span.h"
+#include "base/containers/span_writer.h"
+#include "base/memory/ptr_util.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_utils.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
+#include "third_party/boringssl/src/include/openssl/curve25519.h"
 
 namespace brave_wallet {
 namespace {
-constexpr char kMasterNode[] = "m";
+
+constexpr char kMasterSecret[] = "ed25519 seed";
+
+// Validate keypair by signing and verifying signature to ensure included
+// private key matches public key.
+bool ValidateKeypair(base::span<const uint8_t, kEd25519KeypairSize> key_pair) {
+  std::array<uint8_t, kEd25519SignatureSize> signature = {};
+  auto msg = base::byte_span_from_cstring("brave");
+
+  CHECK(
+      ED25519_sign(signature.data(), msg.data(), msg.size(), key_pair.data()));
+
+  return !!ED25519_verify(msg.data(), msg.size(), signature.data(),
+                          key_pair.last<kEd25519PublicKeySize>().data());
 }
 
-HDKeyEd25519::HDKeyEd25519(
-    std::string path,
-    rust::Box<Ed25519DalekExtendedSecretKeyResult> private_key)
-    : path_(std::move(path)), private_key_(std::move(private_key)) {
-  CHECK(private_key_->is_ok());
-}
+}  // namespace
+
+HDKeyEd25519::HDKeyEd25519() = default;
 HDKeyEd25519::~HDKeyEd25519() = default;
 
-// static
-std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeed(
-    base::span<const uint8_t> seed) {
-  auto master_private_key = generate_ed25519_extended_secret_key_from_seed(
-      rust::Slice<const uint8_t>{seed.data(), seed.size()});
-  if (!master_private_key->is_ok()) {
-    VLOG(0) << std::string(master_private_key->error_message());
-    return nullptr;
-  }
-  return std::make_unique<HDKeyEd25519>(kMasterNode,
-                                        std::move(master_private_key));
+// Child key derivation constructor.
+// https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#private-parent-key--private-child-key
+HDKeyEd25519::HDKeyEd25519(base::span<const uint8_t> key,
+                           base::span<const uint8_t> data) {
+  auto hmac = HmacSha512(key, data);
+  auto [il, ir] = base::span(hmac).split_at<32>();
+
+  // `public_key` is not used, we use key pair instead.
+  std::array<uint8_t, ED25519_PUBLIC_KEY_LEN> public_key;
+  ED25519_keypair_from_seed(public_key.data(), key_pair_.data(), il.data());
+
+  base::span(chain_code_).copy_from(ir);
 }
 
 // static
-std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromPrivateKey(
-    base::span<const uint8_t> private_key) {
-  auto master_private_key = generate_ed25519_extended_secret_key_from_bytes(
-      rust::Slice<const uint8_t>{private_key.data(), private_key.size()});
-  if (!master_private_key->is_ok()) {
-    VLOG(0) << std::string(master_private_key->error_message());
+std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromKeyPair(
+    base::span<const uint8_t, kEd25519KeypairSize> key_pair) {
+  if (!ValidateKeypair(key_pair)) {
     return nullptr;
   }
-  return std::make_unique<HDKeyEd25519>("", std::move(master_private_key));
-}
 
-std::string HDKeyEd25519::GetPath() const {
-  return path_;
+  auto result = std::make_unique<HDKeyEd25519>();
+  base::span(result->key_pair_).copy_from(key_pair);
+  return result;
 }
 
 // index should be 0 to 2^31-1
@@ -62,74 +73,74 @@ std::string HDKeyEd25519::GetPath() const {
 // https://github.com/satoshilabs/slips/blob/master/slip-0010.md#private-parent-key--private-child-key
 std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveHardenedChild(
     uint32_t index) {
-  auto child_private_key = private_key_->unwrap().derive_hardened_child(index);
-  if (!child_private_key->is_ok()) {
-    VLOG(0) << std::string(child_private_key->error_message());
+  if (index >= kHardenedOffset) {
     return nullptr;
   }
-  auto child_path =
-      base::StrCat({path_, "/", base::NumberToString(index), "'"});
-  return std::make_unique<HDKeyEd25519>(std::move(child_path),
-                                        std::move(child_private_key));
+  return DeriveChild(kHardenedOffset + index);
 }
 
-std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveChildFromPath(
-    const std::string& path) {
-  if (path_ != kMasterNode) {
-    VLOG(0) << "must derive only from master key";
+std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveChild(uint32_t index) {
+  std::vector<uint8_t> hmac_payload(37);
+
+  auto span_writer = base::SpanWriter(base::span(hmac_payload));
+  // https://github.com/satoshilabs/slips/blob/master/slip-0010.md#private-parent-key--private-child-key
+  span_writer.Write(base::U8ToBigEndian(0));
+  span_writer.Write(GetPrivateKeyAsSpan());
+  span_writer.Write(base::U32ToBigEndian(index));
+
+  return base::WrapUnique(new HDKeyEd25519(chain_code_, hmac_payload));
+}
+
+// static
+std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeedAndPath(
+    base::span<const uint8_t> seed,
+    std::string_view hd_path) {
+  auto hd_key = base::WrapUnique(
+      new HDKeyEd25519(base::byte_span_from_cstring(kMasterSecret), seed));
+
+  auto nodes = ParseFullHDPath(hd_path);
+  if (!nodes) {
     return nullptr;
   }
 
-  auto child_private_key = private_key_->unwrap().derive(path);
-  if (!child_private_key->is_ok()) {
-    VLOG(0) << std::string(child_private_key->error_message());
-    return nullptr;
+  for (auto index : *nodes) {
+    if (index < kHardenedOffset) {
+      return nullptr;
+    }
+    hd_key = hd_key->DeriveChild(index);
+    if (!hd_key) {
+      return nullptr;
+    }
   }
 
-  return std::make_unique<HDKeyEd25519>(path, std::move(child_private_key));
+  return hd_key;
 }
 
-std::vector<uint8_t> HDKeyEd25519::Sign(base::span<const uint8_t> msg) {
-  auto signature_result = private_key_->unwrap().sign(
-      rust::Slice<const uint8_t>{msg.data(), msg.size()});
-  if (!signature_result->is_ok()) {
-    VLOG(0) << std::string(signature_result->error_message());
-    return std::vector<uint8_t>();
-  }
-  auto signature_bytes = signature_result->unwrap().to_bytes();
-  return std::vector<uint8_t>(signature_bytes.begin(), signature_bytes.end());
+std::array<uint8_t, kEd25519SignatureSize> HDKeyEd25519::Sign(
+    base::span<const uint8_t> msg) {
+  std::array<uint8_t, kEd25519SignatureSize> signature = {};
+
+  CHECK(
+      ED25519_sign(signature.data(), msg.data(), msg.size(), key_pair_.data()));
+  return signature;
 }
 
-bool HDKeyEd25519::VerifyForTesting(base::span<const uint8_t> msg,
-                                    base::span<const uint8_t> sig) {
-  auto verification_result = private_key_->unwrap().verify(
-      rust::Slice<const uint8_t>{msg.data(), msg.size()},
-      rust::Slice<const uint8_t>{sig.data(), sig.size()});
-  if (!verification_result->is_ok()) {
-    VLOG(0) << std::string(verification_result->error_message());
-    return false;
-  }
-  return true;
+base::span<const uint8_t, kEd25519SecretKeySize>
+HDKeyEd25519::GetPrivateKeyAsSpan() const {
+  return base::span(key_pair_).first<kEd25519SecretKeySize>();
 }
 
-std::vector<uint8_t> HDKeyEd25519::GetPrivateKeyBytes() const {
-  auto secret_key = private_key_->unwrap().secret_key_raw();
-  return {secret_key.begin(), secret_key.end()};
-}
-
-std::vector<uint8_t> HDKeyEd25519::GetPublicKeyBytes() const {
-  auto public_key = private_key_->unwrap().public_key_raw();
-  return {public_key.begin(), public_key.end()};
+base::span<const uint8_t, kEd25519PublicKeySize>
+HDKeyEd25519::GetPublicKeyAsSpan() const {
+  return base::span(key_pair_).last<kEd25519PublicKeySize>();
 }
 
 std::string HDKeyEd25519::GetBase58EncodedPublicKey() const {
-  auto public_key = private_key_->unwrap().public_key_raw();
-  return EncodeBase58(public_key);
+  return EncodeBase58(GetPublicKeyAsSpan());
 }
 
 std::string HDKeyEd25519::GetBase58EncodedKeypair() const {
-  auto keypair = private_key_->unwrap().keypair_raw();
-  return EncodeBase58(keypair);
+  return EncodeBase58(key_pair_);
 }
 
 }  // namespace brave_wallet
