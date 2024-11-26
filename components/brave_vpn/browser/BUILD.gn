@@ -9,6 +9,8 @@ assert(enable_brave_vpn)
 
 static_library("browser") {
   sources = [
+    "brave_vpn_metrics.cc",
+    "brave_vpn_metrics.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
     "brave_vpn_service_delegate.h",
@@ -26,10 +28,12 @@ static_library("browser") {
     "//base",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/constants",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings",
     "//brave/components/skus/browser",
     "//brave/components/skus/common:mojom",
+    "//brave/components/time_period_storage",
     "//brave/components/version_info",
     "//build:buildflag_header_h",
     "//components/keyed_service/core",
@@ -45,7 +49,10 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_vpn_service_unittest.cc" ]
+  sources = [
+    "brave_vpn_metrics_unittest.cc",
+    "brave_vpn_service_unittest.cc",
+  ]
 
   deps = [
     ":browser",
@@ -57,6 +64,7 @@ source_set("unit_tests") {
     "//brave/components/brave_vpn/browser/connection/wireguard/credentials:unit_tests",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/constants",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",

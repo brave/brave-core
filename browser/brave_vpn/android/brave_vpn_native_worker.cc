@@ -264,7 +264,7 @@ void BraveVpnNativeWorker::ReportForegroundP3A(JNIEnv* env) {
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     // Reporting a new session to P3A functions.
-    brave_vpn_service->RecordP3A(true);
+    brave_vpn_service->brave_vpn_metrics()->RecordAllMetrics(true);
   }
 }
 

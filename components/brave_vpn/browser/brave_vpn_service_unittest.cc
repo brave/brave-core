@@ -17,7 +17,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
@@ -390,8 +389,6 @@ class BraveVPNServiceTest : public testing::Test {
         connection_manager_->connection_api_impl_.get());
   }
 #endif
-  void RecordP3A(bool new_usage) { service_->RecordP3A(new_usage); }
-
   std::string GetCurrentEnvironment() {
     return service_->GetCurrentEnvironment();
   }
@@ -569,7 +566,6 @@ class BraveVPNServiceTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  base::HistogramTester histogram_tester_;
 };
 
 TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
@@ -1120,54 +1116,6 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateForAnotherEnv) {
   EXPECT_TRUE(observer.GetPurchasedState().has_value());
   EXPECT_EQ(observer.GetPurchasedState().value(), PurchasedState::PURCHASED);
   EXPECT_EQ(GetCurrentEnvironment(), skus::kEnvStaging);
-}
-
-TEST_F(BraveVPNServiceTest, NewUserReturningMetric) {
-  RecordP3A(false);
-  histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 0, 2);
-
-  task_environment_.FastForwardBy(base::Days(1));
-  RecordP3A(true);
-  histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 2, 1);
-
-  task_environment_.FastForwardBy(base::Days(1));
-  RecordP3A(true);
-  histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 3, 1);
-
-  task_environment_.FastForwardBy(base::Days(6));
-  histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 1, 1);
-}
-
-TEST_F(BraveVPNServiceTest, DaysInMonthUsedMetric) {
-  RecordP3A(false);
-  histogram_tester_.ExpectTotalCount(kDaysInMonthUsedHistogramName, 0);
-
-  RecordP3A(true);
-  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedHistogramName, 1, 1);
-
-  task_environment_.FastForwardBy(base::Days(1));
-  RecordP3A(true);
-  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedHistogramName, 2, 1);
-  task_environment_.FastForwardBy(base::Days(1));
-  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedHistogramName, 2, 2);
-
-  RecordP3A(true);
-  task_environment_.FastForwardBy(base::Days(30));
-  histogram_tester_.ExpectBucketCount(kDaysInMonthUsedHistogramName, 0, 1);
-}
-
-TEST_F(BraveVPNServiceTest, LastUsageTimeMetric) {
-  histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 0);
-
-  RecordP3A(true);
-  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 1, 1);
-
-  task_environment_.AdvanceClock(base::Days(10));
-  RecordP3A(true);
-  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 1, 2);
-  task_environment_.AdvanceClock(base::Days(10));
-  RecordP3A(false);
-  histogram_tester_.ExpectBucketCount(kLastUsageTimeHistogramName, 2, 1);
 }
 
 }  // namespace brave_vpn

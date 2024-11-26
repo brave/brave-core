@@ -39,10 +39,12 @@ handler.on<PurchasedState>(Actions.initialize.getType(),
 
 handler.on(Actions.launchVPNPanel.getType(), async (store) => {
   getNTPBrowserAPI().pageHandler.launchVPNPanel()
+  getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
 })
 
 handler.on(Actions.openVPNAccountPage.getType(), async (store) => {
   getNTPBrowserAPI().pageHandler.openVPNAccountPage()
+  getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
 })
 
 handler.on(Actions.toggleConnection.getType(), async (store) => {
@@ -56,6 +58,7 @@ handler.on(Actions.toggleConnection.getType(), async (store) => {
   } else {
     getVPNServiceHandler().connect()
   }
+  getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
 })
 
 handler.on<PurchasedState>(

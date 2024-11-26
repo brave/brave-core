@@ -20,6 +20,7 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_metrics.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_delegate.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
@@ -50,12 +51,6 @@ class BraveBrowserCommandControllerTest;
 namespace brave_vpn {
 
 class BraveVPNServiceDelegate;
-
-inline constexpr char kNewUserReturningHistogramName[] =
-    "Brave.VPN.NewUserReturning";
-inline constexpr char kDaysInMonthUsedHistogramName[] =
-    "Brave.VPN.DaysInMonthUsed";
-inline constexpr char kLastUsageTimeHistogramName[] = "Brave.VPN.LastUsageTime";
 
 // This class is used by desktop and android.
 // However, it includes desktop specific impls and it's hidden
@@ -168,13 +163,12 @@ class BraveVpnService :
     delegate_ = std::move(delegate);
   }
 
-  // new_usage should be set to true if a new VPN connection was just
-  // established.
-  void RecordP3A(bool new_usage);
 #if BUILDFLAG(IS_ANDROID)
   void RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
                                   int64_t session_end_time_ms);
 #endif
+
+  BraveVpnMetrics* brave_vpn_metrics() { return &brave_vpn_metrics_; }
 
  private:
   friend class BraveVPNServiceTest;
@@ -203,9 +197,6 @@ class BraveVpnService :
 
   // KeyedService overrides:
   void Shutdown() override;
-
-  void InitP3A();
-  void OnP3AInterval();
 
   mojom::PurchasedInfo GetPurchasedInfoSync() const;
   void SetPurchasedState(
@@ -251,8 +242,8 @@ class BraveVpnService :
   mojo::RemoteSet<mojom::ServiceObserver> observers_;
   std::unique_ptr<BraveVpnAPIRequest> api_request_;
   std::unique_ptr<BraveVPNServiceDelegate> delegate_;
-  base::RepeatingTimer p3a_timer_;
   base::OneShotTimer subs_cred_refresh_timer_;
+  BraveVpnMetrics brave_vpn_metrics_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
 };
 
