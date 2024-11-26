@@ -37,6 +37,7 @@ async function updateUnsafeBuffersPaths() {
     '-brave/third_party/ethash/',
     '-brave/third_party/bitcoin-core/',
     '-brave/third_party/rapidjson/',
+    '-brave/third_party/opaque-ke/',
     '-brave/vendor/bat-native-tweetnacl/'
   ];
 

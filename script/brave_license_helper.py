@@ -245,6 +245,15 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "URL": "https://github.com/ronaldoussoren/macholib",
             "License": "MIT",
         },
+        os.path.join('brave', 'third_party', 'opaque-ke'): {
+            "Name": "opaque-ke",
+            "URL": "https://github.com/facebook/opaque-ke",
+            "License": "Apache-2.0 OR MIT",
+            "License File": [
+              "/brave/third_party/opaque-ke/LICENSE-APACHE",
+              "/brave/third_party/opaque-ke/LICENSE-MIT",
+            ],
+        },
     })
 
     # Don't recurse into these directories looking for third-party code.

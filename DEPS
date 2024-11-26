@@ -45,6 +45,7 @@ deps = {
     "condition": "checkout_mac",
   },
   "components/brave_wallet/browser/zcash/rust/librustzcash/src": "https://github.com/brave/librustzcash.git@4d44f5dc3429dce7df37359b8b3c4716807770ea",
+  "third_party/opaque-ke": "https://github.com/facebook/opaque-ke.git@ff3a8b960d0f7b675415fee93821ed1d3f2625fc",
 }
 
 recursedeps = [
