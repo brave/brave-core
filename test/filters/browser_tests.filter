@@ -1931,6 +1931,11 @@
 # This test fails because we stub out NetworkService::UpdateKeysPinList
 -PKIMetadataComponentInstallerTest.InstallComponentUpdatesPinningConfig
 
+# Temporarily disabled due to a dangling pointer issue in our update checker,
+# identified here https://github.com/brave/brave-browser/issues/42532
+-ComponentManagerUpdateCheckBrowserTest.RegisterAndUnregisterTranslateKitLanguagePackComponent
+-ComponentManagerUpdateCheckBrowserTest.RegisterTranslateKitComponent
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
