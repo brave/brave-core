@@ -52,6 +52,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(IS_MAC)
   registry->RegisterBooleanPref(prefs::kBraveVPNOnDemandEnabled, false);
 #endif
+  registry->RegisterListPref(prefs::kBraveVPNWidgetUsageWeeklyStorage);
 }
 
 // Region name map between v1 and v2.

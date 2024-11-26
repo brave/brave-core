@@ -85,6 +85,8 @@ inline constexpr char kBraveVPNUsedSecondDay[] =
     "brave.brave_vpn.used_second_day";
 inline constexpr char kBraveVPNDaysInMonthUsed[] =
     "brave.brave_vpn.days_in_month_used";
+inline constexpr char kBraveVPNWidgetUsageWeeklyStorage[] =
+    "brave.brave_vpn.widget_usage";
 }  // namespace prefs
 
 }  // namespace brave_vpn
