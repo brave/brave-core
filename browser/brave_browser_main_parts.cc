@@ -61,7 +61,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #else
-#include "brave/browser/android/background_video/features.h"
+#include "brave/components/youtube_script_injector/common/features.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
@@ -199,15 +199,14 @@ void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
   ChromeBrowserMainParts_ChromiumImpl::PostProfileInit(profile,
                                                        is_initial_profile);
 
-#if BUILDFLAG(IS_ANDROID)
-  if (base::FeatureList::IsEnabled(
-          preferences::features::kBraveBackgroundVideoPlayback) ||
-      profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
-    content::RenderFrameHost::AllowInjectingJavaScript();
-    auto* command_line = base::CommandLine::ForCurrentProcess();
-    command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);
-  }
-#endif
+  #if BUILDFLAG(IS_ANDROID)
+    if (base::FeatureList::IsEnabled(
+            youtube_script_injector::features::kBraveYouTubeScriptInjector) ||
+        profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
+      auto* command_line = base::CommandLine::ForCurrentProcess();
+      command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);
+    }
+  #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
   extensions::ExtensionService* service =
