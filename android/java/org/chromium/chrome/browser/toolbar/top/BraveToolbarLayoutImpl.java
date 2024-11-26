@@ -1210,8 +1210,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void showWalletPanel() {
-        dismissWalletPanelOrDialog();
-        showWalletPanelInternal(this);
+        if (mDAppsWalletController == null) {
+            showWalletPanelInternal(this);
+        } else if (!mDAppsWalletController.isShowingPanel()) {
+            mDAppsWalletController.showWalletPanel();
+        }
     }
 
     @Override
