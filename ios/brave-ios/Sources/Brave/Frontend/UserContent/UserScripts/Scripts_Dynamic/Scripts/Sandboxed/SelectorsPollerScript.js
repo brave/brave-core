@@ -207,8 +207,11 @@ window.__firefox__.execute(function($) {
    * @returns True or false indicating if anything was extracted
    */
   const extractIDSelectorIfNeeded = (element) => {
-    const id = element.id
+    const id = element.getAttribute('id')
     if (!id) { return false }
+    if (typeof id !== 'string' && !(id instanceof String)) {
+      return false
+    }
     const selector = `#${id}`
     if (!CC.allSelectors.has(selector)) {
       CC.allSelectors.add(selector)
