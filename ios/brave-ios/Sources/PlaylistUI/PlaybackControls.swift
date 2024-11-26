@@ -12,22 +12,34 @@ import SwiftUI
 struct PlaybackSpeedPicker: View {
   @Binding var playbackSpeed: PlayerModel.PlaybackSpeed
 
+  private var label: some View {
+    Label(
+      Strings.Playlist.accessibilityPlaybackSpeed,
+      braveSystemImage: playbackSpeed.braveSystemName
+    )
+    .transition(.opacity.animation(.linear(duration: 0.1)))
+  }
+
   var body: some View {
-    Menu {
-      Picker("", selection: $playbackSpeed) {
-        ForEach(PlayerModel.PlaybackSpeed.supportedSpeeds) { speed in
-          Text(verbatim: "\(speed.rate.formatted())×")
-            .tag(speed)
+    if #available(iOS 17.0, *) {
+      Menu {
+        Picker("", selection: $playbackSpeed) {
+          ForEach(PlayerModel.PlaybackSpeed.supportedSpeeds) { speed in
+            Text(verbatim: "\(speed.rate.formatted())×")
+              .tag(speed)
+          }
         }
+      } label: {
+        label
+      } primaryAction: {
+        playbackSpeed.cycle()
       }
-    } label: {
-      Label(
-        Strings.Playlist.accessibilityPlaybackSpeed,
-        braveSystemImage: playbackSpeed.braveSystemName
-      )
-      .transition(.opacity.animation(.linear(duration: 0.1)))
-    } primaryAction: {
-      playbackSpeed.cycle()
+    } else {
+      Button {
+        playbackSpeed.cycle()
+      } label: {
+        label
+      }
     }
   }
 }
@@ -37,30 +49,42 @@ struct PlaybackSpeedPicker: View {
 struct RepeatModePicker: View {
   @Binding var repeatMode: PlayerModel.RepeatMode
 
+  private var label: some View {
+    Group {
+      switch repeatMode {
+      case .none:
+        Label(Strings.Playlist.accessibilityRepeatModeOff, braveSystemImage: "leo.loop.off")
+      case .one:
+        Label(Strings.Playlist.accessibilityRepeatModeOne, braveSystemImage: "leo.loop.1")
+      case .all:
+        Label(Strings.Playlist.accessibilityRepeatModeAll, braveSystemImage: "leo.loop.all")
+      }
+    }
+    .transition(.opacity.animation(.linear(duration: 0.1)))
+  }
+
   var body: some View {
-    Menu {
-      Picker("", selection: $repeatMode) {
-        Label(Strings.Playlist.repeatModeOptionNone, braveSystemImage: "leo.loop.off")
-          .tag(PlayerModel.RepeatMode.none)
-        Label(Strings.Playlist.repeatModeOptionOne, braveSystemImage: "leo.loop.1")
-          .tag(PlayerModel.RepeatMode.one)
-        Label(Strings.Playlist.repeatModeOptionAll, braveSystemImage: "leo.loop.all")
-          .tag(PlayerModel.RepeatMode.all)
-      }
-    } label: {
-      Group {
-        switch repeatMode {
-        case .none:
-          Label(Strings.Playlist.accessibilityRepeatModeOff, braveSystemImage: "leo.loop.off")
-        case .one:
-          Label(Strings.Playlist.accessibilityRepeatModeOne, braveSystemImage: "leo.loop.1")
-        case .all:
-          Label(Strings.Playlist.accessibilityRepeatModeAll, braveSystemImage: "leo.loop.all")
+    if #available(iOS 17.0, *) {
+      Menu {
+        Picker("", selection: $repeatMode) {
+          Label(Strings.Playlist.repeatModeOptionNone, braveSystemImage: "leo.loop.off")
+            .tag(PlayerModel.RepeatMode.none)
+          Label(Strings.Playlist.repeatModeOptionOne, braveSystemImage: "leo.loop.1")
+            .tag(PlayerModel.RepeatMode.one)
+          Label(Strings.Playlist.repeatModeOptionAll, braveSystemImage: "leo.loop.all")
+            .tag(PlayerModel.RepeatMode.all)
         }
+      } label: {
+        label
+      } primaryAction: {
+        repeatMode.cycle()
       }
-      .transition(.opacity.animation(.linear(duration: 0.1)))
-    } primaryAction: {
-      repeatMode.cycle()
+    } else {
+      Button {
+        repeatMode.cycle()
+      } label: {
+        label
+      }
     }
   }
 }
