@@ -10,23 +10,19 @@ import { loadTimeData } from '$web-common/loadTimeData'
 
 // State that is owned by this class because it is global to the UI
 // (loadTimeData / Service / UIHandler).
-export interface UIState {
+export type State = mojom.ServiceState & {
   initialized: boolean
   isStandalone?: boolean
   visibleConversations: mojom.Conversation[]
-  hasAcceptedAgreement: boolean
-  isStoragePrefEnabled: boolean
   isPremiumStatusFetching: boolean
   isPremiumUser: boolean
   isPremiumUserDisconnected: boolean
-  isStorageNoticeDismissed: boolean
-  canShowPremiumPrompt?: boolean
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
   allActions: mojom.ActionGroup[]
 }
 
-export const defaultUIState: UIState = {
+export const defaultUIState: State = {
   initialized: false,
   visibleConversations: [],
   hasAcceptedAgreement: false,
@@ -35,63 +31,65 @@ export const defaultUIState: UIState = {
   isPremiumUser: false,
   isPremiumUserDisconnected: false,
   isStorageNoticeDismissed: false,
-  canShowPremiumPrompt: undefined,
-  isMobile: Boolean(loadTimeData.getBoolean('isMobile')),
-  isHistoryFeatureEnabled: Boolean(loadTimeData.getBoolean('isHistoryEnabled')),
+  canShowPremiumPrompt: false,
+  isMobile: loadTimeData.getBoolean('isMobile'),
+  isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
   allActions: [],
 }
 
-
-export type UIStateChangeEvent = CustomEvent<UIState>
+export type UIStateChangeEvent = CustomEvent<State>
 
 class API {
-  public Service: mojom.ServiceRemote
-  public Observer: mojom.ServiceObserverCallbackRouter
-  public UIHandler: mojom.AIChatUIHandlerRemote
-  public UIObserver: mojom.ChatUICallbackRouter
-  public UIState: UIState = { ...defaultUIState }
+  public service: mojom.ServiceRemote
+  public observer: mojom.ServiceObserverCallbackRouter
+  public uiHandler: mojom.AIChatUIHandlerRemote
+  public uiObserver: mojom.ChatUICallbackRouter
+  public state: State = { ...defaultUIState }
 
   private eventTarget = new EventTarget()
 
   constructor() {
     // Connect to service
-    this.Service = mojom.Service.getRemote()
-    this.Observer = new mojom.ServiceObserverCallbackRouter()
-    this.Service.bindObserver(this.Observer.$.bindNewPipeAndPassRemote())
+    this.service = mojom.Service.getRemote()
+    this.observer = new mojom.ServiceObserverCallbackRouter()
     // Connect to platform UI handler
-    this.UIHandler = mojom.AIChatUIHandler.getRemote()
-    this.UIObserver = new mojom.ChatUICallbackRouter()
+    this.uiHandler = mojom.AIChatUIHandler.getRemote()
+    this.uiObserver = new mojom.ChatUICallbackRouter()
+    this.initialize()
+    this.updateCurrentPremiumStatus()
+  }
 
+  async initialize() {
     // Get any global UI state. We can do that here instead of React context
     // to start as early as possible.
-    this.UIHandler.setChatUI(this.UIObserver.$.bindNewPipeAndPassRemote()).then(
-      ({ isStandalone }) => {
-        this.setPartialUIState({ isStandalone })
-      }
-    )
+    // Premium state separately because it takes longer to fetch and we don't
+    // need to wait for it.
+    const [
+      { state },
+      { isStandalone },
+      { conversations: visibleConversations },
+      { actionList: allActions },
+      premiumStatus
+    ] = await Promise.all([
+      this.service.bindObserver(this.observer.$.bindNewPipeAndPassRemote()),
+      this.uiHandler.setChatUI(this.uiObserver.$.bindNewPipeAndPassRemote()),
+      this.service.getVisibleConversations(),
+      this.service.getActionMenuList(),
+      this.getCurrentPremiumStatus()
+    ])
+    this.setPartialState({
+      ...state,
+      ...premiumStatus,
+      initialized: true,
+      isStandalone,
+      visibleConversations,
+      allActions
+    })
 
-    this.getInitialState()
-    this.updateCurrentPremiumStatus()
-
-    if (this.UIState.isHistoryFeatureEnabled) {
-      this.Observer.onConversationListChanged.addListener(
-        (conversations: mojom.Conversation[]) => {
-          this.setPartialUIState({
-            visibleConversations: conversations
-          })
-        }
-      )
-    }
-
-    this.Observer.onAgreementAccepted.addListener(() =>
-      this.setPartialUIState({
-        hasAcceptedAgreement: true
-      })
-    )
-
-    this.Observer.onStoragePrefChanged.addListener((isStoragePrefEnabled: boolean) => {
-        this.setPartialUIState({
-          isStoragePrefEnabled
+    this.observer.onConversationListChanged.addListener(
+      (conversations: mojom.Conversation[]) => {
+        this.setPartialState({
+          visibleConversations: conversations
         })
       }
     )
@@ -110,63 +108,41 @@ class API {
     })
   }
 
-  addUIStateChangeListener(callback: (event: UIStateChangeEvent) => void) {
+  addStateChangeListener(callback: (event: UIStateChangeEvent) => void) {
     this.eventTarget.addEventListener('uistatechange', callback)
   }
 
-  removeUIStateChangeListener(callback: (event: UIStateChangeEvent) => void) {
+  removeStateChangeListener(callback: (event: UIStateChangeEvent) => void) {
     this.eventTarget.removeEventListener('uistatechange', callback)
   }
 
-  private dispatchDebouncedUIStateChange = debounce(() => {
-    console.debug('dispatching uistatechange event', {...this.UIState})
+  private dispatchDebouncedStateChange = debounce(() => {
+    console.debug('dispatching uistatechange event', {...this.state})
     this.eventTarget.dispatchEvent(
-      new CustomEvent<UIState>('uistatechange', { detail: this.UIState })
+      new Event('uistatechange')
     )
   }, 0)
 
-  private setPartialUIState(partialState: Partial<UIState>) {
-    this.UIState = { ...this.UIState, ...partialState }
-    this.dispatchDebouncedUIStateChange()
+  private setPartialState(partialState: Partial<State>) {
+    this.state = { ...this.state, ...partialState }
+    this.dispatchDebouncedStateChange()
   }
 
-  private async getInitialState() {
-    const [
-      { conversations: visibleConversations },
-      { actionList: allActions },
-      { canShowPremiumPrompt, isStoragePrefEnabled,
-        isStorageNoticeDismissed, hasAcceptedAgreement }
-    ] = await Promise.all([
-      this.Service.getVisibleConversations(),
-      this.Service.getActionMenuList(),
-      this.Service.getNoticesState()
-    ])
-    this.setPartialUIState({
-      initialized: true,
-      hasAcceptedAgreement,
-      isStoragePrefEnabled,
-      isStorageNoticeDismissed,
-      visibleConversations,
-      allActions,
-      canShowPremiumPrompt
-    })
-  }
-
-  private async updateCurrentPremiumStatus() {
-    const { status } = await this.Service.getPremiumStatus()
-    this.setPartialUIState({
+  private async getCurrentPremiumStatus() {
+    const { status } = await this.service.getPremiumStatus()
+    return {
       isPremiumStatusFetching: false,
       isPremiumUser: (status !== undefined && status !== mojom.PremiumStatus.Inactive),
       isPremiumUserDisconnected: status === mojom.PremiumStatus.ActiveDisconnected
-    })
+    }
+  }
+
+  private async updateCurrentPremiumStatus() {
+    this.setPartialState(await this.getCurrentPremiumStatus())
   }
 }
 
 let apiInstance: API
-
-export function setAPIForTesting(instance: API) {
-  apiInstance = instance
-}
 
 export default function getAPI() {
   if (!apiInstance) {
@@ -181,13 +157,13 @@ export function bindConversation(id: string | undefined) {
   let callbackRouter = new mojom.ConversationUICallbackRouter()
 
   if (id !== undefined) {
-    getAPI().Service.bindConversation(
+    getAPI().service.bindConversation(
       id,
       conversationHandler.$.bindNewPipeAndPassReceiver(),
       callbackRouter.$.bindNewPipeAndPassRemote()
     )
   } else {
-    getAPI().UIHandler.bindRelatedConversation(
+    getAPI().uiHandler.bindRelatedConversation(
       conversationHandler.$.bindNewPipeAndPassReceiver(),
       callbackRouter.$.bindNewPipeAndPassRemote()
     )
@@ -202,7 +178,7 @@ export function newConversation() {
   let conversationHandler: mojom.ConversationHandlerRemote =
     new mojom.ConversationHandlerRemote()
   let callbackRouter = new mojom.ConversationUICallbackRouter()
-  getAPI().UIHandler.newConversation(
+  getAPI().uiHandler.newConversation(
     conversationHandler.$.bindNewPipeAndPassReceiver(),
     callbackRouter.$.bindNewPipeAndPassRemote()
   )

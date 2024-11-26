@@ -17,6 +17,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
@@ -72,8 +73,8 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
 class MockServiceClient : public mojom::ServiceObserver {
  public:
   explicit MockServiceClient(AIChatService* service) {
-    service->BindObserver(
-        service_observer_receiver_.BindNewPipeAndPassRemote());
+    service->BindObserver(service_observer_receiver_.BindNewPipeAndPassRemote(),
+                          base::DoNothing());
     service->Bind(service_remote_.BindNewPipeAndPassReceiver());
   }
 
@@ -91,7 +92,7 @@ class MockServiceClient : public mojom::ServiceObserver {
               (std::vector<mojom::ConversationPtr>),
               (override));
 
-  MOCK_METHOD(void, OnAgreementAccepted, (), (override));
+  MOCK_METHOD(void, OnStateChanged, (mojom::ServiceState), (override));
 
  private:
   mojo::Receiver<mojom::ServiceObserver> service_observer_receiver_{this};

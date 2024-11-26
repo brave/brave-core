@@ -135,7 +135,6 @@ class AIChatService : public KeyedService,
       base::OnceClosure open_ai_chat);
 
   // mojom::Service
-  void GetNoticesState(GetNoticesStateCallback callback) override;
   void MarkAgreementAccepted() override;
   void EnableStoragePref() override;
   void DismissStorageNotice() override;
@@ -153,7 +152,8 @@ class AIChatService : public KeyedService,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
       override;
-  void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui) override;
+  void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui,
+                    BindObserverCallback callback) override;
 
   bool HasUserOptedIn();
   bool IsPremiumStatus();
@@ -209,6 +209,8 @@ class AIChatService : public KeyedService,
                                mojom::PremiumStatus status,
                                mojom::PremiumInfoPtr info);
   void OnDataDeletedForDisabledStorage(bool success);
+  mojom::ServiceStatePtr BuildState();
+  void OnStateChanged();
 
   bool IsAIChatHistoryEnabled();
 
