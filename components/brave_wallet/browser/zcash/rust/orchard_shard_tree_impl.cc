@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/zcash/rust/shard_tree_delegate.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet::orchard {
 
@@ -108,9 +109,9 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
     const ShardTreeAddress& addr) const {
   auto shard = delegate_->GetShard(FromRust(addr));
   if (!shard.has_value()) {
-    return wrap_shard_tree_error();
+    return wrap_shard_tree_shard_error();
   } else if (!shard.value()) {
-    return wrap_shard_tree_none();
+    return wrap_shard_tree_shard_none();
   }
   return wrap_shard_tree_shard(ToRust(**shard));
 }
@@ -119,9 +120,9 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
     uint8_t shard_level) const {
   auto shard = delegate_->LastShard(shard_level);
   if (!shard.has_value()) {
-    return wrap_shard_tree_error();
+    return wrap_shard_tree_shard_error();
   } else if (!shard.value()) {
-    return wrap_shard_tree_none();
+    return wrap_shard_tree_shard_none();
   }
   return wrap_shard_tree_shard(ToRust(**shard));
 }
@@ -140,7 +141,7 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
     uint8_t shard_level) const {
   auto shard = delegate_->GetShardRoots(shard_level);
   if (!shard.has_value()) {
-    return wrap_shard_roots_error();
+    return wrap_shard_tree_roots_error();
   }
   ::rust::Vec<ShardTreeAddress> roots;
   for (const auto& root : *shard) {
