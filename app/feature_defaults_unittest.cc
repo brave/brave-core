@@ -106,7 +106,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPrivateAggregationApi,
       &blink::features::kReduceCookieIPCs,
       &blink::features::kSharedStorageAPI,
-      &blink::features::kSharedStorageAPIM118,
       &blink::features::kSharedStorageAPIM125,
       &blink::features::kSpeculationRulesPrefetchFuture,
       &blink::features::kTextFragmentAnchor,
