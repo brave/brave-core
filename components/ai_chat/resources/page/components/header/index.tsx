@@ -75,7 +75,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
                 kind='plain-faint'
                 aria-label={openFullPageButtonLabel}
                 title={openFullPageButtonLabel}
-                onClick={() => getAPI().UIHandler.openConversationFullPage(conversationContext.conversationUuid!)}
+                onClick={() => getAPI().uiHandler.openConversationFullPage(conversationContext.conversationUuid!)}
               >
                 <Icon name='expand' />
               </Button>}
@@ -87,7 +87,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
                 aria-label={closeButtonLabel}
                 title={closeButtonLabel}
                 className={styles.closeButton}
-                onClick={() => getAPI().UIHandler.closeUI()}
+                onClick={() => getAPI().uiHandler.closeUI()}
               >
                 <Icon name='close' />
               </Button>

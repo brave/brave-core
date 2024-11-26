@@ -299,15 +299,16 @@ struct ActionGroup {
   array<ActionEntry> entries;
 };
 
-interface Service {
-  // Gets the current state of any agreements or notices that can or need to be
-  // shown to the user.
-  GetNoticesState() =>
-      (bool has_accepted_agreement,
-       bool is_storage_pref_enabled,
-       bool is_storage_notice_dismissed,
-       bool can_show_premium_prompt);
+// This does not cover more specific data that the Service owns, such as the
+// conversation list, but does cover status of preferences and notices.
+struct ServiceState {
+  bool has_accepted_agreement;
+  bool is_storage_pref_enabled;
+  bool is_storage_notice_dismissed;
+  bool can_show_premium_prompt;
+};
 
+interface Service {
   // Profile-level acknowledgements
   MarkAgreementAccepted();
   EnableStoragePref();
@@ -326,8 +327,8 @@ interface Service {
   DeleteConversation(string id);
   RenameConversation(string id, string new_name);
 
-  // Send events to the UI
-  BindObserver(pending_remote<ServiceObserver> ui);
+  // Bind ability to send events to the UI and receive current state
+  BindObserver(pending_remote<ServiceObserver> ui) => (ServiceState state);
 
   // Bind specified Conversation for 2-way communication
   BindConversation(
@@ -338,8 +339,7 @@ interface Service {
 
 interface ServiceObserver {
   OnConversationListChanged(array<Conversation> conversations);
-  OnStoragePrefChanged(bool is_storage_pref_enabled);
-  OnAgreementAccepted();
+  OnStateChanged(ServiceState state);
 };
 
 // Browser-side handler for general AI Chat UI functions, implemented

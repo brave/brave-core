@@ -10,7 +10,7 @@ import { getLocale } from '$web-common/locale'
 import VisibilityTimer from '$web-common/visibilityTimer'
 import { useAIChat } from '../../state/ai_chat_context'
 import styles from './notices.module.scss'
-const illustrationUrl = require('./conversation_storage.svg')
+import illustrationUrl from './conversation_storage.svg'
 
 export default function NoticeConversationStorage() {
   const aiChatContext = useAIChat()

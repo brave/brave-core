@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import getAPI, * as mojom from '../api'
-export type AIChatContext = mojom.UIState & {
+import getAPI, * as AIChat from '../api'
+export type AIChatContext = AIChat.State & {
   initialized: boolean
   goPremium: () => void
   managePremium: () => void
@@ -15,14 +15,14 @@ export type AIChatContext = mojom.UIState & {
   dismissStorageNotice: () => void
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
-  uiHandler?: mojom.AIChatUIHandlerRemote
+  uiHandler?: AIChat.AIChatUIHandlerRemote
 
   editingConversationId: string | null
   setEditingConversationId: (uuid: string | null) => void
 }
 
 const defaultContext: AIChatContext = {
-  ...mojom.defaultUIState,
+  ...AIChat.defaultUIState,
   initialized: false,
   goPremium: () => { },
   managePremium: () => { },
@@ -41,9 +41,11 @@ export const AIChatReactContext =
   React.createContext<AIChatContext>(defaultContext)
 
 export function AIChatContextProvider(props: React.PropsWithChildren) {
+  // Intialize with global state that may have been set between module-load
+  // time and the first React render.
   const [context, setContext] = React.useState<AIChatContext>({
     ...defaultContext,
-    ...getAPI().UIState
+    ...getAPI().state
   })
   const [editingConversationId, setEditingConversationId] = React.useState<string | null>(null)
 
@@ -55,32 +57,40 @@ export function AIChatContextProvider(props: React.PropsWithChildren) {
   }
 
   React.useEffect(() => {
-    setPartialContext(getAPI().UIState)
+    // Update with any global state change that may have occurred between
+    // first React render and first useEffect run.
+    setPartialContext(getAPI().state)
 
-    getAPI().addUIStateChangeListener((e) => {
-      setPartialContext(e.detail)
-    })
+    // Listen for global state changes that occur after now
+    const onGlobalStateChange = () => {
+      setPartialContext(getAPI().state)
+    }
+    getAPI().addStateChangeListener(onGlobalStateChange)
+
+    return () => {
+      getAPI().removeStateChangeListener(onGlobalStateChange)
+    }
   }, [])
 
-  const { Service, UIHandler } = getAPI()
+  const { service, uiHandler } = getAPI()
 
   const store: AIChatContext = {
     ...context,
     ...props,
-    goPremium: () => UIHandler.goPremium(),
-    managePremium: () => UIHandler.managePremium(),
-    markStorageNoticeViewed: () => Service.dismissStorageNotice(),
+    goPremium: () => uiHandler.goPremium(),
+    managePremium: () => uiHandler.managePremium(),
+    markStorageNoticeViewed: () => service.dismissStorageNotice(),
     dismissStorageNotice: () => {
       setPartialContext({
         isStorageNoticeDismissed: true
       })
-      Service.dismissStorageNotice()
+      service.dismissStorageNotice()
     },
-    enableStoragePref: () => Service.enableStoragePref(),
-    dismissPremiumPrompt: () => Service.dismissPremiumPrompt(),
-    userRefreshPremiumSession: () => UIHandler.refreshPremiumSession(),
-    handleAgreeClick: () => Service.markAgreementAccepted(),
-    uiHandler: UIHandler,
+    enableStoragePref: () => service.enableStoragePref(),
+    dismissPremiumPrompt: () => service.dismissPremiumPrompt(),
+    userRefreshPremiumSession: () => uiHandler.refreshPremiumSession(),
+    handleAgreeClick: () => service.markAgreementAccepted(),
+    uiHandler,
     editingConversationId,
     setEditingConversationId
   }

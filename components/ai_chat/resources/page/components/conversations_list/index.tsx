@@ -159,7 +159,7 @@ export default function ConversationsList(props: ConversationsListProps) {
                           onBlur={() => aiChatContext.setEditingConversationId(null)}
                           onSubmit={(value) => {
                             aiChatContext.setEditingConversationId(null)
-                            getAPI().Service.renameConversation(item.uuid, value)
+                            getAPI().service.renameConversation(item.uuid, value)
                           }}
                         />
                       </div>
@@ -168,7 +168,7 @@ export default function ConversationsList(props: ConversationsListProps) {
                         title={item.title || getLocale('conversationListUntitled')}
                         description=''
                         onEditTitle={() => aiChatContext.setEditingConversationId(item.uuid)}
-                        onDelete={() => getAPI().Service.deleteConversation(item.uuid)}
+                        onDelete={() => getAPI().service.deleteConversation(item.uuid)}
                       />
                     )}
                   </a>
