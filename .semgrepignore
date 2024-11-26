@@ -27,3 +27,4 @@ tests/
 # Ignore third_party rust libraries
 third_party/rust/
 tools/crates/cargo_audit/
+tools/crates/wasm_pack/
