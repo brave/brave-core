@@ -31,9 +31,23 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "extensions/buildflags/buildflags.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
+#include "services/network/public/cpp/network_switches.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/chrome_test_extension_loader.h"
+#include "extensions/browser/api/offscreen/offscreen_document_manager.h"
+#include "extensions/browser/background_script_executor.h"
+#include "extensions/browser/lazy_context_id.h"
+#include "extensions/browser/lazy_context_task_queue.h"
+#include "extensions/browser/offscreen_document_host.h"
+#include "extensions/common/extension.h"
+#include "extensions/common/switches.h"
+#include "extensions/test/test_extension_dir.h"
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 using brave_shields::ControlType;
 using content::TitleWatcher;
@@ -81,6 +95,50 @@ void CheckUserAgentMetadataVersionsList(
   EXPECT_TRUE(has_chromium_brand);
 }
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+// Wakes up the service worker for the `extension` in the given `profile`.
+void WakeUpServiceWorker(const extensions::Extension& extension,
+                         Profile& profile) {
+  base::RunLoop run_loop;
+  const auto context_id =
+      extensions::LazyContextId::ForExtension(&profile, &extension);
+  ASSERT_TRUE(context_id.IsForServiceWorker());
+  context_id.GetTaskQueue()->AddPendingTask(
+      context_id,
+      base::BindOnce(
+          [](std::unique_ptr<extensions::LazyContextTaskQueue::ContextInfo>) {})
+          .Then(run_loop.QuitWhenIdleClosure()));
+  run_loop.Run();
+}
+
+// Creates a new offscreen document through an API call, expecting success.
+void ProgrammaticallyCreateOffscreenDocument(
+    const extensions::Extension& extension,
+    Profile& profile) {
+  static constexpr char kScript[] =
+      R"((async () => {
+            let message;
+            try {
+              await chrome.offscreen.createDocument(
+                  {
+                    url: 'offscreen.html',
+                    reasons: ['TESTING'],
+                    justification: 'testing'
+                  });
+              message = 'success';
+            } catch (e) {
+              message = 'Error: ' + e.toString();
+            }
+            chrome.test.sendScriptResult(message);
+          })();)";
+  base::Value result = extensions::BackgroundScriptExecutor::ExecuteScript(
+      &profile, extension.id(), kScript,
+      extensions::BackgroundScriptExecutor::ResultCapture::kSendScriptResult);
+  ASSERT_TRUE(result.is_string());
+  EXPECT_EQ("success", result.GetString());
+}
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+
 }  // namespace
 
 class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
@@ -90,13 +148,18 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
         brave_shields::features::kBraveShowStrictFingerprintingMode);
   }
 
+  void SetUp() override {
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    ASSERT_TRUE(https_server_->InitializeAndListen());
+    InProcessBrowserTest::SetUp();
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-    https_server_ = std::make_unique<net::EmbeddedTestServer>(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     content::SetupCrossSiteRedirector(https_server_.get());
 
     base::FilePath test_data_dir;
@@ -107,12 +170,18 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
         base::Unretained(this)));
     user_agents_.clear();
 
-    ASSERT_TRUE(https_server_->Start());
+    https_server_->StartAcceptingConnections();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_->port()));
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+    command_line->AppendSwitch(extensions::switches::kOffscreenDocumentTesting);
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
   }
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -163,6 +232,44 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  void TestExtensionOffscreenDocument(std::string_view page_path,
+                                      std::string_view script_path) {
+    extensions::TestExtensionDir test_extension_dir;
+    test_extension_dir.WriteManifest(R"({
+      "name": "Offscreen Document Test",
+      "manifest_version": 3,
+      "version": "0.1",
+      "background": {"service_worker": "background.js"},
+      "permissions": ["offscreen"]
+    })");
+    test_extension_dir.WriteFile(FILE_PATH_LITERAL("background.js"), "");
+    test_extension_dir.CopyFileTo(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA)
+            .AppendASCII(page_path),
+        FILE_PATH_LITERAL("offscreen.html"));
+    test_extension_dir.CopyFileTo(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA)
+            .AppendASCII(script_path),
+        base::FilePath::FromASCII(script_path).BaseName().value());
+
+    extensions::ChromeTestExtensionLoader extension_loader(
+        browser()->profile());
+    scoped_refptr<const extensions::Extension> extension =
+        extension_loader.LoadExtension(test_extension_dir.UnpackedPath());
+    WakeUpServiceWorker(*extension, *browser()->profile());
+    ProgrammaticallyCreateOffscreenDocument(*extension, *browser()->profile());
+    extensions::OffscreenDocumentHost* offscreen_document =
+        extensions::OffscreenDocumentManager::Get(browser()->profile())
+            ->GetOffscreenDocumentForExtension(*extension);
+    ASSERT_TRUE(offscreen_document) << "Offscreen document not created.";
+    content::WaitForLoadStop(offscreen_document->host_contents());
+
+    TitleWatcher watcher(offscreen_document->host_contents(), u"pass");
+    EXPECT_EQ(u"pass", watcher.WaitAndGetTitle());
+  }
+#endif
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
@@ -393,3 +500,23 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   ASSERT_NE(nullptr, ua_full_version);
   EXPECT_EQ(expected_full_version, *ua_full_version);
 }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
+                       ExtensionOffscreenDocument) {
+  TestExtensionOffscreenDocument("navigator/ua-remote-iframe.html",
+                                 "navigator/ua-remote-iframe.js");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
+                       ExtensionOffscreenDocumentWorker) {
+  TestExtensionOffscreenDocument("navigator/workers-useragent.html",
+                                 "navigator/workers-useragent.js");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
+                       ExtensionOffscreenDocumentRemoteIframe) {
+  TestExtensionOffscreenDocument("navigator/workers-remote-iframe.html",
+                                 "navigator/workers-remote-iframe.js");
+}
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)

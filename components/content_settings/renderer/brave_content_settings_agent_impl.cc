@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
@@ -330,10 +331,14 @@ void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
 brave_shields::mojom::ShieldsSettingsPtr
 BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
     ContentSettingsType webcompat_settings_type) {
-  GetOrCreateBraveShieldsRemote()->OnWebcompatFeatureInvoked(
-      webcompat_settings_type);
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   const GURL primary_url(GetTopFrameOriginAsURL(frame));
+  if (!primary_url.SchemeIsHTTPOrHTTPS()) {
+    return brave_shields::mojom::ShieldsSettings::New();
+  }
+
+  GetOrCreateBraveShieldsRemote()->OnWebcompatFeatureInvoked(
+      webcompat_settings_type);
 
   brave_shields::mojom::FarblingLevel farbling_level =
       shields_settings_ ? shields_settings_->farbling_level
@@ -360,6 +365,14 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
     // This should not happen now, but send dumps for now if that's the case in
     // some scenario.
     DCHECK(!HasContentSettingsRules());
+    // Trigger a crash in DCHECK-enabled builds.
+    DCHECK(false);
+    // Add top frame and current frame origins to the crash dump.
+    SCOPED_CRASH_KEY_STRING64("BraveShieldsSettings", "top_frame_origin",
+                              primary_url.possibly_invalid_spec());
+    SCOPED_CRASH_KEY_STRING64(
+        "BraveShieldsSettings", "frame_origin",
+        url::Origin(frame->GetSecurityOrigin()).GetDebugString(false));
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
         farbling_level, base::Token(), std::vector<std::string>(), false);
