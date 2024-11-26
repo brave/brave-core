@@ -191,7 +191,7 @@ public class BraveSetDefaultBrowserUtils {
 
     private static void openDefaultAppsSettings(Activity activity) {
         if (activity instanceof OnBraveSetDefaultBrowserListener) {
-            ((OnBraveSetDefaultBrowserListener) activity).OnCheckDefaultResume();
+            ((OnBraveSetDefaultBrowserListener) activity).onCheckDefaultResume();
         }
 
         Intent intent = new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
@@ -200,7 +200,7 @@ public class BraveSetDefaultBrowserUtils {
 
     private static void openBraveBlog(Activity activity) {
         if (activity instanceof OnBraveSetDefaultBrowserListener) {
-            ((OnBraveSetDefaultBrowserListener) activity).OnCheckDefaultResume();
+            ((OnBraveSetDefaultBrowserListener) activity).onCheckDefaultResume();
         }
 
         LayoutInflater inflater = activity.getLayoutInflater();

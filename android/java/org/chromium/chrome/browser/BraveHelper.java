@@ -19,7 +19,7 @@ public class BraveHelper {
 
     public BraveHelper() {}
 
-    public static void DisableFREDRP() {
+    public static void disableFREDRP() {
         // Disables data reduction promo dialog
         ContextUtils.getAppSharedPreferences()
                 .edit()

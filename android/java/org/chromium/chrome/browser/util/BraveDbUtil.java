@@ -50,13 +50,20 @@ public class BraveDbUtil {
         return sInstance;
     }
 
-    public void ExportRewardsDb(Dialog dlg) {
+    public void exportRewardsDb(Dialog dlg) {
         Context context = ContextUtils.getApplicationContext();
-        mRewardsSrc = context.getApplicationInfo().dataDir + File.separator + REWARDS_DB_SRC_DIR + File.separator
-                + PUBLISHER_INFO_DB;
+        mRewardsSrc =
+                context.getApplicationInfo().dataDir
+                        + File.separator
+                        + REWARDS_DB_SRC_DIR
+                        + File.separator
+                        + PUBLISHER_INFO_DB;
 
-        mRewardsDstDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                .getAbsolutePath() + File.separator + REWARDS_DB_DST_DIR;
+        mRewardsDstDir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                                .getAbsolutePath()
+                        + File.separator
+                        + REWARDS_DB_DST_DIR;
 
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat("-yyyy-MM-dd-HHmmss", Locale.getDefault());
@@ -65,13 +72,19 @@ public class BraveDbUtil {
         copyRewardsDbThread(dlg, false);
     }
 
-    public void ImportRewardsDb(Dialog dlg, String fileToImport) {
+    public void importRewardsDb(Dialog dlg, String fileToImport) {
         mRewardsDst = importDestinationPath();
 
-        mRewardsSrc = fileToImport.isEmpty()
-                ? Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()
-                        + File.separator + REWARDS_DB_DST_DIR + File.separator + PUBLISHER_INFO_DB
-                : fileToImport;
+        mRewardsSrc =
+                fileToImport.isEmpty()
+                        ? Environment.getExternalStoragePublicDirectory(
+                                                Environment.DIRECTORY_DOWNLOADS)
+                                        .getAbsolutePath()
+                                + File.separator
+                                + REWARDS_DB_DST_DIR
+                                + File.separator
+                                + PUBLISHER_INFO_DB
+                        : fileToImport;
 
         mRewardsDstDir = "";
 
