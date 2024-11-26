@@ -10,9 +10,12 @@
 #include <string>
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
-#include "brave/components/brave_wallet/common/orchard_shard_tree_delegate.h"
 
-namespace brave_wallet::orchard {
+namespace brave_wallet {
+
+class OrchardShardTreeDelegate;
+
+namespace orchard {
 
 class OrchardShardTree {
  public:
@@ -36,6 +39,8 @@ class OrchardShardTree {
       std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate);
 };
 
-}  // namespace brave_wallet::orchard
+}  // namespace orchard
+
+}  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_SHARD_TREE_H_

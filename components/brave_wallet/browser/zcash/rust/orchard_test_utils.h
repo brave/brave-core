@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "brave/components/brave_wallet/common/orchard_shard_tree_delegate.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_delegate.h"
 
 namespace brave_wallet::orchard {
 

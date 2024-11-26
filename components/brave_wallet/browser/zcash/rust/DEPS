@@ -8,11 +8,14 @@ specific_include_rules = {
   "unauthorized_orchard_bundle_impl.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
-  "orchard_decoded_blocks_bunde_impl.h": [
+  "orchard_decoded_blocks_bundle_impl.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
   "shard_tree_delegate.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
+  "orchard_shard_tree_impl.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ]
 }
 

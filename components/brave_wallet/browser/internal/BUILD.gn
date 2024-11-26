@@ -59,6 +59,9 @@ if (enable_orchard) {
       "orchard_shard_tree_manager.cc",
       "orchard_shard_tree_manager.h",
     ]
-    deps = [ "//brave/components/brave_wallet/browser/zcash/rust" ]
+    deps = [
+      "orchard_storage:headers",
+      "//brave/components/brave_wallet/browser/zcash/rust",
+    ]
   }
 }

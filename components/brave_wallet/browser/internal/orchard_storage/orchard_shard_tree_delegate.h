@@ -3,15 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ORCHARD_SHARD_TREE_DELEGATE_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ORCHARD_SHARD_TREE_DELEGATE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_STORAGE_ORCHARD_SHARD_TREE_DELEGATE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_STORAGE_ORCHARD_SHARD_TREE_DELEGATE_H_
 
-#include <optional>
+#include <utility>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
+
+class ZCashOrchardStorage;
 
 // Leaf position of checkpoint.
 using CheckpointTreeState = std::optional<uint32_t>;
@@ -110,53 +113,48 @@ struct OrchardTreeState {
   std::vector<uint8_t> frontier;
 };
 
-// Describes the interface for a browser-layer persistent storage system
-// utilized by the shard tree. Utilized by rust-wrapper layer to allow calls
-// from rust code to the browser-layer.
 class OrchardShardTreeDelegate {
  public:
   enum Error { kStorageError = 0 };
 
-  virtual ~OrchardShardTreeDelegate() = default;
+  OrchardShardTreeDelegate(const mojom::AccountIdPtr& account_id,
+                           ZCashOrchardStorage& storage);
+  ~OrchardShardTreeDelegate();
 
-  virtual base::expected<std::optional<OrchardShardTreeCap>, Error> GetCap()
-      const = 0;
-  virtual base::expected<bool, Error> PutCap(
-      const OrchardShardTreeCap& shard) = 0;
+  base::expected<std::optional<OrchardShardTreeCap>, Error> GetCap() const;
+  base::expected<bool, Error> PutCap(const OrchardShardTreeCap& cap);
+  base::expected<bool, Error> Truncate(uint32_t block_height);
+  base::expected<std::optional<uint32_t>, Error> GetLatestShardIndex() const;
+  base::expected<bool, Error> PutShard(const OrchardShard& shard);
+  base::expected<std::optional<OrchardShard>, Error> GetShard(
+      const OrchardShardAddress& address) const;
+  base::expected<std::optional<OrchardShard>, Error> LastShard(
+      uint8_t shard_height) const;
+  base::expected<size_t, Error> CheckpointCount() const;
+  base::expected<std::optional<uint32_t>, Error> MinCheckpointId() const;
+  base::expected<std::optional<uint32_t>, Error> MaxCheckpointId() const;
+  base::expected<std::optional<uint32_t>, Error> GetCheckpointAtDepth(
+      uint32_t depth) const;
+  base::expected<std::optional<OrchardCheckpointBundle>, Error> GetCheckpoint(
+      uint32_t checkpoint_id) const;
+  base::expected<std::vector<OrchardCheckpointBundle>, Error> GetCheckpoints(
+      size_t limit) const;
+  base::expected<bool, Error> AddCheckpoint(
+      uint32_t id,
+      const OrchardCheckpoint& checkpoint);
+  base::expected<bool, Error> TruncateCheckpoints(uint32_t checkpoint_id);
+  base::expected<bool, Error> RemoveCheckpoint(uint32_t checkpoint_id);
+  base::expected<std::vector<OrchardShardAddress>, Error> GetShardRoots(
+      uint8_t shard_level) const;
+  base::expected<bool, Error> UpdateCheckpoint(
+      uint32_t id,
+      const OrchardCheckpoint& checkpoint);
 
-  virtual base::expected<std::optional<uint32_t>, Error> GetLatestShardIndex()
-      const = 0;
-  virtual base::expected<bool, Error> PutShard(const OrchardShard& shard) = 0;
-  virtual base::expected<std::optional<OrchardShard>, Error> GetShard(
-      const OrchardShardAddress& address) const = 0;
-  virtual base::expected<std::optional<OrchardShard>, Error> LastShard(
-      uint8_t shard_height) const = 0;
-  virtual base::expected<bool, Error> Truncate(uint32_t block_height) = 0;
-  virtual base::expected<bool, Error> TruncateCheckpoints(
-      uint32_t checkpoint_id) = 0;
-  virtual base::expected<size_t, Error> CheckpointCount() const = 0;
-  virtual base::expected<std::optional<uint32_t>, Error> MinCheckpointId()
-      const = 0;
-  virtual base::expected<std::optional<uint32_t>, Error> MaxCheckpointId()
-      const = 0;
-  virtual base::expected<std::optional<uint32_t>, Error> GetCheckpointAtDepth(
-      uint32_t depth) const = 0;
-  virtual base::expected<std::optional<OrchardCheckpointBundle>, Error>
-  GetCheckpoint(uint32_t checkpoint_id) const = 0;
-  virtual base::expected<std::vector<OrchardCheckpointBundle>, Error>
-  GetCheckpoints(size_t limit) const = 0;
-  virtual base::expected<bool, Error> RemoveCheckpoint(
-      uint32_t checkpoint_id) = 0;
-  virtual base::expected<bool, Error> AddCheckpoint(
-      uint32_t id,
-      const OrchardCheckpoint& checkpoint) = 0;
-  virtual base::expected<bool, Error> UpdateCheckpoint(
-      uint32_t id,
-      const OrchardCheckpoint& checkpoint) = 0;
-  virtual base::expected<std::vector<OrchardShardAddress>, Error> GetShardRoots(
-      uint8_t shard_level) const = 0;
+ private:
+  mojom::AccountIdPtr account_id_;
+  raw_ref<ZCashOrchardStorage> storage_;  // Owned by ZCashOrchardSyncState
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ORCHARD_SHARD_TREE_DELEGATE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_STORAGE_ORCHARD_SHARD_TREE_DELEGATE_H_

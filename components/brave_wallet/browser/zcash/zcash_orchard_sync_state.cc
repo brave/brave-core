@@ -9,7 +9,7 @@
 
 #include "base/check_is_test.h"
 #include "base/containers/extend.h"
-#include "brave/components/brave_wallet/browser/zcash/orchard_shard_tree_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_delegate.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
@@ -25,9 +25,8 @@ OrchardShardTreeManager& ZCashOrchardSyncState::GetOrCreateShardTreeManager(
     const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (shard_tree_managers_.find(account_id) == shard_tree_managers_.end()) {
-    shard_tree_managers_[account_id.Clone()] =
-        OrchardShardTreeManager::Create(base::WrapUnique(
-            new OrchardShardTreeDelegateImpl(account_id, *storage_)));
+    shard_tree_managers_[account_id.Clone()] = OrchardShardTreeManager::Create(
+        base::WrapUnique(new OrchardShardTreeDelegate(account_id, *storage_)));
   }
   auto* manager = shard_tree_managers_[account_id.Clone()].get();
   CHECK(manager);

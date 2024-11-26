@@ -13,7 +13,7 @@
 
 #include "base/sequence_checker.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_shard_tree_manager.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_storage.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/zcash_orchard_storage.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {

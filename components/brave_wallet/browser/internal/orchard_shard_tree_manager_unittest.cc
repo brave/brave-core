@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/files/scoped_temp_dir.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_shard_tree_manager.h"
+
+#include "base/files/scoped_temp_dir.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_delegate.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
-#include "brave/components/brave_wallet/browser/zcash/orchard_shard_tree_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_orchard_sync_state.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -41,9 +42,9 @@ OrchardCommitment CreateCommitment(OrchardCommitmentValue value,
 
 }  // namespace
 
-class OrchardShardTreeTest : public testing::Test {
+class OrchardShardTreeManagerTest : public testing::Test {
  public:
-  OrchardShardTreeTest()
+  OrchardShardTreeManagerTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   void SetUp() override;
 
@@ -62,7 +63,7 @@ class OrchardShardTreeTest : public testing::Test {
   std::unique_ptr<OrchardShardTreeManager> shard_tree_manager_;
 };
 
-void OrchardShardTreeTest::SetUp() {
+void OrchardShardTreeManagerTest::SetUp() {
   account_id_ = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                         mojom::KeyringId::kZCashMainnet,
                                         mojom::AccountKind::kDerived, 0);
@@ -72,10 +73,10 @@ void OrchardShardTreeTest::SetUp() {
   storage_ = std::make_unique<ZCashOrchardStorage>(db_path);
   shard_tree_manager_ =
       OrchardShardTreeManager::CreateForTesting(base::WrapUnique(
-          new OrchardShardTreeDelegateImpl(account_id_.Clone(), *storage_)));
+          new OrchardShardTreeDelegate(account_id_.Clone(), *storage_)));
 }
 
-TEST_F(OrchardShardTreeTest, CheckpointsPruned) {
+TEST_F(OrchardShardTreeManagerTest, CheckpointsPruned) {
   std::vector<OrchardCommitment> commitments;
 
   for (int i = 0; i < 40; i++) {
@@ -98,7 +99,7 @@ TEST_F(OrchardShardTreeTest, CheckpointsPruned) {
   EXPECT_EQ(76u, storage()->MaxCheckpointId(account_id()).value().value());
 }
 
-TEST_F(OrchardShardTreeTest, InsertWithFrontier) {
+TEST_F(OrchardShardTreeManagerTest, InsertWithFrontier) {
   OrchardTreeState prior_tree_state;
   prior_tree_state.block_height = 0;
   prior_tree_state.tree_size = 48;
@@ -161,7 +162,7 @@ TEST_F(OrchardShardTreeTest, InsertWithFrontier) {
   }
 }
 
-TEST_F(OrchardShardTreeTest, Checkpoint_WithMarked) {
+TEST_F(OrchardShardTreeManagerTest, Checkpoint_WithMarked) {
   std::vector<OrchardCommitment> commitments;
 
   commitments.push_back(
@@ -205,7 +206,7 @@ TEST_F(OrchardShardTreeTest, Checkpoint_WithMarked) {
   }
 }
 
-TEST_F(OrchardShardTreeTest, MinCheckpoint) {
+TEST_F(OrchardShardTreeManagerTest, MinCheckpoint) {
   std::vector<OrchardCommitment> commitments;
 
   for (int i = 0; i < 40; i++) {
@@ -226,7 +227,7 @@ TEST_F(OrchardShardTreeTest, MinCheckpoint) {
   EXPECT_EQ(76u, storage()->MaxCheckpointId(account_id()).value().value());
 }
 
-TEST_F(OrchardShardTreeTest, MaxCheckpoint) {
+TEST_F(OrchardShardTreeManagerTest, MaxCheckpoint) {
   {
     std::vector<OrchardCommitment> commitments;
 
@@ -281,7 +282,7 @@ TEST_F(OrchardShardTreeTest, MaxCheckpoint) {
   EXPECT_EQ(3u, storage()->MaxCheckpointId(account_id()).value().value());
 }
 
-TEST_F(OrchardShardTreeTest, NoWitnessOnNonMarked) {
+TEST_F(OrchardShardTreeManagerTest, NoWitnessOnNonMarked) {
   std::vector<OrchardCommitment> commitments;
 
   commitments.push_back(
@@ -310,7 +311,7 @@ TEST_F(OrchardShardTreeTest, NoWitnessOnNonMarked) {
   }
 }
 
-TEST_F(OrchardShardTreeTest, NoWitnessOnWrongCheckpoint) {
+TEST_F(OrchardShardTreeManagerTest, NoWitnessOnWrongCheckpoint) {
   std::vector<OrchardCommitment> commitments;
 
   commitments.push_back(
@@ -339,7 +340,7 @@ TEST_F(OrchardShardTreeTest, NoWitnessOnWrongCheckpoint) {
   }
 }
 
-TEST_F(OrchardShardTreeTest, TruncateTree) {
+TEST_F(OrchardShardTreeManagerTest, TruncateTree) {
   {
     std::vector<OrchardCommitment> commitments;
 
@@ -416,7 +417,7 @@ TEST_F(OrchardShardTreeTest, TruncateTree) {
   }
 }
 
-TEST_F(OrchardShardTreeTest, TruncateTreeWrongCheckpoint) {
+TEST_F(OrchardShardTreeManagerTest, TruncateTreeWrongCheckpoint) {
   std::vector<OrchardCommitment> commitments;
 
   commitments.push_back(
@@ -440,7 +441,7 @@ TEST_F(OrchardShardTreeTest, TruncateTreeWrongCheckpoint) {
   EXPECT_FALSE(tree_manager()->Truncate(2));
 }
 
-TEST_F(OrchardShardTreeTest, SimpleInsert) {
+TEST_F(OrchardShardTreeManagerTest, SimpleInsert) {
   std::vector<OrchardCommitment> commitments;
 
   commitments.push_back(

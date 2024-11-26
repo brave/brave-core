@@ -57,6 +57,7 @@ source_set("orchard_headers") {
 
   public_deps = [
     "//base",
+    "//brave/components/brave_wallet/browser/internal/orchard_storage:headers",
     "//brave/components/brave_wallet/common",
     "//brave/components/services/brave_wallet/public/mojom",
   ]

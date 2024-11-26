@@ -9,10 +9,12 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet::orchard {
+
+struct OrchardShardTreeBundle;
 
 class OrchardShardTreeImpl : public OrchardShardTree {
  public:

@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
-#include "brave/components/brave_wallet/common/orchard_shard_tree_delegate.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 
 namespace brave_wallet::orchard {
