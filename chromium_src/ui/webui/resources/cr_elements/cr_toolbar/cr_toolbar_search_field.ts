@@ -120,7 +120,7 @@ export class CrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
   }
 
   onSearchTermKeydown_(e: KeyboardEvent) {
-    if (e.key == 'Escape')
+    if (e.key === 'Escape')
       this.showingSearch = false
   }
 
@@ -142,7 +142,7 @@ export class CrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
     this.isBlurring_ = false
 
     // Prevent unnecessary 'search-changed' event from firing on startup.
-    if (previous == undefined)
+    if (previous === undefined)
       return
 
     // Prevent unneccessary re-enable when blurring from input to toggle

@@ -36,7 +36,6 @@ def purge_overrides(out_folder, in_files):
 def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
     """Decides whether we should keep the upstream version of a file by looking
        at the override and see if it references the upstream version"""
-    name_bits = os.path.splitext(override_file)
     overridden_name = get_overridden_file_name(override_file)
 
     # The path to the brave-core override file
@@ -81,6 +80,7 @@ def main(original_function, argv):
 
     # When we rerun the processor, we detect files which should be overridden.
     @override_utils.override_method(argparse.ArgumentParser)
+    # pylint: disable=unused-variable
     def parse_args(self, original_method, argv):
         nonlocal manifest_path, manifest_data
         args = original_method(self, argv)

@@ -9,7 +9,7 @@ import { injectStyle } from '//resources/brave/lit_overriding.js'
 
 import '//resources/brave/leo.bundle.js';
 
-const leoIcons = (window as any)['leoIcons'] as Set<string>
+const leoIcons = (window as any).leoIcons as Set<string>
 
 // Maps Chromium icons to their equivalent Brave icons.
 const iconMap: { [key: string]: string } = {
