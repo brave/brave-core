@@ -112,7 +112,10 @@ export function TransactionStatus({ transactionLookup }: Props) {
     )
   }
 
-  if (tx.txStatus === BraveWallet.TransactionStatus.Error) {
+  if (
+    tx.txStatus === BraveWallet.TransactionStatus.Error ||
+    tx.txStatus === BraveWallet.TransactionStatus.Dropped
+  ) {
     return (
       <TransactionFailedOrCanceled
         transaction={tx}
