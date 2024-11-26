@@ -109,15 +109,13 @@ void P3AService::InitCallback(std::string_view histogram_name) {
 }
 
 void P3AService::InitCallbacks() {
-  for (const std::string_view histogram_name :
-       p3a::kCollectedTypicalHistograms) {
+  for (const auto& [histogram_name, _] : p3a::kCollectedTypicalHistograms) {
     InitCallback(histogram_name);
   }
-  for (const std::string_view histogram_name :
-       p3a::kCollectedExpressHistograms) {
+  for (const auto& [histogram_name, _] : p3a::kCollectedExpressHistograms) {
     InitCallback(histogram_name);
   }
-  for (const std::string_view histogram_name : p3a::kCollectedSlowHistograms) {
+  for (const auto& [histogram_name, _] : p3a::kCollectedSlowHistograms) {
     InitCallback(histogram_name);
   }
   for (const auto& [histogram_name, log_type] : dynamic_metric_log_types_) {
@@ -315,7 +313,8 @@ void P3AService::HandleHistogramChange(
                                         only_update_for_constellation);
     return;
   }
-  if (kConstellationOnlyHistograms.contains(histogram_name)) {
+  const auto* metric_config = message_manager_->GetMetricConfig(histogram_name);
+  if (metric_config && *metric_config && (*metric_config)->constellation_only) {
     only_update_for_constellation = true;
   }
   message_manager_->UpdateMetricValue(std::string(histogram_name), bucket,

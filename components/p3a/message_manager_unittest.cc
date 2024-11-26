@@ -188,38 +188,38 @@ class P3AMessageManagerTest : public testing::Test,
   std::vector<std::string> GetTestHistogramNames(MetricLogType log_type,
                                                  size_t p3a_count,
                                                  size_t p2a_count) {
-    auto histogram_names_begin = kCollectedExpressHistograms.cbegin();
-    auto histogram_names_end = kCollectedExpressHistograms.cend();
+    auto histograms_begin = kCollectedExpressHistograms.cbegin();
+    auto histograms_end = kCollectedExpressHistograms.cend();
     std::vector<std::string> result;
     size_t p3a_i = 0;
     size_t p2a_i = 0;
     switch (log_type) {
       case MetricLogType::kExpress:
-        histogram_names_begin = kCollectedExpressHistograms.cbegin();
-        histogram_names_end = kCollectedExpressHistograms.cend();
+        histograms_begin = kCollectedExpressHistograms.cbegin();
+        histograms_end = kCollectedExpressHistograms.cend();
         break;
       case MetricLogType::kSlow:
-        histogram_names_begin = kCollectedSlowHistograms.cbegin();
-        histogram_names_end = kCollectedSlowHistograms.cend();
+        histograms_begin = kCollectedSlowHistograms.cbegin();
+        histograms_end = kCollectedSlowHistograms.cend();
         break;
       case MetricLogType::kTypical:
-        histogram_names_begin = kCollectedTypicalHistograms.cbegin();
-        histogram_names_end = kCollectedTypicalHistograms.cend();
+        histograms_begin = kCollectedTypicalHistograms.cbegin();
+        histograms_end = kCollectedTypicalHistograms.cend();
         break;
       default:
         NOTREACHED();
     }
-    for (auto histogram_name_i = histogram_names_begin;
-         histogram_name_i != histogram_names_end; histogram_name_i++) {
-      if (histogram_name_i->rfind(kP2APrefix, 0) == 0) {
+    for (auto histogram_i = histograms_begin; histogram_i != histograms_end;
+         histogram_i++) {
+      if (histogram_i->first.rfind(kP2APrefix, 0) == 0) {
         if (p2a_i < p2a_count) {
-          result.push_back(std::string(*histogram_name_i));
+          result.push_back(std::string(histogram_i->first));
           p2a_i++;
         }
       } else if (p3a_i < p3a_count &&
-                 (histogram_name_i->starts_with("Brave.Core") ||
+                 (histogram_i->first.starts_with("Brave.Core") ||
                   log_type == MetricLogType::kExpress)) {
-        result.push_back(std::string(*histogram_name_i));
+        result.push_back(std::string(histogram_i->first));
         p3a_i++;
       }
 

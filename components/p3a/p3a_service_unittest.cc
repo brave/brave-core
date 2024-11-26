@@ -104,16 +104,15 @@ class P3AServiceTest : public testing::Test {
     std::vector<std::string> result;
     size_t p3a_i = 0;
     size_t p2a_i = 0;
-    for (const std::string_view histogram_name :
-         p3a::kCollectedTypicalHistograms) {
-      if (histogram_name.rfind(kP2APrefix, 0) == 0) {
+    for (const auto& histogram_pair : p3a::kCollectedTypicalHistograms) {
+      if (histogram_pair.first.rfind(kP2APrefix, 0) == 0) {
         if (p2a_i < p2a_count) {
-          result.push_back(std::string(histogram_name));
+          result.push_back(std::string(histogram_pair.first));
           p2a_i++;
         }
       } else if (p3a_i < p3a_count &&
-                 histogram_name.starts_with("Brave.Core")) {
-        result.push_back(std::string(histogram_name));
+                 histogram_pair.first.starts_with("Brave.Core")) {
+        result.push_back(std::string(histogram_pair.first));
         p3a_i++;
       }
 

@@ -88,6 +88,9 @@ class MessageManager : public MetricLogStore::Delegate {
       std::string_view histogram_name,
       std::optional<bool> only_update_for_constellation = std::nullopt);
 
+  const std::optional<MetricConfig>* GetMetricConfig(
+      const std::string_view histogram_name) const;
+
  private:
   void StartScheduledUpload(bool is_constellation, MetricLogType log_type);
   void StartScheduledConstellationPrep(MetricLogType log_type);
