@@ -16,7 +16,6 @@ namespace brave_vpn {
 void AddLocalizedStrings(content::WebUIDataSource* html_source) {
   static constexpr webui::LocalizedString kLocalizedStrings[] = {
       {"braveVpn", IDS_BRAVE_VPN},
-      {"braveVpnMainPanelTitle", IDS_BRAVE_VPN_MAIN_PANEL_TITLE},
       {"braveVpnConnect", IDS_BRAVE_VPN_CONNECT},
       {"braveVpnConnecting", IDS_BRAVE_VPN_CONNECTING},
       {"braveVpnConnected", IDS_BRAVE_VPN_CONNECTED},
@@ -33,7 +32,6 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
       {"braveVpnSettingsPanelHeader", IDS_BRAVE_VPN_SETTINGS_PANEL_HEADER},
       {"braveVpnSettingsPanelBackButtonAriaLabel",
        IDS_BRAVE_VPN_SETTINGS_PANEL_BACK_BUTTON_ARIA_LABEL},
-      {"braveVpnErrorPanelHeader", IDS_BRAVE_VPN_ERROR_PANEL_HEADER},
       {"braveVpnErrorPanelBackButtonAriaLabel",
        IDS_BRAVE_VPN_PANEL_GO_TO_MAIN_BUTTON_ARIA_LABEL},
       {"braveVpnStatus", IDS_BRAVE_VPN_STATUS},
