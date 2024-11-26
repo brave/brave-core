@@ -179,7 +179,9 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     command_line->AppendSwitchASCII(
         network::switches::kHostResolverRules,
         base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_->port()));
+#if BUILDFLAG(ENABLE_EXTENSIONS)
     command_line->AppendSwitch(extensions::switches::kOffscreenDocumentTesting);
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
   }
 
   void SetUpInProcessBrowserTestFixture() override {
