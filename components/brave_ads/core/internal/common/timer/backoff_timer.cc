@@ -40,7 +40,7 @@ bool BackoffTimer::Stop() {
 
 base::TimeDelta BackoffTimer::CalculateDelay(const base::TimeDelta delay) {
   int64_t delay_in_seconds = delay.InSeconds();
-  delay_in_seconds <<= ++backoff_count_;
+  delay_in_seconds <<= backoff_count_++;
 
   base::TimeDelta backoff_delay = base::Seconds(delay_in_seconds);
   if (backoff_delay > max_backoff_delay_) {
