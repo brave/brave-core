@@ -28,3 +28,4 @@ tests/
 third_party/rust/
 tools/crates/cargo_audit/
 tools/crates/wasm_bindgen/
+tools/crates/wasm_pack/
