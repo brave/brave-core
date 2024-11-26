@@ -64,7 +64,7 @@ function getGrdpString(fileList) {
  * @param {string} dirPath
  * @returns {Promise<string[]>}
  */
-async function getFileListDeep (dirPath) {
+async function getFileListDeep (dirPath, excludedDirectories) {
   const dirItems = await fs.readdir(dirPath)
   // get Array<string | string[]> of contents
   const dirItemGroups = await Promise.all(dirItems.map(
@@ -72,7 +72,10 @@ async function getFileListDeep (dirPath) {
       const itemPath = path.join(dirPath, dirItemRelativePath)
       const stats = await fs.stat(itemPath)
       if (stats.isDirectory()) {
-        return await getFileListDeep(itemPath)
+        if (excludedDirectories.includes(itemPath)) {
+          return []
+        }
+        return await getFileListDeep(itemPath, excludedDirectories)
       }
       if (stats.isFile()) {
         return itemPath
@@ -93,7 +96,12 @@ async function createDynamicGDR () {
     await fs.unlink(gdrPath)
   } catch (e) {}
   // build file list from target dir
-  const filePaths = await getFileListDeep(targetDir)
+  let excludedDirectories = []
+  const index = process.argv.indexOf('--excluded_directories')
+  if (index > -1) {
+    excludedDirectories = process.argv[index + 1].split(',')
+  }
+  const filePaths = await getFileListDeep(targetDir, excludedDirectories)
   const contents = gdrPath.endsWith('.grdp')
     ? getGrdpString(filePaths)
     : getGrdString(resourceName, filePaths)
