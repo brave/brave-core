@@ -9,6 +9,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -951,6 +952,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        Context context = getContext();
+        if (context instanceof Activity
+                && (((Activity) context).isFinishing() || ((Activity) context).isDestroyed())) {
+            return;
+        }
         dismissShieldsTooltip();
         reopenShieldsPanel();
         // TODO: show wallet panel

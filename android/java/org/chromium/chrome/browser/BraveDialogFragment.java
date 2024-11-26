@@ -26,6 +26,9 @@ public class BraveDialogFragment extends DialogFragment {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        if (isRemoving() || isDetached()) {
+            return;
+        }
         setDialogParams();
     }
 
