@@ -51,21 +51,10 @@ extension BrowserViewController {
       // Region Button is populated without current selected detail title for features menu
       RegionMenuButton(
         settingTitleEnabled: false,
-        regionSelectAction: { [unowned menuController] in
+        regionSelectAction: { [unowned self] in
           let vpnRegionListView = BraveVPNRegionListView(
             onServerRegionSet: { _ in
-              let controller = PopupViewController(
-                rootView: BraveVPNRegionConfirmationView(
-                  country: BraveVPN.serverLocationDetailed.country,
-                  city: BraveVPN.serverLocationDetailed.city,
-                  countryISOCode: BraveVPN.serverLocation.isoCode
-                ),
-                isDismissable: true
-              )
-              menuController.present(controller, animated: true)
-              Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
-                controller.dismiss(animated: true)
-              }
+              self.presentVPNServerRegionPopup()
             }
           )
           let vc = UIHostingController(rootView: vpnRegionListView)
@@ -118,21 +107,10 @@ extension BrowserViewController {
 
       // Region Button is populated including the details for privacy feature menu
       RegionMenuButton(
-        regionSelectAction: { [unowned menuController] in
+        regionSelectAction: { [unowned self] in
           let vpnRegionListView = BraveVPNRegionListView(
             onServerRegionSet: { _ in
-              let controller = PopupViewController(
-                rootView: BraveVPNRegionConfirmationView(
-                  country: BraveVPN.serverLocationDetailed.country,
-                  city: BraveVPN.serverLocationDetailed.city,
-                  countryISOCode: BraveVPN.serverLocation.isoCode
-                ),
-                isDismissable: true
-              )
-              menuController.present(controller, animated: true)
-              Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
-                controller.dismiss(animated: true)
-              }
+              self.presentVPNServerRegionPopup()
             }
           )
           let vc = UIHostingController(rootView: vpnRegionListView)
@@ -339,6 +317,26 @@ extension BrowserViewController {
           self.present(playlistController, animated: true)
         }
       }
+    }
+  }
+
+  // Present a popup when VPN server region has been changed
+  private func presentVPNServerRegionPopup() {
+    let controller = PopupViewController(
+      rootView: BraveVPNRegionConfirmationView(
+        country: BraveVPN.serverLocationDetailed.country,
+        city: BraveVPN.serverLocationDetailed.city,
+        countryISOCode: BraveVPN.serverLocation.isoCode
+      ),
+      isDismissable: true
+    )
+    if let presentedViewController {
+      presentedViewController.present(controller, animated: true)
+    } else {
+      present(controller, animated: true)
+    }
+    Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak controller] _ in
+      controller?.dismiss(animated: true)
     }
   }
 

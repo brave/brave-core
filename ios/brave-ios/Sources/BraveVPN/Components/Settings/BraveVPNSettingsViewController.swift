@@ -416,8 +416,8 @@ public class BraveVPNSettingsViewController: TableViewController {
         isDismissable: true
       )
       self?.present(controller, animated: true)
-      Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
-        controller.dismiss(animated: true)
+      Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak controller] _ in
+        controller?.dismiss(animated: true)
       }
     }
     let vc = UIHostingController(rootView: vpnRegionListView)
