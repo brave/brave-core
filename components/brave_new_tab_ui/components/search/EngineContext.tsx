@@ -55,8 +55,8 @@ export function EngineContextProvider(props: React.PropsWithChildren<{}>) {
     // one, or Brave Search.
     // Note: The key for `Google` is the empty string which is falsey so we need
     // to check for undefined here.
-    if (last === undefined || config[last] === undefined) {
-      return Object.keys(config).find(key => config[key] !== undefined) ?? braveSearchHost
+    if (last === undefined || !config[last]) {
+      return Object.keys(config).find(key => config[key]) ?? braveSearchHost
     }
 
     return last
