@@ -56,6 +56,22 @@ std::string GetPlatformIdentifier() {
 #endif
 }
 
+std::string GetGeneralPlatformIdentifier() {
+#if BUILDFLAG(IS_WIN)
+  return "windows";
+#elif BUILDFLAG(IS_MAC)
+  return "macos";
+#elif BUILDFLAG(IS_LINUX)
+  return "linux";
+#elif BUILDFLAG(IS_IOS)
+  return "ios";
+#elif BUILDFLAG(IS_ANDROID)
+  return "android";
+#else
+  return std::string();
+#endif
+}
+
 int GetIsoWeekNumber(const base::Time& time) {
   char buffer[24];
   time_t rawtime = time.ToTimeT();

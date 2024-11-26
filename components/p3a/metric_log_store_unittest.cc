@@ -56,7 +56,7 @@ class P3AMetricLogStoreTest : public testing::Test,
     for (size_t i = 1; i <= message_count &&
                        histogram_it != p3a::kCollectedTypicalHistograms.end();
          i++) {
-      log_store->UpdateValue(std::string(*histogram_it), 2);
+      log_store->UpdateValue(std::string(histogram_it->first), 2);
       histogram_it++;
     }
   }

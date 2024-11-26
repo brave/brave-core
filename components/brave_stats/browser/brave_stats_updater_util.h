@@ -24,6 +24,8 @@ std::string GetDateAsYMD(const base::Time& time);
 
 std::string GetPlatformIdentifier();
 
+std::string GetGeneralPlatformIdentifier();
+
 int GetIsoWeekNumber(const base::Time& time);
 
 base::Time GetLastMondayTime(const base::Time& time);
