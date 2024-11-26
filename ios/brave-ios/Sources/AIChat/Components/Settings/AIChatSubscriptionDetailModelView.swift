@@ -101,13 +101,13 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   }
 
   var inAppPurchasedProductType: BraveStoreProduct? {
-    if storeSDK.leoSubscriptionStatus != nil {
-      for product in storeSDK.purchasedProducts.all {
-        if product.id == BraveStoreProduct.leoMonthly.rawValue {
+    if let status = storeSDK.leoSubscriptionStatus {
+      if case .verified(let transaction) = status.transaction {
+        if transaction.productID == BraveStoreProduct.leoMonthly.rawValue {
           return .leoMonthly
         }
 
-        if product.id == BraveStoreProduct.leoYearly.rawValue {
+        if transaction.productID == BraveStoreProduct.leoYearly.rawValue {
           return .leoYearly
         }
       }
@@ -121,13 +121,25 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   }
 
   var inAppPurchaseSubscriptionPeriod: StoreKit.Product.SubscriptionPeriod? {
-    if storeSDK.leoSubscriptionStatus != nil {
-      if let leoMonthlySubscription = storeSDK.leoMonthlyProduct?.subscription?.subscriptionPeriod {
-        return leoMonthlySubscription
-      }
+    if let status = storeSDK.leoSubscriptionStatus {
+      if case .verified(let transaction) = status.transaction {
+        if transaction.productID == BraveStoreProduct.leoMonthly.rawValue {
+          return storeSDK.leoMonthlyProduct?.subscription?.subscriptionPeriod
+        }
 
-      if let leoYearlySubscription = storeSDK.leoYearlyProduct?.subscription?.subscriptionPeriod {
-        return leoYearlySubscription
+        if transaction.productID == BraveStoreProduct.leoYearly.rawValue {
+          return storeSDK.leoYearlyProduct?.subscription?.subscriptionPeriod
+        }
+      }
+    }
+
+    return nil
+  }
+
+  var inAppPurchaseSubscriptionExpiryDate: Date? {
+    if let status = storeSDK.leoSubscriptionStatus {
+      if case .verified(let transaction) = status.transaction {
+        return transaction.expirationDate
       }
     }
 
@@ -156,7 +168,7 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
     return false
   }
 
-  var isSubscriptionStatusLoading: Bool {
+  var isSubscriptionStatusLoaded: Bool {
     return storeSDK.leoSubscriptionStatus?.state != nil || credentialSummary != nil
   }
 

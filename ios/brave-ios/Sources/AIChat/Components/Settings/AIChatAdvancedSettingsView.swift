@@ -129,7 +129,7 @@ public struct AIChatAdvancedSettingsView: View {
     }
 
     // No order found
-    return "None"
+    return Strings.AIChat.subscriptionNoneTitle
   }
 
   private var expirationDateTitle: String {
@@ -161,6 +161,10 @@ public struct AIChatAdvancedSettingsView: View {
       let date = periodToDate(period)
     {
       return dateFormatter.string(from: date)
+    }
+
+    if let expiryDate = viewModel.inAppPurchaseSubscriptionExpiryDate {
+      return dateFormatter.string(from: expiryDate)
     }
 
     // Display the info from SkusSDK
@@ -198,7 +202,7 @@ public struct AIChatAdvancedSettingsView: View {
         if viewModel.canDisplaySubscriptionStatus
           && (model.premiumStatus == .active || model.premiumStatus == .activeDisconnected)
         {
-          if viewModel.isSubscriptionStatusLoading {
+          if viewModel.isSubscriptionStatusLoaded {
             AIChatAdvancedSettingsLabelDetailView(
               title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
               detail: subscriptionStatusTitle
@@ -330,9 +334,8 @@ public struct AIChatAdvancedSettingsView: View {
           }
         }
 
-        // Check if there's an AppStore receipt and subscriptions have been loaded
-        if !viewModel.isSubscriptionStatusLoading && viewModel.inAppPurchaseSubscriptionState != nil
-        {
+        // Check if there's an AppStore purchase
+        if viewModel.inAppPurchaseSubscriptionState != nil {
           NavigationLink {
             StoreKitReceiptSimpleView()
           } label: {
