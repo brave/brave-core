@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/span_reader.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "crypto/secure_hash.h"
@@ -57,7 +58,7 @@ class ComponentNoChecksContentsAccessorImpl
 
 namespace {
 
-constexpr const uint8_t kComponentContentsVerifierPublicKey[] = {
+constexpr uint8_t kComponentContentsVerifierPublicKey[] = {
     0x30, 0x82, 0x01, 0x22, 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86,
     0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00, 0x03, 0x82, 0x01, 0x0f, 0x00,
     0x30, 0x82, 0x01, 0x0a, 0x02, 0x82, 0x01, 0x01, 0x00, 0xc3, 0x8a, 0x2d,
@@ -84,33 +85,25 @@ constexpr const uint8_t kComponentContentsVerifierPublicKey[] = {
     0x88, 0x77, 0x2c, 0x84, 0xdd, 0x00, 0x87, 0x03, 0x49, 0x09, 0xb7, 0x4b,
     0xc7, 0x02, 0x03, 0x01, 0x00, 0x01};
 
-constexpr const char kVerifiedContentsPath[] =
-    "_metadata/verified_contents.json";
+constexpr char kVerifiedContentsPath[] = "_metadata/verified_contents.json";
 
 std::string GetRootHasheForContent(base::span<const uint8_t> contents,
                                    size_t block_size) {
-  size_t offset = 0;
   std::vector<std::string> hashes;
   // Even when the contents is empty, we want to output at least one hash
   // block (the hash of the empty string).
+  base::SpanReader reader(contents);
   do {
-    const size_t bytes_to_read = std::min(contents.size() - offset, block_size);
+    auto chunk = reader.Read(std::min(block_size, reader.remaining()));
     std::unique_ptr<crypto::SecureHash> hash(
         crypto::SecureHash::Create(crypto::SecureHash::SHA256));
-    hash->Update(contents.subspan(offset, bytes_to_read));
+    hash->Update(chunk.value());
 
     std::string buffer;
     buffer.resize(crypto::kSHA256Length);
     hash->Finish(base::as_writable_byte_span(buffer));
     hashes.push_back(std::move(buffer));
-
-    // If |contents| is empty, then we want to just exit here.
-    if (bytes_to_read == 0) {
-      break;
-    }
-
-    offset += bytes_to_read;
-  } while (offset < contents.size());
+  } while (reader.remaining() > 0);
 
   CHECK(block_size % crypto::kSHA256Length == 0);
   return extensions::ComputeTreeHashRoot(hashes,
@@ -124,9 +117,10 @@ class ComponentContentsAccessorImpl
   explicit ComponentContentsAccessorImpl(const base::FilePath& component_root)
       : ComponentNoChecksContentsAccessorImpl(component_root) {
     verified_contents_ = extensions::VerifiedContents::CreateFromFile(
-        base::make_span(kComponentContentsVerifierPublicKey),
+        kComponentContentsVerifierPublicKey,
         component_root.AppendASCII(kVerifiedContentsPath));
-    if (verified_contents_->block_size() % crypto::kSHA256Length != 0) {
+    if (verified_contents_ &&
+        verified_contents_->block_size() % crypto::kSHA256Length != 0) {
       // Unsupported block size.
       verified_contents_.reset();
     }
@@ -152,10 +146,7 @@ class ComponentContentsAccessorImpl
 
     const auto root_hash =
         GetRootHasheForContent(contents, verified_contents_->block_size());
-    if (!verified_contents_->TreeHashRootEquals(relative_path, root_hash)) {
-      return false;
-    }
-    return true;
+    return verified_contents_->TreeHashRootEquals(relative_path, root_hash);
   }
 
  private:

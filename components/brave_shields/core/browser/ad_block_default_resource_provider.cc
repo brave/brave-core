@@ -49,10 +49,6 @@ void AdBlockDefaultResourceProvider::OnComponentReady(
     scoped_refptr<brave_component_updater::ComponentContentsAccessor>
         accessor) {
   component_accessor_ = std::move(accessor);
-  if (!component_accessor_) {
-    // This should not happen, but if it does, we should not proceed.
-    return;
-  }
 
   // Load the resources (as a string)
   LoadResources(

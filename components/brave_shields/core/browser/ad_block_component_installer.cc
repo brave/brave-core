@@ -105,7 +105,7 @@ void AdBlockComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::Value::Dict manifest) {
-  ready_callback_.Run(std::move(path));
+  ready_callback_.Run(path);
 }
 
 bool AdBlockComponentInstallerPolicy::VerifyInstallation(
@@ -156,10 +156,8 @@ void RegisterAdBlockDefaultResourceComponent(
 
   auto on_ready = base::BindRepeating(
       [](OnSecureComponentReadyCallback callback, const base::FilePath& path) {
-        auto accessor =
-            brave_component_updater::ComponentContentsVerifier::GetInstance()
-                ->GetContentsAccessor(path);
-        callback.Run(std::move(accessor));
+        brave_component_updater::ComponentContentsVerifier::GetInstance()
+            ->CreateContentsAccessor(path, std::move(callback));
       },
       std::move(callback));
 
