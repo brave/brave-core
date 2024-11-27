@@ -622,7 +622,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         .reduce(0.0, +)
       balance = currencyFormatter.formatAsFiat(currentBalance) ?? "–"
       // Compute historical balances based on historical prices and current balances
-      let assetsWithHistory = allAssets.filter { !$0.history.isEmpty }  // [[AssetTimePrice]]
+      let assetsWithHistory = allAssets.filter { $0.history.count > 1 }  // [[AssetTimePrice]]
       let minCount = assetsWithHistory.map(\.history.count).min() ?? 0  // Shortest array count
       historicalBalances = (0..<minCount).map { index in
         let value = assetsWithHistory.reduce(
