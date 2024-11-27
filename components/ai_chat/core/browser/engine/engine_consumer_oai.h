@@ -61,6 +61,9 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       const std::string& selected_language,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) override;
+  void GenerateTitle(const std::string& page_content,
+                     const std::string& first_message,
+                     GenerationDataCallback data_callback);
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
   bool SupportsDeltaTextResponses() const override;
@@ -75,6 +78,8 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);
+  void OnTitleGenerationData(GenerationDataCallback data_callback,
+                             GenerationResult result);
 
   std::unique_ptr<OAIAPIClient> api_ = nullptr;
   mojom::CustomModelOptions model_options_;
