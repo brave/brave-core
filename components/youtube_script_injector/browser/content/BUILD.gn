@@ -15,6 +15,7 @@ component("content") {
 
   deps = [
     "//base",
+    "//brave/build/android:jni_headers",
     "//brave/components/script_injector/common/mojom",
     "//brave/components/youtube_script_injector/browser/core",
     "//brave/components/youtube_script_injector/common",
