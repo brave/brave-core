@@ -1093,17 +1093,6 @@ extension BrowserViewController: WKNavigationDelegate {
   ) {
     guard let tab = tab(for: webView) else { return }
 
-    // Handle invalid upgrade to https
-    if let responseURL = webView.url,
-      let response = handleInvalidHTTPSUpgrade(
-        tab: tab,
-        responseURL: responseURL
-      )
-    {
-      tab.loadRequest(response)
-      return
-    }
-
     // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
     // to open an external application and hand it over to UIApplication.openURL(). The result
     // will be that we switch to the external app, for example the app store, while keeping the
@@ -1130,6 +1119,15 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+      // Check for invalid upgrade to https
+      if let response = handleInvalidHTTPSUpgrade(
+        tab: tab,
+        responseURL: url
+      ) {
+        tab.loadRequest(response)
+        return
+      }
+
       ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
 
       // Submitting same erroneous URL using toolbar will cause progress bar get stuck
