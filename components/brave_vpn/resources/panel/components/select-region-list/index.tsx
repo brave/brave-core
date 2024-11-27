@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import * as S from './style'
 import Flag from '../flag'
-import { Region } from '../../api/panel_browser_api'
+import { ConnectionState, Region } from '../../api/panel_browser_api'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
 import { getLocale } from '$web-common/locale'
@@ -65,6 +65,9 @@ interface RegionCityProps {
 }
 
 function RegionCity(props: RegionCityProps) {
+  const connectionStatus = useSelector((state) => state.connectionStatus)
+  const showButton =
+    !props.selected || connectionStatus !== ConnectionState.CONNECTED
   return (
     <S.RegionCity selected={props.selected}>
       <S.RegionCityInfo>
@@ -78,7 +81,7 @@ function RegionCity(props: RegionCityProps) {
       {props.selected && (
         <S.StyledCheckBox name='check-circle-filled'></S.StyledCheckBox>
       )}
-      {props.connectionButton}
+      {showButton && props.connectionButton}
     </S.RegionCity>
   )
 }
