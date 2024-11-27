@@ -293,7 +293,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   std::string uuid = "default";
   auto& provider = component_providers.at(uuid);
   EXPECT_TRUE(provider);
-  provider->OnComponentReady(component_path);
+  provider->OnComponentReady(component_updater::CreateComponentContentsAccessor(
+      false, component_path));
 
   auto* engine = service->default_engine_.get();
   EngineTestObserver engine_observer(engine);
@@ -368,7 +369,9 @@ void AdBlockServiceTest::InstallComponent(
 
     auto& provider = component_providers.at(catalog_entry.uuid);
     EXPECT_TRUE(provider);
-    provider->OnComponentReady(component_path);
+    provider->OnComponentReady(
+        component_updater::CreateComponentContentsAccessor(false,
+                                                           component_path));
 
     auto* engine = catalog_entry.first_party_protections
                        ? service->default_engine_.get()

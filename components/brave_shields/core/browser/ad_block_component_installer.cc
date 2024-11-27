@@ -12,6 +12,7 @@
 
 #include "base/base64.h"
 #include "base/containers/to_vector.h"
+#include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
@@ -25,6 +26,8 @@ using brave_component_updater::BraveOnDemandUpdater;
 namespace brave_shields {
 
 namespace {
+
+constexpr size_t kHashSize = 32;
 
 class AdBlockComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
@@ -143,10 +146,11 @@ void OnRegistered(const std::string& component_id) {
       component_id, component_updater::OnDemandUpdater::Priority::FOREGROUND);
 }
 
-}  // namespace
-
-void RegisterAdBlockDefaultResourceComponent(
+void RegisterAdBlockComponentInternal(
     component_updater::ComponentUpdateService* cus,
+    const std::string& component_public_key,
+    const std::string& component_id,
+    const std::string& component_name,
     OnSecureComponentReadyCallback callback) {
   // In test, |cus| could be nullptr.
   if (!cus) {
@@ -162,27 +166,29 @@ void RegisterAdBlockDefaultResourceComponent(
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<AdBlockComponentInstallerPolicy>(
-          kAdBlockResourceComponentBase64PublicKey, kAdBlockResourceComponentId,
-          kAdBlockResourceComponentName, std::move(on_ready)));
-  installer->Register(
-      cus, base::BindOnce(&OnRegistered, kAdBlockResourceComponentId));
+          component_public_key, component_id, component_name,
+          std::move(on_ready)));
+  installer->Register(cus, base::BindOnce(&OnRegistered, component_id));
+}
+
+}  // namespace
+
+void RegisterAdBlockDefaultResourceComponent(
+    component_updater::ComponentUpdateService* cus,
+    OnSecureComponentReadyCallback callback) {
+  RegisterAdBlockComponentInternal(
+      cus, kAdBlockResourceComponentBase64PublicKey,
+      kAdBlockResourceComponentId, kAdBlockResourceComponentName,
+      std::move(callback));
 }
 
 void RegisterAdBlockFilterListCatalogComponent(
     component_updater::ComponentUpdateService* cus,
-    OnComponentReadyCallback callback) {
-  // In test, |cus| could be nullptr.
-  if (!cus) {
-    return;
-  }
-
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<AdBlockComponentInstallerPolicy>(
-          kAdBlockFilterListCatalogComponentBase64PublicKey,
-          kAdBlockFilterListCatalogComponentId,
-          kAdBlockFilterListCatalogComponentName, callback));
-  installer->Register(
-      cus, base::BindOnce(&OnRegistered, kAdBlockFilterListCatalogComponentId));
+    OnSecureComponentReadyCallback callback) {
+  RegisterAdBlockComponentInternal(
+      cus, kAdBlockFilterListCatalogComponentBase64PublicKey,
+      kAdBlockFilterListCatalogComponentId,
+      kAdBlockFilterListCatalogComponentName, std::move(callback));
 }
 
 void RegisterAdBlockFiltersComponent(
@@ -190,16 +196,9 @@ void RegisterAdBlockFiltersComponent(
     const std::string& component_public_key,
     const std::string& component_id,
     const std::string& component_name,
-    OnComponentReadyCallback callback) {
-  // In test, |cus| could be nullptr.
-  if (!cus) {
-    return;
-  }
-
-  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<AdBlockComponentInstallerPolicy>(
-          component_public_key, component_id, component_name, callback));
-  installer->Register(cus, base::BindOnce(&OnRegistered, component_id));
+    OnSecureComponentReadyCallback callback) {
+  RegisterAdBlockComponentInternal(cus, component_public_key, component_id,
+                                   component_name, std::move(callback));
 }
 
 }  // namespace brave_shields
