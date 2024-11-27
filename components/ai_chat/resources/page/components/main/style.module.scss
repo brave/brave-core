@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .main {
-  --conversation-content-margin: 24px;
+  --conversation-content-margin: var(--leo-spacing-2xl);
   --conversation-content-max-width: calc(680px + calc(var(--conversation-content-margin) * 2));
   display: flex;
   flex-direction: column;
@@ -20,7 +20,10 @@
   width: 100%;
   max-width: var(--conversation-content-max-width);
   margin: 0 auto;
-  padding: 0 var(--conversation-content-margin) 8px var(--conversation-content-margin);
+  padding: 0
+           var(--conversation-content-margin)
+           var(--leo-spacing-m)
+           var(--conversation-content-margin);
 }
 
 .scroller {
@@ -28,7 +31,7 @@
   overflow: auto;
   scrollbar-gutter: stable;
   height: 100%;
-  padding-bottom: 16px;
+  padding-bottom: var(--leo-spacing-xl);
 
   &::-webkit-scrollbar {
     width: var(--scrollbar-width);
@@ -61,7 +64,7 @@
 }
 
 .header {
-  padding: 8px 16px;
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
   border-bottom: 1px solid var(--leo-color-divider-subtle);
   display: flex;
   align-items: center;
@@ -151,6 +154,6 @@
   min-height: 60px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--leo-spacing-m);
   border-bottom: 1px solid var(--leo-color-divider-subtle);
 }
