@@ -17,7 +17,7 @@ namespace brave_wallet {
 std::optional<std::vector<uint32_t>> ParseFullHDPath(std::string_view path) {
   auto entries = base::SplitStringPiece(
       path, "/", base::WhitespaceHandling::TRIM_WHITESPACE,
-      base::SplitResult::SPLIT_WANT_NONEMPTY);
+      base::SplitResult::SPLIT_WANT_ALL);
 
   if (entries.empty()) {
     return std::nullopt;

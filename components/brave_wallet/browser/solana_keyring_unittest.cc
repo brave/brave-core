@@ -107,7 +107,8 @@ TEST(SolanaKeyringUnitTest, ImportAccount) {
 
   private_key.clear();
   ASSERT_TRUE(base::HexStringToBytes(
-      "bee602cc7dd4c1be27d8459892ab4e23f7a1d31ffde8cdd50542068ada52a201",
+      "bee602cc7dd4c1be27d8459892ab4e23f7a1d31ffde8cdd50542068ada52a201"
+      "b2d66b28055a98f8e4c19afeb026fd0c2f6755bf1830ad542d86d64b24da43c2",
       &private_key));
   keyring.ImportAccount(private_key);
   EXPECT_EQ(keyring.GetImportedAccountsForTesting().size(), 2u);
