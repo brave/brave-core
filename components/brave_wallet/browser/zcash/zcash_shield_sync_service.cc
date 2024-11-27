@@ -64,7 +64,7 @@ void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
 
 ZCashShieldSyncService::ZCashShieldSyncService(
     ZCashRpc& zcash_rpc,
-    base::SequenceBound<ZCashOrchardSyncState>& zcash_orchard_sync_state,
+    base::SequenceBound<OrchardSyncState>& zcash_orchard_sync_state,
     const mojom::AccountIdPtr& account_id,
     const mojom::ZCashAccountShieldBirthdayPtr& account_birthday,
     const OrchardFullViewKey& fvk,
@@ -164,7 +164,7 @@ void ZCashShieldSyncService::GetOrCreateAccount() {
     return;
   }
   sync_state()
-      .AsyncCall(&ZCashOrchardSyncState::GetAccountMeta)
+      .AsyncCall(&OrchardSyncState::GetAccountMeta)
       .WithArgs(account_id_.Clone())
       .Then(base::BindOnce(&ZCashShieldSyncService::OnGetAccountMeta,
                            weak_ptr_factory_.GetWeakPtr()));
@@ -196,7 +196,7 @@ void ZCashShieldSyncService::OnGetAccountMeta(
 
 void ZCashShieldSyncService::InitAccount() {
   sync_state()
-      .AsyncCall(&ZCashOrchardSyncState::RegisterAccount)
+      .AsyncCall(&OrchardSyncState::RegisterAccount)
       .WithArgs(account_id_.Clone(), account_birthday_->value)
       .Then(base::BindOnce(&ZCashShieldSyncService::OnAccountInit,
                            weak_ptr_factory_.GetWeakPtr()));
@@ -294,7 +294,7 @@ void ZCashShieldSyncService::OnGetTreeStateForChainReorg(
   } else {
     // Reorg database so records related to removed blocks are wiped out
     sync_state()
-        .AsyncCall(&ZCashOrchardSyncState::HandleChainReorg)
+        .AsyncCall(&OrchardSyncState::HandleChainReorg)
         .WithArgs(account_id_.Clone(), (*tree_state)->height,
                   (*tree_state)->hash)
         .Then(base::BindOnce(
@@ -318,7 +318,7 @@ void ZCashShieldSyncService::OnDatabaseUpdatedForChainReorg(
 
 void ZCashShieldSyncService::UpdateSpendableNotes() {
   sync_state()
-      .AsyncCall(&ZCashOrchardSyncState::GetSpendableNotes)
+      .AsyncCall(&OrchardSyncState::GetSpendableNotes)
       .WithArgs(account_id_.Clone())
       .Then(base::BindOnce(&ZCashShieldSyncService::OnGetSpendableNotes,
                            weak_ptr_factory_.GetWeakPtr()));
@@ -410,7 +410,7 @@ void ZCashShieldSyncService::UpdateNotes(
     uint32_t latest_scanned_block,
     std::string latest_scanned_block_hash) {
   sync_state()
-      .AsyncCall(&ZCashOrchardSyncState::UpdateNotes)
+      .AsyncCall(&OrchardSyncState::ApplyScanResults)
       .WithArgs(account_id_.Clone(), std::move(result), latest_scanned_block,
                 latest_scanned_block_hash)
       .Then(base::BindOnce(&ZCashShieldSyncService::UpdateNotesComplete,
@@ -443,8 +443,7 @@ ZCashRpc& ZCashShieldSyncService::zcash_rpc() {
   return zcash_rpc_.get();
 }
 
-base::SequenceBound<ZCashOrchardSyncState>&
-ZCashShieldSyncService::sync_state() {
+base::SequenceBound<OrchardSyncState>& ZCashShieldSyncService::sync_state() {
   return zcash_orchard_sync_state_.get();
 }
 

@@ -15,7 +15,7 @@
 #include "base/threading/sequence_bound.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_sync_state.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -76,7 +76,7 @@ class ZCashShieldSyncService {
 
   ZCashShieldSyncService(
       ZCashRpc& zcash_rpc,
-      base::SequenceBound<ZCashOrchardSyncState>& zcash_orchard_sync_state,
+      base::SequenceBound<OrchardSyncState>& zcash_orchard_sync_state,
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashAccountShieldBirthdayPtr& account_birthday,
       const std::array<uint8_t, kOrchardFullViewKeySize>& fvk,
@@ -155,14 +155,14 @@ class ZCashShieldSyncService {
                            std::optional<ZCashOrchardStorage::Error> error);
 
   ZCashRpc& zcash_rpc();
-  base::SequenceBound<ZCashOrchardSyncState>& sync_state();
+  base::SequenceBound<OrchardSyncState>& sync_state();
 
   uint32_t GetSpendableBalance();
   std::optional<Error> error() { return error_; }
 
   // Params
   raw_ref<ZCashRpc> zcash_rpc_;
-  raw_ref<base::SequenceBound<ZCashOrchardSyncState>> zcash_orchard_sync_state_;
+  raw_ref<base::SequenceBound<OrchardSyncState>> zcash_orchard_sync_state_;
   mojom::AccountIdPtr account_id_;
   // Birthday of the account will be used to resolve initial scan range.
   mojom::ZCashAccountShieldBirthdayPtr account_birthday_;

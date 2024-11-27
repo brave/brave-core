@@ -58,7 +58,7 @@ void ZCashResolveBalanceTask::WorkOnTask() {
   if (IsZCashShieldedTransactionsEnabled()) {
     if (!orchard_notes_) {
       zcash_wallet_service_->sync_state()
-          .AsyncCall(&ZCashOrchardSyncState::GetSpendableNotes)
+          .AsyncCall(&OrchardSyncState::GetSpendableNotes)
           .WithArgs(account_id_.Clone())
           .Then(base::BindOnce(&ZCashResolveBalanceTask::OnGetSpendableNotes,
                                weak_ptr_factory_.GetWeakPtr()));

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_ORCHARD_SYNC_STATE_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_ORCHARD_SYNC_STATE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_SYNC_STATE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_SYNC_STATE_H_
 
 #include <map>
 #include <memory>
@@ -22,10 +22,10 @@ namespace brave_wallet {
 // The synchronization state includes account-specific information regarding
 // spendable and spent notes, sync progress, and the state of the Orchard
 // commitment tree, which is used to sign notes for spending.
-class ZCashOrchardSyncState {
+class OrchardSyncState {
  public:
-  explicit ZCashOrchardSyncState(base::FilePath path_to_database);
-  ~ZCashOrchardSyncState();
+  explicit OrchardSyncState(base::FilePath path_to_database);
+  ~OrchardSyncState();
 
   base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
   RegisterAccount(const mojom::AccountIdPtr& account_id,
@@ -45,9 +45,9 @@ class ZCashOrchardSyncState {
   base::expected<std::vector<OrchardNoteSpend>, ZCashOrchardStorage::Error>
   GetNullifiers(const mojom::AccountIdPtr& account_id);
 
-  std::optional<ZCashOrchardStorage::Error> UpdateNotes(
+  std::optional<ZCashOrchardStorage::Error> ApplyScanResults(
       const mojom::AccountIdPtr& account_id,
-      OrchardBlockScanner::Result block_scanner_results,
+      OrchardBlockScanner::Result&& block_scanner_results,
       const uint32_t latest_scanned_block,
       const std::string& latest_scanned_block_hash);
 
@@ -63,17 +63,28 @@ class ZCashOrchardSyncState {
                                 const std::vector<OrchardInput>& notes,
                                 uint32_t checkpoint_position);
 
+  base::expected<bool, ZCashOrchardStorage::Error> Truncate(
+      const mojom::AccountIdPtr& account_id,
+      uint32_t checkpoint_id);
+
  private:
-  OrchardShardTreeManager& GetOrCreateShardTreeManager(
+  friend class OrchardSyncStateTest;
+
+  // Testing
+  void OverrideShardTreeForTesting(const mojom::AccountIdPtr& account_id);
+  ZCashOrchardStorage* orchard_storage();
+
+  orchard::OrchardShardTree& GetOrCreateShardTree(
       const mojom::AccountIdPtr& account_id);
 
   std::unique_ptr<ZCashOrchardStorage> storage_;
-  std::map<mojom::AccountIdPtr, std::unique_ptr<OrchardShardTreeManager>>
-      shard_tree_managers_;
+  std::map<mojom::AccountIdPtr,
+           std::unique_ptr<::brave_wallet::orchard::OrchardShardTree>>
+      shard_trees_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_ORCHARD_SYNC_STATE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_SYNC_STATE_H_

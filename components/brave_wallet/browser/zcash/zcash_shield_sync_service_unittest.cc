@@ -215,7 +215,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<KeyringService> keyring_service_;
-  base::SequenceBound<ZCashOrchardSyncState> sync_state_;
+  base::SequenceBound<OrchardSyncState> sync_state_;
   testing::NiceMock<MockZCashRPC> zcash_rpc_;
   std::unique_ptr<MockZCashShieldSyncServiceObserver> observer_;
   std::unique_ptr<ZCashShieldSyncService> sync_service_;

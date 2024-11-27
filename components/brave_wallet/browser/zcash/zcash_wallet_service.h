@@ -26,7 +26,7 @@
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_sync_state.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #endif
 
 namespace brave_wallet {
@@ -34,7 +34,7 @@ namespace brave_wallet {
 class ZCashCreateShieldTransactionTask;
 class ZCashCreateTransparentTransactionTask;
 class ZCashGetTransparentUtxosContext;
-class ZCashOrchardSyncState;
+class OrchardSyncState;
 class ZCashResolveBalanceTask;
 
 class ZCashWalletService : public mojom::ZCashWalletService,
@@ -254,7 +254,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashShieldSyncStatusPtr& status) override;
 
-  base::SequenceBound<ZCashOrchardSyncState>& sync_state();
+  base::SequenceBound<OrchardSyncState>& sync_state();
 #endif
 
   void UpdateNextUnusedAddressForAccount(const mojom::AccountIdPtr& account_id,
@@ -273,7 +273,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   std::list<std::unique_ptr<ZCashResolveBalanceTask>> resolve_balance_tasks_;
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  base::SequenceBound<ZCashOrchardSyncState> sync_state_;
+  base::SequenceBound<OrchardSyncState> sync_state_;
   std::list<std::unique_ptr<ZCashCreateShieldTransactionTask>>
       create_shield_transaction_tasks_;
   std::map<mojom::AccountIdPtr, std::unique_ptr<ZCashShieldSyncService>>

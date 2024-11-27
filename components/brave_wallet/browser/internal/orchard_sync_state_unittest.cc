@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/internal/orchard_shard_tree_manager.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
+
+#include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_shard_tree_manager.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_delegate.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_sync_state.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -42,15 +44,15 @@ OrchardCommitment CreateCommitment(OrchardCommitmentValue value,
 
 }  // namespace
 
-class OrchardShardTreeManagerTest : public testing::Test {
+class OrchardSyncStateTest : public testing::Test {
  public:
-  OrchardShardTreeManagerTest()
+  OrchardSyncStateTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   void SetUp() override;
 
-  OrchardShardTreeManager* tree_manager() { return shard_tree_manager_.get(); }
+  OrchardSyncState* sync_state() { return sync_state_.get(); }
 
-  ZCashOrchardStorage* storage() { return storage_.get(); }
+  ZCashOrchardStorage* storage() { return sync_state_->orchard_storage(); }
 
   mojom::AccountIdPtr account_id() { return account_id_.Clone(); }
 
@@ -60,23 +62,21 @@ class OrchardShardTreeManagerTest : public testing::Test {
   mojom::AccountIdPtr account_id_;
 
   std::unique_ptr<ZCashOrchardStorage> storage_;
-  std::unique_ptr<OrchardShardTreeManager> shard_tree_manager_;
+  std::unique_ptr<OrchardSyncState> sync_state_;
 };
 
-void OrchardShardTreeManagerTest::SetUp() {
+void OrchardSyncStateTest::SetUp() {
   account_id_ = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                         mojom::KeyringId::kZCashMainnet,
                                         mojom::AccountKind::kDerived, 0);
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   base::FilePath db_path(
       temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
-  storage_ = std::make_unique<ZCashOrchardStorage>(db_path);
-  shard_tree_manager_ =
-      OrchardShardTreeManager::CreateForTesting(base::WrapUnique(
-          new OrchardShardTreeDelegate(account_id_.Clone(), *storage_)));
+  sync_state_ = std::make_unique<OrchardSyncState>(db_path);
+  sync_state_->OverrideShardTreeForTesting(account_id_);
 }
 
-TEST_F(OrchardShardTreeManagerTest, CheckpointsPruned) {
+TEST_F(OrchardSyncStateTest, CheckpointsPruned) {
   std::vector<OrchardCommitment> commitments;
 
   for (int i = 0; i < 40; i++) {
@@ -91,15 +91,14 @@ TEST_F(OrchardShardTreeManagerTest, CheckpointsPruned) {
   }
   OrchardTreeState orchard_tree_state;
   auto result = CreateResultForTesting(orchard_tree_state, commitments);
-
-  tree_manager()->InsertCommitments(std::move(result));
+  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
   EXPECT_EQ(10u, storage()->CheckpointCount(account_id()).value());
   EXPECT_EQ(40u, storage()->MinCheckpointId(account_id()).value().value());
   EXPECT_EQ(76u, storage()->MaxCheckpointId(account_id()).value().value());
 }
 
-TEST_F(OrchardShardTreeManagerTest, InsertWithFrontier) {
+TEST_F(OrchardSyncStateTest, InsertWithFrontier) {
   OrchardTreeState prior_tree_state;
   prior_tree_state.block_height = 0;
   prior_tree_state.tree_size = 48;
@@ -138,13 +137,14 @@ TEST_F(OrchardShardTreeManagerTest, InsertWithFrontier) {
                        false, std::nullopt));
 
   auto result = CreateResultForTesting(prior_tree_state, commitments);
-  tree_manager()->InsertCommitments(std::move(result));
+  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
   {
     OrchardInput input;
     input.note.orchard_commitment_tree_position = 50;
 
-    auto witness_result = tree_manager()->CalculateWitness({input}, 1);
+    auto witness_result =
+        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
     EXPECT_TRUE(witness_result.has_value());
     EXPECT_EQ(
         witness_result.value()[0].witness.value(),
@@ -162,7 +162,7 @@ TEST_F(OrchardShardTreeManagerTest, InsertWithFrontier) {
   }
 }
 
-TEST_F(OrchardShardTreeManagerTest, Checkpoint_WithMarked) {
+TEST_F(OrchardSyncStateTest, Checkpoint_WithMarked) {
   std::vector<OrchardCommitment> commitments;
 
   commitments.push_back(
@@ -182,12 +182,13 @@ TEST_F(OrchardShardTreeManagerTest, Checkpoint_WithMarked) {
 
   OrchardTreeState tree_state;
   auto result = CreateResultForTesting(tree_state, commitments);
-  tree_manager()->InsertCommitments(std::move(result));
+  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
   {
     OrchardInput input;
     input.note.orchard_commitment_tree_position = 3;
-    auto witness_result = tree_manager()->CalculateWitness({input}, 1);
+    auto witness_result =
+        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
     EXPECT_TRUE(witness_result.has_value());
 
     EXPECT_EQ(
@@ -206,7 +207,7 @@ TEST_F(OrchardShardTreeManagerTest, Checkpoint_WithMarked) {
   }
 }
 
-TEST_F(OrchardShardTreeManagerTest, MinCheckpoint) {
+TEST_F(OrchardSyncStateTest, MinCheckpoint) {
   std::vector<OrchardCommitment> commitments;
 
   for (int i = 0; i < 40; i++) {
@@ -220,14 +221,14 @@ TEST_F(OrchardShardTreeManagerTest, MinCheckpoint) {
   }
   OrchardTreeState tree_state;
   auto result = CreateResultForTesting(tree_state, commitments);
-  tree_manager()->InsertCommitments(std::move(result));
+  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
   EXPECT_EQ(10u, storage()->CheckpointCount(account_id()).value());
   EXPECT_EQ(40u, storage()->MinCheckpointId(account_id()).value().value());
   EXPECT_EQ(76u, storage()->MaxCheckpointId(account_id()).value().value());
 }
 
-TEST_F(OrchardShardTreeManagerTest, MaxCheckpoint) {
+TEST_F(OrchardSyncStateTest, MaxCheckpoint) {
   {
     std::vector<OrchardCommitment> commitments;
 
@@ -240,7 +241,8 @@ TEST_F(OrchardShardTreeManagerTest, MaxCheckpoint) {
         CreateMockCommitmentValue(5, kDefaultCommitmentSeed), false, 1u));
     OrchardTreeState tree_state;
     auto result = CreateResultForTesting(tree_state, commitments);
-    tree_manager()->InsertCommitments(std::move(result));
+    sync_state()->ApplyScanResults(account_id(), std::move(result), 1000,
+                                   "1000");
   }
 
   {
@@ -257,7 +259,8 @@ TEST_F(OrchardShardTreeManagerTest, MaxCheckpoint) {
     tree_state.block_height = 1;
     tree_state.tree_size = 6;
     auto result = CreateResultForTesting(tree_state, commitments);
-    tree_manager()->InsertCommitments(std::move(result));
+    sync_state()->ApplyScanResults(account_id(), std::move(result), 1000,
+                                   "1000");
   }
 
   {
@@ -274,7 +277,8 @@ TEST_F(OrchardShardTreeManagerTest, MaxCheckpoint) {
     tree_state.block_height = 2;
     tree_state.tree_size = 11;
     auto result = CreateResultForTesting(tree_state, commitments);
-    tree_manager()->InsertCommitments(std::move(result));
+    sync_state()->ApplyScanResults(account_id(), std::move(result), 1000,
+                                   "1000");
   }
 
   EXPECT_EQ(3u, storage()->CheckpointCount(account_id()).value());
@@ -282,7 +286,7 @@ TEST_F(OrchardShardTreeManagerTest, MaxCheckpoint) {
   EXPECT_EQ(3u, storage()->MaxCheckpointId(account_id()).value().value());
 }
 
-TEST_F(OrchardShardTreeManagerTest, NoWitnessOnNonMarked) {
+TEST_F(OrchardSyncStateTest, NoWitnessOnNonMarked) {
   std::vector<OrchardCommitment> commitments;
 
   commitments.push_back(
@@ -301,17 +305,18 @@ TEST_F(OrchardShardTreeManagerTest, NoWitnessOnNonMarked) {
                        false, std::nullopt));
 
   auto result = CreateResultForTesting(OrchardTreeState(), commitments);
-  tree_manager()->InsertCommitments(std::move(result));
+  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
   {
     OrchardInput input;
     input.note.orchard_commitment_tree_position = 2;
-    auto witness_result = tree_manager()->CalculateWitness({input}, 1);
+    auto witness_result =
+        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
     EXPECT_FALSE(witness_result.has_value());
   }
 }
 
-TEST_F(OrchardShardTreeManagerTest, NoWitnessOnWrongCheckpoint) {
+TEST_F(OrchardSyncStateTest, NoWitnessOnWrongCheckpoint) {
   std::vector<OrchardCommitment> commitments;
 
   commitments.push_back(
@@ -330,17 +335,18 @@ TEST_F(OrchardShardTreeManagerTest, NoWitnessOnWrongCheckpoint) {
                        false, std::nullopt));
 
   auto result = CreateResultForTesting(OrchardTreeState(), commitments);
-  tree_manager()->InsertCommitments(std::move(result));
+  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
   {
     OrchardInput input;
     input.note.orchard_commitment_tree_position = 2;
-    auto witness_result = tree_manager()->CalculateWitness({input}, 2);
+    auto witness_result =
+        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 2);
     EXPECT_FALSE(witness_result.has_value());
   }
 }
 
-TEST_F(OrchardShardTreeManagerTest, TruncateTree) {
+TEST_F(OrchardSyncStateTest, TruncateTree) {
   {
     std::vector<OrchardCommitment> commitments;
 
@@ -363,10 +369,11 @@ TEST_F(OrchardShardTreeManagerTest, TruncateTree) {
     }
 
     auto result = CreateResultForTesting(OrchardTreeState(), commitments);
-    tree_manager()->InsertCommitments(std::move(result));
+    sync_state()->ApplyScanResults(account_id(), std::move(result), 1000,
+                                   "1000");
   }
 
-  tree_manager()->Truncate(2);
+  EXPECT_TRUE(sync_state()->Truncate(account_id(), 2).value());
 
   {
     std::vector<OrchardCommitment> commitments;
@@ -386,20 +393,23 @@ TEST_F(OrchardShardTreeManagerTest, TruncateTree) {
     // Truncate was on position 5, so 5 elements left in the tre
     tree_state.tree_size = 5;
     auto result = CreateResultForTesting(tree_state, commitments);
-    tree_manager()->InsertCommitments(std::move(result));
+    sync_state()->ApplyScanResults(account_id(), std::move(result), 2000,
+                                   "2000");
   }
 
   {
     OrchardInput input;
     input.note.orchard_commitment_tree_position = 2;
-    auto witness_result = tree_manager()->CalculateWitness({input}, 2);
+    auto witness_result =
+        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 2);
     EXPECT_TRUE(witness_result.has_value());
   }
 
   {
     OrchardInput input;
     input.note.orchard_commitment_tree_position = 2;
-    auto witness_result = tree_manager()->CalculateWitness({input}, 1);
+    auto witness_result =
+        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
     EXPECT_TRUE(witness_result.has_value());
     EXPECT_EQ(
         witness_result.value()[0].witness.value(),
@@ -417,7 +427,7 @@ TEST_F(OrchardShardTreeManagerTest, TruncateTree) {
   }
 }
 
-TEST_F(OrchardShardTreeManagerTest, TruncateTreeWrongCheckpoint) {
+TEST_F(OrchardSyncStateTest, TruncateTreeWrongCheckpoint) {
   std::vector<OrchardCommitment> commitments;
 
   commitments.push_back(
@@ -436,12 +446,12 @@ TEST_F(OrchardShardTreeManagerTest, TruncateTreeWrongCheckpoint) {
                        false, std::nullopt));
 
   auto result = CreateResultForTesting(OrchardTreeState(), commitments);
-  tree_manager()->InsertCommitments(std::move(result));
+  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
-  EXPECT_FALSE(tree_manager()->Truncate(2));
+  EXPECT_FALSE(sync_state()->Truncate(account_id(), 2).value());
 }
 
-TEST_F(OrchardShardTreeManagerTest, SimpleInsert) {
+TEST_F(OrchardSyncStateTest, SimpleInsert) {
   std::vector<OrchardCommitment> commitments;
 
   commitments.push_back(
@@ -460,12 +470,13 @@ TEST_F(OrchardShardTreeManagerTest, SimpleInsert) {
                        false, std::nullopt));
 
   auto result = CreateResultForTesting(OrchardTreeState(), commitments);
-  tree_manager()->InsertCommitments(std::move(result));
+  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
   {
     OrchardInput input;
     input.note.orchard_commitment_tree_position = 2;
-    auto witness_result = tree_manager()->CalculateWitness({input}, 1);
+    auto witness_result =
+        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
     EXPECT_TRUE(witness_result.has_value());
     EXPECT_EQ(
         witness_result.value()[0].witness.value(),

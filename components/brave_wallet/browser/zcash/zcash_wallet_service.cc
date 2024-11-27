@@ -755,7 +755,7 @@ KeyringService& ZCashWalletService::keyring_service() {
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-base::SequenceBound<ZCashOrchardSyncState>& ZCashWalletService::sync_state() {
+base::SequenceBound<OrchardSyncState>& ZCashWalletService::sync_state() {
   return sync_state_;
 }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
@@ -779,7 +779,7 @@ void ZCashWalletService::Reset() {
   weak_ptr_factory_.InvalidateWeakPtrs();
 #if BUILDFLAG(ENABLE_ORCHARD)
   shield_sync_services_.clear();
-  sync_state_.AsyncCall(&ZCashOrchardSyncState::ResetDatabase);
+  sync_state_.AsyncCall(&OrchardSyncState::ResetDatabase);
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 }
 

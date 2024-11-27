@@ -152,7 +152,7 @@ class OrchardShardTreeDelegate {
 
  private:
   mojom::AccountIdPtr account_id_;
-  raw_ref<ZCashOrchardStorage> storage_;  // Owned by ZCashOrchardSyncState
+  raw_ref<ZCashOrchardStorage> storage_;  // Owned by OrchardSyncState
 };
 
 }  // namespace brave_wallet

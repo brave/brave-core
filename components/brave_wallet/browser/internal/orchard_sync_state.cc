@@ -3,75 +3,75 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/zcash/zcash_orchard_sync_state.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 
 #include <utility>
 
 #include "base/check_is_test.h"
 #include "base/containers/extend.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_delegate.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 
-ZCashOrchardSyncState::ZCashOrchardSyncState(base::FilePath path_to_database) {
+OrchardSyncState::OrchardSyncState(base::FilePath path_to_database) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   storage_ = std::make_unique<ZCashOrchardStorage>(path_to_database);
 }
 
-ZCashOrchardSyncState::~ZCashOrchardSyncState() = default;
+OrchardSyncState::~OrchardSyncState() = default;
 
-OrchardShardTreeManager& ZCashOrchardSyncState::GetOrCreateShardTreeManager(
+orchard::OrchardShardTree& OrchardSyncState::GetOrCreateShardTree(
     const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (shard_tree_managers_.find(account_id) == shard_tree_managers_.end()) {
-    shard_tree_managers_[account_id.Clone()] = OrchardShardTreeManager::Create(
-        base::WrapUnique(new OrchardShardTreeDelegate(account_id, *storage_)));
+  if (shard_trees_.find(account_id) == shard_trees_.end()) {
+    shard_trees_[account_id.Clone()] = orchard::OrchardShardTree::Create(
+        std::make_unique<OrchardShardTreeDelegate>(account_id, *storage_));
   }
-  auto* manager = shard_tree_managers_[account_id.Clone()].get();
+  auto* manager = shard_trees_[account_id.Clone()].get();
   CHECK(manager);
   return *manager;
 }
 
 base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
-ZCashOrchardSyncState::RegisterAccount(const mojom::AccountIdPtr& account_id,
-                                       uint64_t account_birthday_block) {
+OrchardSyncState::RegisterAccount(const mojom::AccountIdPtr& account_id,
+                                  uint64_t account_birthday_block) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return storage_->RegisterAccount(std::move(account_id),
                                    account_birthday_block);
 }
 
 base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
-ZCashOrchardSyncState::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return storage_->GetAccountMeta(std::move(account_id));
 }
 
-std::optional<ZCashOrchardStorage::Error>
-ZCashOrchardSyncState::HandleChainReorg(const mojom::AccountIdPtr& account_id,
-                                        uint32_t reorg_block_id,
-                                        const std::string& reorg_block_hash) {
+std::optional<ZCashOrchardStorage::Error> OrchardSyncState::HandleChainReorg(
+    const mojom::AccountIdPtr& account_id,
+    uint32_t reorg_block_id,
+    const std::string& reorg_block_hash) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return storage_->HandleChainReorg(std::move(account_id), reorg_block_id,
                                     reorg_block_hash);
 }
 
 base::expected<std::vector<OrchardNote>, ZCashOrchardStorage::Error>
-ZCashOrchardSyncState::GetSpendableNotes(
-    const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return storage_->GetSpendableNotes(std::move(account_id));
 }
 
 base::expected<std::vector<OrchardNoteSpend>, ZCashOrchardStorage::Error>
-ZCashOrchardSyncState::GetNullifiers(const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::GetNullifiers(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return storage_->GetNullifiers(std::move(account_id));
 }
 
-std::optional<ZCashOrchardStorage::Error> ZCashOrchardSyncState::UpdateNotes(
+std::optional<ZCashOrchardStorage::Error> OrchardSyncState::ApplyScanResults(
     const mojom::AccountIdPtr& account_id,
-    OrchardBlockScanner::Result block_scanner_results,
+    OrchardBlockScanner::Result&& block_scanner_results,
     const uint32_t latest_scanned_block,
     const std::string& latest_scanned_block_hash) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -95,8 +95,8 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardSyncState::UpdateNotes(
     }
   }
 
-  if (!GetOrCreateShardTreeManager(account_id)
-           .InsertCommitments(std::move(block_scanner_results))) {
+  if (!GetOrCreateShardTree(account_id)
+           .ApplyScanResults(std::move(block_scanner_results.scanned_blocks))) {
     return ZCashOrchardStorage::Error{
         ZCashOrchardStorage::ErrorCode::kInternalError,
         "Failed to insert commitments"};
@@ -108,30 +108,54 @@ std::optional<ZCashOrchardStorage::Error> ZCashOrchardSyncState::UpdateNotes(
 }
 
 base::expected<bool, ZCashOrchardStorage::Error>
-ZCashOrchardSyncState::ResetAccountSyncState(
-    const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::ResetAccountSyncState(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return storage_->ResetAccountSyncState(std::move(account_id));
 }
 
 base::expected<std::vector<OrchardInput>, ZCashOrchardStorage::Error>
-ZCashOrchardSyncState::CalculateWitnessForCheckpoint(
+OrchardSyncState::CalculateWitnessForCheckpoint(
     const mojom::AccountIdPtr& account_id,
     const std::vector<OrchardInput>& notes,
     uint32_t checkpoint_position) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto result = GetOrCreateShardTreeManager(account_id)
-                    .CalculateWitness(notes, checkpoint_position);
-  if (!result.has_value()) {
-    return base::unexpected(ZCashOrchardStorage::Error{
-        ZCashOrchardStorage::ErrorCode::kConsistencyError, result.error()});
+  auto& shard_tree = GetOrCreateShardTree(account_id);
+
+  std::vector<OrchardInput> result;
+  for (auto& input : notes) {
+    auto witness = shard_tree.CalculateWitness(
+        input.note.orchard_commitment_tree_position, checkpoint_position);
+    if (!witness.has_value()) {
+      return base::unexpected(ZCashOrchardStorage::Error{
+          ZCashOrchardStorage::ErrorCode::kInternalError, witness.error()});
+    }
+    result.push_back(input);
+    result.back().witness = witness.value();
   }
-  return base::ok(std::move(result.value()));
+  return base::ok(std::move(result));
 }
 
-void ZCashOrchardSyncState::ResetDatabase() {
+void OrchardSyncState::ResetDatabase() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   storage_->ResetDatabase();
+}
+
+base::expected<bool, ZCashOrchardStorage::Error> OrchardSyncState::Truncate(
+    const mojom::AccountIdPtr& account_id,
+    uint32_t checkpoint_id) {
+  return GetOrCreateShardTree(account_id).TruncateToCheckpoint(checkpoint_id);
+}
+
+// Testing
+void OrchardSyncState::OverrideShardTreeForTesting(
+    const mojom::AccountIdPtr& account_id) {
+  shard_trees_[account_id.Clone()] =
+      orchard::OrchardShardTree::CreateForTesting(
+          std::make_unique<OrchardShardTreeDelegate>(account_id, *storage_));
+}
+
+ZCashOrchardStorage* OrchardSyncState::orchard_storage() {
+  return storage_.get();
 }
 
 }  // namespace brave_wallet

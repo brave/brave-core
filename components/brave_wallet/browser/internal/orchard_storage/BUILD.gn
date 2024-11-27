@@ -14,6 +14,7 @@ source_set("orchard_storage") {
 
   visibility = [
     "//brave/components/brave_wallet/browser:*",
+    "//brave/components/brave_wallet/browser/internal:orchard_bundle",
     "//brave/components/brave_wallet/browser/test:*",
   ]
 
