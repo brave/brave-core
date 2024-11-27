@@ -42,6 +42,12 @@
   padding-top: var(--top-padding);
 }
 
+.nav {
+  // Ensure navigation content always stays at full-width even when animation
+  // is decreasing the width of the parent
+  width: var(--navigation-width);
+}
+
 .left {
   min-width: 52px;
 }
