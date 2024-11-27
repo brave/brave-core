@@ -500,21 +500,50 @@ void AdsServiceImpl::NotifyAdsServiceInitialized() const {
   }
 }
 
-void AdsServiceImpl::ShutdownClearDataAndMaybeRestart() {
+void AdsServiceImpl::ShutdownAndClearAdsServiceDataAndMaybeRestart() {
   ShutdownAdsService();
 
   VLOG(6) << "Clearing ads data";
 
+  // Clear catalog preferences to ensure the catalog is redownloaded on restart
+  // because the catalog will be remove from `ads_service`/`database.sqlite`,
+  // leaving these preferences orphaned.
+  prefs_->ClearPref(prefs::kCatalogId);
+  prefs_->ClearPref(prefs::kCatalogVersion);
+  prefs_->ClearPref(prefs::kCatalogPing);
+  prefs_->ClearPref(prefs::kCatalogLastUpdated);
+
+  // Clear reaction preferences as the history will be removed from
+  // `ads_service`/`database.sqlite`, leaving these preferences orphaned.
+  prefs_->ClearPref(prefs::kAdReactions);
+  prefs_->ClearPref(prefs::kSegmentReactions);
+  prefs_->ClearPref(prefs::kSaveAds);
+  prefs_->ClearPref(prefs::kMarkedAsInappropriate);
+
+  ClearAdsServiceDataAndMaybeRestart();
+}
+
+void AdsServiceImpl::ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart() {
+  ShutdownAdsService();
+
+  VLOG(6) << "Clearing ads data";
+
+  // Clear all ads preferences.
   prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
   local_state_->ClearPref(brave_l10n::prefs::kCountryCode);
 
-  file_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, ads_service_path_),
-      base::BindOnce(&AdsServiceImpl::ShutdownClearDataAndMaybeRestartCallback,
-                     weak_ptr_factory_.GetWeakPtr()));
+  ClearAdsServiceDataAndMaybeRestart();
 }
 
-void AdsServiceImpl::ShutdownClearDataAndMaybeRestartCallback(
+void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestart() {
+  file_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, ads_service_path_),
+      base::BindOnce(
+          &AdsServiceImpl::ClearAdsServiceDataAndMaybeRestartCallback,
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestartCallback(
     const bool success) {
   if (!success) {
     VLOG(0) << "Failed to clear ads data";
@@ -1143,7 +1172,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
 
 void AdsServiceImpl::ClearData(base::OnceClosure callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
-  ShutdownClearDataAndMaybeRestart();
+  ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart();
   std::move(callback).Run();
 }
 
@@ -1858,12 +1887,12 @@ void AdsServiceImpl::OnRewardsWalletCreated() {
 void AdsServiceImpl::OnExternalWalletConnected() {
   ShowReminder(mojom::ReminderType::kExternalWalletConnected);
 
-  ShutdownClearDataAndMaybeRestart();
+  ShutdownAndClearAdsServiceDataAndMaybeRestart();
 }
 
 void AdsServiceImpl::OnCompleteReset(const bool success) {
   if (success) {
-    ShutdownClearDataAndMaybeRestart();
+    ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart();
   }
 }
 
