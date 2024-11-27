@@ -300,15 +300,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
   EXPECT_TRUE(
-      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
+      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
 
   ToggleVerticalTabStrip();
   EXPECT_FALSE(
-      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
+      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
 
   ToggleVerticalTabStrip();
   EXPECT_TRUE(
-      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
+      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
@@ -717,7 +717,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, OriginalTabSearchButton) {
   ASSERT_TRUE(region_view);
 
   auto* tab_search_container =
-      region_view->original_region_view_->tab_search_container();
+      region_view->original_region_view_->GetTabSearchContainer();
   if (!tab_search_container) {
     return;
   }
