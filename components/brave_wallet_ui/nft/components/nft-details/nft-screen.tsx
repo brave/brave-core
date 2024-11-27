@@ -234,7 +234,6 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
       ) && (
         <>
           <Alert
-            mode='simple'
             type='info'
           >
             {getLocale('braveWalletUnownedNftAlert')}

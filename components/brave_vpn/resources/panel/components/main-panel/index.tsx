@@ -179,7 +179,6 @@ function MainPanel() {
         {expired && (
           <S.StyledAlert
             type='warning'
-            mode='full'
             hideIcon
           >
             <div slot='title'>{getLocale('braveVpnSessionExpiredTitle')}</div>
@@ -189,7 +188,6 @@ function MainPanel() {
         {outOfCredentials && (
           <S.StyledAlert
             type='warning'
-            mode='full'
             hideIcon
           >
             <div slot='title'>{getLocale('braveVpnOutOfCredentials')}</div>
