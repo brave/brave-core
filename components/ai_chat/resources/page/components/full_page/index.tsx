@@ -122,10 +122,10 @@ export default function FullScreen() {
           className={styles.aside}
         >
           {isNavigationRendered && (
-            <>
+            <div className={styles.nav}>
               <NavigationHeader />
               <ConversationsList setIsConversationsListOpen={setIsNavigationCollapsed} />
-            </>
+            </div>
           )}
         </aside>
       </div>
