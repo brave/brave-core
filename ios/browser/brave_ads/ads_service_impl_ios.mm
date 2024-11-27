@@ -446,9 +446,7 @@ void AdsServiceImplIOS::Shutdown() {
 }
 
 void AdsServiceImplIOS::InitializeAds(InitializeCallback callback) {
-  if (IsInitialized()) {
-    return std::move(callback).Run(/*success=*/false);
-  }
+  CHECK(!IsInitialized());
 
   InitializeDatabase();
 

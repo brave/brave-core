@@ -96,7 +96,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new AdsInternalsUI(
         web_ui, url.host(),
         brave_ads::AdsServiceFactory::GetForProfile(profile),
-        profile->GetPrefs());
+        *profile->GetPrefs());
   } else if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
 #if !BUILDFLAG(IS_ANDROID)

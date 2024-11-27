@@ -25,7 +25,7 @@ class AdsInternalsUI : public content::WebUIController {
   AdsInternalsUI(content::WebUI* const web_ui,
                  const std::string& name,
                  brave_ads::AdsService* ads_service,
-                 PrefService* prefs);
+                 PrefService& prefs);
 
   AdsInternalsUI(const AdsInternalsUI&) = delete;
   AdsInternalsUI& operator=(const AdsInternalsUI&) = delete;

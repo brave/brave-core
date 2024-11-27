@@ -101,14 +101,12 @@ void AdsImpl::GetInternals(GetInternalsCallback callback) {
                                           std::move(callback)));
   }
 
-  // TODO(tmancey): Decouple.
   database::table::CreativeSetConversions database_table;
   database_table.GetActive(base::BindOnce(&AdsImpl::GetActiveCallback,
                                           weak_factory_.GetWeakPtr(),
                                           std::move(callback)));
 }
 
-// TODO(tmancey): Decouple.
 void AdsImpl::GetActiveCallback(
     GetInternalsCallback callback,
     const bool success,
@@ -119,6 +117,7 @@ void AdsImpl::GetActiveCallback(
   }
 
   base::Value::List list;
+  list.reserve(creative_set_conversions.size());
   for (const auto& creative_set_conversion : creative_set_conversions) {
     if (!creative_set_conversion.IsValid()) {
       continue;

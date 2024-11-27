@@ -138,11 +138,13 @@ class AdsServiceImpl final : public AdsService,
 
   void NotifyAdsServiceInitialized() const;
 
-  void ShutdownAndClearAdsServiceDataAndMaybeRestart(ClearDataCallback callback);
-  void ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart();
-  void ClearAdsServiceDataAndMaybeRestart();
+  void ShutdownAndClearAdsServiceDataAndMaybeRestart(
+      ClearDataCallback callback);
+  void ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart(
+      ClearDataCallback callback);
+  void ClearAdsServiceDataAndMaybeRestart(ClearDataCallback callback);
   void ClearAdsServiceDataAndMaybeRestartCallback(ClearDataCallback callback,
-                                                bool success);
+                                                  bool success);
 
   void OnExternalWalletConnectedCallback(bool success);
 

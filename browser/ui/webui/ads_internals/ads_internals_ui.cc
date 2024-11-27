@@ -19,7 +19,7 @@
 AdsInternalsUI::AdsInternalsUI(content::WebUI* const web_ui,
                                const std::string& name,
                                brave_ads::AdsService* ads_service,
-                               PrefService* prefs)
+                               PrefService& prefs)
     : content::WebUIController(web_ui), handler_(ads_service, prefs) {
   CreateAndAddWebUIDataSource(web_ui, name, kAdsInternalsGenerated,
                               kAdsInternalsGeneratedSize,
