@@ -86,6 +86,10 @@ class API {
       allActions
     })
 
+    this.observer.onStateChanged.addListener((state: mojom.ServiceState) => {
+      this.setPartialState(state)
+    })
+
     this.observer.onConversationListChanged.addListener(
       (conversations: mojom.Conversation[]) => {
         this.setPartialState({

@@ -878,6 +878,7 @@ size_t AIChatService::GetInMemoryConversationCountForTesting() {
 }
 
 void AIChatService::OnUserOptedIn() {
+  OnStateChanged();
   bool is_opted_in = HasUserOptedIn();
   if (!is_opted_in) {
     return;
@@ -885,7 +886,6 @@ void AIChatService::OnUserOptedIn() {
   for (auto& kv : conversation_handlers_) {
     kv.second->OnUserOptedIn();
   }
-  OnStateChanged();
   if (ai_chat_metrics_ != nullptr) {
     ai_chat_metrics_->RecordEnabled(true, true, {});
   }
