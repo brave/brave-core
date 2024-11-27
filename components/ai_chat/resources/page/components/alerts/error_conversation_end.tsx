@@ -16,7 +16,6 @@ function ErrorConversationEnd() {
   return (
     <div className={styles.alert}>
       <Alert
-        mode='full'
         type='error'
       >
         {getLocale('errorConversationEnd')}

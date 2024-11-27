@@ -383,7 +383,7 @@ export const EditGas = ({
                 {getLocale('braveWalletEditGasBaseFee')}
               </CurrentBaseText>
               <CurrentBaseText>
-                {`${new Amount(baseFeePerGas).divideByDecimals(9).format()} 
+                {`${new Amount(baseFeePerGas).divideByDecimals(9).format()}
                   ${getLocale('braveWalletEditGasGwei')}`}
               </CurrentBaseText>
             </CurrentBaseRow>
@@ -427,7 +427,6 @@ export const EditGas = ({
             {isCustomGasBelowBaseFee && (
               <Row margin={'16px 0px'}>
                 <Alert
-                  mode='simple'
                   type='error'
                 >
                   <Column

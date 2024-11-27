@@ -48,7 +48,6 @@ function ErrorPanel(props: Props) {
         <S.TopContent>
           <S.StyledAlert
             type='error'
-            mode='full'
             hideIcon
           >
             <div slot='title'>{getLocale('braveVpnUnableConnectToServer')}</div>
