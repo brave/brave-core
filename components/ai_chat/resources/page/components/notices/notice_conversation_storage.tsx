@@ -15,26 +15,26 @@ import illustrationUrl from './conversation_storage.svg'
 export default function NoticeConversationStorage() {
   const aiChatContext = useAIChat()
 
-  const noticeElementRef = React.useRef<HTMLDivElement>(null)
+  const visibilityTimer = React.useRef<VisibilityTimer>()
 
-  // Dismiss the notice for future loads after 4 seconds of being visible
-  React.useEffect(() => {
-    if (!noticeElementRef.current) {
+  const noticeElementRef = React.useCallback((el: HTMLDivElement | null) => {
+    // note: el will be null when we destroy it.
+    // note: In new versions of React (maybe newer than we're using) you can return a cleanup function instead
+    // https://react.dev/blog/2024/04/25/react-19#cleanup-functions-for-refs
+    if (visibilityTimer.current) {
+      visibilityTimer.current.stopTracking()
+    }
+
+    if (!el) {
       return
     }
 
-    const visibilityTimer = new VisibilityTimer(
-      aiChatContext.markStorageNoticeViewed,
-      4000,
-      noticeElementRef.current
+    visibilityTimer.current = new VisibilityTimer(
+      aiChatContext.markStorageNoticeViewed, 4000, el
     )
 
-    visibilityTimer.startTracking()
-
-    return () => {
-      visibilityTimer.stopTracking()
-    }
-  }, [noticeElementRef.current])
+    visibilityTimer.current.startTracking()
+  }, [])
 
   return (
     <div
