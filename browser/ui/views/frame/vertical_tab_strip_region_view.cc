@@ -1195,7 +1195,7 @@ void VerticalTabStripRegionView::AnimationEnded(
 
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser_);
-  auto* original_ntb = original_region_view_->new_tab_button();
+  auto* original_ntb = original_region_view_->GetNewTabButton();
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
   separator_->SetVisible(is_vertical_tabs);
@@ -1225,7 +1225,7 @@ void VerticalTabStripRegionView::UpdateOriginalTabSearchButtonVisibility() {
   const bool use_search_button =
       browser_->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
   if (auto* tab_search_container =
-          original_region_view_->tab_search_container()) {
+          original_region_view_->GetTabSearchContainer()) {
     if (auto* tab_search_button = tab_search_container->tab_search_button()) {
       tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
     }

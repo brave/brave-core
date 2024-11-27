@@ -36,12 +36,12 @@ IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
   views::View* button = nullptr;
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* tab_search_container =
-      browser_view->tab_strip_region_view()->tab_search_container();
+      browser_view->tab_strip_region_view()->GetTabSearchContainer();
   if (!tab_search_container) {
     return;
   }
   button = browser_view->tab_strip_region_view()
-               ->tab_search_container()
+               ->GetTabSearchContainer()
                ->tab_search_button();
   ASSERT_NE(nullptr, button);
   EXPECT_TRUE(button->GetVisible());
