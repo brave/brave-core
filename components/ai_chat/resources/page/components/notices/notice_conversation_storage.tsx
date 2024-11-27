@@ -45,7 +45,7 @@ export default function NoticeConversationStorage() {
         <img src={illustrationUrl} alt="illustration" />
       </div>
       <div className={styles.content}>
-        <h4>{getLocale('noticeConversationHistoryTitle')}</h4>
+        <h4>{getLocale('menuConversationHistory')}</h4>
         <p>{getLocale('noticeConversationHistoryBody')}</p>
         <p>
           <a

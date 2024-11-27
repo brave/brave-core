@@ -131,8 +131,6 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"searchQueries", IDS_CHAT_UI_SEARCH_QUERIES},
        {"learnMore", IDS_CHAT_UI_LEARN_MORE},
        {"closeNotice", IDS_CHAT_UI_CLOSE_NOTICE},
-       {"noticeConversationHistoryTitle",
-        IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_TITLE},
        {"noticeConversationHistoryBody",
         IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY},
        {"noticeConversationHistoryEmpty",

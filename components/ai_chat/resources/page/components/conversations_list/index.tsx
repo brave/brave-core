@@ -133,7 +133,7 @@ export default function ConversationsList(props: ConversationsListProps) {
           {aiChatContext.isStoragePrefEnabled && aiChatContext.visibleConversations.length === 0 &&
           <Alert type='notice'>
             <Icon name='history' slot='icon' />
-            <div slot='title'>{getLocale('noticeConversationHistoryTitle')}</div>
+            <div slot='title'>{getLocale('menuConversationHistory')}</div>
             {getLocale('noticeConversationHistoryEmpty')}
           </Alert>
           }

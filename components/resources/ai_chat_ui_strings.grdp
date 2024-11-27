@@ -276,9 +276,6 @@
   <message name="IDS_CHAT_UI_CLOSE_NOTICE" desc="Label for button which closes a notice">
     Close this notice
   </message>
-  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_TITLE" desc="Title for the notice about conversation history">
-    Conversation history
-  </message>
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history">
     Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.
   </message>
