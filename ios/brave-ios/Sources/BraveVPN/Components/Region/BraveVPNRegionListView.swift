@@ -20,9 +20,6 @@ public struct BraveVPNRegionListView: View {
   private var isRegionDetailsPresented = false
 
   @State
-  private var isConfirmationPresented = false
-
-  @State
   private var isShowingChangeRegionAlert = false
 
   @State
@@ -37,8 +34,13 @@ public struct BraveVPNRegionListView: View {
   @State
   private var regionModificationTimer: Timer?
 
-  public init() {
+  private var onServerRegionSet: ((_ region: GRDRegion?) -> Void)?
+
+  public init(
+    onServerRegionSet: ((_ region: GRDRegion?) -> Void)?
+  ) {
     self.isAutomatic = BraveVPN.isAutomaticRegion
+    self.onServerRegionSet = onServerRegionSet
   }
 
   public var body: some View {
@@ -77,16 +79,11 @@ public struct BraveVPNRegionListView: View {
         )
       }
     }
-    .background {
-      BraveVPNRegionConfirmationContentView(
-        isPresented: $isConfirmationPresented,
-        country: BraveVPN.serverLocationDetailed.country,
-        city: BraveVPN.serverLocationDetailed.city,
-        countryISOCode: BraveVPN.serverLocation.isoCode
-      )
-    }
     .onAppear {
       isAutomatic = BraveVPN.isAutomaticRegion
+    }
+    .onDisappear {
+      cancelTimer()
     }
     .alert(isPresented: $isShowingChangeRegionAlert) {
       Alert(
@@ -96,16 +93,8 @@ public struct BraveVPNRegionListView: View {
       )
     }
     .onReceive(NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)) { _ in
-      let isVPNEnabled = BraveVPN.isConnected
-
-      if isVPNEnabled {
+      if BraveVPN.isConnected {
         cancelTimer()
-        isConfirmationPresented = true
-
-        // Dismiss confirmation dialog automatically
-        Task.delayed(bySeconds: 2) { @MainActor in
-          isConfirmationPresented = false
-        }
       }
     }
   }
@@ -246,7 +235,7 @@ public struct BraveVPNRegionListView: View {
 
       if success {
         selectedRegion = region
-
+        onServerRegionSet?(region)
         // Changing vpn server settings takes lot of time,
         // and nothing we can do about it as it relies on Apple apis.
         // Here we observe vpn status and we show success alert if it connected,
@@ -272,7 +261,7 @@ public struct BraveVPNRegionListView: View {
 #if DEBUG
 struct ServerRegionView_Previews: PreviewProvider {
   static var previews: some View {
-    BraveVPNRegionListView()
+    BraveVPNRegionListView(onServerRegionSet: nil)
   }
 }
 #endif
