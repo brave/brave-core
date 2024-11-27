@@ -53,9 +53,10 @@ OrchardTestingShardTreeImpl::~OrchardTestingShardTreeImpl() {}
 
 // static
 std::unique_ptr<OrchardShardTree> OrchardShardTree::CreateForTesting(
-    std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate) {
+    ::brave_wallet::ZCashOrchardStorage& storage,
+    const mojom::AccountIdPtr& account_id) {
   auto shard_tree_result = create_testing_shard_tree(
-      std::make_unique<CxxOrchardShardTreeDelegate>(std::move(delegate)));
+      std::make_unique<CxxOrchardShardTreeDelegate>(storage, account_id));
   if (!shard_tree_result->is_ok()) {
     return nullptr;
   }

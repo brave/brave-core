@@ -6,16 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_CXX_ORCHARD_SHARD_TREE_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_CXX_ORCHARD_SHARD_TREE_DELEGATE_H_
 
-#include <memory>
-#include <vector>
-
+#include "base/memory/raw_ref.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet {
-class OrchardShardTreeDelegate;
-}  // namespace brave_wallet
 
-namespace brave_wallet::orchard {
+class ZCashOrchardStorage;
+
+namespace orchard {
 
 struct ShardTreeShard;
 struct ShardTreeCap;
@@ -33,8 +32,8 @@ struct ShardTreeShardResultWrapper;
 
 class CxxOrchardShardTreeDelegate {
  public:
-  explicit CxxOrchardShardTreeDelegate(
-      std::unique_ptr<OrchardShardTreeDelegate> delegate);
+  explicit CxxOrchardShardTreeDelegate(ZCashOrchardStorage& storage,
+                                       const mojom::AccountIdPtr& account_id);
   ~CxxOrchardShardTreeDelegate();
 
   ::rust::Box<ShardTreeShardResultWrapper> LastShard(uint8_t shard_level) const;
@@ -65,9 +64,11 @@ class CxxOrchardShardTreeDelegate {
   ::rust::Box<CheckpointsResultWrapper> GetCheckpoints(size_t limit) const;
 
  private:
-  std::unique_ptr<OrchardShardTreeDelegate> delegate_;
+  raw_ref<ZCashOrchardStorage> storage_;
+  ::brave_wallet::mojom::AccountIdPtr account_id_;
 };
 
-}  // namespace brave_wallet::orchard
+}  // namespace orchard
+}  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_CXX_ORCHARD_SHARD_TREE_DELEGATE_H_

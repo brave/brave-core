@@ -7,9 +7,8 @@ import("//brave/components/brave_wallet/common/config.gni")
 
 source_set("orchard_storage") {
   sources = [
-    "orchard_shard_tree_delegate.cc",
+    "orchard_types.cc",
     "zcash_orchard_storage.cc",
-    "zcash_orchard_storage.h",
   ]
 
   visibility = [
@@ -21,7 +20,6 @@ source_set("orchard_storage") {
   deps = [
     "//base",
     "//brave/components/brave_wallet/common",
-    "//brave/components/services/brave_wallet/public/mojom",
     "//sql",
   ]
 
@@ -29,7 +27,10 @@ source_set("orchard_storage") {
 }
 
 source_set("headers") {
-  sources = [ "orchard_shard_tree_delegate.h" ]
+  sources = [
+    "orchard_types.h",
+    "zcash_orchard_storage.h",
+  ]
 
   visibility = [
     ":orchard_storage",
@@ -41,5 +42,7 @@ source_set("headers") {
   deps = [
     "//base",
     "//brave/components/brave_wallet/common",
+    "//brave/components/services/brave_wallet/public/mojom",
+    "//sql",
   ]
 }

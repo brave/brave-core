@@ -8,8 +8,7 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
-#include "brave/components/brave_wallet/browser/internal/orchard_shard_tree_manager.h"
-#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_delegate.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_types.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"

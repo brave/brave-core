@@ -1101,6 +1101,36 @@ ZCashOrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
   return base::ok(true);
 }
 
+base::expected<bool, ZCashOrchardStorage::Error>
+ZCashOrchardStorage::UpdateCheckpoint(const mojom::AccountIdPtr& account_id,
+                                      uint32_t checkpoint_id,
+                                      const OrchardCheckpoint& checkpoint) {
+  auto get_checkpoint_result = GetCheckpoint(account_id, checkpoint_id);
+  if (!get_checkpoint_result.has_value()) {
+    return base::unexpected(get_checkpoint_result.error());
+  }
+  if (!get_checkpoint_result.value()) {
+    return false;
+  }
+
+  auto remove_result = RemoveCheckpoint(account_id, checkpoint_id);
+  if (!remove_result.has_value()) {
+    return base::unexpected(base::unexpected(remove_result.error()));
+  }
+  if (!remove_result.value()) {
+    return false;
+  }
+
+  auto add_result = AddCheckpoint(account_id, checkpoint_id, checkpoint);
+  if (!add_result.has_value()) {
+    return base::unexpected(base::unexpected(add_result.error()));
+  }
+  if (!add_result.value()) {
+    return false;
+  }
+  return true;
+}
+
 base::expected<size_t, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::CheckpointCount(const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,

@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_types.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 

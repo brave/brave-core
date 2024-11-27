@@ -12,11 +12,15 @@
 #include <vector>
 
 #include "base/sequence_checker.h"
-#include "brave/components/brave_wallet/browser/internal/orchard_shard_tree_manager.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_types.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/zcash_orchard_storage.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
+namespace orchard {
+class OrchardShardTree;
+}  // namespace orchard
 
 // Represents the persisted synchronization state for the Zcash blockchain.
 // The synchronization state includes account-specific information regarding

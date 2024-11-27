@@ -14,7 +14,7 @@
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_delegate.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_types.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
@@ -154,6 +154,10 @@ class ZCashOrchardStorage {
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
   base::expected<bool, Error> AddCheckpoint(
+      const mojom::AccountIdPtr& account_id,
+      uint32_t checkpoint_id,
+      const OrchardCheckpoint& checkpoint);
+  base::expected<bool, Error> UpdateCheckpoint(
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id,
       const OrchardCheckpoint& checkpoint);

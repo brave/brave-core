@@ -10,10 +10,11 @@
 #include <string>
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-class OrchardShardTreeDelegate;
+class ZCashOrchardStorage;
 
 namespace orchard {
 
@@ -33,10 +34,12 @@ class OrchardShardTree {
       uint32_t checkpoint) = 0;
 
   static std::unique_ptr<OrchardShardTree> Create(
-      std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate);
+      ::brave_wallet::ZCashOrchardStorage& storage,
+      const mojom::AccountIdPtr& account_id);
 
   static std::unique_ptr<OrchardShardTree> CreateForTesting(
-      std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate);
+      ::brave_wallet::ZCashOrchardStorage& storage,
+      const mojom::AccountIdPtr& account_id);
 };
 
 }  // namespace orchard

@@ -9,7 +9,7 @@
 
 #include "base/check_is_test.h"
 #include "base/containers/extend.h"
-#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_delegate.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_types.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
@@ -26,8 +26,8 @@ orchard::OrchardShardTree& OrchardSyncState::GetOrCreateShardTree(
     const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (shard_trees_.find(account_id) == shard_trees_.end()) {
-    shard_trees_[account_id.Clone()] = orchard::OrchardShardTree::Create(
-        std::make_unique<OrchardShardTreeDelegate>(account_id, *storage_));
+    shard_trees_[account_id.Clone()] =
+        orchard::OrchardShardTree::Create(*storage_, account_id);
   }
   auto* manager = shard_trees_[account_id.Clone()].get();
   CHECK(manager);
@@ -150,8 +150,7 @@ base::expected<bool, ZCashOrchardStorage::Error> OrchardSyncState::Truncate(
 void OrchardSyncState::OverrideShardTreeForTesting(
     const mojom::AccountIdPtr& account_id) {
   shard_trees_[account_id.Clone()] =
-      orchard::OrchardShardTree::CreateForTesting(
-          std::make_unique<OrchardShardTreeDelegate>(account_id, *storage_));
+      orchard::OrchardShardTree::CreateForTesting(*storage_, account_id);
 }
 
 ZCashOrchardStorage* OrchardSyncState::orchard_storage() {
