@@ -117,9 +117,8 @@ const ActionLabel = styled.div`
 `
 
 const VPNShileldsIcon = styled.div<{ connectionState: ConnectionState }>`
-  width: 62px;
-  height: 62px;
-  margin-bottom: 3px;
+  width: 64px;
+  height: 64px;
   background-image: url(${(p) =>
     p.connectionState === ConnectionState.CONNECTED
       ? vpnShieldsConnectedUrl
