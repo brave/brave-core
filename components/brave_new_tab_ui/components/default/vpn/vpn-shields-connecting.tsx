@@ -9,7 +9,8 @@ import styled from 'styled-components'
 import LottiePlayer from '$web-common/lottiePlayer'
 
 const LottieBox = styled.div`
-  width: 124px;
+  width: 128px;
+  height: 64px;
 `
 
 const shieldsConnectingAnimation =
