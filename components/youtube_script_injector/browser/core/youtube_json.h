@@ -18,8 +18,6 @@
 #include "base/values.h"
 #include "extensions/common/url_pattern_set.h"
 
-class GURL;
-
 namespace youtube_script_injector {
 
 // Format of the youtube.json file:
