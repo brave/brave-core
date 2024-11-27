@@ -275,6 +275,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     new BottomUiThemeColorProvider(
                             mTopUiThemeColorProvider,
                             mBrowserControlsSizer,
+                            mBottomControlsStacker,
                             mIncognitoStateProvider,
                             mActivity);
 
