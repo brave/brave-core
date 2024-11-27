@@ -16,7 +16,6 @@ export default function WarningPremiumDisconnected() {
   return (
     <div className={styles.alert}>
       <Alert
-        mode='full'
         type='warning'
       >
         {getLocale('premiumRefreshWarningDescription')}

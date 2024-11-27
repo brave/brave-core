@@ -35,7 +35,6 @@ function PurchaseFailedPanel(props: Props) {
         <S.EmptyPanelHeader />
         <S.StyledAlert
           type='error'
-          mode='full'
           hideIcon
         >
           {title}

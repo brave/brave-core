@@ -638,7 +638,6 @@ export const AddNftForm = (props: Props) => {
 
                         {!userOwnsNft && (
                           <Alert
-                            mode='simple'
                             type='info'
                           >
                             {getLocale('braveWalletUnownedNftAlert')}

@@ -27,7 +27,6 @@ export const WalletBanner = (props: Props) => {
     <StyledWrapper>
       <Alert
         type={bannerType}
-        mode='full'
       >
         <Icon
           slot='icon'

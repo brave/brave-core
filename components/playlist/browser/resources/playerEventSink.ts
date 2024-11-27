@@ -44,7 +44,6 @@ function handlePlayerEvents(payload: PlayerEventsPayload) {
           content: getLocalizedString(
             'bravePlaylistFailedToPlayDescription'
           ).replace('$1', payload.data.name),
-          mode: 'full',
           type: 'error',
           actions: [
             {
