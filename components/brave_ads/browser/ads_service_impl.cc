@@ -521,10 +521,11 @@ void AdsServiceImpl::ShutdownAndClearAdsServiceDataAndMaybeRestart(
   prefs_->ClearPref(prefs::kSaveAds);
   prefs_->ClearPref(prefs::kMarkedAsInappropriate);
 
-  ClearAdsServiceDataAndMaybeRestart();
+  ClearAdsServiceDataAndMaybeRestart(std::move(callback));
 }
 
-void AdsServiceImpl::ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart() {
+void AdsServiceImpl::ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart(
+    ClearDataCallback callback) {
   ShutdownAdsService();
 
   VLOG(6) << "Clearing ads data";
@@ -533,10 +534,11 @@ void AdsServiceImpl::ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart() {
   prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
   local_state_->ClearPref(brave_l10n::prefs::kCountryCode);
 
-  ClearAdsServiceDataAndMaybeRestart();
+  ClearAdsServiceDataAndMaybeRestart(std::move(callback));
 }
 
-void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestart() {
+void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestart(
+    ClearDataCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, ads_service_path_),
       base::BindOnce(
@@ -1900,12 +1902,14 @@ void AdsServiceImpl::OnRewardsWalletCreated() {
 void AdsServiceImpl::OnExternalWalletConnected() {
   ShowReminder(mojom::ReminderType::kExternalWalletConnected);
 
-  ShutdownAndClearAdsServiceDataAndMaybeRestart(/*intentional*/ base::DoNothing());
+  ShutdownAndClearAdsServiceDataAndMaybeRestart(
+      /*intentional*/ base::DoNothing());
 }
 
 void AdsServiceImpl::OnCompleteReset(const bool success) {
   if (success) {
-    ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart(/*intentional*/ base::DoNothing());
+    ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart(
+        /*intentional*/ base::DoNothing());
   }
 }
 

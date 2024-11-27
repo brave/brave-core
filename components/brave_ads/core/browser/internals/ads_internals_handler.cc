@@ -16,12 +16,9 @@
 #include "components/prefs/pref_service.h"
 
 AdsInternalsHandler::AdsInternalsHandler(brave_ads::AdsService* ads_service,
-                                         PrefService* prefs)
+                                         PrefService& prefs)
     : ads_service_(ads_service), prefs_(prefs) {
-  CHECK(ads_service_);
-  CHECK(prefs_);
-
-  pref_change_registrar_.Init(prefs_);
+  pref_change_registrar_.Init(&*prefs_);
   pref_change_registrar_.Add(
       brave_rewards::prefs::kEnabled,
       base::BindRepeating(&AdsInternalsHandler::OnPrefChanged,
@@ -69,6 +66,9 @@ void AdsInternalsHandler::CreateAdsInternalsPageHandler(
 void AdsInternalsHandler::GetInternalsCallback(
     GetAdsInternalsCallback callback,
     std::optional<base::Value::List> value) {
+  // `value` can be nullopt when:
+  // - bat ads associated remote is not bound
+  // - database query fails
   if (!value) {
     return std::move(callback).Run("");
   }

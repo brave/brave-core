@@ -25,7 +25,7 @@ class AdsService;
 
 class AdsInternalsHandler : public bat_ads::mojom::AdsInternals {
  public:
-  AdsInternalsHandler(brave_ads::AdsService* ads_service, PrefService* prefs);
+  AdsInternalsHandler(brave_ads::AdsService* ads_service, PrefService& prefs);
 
   AdsInternalsHandler(const AdsInternalsHandler&) = delete;
   AdsInternalsHandler& operator=(const AdsInternalsHandler&) = delete;
@@ -51,9 +51,9 @@ class AdsInternalsHandler : public bat_ads::mojom::AdsInternals {
   void OnPrefChanged(const std::string& path);
   void UpdateBraveRewardsEnabled();
 
-  const raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // Not owned.
+  const raw_ptr<brave_ads::AdsService> ads_service_;  // Not owned.
 
-  const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
+  const raw_ref<PrefService> prefs_;
 
   mojo::Receiver<bat_ads::mojom::AdsInternals> receiver_{this};
 
