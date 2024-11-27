@@ -25,16 +25,19 @@ namespace brave_component_updater {
 class ComponentContentsAccessor
     : public base::RefCountedThreadSafe<ComponentContentsAccessor> {
  public:
-  enum class Error {
-    kFileReadFailed,
-    kInvalidSignature,
-  };
+  explicit ComponentContentsAccessor(const base::FilePath component_root);
+  ComponentContentsAccessor(const ComponentContentsAccessor&) = delete;
+  ComponentContentsAccessor(ComponentContentsAccessor&&) = delete;
+  ComponentContentsAccessor& operator=(const ComponentContentsAccessor&) =
+      delete;
+  ComponentContentsAccessor& operator=(ComponentContentsAccessor&&) = delete;
 
-  virtual const base::FilePath& GetComponentRoot() const = 0;
-  virtual bool IsComponentSignatureValid() const = 0;
-  virtual void IgnoreInvalidSignature(bool ignore) = 0;
+  virtual bool IsComponentSignatureValid() const;
+  virtual void IgnoreInvalidSignature(bool ignore);
   virtual bool VerifyContents(const base::FilePath& relative_path,
-                              base::span<const uint8_t> contents) = 0;
+                              base::span<const uint8_t> contents);
+
+  const base::FilePath& GetComponentRoot() const;
 
   std::optional<std::string> GetFileAsString(
       const base::FilePath& relative_path);
@@ -44,6 +47,8 @@ class ComponentContentsAccessor
  protected:
   friend class base::RefCountedThreadSafe<ComponentContentsAccessor>;
   virtual ~ComponentContentsAccessor() = default;
+
+  const base::FilePath component_root_;
 };
 
 class ComponentContentsVerifier {
