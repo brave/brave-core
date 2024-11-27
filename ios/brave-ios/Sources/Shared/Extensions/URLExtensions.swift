@@ -297,39 +297,6 @@ extension URL {
 // Helpers to deal with ErrorPage URLs
 
 extension URL {
-
-  // Check if the website is a night mode blocked site
-  public var isNightModeBlockedURL: Bool {
-    guard let host = self.normalizedHostAndPath else {
-      return false
-    }
-
-    /// Site domains that should not inject night mode
-    let majorsiteList = [
-      "twitter", "youtube", "twitch",
-      "soundcloud", "github", "netflix",
-      "imdb", "mail.proton", "amazon",
-      "x",
-    ]
-
-    let searchSiteList = [
-      "search.brave", "google", "qwant",
-      "startpage", "duckduckgo", "presearch",
-    ]
-
-    let devSiteList = ["macrumors", "9to5mac", "developer.apple"]
-
-    let casualSiteList = [
-      "wowhead", "xbox", "thegamer",
-      "cineplex", "starwars",
-    ]
-
-    let darkModeEnabledSiteList =
-      majorsiteList + searchSiteList + devSiteList + casualSiteList
-
-    return darkModeEnabledSiteList.contains(where: host.contains)
-  }
-
   // Check if the website is search engine
   public var isSearchEngineURL: Bool {
     guard let host = self.normalizedHostAndPath else {
