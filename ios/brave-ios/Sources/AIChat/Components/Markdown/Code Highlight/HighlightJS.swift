@@ -76,22 +76,6 @@ class HighlightJS {
       ) {
         return processAttributedString(string, preferredFont: preferredFont)
       }
-
-      // Fallback to Apple's parser.
-      let styledCode = "<style>\(theme)</style><pre><code class='hljs'>\(code)</code></pre>"
-
-      if let data = styledCode.data(using: .utf8),
-        let string = try? NSMutableAttributedString(
-          data: data,
-          options: [
-            .documentType: NSAttributedString.DocumentType.html,
-            .characterEncoding: String.Encoding.utf8.rawValue,
-          ],
-          documentAttributes: nil
-        )
-      {
-        return processAttributedString(string, preferredFont: preferredFont)
-      }
     }
 
     return nil
