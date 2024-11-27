@@ -1,12 +1,12 @@
 diff --git a/tools/polymer/css_to_wrapper.py b/tools/polymer/css_to_wrapper.py
-index 51b625b3d460d..89ee8c39aae0f 100644
+index 51b625b3d460d..4bd1c83d92880 100644
 --- a/tools/polymer/css_to_wrapper.py
 +++ b/tools/polymer/css_to_wrapper.py
-@@ -186,6 +186,7 @@ def main(argv):
-   args = parser.parse_args(argv)
+@@ -324,6 +324,6 @@ def main(argv):
  
-   in_folder = path.normpath(path.join(_CWD, args.in_folder))
-+  import os; import glob; args.in_files.extend([os.path.relpath(f, in_folder) for f in glob.glob(path.join(in_folder, '**/*-chromium.css'))])
-   out_folder = path.normpath(path.join(_CWD, args.out_folder))
-   extension = '.js' if args.use_js else '.ts'
+   return
  
+-
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   main(sys.argv[1:])

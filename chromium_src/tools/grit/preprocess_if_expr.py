@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
-import glob
 import override_utils
 import os
 import shutil
@@ -35,7 +34,8 @@ def purge_overrides(out_folder, in_files):
 
 def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
     """Decides whether we should keep the upstream version of a file by looking
-       at the override and see if it references the upstream version"""
+       at the override and see if it references the upstream version.
+       Returns the path to the upstream file, if we keep it."""
     overridden_name = get_overridden_file_name(override_file)
 
     # The path to the brave-core override file
@@ -52,6 +52,8 @@ def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
         if os.path.basename(overridden_name).replace('.ts', '.js') in text:
             shutil.copy(upstream_file_path,
                         os.path.join(out_folder, overridden_name))
+            return overridden_name
+    return None
 
 
 def get_brave_overrides(in_folder, in_files):
@@ -94,17 +96,18 @@ def main(original_function, argv):
         overrides = get_brave_overrides(in_folder, args.in_files)
 
         if len(overrides) == 0:
-            raise NoOverridesException
+            # Throw an exception to abort the second call to `main()` early if no overrides were found.
+            raise NoOverridesException()
 
         if args.out_manifest:
             manifest_path = os.path.join(cwd, args.out_manifest)
             manifest_data = json.load(open(manifest_path))
-            manifest_data['files'].extend(
-                [get_overridden_file_name(f) for f in overrides])
 
         for override_file in overrides:
-            maybe_keep_upstream_version(override_root_folder, out_folder,
-                                        override_file)
+            overridden_name = maybe_keep_upstream_version(
+                override_root_folder, out_folder, override_file)
+            if overridden_name and args.out_manifest:
+                manifest_data['files'].append(overridden_name)
 
         args.in_folder = get_chromium_src_override(args.in_folder)
         args.in_files = overrides
