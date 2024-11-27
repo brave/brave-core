@@ -56,7 +56,11 @@ struct PlaylistItemView: View {
         HStack(alignment: .firstTextBaseline) {
           switch duration {
           case .seconds(let duration):
-            Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+            if duration > 0 {
+              Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+            } else {
+              EmptyView()
+            }
           case .indefinite:
             Text(Strings.Playlist.liveIndicator)
           case .unknown:

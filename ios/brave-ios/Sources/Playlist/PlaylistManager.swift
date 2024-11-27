@@ -764,6 +764,11 @@ extension PlaylistManager {
       return
     }
 
+    if let url = URL(string: item.src), url.scheme == "blob" {
+      completion(nil)
+      return
+    }
+
     fetchAssetDuration(item: item) { [weak self] duration in
       guard let self = self else {
         completion(nil)
