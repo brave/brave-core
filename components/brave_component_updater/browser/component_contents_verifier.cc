@@ -15,31 +15,29 @@
 
 namespace brave_component_updater {
 
-std::string ComponentContentsAccessor::GetFileAsString(
-    const base::FilePath& relative_path,
-    const std::string& default_value) {
+std::optional<std::string> ComponentContentsAccessor::GetFileAsString(
+    const base::FilePath& relative_path) {
   std::string contents;
   if (!base::ReadFileToString(GetComponentRoot().Append(relative_path),
                               &contents)) {
-    return default_value;
+    return std::nullopt;
   }
   if (!VerifyContents(relative_path, base::as_byte_span(contents))) {
-    return default_value;
+    return std::nullopt;
   }
 
   return contents;
 }
 
-std::vector<uint8_t> ComponentContentsAccessor::GetFileAsBytes(
-    const base::FilePath& relative_path,
-    const std::vector<uint8_t>& default_value) {
+std::optional<std::vector<uint8_t>> ComponentContentsAccessor::GetFileAsBytes(
+    const base::FilePath& relative_path) {
   auto contents =
       base::ReadFileToBytes(GetComponentRoot().Append(relative_path));
   if (!contents) {
-    return default_value;
+    return std::nullopt;
   }
   if (!VerifyContents(relative_path, base::as_byte_span(*contents))) {
-    return default_value;
+    return std::nullopt;
   }
   return std::move(*contents);
 }
