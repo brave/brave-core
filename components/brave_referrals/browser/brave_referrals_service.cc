@@ -591,6 +591,7 @@ void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kReferralAttemptCount, 0);
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterTimePref(kReferralAndroidFirstRunTimestamp, base::Time());
+  registry->RegisterStringPref(kSafetynetStatus, std::string());
 #endif
 }
 
