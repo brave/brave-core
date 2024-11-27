@@ -199,14 +199,14 @@ void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
   ChromeBrowserMainParts_ChromiumImpl::PostProfileInit(profile,
                                                        is_initial_profile);
 
-  #if BUILDFLAG(IS_ANDROID)
-    if (base::FeatureList::IsEnabled(
-            youtube_script_injector::features::kBraveYouTubeScriptInjector) ||
-        profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
-      auto* command_line = base::CommandLine::ForCurrentProcess();
-      command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);
-    }
-  #endif
+#if BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(
+          youtube_script_injector::features::kBraveYouTubeScriptInjector) ||
+      profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
+    auto* command_line = base::CommandLine::ForCurrentProcess();
+    command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);
+  }
+#endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
   extensions::ExtensionService* service =
