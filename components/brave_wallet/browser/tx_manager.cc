@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -88,7 +87,7 @@ void TxManager::CheckIfBlockTrackerShouldRun(
   } else if (new_pending_chain_ids != pending_chain_ids_) {
     // Stop tracker that is no longer needed.
     for (const auto& pending_chain_id : pending_chain_ids_) {
-      if (!base::Contains(new_pending_chain_ids, pending_chain_id)) {
+      if (!new_pending_chain_ids.contains(pending_chain_id)) {
         block_tracker_->Stop(pending_chain_id);
       }
     }

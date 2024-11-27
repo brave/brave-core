@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
-#include "base/containers/contains.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -411,7 +410,7 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
 }
 
 bool AdsTabHelper::IsPlayingMedia(const std::string& media_player_uuid) {
-  return base::Contains(media_players_, media_player_uuid);
+  return media_players_.contains(media_player_uuid);
 }
 
 void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& /*video_type*/,

@@ -576,7 +576,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   ExpectCookiesOnHost(GURL("https://example.wp.com"), "frame=true");
 
   // No network cookie should be sent on first request.
-  EXPECT_FALSE(base::Contains(seen_cookies(), wp_frame_url_));
+  EXPECT_FALSE(seen_cookies().contains(wp_frame_url_));
 
   // Navigate from WordPress elsewhere.
   NavigateToPageWithFrame(cookie_iframe_url_);
@@ -586,6 +586,6 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateToPageWithFrame(wordpress_top_url_);
   NavigateFrameTo(wp_top_url_);
 
-  ASSERT_TRUE(base::Contains(seen_cookies(), wp_top_url_));
+  ASSERT_TRUE(seen_cookies().contains(wp_top_url_));
   EXPECT_EQ(seen_cookies().at(wp_top_url_), "frame=true");
 }

@@ -53,7 +53,7 @@ mojom::CommandPtr ToMojoCommand(
     auto a = mojom::Accelerator::New();
     a->codes = commands::ToCodesString(accelerator);
     a->keys = commands::ToKeysString(accelerator);
-    a->unmodifiable = base::Contains(unmodifiable, accelerator);
+    a->unmodifiable = unmodifiable.contains(accelerator);
     command->accelerators.push_back(std::move(a));
   }
   return command;
@@ -119,7 +119,7 @@ void AcceleratorService::UpdateDefaultAccelerators() {
           return !base::Contains(old_accelerators, accelerator) ||
                  // If the accelerator is marked as a system command, be sure to
                  // reset it.
-                 base::Contains(system_managed, accelerator);
+                 system_managed.contains(accelerator);
         });
 
     // Note all the removed accelerators.
@@ -134,7 +134,7 @@ void AcceleratorService::UpdateDefaultAccelerators() {
   // of default accelerators:
   for (const auto& [command_id, accelerators] : old_defaults) {
     // This is handled above.
-    if (base::Contains(default_accelerators_, command_id)) {
+    if (default_accelerators_.contains(command_id)) {
       continue;
     }
 
@@ -290,7 +290,7 @@ std::vector<int> AcceleratorService::AssignAccelerator(
               // Note: We don't erase system managed default accelerators, as
               // the system can register the same accelerator for multiple
               // commands, and we don't want resetting one to reset the other.
-              return !(base::Contains(system_managed, other) &&
+              return !(system_managed.contains(other) &&
                        is_default_accelerator) &&
                      ToCodesString(accelerator) == ToCodesString(other);
             })) {

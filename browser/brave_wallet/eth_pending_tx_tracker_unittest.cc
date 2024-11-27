@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
@@ -150,7 +149,7 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
       "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
   meta.tx()->set_nonce(uint256_t(1));
   EXPECT_TRUE(pending_tx_tracker.ShouldTxDropped(meta));
-  EXPECT_FALSE(base::Contains(pending_tx_tracker.network_nonce_map_, addr));
+  EXPECT_FALSE(pending_tx_tracker.network_nonce_map_.contains(addr));
 
   meta.tx()->set_nonce(uint256_t(4));
   EXPECT_FALSE(pending_tx_tracker.ShouldTxDropped(meta));
@@ -159,8 +158,8 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
   // drop
   EXPECT_EQ(pending_tx_tracker.dropped_blocks_counter_[meta.tx_hash()], 3);
   EXPECT_TRUE(pending_tx_tracker.ShouldTxDropped(meta));
-  EXPECT_FALSE(base::Contains(pending_tx_tracker.dropped_blocks_counter_,
-                              (meta.tx_hash())));
+  EXPECT_FALSE(
+      pending_tx_tracker.dropped_blocks_counter_.contains(meta.tx_hash()));
 }
 
 TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
