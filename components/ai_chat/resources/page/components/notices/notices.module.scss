@@ -58,9 +58,17 @@
 }
 
 .closeButton {
+  --leo-button-color: color-mix(in srgb,
+    transparent 50%,
+    var(--leo-color-container-background));
+  --leo-button-padding: 2px;
+  --leo-button-radius: 100px;
   position: absolute;
   top: 16px;
   right: 16px;
+}
+.closeIcon {
+  --leo-icon-color: var(--leo-color-icon-default);
 }
 
 @container (width < 410px) {

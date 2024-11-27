@@ -10,6 +10,7 @@ import '@brave/leo/tokens/css/variables.css'
 import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
 import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
+import getAPI from './api'
 import { AIChatContextProvider, useAIChat } from './state/ai_chat_context'
 import {
   ConversationContextProvider
