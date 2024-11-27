@@ -13,6 +13,7 @@
 
 #include "base/containers/span_reader.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "crypto/secure_hash.h"
 #include "crypto/sha2.h"
@@ -52,6 +53,8 @@ constexpr uint8_t kComponentContentsVerifierPublicKey[] = {
     0xc7, 0x02, 0x03, 0x01, 0x00, 0x01};
 
 constexpr char kVerifiedContentsPath[] = "_metadata/verified_contents.json";
+constexpr char kBraveVerifiedContentsPath[] =
+    "brave_metadata/verified_contents.json";
 
 std::string GetRootHasheForContent(base::span<const uint8_t> contents,
                                    size_t block_size) {
@@ -82,9 +85,16 @@ class ComponentContentsAccessorImpl
  public:
   explicit ComponentContentsAccessorImpl(const base::FilePath& component_root)
       : brave_component_updater::ComponentContentsAccessor(component_root) {
-    verified_contents_ = extensions::VerifiedContents::CreateFromFile(
-        kComponentContentsVerifierPublicKey,
-        component_root.AppendASCII(kVerifiedContentsPath));
+    if (base::PathExists(
+            component_root.AppendASCII(kBraveVerifiedContentsPath))) {
+      verified_contents_ = extensions::VerifiedContents::CreateFromFile(
+          kComponentContentsVerifierPublicKey,
+          component_root.AppendASCII(kBraveVerifiedContentsPath));
+    } else {
+      verified_contents_ = extensions::VerifiedContents::CreateFromFile(
+          kComponentContentsVerifierPublicKey,
+          component_root.AppendASCII(kVerifiedContentsPath));
+    }
     if (verified_contents_ &&
         verified_contents_->block_size() % crypto::kSHA256Length != 0) {
       // Unsupported block size.

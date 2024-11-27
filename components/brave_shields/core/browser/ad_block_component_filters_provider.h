@@ -19,6 +19,10 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
+namespace brave_component_updater {
+class ComponentContentsAccessor;
+}
+
 namespace base {
 class FilePath;
 }
@@ -73,9 +77,13 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   friend class ::AdBlockServiceTest;
   friend class ::DebounceBrowserTest;
 
-  void OnComponentReady(const base::FilePath&);
+  void OnComponentReady(
+      scoped_refptr<brave_component_updater::ComponentContentsAccessor>
+          accessor);
 
-  base::FilePath component_path_;
+  scoped_refptr<brave_component_updater::ComponentContentsAccessor>
+      component_accessor_;
+
   std::string component_id_;
   uint8_t permission_mask_;
   const raw_ptr<component_updater::ComponentUpdateService>
