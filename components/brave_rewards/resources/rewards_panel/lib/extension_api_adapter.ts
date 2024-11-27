@@ -54,6 +54,7 @@ export function getEarningsInfo () {
     chrome.braveRewards.getAdsAccountStatement((success, statement) => {
       if (success) {
         resolve({
+          adsReceivedThisMonth: statement.adsReceivedThisMonth,
           minEarningsLastMonth: statement.minEarningsLastMonth,
           maxEarningsLastMonth: statement.maxEarningsLastMonth,
           minEarningsThisMonth: statement.minEarningsThisMonth,

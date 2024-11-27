@@ -15,7 +15,7 @@ export const localeStrings = {
   walletAutoContribute: 'Auto-Contribute',
   walletBalanceTitle: 'Balance',
   walletDisconnected: 'Logged out',
-  walletEstimatedEarnings: 'Earnings so far',
+  walletEstimatedEarnings: 'Ads seen this month',
   walletEarningInfoText: 'This reflects your estimated earnings range for Brave Ads this month.',
   walletLogIntoYourAccount: 'Log in to your $1 account',
   walletManageAds: 'Manage ads',
