@@ -92,7 +92,7 @@ class MockServiceClient : public mojom::ServiceObserver {
               (std::vector<mojom::ConversationPtr>),
               (override));
 
-  MOCK_METHOD(void, OnStateChanged, (mojom::ServiceState), (override));
+  MOCK_METHOD(void, OnStateChanged, (mojom::ServiceStatePtr), (override));
 
  private:
   mojo::Receiver<mojom::ServiceObserver> service_observer_receiver_{this};
