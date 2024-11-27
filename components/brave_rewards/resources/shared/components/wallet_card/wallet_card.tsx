@@ -22,8 +22,6 @@ import { Optional } from '../../../shared/lib/optional'
 import { useCounterAnimation } from './counter_animation'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
-import { EarningsRange } from '../earnings_range'
-import { NewTabLink } from '../new_tab_link'
 import { ExternalWalletView } from './external_wallet_view'
 import { ExternalWalletAction } from './external_wallet_action'
 import { RewardsSummary, RewardsSummaryData } from './rewards_summary'
@@ -31,8 +29,6 @@ import { PendingRewardsView } from './pending_rewards_view'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { CaretIcon } from '../icons/caret_icon'
-
-import * as urls from '../../lib/rewards_urls'
 
 import * as style from './wallet_card.style'
 
@@ -49,6 +45,7 @@ interface Props {
   balance: Optional<number>
   externalWallet: ExternalWallet | null
   providerPayoutStatus: ProviderPayoutStatus
+  adsReceivedThisMonth?: number
   minEarningsThisMonth: number
   maxEarningsThisMonth: number
   minEarningsLastMonth: number
@@ -143,7 +140,7 @@ export function WalletCard (props: Props) {
             onExternalWalletAction={props.onExternalWalletAction}
           />
         </style.statusIndicator>
-        <style.earnings>
+        <style.earnings className={props.adsReceivedThisMonth === undefined ? 'hidden' : ''}>
           <style.earningsHeader>
             <style.earningsHeaderTitle>
               {getString('walletEstimatedEarnings')}
@@ -171,22 +168,7 @@ export function WalletCard (props: Props) {
               {monthFormatter.format(new Date())}
             </style.earningsMonth>
             <style.earningsAmount>
-              {
-                props.externalWallet
-                  ? <EarningsRange
-                      minimum={props.minEarningsThisMonth}
-                      maximum={props.maxEarningsThisMonth}
-                      minimumFractionDigits={3}
-                    />
-                  : <style.hiddenEarnings>
-                      <style.hiddenEarningsValue>
-                        - -
-                      </style.hiddenEarningsValue>
-                      <NewTabLink href={urls.rewardsChangesURL}>
-                        {getString('rewardsLearnMore')}
-                      </NewTabLink>
-                    </style.hiddenEarnings>
-              }
+              {props.adsReceivedThisMonth}
             </style.earningsAmount>
           </style.earningsDisplay>
         </style.earnings>
