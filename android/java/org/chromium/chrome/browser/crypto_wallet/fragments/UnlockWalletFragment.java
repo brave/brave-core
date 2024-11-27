@@ -118,6 +118,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
 
         mUnlockWalletRestoreButton.setOnClickListener(
                 v -> {
+                    mUnlockWalletRestoreButton.setEnabled(false);
                     onNextPage.gotoRestorePage(false);
                     mUnlockWalletPassword.setText(null);
                 });
@@ -143,6 +144,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
     @Override
     public void onResume() {
         super.onResume();
+        mUnlockWalletRestoreButton.setEnabled(true);
         if (mOnNextPage != null) {
             mOnNextPage.showCloseButton(false);
             mOnNextPage.showBackButton(false);
