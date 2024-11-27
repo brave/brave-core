@@ -194,67 +194,69 @@ function Main() {
         onScroll={handleScroll}
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        <div className={styles.conversationContent}
-          ref={conversationContentElement}>
-          {aiChatContext.hasAcceptedAgreement && <>
-            <ModelIntro />
-            <ConversationEntries
-              onLastElementHeightChange={handleLastElementHeightChange}
-            />
-          </>}
+        <div
+          className={styles.conversationContent}
+          ref={conversationContentElement}
+        >
+          {aiChatContext.hasAcceptedAgreement && (
+            <>
+              <ModelIntro />
+              <ConversationEntries
+                onLastElementHeightChange={handleLastElementHeightChange}
+              />
+            </>
+          )}
           {currentErrorElement && (
             <div className={styles.promptContainer}>{currentErrorElement}</div>
           )}
-          {
-            aiChatContext.hasAcceptedAgreement && !aiChatContext.isStorageNoticeDismissed &&
+          {aiChatContext.hasAcceptedAgreement && !aiChatContext.isStorageNoticeDismissed && (
             <div className={styles.promptContainer}>
               <NoticeConversationStorage />
             </div>
-          }
-          {
-            shouldShowPremiumSuggestionForModel && (
-              <div className={styles.promptContainer}>
-                <PremiumSuggestion
-                  title={getLocale('unlockPremiumTitle')}
-                  secondaryActionButton={
-                    <Button
-                      kind='plain-faint'
-                      onClick={() => conversationContext.switchToBasicModel()}
-                    >
-                      {getLocale('switchToBasicModelButtonLabel')}
-                    </Button>
-                  }
-                />
-              </div>
-            )
-          }
-          {
-            shouldShowPremiumSuggestionStandalone && (
-              <div className={styles.promptContainer}>
-                <PremiumSuggestion
-                  title={getLocale('unlockPremiumTitle')}
-                  secondaryActionButton={
-                    <Button
-                      kind='plain-faint'
-                      onClick={() => aiChatContext.dismissPremiumPrompt()}
-                    >
-                      {getLocale('dismissButtonLabel')}
-                    </Button>
-                  }
-                />
-              </div>
-            )
-          }
-          {aiChatContext.isPremiumUserDisconnected && (!conversationContext.currentModel || isLeoModel(conversationContext.currentModel)) &&
+          )}
+          {shouldShowPremiumSuggestionForModel && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale('unlockPremiumTitle')}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => conversationContext.switchToBasicModel()}
+                  >
+                    {getLocale('switchToBasicModelButtonLabel')}
+                  </Button>
+                }
+              />
+            </div>
+          )}
+          {shouldShowPremiumSuggestionStandalone && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale('unlockPremiumTitle')}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => aiChatContext.dismissPremiumPrompt()}
+                  >
+                    {getLocale('dismissButtonLabel')}
+                  </Button>
+                }
+              />
+            </div>
+          )}
+          {aiChatContext.isPremiumUserDisconnected && (!conversationContext.currentModel || isLeoModel(conversationContext.currentModel)) && (
             <div className={styles.promptContainer}>
               <WarningPremiumDisconnected />
             </div>
-          }
-          {conversationContext.shouldShowLongConversationInfo &&
+          )}
+          {conversationContext.shouldShowLongConversationInfo && (
             <div className={styles.promptContainer}>
               <LongConversationInfo />
-            </div>}
-          {!aiChatContext.hasAcceptedAgreement && !conversationContext.conversationHistory.length && <WelcomeGuide />}
+            </div>
+          )}
+          {!aiChatContext.hasAcceptedAgreement && !conversationContext.conversationHistory.length && (
+            <WelcomeGuide />
+          )}
         </div>
       </div>
       <div className={styles.input}>
