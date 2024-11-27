@@ -127,7 +127,7 @@ class API {
     )
   }, 0)
 
-  private setPartialState(partialState: Partial<State>) {
+  public setPartialState(partialState: Partial<State>) {
     this.state = { ...this.state, ...partialState }
     this.dispatchDebouncedStateChange()
   }

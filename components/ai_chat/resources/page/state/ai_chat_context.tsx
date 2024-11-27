@@ -5,7 +5,8 @@
 
 import * as React from 'react'
 import getAPI, * as AIChat from '../api'
-export type AIChatContext = AIChat.State & {
+
+type AIChatContextInternal = {
   initialized: boolean
   goPremium: () => void
   managePremium: () => void
@@ -20,6 +21,8 @@ export type AIChatContext = AIChat.State & {
   editingConversationId: string | null
   setEditingConversationId: (uuid: string | null) => void
 }
+
+export type AIChatContext = AIChat.State & AIChatContextInternal
 
 const defaultContext: AIChatContext = {
   ...AIChat.defaultUIState,
@@ -49,21 +52,21 @@ export function AIChatContextProvider(props: React.PropsWithChildren) {
   })
   const [editingConversationId, setEditingConversationId] = React.useState<string | null>(null)
 
-  const setPartialContext = (partialContext: Partial<AIChatContext>) => {
+  const updateFromAPIState = (state: AIChat.State) => {
     setContext((value) => ({
       ...value,
-      ...partialContext
+      ...state
     }))
   }
 
   React.useEffect(() => {
     // Update with any global state change that may have occurred between
     // first React render and first useEffect run.
-    setPartialContext(getAPI().state)
+    updateFromAPIState(getAPI().state)
 
     // Listen for global state changes that occur after now
     const onGlobalStateChange = () => {
-      setPartialContext(getAPI().state)
+      updateFromAPIState(getAPI().state)
     }
     getAPI().addStateChangeListener(onGlobalStateChange)
 
@@ -81,7 +84,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren) {
     managePremium: () => uiHandler.managePremium(),
     markStorageNoticeViewed: () => service.dismissStorageNotice(),
     dismissStorageNotice: () => {
-      setPartialContext({
+      getAPI().setPartialState({
         isStorageNoticeDismissed: true
       })
       service.dismissStorageNotice()
