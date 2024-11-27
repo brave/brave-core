@@ -29,7 +29,7 @@ import java.util.Map;
 public class QuickSearchEnginesUtil {
     private static final String YOUTUBE_SEARCH_ENGINE_URL =
             "https://www.youtube.com/results?search_query={searchTerms}";
-    private static final String GOOGLE_SEARCH_ENGINE_URL =
+    public static final String GOOGLE_SEARCH_ENGINE_URL =
             "https://www.google.com/search?q={searchTerms}";
 
     public static void saveSearchEnginesIntoPref(
@@ -88,18 +88,7 @@ public class QuickSearchEnginesUtil {
         }
 
         if (!defaultSearchEngineTemplateUrl.getShortName().equals(getPreviousDSE())) {
-            Map<String, QuickSearchEnginesModel> defaultSearchEnginesMap =
-                    new LinkedHashMap<String, QuickSearchEnginesModel>();
-            TemplateUrl previousDSETemplateUrl =
-                    BraveSearchEngineUtils.getTemplateUrlByShortName(profile, getPreviousDSE());
-            if (searchEnginesMap.containsKey(previousDSETemplateUrl.getKeyword())) {
-                searchEnginesMap.remove(previousDSETemplateUrl.getKeyword());
-            }
-            removeDefaultSearchEngine(searchEnginesMap, defaultSearchEngineTemplateUrl);
-            addSearchEngines(defaultSearchEnginesMap, previousDSETemplateUrl);
-            defaultSearchEnginesMap.putAll(searchEnginesMap);
-            searchEnginesMap = defaultSearchEnginesMap;
-            setPreviousDSE(defaultSearchEngineTemplateUrl.getShortName());
+            addPreviousDSE(profile, searchEnginesMap, defaultSearchEngineTemplateUrl);
         } else {
             for (TemplateUrl templateUrl : templateUrls) {
                 if (!searchEnginesMap.containsKey(templateUrl.getKeyword())) {
@@ -120,6 +109,38 @@ public class QuickSearchEnginesUtil {
         return searchEnginesMap;
     }
 
+    private static void addPreviousDSE(
+            Profile profile,
+            Map<String, QuickSearchEnginesModel> searchEnginesMap,
+            TemplateUrl defaultSearchEngineTemplateUrl) {
+        // Create new map to store search engines with previous DSE first
+        Map<String, QuickSearchEnginesModel> orderedSearchEnginesMap =
+                new LinkedHashMap<String, QuickSearchEnginesModel>();
+
+        // Get previous default search engine template URL
+        TemplateUrl previousDSETemplateUrl =
+                BraveSearchEngineUtils.getTemplateUrlByShortName(profile, getPreviousDSE());
+
+        // Remove previous DSE from current map if it exists
+        searchEnginesMap.remove(previousDSETemplateUrl.getKeyword());
+
+        // Remove current default search engine
+        removeDefaultSearchEngine(searchEnginesMap, defaultSearchEngineTemplateUrl);
+
+        // Add previous DSE as first entry in ordered map
+        addSearchEngines(orderedSearchEnginesMap, previousDSETemplateUrl);
+
+        // Add remaining search engines after previous DSE
+        orderedSearchEnginesMap.putAll(searchEnginesMap);
+
+        // Update reference to ordered map
+        searchEnginesMap.clear();
+        searchEnginesMap.putAll(orderedSearchEnginesMap);
+
+        // Update previous DSE to current default
+        setPreviousDSE(defaultSearchEngineTemplateUrl.getShortName());
+    }
+
     private static void removeDefaultSearchEngine(
             Map<String, QuickSearchEnginesModel> searchEnginesMap,
             TemplateUrl defaultSearchEngineTemplateUrl) {
@@ -131,16 +152,11 @@ public class QuickSearchEnginesUtil {
     private static void addSearchEngines(
             Map<String, QuickSearchEnginesModel> searchEnginesMap,
             TemplateUrl searchEngineTemplateUrl) {
-        String url =
-                BraveActivity.GOOGLE_SEARCH_ENGINE_KEYWORD.equals(
-                                searchEngineTemplateUrl.getKeyword())
-                        ? GOOGLE_SEARCH_ENGINE_URL
-                        : searchEngineTemplateUrl.getURL();
         QuickSearchEnginesModel quickSearchEnginesModel =
                 new QuickSearchEnginesModel(
                         searchEngineTemplateUrl.getShortName(),
                         searchEngineTemplateUrl.getKeyword(),
-                        url,
+                        searchEngineTemplateUrl.getURL(),
                         true);
         searchEnginesMap.put(searchEngineTemplateUrl.getKeyword(), quickSearchEnginesModel);
     }
