@@ -31,8 +31,27 @@ import java.util.Set;
 public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragment {
 
     private static final int NEXT_PAGE_DELAY_MS = 700;
+    private static final String OVERRIDE_PREVIOUS_WALLET_ARG = "overridePreviousWallet";
 
     private boolean mAddTransitionDelay = true;
+    private boolean mOverridePreviousWallet;
+
+    @NonNull
+    public static OnboardingCreatingWalletFragment newInstance(
+            final boolean overridePreviousWallet) {
+        OnboardingCreatingWalletFragment fragment = new OnboardingCreatingWalletFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(OVERRIDE_PREVIOUS_WALLET_ARG, overridePreviousWallet);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mOverridePreviousWallet =
+                requireArguments().getBoolean(OVERRIDE_PREVIOUS_WALLET_ARG, false);
+    }
 
     @Override
     public View onCreateView(
@@ -55,10 +74,12 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
 
         KeyringModel keyringModel = getKeyringModel();
         if (keyringModel != null) {
-            // Check if a wallet is already present and skip if that's the case.
+            // Check if a wallet is already present and skip only
+            // when not restoring a wallet over an existing one from
+            // unlock screen button.
             keyringModel.isWalletCreated(
                     isCreated -> {
-                        if (isCreated) {
+                        if (isCreated && !mOverridePreviousWallet) {
                             goToNextPage();
                             return;
                         }
