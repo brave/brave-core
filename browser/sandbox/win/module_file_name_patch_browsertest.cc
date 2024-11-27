@@ -70,11 +70,11 @@ IN_PROC_BROWSER_TEST_P(ModuleFileNameBrowserTest, CheckPath) {
       std::wstring_view(main_path).ends_with(L"brave_browser_tests.exe"))
       << main_path;
 
-  constexpr const size_t kInterceptedFunctions = 4u;
+  static constexpr size_t kInterceptedFunctions = 4u;
 #if !defined(ADDRESS_SANITIZER)
-  constexpr const size_t kExpectedReplacements = 4u;
+  static constexpr size_t kExpectedReplacements = 4u;
 #else
-  constexpr const size_t kExpectedReplacements = 3u;
+  static constexpr size_t kExpectedReplacements = 3u;
 #endif
 
   if (GetParam()) {

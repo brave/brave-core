@@ -16,6 +16,8 @@
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -43,6 +45,7 @@ class WebcompatReporterService : public KeyedService,
   };
 
   WebcompatReporterService(
+      PrefService* profile_prefs,
       std::unique_ptr<Delegate> service_delegate,
       std::unique_ptr<WebcompatReportUploader> report_uploader);
   WebcompatReporterService(const WebcompatReporterService&) = delete;
@@ -54,9 +57,17 @@ class WebcompatReporterService : public KeyedService,
 
   void SubmitWebcompatReport(mojom::ReportInfoPtr report_info) override;
 
+  void GetContactInfoSaveFlag(GetContactInfoSaveFlagCallback callback) override;
+
+  void SetContactInfoSaveFlag(bool value) override;
+
+  void GetContactInfo(GetContactInfoCallback callback) override;
+
  private:
   friend class WebcompatReporterServiceUnitTest;
+  void SetPrefServiceTest(PrefService* pref_service);
 
+  raw_ptr<PrefService> profile_prefs_;
   std::unique_ptr<Delegate> service_delegate_;
   std::unique_ptr<WebcompatReportUploader> report_uploader_;
   mojo::ReceiverSet<mojom::WebcompatReporterHandler> receivers_;

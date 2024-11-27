@@ -6,7 +6,9 @@
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 
 #include <algorithm>
+#include <array>
 #include <optional>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -40,8 +42,9 @@ constexpr char kNewTabPageEventCountConstellationDictPref[] =
     "brave.brave_ads.p3a.ntp_event_count_constellation";
 constexpr char kNewTabPageKnownCampaignsDictPref[] =
     "brave.brave_ads.p3a.ntp_known_campaigns";
-constexpr const char* kAllCreativeCountDicts[] = {
-    kNewTabPageEventCountDictPref, kNewTabPageEventCountConstellationDictPref};
+constexpr auto kAllCreativeCountDicts = std::to_array<std::string_view>(
+    {kNewTabPageEventCountDictPref,
+     kNewTabPageEventCountConstellationDictPref});
 
 constexpr int kCountBuckets[] = {0, 1, 2, 3, 8, 12, 16};
 
@@ -313,7 +316,7 @@ void NTPP3AHelperImpl::CleanOldCampaignsAndCreatives() {
     it = update->erase(it);
   }
 
-  for (const char* dict_pref : kAllCreativeCountDicts) {
+  for (auto dict_pref : kAllCreativeCountDicts) {
     ScopedDictPrefUpdate creative_update(local_state_, dict_pref);
 
     for (auto it = creative_update->begin(); it != creative_update->end();) {
@@ -355,8 +358,8 @@ void NTPP3AHelperImpl::RemoveMetricIfInstanceDoesNotExist(
     const std::string& histogram_name,
     const std::string& event_type,
     const std::string& creative_instance_id) {
-  bool creative_instance_exists = base::ranges::any_of(
-      kAllCreativeCountDicts, [&](const char* dict_pref_name) {
+  bool creative_instance_exists =
+      base::ranges::any_of(kAllCreativeCountDicts, [&](auto dict_pref_name) {
         const auto& count_dict = local_state_->GetDict(dict_pref_name);
         const auto* creative_dict = count_dict.FindDict(creative_instance_id);
         if (creative_dict == nullptr) {
@@ -383,7 +386,7 @@ void NTPP3AHelperImpl::UpdateMetricCount(
   // epochs do not perfectly align.
   // TODO(djandries): Remove JSON counts once transition to Constellation
   // is complete
-  for (const char* dict_pref : kAllCreativeCountDicts) {
+  for (auto dict_pref : kAllCreativeCountDicts) {
     if (dict_pref == kNewTabPageEventCountDictPref && is_json_deprecated_) {
       continue;
     }

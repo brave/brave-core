@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import BraveUI
 import DesignSystem
 import Preferences
@@ -128,7 +129,7 @@ public struct AIChatAdvancedSettingsView: View {
     }
 
     // No order found
-    return "None"
+    return Strings.AIChat.subscriptionNoneTitle
   }
 
   private var expirationDateTitle: String {
@@ -160,6 +161,10 @@ public struct AIChatAdvancedSettingsView: View {
       let date = periodToDate(period)
     {
       return dateFormatter.string(from: date)
+    }
+
+    if let expiryDate = viewModel.inAppPurchaseSubscriptionExpiryDate {
+      return dateFormatter.string(from: expiryDate)
     }
 
     // Display the info from SkusSDK
@@ -197,7 +202,7 @@ public struct AIChatAdvancedSettingsView: View {
         if viewModel.canDisplaySubscriptionStatus
           && (model.premiumStatus == .active || model.premiumStatus == .activeDisconnected)
         {
-          if viewModel.isSubscriptionStatusLoading {
+          if viewModel.isSubscriptionStatusLoaded {
             AIChatAdvancedSettingsLabelDetailView(
               title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
               detail: subscriptionStatusTitle
@@ -327,6 +332,15 @@ public struct AIChatAdvancedSettingsView: View {
               dismissButton: .default(Text(Strings.OKString))
             )
           }
+        }
+
+        // Check if there's an AppStore purchase
+        if viewModel.inAppPurchaseSubscriptionState != nil {
+          NavigationLink {
+            StoreKitReceiptSimpleView()
+          } label: {
+            LabelView(title: Strings.AIChat.advancedSettingsViewReceiptTitle)
+          }.listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       } header: {
         Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle.uppercased())

@@ -6,6 +6,7 @@
 import CoreData
 import Foundation
 import Shared
+import SwiftUI
 import os.log
 
 @objc(PlaylistItem)
@@ -164,7 +165,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         context: context
       )
 
-      PlaylistItem.reorderItems(context: context)
+      PlaylistItem.reorderItems(context: context, folderUUID: folderUUID)
       PlaylistItem.saveContext(context)
 
       DispatchQueue.main.async {
@@ -200,8 +201,38 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         playlistItem.playlistFolder = folder
       }
 
-      PlaylistItem.reorderItems(context: context)
+      PlaylistItem.reorderItems(context: context, folderUUID: folderUUID)
       PlaylistItem.saveContext(context)
+
+      DispatchQueue.main.async {
+        completion?()
+      }
+    }
+  }
+
+  public static func reorderItems(
+    in folder: PlaylistFolder,
+    fromOffsets indexSet: IndexSet,
+    toOffset offset: Int,
+    completion: (() -> Void)? = nil
+  ) {
+    let frc = PlaylistItem.frc(parentFolder: folder)
+    try? frc.performFetch()
+    guard var objects = frc.fetchedObjects else {
+      return
+    }
+    frc.managedObjectContext.perform {
+      objects.move(fromOffsets: indexSet, toOffset: offset)
+
+      for (order, item) in objects.enumerated().reversed() {
+        item.order = Int32(order)
+      }
+
+      do {
+        try frc.managedObjectContext.save()
+      } catch {
+        Logger.module.error("\(error.localizedDescription)")
+      }
 
       DispatchQueue.main.async {
         completion?()
@@ -235,7 +266,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
           playlistItem.playlistFolder = folder
         })
 
-        PlaylistItem.reorderItems(context: context)
+        PlaylistItem.reorderItems(context: context, folderUUID: folderUUID)
         PlaylistItem.saveContext(context)
 
         DispatchQueue.main.async {
@@ -269,7 +300,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         playlistItem.playlistFolder = folder
       })
 
-      PlaylistItem.reorderItems(context: context)
+      PlaylistItem.reorderItems(context: context, folderUUID: folderUUID)
 
       // Issue #6243 The policy change is added to prevent merge conflicts
       // Occasionally saving context will give error
@@ -451,7 +482,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         playlistItem.playlistFolder = folder
       }
 
-      PlaylistItem.reorderItems(context: context)
+      PlaylistItem.reorderItems(context: context, folderUUID: folderUUID)
       PlaylistItem.saveContext(context)
 
       DispatchQueue.main.async {
@@ -514,7 +545,11 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     }
   }
 
-  public static func moveItems(items: [NSManagedObjectID], to folderUUID: String?) {
+  public static func moveItems(
+    items: [NSManagedObjectID],
+    to folderUUID: String?,
+    completion: (() -> Void)? = nil
+  ) {
     DataController.perform { context in
       var folder: PlaylistFolder?
       if let folderUUID = folderUUID {
@@ -528,15 +563,25 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
         $0.playlistFolder = folder
         folder?.playlistItems?.insert($0)
       }
+
+      DispatchQueue.main.async {
+        completion?()
+      }
     }
   }
 
   // MARK: - Internal
-  private static func reorderItems(context: NSManagedObjectContext) {
+  private static func reorderItems(context: NSManagedObjectContext, folderUUID: String?) {
     DataController.perform(context: .existing(context), save: true) { context in
       let request = NSFetchRequest<PlaylistItem>()
       request.entity = PlaylistItem.entity(context)
       request.fetchBatchSize = 20
+
+      if let folderUUID = folderUUID {
+        request.predicate = NSPredicate(format: "playlistFolder.uuid == %@", folderUUID)
+      } else {
+        request.predicate = NSPredicate(format: "playlistFolder == nil")
+      }
 
       let orderSort = NSSortDescriptor(key: "order", ascending: true)
       let items = PlaylistItem.all(sortDescriptors: [orderSort], context: context) ?? []

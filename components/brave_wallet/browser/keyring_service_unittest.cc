@@ -351,19 +351,19 @@ class KeyringServiceUnitTest : public testing::Test {
       mojom::KeyringId keyring_id) {
     EXPECT_CALL(*observer, WalletCreated()).Times(0);
 
-    for (size_t i = 0; i < imported_accounts.size(); ++i) {
-      auto account = ImportFilecoinAccount(service, imported_accounts[i].name,
-                                           imported_accounts[i].import_payload,
-                                           imported_accounts[i].network);
+    for (const auto& imported_account : imported_accounts) {
+      auto account = ImportFilecoinAccount(service, imported_account.name,
+                                           imported_account.import_payload,
+                                           imported_account.network);
       ASSERT_TRUE(account);
-      EXPECT_EQ(account->address, imported_accounts[i].address);
+      EXPECT_EQ(account->address, imported_account.address);
 
       auto payload = EncodePrivateKeyForExport(
           service, MakeAccountId(mojom::CoinType::FIL, keyring_id,
                                  mojom::AccountKind::kImported,
-                                 imported_accounts[i].address));
+                                 imported_account.address));
       EXPECT_TRUE(payload);
-      EXPECT_EQ(imported_accounts[i].import_payload, *payload);
+      EXPECT_EQ(imported_account.import_payload, *payload);
 
       EXPECT_EQ(account, service->GetSelectedWalletAccount());
     }

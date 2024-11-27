@@ -6,10 +6,15 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONSTANTS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONSTANTS_H_
 
+#include <stddef.h>
+
+#include <cstdint>
 #include <limits>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/span.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
@@ -19,11 +24,15 @@ namespace ai_chat {
 base::span<const webui::LocalizedString> GetLocalizedStrings();
 std::vector<mojom::ActionGroupPtr> GetActionMenuList();
 
-extern const base::fixed_flat_set<std::string_view, 1>
-    kPrintPreviewRetrievalHosts;
+inline constexpr auto kPrintPreviewRetrievalHosts =
+    base::MakeFixedFlatSet<std::string_view>({
+        "docs.google.com",
+    });
 
 inline constexpr uint8_t kMaxPreviewPages = 20;
-extern const char kLeoModelSupportUrl[];
+inline constexpr char kLeoModelSupportUrl[] =
+    "https://support.brave.com/hc/en-us/categories/"
+    "20990938292237-Brave-Leo";
 
 // Upon registering a custom model, users have the ability to explicitly
 // provide a context size (in tokens). When present, we'll use this value to

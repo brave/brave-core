@@ -8,7 +8,6 @@
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/misc_metrics/uptime_monitor.h"
-#include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -96,9 +95,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   brave_sync::MigrateBraveSyncPrefs(profile_prefs);
 
 #if !BUILDFLAG(IS_ANDROID)
-  // Added 9/2020
-  new_tab_page::MigrateNewTabPagePrefs(profile_prefs);
-
   // Added 10/2022
   profile_prefs->ClearPref(kDefaultBrowserLaunchingCount);
 #endif

@@ -164,7 +164,8 @@ void EthAllowanceManager::OnGetCurrentBlock(
     return;
   }
 
-  const auto approval_topic_hash = KeccakHash(kApprovalTopicFunctionSignature);
+  const auto approval_topic_hash = ToHex(KeccakHash(
+      base::byte_span_from_cstring(kApprovalTopicFunctionSignature)));
   for (const auto& account_address : account_addresses) {
     std::string account_address_hex;
     if (!PadHexEncodedParameter(account_address, &account_address_hex)) {
@@ -238,7 +239,6 @@ void EthAllowanceManager::LoadCachedAllowances(
     const auto* amount = ca_dict->FindString(kAmount);
 
     if (!approver_address || !contract_address || !spender_address || !amount) {
-      NOTREACHED_IN_MIGRATION() << " Wrong allowance cache format";
       continue;
     }
 

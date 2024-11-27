@@ -8,18 +8,6 @@ import * as React from 'react'
 import { Locale, LocaleContext } from '../../shared/lib/locale_context'
 
 export type StringKey =
-  'acAmountLabel' |
-  'acAmountText' |
-  'acAttentionLabel' |
-  'acDisabledText' |
-  'acDisabledTitle' |
-  'acEmptyListText' |
-  'acInfoText' |
-  'acInfoTitle' |
-  'acNextContributionLabel' |
-  'acSiteCountLabel' |
-  'acSiteLabel' |
-  'acTitle' |
   'adsBrowserUpgradeRequiredText' |
   'adsHistoryButtonLabel' |
   'adsHistoryMarkInappropriateLabel' |
@@ -32,7 +20,6 @@ export type StringKey =
   'adsSettingsAdTypeTitle' |
   'adsSettingsAdViewsTitle' |
   'adsSettingsButtonLabel' |
-  'adsSettingsEarningsLabel' |
   'adsSettingsPayoutDateLabel' |
   'adsSettingsTotalAdsLabel' |
   'adsSettingsNewsOffTooltip' |
@@ -91,6 +78,8 @@ export type StringKey =
   'captchaSolvedTitle' |
   'captchaSupportButtonLabel' |
   'closeButtonLabel' |
+  'communityTitle' |
+  'connectedAdsViewedText' |
   'connectAccountSubtext' |
   'connectAccountText' |
   'connectButtonLabel' |
@@ -140,17 +129,14 @@ export type StringKey =
   'countrySelectText' |
   'doneButtonLabel' |
   'earningsAdsReceivedText' |
-  'earningsEstimateText' |
-  'earningsRangeTooltip' |
   'helpButtonLabel' |
   'learnMoreLink' |
+  'merchStoreTitle' |
   'moreButtonLabel' |
   'navigationCreatorsLabel' |
   'navigationExploreLabel' |
   'navigationHomeLabel' |
   'newBadgeText' |
-  'notificationAutoContributeCompletedText' |
-  'notificationAutoContributeCompletedTitle' |
   'notificationWalletDisconnectedAction' |
   'notificationWalletDisconnectedText' |
   'notificationWalletDisconnectedTitle' |
@@ -206,6 +192,8 @@ export type StringKey =
   'tosUpdateRequiredText' |
   'tosUpdateRequiredTitle' |
   'unconnectedAdsViewedText' |
+  'viewAllLink' |
+  'viewStoreLink' |
   'wdpCheckboxLabel' |
   'wdpOptInText' |
   'wdpOptInTitle'

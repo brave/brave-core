@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as mojom from './mojom'
-import { AdType } from '../lib/app_model'
+import { AdType } from '../lib/app_state'
 
 import {
   ExternalWalletProvider,
@@ -13,9 +13,7 @@ import {
 
 import {
   Notification,
-  AutoContributeCompletedNotification,
-  MonthlyContributionFailedNotification,
-  ExternalWalletDisconnectedNotification,
+  ExternalWalletDisconnectedNotification
 } from '../../shared/components/notifications'
 
 // Converts a mojo Time value to a JS time ms value.
@@ -38,23 +36,6 @@ export function mapNotification (
   }
 
   switch (obj.type) {
-    case mojom.RewardsNotificationType.kAutoContribute:
-      switch (parseInt(obj.args[1], 10)) {
-        case 0: // Success
-          return create<AutoContributeCompletedNotification>({
-            ...baseProps,
-            type: 'auto-contribute-completed',
-            amount: parseFloat(obj.args[3]) || 0
-          })
-        case 1: // General error
-        case 15: // Not enough funds
-          return create<MonthlyContributionFailedNotification>({
-            ...baseProps,
-            type: 'monthly-contribution-failed',
-            reason: 'unknown'
-          })
-      }
-      break
     case mojom.RewardsNotificationType.kTipsProcessed:
       return {
         ...baseProps,

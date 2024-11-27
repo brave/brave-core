@@ -9,6 +9,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -391,6 +392,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (getLocationBar() instanceof BraveLocationBarCoordinator) {
             ((BraveLocationBarCoordinator) getLocationBar()).clearOmniboxFocus();
         }
+    }
+
+    public boolean isUrlBarFocused() {
+        if (getLocationBar() instanceof BraveLocationBarCoordinator) {
+            return ((BraveLocationBarCoordinator) getLocationBar()).isUrlBarFocused();
+        }
+        return false;
     }
 
     @Override
@@ -944,6 +952,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        Context context = getContext();
+        if (context instanceof Activity
+                && (((Activity) context).isFinishing() || ((Activity) context).isDestroyed())) {
+            return;
+        }
         dismissShieldsTooltip();
         reopenShieldsPanel();
         // TODO: show wallet panel
@@ -1203,8 +1216,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void showWalletPanel() {
-        dismissWalletPanelOrDialog();
-        showWalletPanelInternal(this);
+        if (mDAppsWalletController == null) {
+            showWalletPanelInternal(this);
+        } else if (!mDAppsWalletController.isShowingPanel()) {
+            mDAppsWalletController.showWalletPanel();
+        }
     }
 
     @Override
@@ -1275,11 +1291,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         Context context = getContext();
         String countryCode = Locale.getDefault().getCountry();
         try {
+            BraveActivity braveActivity = BraveActivity.getBraveActivity();
             if (hasFocus
                     && PackageUtils.isFirstInstall(context)
-                    && BraveActivity.getBraveActivity().getActivityTab() != null
-                    && UrlUtilities.isNtpUrl(
-                            BraveActivity.getBraveActivity().getActivityTab().getUrl().getSpec())
+                    && braveActivity.getActivityTab() != null
+                    && UrlUtilities.isNtpUrl(braveActivity.getActivityTab().getUrl().getSpec())
                     && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
                     && OnboardingPrefManager.getInstance().getUrlFocusCount() == 1
                     && !BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS.contains(countryCode)) {
@@ -1287,7 +1303,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 searchActivityIntent.setAction(Intent.ACTION_VIEW);
                 context.startActivity(searchActivityIntent);
             }
-
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onUrlFocusChange " + e);
         }

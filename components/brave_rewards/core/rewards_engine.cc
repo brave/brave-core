@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/endpoints/brave/get_ui_cards.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/initialization_manager.h"
@@ -83,19 +84,10 @@ void RewardsEngine::GetRewardsParameters(
   });
 }
 
-void RewardsEngine::GetAutoContributeProperties(
-    GetAutoContributePropertiesCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(mojom::AutoContributeProperties::New());
-  }
-
-  auto props = mojom::AutoContributeProperties::New();
-  props->enabled_contribute = state()->GetAutoContributeEnabled();
-  props->amount = state()->GetAutoContributionAmount();
-  props->contribution_min_time = state()->GetPublisherMinVisitTime();
-  props->contribution_min_visits = state()->GetPublisherMinVisits();
-  props->reconcile_stamp = state()->GetReconcileStamp();
-  std::move(callback).Run(std::move(props));
+void RewardsEngine::FetchUICards(FetchUICardsCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    Get<endpoints::GetUICards>().Request(std::move(callback));
+  });
 }
 
 void RewardsEngine::GetPublisherMinVisitTime(
@@ -114,15 +106,6 @@ void RewardsEngine::GetPublisherMinVisits(
   }
 
   std::move(callback).Run(state()->GetPublisherMinVisits());
-}
-
-void RewardsEngine::GetAutoContributeEnabled(
-    GetAutoContributeEnabledCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(false);
-  }
-
-  std::move(callback).Run(state()->GetAutoContributeEnabled());
 }
 
 void RewardsEngine::GetReconcileStamp(GetReconcileStampCallback callback) {
@@ -281,14 +264,6 @@ void RewardsEngine::SetPublisherMinVisits(int visits) {
   WhenReady([this, visits] { state()->SetPublisherMinVisits(visits); });
 }
 
-void RewardsEngine::SetAutoContributionAmount(double amount) {
-  WhenReady([this, amount] { state()->SetAutoContributionAmount(amount); });
-}
-
-void RewardsEngine::SetAutoContributeEnabled(bool enabled) {
-  WhenReady([this, enabled] { state()->SetAutoContributeEnabled(enabled); });
-}
-
 void RewardsEngine::GetBalanceReport(mojom::ActivityMonth month,
                                          int32_t year,
                                          GetBalanceReportCallback callback) {
@@ -306,15 +281,6 @@ void RewardsEngine::GetPublisherActivityFromUrl(
     publisher()->GetPublisherActivityFromUrl(window_id, std::move(visit_data),
                                              publisher_blob);
   });
-}
-
-void RewardsEngine::GetAutoContributionAmount(
-    GetAutoContributionAmountCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(0);
-  }
-
-  std::move(callback).Run(state()->GetAutoContributionAmount());
 }
 
 void RewardsEngine::GetPublisherBanner(
@@ -597,12 +563,6 @@ std::string RewardsEngine::GetClientCountryCode() {
   std::string country_code;
   client_->GetClientCountryCode(&country_code);
   return country_code;
-}
-
-bool RewardsEngine::IsAutoContributeSupportedForClient() {
-  bool value = false;
-  client_->IsAutoContributeSupportedForClient(&value);
-  return value;
 }
 
 std::string RewardsEngine::GetLegacyWallet() {

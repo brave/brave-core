@@ -4,126 +4,158 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import useMediaQuery from '$web-common/useMediaQuery'
-import { useAIChat } from '../../state/ai_chat_context'
-import ConversationsList from '../conversations_list'
-import { NavigationHeader } from '../header'
-import Main from '../main'
 import styles from './style.module.scss'
+import classnames from '$web-common/classnames'
+import Icon from '@brave/leo/react/icon'
+import ButtonMenu from '@brave/leo/react/buttonMenu'
+import { useAIChat } from '../../state/ai_chat_context'
+import { getLocale } from '$web-common/locale'
+import getAPI from '../../api'
+import { useConversation } from '../../state/conversation_context'
 
-export default function FullScreen() {
-  const aiChatContext = useAIChat()
-  const asideAnimationRef = React.useRef<Animation | null>()
-  const controllerRef = React.useRef(new AbortController())
-  const isSmall = useMediaQuery('(max-width: 1024px)')
-  const [isNavigationCollapsed, setIsNavigationCollapsed] = React.useState(isSmall)
-  const [isNavigationRendered, setIsNavigationRendered] = React.useState(!isSmall)
+interface SimpleInputProps {
+  text?: string
+  onSubmit?: (value: string) => void
+  onBlur?: () => void
+}
 
-  const initAsideAnimation = React.useCallback((node: HTMLElement | null) => {
-    if (!node) return
-    const open = { width: '340px', opacity: 1 }
-    const close = { width: '0px', opacity: 0 }
-    const animationOptions: KeyframeAnimationOptions = {
-      duration: 200,
-      easing: 'ease-out',
-      fill: 'forwards'
-    }
-    asideAnimationRef.current = new Animation(
-      new KeyframeEffect(node, [open, close], animationOptions)
-    )
+function SimpleInput(props: SimpleInputProps) {
+  const [value, setValue] = React.useState(props.text || '')
 
-    // Make sure we're in the right state for our screen size when
-    asideAnimationRef.current.playbackRate = isSmall ? 1 : -1
-    asideAnimationRef.current.finish()
-  }, [])
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value)
+  }
 
-  const toggleAside = () => {
-    const asideAnimation = asideAnimationRef.current
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    props.onSubmit?.(value)
+  }
 
-    if (asideAnimation) {
-      if (isNavigationCollapsed) {
-        controllerRef.current.abort()
-        controllerRef.current = new AbortController()
-        asideAnimation.ready.then(() => setIsNavigationRendered(true))
-        asideAnimation.playbackRate = -1
-      } else {
-        // 'finish' triggers in both directions, so we only need this once per close animation
-        // user may rapidly toggle the aside, so we need to abort scheduled listener in open animation
-        asideAnimation.addEventListener(
-          'finish',
-          () => setIsNavigationRendered(false),
-          { once: true, signal: controllerRef.current.signal }
-        )
-        asideAnimation.playbackRate = 1
-      }
-
-      asideAnimation.play()
-      setIsNavigationCollapsed(!isNavigationCollapsed)
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      props.onBlur?.()
     }
   }
 
-  React.useEffect(() => {
-    const isOpen = asideAnimationRef.current?.playbackRate === 1
-    if (aiChatContext.editingConversationId && isOpen) {
-      toggleAside()
-    }
-  }, [aiChatContext.editingConversationId, isNavigationCollapsed]);
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        className={styles.simpleInput}
+        type='text'
+        value={value}
+        onChange={handleChange}
+        autoFocus
+        onBlur={props.onBlur}
+        onKeyDown={handleKeyDown}
+      />
+    </form>
+  )
+}
 
-  React.useEffect(() => {
-    const isOpen = asideAnimationRef.current?.playbackRate === 1
+interface DisplayTitleProps {
+  title: string
+  description?: string
+  onEditTitle?: () => void
+  onDelete?: () => void
+}
 
-    // We've just changed to small and the sidebar was open, so close it
-    if (isSmall && !isOpen) {
-      toggleAside()
-    }
-
-    // We've just changed to big and the sidebar was closed, so open it
-    if (!isSmall && isOpen) {
-      toggleAside()
-    }
-
-  }, [isSmall])
+function DisplayTitle(props: DisplayTitleProps) {
+  const [isButtonMenuVisible, setIsButtonMenuVisible] = React.useState(false)
 
   return (
-    <div className={styles.fullscreen}>
-      <div className={styles.left}>
-        <div className={styles.controls}>
-              <Button
-              fab
-              kind='plain-faint'
-              onClick={toggleAside}
-              >
-              <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
-              </Button>
-          {!isNavigationRendered && (
-            <>
-              <Button
-                fab
-                kind='plain-faint'
-                onClick={aiChatContext.onNewConversation}
-              >
-                <Icon name='edit-box' />
-              </Button>
-            </>
-          )}
-        </div>
-        <aside
-          ref={initAsideAnimation}
-          className={styles.aside}
+    <div
+      className={styles.displayTitle}
+      onMouseEnter={() => setIsButtonMenuVisible(true)}
+      onMouseLeave={() => setIsButtonMenuVisible(false)}
+    >
+      <div className={styles.displayTitleContent}>
+        <div
+          className={styles.text}
+          onDoubleClick={props.onEditTitle}
+          title={props.title}
         >
-          {isNavigationRendered && (
-            <>
-              <NavigationHeader />
-              <ConversationsList setIsConversationsListOpen={setIsNavigationCollapsed} />
-            </>
-          )}
-        </aside>
+          {props.title}
+        </div>
+        <div className={styles.description}>{props.description}</div>
       </div>
-      <div className={styles.content}>
-        <Main />
-      </div>
+      {isButtonMenuVisible && (
+        <ButtonMenu className={styles.optionsMenu}>
+          <div
+            slot='anchor-content'
+            className={styles.optionsButton}
+          >
+            <Icon name='more-vertical' />
+          </div>
+          <leo-menu-item onClick={props.onEditTitle}>
+            <div className={styles.optionsMenuItemWithIcon}>
+              <Icon name='edit-pencil' />
+              <div>{getLocale('menuRenameConversation')}</div>
+            </div>
+          </leo-menu-item>
+          <leo-menu-item onClick={props.onDelete}>
+            <div className={styles.optionsMenuItemWithIcon}>
+              <Icon name='trash' />
+              <div>{getLocale('menuDeleteConversation')}</div>
+            </div>
+          </leo-menu-item>
+        </ButtonMenu>
+      )}
     </div>
+  )
+}
+
+interface ConversationsListProps {
+  setIsConversationsListOpen?: (value: boolean) => unknown
+}
+
+export default function ConversationsList(props: ConversationsListProps) {
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
+
+  return (
+    <>
+      <div className={styles.scroller}>
+        <nav className={styles.nav}>
+          <ol>
+            {aiChatContext.visibleConversations.map(item => {
+              return (
+                <li key={item.uuid}>
+                  <div
+                    className={classnames({
+                      [styles.navItem]: true,
+                      [styles.navItemActive]: item.uuid === conversationContext.conversationUuid
+                    })}
+                    onClick={() => {
+                      aiChatContext.onSelectConversationUuid(item.uuid)
+                      props.setIsConversationsListOpen?.(false)
+                    }}
+                  >
+                    {item.uuid === aiChatContext.editingConversationId ? (
+                      <div className={styles.editibleTitle}>
+                        <SimpleInput
+                          text={item.title}
+                          onBlur={() => aiChatContext.setEditingConversationId(null)}
+                          onSubmit={(value) => {
+                            aiChatContext.setEditingConversationId(null)
+                            getAPI().Service.renameConversation(item.uuid, value)
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <DisplayTitle
+                        title={item.title || getLocale('conversationListUntitled')}
+                        description=''
+                        onEditTitle={() => aiChatContext.setEditingConversationId(item.uuid)}
+                        onDelete={() => getAPI().Service.deleteConversation(item.uuid)}
+                      />
+                    )}
+                  </div>
+                </li>
+              )
+            })}
+          </ol>
+        </nav>
+      </div>
+    </>
   )
 }

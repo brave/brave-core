@@ -110,6 +110,13 @@
       other {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> you've seen this month.}
     }
   </message>
+  <message name="IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT" desc="">
+    {ADS_VIEWED, plural,
+      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> this month}
+      =1 {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph># Ad<ph name="COUNT_END">$2</ph> this month}
+      other {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> this month}
+    }
+  </message>
 
   <!-- Rewards new tab page widget -->
   <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
@@ -385,7 +392,7 @@
     Learn more
   </message>
   <message name="IDS_REWARDS_ESTIMATED_EARNINGS_TITLE" desc="">
-    Earnings so far
+    Ads seen this month
   </message>
   <message name="IDS_REWARDS_APP_ERROR_TITLE" desc="">
     Something went wrong
@@ -722,9 +729,6 @@
   <message name="IDS_REWARDS_ADS_SETTINGS_BUTTON_LABEL" desc="">
     Ads Settings
   </message>
-  <message name="IDS_REWARDS_ADS_SETTINGS_EARNINGS_LABEL" desc="">
-    Earnings so far this month
-  </message>
   <message name="IDS_REWARDS_ADS_SETTINGS_PAYOUT_DATE_LABEL" desc="">
     Next earnings payout date
   </message>
@@ -783,12 +787,6 @@
   <message name="IDS_REWARDS_EARNINGS_ADS_RECEIVED_TEXT" desc="">
     <ph name="NUM">$1</ph> ads received this month
   </message>
-  <message name="IDS_REWARDS_EARNINGS_ESTIMATE_TEXT" desc="">
-    You've earned <ph name="NUM">$1</ph> so far this month
-  </message>
-  <message name="IDS_REWARDS_EARNINGS_RANGE_TOOLTIP" desc="">
-    You're estimated to earn between: <ph name="RANGE">$1</ph>
-  </message>
 
   <message name="IDS_REWARDS_PAYOUT_ACCOUNT_BALANCE_LABEL" desc="">
     Your balance
@@ -821,42 +819,6 @@
     Your BAT earnings will be paid to this payout account.
   </message>
 
-  <message name="IDS_REWARDS_AC_AMOUNT_LABEL" desc="">
-    You will send
-  </message>
-  <message name="IDS_REWARDS_AC_AMOUNT_TEXT" desc="">
-    Up to <ph name="AMOUNT">$1</ph> BAT
-  </message>
-  <message name="IDS_REWARDS_AC_ATTENTION_LABEL" desc="">
-    Attention
-  </message>
-  <message name="IDS_REWARDS_AC_DISABLED_TEXT" desc="">
-    An automatic way to support websites and content creators, based on how much time you spend on their content.
-  </message>
-  <message name="IDS_REWARDS_AC_DISABLED_TITLE" desc="">
-    Auto-Contribute is disabled
-  </message>
-  <message name="IDS_REWARDS_AC_EMPTY_LIST_TEXT" desc="">
-    Verified creators that you visit will appear here as you browse.
-  </message>
-  <message name="IDS_REWARDS_AC_INFO_TEXT" desc="">
-    Auto-contribute automatically sends monthly contributions to creators verified with Brave, based on how much time you spend on their content.
-  </message>
-  <message name="IDS_REWARDS_AC_INFO_TITLE" desc="">
-    How does Auto-Contribute work?
-  </message>
-  <message name="IDS_REWARDS_AC_NEXT_CONTRIBUTION_LABEL" desc="">
-    Next contribution date
-  </message>
-  <message name="IDS_REWARDS_AC_SITE_COUNT_LABEL" desc="">
-    Sites viewed
-  </message>
-  <message name="IDS_REWARDS_AC_SITE_LABEL" desc="">
-    Site
-  </message>
-  <message name="IDS_REWARDS_AC_TITLE" desc="">
-    Auto-Contribute
-  </message>
   <message name="IDS_REWARDS_BENEFITS_STORE_SUBTEXT" desc="">
     Get Brave-branded products.
   </message>
@@ -976,6 +938,19 @@
   </message>
   <message name="IDS_REWARDS_WDP_OPT_IN_TITLE" desc="">
     Web Discovery Project
+  </message>
+
+  <message name="IDS_REWARDS_COMMUNITY_TITLE" desc="">
+    Community
+  </message>
+  <message name="IDS_REWARDS_MERCH_STORE_TITLE" desc="">
+    Brave merch store
+  </message>
+  <message name="IDS_REWARDS_VIEW_ALL_LINK" desc="">
+    View all
+  </message>
+  <message name="IDS_REWARDS_VIEW_STORE_LINK" desc="">
+    View Store
   </message>
 
 </grit-part>

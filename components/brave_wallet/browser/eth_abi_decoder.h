@@ -8,7 +8,6 @@
 
 #include <optional>
 #include <string>
-#include <tuple>
 #include <vector>
 
 #include "base/values.h"
@@ -20,7 +19,7 @@ std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
     const std::string& encoded_path);
 
 std::optional<base::Value::List> ABIDecode(const eth_abi::Type& type,
-                                           const std::vector<uint8_t>& data);
+                                           base::span<const uint8_t> input);
 
 }  // namespace brave_wallet
 

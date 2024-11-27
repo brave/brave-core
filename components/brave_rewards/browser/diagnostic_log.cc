@@ -22,8 +22,8 @@
 
 namespace {
 
-const int64_t kChunkSize = 1024;
-const size_t kDividerLength = 80;
+constexpr int64_t kChunkSize = 1024;
+constexpr size_t kDividerLength = 80;
 
 std::string FormatTime(const base::Time& time) {
   return base::UnlocalizedTimeFormatWithPattern(

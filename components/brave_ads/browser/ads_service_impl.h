@@ -23,9 +23,9 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/application_state/background_helper.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom-forward.h"
@@ -94,9 +94,6 @@ class AdsServiceImpl final : public AdsService,
 
   ~AdsServiceImpl() override;
 
-  void AddObserver(AdsServiceObserver* observer) override;
-  void RemoveObserver(AdsServiceObserver* observer) override;
-
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
@@ -140,8 +137,10 @@ class AdsServiceImpl final : public AdsService,
 
   void NotifyAdsServiceInitialized() const;
 
-  void ShutdownClearDataAndMaybeRestart();
-  void ShutdownClearDataAndMaybeRestartCallback(bool success);
+  void ShutdownAndClearAdsServiceDataAndMaybeRestart();
+  void ShutdownAndClearPrefsAndAdsServiceDataAndMaybeRestart();
+  void ClearAdsServiceDataAndMaybeRestart();
+  void ClearAdsServiceDataAndMaybeRestartCallback(bool success);
 
   void OnExternalWalletConnectedCallback(bool success);
 
@@ -229,7 +228,7 @@ class AdsServiceImpl final : public AdsService,
                               bool by_user) override;
   void OnNotificationAdClicked(const std::string& placement_id) override;
 
-  void ClearData() override;
+  void ClearData(base::OnceClosure callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
@@ -237,7 +236,7 @@ class AdsServiceImpl final : public AdsService,
 
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
-      MaybeServeInlineContentAdAsDictCallback callback) override;
+      MaybeServeInlineContentAdCallback callback) override;
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

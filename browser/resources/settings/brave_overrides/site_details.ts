@@ -6,14 +6,17 @@
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
 import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
-
 import {loadTimeData} from '../i18n_setup.js'
 
 import 'chrome://resources/brave/leo.bundle.js'
 
 RegisterPolymerTemplateModifications({
-  'site-details': (templateContent) => {
+  'site-details': (templateContent: HTMLTemplateElement) => {
+    // Add top-padding to subpage
+    templateContent.prepend(html`<style>#usage { padding-top: var(--leo-spacing-l); }</style>`.content)
+
     if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
       const idleDetectionItem = templateContent.querySelector('[category="[[contentSettingsTypesEnum_.IDLE_DETECTION]]"]')
       if (!idleDetectionItem) {
@@ -159,6 +162,12 @@ RegisterPolymerTemplateModifications({
         } else {
           solanaSettings.setAttribute(
               'label', loadTimeData.getString('siteSettingsSolana'))
+        }
+        const adPersonalization = templateContent.querySelector('#adPersonalization')
+        if (!adPersonalization) {
+          console.error('[Brave Settings Overrides] Could not find adPersonalization element to hide')
+        } else {
+          adPersonalization.remove()
         }
       }
     }

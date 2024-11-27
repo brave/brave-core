@@ -7,19 +7,26 @@
 
 #include <base/containers/flat_map.h>
 
+#include <ios>
 #include <optional>
+#include <ostream>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
-#include "base/no_destructor.h"
+#include "base/logging.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/metrics/field_trial_params.h"
+#include "base/numerics/clamped_math.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -28,8 +35,8 @@
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
+#include "url/url_constants.h"
 
 namespace ai_chat {
 namespace {

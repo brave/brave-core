@@ -15,6 +15,7 @@ struct PlaylistSidebarList: View {
   var selectedFolderID: PlaylistFolder.ID
   @Binding var selectedItemID: PlaylistItem.ID?
   var isPlaying: Bool
+  var onPlaylistUpdated: () -> Void
 
   @Environment(\.openTabURL) private var openTabURL
   @FetchRequest private var items: FetchedResults<PlaylistItem>
@@ -26,7 +27,8 @@ struct PlaylistSidebarList: View {
     folders: [PlaylistFolder],
     folderID: PlaylistFolder.ID,
     selectedItemID: Binding<PlaylistItem.ID?>,
-    isPlaying: Bool
+    isPlaying: Bool,
+    onPlaylistUpdated: @escaping () -> Void
   ) {
     self.folders = folders
     self.selectedFolderID = folderID
@@ -39,6 +41,7 @@ struct PlaylistSidebarList: View {
     )
     self._selectedItemID = selectedItemID
     self.isPlaying = isPlaying
+    self.onPlaylistUpdated = onPlaylistUpdated
   }
 
   var body: some View {
@@ -127,7 +130,9 @@ struct PlaylistSidebarList: View {
                 selection: Binding(
                   get: { selectedFolderID },
                   set: {
-                    PlaylistItem.moveItems(items: [item.objectID], to: $0)
+                    PlaylistItem.moveItems(items: [item.objectID], to: $0) {
+                      onPlaylistUpdated()
+                    }
                   }
                 )
               ) {
@@ -146,6 +151,7 @@ struct PlaylistSidebarList: View {
                 if selectedItemID == item.id {
                   selectedItemID = nil
                 }
+                onPlaylistUpdated()
               }
             } label: {
               Label(Strings.Playlist.deleteItem, braveSystemImage: "leo.trash")
@@ -155,10 +161,10 @@ struct PlaylistSidebarList: View {
       }
     }
     .frame(maxWidth: .infinity, alignment: .leading)
-    .onAppear {
+    .task {
       for item in items {
         guard let uuid = item.uuid else { continue }
-        downloadStates[uuid] = PlaylistManager.shared.state(for: uuid)
+        downloadStates[uuid] = await PlaylistManager.shared.downloadState(for: uuid)
       }
     }
     .onReceive(PlaylistManager.shared.downloadStateChanged) { output in
@@ -370,6 +376,12 @@ struct PlaylistSidebarContentUnavailableView: View {
 
 #if DEBUG
 #Preview {
-  PlaylistSidebarList(folders: [], folderID: "", selectedItemID: .constant(nil), isPlaying: false)
+  PlaylistSidebarList(
+    folders: [],
+    folderID: "",
+    selectedItemID: .constant(nil),
+    isPlaying: false,
+    onPlaylistUpdated: {}
+  )
 }
 #endif

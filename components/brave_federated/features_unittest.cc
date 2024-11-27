@@ -49,7 +49,7 @@ TEST(BraveFederatedLearningFeaturesTest, OperationalPatternsEnabled) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterOperationalPatternsEnabled[] =
+  static constexpr char kFieldTrialParameterOperationalPatternsEnabled[] =
       "operational_patterns_enabled";
   kFederatedLearningParameters[kFieldTrialParameterOperationalPatternsEnabled] =
       "true";
@@ -92,7 +92,7 @@ TEST(BraveFederatedLearningFeaturesTest, CollectionSizeInSeconds) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterCollectionSlotSizeInSeconds[] =
+  static constexpr char kFieldTrialParameterCollectionSlotSizeInSeconds[] =
       "collection_slot_size_in_seconds";
   kFederatedLearningParameters
       [kFieldTrialParameterCollectionSlotSizeInSeconds] = "420";
@@ -133,7 +133,7 @@ TEST(BraveFederatedLearningFeaturesTest, MockTaskDuration) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterMockTaskDurationInSeconds[] =
+  static constexpr char kFieldTrialParameterMockTaskDurationInSeconds[] =
       "mock_task_duration_in_seconds";
   kFederatedLearningParameters[kFieldTrialParameterMockTaskDurationInSeconds] =
       "600";
@@ -177,7 +177,7 @@ TEST(BraveFederatedLearningFeaturesTest, CollectionIdLifetimeInSeconds) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams kFederatedLearningParameters;
-  const char kFieldTrialParameterCollectionIdLifetimeInSeconds[] =
+  static constexpr char kFieldTrialParameterCollectionIdLifetimeInSeconds[] =
       "collection_id_lifetime_in_seconds";
   kFederatedLearningParameters
       [kFieldTrialParameterCollectionIdLifetimeInSeconds] = "2592000";

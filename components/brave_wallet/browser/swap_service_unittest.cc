@@ -1915,14 +1915,15 @@ TEST_F(SwapServiceUnitTest, GetSquidQuoteError) {
 
   base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
 
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
-                  EqualsMojo(mojom::SwapFeesPtr()),
-                  EqualsMojo(mojom::SwapErrorUnion::NewSquidError(
-                      mojom::SquidError::New(
-                          "onChainQuoting must be a `boolean` type.",
-                          mojom::SquidErrorType::kSchemaValidationError))),
-                  ""));
+  EXPECT_CALL(
+      callback,
+      Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
+          EqualsMojo(mojom::SwapFeesPtr()),
+          EqualsMojo(
+              mojom::SwapErrorUnion::NewSquidError(mojom::SquidError::New(
+                  "onChainQuoting must be a `boolean` type.",
+                  mojom::SquidErrorType::kSchemaValidationError, false))),
+          ""));
 
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(
@@ -1950,13 +1951,14 @@ TEST_F(SwapServiceUnitTest, GetSquidTransactionError) {
 
   base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
 
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
-                  EqualsMojo(mojom::SwapErrorUnion::NewSquidError(
-                      mojom::SquidError::New(
-                          "onChainQuoting must be a `boolean` type.",
-                          mojom::SquidErrorType::kSchemaValidationError))),
-                  ""));
+  EXPECT_CALL(
+      callback,
+      Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
+          EqualsMojo(
+              mojom::SwapErrorUnion::NewSquidError(mojom::SquidError::New(
+                  "onChainQuoting must be a `boolean` type.",
+                  mojom::SquidErrorType::kSchemaValidationError, false))),
+          ""));
 
   swap_service_->GetTransaction(
       mojom::SwapTransactionParamsUnion::NewSquidTransactionParams(

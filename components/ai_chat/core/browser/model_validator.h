@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODEL_VALIDATOR_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODEL_VALIDATOR_H_
 
+#include <stddef.h>
+
+#include <cstdint>
 #include <optional>
 
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -13,7 +16,12 @@
 #include "brave/net/base/url_util.h"
 #include "url/url_constants.h"
 
+class GURL;
+
 namespace ai_chat {
+namespace mojom {
+class CustomModelOptions;
+}  // namespace mojom
 
 // The declared context size needs to be large enough to accommodate expected
 // reserves (i.e., prompt tokens and max new tokens)
@@ -35,7 +43,9 @@ class ModelValidator {
   static bool IsValidContextSize(const std::optional<int32_t>& size);
   static bool HasValidContextSize(const mojom::CustomModelOptions& options);
 
-  static bool IsValidEndpoint(const GURL& endpoint);
+  static bool IsValidEndpoint(
+      const GURL& endpoint,
+      std::optional<bool> check_as_private_ip = std::nullopt);
 
   // Validates the custom model's properties, such as context size and endpoint
   static ModelValidationResult ValidateCustomModelOptions(

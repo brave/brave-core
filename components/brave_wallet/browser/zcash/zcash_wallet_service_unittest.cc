@@ -331,7 +331,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   orchard_storage()
       .AsyncCall(&ZCashOrchardStorage::UpdateNotes)
       .WithArgs(account_id.Clone(), std::vector<OrchardNote>({note}),
-                std::vector<OrchardNullifier>(), 50000, "hash50000")
+                std::vector<OrchardNoteSpend>(), 50000, "hash50000")
       .Then(std::move(update_notes_callback));
 
   task_environment_.RunUntilIdle();
@@ -416,7 +416,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
   orchard_storage()
       .AsyncCall(&ZCashOrchardStorage::UpdateNotes)
       .WithArgs(account_id.Clone(), std::vector<OrchardNote>({note}),
-                std::vector<OrchardNullifier>(), 50000, "hash50000")
+                std::vector<OrchardNoteSpend>(), 50000, "hash50000")
       .Then(std::move(update_notes_callback));
 
   task_environment_.RunUntilIdle();
@@ -803,6 +803,37 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateZCashAddress) {
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
+
+TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
+  keyring_service()->Reset();
+  keyring_service()->RestoreWallet(
+      "gate junior chunk maple cage select orange circle price air tortoise "
+      "jelly art frequent fence middle ice moral wage toddler attitude sign "
+      "lesson grain",
+      kTestWalletPassword, false, base::DoNothing());
+  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
+  {
+    base::MockCallback<ZCashWalletService::GetZCashAccountInfoCallback>
+        get_zcash_account_info_callback;
+    EXPECT_CALL(get_zcash_account_info_callback, Run(_))
+        .WillOnce(
+            ::testing::Invoke([&](mojom::ZCashAccountInfoPtr account_info) {
+              EXPECT_EQ(account_info->unified_address.value(),
+                        "u1gjrzpk0v0v2ae359cp296zapth9mw8xseyzhu44a4ftux3gn8gh9"
+                        "hmzazrz6f3yvjyglrchz68g0s2hwpjknw3eywxgp0tn3p5p3g94w4j"
+                        "dfked5as22p9y3ftkyt59eh7phch995yh");
+              EXPECT_EQ(account_info->orchard_address.value(),
+                        "u1qtnwpp2gg5r745auv2r5cvc4v0q8sr8nd3xcg48ck92xul8t6tmv"
+                        "urkzksfln94mh2amfxjemwwtmvys4l40xlkxck5fpgqxzuqxs2jq");
+            }));
+    zcash_wallet_service_->GetZCashAccountInfo(
+        account_id_1.Clone(), get_zcash_account_info_callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+}
 
 TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
   // Shielded addresses disabled

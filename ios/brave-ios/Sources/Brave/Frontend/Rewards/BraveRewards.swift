@@ -134,7 +134,6 @@ public class BraveRewards: PreferencesObserver {
       createWalletIfNeeded { [weak self] in
         guard let self = self else { return }
         Preferences.Rewards.rewardsToggledOnce.value = true
-        self.rewardsAPI?.setAutoContributeEnabled(newValue)
         let wasEnabled = self.ads.isEnabled
         if !wasEnabled && newValue {
           Preferences.Rewards.adsEnabledTimestamp.value = Date()
@@ -239,17 +238,8 @@ public class BraveRewards: PreferencesObserver {
   /// Clear Brave Ads Data.
   @MainActor func clearAdsData() async {
     await withCheckedContinuation { continuation in
-      ads.shutdownService { [ads] in
-        ads.clearData {
-          continuation.resume()
-        }
-      }
-    }
-    if shouldStartAds {
-      await withCheckedContinuation { continuation in
-        ads.initialize { _ in
-          continuation.resume()
-        }
+      ads.clearData {
+        continuation.resume()
       }
     }
   }

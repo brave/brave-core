@@ -36,8 +36,8 @@ constexpr char kDDGBannerDTriggeredKey[] = "ddg_banner_d.triggered";
 
 constexpr char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
 
-const int kMaxStoredQueryCount = 41;
-const int kQueriesBeforeChurnBuckets[] = {0, 1, 2, 5, 10, 20, 40};
+constexpr int kMaxStoredQueryCount = 41;
+constexpr int kQueriesBeforeChurnBuckets[] = {0, 1, 2, 5, 10, 20, 40};
 
 const char* GetPromoShownKeyName(ConversionType type) {
   switch (type) {
@@ -57,10 +57,10 @@ const char* GetPromoShownKeyName(ConversionType type) {
       return kButtonShownKey;
     case ConversionType::kNTP:
       return kNTPShownKey;
-    default:
+    case ConversionType::kNone:
       break;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 const char* GetPromoTriggeredKeyName(ConversionType type) {
@@ -82,10 +82,10 @@ const char* GetPromoTriggeredKeyName(ConversionType type) {
       return kButtonTriggeredKey;
     case ConversionType::kNTP:
       return kNTPTriggeredKey;
-    default:
+    case ConversionType::kNone:
       break;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 const char* GetPromoTypeHistogramName(ConversionType type) {
@@ -107,10 +107,10 @@ const char* GetPromoTypeHistogramName(ConversionType type) {
       return kSearchPromoButtonHistogramName;
     case ConversionType::kNTP:
       return kSearchPromoNTPHistogramName;
-    default:
+    case ConversionType::kNone:
       break;
   }
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 void UpdateHistograms(PrefService* prefs) {

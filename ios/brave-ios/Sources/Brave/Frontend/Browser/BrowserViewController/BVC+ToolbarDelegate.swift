@@ -475,6 +475,7 @@ extension BrowserViewController: TopToolbarDelegate {
           debounceService: DebounceServiceFactory.get(privateMode: false),
           braveCore: braveCore,
           rewards: rewards,
+          webcompatReporterHandler: WebcompatReporter.ServiceFactory.get(privateMode: false),
           clearDataCallback: { [weak self] isLoading, isHistoryCleared in
             guard let self else { return }
             guard let view = self.navigationController?.view, view.window != nil else {

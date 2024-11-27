@@ -66,20 +66,19 @@ void RequestOTRBlockingPage::CommandReceived(const std::string& command) {
     case security_interstitials::CMD_DONT_PROCEED:
       p3a::RecordInterstitialEnd(profile_prefs_, start_time_);
       request_otr_controller->Proceed();
-      break;
+      return;
     case security_interstitials::CMD_PROCEED:
       p3a::RecordInterstitialEnd(profile_prefs_, start_time_);
       request_otr_controller->ProceedOTR();
-      break;
+      return;
     case security_interstitials::CMD_DO_REPORT:
       request_otr_controller->SetDontWarnAgain(true);
-      break;
+      return;
     case security_interstitials::CMD_DONT_REPORT:
       request_otr_controller->SetDontWarnAgain(false);
-      break;
-    default:
-      NOTREACHED_IN_MIGRATION() << "Unsupported command: " << command;
+      return;
   }
+  NOTREACHED() << "Unsupported command: " << command;
 }
 
 void RequestOTRBlockingPage::PopulateInterstitialStrings(

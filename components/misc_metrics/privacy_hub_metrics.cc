@@ -14,7 +14,7 @@
 namespace misc_metrics {
 
 namespace {
-const int kViewsMonthlyBucketValues[] = {1, 10, 20};
+constexpr int kViewsMonthlyBucketValues[] = {1, 10, 20};
 constexpr base::TimeDelta kReportUpdateInterval = base::Days(1);
 }  // namespace
 

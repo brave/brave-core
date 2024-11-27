@@ -363,7 +363,7 @@ public class BraveWalletPanel implements DialogInterface {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             if (activity.getActivityTab() != null) {
-                BraveWalletProviderDelegateImplHelper.IsSolanaConnected(
+                BraveWalletProviderDelegateImplHelper.isSolanaConnected(
                         activity.getActivityTab().getWebContents(),
                         selectedAccount.address,
                         isConnected -> {

@@ -10,17 +10,18 @@
 
 namespace brave_ads {
 
-ADS_EXPORT extern const char kDatabaseFilename[];
+inline constexpr char kDatabaseFilename[] = "database.sqlite";
 
 // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
 // from using JSON state to a more efficient data approach.
-ADS_EXPORT extern const char kClientJsonFilename[];
+inline constexpr char kClientJsonFilename[] = "client.json";
 
 // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
 // from using JSON state to a more efficient data approach.
-ADS_EXPORT extern const char kConfirmationsJsonFilename[];
+inline constexpr char kConfirmationsJsonFilename[] = "confirmations.json";
 
-ADS_EXPORT extern const char kCatalogJsonSchemaDataResourceName[];
+inline constexpr char kCatalogJsonSchemaDataResourceName[] =
+    "catalog-schema.json";
 
 }  // namespace brave_ads
 

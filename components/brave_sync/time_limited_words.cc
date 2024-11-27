@@ -69,10 +69,7 @@ int TimeLimitedWords::GetIndexByWord(const std::string& word) {
   std::string word_prepared = base::ToLowerASCII(word);
 
   struct words* mnemonic_w = nullptr;
-  if (bip39_get_wordlist(nullptr, &mnemonic_w) != WALLY_OK) {
-    DCHECK(false);
-    return -1;
-  }
+  CHECK_EQ(bip39_get_wordlist(nullptr, &mnemonic_w), WALLY_OK);
 
   DCHECK_NE(mnemonic_w, nullptr);
   size_t idx = wordlist_lookup_word(mnemonic_w, word_prepared.c_str());
@@ -196,8 +193,7 @@ TimeLimitedWords::ParseImpl(const std::string& time_limited_words,
   } else {
     return base::unexpected(ValidationStatus::kWrongWordsNumber);
   }
-
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 base::expected<std::string, TimeLimitedWords::ValidationStatus>

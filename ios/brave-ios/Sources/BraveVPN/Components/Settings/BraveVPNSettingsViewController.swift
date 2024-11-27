@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveStore
 import BraveUI
 import GuardianConnect
 import Preferences
@@ -80,6 +81,9 @@ public class BraveVPNSettingsViewController: TableViewController {
       Row(
         text: Strings.VPN.settingsLinkReceipt,
         selection: { [unowned self] in
+          Task {
+            try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+          }
           openURL?(.brave.braveVPNLinkReceiptProd)
         },
         cellClass: ButtonCell.self
@@ -91,6 +95,9 @@ public class BraveVPNSettingsViewController: TableViewController {
         Row(
           text: "[Staging] Link Receipt",
           selection: { [unowned self] in
+            Task {
+              try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+            }
             openURL?(.brave.braveVPNLinkReceiptStaging)
           },
           cellClass: ButtonCell.self
@@ -98,12 +105,26 @@ public class BraveVPNSettingsViewController: TableViewController {
         Row(
           text: "[Dev] Link Receipt",
           selection: { [unowned self] in
+            Task {
+              try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+            }
             openURL?(.brave.braveVPNLinkReceiptDev)
           },
           cellClass: ButtonCell.self
         ),
       ]
     }
+
+    rows.append(
+      Row(
+        text: Strings.VPN.settingsViewReceipt,
+        selection: { [unowned self] in
+          let controller = UIHostingController(rootView: StoreKitReceiptSimpleView())
+          self.navigationController?.pushViewController(controller, animated: true)
+        },
+        cellClass: ButtonCell.self
+      )
+    )
 
     return rows
   }
@@ -385,7 +406,21 @@ public class BraveVPNSettingsViewController: TableViewController {
       return
     }
 
-    let vc = UIHostingController(rootView: BraveVPNRegionListView())
+    let vpnRegionListView = BraveVPNRegionListView { [weak self] _ in
+      let controller = PopupViewController(
+        rootView: BraveVPNRegionConfirmationView(
+          country: BraveVPN.serverLocationDetailed.country,
+          city: BraveVPN.serverLocationDetailed.city,
+          countryISOCode: BraveVPN.serverLocation.isoCode
+        ),
+        isDismissable: true
+      )
+      self?.present(controller, animated: true)
+      Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak controller] _ in
+        controller?.dismiss(animated: true)
+      }
+    }
+    let vc = UIHostingController(rootView: vpnRegionListView)
     vc.title = Strings.VPN.vpnRegionListServerScreenTitle
     navigationController?.pushViewController(vc, animated: true)
   }

@@ -5,18 +5,29 @@
 
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 
+#include <iterator>
 #include <memory>
+#include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check_is_test.h"
+#include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "base/path_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "components/component_updater/component_updater_paths.h"
+#include "components/update_client/update_client_errors.h"
 #include "crypto/sha2.h"
+
+namespace base {
+class Version;
+}  // namespace base
 
 namespace ai_chat {
 
@@ -25,8 +36,8 @@ constexpr base::FilePath::CharType kComponentInstallDir[] =
     FILE_PATH_LITERAL("AIChatLocalModels");
 constexpr base::FilePath::CharType kDeprecatedComponentInstallDir[] =
     FILE_PATH_LITERAL("LeoLocalModels");
-constexpr const char kComponentName[] = "Leo Local Models Updater";
-constexpr const char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
+constexpr char kComponentName[] = "Leo Local Models Updater";
+constexpr char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
 constexpr uint8_t kPublicKeySHA256[32] = {
     0x49, 0x74, 0x99, 0xc0, 0xe0, 0xe7, 0xf6, 0x7d, 0x1b, 0x23, 0x29,
     0x8b, 0xd3, 0xa0, 0xd6, 0x54, 0xb6, 0xc3, 0x23, 0x87, 0x75, 0xec,
@@ -49,9 +60,6 @@ base::FilePath GetDeprecatedComponentDir() {
 }
 
 }  // namespace
-
-constexpr const char kUniversalQAModelName[] =
-    "universal_sentence_encoder_qa_with_metadata.tflite";
 
 LocalModelsComponentInstallerPolicy::
     LocalModelsComponentInstallerPolicy() = default;

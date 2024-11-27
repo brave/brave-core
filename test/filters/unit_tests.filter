@@ -70,7 +70,7 @@
 -CookieControlsContentViewTrackingProtectionUnitTest.CreateManagedSectionForCookieSettingEnforcement
 -CookieControlsContentViewTrackingProtectionUnitTest.CreateManagedSectionForPolicyEnforcement
 -CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithEnforcementByCookieSetting
--CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithProtectionsOff 
+-CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithProtectionsOff
 -CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithProtectionsOn
 -CookieControlsUserBypassTrackingProtectionUiTest.DisplayEyeIconWhenActFeaturesNotEnforced
 -CookieControlsUserBypassTrackingProtectionUiTest.DoesNotDisplayEyeIconWhenActFeaturesAreEnforced
@@ -555,6 +555,7 @@
 # GetUkmSourceId override.
 -All/SiteSettingsHandlerTest.NotificationPermissionRevokeUkm/*
 -All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/*
+-SiteSettingsHandlerTest.NotificationPermissionRevokeUkm
 
 # This test fails because we replace WebUI chrome:// scheme with brave://
 -ChromeURLsTest.ContainsConfigURLs
@@ -657,6 +658,22 @@
 -SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_AllModules
 -SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_OneModule
 -SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_TwoModulesWithPassword
+
+# These tests fail because our feature override for kSidePanelJourneys doesn't
+# seem to work correctly in these tests. Have not diagnosed the specific reason
+# why. We also run these tests as part of brave_unit_tests where they seem to
+# work correctly.
+-RecentTabsSubMenuModelTest.NoTabs
+-RecentTabsSubMenuModelTest.OtherDevices
+-RecentTabsSubMenuModelTest.OtherDevicesDynamicUpdate
+
+# These tests are disabled because we disable creation of UserEducationService
+# for regular and guest profiles.
+-BrowserFeaturePromoController*
+-NewTabPageFeaturePromoHelperTest.*
+
+# zoom_level.display_name is "(Brave error pages)"
+-SiteSettingsHandlerTest.ZoomLevels
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -997,10 +1014,6 @@
 -SitePermissionsHelperUnitTest.*
 -SitePermissionsHelperWithUserHostControlsUnitTest.DowngradingFromAllSitesToOnClickAppliesUserPermittedSites
 -SideSearchTabContentsHelperTest.*
--SiteSettingsCounterTest.*
--SiteSettingsHandlerInfobarTest.*
--SiteSettingsHandlerTest.*
--SiteSettingsHelperTest.*
 -StartupBrowserPolicyUnitTest.*
 -StartupTabProviderTest.*
 -StateStoreTest.ClearAll

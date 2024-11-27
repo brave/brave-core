@@ -33,8 +33,7 @@ std::string HDKeyring::GetRootPath(mojom::KeyringId keyring_id) {
     return "m/44'/1'";
   }
 
-  NOTREACHED_IN_MIGRATION() << keyring_id;
-  return "";
+  NOTREACHED() << keyring_id;
 }
 
 }  // namespace brave_wallet

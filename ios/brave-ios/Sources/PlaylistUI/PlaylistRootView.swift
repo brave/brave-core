@@ -80,7 +80,7 @@ public struct PlaylistRootView: View {
     .preferredColorScheme(.dark)
     .environment(
       \.openTabURL,
-      .init { url, isPrivate in
+      .init { [delegate] url, isPrivate in
         delegate.openTabURL(url, isPrivate)
       }
     )

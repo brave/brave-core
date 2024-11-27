@@ -17,11 +17,19 @@ struct PlayerView: View {
   @State private var isControlsVisible: Bool = false
   @State private var autoHideControlsTask: Task<Void, Error>?
   @State private var dragOffset: CGSize = .zero
+  @State private var activeFullScreenGestureMode: ActiveFullScreenGestureMode = .none
   @GestureState private var isTouchingInlineControls: Bool = false
+
+  enum ActiveFullScreenGestureMode {
+    case none
+    case seekingVideo(startingTime: TimeInterval, playAfterCompletion: Bool)
+    case dismissFullScreen
+  }
 
   @Environment(\.interfaceOrientation) private var orientation
   @Environment(\.isFullScreen) private var isFullScreen
   @Environment(\.toggleFullScreen) private var toggleFullScreen
+  @Environment(\.layoutDirection) private var layoutDirection
 
   /// A 0-distance DragGesture to tracks if the user is touching the screen in any way
   private var activeTouchGesture: some Gesture {
@@ -38,17 +46,64 @@ struct PlayerView: View {
     }
   }
 
+  private func fullScreenGesture(proxy: GeometryProxy) -> some Gesture {
+    DragGesture()
+      .onChanged { value in
+        switch activeFullScreenGestureMode {
+        case .none:
+          // Check velocity to see which mode to enter
+          if abs(value.velocity.height) > abs(value.velocity.width) {
+            activeFullScreenGestureMode = .dismissFullScreen
+          } else {
+            if case .seconds = playerModel.duration {
+              activeFullScreenGestureMode = .seekingVideo(
+                startingTime: playerModel.currentTime,
+                playAfterCompletion: playerModel.isPlaying
+              )
+              playerModel.pause()
+            }
+          }
+          break
+        case .seekingVideo(let startingTime, _):
+          if case .seconds(let seconds) = playerModel.duration, proxy.size.width > 0 {
+            var timeTranslation = (value.translation.width * (seconds / proxy.size.width))
+            if layoutDirection == .rightToLeft {
+              timeTranslation *= -1
+            }
+            Task {
+              await playerModel.seek(to: startingTime + timeTranslation, accurately: true)
+            }
+          }
+        case .dismissFullScreen:
+          dragOffset = value.translation
+        }
+      }
+      .onEnded { value in
+        switch activeFullScreenGestureMode {
+        case .none:
+          break
+        case .seekingVideo(_, let playAfterCompletion):
+          if playAfterCompletion {
+            playerModel.play()
+          }
+        case .dismissFullScreen:
+          let finalOffset = value.predictedEndTranslation
+          if abs(finalOffset.height) > 200 {
+            withAnimation(.snappy(duration: 0.3)) {
+              toggleFullScreen()
+            }
+          }
+          withAnimation(.snappy) {
+            dragOffset = .zero
+          }
+        }
+        activeFullScreenGestureMode = .none
+      }
+  }
+
   var body: some View {
     VideoPlayerLayout(aspectRatio: isFullScreen ? nil : 16 / 9) {
       VideoPlayer(playerLayer: playerModel.playerLayer)
-    }
-    .background {
-      if !isFullScreen {
-        VideoAmbianceBackground(playerModel: playerModel)
-          .transition(.opacity.animation(.snappy))
-          .opacity(playerModel.isPlaying ? 1 : 0.5)
-          .animation(.default, value: playerModel.isPlaying)
-      }
     }
     .allowsHitTesting(false)
     // For some reason this is required or the status bar breaks when touching anything on the
@@ -79,33 +134,19 @@ struct PlayerView: View {
         .accessibilityHidden(isControlsVisible && isFullScreen)
         .background {
           if isFullScreen {
-            Color.clear
-              .contentShape(.rect)
-              .simultaneousGesture(
-                TapGesture().onEnded { _ in
-                  withAnimation(.linear(duration: 0.1)) {
-                    isControlsVisible.toggle()
-                  }
-                }
-              )
-              .simultaneousGesture(activeTouchGesture)
-              .simultaneousGesture(
-                DragGesture()
-                  .onChanged { value in
-                    dragOffset = value.translation
-                  }
-                  .onEnded { value in
-                    let finalOffset = value.predictedEndTranslation
-                    if abs(finalOffset.height) > 200 {
-                      withAnimation(.snappy(duration: 0.3)) {
-                        toggleFullScreen()
-                      }
-                    }
-                    withAnimation(.snappy) {
-                      dragOffset = .zero
+            GeometryReader { proxy in
+              Color.clear
+                .contentShape(.rect)
+                .simultaneousGesture(
+                  TapGesture().onEnded { _ in
+                    withAnimation(.linear(duration: 0.1)) {
+                      isControlsVisible.toggle()
                     }
                   }
-              )
+                )
+                .simultaneousGesture(activeTouchGesture)
+                .simultaneousGesture(fullScreenGesture(proxy: proxy))
+            }
           }
         }
     }
@@ -258,6 +299,7 @@ extension PlayerView {
             }
             .buttonStyle(.playbackControl)
           }
+          .contentShape(.rect)
           .tint(Color(braveSystemName: .iconInteractive))
         }
       }
@@ -295,35 +337,11 @@ extension PlayerView {
       .buttonStyle(.playbackControl)
       .tint(Color(braveSystemName: .textPrimary))
       .backgroundStyle(Color.white.opacity(0.2))
-      .task(priority: .low) {
+      .task(id: model.isPlayerInForeground, priority: .low) {
+        if !model.isPlayerInForeground { return }
         self.currentTime = model.currentTime
         for await currentTime in model.currentTimeStream {
           self.currentTime = currentTime
-        }
-      }
-    }
-  }
-}
-
-struct VideoAmbianceBackground: View {
-  var playerModel: PlayerModel
-
-  @State private var videoAmbianceDecorationImage: UIImage?
-
-  var body: some View {
-    VStack {
-      if let videoAmbianceDecorationImage {
-        Image(uiImage: videoAmbianceDecorationImage)
-          .resizable()
-          .blur(radius: 30)
-          .id(videoAmbianceDecorationImage)
-          .transition(.opacity)
-      }
-    }
-    .task(priority: .medium) {
-      for await image in playerModel.videoAmbianceImageStream {
-        withAnimation {
-          videoAmbianceDecorationImage = image.size == .zero ? nil : image
         }
       }
     }

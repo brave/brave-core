@@ -15,6 +15,7 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { isLeoModel } from '../../model_utils'
 import ErrorConnection from '../alerts/error_connection'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
+import ErrorInvalidEndpointURL from '../alerts/error_invalid_endpoint_url'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import LongConversationInfo from '../alerts/long_conversation_info'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
@@ -70,25 +71,22 @@ function Main() {
 
   const scrollPos = React.useRef({ isAtBottom: true })
 
-  if (aiChatContext.hasAcceptedAgreement) {
-    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.ConnectionIssue) {
-      currentErrorElement = (
-        <ErrorConnection
-          onRetry={conversationContext.retryAPIRequest}
-        />
-      )
-    }
-
-    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.RateLimitReached) {
-      currentErrorElement = (
-        <ErrorRateLimit />
-      )
-    }
-
-    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.ContextLimitReached) {
-      currentErrorElement = (
-        <ErrorConversationEnd />
-      )
+  // Determine which, if any, error message should be displayed
+  if (aiChatContext.hasAcceptedAgreement && conversationContext.apiHasError) {
+    switch (conversationContext.currentError) {
+      case mojom.APIError.ConnectionIssue:
+        currentErrorElement = <ErrorConnection
+          onRetry={conversationContext.retryAPIRequest} />
+        break
+      case mojom.APIError.RateLimitReached:
+        currentErrorElement = <ErrorRateLimit />
+        break
+      case mojom.APIError.ContextLimitReached:
+        currentErrorElement = <ErrorConversationEnd />
+        break
+      case mojom.APIError.InvalidEndpointURL:
+        currentErrorElement = <ErrorInvalidEndpointURL />
+        break
     }
   }
 

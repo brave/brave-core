@@ -42,14 +42,6 @@ class State {
 
   void GetScoreValues(double* a, double* b);
 
-  void SetAutoContributeEnabled(bool enabled);
-
-  bool GetAutoContributeEnabled();
-
-  void SetAutoContributionAmount(const double amount);
-
-  double GetAutoContributionAmount();
-
   uint64_t GetReconcileStamp();
 
   void SetReconcileStamp(const int reconcile_interval);

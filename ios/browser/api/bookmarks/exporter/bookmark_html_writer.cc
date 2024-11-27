@@ -46,7 +46,7 @@ using bookmarks::BookmarkCodec;
 using bookmarks::BookmarkNode;
 
 namespace gfx {
-const int kFaviconSize = 16;
+constexpr int kFaviconSize = 16;
 }
 
 namespace {

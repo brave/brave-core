@@ -10,7 +10,6 @@
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
-#include "brave/browser/search/ntp_utils.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
@@ -53,6 +52,7 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefetch/pref_names.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
@@ -136,8 +136,6 @@ namespace brave {
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
 #if !BUILDFLAG(IS_ANDROID)
-  new_tab_page::RegisterNewTabPagePrefsForMigration(registry);
-
   // Added 10/2022
   registry->RegisterIntegerPref(kDefaultBrowserLaunchingCount, 0);
 #endif
@@ -491,6 +489,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->SetDefaultPrefValue(prefs::kSearchSuggestEnabled,
                                 base::Value(false));
+
+  webcompat_reporter::prefs::RegisterProfilePrefs(registry);
 }
 
 }  // namespace brave

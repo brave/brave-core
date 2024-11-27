@@ -54,7 +54,6 @@ function ContextMenuAssistant_(
       .then((resp) => {
         if (!resp.ratingId) {
           showAlert({
-            mode: 'simple',
             type: 'error',
             content: getLocale('ratingError'),
             actions: []
@@ -65,7 +64,6 @@ function ContextMenuAssistant_(
 
         setCurrentRatingStatus(RatingStatus.Liked)
         showAlert({
-          mode: 'simple',
           type: 'info',
           content: getLocale('answerLiked'),
           actions: []
@@ -81,7 +79,6 @@ function ContextMenuAssistant_(
       .then((resp) => {
         if (!resp.ratingId) {
           showAlert({
-            mode: 'simple',
             type: 'error',
             content: getLocale('ratingError'),
             actions: []
@@ -93,7 +90,6 @@ function ContextMenuAssistant_(
         setFeedbackId(resp.ratingId)
         setCurrentRatingStatus(RatingStatus.Disliked)
         showAlert({
-          mode: 'simple',
           type: 'info',
           content: getLocale('answerDisliked'),
           actions: [
@@ -118,7 +114,6 @@ function ContextMenuAssistant_(
         .then((resp) => {
           if (!resp.isSuccess) {
             showAlert({
-              mode: 'simple',
               type: 'error',
               content: getLocale('feedbackError'),
               actions: []
@@ -128,7 +123,6 @@ function ContextMenuAssistant_(
           }
 
           showAlert({
-            mode: 'simple',
             type: 'success',
             content: getLocale('feedbackSent'),
             actions: []

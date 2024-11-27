@@ -42,14 +42,14 @@ namespace {
 
 // https://gitlab.torproject.org/tpo/anti-censorship/rdsys/-/blob/main/doc/moat.md
 
-constexpr const char kTorBridgesFetchUrl[] =
+constexpr char kTorBridgesFetchUrl[] =
     "https://bridges.torproject.org/moat/fetch";
-constexpr const char kTorBridgesCheckUrl[] =
+constexpr char kTorBridgesCheckUrl[] =
     "https://bridges.torproject.org/moat/check";
 
-constexpr const char kMoatVersion[] = "0.1.0";
+constexpr char kMoatVersion[] = "0.1.0";
 
-constexpr const char kMoatShimToken[] = "LVOippNS8UiKLH6kXf1D8pI1clLc";
+constexpr char kMoatShimToken[] = "LVOippNS8UiKLH6kXf1D8pI1clLc";
 
 constexpr net::NetworkTrafficAnnotationTag kTorBridgesMoatAnnotation =
     net::DefineNetworkTrafficAnnotation("brave_tor_bridges", R"(
@@ -66,7 +66,7 @@ constexpr net::NetworkTrafficAnnotationTag kTorBridgesMoatAnnotation =
       cookies_allowed: NO
     })");
 
-constexpr const size_t kMaxBodySize = 256 * 1024;
+constexpr size_t kMaxBodySize = 256 * 1024;
 
 base::Value FetchCaptchaData() {
   base::Value::Dict data;

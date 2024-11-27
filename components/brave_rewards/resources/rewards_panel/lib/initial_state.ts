@@ -13,12 +13,7 @@ export function getInitialState (): HostState {
     requestedView: null,
     rewardsEnabled: false,
     balance: optional<number>(),
-    settings: {
-      autoContributeEnabled: false,
-      autoContributeAmount: 0
-    },
     options: {
-      autoContributeAmounts: [],
       externalWalletRegions: new Map(),
       vbatDeadline: undefined,
       vbatExpired: false
@@ -30,6 +25,7 @@ export function getInitialState (): HostState {
     },
     earningsInfo: {
       nextPaymentDate: 0,
+      adsReceivedThisMonth: 0,
       minEarningsThisMonth: 0,
       maxEarningsThisMonth: 0,
       minEarningsLastMonth: 0,

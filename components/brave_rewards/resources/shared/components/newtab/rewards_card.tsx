@@ -17,7 +17,6 @@ import { BatIcon } from '../icons/bat_icon'
 import { OptInIcon } from '../icons/optin_icon'
 import { InfoIcon } from './icons/info_icon'
 import { CaretIcon } from '../icons/caret_icon'
-import { EarningsRange } from '../earnings_range'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
@@ -66,6 +65,7 @@ interface Props {
   exchangeCurrency: string
   providerPayoutStatus: ProviderPayoutStatus
   nextPaymentDate: number
+  adsReceivedThisMonth: number
   minEarningsThisMonth: number
   maxEarningsThisMonth: number
   minEarningsLastMonth: number
@@ -242,7 +242,7 @@ export function RewardsCard (props: Props) {
 
   function renderEarnings () {
     return (
-      <>
+      <style.earnings>
         <style.earningsHeader>
           <style.earningsHeaderText>
             {getString('rewardsEarningsTitle')}
@@ -267,14 +267,10 @@ export function RewardsCard (props: Props) {
             {monthFormatter.format(new Date())}
           </style.earningsMonth>
           <div>
-            <EarningsRange
-              minimum={props.minEarningsThisMonth}
-              maximum={props.maxEarningsThisMonth}
-              minimumFractionDigits={3}
-            />
+            {props.adsReceivedThisMonth}
           </div>
         </style.earningsDisplay>
-      </>
+      </style.earnings>
     )
   }
 

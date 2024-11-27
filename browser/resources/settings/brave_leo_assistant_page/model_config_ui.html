@@ -63,7 +63,29 @@
   .actions-container leo-button:first-of-type {
     margin-right: 5px;
   }
+  
+  .unsafe-endpoint-label {
+    gap: 1em;
+    display: flex;
+    justify-content: center;
+    color: var(--leo-color-systemfeedback-error-icon);
+  }
 </style>
+
+<!-- warning message against potentially unsafe endpoints -->
+<template is="dom-if" if="[[shouldShowUnsafeEndpointModal]]">
+  <cr-dialog show-close-button show-on-attach>
+    <div slot="title">
+      <span class="dialog-title">
+        $i18n{braveLeoAssistantEndpointValidAsPrivateIp_Title}
+      </span>
+    </div>
+    <div slot="body">
+      <p>$i18n{braveLeoAssistantEndpointValidAsPrivateIp_Body}</p>
+      <p>$i18n{braveLeoAssistantEndpointValidAsPrivateIp_Instructions}</p>
+    </div>
+  </cr-dialog>
+</template>
 
 <div class="settings-box">
   <div class="container">
@@ -174,6 +196,14 @@
         invalid="[[isUrlInvalid]]"
         error-message="[[invalidUrlErrorMessage]]"
       ></cr-input>
+      <template is="dom-if" if="[[shouldShowUnsafeEndpointLabel]]">
+        <div class="unsafe-endpoint-label">
+          <leo-icon name="lock-open"></leo-icon> 
+          <span class="label-text">
+            $i18n{braveLeoAssistantEndpointPotentiallyUnsafeError}
+          </span>
+        </div>
+      </template>
     </div>
 
     <div class="input-container">

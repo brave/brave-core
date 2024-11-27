@@ -111,14 +111,20 @@ export default function Context(props: React.PropsWithChildren) {
   const [forwardHistory, setForwardHistory] = React.useState<string[]>([])
   const [backHistory, setBackHistory] = React.useState<string[]>([])
   const [isGenerating, setIsGenerating] = React.useState(false)
+  const [allActions, setAllActions] = React.useState<ActionGroup[]>([])
 
-  const actionList = useActionMenu(instructionsText, () => getRewriterPageHandler().getActionMenuList().then(({ actionList }) => actionList))
+  const actionList = useActionMenu(instructionsText, allActions)
   const charCountContext = useCharCountInfo(instructionsText)
 
   React.useEffect(() => {
-    getRewriterPageHandler()
+    const rewriterAPI = getRewriterPageHandler()
+    rewriterAPI
       .getInitialText()
       .then(({ initialText }) => setInitialText(initialText))
+
+    rewriterAPI
+      .getActionMenuList()
+      .then(({ actionList }) => setAllActions(actionList))
 
     const callbackRouter = getCallbackRouter()
     callbackRouter.onUpdatedGeneratedText.addListener(setGeneratedText)

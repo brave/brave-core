@@ -79,13 +79,13 @@ void CrxUpdateService::OnDemandUpdate(const std::vector<std::string>& ids,
 
 void OnDemandUpdater::EnsureInstalled(const std::string& id,
                                       Callback callback) {
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 void OnDemandUpdater::OnDemandUpdate(const std::vector<std::string>& ids,
                                      Priority priority,
                                      Callback callback) {
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 }  // namespace component_updater

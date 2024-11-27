@@ -12,7 +12,10 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/search_engines/template_url_table_model.h"
+#include "components/prefs/pref_service.h"
+#include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url.h"
 
 namespace settings {
@@ -34,6 +37,11 @@ void BraveSearchEnginesHandler::RegisterMessages() {
       "getPrivateSearchEnginesList",
       base::BindRepeating(
           &BraveSearchEnginesHandler::HandleGetPrivateSearchEnginesList,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setDefaultPrivateSearchEngine",
+      base::BindRepeating(
+          &BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine,
           base::Unretained(this)));
 }
 
@@ -70,13 +78,36 @@ base::Value::List BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
     if (base::UTF16ToUTF8(template_url->keyword()) == kBraveSearchForTorKeyword)
       continue;
 
-    base::Value::Dict dict;
-    dict.Set("value", template_url->sync_guid());
-    dict.Set("name", template_url->short_name());
+    const std::string& default_private_search_provider_guid =
+        profile_->GetPrefs()->GetString(
+            prefs::kSyncedDefaultPrivateSearchProviderGUID);
+    const bool is_default =
+        default_private_search_provider_guid == template_url->sync_guid();
+
+    base::Value::Dict dict = CreateDictionaryForEngine(i, is_default);
     defaults.Append(std::move(dict));
   }
 
   return defaults;
+}
+
+void BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine(
+    const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  int index = args[0].GetInt();
+  if (index < 0 || static_cast<size_t>(index) >=
+                       list_controller_.table_model()->RowCount()) {
+    return;
+  }
+
+  const auto* template_url = list_controller_.GetTemplateURL(index);
+  CHECK(template_url);
+
+  profile_->GetPrefs()->SetString(
+      prefs::kSyncedDefaultPrivateSearchProviderGUID,
+      template_url->sync_guid());
+
+  OnModelChanged();
 }
 
 base::Value::Dict BraveSearchEnginesHandler::GetSearchEnginesList() {

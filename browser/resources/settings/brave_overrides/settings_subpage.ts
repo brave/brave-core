@@ -19,7 +19,7 @@ RegisterStyleOverride(
         background-color: var(--leo-color-page-background) !important;
         box-shadow: none !important;
     }
-    slot {
+    slot:has(:not(settings-safety-hub-page)) {
         box-shadow: var(--leo-effect-elevation-01) !important;
         background-color: var(--leo-color-container-background) !important;
         border-radius: var(--leo-radius-m) !important;
@@ -36,7 +36,7 @@ RegisterStyleOverride(
     .cr-title-text {
         color: var(--cr-title-text-color);
         font-weight: 600 !important;
-        font-size: var(--leo-typography-heading-h3-font-size) !important;
+        font-size: var(--leo-typography-heading-h4-font-size) !important;
     }
   </style>
   `

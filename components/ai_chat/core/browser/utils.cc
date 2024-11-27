@@ -6,28 +6,38 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
-#include "base/containers/fixed_flat_set.h"
+#include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
-#include "base/task/bind_post_task.h"
-#include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/brave_domains/service_domains.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 #include "url/url_constants.h"
+
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
+#endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+
+#if BUILDFLAG(IS_WIN)
+#include "base/task/bind_post_task.h"
+#include "brave/components/l10n/common/locale_util.h"
+#endif  // BUILDFLAG(IS_WIN)
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 #include "brave/components/text_recognition/browser/text_recognition.h"

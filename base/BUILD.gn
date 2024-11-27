@@ -18,13 +18,13 @@ source_set("base") {
 source_set("base_unittests") {
   testonly = true
   sources = [
+    "//base/tools_sanity_unittest.cc",
     "build_time_unittest.cc",
     "feature_override_unittest.cc",
     "test/current_test_vendor_is_brave_unittest.cc",
     "test/launcher/teamcity_reporter_integration_unittest.cc",
     "test/launcher/teamcity_reporter_unittest.cc",
     "test/launcher/teamcity_service_messages_unittest.cc",
-    "tools_sanity_unittest.cc",
   ]
   deps = [
     "//base",

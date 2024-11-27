@@ -91,16 +91,12 @@ class RewardsEngine : public mojom::RewardsEngine,
 
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
-  void GetAutoContributeProperties(
-      GetAutoContributePropertiesCallback callback) override;
+  void FetchUICards(FetchUICardsCallback callback) override;
 
   void GetPublisherMinVisitTime(
       GetPublisherMinVisitTimeCallback callback) override;
 
   void GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) override;
-
-  void GetAutoContributeEnabled(
-      GetAutoContributeEnabledCallback callback) override;
 
   void GetReconcileStamp(GetReconcileStampCallback callback) override;
 
@@ -133,10 +129,6 @@ class RewardsEngine : public mojom::RewardsEngine,
 
   void SetPublisherMinVisits(int visits) override;
 
-  void SetAutoContributionAmount(double amount) override;
-
-  void SetAutoContributeEnabled(bool enabled) override;
-
   void GetBalanceReport(mojom::ActivityMonth month,
                         int32_t year,
                         GetBalanceReportCallback callback) override;
@@ -144,9 +136,6 @@ class RewardsEngine : public mojom::RewardsEngine,
   void GetPublisherActivityFromUrl(uint64_t window_id,
                                    mojom::VisitDataPtr visit_data,
                                    const std::string& publisher_blob) override;
-
-  void GetAutoContributionAmount(
-      GetAutoContributionAmountCallback callback) override;
 
   void GetPublisherBanner(const std::string& publisher_id,
                           GetPublisherBannerCallback callback) override;
@@ -289,8 +278,6 @@ class RewardsEngine : public mojom::RewardsEngine,
   }
 
   std::string GetClientCountryCode();
-
-  bool IsAutoContributeSupportedForClient();
 
   std::string GetLegacyWallet();
 

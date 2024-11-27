@@ -12,6 +12,8 @@ namespace webcompat_reporter {
 
 bool NeedsToGetComponentInfo(std::string_view component_id);
 
+std::string BoolToString(bool value);
+
 }  // namespace webcompat_reporter
 
 #endif  // BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_UTILS_H_

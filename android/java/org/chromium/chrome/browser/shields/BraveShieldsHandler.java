@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -126,6 +127,8 @@ public class BraveShieldsHandler
     private Profile mProfile;
     public boolean isDisconnectEntityLoaded;
     private CheckBox mCheckBoxScreenshot;
+    private EditText mEditTextDetails;
+    private EditText mEditTextContact;
     private View mDialogView;
     private Dialog mDialog;
     private ImageView mImageView;
@@ -148,6 +151,7 @@ public class BraveShieldsHandler
 
     /**
      * Constructs a BraveShieldsHandler object.
+     *
      * @param context Context that is using the BraveShieldsMenu.
      */
     public BraveShieldsHandler(Context context) {
@@ -291,9 +295,8 @@ public class BraveShieldsHandler
             popupWindow.setElevation(20);
         }
         // mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.drawable.picture_frame));
-        //Set the location of the window on the screen
+        // Set the location of the window on the screen
         popupWindow.showAsDropDown(anchorView, 0, 0);
-        popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NOT_NEEDED);
         popupWindow.setAnimationStyle(R.style.EndIconMenuAnim);
 
         // Turn off window animations for low end devices, and on Android M, which has built-in menu
@@ -316,8 +319,15 @@ public class BraveShieldsHandler
     }
 
     private void initWebcompatReporterService() {
+        if (mWebcompatReporterHandler != null) {
+            mWebcompatReporterHandler.close();
+        }
+        Tab currentActiveTab = mIconFetcher.getTab();
+        final boolean isPrivateWindow =
+                currentActiveTab != null ? currentActiveTab.isIncognito() : false;
         mWebcompatReporterHandler =
-                WebcompatReporterServiceFactory.getInstance().getWebcompatReporterHandler(this);
+                WebcompatReporterServiceFactory.getInstance()
+                        .getWebcompatReporterHandler(this, isPrivateWindow);
     }
 
     public void updateUrlSpec(String urlSpec) {
@@ -825,6 +835,8 @@ public class BraveShieldsHandler
                         mViewScreenshot.setVisibility(View.GONE);
                     }
                 });
+        mEditTextDetails = mReportBrokenSiteLayout.findViewById(R.id.details_info_text);
+        mEditTextContact = mReportBrokenSiteLayout.findViewById(R.id.contact_info_text);
 
         Button mSubmitButton = mReportBrokenSiteLayout.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(
@@ -838,6 +850,12 @@ public class BraveShieldsHandler
                         mThankYouLayout.setVisibility(View.VISIBLE);
                     }
                 });
+        mWebcompatReporterHandler.getContactInfo(
+                contactInfo -> {
+                    if (contactInfo != null && !contactInfo.isEmpty()) {
+                        mEditTextContact.setText(contactInfo);
+                    }
+                });
     }
 
     private ReportInfo getReportInfo(String siteUrl) {
@@ -846,6 +864,9 @@ public class BraveShieldsHandler
         reportInfo.braveVersion = BraveVersionConstants.VERSION;
         reportInfo.reportUrl = siteUrl;
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
+        reportInfo.details = mEditTextDetails.getText().toString();
+        reportInfo.contact = mEditTextContact.getText().toString();
+        Tab currentActiveTab = mIconFetcher.getTab();
         return reportInfo;
     }
 

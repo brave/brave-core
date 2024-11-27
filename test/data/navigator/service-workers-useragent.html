@@ -16,9 +16,11 @@
         }
       };
       navigator.serviceWorker.ready.then(function(registration) {
-        if (!navigator.serviceWorker.controller)
+        if (!navigator.serviceWorker.controller) {
           window.location.reload();
-        navigator.serviceWorker.controller.postMessage("generate");
+        } else {
+          navigator.serviceWorker.controller.postMessage("generate");
+        }
       });
     </script>
   </body>

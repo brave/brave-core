@@ -131,7 +131,7 @@ extension Preferences.Option where ValueType: ExpressibleByNilLiteral {
     defaultValue: ValueType,
     container: UserDefaults
   ) where V: UserDefaultsEncodable, ValueType == V? {
-    let initialValue = (container.value(forKey: key) as? ValueType) ?? defaultValue
+    let initialValue = (container.value(forKey: key) as? V) ?? defaultValue
     self.init(
       key: key,
       initialValue: initialValue,

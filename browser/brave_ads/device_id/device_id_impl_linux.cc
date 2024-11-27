@@ -5,14 +5,14 @@
 
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 
-#include <sys/socket.h>
-
 #include <ifaddrs.h>
 #include <net/if.h>
 #include <stddef.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/socket.h>
 
+#include <array>
 #include <map>
 #include <string>
 #include <utility>
@@ -41,7 +41,7 @@ using DiskMap = std::map<base::FilePath, base::FilePath>;
 namespace {
 
 constexpr char kDiskByUuidDirectoryName[] = "/dev/disk/by-uuid";
-constexpr const char* const kDeviceNames[] = {
+constexpr auto const kDeviceNames = std::to_array<std::string_view>({
     "sda1",       // First partition of the first SATA, SCSI, or IDE drive.
     "hda1",       // First partition of the first IDE/ATA drive.
     "nvme0n1p1",  // First partition of the first NVMe device.
@@ -62,13 +62,13 @@ constexpr const char* const kDeviceNames[] = {
                   // virtualized environments.
     "xvda2",  // Second partition of the first virtual drive in Xen virtualized
               // environments.
-};
-constexpr const char* const kNetDeviceNamePrefixes[] = {
-    // Fedora 15 uses biosdevname feature where Embedded ethernet uses the "em"
-    // prefix and PCI cards use the p[0-9]c[0-9] format based on PCI slot and
-    // card information.
-    "eth", "em", "en", "wl", "ww", "p0", "p1", "p2",
-    "p3",  "p4", "p5", "p6", "p7", "p8", "p9", "wlan"};
+});
+constexpr auto const kNetDeviceNamePrefixes = std::to_array<std::string_view>(
+    {// Fedora 15 uses biosdevname feature where Embedded ethernet uses the "em"
+     // prefix and PCI cards use the p[0-9]c[0-9] format based on PCI slot and
+     // card information.
+     "eth", "em", "en", "wl", "ww", "p0", "p1", "p2", "p3", "p4", "p5", "p6",
+     "p7", "p8", "p9", "wlan"});
 
 std::string GetDiskUuid() {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
@@ -96,7 +96,7 @@ std::string GetDiskUuid() {
 
   // Look for first device name matching an entry of `kDeviceNames`.
   std::string result;
-  for (const char* device_name : kDeviceNames) {
+  for (auto device_name : kDeviceNames) {
     DiskMap::iterator iter = disks.find(base::FilePath(device_name));
     if (iter != disks.cend()) {
       result = iter->second.value();
@@ -114,9 +114,7 @@ class MacAddressProcessor {
       : is_valid_mac_address_callback_(
             std::move(is_valid_mac_address_callback)) {}
 
-  bool ProcessInterface(struct ifaddrs* ifaddr,
-                        const char* const prefixes[],
-                        size_t prefixes_count) {
+  bool ProcessInterface(struct ifaddrs* ifaddr) {
     bool keep_going = true;
 
 
@@ -139,7 +137,7 @@ class MacAddressProcessor {
       return keep_going;
     }
 
-    if (!IsValidPrefix(ifinfo.ifr_name, prefixes, prefixes_count)) {
+    if (!IsValidPrefix(ifinfo.ifr_name)) {
       return keep_going;
     }
 
@@ -153,11 +151,9 @@ class MacAddressProcessor {
   std::string GetMacAddress() const { return mac_address_; }
 
  private:
-  bool IsValidPrefix(const char* name,
-                     const char* const prefixes[],
-                     size_t prefixes_count) {
-    for (size_t i = 0; i < prefixes_count; i++) {
-      if (UNSAFE_TODO(strncmp(prefixes[i], name, strlen(prefixes[i]))) == 0) {
+  bool IsValidPrefix(base::span<const char> name) const {
+    for (auto prefix : kNetDeviceNamePrefixes) {
+      if (base::as_string_view(name).starts_with(prefix)) {
         return true;
       }
     }
@@ -182,8 +178,7 @@ std::string GetMacAddress(
 
   MacAddressProcessor processor(std::move(is_valid_mac_address_callback));
   for (struct ifaddrs* ifa = ifaddrs; ifa; ifa = ifa->ifa_next) {
-    bool keep_going = processor.ProcessInterface(
-        ifa, kNetDeviceNamePrefixes, std::size(kNetDeviceNamePrefixes));
+    bool keep_going = processor.ProcessInterface(ifa);
     if (!keep_going) {
       break;
     }

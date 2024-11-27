@@ -172,6 +172,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        if (isRemoving() || isDetached()) {
+            return;
+        }
 
         // Checks the orientation of the screen
         if (newConfig.orientation != Configuration.ORIENTATION_UNDEFINED
@@ -266,7 +269,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 return;
             }
             ArrayList<BraveSyncDevices.SyncDeviceInfo> deviceInfos =
-                    BraveSyncDevices.get().GetSyncDeviceList();
+                    BraveSyncDevices.get().getSyncDeviceList();
 
             ViewGroup insertPoint = (ViewGroup) getView().findViewById(R.id.brave_sync_devices);
             insertPoint.removeAllViews();
@@ -597,6 +600,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             seedWordsReceived(mCodephrase, SyncInputType.NEW);
         } else if (mMobileButton == v) {
             setAddMobileDeviceLayout();
+            selectAddMobileTab();
         } else if (mLaptopButton == v) {
             setAddLaptopLayout();
             selectAddLaptopTab();
@@ -713,6 +717,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     private void selectAddLaptopTab() {
         mTabLayout.getTabAt(1).select();
+    }
+
+    private void selectAddMobileTab() {
+        mTabLayout.getTabAt(0).select();
     }
 
     void generateNewCodeWords() {
@@ -1203,7 +1211,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                 getBraveSyncWorker().resetSync();
                                 startLeaveSyncChainOperations();
                             } else {
-                                BraveSyncDevices.get().DeleteDevice(device.mGuid);
+                                BraveSyncDevices.get().deleteDevice(device.mGuid);
                             }
                         }
                     }

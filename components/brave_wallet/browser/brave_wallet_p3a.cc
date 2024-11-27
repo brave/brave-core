@@ -30,14 +30,16 @@ namespace brave_wallet {
 
 namespace {
 
-const int kRefreshP3AFrequencyHours = 24;
-const int kActiveAccountBuckets[] = {0, 1, 2, 3, 7};
-const char* kTimePrefsToMigrateToLocalState[] = {kBraveWalletLastUnlockTime,
-                                                 kBraveWalletP3AFirstUnlockTime,
-                                                 kBraveWalletP3ALastUnlockTime};
-const char* kTimePrefsToRemove[] = {kBraveWalletP3AFirstReportTimeDeprecated,
-                                    kBraveWalletP3ALastReportTimeDeprecated};
-const int kNFTCountBuckets[] = {0, 4, 20};
+constexpr int kRefreshP3AFrequencyHours = 24;
+constexpr int kActiveAccountBuckets[] = {0, 1, 2, 3, 7};
+auto constexpr kTimePrefsToMigrateToLocalState =
+    std::to_array<std::string_view>({kBraveWalletLastUnlockTime,
+                                     kBraveWalletP3AFirstUnlockTime,
+                                     kBraveWalletP3ALastUnlockTime});
+auto constexpr kTimePrefsToRemove =
+    std::to_array<std::string_view>({kBraveWalletP3AFirstReportTimeDeprecated,
+                                     kBraveWalletP3ALastReportTimeDeprecated});
+constexpr int kNFTCountBuckets[] = {0, 4, 20};
 constexpr base::TimeDelta kOnboardingRecordDelay = base::Seconds(120);
 
 // Has the Wallet keyring been created?
@@ -254,6 +256,8 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
     case mojom::CoinType::ZEC:
       histogram_name = kZecTransactionSentHistogramName;
       break;
+    default:
+      NOTREACHED() << coin;
   }
 
   CHECK(histogram_name);
@@ -304,6 +308,8 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
     case mojom::CoinType::ZEC:
       histogram_name = kZecActiveAccountHistogramName;
       break;
+    default:
+      NOTREACHED() << coin_type;
   }
 
   CHECK(histogram_name);
@@ -357,7 +363,7 @@ void BraveWalletP3A::ReportNftDiscoverySetting() {
 
 // TODO(djandries): remove pref migration around April 2024
 void BraveWalletP3A::MigrateUsageProfilePrefsToLocalState() {
-  for (const char* pref_name : kTimePrefsToMigrateToLocalState) {
+  for (auto pref_name : kTimePrefsToMigrateToLocalState) {
     if (local_state_->GetTime(pref_name).is_null()) {
       base::Time profile_time = profile_prefs_->GetTime(pref_name);
       if (!profile_time.is_null()) {
@@ -366,7 +372,7 @@ void BraveWalletP3A::MigrateUsageProfilePrefsToLocalState() {
       }
     }
   }
-  for (const char* pref_name : kTimePrefsToRemove) {
+  for (auto pref_name : kTimePrefsToRemove) {
     local_state_->ClearPref(pref_name);
     profile_prefs_->ClearPref(pref_name);
   }
@@ -464,7 +470,7 @@ void BraveWalletP3A::OnTransactionStatusChanged(
       return;
     }
   } else {
-    return;
+    NOTREACHED() << tx_coin;
   }
   ReportTransactionSent(tx_coin, true);
 }

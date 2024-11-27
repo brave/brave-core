@@ -51,10 +51,13 @@ extension BrowserViewController {
       // Region Button is populated without current selected detail title for features menu
       RegionMenuButton(
         settingTitleEnabled: false,
-        regionSelectAction: {
-          let vc = UIHostingController(
-            rootView: BraveVPNRegionListView()
+        regionSelectAction: { [unowned self] in
+          let vpnRegionListView = BraveVPNRegionListView(
+            onServerRegionSet: { _ in
+              self.presentVPNServerRegionPopup()
+            }
           )
+          let vc = UIHostingController(rootView: vpnRegionListView)
           vc.title = Strings.VPN.vpnRegionListServerScreenTitle
 
           (self.presentedViewController as? MenuViewController)?
@@ -104,10 +107,13 @@ extension BrowserViewController {
 
       // Region Button is populated including the details for privacy feature menu
       RegionMenuButton(
-        regionSelectAction: {
-          let vc = UIHostingController(
-            rootView: BraveVPNRegionListView()
+        regionSelectAction: { [unowned self] in
+          let vpnRegionListView = BraveVPNRegionListView(
+            onServerRegionSet: { _ in
+              self.presentVPNServerRegionPopup()
+            }
           )
+          let vc = UIHostingController(rootView: vpnRegionListView)
           vc.title = Strings.VPN.vpnRegionListServerScreenTitle
 
           (self.presentedViewController as? MenuViewController)?
@@ -314,6 +320,26 @@ extension BrowserViewController {
     }
   }
 
+  // Present a popup when VPN server region has been changed
+  private func presentVPNServerRegionPopup() {
+    let controller = PopupViewController(
+      rootView: BraveVPNRegionConfirmationView(
+        country: BraveVPN.serverLocationDetailed.country,
+        city: BraveVPN.serverLocationDetailed.city,
+        countryISOCode: BraveVPN.serverLocation.isoCode
+      ),
+      isDismissable: true
+    )
+    if let presentedViewController {
+      presentedViewController.present(controller, animated: true)
+    } else {
+      present(controller, animated: true)
+    }
+    Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak controller] _ in
+      controller?.dismiss(animated: true)
+    }
+  }
+
   struct PageActionsMenuSection: View {
     var browserViewController: BrowserViewController
     var tabURL: URL
@@ -375,6 +401,20 @@ extension BrowserViewController {
           ) {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
+          }
+          MenuItemButton(
+            icon: Image(braveSystemName: "leo.shred.data"),
+            title: Strings.Shields.shredSiteData
+          ) {
+            browserViewController.dismiss(animated: true) {
+              guard let tab = self.browserViewController.tabManager.selectedTab,
+                let url = tab.url
+              else { return }
+              let alert = UIAlertController.shredDataAlert(url: url) { _ in
+                self.browserViewController.shredData(for: url, in: tab)
+              }
+              browserViewController.present(alert, animated: true)
+            }
           }
           NightModeMenuButton(dismiss: {
             browserViewController.dismiss(animated: true)

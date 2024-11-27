@@ -72,6 +72,8 @@ public class BraveNewsPreferencesTypeAdapter extends RecyclerView.Adapter<Recycl
         mBraveNewsPreferencesType = braveNewsPreferencesType;
         mPublisherList = publisherList;
         mChannelList = channelList;
+        // Init channel list as an empty array if it is null to avoid null pointer crashes.
+        if (mChannelList == null) mChannelList = new ArrayList<>();
         if (mChannelList.size() > 0) {
             mChannelIcons = BraveNewsUtils.getChannelIcons();
         }

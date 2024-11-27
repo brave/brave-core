@@ -23,7 +23,6 @@ extension BrowserViewController {
   /// - P3A
   /// - VPN Update Billing
   /// - Bottom Bar
-  /// - VPN Promotion
   /// - Default Browser
   /// - Rewards
   /// - VPN Link Receipt
@@ -50,8 +49,6 @@ extension BrowserViewController {
       presentDefaultBrowserScreenCallout(skipSafeGuards: skipSafeGuards)
     case .rewards:
       presentBraveRewardsScreenCallout(skipSafeGuards: skipSafeGuards)
-    case .vpnPromotion:
-      presentVPNPromotionCallout(skipSafeGuards: skipSafeGuards)
     case .vpnLinkReceipt:
       presentVPNLinkReceiptCallout(skipSafeGuards: skipSafeGuards)
     }
@@ -203,38 +200,6 @@ extension BrowserViewController {
 
     isOnboardingOrFullScreenCalloutPresented = true
     present(controller, animated: true)
-  }
-
-  private func presentVPNPromotionCallout(skipSafeGuards: Bool = false) {
-    if !skipSafeGuards {
-      // Onboarding should be completed to show callouts
-      if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue
-      {
-        return
-      }
-
-      if Preferences.VPN.popupShowed.value
-        || !BraveVPNProductInfo.isComplete
-      {
-        FullScreenCalloutType.vpnPromotion.preferenceValue.value = false
-        return
-      }
-    }
-
-    var vpnDetailsView = OnboardingVPNDetailsView()
-    vpnDetailsView.learnMore = { [weak self] in
-      guard let self = self else { return }
-
-      self.dismiss(animated: false) {
-        self.presentCorrespondingVPNViewController()
-      }
-    }
-
-    let popup = PopupViewController(rootView: vpnDetailsView, isDismissable: true)
-    Preferences.VPN.popupShowed.value = true
-
-    isOnboardingOrFullScreenCalloutPresented = true
-    present(popup, animated: false)
   }
 
   private func presentVPNLinkReceiptCallout(skipSafeGuards: Bool = false) {

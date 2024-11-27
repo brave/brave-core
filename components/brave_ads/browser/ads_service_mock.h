@@ -12,8 +12,9 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/ads_service_observer.h"
+#include "base/functional/callback_forward.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -30,9 +31,6 @@ class AdsServiceMock : public AdsService {
   AdsServiceMock& operator=(AdsServiceMock&&) noexcept = delete;
 
   ~AdsServiceMock() override;
-
-  MOCK_METHOD(void, AddObserver, (AdsServiceObserver * observer));
-  MOCK_METHOD(void, RemoveObserver, (AdsServiceObserver * observer));
 
   MOCK_METHOD(void,
               AddBatAdsObserver,
@@ -53,7 +51,7 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(void,
               MaybeServeInlineContentAd,
-              (const std::string&, MaybeServeInlineContentAdAsDictCallback));
+              (const std::string&, MaybeServeInlineContentAdCallback));
   MOCK_METHOD(void,
               TriggerInlineContentAdEvent,
               (const std::string&,
@@ -99,7 +97,7 @@ class AdsServiceMock : public AdsService {
               GetAdHistory,
               (base::Time, base::Time, GetAdHistoryForUICallback));
 
-  MOCK_METHOD(void, ClearData, ());
+  MOCK_METHOD(void, ClearData, (base::OnceClosure));
 
   MOCK_METHOD(void,
               ToggleLikeAd,

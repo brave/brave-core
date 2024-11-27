@@ -79,7 +79,11 @@ struct PlaylistContentView: View {
             }
           }
         ),
-        isPlaying: playerModel.isPlaying
+        isPlaying: playerModel.isPlaying,
+        onPlaylistUpdated: {
+          // Update the queue to reflect updated playlist
+          playerModel.makeItemQueue(selectedItemID: selectedItemID)
+        }
       )
     } sidebarHeader: {
       if let selectedFolder = selectedFolder {
@@ -165,7 +169,9 @@ struct PlaylistContentView: View {
     }
     .sheet(isPresented: $isEditModePresented) {
       if let selectedFolder {
-        EditFolderView(folder: selectedFolder, folders: Array(folders))
+        EditFolderView(folder: selectedFolder, folders: Array(folders)) {
+          playerModel.makeItemQueue(selectedItemID: playerModel.selectedItemID)
+        }
       }
     }
     .alert(Strings.Playlist.newPlaylistButtonTitle, isPresented: $isNewPlaylistAlertPresented) {

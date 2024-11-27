@@ -12,6 +12,8 @@
 
 class GURL;
 
+class HostContentSettingsMap;
+
 namespace user_prefs {
 class PrefRegistrySyncable;
 }
@@ -22,17 +24,16 @@ typedef absl::randen_engine<uint64_t> FarblingPRNG;
 
 class BraveFarblingService : public KeyedService {
  public:
-  BraveFarblingService();
+  explicit BraveFarblingService(
+      HostContentSettingsMap* host_content_settings_map);
   ~BraveFarblingService() override;
 
-  uint64_t session_token();
-  void set_session_tokens_for_testing(uint64_t session_token);
   bool MakePseudoRandomGeneratorForURL(const GURL& url, FarblingPRNG* prng);
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
  private:
-  uint64_t session_token_;
+  const raw_ptr<HostContentSettingsMap> host_content_settings_map_;
 };
 
 }  // namespace brave

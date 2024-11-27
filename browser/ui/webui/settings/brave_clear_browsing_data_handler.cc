@@ -6,8 +6,9 @@
 #include "brave/browser/ui/webui/settings/brave_clear_browsing_data_handler.h"
 
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
@@ -60,7 +61,7 @@ void BraveClearBrowsingDataHandler::HandleClearBraveAdsData(
     const base::Value::List& /*args*/) {
   if (auto* ads_service =
           brave_ads::AdsServiceFactory::GetForProfile(profile_)) {
-    ads_service->ClearData();
+    ads_service->ClearData(/*intentional*/ base::DoNothing());
   }
 }
 

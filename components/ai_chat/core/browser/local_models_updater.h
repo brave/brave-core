@@ -6,11 +6,21 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_LOCAL_MODELS_UPDATER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_LOCAL_MODELS_UPDATER_H_
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/no_destructor.h"
+#include "base/values.h"
 #include "components/component_updater/component_installer.h"
+#include "components/update_client/update_client.h"
+
+namespace base {
+class Version;
+template <typename T>
+class NoDestructor;
+}  // namespace base
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -18,7 +28,8 @@ class ComponentUpdateService;
 
 namespace ai_chat {
 
-extern const char kUniversalQAModelName[];
+inline constexpr char kUniversalQAModelName[] =
+    "universal_sentence_encoder_qa_with_metadata.tflite";
 
 class LocalModelsComponentInstallerPolicy
     : public ::component_updater::ComponentInstallerPolicy {

@@ -5,27 +5,33 @@
 
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 
+#include <ios>
 #include <memory>
+#include <ostream>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
-#include "base/containers/fixed_flat_set.h"
+#include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
+#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
-#include "base/ranges/algorithm.h"
-#include "base/strings/string_util.h"
+#include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/browser/brave_search_responses.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "net/base/url_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/url_constants.h"
 
 namespace ai_chat {
 

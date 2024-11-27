@@ -40,7 +40,6 @@ void ComponentInstaller::Register(
     "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
     "imefjhfbkmcmebodilednhmaccmincoa",  // Client Side Phishing Detection
     "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
-    "ojhpjlocmbogdgmfpkhlaaeamibhnphh",  // Zxcvbn Data Dictionaries
     "gonpemdgkjcecdgbnaabipppbmgfggbe",  // First Party Sets
     "dhlpobdgcjafebgbbhjdnapejmpkgiie",  // Desktop Sharing Hub
 #if BUILDFLAG(IS_ANDROID)

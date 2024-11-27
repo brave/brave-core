@@ -166,7 +166,7 @@ function MainPanel() {
           tooltip={getLocale('braveVpnSettingsTooltip')}
           onClick={handleSettingsButtonClick}
         />
-        <PanelHeader title={getLocale('braveVpnMainPanelTitle')} />
+        <PanelHeader title={getLocale('braveVpn')} />
         <Toggle disabled={expired} />
         {connectionStatus === ConnectionState.CONNECT_NOT_ALLOWED && (
           <S.StyledAlert
@@ -179,7 +179,6 @@ function MainPanel() {
         {expired && (
           <S.StyledAlert
             type='warning'
-            mode='full'
             hideIcon
           >
             <div slot='title'>{getLocale('braveVpnSessionExpiredTitle')}</div>
@@ -189,7 +188,6 @@ function MainPanel() {
         {outOfCredentials && (
           <S.StyledAlert
             type='warning'
-            mode='full'
             hideIcon
           >
             <div slot='title'>{getLocale('braveVpnOutOfCredentials')}</div>

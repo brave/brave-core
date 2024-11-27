@@ -50,17 +50,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           ]
         }
       },
-      cookieControlTypes_: {
-          readOnly: true,
-          type: Array,
-          value: function () {
-            return [
-                { value: 'block', name: loadTimeData.getString('blockAllCookies') },
-                { value: 'block_third_party', name: loadTimeData.getString('block3rdPartyCookies') },
-                { value: 'allow', name: loadTimeData.getString('allowAllCookies') }
-            ]
-          }
-      },
       fingerprintingControlTypes_: {
           readOnly: true,
           type: Array,
@@ -87,6 +76,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           }
       },
       adControlType_: String,
+      cookieControlTypes_: Array,
       cookieControlType_: String,
       fingerprintingControlType_: String,
       httpsUpgradeControlType_: String,
@@ -115,6 +105,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         }
       },
       isFingerprintingEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
+        }
+      },
+      isContactInfoSaveFlagEnabled_: {
         type: Object,
         value: {
           key: '',
@@ -166,6 +164,21 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       this.cookieControlType_ = value
     })
 
+    this.browserProxy_.getHideBlockAllCookieTogle().then(value => {
+      this.cookieControlTypes_ = [
+        { value: 'block_third_party',
+          name: loadTimeData.getString('block3rdPartyCookies') },
+        { value: 'allow',
+          name: loadTimeData.getString('allowAllCookies') }
+      ]
+      if (!value) {
+        this.cookieControlTypes_.unshift({
+          value: 'block',
+          name: loadTimeData.getString('blockAllCookies')
+        })
+      }
+    })
+
     this.browserProxy_.getFingerprintingControlType().then(value => {
       this.fingerprintingControlType_ = value
       this.isFingerprintingEnabled_ = {
@@ -181,6 +194,13 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
     this.browserProxy_.getForgetFirstPartyStorageEnabled().then(value => {
       this.isForgetFirstPartyStorageEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
+    })
+    this.browserProxy_.getContactInfoSaveFlag().then(value => {
+      this.isContactInfoSaveFlagEnabled_ = {
         key: '',
         type: chrome.settingsPrivate.PrefType.BOOLEAN,
         value: value,
@@ -219,6 +239,12 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   onForgetFirstPartyStorageToggleChange_ () {
     this.browserProxy_.setForgetFirstPartyStorageEnabled(
       this.$.forgetFirstPartyStorageControlType.checked
+    )
+  }
+
+  onSaveContactInfoToggle_() {
+    this.browserProxy_.setContactInfoSaveFlag(
+      this.$.setContactInfoSaveFlagToggle.checked
     )
   }
 }

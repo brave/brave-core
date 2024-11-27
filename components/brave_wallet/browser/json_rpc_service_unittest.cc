@@ -18,6 +18,7 @@
 #include "base/base64.h"
 #include "base/containers/contains.h"
 #include "base/containers/span.h"
+#include "base/containers/span_writer.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -409,10 +410,8 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
 
   static std::vector<uint8_t> MakeMintData(int supply) {
     std::vector<uint8_t> data(82);
-    base::as_writable_bytes(base::make_span(data))
-        .subspan(36)
-        .first<8u>()
-        .copy_from(base::U64ToNativeEndian(supply));
+    base::span(data).subspan(36).first<8u>().copy_from(
+        base::U64ToLittleEndian(supply));
     return data;
   }
 
@@ -420,7 +419,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
       const SolanaAddress& owner,
       const std::vector<uint8_t>& data = {}) {
     std::vector<uint8_t> result(96 + data.size());
-    auto result_span = base::as_writable_bytes(base::make_span(result));
+    auto result_span = base::span(result);
     // Header.
     base::ranges::copy(owner.bytes(), result_span.subspan(32, 32).begin());
 
@@ -435,7 +434,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
       const SolanaAddress& sol_record_address,
       const std::vector<uint8_t>& signer_key) {
     std::vector<uint8_t> result(32 + 64);  // payload_address + signature.
-    auto result_span = base::as_writable_bytes(base::make_span(result));
+    auto result_span = base::span(result);
 
     base::ranges::copy(sol_record_payload_address.bytes(), result_span.begin());
 
@@ -609,16 +608,11 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
   static std::vector<uint8_t> MakeTokenAccountData(const SolanaAddress& mint,
                                                    const SolanaAddress& owner) {
     std::vector<uint8_t> data(165);
-    auto mint_span =
-        base::as_writable_bytes(base::make_span(data)).subspan(0, 32);
-    base::ranges::copy(mint.bytes(), mint_span.begin());
-    auto owner_span =
-        base::as_writable_bytes(base::make_span(data)).subspan(32, 32);
-    base::ranges::copy(owner.bytes(), owner_span.begin());
 
-    auto amount_span =
-        base::as_writable_bytes(base::make_span(data)).subspan(64, 1);
-    *amount_span.data() = 1;
+    auto span_writer = base::SpanWriter(base::span(data));
+    span_writer.Write(mint.bytes());
+    span_writer.Write(owner.bytes());
+    span_writer.WriteU8LittleEndian(1);
 
     return data;
   }
@@ -632,7 +626,7 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
     auto* filters = (*dict.FindList("params"))[1].GetDict().FindList("filters");
     EXPECT_TRUE(filters);
 
-    auto data_span = base::make_span(token_account_data_);
+    auto data_span = base::span(token_account_data_);
     base::Value::List expected_filters;
     expected_filters.Append(base::Value::Dict());
     expected_filters.back().GetDict().SetByDottedPath("memcmp.offset", 0);
@@ -3183,10 +3177,11 @@ class UDGetManyCallHandler : public EthCallHandler {
         eth_abi::TupleEncoder().AddStringArray(result_strings));
   }
 
-  void AddItem(const std::string& domain,
-               const std::string& key,
-               const std::string& value) {
-    items_.push_back(Item{domain, key, value});
+  void AddItem(std::string_view domain,
+               std::string_view key,
+               std::string_view value) {
+    items_.push_back(
+        Item{std::string(domain), std::string(key), std::string(value)});
   }
 
   void Reset() {
@@ -3643,24 +3638,24 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
                               "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"),
           mojom::ProviderError::kSuccess, ""));
 
-  auto& keys = unstoppable_domains::GetRecordKeys();
-  ASSERT_EQ(6u, keys.size());
+  ASSERT_EQ(6u, unstoppable_domains::kRecordKeys.size());
   // This will resolve brave.crypto requests.
   eth_mainnet_getmany_call_handler_->AddItem(
-      "brave.crypto", keys[0],
+      "brave.crypto", unstoppable_domains::kRecordKeys[0],
       "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
-  eth_mainnet_getmany_call_handler_->AddItem("brave.crypto", keys[5],
-                                             "https://brave.com");
-  polygon_getmany_call_handler_->AddItem("brave.crypto", keys[5],
-                                         "https://brave.com");
+  eth_mainnet_getmany_call_handler_->AddItem(
+      "brave.crypto", unstoppable_domains::kRecordKeys[5], "https://brave.com");
+  polygon_getmany_call_handler_->AddItem(
+      "brave.crypto", unstoppable_domains::kRecordKeys[5], "https://brave.com");
 
   // This will resolve brave.x requests.
   polygon_getmany_call_handler_->AddItem(
-      "brave.x", keys[0], "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
-  polygon_getmany_call_handler_->AddItem("brave.x", keys[5],
-                                         "https://brave.com");
-  eth_mainnet_getmany_call_handler_->AddItem("brave.x", keys[5],
-                                             "https://brave.com");
+      "brave.x", unstoppable_domains::kRecordKeys[0],
+      "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
+  polygon_getmany_call_handler_->AddItem(
+      "brave.x", unstoppable_domains::kRecordKeys[5], "https://brave.com");
+  eth_mainnet_getmany_call_handler_->AddItem(
+      "brave.x", unstoppable_domains::kRecordKeys[5], "https://brave.com");
 
   EXPECT_EQ(0, eth_mainnet_getmany_call_handler_->calls_number());
   EXPECT_EQ(0, polygon_getmany_call_handler_->calls_number());
@@ -3882,6 +3877,22 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidDomain) {
       task_environment_.RunUntilIdle();
     }
   }
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidCoin) {
+  base::MockCallback<JsonRpcService::UnstoppableDomainsGetWalletAddrCallback>
+      callback;
+
+  for (auto coin : {mojom::CoinType::BTC, mojom::CoinType::ZEC}) {
+    auto token = mojom::BlockchainToken::New();
+    token->coin = coin;
+    EXPECT_CALL(callback, Run("", mojom::ProviderError::kSuccess, ""));
+    json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+        "brave.crypto", token.Clone(), callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+
+  EXPECT_TRUE(AllCoinsTested());
 }
 
 TEST_F(JsonRpcServiceUnitTest, IsValidEnsDomain) {
@@ -5576,7 +5587,7 @@ class EnsGetRecordHandler : public EthCallHandler {
     bool host_matches =
         base::ranges::equal(*namehash_bytes, Namehash(host_name_));
 
-    if (base::ranges::equal(selector, GetFunctionHashBytes4("addr(bytes32)"))) {
+    if (selector == GetFunctionHashBytes4("addr(bytes32)")) {
       auto eth_address = EthAddress::ZeroAddress();
       if (host_matches) {
         eth_address = result_address_;
@@ -5584,8 +5595,9 @@ class EnsGetRecordHandler : public EthCallHandler {
 
       return MakeJsonRpcTupleResponse(
           eth_abi::TupleEncoder().AddAddress(eth_address));
-    } else if (base::ranges::equal(
-                   selector, GetFunctionHashBytes4("contenthash(bytes32)"))) {
+    }
+
+    if (selector == GetFunctionHashBytes4("contenthash(bytes32)")) {
       std::vector<uint8_t> contenthash;
       if (host_matches) {
         contenthash = result_contenthash_;
@@ -5594,7 +5606,7 @@ class EnsGetRecordHandler : public EthCallHandler {
       return MakeJsonRpcTupleResponse(
           eth_abi::TupleEncoder().AddBytes(contenthash));
     }
-    NOTREACHED_IN_MIGRATION();
+
     return std::nullopt;
   }
 
@@ -5704,8 +5716,7 @@ class OffchainGatewayHandler {
     auto* data = payload->GetDict().FindString("data");
     auto bytes = PrefixedHexStringToBytes(*data);
     if (!bytes) {
-      NOTREACHED_IN_MIGRATION();
-      return std::nullopt;
+      NOTREACHED();
     }
 
     auto [selector, args] =
@@ -5758,8 +5769,7 @@ class OffchainGatewayHandler {
         }
       }
     } else {
-      NOTREACHED_IN_MIGRATION();
-      return std::nullopt;
+      NOTREACHED();
     }
 
     if (ensip10_resolve) {
@@ -6963,22 +6973,21 @@ TEST_F(JsonRpcServiceUnitTest, EthGetLogs) {
   base::Value::List topics;
 
   // Invalid network ID yields internal error
-  TestEthGetLogs("0xinvalid", "earliest", "latest",
-                 std::move(contract_addresses), std::move(topics), {},
-                 mojom::ProviderError::kInternalError,
+  TestEthGetLogs("0xinvalid", "earliest", "latest", contract_addresses.Clone(),
+                 topics.Clone(), {}, mojom::ProviderError::kInternalError,
                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   // Non 200 response yields internal error
   SetHTTPRequestTimeoutInterceptor();
   TestEthGetLogs(mojom::kMainnetChainId, "earliest", "latest",
-                 std::move(contract_addresses), std::move(topics), {},
+                 contract_addresses.Clone(), topics.Clone(), {},
                  mojom::ProviderError::kInternalError,
                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   // Invalid response body yields parsing error
   SetInvalidJsonInterceptor();
   TestEthGetLogs(mojom::kMainnetChainId, "earliest", "latest",
-                 std::move(contract_addresses), std::move(topics), {},
+                 contract_addresses.Clone(), topics.Clone(), {},
                  mojom::ProviderError::kParsingError,
                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
@@ -7030,7 +7039,7 @@ TEST_F(JsonRpcServiceUnitTest, EthGetLogs) {
   SetInterceptor(GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
                  "eth_getLogs", "", response);
   TestEthGetLogs(mojom::kMainnetChainId, "earliest", "latest",
-                 std::move(contract_addresses), std::move(topics),
+                 contract_addresses.Clone(), topics.Clone(),
                  std::move(expected_logs), mojom::ProviderError::kSuccess, "");
 }
 

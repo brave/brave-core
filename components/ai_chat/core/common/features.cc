@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "build/build_config.h"
 
 namespace ai_chat::features {
 
@@ -53,6 +54,14 @@ BASE_FEATURE(kPageContentRefine,
 
 bool IsPageContentRefineEnabled() {
   return base::FeatureList::IsEnabled(features::kPageContentRefine);
+}
+
+BASE_FEATURE(kAllowPrivateIPs,
+             "AllowPrivateIPs",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAllowPrivateIPsEnabled() {
+  return base::FeatureList::IsEnabled(features::kAllowPrivateIPs);
 }
 
 BASE_FEATURE(kOpenAIChatFromBraveSearch,

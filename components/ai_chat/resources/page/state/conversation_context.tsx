@@ -4,20 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-
 import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
-import usePromise from '$web-common/usePromise'
 import * as API from '../api/'
 import { useAIChat } from './ai_chat_context'
 import { isLeoModel } from '../model_utils'
+import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
+import useIsConversationVisible from '../hooks/useIsConversationVisible'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
-
-export interface ConversationContextProps {
-  conversationHandler: API.ConversationHandlerRemote
-  callbackRouter: API.ConversationUICallbackRouter
-}
 
 export interface CharCountContext {
   isCharLimitExceeded: boolean
@@ -87,18 +82,18 @@ const defaultContext: ConversationContext = {
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
-  setCurrentModel: () => {},
-  switchToBasicModel: () => {},
-  generateSuggestedQuestions: () => {},
-  dismissLongConversationInfo: () => {},
-  updateShouldSendPageContents: () => {},
-  retryAPIRequest: () => {},
-  handleResetError: () => {},
-  setInputText: () => {},
-  submitInputTextToAPI: () => {},
-  resetSelectedActionType: () => {},
-  handleActionTypeClick: () => {},
-  setIsToolsMenuOpen: () => {},
+  setCurrentModel: () => { },
+  switchToBasicModel: () => { },
+  generateSuggestedQuestions: () => { },
+  dismissLongConversationInfo: () => { },
+  updateShouldSendPageContents: () => { },
+  retryAPIRequest: () => { },
+  handleResetError: () => { },
+  setInputText: () => { },
+  submitInputTextToAPI: () => { },
+  resetSelectedActionType: () => { },
+  handleActionTypeClick: () => { },
+  setIsToolsMenuOpen: () => { },
   ...defaultCharCountContext
 }
 
@@ -125,10 +120,8 @@ export const getFirstValidAction = (actionList: mojom.ActionGroup[]) =>
 
 export function useActionMenu(
   filter: string,
-  getActions: () => Promise<mojom.ActionGroup[]>
+  actionList: mojom.ActionGroup[]
 ) {
-  const { result: actionList = [] } = usePromise(getActions, [])
-
   return React.useMemo(() => {
     const reg = new RegExp(/^\/\w+/)
 
@@ -155,13 +148,11 @@ export function useActionMenu(
 export const ConversationReactContext =
   React.createContext<ConversationContext>(defaultContext)
 
-export function ConversationContextProvider(
-  props: React.PropsWithChildren<ConversationContextProps>
-) {
+export function ConversationContextProvider(props: React.PropsWithChildren) {
   const [context, setContext] =
     React.useState<ConversationContext>(defaultContext)
 
-  const { conversationHandler, callbackRouter } = props
+  const { conversationHandler, callbackRouter, selectedConversationId, updateSelectedConversationId } = useActiveChat()
 
   const [
     hasDismissedLongConversationInfo,
@@ -314,9 +305,16 @@ export function ConversationContextProvider(
       })
   }, [context.conversationUuid, context.faviconCacheKey])
 
-  const actionList = useActionMenu(context.inputText, () =>
-    Promise.resolve(aiChatContext.allActions)
-  )
+  // Update the location when the visible conversation changes
+  const isVisible = useIsConversationVisible(context.conversationUuid)
+  React.useEffect(() => {
+    if (!isVisible) return
+    if (selectedConversationId === tabAssociatedChatId) return
+    if (context.conversationUuid === selectedConversationId) return
+    updateSelectedConversationId(context.conversationUuid)
+  }, [isVisible, updateSelectedConversationId])
+
+  const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
     const chatHistoryCharTotal = context.conversationHistory.reduce(
@@ -330,7 +328,7 @@ export function ConversationContextProvider(
 
     let totalCharLimit = 0
 
-    if ( options ) {
+    if (options) {
       totalCharLimit += options.longConversationWarningCharacterLimit ?? 0
       totalCharLimit += context.shouldSendPageContents
         ? options.maxAssociatedContentLength ?? 0
@@ -338,7 +336,7 @@ export function ConversationContextProvider(
     }
 
     return !hasDismissedLongConversationInfo
-           && chatHistoryCharTotal >= totalCharLimit
+      && chatHistoryCharTotal >= totalCharLimit
   }, [
     context.conversationHistory,
     context.currentModel,
@@ -363,7 +361,7 @@ export function ConversationContextProvider(
     context.isGenerating ||
     (!aiChatContext.isPremiumUser &&
       context.currentModel?.options.leoModelOptions?.access ===
-        mojom.ModelAccess.PREMIUM)
+      mojom.ModelAccess.PREMIUM)
   )
   const isCharLimitExceeded = context.inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching =
@@ -475,7 +473,7 @@ export function ConversationContextProvider(
     shouldShowLongPageWarning,
     dismissLongConversationInfo: () =>
       setHasDismissedLongConversationInfo(true),
-    retryAPIRequest: conversationHandler.retryAPIRequest,
+    retryAPIRequest: () => conversationHandler.retryAPIRequest(),
     handleResetError,
     // Experimentally don't cache model key locally, browser should notify of model change quickly
     setCurrentModel: (model) => conversationHandler.changeModel(model.key),

@@ -8,12 +8,15 @@
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
@@ -35,6 +38,15 @@ constexpr char kTitleScript[] = "document.title;";
 class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
     : public InProcessBrowserTest {
  public:
+  BraveNavigatorHardwareConcurrencyFarblingBrowserTest() {
+    scoped_feature_list_.InitWithFeatures(
+        {
+            brave_shields::features::kBraveShowStrictFingerprintingMode,
+            webcompat::features::kBraveWebcompatExceptionsService,
+        },
+        {});
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -84,6 +96,7 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
   }
 
  private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   GURL top_level_page_url_;
   GURL farbling_url_;
 };
@@ -118,7 +131,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
       content::EvalJs(contents(), kHardwareConcurrencyScript).ExtractInt();
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.
-  EXPECT_EQ(completely_fake_value, 5);
+  EXPECT_EQ(completely_fake_value, 8);
 
   // Farbling level: default, but with webcompat exception enabled
   SetFingerprintingDefault();
@@ -172,7 +185,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
                     &completely_fake_value);
   // For this domain (a.com) + the random seed (constant for browser tests),
   // the value will always be the same.
-  EXPECT_EQ(completely_fake_value, 5);
+  EXPECT_EQ(completely_fake_value, 8);
 
   // Farbling level: default, but with webcompat exception enabled
   // get real navigator.hardwareConcurrency

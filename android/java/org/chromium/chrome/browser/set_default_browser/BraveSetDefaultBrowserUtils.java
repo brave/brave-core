@@ -145,22 +145,11 @@ public class BraveSetDefaultBrowserUtils {
     }
 
     public static void setDefaultBrowser(Activity activity) {
-        int roleManagerOpenCount =
-                ChromeSharedPreferences.getInstance()
-                        .readInt(BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT);
-
-        if (supportsDefaultRoleManager() && roleManagerOpenCount < 2) {
+        if (supportsDefaultRoleManager()) {
             RoleManager roleManager = activity.getSystemService(RoleManager.class);
 
             if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
                 if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
-                    // save role manager open count as the second times onwards the dialog is shown,
-                    // the system allows the user to click on "don't show again".
-                    ChromeSharedPreferences.getInstance()
-                            .writeInt(
-                                    BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT,
-                                    roleManagerOpenCount + 1);
-
                     activity.startActivityForResult(
                             roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
                             BraveConstants.DEFAULT_BROWSER_ROLE_REQUEST_CODE);
@@ -171,7 +160,6 @@ public class BraveSetDefaultBrowserUtils {
 
         } else if (supportsDefault()) {
             openDefaultAppsSettings(activity);
-
         } else {
             ResolveInfo resolveInfo = getResolveInfo(activity);
             if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
@@ -203,7 +191,7 @@ public class BraveSetDefaultBrowserUtils {
 
     private static void openDefaultAppsSettings(Activity activity) {
         if (activity instanceof OnBraveSetDefaultBrowserListener) {
-            ((OnBraveSetDefaultBrowserListener) activity).OnCheckDefaultResume();
+            ((OnBraveSetDefaultBrowserListener) activity).onCheckDefaultResume();
         }
 
         Intent intent = new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
@@ -212,7 +200,7 @@ public class BraveSetDefaultBrowserUtils {
 
     private static void openBraveBlog(Activity activity) {
         if (activity instanceof OnBraveSetDefaultBrowserListener) {
-            ((OnBraveSetDefaultBrowserListener) activity).OnCheckDefaultResume();
+            ((OnBraveSetDefaultBrowserListener) activity).onCheckDefaultResume();
         }
 
         LayoutInflater inflater = activity.getLayoutInflater();

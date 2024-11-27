@@ -11,7 +11,8 @@ import {
   externalWalletProviderFromString
 } from '../../shared/lib/external_wallet'
 
-import { AppModel, AppState, Notification, defaultState } from '../lib/app_model'
+import { AppModel } from '../lib/app_model'
+import { AppState, Notification, defaultState } from '../lib/app_state'
 import { RewardsPageProxy } from './rewards_page_proxy'
 import { createStateManager } from '../../shared/lib/state_manager'
 import { createAdsHistoryAdapter } from './ads_history_adapter'
@@ -143,10 +144,7 @@ export function createModel(): AppModel {
             'search-result': adTypeSummaryThisMonth.searchResultAds,
             'inline-content': adTypeSummaryThisMonth.inlineContentAds
           },
-          minEarningsThisMonth: statement.minEarningsThisMonth,
-          maxEarningsThisMonth: statement.maxEarningsThisMonth,
           minEarningsPreviousMonth: statement.minEarningsPreviousMonth,
-          maxEarningsPreviousMonth: statement.maxEarningsPreviousMonth,
           nextPaymentDate: convertMojoTime(statement.nextPaymentDate),
           notificationAdsPerHour: settings.notificationAdsPerHour,
           shouldAllowSubdivisionTargeting:
@@ -164,34 +162,6 @@ export function createModel(): AppModel {
   async function updateRewardsParameters() {
     const { rewardsParameters } = await pageHandler.getRewardsParameters()
     stateManager.update({ rewardsParameters })
-  }
-
-  async function updateAutoContributeInfo() {
-    const [{ settings }, { sites }] = await Promise.all([
-      pageHandler.getAutoContributeSettings(),
-      pageHandler.getAutoContributeSites()
-    ])
-
-    if (!settings) {
-      stateManager.update({ autoContributeInfo: null })
-      return
-    }
-
-    stateManager.update({
-      autoContributeInfo: {
-        ...settings,
-        entries: sites.map((item) => ({
-          site: {
-            id: item.id,
-            icon: item.faviconUrl,
-            name: item.name,
-            url: item.url,
-            platform: parseCreatorPlatform(item.provider)
-          },
-          attention: item.percent / 100
-        }))
-      }
-    })
   }
 
   async function updateRecurringContributions() {
@@ -273,6 +243,11 @@ export function createModel(): AppModel {
     stateManager.update({ notifications: list })
   }
 
+  async function updateCards() {
+    const { cards } = await pageHandler.fetchUICards()
+    stateManager.update({ cards: cards || null })
+  }
+
   async function loadData() {
     // Discards the supplied promise so that the `Promise.all` below does not
     // block on the result. Any calls that may be blocked on a network request
@@ -289,11 +264,11 @@ export function createModel(): AppModel {
       updateSelfCustodyInviteDismissed(),
       updateAdsInfo(),
       updateRecurringContributions(),
-      updateAutoContributeInfo(),
       updateRewardsParameters(),
       updateNotifications(),
       inBackground(updateCurrentCreator()),
-      inBackground(updateCaptchaInfo({ pendingOnly: true }))
+      inBackground(updateCaptchaInfo({ pendingOnly: true })),
+      inBackground(updateCards())
     ])
 
     stateManager.update({ loading: false })
@@ -472,20 +447,6 @@ export function createModel(): AppModel {
       const detail = adsHistoryAdapter.getRawDetail(id)
       adsHistoryAdapter.setInappropriate(id, value)
       await pageHandler.toggleAdInappropriate(detail)
-    },
-
-    async setAutoContributeEnabled(enabled) {
-      await pageHandler.setAutoContributeEnabled(enabled)
-      updateAutoContributeInfo()
-    },
-
-    async setAutoContributeAmount(amount) {
-      await pageHandler.setAutoContributeAmount(amount)
-      updateAutoContributeInfo()
-    },
-
-    async removeAutoContributeSite(id) {
-      await pageHandler.removeAutoContributeSite(id)
     },
 
     async removeRecurringContribution(id) {

@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import GuardianConnect
+import Preferences
 import Shared
 
 extension BraveVPN {
@@ -14,11 +15,10 @@ extension BraveVPN {
 
   /// Type of the active purchased vpn plan
   public static var activeSubscriptionType: SubscriptionType {
-    guard let credential = GRDSubscriberCredential.current() else {
-      logAndStoreError("subscriptionName: failed to retrieve subscriber credentials")
+    guard let productId = Preferences.VPN.subscriptionProductId.value else {
+      logAndStoreError("subscriptionName: failed to retrieve productId")
       return .other
     }
-    let productId = credential.subscriptionType
 
     switch productId {
     case BraveVPNProductInfo.ProductIdentifiers.monthlySub:
@@ -32,11 +32,10 @@ extension BraveVPN {
 
   /// Name of the purchased vpn plan.
   public static var subscriptionName: String {
-    guard let credential = GRDSubscriberCredential.current() else {
-      logAndStoreError("subscriptionName: failed to retrieve subscriber credentials")
+    guard let productId = Preferences.VPN.subscriptionProductId.value else {
+      logAndStoreError("subscriptionName: failed to retrieve productId")
       return ""
     }
-    let productId = credential.subscriptionType
 
     switch productId {
     case BraveVPNProductInfo.ProductIdentifiers.monthlySub:

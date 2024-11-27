@@ -7,11 +7,14 @@
 
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
@@ -29,12 +32,21 @@ using brave_shields::ControlType;
 
 constexpr char kEmbeddedTestServerDirectory[] = "canvas";
 constexpr char kTitleScript[] = "document.title;";
-constexpr char kExpectedImageDataHashFarblingBalanced[] = "204";
+constexpr char kExpectedImageDataHashFarblingBalanced[] = "184";
 constexpr char kExpectedImageDataHashFarblingOff[] = "0";
-constexpr char kExpectedImageDataHashFarblingMaximum[] = "204";
+constexpr char kExpectedImageDataHashFarblingMaximum[] = "184";
 
 class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
  public:
+  BraveOffscreenCanvasFarblingBrowserTest() {
+    scoped_feature_list_.InitWithFeatures(
+        {
+            brave_shields::features::kBraveShowStrictFingerprintingMode,
+            webcompat::features::kBraveWebcompatExceptionsService,
+        },
+        {});
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -75,6 +87,7 @@ class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
   }
 
  private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   GURL top_level_page_url_;
 };
 

@@ -33,8 +33,7 @@ TEST_F(BraveAdsConditionMatcherUtilTest, MatchEmptyConditions) {
   EXPECT_TRUE(MatchConditions(&pref_provider_, /*condition_matchers=*/{}));
 }
 
-TEST_F(BraveAdsConditionMatcherUtilTest,
-       MatchConditionsIfAllConditionsAreTrue) {
+TEST_F(BraveAdsConditionMatcherUtilTest, MatchMultipleConditions) {
   // Arrange
   const ConditionMatcherMap condition_matchers = {
       {prefs::kSubdivisionTargetingUserSelectedSubdivision, "AUTO"},
@@ -53,6 +52,26 @@ TEST_F(BraveAdsConditionMatcherUtilTest, MatchEpochEqualOperatorCondition) {
 
   // Act & Assert
   EXPECT_TRUE(MatchConditions(&pref_provider_, condition_matchers));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchEpochEqualOperatorConditionForUnknownPrefPath) {
+  // Arrange
+  const ConditionMatcherMap condition_matchers = {
+      {"unknown_pref_path", "[T=]:0"}};
+
+  // Act & Assert
+  EXPECT_TRUE(MatchConditions(&pref_provider_, condition_matchers));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       DoNotMatchEpochEqualOperatorConditionForUnknownPrefPath) {
+  // Arrange
+  const ConditionMatcherMap condition_matchers = {
+      {"unknown_pref_path", "[T=]:1"}};
+
+  // Act & Assert
+  EXPECT_FALSE(MatchConditions(&pref_provider_, condition_matchers));
 }
 
 TEST_F(BraveAdsConditionMatcherUtilTest,
@@ -75,6 +94,26 @@ TEST_F(BraveAdsConditionMatcherUtilTest, MatchNumericalEqualOperatorCondition) {
 
   // Act & Assert
   EXPECT_TRUE(MatchConditions(&pref_provider_, condition_matchers));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchNumericalEqualOperatorConditionForUnknownPrefPath) {
+  // Arrange
+  const ConditionMatcherMap condition_matchers = {
+      {"unknown_pref_path", "[R=]:0"}};
+
+  // Act & Assert
+  EXPECT_TRUE(MatchConditions(&pref_provider_, condition_matchers));
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       DoNotMatchNumericalEqualOperatorConditionForUnknownPrefPath) {
+  // Arrange
+  const ConditionMatcherMap condition_matchers = {
+      {"unknown_pref_path", "[R=]:1"}};
+
+  // Act & Assert
+  EXPECT_FALSE(MatchConditions(&pref_provider_, condition_matchers));
 }
 
 TEST_F(BraveAdsConditionMatcherUtilTest,

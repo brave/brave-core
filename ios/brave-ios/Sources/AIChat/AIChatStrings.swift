@@ -537,6 +537,13 @@ extension Strings {
       value: "Premium Subscription",
       comment: "Title showing premium subscription - not determined monthly por yearly"
     )
+    public static let subscriptionNoneTitle = NSLocalizedString(
+      "aichat.subscriptionNoneTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "None",
+      comment: "Title showing the user has no subscription."
+    )
     public static let advancedSettingsAutocompleteTitle = NSLocalizedString(
       "aichat.advancedSettingsAutocompleteTitle",
       tableName: "BraveLeo",
@@ -600,6 +607,13 @@ extension Strings {
       bundle: .module,
       value: "Subscription",
       comment: "The title for the header for subscription details"
+    )
+    public static let advancedSettingsViewReceiptTitle = NSLocalizedString(
+      "aichat.advancedSettingsViewReceiptTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "View AppStore Receipt",
+      comment: "The title for the button that allows the user to view the AppStore Receipt"
     )
     public static let appStoreErrorTitle = NSLocalizedString(
       "aichat.appStoreErrorTitle",

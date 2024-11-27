@@ -29,17 +29,6 @@
 
 .suggestedQuestionsBox {
   padding: var(--leo-spacing-2xl);
-
-  leo-button {
-    --leo-button-padding: var(--leo-spacing-m) var(--leo-spacing-l);
-  }
-}
-
-.buttonText {
-  display: flex;
-  align-items: flex-start;
-  text-align: left;
-  font: var(--leo-font-default-regular);
 }
 
 .questionsList {

@@ -191,8 +191,14 @@ export const needsBrowserUpdateContentBody = styled.div`
   font-weight: 400;
 `
 
-export const earningsHeader = styled.div`
+export const earnings = styled.div`
   margin: 24px 0 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const earningsHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
@@ -204,6 +210,7 @@ export const earningsHeaderText = styled.div`
 
 export const earningsInfo = styled.span`
   position: relative;
+  display: none;
 
   .icon {
     height: 12px;
@@ -284,6 +291,7 @@ export const earningsDisplay = styled.div`
 `
 
 export const earningsMonth = styled.div`
+  display: none;
   padding: 5px 6px;
   font: ${font.components.label};
   background: rgba(255, 255, 255, 0.10);

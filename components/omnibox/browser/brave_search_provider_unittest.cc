@@ -315,11 +315,11 @@ TEST_F(BraveSearchProviderTest, SearchSuggestionsSendTest) {
       {"http://a asdfasdfasdfasdf", false},
   };
 
-  for (size_t i = 0; i < std::size(cases); ++i) {
-    ASSERT_NO_FATAL_FAILURE(QueryForInput(base::ASCIIToUTF16(cases[i].input)));
-    EXPECT_EQ(cases[i].expect_to_send_to_default_provider,
+  for (auto& value : cases) {
+    ASSERT_NO_FATAL_FAILURE(QueryForInput(base::ASCIIToUTF16(value.input)));
+    EXPECT_EQ(value.expect_to_send_to_default_provider,
               test_url_loader_factory_.IsPending(base::StrCat(
-                  {kSuggestionUrlHost, base::EscapePath(cases[i].input)})));
+                  {kSuggestionUrlHost, base::EscapePath(value.input)})));
   }
 }
 
@@ -371,8 +371,8 @@ TEST(SearchSuggestionsTest, IsSuspiciousQueryTest) {
       "seti@home",
       "a seti@home b",
   };
-  for (size_t i = 0; i < std::size(cases_ok); ++i) {
-    EXPECT_FALSE(search_suggestions::IsSuspiciousQuery(cases_ok[i]));
+  for (const auto* value : cases_ok) {
+    EXPECT_FALSE(search_suggestions::IsSuspiciousQuery(value));
   }
 
   const char* cases_no[] = {
@@ -412,8 +412,8 @@ TEST(SearchSuggestionsTest, IsSuspiciousQueryTest) {
       "seti@home.com",
       "a seti@home.com b",
   };
-  for (size_t i = 0; i < std::size(cases_no); ++i) {
-    EXPECT_TRUE(search_suggestions::IsSuspiciousQuery(cases_no[i]));
+  for (const auto* i : cases_no) {
+    EXPECT_TRUE(search_suggestions::IsSuspiciousQuery(i));
   }
 }
 
@@ -470,8 +470,8 @@ TEST(SearchSuggestionsTest, IsSafeQueryUrlTest) {
       "Grafik 640, 2x DDR",
       "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb",
   };
-  for (size_t i = 0; i < std::size(cases_ok); ++i) {
-    EXPECT_TRUE(search_suggestions::IsSafeQueryUrl(cases_ok[i]));
+  for (const auto* value : cases_ok) {
+    EXPECT_TRUE(search_suggestions::IsSafeQueryUrl(value));
   }
 
   const char* cases_no[] = {
@@ -504,8 +504,8 @@ TEST(SearchSuggestionsTest, IsSafeQueryUrlTest) {
       "name messages.AndroidJpsBundle, locale de_DEat java.ut",
       "bit.ly/1h0ceQI",
   };
-  for (size_t i = 0; i < std::size(cases_no); ++i) {
-    EXPECT_FALSE(search_suggestions::IsSafeQueryUrl(cases_no[i]));
+  for (const auto* value : cases_no) {
+    EXPECT_FALSE(search_suggestions::IsSafeQueryUrl(value));
   }
 }
 #endif

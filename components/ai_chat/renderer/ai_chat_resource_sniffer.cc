@@ -5,17 +5,35 @@
 
 #include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer.h"
 
-#include <memory>
+#include <array>
+#include <functional>
 #include <string>
+#include <string_view>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
+#include "base/functional/callback.h"
+#include "base/macros/if.h"
+#include "base/memory/ptr_util.h"
+#include "base/notreached.h"
+#include "base/strings/string_util.h"
+#include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer_throttle_delegate.h"
 #include "brave/components/ai_chat/renderer/yt_util.h"
+#include "url/gurl.h"
+
+namespace network {
+namespace mojom {
+class URLResponseHead;
+}  // namespace mojom
+struct ResourceRequest;
+}  // namespace network
 
 namespace ai_chat {
 
 namespace {
-constexpr const char kYouTubePlayerAPIPath[] = "/youtubei/v1/player";
+constexpr char kYouTubePlayerAPIPath[] = "/youtubei/v1/player";
 }
 
 AIChatResourceSniffer::AIChatResourceSniffer(

@@ -7,6 +7,10 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
+// selectors
+import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
+
 // constants
 import { BraveWallet, AccountPageTabs } from '../../../../constants/types'
 import {
@@ -44,7 +48,8 @@ import {
   useGetVisibleNetworksQuery,
   useGetTokenSpotPricesQuery,
   useGetRewardsInfoQuery,
-  useGetUserTokensRegistryQuery
+  useGetUserTokensRegistryQuery,
+  useGetIsShieldingAvailableQuery
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
@@ -52,12 +57,27 @@ export const Accounts = () => {
   // routing
   const history = useHistory()
 
+  // selectors
+  const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashShieldedTransactionsEnabled
+  )
+
   // queries
   const { accounts } = useAccountsQuery()
   const {
     data: { rewardsAccount: externalRewardsAccount } = emptyRewardsInfo
   } = useGetRewardsInfoQuery()
   const { data: userTokensRegistry } = useGetUserTokensRegistryQuery()
+
+  const zcashAccountIds = accounts
+    .filter((account) => account.accountId.coin === BraveWallet.CoinType.ZEC)
+    .map((account) => account.accountId)
+
+  const { data: isShieldingAvailable } = useGetIsShieldingAvailableQuery(
+    isZCashShieldedTransactionsEnabled && zcashAccountIds
+      ? zcashAccountIds
+      : skipToken
+  )
 
   // methods
   const onSelectAccount = React.useCallback(
@@ -151,6 +171,7 @@ export const Accounts = () => {
               isLoadingBalances={isLoadingBalances}
               spotPriceRegistry={spotPriceRegistry}
               isLoadingSpotPrices={isLoadingSpotPrices}
+              isShieldingAvailable={isShieldingAvailable}
             />
           )
         )}
@@ -163,7 +184,8 @@ export const Accounts = () => {
     tokenBalancesRegistry,
     spotPriceRegistry,
     isLoadingBalances,
-    isLoadingSpotPrices
+    isLoadingSpotPrices,
+    isShieldingAvailable
   ])
 
   const ledgerKeys = React.useMemo(() => {
@@ -187,6 +209,7 @@ export const Accounts = () => {
               isLoadingBalances={isLoadingBalances}
               spotPriceRegistry={spotPriceRegistry}
               isLoadingSpotPrices={isLoadingSpotPrices}
+              isShieldingAvailable={isShieldingAvailable}
             />
           )
         )}
@@ -199,7 +222,8 @@ export const Accounts = () => {
     tokenBalancesRegistry,
     spotPriceRegistry,
     isLoadingBalances,
-    isLoadingSpotPrices
+    isLoadingSpotPrices,
+    isShieldingAvailable
   ])
 
   // computed
@@ -232,6 +256,7 @@ export const Accounts = () => {
             isLoadingBalances={isLoadingBalances}
             spotPriceRegistry={spotPriceRegistry}
             isLoadingSpotPrices={isLoadingSpotPrices}
+            isShieldingAvailable={isShieldingAvailable}
           />
         ))}
       </AccountsListWrapper>
@@ -260,6 +285,7 @@ export const Accounts = () => {
                 isLoadingBalances={isLoadingBalances}
                 spotPriceRegistry={spotPriceRegistry}
                 isLoadingSpotPrices={isLoadingSpotPrices}
+                isShieldingAvailable={isShieldingAvailable}
               />
             ))}
           </AccountsListWrapper>
@@ -310,6 +336,7 @@ export const Accounts = () => {
               isLoadingBalances={isLoadingBalances}
               spotPriceRegistry={spotPriceRegistry}
               isLoadingSpotPrices={isLoadingSpotPrices}
+              isShieldingAvailable={isShieldingAvailable}
             />
           </AccountsListWrapper>
         </>

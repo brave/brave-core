@@ -158,8 +158,7 @@ FilAddress FilAddress::FromAddress(const std::string& address) {
     return FilAddress();
   }
 
-  payload_decoded.erase(std::prev(payload_decoded.end(), kChecksumSize),
-                        payload_decoded.end());
+  payload_decoded.resize(payload_decoded.size() - kChecksumSize);
   return FilAddress::FromPayload(payload_decoded, protocol.value(), network);
 }
 
@@ -258,7 +257,7 @@ FilAddress FilAddress::FromPayload(const std::vector<uint8_t>& payload,
       return FilAddress();
     }
   } else {
-    NOTREACHED_IN_MIGRATION();
+    NOTREACHED() << protocol;
   }
   return FilAddress(payload, protocol, network);
 }

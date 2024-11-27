@@ -5,6 +5,9 @@
 
 #include "brave/browser/net/brave_network_audit_test_helper.h"
 
+#include <array>
+#include <string_view>
+
 #include "base/json/json_file_value_serializer.h"
 #include "base/json/json_reader.h"
 #include "base/values.h"
@@ -17,16 +20,13 @@ namespace brave {
 namespace {
 // Based on the implementation of isPrivateIP() from NPM's "ip" module.
 // See https://github.com/indutny/node-ip/blob/master/lib/ip.js
-constexpr const char* kPrivateIPRegexps[] = {
-    "(::f{4}:)?10\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})",
-    "(::f{4}:)?192\\.168\\.([0-9]{1,3})\\.([0-9]{1,3})",
-    "(::f{4}:)?172\\.(1[6-9]|2\\d|30|31)\\.([0-9]{1,3})\\.([0-9]{1,3})",
-    "(::f{4}:)?127\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})",
-    "(::f{4}:)?169\\.254\\.([0-9]{1,3})\\.([0-9]{1,3})",
-    "f[cd][0-9a-f]{2}:.*",
-    "fe80:.*",
-    "::1",
-    "::"};
+constexpr auto kPrivateIPRegexps = std::to_array<std::string_view>(
+    {"(::f{4}:)?10\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})",
+     "(::f{4}:)?192\\.168\\.([0-9]{1,3})\\.([0-9]{1,3})",
+     "(::f{4}:)?172\\.(1[6-9]|2\\d|30|31)\\.([0-9]{1,3})\\.([0-9]{1,3})",
+     "(::f{4}:)?127\\.([0-9]{1,3})\\.([0-9]{1,3})\\.([0-9]{1,3})",
+     "(::f{4}:)?169\\.254\\.([0-9]{1,3})\\.([0-9]{1,3})", "f[cd][0-9a-f]{2}:.*",
+     "fe80:.*", "::1", "::"});
 
 void WriteNetworkAuditResultsToDisk(const base::Value::Dict& results_dic,
                                     const base::FilePath& path) {
@@ -38,7 +38,7 @@ void WriteNetworkAuditResultsToDisk(const base::Value::Dict& results_dic,
 }
 
 bool isPrivateURL(const GURL& url) {
-  for (const char* regexp : kPrivateIPRegexps) {
+  for (auto regexp : kPrivateIPRegexps) {
     if (RE2::FullMatch(url.host(), regexp)) {
       return true;
     }
@@ -105,14 +105,12 @@ bool PerformNetworkAuditProcess(
       return true;
     }
 
-    for (const char* protocol : kAllowedUrlProtocols) {
-      if (protocol == url.scheme()) {
-        return true;
-      }
+    if (kAllowedUrlProtocols.count(url.scheme())) {
+      return true;
     }
 
     bool found_prefix = false;
-    for (const char* prefix : kAllowedUrlPrefixes) {
+    for (auto prefix : kAllowedUrlPrefixes) {
       if (!url.spec().rfind(prefix, 0)) {
         found_prefix = true;
         break;
@@ -129,7 +127,7 @@ bool PerformNetworkAuditProcess(
     }
 
     bool found_pattern = false;
-    for (const char* pattern : kAllowedUrlPatterns) {
+    for (auto pattern : kAllowedUrlPatterns) {
       if (RE2::FullMatch(url.spec(), pattern)) {
         found_pattern = true;
         break;

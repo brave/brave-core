@@ -22,7 +22,7 @@ enum {
 }  // namespace brave_syncable_prefs_ids
 
 const auto& BraveSyncablePreferences() {
-  static const auto kBraveCommonSyncablePrefsAllowlist =
+  static constexpr auto kBraveCommonSyncablePrefsAllowlist =
       base::MakeFixedFlatMap<std::string_view, SyncablePrefMetadata>(
           {{prefs::kSyncedDefaultPrivateSearchProviderGUID,
             {brave_syncable_prefs_ids::kSyncedDefaultPrivateSearchProviderGUID,

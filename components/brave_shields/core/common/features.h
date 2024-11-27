@@ -29,6 +29,7 @@ BASE_DECLARE_FEATURE(kBraveDarkModeBlock);
 BASE_DECLARE_FEATURE(kBraveDomainBlock);
 BASE_DECLARE_FEATURE(kBraveDomainBlock1PES);
 BASE_DECLARE_FEATURE(kBraveExtensionNetworkBlocking);
+BASE_DECLARE_FEATURE(kBraveFarbling);
 BASE_DECLARE_FEATURE(kBraveLocalhostAccessPermission);
 BASE_DECLARE_FEATURE(kBraveReduceLanguage);
 BASE_DECLARE_FEATURE(kBraveShredFeature);
@@ -37,6 +38,7 @@ BASE_DECLARE_FEATURE(kBraveShowStrictFingerprintingMode);
 BASE_DECLARE_FEATURE(kCosmeticFilteringExtraPerfMetrics);
 BASE_DECLARE_FEATURE(kCosmeticFilteringJsPerformance);
 BASE_DECLARE_FEATURE(kCosmeticFilteringSyncLoad);
+BASE_DECLARE_FEATURE(kBlockAllCookiesToggle);
 extern const base::FeatureParam<int> kComponentUpdateCheckIntervalMins;
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs;

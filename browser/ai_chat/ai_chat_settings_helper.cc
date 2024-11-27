@@ -172,7 +172,15 @@ void AIChatSettingsHelper::SaveCustomModel(uint32_t index,
   ModelValidationResult result = ModelValidator::ValidateCustomModelOptions(
       *model->options->get_custom_model_options());
   if (result == ModelValidationResult::kInvalidUrl) {
-    std::move(callback).Run(mojom::OperationResult::InvalidUrl);
+    const auto endpoint = model->options->get_custom_model_options()->endpoint;
+    const bool valid_as_private_ip =
+        ModelValidator::IsValidEndpoint(endpoint, true);
+    // The URL is invalid, but may be valid as a private endpoint. Let's
+    // examine the value more closely, and notify the user.
+    std::move(callback).Run(
+        valid_as_private_ip ? mojom::OperationResult::UrlValidAsPrivateEndpoint
+                            : mojom::OperationResult::InvalidUrl);
+
     return;
   }
 

@@ -58,6 +58,11 @@
             android:title="@string/fingerprint_language_switch"
             android:summary="@string/fingerprint_language_switch_summary"
             android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="brave_shields_save_contact_info"
+            android:title="@string/brave_shields_save_contact_info_switch"
+            android:summary="@string/brave_shields_save_contact_info_switch_summary"
+            android:defaultValue="true" />
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:fragment="org.chromium.chrome.browser.shields.ContentFilteringFragment"
             android:key="content_filtering"

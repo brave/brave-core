@@ -105,11 +105,9 @@ std::string_view GetMigratedNameIfNeeded(PrefService* local_prefs,
     return name;
   }
 
-  if (kV1ToV2Map.contains(name)) {
-    return kV1ToV2Map.at(name);
-  }
-
-  NOTREACHED_NORETURN();
+  auto it = kV1ToV2Map.find(name);
+  CHECK(it != kV1ToV2Map.end());
+  return it->second;
 }
 
 bool IsBraveVPNWireguardEnabled(PrefService* local_state) {

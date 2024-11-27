@@ -21,8 +21,7 @@ import {
   EarningsInfo,
   ExchangeInfo,
   Options,
-  PublisherInfo,
-  Settings
+  PublisherInfo
 } from './interfaces'
 
 import { optional, Optional } from '../../shared/lib/optional'
@@ -38,22 +37,12 @@ export function getRewardsBalance () {
   })
 }
 
-export function getSettings () {
-  return new Promise<Settings>((resolve) => {
-    chrome.braveRewards.getPrefs((prefs) => {
-      resolve({
-        autoContributeEnabled: prefs.autoContributeEnabled,
-        autoContributeAmount: prefs.autoContributeAmount
-      })
-    })
-  })
-}
-
 export function getEarningsInfo () {
   return new Promise<EarningsInfo | null>((resolve) => {
     chrome.braveRewards.getAdsAccountStatement((success, statement) => {
       if (success) {
         resolve({
+          adsReceivedThisMonth: statement.adsReceivedThisMonth,
           minEarningsLastMonth: statement.minEarningsLastMonth,
           maxEarningsLastMonth: statement.maxEarningsLastMonth,
           minEarningsThisMonth: statement.minEarningsThisMonth,
@@ -87,7 +76,6 @@ export function getRewardsParameters () {
       resolve({
         options: {
           externalWalletRegions: regionMap,
-          autoContributeAmounts: parameters.autoContributeChoices,
           vbatDeadline: parameters.vbatDeadline,
           vbatExpired: parameters.vbatExpired
         },
@@ -292,7 +280,6 @@ function defaultPublisherInfo (url: string): PublisherInfo | null {
     icon: iconURL(parsedURL.origin),
     platform: null,
     attentionScore: 0,
-    autoContributeEnabled: true,
     monthlyTip: 0,
     supportedWalletProviders: []
   }
@@ -360,7 +347,6 @@ export async function getPublisherInfo (tabId: number) {
     icon: iconURL(String(publisher.favIconUrl || publisher.url || '')),
     platform: getPublisherPlatform(String(publisher.provider || '')),
     attentionScore: Number(publisher.percentage) / 100 || 0,
-    autoContributeEnabled: !publisher.excluded,
     monthlyTip: await getMonthlyTipAmount(publisherKey),
     supportedWalletProviders
   }

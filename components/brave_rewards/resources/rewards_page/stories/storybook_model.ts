@@ -5,7 +5,8 @@
 
 import { createStateManager } from '../../shared/lib/state_manager'
 import { createLocaleContextForTesting } from '../../shared/lib/locale_context'
-import { AppModel, AppState, defaultState, defaultModel } from '../lib/app_model'
+import { AppState, defaultState } from '../lib/app_state'
+import { AppModel, defaultModel } from '../lib/app_model'
 import { localeStrings } from './storybook_strings'
 import { optional } from '../../shared/lib/optional'
 
@@ -38,10 +39,7 @@ export function createModel(): AppModel {
         'search-result': 1,
         'inline-content': 0
       },
-      minEarningsThisMonth: 21.244,
-      maxEarningsThisMonth: 32.980,
       minEarningsPreviousMonth: 1.244,
-      maxEarningsPreviousMonth: 2.980,
       nextPaymentDate: Date.now() + (4 * 24 * 60 * 60 * 1000),
       notificationAdsPerHour: 5,
       shouldAllowSubdivisionTargeting: true,
@@ -62,73 +60,6 @@ export function createModel(): AppModel {
     balance: optional(4.167),
     tosUpdateRequired: false,
     selfCustodyInviteDismissed: false,
-    autoContributeInfo: {
-      enabled: true,
-      amount: 7,
-      nextAutoContributeDate: Date.now(),
-      entries: [
-        {
-          site: {
-            id: '1',
-            icon: '',
-            name: 'The Verge',
-            url: 'https://brave.com',
-            platform: ''
-          },
-          attention: .4
-        },
-        {
-          site: {
-            id: '2',
-            icon: '',
-            name: 'Brave',
-            url: 'https://brave.com',
-            platform: ''
-          },
-          attention: .3
-        },
-        {
-          site: {
-            id: '3',
-            icon: '',
-            name: 'Brave',
-            url: 'https://brave.com',
-            platform: '',
-          },
-          attention: .3
-        },
-        {
-          site: {
-            id: '4',
-            icon: '',
-            name: 'Brave',
-            url: 'https://brave.com',
-            platform: ''
-          },
-          attention: .15
-        },
-        {
-          site: {
-            id: '5',
-            icon: '',
-            name: 'Brave',
-            url: 'https://brave.com',
-            platform: ''
-          },
-          attention: .1
-        },
-        {
-          site: {
-            id: '6',
-            icon: '',
-            name: 'Brave',
-            url: 'https://brave.com',
-            platform: ''
-          },
-          attention: .05
-        }
-      ]
-    },
     recurringContributions: [
       {
         site: {
@@ -154,8 +85,6 @@ export function createModel(): AppModel {
       }
     ],
     rewardsParameters: {
-      autoContributeChoices: [1, 2, 5, 10],
-      autoContributeChoice: 1,
       tipChoices: [1.25, 5.0, 10.5],
       rate: .56,
       walletProviderRegions: {
@@ -185,7 +114,31 @@ export function createModel(): AppModel {
       supportedWalletProviders: ['uphold', 'gemini']
     },
     captchaInfo: null,
-    notifications: []
+    notifications: [],
+    cards: [
+      {
+        name: 'community-card',
+        items: [
+          {
+            title: 'Brave meetup in Toronto!',
+            description: 'December 12 in Toronto, Canada',
+            url: '{{ some link to event details }}',
+            thumbnail: ''
+          }
+        ],
+      },
+      {
+        name: 'merch-store-card',
+        items: [
+          {
+            title: 'Brave Embroidered Crop Top',
+            description: 'The beautiful embroidery, trendy raw hem, and matching drawstring are great.',
+            url: 'https://store.brave.com/p/brave-lion-embroidered-eco-hoodie/3576345201/',
+            thumbnail: 'https://cdn.store.brave.com/6944e95453a447ed8bd4ba69524eb76bb0b6b924db88ab0726b169affe0ac743.png'
+          }
+        ]
+      }
+    ]
   })
 
   return {
@@ -268,25 +221,6 @@ export function createModel(): AppModel {
           inappropriate: false
         }
       ]
-    },
-
-    async setAutoContributeEnabled(enabled) {
-      const { autoContributeInfo } = stateManager.getState()
-      autoContributeInfo!.enabled = enabled
-      stateManager.update({ autoContributeInfo })
-    },
-
-    async setAutoContributeAmount(amount) {
-      const { autoContributeInfo } = stateManager.getState()
-      autoContributeInfo!.amount = amount
-      stateManager.update({ autoContributeInfo })
-    },
-
-    async removeAutoContributeSite(id) {
-      const { autoContributeInfo } = stateManager.getState()
-      autoContributeInfo!.entries =
-        autoContributeInfo!.entries.filter((entry) => entry.site.id !== id)
-      stateManager.update({ autoContributeInfo })
     },
 
     async removeRecurringContribution(id) {

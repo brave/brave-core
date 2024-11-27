@@ -61,6 +61,7 @@ export function Card () {
             url: ''
           }}
           nextPaymentDate={nextPaymentDate}
+          adsReceivedThisMonth={2}
           minEarningsThisMonth={0.142}
           maxEarningsThisMonth={1.142}
           minEarningsLastMonth={1.00}

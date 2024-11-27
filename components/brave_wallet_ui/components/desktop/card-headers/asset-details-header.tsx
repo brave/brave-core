@@ -43,6 +43,7 @@ import useExplorer from '../../../common/hooks/explorer'
 import withPlaceholderIcon from '../../shared/create-placeholder-icon'
 import { AssetDetailsMenu } from '../wallet-menus/asset-details-menu'
 import { CreateNetworkIcon } from '../../shared/create-network-icon'
+import { ShieldedLabel } from '../../shared/shielded_label/shielded_label'
 
 // Styled Components
 import {
@@ -233,7 +234,17 @@ export const AssetDetailsHeader = (props: Props) => {
           )}
           <Column alignItems='flex-start'>
             {selectedAsset ? (
-              <AssetNameText>{selectedAsset?.name ?? ''}</AssetNameText>
+              <Row
+                width='unset'
+                gap='6px'
+              >
+                <AssetNameText>
+                  {selectedAsset.isShielded
+                    ? 'Zcash'
+                    : selectedAsset?.name ?? ''}
+                </AssetNameText>
+                {selectedAsset.isShielded && <ShieldedLabel />}
+              </Row>
             ) : (
               <Skeleton
                 height={'18px'}

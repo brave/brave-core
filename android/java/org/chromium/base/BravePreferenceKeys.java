@@ -12,7 +12,6 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_IS_MENU_FROM_BOTTOM = "brave_is_menu_from_bottom";
     public static final String BRAVE_USE_CUSTOM_TABS = "use_custom_tabs";
     public static final String BRAVE_APP_OPEN_COUNT = "brave_app_open_count";
-    public static final String BRAVE_ROLE_MANAGER_DIALOG_COUNT = "brave_role_manager_dialog_count";
     public static final String BRAVE_IS_DEFAULT = "brave_is_default";
     public static final String BRAVE_WAS_DEFAULT_ASK_COUNT = "brave_was_default_ask_count";
     public static final String BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT =
@@ -81,8 +80,12 @@ public final class BravePreferenceKeys {
 
     public static final String SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
 
+    public static final String OPEN_YT_IN_BRAVE_DIALOG = "open_yt_in_brave_dialog";
+
     public static final String BRAVE_QUICK_SEARCH_ENGINES = "quick_search_engines";
     public static final String BRAVE_QUICK_SEARCH_ENGINES_FEATURE = "quick_search_engines_feature";
+    public static final String BRAVE_QUICK_SEARCH_ENGINES_PREVIOUS_DSE =
+            "quick_search_engines_previous_dse";
 
     /*
      * Checks if preference key is used in Brave.

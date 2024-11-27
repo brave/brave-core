@@ -5,15 +5,6 @@
     <title></title>
   </head>
   <body>
-    <script>
-      window.onmessage = function(event) {
-        if (navigator.userAgent == event.data) {
-          document.title = "pass";
-        }
-      }
-      var iframe = document.createElement("iframe");
-      iframe.src = document.location.href.replace("b.com", "z.com").replace("remote-", "");
-      document.body.appendChild(iframe);
-    </script>
+    <script src="ua-remote-iframe.js"></script>
   </body>
 </html>

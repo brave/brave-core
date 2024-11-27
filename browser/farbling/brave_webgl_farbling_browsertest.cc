@@ -8,12 +8,15 @@
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
@@ -33,6 +36,15 @@ constexpr char kTitleScript[] = "document.title";
 
 class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
  public:
+  BraveWebGLFarblingBrowserTest() {
+    scoped_feature_list_.InitWithFeatures(
+        {
+            brave_shields::features::kBraveShowStrictFingerprintingMode,
+            webcompat::features::kBraveWebcompatExceptionsService,
+        },
+        {});
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -93,19 +105,21 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
     }
     return diffs;
   }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, FarbleGetParameterWebGL) {
   std::string domain = "a.com";
   GURL url = embedded_test_server()->GetURL(domain, "/getParameter.html");
-  const std::string kExpectedRandomString = "USRQv2Ep,t9e2jwYU";
+  constexpr char kExpectedRandomString[] = "uAfPPuXL,aseXyZzC";
   // Farbling level: maximum
   // WebGL getParameter of restricted values: pseudo-random data with no
   // relation to original data
   BlockFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
-            kExpectedRandomString);
+  EXPECT_EQ(EvalJs(contents(), kTitleScript), kExpectedRandomString);
   // second time, same as the first (tests that results are consistent for the
   // lifetime of a session, and that the PRNG properly resets itself at the
   // beginning of each calculation)
@@ -132,9 +146,9 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, FarbleGetParameterWebGL) {
 
 IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest,
                        FarbleGetParameterWebGL2) {
-  const std::map<std::string, std::string> tests = {{"a.com", "101111111100"},
-                                                    {"b.com", "111110111100"},
-                                                    {"c.com", "000000100101"}};
+  const std::map<std::string, std::string> tests = {{"a.com", "101010000011"},
+                                                    {"b.com", "100101000101"},
+                                                    {"c.com", "010101100011"}};
   for (const auto& pair : tests) {
     std::string domain = pair.first;
     std::string expected_diff = pair.second;
@@ -157,7 +171,7 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest,
     std::vector<int64_t> farbled_values =
         SplitStringAsInts(EvalJs(contents(), kTitleScript).ExtractString());
     ASSERT_EQ(farbled_values.size(), 12UL);
-    ASSERT_EQ(DiffsAsString(real_values, farbled_values), expected_diff);
+    EXPECT_EQ(DiffsAsString(real_values, farbled_values), expected_diff);
 
     // Farbling level: default, but webcompat exception enabled
     // Get the actual WebGL2 parameter values.

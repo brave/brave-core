@@ -32,23 +32,27 @@ public class NotificationIntent {
     private static final String NOTIFICATION_TAG = "16c570a4-da7d-4c4e-8518-d2b7d6e41615";
     private static final String NOTIFICATION_CHANNEL_ID = "a79c3102-4183-4001-a553-ec3041bd0f49";
     private static final String URL = "https://support.brave.com/hc/en-us/articles/360045401211/";
-    private static final List<String> mWhitelistedRegionalLocales = Arrays.asList("en", "ru", "uk", "de", "pt", "pl", "ja", "es", "fr");
+    private static final List<String> mWhitelistedRegionalLocales =
+            Arrays.asList("en", "ru", "uk", "de", "pt", "pl", "ja", "es", "fr");
     private static final int NOTIFICATION_ID = 732;
-    //private static final String NOTIFICATION_TITLE = "Brave update";
-    //private static final String NOTIFICATION_TEXT = "The new Brave browser is 22% faster";
+
+    // private static final String NOTIFICATION_TITLE = "Brave update";
+    // private static final String NOTIFICATION_TEXT = "The new Brave browser is 22% faster";
 
     public static void fireNotificationIfNecessary(Context context) {
         String notification_text = context.getString(R.string.update_notification_text);
-        if (!ShouldNotify(context)) {
+        if (!shouldNotify(context)) {
             return;
         }
         NotificationManager mNotificationManager =
-            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
-                    "Channel for notifications",
-                    NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel =
+                    new NotificationChannel(
+                            NOTIFICATION_CHANNEL_ID,
+                            "Channel for notifications",
+                            NotificationManager.IMPORTANCE_DEFAULT);
             mNotificationManager.createNotificationChannel(channel);
         }
 
@@ -73,18 +77,20 @@ public class NotificationIntent {
         mNotificationManager.notify(NOTIFICATION_TAG, NOTIFICATION_ID, mBuilder.build());
     }
 
-    public static boolean ShouldNotify(Context context) {
+    private static boolean shouldNotify(Context context) {
         String deviceLanguage = Locale.getDefault().getLanguage();
-        if (GetPreferences(context) != 0
-              || !mWhitelistedRegionalLocales.contains(new Locale(deviceLanguage).getLanguage())) {
+        if (getPreferences(context) != 0
+                || !mWhitelistedRegionalLocales.contains(
+                        new Locale(deviceLanguage).getLanguage())) {
             return false;
         }
 
         return true;
     }
 
-    public static long GetPreferences(Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences(BravePreferenceKeys.BRAVE_NOTIFICATION_PREF_NAME, 0);
+    private static long getPreferences(Context context) {
+        SharedPreferences sharedPref =
+                context.getSharedPreferences(BravePreferenceKeys.BRAVE_NOTIFICATION_PREF_NAME, 0);
 
         return sharedPref.getLong(BravePreferenceKeys.BRAVE_MILLISECONDS_NAME, 0);
     }

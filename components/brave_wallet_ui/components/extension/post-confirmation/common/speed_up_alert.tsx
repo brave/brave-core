@@ -21,7 +21,6 @@ export const SpeedUpAlert = (props: Props) => {
   return (
     <Alert
       type='info'
-      mode='simple'
     >
       {getLocale('braveWalletTransactionTakingLongTime')}
       <div slot='content-after'>

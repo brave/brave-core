@@ -187,8 +187,8 @@ TEST(EthCallDataBuilderTest, SupportsInterface) {
 namespace unstoppable_domains {
 
 TEST(EthCallDataBuilderTest, GetMany) {
-  std::vector<std::string> keys = {"crypto.ETH.address"};
-  auto data = GetMany(keys, "brave.crypto");
+  auto data = GetMany("brave.crypto",
+                      std::to_array<std::string_view>({"crypto.ETH.address"}));
   EXPECT_TRUE(data);
   EXPECT_EQ(data,
             "0x1bd8cc1a"
@@ -205,9 +205,10 @@ TEST(EthCallDataBuilderTest, GetMany) {
             // Encoding of "crypto.ETH.address"
             "63727970746f2e4554482e616464726573730000000000000000000000000000");
 
-  keys = {"dweb.ipfs.hash", "ipfs.html.value", "browser.redirect_url",
-          "ipfs.redirect_domain.value"};
-  data = GetMany(keys, "brave.crypto");
+  data = GetMany("brave.crypto",
+                 std::to_array<std::string_view>(
+                     {"dweb.ipfs.hash", "ipfs.html.value",
+                      "browser.redirect_url", "ipfs.redirect_domain.value"}));
   EXPECT_TRUE(data);
   EXPECT_EQ(data,
             "0x1bd8cc1a"

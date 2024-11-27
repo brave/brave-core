@@ -5,16 +5,32 @@
 
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 
+#include <array>
 #include <cstdint>
+#include <functional>
+#include <ios>
 #include <memory>
+#include <optional>
+#include <ostream>
 #include <string>
-#include <utility>
+#include <string_view>
+#include <type_traits>
+#include <vector>
 
+#include "base/check.h"
+#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
+#include "base/location.h"
+#include "base/logging.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/ranges/algorithm.h"
+#include "base/numerics/clamped_math.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_ostream_operators.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
@@ -28,15 +44,28 @@
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/permission_controller.h"
-#include "content/public/browser/permission_request_description.h"
 #include "content/public/browser/permission_result.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/scoped_accessibility_mode.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "pdf/buildflags.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
+#include "third_party/blink/public/mojom/permissions/permission_status.mojom-shared.h"
+#include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/accessibility/ax_mode.h"
+#include "ui/accessibility/ax_node_data.h"
+#include "ui/accessibility/ax_tree_update.h"
 #include "ui/accessibility/ax_updates_and_events.h"
 #include "ui/base/l10n/l10n_util.h"
+
+namespace favicon {
+class FaviconDriver;
+}  // namespace favicon
+namespace gfx {
+class Image;
+}  // namespace gfx
 
 namespace ai_chat {
 
@@ -52,9 +81,7 @@ void AIChatTabHelper::PDFA11yInfoLoadObserver::AccessibilityEventReceived(
     for (const auto& node : update.nodes) {
       const auto& node_name =
           node.GetStringAttribute(ax::mojom::StringAttribute::kName);
-      if (node_name == l10n_util::GetStringUTF8(IDS_PDF_LOADED_TO_A11Y_TREE) ||
-          node_name == l10n_util::GetStringUTF8(IDS_PDF_OCR_COMPLETED) ||
-          node_name == l10n_util::GetStringUTF8(IDS_PDF_OCR_NO_RESULT)) {
+      if (node_name == l10n_util::GetStringUTF8(IDS_PDF_LOADED_TO_A11Y_TREE)) {
         // features::kUseMoveNotCopyInMergeTreeUpdate updates a11y tree after
         // `AccessibilityEventReceived` so we cannot assume changes are
         // reflected upon receiving updates.
@@ -251,20 +278,6 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
   bool is_pdf = IsPdf(web_contents());
   if (is_pdf && !is_pdf_a11y_info_loaded_) {
     SetPendingGetContentCallback(std::move(callback));
-    // PdfAccessibilityTree::AccessibilityModeChanged handles kPDFOcr changes
-    // with |always_load_or_reload_accessibility| is true
-    if (inner_web_contents_) {
-      auto current_mode = inner_web_contents_->GetAccessibilityMode();
-      if (!current_mode.has_mode(ui::AXMode::kPDFOcr)) {
-        current_mode |= ui::AXMode::kPDFOcr;
-        scoped_accessibility_mode_ =
-            content::BrowserAccessibilityState::GetInstance()
-                ->CreateScopedModeForWebContents(inner_web_contents_,
-                                                 current_mode);
-      }
-      pdf_load_observer_ =
-          std::make_unique<PDFA11yInfoLoadObserver>(inner_web_contents_, this);
-    }
     // Manually check when pdf extraction requested so we don't always rely on
     // a11y events to prevent stale callback. It can happens during background
     // pdf tab loading or bug in upstream kPdfOCR that an empty page in pdf will
@@ -274,7 +287,7 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
     CheckPDFA11yTree();
     return;
   }
-  if (base::Contains(kPrintPreviewRetrievalHosts, GetPageURL().host_piece())) {
+  if (kPrintPreviewRetrievalHosts.contains(GetPageURL().host_piece())) {
     // Get content using a printing / OCR mechanism, instead of
     // directly from the source, if available.
     DVLOG(1) << __func__ << " print preview url";

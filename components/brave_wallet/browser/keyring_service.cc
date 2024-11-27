@@ -1053,7 +1053,6 @@ void KeyringService::ImportAccount(const std::string& account_name,
   base::TrimString(private_key, " \n\t", &private_key_trimmed);
 
   if (coin != mojom::CoinType::ETH && coin != mojom::CoinType::SOL) {
-    NOTREACHED_IN_MIGRATION() << "Invalid coin " << coin;
     std::move(callback).Run({});
     return;
   }
@@ -1261,8 +1260,7 @@ void KeyringService::RemoveAccount(mojom::AccountIdPtr account_id,
     return;
   }
 
-  NOTREACHED_IN_MIGRATION();
-  std::move(callback).Run(false);
+  NOTREACHED() << account_id->kind;
 }
 
 bool KeyringService::RemoveImportedAccountInternal(
@@ -1694,7 +1692,6 @@ void KeyringService::AddAccountsWithDefaultName(
     size_t number) {
   auto* keyring = GetHDKeyringById(keyring_id);
   if (!keyring) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -1855,7 +1852,7 @@ void KeyringService::CreateKeyringInternal(mojom::KeyringId keyring_id,
     bitcoin_hardware_keyrings_[keyring_id] =
         std::make_unique<BitcoinHardwareKeyring>(true);
   } else {
-    NOTREACHED_NORETURN() << keyring_id;
+    NOTREACHED() << keyring_id;
   }
 }
 
@@ -1926,8 +1923,7 @@ void KeyringService::SetAccountName(mojom::AccountIdPtr account_id,
           SetHardwareAccountNameInternal(*account_id, name));
       return;
   }
-  NOTREACHED_IN_MIGRATION();
-  std::move(callback).Run(false);
+  NOTREACHED() << account_id->kind;
 }
 
 bool KeyringService::SetKeyringDerivedAccountNameInternal(
@@ -2240,7 +2236,10 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
         }
       }
     }
-  } else if (IsBitcoinImportKeyring(keyring_id)) {
+    return;
+  }
+
+  if (IsBitcoinImportKeyring(keyring_id)) {
     auto accounts = GetImportedAccountsForKeyring(profile_prefs_, keyring_id);
     for (auto& account : accounts) {
       if (account_id == account.GetAccountId()) {
@@ -2252,7 +2251,10 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
         }
       }
     }
-  } else if (IsBitcoinHardwareKeyring(keyring_id)) {
+    return;
+  }
+
+  if (IsBitcoinHardwareKeyring(keyring_id)) {
     auto accounts = GetHardwareAccountsForKeyring(profile_prefs_, keyring_id);
     for (auto& account : accounts) {
       if (account_id == account.GetAccountId()) {
@@ -2264,9 +2266,10 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
         }
       }
     }
-  } else {
-    NOTREACHED_IN_MIGRATION() << keyring_id;
+    return;
   }
+
+  NOTREACHED() << keyring_id;
 }
 
 bool KeyringService::SetZCashAccountBirthday(
@@ -2510,6 +2513,11 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
     if (unified_address) {
       result->unified_address = *unified_address;
     }
+    auto orchard_address = zcash_keyring->GetShieldedAddress(
+        *mojom::ZCashKeyId::New(account_id->account_index, 0, 0));
+    if (orchard_address) {
+      result->orchard_address = orchard_address->address_string;
+    }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
     return result;
@@ -2597,7 +2605,6 @@ mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
 void KeyringService::MaybeFixAccountSelection() {
   const auto& account_infos = GetAllAccountInfos();
   if (account_infos.empty()) {
-    NOTREACHED_IN_MIGRATION();
     return;
   }
 

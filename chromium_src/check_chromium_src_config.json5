@@ -17,6 +17,7 @@
     // Please, keep in alphabetical order.
     "path_excludes": [
         "base/feature_override.h",
+        "base/types/zip.h",
         "check_chromium_src_config.json5",
         "chrome/browser/devtools/url_constants_unittest.cc",
         "chrome/browser/history/history_utils_unittest.cc",
@@ -49,6 +50,9 @@
     // These symbols found in associated paths will be ignored.
     // Please, keep paths and symbols in alphabetical order.
     "symbol_excludes": {
+        "base/debug/alias.h": [
+            "DEBUG_ALIAS_FOR_OBJECT",
+        ],
         "base/trace_event/builtin_categories.h": [
             "BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES",
         ],

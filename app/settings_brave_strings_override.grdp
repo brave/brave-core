@@ -26,10 +26,6 @@
   <if expr="not is_chromeos">
     </if>
 
-  <message name="IDS_SETTINGS_SECURE_DNS_DESCRIPTION" desc="Secondary, continued explanation of secure DNS in Privacy options">
-    Make it harder for profiles with access to your internet traffic to see which sites you visit. Brave uses a secure connection to look up a site's IP address in the DNS (Domain Name System).
-  </message>
-
   <if expr="not chromeos_ash">
   </if>
   <if expr="chromeos_ash">

@@ -26,7 +26,7 @@ constexpr char kBrowserViewsPrefKey[] = "browser_views";
 
 constexpr base::TimeDelta kUpdateInterval = base::Days(1);
 
-const int kMenuOpenBuckets[] = {0, 5, 15, 29, 49};
+constexpr int kMenuOpenBuckets[] = {0, 5, 15, 29, 49};
 
 const char* GetMenuGroupPrefKey(MenuGroup group) {
   switch (group) {

@@ -35,11 +35,10 @@ class ResetReportUploaderTest : public testing::Test {
 TEST_F(ResetReportUploaderTest, NoFetch) {
   bool network_access_occurred = false;
   test_url_loader_factory()->SetInterceptor(
-    base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-                                   network_access_occurred = true;
-                               }));
-  ResetReportUploader* uploader =
-    new ResetReportUploader(shared_url_loader_factory());
-  uploader->DispatchReportInternal("");
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        network_access_occurred = true;
+      }));
+  ResetReportUploader uploader(shared_url_loader_factory());
+  uploader.DispatchReportInternal("");
   EXPECT_FALSE(network_access_occurred);
 }

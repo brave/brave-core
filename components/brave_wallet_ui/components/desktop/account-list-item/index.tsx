@@ -5,8 +5,6 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Label from '@brave/leo/react/label'
-import Icon from '@brave/leo/react/icon'
 
 // redux
 import { useDispatch } from 'react-redux'
@@ -78,6 +76,7 @@ import { RewardsLogin } from '../rewards_login/rewards_login'
 import {
   ShieldZCashAccountModal //
 } from '../popup-modals/shield_zcash_account/shield_zcash_account'
+import { ShieldedLabel } from '../../shared/shielded_label/shielded_label'
 
 // style
 import {
@@ -109,6 +108,7 @@ interface Props {
   isLoadingBalances: boolean
   spotPriceRegistry: SpotPriceRegistry | undefined
   isLoadingSpotPrices: boolean
+  isShieldingAvailable: boolean | undefined
 }
 
 export const AccountListItem = ({
@@ -117,7 +117,8 @@ export const AccountListItem = ({
   tokenBalancesRegistry,
   spotPriceRegistry,
   isLoadingBalances,
-  isLoadingSpotPrices
+  isLoadingSpotPrices,
+  isShieldingAvailable
 }: Props) => {
   // redux
   const dispatch = useDispatch()
@@ -320,6 +321,7 @@ export const AccountListItem = ({
     const canShieldAccount =
       isZCashShieldedTransactionsEnabled &&
       account.accountId.coin === BraveWallet.CoinType.ZEC &&
+      isShieldingAvailable &&
       zCashAccountInfo &&
       !zCashAccountInfo.accountShieldBirthday
 
@@ -335,7 +337,12 @@ export const AccountListItem = ({
       options = options.filter((option) => option.id !== 'shield')
     }
     return options
-  }, [account, isZCashShieldedTransactionsEnabled, zCashAccountInfo])
+  }, [
+    account,
+    isZCashShieldedTransactionsEnabled,
+    isShieldingAvailable,
+    zCashAccountInfo
+  ])
 
   // render
   return (
@@ -366,16 +373,9 @@ export const AccountListItem = ({
                   >
                     {account.name}
                   </Text>
-                  <HorizontalSpace space='8px' />
+                  <HorizontalSpace space='6px' />
                   {zCashAccountInfo &&
-                    zCashAccountInfo.accountShieldBirthday && (
-                      <Label color='neutral'>
-                        <div slot='icon-before'>
-                          <Icon name='shield-done' />
-                        </div>
-                        {getLocale('braveWalletShielded')}
-                      </Label>
-                    )}
+                    zCashAccountInfo.accountShieldBirthday && <ShieldedLabel />}
                   {isRewardsAccount && (
                     <>
                       <VerticalSpacer space='4px' />

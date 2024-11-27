@@ -6,8 +6,10 @@
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 
 #include <memory>
-#include <utility>
+#include <string>
+#include <string_view>
 
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
@@ -28,7 +30,7 @@ constexpr base::FilePath::CharType kComponentInstallDir[] =
     FILE_PATH_LITERAL("AIChatLocalModels");
 constexpr base::FilePath::CharType kDeprecatedComponentInstallDir[] =
     FILE_PATH_LITERAL("LeoLocalModels");
-constexpr const char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
+constexpr char kComponentId[] = "ejhejjmaoaohpghnblcdcjilndkangfe";
 }  // namespace
 
 class LocalModelsUpdaterUnitTest : public testing::Test {

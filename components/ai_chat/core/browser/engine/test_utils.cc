@@ -8,15 +8,15 @@
 #include <optional>
 #include <utility>
 
+#include "base/numerics/clamped_math.h"
 #include "base/time/time.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
 
 std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
   std::vector<mojom::ConversationTurnPtr> history;
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
       "Which show is 'This is the way' from?", std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false));
@@ -34,18 +34,19 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       mojom::CompletionEvent::New("The Mandalorian")));
 
   auto edit = mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-      std::nullopt, std::move(modified_events), base::Time::Now(), std::nullopt,
-      false);
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "The Mandalorian.", std::nullopt, std::move(modified_events),
+      base::Time::Now(), std::nullopt, false);
   std::vector<mojom::ConversationTurnPtr> edits;
   edits.push_back(std::move(edit));
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "Mandalorian.", std::nullopt,
-      std::move(events), base::Time::Now(), std::move(edits), false));
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "Mandalorian.", std::nullopt, std::move(events), base::Time::Now(),
+      std::move(edits), false));
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
       "Is it related to a broader series?", std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false));

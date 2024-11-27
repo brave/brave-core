@@ -32,18 +32,6 @@ static constexpr webui::ResourcePath kResources[] = {
     {"favicon.ico", IDR_BRAVE_REWARDS_FAVICON}};
 
 static constexpr webui::LocalizedString kStrings[] = {
-    {"acAmountLabel", IDS_REWARDS_AC_AMOUNT_LABEL},
-    {"acAmountText", IDS_REWARDS_AC_AMOUNT_TEXT},
-    {"acAttentionLabel", IDS_REWARDS_AC_ATTENTION_LABEL},
-    {"acDisabledText", IDS_REWARDS_AC_DISABLED_TEXT},
-    {"acDisabledTitle", IDS_REWARDS_AC_DISABLED_TITLE},
-    {"acEmptyListText", IDS_REWARDS_AC_EMPTY_LIST_TEXT},
-    {"acInfoText", IDS_REWARDS_AC_INFO_TEXT},
-    {"acInfoTitle", IDS_REWARDS_AC_INFO_TITLE},
-    {"acNextContributionLabel", IDS_REWARDS_AC_NEXT_CONTRIBUTION_LABEL},
-    {"acSiteCountLabel", IDS_REWARDS_AC_SITE_COUNT_LABEL},
-    {"acSiteLabel", IDS_REWARDS_AC_SITE_LABEL},
-    {"acTitle", IDS_REWARDS_AC_TITLE},
     {"adsBrowserUpgradeRequiredText",
      IDS_REWARDS_ADS_BROWSER_UPGRADE_REQUIRED_TEXT},
     {"adsHistoryButtonLabel", IDS_REWARDS_ADS_HISTORY_BUTTON_LABEL},
@@ -59,7 +47,6 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"adsSettingsAdTypeTitle", IDS_REWARDS_ADS_SETTINGS_AD_TYPE_TITLE},
     {"adsSettingsAdViewsTitle", IDS_REWARDS_ADS_SETTINGS_AD_VIEWS_TITLE},
     {"adsSettingsButtonLabel", IDS_REWARDS_ADS_SETTINGS_BUTTON_LABEL},
-    {"adsSettingsEarningsLabel", IDS_REWARDS_ADS_SETTINGS_EARNINGS_LABEL},
     {"adsSettingsPayoutDateLabel", IDS_REWARDS_ADS_SETTINGS_PAYOUT_DATE_LABEL},
     {"adsSettingsTotalAdsLabel", IDS_REWARDS_ADS_SETTINGS_TOTAL_ADS_LABEL},
     {"adsSettingsNewsOffTooltip", IDS_REWARDS_ADS_SETTINGS_NEWS_OFF_TOOLTIP},
@@ -147,6 +134,7 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"captchaSolvedTitle", IDS_REWARDS_CAPTCHA_SOLVED_TITLE},
     {"captchaSupportButtonLabel", IDS_REWARDS_CAPTCHA_CONTACT_SUPPORT},
     {"closeButtonLabel", IDS_BRAVE_REWARDS_ONBOARDING_CLOSE},
+    {"communityTitle", IDS_REWARDS_COMMUNITY_TITLE},
     {"connectAccountSubtext", IDS_REWARDS_CONNECT_ACCOUNT_SUBTEXT},
     {"connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT_2},
     {"connectButtonLabel", IDS_REWARDS_CONNECT_ACCOUNT},
@@ -202,19 +190,14 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"countrySelectText", IDS_REWARDS_COUNTRY_SELECT_TEXT},
     {"doneButtonLabel", IDS_BRAVE_REWARDS_ONBOARDING_DONE},
     {"earningsAdsReceivedText", IDS_REWARDS_EARNINGS_ADS_RECEIVED_TEXT},
-    {"earningsEstimateText", IDS_REWARDS_EARNINGS_ESTIMATE_TEXT},
-    {"earningsRangeTooltip", IDS_REWARDS_EARNINGS_RANGE_TOOLTIP},
     {"helpButtonLabel", IDS_REWARDS_HELP_BUTTON_LABEL},
     {"learnMoreLink", IDS_REWARDS_LEARN_MORE},
+    {"merchStoreTitle", IDS_REWARDS_MERCH_STORE_TITLE},
     {"moreButtonLabel", IDS_REWARDS_MORE_BUTTON_LABEL},
     {"navigationCreatorsLabel", IDS_REWARDS_NAVIGATION_CREATORS_LABEL},
     {"navigationExploreLabel", IDS_REWARDS_NAVIGATION_EXPLORE_LABEL},
     {"navigationHomeLabel", IDS_REWARDS_NAVIGATION_HOME_LABEL},
     {"newBadgeText", IDS_REWARDS_NEW_BADGE_TEXT},
-    {"notificationAutoContributeCompletedText",
-     IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TEXT},
-    {"notificationAutoContributeCompletedTitle",
-     IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TITLE},
     {"notificationWalletDisconnectedAction",
      IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_ACTION},
     {"notificationWalletDisconnectedText",
@@ -283,6 +266,8 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"tosUpdateLink", IDS_REWARDS_TOS_UPDATE_LINK_TEXT},
     {"tosUpdateRequiredText", IDS_REWARDS_TOS_UPDATE_TEXT},
     {"tosUpdateRequiredTitle", IDS_REWARDS_TOS_UPDATE_HEADING},
+    {"viewAllLink", IDS_REWARDS_VIEW_ALL_LINK},
+    {"viewStoreLink", IDS_REWARDS_VIEW_STORE_LINK},
     {"wdpCheckboxLabel", IDS_REWARDS_WDP_CHECKBOX_LABEL},
     {"wdpOptInText", IDS_REWARDS_WDP_OPT_IN_TEXT},
     {"wdpOptInTitle", IDS_REWARDS_WDP_OPT_IN_TITLE}};
@@ -294,11 +279,8 @@ void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
   auto* browser_context = web_ui.GetWebContents()->GetBrowserContext();
   auto* source = content::WebUIDataSource::CreateAndAdd(browser_context, host);
 
-  webui::SetupWebUIDataSource(
-      source,
-      UNSAFE_TODO(
-          base::make_span(kRewardsPageGenerated, kRewardsPageGeneratedSize)),
-      IDR_NEW_BRAVE_REWARDS_PAGE_HTML);
+  webui::SetupWebUIDataSource(source, kRewardsPageGenerated,
+                              IDR_NEW_BRAVE_REWARDS_PAGE_HTML);
 
   // Adaptive captcha challenges are displayed in an iframe on the Rewards
   // panel. In order to display these challenges we need to specify in CSP that

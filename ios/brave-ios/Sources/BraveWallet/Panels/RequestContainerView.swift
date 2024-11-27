@@ -15,6 +15,7 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
   var toolbarDismissContent: DismissContent
 
   var onDismiss: () -> Void
+  var onViewInActivity: () -> Void
 
   var body: some View {
     NavigationView {
@@ -26,7 +27,8 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               confirmationStore: cryptoStore.openConfirmationStore(),
               networkStore: cryptoStore.networkStore,
               keyringStore: keyringStore,
-              onDismiss: onDismiss
+              onDismiss: onDismiss,
+              onViewInActivity: onViewInActivity
             )
           case .addSuggestedToken(let request):
             AddSuggestedTokenView(

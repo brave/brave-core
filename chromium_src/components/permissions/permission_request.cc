@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/strings/grit/components_strings.h"
@@ -20,25 +21,17 @@
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
 // Brave Ethereum/Solana permission has its own permission request prompt.
 #if BUILDFLAG(IS_ANDROID)
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH                              \
-  case RequestType::kBraveEthereum:                              \
-  case RequestType::kBraveSolana:                                \
-    NOTREACHED_IN_MIGRATION();                                   \
-    return permissions::PermissionRequest::AnnotatedMessageText( \
-        std::u16string(), {});                                   \
-  case RequestType::kWidevine:                                   \
-    NOTREACHED_IN_MIGRATION();                                   \
-    return permissions::PermissionRequest::AnnotatedMessageText( \
-        std::u16string(), {});
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
+  case RequestType::kBraveEthereum: \
+  case RequestType::kBraveSolana:   \
+  case RequestType::kWidevine:      \
+    NOTREACHED();
 #else
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
-    NOTREACHED_IN_MIGRATION();      \
-    return std::u16string();        \
   case RequestType::kWidevine:      \
-    NOTREACHED_IN_MIGRATION();      \
-    return std::u16string();
+    NOTREACHED();
 #endif
 
 // For permission strings that we also need on Android, we need to use
@@ -161,18 +154,18 @@ PermissionRequest::GetDialogAnnotatedMessageText(
 #endif
 
 bool PermissionRequest::SupportsLifetime() const {
-  const RequestType kExcludedTypes[] = {RequestType::kDiskQuota,
-                                        RequestType::kMultipleDownloads,
+  static constexpr auto kExcludedTypes = base::MakeFixedFlatSet<RequestType>(
+      {RequestType::kDiskQuota, RequestType::kMultipleDownloads,
 #if BUILDFLAG(IS_ANDROID)
-                                        RequestType::kProtectedMediaIdentifier,
+       RequestType::kProtectedMediaIdentifier,
 #else
     RequestType::kRegisterProtocolHandler,
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_WIDEVINE)
-                                        RequestType::kWidevine
+       RequestType::kWidevine
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
-  };
-  return !base::Contains(kExcludedTypes, request_type());
+      });
+  return !kExcludedTypes.contains(request_type());
 }
 
 void PermissionRequest::SetLifetime(std::optional<base::TimeDelta> lifetime) {

@@ -5,6 +5,15 @@
 
 import("//mojo/public/tools/bindings/mojom.gni")
 
+static_library("common") {
+  sources = [
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+
+  deps = [ "//components/prefs" ]
+}
+
 mojom("mojom") {
   generate_java = true
   sources = [ "webcompat_reporter.mojom" ]

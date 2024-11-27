@@ -10,17 +10,12 @@ import UIKit
 class BraveRewardsStatusView: UIView {
   enum VisibleStatus {
     case rewardsOff
-    case rewardsOnNoCount
     case rewardsOn
   }
 
   private let stackView = UIStackView().then {
     $0.axis = .vertical
     $0.spacing = 0
-  }
-
-  let countView = BraveRewardsSupportedCountView().then {
-    $0.isHidden = true
   }
 
   private let onView = StatusLabelView(
@@ -40,8 +35,6 @@ class BraveRewardsStatusView: UIView {
     case .rewardsOff:
       setVisibleView(offView, animated: animated)
     case .rewardsOn:
-      setVisibleView(countView, animated: animated)
-    case .rewardsOnNoCount:
       setVisibleView(onView, animated: animated)
     }
   }
@@ -94,7 +87,6 @@ class BraveRewardsStatusView: UIView {
     }
 
     stackView.addStackViewItems(
-      .view(countView),
       .view(offView),
       .view(onView)
     )

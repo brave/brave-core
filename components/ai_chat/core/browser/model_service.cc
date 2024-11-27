@@ -6,16 +6,30 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
 #include <algorithm>
+#include <ios>
+#include <iterator>
 #include <memory>
+#include <optional>
+#include <ostream>
+#include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check.h"
+#include "base/containers/checked_iterators.h"
 #include "base/containers/contains.h"
+#include "base/logging.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
+#include "base/numerics/safe_math.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
@@ -26,22 +40,26 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "cc/task/core/task_utils.h"
 #include "components/os_crypt/sync/os_crypt.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
+class AIChatCredentialManager;
 
-inline constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
-inline constexpr char kCustomModelsList[] = "brave.ai_chat.custom_models";
 namespace {
-inline constexpr char kCustomModelItemLabelKey[] = "label";
-inline constexpr char kCustomModelItemModelKey[] = "model_request_name";
-inline constexpr char kCustomModelContextSizeKey[] = "context_size";
-inline constexpr char kCustomModelSystemPromptKey[] = "model_system_prompt";
-inline constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
-inline constexpr char kCustomModelItemApiKey[] = "api_key";
-inline constexpr char kCustomModelItemKey[] = "key";
+constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
+constexpr char kCustomModelsList[] = "brave.ai_chat.custom_models";
+constexpr char kCustomModelItemLabelKey[] = "label";
+constexpr char kCustomModelItemModelKey[] = "model_request_name";
+constexpr char kCustomModelContextSizeKey[] = "context_size";
+constexpr char kCustomModelSystemPromptKey[] = "model_system_prompt";
+constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
+constexpr char kCustomModelItemApiKey[] = "api_key";
+constexpr char kCustomModelItemKey[] = "key";
 
 // When adding new models, especially for display, make sure to add the UI
 // strings to ai_chat_ui_strings.grdp and ai_chat/core/constants.cc.

@@ -56,9 +56,8 @@ std::string GetSyncCodeValidationErrorString(
       // kValid means no error and we don't display any error when all is ok
       return "OK";
   }
-  NOTREACHED_NORETURN()
-      << "Unexpected value for TimeLimitedWords::ValidationStatus: "
-      << base::to_underlying(validation_result);
+  NOTREACHED() << "Unexpected value for TimeLimitedWords::ValidationStatus: "
+               << base::to_underlying(validation_result);
 }
 
 }  // namespace

@@ -1286,8 +1286,8 @@ TEST_P(TokenProgramTest, MakeTokenProgramTransferTxData) {
   registry->UpdateOfacAddressesList({base::ToLowerASCII(ofac_sanctioned_to)});
   TestMakeTokenProgramTransferTxData(
       FROM_HERE, mojom::kSolanaMainnet, spl_token_mint_address,
-      from_wallet_address, ofac_sanctioned_to, 10000000, std::move(tx_data),
-      mojom::SolanaProviderError::kInvalidParams,
+      from_wallet_address, ofac_sanctioned_to, 10000000,
+      /*expected_tx_data=*/nullptr, mojom::SolanaProviderError::kInvalidParams,
       l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
 }
 
