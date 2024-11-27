@@ -410,7 +410,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
 
   static std::vector<uint8_t> MakeMintData(int supply) {
     std::vector<uint8_t> data(82);
-    base::span(data).subspan(36).first<8u>().copy_from(
+    base::span(data).subspan(36u).first<8u>().copy_from(
         base::U64ToLittleEndian(supply));
     return data;
   }
@@ -421,10 +421,10 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     std::vector<uint8_t> result(96 + data.size());
     auto result_span = base::span(result);
     // Header.
-    base::ranges::copy(owner.bytes(), result_span.subspan(32, 32).begin());
+    result_span.subspan<32, 32>().copy_from(owner.bytes());
 
     // Data.
-    base::ranges::copy(data, result_span.subspan(96).begin());
+    result_span.last(data.size()).copy_from(data);
 
     return result;
   }
@@ -436,7 +436,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     std::vector<uint8_t> result(32 + 64);  // payload_address + signature.
     auto result_span = base::span(result);
 
-    base::ranges::copy(sol_record_payload_address.bytes(), result_span.begin());
+    result_span.copy_prefix_from(sol_record_payload_address.bytes());
 
     std::vector<uint8_t> message;
     message.insert(message.end(), sol_record_payload_address.bytes().begin(),
@@ -444,7 +444,7 @@ class GetAccountInfoHandler : public SolRpcCallHandler {
     message.insert(message.end(), sol_record_address.bytes().begin(),
                    sol_record_address.bytes().end());
     std::string hex_message = base::ToLowerASCII(base::HexEncode(message));
-    ED25519_sign(result_span.subspan(32).data(),
+    ED25519_sign(result_span.subspan(32u).data(),
                  reinterpret_cast<const uint8_t*>(hex_message.data()),
                  hex_message.length(), signer_key.data());
 
@@ -631,11 +631,11 @@ class GetProgramAccountsHandler : public SolRpcCallHandler {
     expected_filters.Append(base::Value::Dict());
     expected_filters.back().GetDict().SetByDottedPath("memcmp.offset", 0);
     expected_filters.back().GetDict().SetByDottedPath(
-        "memcmp.bytes", Base58Encode(data_span.subspan(0, 32)));
+        "memcmp.bytes", Base58Encode(data_span.first<32>()));
     expected_filters.Append(base::Value::Dict());
     expected_filters.back().GetDict().SetByDottedPath("memcmp.offset", 64);
     expected_filters.back().GetDict().SetByDottedPath(
-        "memcmp.bytes", Base58Encode(data_span.subspan(64, 1)));
+        "memcmp.bytes", Base58Encode(data_span.subspan(64u, 1u)));
     expected_filters.Append(base::Value::Dict());
     expected_filters.back().GetDict().Set("dataSize", 165);
 

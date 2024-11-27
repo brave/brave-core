@@ -53,16 +53,16 @@ std::optional<uint64_t> ReadCompactSize(base::span<const uint8_t>& data) {
   uint8_t type = data[0];
   if (data.size() > 0 && data[0] < 253) {
     value = type;
-    data = data.subspan(1);
+    data = data.subspan(1u);
   } else if (type == 253 && data.size() >= 3) {
     value = base::numerics::U16FromBigEndian(data.subspan<1, 2u>());
-    data = data.subspan(1 + 2);
+    data = data.subspan(1u + 2);
   } else if (type <= 254 && data.size() >= 5) {
     value = base::numerics::U32FromBigEndian(data.subspan<1, 4u>());
-    data = data.subspan(1 + 4);
+    data = data.subspan(1u + 4);
   } else if (data.size() >= 9) {
     value = base::numerics::U64FromBigEndian(data.subspan<1, 8u>());
-    data = data.subspan(1 + 8);
+    data = data.subspan(1u + 8);
   } else {
     return std::nullopt;
   }
@@ -97,7 +97,7 @@ std::optional<std::vector<ParsedAddress>> ParseUnifiedAddressBody(
     addr.second =
         std::vector(dejumbled_data.begin(), dejumbled_data.begin() + *size);
     result.push_back(std::move(addr));
-    dejumbled_data = dejumbled_data.subspan(*size);
+    dejumbled_data = dejumbled_data.subspan(base::checked_cast<size_t>(*size));
   }
   return result;
 }

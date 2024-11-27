@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -102,7 +103,7 @@ std::optional<Span32> ExtractHeadFromTuple(Span data, size_t tuple_pos) {
 }
 
 EthAddress ExtractAddress(Span32 address_encoded) {
-  return EthAddress::FromBytes(address_encoded.subspan(12));
+  return EthAddress::FromBytes(address_encoded.subspan<12>());
 }
 
 }  // namespace
@@ -114,7 +115,7 @@ std::pair<Span, Span> ExtractFunctionSelectorAndArgsFromCall(Span data) {
   if ((data.size() - 4) % kRowLength) {
     return {};
   }
-  return {data.subspan(0, 4), data.subspan(4)};
+  return data.split_at<4>();
 }
 
 std::pair<std::optional<size_t>, Span> ExtractArrayInfo(Span data) {
@@ -167,8 +168,7 @@ std::optional<std::vector<uint8_t>> ExtractBytes(Span bytes_encoded) {
   if (!CheckPadding(padded_bytes_data, *bytes_len)) {
     return std::nullopt;
   }
-  Span bytes_result = padded_bytes_data.subspan(0, *bytes_len);
-  return std::vector<uint8_t>{bytes_result.begin(), bytes_result.end()};
+  return base::ToVector(padded_bytes_data.first(*bytes_len));
 }
 
 std::optional<std::string> ExtractString(Span string_encoded) {
@@ -194,8 +194,8 @@ std::optional<std::string> ExtractString(Span string_encoded) {
     return std::nullopt;
   }
 
-  Span string_result = padded_string_data.subspan(0, *string_len);
-  return std::string{string_result.begin(), string_result.end()};
+  return std::string(
+      base::as_string_view(padded_string_data.first(*string_len)));
 }
 
 std::optional<std::vector<std::string>> ExtractStringArray(Span string_array) {
@@ -367,11 +367,11 @@ ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos) {
     return std::nullopt;
   }
 
-  if (!CheckPadding(head->subspan(0), fixed_size)) {
+  if (!CheckPadding(*head, fixed_size)) {
     return std::nullopt;
   }
 
-  return std::vector<uint8_t>{head->begin(), head->begin() + fixed_size};
+  return base::ToVector(head->first(fixed_size));
 }
 
 // NOLINTNEXTLINE(runtime/references)

@@ -142,7 +142,7 @@ base::span<const uint8_t> ExtractSpan(base::span<const uint8_t>& data,
   if (data.size() < size) {
     return {};
   }
-  auto result = data.subspan(0, size);
+  auto result = data.first(size);
   data = data.subspan(size);
   return result;
 }
@@ -239,8 +239,8 @@ std::optional<SolanaAddress> ParseAndVerifySolRecordV1Data(
   }
 
   // Extract 32 bytes of address followed by 64 bytes of signature.
-  auto sol_record_payload_address = SolanaAddress::FromBytes(
-      sol_record_payload.subspan(0, kSolanaPubkeySize));
+  auto sol_record_payload_address =
+      SolanaAddress::FromBytes(sol_record_payload.first<kSolanaPubkeySize>());
   if (!sol_record_payload_address) {
     return std::nullopt;
   }
@@ -588,15 +588,15 @@ std::optional<NameRegistryState> NameRegistryState::FromBytes(
   // 96 bytes of header block followed by data block(possibly empty).
   result.emplace();
   result->parent_name =
-      *SolanaAddress::FromBytes(data_span.subspan(0, kSolanaPubkeySize));
+      *SolanaAddress::FromBytes(data_span.first<kSolanaPubkeySize>());
   data_span = data_span.subspan(kSolanaPubkeySize);
 
   result->owner =
-      *SolanaAddress::FromBytes(data_span.subspan(0, kSolanaPubkeySize));
+      *SolanaAddress::FromBytes(data_span.first<kSolanaPubkeySize>());
   data_span = data_span.subspan(kSolanaPubkeySize);
 
   result->data_class =
-      *SolanaAddress::FromBytes(data_span.subspan(0, kSolanaPubkeySize));
+      *SolanaAddress::FromBytes(data_span.first<kSolanaPubkeySize>());
   data_span = data_span.subspan(kSolanaPubkeySize);
 
   result->data.assign(data_span.begin(), data_span.end());

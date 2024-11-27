@@ -233,7 +233,7 @@ class TorControl {
   std::queue<std::pair<PerLineCallback, CmdCallback>> cmdq_;
   bool reading_;
   scoped_refptr<net::GrowableIOBuffer> readiobuf_;
-  int read_start_;  // offset where the current line starts
+  size_t read_start_;  // offset where the current line starts
   bool read_cr_;    // true if we have parsed a CR
 
   // Asynchronous command response callback state machine.
