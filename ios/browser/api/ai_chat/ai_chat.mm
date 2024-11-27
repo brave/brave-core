@@ -222,10 +222,6 @@
                                             base::SysNSStringToUTF8(newText));
 }
 
-- (void)getNoticesState:(void (^_Nullable)(bool, bool, bool, bool))completion {
-  service_->GetNoticesState(base::BindOnce(completion));
-}
-
 - (void)dismissPremiumPrompt {
   service_->DismissPremiumPrompt();
 }
