@@ -22,23 +22,10 @@
 }
 
 .navItem {
-<<<<<<< Updated upstream
-  font: var(--leo-font-default-regular);
-  width: 100%;
-  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-  border-radius: 8px;
-  position: relative;
-  transition: all 0.2s ease-out allow-discrete;
-
-  &:hover {
-    background: var(--leo-color-container-highlight);
-    box-shadow: var(--leo-effect-elevation-01);
-  }
-=======
   all: unset;
+  border-radius: 8px;
   display: block;
   font: var(--leo-font-default-regular);
->>>>>>> Stashed changes
 }
 
 .navItemActive {
