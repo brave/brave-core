@@ -43,11 +43,12 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
-        <div className={styles.pageTitle}>
+        <div className={styles.conversationTitle}>
           {!isTabAssociated && !aiChatContext.isStandalone && <Button
             kind='plain-faint'
             fab
             onClick={() => location.href = tabAssociatedChatId}
+            title={getLocale('goBackToActiveConversationButton')}
           >
             <Icon name='arrow-left' />
           </Button>}
