@@ -65,13 +65,20 @@ void AdBlockDefaultResourceProvider::LoadResources(
     return;
   }
 
+  auto handle_file_content = base::BindOnce(
+      [](base::OnceCallback<void(const std::string& resources_json)> cb,
+         std::optional<std::string> content) {
+        std::move(cb).Run(content.value_or("[]"));
+      },
+      std::move(cb));
+
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(
           &brave_component_updater::ComponentContentsAccessor::GetFileAsString,
           base::RetainedRef(component_accessor_),
-          base::FilePath::FromASCII(kAdBlockResourcesFilename), "[]"),
-      std::move(cb));
+          base::FilePath::FromASCII(kAdBlockResourcesFilename)),
+      std::move(handle_file_content));
 }
 
 }  // namespace brave_shields

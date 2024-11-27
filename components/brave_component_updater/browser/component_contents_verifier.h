@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_COMPONENT_CONTENTS_VERIFIER_H_
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_COMPONENT_CONTENTS_VERIFIER_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/ref_counted.h"
-#include "base/types/expected.h"
 
 namespace base {
 template <typename T>
@@ -36,11 +36,10 @@ class ComponentContentsAccessor
   virtual bool VerifyContents(const base::FilePath& relative_path,
                               base::span<const uint8_t> contents) = 0;
 
-  std::string GetFileAsString(const base::FilePath& relative_path,
-                              const std::string& default_value);
-  std::vector<uint8_t> GetFileAsBytes(
-      const base::FilePath& relative_path,
-      const std::vector<uint8_t>& default_value);
+  std::optional<std::string> GetFileAsString(
+      const base::FilePath& relative_path);
+  std::optional<std::vector<uint8_t>> GetFileAsBytes(
+      const base::FilePath& relative_path);
 
  protected:
   friend class base::RefCountedThreadSafe<ComponentContentsAccessor>;
