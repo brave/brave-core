@@ -12,6 +12,7 @@ import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
 import * as mojom from '../api/'
+import { ActiveChatContext, SelectedChatDetails } from '../state/active_chat_context'
 import { AIChatContext, AIChatReactContext } from '../state/ai_chat_context'
 import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
 import FeedbackForm from '../components/feedback_form'
@@ -510,6 +511,15 @@ const preview: Meta<CustomArgs> = {
         setEditingConversationId: () => {}
       }
 
+      const activeChatContext: SelectedChatDetails = {
+        selectedConversationId: CONVERSATIONS[0].uuid,
+        updateSelectedConversationId: () => {},
+        callbackRouter: undefined!,
+        conversationHandler: undefined!,
+        createNewConversation: () => {},
+        isTabAssociated: options.args.isDefaultConversation
+      }
+
       const inputText = options.args.inputText
 
       const conversationContext: ConversationContext = {
@@ -551,11 +561,13 @@ const preview: Meta<CustomArgs> = {
 
       return (
         <AIChatReactContext.Provider value={aiChatContext}>
-          <ConversationReactContext.Provider value={conversationContext}>
-          <ThemeProvider>
-            <Story />
-          </ThemeProvider>
-          </ConversationReactContext.Provider>
+          <ActiveChatContext.Provider value={activeChatContext}>
+            <ConversationReactContext.Provider value={conversationContext}>
+            <ThemeProvider>
+              <Story />
+            </ThemeProvider>
+            </ConversationReactContext.Provider>
+          </ActiveChatContext.Provider>
         </AIChatReactContext.Provider>
       )
     }
@@ -588,7 +600,8 @@ export const _FeedbackForm = {
 
 export const _FullPage = {
   args: {
-    isStandalone: true
+    isStandalone: true,
+    isDefaultConversation: false
   },
   render: () => {
     return (
