@@ -505,7 +505,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     private void maybeShowPendingTransactions() {
         if (mWalletModel != null) {
-            // Trigger to observer to refresh data to process the pending request.
+            // Trigger observer to refresh the transactions and process any pending request.
             mWalletModel.getCryptoModel().refreshTransactions();
         }
     }
@@ -659,17 +659,18 @@ public abstract class BraveActivity extends ChromeActivity
                                     layout.showWalletPanel();
                                     return;
                                 }
-                                if (showPendingTransactions && mWalletBadgeVisible) {
-                                    maybeShowPendingTransactions();
-                                } else {
-                                    // Create a runnable that opens the Wallet
-                                    // if the pending requests reach the end of the chain
-                                    // without returning earlier.
-                                    final Runnable openWalletPanelRunnable =
-                                            () -> getBraveToolbarLayout().showWalletPanel();
-                                    maybeShowSignSolTransactionsRequestLayout(
-                                            openWalletPanelRunnable);
-                                }
+                                // Create a runnable that opens the Wallet
+                                // if the pending requests reach the end of the chain
+                                // without returning earlier.
+                                final Runnable openWalletPanelRunnable =
+                                        () -> {
+                                            if (showPendingTransactions && mWalletBadgeVisible) {
+                                                maybeShowPendingTransactions();
+                                            } else {
+                                                getBraveToolbarLayout().showWalletPanel();
+                                            }
+                                        };
+                                maybeShowSignSolTransactionsRequestLayout(openWalletPanelRunnable);
                             });
                 });
     }
