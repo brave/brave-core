@@ -33,12 +33,12 @@
 
 .content {
   flex-grow: 1;
-  padding: 16px;
+  padding: var(--leo-spacing-xl);
 
   h4 {
-    margin: 0 0 4px 0;
+    margin: 0 0 var(--leo-spacing-s) 0;
     // width of close button, make sure no overlap
-    padding-right: 20px;
+    padding-right: var(--leo-spacing-2x);
     display: block;
     overflow: hidden;
     overflow-wrap: break-word;
@@ -47,7 +47,7 @@
   }
 
   p {
-    margin: 0 0 4px 0;
+    margin: 0 0 var(--leo-spacing-s) 0;
     font: var(--leo-font-default-regular);
   }
 
@@ -61,11 +61,11 @@
   --leo-button-color: color-mix(in srgb,
     transparent 50%,
     var(--leo-color-container-background));
-  --leo-button-padding: 2px;
+  --leo-button-padding: var(--leo-spacing-xs);
   --leo-button-radius: 100px;
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: var(--leo-spacing-xl);
+  right: var(--leo-spacing-xl);
 }
 .closeIcon {
   --leo-icon-color: var(--leo-color-icon-default);
