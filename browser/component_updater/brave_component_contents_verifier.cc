@@ -21,40 +21,6 @@
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/content_hash_tree.h"
 #include "extensions/browser/verified_contents.h"
-#endif
-
-namespace {
-
-// Only proxies the file access.
-class ComponentNoChecksContentsAccessorImpl
-    : public brave_component_updater::ComponentContentsAccessor {
- public:
-  explicit ComponentNoChecksContentsAccessorImpl(
-      const base::FilePath& component_root)
-      : component_root_(component_root) {}
-
-  const base::FilePath& GetComponentRoot() const override {
-    return component_root_;
-  }
-
-  bool IsComponentSignatureValid() const override { return true; }
-
-  void IgnoreInvalidSignature(bool) override {}
-
-  bool VerifyContents(const base::FilePath& relative_path,
-                      base::span<const uint8_t> contents) override {
-    return true;
-  }
-
- protected:
-  ~ComponentNoChecksContentsAccessorImpl() override = default;
-
-  const base::FilePath component_root_;
-};
-
-}  // namespace
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
 
 namespace {
 
@@ -112,10 +78,10 @@ std::string GetRootHasheForContent(base::span<const uint8_t> contents,
 
 // Proxies the file access and checks the verified_contents.json.
 class ComponentContentsAccessorImpl
-    : public ComponentNoChecksContentsAccessorImpl {
+    : public brave_component_updater::ComponentContentsAccessor {
  public:
   explicit ComponentContentsAccessorImpl(const base::FilePath& component_root)
-      : ComponentNoChecksContentsAccessorImpl(component_root) {
+      : brave_component_updater::ComponentContentsAccessor(component_root) {
     verified_contents_ = extensions::VerifiedContents::CreateFromFile(
         kComponentContentsVerifierPublicKey,
         component_root.AppendASCII(kVerifiedContentsPath));
@@ -172,8 +138,8 @@ CreateComponentContentsAccessor(bool with_verifier,
 #endif
   // if there is no extensions enabled then we expect that on these platforms
   // the component files are protected by the OS.
-  return base::MakeRefCounted<ComponentNoChecksContentsAccessorImpl>(
-      component_root);
+  return base::MakeRefCounted<
+      brave_component_updater::ComponentContentsAccessor>(component_root);
 }
 
 void SetupComponentContentsVerifier() {

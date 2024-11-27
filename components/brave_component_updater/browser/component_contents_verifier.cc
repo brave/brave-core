@@ -15,6 +15,26 @@
 
 namespace brave_component_updater {
 
+ComponentContentsAccessor::ComponentContentsAccessor(
+    const base::FilePath component_root)
+    : component_root_(component_root) {}
+
+bool ComponentContentsAccessor::IsComponentSignatureValid() const {
+  return true;
+}
+
+void ComponentContentsAccessor::IgnoreInvalidSignature(bool ignore) {}
+
+bool ComponentContentsAccessor::VerifyContents(
+    const base::FilePath& relative_path,
+    base::span<const uint8_t> contents) {
+  return true;
+}
+
+const base::FilePath& ComponentContentsAccessor::GetComponentRoot() const {
+  return component_root_;
+}
+
 std::optional<std::string> ComponentContentsAccessor::GetFileAsString(
     const base::FilePath& relative_path) {
   std::string contents;
