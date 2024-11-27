@@ -13,6 +13,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_delegate.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/cxx_orchard_shard_tree_delegate.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -98,13 +99,13 @@ ShardTreeCheckpointBundle ToRust(
                             checkpoint.mark_removed.end())};
 }
 
-ShardTreeDelegate::ShardTreeDelegate(
+CxxOrchardShardTreeDelegate::CxxOrchardShardTreeDelegate(
     std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate)
     : delegate_(std::move(delegate)) {}
 
-ShardTreeDelegate::~ShardTreeDelegate() = default;
+CxxOrchardShardTreeDelegate::~CxxOrchardShardTreeDelegate() = default;
 
-::rust::Box<ShardTreeShardResultWrapper> ShardTreeDelegate::GetShard(
+::rust::Box<ShardTreeShardResultWrapper> CxxOrchardShardTreeDelegate::GetShard(
     const ShardTreeAddress& addr) const {
   auto shard = delegate_->GetShard(FromRust(addr));
   if (!shard.has_value()) {
@@ -115,7 +116,7 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_shard_tree_shard(ToRust(**shard));
 }
 
-::rust::Box<ShardTreeShardResultWrapper> ShardTreeDelegate::LastShard(
+::rust::Box<ShardTreeShardResultWrapper> CxxOrchardShardTreeDelegate::LastShard(
     uint8_t shard_level) const {
   auto shard = delegate_->LastShard(shard_level);
   if (!shard.has_value()) {
@@ -126,7 +127,7 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_shard_tree_shard(ToRust(**shard));
 }
 
-::rust::Box<BoolResultWrapper> ShardTreeDelegate::PutShard(
+::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::PutShard(
     const ShardTreeShard& tree) const {
   auto result = delegate_->PutShard(FromRust(tree));
   if (!result.has_value()) {
@@ -136,7 +137,7 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_bool(result.value());
 }
 
-::rust::Box<ShardRootsResultWrapper> ShardTreeDelegate::GetShardRoots(
+::rust::Box<ShardRootsResultWrapper> CxxOrchardShardTreeDelegate::GetShardRoots(
     uint8_t shard_level) const {
   auto shard = delegate_->GetShardRoots(shard_level);
   if (!shard.has_value()) {
@@ -149,7 +150,7 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_shard_tree_roots(std::move(roots));
 }
 
-::rust::Box<BoolResultWrapper> ShardTreeDelegate::Truncate(
+::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::Truncate(
     const ShardTreeAddress& address) const {
   auto result = delegate_->Truncate(address.index);
   if (!result.has_value()) {
@@ -158,7 +159,8 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_bool(result.value());
 }
 
-::rust::Box<ShardTreeCapResultWrapper> ShardTreeDelegate::GetCap() const {
+::rust::Box<ShardTreeCapResultWrapper> CxxOrchardShardTreeDelegate::GetCap()
+    const {
   auto result = delegate_->GetCap();
   if (!result.has_value()) {
     return wrap_shard_tree_cap_error();
@@ -168,7 +170,7 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_shard_tree_cap(ToRust(**result));
 }
 
-::rust::Box<BoolResultWrapper> ShardTreeDelegate::PutCap(
+::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::PutCap(
     const ShardTreeCap& tree) const {
   auto result = delegate_->PutCap(FromRust(tree));
   if (!result.has_value()) {
@@ -177,8 +179,8 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_bool(result.value());
 }
 
-::rust::Box<CheckpointIdResultWrapper> ShardTreeDelegate::MinCheckpointId()
-    const {
+::rust::Box<CheckpointIdResultWrapper>
+CxxOrchardShardTreeDelegate::MinCheckpointId() const {
   auto result = delegate_->MinCheckpointId();
   if (!result.has_value()) {
     return wrap_checkpoint_id_error();
@@ -188,8 +190,8 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_checkpoint_id(**result);
 }
 
-::rust::Box<CheckpointIdResultWrapper> ShardTreeDelegate::MaxCheckpointId()
-    const {
+::rust::Box<CheckpointIdResultWrapper>
+CxxOrchardShardTreeDelegate::MaxCheckpointId() const {
   auto result = delegate_->MaxCheckpointId();
   if (!result.has_value()) {
     return wrap_checkpoint_id_error();
@@ -199,7 +201,7 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_checkpoint_id(**result);
 }
 
-::rust::Box<BoolResultWrapper> ShardTreeDelegate::AddCheckpoint(
+::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::AddCheckpoint(
     uint32_t checkpoint_id,
     const ShardTreeCheckpoint& checkpoint) const {
   auto result = delegate_->AddCheckpoint(checkpoint_id, FromRust(checkpoint));
@@ -209,8 +211,8 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_bool(result.value());
 }
 
-::rust::Box<CheckpointCountResultWrapper> ShardTreeDelegate::CheckpointCount()
-    const {
+::rust::Box<CheckpointCountResultWrapper>
+CxxOrchardShardTreeDelegate::CheckpointCount() const {
   auto result = delegate_->CheckpointCount();
   if (!result.has_value()) {
     return wrap_checkpoint_count_error();
@@ -218,8 +220,8 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_checkpoint_count(result.value());
 }
 
-::rust::Box<CheckpointBundleResultWrapper> ShardTreeDelegate::CheckpointAtDepth(
-    size_t depth) const {
+::rust::Box<CheckpointBundleResultWrapper>
+CxxOrchardShardTreeDelegate::CheckpointAtDepth(size_t depth) const {
   auto checkpoint_id = delegate_->GetCheckpointAtDepth(depth);
   if (!checkpoint_id.has_value()) {
     return wrap_checkpoint_bundle_error();
@@ -236,8 +238,8 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_checkpoint_bundle(ToRust(**checkpoint));
 }
 
-::rust::Box<CheckpointBundleResultWrapper> ShardTreeDelegate::GetCheckpoint(
-    uint32_t checkpoint_id) const {
+::rust::Box<CheckpointBundleResultWrapper>
+CxxOrchardShardTreeDelegate::GetCheckpoint(uint32_t checkpoint_id) const {
   auto checkpoint = delegate_->GetCheckpoint(checkpoint_id);
   if (!checkpoint.has_value()) {
     return wrap_checkpoint_bundle_error();
@@ -247,7 +249,7 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_checkpoint_bundle(ToRust(**checkpoint));
 }
 
-::rust::Box<BoolResultWrapper> ShardTreeDelegate::UpdateCheckpoint(
+::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::UpdateCheckpoint(
     uint32_t checkpoint_id,
     const ShardTreeCheckpoint& checkpoint) const {
   auto result =
@@ -258,7 +260,7 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_bool(result.value());
 }
 
-::rust::Box<BoolResultWrapper> ShardTreeDelegate::RemoveCheckpoint(
+::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::RemoveCheckpoint(
     uint32_t checkpoint_id) const {
   auto result = delegate_->RemoveCheckpoint(checkpoint_id);
   if (!result.has_value()) {
@@ -267,7 +269,7 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_bool(result.value());
 }
 
-::rust::Box<BoolResultWrapper> ShardTreeDelegate::TruncateCheckpoint(
+::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::TruncateCheckpoint(
     uint32_t checkpoint_id) const {
   auto result = delegate_->TruncateCheckpoints(checkpoint_id);
   if (!result.has_value()) {
@@ -276,8 +278,8 @@ ShardTreeDelegate::~ShardTreeDelegate() = default;
   return wrap_bool(result.value());
 }
 
-::rust::Box<CheckpointsResultWrapper> ShardTreeDelegate::GetCheckpoints(
-    size_t limit) const {
+::rust::Box<CheckpointsResultWrapper>
+CxxOrchardShardTreeDelegate::GetCheckpoints(size_t limit) const {
   auto checkpoints = delegate_->GetCheckpoints(limit);
   if (!checkpoints.has_value()) {
     return wrap_checkpoints_error();
@@ -331,7 +333,7 @@ OrchardShardTreeImpl::~OrchardShardTreeImpl() {}
 std::unique_ptr<OrchardShardTree> OrchardShardTree::Create(
     std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate) {
   auto shard_tree_result = create_shard_tree(
-      std::make_unique<ShardTreeDelegate>(std::move(delegate)));
+      std::make_unique<CxxOrchardShardTreeDelegate>(std::move(delegate)));
   if (!shard_tree_result->is_ok()) {
     return nullptr;
   }

@@ -7,8 +7,8 @@
 
 #include <memory>
 
+#include "brave/components/brave_wallet/browser/zcash/rust/cxx_orchard_shard_tree_delegate.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/shard_tree_delegate.h"
 
 namespace brave_wallet::orchard {
 
@@ -55,7 +55,7 @@ OrchardTestingShardTreeImpl::~OrchardTestingShardTreeImpl() {}
 std::unique_ptr<OrchardShardTree> OrchardShardTree::CreateForTesting(
     std::unique_ptr<::brave_wallet::OrchardShardTreeDelegate> delegate) {
   auto shard_tree_result = create_testing_shard_tree(
-      std::make_unique<ShardTreeDelegate>(std::move(delegate)));
+      std::make_unique<CxxOrchardShardTreeDelegate>(std::move(delegate)));
   if (!shard_tree_result->is_ok()) {
     return nullptr;
   }

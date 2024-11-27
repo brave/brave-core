@@ -62,10 +62,10 @@ use cxx::UniquePtr;
 use pasta_curves::{group::ff::Field, pallas};
 
 use crate::ffi::{
+    CxxOrchardShardTreeDelegate,
     OrchardCompactAction,
     OrchardOutput,
     OrchardSpend,
-    ShardTreeDelegate,
     ShardTreeAddress,
     ShardTreeCap,
     ShardTreeCheckpoint,
@@ -441,11 +441,11 @@ mod ffi {
 
         // Creates shard tree of default orchard height
         fn create_shard_tree(
-            delegate: UniquePtr<ShardTreeDelegate>
+            delegate: UniquePtr<CxxOrchardShardTreeDelegate>
         ) -> Box<OrchardShardTreeBundleResult>;
         // Creates shard tree of smaller size for testing purposes
         fn create_testing_shard_tree(
-            delegate: UniquePtr<ShardTreeDelegate>
+            delegate: UniquePtr<CxxOrchardShardTreeDelegate>
         ) -> Box<OrchardTestingShardTreeBundleResult>;
 
         fn insert_commitments(
@@ -502,9 +502,9 @@ mod ffi {
     }
 
     unsafe extern "C++" {
-        include!("brave/components/brave_wallet/browser/zcash/rust/shard_tree_delegate.h");
+        include!("brave/components/brave_wallet/browser/zcash/rust/cxx_orchard_shard_tree_delegate.h");
 
-        type ShardTreeDelegate;
+        type CxxOrchardShardTreeDelegate;
 
         fn LastShard(
             &self, shard_level: u8) -> Box<ShardTreeShardResultWrapper>;
@@ -1193,7 +1193,7 @@ impl OrchardWitnessBundle {
 }
 
 pub struct CxxShardStoreImpl<H, const SHARD_HEIGHT: u8>  {
-    delegate: UniquePtr<ShardTreeDelegate>,
+    delegate: UniquePtr<CxxOrchardShardTreeDelegate>,
     _hash_type: PhantomData<H>,
 }
 
@@ -1572,7 +1572,7 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 }
 
-fn create_shard_tree(delegate: UniquePtr<ShardTreeDelegate>) -> Box<OrchardShardTreeBundleResult> {
+fn create_shard_tree(delegate: UniquePtr<CxxOrchardShardTreeDelegate>) -> Box<OrchardShardTreeBundleResult> {
     let shard_store = OrchardCxxShardStoreImpl {
         delegate: delegate,
         _hash_type: Default::default()
@@ -1606,7 +1606,7 @@ fn create_mock_decode_result(prior_tree_state: ShardTreeState, commitments: Shar
     })))
 }
 
-fn create_testing_shard_tree(delegate: UniquePtr<ShardTreeDelegate>) -> Box<OrchardTestingShardTreeBundleResult> {
+fn create_testing_shard_tree(delegate: UniquePtr<CxxOrchardShardTreeDelegate>) -> Box<OrchardTestingShardTreeBundleResult> {
     let shard_store: CxxShardStoreImpl<MerkleHashOrchard, 4> = TestingCxxShardStoreImpl {
         delegate: delegate,
         _hash_type: Default::default()

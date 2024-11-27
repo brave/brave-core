@@ -95,9 +95,9 @@ source_set("orchard_impl") {
   ]
 }
 
-source_set("shard_store") {
+source_set("cxx_interfaces") {
   visibility = [ ":*" ]
-  sources = [ "shard_tree_delegate.h" ]
+  sources = [ "cxx_orchard_shard_tree_delegate.h" ]
 
   public_deps = [
     "//base",
@@ -135,5 +135,5 @@ rust_static_library("rust_lib") {
     "//third_party/rust/byteorder/v1:lib",
   ]
 
-  public_deps = [ ":shard_store" ]
+  public_deps = [ ":cxx_interfaces" ]
 }

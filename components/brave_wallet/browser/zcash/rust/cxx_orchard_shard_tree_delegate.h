@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_SHARD_TREE_DELEGATE_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_SHARD_TREE_DELEGATE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_CXX_ORCHARD_SHARD_TREE_DELEGATE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_CXX_ORCHARD_SHARD_TREE_DELEGATE_H_
 
 #include <memory>
 #include <vector>
@@ -31,11 +31,11 @@ struct ShardRootsResultWrapper;
 struct ShardTreeCapResultWrapper;
 struct ShardTreeShardResultWrapper;
 
-class ShardTreeDelegate {
+class CxxOrchardShardTreeDelegate {
  public:
-  explicit ShardTreeDelegate(
+  explicit CxxOrchardShardTreeDelegate(
       std::unique_ptr<OrchardShardTreeDelegate> delegate);
-  ~ShardTreeDelegate();
+  ~CxxOrchardShardTreeDelegate();
 
   ::rust::Box<ShardTreeShardResultWrapper> LastShard(uint8_t shard_level) const;
   ::rust::Box<BoolResultWrapper> PutShard(const ShardTreeShard& tree) const;
@@ -70,4 +70,4 @@ class ShardTreeDelegate {
 
 }  // namespace brave_wallet::orchard
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_SHARD_TREE_DELEGATE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_CXX_ORCHARD_SHARD_TREE_DELEGATE_H_
