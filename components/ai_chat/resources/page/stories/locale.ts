@@ -111,4 +111,7 @@ provideStrings({
   sendChatButtonLabel: 'Send message to Leo',
   useMicButtonLabel: 'Use microphone',
   menuTitleCustomModels: 'Custom models',
+  startConversationLabel: 'Start new conversation',
+  goBackToActiveConversationButton: 'Go back to the active conversation',
+  conversationListUntitled: 'New conversation'
 })
