@@ -13,6 +13,7 @@ specific_include_rules = {
   ],
   "hash_utils\.cc": [
     "+brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h",
+    "+third_party/boringssl",
   ],
   "zcash_utils\.cc": [
     "+brave/third_party/bitcoin-core/src/src/base58.h",

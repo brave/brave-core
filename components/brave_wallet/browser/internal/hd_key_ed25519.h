@@ -13,12 +13,12 @@
 
 namespace brave_wallet {
 
-constexpr size_t kEd25519SecretKeySize = 32;
-constexpr size_t kEd25519PublicKeySize = 32;
-constexpr size_t kEd25519KeypairSize =
+inline constexpr size_t kEd25519SecretKeySize = 32;
+inline constexpr size_t kEd25519PublicKeySize = 32;
+inline constexpr size_t kEd25519KeypairSize =
     kEd25519SecretKeySize + kEd25519PublicKeySize;
-constexpr size_t kEd25519ChainCodeSize = 32;
-constexpr size_t kEd25519SignatureSize = 64;
+inline constexpr size_t kEd25519ChainCodeSize = 32;
+inline constexpr size_t kEd25519SignatureSize = 64;
 
 // This class implements basic EdDSA over ed25519 functionality of SLIP-0010
 // spec with 32 bytes private key and only allows private key derivation with

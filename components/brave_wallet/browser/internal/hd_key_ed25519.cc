@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/containers/span.h"
