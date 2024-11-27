@@ -60,12 +60,13 @@ export default function NoticeConversationStorage() {
       </div>
       <Button
         className={styles.closeButton}
-        kind='plain-faint'
+        kind='filled'
+        size='tiny'
         fab
         title={getLocale('closeNotice')}
         onClick={aiChatContext.dismissStorageNotice}
       >
-        <Icon name='close' />
+        <Icon className={styles.closeIcon} name='close' />
       </Button>
     </div>
   )
