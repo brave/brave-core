@@ -5,7 +5,7 @@
 
 #include "brave/app/command_utils.h"
 
-#include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/commands/common/features.h"
 #include "build/buildflag.h"
@@ -66,37 +66,37 @@ IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
                        DISABLED_AllCommandsShouldBeExecutableWithoutCrash) {
   // Some commands, particularly those that create dialogs introduce some test
   // flakes, so we disable them.
-  constexpr int kKnownGoodCommandsThatSometimesBreakTest[] = {
-      IDC_PRINT,
-      IDC_BASIC_PRINT,
-      IDC_OPEN_FILE,
-      IDC_SAVE_PAGE,
-      IDC_SHOW_AVATAR_MENU,
-      IDC_SHOW_MANAGEMENT_PAGE,
+  static constexpr auto kKnownGoodCommandsThatSometimesBreakTest =
+      base::MakeFixedFlatSet<int>({IDC_PRINT,
+                                   IDC_BASIC_PRINT,
+                                   IDC_OPEN_FILE,
+                                   IDC_SAVE_PAGE,
+                                   IDC_SHOW_AVATAR_MENU,
+                                   IDC_SHOW_MANAGEMENT_PAGE,
 #if BUILDFLAG(IS_MAC)
-      IDC_FOCUS_THIS_TAB,
-      IDC_FOCUS_TOOLBAR,
-      IDC_FOCUS_LOCATION,
-      IDC_FOCUS_SEARCH,
-      IDC_FOCUS_MENU_BAR,
-      IDC_FOCUS_NEXT_PANE,
-      IDC_FOCUS_PREVIOUS_PANE,
-      IDC_FOCUS_BOOKMARKS,
-      IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY,
-      IDC_FOCUS_WEB_CONTENTS_PANE,
-      IDC_TOGGLE_FULLSCREEN_TOOLBAR,
-      IDC_CONTENT_CONTEXT_EXIT_FULLSCREEN,
-      IDC_FULLSCREEN,
-      IDC_TOGGLE_VERTICAL_TABS,
-      IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE,
+                                   IDC_FOCUS_THIS_TAB,
+                                   IDC_FOCUS_TOOLBAR,
+                                   IDC_FOCUS_LOCATION,
+                                   IDC_FOCUS_SEARCH,
+                                   IDC_FOCUS_MENU_BAR,
+                                   IDC_FOCUS_NEXT_PANE,
+                                   IDC_FOCUS_PREVIOUS_PANE,
+                                   IDC_FOCUS_BOOKMARKS,
+                                   IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY,
+                                   IDC_FOCUS_WEB_CONTENTS_PANE,
+                                   IDC_TOGGLE_FULLSCREEN_TOOLBAR,
+                                   IDC_CONTENT_CONTEXT_EXIT_FULLSCREEN,
+                                   IDC_FULLSCREEN,
+                                   IDC_TOGGLE_VERTICAL_TABS,
+                                   IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE,
 #endif
 
-      IDC_EXIT};
+                                   IDC_EXIT});
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
   const auto& commands = commands::GetCommands();
   for (const auto& command : commands) {
-    if (base::Contains(kKnownGoodCommandsThatSometimesBreakTest, command)) {
+    if (kKnownGoodCommandsThatSometimesBreakTest.contains(command)) {
       continue;
     }
 

@@ -74,7 +74,7 @@ const std::vector<GURL> BraveNewsTabHelper::GetAvailableFeedUrls() {
   }
 
   for (const auto& rss_feed : rss_page_feeds_) {
-    if (base::Contains(seen_feeds, rss_feed.feed_url)) {
+    if (seen_feeds.contains(rss_feed.feed_url)) {
       continue;
     }
 
@@ -317,8 +317,8 @@ void BraveNewsTabHelper::OnPublishersChanged() {
   auto subscriptions = controller_->prefs().GetSubscriptions();
   for (auto& feed : rss_page_feeds_) {
     feed.subscribed =
-        base::Contains(subscriptions.enabled_publishers(),
-                       feed.combined_publisher_id) ||
+        subscriptions.enabled_publishers().contains(
+            feed.combined_publisher_id) ||
         base::Contains(subscriptions.direct_feeds(), feed.feed_url,
                        [](const auto& direct_feed) { return direct_feed.url; });
   }

@@ -309,11 +309,11 @@ void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
     return;
   }
 
-  if (!base::Contains(browsers_, browser)) {
+  if (!browsers_.contains(browser)) {
     // Browser could be different profile or not a type we're
     // looking for. Let |OnBrowserAdded| decide which to look for.
     DCHECK(!browser->is_type_normal() || profile_ != browser->profile() ||
-           base::Contains(closing_browsers_, browser))
+           closing_browsers_.contains(browser))
         << "We expect a Browser to be created before set active";
     return;
   }
@@ -332,7 +332,7 @@ void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
 
 void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
   DVLOG(2) << __FUNCTION__;
-  if (!base::Contains(browsers_, browser)) {
+  if (!browsers_.contains(browser)) {
     // This could be called multiple times for the same |browser|
     return;
   }

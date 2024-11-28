@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
@@ -119,7 +118,7 @@ void BraveRequestHandler::SetupCallbacks() {
 
 bool BraveRequestHandler::IsRequestIdentifierValid(
     uint64_t request_identifier) {
-  return base::Contains(callbacks_, request_identifier);
+  return callbacks_.contains(request_identifier);
 }
 
 int BraveRequestHandler::OnBeforeURLRequest(
@@ -180,8 +179,9 @@ int BraveRequestHandler::OnHeadersReceived(
 
 void BraveRequestHandler::OnURLRequestDestroyed(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  if (base::Contains(callbacks_, ctx->request_identifier)) {
-    callbacks_.erase(ctx->request_identifier);
+  auto it = callbacks_.find(ctx->request_identifier);
+  if (it != callbacks_.end()) {
+    callbacks_.erase(it);
   }
 }
 
@@ -202,7 +202,7 @@ void BraveRequestHandler::RunNextCallback(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  if (!base::Contains(callbacks_, ctx->request_identifier)) {
+  if (!callbacks_.contains(ctx->request_identifier)) {
     return;
   }
 

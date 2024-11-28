@@ -188,7 +188,7 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
   void MonitorResourceRequest(const net::test_server::HttpRequest& request) {
     for (const auto& elem : network::GetClientHintToNameMap()) {
       const auto& header = elem.second;
-      if (base::Contains(request.headers, header)) {
+      if (request.headers.contains(header)) {
         if (base::Contains(default_hints_, header)) {
           default_client_hints_headers_seen_.insert(header);
           continue;

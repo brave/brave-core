@@ -11,7 +11,7 @@
 #include "src/components/component_updater/component_installer.cc"
 #undef Register
 
-#include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 
 namespace component_updater {
 
@@ -33,26 +33,27 @@ void ComponentInstaller::Register(
     base::OnceClosure callback,
     const base::Version& registered_version,
     const base::Version& max_previous_product_version) {
-  static std::string disallowed_components[] = {
-    "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
-    "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
-    "eeigpngbgcognadeebkilcpcaedhellh",  // Autofill States Data
-    "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
-    "imefjhfbkmcmebodilednhmaccmincoa",  // Client Side Phishing Detection
-    "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
-    "gonpemdgkjcecdgbnaabipppbmgfggbe",  // First Party Sets
-    "dhlpobdgcjafebgbbhjdnapejmpkgiie",  // Desktop Sharing Hub
+  static constexpr auto kDisallowedComponents =
+      base::MakeFixedFlatSet<std::string_view>({
+          "bklopemakmnopmghhmccadeonafabnal",  // Legacy TLS Deprecation Config
+          "cmahhnpholdijhjokonmfdjbfmklppij",  // Federated Learning of Cohorts
+          "eeigpngbgcognadeebkilcpcaedhellh",  // Autofill States Data
+          "gcmjkmgdlgnkkcocmoeiminaijmmjnii",  // Subresource Filter Rules
+          "imefjhfbkmcmebodilednhmaccmincoa",  // Client Side Phishing Detection
+          "llkgjffcdpffmhiakmfcdcblohccpfmo",  // Origin Trials
+          "gonpemdgkjcecdgbnaabipppbmgfggbe",  // First Party Sets
+          "dhlpobdgcjafebgbbhjdnapejmpkgiie",  // Desktop Sharing Hub
 #if BUILDFLAG(IS_ANDROID)
-    "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
-    "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
+          "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
+          "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
 #endif
-  };
+      });
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (installer_policy_) {
     std::vector<uint8_t> hash;
     installer_policy_->GetHash(&hash);
     const std::string id = update_client::GetCrxIdFromPublicKeyHash(hash);
-    if (base::Contains(disallowed_components, id)) {
+    if (kDisallowedComponents.contains(id)) {
       VLOG(1) << "Skipping registration of Brave-unsupported component "
               << id << ".";
       return;

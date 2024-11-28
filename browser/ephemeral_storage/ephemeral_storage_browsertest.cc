@@ -1052,7 +1052,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
 
     for (const auto& wc_frames : frames) {
       for (auto* rfh : wc_frames.second) {
-        if (!base::Contains(processed_rfhs, rfh)) {
+        if (!processed_rfhs.contains(rfh)) {
           SCOPED_TRACE(testing::Message()
                        << "WebContents URL: "
                        << wc_frames.first->GetLastCommittedURL()

@@ -215,7 +215,7 @@ std::vector<AcceleratorMapping> GetGlobalAccelerators() {
   // e.g. IDC_CLOSE_TAB is missing because it's dynamically added.
   for (const auto& [command_id, accelerator] :
        *AcceleratorsCocoa::GetInstance()) {
-    if (base::Contains(accelerator_map, command_id) ||
+    if (accelerator_map.contains(command_id) ||
         !CanConvertToAcceleratorMapping(command_id)) {
       continue;
     }
