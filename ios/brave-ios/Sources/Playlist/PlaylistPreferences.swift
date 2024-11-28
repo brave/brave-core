@@ -53,7 +53,7 @@ extension Preferences {
     /// The Option to disable playlist MediaSource web-compatibility
     public static let webMediaSourceCompatibility = Option<Bool>(
       key: "playlist.webMediaSourceCompatibility",
-      default: false
+      default: UIDevice.isIpad
     )
     /// The option to start the playback where user left-off
     public static let playbackLeftOff = Option<Bool>(key: "playlist.playbackLeftOff", default: true)
