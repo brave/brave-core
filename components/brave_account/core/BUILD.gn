@@ -3,39 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-wasm_pack_target_dir = "$root_build_dir/wasm_pack"
-wasm_pack_exe = "$wasm_pack_target_dir/release/wasm-pack"
-wasm_pack_src = "//brave/tools/crates/wasm_pack/v0_13/crate"
-if (host_os == "win") {
-  wasm_pack_exe += ".exe"
-}
-
-action("build_wasm_pack") {
-  script = "//build/gn_run_binary.py"
-
-  cargo_exe = "//third_party/rust-toolchain/bin/cargo"
-  if (host_os == "win") {
-    cargo_exe += ".exe"
-  }
-
-  inputs = [
-    cargo_exe,
-    "$wasm_pack_src/Cargo.lock",
-  ]
-
-  outputs = [ wasm_pack_exe ]
-
-  args = [
-    rebase_path(cargo_exe),
-    "build",
-    "--release",
-    "--manifest-path",
-    rebase_path("$wasm_pack_src/Cargo.toml"),
-    "--target-dir",
-    rebase_path(wasm_pack_target_dir),
-  ]
-}
-
 component("brave_account") {
   deps = [
     "//base",
@@ -48,5 +15,7 @@ component("brave_account") {
     "brave_account.h",
   ]
 
-  deps = [ ":build_wasm_pack" ]
+  deps = [
+    "//brave/components/brave_account/core/opaque-ke:build_opaque_ke"
+  ]
 }
