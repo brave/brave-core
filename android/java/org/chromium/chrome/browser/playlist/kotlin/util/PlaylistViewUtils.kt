@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.transition.Slide
 import androidx.transition.TransitionManager
-import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.kotlin.extension.allowMoving
 import org.chromium.chrome.browser.playlist.kotlin.interpolator.BraveBounceInterpolator
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener
