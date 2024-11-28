@@ -8,6 +8,7 @@
 #include "ai_chat.mojom.objc+private.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -16,13 +17,21 @@
 
 namespace ai_chat {
 
-ConversationClient::ConversationClient(ConversationHandler* conversation,
+ConversationClient::ConversationClient(AIChatService* ai_chat_service,
                                        id<AIChatDelegate> bridge)
     : bridge_(bridge) {
-  conversation->Bind(receiver_.BindNewPipeAndPassRemote());
+  ai_chat_service->BindObserver(
+      service_receiver_.BindNewPipeAndPassRemote(),
+      base::BindOnce(&ConversationClient::OnStateChanged,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 ConversationClient::~ConversationClient() = default;
+
+void ConversationClient::ChangeConversation(ConversationHandler* conversation) {
+  receiver_.reset();
+  conversation->Bind(receiver_.BindNewPipeAndPassRemote());
+}
 
 // MARK: - mojom::ConversationUI
 
@@ -73,6 +82,11 @@ void ConversationClient::OnConversationDeleted() {
   // TODO(petemill): UI should bind to a new conversation. This only
   // needs to be handled when the AIChatStorage feature is enabled, which
   // allows deletion.
+}
+
+void ConversationClient::OnStateChanged(const mojom::ServiceStatePtr state) {
+  [bridge_ onServiceStateChanged:[[AiChatServiceState alloc]
+                                     initWithServiceStatePtr:state->Clone()]];
 }
 
 }  // namespace ai_chat

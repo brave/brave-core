@@ -117,6 +117,10 @@ AIChatService::AIChatService(
       prefs::kStorageEnabled,
       base::BindRepeating(&AIChatService::MaybeInitStorage,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kUserDismissedPremiumPrompt,
+      base::BindRepeating(&AIChatService::OnStateChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
 }
