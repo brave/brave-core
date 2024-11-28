@@ -17,7 +17,7 @@ import org.chromium.chrome.browser.playlist.R;
 /** The preference used to reset Brave Playlist. */
 public class BravePlaylistResetPreference extends Preference
         implements Preference.OnPreferenceClickListener {
-    private String TAG = "BravePlaylistResetPreference";
+    private static final String TAG = "BravePlaylistResetPreference";
 
     private int mPrefAccentColor;
 
@@ -25,7 +25,7 @@ public class BravePlaylistResetPreference extends Preference
     public BravePlaylistResetPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mPrefAccentColor = getContext().getColor(R.color.wallet_error_text_color);
+        mPrefAccentColor = getContext().getColor(R.color.playlist_reset_text_color);
         setOnPreferenceClickListener(this);
     }
 
