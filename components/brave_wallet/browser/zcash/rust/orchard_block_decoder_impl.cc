@@ -43,14 +43,13 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
 
         orchard_compact_action.block_id = block->height;
         orchard_compact_action.is_block_last_action = false;
-        base::ranges::copy(orchard_action->nullifier,
-                           orchard_compact_action.nullifier.begin());
-        base::ranges::copy(orchard_action->cmx,
-                           orchard_compact_action.cmx.begin());
-        base::ranges::copy(orchard_action->ephemeral_key,
-                           orchard_compact_action.ephemeral_key.begin());
-        base::ranges::copy(orchard_action->ciphertext,
-                           orchard_compact_action.enc_cipher_text.begin());
+        base::span(orchard_compact_action.nullifier)
+            .copy_from(orchard_action->nullifier);
+        base::span(orchard_compact_action.cmx).copy_from(orchard_action->cmx);
+        base::span(orchard_compact_action.ephemeral_key)
+            .copy_from(orchard_action->ephemeral_key);
+        base::span(orchard_compact_action.enc_cipher_text)
+            .copy_from(orchard_action->ciphertext);
 
         orchard_actions.push_back(std::move(orchard_compact_action));
       }

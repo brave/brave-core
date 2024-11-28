@@ -122,6 +122,7 @@ OrchardSyncState::CalculateWitnessForCheckpoint(
   auto& shard_tree = GetOrCreateShardTree(account_id);
 
   std::vector<OrchardInput> result;
+  result.reserve(notes.size());
   for (auto& input : notes) {
     auto witness = shard_tree.CalculateWitness(
         input.note.orchard_commitment_tree_position, checkpoint_position);
@@ -130,7 +131,7 @@ OrchardSyncState::CalculateWitnessForCheckpoint(
           ZCashOrchardStorage::ErrorCode::kInternalError, witness.error()});
     }
     result.push_back(input);
-    result.back().witness = witness.value();
+    result.back().witness = std::move(witness.value());
   }
   return base::ok(std::move(result));
 }
@@ -143,6 +144,7 @@ void OrchardSyncState::ResetDatabase() {
 base::expected<bool, ZCashOrchardStorage::Error> OrchardSyncState::Truncate(
     const mojom::AccountIdPtr& account_id,
     uint32_t checkpoint_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return GetOrCreateShardTree(account_id).TruncateToCheckpoint(checkpoint_id);
 }
 

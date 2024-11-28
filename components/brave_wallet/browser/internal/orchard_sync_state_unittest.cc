@@ -138,27 +138,25 @@ TEST_F(OrchardSyncStateTest, InsertWithFrontier) {
   auto result = CreateResultForTesting(prior_tree_state, commitments);
   sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
-  {
-    OrchardInput input;
-    input.note.orchard_commitment_tree_position = 50;
+  OrchardInput input;
+  input.note.orchard_commitment_tree_position = 50;
 
-    auto witness_result =
-        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
-    EXPECT_TRUE(witness_result.has_value());
-    EXPECT_EQ(
-        witness_result.value()[0].witness.value(),
-        CreateWitness(
-            {"9695d64b1ccd38aa5dfdc5c70aecf0e763549034318c59943a3e3e921b415c3a",
-             "48ddf8a84afc5949e074c162630e3f6aab3d4350bf929ba82677cee4c634e029",
-             "c7413f4614cd64043abbab7cc1095c9bb104231cea89e2c3e0df83769556d030",
-             "2111fc397753e5fd50ec74816df27d6ada7ed2a9ac3816aab2573c8fac794204",
-             "2d99471d096691e4a5f43efe469734aff37f4f21c707b060c952a84169f9302f",
-             "5ee4ba7b008827c0e28128fd0053f88a071a78d4bf872c00ab2a450685cd7304",
-             "27ab1320953ae1ad70c8c15a1253a0a86fbc8a0aa36a84207293f8a495ffc402",
-             "4e14563df191a2a65b4b37113b5230680555051b22d74a8e1f1d706f90f3133"
-             "b"},
-            50));
-  }
+  auto witness_result =
+      sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
+  EXPECT_TRUE(witness_result.has_value());
+  EXPECT_EQ(
+      witness_result.value()[0].witness.value(),
+      CreateWitness(
+          {"9695d64b1ccd38aa5dfdc5c70aecf0e763549034318c59943a3e3e921b415c3a",
+           "48ddf8a84afc5949e074c162630e3f6aab3d4350bf929ba82677cee4c634e029",
+           "c7413f4614cd64043abbab7cc1095c9bb104231cea89e2c3e0df83769556d030",
+           "2111fc397753e5fd50ec74816df27d6ada7ed2a9ac3816aab2573c8fac794204",
+           "2d99471d096691e4a5f43efe469734aff37f4f21c707b060c952a84169f9302f",
+           "5ee4ba7b008827c0e28128fd0053f88a071a78d4bf872c00ab2a450685cd7304",
+           "27ab1320953ae1ad70c8c15a1253a0a86fbc8a0aa36a84207293f8a495ffc402",
+           "4e14563df191a2a65b4b37113b5230680555051b22d74a8e1f1d706f90f3133"
+           "b"},
+          50));
 }
 
 TEST_F(OrchardSyncStateTest, Checkpoint_WithMarked) {
@@ -183,27 +181,25 @@ TEST_F(OrchardSyncStateTest, Checkpoint_WithMarked) {
   auto result = CreateResultForTesting(tree_state, commitments);
   sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
-  {
-    OrchardInput input;
-    input.note.orchard_commitment_tree_position = 3;
-    auto witness_result =
-        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
-    EXPECT_TRUE(witness_result.has_value());
+  OrchardInput input;
+  input.note.orchard_commitment_tree_position = 3;
+  auto witness_result =
+      sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
+  EXPECT_TRUE(witness_result.has_value());
 
-    EXPECT_EQ(
-        witness_result.value()[0].witness.value(),
-        CreateWitness(
-            {"3bb11bd05d2ed5e590369f274a1a247d390380aa0590160bfbf72cb186d7023f",
-             "d4059d13ddcbe9ec7e6fc99bdf9bfd08b0a678d26e3bf6a734e7688eca669f37",
-             "c7413f4614cd64043abbab7cc1095c9bb104231cea89e2c3e0df83769556d030",
-             "2111fc397753e5fd50ec74816df27d6ada7ed2a9ac3816aab2573c8fac794204",
-             "806afbfeb45c64d4f2384c51eff30764b84599ae56a7ab3d4a46d9ce3aeab431",
-             "873e4157f2c0f0c645e899360069fcc9d2ed9bc11bf59827af0230ed52edab18",
-             "27ab1320953ae1ad70c8c15a1253a0a86fbc8a0aa36a84207293f8a495ffc402",
-             "4e14563df191a2a65b4b37113b5230680555051b22d74a8e1f1d706f90f3133"
-             "b"},
-            3));
-  }
+  EXPECT_EQ(
+      witness_result.value()[0].witness.value(),
+      CreateWitness(
+          {"3bb11bd05d2ed5e590369f274a1a247d390380aa0590160bfbf72cb186d7023f",
+           "d4059d13ddcbe9ec7e6fc99bdf9bfd08b0a678d26e3bf6a734e7688eca669f37",
+           "c7413f4614cd64043abbab7cc1095c9bb104231cea89e2c3e0df83769556d030",
+           "2111fc397753e5fd50ec74816df27d6ada7ed2a9ac3816aab2573c8fac794204",
+           "806afbfeb45c64d4f2384c51eff30764b84599ae56a7ab3d4a46d9ce3aeab431",
+           "873e4157f2c0f0c645e899360069fcc9d2ed9bc11bf59827af0230ed52edab18",
+           "27ab1320953ae1ad70c8c15a1253a0a86fbc8a0aa36a84207293f8a495ffc402",
+           "4e14563df191a2a65b4b37113b5230680555051b22d74a8e1f1d706f90f3133"
+           "b"},
+          3));
 }
 
 TEST_F(OrchardSyncStateTest, MinCheckpoint) {
@@ -350,20 +346,25 @@ TEST_F(OrchardSyncStateTest, TruncateTree) {
     std::vector<OrchardCommitment> commitments;
 
     for (int i = 0; i < 10; i++) {
-      if (i == 2) {
-        commitments.push_back(CreateCommitment(
-            CreateMockCommitmentValue(i, kDefaultCommitmentSeed), true,
-            std::nullopt));
-      } else if (i == 3) {
-        commitments.push_back(CreateCommitment(
-            CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false, 1));
-      } else if (i == 5) {
-        commitments.push_back(CreateCommitment(
-            CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false, 2));
-      } else {
-        commitments.push_back(CreateCommitment(
-            CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false,
-            std::nullopt));
+      switch (i) {
+        case 2:
+          commitments.push_back(CreateCommitment(
+              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), true,
+              std::nullopt));
+          break;
+        case 3:
+          commitments.push_back(CreateCommitment(
+              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false, 1));
+          break;
+        case 5:
+          commitments.push_back(CreateCommitment(
+              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false, 2));
+          break;
+        default:
+          commitments.push_back(CreateCommitment(
+              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false,
+              std::nullopt));
+          break;
       }
     }
 
@@ -404,26 +405,24 @@ TEST_F(OrchardSyncStateTest, TruncateTree) {
     EXPECT_TRUE(witness_result.has_value());
   }
 
-  {
-    OrchardInput input;
-    input.note.orchard_commitment_tree_position = 2;
-    auto witness_result =
-        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
-    EXPECT_TRUE(witness_result.has_value());
-    EXPECT_EQ(
-        witness_result.value()[0].witness.value(),
-        CreateWitness(
-            {"f342eb6489f4e5b5a0fb0a4ece48d137dcd5e80011aab4668913f98be2af3311",
-             "d4059d13ddcbe9ec7e6fc99bdf9bfd08b0a678d26e3bf6a734e7688eca669f37",
-             "c7413f4614cd64043abbab7cc1095c9bb104231cea89e2c3e0df83769556d030",
-             "2111fc397753e5fd50ec74816df27d6ada7ed2a9ac3816aab2573c8fac794204",
-             "806afbfeb45c64d4f2384c51eff30764b84599ae56a7ab3d4a46d9ce3aeab431",
-             "873e4157f2c0f0c645e899360069fcc9d2ed9bc11bf59827af0230ed52edab18",
-             "27ab1320953ae1ad70c8c15a1253a0a86fbc8a0aa36a84207293f8a495ffc402",
-             "4e14563df191a2a65b4b37113b5230680555051b22d74a8e1f1d706f90f3133"
-             "b"},
-            2));
-  }
+  OrchardInput input;
+  input.note.orchard_commitment_tree_position = 2;
+  auto witness_result =
+      sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
+  EXPECT_TRUE(witness_result.has_value());
+  EXPECT_EQ(
+      witness_result.value()[0].witness.value(),
+      CreateWitness(
+          {"f342eb6489f4e5b5a0fb0a4ece48d137dcd5e80011aab4668913f98be2af3311",
+           "d4059d13ddcbe9ec7e6fc99bdf9bfd08b0a678d26e3bf6a734e7688eca669f37",
+           "c7413f4614cd64043abbab7cc1095c9bb104231cea89e2c3e0df83769556d030",
+           "2111fc397753e5fd50ec74816df27d6ada7ed2a9ac3816aab2573c8fac794204",
+           "806afbfeb45c64d4f2384c51eff30764b84599ae56a7ab3d4a46d9ce3aeab431",
+           "873e4157f2c0f0c645e899360069fcc9d2ed9bc11bf59827af0230ed52edab18",
+           "27ab1320953ae1ad70c8c15a1253a0a86fbc8a0aa36a84207293f8a495ffc402",
+           "4e14563df191a2a65b4b37113b5230680555051b22d74a8e1f1d706f90f3133"
+           "b"},
+          2));
 }
 
 TEST_F(OrchardSyncStateTest, TruncateTreeWrongCheckpoint) {
@@ -471,26 +470,24 @@ TEST_F(OrchardSyncStateTest, SimpleInsert) {
   auto result = CreateResultForTesting(OrchardTreeState(), commitments);
   sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
 
-  {
-    OrchardInput input;
-    input.note.orchard_commitment_tree_position = 2;
-    auto witness_result =
-        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
-    EXPECT_TRUE(witness_result.has_value());
-    EXPECT_EQ(
-        witness_result.value()[0].witness.value(),
-        CreateWitness(
-            {"f342eb6489f4e5b5a0fb0a4ece48d137dcd5e80011aab4668913f98be2af3311",
-             "d4059d13ddcbe9ec7e6fc99bdf9bfd08b0a678d26e3bf6a734e7688eca669f37",
-             "c7413f4614cd64043abbab7cc1095c9bb104231cea89e2c3e0df83769556d030",
-             "2111fc397753e5fd50ec74816df27d6ada7ed2a9ac3816aab2573c8fac794204",
-             "806afbfeb45c64d4f2384c51eff30764b84599ae56a7ab3d4a46d9ce3aeab431",
-             "873e4157f2c0f0c645e899360069fcc9d2ed9bc11bf59827af0230ed52edab18",
-             "27ab1320953ae1ad70c8c15a1253a0a86fbc8a0aa36a84207293f8a495ffc402",
-             "4e14563df191a2a65b4b37113b5230680555051b22d74a8e1f1d706f90f3133"
-             "b"},
-            2));
-  }
+  OrchardInput input;
+  input.note.orchard_commitment_tree_position = 2;
+  auto witness_result =
+      sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
+  EXPECT_TRUE(witness_result.has_value());
+  EXPECT_EQ(
+      witness_result.value()[0].witness.value(),
+      CreateWitness(
+          {"f342eb6489f4e5b5a0fb0a4ece48d137dcd5e80011aab4668913f98be2af3311",
+           "d4059d13ddcbe9ec7e6fc99bdf9bfd08b0a678d26e3bf6a734e7688eca669f37",
+           "c7413f4614cd64043abbab7cc1095c9bb104231cea89e2c3e0df83769556d030",
+           "2111fc397753e5fd50ec74816df27d6ada7ed2a9ac3816aab2573c8fac794204",
+           "806afbfeb45c64d4f2384c51eff30764b84599ae56a7ab3d4a46d9ce3aeab431",
+           "873e4157f2c0f0c645e899360069fcc9d2ed9bc11bf59827af0230ed52edab18",
+           "27ab1320953ae1ad70c8c15a1253a0a86fbc8a0aa36a84207293f8a495ffc402",
+           "4e14563df191a2a65b4b37113b5230680555051b22d74a8e1f1d706f90f3133"
+           "b"},
+          2));
 }
 
 }  // namespace brave_wallet

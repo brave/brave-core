@@ -95,6 +95,8 @@ bool ZCashOrchardStorage::EnsureDbInit() {
 }
 
 void ZCashOrchardStorage::ResetDatabase() {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   database_.Close();
@@ -102,6 +104,8 @@ void ZCashOrchardStorage::ResetDatabase() {
 }
 
 bool ZCashOrchardStorage::CreateOrUpdateDatabase() {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const base::FilePath dir = db_file_path_.DirName();
@@ -1105,6 +1109,8 @@ base::expected<bool, ZCashOrchardStorage::Error>
 ZCashOrchardStorage::UpdateCheckpoint(const mojom::AccountIdPtr& account_id,
                                       uint32_t checkpoint_id,
                                       const OrchardCheckpoint& checkpoint) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
   auto get_checkpoint_result = GetCheckpoint(account_id, checkpoint_id);
   if (!get_checkpoint_result.has_value()) {
     return base::unexpected(get_checkpoint_result.error());
