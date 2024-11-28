@@ -142,6 +142,8 @@ public struct WalletConstants {
     ".tball", ".stepn", ".secret", ".raiin", ".pog", ".clay",
     ".metropolis", ".witg", ".ubu", ".kryptic", ".farms", ".dfz",
     ".kresus", ".binanceus", ".austin", ".bitget", ".wrkx",
+    ".bald", ".benji", ".chomp", ".dream", ".ethermail", ".lfg",
+    ".propykeys", ".smobler",
   ]
 
   /// The supported IPFS schemes
