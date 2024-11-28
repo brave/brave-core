@@ -96,6 +96,26 @@ def inline_chromium_src_override(_globals: Dict[str, Any],
     inline_file(chromium_src_override, _globals, _locals)
 
 
+def get_webui_overriden_file_name(file_name):
+    """Gets the name of an upstream file which is being overridden (but still
+       referenced)
+       for example `foo.ts` ==> `foo-chromium.ts`
+                   `bar.css` ==> `bar-chromium.css`
+                   `bar.css.js` ==> `bar-chromium.css.js`
+    """
+    name_bits = file_name.split('.')
+    return "".join([name_bits[0], "-chromium.", '.'.join(name_bits[1:])])
+
+
+def get_webui_overridden_but_referenced_files(folder, in_files):
+    """Returns a list of files which are overridden by chromium_src but are still referenced."""
+    for file in in_files:
+        overridden_name = get_webui_overriden_file_name(file)
+        override = os.path.join(folder, overridden_name)
+        if os.path.exists(override):
+            yield overridden_name
+
+
 @contextlib.contextmanager
 def sys_path(path: str, position: Optional[int] = None):
     path = wspath(path)

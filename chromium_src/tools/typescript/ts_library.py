@@ -8,6 +8,7 @@ import os
 
 import override_utils
 
+from brave_chromium_utils import get_webui_overridden_but_referenced_files
 
 def is_gen_brave_dir(out_dir):
     GEN_BRAVE = 'gen/brave'
@@ -18,7 +19,10 @@ def is_gen_brave_dir(out_dir):
 
 @override_utils.override_function(globals())
 def _write_tsconfig_json(original_function, gen_dir, tsconfig, tsconfig_file):
-    tsconfig['include'] = ["preprocessed/**/*-chromium*.ts"]
+    in_files = tsconfig['files']
+    in_folder = os.path.join(os.getcwd(), gen_dir)
+    tsconfig['files'].extend(
+        get_webui_overridden_but_referenced_files(in_folder, in_files))
     original_function(gen_dir, tsconfig, tsconfig_file)
 
 
@@ -53,15 +57,13 @@ def main(original_function, argv):
                                  f'{args.output_suffix}_manifest.json')
     if os.path.exists(manifest_path):
         import json
-        import glob
         import re
         manifest = json.load(open(manifest_path))
 
         preprocess_dir = os.path.join(args.gen_dir, 'preprocessed')
-        for override_file in glob.glob(
-                os.path.join(preprocess_dir, '**/*-chromium*.ts')):
-            rel_path = os.path.relpath(override_file, preprocess_dir)
-            manifest['files'].append(re.sub(r'\.ts$', '.js', rel_path))
+        for override_file in get_webui_overridden_but_referenced_files(
+                preprocess_dir, args.in_files):
+            manifest['files'].append(re.sub(r'\.ts$', '.js', override_file))
 
         with open(manifest_path, 'w') as f:
             json.dump(manifest, f)

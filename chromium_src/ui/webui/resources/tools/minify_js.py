@@ -5,9 +5,10 @@
 
 import argparse
 import os
-import glob
 
 import override_utils
+
+from brave_chromium_utils import get_webui_overridden_but_referenced_files
 
 
 @override_utils.override_function(globals())
@@ -19,8 +20,9 @@ def main(original_function, argv):
         args = original_method(self, argv)
 
         in_folder = os.path.normpath(os.path.join(os.getcwd(), args.in_folder))
-        for file in glob.glob(os.path.join(in_folder, '**/*chromium*.js')):
-            args.in_files.append(os.path.relpath(file, in_folder))
+        for file in get_webui_overridden_but_referenced_files(
+                in_folder, args.in_files):
+            args.in_files.append(file)
         return args
 
     original_function(argv)

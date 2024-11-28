@@ -4,11 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import override_utils
-import glob
 import argparse
 import os
 
 from os import path
+from brave_chromium_utils import get_webui_overridden_but_referenced_files
 
 
 @override_utils.override_function(globals())
@@ -20,10 +20,9 @@ def main(original_function, argv):
         args = original_method(self, argv)
         in_folder = path.normpath(path.join(os.getcwd(), args.in_folder))
 
-        args.in_files.extend([
-            path.relpath(f, args.in_folder)
-            for f in glob.glob(path.join(args.in_folder, '**/*-chromium.css'))
-        ])
+        for file in get_webui_overridden_but_referenced_files(
+                in_folder, args.in_files):
+            args.in_files.append(file)
         return args
 
     original_function(argv)

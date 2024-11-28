@@ -9,34 +9,22 @@ import os
 import shutil
 import json
 
-from brave_chromium_utils import get_chromium_src_override
-
-
-def get_overridden_file_name(file_name):
-    """Gets the name of an upstream file which is being overridden (but still
-       referenced)
-       for example `foo.ts` ==> `foo-chromium.ts`
-                   `bar.css` ==> `bar-chromium.css`
-    """
-    name_bits = os.path.splitext(file_name)
-    return "".join([name_bits[0], "-chromium", name_bits[1]])
+from brave_chromium_utils import get_chromium_src_override, get_webui_overriden_file_name, get_webui_overridden_but_referenced_files
 
 
 def purge_overrides(out_folder, in_files):
     """Deletes all overridden upstream files from the preprocess directory - we
        need this so removing an override doesn't break the build."""
-    for file in in_files:
-        overridden_name = get_overridden_file_name(file)
-        overridden_path = os.path.join(out_folder, overridden_name)
-        if os.path.exists(overridden_path):
-            os.remove(overridden_path)
+    for file in get_webui_overridden_but_referenced_files(
+            out_folder, in_files):
+        os.remove(os.path.join(out_folder, file))
 
 
 def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
     """Decides whether we should keep the upstream version of a file by looking
        at the override and see if it references the upstream version.
        Returns the path to the upstream file, if we keep it."""
-    overridden_name = get_overridden_file_name(override_file)
+    overridden_name = get_webui_overriden_file_name(override_file)
 
     # The path to the brave-core override file
     override_in_path = os.path.join(override_in_folder, override_file)
@@ -56,7 +44,7 @@ def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
     return None
 
 
-def get_brave_overrides(in_folder, in_files):
+def get_chromium_src_files(in_folder, in_files):
     """Gets all the overrides we have in brave-core for this target"""
     override_files = []
     for file in in_files:
@@ -93,7 +81,7 @@ def main(original_function, argv):
         override_root_folder = get_chromium_src_override(in_folder)
 
         purge_overrides(out_folder, args.in_files)
-        overrides = get_brave_overrides(in_folder, args.in_files)
+        overrides = get_chromium_src_files(in_folder, args.in_files)
 
         if len(overrides) == 0:
             # Throw an exception to abort the second call to `main()` early if no overrides were found.
@@ -120,7 +108,6 @@ def main(original_function, argv):
 
         # We need to update the manifest to include all the -chromium files.
         if manifest_path:
-            print("Manifest path", manifest_path)
             with open(manifest_path, 'w', encoding='utf-8', newline='\n') as f:
                 json.dump(manifest_data, f)
 
