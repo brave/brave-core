@@ -111,7 +111,6 @@
       "android/java/org/chromium/chrome/browser/help/BraveHelpAndFeedbackLauncher\\.java",
       "android/java/org/chromium/chrome/browser/search_engines/settings/BraveSearchEngineAdapter\\.java",
       "android/java/org/chromium/chrome/browser/settings/BravePreferenceDialogFragment\\.java",
-      "android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentServiceImpl\\.java",
     ],
     "_CheckAndroidToastUsage": [
       "android/java/org/chromium/chrome/browser/brave_news/BraveNewsBottomSheetDialogFragment\\.java",

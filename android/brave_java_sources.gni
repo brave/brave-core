@@ -451,7 +451,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ui/system/BraveStatusBarColorController.java",
   "../../brave/android/java/org/chromium/chrome/browser/undo_tab_close_snackbar/BraveUndoBarControllerBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BravePackageReplacedBroadcastReceiver.java",
-  "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentServiceImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/NotificationIntent.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveConstants.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveDbUtil.java",
@@ -549,7 +548,6 @@ brave_java_base_sources = [
 brave_java_base_module_sources = [
   "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsService.java",
-  "//brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",
 ]
 
