@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/android/jni_android.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/build/android/jni_headers/PlaylistServiceFactoryAndroid_jni.h"
+
+#include "base/android/jni_android.h"
+#include "brave/android/java/org/chromium/chrome/browser/playlist/jni_headers/PlaylistServiceFactoryAndroid_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 

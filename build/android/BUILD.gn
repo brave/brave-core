@@ -232,7 +232,6 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/channels/BraveSiteChannelsManagerBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
-    "//brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
     "//brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
@@ -245,5 +244,8 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
   ]
 
-  public_deps = [ "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers" ]
+  public_deps = [
+    "//brave/android/java/org/chromium/chrome/browser/playlist:playlist_jni_headers",
+    "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers",
+  ]
 }

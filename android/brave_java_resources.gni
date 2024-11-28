@@ -1017,7 +1017,6 @@ brave_java_resources = [
   "java/res/xml/brave_leo_radio_button_group_default_model_preference.xml",
   "java/res/xml/brave_license_preferences.xml",
   "java/res/xml/brave_main_preferences.xml",
-  "java/res/xml/brave_playlist_preferences.xml",
   "java/res/xml/brave_privacy_preferences.xml",
   "java/res/xml/brave_rewards_debug_preferences.xml",
   "java/res/xml/brave_search_engines_preferences.xml",

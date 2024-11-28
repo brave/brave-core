@@ -7,9 +7,8 @@ import("//build/config/android/rules.gni")
 import("//third_party/jni_zero/jni_zero.gni")
 
 android_library("playlist_java_sources") {
-  srcjar_deps = [ ":jni_headers" ]
+  srcjar_deps = [ ":playlist_jni_headers" ]
   sources = [
-    "PlaylistHostActivity.java",
     "PlaylistServiceFactoryAndroid.java",
     "PlaylistServiceObserverImpl.java",
     "PlaylistStreamingObserverImpl.java",
@@ -88,7 +87,6 @@ android_library("playlist_java_sources") {
     "//brave/third_party/android_deps:com_github_bumptech_glide_java",
     "//build/android:build_java",
     "//chrome/android:base_module_java",
-    "//chrome/android:chrome_java",
     "//chrome/browser/profiles/android:java",
     "//chrome/browser/settings:java",
     "//components/browser_ui/settings/android:java",
@@ -116,7 +114,7 @@ android_library("playlist_java_sources") {
   resources_package = "org.chromium.chrome.browser.playlist"
 }
 
-generate_jni("jni_headers") {
+generate_jni("playlist_jni_headers") {
   sources = [ "PlaylistServiceFactoryAndroid.java" ]
 }
 
@@ -208,6 +206,7 @@ android_resources("playlist_resources") {
     "res/values/playlist_dimens.xml",
     "res/values/playlist_ids.xml",
     "res/values/playlist_styles.xml",
+    "res/xml/brave_playlist_preferences.xml",
   ]
   deps = [ "//brave/build/android:android_brave_strings_grd" ]
 }

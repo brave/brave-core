@@ -123,7 +123,6 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/notifications/channels/BraveSiteChannelsManagerBridge.java",
   "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
-  "//brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
   "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
   "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   "//brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
