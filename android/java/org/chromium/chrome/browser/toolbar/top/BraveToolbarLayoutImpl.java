@@ -85,7 +85,6 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
@@ -451,7 +450,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         if (mBraveRewardsNativeWorker != null
                 && mBraveRewardsNativeWorker.isSupported()
-                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
                 && NtpUtil.shouldShowRewardsIcon()
                 && mRewardsLayout != null) {
             mRewardsLayout.setVisibility(View.VISIBLE);
@@ -1401,7 +1399,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         } else if (isNativeLibraryReady()
                 && mBraveRewardsNativeWorker != null
                 && mBraveRewardsNativeWorker.isSupported()
-                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
                 && NtpUtil.shouldShowRewardsIcon()) {
             mRewardsLayout.setVisibility(View.VISIBLE);
             updateShieldsLayoutBackground(false);

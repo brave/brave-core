@@ -188,15 +188,6 @@ void JNI_BravePrefServiceBridge_SetOldHttpsUpgradesCount(
       kHttpsUpgrades, count + profile->GetPrefs()->GetUint64(kHttpsUpgrades));
 }
 
-void JNI_BravePrefServiceBridge_SetSafetynetCheckFailed(JNIEnv* env,
-                                                        jboolean value) {
-  GetOriginalProfile()->GetPrefs()->SetBoolean(kSafetynetCheckFailed, value);
-}
-
-jboolean JNI_BravePrefServiceBridge_GetSafetynetCheckFailed(JNIEnv* env) {
-  return GetOriginalProfile()->GetPrefs()->GetBoolean(kSafetynetCheckFailed);
-}
-
 void JNI_BravePrefServiceBridge_ResetPromotionLastFetchStamp(JNIEnv* env) {
   GetOriginalProfile()->GetPrefs()->SetUint64(
       brave_rewards::prefs::kPromotionLastFetchStamp, 0);

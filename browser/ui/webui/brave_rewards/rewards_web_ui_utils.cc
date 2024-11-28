@@ -36,12 +36,6 @@ bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
                          : brave_rewards::IsSupportedOptions::kNone)) {
       return true;
     }
-#if BUILDFLAG(IS_ANDROID)
-    auto* prefs = profile->GetPrefs();
-    if (prefs && prefs->GetBoolean(kSafetynetCheckFailed)) {
-      return true;
-    }
-#endif  // BUILDFLAG(IS_ANDROID)
   }
   return false;
 }
