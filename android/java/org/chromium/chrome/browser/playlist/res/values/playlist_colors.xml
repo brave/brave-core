@@ -27,4 +27,5 @@
     <color name="day_night_icon_color">#495057</color>
     <color name="player_seekbar_text_color">#C2C4CF</color>
     <color name="player_control_bg">#4D000000</color>
+    <color name="playlist_reset_text_color">#FF4B6A</color>
 </resources>
