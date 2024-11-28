@@ -275,7 +275,7 @@ void DistillPageTextViaSiteScript(
 
   // Execute the combined script as a single source
   render_frame->GetWebFrame()->RequestExecuteScript(
-      world_id, base::make_span(&source, 1u),
+      world_id, base::span_from_ref(source),
       blink::mojom::UserActivationOption::kDoNotActivate,
       blink::mojom::EvaluationTiming::kAsynchronous,
       blink::mojom::LoadEventBlockingOption::kDoNotBlock,
