@@ -87,6 +87,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"copyButtonLabel", IDS_CHAT_UI_COPY_BUTTON_LABEL},
        {"likeAnswerButtonLabel", IDS_CHAT_UI_LIKE_ANSWER_BUTTON_LABEL},
        {"dislikeAnswerButtonLabel", IDS_CHAT_UI_DISLIKE_ANSWER_BUTTON_LABEL},
+       {"likeDislikeAnswerButtonTitle",
+        IDS_CHAT_UI_LIKE_DISLIKE_ANSWER_BUTTON_TITLE},
        {"provideFeedbackTitle", IDS_CHAT_UI_PROVIDE_FEEDBACK_TITLE},
        {"selectFeedbackTopic", IDS_CHAT_UI_SELECT_FEEDBACK_TOPIC},
        {"feedbackCategoryLabel", IDS_CHAT_UI_FEEDBACK_CATEGORY_LABEL},
