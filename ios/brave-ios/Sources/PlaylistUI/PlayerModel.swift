@@ -651,6 +651,11 @@ public final class PlayerModel: ObservableObject {
     if let playerItem = playerItemToReplace {
       if let (_, _, duration) = try? await playerItem.asset.load(.isPlayable, .tracks, .duration) {
         self.duration = itemDurationForAssetDuration(duration)
+        // Update the PlaylistItem's duration if its missing
+        if item.duration.isZero, case .seconds(let timeInterval) = self.duration, timeInterval > 0 {
+          item.duration = timeInterval
+          PlaylistItem.updateItem(.init(item: item))
+        }
       }
       if playImmediately {
         pause()
