@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_browser.h"
 
+#include "base/test/run_until.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/devtools/devtools_window_testing.h"
@@ -140,4 +141,23 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(browser()->tab_strip_model()->count(), 2);
   EXPECT_EQ(chrome::GetTotalBrowserCount(), 1u);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
+                       CloseBrowserAfterDetachingAllTabToAnotherBrowser) {
+  browser()->profile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+  Browser* browser2 = CreateBrowser(browser()->profile());
+  ASSERT_TRUE(browser2);
+
+  TabStripModel* tab_strip = browser()->tab_strip_model();
+  TabStripModel* tab_strip2 = browser2->tab_strip_model();
+
+  // New browser has one tab and it'll be attached to browser() and |browser2|
+  // should be gone.
+  EXPECT_EQ(1, tab_strip2->count());
+  auto detached_tab = tab_strip2->DetachTabAtForInsertion(0);
+  tab_strip->InsertDetachedTabAt(0, std::move(detached_tab),
+                                 AddTabTypes::ADD_ACTIVE);
+  EXPECT_TRUE(
+      base::test::RunUntil([] { return chrome::GetTotalBrowserCount() == 1; }));
 }
