@@ -15,6 +15,10 @@ export const Box = styled.div`
   background: ${color.container.background};
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
 `
 
 export const WavesContainer = styled.div`
