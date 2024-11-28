@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import org.chromium.chrome.R
+import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistClickListener
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistModel
 import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils
