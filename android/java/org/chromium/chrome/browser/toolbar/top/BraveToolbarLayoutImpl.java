@@ -563,6 +563,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 && mBraveRewardsNativeWorker.isSupported()) {
                             showOnBoarding();
                         }
+                        hidePlaylistButton();
                     }
 
                     @Override
@@ -1699,15 +1700,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     @Override
-    public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {
+    public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] playlistItems) {
         Tab currentTab = getToolbarDataProvider().getTab();
         if (currentTab == null || !pageUrl.url.equals(currentTab.getUrl().getSpec())) {
             return;
         }
-        mShouldShowPlaylistMenu = true;
-        if (ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
-            showPlaylistButton(items);
+        if (playlistItems.length > 0 && !UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
+            mShouldShowPlaylistMenu = true;
+            if (ChromeSharedPreferences.getInstance()
+                    .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
+                showPlaylistButton(playlistItems);
+            }
         }
     }
 }
