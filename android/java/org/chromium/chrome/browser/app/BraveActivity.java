@@ -1029,9 +1029,7 @@ public abstract class BraveActivity extends ChromeActivity
         String paymentID =
                 UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                         .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
-        if (!TextUtils.isEmpty(captchaID)
-                && !TextUtils.isEmpty(paymentID)
-                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+        if (!TextUtils.isEmpty(captchaID) && !TextUtils.isEmpty(paymentID)) {
             AdaptiveCaptchaHelper.startAttestation(captchaID, paymentID);
         }
     }

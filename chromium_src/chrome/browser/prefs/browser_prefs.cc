@@ -190,6 +190,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 
 #if BUILDFLAG(IS_ANDROID)
   // Added 27/11/2024: https://github.com/brave/brave-core/pull/26719
+  profile_prefs->ClearPref(kSafetynetCheckFailed);
   profile_prefs->ClearPref(kSafetynetStatus);
 #endif  // BUILDFLAG(IS_ANDROID)
 

@@ -80,17 +80,6 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getDataSaved(profile);
     }
 
-    /**
-     * @param whether SafetyNet check failed.
-     */
-    public void setSafetynetCheckFailed(boolean value) {
-        BravePrefServiceBridgeJni.get().setSafetynetCheckFailed(value);
-    }
-
-    public boolean getSafetynetCheckFailed() {
-        return BravePrefServiceBridgeJni.get().getSafetynetCheckFailed();
-    }
-
     public void resetPromotionLastFetchStamp() {
         BravePrefServiceBridgeJni.get().resetPromotionLastFetchStamp();
     }
@@ -156,11 +145,10 @@ public class BravePrefServiceBridge {
         // Used to pass total stat from upgrading old tabs based browser
         // to a new core based
         void setOldTrackersBlockedCount(Profile profile, long count);
-        void setOldAdsBlockedCount(Profile profile, long count);
-        void setOldHttpsUpgradesCount(Profile profile, long count);
 
-        void setSafetynetCheckFailed(boolean value);
-        boolean getSafetynetCheckFailed();
+        void setOldAdsBlockedCount(Profile profile, long count);
+
+        void setOldHttpsUpgradesCount(Profile profile, long count);
 
         void resetPromotionLastFetchStamp();
 
