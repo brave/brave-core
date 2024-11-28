@@ -37,5 +37,8 @@ public struct URLElidedText: View {
         attributes: .init([.font: font ?? .body, .paragraphStyle: paragraphStyle])
       )
     )
+    .truncationMode(.tail)
+    .environment(\.layoutDirection, .leftToRight)
+    .flipsForRightToLeftLayoutDirection(false)
   }
 }

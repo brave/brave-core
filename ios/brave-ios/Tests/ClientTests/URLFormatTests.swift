@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Shared
 import UIKit
 import XCTest
@@ -11,6 +12,10 @@ import XCTest
 @testable import Brave
 
 @MainActor class URLFormatTests: XCTestCase {
+
+  override class func setUp() {
+    BraveCoreMain.initializeICUForTesting()
+  }
 
   func testURIFixup() {
     // Check valid URLs. We can load these after some fixup.
@@ -192,6 +197,138 @@ import XCTest
         schemeDisplay: .omitHttpAndHttps
       ),
       "www.brave.com"
+    )
+  }
+
+  func testSecurityLTRAndRTLRendering() {
+    XCTAssertTrue(URL(string: "https://brave.com")!.isRenderedLeftToRight)
+    XCTAssertTrue(
+      URL(
+        string:
+          "https://long-extended-subdomain-name-containing-many-letters-and-dashes.badssl.com/"
+      )!.isRenderedLeftToRight
+    )
+    XCTAssertTrue(
+      URL(
+        string:
+          "https://longextendedsubdomainnamewithoutdashesinordertotestwordwrapping.badssl.com/"
+      )!.isRenderedLeftToRight
+    )
+
+    XCTAssertTrue(
+      URL(
+        string:
+          "blob:https://pwr.wtf/58f713aa-fa8f-4651-ac2e-e68d2a4c5ef4#?x#https://www.account.apple.com"
+      )!.isRenderedLeftToRight
+    )
+    XCTAssertTrue(URL(string: "about:blank%23https://accounts.google.com")!.isRenderedLeftToRight)
+    XCTAssertFalse(
+      URL(string: "https://xn--llb.login.wwww.accounts.google.com.xn--llb.pwr.wtf/")!
+        .isRenderedLeftToRight
+    )
+    XCTAssertTrue(URL(string: "about:blank%23https://accounts.google.com")!.isRenderedLeftToRight)
+
+    XCTAssertTrue(
+      URL(string: "https://com.xn--mgbh0fb.xn--mgberp4a5d4ar/%D9%A0/1100068049663")!
+        .isRenderedLeftToRight
+    )
+    XCTAssertTrue(
+      URL(
+        string:
+          "https://com.facebook.verylongsubdomainpadding.xn--mgbh0fb.xn--mgberp4a5d4ar/%D9%A0/1100068049663"
+      )!.isRenderedLeftToRight
+    )
+    XCTAssertFalse(URL(string: "https://xn--mgbh0fb.xn--mgberp4a5d4ar/")!.isRenderedLeftToRight)
+    XCTAssertFalse(
+      URL(
+        string:
+          "https://xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgberp4a5d4ar/"
+      )!.isRenderedLeftToRight
+    )
+
+    XCTAssertFalse(
+      URL(
+        string: "http://xn--mgbaaaaaaaaaaaaaaaaaaaaa.login.google.com.xn--ngbof4hb.xn--ngbc5azd/"
+      )!.isRenderedLeftToRight
+    )
+  }
+
+  func testSecurityDisplay() {
+    let formatURL = { (url: URL) -> String in
+      return URLFormatter.formatURL(
+        URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
+        formatTypes: [
+          .omitDefaults, .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
+        ],
+        unescapeOptions: .normal
+      )
+    }
+
+    XCTAssertEqual(formatURL(URL(string: "https://brave.com")!), "brave.com")
+    XCTAssertEqual(
+      formatURL(
+        URL(
+          string:
+            "https://long-extended-subdomain-name-containing-many-letters-and-dashes.badssl.com/"
+        )!
+      ),
+      "long-extended-subdomain-name-containing-many-letters-and-dashes.badssl.com"
+    )
+    XCTAssertEqual(
+      formatURL(
+        URL(
+          string:
+            "https://longextendedsubdomainnamewithoutdashesinordertotestwordwrapping.badssl.com/"
+        )!
+      ),
+      "longextendedsubdomainnamewithoutdashesinordertotestwordwrapping.badssl.com"
+    )
+    XCTAssertEqual(
+      formatURL(
+        URL(
+          string:
+            "https://pwr.wtf/58f713aa-fa8f-4651-ac2e-e68d2a4c5ef4#?x#https://www.account.apple.com"
+        )!
+      ),
+      "pwr.wtf"
+    )
+    XCTAssertEqual(
+      formatURL(URL(string: "https://xn--llb.login.wwww.accounts.google.com.xn--llb.pwr.wtf/")!),
+      "ە.login.wwww.accounts.google.com.ە.pwr.wtf"
+    )
+    XCTAssertEqual(
+      formatURL(URL(string: "https://com.xn--mgbh0fb.xn--mgberp4a5d4ar/%D9%A0/1100068049663")!),
+      "com.مثال.السعودية"
+    )
+    XCTAssertEqual(
+      formatURL(
+        URL(
+          string:
+            "https://com.facebook.verylongsubdomainpadding.xn--mgbh0fb.xn--mgberp4a5d4ar/%D9%A0/1100068049663"
+        )!
+      ),
+      "com.facebook.verylongsubdomainpadding.مثال.السعودية"
+    )
+    XCTAssertEqual(
+      formatURL(URL(string: "https://xn--mgbh0fb.xn--mgberp4a5d4ar/")!),
+      "مثال.السعودية"
+    )
+    XCTAssertEqual(
+      formatURL(
+        URL(
+          string:
+            "https://xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgbh0fb.xn--mgberp4a5d4ar/"
+        )!
+      ),
+      "مثال.مثال.مثال.مثال.مثال.مثال.مثال.مثال.مثال.مثال.السعودية"
+    )
+    XCTAssertEqual(
+      formatURL(
+        URL(
+          string: "http://xn--mgbaaaaaaaaaaaaaaaaaaaaa.login.google.com.xn--ngbof4hb.xn--ngbc5azd/"
+        )!
+      ),
+      "اااااااااااااااااااااا.login.google.com.بريدي.شبكة"
     )
   }
 
