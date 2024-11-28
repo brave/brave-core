@@ -9,13 +9,17 @@ package org.chromium.chrome.browser.playlist.kotlin.util
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.text.TextUtils
 import android.util.Log
 import android.util.TypedValue
+import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
+import org.chromium.base.task.PostTask
+import org.chromium.base.task.TaskTraits
 import org.chromium.chrome.R
 import org.chromium.chrome.browser.ChromeTabbedActivity
 import org.chromium.chrome.browser.playlist.hls_content.HlsService
@@ -25,6 +29,8 @@ import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
 import org.chromium.chrome.browser.util.ServiceUtils
 import org.chromium.playlist.mojom.PlaylistItem
+
+import java.io.File
 
 object PlaylistUtils {
     private val TAG: String = "Playlist/" + this::class.java.simpleName
@@ -94,6 +100,19 @@ object PlaylistUtils {
     fun dipToPixels(context: Context, dipValue: Float): Float {
         val metrics = context.resources.displayMetrics
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics)
+    }
+
+    fun loadPlaylistImage(imageView:ImageView, imagePath:String, placeholderRes: Int) {
+        PostTask.postTask(TaskTraits.UI_DEFAULT) {
+            val imgFile = File(imagePath.replace("file://", ""))
+            if (imgFile.exists()) {
+                val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
+                imageView.setImageBitmap(bitmap)
+            } else {
+                // Handle the case where the file does not exist
+                imageView.setImageResource(placeholderRes) // A placeholder image
+            }
+        };
     }
 
     @JvmStatic

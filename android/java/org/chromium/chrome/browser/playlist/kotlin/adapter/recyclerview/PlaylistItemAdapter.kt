@@ -18,7 +18,6 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 
-import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.CircularProgressIndicator
 
 import org.chromium.chrome.R
@@ -97,12 +96,7 @@ class PlaylistItemAdapter(
             tvMediaTitle.text = model.name
 
             if (model.thumbnailPath.url.isNotEmpty()) {
-                Glide.with(itemView.context)
-                    .asBitmap()
-                    .placeholder(R.drawable.ic_playlist_item_placeholder)
-                    .error(R.drawable.ic_playlist_item_placeholder)
-                    .load(model.thumbnailPath.url)
-                    .into(ivMediaThumbnail)
+                PlaylistUtils.loadPlaylistImage(ivMediaThumbnail, model.thumbnailPath.url, R.drawable.ic_playlist_item_placeholder)
             } else {
                 ivMediaThumbnail.setImageResource(R.drawable.ic_playlist_item_placeholder)
             }
