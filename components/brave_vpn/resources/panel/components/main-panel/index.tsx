@@ -71,16 +71,24 @@ function SessionExpiredContent() {
 }
 
 // Exported to share same header & settings button with loading panel.
-export function PanelHeader(props: { title: string }) {
+export function PanelHeader(props: {
+  title: string
+  settingsTooltip: string
+  settingsOnClick: () => void
+}) {
   return (
     <S.PanelHeader>
       <S.VpnLogo name='product-vpn' />
       <S.PanelTitle>{props.title}</S.PanelTitle>
+      <SettingsButton
+        tooltip={props.settingsTooltip}
+        onClick={props.settingsOnClick}
+      />
     </S.PanelHeader>
   )
 }
 
-export function SettingsButton(props: {
+function SettingsButton(props: {
   tooltip: string
   onClick: () => void
 }) {
@@ -161,12 +169,12 @@ function MainPanel() {
       : currentRegion.namePretty
   return (
     <PanelBox>
+      <PanelHeader
+        title={getLocale('braveVpn')}
+        settingsTooltip={getLocale('braveVpnSettingsTooltip')}
+        settingsOnClick={handleSettingsButtonClick}
+      />
       <S.PanelContent>
-        <SettingsButton
-          tooltip={getLocale('braveVpnSettingsTooltip')}
-          onClick={handleSettingsButtonClick}
-        />
-        <PanelHeader title={getLocale('braveVpn')} />
         <Toggle disabled={expired} />
         {connectionStatus === ConnectionState.CONNECT_NOT_ALLOWED && (
           <S.StyledAlert
@@ -195,17 +203,17 @@ function MainPanel() {
           </S.StyledAlert>
         )}
         {!outOfCredentials && (
-        <S.RegionSelectorButton
-          type='button'
-          onClick={onSelectRegionButtonClick}
-        >
-          <Flag countryCode={currentRegion.countryIsoCode} />
-          <RegionInfo>
-            <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
-            <RegionServerLabel>{regionServerLabel}</RegionServerLabel>
-          </RegionInfo>
-          <S.StyledIcon name='carat-right' />
-        </S.RegionSelectorButton>
+          <S.RegionSelectorButton
+            type='button'
+            onClick={onSelectRegionButtonClick}
+          >
+            <Flag countryCode={currentRegion.countryIsoCode} />
+            <RegionInfo>
+              <RegionLabel>{getCountryNameForCurrentRegion()}</RegionLabel>
+              <RegionServerLabel>{regionServerLabel}</RegionServerLabel>
+            </RegionInfo>
+            <S.StyledIcon name='carat-right' />
+          </S.RegionSelectorButton>
         )}
       </S.PanelContent>
     </PanelBox>

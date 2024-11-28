@@ -10,7 +10,8 @@ import SettingsPanel from '../settings-panel'
 import ContactSupport from '../contact-support'
 import PanelBox from '../panel-box'
 import { getLocale } from '$web-common/locale'
-import { PanelHeader, SettingsButton } from '../main-panel'
+import { PanelHeader } from '../main-panel'
+import { PanelContent } from '../main-panel/style'
 
 function LoadingPanel() {
   const [isSettingsPanelVisible, setSettingsPanelVisible] =
@@ -39,17 +40,17 @@ function LoadingPanel() {
 
   return (
     <PanelBox>
-      <S.PanelContent>
-        <SettingsButton
-          tooltip={getLocale('braveVpnSettingsTooltip')}
-          onClick={handleSettingsButtonClick}
-        />
-        <PanelHeader title={getLocale('braveVpn')} />
+      <PanelHeader
+        title={getLocale('braveVpn')}
+        settingsTooltip={getLocale('braveVpnSettingsTooltip')}
+        settingsOnClick={handleSettingsButtonClick}
+      />
+      <PanelContent>
         <S.Status>
           <S.LoadingIcon />
           <S.PanelDesc>{getLocale('braveVpnLoading')}</S.PanelDesc>
         </S.Status>
-      </S.PanelContent>
+      </PanelContent>
     </PanelBox>
   )
 }

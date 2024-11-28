@@ -10,10 +10,10 @@ import { color, effect, gradient, font, radius, spacing } from '@brave/leo/token
 
 export const PanelContent = styled.section`
   display: flex;
+  padding: 0px ${spacing['2Xl']} ${spacing['2Xl']} ${spacing['2Xl']};
   flex-direction: column;
   align-items: center;
-  padding: 24px;
-  position: relative;
+  align-self: stretch;
   z-index: 2;
 `
 
@@ -23,14 +23,14 @@ export const StyledIcon = styled(Icon)`
 `
 
 export const VpnLogo = styled(Icon)`
-  --leo-icon-size: 24px;
+  --leo-icon-size: 20px;
   --leo-icon-color: ${gradient.iconsActive};
 `
 
 export const SettingsButton = styled.button`
   position: absolute;
-  right: 16px;
-  top: 16px;
+  right: 18px;
+  top: 20px;
   border: 0;
   padding: 0;
   background: transparent;
@@ -39,14 +39,17 @@ export const SettingsButton = styled.button`
 
 export const PanelHeader = styled.section`
   display: flex;
-  padding: ${spacing.m} 0;
+  width: 100%;
+  height: 60px;
+  padding: ${spacing.m} ${spacing.xl};
+  justify-content: center;
+  gap: ${spacing.l};
   align-items: center;
-  gap: ${spacing.m};
 `
 
 export const PanelTitle = styled.span`
   color: ${color.text.primary};
-  font: ${font.heading.h3};
+  font: ${font.heading.h4};
 `
 
 export const RegionSelectorButton = styled.button`

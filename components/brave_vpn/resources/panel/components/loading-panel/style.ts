@@ -7,15 +7,6 @@ import styled from 'styled-components'
 import ProgressRing from '@brave/leo/react/progressRing'
 import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 
-export const PanelContent = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px;
-  position: relative;
-  z-index: 2;
-`
-
 export const LoadingIcon = styled(ProgressRing)`
   --leo-progressring-size: 40px;
   --leo-progressring-color: ${color.icon.interactive};
