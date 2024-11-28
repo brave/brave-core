@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/debug/crash_logging.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
@@ -83,6 +84,13 @@ WorkerContentSettingsClient_BraveImpl::GetBraveShieldsSettings(
     DCHECK(!HasContentSettingsRules());
     // Trigger a crash in DCHECK-enabled builds.
     DCHECK(false);
+    // Add top frame and current frame origins to the crash dump.
+    SCOPED_CRASH_KEY_STRING64("BraveShieldsSettings", "top_frame_origin",
+                              top_frame_origin_.GetDebugString(false));
+    SCOPED_CRASH_KEY_STRING64("BraveShieldsSettings", "frame_origin",
+                              document_origin_.GetDebugString(false));
+    SCOPED_CRASH_KEY_BOOL("BraveShieldsSettings", "has_cs_rules",
+                          HasContentSettingsRules());
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
         farbling_level, base::Token(), std::vector<std::string>(), false);
