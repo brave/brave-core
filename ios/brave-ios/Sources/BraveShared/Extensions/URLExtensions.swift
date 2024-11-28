@@ -136,6 +136,55 @@ extension URL {
 
     return URL(string: "\(baseURL)?\(InternalURL.Param.url.rawValue)=\(encodedURL)")
   }
+
+  /// Determines the predominant directionality of the URL's text as defined:
+  /// - Left-To-Right - if a string has a strong LTR directionality, it would be laid out LTR.
+  /// - Right-To-Left - if a string has a strong RTL directionality, it would be laid out RTL.
+  /// - Mixed - if a string contains BOTH a strong LTR and RTL directionality
+  /// - Neutral - if a string contains NEITHER a strong LTR or RTL directionality (empty string)
+  /// Therefore, a string is `Uni-directional`, if it is LTR or RTL, but not both.
+  public var isUnidirectional: Bool {
+    // First format the URL which will decode the puny-coding
+    var renderedString = URLFormatter.formatURL(
+      absoluteString,
+      formatTypes: [.omitDefaults, .omitTrivialSubdomains, .omitTrailingSlashOnBareHostname],
+      unescapeOptions: .normal
+    )
+
+    // Strip scheme
+    if let scheme,
+      let range = renderedString.range(
+        of: "^(\(scheme)://|\(scheme):)",
+        options: .regularExpression
+      )
+    {
+      renderedString.replaceSubrange(range, with: "")
+    }
+
+    return renderedString.bidiDirection != .mixed
+  }
+
+  /// Determines whether the URL would typically be rendered Left-To-Right instead of Right-To-Left
+  public var isRenderedLeftToRight: Bool {
+    // First format the URL which will decode the puny-coding
+    var renderedString = URLFormatter.formatURL(
+      absoluteString,
+      formatTypes: [.omitDefaults, .omitTrivialSubdomains, .omitTrailingSlashOnBareHostname],
+      unescapeOptions: .normal
+    )
+
+    // Strip scheme
+    if let scheme,
+      let range = renderedString.range(
+        of: "^(\(scheme)://|\(scheme):)",
+        options: .regularExpression
+      )
+    {
+      renderedString.replaceSubrange(range, with: "")
+    }
+
+    return renderedString.bidiBaseDirection == .leftToRight
+  }
 }
 
 extension InternalURL {
