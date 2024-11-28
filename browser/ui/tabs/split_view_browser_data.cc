@@ -102,7 +102,7 @@ void SplitViewBrowserData::Transfer(SplitViewBrowserData* other,
 }
 
 bool SplitViewBrowserData::IsTabTiled(const tabs::TabHandle& tab) const {
-  return base::Contains(tile_index_for_tab_, tab);
+  return tile_index_for_tab_.contains(tab);
 }
 
 void SplitViewBrowserData::SwapTabsInTile(const TabTile& tile) {

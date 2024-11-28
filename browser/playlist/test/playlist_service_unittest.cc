@@ -1054,7 +1054,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveItemFromPlaylist) {
     base::ranges::transform(default_playlist->items,
                             std::inserter(stored_ids, stored_ids.end()),
                             [](const auto& item) { return item->id; });
-    EXPECT_FALSE(base::Contains(stored_ids, id));
+    EXPECT_FALSE(stored_ids.contains(id));
     EXPECT_FALSE(prefs->GetDict(kPlaylistItemsPref).FindDict(id));
   }
 
@@ -1087,7 +1087,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveItemFromPlaylist) {
                             std::inserter(stored_ids, stored_ids.end()),
                             [](const auto& item) { return item->id; });
 
-    EXPECT_FALSE(base::Contains(stored_ids, id));
+    EXPECT_FALSE(stored_ids.contains(id));
     EXPECT_TRUE(prefs->GetDict(kPlaylistItemsPref).FindDict(id));
 
     service->GetPlaylistItem(
@@ -1295,8 +1295,7 @@ TEST_F(PlaylistServiceUnitTest, MigratePlaylistOrder) {
   auto playlists_dict = prefs()->GetDict(kPlaylistsPref).Clone();
   EXPECT_TRUE(playlists_dict.Remove(playlist->id.value()));
   prefs()->SetDict(kPlaylistsPref, std::move(playlists_dict));
-  EXPECT_FALSE(
-      base::Contains(prefs()->GetDict(kPlaylistsPref), playlist->id.value()));
+  EXPECT_FALSE(prefs()->GetDict(kPlaylistsPref).contains(playlist->id.value()));
 
   new_order_list = prefs()->GetList(kPlaylistOrderPref).Clone();
   MigratePlaylistOrder(prefs()->GetDict(kPlaylistsPref), new_order_list);

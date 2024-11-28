@@ -31,10 +31,11 @@ ItemImageCache& GetInMemoryCache(playlist::PlaylistService* service) {
   // We don't want to mix up images from different services, as the
   // PlaylistService is bound to a Profile.
   static base::NoDestructor<base::flat_map<uintptr_t, ItemImageCache>> s_cache;
-  if (!base::Contains(*s_cache, key)) {
-    s_cache->insert({key, ItemImageCache(/*max size=*/30)});
+  auto it = s_cache->find(key);
+  if (it == s_cache->end()) {
+    it = s_cache->insert({key, ItemImageCache(/*max size=*/30)}).first;
   }
-  return s_cache->at(key);
+  return it->second;
 }
 
 bool IsItemThumbnailCached(const playlist::mojom::PlaylistItemPtr& item) {
