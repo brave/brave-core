@@ -193,6 +193,21 @@ void BraveBrowser::OnTabStripModelChanged(
     const TabStripSelectionChange& selection) {
   Browser::OnTabStripModelChanged(tab_strip_model, change, selection);
 
+  if (!profile()->GetPrefs()->GetBoolean(kEnableClosingLastTab) &&
+      change.type() == TabStripModelChange::kRemoved) {
+    for (const auto& contents : change.GetRemove()->contents) {
+      // If there is no tab after this change for inserting them to
+      // another window, this browser should be closed.
+      if (contents.remove_reason ==
+              TabStripModelChange::RemoveReason::kInsertedIntoOtherTabStrip &&
+          tab_strip_model->empty()) {
+        // Each removed can only have same reason. so safe to early return here.
+        ignore_enable_closing_last_tab_pref_ = true;
+        break;
+      }
+    }
+  }
+
 #if defined(TOOLKIT_VIEWS)
   // sidebar() can return a nullptr in unit tests.
   if (!sidebar_controller_ || !sidebar_controller_->sidebar()) {
