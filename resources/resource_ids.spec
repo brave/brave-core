@@ -225,13 +225,13 @@
     "META": {"sizes": {"includes": [50]}},
     "includes": [34650],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ads_internals/ads_internals.grd": {
-    "META": {"sizes": {"includes": [10]}},
-    "includes": [34660],
-  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-creator_detection/creator_detection.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [34700],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ads_internals/ads_internals.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [34710],
   },
   # WARNING: The upstream ChromeOS/Ash strings currently run through 36930. We
   # must be careful not to exceed that maximum when adding new strings here.
