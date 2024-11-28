@@ -25,7 +25,6 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
-#include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/version_info/version_info.h"
 #include "components/grit/brave_components_strings.h"
@@ -52,7 +51,8 @@ BraveVpnService::BraveVpnService(
     : local_prefs_(local_prefs),
       profile_prefs_(profile_prefs),
       skus_service_getter_(skus_service_getter),
-      api_request_(new BraveVpnAPIRequest(url_loader_factory)) {
+      api_request_(new BraveVpnAPIRequest(url_loader_factory)),
+      brave_vpn_metrics_(local_prefs, profile_prefs) {
   DCHECK(IsBraveVPNFeatureEnabled());
 #if !BUILDFLAG(IS_ANDROID)
   DCHECK(connection_manager);
@@ -67,7 +67,6 @@ BraveVpnService::BraveVpnService(
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   CheckInitialState();
-  InitP3A();
 }
 
 BraveVpnService::~BraveVpnService() = default;
@@ -165,7 +164,7 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
       delegate_->ShowBraveVpnStatusTrayIcon();
     }
 #endif
-    RecordP3A(true);
+    brave_vpn_metrics_.RecordAllMetrics(true);
   }
 
   for (const auto& obs : observers_) {
@@ -826,66 +825,13 @@ void BraveVpnService::RefreshSubscriberCredential() {
   ReloadPurchasedState();
 }
 
-// TODO(simonhong): Should move p3a to BraveVPNConnectionManager?
-void BraveVpnService::InitP3A() {
-  p3a_timer_.Start(FROM_HERE, base::Hours(kP3AIntervalHours), this,
-                   &BraveVpnService::OnP3AInterval);
-  RecordP3A(false);
-}
-
-void BraveVpnService::RecordP3A(bool new_usage) {
-  if (new_usage) {
-    p3a_utils::RecordFeatureUsage(local_prefs_, prefs::kBraveVPNFirstUseTime,
-                                  prefs::kBraveVPNLastUseTime);
-  }
-  p3a_utils::RecordFeatureNewUserReturning(
-      local_prefs_, prefs::kBraveVPNFirstUseTime, prefs::kBraveVPNLastUseTime,
-      prefs::kBraveVPNUsedSecondDay, kNewUserReturningHistogramName);
-  p3a_utils::RecordFeatureDaysInMonthUsed(
-      local_prefs_, new_usage, prefs::kBraveVPNLastUseTime,
-      prefs::kBraveVPNDaysInMonthUsed, kDaysInMonthUsedHistogramName);
-  p3a_utils::RecordFeatureLastUsageTimeMetric(
-      local_prefs_, prefs::kBraveVPNLastUseTime, kLastUsageTimeHistogramName);
-}
-
 #if BUILDFLAG(IS_ANDROID)
 void BraveVpnService::RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
                                                  int64_t session_end_time_ms) {
-  if (session_start_time_ms < 0 || session_end_time_ms < 0) {
-    RecordP3A(false);
-    return;
-  }
-  base::Time session_start_time =
-      base::Time::FromMillisecondsSinceUnixEpoch(
-          static_cast<double>(session_start_time_ms))
-          .LocalMidnight();
-  base::Time session_end_time = base::Time::FromMillisecondsSinceUnixEpoch(
-                                    static_cast<double>(session_end_time_ms))
-                                    .LocalMidnight();
-  for (base::Time day = session_start_time; day <= session_end_time;
-       day += base::Days(1)) {
-    bool is_last_day = day == session_end_time;
-    // Call functions for each day in the last session to ensure
-    // p3a_util functions produce the correct result
-    p3a_utils::RecordFeatureUsage(local_prefs_, prefs::kBraveVPNFirstUseTime,
-                                  prefs::kBraveVPNLastUseTime, day);
-    p3a_utils::RecordFeatureNewUserReturning(
-        local_prefs_, prefs::kBraveVPNFirstUseTime, prefs::kBraveVPNLastUseTime,
-        prefs::kBraveVPNUsedSecondDay, kNewUserReturningHistogramName,
-        is_last_day);
-    p3a_utils::RecordFeatureDaysInMonthUsed(
-        local_prefs_, day, prefs::kBraveVPNLastUseTime,
-        prefs::kBraveVPNDaysInMonthUsed, kDaysInMonthUsedHistogramName,
-        is_last_day);
-  }
-  p3a_utils::RecordFeatureLastUsageTimeMetric(
-      local_prefs_, prefs::kBraveVPNLastUseTime, kLastUsageTimeHistogramName);
+  brave_vpn_metrics_.RecordAndroidBackgroundP3A(session_start_time_ms,
+                                                session_end_time_ms);
 }
 #endif
-
-void BraveVpnService::OnP3AInterval() {
-  RecordP3A(false);
-}
 
 void BraveVpnService::SetPurchasedState(
     const std::string& env,
@@ -939,7 +885,6 @@ void BraveVpnService::Shutdown() {
   skus_service_.reset();
   observers_.Clear();
   api_request_.reset();
-  p3a_timer_.Stop();
   subs_cred_refresh_timer_.Stop();
 
 #if !BUILDFLAG(IS_ANDROID)

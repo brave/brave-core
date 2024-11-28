@@ -353,6 +353,14 @@ void BraveNewTabPageHandler::OpenVPNAccountPage() {
 #endif
 }
 
+void BraveNewTabPageHandler::ReportVPNWidgetUsage() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto* vpn_service =
+      brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
+  vpn_service->brave_vpn_metrics()->RecordWidgetUsage(true);
+#endif
+}
+
 bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
   if (profile_->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
           ThemePrefInMigration::kNtpCustomBackgroundDict))) {
