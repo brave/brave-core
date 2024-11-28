@@ -96,10 +96,11 @@ bool DoesETLDPlusOneContainWildcards(const GURL& url) {
   // containing a '?' are deemed invalid.
   constexpr char kUrlEncodedAsteriskWildcard[] = "%2A";
 
-  return base::Contains(
+  const std::string domain_and_registry =
       net::registry_controlled_domains::GetDomainAndRegistry(
-          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES),
-      kUrlEncodedAsteriskWildcard);
+          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
+  return base::Contains(domain_and_registry, kUrlEncodedAsteriskWildcard);
 }
 
 }  // namespace brave_ads

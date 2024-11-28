@@ -148,7 +148,7 @@ CreativePromotedContentAdList GetCreativeAdsFromResponse(
     }
 
     for (const auto& geo_target : creative_ad.geo_targets) {
-      if (!base::Contains(iter->second.geo_targets, geo_target)) {
+      if (!iter->second.geo_targets.contains(geo_target)) {
         iter->second.geo_targets.insert(geo_target);
       }
     }

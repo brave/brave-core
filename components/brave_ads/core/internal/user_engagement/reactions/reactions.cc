@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
@@ -185,7 +184,7 @@ void Reactions::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 bool Reactions::IsAdSaved(const std::string& creative_instance_id) const {
-  return base::Contains(saved_ads_, creative_instance_id);
+  return saved_ads_.contains(creative_instance_id);
 }
 
 void Reactions::ToggleMarkAdAsInappropriate(
@@ -215,7 +214,7 @@ void Reactions::ToggleMarkAdAsInappropriate(
 
 bool Reactions::IsAdMarkedAsInappropriate(
     const std::string& creative_set_id) const {
-  return base::Contains(marked_as_inappropriate_, creative_set_id);
+  return marked_as_inappropriate_.contains(creative_set_id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

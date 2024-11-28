@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 
-#include "base/containers/contains.h"
 #include "base/strings/pattern.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util_internal.h"

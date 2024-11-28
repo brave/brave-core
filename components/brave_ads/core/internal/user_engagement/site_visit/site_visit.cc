@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
@@ -46,7 +45,7 @@ void SiteVisit::RemoveObserver(SiteVisitObserver* const observer) {
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SiteVisit::IsLandingOnPage(const int32_t tab_id) const {
-  return base::Contains(page_lands_, tab_id);
+  return page_lands_.contains(tab_id);
 }
 
 void SiteVisit::MaybeLandOnPage(const TabInfo& tab,

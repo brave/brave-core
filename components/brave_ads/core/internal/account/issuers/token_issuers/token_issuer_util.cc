@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
@@ -56,7 +55,7 @@ bool TokenIssuerPublicKeyExistsForType(const TokenIssuerType token_issuer_type,
       public_key.EncodeBase64();
 
   return public_key_base64 &&
-         base::Contains(token_issuer->public_keys, public_key_base64);
+         token_issuer->public_keys.contains(public_key_base64);
 }
 
 }  // namespace brave_ads
