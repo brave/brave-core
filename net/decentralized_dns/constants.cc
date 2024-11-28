@@ -62,7 +62,8 @@ inline constexpr auto kUnstoppableDomains =
          ".tball",      ".stepn",      ".secret",  ".raiin",       ".pog",
          ".clay",       ".metropolis", ".witg",    ".ubu",         ".kryptic",
          ".farms",      ".dfz",        ".kresus",  ".binanceus",   ".austin",
-         ".bitget",     ".wrkx"},
+         ".bitget",     ".wrkx",       ".bald",    ".benji",       ".chomp",
+         ".dream",      ".ethermail",  ".lfg",     ".propykeys",   ".smobler"},
         SuffixComparator());
 
 // Ensure all domain suffixes start with `.`
@@ -76,7 +77,7 @@ constexpr bool CheckAllDomainSuffixesStartWithDot() {
 }
 static_assert(CheckAllDomainSuffixesStartWithDot(),
               "kUnstoppableDomains must start with a '.', and only one "
-              "occurence of the '.'");
+              "occurrence of the '.'");
 
 }  // namespace
 
