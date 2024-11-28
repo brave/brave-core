@@ -769,6 +769,7 @@ source_set("ui") {
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/ai_chat/distiller_scripts:generated_resources",
     "//brave/components/ai_chat/resources/page:generated_resources",
     "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_adaptive_captcha",
@@ -1082,17 +1083,6 @@ source_set("ui") {
       "//third_party/blink/public/common",
       "//ui/color",
       "//ui/web_dialogs",
-    ]
-  }
-
-  if (enable_ai_chat) {
-    deps += [
-      "//brave/components/ai_chat/content/browser",
-      "//brave/components/ai_chat/core/browser",
-      "//brave/components/ai_chat/core/common",
-      "//brave/components/ai_chat/core/common/mojom",
-      "//brave/components/ai_chat/distiller_scripts:generated_resources",
-      "//brave/components/ai_chat/resources/page:generated_resources",
     ]
   }
 

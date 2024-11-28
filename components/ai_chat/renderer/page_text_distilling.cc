@@ -28,6 +28,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/distiller_scripts/grit/ai_chat_site_distiller_generated.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/mojom/script/script_evaluation_params.mojom-shared.h"
 #include "third_party/blink/public/platform/web_string.h"
