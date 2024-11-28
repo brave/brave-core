@@ -8,6 +8,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import useMediaQuery from '$web-common/useMediaQuery'
 import { useAIChat } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
 import ConversationsList from '../conversations_list'
 import { NavigationHeader } from '../header'
 import Main from '../main'
@@ -17,6 +18,7 @@ import { useActiveChat } from '../../state/active_chat_context'
 export default function FullScreen() {
   const aiChatContext = useAIChat()
   const { createNewConversation } = useActiveChat()
+  const conversationContext = useConversation()
 
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
@@ -24,9 +26,12 @@ export default function FullScreen() {
   const [isNavigationCollapsed, setIsNavigationCollapsed] = React.useState(isSmall)
   const [isNavigationRendered, setIsNavigationRendered] = React.useState(!isSmall)
 
+  const canStartNewConversation = aiChatContext.hasAcceptedAgreement &&
+    !!conversationContext.conversationHistory.length
+
   const initAsideAnimation = React.useCallback((node: HTMLElement | null) => {
     if (!node) return
-    const open = { width: '340px', opacity: 1 }
+    const open = { width: 'var(--navigation-width)', opacity: 1 }
     const close = { width: '0px', opacity: 0 }
     const animationOptions: KeyframeAnimationOptions = {
       duration: 200,
@@ -100,7 +105,7 @@ export default function FullScreen() {
           >
             <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
           </Button>
-          {!isNavigationRendered && (
+          {!isNavigationRendered && canStartNewConversation && (
             <>
               <Button
                 fab
@@ -117,10 +122,10 @@ export default function FullScreen() {
           className={styles.aside}
         >
           {isNavigationRendered && (
-            <>
+            <div className={styles.nav}>
               <NavigationHeader />
               <ConversationsList setIsConversationsListOpen={setIsNavigationCollapsed} />
-            </>
+            </div>
           )}
         </aside>
       </div>

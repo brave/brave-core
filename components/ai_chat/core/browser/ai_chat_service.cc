@@ -117,6 +117,10 @@ AIChatService::AIChatService(
       prefs::kStorageEnabled,
       base::BindRepeating(&AIChatService::MaybeInitStorage,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kUserDismissedPremiumPrompt,
+      base::BindRepeating(&AIChatService::OnStateChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
 }
@@ -362,6 +366,7 @@ void AIChatService::MaybeInitStorage() {
                                weak_ptr_factory_.GetWeakPtr()));
     }
   }
+  OnStateChanged();
 }
 
 void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor,
@@ -548,6 +553,18 @@ void AIChatService::MarkAgreementAccepted() {
   SetUserOptedIn(profile_prefs_, true);
 }
 
+void AIChatService::EnableStoragePref() {
+  profile_prefs_->SetBoolean(prefs::kStorageEnabled, true);
+}
+
+void AIChatService::DismissStorageNotice() {
+  profile_prefs_->SetBoolean(prefs::kUserDismissedStorageNotice, true);
+}
+
+void AIChatService::DismissPremiumPrompt() {
+  profile_prefs_->SetBoolean(prefs::kUserDismissedPremiumPrompt, true);
+}
+
 void AIChatService::GetActionMenuList(GetActionMenuListCallback callback) {
   std::move(callback).Run(ai_chat::GetActionMenuList());
 }
@@ -556,41 +573,6 @@ void AIChatService::GetPremiumStatus(GetPremiumStatusCallback callback) {
   credential_manager_->GetPremiumStatus(
       base::BindOnce(&AIChatService::OnPremiumStatusReceived,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void AIChatService::GetCanShowPremiumPrompt(
-    GetCanShowPremiumPromptCallback callback) {
-  bool has_user_dismissed_prompt =
-      profile_prefs_->GetBoolean(prefs::kUserDismissedPremiumPrompt);
-
-  if (has_user_dismissed_prompt) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  base::Time last_accepted_disclaimer =
-      profile_prefs_->GetTime(prefs::kLastAcceptedDisclaimer);
-
-  // Can't show if we haven't accepted disclaimer yet
-  if (last_accepted_disclaimer.is_null()) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  base::Time time_1_day_ago = base::Time::Now() - base::Days(1);
-  bool is_more_than_24h_since_last_seen =
-      last_accepted_disclaimer < time_1_day_ago;
-
-  if (is_more_than_24h_since_last_seen) {
-    std::move(callback).Run(true);
-    return;
-  }
-
-  std::move(callback).Run(false);
-}
-
-void AIChatService::DismissPremiumPrompt() {
-  profile_prefs_->SetBoolean(prefs::kUserDismissedPremiumPrompt, true);
 }
 
 void AIChatService::DeleteConversation(const std::string& id) {
@@ -678,6 +660,38 @@ void AIChatService::MaybeUnloadConversation(
              << (conversation_handler->IsAnyClientConnected() ? "yes" : "no")
              << " Request is in progress: "
              << (conversation_handler->IsRequestInProgress() ? "yes" : "no");
+  }
+}
+
+mojom::ServiceStatePtr AIChatService::BuildState() {
+  bool has_user_dismissed_storage_notice =
+      profile_prefs_->GetBoolean(prefs::kUserDismissedStorageNotice);
+  base::Time last_accepted_disclaimer =
+      profile_prefs_->GetTime(ai_chat::prefs::kLastAcceptedDisclaimer);
+
+  bool is_user_opted_in = !last_accepted_disclaimer.is_null();
+
+  // Premium prompt is only shown conditionally (e.g. the user hasn't dismissed
+  // it and it's been some time since the user started using the feature).
+  bool can_show_premium_prompt =
+      !profile_prefs_->GetBoolean(prefs::kUserDismissedPremiumPrompt) &&
+      !last_accepted_disclaimer.is_null() &&
+      last_accepted_disclaimer < base::Time::Now() - base::Days(1);
+
+  bool is_storage_enabled = profile_prefs_->GetBoolean(prefs::kStorageEnabled);
+
+  mojom::ServiceStatePtr state = mojom::ServiceState::New();
+  state->has_accepted_agreement = is_user_opted_in;
+  state->is_storage_pref_enabled = is_storage_enabled;
+  state->is_storage_notice_dismissed = has_user_dismissed_storage_notice;
+  state->can_show_premium_prompt = can_show_premium_prompt;
+  return state;
+}
+
+void AIChatService::OnStateChanged() {
+  mojom::ServiceStatePtr state = BuildState();
+  for (auto& remote : observer_remotes_) {
+    remote->OnStateChanged(state.Clone());
   }
 }
 
@@ -843,8 +857,10 @@ void AIChatService::BindConversation(
 }
 
 void AIChatService::BindObserver(
-    mojo::PendingRemote<mojom::ServiceObserver> observer) {
+    mojo::PendingRemote<mojom::ServiceObserver> observer,
+    BindObserverCallback callback) {
   observer_remotes_.Add(std::move(observer));
+  std::move(callback).Run(BuildState());
 }
 
 bool AIChatService::HasUserOptedIn() {
@@ -866,15 +882,13 @@ size_t AIChatService::GetInMemoryConversationCountForTesting() {
 }
 
 void AIChatService::OnUserOptedIn() {
+  OnStateChanged();
   bool is_opted_in = HasUserOptedIn();
   if (!is_opted_in) {
     return;
   }
   for (auto& kv : conversation_handlers_) {
     kv.second->OnUserOptedIn();
-  }
-  for (auto& remote : observer_remotes_) {
-    remote->OnAgreementAccepted();
   }
   if (ai_chat_metrics_ != nullptr) {
     ai_chat_metrics_->RecordEnabled(true, true, {});

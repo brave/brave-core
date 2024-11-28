@@ -28,6 +28,8 @@ inline constexpr char kBraveChatPremiumCredentialCache[] =
     "brave.ai_chat.premium_credential_cache";
 inline constexpr char kUserDismissedPremiumPrompt[] =
     "brave.ai_chat.user_dismissed_premium_prompt";
+inline constexpr char kUserDismissedStorageNotice[] =
+    "brave.ai_chat.user_dismissed_storage_notice";
 inline constexpr char kBraveChatP3AOmniboxOpenWeeklyStorage[] =
     "brave.ai_chat.p3a_omnibox_open";
 inline constexpr char kBraveChatP3AOmniboxAutocompleteWeeklyStorage[] =

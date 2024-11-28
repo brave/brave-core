@@ -125,7 +125,7 @@ export default function FeatureMenu(props: Props) {
             </div>
           </div>
         </leo-menu-item>
-        <leo-menu-item onClick={() => getAPI().Service.deleteConversation(conversationContext.conversationUuid!)}>
+        <leo-menu-item onClick={() => getAPI().service.deleteConversation(conversationContext.conversationUuid!)}>
           <div className={classnames(
             styles.menuItemWithIcon,
             styles.menuItemMainItem
@@ -170,7 +170,7 @@ export default function FeatureMenu(props: Props) {
           </div>
         </leo-menu-item>
       )}
-      {!aiChatContext.isStandalone && aiChatContext.isHistoryEnabled && (
+      {!aiChatContext.isStandalone && aiChatContext.isHistoryFeatureEnabled && (
         <>
           <leo-menu-item
             onClick={() => props.setIsConversationsListOpen?.(true)}

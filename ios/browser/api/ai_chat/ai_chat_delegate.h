@@ -28,6 +28,7 @@ OBJC_EXPORT
                              status:(AiChatSuggestionGenerationStatus)status;
 - (void)onPageHasContent:(AiChatSiteInfo*)siteInfo
        shouldSendContent:(bool)shouldSendContent;
+- (void)onServiceStateChanged:(AiChatServiceState*)state;
 @end
 
 NS_ASSUME_NONNULL_END

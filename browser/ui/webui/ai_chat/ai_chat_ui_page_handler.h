@@ -54,7 +54,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ManagePremium() override;
   void HandleVoiceRecognition(const std::string& conversation_uuid) override;
   void CloseUI() override;
-  void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui) override;
+  void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
+                 SetChatUICallback callback) override;
   void BindRelatedConversation(
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)

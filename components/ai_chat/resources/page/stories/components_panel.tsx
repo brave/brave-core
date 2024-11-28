@@ -12,10 +12,12 @@ import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
 import * as mojom from '../api/'
+import { ActiveChatContext, SelectedChatDetails } from '../state/active_chat_context'
 import { AIChatContext, AIChatReactContext } from '../state/ai_chat_context'
 import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
 import FeedbackForm from '../components/feedback_form'
 import FullPage from '../components/full_page'
+import Loading from '../components/loading'
 import Main from '../components/main'
 import './locale'
 import ACTIONS_LIST from './actions'
@@ -389,14 +391,18 @@ const SITE_INFO: mojom.SiteInfo = {
 }
 
 type CustomArgs = {
+  initialized: boolean
   currentErrorState: keyof typeof mojom.APIError
   model: string
   inputText: string
   hasConversation: boolean
+  hasConversationListItems: boolean
   hasSuggestedQuestions: boolean
   hasSiteInfo: boolean
+  isStorageNoticeDismissed: boolean
   canShowPremiumPrompt: boolean
   hasAcceptedAgreement: boolean
+  isStoragePrefEnabled: boolean
   isPremiumModel: boolean
   isPremiumUser: boolean
   isPremiumUserDisconnected: boolean
@@ -410,11 +416,15 @@ type CustomArgs = {
 }
 
 const args: CustomArgs = {
+  initialized: true,
   inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
   hasConversation: true,
+  hasConversationListItems: true,
   hasSuggestedQuestions: true,
   hasSiteInfo: true,
+  isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
+  isStoragePrefEnabled: true,
   hasAcceptedAgreement: true,
   isPremiumModel: false,
   isPremiumUser: true,
@@ -476,24 +486,38 @@ const preview: Meta<CustomArgs> = {
       }
 
       const aiChatContext: AIChatContext = {
-        initialized: true,
+        initialized: options.args.initialized,
         editingConversationId: null,
-        visibleConversations: CONVERSATIONS,
+        visibleConversations: options.args.hasConversationListItems ? CONVERSATIONS : [],
+        isStoragePrefEnabled: options.args.isStoragePrefEnabled,
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
         isPremiumUser: options.args.isPremiumUser,
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
+        isStorageNoticeDismissed: options.args.isStorageNoticeDismissed,
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         isMobile: options.args.isMobile,
-        isHistoryEnabled: options.args.isHistoryEnabled,
+        isHistoryFeatureEnabled: options.args.isHistoryEnabled,
         isStandalone: options.args.isStandalone,
         allActions: ACTIONS_LIST,
         goPremium: () => {},
         managePremium: () => {},
         handleAgreeClick: () => {},
+        enableStoragePref: () => {},
+        markStorageNoticeViewed: () => {},
+        dismissStorageNotice: () => {},
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},
         setEditingConversationId: () => {}
+      }
+
+      const activeChatContext: SelectedChatDetails = {
+        selectedConversationId: CONVERSATIONS[0].uuid,
+        updateSelectedConversationId: () => {},
+        callbackRouter: undefined!,
+        conversationHandler: undefined!,
+        createNewConversation: () => {},
+        isTabAssociated: options.args.isDefaultConversation
       }
 
       const inputText = options.args.inputText
@@ -537,11 +561,13 @@ const preview: Meta<CustomArgs> = {
 
       return (
         <AIChatReactContext.Provider value={aiChatContext}>
-          <ConversationReactContext.Provider value={conversationContext}>
-          <ThemeProvider>
-            <Story />
-          </ThemeProvider>
-          </ConversationReactContext.Provider>
+          <ActiveChatContext.Provider value={activeChatContext}>
+            <ConversationReactContext.Provider value={conversationContext}>
+            <ThemeProvider>
+              <Story />
+            </ThemeProvider>
+            </ConversationReactContext.Provider>
+          </ActiveChatContext.Provider>
         </AIChatReactContext.Provider>
       )
     }
@@ -574,12 +600,26 @@ export const _FeedbackForm = {
 
 export const _FullPage = {
   args: {
-    isStandalone: true
+    isStandalone: true,
+    isDefaultConversation: false
   },
   render: () => {
     return (
       <div className={styles.containerFull}>
         <FullPage />
+      </div>
+    )
+  }
+}
+
+export const _Loading = {
+  args: {
+    initialized: false
+  },
+  render: () => {
+    return (
+      <div className={styles.container}>
+        <Loading />
       </div>
     )
   }

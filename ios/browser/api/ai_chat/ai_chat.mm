@@ -61,6 +61,9 @@
     current_content_ = std::make_unique<ai_chat::AssociatedContentDriverIOS>(
         profile_->GetSharedURLLoaderFactory(), delegate);
 
+    conversation_client_ = std::make_unique<ai_chat::ConversationClient>(
+        service_.get(), delegate_);
+
     [self createNewConversation];
   }
   return self;
@@ -78,8 +81,7 @@
 - (void)createNewConversation {
   current_conversation_ = service_->CreateConversationHandlerForContent(
       current_content_->GetContentId(), current_content_->GetWeakPtr());
-  conversation_client_ = std::make_unique<ai_chat::ConversationClient>(
-      current_conversation_.get(), delegate_);
+  conversation_client_->ChangeConversation(current_conversation_.get());
 }
 
 - (bool)isAgreementAccepted {
@@ -220,10 +222,6 @@
 - (void)modifyConversation:(NSUInteger)turnId newText:(NSString*)newText {
   current_conversation_->ModifyConversation(turnId,
                                             base::SysNSStringToUTF8(newText));
-}
-
-- (void)getCanShowPremiumPrompt:(void (^_Nullable)(bool))completion {
-  service_->GetCanShowPremiumPrompt(base::BindOnce(completion));
 }
 
 - (void)dismissPremiumPrompt {

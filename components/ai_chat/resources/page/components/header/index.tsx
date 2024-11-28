@@ -38,16 +38,17 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
   const showTitle = !isTabAssociated || aiChatContext.isStandalone
-  const canShowFullScreenButton = aiChatContext.isHistoryEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
+  const canShowFullScreenButton = aiChatContext.isHistoryFeatureEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
 
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
-        <div className={styles.pageTitle}>
+        <div className={styles.conversationTitle}>
           {!isTabAssociated && !aiChatContext.isStandalone && <Button
             kind='plain-faint'
             fab
             onClick={() => location.href = tabAssociatedChatId}
+            title={getLocale('goBackToActiveConversationButton')}
           >
             <Icon name='arrow-left' />
           </Button>}
@@ -66,7 +67,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
                 title={newChatButtonLabel}
                 onClick={createNewConversation}
               >
-                <Icon name={aiChatContext.isHistoryEnabled ? 'edit-box' : 'erase'} />
+                <Icon name={aiChatContext.isHistoryFeatureEnabled ? 'edit-box' : 'erase'} />
               </Button>
             )}
             {canShowFullScreenButton &&
@@ -75,7 +76,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
                 kind='plain-faint'
                 aria-label={openFullPageButtonLabel}
                 title={openFullPageButtonLabel}
-                onClick={() => getAPI().UIHandler.openConversationFullPage(conversationContext.conversationUuid!)}
+                onClick={() => getAPI().uiHandler.openConversationFullPage(conversationContext.conversationUuid!)}
               >
                 <Icon name='expand' />
               </Button>}
@@ -87,7 +88,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
                 aria-label={closeButtonLabel}
                 title={closeButtonLabel}
                 className={styles.closeButton}
-                onClick={() => getAPI().UIHandler.closeUI()}
+                onClick={() => getAPI().uiHandler.closeUI()}
               >
                 <Icon name='close' />
               </Button>

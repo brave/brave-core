@@ -299,9 +299,21 @@ struct ActionGroup {
   array<ActionEntry> entries;
 };
 
+// This does not cover more specific data that the Service owns, such as the
+// conversation list, but does cover status of preferences and notices.
+struct ServiceState {
+  bool has_accepted_agreement;
+  bool is_storage_pref_enabled;
+  bool is_storage_notice_dismissed;
+  bool can_show_premium_prompt;
+};
+
 interface Service {
-  // User opts-in to the feature at a profile level
+  // Profile-level acknowledgements
   MarkAgreementAccepted();
+  EnableStoragePref();
+  DismissStorageNotice();
+  DismissPremiumPrompt();
 
   // Get metadata for non-archived conversations
   GetVisibleConversations() => (array<Conversation> conversations);
@@ -312,16 +324,11 @@ interface Service {
   // Current status of subscription
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
 
-  // Premium prompt is only shown conditionally (e.g. the user hasn't dismissed
-  // it and it's been some time since the user started using the feature).
-  GetCanShowPremiumPrompt() => (bool can_show);
-  DismissPremiumPrompt();
-
   DeleteConversation(string id);
   RenameConversation(string id, string new_name);
 
-  // Send events to the UI
-  BindObserver(pending_remote<ServiceObserver> ui);
+  // Bind ability to send events to the UI and receive current state
+  BindObserver(pending_remote<ServiceObserver> ui) => (ServiceState state);
 
   // Bind specified Conversation for 2-way communication
   BindConversation(
@@ -332,7 +339,7 @@ interface Service {
 
 interface ServiceObserver {
   OnConversationListChanged(array<Conversation> conversations);
-  OnAgreementAccepted();
+  OnStateChanged(ServiceState state);
 };
 
 // Browser-side handler for general AI Chat UI functions, implemented
@@ -358,7 +365,9 @@ interface AIChatUIHandler {
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 
-  SetChatUI(pending_remote<ChatUI> chat_ui);
+  // Provide a reference of the UI to the UI handler and get some
+  // initial constant state
+  SetChatUI(pending_remote<ChatUI> chat_ui) => (bool is_standalone);
 
   // Bind 2-way communication to the conversation related to the open page in
   // the current browser window. No binding will occur if this isn't a
@@ -380,8 +389,6 @@ interface AIChatUIHandler {
 
 // UI-side handler for whole AI Chat UI
 interface ChatUI {
-  // Initial Data
-  SetInitialData(bool is_standalone);
   // Notifies that the default conversation for the
   // panel has changed. e.g. Tab navigation with AIChat open in sidebar.
   OnNewDefaultConversation();

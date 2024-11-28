@@ -136,13 +136,13 @@ class AIChatService : public KeyedService,
 
   // mojom::Service
   void MarkAgreementAccepted() override;
+  void EnableStoragePref() override;
+  void DismissStorageNotice() override;
+  void DismissPremiumPrompt() override;
   void GetVisibleConversations(
       GetVisibleConversationsCallback callback) override;
   void GetActionMenuList(GetActionMenuListCallback callback) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
-  void GetCanShowPremiumPrompt(
-      GetCanShowPremiumPromptCallback callback) override;
-  void DismissPremiumPrompt() override;
   void DeleteConversation(const std::string& id) override;
   void RenameConversation(const std::string& id,
                           const std::string& new_name) override;
@@ -152,7 +152,8 @@ class AIChatService : public KeyedService,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
       override;
-  void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui) override;
+  void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui,
+                    BindObserverCallback callback) override;
 
   bool HasUserOptedIn();
   bool IsPremiumStatus();
@@ -208,6 +209,8 @@ class AIChatService : public KeyedService,
                                mojom::PremiumStatus status,
                                mojom::PremiumInfoPtr info);
   void OnDataDeletedForDisabledStorage(bool success);
+  mojom::ServiceStatePtr BuildState();
+  void OnStateChanged();
 
   bool IsAIChatHistoryEnabled();
 

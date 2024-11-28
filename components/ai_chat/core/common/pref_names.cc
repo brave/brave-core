@@ -19,6 +19,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterBooleanPref(kStorageEnabled, true);
     registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
     registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
+    registry->RegisterBooleanPref(kUserDismissedStorageNotice, false);
 #if BUILDFLAG(IS_ANDROID)
     registry->RegisterBooleanPref(kBraveChatSubscriptionActiveAndroid, false);
     registry->RegisterStringPref(kBraveChatPurchaseTokenAndroid, "");
