@@ -28,6 +28,8 @@ def main(original_function, argv):
     parser = argparse.ArgumentParser()
     parser.add_argument('--root_dir', required=True)
     parser.add_argument('--out_dir', required=True)
+    parser.add_argument('--output_suffix', required=True)
+    parser.add_argument('--gen_dir', required=True)
     parser.add_argument('--in_files', nargs='*')
     args, _ = parser.parse_known_args(argv)
 
@@ -46,3 +48,20 @@ def main(original_function, argv):
                     os.remove(to_check)
 
     original_function(argv)
+
+    manifest_path = os.path.join(args.gen_dir,
+                                 f'{args.output_suffix}_manifest.json')
+    if os.path.exists(manifest_path):
+        import json
+        import glob
+        import re
+        manifest = json.load(open(manifest_path))
+
+        preprocess_dir = os.path.join(args.gen_dir, 'preprocessed')
+        for override_file in glob.glob(
+                os.path.join(preprocess_dir, '**/*-chromium*.ts')):
+            rel_path = os.path.relpath(override_file, preprocess_dir)
+            manifest['files'].append(re.sub(r'\.ts$', '.js', rel_path))
+
+        with open(manifest_path, 'w') as f:
+            json.dump(manifest, f)
