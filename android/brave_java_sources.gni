@@ -516,7 +516,6 @@ brave_java_sources += brave_feed_java_sources
 brave_java_sources += brave_public_tab_management_java_sources
 brave_java_sources += brave_share_java_sources
 brave_java_sources += brave_app_billing_sources
-brave_java_sources += brave_playlist_sources
 
 brave_browser_ui_android_appmenu_internal_sources = [ "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java" ]
 
