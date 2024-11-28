@@ -4,5 +4,5 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("browser") {
-  deps = [ "anonymous_credentials/rs/cxx:rust_lib" ]
+  deps = [ "anonymous_credentials:rust_lib" ]
 }
