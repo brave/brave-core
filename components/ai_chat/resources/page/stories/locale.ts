@@ -53,6 +53,7 @@ provideStrings({
   copyButtonLabel: 'Copy',
   likeAnswerButtonLabel: 'Like answer',
   dislikeAnswerButtonLabel: 'Dislike answer',
+  likeDislikeAnswerButtonTitle: 'Sends rating, conversation, model, language, version, and premium status',
   provideFeedbackTitle: 'Provide Brave AI Feedback',
   selectFeedbackTopic: 'Select your feedback topic',
   feedbackCategoryLabel: 'Whats your feedback about?',

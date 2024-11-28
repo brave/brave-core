@@ -519,7 +519,7 @@ void ConversationHandler::RateMessage(bool is_liked,
 
     feedback_api_->SendRating(
         is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,
-        model.options->get_leo_model_options()->name,
+        model.options->get_leo_model_options()->name, selected_language_,
         base::BindOnce(
             [](RateMessageCallback callback, APIRequestResult result) {
               if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
@@ -565,7 +565,7 @@ void ConversationHandler::SendFeedback(const std::string& category,
                               (send_hostname && page_url.SchemeIsHTTPOrHTTPS())
                                   ? std::optional<std::string>(page_url.host())
                                   : std::nullopt,
-                              std::move(on_complete));
+                              selected_language_, std::move(on_complete));
 }
 
 void ConversationHandler::GetConversationUuid(
