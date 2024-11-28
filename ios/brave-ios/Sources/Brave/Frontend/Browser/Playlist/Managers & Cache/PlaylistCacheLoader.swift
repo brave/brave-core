@@ -37,7 +37,10 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     type: .private
   ).then {
     $0.createWebview()
-    $0.setScript(script: .playlistMediaSource, enabled: true)
+    $0.setScript(
+      script: .playlistMediaSource,
+      enabled: Preferences.Playlist.webMediaSourceCompatibility.value
+    )
     $0.webView?.scrollView.layer.masksToBounds = true
   }
 
