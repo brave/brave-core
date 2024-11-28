@@ -1082,17 +1082,6 @@ extension BrowserViewController: WKNavigationDelegate {
   ) {
     guard let tab = tab(for: webView) else { return }
 
-    // Handle invalid upgrade to https
-    if let responseURL = webView.url,
-      let response = handleInvalidHTTPSUpgrade(
-        tab: tab,
-        responseURL: responseURL
-      )
-    {
-      tab.loadRequest(response)
-      return
-    }
-
     // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
     // to open an external application and hand it over to UIApplication.openURL(). The result
     // will be that we switch to the external app, for example the app store, while keeping the
@@ -1119,6 +1108,18 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+      // Check for invalid upgrade to https
+      if url.scheme == "https",  // verify failing url was https
+        let response = handleInvalidHTTPSUpgrade(
+          tab: tab,
+          responseURL: url
+        )
+      {
+        // load original or strict mode interstitial
+        tab.loadRequest(response)
+        return
+      }
+
       ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
 
       // Submitting same erroneous URL using toolbar will cause progress bar get stuck
@@ -1835,6 +1836,15 @@ extension BrowserViewController: WKUIDelegate {
     if shouldUpgradeToHttps(url: requestURL, isPrivate: tab.isPrivate),
       var urlComponents = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
     {
+      if let existingUpgradeRequestURL = tab.upgradedHTTPSRequest?.url,
+        existingUpgradeRequestURL == requestURL
+      {
+        // if server redirected https -> http, https load never fails.
+        // `webView(_:decidePolicyFor:preferences:)` will be called before
+        // `webView(_:didReceiveServerRedirectForProvisionalNavigation:)`
+        // so we must prevent upgrade loop.
+        return handleInvalidHTTPSUpgrade(tab: tab, responseURL: requestURL)
+      }
       // Attempt to upgrade to HTTPS
       urlComponents.scheme = "https"
       if let upgradedURL = urlComponents.url {
@@ -1880,8 +1890,7 @@ extension BrowserViewController: WKUIDelegate {
   /// or show the interstitial page
   private func handleInvalidHTTPSUpgrade(tab: Tab, responseURL: URL) -> URLRequest? {
     // Handle invalid upgrade to https
-    guard responseURL.scheme == "https",
-      let originalRequest = tab.upgradedHTTPSRequest,
+    guard let originalRequest = tab.upgradedHTTPSRequest,
       let originalURL = originalRequest.url,
       responseURL.baseDomain == originalURL.baseDomain
     else {
