@@ -254,9 +254,9 @@ public class BraveShieldsContentSettings {
     }
 
     @CalledByNative
-    private void blockedEvent(int tabId, String block_type, String subresource) {
+    private void blockedEvent(int tabId, String blockType, String subresource) {
         for (BraveShieldsContentSettingsObserver observer : mBraveShieldsContentSettingsObservers) {
-            observer.blockEvent(tabId, block_type, subresource);
+            observer.blockEvent(tabId, blockType, subresource);
         }
     }
 
