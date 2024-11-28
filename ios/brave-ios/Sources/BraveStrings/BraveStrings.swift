@@ -5179,24 +5179,6 @@ extension Strings {
         comment: "Error message when saving a playlist item for offline fails"
       )
 
-    public static let playlistWebCompatibilityTitle =
-      NSLocalizedString(
-        "playlist.playlistWebCompatibilityTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Web Compatibility",
-        comment: "Title for Playlist setting"
-      )
-
-    public static let playlistWebCompatibilityDescription =
-      NSLocalizedString(
-        "playlist.playlistWebCompatibilityDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Disables the WebKit MediaSource API",
-        comment: "Description for Playlist setting"
-      )
-
     public static let playlistLiveMediaStream =
       NSLocalizedString(
         "playlist.playlistLiveMediaStream",
