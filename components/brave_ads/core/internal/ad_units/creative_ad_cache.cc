@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/creative_ad_cache.h"
 
-#include "base/containers/contains.h"
 #include "base/functional/overloaded.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
@@ -70,7 +69,7 @@ std::optional<CreativeAdVariant> CreativeAdCache::MaybeGetCreativeAdVariant(
 }
 
 void CreativeAdCache::PurgePlacements(const int32_t tab_id) {
-  if (!base::Contains(placement_ids_, tab_id)) {
+  if (!placement_ids_.contains(tab_id)) {
     return;
   }
 

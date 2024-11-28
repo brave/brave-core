@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/hash/hash.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -70,7 +69,7 @@ bool TabManager::IsPlayingMedia(const int32_t tab_id) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 bool TabManager::DoesExistForId(const int32_t tab_id) const {
-  return base::Contains(tabs_, tab_id);
+  return tabs_.contains(tab_id);
 }
 
 TabInfo& TabManager::GetOrCreateForId(const int32_t tab_id) {

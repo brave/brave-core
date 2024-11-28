@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
@@ -75,7 +74,7 @@ SegmentList GetParentSegments(const SegmentList& segments) {
     const std::string parent_segment = GetParentSegment(segment);
     CHECK(!parent_segment.empty());
 
-    if (base::Contains(exists, parent_segment)) {
+    if (exists.contains(parent_segment)) {
       continue;
     }
 
