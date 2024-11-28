@@ -47,9 +47,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.brave.playlist.util.ConstantUtils;
-import com.brave.playlist.util.PlaylistPreferenceUtils;
-import com.brave.playlist.util.PlaylistUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -150,7 +147,12 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
-import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
+import org.chromium.chrome.browser.playlist.kotlin.activity.AllPlaylistActivity;
+import org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistActivity;
+import org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService;
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils;
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistPreferenceUtils;
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -1097,6 +1099,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         initMiscAndroidMetrics();
         checkForNotificationData();
+        checkPlaylistAction();
 
         if (RateUtils.getInstance().isLastSessionShown()) {
             RateUtils.getInstance().setPrefNextRateDate();
@@ -1527,23 +1530,31 @@ public abstract class BraveActivity extends ChromeActivity
 
     private void openPlaylist(boolean shouldHandlePlaylistActivity) {
         if (!shouldHandlePlaylistActivity) mIsDeepLink = true;
-
         if (ChromeSharedPreferences.getInstance()
                 .readBoolean(PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
             PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
         } else if (shouldHandlePlaylistActivity) {
-            openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
+            openAllPlaylistActivity();
         }
     }
 
-    public void openPlaylistActivity(Context context, String playlistId) {
-        Intent playlistActivityIntent = new Intent(context, PlaylistHostActivity.class);
+    public void openPlaylistActivity(Context context, String playlistId, boolean isPlaylistAction) {
+        Intent playlistActivityIntent = new Intent(context, PlaylistActivity.class);
         playlistActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, playlistId);
         playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        playlistActivityIntent.setAction(Intent.ACTION_VIEW);
+        playlistActivityIntent.setAction(
+                isPlaylistAction ? ConstantUtils.PLAYLIST_ACTION : Intent.ACTION_VIEW);
         context.startActivity(playlistActivityIntent);
+    }
+
+    public void openAllPlaylistActivity() {
+        Intent allPlaylistActivityIntent =
+                new Intent(BraveActivity.this, AllPlaylistActivity.class);
+        allPlaylistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        allPlaylistActivityIntent.setAction(Intent.ACTION_VIEW);
+        startActivity(allPlaylistActivityIntent);
     }
 
     private void showLinkVpnSubscriptionDialog() {
@@ -1683,10 +1694,27 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    private void checkPlaylistAction() {
+        if (getIntent() != null
+                && !TextUtils.isEmpty(getIntent().getAction())
+                && getIntent().getAction().equals(ConstantUtils.PLAYLIST_ACTION)) {
+            if (TextUtils.isEmpty(VideoPlaybackService.Companion.getCurrentPlaylistId())) {
+                return;
+            }
+            openPlaylistActivity(
+                    BraveActivity.this,
+                    VideoPlaybackService.Companion.getCurrentPlaylistId(),
+                    true);
+        }
+    }
+
     private void checkForNotificationData() {
         Intent notifIntent = getIntent();
-        if (notifIntent != null && notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE) != null) {
-            String notificationType = notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
+        if (notifIntent != null
+                && notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE)
+                        != null) {
+            String notificationType =
+                    notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
             switch (notificationType) {
                 case RetentionNotificationUtil.HOUR_3:
                 case RetentionNotificationUtil.HOUR_24:

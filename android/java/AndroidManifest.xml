@@ -129,7 +129,35 @@
     tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
 
 <activity
-    android:name="org.chromium.chrome.browser.playlist.PlaylistHostActivity"
+    android:name="org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistBaseActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+
+<activity
+    android:name="org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistPlayerActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+
+<activity
+    android:name="org.chromium.chrome.browser.playlist.kotlin.activity.AllPlaylistActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+
+<activity
+    android:name="org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity,DiscouragedApi"/>
+
+<activity
+    android:name="org.chromium.chrome.browser.playlist.kotlin.activity.NewPlaylistActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"
     android:configChanges="orientation|keyboardHidden|screenSize"
     android:screenOrientation="sensorPortrait"
@@ -206,13 +234,13 @@
 </service>
 
 <activity
-    android:name="com.brave.playlist.activity.PlaylistMenuOnboardingActivity"
+    android:name="org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistMenuOnboardingActivity"
     android:exported="false"
     android:launchMode="singleTask"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen" />
 
 <service
-    android:name="com.brave.playlist.playback_service.VideoPlaybackService"
+    android:name="org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService"
     android:foregroundServiceType="mediaPlayback"
     android:exported="false">
     <intent-filter>
