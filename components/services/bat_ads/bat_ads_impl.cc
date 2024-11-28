@@ -230,6 +230,10 @@ void BatAdsImpl::GetStatementOfAccounts(
   GetAds()->GetStatementOfAccounts(std::move(callback));
 }
 
+void BatAdsImpl::GetInternals(GetInternalsCallback callback) {
+  GetAds()->GetInternals(std::move(callback));
+}
+
 void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   GetAds()->GetDiagnostics(std::move(callback));
 }

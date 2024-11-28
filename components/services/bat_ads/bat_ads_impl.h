@@ -51,6 +51,8 @@ class BatAdsImpl : public mojom::BatAds {
                   InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 
+  void GetInternals(GetInternalsCallback callback) override;
+
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;

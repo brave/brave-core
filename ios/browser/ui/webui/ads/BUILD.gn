@@ -1,0 +1,36 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/config/features.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("ads") {
+  sources = [
+    "ads_internals_ui.h",
+    "ads_internals_ui.mm",
+  ]
+
+  deps = [
+    "//brave/components/brave_ads/browser/resources:generated_resources",
+    "//brave/components/constants",
+    "//brave/components/resources:static_resources",
+    "//brave/ios/browser/brave_ads",
+    "//components/prefs",
+    "//components/resources",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public/webui",
+    "//ui/base",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/core",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//ios/web/public",
+    "//mojo/public/cpp/bindings",
+    "//url",
+  ]
+}

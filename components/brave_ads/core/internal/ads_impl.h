@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/common/functional/once_closure_task_queue.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -52,6 +53,10 @@ class AdsImpl final : public Ads {
                   InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 
+  void GetInternals(GetInternalsCallback callback) override;
+
+  // TODO(https://github.com/brave/brave-browser/issues/42034): Transition
+  // diagnostics from brave://rewards-internals to brave://ads-internals.
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
@@ -136,6 +141,11 @@ class AdsImpl final : public Ads {
   void LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                      InitializeCallback callback,
                                      bool success);
+  // TODO(tmancey): Decouple.
+  void GetActiveCallback(
+      GetInternalsCallback callback,
+      bool success,
+      const CreativeSetConversionList& creative_set_conversions);
 
   bool is_initialized_ = false;
 

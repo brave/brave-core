@@ -10,13 +10,13 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 class PrefService;
 
@@ -71,10 +71,12 @@ class AdsServiceImplIOS : public AdsService {
                               bool by_user) override;
   void OnNotificationAdClicked(const std::string& placement_id) override;
 
-  void ClearData(base::OnceClosure callback) override;
+  void ClearData(ClearDataCallback callback) override;
 
   void AddBatAdsObserver(mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
                              bat_ads_observer_pending_remote) override;
+
+  void GetInternals(GetInternalsCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
@@ -168,8 +170,8 @@ class AdsServiceImplIOS : public AdsService {
 
   void ShutdownAdsCallback(ShutdownCallback callback, bool success);
 
-  void ClearAdsData(base::OnceClosure callback, bool success);
-  void ClearAdsDataCallback(base::OnceClosure callback);
+  void ClearAdsData(ClearDataCallback callback, bool success);
+  void ClearAdsDataCallback(ClearDataCallback callback);
 
   const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
 

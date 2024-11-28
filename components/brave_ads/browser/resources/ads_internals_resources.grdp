@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+   <include name="IDR_ADS_INTERNALS_HTML" file="../brave_ads/browser/resources/ads_internals.html" type="BINDATA" />
+</grit-part>
