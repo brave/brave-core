@@ -253,9 +253,9 @@ MdTextButton::~MdTextButton() = default;
 
 SkPath MdTextButton::GetHighlightPath() const {
   SkPath path;
-  float radius = GetCornerRadiusValue();
-  path.addRRect(
-      SkRRect::MakeRectXY(RectToSkRect(GetLocalBounds()), radius, radius));
+  gfx::RoundedCornersF radii = GetCornerRadii();
+  path.addRRect(SkRRect::MakeRectXY(RectToSkRect(GetLocalBounds()),
+                                    radii.upper_left(), radii.lower_right()));
   return path;
 }
 
@@ -304,8 +304,7 @@ void MdTextButton::UpdateBackgroundColor() {
 
   SetBackground(
       CreateBackgroundFromPainter(Painter::CreateRoundRectWith1PxBorderPainter(
-          colors.background_color, colors.stroke_color,
-          GetCornerRadiusValue())));
+          colors.background_color, colors.stroke_color, GetCornerRadii())));
 }
 
 void MdTextButton::UpdateColors() {
