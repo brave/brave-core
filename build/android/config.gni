@@ -122,7 +122,6 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
   "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
   "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
-  "//brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
   "//brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
