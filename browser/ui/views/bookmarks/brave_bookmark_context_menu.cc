@@ -19,7 +19,6 @@ BraveBookmarkContextMenu::BraveBookmarkContextMenu(
     Browser* browser,
     Profile* profile,
     BookmarkLaunchLocation opened_from,
-    const bookmarks::BookmarkNode* parent,
     const std::vector<
         raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>& selection,
     bool close_on_remove)
@@ -27,7 +26,6 @@ BraveBookmarkContextMenu::BraveBookmarkContextMenu(
                           browser,
                           profile,
                           opened_from,
-                          parent,
                           selection,
                           close_on_remove) {
   auto* submenu = menu()->GetMenuItemByID(IDC_BRAVE_BOOKMARK_BAR_SUBMENU);
