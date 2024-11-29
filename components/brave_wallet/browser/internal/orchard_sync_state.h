@@ -13,8 +13,8 @@
 
 #include "base/sequence_checker.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_types.h"
-#include "brave/components/brave_wallet/browser/internal/orchard_storage/zcash_orchard_storage.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
@@ -31,25 +31,25 @@ class OrchardSyncState {
   explicit OrchardSyncState(const base::FilePath& path_to_database);
   ~OrchardSyncState();
 
-  base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
+  base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error>
   RegisterAccount(const mojom::AccountIdPtr& account_id,
                   uint64_t account_birthday_block);
 
-  base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
+  base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error>
   GetAccountMeta(const mojom::AccountIdPtr& account_id);
 
-  std::optional<ZCashOrchardStorage::Error> HandleChainReorg(
+  std::optional<OrchardStorage::Error> HandleChainReorg(
       const mojom::AccountIdPtr& account_id,
       uint32_t reorg_block_id,
       const std::string& reorg_block_hash);
 
-  base::expected<std::vector<OrchardNote>, ZCashOrchardStorage::Error>
+  base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
   GetSpendableNotes(const mojom::AccountIdPtr& account_id);
 
-  base::expected<std::vector<OrchardNoteSpend>, ZCashOrchardStorage::Error>
+  base::expected<std::vector<OrchardNoteSpend>, OrchardStorage::Error>
   GetNullifiers(const mojom::AccountIdPtr& account_id);
 
-  std::optional<ZCashOrchardStorage::Error> ApplyScanResults(
+  std::optional<OrchardStorage::Error> ApplyScanResults(
       const mojom::AccountIdPtr& account_id,
       // Value is used here to allow moving scanned_blocks which wraps rust
       // object.
@@ -58,18 +58,18 @@ class OrchardSyncState {
       const std::string& latest_scanned_block_hash);
 
   // Clears sync data related to the account except it's birthday.
-  base::expected<bool, ZCashOrchardStorage::Error> ResetAccountSyncState(
+  base::expected<bool, OrchardStorage::Error> ResetAccountSyncState(
       const mojom::AccountIdPtr& account_id);
 
   // Drops underlying database.
   void ResetDatabase();
 
-  base::expected<std::vector<OrchardInput>, ZCashOrchardStorage::Error>
+  base::expected<std::vector<OrchardInput>, OrchardStorage::Error>
   CalculateWitnessForCheckpoint(const mojom::AccountIdPtr& account_id,
                                 const std::vector<OrchardInput>& notes,
                                 uint32_t checkpoint_position);
 
-  base::expected<bool, ZCashOrchardStorage::Error> Truncate(
+  base::expected<bool, OrchardStorage::Error> Truncate(
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
 
@@ -78,12 +78,12 @@ class OrchardSyncState {
 
   // Testing
   void OverrideShardTreeForTesting(const mojom::AccountIdPtr& account_id);
-  ZCashOrchardStorage* orchard_storage();
+  OrchardStorage* orchard_storage();
 
   orchard::OrchardShardTree& GetOrCreateShardTree(
       const mojom::AccountIdPtr& account_id) LIFETIME_BOUND;
 
-  std::unique_ptr<ZCashOrchardStorage> storage_;
+  std::unique_ptr<OrchardStorage> storage_;
   std::map<std::string, std::unique_ptr<orchard::OrchardShardTree>>
       shard_trees_;
 

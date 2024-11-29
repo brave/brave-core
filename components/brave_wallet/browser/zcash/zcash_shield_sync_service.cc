@@ -171,8 +171,7 @@ void ZCashShieldSyncService::GetOrCreateAccount() {
 }
 
 void ZCashShieldSyncService::OnGetAccountMeta(
-    base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
-        result) {
+    base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error> result) {
   if (result.has_value()) {
     account_meta_ = *result;
     if (account_meta_->latest_scanned_block_id.value() &&
@@ -185,7 +184,7 @@ void ZCashShieldSyncService::OnGetAccountMeta(
   }
 
   if (result.error().error_code ==
-      ZCashOrchardStorage::ErrorCode::kAccountNotFound) {
+      OrchardStorage::ErrorCode::kAccountNotFound) {
     InitAccount();
     return;
   } else {
@@ -203,8 +202,7 @@ void ZCashShieldSyncService::InitAccount() {
 }
 
 void ZCashShieldSyncService::OnAccountInit(
-    base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
-        result) {
+    base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error> result) {
   if (!result.has_value()) {
     error_ = Error{ErrorCode::kFailedToInitAccount, result.error().message};
   } else {
@@ -214,7 +212,7 @@ void ZCashShieldSyncService::OnAccountInit(
 }
 
 void ZCashShieldSyncService::VerifyChainState(
-    ZCashOrchardStorage::AccountMeta account_meta) {
+    OrchardStorage::AccountMeta account_meta) {
   if (account_meta.account_birthday < kNu5BlockUpdate) {
     error_ = Error{ErrorCode::kFailedToRetrieveAccount,
                    "Wrong birthday block height"};
@@ -246,7 +244,7 @@ void ZCashShieldSyncService::VerifyChainState(
 }
 
 void ZCashShieldSyncService::OnGetTreeStateForChainVerification(
-    ZCashOrchardStorage::AccountMeta account_meta,
+    OrchardStorage::AccountMeta account_meta,
     base::expected<zcash::mojom::TreeStatePtr, std::string> tree_state) {
   if (!tree_state.has_value() || !tree_state.value()) {
     error_ = Error{ErrorCode::kFailedToReceiveTreeState, tree_state.error()};
@@ -305,7 +303,7 @@ void ZCashShieldSyncService::OnGetTreeStateForChainReorg(
 
 void ZCashShieldSyncService::OnDatabaseUpdatedForChainReorg(
     uint32_t new_block_height,
-    std::optional<ZCashOrchardStorage::Error> error) {
+    std::optional<OrchardStorage::Error> error) {
   if (error) {
     error_ = Error{ErrorCode::kFailedToUpdateDatabase, error->message};
     ScheduleWorkOnTask();
@@ -325,8 +323,7 @@ void ZCashShieldSyncService::UpdateSpendableNotes() {
 }
 
 void ZCashShieldSyncService::OnGetSpendableNotes(
-    base::expected<std::vector<OrchardNote>, ZCashOrchardStorage::Error>
-        result) {
+    base::expected<std::vector<OrchardNote>, OrchardStorage::Error> result) {
   if (!result.has_value()) {
     error_ = Error{ErrorCode::kFailedToRetrieveSpendableNotes,
                    result.error().message};
@@ -420,7 +417,7 @@ void ZCashShieldSyncService::UpdateNotes(
 
 void ZCashShieldSyncService::UpdateNotesComplete(
     uint32_t new_latest_scanned_block,
-    std::optional<ZCashOrchardStorage::Error> error) {
+    std::optional<OrchardStorage::Error> error) {
   if (error) {
     error_ = Error{ErrorCode::kFailedToUpdateDatabase, error->message};
   } else {

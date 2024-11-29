@@ -21,7 +21,7 @@
 
 namespace brave_wallet {
 
-class ZCashOrchardStorage;
+class OrchardStorage;
 class ZCashRpc;
 class ZCashWalletService;
 
@@ -100,11 +100,11 @@ class ZCashShieldSyncService {
 
   // Setup account info
   void GetOrCreateAccount();
-  void OnGetAccountMeta(base::expected<ZCashOrchardStorage::AccountMeta,
-                                       ZCashOrchardStorage::Error> result);
+  void OnGetAccountMeta(base::expected<OrchardStorage::AccountMeta,
+                                       OrchardStorage::Error> result);
   void InitAccount();
-  void OnAccountInit(base::expected<ZCashOrchardStorage::AccountMeta,
-                                    ZCashOrchardStorage::Error> error);
+  void OnAccountInit(
+      base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error> error);
 
   // Get last known block in the blockchain
   void UpdateChainTip();
@@ -116,9 +116,9 @@ class ZCashShieldSyncService {
   // We assume that there is a limit of reorg depth - kChainReorgBlockDelta
 
   // Verifies that last known scanned block hash is unchanged
-  void VerifyChainState(ZCashOrchardStorage::AccountMeta account_meta);
+  void VerifyChainState(OrchardStorage::AccountMeta account_meta);
   void OnGetTreeStateForChainVerification(
-      ZCashOrchardStorage::AccountMeta account_meta,
+      OrchardStorage::AccountMeta account_meta,
       base::expected<zcash::mojom::TreeStatePtr, std::string> tree_state);
 
   // Resolves block hash for the block we are going to fallback
@@ -128,12 +128,12 @@ class ZCashShieldSyncService {
       base::expected<zcash::mojom::TreeStatePtr, std::string> tree_state);
   void OnDatabaseUpdatedForChainReorg(
       uint32_t new_block_height,
-      std::optional<ZCashOrchardStorage::Error> error);
+      std::optional<OrchardStorage::Error> error);
 
   // Update spendable notes state
   void UpdateSpendableNotes();
-  void OnGetSpendableNotes(base::expected<std::vector<OrchardNote>,
-                                          ZCashOrchardStorage::Error> result);
+  void OnGetSpendableNotes(
+      base::expected<std::vector<OrchardNote>, OrchardStorage::Error> result);
 
   // Download, scan, update flow
   // Download next bunch of blocks
@@ -152,7 +152,7 @@ class ZCashShieldSyncService {
                    uint32_t latest_scanned_block,
                    std::string latest_scanned_block_hash);
   void UpdateNotesComplete(uint32_t new_latest_scanned_block,
-                           std::optional<ZCashOrchardStorage::Error> error);
+                           std::optional<OrchardStorage::Error> error);
 
   ZCashRpc& zcash_rpc();
   base::SequenceBound<OrchardSyncState>& sync_state();
@@ -172,7 +172,7 @@ class ZCashShieldSyncService {
 
   std::unique_ptr<OrchardBlockScannerProxy> block_scanner_;
 
-  std::optional<ZCashOrchardStorage::AccountMeta> account_meta_;
+  std::optional<OrchardStorage::AccountMeta> account_meta_;
   // Latest scanned block
   std::optional<size_t> latest_scanned_block_;
   // Latest block in the blockchain

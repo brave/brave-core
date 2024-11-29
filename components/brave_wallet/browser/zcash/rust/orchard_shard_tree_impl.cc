@@ -12,7 +12,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_wallet/browser/internal/orchard_storage/zcash_orchard_storage.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/cxx_orchard_shard_tree_delegate.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
@@ -100,7 +100,7 @@ ShardTreeCheckpointBundle ToRust(
 }
 
 CxxOrchardShardTreeDelegate::CxxOrchardShardTreeDelegate(
-    ZCashOrchardStorage& storage,
+    OrchardStorage& storage,
     const mojom::AccountIdPtr& account_id)
     : storage_(storage), account_id_(account_id.Clone()) {}
 
@@ -333,7 +333,7 @@ OrchardShardTreeImpl::~OrchardShardTreeImpl() {}
 
 // static
 std::unique_ptr<OrchardShardTree> OrchardShardTree::Create(
-    ::brave_wallet::ZCashOrchardStorage& storage,
+    ::brave_wallet::OrchardStorage& storage,
     const mojom::AccountIdPtr& account_id) {
   auto shard_tree_result = create_shard_tree(
       std::make_unique<CxxOrchardShardTreeDelegate>(storage, account_id));

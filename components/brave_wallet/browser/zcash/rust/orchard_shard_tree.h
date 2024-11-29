@@ -14,7 +14,7 @@
 
 namespace brave_wallet {
 
-class ZCashOrchardStorage;
+class OrchardStorage;
 
 namespace orchard {
 
@@ -34,11 +34,11 @@ class OrchardShardTree {
       uint32_t checkpoint) = 0;
 
   static std::unique_ptr<OrchardShardTree> Create(
-      ::brave_wallet::ZCashOrchardStorage& storage,
+      ::brave_wallet::OrchardStorage& storage,
       const mojom::AccountIdPtr& account_id);
 
   static std::unique_ptr<OrchardShardTree> CreateForTesting(
-      ::brave_wallet::ZCashOrchardStorage& storage,
+      ::brave_wallet::OrchardStorage& storage,
       const mojom::AccountIdPtr& account_id);
 };
 

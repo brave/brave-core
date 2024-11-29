@@ -52,7 +52,7 @@ ReadSizedBlob(sql::Statement& statement, size_t position) {
 
 // Implements SQLite database to store found incoming notes,
 // nullifiers, wallet zcash accounts and commitment trees.
-class ZCashOrchardStorage {
+class OrchardStorage {
  public:
   struct AccountMeta {
     AccountMeta();
@@ -80,8 +80,8 @@ class ZCashOrchardStorage {
     std::string message;
   };
 
-  explicit ZCashOrchardStorage(const base::FilePath& path_to_database);
-  ~ZCashOrchardStorage();
+  explicit OrchardStorage(const base::FilePath& path_to_database);
+  ~OrchardStorage();
 
   base::expected<AccountMeta, Error> RegisterAccount(
       const mojom::AccountIdPtr& account_id,
@@ -99,7 +99,7 @@ class ZCashOrchardStorage {
                                         const std::string& reorg_block_hash);
   // Calculates a list of discovered spendable notes that don't have nullifiers
   // in the blockchain
-  base::expected<std::vector<OrchardNote>, ZCashOrchardStorage::Error>
+  base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
   GetSpendableNotes(const mojom::AccountIdPtr& account_id);
   // Returns a list of discovered nullifiers
   base::expected<std::vector<OrchardNoteSpend>, Error> GetNullifiers(

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/internal/orchard_storage/zcash_orchard_storage.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
 
 #include <memory>
 #include <string>
@@ -25,14 +25,14 @@ class OrchardStorageTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
-  std::unique_ptr<ZCashOrchardStorage> orchard_storage_;
+  std::unique_ptr<OrchardStorage> orchard_storage_;
 };
 
 void OrchardStorageTest::SetUp() {
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   base::FilePath db_path(
       temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
-  orchard_storage_ = std::make_unique<ZCashOrchardStorage>(db_path);
+  orchard_storage_ = std::make_unique<OrchardStorage>(db_path);
 }
 
 TEST_F(OrchardStorageTest, AccountMeta) {
@@ -62,7 +62,7 @@ TEST_F(OrchardStorageTest, AccountMeta) {
     // Failed to insert same account
     EXPECT_EQ(
         orchard_storage_->RegisterAccount(account_id_1, 200).error().error_code,
-        ZCashOrchardStorage::ErrorCode::kFailedToExecuteStatement);
+        OrchardStorage::ErrorCode::kFailedToExecuteStatement);
   }
 
   // Insert second account

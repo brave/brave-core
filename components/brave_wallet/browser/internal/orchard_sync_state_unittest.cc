@@ -51,7 +51,7 @@ class OrchardSyncStateTest : public testing::Test {
 
   OrchardSyncState* sync_state() { return sync_state_.get(); }
 
-  ZCashOrchardStorage* storage() { return sync_state_->orchard_storage(); }
+  OrchardStorage* storage() { return sync_state_->orchard_storage(); }
 
   mojom::AccountIdPtr account_id() { return account_id_.Clone(); }
 
@@ -60,7 +60,7 @@ class OrchardSyncStateTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
   mojom::AccountIdPtr account_id_;
 
-  std::unique_ptr<ZCashOrchardStorage> storage_;
+  std::unique_ptr<OrchardStorage> storage_;
   std::unique_ptr<OrchardSyncState> sync_state_;
 };
 

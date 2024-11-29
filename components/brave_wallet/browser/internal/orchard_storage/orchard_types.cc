@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_types.h"
 
-#include "brave/components/brave_wallet/browser/internal/orchard_storage/zcash_orchard_storage.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
 
 namespace brave_wallet {
 

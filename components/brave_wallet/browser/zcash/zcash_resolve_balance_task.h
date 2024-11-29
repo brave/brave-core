@@ -41,8 +41,8 @@ class ZCashResolveBalanceTask {
       base::expected<ZCashWalletService::UtxoMap, std::string> result);
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  void OnGetSpendableNotes(base::expected<std::vector<OrchardNote>,
-                                          ZCashOrchardStorage::Error> result);
+  void OnGetSpendableNotes(
+      base::expected<std::vector<OrchardNote>, OrchardStorage::Error> result);
 
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 

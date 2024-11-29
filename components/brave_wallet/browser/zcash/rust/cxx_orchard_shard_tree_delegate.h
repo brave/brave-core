@@ -12,7 +12,7 @@
 
 namespace brave_wallet {
 
-class ZCashOrchardStorage;
+class OrchardStorage;
 
 namespace orchard {
 
@@ -32,7 +32,7 @@ struct ShardTreeShardResultWrapper;
 
 class CxxOrchardShardTreeDelegate {
  public:
-  explicit CxxOrchardShardTreeDelegate(ZCashOrchardStorage& storage,
+  explicit CxxOrchardShardTreeDelegate(OrchardStorage& storage,
                                        const mojom::AccountIdPtr& account_id);
   ~CxxOrchardShardTreeDelegate();
 
@@ -64,7 +64,7 @@ class CxxOrchardShardTreeDelegate {
   ::rust::Box<CheckpointsResultWrapper> GetCheckpoints(size_t limit) const;
 
  private:
-  raw_ref<ZCashOrchardStorage> storage_;
+  raw_ref<OrchardStorage> storage_;
   ::brave_wallet::mojom::AccountIdPtr account_id_;
 };
 

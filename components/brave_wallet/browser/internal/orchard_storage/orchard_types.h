@@ -14,7 +14,7 @@
 
 namespace brave_wallet {
 
-class ZCashOrchardStorage;
+class OrchardStorage;
 
 // Leaf position of checkpoint.
 using CheckpointTreeState = std::optional<uint32_t>;
