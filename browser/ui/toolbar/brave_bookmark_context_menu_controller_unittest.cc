@@ -68,7 +68,6 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
   BookmarkContextMenuController controller(
       nullptr, nullptr, nullptr, profile_.get(),
       BookmarkLaunchLocation::kSidePanelContextMenu,
-      model_->bookmark_bar_node(),
       std::vector<
           raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>());
 
@@ -107,7 +106,7 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
 TEST_F(BraveBookmarkContextMenuControllerTest, AddBraveBookmarksSubmenu) {
   BraveBookmarkContextMenuController controller(
       nullptr, nullptr, nullptr, profile_.get(),
-      BookmarkLaunchLocation::kSidePanelFolder, model_->bookmark_bar_node(),
+      BookmarkLaunchLocation::kSidePanelFolder,
       std::vector<
           raw_ptr<const bookmarks::BookmarkNode, VectorExperimental>>());
   EXPECT_FALSE(controller.menu_model()
