@@ -27,12 +27,6 @@
         android:summaryOff="@string/text_off" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="use_sync_staging_server"
-        android:title="Use Sync staging server"
-        android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
-
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="qa_maximize_initial_ads_number"
         android:title="Maximize initial ads number"
         android:summaryOn="@string/text_on"

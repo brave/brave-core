@@ -23,8 +23,6 @@ import android.widget.EditText;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 
-import org.jni_zero.CalledByNative;
-
 import org.chromium.base.ContextUtils;
 import org.chromium.base.FileUtils;
 import org.chromium.base.Log;
@@ -56,7 +54,6 @@ import java.io.InputStream;
 public class BraveQAPreferences extends BravePreferenceFragment
         implements OnPreferenceChangeListener, BraveRewardsObserver {
     private static final String PREF_USE_REWARDS_STAGING_SERVER = "use_rewards_staging_server";
-    private static final String PREF_USE_SYNC_STAGING_SERVER = "use_sync_staging_server";
     private static final String PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER =
             "qa_maximize_initial_ads_number";
     private static final String PREF_QA_DEBUG_NTP = "qa_debug_ntp";
@@ -75,7 +72,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mLinkSubscriptionOnStaging;
     private ChromeSwitchPreference mBraveDormantFeatureEngagement;
     private ChromeSwitchPreference mIsStagingServer;
-    private ChromeSwitchPreference mIsSyncStagingServer;
     private ChromeSwitchPreference mMaximizeAdsNumber;
     private ChromeSwitchPreference mDebugNTP;
     private ChromeSwitchPreference mVlogRewards;
@@ -118,13 +114,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
         mIsStagingServer.setChecked(
                 UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                         .getBoolean(BravePref.USE_REWARDS_STAGING_SERVER));
-
-        mIsSyncStagingServer =
-                (ChromeSwitchPreference) findPreference(PREF_USE_SYNC_STAGING_SERVER);
-        if (mIsSyncStagingServer != null) {
-            mIsSyncStagingServer.setOnPreferenceChangeListener(this);
-        }
-        mIsSyncStagingServer.setChecked(isSyncStagingUsed());
 
         mMaximizeAdsNumber =
                 (ChromeSwitchPreference) findPreference(PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER);
@@ -268,7 +257,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
         } else if (PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER.equals(preference.getKey())) {
             enableMaximumAdsNumber((boolean) newValue);
         } else if (PREF_QA_DEBUG_NTP.equals(preference.getKey())
-                || PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())
                 || PREF_QA_VLOG_REWARDS.equals(preference.getKey())
                 || LinkSubscriptionUtils.PREF_LINK_SUBSCRIPTION_ON_STAGING.equals(
                         preference.getKey())
@@ -302,11 +290,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static String getPreferenceString(String preferenceName) {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         return sharedPreferences.getString(preferenceName, "");
-    }
-
-    @CalledByNative
-    public static boolean isSyncStagingUsed() {
-        return getPreferenceValue(PREF_USE_SYNC_STAGING_SERVER);
     }
 
     public static boolean shouldVlogRewards() {
