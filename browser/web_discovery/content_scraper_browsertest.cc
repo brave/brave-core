@@ -92,11 +92,6 @@ class WebDiscoveryContentScraperTest : public PlatformBrowserTest {
     return remote;
   }
 
-  std::string page_content_;
-  std::unique_ptr<ContentScraper> scraper_;
-  std::unique_ptr<base::RunLoop> run_loop_;
-
- private:
   void InitScraper() {
     server_config_loader_ = std::make_unique<ServerConfigLoader>(
         nullptr, base::FilePath(), nullptr, base::DoNothing(),
@@ -175,6 +170,10 @@ class WebDiscoveryContentScraperTest : public PlatformBrowserTest {
   net::EmbeddedTestServer test_server_{net::EmbeddedTestServer::TYPE_HTTPS};
   base::test::ScopedFeatureList scoped_features_;
   std::unique_ptr<ServerConfigLoader> server_config_loader_;
+
+  std::string page_content_;
+  std::unique_ptr<ContentScraper> scraper_;
+  std::unique_ptr<base::RunLoop> run_loop_;
 };
 
 IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RendererScrape) {
