@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveStrings
 import Combine
 import DesignSystem
@@ -456,7 +457,7 @@ class TabLocationView: UIView {
 
     if let url = url {
       if let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
-        urlDisplayLabel.isWebScheme = false
+        urlDisplayLabel.isLeftToRight = true
         urlDisplayLabel.text = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
       } else {
         // Matches LocationBarModelImpl::GetFormattedURL in Chromium (except for omitHTTP)
@@ -466,21 +467,42 @@ class TabLocationView: UIView {
         // If we can't parse the origin and the URL can't be classified via AutoCompleteClassifier
         // the URL is likely a broken deceptive URL. Example: `about:blank#https://apple.com`
         if URLOrigin(url: url).url == nil && URIFixup.getURL(url.absoluteString) == nil {
-          urlDisplayLabel.isWebScheme = false
+          urlDisplayLabel.isLeftToRight = true
           urlDisplayLabel.text = ""
         } else {
-          urlDisplayLabel.isWebScheme = ["http", "https"].contains(url.scheme ?? "")
           urlDisplayLabel.text = URLFormatter.formatURL(
             URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
             formatTypes: [
-              .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
+              .omitDefaults, .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
             ],
             unescapeOptions: .normal
           )
+
+          // The direction the string will be rendered (this happens regardless of locale!!!)
+          // In a LTR environment, Arabic will always render RTL
+          // The dominant charset based on unicode's bidirection algorithm
+          // with strong L and strong R determines how a string will be rendered
+          let isRenderedLeftToRight = url.isRenderedLeftToRight
+
+          // Determine if the URL has BOTH LTR and RTL characters.
+          // Very likely a malicious URL, but not always!
+          // URLs like: m5155.xn--mgbaiqly6b2eg.xn--ngbc5azd/ are innocent
+          let isMixedCharset = !url.isUnidirectional
+
+          var isLTR = isRenderedLeftToRight && !isMixedCharset
+          if isMixedCharset {
+            // FORCE LTR - ETLD are always the right most portion after the dot.
+            // We will force render the URL in LTR mode, so we should force clip on the left (sub-domain).
+            // RTL rendered domains will clip from the right side (sub-domain) and the ETLD will be rendered on the left.
+            isLTR = true
+          }
+
+          urlDisplayLabel.isLeftToRight =
+            !["http", "https"].contains(url.scheme ?? "") || !isLTR
         }
       }
     } else {
-      urlDisplayLabel.isWebScheme = false
+      urlDisplayLabel.isLeftToRight = true
       urlDisplayLabel.text = ""
     }
 
@@ -548,9 +570,10 @@ private class DisplayURLLabel: UILabel {
   }
 
   private var textSize: CGSize = .zero
-  private var isRightToLeft: Bool = false
-  fileprivate var isWebScheme: Bool = false {
+  fileprivate var isLeftToRight: Bool = true {
     didSet {
+      updateText()
+      updateTextSize()
       updateClippingDirection()
       setNeedsLayout()
       setNeedsDisplay()
@@ -570,11 +593,22 @@ private class DisplayURLLabel: UILabel {
       if oldValue != text {
         updateText()
         updateTextSize()
-        detectLanguageForNaturalDirectionClipping()
         updateClippingDirection()
       }
       setNeedsDisplay()
     }
+  }
+
+  private func updateTextSize() {
+    textSize = attributedText?.size() ?? .zero
+    setNeedsLayout()
+    setNeedsDisplay()
+  }
+
+  private func updateClippingDirection() {
+    // Update clipping fade direction
+    clippingFade.gradientLayer.startPoint = .init(x: isLeftToRight ? 1 : 0, y: 0.5)
+    clippingFade.gradientLayer.endPoint = .init(x: isLeftToRight ? 0 : 1, y: 0.5)
   }
 
   private func updateText() {
@@ -597,28 +631,6 @@ private class DisplayURLLabel: UILabel {
     }
   }
 
-  private func updateTextSize() {
-    textSize = attributedText?.size() ?? .zero
-    setNeedsLayout()
-    setNeedsDisplay()
-  }
-
-  private func detectLanguageForNaturalDirectionClipping() {
-    guard let text, let language = NLLanguageRecognizer.dominantLanguage(for: text) else { return }
-    switch language {
-    case .arabic, .hebrew, .persian, .urdu:
-      isRightToLeft = true
-    default:
-      isRightToLeft = false
-    }
-  }
-
-  private func updateClippingDirection() {
-    // Update clipping fade direction
-    clippingFade.gradientLayer.startPoint = .init(x: isRightToLeft || !isWebScheme ? 1 : 0, y: 0.5)
-    clippingFade.gradientLayer.endPoint = .init(x: isRightToLeft || !isWebScheme ? 0 : 1, y: 0.5)
-  }
-
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
@@ -637,7 +649,7 @@ private class DisplayURLLabel: UILabel {
     super.layoutSubviews()
 
     clippingFade.frame = .init(
-      x: isRightToLeft || !isWebScheme ? bounds.width - 20 : 0,
+      x: isLeftToRight ? bounds.width - 20 : 0,
       y: 0,
       width: 20,
       height: bounds.height
@@ -651,7 +663,7 @@ private class DisplayURLLabel: UILabel {
     var rect = rect
     if textSize.width > bounds.width {
       let delta = (textSize.width - bounds.width)
-      if !isRightToLeft && isWebScheme {
+      if !isLeftToRight {
         rect.origin.x -= delta
         rect.size.width += delta
       }
