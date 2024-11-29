@@ -44,10 +44,8 @@ extension BrowserViewController {
       }
     )
     let vpnPaywallHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView)
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      (presentedViewController as? MenuViewController)?.presentInnerMenu(vpnPaywallHostingVC)
-    } else {
-      present(UINavigationController(rootViewController: vpnPaywallHostingVC), animated: true)
+    popToBVC(isAnimated: true) { [weak self] in
+      self?.present(UINavigationController(rootViewController: vpnPaywallHostingVC), animated: true)
     }
   }
 }

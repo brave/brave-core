@@ -23,8 +23,10 @@ extension BrowserViewController {
         retryStateActive: Preferences.VPN.vpnReceiptStatus.value
           == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
         vpnProductInfo: self.vpnProductInfo,
-        displayVPNDestination: { [unowned self, unowned menuController] vc in
-          self.presentVPNPaywall(menuController: menuController, vc: vc)
+        displayVPNDestination: { [unowned self] vc in
+          self.dismiss(animated: true) {
+            self.present(UINavigationController(rootViewController: vc), animated: true)
+          }
         },
         enableInstalledVPN: { [unowned menuController] in
           // Donate Enable VPN Activity for suggestions
@@ -86,8 +88,10 @@ extension BrowserViewController {
           == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
         vpnProductInfo: self.vpnProductInfo,
         description: Strings.OptionsMenu.braveVPNItemDescription,
-        displayVPNDestination: { [unowned self, unowned menuController] vc in
-          self.presentVPNPaywall(menuController: menuController, vc: vc)
+        displayVPNDestination: { [unowned self] vc in
+          self.dismiss(animated: true) {
+            self.present(UINavigationController(rootViewController: vc), animated: true)
+          }
         },
         enableInstalledVPN: { [unowned menuController] in
           // Donate Enable VPN Activity for suggestions
@@ -347,16 +351,6 @@ extension BrowserViewController {
     }
     Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak controller] _ in
       controller?.dismiss(animated: true)
-    }
-  }
-
-  func presentVPNPaywall(menuController: MenuViewController, vc: UIViewController) {
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      menuController.presentInnerMenu(vc)
-    } else {
-      dismiss(animated: true) {
-        self.present(UINavigationController(rootViewController: vc), animated: true)
-      }
     }
   }
 

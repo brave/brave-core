@@ -1343,24 +1343,14 @@ class SettingsViewController: TableViewController {
       },
       installVPNProfile: { [weak self] in
         guard let self = self else { return }
-        // Not using `push` since we don't want the user to go back.
         self.dismiss(animated: true) {
-          self.navigationController?.setViewControllers(
-            [BraveVPNInstallViewController()],
-            animated: true
-          )
+          self.present(BraveVPNInstallViewController(), animated: true)
         }
       }
     )
 
     let vpnHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView)
-
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      vpnHostingVC.title = Strings.VPN.vpnName
-      (self.navigationController as? MenuViewController)?.presentInnerMenu(vpnHostingVC)
-    } else {
-      self.present(UINavigationController(rootViewController: vpnHostingVC), animated: true)
-    }
+    self.present(UINavigationController(rootViewController: vpnHostingVC), animated: true)
   }
 
   // MARK: - Actions
