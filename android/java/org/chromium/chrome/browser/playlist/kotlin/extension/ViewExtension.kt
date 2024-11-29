@@ -14,6 +14,8 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
 import android.view.View
 import android.view.ViewTreeObserver
+import org.chromium.chrome.browser.playlist.R
+import androidx.core.content.ContextCompat
 import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistUtils
 
 fun View.afterMeasured(f: View.() -> Unit) {
@@ -29,13 +31,13 @@ fun View.afterMeasured(f: View.() -> Unit) {
 
 fun View.showOnboardingGradientBg() {
     val colors = intArrayOf(
-        Color.parseColor("#1F1941"),
-        Color.parseColor("#241B5B"),
-        Color.parseColor("#291889"),
-        Color.parseColor("#310F99"),
-        Color.parseColor("#5B0B99"),
-        Color.parseColor("#9D159E"),
-        Color.parseColor("#CA0C7F"),
+        ContextCompat.getColor(context, R.color.playlist_onboarding_gradient_color1),
+        ContextCompat.getColor(context, R.color.playlist_onboarding_gradient_color2),
+        ContextCompat.getColor(context, R.color.playlist_onboarding_gradient_color3),
+        ContextCompat.getColor(context, R.color.playlist_onboarding_gradient_color4),
+        ContextCompat.getColor(context, R.color.playlist_onboarding_gradient_color5),
+        ContextCompat.getColor(context, R.color.playlist_onboarding_gradient_color6),
+        ContextCompat.getColor(context, R.color.playlist_onboarding_gradient_color7),
     )
     val colorPositions = floatArrayOf(0.0142f, 0.1414f, 0.3206f, 0.4944f, 0.6556f, 0.8442f, 1f)
 

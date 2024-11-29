@@ -4,3 +4,5 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_java_base_module_playlist_sources = [ "//brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsService.java" ]
+
+brave_playlist_kt_allowlist = [ "kotlin/*.kt" ]
