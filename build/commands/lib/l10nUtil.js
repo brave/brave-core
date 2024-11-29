@@ -64,6 +64,7 @@ const braveSpecificGeneratedResourcesPath = path.resolve(path.join(srcDir, 'brav
 const braveResourcesComponentsStringsPath = path.resolve(path.join(srcDir, 'brave', 'components', 'resources', 'brave_components_strings.grd'))
 const braveExtensionMessagesPath = path.resolve(path.join(srcDir, 'brave', 'components', 'brave_extension', 'extension', 'brave_extension', '_locales', 'en_US', 'messages.json'))
 const braveAndroidBraveStringsPath = path.resolve(path.join(srcDir, 'brave', 'browser', 'ui', 'android', 'strings', 'android_brave_strings.grd'))
+const braveAndroidPlaylistStringsPath = path.resolve(path.join(srcDir, 'brave', 'android', 'java', 'org', 'chromium','chrome','browser','playlist', 'android_playlist_strings.grd'))
 
 // Helper function to find all grdp parts in a grd.
 function getGrdPartsFromGrd(path) {
@@ -193,7 +194,8 @@ const l10nUtil = {
         braveSpecificGeneratedResourcesPath,
         braveResourcesComponentsStringsPath,
         braveExtensionMessagesPath,
-        braveAndroidBraveStringsPath
+        braveAndroidBraveStringsPath,
+        braveAndroidPlaylistStringsPath
       ]
     }
     return l10nUtil.getBraveNonGeneratedPaths.paths

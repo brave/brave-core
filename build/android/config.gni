@@ -88,6 +88,7 @@ brave_chrome_java_srcjar_deps = [
 brave_chrome_app_java_resources_deps = [
   "//brave/android/java/org/chromium/chrome/browser/playlist:playlist_resources",
   "//brave/build/android:android_brave_strings_grd",
+  "//brave/build/android:android_playlist_strings_grd",
   "//brave/build/android:brave_java_xml_preprocess_resources",
 ]
 
