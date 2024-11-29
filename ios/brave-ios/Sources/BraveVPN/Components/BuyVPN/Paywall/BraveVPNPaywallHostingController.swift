@@ -5,13 +5,7 @@
 
 import SwiftUI
 
-public protocol BraveVPNPaywallHostingControllerDelegate: AnyObject {
-  func deviceOrientationChanged()
-}
-
 public class BraveVPNPaywallHostingController: UIHostingController<BraveVPNPaywallView> {
-
-  public weak var delegate: BraveVPNPaywallHostingControllerDelegate?
 
   public init(paywallView: BraveVPNPaywallView) {
     super.init(rootView: paywallView)
@@ -20,14 +14,6 @@ public class BraveVPNPaywallHostingController: UIHostingController<BraveVPNPaywa
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
-  }
-
-  deinit {
-    NotificationCenter.default.removeObserver(
-      self,
-      name: UIDevice.orientationDidChangeNotification,
-      object: nil
-    )
   }
 
   public override func viewDidLoad() {
@@ -59,32 +45,15 @@ public class BraveVPNPaywallHostingController: UIHostingController<BraveVPNPaywa
     }
 
     navigationController?.navigationBar.tintColor = .white
-
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(deviceOrientationChanged),
-      name: UIDevice.orientationDidChangeNotification,
-      object: nil
-    )
   }
 
   // MARK: Actions
 
   @objc private func tappedRestore() {
-    Task { @MainActor in
-      await rootView.restorePurchase()
-    }
+    rootView.restorePurchase()
   }
 
   @objc private func tappedCancel() {
     dismiss(animated: true)
-  }
-
-  @objc func deviceOrientationChanged() {
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      dismiss(animated: true) {
-        self.delegate?.deviceOrientationChanged()
-      }
-    }
   }
 }

@@ -4,19 +4,26 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import DesignSystem
+import Preferences
 import SwiftUI
 
 struct BraveVPNPoweredBrandView: View {
-  @State var isFreeTrialAvailable: Bool
+  @ObservedObject private var freeTrialUsed = Preferences.VPN.freeTrialUsed
+  @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+  @Environment(\.verticalSizeClass) private var verticalSizeClass
 
   var body: some View {
-    VStack(alignment: UIDevice.current.orientation.isLandscape ? .leading : .center, spacing: 8) {
+    VStack(
+      alignment: (horizontalSizeClass == .compact && verticalSizeClass == .compact)
+        ? .leading : .center,
+      spacing: 8
+    ) {
       HStack(spacing: 5) {
         Text(Strings.VPN.poweredBy)
         Image(sharedName: "vpn_brand")
       }
 
-      if isFreeTrialAvailable {
+      if !freeTrialUsed.value {
         Text("\(Strings.VPN.freeTrialDetail) ")
           + Text("\(Strings.VPN.freeTrialPeriod)!")
           .underline()
@@ -31,16 +38,8 @@ struct BraveVPNPoweredBrandView: View {
 #if DEBUG
 struct BraveVPNPoweredBrandView_Previews: PreviewProvider {
   static var previews: some View {
-    @State var isNoAvailable: Bool = false
-    @State var isAvailable: Bool = true
-
     VStack {
-      BraveVPNPoweredBrandView(isFreeTrialAvailable: isNoAvailable)
-
-      Color(braveSystemName: .primitivePrimary25)
-        .frame(height: 1.0)
-
-      BraveVPNPoweredBrandView(isFreeTrialAvailable: isAvailable)
+      BraveVPNPoweredBrandView()
     }
     .background(
       Color(braveSystemName: .primitivePrimary10)

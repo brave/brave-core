@@ -59,7 +59,7 @@ struct BraveVPNTitleActionsView: View {
         .font(.subheadline)
         .foregroundColor(Color(braveSystemName: .primitiveBlurple98))
       Button(
-        action: { action() },
+        action: action,
         label: {
           Text(actionType.actionTitle)
             .font(.subheadline.weight(.semibold))

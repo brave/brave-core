@@ -43,48 +43,11 @@ extension BrowserViewController {
         }
       }
     )
-    let vpnPaywallHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView).then {
-      $0.delegate = self
-    }
-
-    if let menuVC = presentedViewController as? MenuViewController {
-
-      if UIDevice.current.userInterfaceIdiom == .pad
-        && UIDevice.current.orientation.isPortrait
-      {
-        vpnPaywallHostingVC.title = Strings.VPN.vpnName
-        menuVC.presentInnerMenu(vpnPaywallHostingVC)
-      } else {
-        let navigationController = UINavigationController(
-          rootViewController: vpnPaywallHostingVC
-        )
-        if UIDevice.current.userInterfaceIdiom == .pad {
-          if UIDevice.current.orientation.isLandscape {
-            navigationController.modalPresentationStyle = .fullScreen
-          }
-          menuVC.present(navigationController, animated: true)
-        } else {
-          self.dismiss(animated: true) {
-            self.present(navigationController, animated: true)
-          }
-        }
-      }
+    let vpnPaywallHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView)
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      (presentedViewController as? MenuViewController)?.presentInnerMenu(vpnPaywallHostingVC)
     } else {
-      let navigationViewController = UINavigationController(
-        rootViewController: vpnPaywallHostingVC
-      )
-      if UIDevice.current.userInterfaceIdiom == .pad
-        && UIDevice.current.orientation.isLandscape
-      {
-        navigationViewController.modalPresentationStyle = .fullScreen
-      }
-      present(navigationViewController, animated: true)
+      present(UINavigationController(rootViewController: vpnPaywallHostingVC), animated: true)
     }
-  }
-}
-
-extension BrowserViewController: BraveVPNPaywallHostingControllerDelegate {
-  public func deviceOrientationChanged() {
-    presentCorrespondingVPNViewController()
   }
 }

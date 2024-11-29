@@ -31,9 +31,6 @@ public struct BraveVPNEnableSettingsHeaderView: View {
 
   public var body: some View {
     VStack(spacing: 0) {
-      Rectangle()
-        .fill(.clear)
-        .frame(height: 20)
       VStack(spacing: 16) {
         Text(Strings.VPN.vpnName)
           .font(.title2).fontWeight(.semibold)
@@ -86,7 +83,7 @@ public struct BraveVPNEnableSettingsHeaderView: View {
           dismissHeaderTapped?()
         } label: {
           Image(braveSystemName: "leo.close")
-            .frame(width: 18, height: 18)
+            .font(.headline)
             .foregroundColor(.white.opacity(0.75))
             .padding(8)
         }
@@ -95,5 +92,6 @@ public struct BraveVPNEnableSettingsHeaderView: View {
         .padding(.trailing, 12)
       }
     }
+    .padding(.top, 20)
   }
 }

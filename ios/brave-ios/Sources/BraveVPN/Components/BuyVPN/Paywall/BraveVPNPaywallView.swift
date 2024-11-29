@@ -14,6 +14,7 @@ import os.log
 
 public struct BraveVPNPaywallView: View {
   @ObservedObject var iapObserverManager: BraveVPNIAPObserverManager
+  @ObservedObject private var freeTrialUsed = Preferences.VPN.freeTrialUsed
 
   private let openVPNAuthenticationInNewTab: () -> Void
   private let installVPNProfile: () -> Void
@@ -21,12 +22,13 @@ public struct BraveVPNPaywallView: View {
   @State private var selectedTierType: BraveVPNSubscriptionTier = .yearly
   @State private var availableTierTypes: [BraveVPNSubscriptionTier] = [.yearly, .monthly]
   @State private var isShowingPurchaseAlert = false
-  @State private var isFreeTrialAvailable = !Preferences.VPN.freeTrialUsed.value
   @State private var iapRestoreTimer: Task<Void, Error>?
-  @State private var orientation = UIDeviceOrientation.unknown
 
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.sizeCategory) private var sizeCategory
+  @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+  @Environment(\.verticalSizeClass) private var verticalSizeClass
+  @Environment(\.pixelLength) private var pixelLength
 
   public init(
     openVPNAuthenticationInNewTab: @escaping (() -> Void),
@@ -41,15 +43,14 @@ public struct BraveVPNPaywallView: View {
     VStack(spacing: 8.0) {
       ScrollView {
         Group {
-          if orientation.isLandscape
-            || (UIDevice.current.userInterfaceIdiom == .phone && orientation == .portraitUpsideDown)
-            || sizeCategory.isAccessibilityCategory
+          if sizeCategory.isAccessibilityCategory
+            || (horizontalSizeClass == .compact && verticalSizeClass == .regular)
           {
-            horizontalContentView
-              .padding(24.0)
-          } else {
             verticalContentView
               .padding(.horizontal, 16)
+          } else {
+            horizontalContentView
+              .padding(24.0)
           }
         }
       }
@@ -97,17 +98,6 @@ public struct BraveVPNPaywallView: View {
         installVPNProfile()
       }
     }
-    .onReceive(
-      NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
-    ) { _ in
-      let new = UIDevice.current.orientation
-      if new != .faceUp && new != .faceDown {
-        orientation = new
-      }
-    }
-    .onAppear {
-      orientation = UIDevice.current.orientation
-    }
     .onDisappear {
       iapRestoreTimer?.cancel()
     }
@@ -117,7 +107,7 @@ public struct BraveVPNPaywallView: View {
     HStack {
       VStack(alignment: .leading, spacing: 40) {
         BraveVPNPremiumUpsellView()
-        BraveVPNPoweredBrandView(isFreeTrialAvailable: isFreeTrialAvailable)
+        BraveVPNPoweredBrandView()
         Spacer()
       }
       VStack(spacing: 8.0) {
@@ -141,7 +131,7 @@ public struct BraveVPNPaywallView: View {
         .padding(.bottom, 8.0)
       separatorView
         .padding(.horizontal, -16.0)
-      BraveVPNPoweredBrandView(isFreeTrialAvailable: isFreeTrialAvailable)
+      BraveVPNPoweredBrandView()
         .padding()
       tierSelection
       BraveVPNSubscriptionActionView(
@@ -158,7 +148,7 @@ public struct BraveVPNPaywallView: View {
 
   private var separatorView: some View {
     Color(braveSystemName: .primitivePrimary25)
-      .frame(height: 1.0)
+      .frame(height: pixelLength)
   }
 
   private var tierSelection: some View {
@@ -205,9 +195,9 @@ public struct BraveVPNPaywallView: View {
               .padding()
           } else {
             Text(
-              isFreeTrialAvailable
-                ? Strings.VPN.freeTrialPeriodAction.capitalized
-                : Strings.VPN.activateSubscriptionAction.capitalized
+              freeTrialUsed.value
+                ? Strings.VPN.activateSubscriptionAction.capitalized
+                : Strings.VPN.freeTrialPeriodAction.capitalized
             )
             .font(.body.weight(.semibold))
             .foregroundColor(Color(.white))

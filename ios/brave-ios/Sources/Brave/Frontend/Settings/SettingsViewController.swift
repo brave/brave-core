@@ -1354,21 +1354,12 @@ class SettingsViewController: TableViewController {
     )
 
     let vpnHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView)
-    vpnHostingVC.delegate = self
 
-    if UIDevice.current.userInterfaceIdiom == .pad
-      && UIDevice.current.orientation.isPortrait
-    {
+    if UIDevice.current.userInterfaceIdiom == .pad {
       vpnHostingVC.title = Strings.VPN.vpnName
       (self.navigationController as? MenuViewController)?.presentInnerMenu(vpnHostingVC)
     } else {
-      let navigationController = UINavigationController(rootViewController: vpnHostingVC)
-      if UIDevice.current.userInterfaceIdiom == .pad
-        && UIDevice.current.orientation.isLandscape
-      {
-        navigationController.modalPresentationStyle = .fullScreen
-      }
-      self.present(navigationController, animated: true)
+      self.present(UINavigationController(rootViewController: vpnHostingVC), animated: true)
     }
   }
 
@@ -1392,11 +1383,5 @@ class SettingsViewController: TableViewController {
     if dataSource.sections.isEmpty { return }
     dataSource.sections[0] = Static.Section()
     Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
-  }
-}
-
-extension SettingsViewController: BraveVPNPaywallHostingControllerDelegate {
-  func deviceOrientationChanged() {
-    presentVPNPaywall()
   }
 }

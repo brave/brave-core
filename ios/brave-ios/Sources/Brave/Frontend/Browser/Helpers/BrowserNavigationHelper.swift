@@ -102,18 +102,8 @@ class BrowserNavigationHelper {
       }
     )
 
-    let vpnPaywallHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView).then {
-      $0.delegate = bvc
-    }
-    let navigationViewController = UINavigationController(
-      rootViewController: vpnPaywallHostingVC
-    )
-    if UIDevice.current.userInterfaceIdiom == .pad
-      && UIDevice.current.orientation.isLandscape
-    {
-      navigationViewController.modalPresentationStyle = .fullScreen
-    }
-    bvc?.present(navigationViewController, animated: true)
+    let vpnPaywallHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView)
+    bvc?.present(UINavigationController(rootViewController: vpnPaywallHostingVC), animated: true)
   }
 
   func openShareSheet() {

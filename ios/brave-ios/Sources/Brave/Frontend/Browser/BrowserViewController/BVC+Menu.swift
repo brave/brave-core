@@ -24,25 +24,7 @@ extension BrowserViewController {
           == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue,
         vpnProductInfo: self.vpnProductInfo,
         displayVPNDestination: { [unowned self, unowned menuController] vc in
-          vc.delegate = self
-          if UIDevice.current.userInterfaceIdiom == .pad
-            && UIDevice.current.orientation.isPortrait
-          {
-            vc.title = Strings.VPN.vpnName
-            menuController.presentInnerMenu(vc)
-          } else {
-            let navigationController = UINavigationController(rootViewController: vc)
-            if UIDevice.current.userInterfaceIdiom == .pad {
-              if UIDevice.current.orientation.isLandscape {
-                navigationController.modalPresentationStyle = .fullScreen
-              }
-              menuController.present(navigationController, animated: true)
-            } else {
-              self.dismiss(animated: true) {
-                self.present(navigationController, animated: true)
-              }
-            }
-          }
+          self.presentVPNPaywall(menuController: menuController, vc: vc)
         },
         enableInstalledVPN: { [unowned menuController] in
           // Donate Enable VPN Activity for suggestions
@@ -105,25 +87,7 @@ extension BrowserViewController {
         vpnProductInfo: self.vpnProductInfo,
         description: Strings.OptionsMenu.braveVPNItemDescription,
         displayVPNDestination: { [unowned self, unowned menuController] vc in
-          vc.delegate = self
-          if UIDevice.current.userInterfaceIdiom == .pad
-            && UIDevice.current.orientation.isPortrait
-          {
-            vc.title = Strings.VPN.vpnName
-            menuController.presentInnerMenu(vc)
-          } else {
-            let navigationController = UINavigationController(rootViewController: vc)
-            if UIDevice.current.userInterfaceIdiom == .pad {
-              if UIDevice.current.orientation.isLandscape {
-                navigationController.modalPresentationStyle = .fullScreen
-              }
-              menuController.present(navigationController, animated: true)
-            } else {
-              self.dismiss(animated: true) {
-                self.present(navigationController, animated: true)
-              }
-            }
-          }
+          self.presentVPNPaywall(menuController: menuController, vc: vc)
         },
         enableInstalledVPN: { [unowned menuController] in
           // Donate Enable VPN Activity for suggestions
@@ -383,6 +347,16 @@ extension BrowserViewController {
     }
     Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { [weak controller] _ in
       controller?.dismiss(animated: true)
+    }
+  }
+
+  func presentVPNPaywall(menuController: MenuViewController, vc: UIViewController) {
+    if UIDevice.current.userInterfaceIdiom == .pad {
+      menuController.presentInnerMenu(vc)
+    } else {
+      dismiss(animated: true) {
+        self.present(UINavigationController(rootViewController: vc), animated: true)
+      }
     }
   }
 
