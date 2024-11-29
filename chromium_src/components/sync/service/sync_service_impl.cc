@@ -11,11 +11,6 @@
 #include "components/sync/base/command_line_switches.h"
 #include "components/sync/base/sync_util.h"
 
-#if BUILDFLAG(IS_ANDROID)
-#include "base/android/jni_android.h"
-#include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
-#endif
-
 namespace syncer {
 
 GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
@@ -52,16 +47,6 @@ GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
                      << value;
       }
     }
-  }
-#else
-  const char kBraveSyncServiceStagingURL[] =
-      "https://sync-v2.bravesoftware.com/v2";
-
-  JNIEnv* env = base::android::AttachCurrentThread();
-  bool b_use_staging_sync_server =
-      Java_BraveQAPreferences_isSyncStagingUsed(env);
-  if (b_use_staging_sync_server) {
-    return GURL(kBraveSyncServiceStagingURL);
   }
 #endif
 
