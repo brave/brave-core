@@ -233,10 +233,6 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [34710],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ads_internals/ads_internals.grd": {
-    "META": {"sizes": {"includes": [10]}},
-    "includes": [34710],
-  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_site_distiller/ai_chat_site_distiller.grd": {
     "META": {"sizes": {"includes": [50]}},
     "includes": [34720],
