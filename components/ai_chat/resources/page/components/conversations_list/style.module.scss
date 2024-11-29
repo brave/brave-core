@@ -35,7 +35,7 @@
 
 .navItemActive {
   background: var(--leo-color-container-background);
-  border-radius: 8px;
+  border-radius: var(--leo-radius-m);
   transition: all 0.2s ease-out allow-discrete;
 }
 
