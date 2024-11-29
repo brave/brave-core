@@ -328,6 +328,11 @@ class Tab: NSObject {
   /// This allows us to rollback the upgrade when we encounter a 4xx+
   var upgradedHTTPSRequest: URLRequest?
 
+  /// This is a timer that's started on HTTPS upgrade
+  /// If the upgrade hasn't completed within 3s, it is cancelled
+  /// and we fallback to HTTP or cancel the request (strict vs. standard)
+  var upgradeHTTPSTimeoutTimer: Timer?
+
   /// The tabs new tab page controller.
   ///
   /// Should be setup in BVC then assigned here for future use.
