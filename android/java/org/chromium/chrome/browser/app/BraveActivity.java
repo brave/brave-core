@@ -1042,7 +1042,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         BraveHelper.maybeMigrateSettings();
 
-        PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar();
+        PrefChangeRegistrar mPrefChangeRegistrar = new PrefChangeRegistrar(getCurrentProfile());
         mPrefChangeRegistrar.addObserver(BravePref.SCHEDULED_CAPTCHA_ID, this);
 
         if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
