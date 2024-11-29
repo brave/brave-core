@@ -44,13 +44,10 @@ struct HistoryItemView: View {
             forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
           )
         )
-        .truncationMode(.tail)
         .font(.footnote)
         .frame(maxWidth: .infinity, alignment: .leading)
         .fixedSize(horizontal: false, vertical: true)
         .foregroundStyle(Color(braveSystemName: .textSecondary))
-        .environment(\.layoutDirection, .leftToRight)
-        .flipsForRightToLeftLayoutDirection(false)
       }
     }
   }
