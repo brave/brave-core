@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.PopupMenu;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
@@ -43,8 +44,10 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.components.bookmarks.BookmarkId;
+import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.util.ColorUtils;
+import org.chromium.url.GURL;
 
 import java.lang.reflect.Field;
 
@@ -345,5 +348,29 @@ public class TabUtils {
             return transition;
         }
         return 0;
+    }
+
+    /**
+     * Returns {@code true} when current tab URL matches the URL of a
+     * YouTube video. Current tab or current tab URL might be {@code null}
+     * if the model is not initialized yet.
+     * @param currentTab Current tab holding the URL to check.
+     * @return {@code true} if the current tab URL matches the URL of a
+     *         YouTube video, {@code false} otherwise.
+     */
+    public static boolean isYouTubeVideo(@Nullable final Tab currentTab) {
+        if (currentTab == null || currentTab.getUrl() == null) {
+            return false;
+        }
+        final GURL url = currentTab.getUrl();
+        if (!GURL.isEmptyOrInvalid(url)
+                && url.domainIs(BraveConstants.YOUTUBE_DOMAIN)
+                && url.getPath() != null
+                && url.getPath().equalsIgnoreCase("/watch")
+                && url.getQuery() != null) {
+            String videoId = UrlUtilities.getValueForKeyInQuery(url, "v");
+            return videoId != null && videoId.trim().length() > 0;
+        }
+        return false;
     }
 }

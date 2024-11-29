@@ -62,6 +62,7 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
+import org.chromium.chrome.browser.util.TabUtils;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -523,9 +524,7 @@ public abstract class BraveActivity extends ChromeActivity
         super.onUserLeaveHint();
         if (isActivityFinishingOrDestroyed()) return;
         Tab currentTab = getActivityTab();
-        if (currentTab != null
-                && currentTab.getUrl() != null
-                && isYTVideoUrl(currentTab.getUrl())
+        if (TabUtils.isYouTubeVideo(currentTab)
                 && !isInPictureInPictureMode()
                 && BackgroundVideoPlaybackTabHelper.isPlayingMedia(currentTab.getWebContents())) {
             BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
@@ -542,25 +541,11 @@ public abstract class BraveActivity extends ChromeActivity
         super.performOnConfigurationChanged(newConfig);
 
         Tab currentTab = getActivityTab();
-        if (currentTab != null
-                && currentTab.getUrl() != null
-                && isYTVideoUrl(currentTab.getUrl())
+        if (TabUtils.isYouTubeVideo(currentTab)
                 && !isInPictureInPictureMode()
                 && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
         }
-    }
-
-    private boolean isYTVideoUrl(GURL url) {
-        if (!GURL.isEmptyOrInvalid(url)
-                && url.domainIs(BraveConstants.YOUTUBE_DOMAIN)
-                && url.getPath() != null
-                && url.getPath().equalsIgnoreCase("/watch")
-                && url.getQuery() != null) {
-            String videoId = UrlUtilities.getValueForKeyInQuery(url, "v");
-            return videoId != null && videoId.trim().length() > 0;
-        }
-        return false;
     }
 
     /**
