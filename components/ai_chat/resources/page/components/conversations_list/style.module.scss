@@ -28,7 +28,7 @@
 
 .navItem {
   all: unset;
-  border-radius: 8px;
+  border-radius: var(--leo-radius-m);
   display: block;
   font: var(--leo-font-default-regular);
 }
