@@ -56,17 +56,6 @@ class WebDiscoveryDoubleFetcherTest : public testing::Test {
     url_loader_factory_.AddResponse(kTestUrl, kTestResponseText, status);
   }
 
-  base::test::TaskEnvironment task_environment_;
-  struct CompletedFetch {
-    GURL url;
-    base::Value associated_data;
-    std::optional<std::string> response_body;
-  };
-  std::unique_ptr<DoubleFetcher> double_fetcher_;
-  std::vector<CompletedFetch> completed_fetches_;
-  network::TestURLLoaderFactory url_loader_factory_;
-
- private:
   void HandleDoubleFetch(const GURL& url,
                          const base::Value& associated_data,
                          std::optional<std::string> response_body) {
@@ -76,8 +65,18 @@ class WebDiscoveryDoubleFetcherTest : public testing::Test {
                        .response_body = response_body});
   }
 
+  base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple profile_prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+
+  struct CompletedFetch {
+    GURL url;
+    base::Value associated_data;
+    std::optional<std::string> response_body;
+  };
+  std::unique_ptr<DoubleFetcher> double_fetcher_;
+  std::vector<CompletedFetch> completed_fetches_;
+  network::TestURLLoaderFactory url_loader_factory_;
 };
 
 TEST_F(WebDiscoveryDoubleFetcherTest, ScheduleAndFetch) {

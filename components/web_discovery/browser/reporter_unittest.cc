@@ -112,13 +112,6 @@ class WebDiscoveryReporterTest : public testing::Test {
     return payload;
   }
 
-  base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<Reporter> reporter_;
-  TestCredentialSigner credential_signer_;
-  size_t report_requests_made_ = 0;
-  net::HttpStatusCode submit_status_code_ = net::HTTP_OK;
-
- private:
   void HandleRequest(const network::ResourceRequest& request) {
     url_loader_factory_.ClearResponses();
 
@@ -145,10 +138,16 @@ class WebDiscoveryReporterTest : public testing::Test {
     report_requests_made_++;
   }
 
-  std::unique_ptr<ServerConfigLoader> server_config_loader_;
+  base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple profile_prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<ServerConfigLoader> server_config_loader_;
+
+  std::unique_ptr<Reporter> reporter_;
+  TestCredentialSigner credential_signer_;
+  size_t report_requests_made_ = 0;
+  net::HttpStatusCode submit_status_code_ = net::HTTP_OK;
 };
 
 TEST_F(WebDiscoveryReporterTest, BasicReport) {
