@@ -87,7 +87,7 @@ struct OrchardShard {
   std::optional<OrchardShardRootHash> root_hash;
   std::vector<uint8_t> shard_data;
   // Right-most position of the subtree leaf.
-  size_t subtree_end_height = 0;
+  uint32_t subtree_end_height = 0;
 };
 
 struct OrchardCommitment {

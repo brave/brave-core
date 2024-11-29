@@ -16,7 +16,6 @@ namespace brave_wallet::orchard {
 
 class OrchardDecodedBlocksBundleImpl : public OrchardDecodedBlocksBundle {
  public:
-  explicit OrchardDecodedBlocksBundleImpl(rust::Box<BatchOrchardDecodeBundle>);
   ~OrchardDecodedBlocksBundleImpl() override;
 
   std::optional<std::vector<::brave_wallet::OrchardNote>> GetDiscoveredNotes()
@@ -24,6 +23,9 @@ class OrchardDecodedBlocksBundleImpl : public OrchardDecodedBlocksBundle {
   BatchOrchardDecodeBundle& GetDecodeBundle();
 
  private:
+  friend class OrchardBlockDecoderImpl;
+  friend class TestingDecodedBundleBuilderImpl;
+  explicit OrchardDecodedBlocksBundleImpl(rust::Box<BatchOrchardDecodeBundle>);
   rust::Box<BatchOrchardDecodeBundle> batch_decode_result_;
 };
 

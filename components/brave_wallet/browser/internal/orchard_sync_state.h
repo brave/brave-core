@@ -28,7 +28,7 @@ class OrchardShardTree;
 // commitment tree, which is used to sign notes for spending.
 class OrchardSyncState {
  public:
-  explicit OrchardSyncState(base::FilePath path_to_database);
+  explicit OrchardSyncState(const base::FilePath& path_to_database);
   ~OrchardSyncState();
 
   base::expected<ZCashOrchardStorage::AccountMeta, ZCashOrchardStorage::Error>
@@ -51,7 +51,9 @@ class OrchardSyncState {
 
   std::optional<ZCashOrchardStorage::Error> ApplyScanResults(
       const mojom::AccountIdPtr& account_id,
-      OrchardBlockScanner::Result&& block_scanner_results,
+      // Value is used here to allow moving scanned_blocks which wraps rust
+      // object.
+      OrchardBlockScanner::Result block_scanner_results,
       const uint32_t latest_scanned_block,
       const std::string& latest_scanned_block_hash);
 
@@ -79,11 +81,10 @@ class OrchardSyncState {
   ZCashOrchardStorage* orchard_storage();
 
   orchard::OrchardShardTree& GetOrCreateShardTree(
-      const mojom::AccountIdPtr& account_id);
+      const mojom::AccountIdPtr& account_id) LIFETIME_BOUND;
 
   std::unique_ptr<ZCashOrchardStorage> storage_;
-  std::map<mojom::AccountIdPtr,
-           std::unique_ptr<::brave_wallet::orchard::OrchardShardTree>>
+  std::map<std::string, std::unique_ptr<orchard::OrchardShardTree>>
       shard_trees_;
 
   SEQUENCE_CHECKER(sequence_checker_);
