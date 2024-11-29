@@ -663,8 +663,8 @@ TEST(HDKeyUnitTest, SignDer) {
   std::unique_ptr<HDKey> hdkey =
       HDKey::GenerateFromPrivateKey(private_key_bytes);
 
-  std::string message = "Very deterministic message";
-  auto hashed = DoubleSHA256Hash(base::as_byte_span(message));
+  auto hashed = DoubleSHA256Hash(
+      base::byte_span_from_cstring("Very deterministic message"));
 
   auto signature = hdkey->SignDer(hashed);
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/test/key_tests.cpp#L141

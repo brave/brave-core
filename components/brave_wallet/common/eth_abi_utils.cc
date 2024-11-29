@@ -63,14 +63,6 @@ std::optional<size_t> BytesToSize(Span32 data) {
   return static_cast<size_t>(result);
 }
 
-std::optional<Span32> ToSpan32(Span data) {
-  if (data.size() != kRowLength) {
-    return std::nullopt;
-  }
-
-  return UNSAFE_TODO(Span32(data.data(), kRowLength));
-}
-
 Span ExtractRows(Span data, size_t row, size_t row_count) {
   if (data.size() % kRowLength) {
     return {};
@@ -87,7 +79,7 @@ Span ExtractRows(Span data, size_t row, size_t row_count) {
 }
 
 std::optional<Span32> ExtractRow(Span data, size_t row) {
-  return ToSpan32(ExtractRows(data, row, 1));
+  return ExtractRows(data, row, 1).to_fixed_extent<kRowLength>();
 }
 
 bool CheckPadding(Span data, size_t padded_data_size) {
@@ -130,7 +122,7 @@ std::pair<std::optional<size_t>, Span> ExtractArrayInfo(Span data) {
 }
 
 EthAddress ExtractAddress(Span address_encoded) {
-  auto span32 = ToSpan32(address_encoded);
+  auto span32 = address_encoded.to_fixed_extent<kRowLength>();
   if (!span32) {
     return EthAddress();
   }
@@ -374,13 +366,11 @@ ExtractFixedBytesFromTuple(Span data, size_t fixed_size, size_t tuple_pos) {
   return base::ToVector(head->first(fixed_size));
 }
 
-// NOLINTNEXTLINE(runtime/references)
 size_t AppendEmptyRow(std::vector<uint8_t>& destination) {
   destination.resize(destination.size() + kRowLength, 0);
   return kRowLength;
 }
 
-// NOLINTNEXTLINE(runtime/references)
 size_t AppendRow(std::vector<uint8_t>& destination, uint256_t value) {
   // Append 32 bytes.
   destination.resize(destination.size() + kRowLength, 0);
@@ -389,7 +379,6 @@ size_t AppendRow(std::vector<uint8_t>& destination, uint256_t value) {
   return kRowLength;
 }
 
-// NOLINTNEXTLINE(runtime/references)
 size_t AppendRow(std::vector<uint8_t>& destination, Span32 value) {
   DCHECK_EQ(value.size(), kRowLength);
   // Append 32 bytes.
@@ -400,7 +389,6 @@ size_t AppendRow(std::vector<uint8_t>& destination, Span32 value) {
   return kRowLength;
 }
 
-// NOLINTNEXTLINE(runtime/references)
 size_t AppendBytesWithPadding(std::vector<uint8_t>& destination, Span bytes) {
   auto padded_size = PaddedSize(bytes.size());
   destination.resize(destination.size() + padded_size);
@@ -409,7 +397,6 @@ size_t AppendBytesWithPadding(std::vector<uint8_t>& destination, Span bytes) {
   return padded_size;
 }
 
-// NOLINTNEXTLINE(runtime/references)
 size_t AppendBytes(std::vector<uint8_t>& destination, Span bytes) {
   size_t total_added_bytes = 0;
   total_added_bytes += AppendRow(destination, bytes.size());
@@ -564,10 +551,8 @@ void TupleEncoder::EncodeTo(std::vector<uint8_t>& destination) const {
   }
 }
 
-Type::Type(TypeKind kind)
-    : kind(kind), m(std::nullopt), array_type(nullptr), tuple_types() {}
-Type::Type(TypeKind kind, size_t m)
-    : kind(kind), m(m), array_type(nullptr), tuple_types() {}
+Type::Type(TypeKind kind) : kind(kind), m(std::nullopt) {}
+Type::Type(TypeKind kind, size_t m) : kind(kind), m(m) {}
 Type::~Type() = default;
 Type::Type(Type&& other) noexcept
     : kind(other.kind),

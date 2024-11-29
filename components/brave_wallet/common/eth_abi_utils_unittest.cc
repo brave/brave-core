@@ -197,13 +197,13 @@ TEST(EthAbiUtilsTest, ExtractAddress) {
     // Zero address.
     auto bytes = ToBytes(
         "0000000000000000000000000000000000000000000000000000000000000000");
-    EXPECT_EQ(ExtractAddress(base::span(bytes)).ToHex(),
+    EXPECT_EQ(ExtractAddress(bytes).ToHex(),
               "0x0000000000000000000000000000000000000000");
   }
 
   {  // Empty.
     auto bytes = std::vector<uint8_t>{};
-    EXPECT_TRUE(ExtractAddress(base::span(bytes)).IsEmpty());
+    EXPECT_TRUE(ExtractAddress(bytes).IsEmpty());
   }
 }
 
