@@ -208,5 +208,5 @@ android_resources("playlist_resources") {
     "res/values/playlist_styles.xml",
     "res/xml/brave_playlist_preferences.xml",
   ]
-  deps = [ "//brave/build/android:android_brave_strings_grd" ]
+  deps = [ "//brave/build/android:android_playlist_strings_grd" ]
 }
