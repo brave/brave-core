@@ -373,6 +373,8 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
     SCOPED_CRASH_KEY_STRING64(
         "BraveShieldsSettings", "frame_origin",
         url::Origin(frame->GetSecurityOrigin()).GetDebugString(false));
+    SCOPED_CRASH_KEY_BOOL("BraveShieldsSettings", "has_cs_rules",
+                          HasContentSettingsRules());
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
         farbling_level, base::Token(), std::vector<std::string>(), false);

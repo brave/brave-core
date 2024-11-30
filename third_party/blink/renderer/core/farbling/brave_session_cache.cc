@@ -236,7 +236,7 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
     default_shields_settings_ = settings_client->GetBraveShieldsSettings(
         ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
     if (!default_shields_settings_) {
-      base::debug::Alias(settings_client);
+      DEBUG_ALIAS_FOR_OBJECT(settings_client_alias, settings_client);
       base::debug::DumpWithoutCrashing();
       default_shields_settings_ = brave_shields::mojom::ShieldsSettings::New();
     }
