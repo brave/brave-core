@@ -28,8 +28,10 @@ function distillBranchesTable(table: HTMLTableElement) {
     'pull request': (cell: HTMLTableCellElement) => {
       const link = cell.querySelector('a')
       const href = link?.getAttribute('href')
-      const aria = link?.getAttribute('aria-label')
-      const state = aria?.match(/(\w+) pull request/)![1]
+      // We can infer the state from the presence and type of icon
+      const state = link
+        ?.querySelector<HTMLElement>('[data-testid$="-pull-request-icon"]')
+        ?.dataset.testid?.split('-')[0]
       if (href && state) {
         return { href, state }
       }
