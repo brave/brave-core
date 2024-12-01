@@ -4,7 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
+import json
 import os
+import re
 
 import override_utils
 
@@ -56,8 +58,6 @@ def main(original_function, argv):
     manifest_path = os.path.join(args.gen_dir,
                                  f'{args.output_suffix}_manifest.json')
     if os.path.exists(manifest_path):
-        import json
-        import re
         manifest = json.load(open(manifest_path))
 
         preprocess_dir = os.path.join(args.gen_dir, 'preprocessed')
