@@ -28,23 +28,14 @@
 
 .navItem {
   all: unset;
-
+  border-radius: var(--leo-radius-m);
   display: block;
-
   font: var(--leo-font-default-regular);
-  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-  border-radius: 8px;
-  position: relative;
-  transition: all 0.2s ease-out allow-discrete;
-
-  &:hover {
-    background: var(--leo-color-container-highlight);
-    box-shadow: var(--leo-effect-elevation-01);
-  }
 }
 
 .navItemActive {
   background: var(--leo-color-container-background);
+  border-radius: var(--leo-radius-m);
   transition: all 0.2s ease-out allow-discrete;
 }
 
@@ -65,9 +56,19 @@
 }
 
 .displayTitle {
-  width: 100%;
+  border-radius: var(--leo-radius-m);
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  position: relative;
+  transition: all 0.2s ease-out allow-discrete;
+  width: 100%;
+
+  &:hover {
+    background: var(--leo-color-container-highlight);
+    box-shadow: var(--leo-effect-elevation-01);
+  }
 }
 
 .displayTitleContent {
