@@ -44,6 +44,13 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
     <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.conversationTitle}>
+          {aiChatContext.isMobile && aiChatContext.isStandalone && <Button
+            fab
+            kind='plain-faint'
+            onClick={aiChatContext.toggleSidebar}
+          >
+            <Icon name='hamburger-menu' />
+          </Button>}
           {!isTabAssociated && !aiChatContext.isStandalone && <Button
             kind='plain-faint'
             fab
@@ -110,6 +117,13 @@ export function NavigationHeader() {
 
   return (
     <div className={styles.header}>
+      {aiChatContext.isMobile && <Button
+        fab
+        kind='plain-faint'
+        onClick={aiChatContext.toggleSidebar}
+      >
+        <Icon name='hamburger-menu' />
+      </Button>}
       <div className={styles.logoBody}>
         <div className={styles.divider} />
         <Logo isPremium={aiChatContext.isPremiumUser} />

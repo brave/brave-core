@@ -8,14 +8,20 @@
   border-bottom: 1px solid var(--leo-color-divider-subtle);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   min-height: 60px;
+
+  & leo-button {
+    flex-grow: 0;
+  }
 }
 
 .actions {
   --leo-icon-size: 20px;
   --gap: 12px;
+  flex-grow: 1;
   display: flex;
+  justify-content: end;
   align-items: center;
   color: var(--leo-color-icon-default);
   gap: var(--gap);
@@ -61,6 +67,10 @@
   align-items: center;
   gap: 16px;
   padding-left: 36px;
+
+  aside & {
+    padding-left: 16px;
+  }
 }
 
 .conversationTitle {

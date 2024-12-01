@@ -6,8 +6,8 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import useMediaQuery from '$web-common/useMediaQuery'
-import { useAIChat } from '../../state/ai_chat_context'
+import classNames from '$web-common/classnames'
+import { useAIChat, useIsSmall } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import ConversationsList from '../conversations_list'
 import { NavigationHeader } from '../header'
@@ -22,7 +22,7 @@ export default function FullScreen() {
 
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
-  const isSmall = useMediaQuery('(max-width: 1024px)')
+  const isSmall = useIsSmall()
   const [isNavigationCollapsed, setIsNavigationCollapsed] = React.useState(isSmall)
   const [isNavigationRendered, setIsNavigationRendered] = React.useState(!isSmall)
 
@@ -94,14 +94,21 @@ export default function FullScreen() {
 
   }, [isSmall])
 
+  React.useEffect(() => {
+    const isOpen = asideAnimationRef.current?.playbackRate === 1
+    if (isOpen !== aiChatContext.showSidebar) {
+      toggleAside()
+    }
+  }, [aiChatContext.showSidebar])
+
   return (
-    <div className={styles.fullscreen}>
+    <div className={classNames(styles.fullscreen, aiChatContext.isMobile && styles.mobile)}>
       <div className={styles.left}>
-        <div className={styles.controls}>
+        {!aiChatContext.isMobile && <div className={styles.controls}>
           <Button
             fab
             kind='plain-faint'
-            onClick={toggleAside}
+            onClick={() => aiChatContext.toggleSidebar()}
           >
             <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
           </Button>
@@ -116,7 +123,7 @@ export default function FullScreen() {
               </Button>
             </>
           )}
-        </div>
+        </div>}
         <aside
           ref={initAsideAnimation}
           className={styles.aside}
