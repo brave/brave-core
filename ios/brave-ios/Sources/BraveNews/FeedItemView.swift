@@ -357,7 +357,7 @@ extension FeedItemView {
           return 36.0
         }
       }
-      return _height(for: .stack(root))
+      return max(0, _height(for: .stack(root)))
     }
 
     /// Defines a feed item layout where the thumbnail resides on top taking up
