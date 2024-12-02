@@ -28,4 +28,13 @@
     <color name="player_seekbar_text_color">#C2C4CF</color>
     <color name="player_control_bg">#4D000000</color>
     <color name="playlist_reset_text_color">#FF4B6A</color>
+
+    <!-- Playlist onboarding gradient colors -->
+    <color name="playlist_onboarding_gradient_color1">#1F1941</color>
+    <color name="playlist_onboarding_gradient_color2">#241B5B</color>
+    <color name="playlist_onboarding_gradient_color3">#291889</color>
+    <color name="playlist_onboarding_gradient_color4">#310F99</color>
+    <color name="playlist_onboarding_gradient_color5">#5B0B99</color>
+    <color name="playlist_onboarding_gradient_color6">#9D159E</color>
+    <color name="playlist_onboarding_gradient_color7">#CA0C7F</color>
 </resources>
