@@ -7,10 +7,11 @@ import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js';
 import { loadTimeData } from '//resources/js/load_time_data.js';
 
 import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
-import { getHtml } from './br_toolbar.html.js';
-import { getCss } from './br_toolbar.css.js';
+import { getHtml } from './cr_toolbar.html.js';
+import { getCss } from './cr_toolbar.css.js';
 
-import './br_toolbar_search_field.js'
+import './cr_toolbar_search_field.js'
+import type { CrToolbarSearchFieldElement } from './cr_toolbar_search_field.js'
 
 const customCurrentWebUINameMap: { [key: string]: string } = {
   extensions: 'settings',
@@ -19,7 +20,7 @@ const customCurrentWebUINameMap: { [key: string]: string } = {
 
 export interface CrToolbarElement {
   $: {
-    search: HTMLElement
+    search: CrToolbarSearchFieldElement
   }
 }
 
@@ -94,7 +95,11 @@ export class CrToolbarElement extends CrLitElement {
 
       fontsLoadedClassName: {
         type: String
-      }
+      },
+
+      alwaysShowLogo: { type: Boolean, reflect: true },
+      searchIconOverride: { type: String },
+      searchInputAriaDescription: { type: String },
     }
   }
 
@@ -115,6 +120,10 @@ export class CrToolbarElement extends CrLitElement {
   showRewardsButton = true
   isBraveWalletAllowed_ = loadTimeData.getBoolean('brToolbarShowRewardsButton')
 
+  alwaysShowLogo = false
+  searchIconOverride?: string
+  searchInputAriaDescription = ''
+
   // Localized strings:
   historyTitle = loadTimeData.getString('brToolbarHistoryTitle')
   settingsTitle = loadTimeData.getString('brToolbarSettingsTitle')
@@ -130,8 +139,8 @@ export class CrToolbarElement extends CrLitElement {
   fontsLoadedClassName = ''
 
   // Slotted content
-  toolbarExtraSlot: HTMLSlotElement
-  toolbarExtraElement: Element
+  toolbarExtraSlot: HTMLSlotElement | null = null
+  toolbarExtraElement: Element | null = null
 
   override willUpdate(changedProperties: PropertyValues<this>) {
     super.updated(changedProperties);
@@ -186,7 +195,7 @@ export class CrToolbarElement extends CrLitElement {
     let currentWebUIName = document.location.hostname
     // override name from hostname, if applicable
     if (customCurrentWebUINameMap[currentWebUIName])
-      currentWebUIName = customCurrentWebUINameMap[currentWebUIName]
+      currentWebUIName = customCurrentWebUINameMap[currentWebUIName]!
 
     if (itemName === currentWebUIName)
       return '-selected'
@@ -195,12 +204,12 @@ export class CrToolbarElement extends CrLitElement {
   }
 
   notifyIfExtraSlotFilled() {
-    const slotIsFilled = this.toolbarExtraSlot.assignedNodes().length !== 0
+    const slotIsFilled = this.toolbarExtraSlot?.assignedNodes().length !== 0
     const classNameFilled = '-slot-filled'
     if (slotIsFilled) {
-      this.toolbarExtraElement.classList.add(classNameFilled)
+      this.toolbarExtraElement?.classList.add(classNameFilled)
     } else {
-      this.toolbarExtraElement.classList.remove(classNameFilled)
+      this.toolbarExtraElement?.classList.remove(classNameFilled)
     }
   }
 
@@ -252,6 +261,12 @@ export class CrToolbarElement extends CrLitElement {
 
   setFontsAreLoaded() {
     this.fontsLoadedClassName = 'fonts-loaded'
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'cr-toolbar': CrToolbarElement;
   }
 }
 

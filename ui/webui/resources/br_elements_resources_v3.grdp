@@ -13,16 +13,4 @@
          use_base_dir="false"
          type="BINDATA"
          compress="gzip" />
-  <include name="IDR_BR_ELEMENTS_BR_TOOLBAR_BR_TOOLBAR_JS"
-         file="${root_gen_dir}/brave/ui/webui/resources/br_elements/br_toolbar/br_toolbar.html.js"
-         resource_path="br_elements/br_toolbar/br_toolbar.html.js"
-         use_base_dir="false"
-         type="BINDATA"
-         compress="gzip" />
-  <include name="IDR_BR_ELEMENTS_BR_TOOLBAR_BR_TOOLBAR_SEARCH_FIELD_JS"
-         file="${root_gen_dir}/brave/ui/webui/resources/br_elements/br_toolbar/br_toolbar_search_field.html.js"
-         resource_path="br_elements/br_toolbar/br_toolbar_search_field.html.js"
-         use_base_dir="false"
-         type="BINDATA"
-         compress="gzip" />
 </grit-part>

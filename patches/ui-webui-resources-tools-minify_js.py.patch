@@ -1,0 +1,11 @@
+diff --git a/ui/webui/resources/tools/minify_js.py b/ui/webui/resources/tools/minify_js.py
+index e484efaf58f74..9bbe58c7f23c4 100755
+--- a/ui/webui/resources/tools/minify_js.py
++++ b/ui/webui/resources/tools/minify_js.py
+@@ -74,5 +74,6 @@ def main(argv):
+     json.dump(manifest_data, manifest_file)
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   main(sys.argv[1:])

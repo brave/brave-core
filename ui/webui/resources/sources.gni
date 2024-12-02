@@ -3,17 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# These cr_elements will be replaced by a custom override, conforming to the
-# same interface. It's intended to allow us to provide a compatibility layer
-# for Nala components.
-# Make sure you also override the files in
-# chromium_src/ui/resources/grit/webui_resources.h so the overrides work in
-# Debug builds.
-brave_override_cr_elements = [
-  "cr_toggle",
-  "cr_button",
-]
-
 # Extra GRDPs to give //ui/webui/resources:build_grd
 # (which generates //ui/webui/resources/webui_generated_resources.grd)
 
