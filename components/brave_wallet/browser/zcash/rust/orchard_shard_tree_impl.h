@@ -15,7 +15,7 @@
 
 namespace brave_wallet::orchard {
 
-struct OrchardShardTreeBundle;
+struct CxxOrchardShardTreeBundle;
 
 class OrchardShardTreeImpl : public OrchardShardTree {
  public:
@@ -33,8 +33,8 @@ class OrchardShardTreeImpl : public OrchardShardTree {
  private:
   friend class OrchardShardTree;
   explicit OrchardShardTreeImpl(
-      rust::Box<OrchardShardTreeBundle> orcard_shard_tree);
-  ::rust::Box<OrchardShardTreeBundle> orhcard_shard_tree_;
+      rust::Box<CxxOrchardShardTreeBundle> orcard_shard_tree);
+  ::rust::Box<CxxOrchardShardTreeBundle> orhcard_shard_tree_;
 };
 
 }  // namespace brave_wallet::orchard

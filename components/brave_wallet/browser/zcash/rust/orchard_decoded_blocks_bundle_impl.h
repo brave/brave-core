@@ -20,13 +20,14 @@ class OrchardDecodedBlocksBundleImpl : public OrchardDecodedBlocksBundle {
 
   std::optional<std::vector<::brave_wallet::OrchardNote>> GetDiscoveredNotes()
       override;
-  BatchOrchardDecodeBundle& GetDecodeBundle();
+  CxxBatchOrchardDecodeBundle& GetDecodeBundle();
 
  private:
   friend class OrchardBlockDecoder;
   friend class TestingDecodedBundleBuilderImpl;
-  explicit OrchardDecodedBlocksBundleImpl(rust::Box<BatchOrchardDecodeBundle>);
-  rust::Box<BatchOrchardDecodeBundle> batch_decode_result_;
+  explicit OrchardDecodedBlocksBundleImpl(
+      rust::Box<CxxBatchOrchardDecodeBundle>);
+  rust::Box<CxxBatchOrchardDecodeBundle> batch_decode_result_;
 };
 
 }  // namespace brave_wallet::orchard

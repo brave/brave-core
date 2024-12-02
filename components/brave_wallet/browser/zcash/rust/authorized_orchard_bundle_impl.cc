@@ -5,10 +5,12 @@
 
 #include "brave/components/brave_wallet/browser/zcash/rust/authorized_orchard_bundle_impl.h"
 
+#include <utility>
+
 namespace brave_wallet::orchard {
 
 AuthorizedOrchardBundleImpl::AuthorizedOrchardBundleImpl(
-    ::rust::Box<orchard::OrchardAuthorizedBundle> orchard_authorized_bundle)
+    ::rust::Box<CxxOrchardAuthorizedBundle> orchard_authorized_bundle)
     : orchard_authorized_bundle_(std::move(orchard_authorized_bundle)) {}
 
 AuthorizedOrchardBundleImpl::~AuthorizedOrchardBundleImpl() = default;

@@ -32,8 +32,8 @@ class OrchardTestingShardTreeImpl : public OrchardShardTree {
   friend class OrchardShardTree;
 
   explicit OrchardTestingShardTreeImpl(
-      rust::Box<OrchardTestingShardTreeBundle> orcard_shard_tree);
-  ::rust::Box<OrchardTestingShardTreeBundle> orchard_shard_tree_;
+      rust::Box<CxxOrchardTestingShardTreeBundle> orcard_shard_tree);
+  ::rust::Box<CxxOrchardTestingShardTreeBundle> orchard_shard_tree_;
 };
 }  // namespace brave_wallet::orchard
 

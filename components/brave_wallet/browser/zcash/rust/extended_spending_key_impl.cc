@@ -12,7 +12,7 @@
 namespace brave_wallet::orchard {
 
 ExtendedSpendingKeyImpl::ExtendedSpendingKeyImpl(
-    rust::Box<OrchardExtendedSpendingKey> esk)
+    rust::Box<CxxOrchardExtendedSpendingKey> esk)
     : extended_spending_key_(std::move(esk)) {}
 
 ExtendedSpendingKeyImpl::~ExtendedSpendingKeyImpl() = default;

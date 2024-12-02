@@ -37,10 +37,11 @@ class ExtendedSpendingKeyImpl : ExtendedSpendingKey {
 
  private:
   friend class ExtendedSpendingKey;
-  explicit ExtendedSpendingKeyImpl(rust::Box<OrchardExtendedSpendingKey> esk);
+  explicit ExtendedSpendingKeyImpl(
+      rust::Box<CxxOrchardExtendedSpendingKey> esk);
   // Extended spending key is a root key of an account, all other keys can be
   // derived from esk
-  rust::Box<OrchardExtendedSpendingKey> extended_spending_key_;
+  rust::Box<CxxOrchardExtendedSpendingKey> extended_spending_key_;
 };
 
 }  // namespace brave_wallet::orchard

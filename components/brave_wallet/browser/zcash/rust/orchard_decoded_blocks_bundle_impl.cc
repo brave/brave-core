@@ -13,10 +13,10 @@
 namespace brave_wallet::orchard {
 
 OrchardDecodedBlocksBundleImpl::OrchardDecodedBlocksBundleImpl(
-    rust::Box<BatchOrchardDecodeBundle> v)
+    rust::Box<CxxBatchOrchardDecodeBundle> v)
     : batch_decode_result_(std::move(v)) {}
 
-OrchardDecodedBlocksBundleImpl::~OrchardDecodedBlocksBundleImpl() {}
+OrchardDecodedBlocksBundleImpl::~OrchardDecodedBlocksBundleImpl() = default;
 
 std::optional<std::vector<::brave_wallet::OrchardNote>>
 OrchardDecodedBlocksBundleImpl::GetDiscoveredNotes() {
@@ -37,7 +37,7 @@ OrchardDecodedBlocksBundleImpl::GetDiscoveredNotes() {
   return result;
 }
 
-BatchOrchardDecodeBundle& OrchardDecodedBlocksBundleImpl::GetDecodeBundle() {
+CxxBatchOrchardDecodeBundle& OrchardDecodedBlocksBundleImpl::GetDecodeBundle() {
   return *batch_decode_result_;
 }
 

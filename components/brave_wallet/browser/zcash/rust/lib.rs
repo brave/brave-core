@@ -311,21 +311,21 @@ mod ffi {
     }
 
     extern "Rust" {
-        type OrchardExtendedSpendingKey;
-        type OrchardUnauthorizedBundle;
-        type OrchardAuthorizedBundle;
-        type BatchOrchardDecodeBundle;
-        type OrchardShardTreeBundle;
-        type OrchardTestingShardTreeBundle;
-        type OrchardWitnessBundle;
+        type CxxOrchardExtendedSpendingKey;
+        type CxxOrchardUnauthorizedBundle;
+        type CxxOrchardAuthorizedBundle;
+        type CxxBatchOrchardDecodeBundle;
+        type CxxOrchardShardTreeBundle;
+        type CxxOrchardTestingShardTreeBundle;
+        type CxxOrchardWitnessBundle;
 
-        type OrchardExtendedSpendingKeyResult;
-        type OrchardUnauthorizedBundleResult;
-        type OrchardAuthorizedBundleResult;
-        type OrchardWitnessBundleResult;
-        type BatchOrchardDecodeBundleResult;
-        type OrchardTestingShardTreeBundleResult;
-        type OrchardShardTreeBundleResult;
+        type CxxOrchardExtendedSpendingKeyResult;
+        type CxxOrchardUnauthorizedBundleResult;
+        type CxxOrchardAuthorizedBundleResult;
+        type CxxOrchardWitnessBundleResult;
+        type CxxBatchOrchardDecodeBundleResult;
+        type CxxOrchardTestingShardTreeBundleResult;
+        type CxxOrchardShardTreeBundleResult;
 
         type CxxOrchardShardResultWrapper;
         type CxxBoolResultWrapper;
@@ -341,7 +341,7 @@ mod ffi {
             tree_state: &[u8],
             spends: Vec<CxxOrchardSpend>,
             outputs: Vec<CxxOrchardOutput>
-        ) -> Box<OrchardUnauthorizedBundleResult>;
+        ) -> Box<CxxOrchardUnauthorizedBundleResult>;
 
         // Creates orchard bundle with mocked rng using provided rng seed.
         // Must not be used in production, only in tests.
@@ -350,127 +350,127 @@ mod ffi {
             spends: Vec<CxxOrchardSpend>,
             outputs: Vec<CxxOrchardOutput>,
             rng_seed: u64
-        ) -> Box<OrchardUnauthorizedBundleResult>;
+        ) -> Box<CxxOrchardUnauthorizedBundleResult>;
 
         fn generate_orchard_extended_spending_key_from_seed(
             bytes: &[u8]
-        ) -> Box<OrchardExtendedSpendingKeyResult>;
+        ) -> Box<CxxOrchardExtendedSpendingKeyResult>;
 
-        fn is_ok(self: &OrchardExtendedSpendingKeyResult) -> bool;
-        fn error_message(self: &OrchardExtendedSpendingKeyResult) -> String;
-        fn unwrap(self: &mut OrchardExtendedSpendingKeyResult) -> Box<OrchardExtendedSpendingKey>;
+        fn is_ok(self: &CxxOrchardExtendedSpendingKeyResult) -> bool;
+        fn error_message(self: &CxxOrchardExtendedSpendingKeyResult) -> String;
+        fn unwrap(self: &mut CxxOrchardExtendedSpendingKeyResult) -> Box<CxxOrchardExtendedSpendingKey>;
 
         fn batch_decode(
             fvk_bytes: &[u8; 96],  // Array size should match kOrchardFullViewKeySize
             prior_tree_state: CxxOrchardShardTreeState,
             actions: Vec<CxxOrchardCompactAction>
-        ) -> Box<BatchOrchardDecodeBundleResult>;
+        ) -> Box<CxxBatchOrchardDecodeBundleResult>;
 
         fn derive(
-            self: &OrchardExtendedSpendingKey,
+            self: &CxxOrchardExtendedSpendingKey,
             index: u32
-        ) -> Box<OrchardExtendedSpendingKeyResult>;
+        ) -> Box<CxxOrchardExtendedSpendingKeyResult>;
         // External addresses can be used for receiving funds from external
         // senders.
         fn external_address(
-            self: &OrchardExtendedSpendingKey,
+            self: &CxxOrchardExtendedSpendingKey,
             diversifier_index: u32
         ) -> [u8; 43];  // Array size should match kOrchardRawBytesSize
         // Internal addresses are used for change or internal shielding and
         // shouldn't be exposed to public.
         fn internal_address(
-            self: &OrchardExtendedSpendingKey,
+            self: &CxxOrchardExtendedSpendingKey,
             diversifier_index: u32
         ) -> [u8; 43];  // Array size should match kOrchardRawBytesSize
         fn full_view_key(
-            self: &OrchardExtendedSpendingKey
+            self: &CxxOrchardExtendedSpendingKey
         ) -> [u8; 96];  // Array size sohuld match kOrchardFullViewKeySize
 
         fn spending_key(
-            self: &OrchardExtendedSpendingKey
+            self: &CxxOrchardExtendedSpendingKey
         ) -> [u8; 32];  // Array size should match kSpendingKeySize
 
-        fn is_ok(self: &OrchardAuthorizedBundleResult) -> bool;
-        fn error_message(self: &OrchardAuthorizedBundleResult) -> String;
-        fn unwrap(self: &mut OrchardAuthorizedBundleResult) -> Box<OrchardAuthorizedBundle>;
+        fn is_ok(self: &CxxOrchardAuthorizedBundleResult) -> bool;
+        fn error_message(self: &CxxOrchardAuthorizedBundleResult) -> String;
+        fn unwrap(self: &mut CxxOrchardAuthorizedBundleResult) -> Box<CxxOrchardAuthorizedBundle>;
 
-        fn is_ok(self: &OrchardUnauthorizedBundleResult) -> bool;
-        fn error_message(self: &OrchardUnauthorizedBundleResult) -> String;
-        fn unwrap(self: &mut OrchardUnauthorizedBundleResult) -> Box<OrchardUnauthorizedBundle>;
+        fn is_ok(self: &CxxOrchardUnauthorizedBundleResult) -> bool;
+        fn error_message(self: &CxxOrchardUnauthorizedBundleResult) -> String;
+        fn unwrap(self: &mut CxxOrchardUnauthorizedBundleResult) -> Box<CxxOrchardUnauthorizedBundle>;
 
-        fn is_ok(self: &BatchOrchardDecodeBundleResult) -> bool;
-        fn error_message(self: &BatchOrchardDecodeBundleResult) -> String;
-        fn unwrap(self: &mut BatchOrchardDecodeBundleResult) -> Box<BatchOrchardDecodeBundle>;
+        fn is_ok(self: &CxxBatchOrchardDecodeBundleResult) -> bool;
+        fn error_message(self: &CxxBatchOrchardDecodeBundleResult) -> String;
+        fn unwrap(self: &mut CxxBatchOrchardDecodeBundleResult) -> Box<CxxBatchOrchardDecodeBundle>;
 
-        fn size(self :&BatchOrchardDecodeBundle) -> usize;
-        fn note_value(self :&BatchOrchardDecodeBundle, index: usize) -> u32;
+        fn size(self :&CxxBatchOrchardDecodeBundle) -> usize;
+        fn note_value(self :&CxxBatchOrchardDecodeBundle, index: usize) -> u32;
         // Result array size should match kOrchardNullifierSize
         // fvk array size should match kOrchardFullViewKeySize
-        fn note_nullifier(self :&BatchOrchardDecodeBundle, index: usize) -> [u8; 32];
-        fn note_rho(self :&BatchOrchardDecodeBundle, index: usize) -> [u8; 32];
-        fn note_rseed(self :&BatchOrchardDecodeBundle, index: usize) -> [u8; 32];
-        fn note_addr(self :&BatchOrchardDecodeBundle, index: usize) -> [u8; 43];
-        fn note_block_height(self :&BatchOrchardDecodeBundle, index: usize) -> u32;
-        fn note_commitment_tree_position(self :&BatchOrchardDecodeBundle, index: usize) -> u32;
+        fn note_nullifier(self :&CxxBatchOrchardDecodeBundle, index: usize) -> [u8; 32];
+        fn note_rho(self :&CxxBatchOrchardDecodeBundle, index: usize) -> [u8; 32];
+        fn note_rseed(self :&CxxBatchOrchardDecodeBundle, index: usize) -> [u8; 32];
+        fn note_addr(self :&CxxBatchOrchardDecodeBundle, index: usize) -> [u8; 43];
+        fn note_block_height(self :&CxxBatchOrchardDecodeBundle, index: usize) -> u32;
+        fn note_commitment_tree_position(self :&CxxBatchOrchardDecodeBundle, index: usize) -> u32;
 
-        fn is_ok(self: &OrchardShardTreeBundleResult) -> bool;
-        fn error_message(self: &OrchardShardTreeBundleResult) -> String;
-        fn unwrap(self: &mut OrchardShardTreeBundleResult) -> Box<OrchardShardTreeBundle>;
+        fn is_ok(self: &CxxOrchardShardTreeBundleResult) -> bool;
+        fn error_message(self: &CxxOrchardShardTreeBundleResult) -> String;
+        fn unwrap(self: &mut CxxOrchardShardTreeBundleResult) -> Box<CxxOrchardShardTreeBundle>;
 
-        fn is_ok(self: &OrchardTestingShardTreeBundleResult) -> bool;
-        fn error_message(self: &OrchardTestingShardTreeBundleResult) -> String;
-        fn unwrap(self: &mut OrchardTestingShardTreeBundleResult) -> Box<OrchardTestingShardTreeBundle>;
+        fn is_ok(self: &CxxOrchardTestingShardTreeBundleResult) -> bool;
+        fn error_message(self: &CxxOrchardTestingShardTreeBundleResult) -> String;
+        fn unwrap(self: &mut CxxOrchardTestingShardTreeBundleResult) -> Box<CxxOrchardTestingShardTreeBundle>;
 
         // Orchard digest is desribed here https://zips.z.cash/zip-0244#t-4-orchard-digest
         // Used in constructing signature digest and tx id
-        fn orchard_digest(self: &OrchardUnauthorizedBundle) -> [u8; 32];  // Array size should match kZCashDigestSize
+        fn orchard_digest(self: &CxxOrchardUnauthorizedBundle) -> [u8; 32];  // Array size should match kZCashDigestSize
         // Completes unauthorized bundle to authorized state
         // Signature digest should be constructed as desribed in https://zips.z.cash/zip-0244#signature-digest
-        fn complete(self: &OrchardUnauthorizedBundle, sighash: [u8; 32]) -> Box<OrchardAuthorizedBundleResult>;  // Array size should match kZCashDigestSize
+        fn complete(self: &CxxOrchardUnauthorizedBundle, sighash: [u8; 32]) -> Box<CxxOrchardAuthorizedBundleResult>;  // Array size should match kZCashDigestSize
 
         // Orchard part of v5 transaction as described in
         // https://zips.z.cash/zip-0225
-        fn raw_tx(self: &OrchardAuthorizedBundle) -> Vec<u8>;
+        fn raw_tx(self: &CxxOrchardAuthorizedBundle) -> Vec<u8>;
 
         // Witness is used to construct zk-proof for the transaction
-        fn is_ok(self: &OrchardWitnessBundleResult) -> bool;
-        fn error_message(self: &OrchardWitnessBundleResult) -> String;
-        fn unwrap(self: &mut OrchardWitnessBundleResult) -> Box<OrchardWitnessBundle>;
-        fn size(self :&OrchardWitnessBundle) -> usize;
-        fn item(self: &OrchardWitnessBundle, index: usize) -> [u8; 32];
+        fn is_ok(self: &CxxOrchardWitnessBundleResult) -> bool;
+        fn error_message(self: &CxxOrchardWitnessBundleResult) -> String;
+        fn unwrap(self: &mut CxxOrchardWitnessBundleResult) -> Box<CxxOrchardWitnessBundle>;
+        fn size(self :&CxxOrchardWitnessBundle) -> usize;
+        fn item(self: &CxxOrchardWitnessBundle, index: usize) -> [u8; 32];
 
         // Creates shard tree of default orchard height
         fn create_shard_tree(
             delegate: UniquePtr<CxxOrchardShardTreeDelegate>
-        ) -> Box<OrchardShardTreeBundleResult>;
+        ) -> Box<CxxOrchardShardTreeBundleResult>;
         // Creates shard tree of smaller size for testing purposes
         fn create_testing_shard_tree(
             delegate: UniquePtr<CxxOrchardShardTreeDelegate>
-        ) -> Box<OrchardTestingShardTreeBundleResult>;
+        ) -> Box<CxxOrchardTestingShardTreeBundleResult>;
 
         fn insert_commitments(
-            self: &mut OrchardShardTreeBundle,
-            scan_result: &mut BatchOrchardDecodeBundle) -> bool;
+            self: &mut CxxOrchardShardTreeBundle,
+            scan_result: &mut CxxBatchOrchardDecodeBundle) -> bool;
         fn calculate_witness(
-            self: &mut OrchardShardTreeBundle,
+            self: &mut CxxOrchardShardTreeBundle,
             commitment_tree_position: u32,
-            checkpoint: u32) -> Box<OrchardWitnessBundleResult>;
-        fn truncate(self: &mut OrchardShardTreeBundle, checkpoint_id: u32) -> bool;
+            checkpoint: u32) -> Box<CxxOrchardWitnessBundleResult>;
+        fn truncate(self: &mut CxxOrchardShardTreeBundle, checkpoint_id: u32) -> bool;
 
         fn insert_commitments(
-            self: &mut OrchardTestingShardTreeBundle,
-            scan_result: &mut BatchOrchardDecodeBundle) -> bool;
+            self: &mut CxxOrchardTestingShardTreeBundle,
+            scan_result: &mut CxxBatchOrchardDecodeBundle) -> bool;
         fn calculate_witness(
-            self: &mut OrchardTestingShardTreeBundle,
+            self: &mut CxxOrchardTestingShardTreeBundle,
             commitment_tree_position: u32,
-            checkpoint: u32) -> Box<OrchardWitnessBundleResult>;
-        fn truncate(self: &mut OrchardTestingShardTreeBundle, checkpoint_id: u32) -> bool;
+            checkpoint: u32) -> Box<CxxOrchardWitnessBundleResult>;
+        fn truncate(self: &mut CxxOrchardTestingShardTreeBundle, checkpoint_id: u32) -> bool;
 
         // Size matches kOrchardCmxSize in zcash_utils
         fn create_mock_commitment(position: u32, seed: u32) -> [u8; 32];
         fn create_mock_decode_result(
             prior_tree_state: CxxOrchardShardTreeState,
-            commitments: CxxOrchardShardTreeLeafs) -> Box<BatchOrchardDecodeBundleResult>;
+            commitments: CxxOrchardShardTreeLeafs) -> Box<CxxBatchOrchardDecodeBundleResult>;
 
         fn wrap_shard_tree_shard(item: CxxOrchardShard) -> Box<CxxOrchardShardResultWrapper>;
         fn wrap_shard_tree_shard_error()-> Box<CxxOrchardShardResultWrapper>;
@@ -609,7 +609,7 @@ enum OrchardRandomSource {
 // Unauthorized bundle is a bundle without generated proof, but it
 // contains Orchard digest needed to calculate tx signature digests.
 #[derive(Clone)]
-pub struct OrchardUnauthorizedBundleValue {
+pub struct CxxOrchardUnauthorizedBundleValue {
     unauthorized_bundle: Bundle<InProgress<Unproven, Unauthorized>, Amount>,
     rng: OrchardRandomSource,
     asks: Vec<SpendAuthorizingKey>
@@ -618,7 +618,7 @@ pub struct OrchardUnauthorizedBundleValue {
 // Authorized bundle is a bundle where inputs are signed with signature digests
 // and proof is generated.
 #[derive(Clone)]
-pub struct OrchardAuthorizedBundleValue {
+pub struct CxxOrchardAuthorizedBundleValue {
     raw_tx: Vec<u8>
 }
 
@@ -630,7 +630,7 @@ pub struct DecryptedCxxOrchardOutput {
 }
 
 #[derive(Clone)]
-pub struct BatchOrchardDecodeBundleValue {
+pub struct CxxBatchOrchardDecodeBundleValue {
     fvk: [u8; 96],
     outputs: Vec<DecryptedCxxOrchardOutput>,
     commitments: Vec<(MerkleHashOrchard, Retention<BlockHeight>)>,
@@ -641,9 +641,9 @@ pub struct OrchardGenericShardTreeBundleValue<const T: u8, const S: u8, const P:
     tree: ShardTree<CxxShardStoreImpl<orchard::tree::MerkleHashOrchard, S>, T, S>
 }
 
-type OrchardShardTreeBundleValue =
+type CxxOrchardShardTreeBundleValue =
     OrchardGenericShardTreeBundleValue<TREE_HEIGHT, SHARD_HEIGHT, PRUNING_DEPTH>;
-type OrchardTestingShardTreeBundleValue =
+type CxxOrchardTestingShardTreeBundleValue =
     OrchardGenericShardTreeBundleValue<TESTING_TREE_HEIGHT, TESTING_SHARD_HEIGHT, TESTING_PRUNING_DEPTH>;
 
 #[derive(Clone)]
@@ -660,33 +660,33 @@ impl From<incrementalmerkletree::MerklePath<MerkleHashOrchard, 8>> for MarkleHas
 }
 
 
-pub struct OrchardWitnessBundleValue {
+pub struct CxxOrchardWitnessBundleValue {
     path: MarkleHashVec
 }
 
-struct OrchardExtendedSpendingKey(ExtendedSpendingKey);
-struct OrchardAuthorizedBundle(OrchardAuthorizedBundleValue);
-struct OrchardUnauthorizedBundle(OrchardUnauthorizedBundleValue);
-struct BatchOrchardDecodeBundle(BatchOrchardDecodeBundleValue);
-struct OrchardShardTreeBundle(OrchardShardTreeBundleValue);
-struct OrchardTestingShardTreeBundle(OrchardTestingShardTreeBundleValue);
-struct OrchardWitnessBundle(OrchardWitnessBundleValue);
+struct CxxOrchardExtendedSpendingKey(ExtendedSpendingKey);
+struct CxxOrchardAuthorizedBundle(CxxOrchardAuthorizedBundleValue);
+struct CxxOrchardUnauthorizedBundle(CxxOrchardUnauthorizedBundleValue);
+struct CxxBatchOrchardDecodeBundle(CxxBatchOrchardDecodeBundleValue);
+struct CxxOrchardShardTreeBundle(CxxOrchardShardTreeBundleValue);
+struct CxxOrchardTestingShardTreeBundle(CxxOrchardTestingShardTreeBundleValue);
+struct CxxOrchardWitnessBundle(CxxOrchardWitnessBundleValue);
 
-struct OrchardExtendedSpendingKeyResult(Result<Option<OrchardExtendedSpendingKey>, Error>);
-struct OrchardAuthorizedBundleResult(Result<Option<OrchardAuthorizedBundle>, Error>);
-struct OrchardUnauthorizedBundleResult(Result<Option<OrchardUnauthorizedBundle>, Error>);
-struct BatchOrchardDecodeBundleResult(Result<Option<BatchOrchardDecodeBundle>, Error>);
-struct OrchardShardTreeBundleResult(Result<Option<OrchardShardTreeBundle>, Error>);
-struct OrchardWitnessBundleResult(Result<Option<OrchardWitnessBundle>, Error>);
-struct OrchardTestingShardTreeBundleResult(Result<Option<OrchardTestingShardTreeBundle>, Error>);
+struct CxxOrchardExtendedSpendingKeyResult(Result<Option<CxxOrchardExtendedSpendingKey>, Error>);
+struct CxxOrchardAuthorizedBundleResult(Result<Option<CxxOrchardAuthorizedBundle>, Error>);
+struct CxxOrchardUnauthorizedBundleResult(Result<Option<CxxOrchardUnauthorizedBundle>, Error>);
+struct CxxBatchOrchardDecodeBundleResult(Result<Option<CxxBatchOrchardDecodeBundle>, Error>);
+struct CxxOrchardShardTreeBundleResult(Result<Option<CxxOrchardShardTreeBundle>, Error>);
+struct CxxOrchardWitnessBundleResult(Result<Option<CxxOrchardWitnessBundle>, Error>);
+struct CxxOrchardTestingShardTreeBundleResult(Result<Option<CxxOrchardTestingShardTreeBundle>, Error>);
 
-impl_result!(OrchardExtendedSpendingKey, OrchardExtendedSpendingKeyResult, ExtendedSpendingKey);
-impl_result!(OrchardAuthorizedBundle, OrchardAuthorizedBundleResult, OrchardAuthorizedBundleValue);
-impl_result!(OrchardUnauthorizedBundle, OrchardUnauthorizedBundleResult, OrchardUnauthorizedBundleValue);
-impl_result!(BatchOrchardDecodeBundle, BatchOrchardDecodeBundleResult, BatchOrchardDecodeBundleValue);
-impl_result!(OrchardShardTreeBundle, OrchardShardTreeBundleResult, OrchardShardTreeBundleValue);
-impl_result!(OrchardTestingShardTreeBundle, OrchardTestingShardTreeBundleResult, OrchardTestingShardTreeBundleValue);
-impl_result!(OrchardWitnessBundle, OrchardWitnessBundleResult, OrchardWitnessBundleValue);
+impl_result!(CxxOrchardExtendedSpendingKey, CxxOrchardExtendedSpendingKeyResult, ExtendedSpendingKey);
+impl_result!(CxxOrchardAuthorizedBundle, CxxOrchardAuthorizedBundleResult, CxxOrchardAuthorizedBundleValue);
+impl_result!(CxxOrchardUnauthorizedBundle, CxxOrchardUnauthorizedBundleResult, CxxOrchardUnauthorizedBundleValue);
+impl_result!(CxxBatchOrchardDecodeBundle, CxxBatchOrchardDecodeBundleResult, CxxBatchOrchardDecodeBundleValue);
+impl_result!(CxxOrchardShardTreeBundle, CxxOrchardShardTreeBundleResult, CxxOrchardShardTreeBundleValue);
+impl_result!(CxxOrchardTestingShardTreeBundle, CxxOrchardTestingShardTreeBundleResult, CxxOrchardTestingShardTreeBundleValue);
+impl_result!(CxxOrchardWitnessBundle, CxxOrchardWitnessBundleResult, CxxOrchardWitnessBundleValue);
 
 // Shard store interface results
 struct CxxOrchardShardResultWrapper(Result<Option<CxxOrchardShard>, Error>);
@@ -709,25 +709,25 @@ impl_result_wrapper!(Vec<CxxOrchardShardAddress>, CxxShardRootsResultWrapper, sh
 
 fn generate_orchard_extended_spending_key_from_seed(
     bytes: &[u8]
-) -> Box<OrchardExtendedSpendingKeyResult> {
-  Box::new(OrchardExtendedSpendingKeyResult::from(
+) -> Box<CxxOrchardExtendedSpendingKeyResult> {
+  Box::new(CxxOrchardExtendedSpendingKeyResult::from(
     ExtendedSpendingKey::master(bytes).map_err(Error::from))
   )
 }
 
-impl OrchardExtendedSpendingKey {
+impl CxxOrchardExtendedSpendingKey {
     fn derive(
-        self: &OrchardExtendedSpendingKey,
+        self: &CxxOrchardExtendedSpendingKey,
         index: u32
-    ) -> Box<OrchardExtendedSpendingKeyResult> {
-        Box::new(OrchardExtendedSpendingKeyResult::from(
+    ) -> Box<CxxOrchardExtendedSpendingKeyResult> {
+        Box::new(CxxOrchardExtendedSpendingKeyResult::from(
             self.0.derive_child(
                 OrchardChildIndex::hardened(index))
                 .map_err(Error::from)))
     }
 
     fn external_address(
-        self: &OrchardExtendedSpendingKey,
+        self: &CxxOrchardExtendedSpendingKey,
         diversifier_index: u32
     ) -> [u8; 43] {
         let address = OrchardFVK::from(&self.0).address_at(
@@ -736,7 +736,7 @@ impl OrchardExtendedSpendingKey {
     }
 
     fn internal_address(
-        self: &OrchardExtendedSpendingKey,
+        self: &CxxOrchardExtendedSpendingKey,
         diversifier_index: u32
     ) -> [u8; 43] {
         let address = OrchardFVK::from(&self.0).address_at(
@@ -745,20 +745,20 @@ impl OrchardExtendedSpendingKey {
     }
 
     fn full_view_key(
-        self: &OrchardExtendedSpendingKey
+        self: &CxxOrchardExtendedSpendingKey
     ) -> [u8; 96] {
         OrchardFVK::from(&self.0).to_bytes()
     }
 
     fn spending_key(
-        self: &OrchardExtendedSpendingKey
+        self: &CxxOrchardExtendedSpendingKey
     ) -> [u8; 32] {
         *self.0.sk().to_bytes()
     }
 }
 
-impl OrchardAuthorizedBundle {
-    fn raw_tx(self: &OrchardAuthorizedBundle) -> Vec<u8> {
+impl CxxOrchardAuthorizedBundle {
+    fn raw_tx(self: &CxxOrchardAuthorizedBundle) -> Vec<u8> {
         self.0.raw_tx.clone()
     }
 }
@@ -768,14 +768,14 @@ fn create_orchard_builder_internal(
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
     random_source: OrchardRandomSource
-) -> Box<OrchardUnauthorizedBundleResult> {
+) -> Box<CxxOrchardUnauthorizedBundleResult> {
     // To construct transaction orchard tree state of some block should be provided
     // But in tests we can use empty anchor.
     let anchor = if orchard_tree_bytes.len() > 0 {
         match read_commitment_tree::<MerkleHashOrchard, _, { orchard::NOTE_COMMITMENT_TREE_DEPTH as u8 }>(
                 &orchard_tree_bytes[..]) {
             Ok(tree) => Anchor::from(tree.root()),
-            Err(_e) => return Box::new(OrchardUnauthorizedBundleResult::from(
+            Err(_e) => return Box::new(CxxOrchardUnauthorizedBundleResult::from(
                 Err(Error::from(OrchardBuildError::AnchorMismatch)))),
         }
     } else {
@@ -791,7 +791,7 @@ fn create_orchard_builder_internal(
     for spend in spends {
         let fvk = OrchardFVK::from_bytes(&spend.fvk);
         if fvk.is_none().into() {
-            return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::FvkError)))
+            return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::FvkError)))
         }
 
         let auth_path = spend.merkle_path.auth_path.iter().map(|v| {
@@ -804,12 +804,12 @@ fn create_orchard_builder_internal(
         }).collect::<Result<Vec<MerkleHashOrchard>, _>>();
 
         if auth_path.is_err() {
-            return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::WitnessError)))
+            return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::WitnessError)))
         }
 
         let auth_path_sized : Result<[MerkleHashOrchard; orchard::NOTE_COMMITMENT_TREE_DEPTH], _> = auth_path.unwrap().try_into();
         if auth_path_sized.is_err() {
-            return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::WitnessError)))
+            return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::WitnessError)))
         }
 
         let merkle_path = MerklePath::from_parts(
@@ -819,15 +819,15 @@ fn create_orchard_builder_internal(
 
         let rho = Rho::from_bytes(&spend.rho);
         if rho.is_none().into() {
-            return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::OrchardActionFormatError)))
+            return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::OrchardActionFormatError)))
         }
         let rseed = RandomSeed::from_bytes(spend.r, &rho.unwrap());
         if rseed.is_none().into() {
-            return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::OrchardActionFormatError)))
+            return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::OrchardActionFormatError)))
         }
         let addr = orchard::Address::from_raw_address_bytes(&spend.addr);
         if addr.is_none().into() {
-            return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::WrongInputError)))
+            return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::WrongInputError)))
         }
 
         let note = orchard::Note::from_parts(
@@ -837,12 +837,12 @@ fn create_orchard_builder_internal(
             rseed.unwrap());
 
         if note.is_none().into() {
-            return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::OrchardActionFormatError)))
+            return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::OrchardActionFormatError)))
         }
 
         let add_spend_result = builder.add_spend(fvk.unwrap(), note.unwrap(), merkle_path);
         if add_spend_result.is_err() {
-            return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::SpendError)))
+            return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::SpendError)))
         }
         asks.push(SpendAuthorizingKey::from(&SpendingKey::from_bytes(spend.sk).unwrap()));
     }
@@ -854,16 +854,16 @@ fn create_orchard_builder_internal(
                     orchard::value::NoteValue::from_raw(
                         u64::from(out.value)), if out.use_memo { Some(out.memo)} else { Option::None })
             },
-            None => return Box::new(OrchardUnauthorizedBundleResult::from(Err(Error::WrongOutputError)))
+            None => return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::WrongOutputError)))
         };
     }
 
-    Box::new(OrchardUnauthorizedBundleResult::from(match random_source {
+    Box::new(CxxOrchardUnauthorizedBundleResult::from(match random_source {
         OrchardRandomSource::OsRng(mut rng) => {
             builder.build(&mut rng)
                 .map_err(Error::from)
                 .and_then(|builder| {
-                    builder.map(|bundle| OrchardUnauthorizedBundleValue {
+                    builder.map(|bundle| CxxOrchardUnauthorizedBundleValue {
                         unauthorized_bundle: bundle.0,
                         rng: OrchardRandomSource::OsRng(rng),
                         asks: asks }).ok_or(Error::BuildError)
@@ -873,7 +873,7 @@ fn create_orchard_builder_internal(
             builder.build(&mut rng)
                 .map_err(Error::from)
                 .and_then(|builder| {
-                    builder.map(|bundle| OrchardUnauthorizedBundleValue {
+                    builder.map(|bundle| CxxOrchardUnauthorizedBundleValue {
                         unauthorized_bundle: bundle.0,
                         rng: OrchardRandomSource::MockRng(rng), asks: asks
                     }).ok_or(Error::BuildError)
@@ -886,7 +886,7 @@ fn create_orchard_bundle(
     orchard_tree_bytes: &[u8],
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>
-) -> Box<OrchardUnauthorizedBundleResult> {
+) -> Box<CxxOrchardUnauthorizedBundleResult> {
     create_orchard_builder_internal(orchard_tree_bytes, spends, outputs, OrchardRandomSource::OsRng(OsRng))
 }
 
@@ -895,18 +895,18 @@ fn create_testing_orchard_bundle(
     spends: Vec<CxxOrchardSpend>,
     outputs: Vec<CxxOrchardOutput>,
     rng_seed: u64
-) -> Box<OrchardUnauthorizedBundleResult> {
+) -> Box<CxxOrchardUnauthorizedBundleResult> {
     create_orchard_builder_internal(orchard_tree_bytes, spends, outputs, OrchardRandomSource::MockRng(MockRng(rng_seed)))
 }
 
-impl OrchardUnauthorizedBundle {
-    fn orchard_digest(self: &OrchardUnauthorizedBundle) -> [u8; 32] {
+impl CxxOrchardUnauthorizedBundle {
+    fn orchard_digest(self: &CxxOrchardUnauthorizedBundle) -> [u8; 32] {
         self.0.unauthorized_bundle.commitment().into()
     }
 
-    fn complete(self: &OrchardUnauthorizedBundle, sighash: [u8; 32]) -> Box<OrchardAuthorizedBundleResult> {
+    fn complete(self: &CxxOrchardUnauthorizedBundle, sighash: [u8; 32]) -> Box<CxxOrchardAuthorizedBundleResult> {
         use zcash_primitives::transaction::components::orchard::write_v5_bundle;
-        Box::new(OrchardAuthorizedBundleResult::from(match self.0.rng.clone() {
+        Box::new(CxxOrchardAuthorizedBundleResult::from(match self.0.rng.clone() {
             OrchardRandomSource::OsRng(mut rng) => {
                 self.0.unauthorized_bundle.clone()
                 .create_proof(&orchard::circuit::ProvingKey::build(), &mut rng)
@@ -930,7 +930,7 @@ impl OrchardUnauthorizedBundle {
                         })
             }
         }.map_err(Error::from).and_then(|authorized_bundle| {
-            let mut result = OrchardAuthorizedBundleValue {raw_tx : vec![]};
+            let mut result = CxxOrchardAuthorizedBundleValue {raw_tx : vec![]};
             let _ = write_v5_bundle(Some(&authorized_bundle), &mut result.raw_tx);
             Ok(result)
         })))
@@ -955,10 +955,10 @@ fn batch_decode(
     fvk_bytes: &[u8; 96],
     prior_tree_state: CxxOrchardShardTreeState,
     actions: Vec<CxxOrchardCompactAction>
-) -> Box<BatchOrchardDecodeBundleResult> {
+) -> Box<CxxBatchOrchardDecodeBundleResult> {
     let fvk = match OrchardFVK::from_bytes(fvk_bytes) {
         Some(fvk) => fvk,
-        None => return Box::new(BatchOrchardDecodeBundleResult::from(Err(Error::FvkError)))
+        None => return Box::new(CxxBatchOrchardDecodeBundleResult::from(Err(Error::FvkError)))
     };
 
     let ivks = [
@@ -996,7 +996,7 @@ fn batch_decode(
 
     let input_actions = match input_actions {
         Ok(actions) => actions,
-        Err(e) => return Box::new(BatchOrchardDecodeBundleResult::from(Err(e.into())))
+        Err(e) => return Box::new(CxxBatchOrchardDecodeBundleResult::from(Err(e.into())))
     };
 
     let mut decrypted_len = 0;
@@ -1031,7 +1031,7 @@ fn batch_decode(
         };
         let commitment = MerkleHashOrchard::from_bytes(&output.cmx);
         if commitment.is_none().into() {
-            return Box::new(BatchOrchardDecodeBundleResult::from(Err(Error::OrchardActionFormatError)))
+            return Box::new(CxxBatchOrchardDecodeBundleResult::from(Err(Error::OrchardActionFormatError)))
         }
         note_commitments.push((commitment.unwrap(), retention));
 
@@ -1044,7 +1044,7 @@ fn batch_decode(
         }
     }
 
-    Box::new(BatchOrchardDecodeBundleResult::from(Ok(BatchOrchardDecodeBundleValue {
+    Box::new(CxxBatchOrchardDecodeBundleResult::from(Ok(CxxBatchOrchardDecodeBundleValue {
         fvk: *fvk_bytes,
         outputs: found_notes,
         commitments: note_commitments,
@@ -1052,38 +1052,38 @@ fn batch_decode(
      })))
 }
 
-impl BatchOrchardDecodeBundle {
-    fn size(self :&BatchOrchardDecodeBundle) -> usize {
+impl CxxBatchOrchardDecodeBundle {
+    fn size(self :&CxxBatchOrchardDecodeBundle) -> usize {
       self.0.outputs.len()
     }
 
-    fn note_value(self :&BatchOrchardDecodeBundle, index: usize) -> u32 {
+    fn note_value(self :&CxxBatchOrchardDecodeBundle, index: usize) -> u32 {
       u32::try_from(self.0.outputs[index].note.value().inner()).expect(
           "Outputs are always created from a u32, so conversion back will always succeed")
     }
 
-    fn note_nullifier(self :&BatchOrchardDecodeBundle, index: usize) -> [u8; 32] {
+    fn note_nullifier(self :&CxxBatchOrchardDecodeBundle, index: usize) -> [u8; 32] {
       self.0.outputs[index].note.nullifier(&OrchardFVK::from_bytes(&self.0.fvk).unwrap()).to_bytes()
     }
 
-    fn note_block_height(self :&BatchOrchardDecodeBundle, index: usize) -> u32 {
+    fn note_block_height(self :&CxxBatchOrchardDecodeBundle, index: usize) -> u32 {
         self.0.outputs[index].block_height
     }
 
-    fn note_rho(self :&BatchOrchardDecodeBundle, index: usize) -> [u8; 32] {
+    fn note_rho(self :&CxxBatchOrchardDecodeBundle, index: usize) -> [u8; 32] {
         self.0.outputs[index].note.rho().to_bytes()
 
     }
 
-    fn note_rseed(self :&BatchOrchardDecodeBundle, index: usize) -> [u8; 32] {
+    fn note_rseed(self :&CxxBatchOrchardDecodeBundle, index: usize) -> [u8; 32] {
         *self.0.outputs[index].note.rseed().as_bytes()
     }
 
-    fn note_addr(self :&BatchOrchardDecodeBundle, index: usize) -> [u8; 43] {
+    fn note_addr(self :&CxxBatchOrchardDecodeBundle, index: usize) -> [u8; 43] {
         self.0.outputs[index].note.recipient().to_raw_address_bytes()
     }
 
-    fn note_commitment_tree_position(self :&BatchOrchardDecodeBundle, index: usize) -> u32 {
+    fn note_commitment_tree_position(self :&CxxBatchOrchardDecodeBundle, index: usize) -> u32 {
         self.0.outputs[index].commitment_tree_position
     }
 }
@@ -1109,7 +1109,7 @@ fn insert_frontier<const COMMITMENT_TREE_DEPTH: u8, const SHARD_HEIGHT: u8>(
 
 fn insert_commitments<const COMMITMENT_TREE_DEPTH: u8, const CHUNK_SIZE: usize, const SHARD_HEIGHT: u8>(
       shard_tree: &mut ShardTree<CxxShardStoreImpl<orchard::tree::MerkleHashOrchard, SHARD_HEIGHT>, COMMITMENT_TREE_DEPTH, SHARD_HEIGHT>,
-      scan_result: &mut BatchOrchardDecodeBundle) -> bool {
+      scan_result: &mut CxxBatchOrchardDecodeBundle) -> bool {
     let start_position : u64 = scan_result.0.prior_tree_state.tree_size.into();
 
     if !scan_result.0.prior_tree_state.frontier.is_empty() {
@@ -1141,53 +1141,53 @@ impl From<&[MerkleHashOrchard]> for MarkleHashVec {
     }
 }
 
-impl OrchardShardTreeBundle {
-    fn insert_commitments(self: &mut OrchardShardTreeBundle,
-                          scan_result: &mut BatchOrchardDecodeBundle) -> bool {
+impl CxxOrchardShardTreeBundle {
+    fn insert_commitments(self: &mut CxxOrchardShardTreeBundle,
+                          scan_result: &mut CxxBatchOrchardDecodeBundle) -> bool {
         insert_commitments::<TREE_HEIGHT, CHUNK_SIZE, SHARD_HEIGHT>(&mut self.0.tree, scan_result)
     }
 
-    fn calculate_witness(self: &mut OrchardShardTreeBundle,
+    fn calculate_witness(self: &mut CxxOrchardShardTreeBundle,
                          commitment_tree_position: u32,
-                         checkpoint: u32) -> Box<OrchardWitnessBundleResult> {
+                         checkpoint: u32) -> Box<CxxOrchardWitnessBundleResult> {
         match self.0.tree.witness_at_checkpoint_id_caching((
                 commitment_tree_position as u64).into(), &checkpoint.into()) {
-            Ok(witness) => Box::new(OrchardWitnessBundleResult::from(
-                Ok(OrchardWitnessBundleValue { path: witness.path_elems().into() }))),
-            Err(_e) => Box::new(OrchardWitnessBundleResult::from(Err(Error::WitnessError)))
+            Ok(witness) => Box::new(CxxOrchardWitnessBundleResult::from(
+                Ok(CxxOrchardWitnessBundleValue { path: witness.path_elems().into() }))),
+            Err(_e) => Box::new(CxxOrchardWitnessBundleResult::from(Err(Error::WitnessError)))
         }
     }
 
-    fn truncate(self: &mut OrchardShardTreeBundle, checkpoint: u32) -> bool {
+    fn truncate(self: &mut CxxOrchardShardTreeBundle, checkpoint: u32) -> bool {
         self.0.tree.truncate_removing_checkpoint(&BlockHeight::from_u32(checkpoint)).is_ok()
     }
 }
 
-impl OrchardTestingShardTreeBundle {
-    fn insert_commitments(self: &mut OrchardTestingShardTreeBundle, scan_result: &mut BatchOrchardDecodeBundle) -> bool {
+impl CxxOrchardTestingShardTreeBundle {
+    fn insert_commitments(self: &mut CxxOrchardTestingShardTreeBundle, scan_result: &mut CxxBatchOrchardDecodeBundle) -> bool {
         insert_commitments::<TESTING_TREE_HEIGHT, TESTING_CHUNK_SIZE, TESTING_SHARD_HEIGHT>(&mut self.0.tree, scan_result)
     }
 
-    fn calculate_witness(self: &mut OrchardTestingShardTreeBundle,
-            commitment_tree_position: u32, checkpoint: u32) -> Box<OrchardWitnessBundleResult> {
+    fn calculate_witness(self: &mut CxxOrchardTestingShardTreeBundle,
+            commitment_tree_position: u32, checkpoint: u32) -> Box<CxxOrchardWitnessBundleResult> {
         match self.0.tree.witness_at_checkpoint_id_caching((commitment_tree_position as u64).into(), &checkpoint.into()) {
-            Ok(witness) => Box::new(OrchardWitnessBundleResult::from(Ok(OrchardWitnessBundleValue { path: witness.into() }))),
-            Err(_e) => Box::new(OrchardWitnessBundleResult::from(Err(Error::WitnessError)))
+            Ok(witness) => Box::new(CxxOrchardWitnessBundleResult::from(Ok(CxxOrchardWitnessBundleValue { path: witness.into() }))),
+            Err(_e) => Box::new(CxxOrchardWitnessBundleResult::from(Err(Error::WitnessError)))
         }
     }
 
-    fn truncate(self: &mut OrchardTestingShardTreeBundle, checkpoint: u32) -> bool {
+    fn truncate(self: &mut CxxOrchardTestingShardTreeBundle, checkpoint: u32) -> bool {
         let result =  self.0.tree.truncate_removing_checkpoint(&BlockHeight::from_u32(checkpoint));
         return result.is_ok() && result.unwrap();
     }
 }
 
-impl OrchardWitnessBundle {
-    fn size(self: &OrchardWitnessBundle) -> usize {
+impl CxxOrchardWitnessBundle {
+    fn size(self: &CxxOrchardWitnessBundle) -> usize {
         self.0.path.0.len()
     }
 
-    fn item(self: &OrchardWitnessBundle, index: usize) -> [u8; 32] {
+    fn item(self: &CxxOrchardWitnessBundle, index: usize) -> [u8; 32] {
         self.0.path.0[index].to_bytes()
     }
 }
@@ -1572,13 +1572,13 @@ impl<H: HashSer, const SHARD_HEIGHT: u8> ShardStore
     }
 }
 
-fn create_shard_tree(delegate: UniquePtr<CxxOrchardShardTreeDelegate>) -> Box<OrchardShardTreeBundleResult> {
+fn create_shard_tree(delegate: UniquePtr<CxxOrchardShardTreeDelegate>) -> Box<CxxOrchardShardTreeBundleResult> {
     let shard_store = OrchardCxxShardStoreImpl {
         delegate: delegate,
         _hash_type: Default::default()
     };
     let shardtree = ShardTree::new(shard_store, PRUNING_DEPTH.try_into().unwrap());
-    Box::new(OrchardShardTreeBundleResult::from(Ok(OrchardShardTreeBundleValue{tree: shardtree})))
+    Box::new(CxxOrchardShardTreeBundleResult::from(Ok(CxxOrchardShardTreeBundleValue{tree: shardtree})))
 }
 
 fn convert_ffi_commitments(shard_tree_leafs: &CxxOrchardShardTreeLeafs) -> Vec<(MerkleHashOrchard, Retention<BlockHeight>)> {
@@ -1597,8 +1597,8 @@ fn convert_ffi_commitments(shard_tree_leafs: &CxxOrchardShardTreeLeafs) -> Vec<(
     }).collect()
 }
 
-fn create_mock_decode_result(prior_tree_state: CxxOrchardShardTreeState, commitments: CxxOrchardShardTreeLeafs) -> Box<BatchOrchardDecodeBundleResult> {
-    Box::new(BatchOrchardDecodeBundleResult::from(Ok(BatchOrchardDecodeBundleValue {
+fn create_mock_decode_result(prior_tree_state: CxxOrchardShardTreeState, commitments: CxxOrchardShardTreeLeafs) -> Box<CxxBatchOrchardDecodeBundleResult> {
+    Box::new(CxxBatchOrchardDecodeBundleResult::from(Ok(CxxBatchOrchardDecodeBundleValue {
         fvk: [0; 96],
         outputs: vec![],
         commitments: convert_ffi_commitments(&commitments),
@@ -1606,13 +1606,13 @@ fn create_mock_decode_result(prior_tree_state: CxxOrchardShardTreeState, commitm
     })))
 }
 
-fn create_testing_shard_tree(delegate: UniquePtr<CxxOrchardShardTreeDelegate>) -> Box<OrchardTestingShardTreeBundleResult> {
+fn create_testing_shard_tree(delegate: UniquePtr<CxxOrchardShardTreeDelegate>) -> Box<CxxOrchardTestingShardTreeBundleResult> {
     let shard_store: CxxShardStoreImpl<MerkleHashOrchard, 4> = TestingCxxShardStoreImpl {
         delegate: delegate,
         _hash_type: Default::default()
     };
     let shardtree = ShardTree::new(shard_store, TESTING_PRUNING_DEPTH.try_into().unwrap());
-    Box::new(OrchardTestingShardTreeBundleResult::from(Ok(OrchardTestingShardTreeBundleValue{tree: shardtree})))
+    Box::new(CxxOrchardTestingShardTreeBundleResult::from(Ok(CxxOrchardTestingShardTreeBundleValue{tree: shardtree})))
 }
 
 fn create_mock_commitment(position: u32, seed: u32) -> [u8; 32] {

@@ -21,10 +21,10 @@ class AuthorizedOrchardBundleImpl : public AuthorizedOrchardBundle {
 
  private:
   explicit AuthorizedOrchardBundleImpl(
-      ::rust::Box<orchard::OrchardAuthorizedBundle> orchard_authorized_bundle);
+      ::rust::Box<CxxOrchardAuthorizedBundle> orchard_authorized_bundle);
   friend class UnauthorizedOrchardBundleImpl;
 
-  ::rust::Box<orchard::OrchardAuthorizedBundle> orchard_authorized_bundle_;
+  ::rust::Box<CxxOrchardAuthorizedBundle> orchard_authorized_bundle_;
 };
 
 }  // namespace brave_wallet::orchard

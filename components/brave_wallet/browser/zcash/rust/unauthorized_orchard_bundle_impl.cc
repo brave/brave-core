@@ -17,7 +17,7 @@
 namespace brave_wallet::orchard {
 
 UnauthorizedOrchardBundleImpl::UnauthorizedOrchardBundleImpl(
-    ::rust::Box<orchard::OrchardUnauthorizedBundle> orchard_unauthorized_bundle)
+    ::rust::Box<CxxOrchardUnauthorizedBundle> orchard_unauthorized_bundle)
     : orchard_unauthorized_bundle_(std::move(orchard_unauthorized_bundle)) {}
 
 UnauthorizedOrchardBundleImpl::~UnauthorizedOrchardBundleImpl() = default;

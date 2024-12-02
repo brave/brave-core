@@ -46,7 +46,7 @@ bool OrchardTestingShardTreeImpl::TruncateToCheckpoint(uint32_t checkpoint_id) {
 }
 
 OrchardTestingShardTreeImpl::OrchardTestingShardTreeImpl(
-    rust::Box<OrchardTestingShardTreeBundle> orcard_shard_tree)
+    rust::Box<CxxOrchardTestingShardTreeBundle> orcard_shard_tree)
     : orchard_shard_tree_(std::move(orcard_shard_tree)) {}
 
 OrchardTestingShardTreeImpl::~OrchardTestingShardTreeImpl() {}

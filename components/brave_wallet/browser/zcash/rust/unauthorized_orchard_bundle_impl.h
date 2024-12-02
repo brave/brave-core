@@ -25,10 +25,9 @@ class UnauthorizedOrchardBundleImpl : public UnauthorizedOrchardBundle {
  private:
   friend class UnauthorizedOrchardBundle;
   explicit UnauthorizedOrchardBundleImpl(
-      ::rust::Box<orchard::OrchardUnauthorizedBundle>
-          orchard_unauthorized_bundle);
+      ::rust::Box<CxxOrchardUnauthorizedBundle> orchard_unauthorized_bundle);
 
-  ::rust::Box<orchard::OrchardUnauthorizedBundle> orchard_unauthorized_bundle_;
+  ::rust::Box<CxxOrchardUnauthorizedBundle> orchard_unauthorized_bundle_;
 };
 
 }  // namespace brave_wallet::orchard

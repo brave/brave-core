@@ -66,7 +66,7 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodeBlocks(
   base::ranges::copy(tree_state.frontier,
                      std::back_inserter(prior_tree_state.frontier));
 
-  ::rust::Box<BatchOrchardDecodeBundleResult> decode_result = batch_decode(
+  ::rust::Box<CxxBatchOrchardDecodeBundleResult> decode_result = batch_decode(
       fvk, std::move(prior_tree_state), std::move(orchard_actions));
 
   if (decode_result->is_ok()) {
