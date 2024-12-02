@@ -590,15 +590,15 @@ static bool CustomLogHandler(int severity,
 // The incognito BrowserState should be closed when the last incognito tab is
 // closed (i.e. if there are other incognito tabs open in another Scene, the
 // BrowserState must not be destroyed).
-- (BOOL)shouldDestroyAndRebuildIncognitoBrowserState {
-  return _main_profile->HasOffTheRecordChromeBrowserState();
+- (BOOL)shouldDestroyAndRebuildIncognitoProfile {
+  return _main_profile->HasOffTheRecordProfile();
 }
 
 // Matches lastIncognitoTabClosed from Chrome's SceneController
 - (void)notifyLastPrivateTabClosed {
   // If no other window has incognito tab, then destroy and rebuild the
   // BrowserState. Otherwise, just do the state transition animation.
-  if ([self shouldDestroyAndRebuildIncognitoBrowserState]) {
+  if ([self shouldDestroyAndRebuildIncognitoProfile]) {
     // Incognito browser state cannot be deleted before all the requests are
     // deleted. Queue empty task on IO thread and destroy the BrowserState
     // when the task has executed, again verifying that no incognito tabs are
@@ -608,8 +608,8 @@ static bool CustomLogHandler(int severity,
     // the cleanup shouldn't proceed.
 
     auto cleanup = ^{
-      if ([self shouldDestroyAndRebuildIncognitoBrowserState]) {
-        [self destroyAndRebuildIncognitoBrowserState];
+      if ([self shouldDestroyAndRebuildIncognitoProfile]) {
+        [self destroyAndRebuildIncognitoProfile];
       }
     };
 
@@ -639,8 +639,8 @@ static bool CustomLogHandler(int severity,
   }
 }
 
-- (void)destroyAndRebuildIncognitoBrowserState {
-  DCHECK(_main_profile->HasOffTheRecordChromeBrowserState());
+- (void)destroyAndRebuildIncognitoProfile {
+  DCHECK(_main_profile->HasOffTheRecordProfile());
   _nonPersistentWebViewConfiguration = nil;
 
   ProfileIOS* otrProfile = _main_profile->GetOffTheRecordProfile();
