@@ -36,12 +36,17 @@ jobs:
           echo "::notice::PR branch: ${GITHUB_HEAD_REF:?} (${pr_ver:?}), target branch: ${GITHUB_BASE_REF:?} (${target_ver:?})"
 
           if [[ "${pr_ver%%.*}" != "${target_ver%%.*}" ]]; then
+              # TODO: Some $(chromium_ver "$GITHUB_BASE_REF") calls in compare-chromium-versions get a stale version.
+              # Seems random, could be a caching issue at GitHub, let's try to sleep as a workaround.
+              sleep 30
+
               echo "::notice::Rerunning compare-chromium-versions in PRs targeting ${GITHUB_BASE_REF:?}"
               while read -r pr_number head_sha; do
                   run_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/compare-chromium-versions.yml/runs?head_sha=${head_sha:?}" -q '.workflow_runs[0].id')"
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
                       echo "Rerunning $run_id for $pr_url"
+                      # TODO: some reruns silently fail to run, will ask GitHub support
                       gh -R "$GITHUB_REPOSITORY" run rerun "$run_id" || fail=1
                   else
                       echo "No run found for $pr_url"
