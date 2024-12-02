@@ -46,8 +46,9 @@ jobs:
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
                       echo "Rerunning $run_id for $pr_url"
-                      # TODO: some reruns silently fail to run, will ask GitHub support
-                      gh -R "$GITHUB_REPOSITORY" run rerun "$run_id" || fail=1
+                      # Workflows older than 30 days will fail to rerun
+                      # https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/re-running-workflows-and-jobs
+                      gh -R "$GITHUB_REPOSITORY" run rerun "$run_id" || true
                   else
                       echo "No run found for $pr_url"
                   fi
@@ -56,5 +57,3 @@ jobs:
           else
               echo "::notice::Chromium major versions match, nothing to do"
           fi
-
-          [[ "$fail" != 1 ]]
