@@ -1,0 +1,78 @@
+diff --git a/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs b/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs
+index d6f0f75c6abf3c303473378ac3ceff0a6ac5d652..435a1f62d76a84304a67a7c8d1db5546cabc76d9 100644
+--- a/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs
++++ b/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs
+@@ -39,6 +39,7 @@ pub struct ValueVisitor<'c> {
+     fns: &'static Functions,
+     aggregate: DeserializationTarget<'c>,
+     recursion_depth_check: RecursionDepthCheck,
++    allow_64bit_numbers: bool,
+ }
+ 
+ impl<'c> ValueVisitor<'c> {
+@@ -46,6 +47,7 @@ impl<'c> ValueVisitor<'c> {
+         fns: &'static Functions,
+         target: DeserializationTarget<'c>,
+         max_depth: usize,
++        allow_64bit_numbers: bool,
+     ) -> Self {
+         Self {
+             fns,
+@@ -53,6 +55,7 @@ impl<'c> ValueVisitor<'c> {
+             // The `max_depth` includes the top level of the JSON input, which is where parsing
+             // starts. We subtract 1 to count the top level now.
+             recursion_depth_check: RecursionDepthCheck(max_depth - 1),
++            allow_64bit_numbers: allow_64bit_numbers,
+         }
+     }
+ }
+@@ -91,7 +94,15 @@ impl<'de, 'c> Visitor<'de> for ValueVisitor<'c> {
+         // JSONReaderTest.LargerIntIsLossy for a related test.
+         match i32::try_from(value) {
+             Ok(value) => self.visit_i32(value),
+-            Err(_) => self.visit_f64(value as f64),
++            Err(_) => if !self.allow_64bit_numbers {
++                self.visit_f64(value as f64)
++            } else {
++                match self.aggregate {
++                    DeserializationTarget::List { ctx } => self.fns.list_append_i64(ctx, value),
++                    DeserializationTarget::Dict { ctx, key } => self.fns.dict_set_i64(ctx, &key, value),
++                }
++                Ok(())        
++            }
+         }
+     }
+ 
+@@ -99,7 +110,15 @@ impl<'de, 'c> Visitor<'de> for ValueVisitor<'c> {
+         // See visit_i64 comment.
+         match i32::try_from(value) {
+             Ok(value) => self.visit_i32(value),
+-            Err(_) => self.visit_f64(value as f64),
++            Err(_) => if !self.allow_64bit_numbers {
++                self.visit_f64(value as f64)
++            } else {
++                match self.aggregate {
++                    DeserializationTarget::List { ctx } => self.fns.list_append_u64(ctx, value),
++                    DeserializationTarget::Dict { ctx, key } => self.fns.dict_set_u64(ctx, &key, value),
++                }
++                Ok(())        
++            }
+         }
+     }
+ 
+@@ -159,6 +178,7 @@ impl<'de, 'c> Visitor<'de> for ValueVisitor<'c> {
+                 fns: self.fns,
+                 aggregate: DeserializationTarget::Dict { ctx: inner_ctx.as_mut(), key },
+                 recursion_depth_check: self.recursion_depth_check.recurse()?,
++                allow_64bit_numbers: self.allow_64bit_numbers,
+             })?;
+         }
+         Ok(())
+@@ -180,6 +200,7 @@ impl<'de, 'c> Visitor<'de> for ValueVisitor<'c> {
+             fns: self.fns,
+             aggregate: DeserializationTarget::List { ctx: inner_ctx.as_mut() },
+             recursion_depth_check: self.recursion_depth_check.recurse()?,
++            allow_64bit_numbers: self.allow_64bit_numbers,
+         })? {}
+         Ok(())
+     }

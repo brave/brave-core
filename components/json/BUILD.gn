@@ -5,6 +5,15 @@
 
 import("//testing/test.gni")
 
+import("//tools/json_schema_compiler/json_features.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+generated_types("schema") {
+  sources = [ "schema.idl" ]
+
+  root_namespace = "json::%(namespace)s"
+}
+
 component("json") {
   sources = [
     "json_export.h",
@@ -22,10 +31,18 @@ component("json") {
 
 source_set("brave_json_unit_tests") {
   testonly = true
-  sources = [ "//brave/components/json/json_parser_unittest.cc" ]
+  sources = [
+    "//base/json/json_reader_unittest.cc",
+    "//base/json/json_writer_unittest.cc",
+    "json_64bit_support_unittest.cc",
+    "json_parser_unittest.cc",
+  ]
   deps = [
+    ":schema",
     "//base",
+    "//base/test:test_support",
     "//brave/components/json",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }

@@ -1,0 +1,12 @@
+diff --git a/tools/json_schema_compiler/model.py b/tools/json_schema_compiler/model.py
+index 06155e18c937a72276a1aed14ea1e0407ed58196..5a49530805799b3056a497c82ede15477e6304bf 100644
+--- a/tools/json_schema_compiler/model.py
++++ b/tools/json_schema_compiler/model.py
+@@ -264,6 +264,7 @@ class Type(object):
+       self.property_type = PropertyType.ANY
+     elif json_type == 'binary':
+       self.property_type = PropertyType.BINARY
++      self.override = json.get('override', None)
+     elif json_type == 'boolean':
+       self.property_type = PropertyType.BOOLEAN
+     elif json_type == 'integer':

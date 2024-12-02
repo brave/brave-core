@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/serde_json_lenient/v0_2/wrapper/functions.h b/third_party/rust/serde_json_lenient/v0_2/wrapper/functions.h
+index 79c19022d3aa8badca3ec120c6ba14e39119501a..c479f77a8ad2da9d0f133f469a12dc7f29ce609e 100644
+--- a/third_party/rust/serde_json_lenient/v0_2/wrapper/functions.h
++++ b/third_party/rust/serde_json_lenient/v0_2/wrapper/functions.h
+@@ -46,6 +46,7 @@ struct Functions {
+   // The returned ContextPointer reference is given to the visitor functions as
+   // an argument for all nodes visited in this dict.
+   ContextPointer& (*dict_set_dict_fn)(ContextPointer&, rust::Str);
++  BRAVE_SERDE_JSON_LENIENT_FUNCTIONS
+ 
+   void list_append_none(ContextPointer& c) const {
+     list_append_none_fn(c);

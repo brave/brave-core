@@ -1,0 +1,20 @@
+diff --git a/base/json/json_reader.cc b/base/json/json_reader.cc
+index 5a173f027372113b0341f3d1af3ad163ded0132d..9bee0b0a335c8d14ce26b7b3086f2d369b5bbee4 100644
+--- a/base/json/json_reader.cc
++++ b/base/json/json_reader.cc
+@@ -95,6 +95,7 @@ JSONReader::Result DecodeJSONInRust(std::string_view json,
+       .allow_vert_tab = (options & base::JSON_ALLOW_VERT_TAB) != 0,
+       .allow_x_escapes = (options & base::JSON_ALLOW_X_ESCAPES) != 0,
+       .max_depth = max_depth,
++      BRAVE_JSON_READER_ALLOW_64BIT_NUMBERS_ARG
+   };
+   static constexpr serde_json_lenient::Functions functions = {
+       .list_append_none_fn = ListAppendNone,
+@@ -111,6 +112,7 @@ JSONReader::Result DecodeJSONInRust(std::string_view json,
+       .dict_set_str_fn = DictSetValue<rust::Str, std::string>,
+       .dict_set_list_fn = DictSetList,
+       .dict_set_dict_fn = DictSetDict,
++      BRAVE_JSON_READER_ALLOW_64BIT_NUMBERS_FUNCTIONS
+   };
+ 
+   base::Value value(base::Value::Type::LIST);

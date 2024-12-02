@@ -1,0 +1,33 @@
+diff --git a/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs b/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs
+index 0cfb702eb8a13be14fb1b845a1f297eb2f7b4859..ad381fd275391e9fac27c6a90c14efffd28255c6 100644
+--- a/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs
++++ b/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs
+@@ -54,6 +54,10 @@ mod ffi {
+             ctx: Pin<&'a mut ContextPointer>,
+             key: &'f str,
+         ) -> Pin<&'a mut ContextPointer>;
++        fn list_append_i64(self: &Functions, ctx: Pin<&mut ContextPointer>, val: i64);
++        fn list_append_u64(self: &Functions, ctx: Pin<&mut ContextPointer>, val: u64);
++        fn dict_set_i64(self: &Functions, ctx: Pin<&mut ContextPointer>, key: &str, val: i64);
++        fn dict_set_u64(self: &Functions, ctx: Pin<&mut ContextPointer>, key: &str, val: u64);
+     }
+ 
+     extern "Rust" {
+@@ -99,6 +103,8 @@ mod ffi {
+         /// The maximum recursion depth to walk while parsing nested JSON
+         /// objects. JSON beyond the specified depth will be ignored.
+         max_depth: usize,
++        /// Allows 64-bit integers rather than trying to fit than as double.
++        allow_64bit_numbers: bool,
+     }
+ }
+ 
+@@ -165,7 +171,7 @@ pub fn decode_json(
+     let target = visitor::DeserializationTarget::List { ctx };
+ 
+     let result =
+-        deserializer.deserialize_any(ValueVisitor::new(&functions, target, options.max_depth));
++        deserializer.deserialize_any(ValueVisitor::new(&functions, target, options.max_depth, options.allow_64bit_numbers));
+     match result.and(deserializer.end()) {
+         Ok(()) => true,
+         Err(err) => {

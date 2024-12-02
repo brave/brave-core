@@ -1,0 +1,20 @@
+diff --git a/base/json/json_writer.cc b/base/json/json_writer.cc
+index ef6de84ead04c84c8f12dbca10ec71f9d7470dfd..a6d16bcff6ae2b34a18f90ee8ece863f70e51651 100644
+--- a/base/json/json_writer.cc
++++ b/base/json/json_writer.cc
+@@ -58,6 +58,7 @@ JSONWriter::JSONWriter(int options, std::string* json, size_t max_depth)
+       omit_double_type_preservation_(
+           (options & OPTIONS_OMIT_DOUBLE_TYPE_PRESERVATION) != 0),
+       pretty_print_((options & OPTIONS_PRETTY_PRINT) != 0),
++      BRAVE_JSON_WRITER_SERIALISE_64BIT_NUMBERS_ARG
+       json_string_(json),
+       max_depth_(max_depth),
+       stack_depth_(0) {
+@@ -113,6 +114,7 @@ bool JSONWriter::BuildJSONString(std::string_view node, size_t depth) {
+ }
+ 
+ bool JSONWriter::BuildJSONString(const Value::BlobStorage& node, size_t depth) {
++  BRAVE_JSON_WRITER_BUILD_STRING_JSON
+   // Successful only if we're allowed to omit it.
+   DLOG_IF(ERROR, !omit_binary_values_) << "Cannot serialize binary value.";
+   return omit_binary_values_;

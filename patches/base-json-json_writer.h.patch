@@ -1,0 +1,23 @@
+diff --git a/base/json/json_writer.h b/base/json/json_writer.h
+index c9eb3bd028687646db765b08ae08bc9cecea93a3..02acfa28ff76d871a8c87723b4f452470b03f786 100644
+--- a/base/json/json_writer.h
++++ b/base/json/json_writer.h
+@@ -35,6 +35,9 @@ enum JsonOptions {
+   // Return a slightly nicer formatted json string (pads with whitespace to
+   // help with readability).
+   OPTIONS_PRETTY_PRINT = 1 << 2,
++
++  // This option tells the writer to try to serialise binary values as 64-bit numbers.
++  OPTIONS_SERIALISE_64BIT_NUMBERS = 1 << 3,
+ };
+ 
+ // Given a root node, generates and returns a JSON string.
+@@ -70,6 +73,8 @@ class BASE_EXPORT JSONWriter {
+       JsonOptions::OPTIONS_OMIT_DOUBLE_TYPE_PRESERVATION;
+   static constexpr auto OPTIONS_PRETTY_PRINT =
+       JsonOptions::OPTIONS_PRETTY_PRINT;
++  static constexpr auto OPTIONS_SERIALISE_64BIT_NUMBERS =
++      JsonOptions::OPTIONS_SERIALISE_64BIT_NUMBERS;
+ 
+   JSONWriter(const JSONWriter&) = delete;
+   JSONWriter& operator=(const JSONWriter&) = delete;

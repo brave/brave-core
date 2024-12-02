@@ -1,5 +1,5 @@
 diff --git a/tools/json_schema_compiler/cc_generator.py b/tools/json_schema_compiler/cc_generator.py
-index 87c74ca50eb017a16eb90178714c53e632b2e522..aebd1f40b2436822409b41a781a239d00f69148f 100644
+index 87c74ca50eb017a16eb90178714c53e632b2e522..bc864ed52966da16d5d500bc3a1fdaf0c9b3be24 100644
 --- a/tools/json_schema_compiler/cc_generator.py
 +++ b/tools/json_schema_compiler/cc_generator.py
 @@ -30,6 +30,7 @@ class _Generator(object):
@@ -19,3 +19,49 @@ index 87c74ca50eb017a16eb90178714c53e632b2e522..aebd1f40b2436822409b41a781a239d0
          .Concat(self._GeneratePopulatePropertyFromValue(
              prop, '(*%s)' % value_var, dst, 'false')))
        underlying_type = self._type_helper.FollowRef(prop.type_)
+@@ -937,6 +938,10 @@ class _Generator(object):
+       if type_.property_type == PropertyType.REF:
+         maybe_namespace = '%s::' % underlying_type.namespace.unix_name
+       return '%sToString(%s)' % (maybe_namespace, var)
++    elif underlying_type.property_type == PropertyType.BINARY and underlying_type.override:
++      if is_ptr:
++        var = '*%s' % var
++      return 'base::Value(base::as_byte_span(base::NumberToString(%s)))' % var
+     elif underlying_type.property_type == PropertyType.BINARY:
+       if is_ptr:
+         var = '*%s' % var
+@@ -1232,6 +1237,34 @@ class _Generator(object):
+       c.Concat(
+           self._GenerateStringToEnumConversion(underlying_type, src_var,
+                                                dst_var, failure_value))
++    elif underlying_type.property_type == PropertyType.BINARY and underlying_type.override is not None:
++      (c.Sblock('if (%(src_var)s.is_blob()) {') \
++        .Append('%s value = {};' % underlying_type.override))
++
++      conversion_func_suffix = ('Uint64' if underlying_type.override == 'uint64_t' else 'Int64')
++      (c.Sblock('if (base::StringTo' + conversion_func_suffix + '(base::as_string_view(%(src_var)s.GetBlob()), &value)) {') \
++        .Append('%(dst_var)s = value;'))
++      (c.Eblock('}') \
++        .Sblock('else {')
++        .Concat(self._AppendError16(
++          'u"\'%%(key)s\': binary value is not covertible to overriden field type " + ' +
++          self._util_cc_helper.GetValueTypeString('%%(src_var)s'))) \
++        .Append('return %(failure_value)s;')
++        .Eblock('}')
++      )
++      (c.Eblock('}') \
++        .Sblock('else if (%(src_var)s.is_int()) {')
++        .Append('%(dst_var)s = %(src_var)s.GetInt();')
++      )
++      (c.Eblock('}') \
++        .Sblock('else {')
++        .Concat(self._AppendError16(
++          'u"\'%%(key)s\': Overriden field should have type binary or int " + ' +
++          self._util_cc_helper.GetValueTypeString('%%(src_var)s'))) \
++        .Append('return %(failure_value)s;')
++        .Eblock('}')
++      )
++      # c.Append('%(dst_var)s = %(src_var)s.GetBlob();')
+     elif underlying_type.property_type == PropertyType.BINARY:
+       (c.Sblock('if (!%(src_var)s.is_blob()) {') \
+         .Concat(self._AppendError16(
