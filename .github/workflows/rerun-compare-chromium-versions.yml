@@ -46,8 +46,7 @@ jobs:
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
                       echo "Rerunning $run_id for $pr_url"
-                      # Workflows older than 30 days will fail to rerun
-                      # https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/re-running-workflows-and-jobs
+                      # TODO: Workflows older than 30 days will fail to rerun (by design), let's filter them out (using `|| true` for now)
                       gh -R "$GITHUB_REPOSITORY" run rerun "$run_id" || true
                   else
                       echo "No run found for $pr_url"
