@@ -72,6 +72,7 @@ source_set("orchard_impl") {
   sources = [
     "authorized_orchard_bundle_impl.cc",
     "authorized_orchard_bundle_impl.h",
+    "cxx_orchard_shard_tree_delegate.cc",
     "extended_spending_key_impl.cc",
     "extended_spending_key_impl.h",
     "orchard_block_decoder_impl.cc",
