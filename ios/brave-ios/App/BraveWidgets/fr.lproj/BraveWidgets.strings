@@ -2,13 +2,13 @@
 "0W40Cl" = "Nouvel onglet";
 
 /* (No Comment) */
-"5ixvGX-tYwiRd" = "Il y a ${count} options correspondant à « Temps économisé est. ».";
+"5ixvGX-tYwiRd" = "Il y a ${count} éléments correspondant à « Temps économisé est. ».";
 
 /* (No Comment) */
-"5ixvGX-vjA5pZ" = "Il y a ${count} options correspondant à « Données économisées est. ».";
+"5ixvGX-vjA5pZ" = "Il y a ${count} éléments correspondant à « Données économisées est. ».";
 
 /* (No Comment) */
-"5ixvGX-xcI3h9" = "Il y a ${count} options correspondant à « Publicités bloquées ».";
+"5ixvGX-xcI3h9" = "Il y a ${count} éléments correspondant à « Publicités bloquées ».";
 
 /* (No Comment) */
 "7Ds8rk" = "Configuration des favoris sur l'écran de verrouillage";
@@ -35,7 +35,7 @@
 "bUXzTx" = "Type de statistique";
 
 /* (No Comment) */
-"crhbMy" = "Marque-pages";
+"crhbMy" = "Favoris";
 
 /* (No Comment) */
 "D5r3nt" = "URL";
@@ -44,19 +44,19 @@
 "e13lS3-0W40Cl" = "Vouliez-vous dire « Nouvel onglet » ?";
 
 /* (No Comment) */
-"e13lS3-crhbMy" = "Vouliez-vous dire « Marque-pages » ?";
+"e13lS3-crhbMy" = "Vouliez-vous dire « Favoris » ?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Vouliez-vous dire \"Liste de lecture Brave\" ?";
+"e13lS3-FGO5qW" = "Vouliez-vous dire « Playlist Brave​ » ?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Vouliez-vous dire \"Portefeuille Brave\" ?";
+"e13lS3-jXiFQY" = "Vouliez-vous dire « Portefeuille Brave​ » ?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
 
 /* (No Comment) */
-"e13lS3-qKrzyX" = "Vouliez-vous dire \"Scanner un code QR\" ?";
+"e13lS3-qKrzyX" = "Vouliez-vous dire « Scanner un code QR » ?";
 
 /* (No Comment) */
 "e13lS3-U0eRbw" = "Vouliez-vous dire « IA Leo » ?";
@@ -68,10 +68,10 @@
 "e13lS3-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Vouliez-vous dire \"Actualités Brave\" ?";
+"e13lS3-XCyA8c" = "Vouliez-vous dire « Actualités Brave » ?";
 
 /* (No Comment) */
-"e13lS3-Y7TWy8" = "Vouliez-vous dire \"Recherche\" ?";
+"e13lS3-Y7TWy8" = "Vouliez-vous dire « Recherche » ?";
 
 /* (No Comment) */
 "EUS9FL" = "Raccourci du widget";
@@ -80,19 +80,19 @@
 "EvESs0-0W40Cl" = "Vouliez-vous dire « Nouvel onglet » ?";
 
 /* (No Comment) */
-"EvESs0-crhbMy" = "Vouliez-vous dire « Marque-pages » ?";
+"EvESs0-crhbMy" = "Vouliez-vous dire « Favoris » ?";
 
 /* (No Comment) */
-"EvESs0-FGO5qW" = "Vouliez-vous dire \"Liste de lecture Brave\" ?";
+"EvESs0-FGO5qW" = "Vouliez-vous dire « Playlist Brave » ?";
 
 /* (No Comment) */
-"EvESs0-jXiFQY" = "Vouliez-vous dire \"Portefeuille Brave\" ?";
+"EvESs0-jXiFQY" = "Vouliez-vous dire « Portefeuille Brave » ?";
 
 /* (No Comment) */
 "EvESs0-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
 
 /* (No Comment) */
-"EvESs0-qKrzyX" = "Vouliez-vous dire \"Scanner un code QR\" ?";
+"EvESs0-qKrzyX" = "Vouliez-vous dire « Scanner un code QR » ?";
 
 /* (No Comment) */
 "EvESs0-U0eRbw" = "Vouliez-vous dire « IA Leo » ?";
@@ -104,13 +104,13 @@
 "EvESs0-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
 
 /* (No Comment) */
-"EvESs0-XCyA8c" = "Vouliez-vous dire \"Actualités Brave\" ?";
+"EvESs0-XCyA8c" = "Vouliez-vous dire « Actualités Brave » ?";
 
 /* (No Comment) */
-"EvESs0-Y7TWy8" = "Vouliez-vous dire \"Recherche\" ?";
+"EvESs0-Y7TWy8" = "Vouliez-vous dire « Recherche » ?";
 
 /* (No Comment) */
-"FGO5qW" = "Liste de lecture Brave";
+"FGO5qW" = "Playlist Brave";
 
 /* (No Comment) */
 "gpCwrM" = "Configuration des statistiques";
@@ -128,37 +128,37 @@
 "jXiFQY" = "Portefeuille Brave";
 
 /* (No Comment) */
-"L1fziM-0W40Cl" = "Il y a ${count} options correspondant à « Nouvel onglet ».";
+"L1fziM-0W40Cl" = "Il y a ${count} éléments correspondant à « Nouvel onglet ».";
 
 /* (No Comment) */
-"L1fziM-crhbMy" = "Il y a ${count} options correspondant à « Marque-pages ».";
+"L1fziM-crhbMy" = "Il y a ${count} éléments correspondant à « Favoris ».";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Il y a ${count} options correspondant à \"Liste de lecture Brave\".";
+"L1fziM-FGO5qW" = "Il y a ${count} éléments correspondant à « Playlist Brave ».";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Il y a ${count} options correspondant à \"Portefeuille Brave\".";
+"L1fziM-jXiFQY" = "Il y a ${count} éléments correspondant à « Portefeuille Brave ».";
 
 /* (No Comment) */
-"L1fziM-nthxSL" = "Il y a ${count} options correspondant à « Téléchargements ».";
+"L1fziM-nthxSL" = "Il y a ${count} éléments correspondant à « Téléchargements ».";
 
 /* (No Comment) */
-"L1fziM-qKrzyX" = "Il y a ${count} options correspondant à \"Scanner un code QR\".";
+"L1fziM-qKrzyX" = "Il y a ${count} éléments correspondant à « Scanner un code QR ».";
 
 /* (No Comment) */
-"L1fziM-U0eRbw" = "Il y a ${count} options correspondant à « IA Leo ».";
+"L1fziM-U0eRbw" = "Il y a ${count} éléments correspondant à « IA Leo ».";
 
 /* (No Comment) */
-"L1fziM-VBH4G6" = "Il y a ${count} options correspondant à « Historique ».";
+"L1fziM-VBH4G6" = "Il y a ${count} éléments correspondant à « Historique ».";
 
 /* (No Comment) */
-"L1fziM-vs094F" = "Il y a ${count} options correspondant à « Nouvel onglet privé ».";
+"L1fziM-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet privé ».";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Brave\".";
+"L1fziM-XCyA8c" = "Il y a ${count} éléments correspondant à « Actualités Brave ».";
 
 /* (No Comment) */
-"L1fziM-Y7TWy8" = "Il y a ${count} options correspondant à \"Recherche\".";
+"L1fziM-Y7TWy8" = "Il y a ${count} éléments correspondant à « Recherche ».";
 
 /* (No Comment) */
 "M2Y1rg" = "#4";
@@ -176,19 +176,19 @@
 "r2EI05-0W40Cl" = "Vouliez-vous dire « Nouvel onglet » ?";
 
 /* (No Comment) */
-"r2EI05-crhbMy" = "Vouliez-vous dire « Marque-pages » ?";
+"r2EI05-crhbMy" = "Vouliez-vous dire « Favoris » ?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Vouliez-vous dire \"Liste de lecture Brave\" ?";
+"r2EI05-FGO5qW" = "Vouliez-vous dire « Playlist Brave​ » ?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Vouliez-vous dire \"Portefeuille Brave\" ?";
+"r2EI05-jXiFQY" = "Vouliez-vous dire « Portefeuille Brave​ » ?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
 
 /* (No Comment) */
-"r2EI05-qKrzyX" = "Vouliez-vous dire \"Scanner un code QR\" ?";
+"r2EI05-qKrzyX" = "Vouliez-vous dire « Scanner un code QR » ?";
 
 /* (No Comment) */
 "r2EI05-U0eRbw" = "Vouliez-vous dire « IA Leo » ?";
@@ -200,10 +200,10 @@
 "r2EI05-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Vouliez-vous dire \"Actualités Brave\" ?";
+"r2EI05-XCyA8c" = "Vouliez-vous dire « Actualités Brave » ?";
 
 /* (No Comment) */
-"r2EI05-Y7TWy8" = "Vouliez-vous dire \"Recherche\" ?";
+"r2EI05-Y7TWy8" = "Vouliez-vous dire « Recherche » ?";
 
 /* (No Comment) */
 "sdOBtj-tYwiRd" = "Vouliez-vous dire « Temps économisé est. » ?";
@@ -215,73 +215,73 @@
 "sdOBtj-xcI3h9" = "Vouliez-vous dire « Publicités bloquées » ?";
 
 /* (No Comment) */
-"tNCrcE-0W40Cl" = "Il y a ${count} options correspondant à « Nouvel onglet ».";
+"tNCrcE-0W40Cl" = "Il y a ${count} éléments correspondant à « Nouvel onglet ».";
 
 /* (No Comment) */
-"tNCrcE-crhbMy" = "Il y a ${count} options correspondant à « Marque-pages ».";
+"tNCrcE-crhbMy" = "Il y a ${count} éléments correspondant à « Favoris ».";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Il y a ${count} options correspondant à \"Liste de lecture Brave\".";
+"tNCrcE-FGO5qW" = "Il y a ${count} éléments correspondant à « Playlist Brave ».";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Il y a ${count} options correspondant à \"Portefeuille Brave\".";
+"tNCrcE-jXiFQY" = "Il y a ${count} éléments correspondant à « Portefeuille Brave ».";
 
 /* (No Comment) */
-"tNCrcE-nthxSL" = "Il y a ${count} options correspondant à « Téléchargements ».";
+"tNCrcE-nthxSL" = "Il y a ${count} éléments correspondant à « Téléchargements ».";
 
 /* (No Comment) */
-"tNCrcE-qKrzyX" = "Il y a ${count} options correspondant à \"Scanner un code QR\".";
+"tNCrcE-qKrzyX" = "Il y a ${count} éléments correspondant à « Scanner un code QR ».";
 
 /* (No Comment) */
-"tNCrcE-U0eRbw" = "Il y a ${count} options correspondant à « IA Leo ».";
+"tNCrcE-U0eRbw" = "Il y a ${count} éléments correspondant à « IA Leo ».";
 
 /* (No Comment) */
-"tNCrcE-VBH4G6" = "Il y a ${count} options correspondant à « Historique ».";
+"tNCrcE-VBH4G6" = "Il y a ${count} éléments correspondant à « Historique ».";
 
 /* (No Comment) */
-"tNCrcE-vs094F" = "Il y a ${count} options correspondant à « Nouvel onglet privé ».";
+"tNCrcE-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet privé ».";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Brave\".";
+"tNCrcE-XCyA8c" = "Il y a ${count} éléments correspondant à « Actualités Brave ».";
 
 /* (No Comment) */
-"tNCrcE-Y7TWy8" = "Il y a ${count} options correspondant à \"Recherche\".";
+"tNCrcE-Y7TWy8" = "Il y a ${count} éléments correspondant à « Recherche ».";
 
 /* (No Comment) */
 "tVvJ9c" = "Widget de configuration des statistiques";
 
 /* (No Comment) */
-"TxuMja-0W40Cl" = "Il y a ${count} options correspondant à « Nouvel onglet ».";
+"TxuMja-0W40Cl" = "Il y a ${count} éléments correspondant à « Nouvel onglet ».";
 
 /* (No Comment) */
-"TxuMja-crhbMy" = "Il y a ${count} options correspondant à « Marque-pages ».";
+"TxuMja-crhbMy" = "Il y a ${count} éléments correspondant à « Favoris ».";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Il y a ${count} options correspondant à \"Liste de lecture Brave\".";
+"TxuMja-FGO5qW" = "Il y a ${count} éléments correspondant à « Playlist Brave ».";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Il y a ${count} options correspondant à \"Portefeuille Brave\".";
+"TxuMja-jXiFQY" = "Il y a ${count} éléments correspondant à « Portefeuille Brave ».";
 
 /* (No Comment) */
-"TxuMja-nthxSL" = "Il y a ${count} options correspondant à « Téléchargements ».";
+"TxuMja-nthxSL" = "Il y a ${count} éléments correspondant à « Téléchargements ».";
 
 /* (No Comment) */
-"TxuMja-qKrzyX" = "Il y a ${count} options correspondant à \"Scanner un code QR\".";
+"TxuMja-qKrzyX" = "Il y a ${count} éléments correspondant à « Scanner un code QR ».";
 
 /* (No Comment) */
-"TxuMja-U0eRbw" = "Il y a ${count} options correspondant à « IA Leo ».";
+"TxuMja-U0eRbw" = "Il y a ${count} éléments correspondant à « IA Leo ».";
 
 /* (No Comment) */
-"TxuMja-VBH4G6" = "Il y a ${count} options correspondant à « Historique ».";
+"TxuMja-VBH4G6" = "Il y a ${count} éléments correspondant à « Historique ».";
 
 /* (No Comment) */
-"TxuMja-vs094F" = "Il y a ${count} options correspondant à « Nouvel onglet privé ».";
+"TxuMja-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet privé ».";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Brave\".";
+"TxuMja-XCyA8c" = "Il y a ${count} éléments correspondant à « Actualités Brave ».";
 
 /* (No Comment) */
-"TxuMja-Y7TWy8" = "Il y a ${count} options correspondant à \"Recherche\".";
+"TxuMja-Y7TWy8" = "Il y a ${count} éléments correspondant à « Recherche ».";
 
 /* (No Comment) */
 "tYwiRd" = "Temps économisé est.";
@@ -314,19 +314,19 @@
 "YQiQuz-0W40Cl" = "Vouliez-vous dire « Nouvel onglet » ?";
 
 /* (No Comment) */
-"YQiQuz-crhbMy" = "Vouliez-vous dire « Marque-pages » ?";
+"YQiQuz-crhbMy" = "Vouliez-vous dire « Favoris » ?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Vouliez-vous dire \"Liste de lecture Brave\" ?";
+"YQiQuz-FGO5qW" = "Vouliez-vous dire « Playlist Brave​ » ?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Vouliez-vous dire \"Portefeuille Brave\" ?";
+"YQiQuz-jXiFQY" = "Vouliez-vous dire « Portefeuille Brave​ » ?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
 
 /* (No Comment) */
-"YQiQuz-qKrzyX" = "Vouliez-vous dire \"Scanner un code QR\" ?";
+"YQiQuz-qKrzyX" = "Vouliez-vous dire « Scanner un code QR » ?";
 
 /* (No Comment) */
 "YQiQuz-U0eRbw" = "Vouliez-vous dire « IA Leo » ?";
@@ -338,43 +338,43 @@
 "YQiQuz-vs094F" = "Vouliez-vous dire « Nouvel onglet privé » ?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Vouliez-vous dire \"Actualités Brave\" ?";
+"YQiQuz-XCyA8c" = "Vouliez-vous dire « Actualités Brave » ?";
 
 /* (No Comment) */
-"YQiQuz-Y7TWy8" = "Vouliez-vous dire \"Recherche\" ?";
+"YQiQuz-Y7TWy8" = "Vouliez-vous dire « Recherche » ?";
 
 /* (No Comment) */
-"z517nu-0W40Cl" = "Il y a ${count} options correspondant à « Nouvel onglet ».";
+"z517nu-0W40Cl" = "Il y a ${count} éléments correspondant à « Nouvel onglet ».";
 
 /* (No Comment) */
-"z517nu-crhbMy" = "Il y a ${count} options correspondant à « Marque-pages ».";
+"z517nu-crhbMy" = "Il y a ${count} éléments correspondant à « Favoris ».";
 
 /* (No Comment) */
-"z517nu-FGO5qW" = "Il y a ${count} options correspondant à \"Liste de lecture Brave\".";
+"z517nu-FGO5qW" = "Il y a ${count} éléments correspondant à « Playlist Brave ».";
 
 /* (No Comment) */
-"z517nu-jXiFQY" = "Il y a ${count} options correspondant à \"Portefeuille Brave\".";
+"z517nu-jXiFQY" = "Il y a ${count} éléments correspondant à « Portefeuille Brave ».";
 
 /* (No Comment) */
-"z517nu-nthxSL" = "Il y a ${count} options correspondant à « Téléchargements ».";
+"z517nu-nthxSL" = "Il y a ${count} éléments correspondant à « Téléchargements ».";
 
 /* (No Comment) */
-"z517nu-qKrzyX" = "Il y a ${count} options correspondant à \"Scanner un code QR\".";
+"z517nu-qKrzyX" = "Il y a ${count} éléments correspondant à « Scanner un code QR ».";
 
 /* (No Comment) */
-"z517nu-U0eRbw" = "Il y a ${count} options correspondant à « IA Leo ».";
+"z517nu-U0eRbw" = "Il y a ${count} éléments correspondant à « IA Leo ».";
 
 /* (No Comment) */
-"z517nu-VBH4G6" = "Il y a ${count} options correspondant à « Historique ».";
+"z517nu-VBH4G6" = "Il y a ${count} éléments correspondant à « Historique ».";
 
 /* (No Comment) */
-"z517nu-vs094F" = "Il y a ${count} options correspondant à « Nouvel onglet privé ».";
+"z517nu-vs094F" = "Il y a ${count} éléments correspondant à « Nouvel onglet privé ».";
 
 /* (No Comment) */
-"z517nu-XCyA8c" = "Il y a ${count} options correspondant à \"Actualités Brave\".";
+"z517nu-XCyA8c" = "Il y a ${count} éléments correspondant à « Actualités Brave ».";
 
 /* (No Comment) */
-"z517nu-Y7TWy8" = "Il y a ${count} options correspondant à \"Recherche\".";
+"z517nu-Y7TWy8" = "Il y a ${count} éléments correspondant à « Recherche ».";
 
 /* (No Comment) */
 "ziTvSZ" = "Configuration du widget des raccourcis";

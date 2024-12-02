@@ -256,6 +256,9 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Transportný protokol";
 
+/* Button to allow the user to view the app-store receipt. */
+"vpn.settingsViewReceipt" = "Zobrazenie potvrdenia z App Store";
+
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Aktualizovať spôsob platby";
 

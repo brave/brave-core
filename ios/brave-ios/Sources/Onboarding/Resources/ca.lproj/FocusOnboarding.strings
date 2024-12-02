@@ -13,6 +13,9 @@
 /* The title of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenTitle" = "Menys anuncis i menys rastrejadors.";
 
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "Ara no";
+
 /* The subtitle of the screen that shows ads embeded in video are blocked */
 "focusOnboarding.noVideoAdsScreenDescription" = "De debò, ens n'hem alliberat.";
 
@@ -30,6 +33,9 @@
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
 "focusOnboarding.p3aToggleDescription" = "Canvieu això en qualsevol moment a la configuració de Brave, a \"Privacitat i Escuts de Brave\".";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "Comparteix informació privada i anònima del producte.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Inicia la navegació";

@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri-opdrachten";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Toon Bladwijzers-snelkoppeling";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Toon bladwijzers";
 
@@ -2896,8 +2893,14 @@
 /* Add mobile device to sync with scan */
 "sync.addDeviceScan" = "QR-code voor synchronisatieketen";
 
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "Ga op je tweede mobiele apparaat naar 'Instellingen', kies 'Synchronisatie' en tik op de knop 'Scan synchronisatiecode'. Gebruik je camera om de onderstaande QR-code te scannen.\n\nBehandel deze code als een wachtwoord. Als iemand deze in handen krijgt, kan die je gesynchroniseerde gegevens lezen en wijzigen.";
+
 /* Add device to sync with code words */
 "sync.addDeviceWords" = "Voer de synchronisatiecode in";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Ga op je apparaat naar 'Instellingen', kies 'Synchronisatie' en tik op de knop '%@'. Voer de codewoorden van de synchronisatieketen in die je hieronder ziet.\n\nBehandel deze code als een wachtwoord. Als iemand deze in handen krijgt, kan die je gesynchroniseerde gegevens lezen en wijzigen.";
 
 /* Add device to sync with code words navigation title */
 "sync.addDeviceWordsTitle" = "Voer de codewoorden in";
@@ -2938,6 +2941,9 @@
 /* Header for device choosing screen. */
 "sync.chooseDeviceHeader" = "Kies het type apparaat dat je wilt synchroniseren.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Code is verlopen. Genereer een nieuwe code door op de onderstaande knop te tikken.";
+
 /* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
 "sync.codeTimeMinutesAbbreviation" = "min";
 
@@ -2946,6 +2952,9 @@
 
 /* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
 "sync.codeTimeMultipleSecondsText" = "seconden";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Deze tijdelijke code is geldig gedurende de komende %@";
 
 /* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
 "sync.codeTimeSingleHourText" = "uur";
@@ -2974,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Kopieer naar klembord";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Verwijder synchronisatieaccount";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Verwijder synchronisatieaccount";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Als u uw account verwijdert, worden al uw versleutelde gegevens op Brave-servers verwijderd en wordt Sync op al uw verbonden apparaten uitgeschakeld.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "De gegevens die lokaal op apparaten zijn opgeslagen, worden echter niet verwijderd.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Verwijder synchronisatieaccount";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Zo te zien is deze code gecreëerd op een apparaat met een oudere versie van Brave. Werk bij naar de nieuwste versie van Brave op uw andere apparaat en maak dan een nieuwe synchronisatiecode.";

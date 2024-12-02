@@ -1,0 +1,78 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "บุ๊กมาร์ก";
+
+/* The name of the feature */
+"widgets.braveLeo" = "Leo AI";
+
+/* The name of the feature */
+"widgets.braveNews" = "ข่าว Brave";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "ดาวน์โหลด";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "เข้าถึงเว็บไซต์ที่คุณชื่นชอบได้อย่างรวดเร็ว";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "รายการโปรด";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "ประวัติการเข้าชม";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "ลองอีกครั้งในภายหลัง";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "อ่านเพิ่มเติม";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "รับข่าวสารล่าสุด";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "ข่าวยอดนิยม";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "โปรดเปิด Brave เพื่อดูรายการโปรดของคุณที่นี่";
+
+/* QR Code section title */
+"widgets.QRCode" = "QR Code";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "ค้นหา";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "ข้อมูลสรุปวิธีที่ Brave ช่วยคุณประหยัดเวลาและปกป้องคุณทางออนไลน์";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "สถิติความเป็นส่วนตัว";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "สถิติความเป็นส่วนตัว";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "ค้นหาหรือพิมพ์ URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "แท็บใหม่";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "เพลย์ลิสต์";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "แท็บส่วนตัว";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "การเข้าถึงการค้นหาเว็บหรือเปิดหน้าเว็บอย่างรวดเร็วใน Brave";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "ทางลัด";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "ข้อมูลสรุปวิธีที่ Brave จะปกป้องคุณทางออนไลน์";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "สถิติความเป็นส่วนตัว";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Brave Wallet";
+

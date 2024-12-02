@@ -28,6 +28,9 @@
 /* Title for the button to add a new website bookmark. */
 "AddToMenuItem" = "Afegeix adreça d'interès";
 
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Dades dels Anuncis de Brave";
+
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Anuncis i rastrejadors";
 
@@ -261,6 +264,9 @@
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutTitle" = "Ajuda a millorar Brave.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Comparteix informació privada i anònima del producte.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Aconsegueix la privacitat de Brave al teu ordinador o tauleta i sincronitza les adreces d'interès i les extensions entre dispositius.";
@@ -1027,8 +1033,20 @@
 /* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
 "ntp.settingsAutoOpenKeyboard" = "Obertura automàtica del teclat";
 
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Fons";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Tipus de mitjà";
+
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Imatges predeterminades";
+
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Imatges i vídeos esponsoritzats";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "Imatges esponsoritzades";
 
 /* Title on settings page to adjust the primary home screen functionality. */
 "ntp.settingsTitle" = "Nova pàgina de pestanyes";
@@ -1352,6 +1370,9 @@
 "p3a.settingTitle" = "Permet l'anàlisi de productes per preservar la privacitat (P3A)";
 
 /* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Tanca la informació destacada del producte per preservar la privacitat";
+
+/* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "La teva connexió en aquest lloc no és totalment segura.";
 
 /* No comment provided by engineer. */
@@ -1365,6 +1386,9 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageUnknownStatusWarning" = "No s'ha pogut verificar completament la vostra connexió a aquest lloc. Podeu continuar, o proveu de tornar a carregar la pàgina per establir una connexió segura.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Inicia la sessió al lloc web";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Consulta el certificat";
@@ -2182,11 +2206,29 @@
 /* Title for Brave Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInTitle" = "Per iniciar una trucada gratuïta, activa Recompenses de Brave";
 
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Activa per ajudar a donar suport a Brave i a la comunitat BAT.";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "L'ús de Recompenses de Brave ajuda a donar suport a Brave i a la comunitat BAT.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Estàs ajudant a donar suport a Brave i a la comunitat BAT.";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Gràcies per ajudar a donar suport a Brave i a la comunitat BAT!";
+
 /* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
 "rewards.optInDisclaimer" = "En clicar, acceptes les %1$@ i %2$@. Desactiva-ho en qualsevol moment a Configuració.";
 
 /* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Ajuda a donar suport a Brave i a la comunitat BAT activant Recompenses de Brave i veient Anuncis de Brave.";
+
+/* No comment provided by engineer. */
 "rewards.settingsToggleTitle" = "Activa Recompenses de Brave";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Aquest creador de contingut està verificat amb Creadors de Brave";
 
 /* Displayed next to a number representing the total number of publishers supported */
 "rewards.totalSupportedCount" = "Nombre de creadors de contingut als quals ajudes a donar suport aquest mes.";
@@ -2791,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Dreceres de Siri";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Mostra la drecera d'adreces d'interès";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Mostra les adreces d'interès";
 
@@ -2902,6 +2941,9 @@
 /* Header for device choosing screen. */
 "sync.chooseDeviceHeader" = "Tria el tipus de dispositiu amb què et vols sincronitzar.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "El codi ha caducat. Genereu-ne un de nou tocant el botó següent.";
+
 /* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
 "sync.codeTimeMinutesAbbreviation" = "min";
 
@@ -2941,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Copia al porta-retalls";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Suprimeix el compte de sincronització";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Suprimeix el compte de sincronització";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Si suprimeixes el compte, se suprimiran les teves dades xifrades dels servidors Brave i es desactivarà la sincronització en tots els dispositius connectats.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "No obstant això, no s'eliminaran les dades que s'emmagatzemen localment en aquests dispositius.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Suprimeix el compte de sincronització";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Sembla que s'ha creat aquest codi en un aparell amb una versió més antiga de Brave. Actualitzeu l'altre aparell amb la versió més recent de Brave i, a continuació, creeu un codi de sincronització nou.";

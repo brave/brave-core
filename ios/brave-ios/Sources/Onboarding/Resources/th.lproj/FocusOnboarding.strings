@@ -1,0 +1,51 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "ดำเนินการต่อ";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "เปิดทุกลิงก์ที่คุณแตะด้วยการปกป้องความเป็นส่วนตัวของ Brave";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้นของคุณ";
+
+/* The subtitle of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenDescription" = "ท่องเว็บได้เร็วขึ้นและใช้ข้อมูลน้อยลง";
+
+/* The title of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenTitle" = "โฆษณาและตัวติดตามที่น้อยลง";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "ไม่ใช่ตอนนี้";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "เราจัดการพวกมันได้แล้วจริงๆ";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "ไม่มีโฆษณาบนวิดีโออีกต่อไป";
+
+/* The title of the button that opens the website abouyt privacy preserving analytics. */
+"focusOnboarding.p3aInformationButtonTitle" = "เรียนรู้เพิ่มเติมเกี่ยวกับการวิเคราะห์ผลิตภัณฑ์โดยรักษาความเป็นส่วนตัว (P3A) ของเรา";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "บอกให้เราทราบทีว่าฟีเจอร์ใดที่คุณชื่นชอบที่สุด";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "ปรับปรุง Brave ให้ดีขึ้น";
+
+/* The title of the toggle for enable / disable privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "เปลี่ยนแปลงการตั้งค่านี้ได้ตลอดเวลาในการตั้งค่า ‘Brave Shields และความเป็นส่วนตัว’";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "แบ่งปันข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัวและแบบไม่เปิดเผยตัวตน";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "เริ่มท่องเว็บ";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "ไปที่การตั้งค่าระบบ";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "ใส่ URL เพื่อเพลิดเพลินไปกับโฆษณาและตัวติดตามที่น้อยลง";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "ดูความแตกต่างของ Brave";
+
