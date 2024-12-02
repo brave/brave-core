@@ -20,7 +20,6 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
-      TARGET_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
       - name: If a major Chromium bump was merged, rerun compare-chromium-versions in all PRs targeting the same branch
         run: |
@@ -30,7 +29,7 @@ jobs:
           chromium_ver() { curl -fsS "https://raw.githubusercontent.com/${GITHUB_REPOSITORY:?}/${1:?}/package.json"|jq -r .config.projects.chrome.tag; }
 
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
-          target_ver="$(chromium_ver "${TARGET_SHA:?}")"
+          target_ver="$(chromium_ver "${GITHUB_SHA:?}")"
 
           echo "::notice::PR branch: ${GITHUB_HEAD_REF:?} (${pr_ver:?}), target branch: ${GITHUB_BASE_REF:?} (${target_ver:?})"
 
@@ -41,7 +40,7 @@ jobs:
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
                       echo "Rerunning $run_id for $pr_url"
-                      gh -R "$GITHUB_REPOSITORY" run rerun "$run_id"
+                      gh -R "$GITHUB_REPOSITORY" run rerun "$run_id" || fail=1
                   else
                       echo "No run found for $pr_url"
                   fi
@@ -50,3 +49,5 @@ jobs:
           else
               echo "::notice::Chromium major versions match, nothing to do"
           fi
+
+          [[ "$fail" != 1 ]]
