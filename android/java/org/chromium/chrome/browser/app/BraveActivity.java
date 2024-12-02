@@ -1097,6 +1097,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         initMiscAndroidMetrics();
         checkForNotificationData();
+        checkPlaylistAction();
 
         if (RateUtils.getInstance().isLastSessionShown()) {
             RateUtils.getInstance().setPrefNextRateDate();
@@ -1528,11 +1529,12 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
-    public void openPlaylistActivity(Context context, String playlistId) {
+    public void openPlaylistActivity(Context context, String playlistId, boolean isPlaylistAction) {
         Intent playlistActivityIntent = new Intent(context, PlaylistActivity.class);
         playlistActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, playlistId);
         playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        playlistActivityIntent.setAction(Intent.ACTION_VIEW);
+        playlistActivityIntent.setAction(
+                isPlaylistAction ? ConstantUtils.PLAYLIST_ACTION : Intent.ACTION_VIEW);
         context.startActivity(playlistActivityIntent);
     }
 
@@ -1689,7 +1691,9 @@ public abstract class BraveActivity extends ChromeActivity
                 return;
             }
             openPlaylistActivity(
-                    BraveActivity.this, VideoPlaybackService.Companion.getCurrentPlaylistId());
+                    BraveActivity.this,
+                    VideoPlaybackService.Companion.getCurrentPlaylistId(),
+                    true);
         }
     }
 

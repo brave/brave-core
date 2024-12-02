@@ -269,7 +269,6 @@ class VideoPlaybackService :
                     (mPlayer.currentMediaItemIndex - 1)
                 else mPlayer.currentMediaItemIndex
             saveLastPosition(mPlayer.getMediaItemAt(previousItemIndex), 0)
-            updateCurrentlyPlayedItem()
         }
     }
 
