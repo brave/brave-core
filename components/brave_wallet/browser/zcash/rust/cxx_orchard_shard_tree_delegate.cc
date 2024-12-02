@@ -9,35 +9,39 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet::orchard {
 
 namespace {
 
-::brave_wallet::OrchardShardAddress FromRust(const ShardTreeAddress& addr) {
+::brave_wallet::OrchardShardAddress FromRust(
+    const CxxOrchardShardAddress& addr) {
   return ::brave_wallet::OrchardShardAddress{addr.level, addr.index};
 }
 
-ShardTreeAddress ToRust(const ::brave_wallet::OrchardShardAddress& addr) {
-  return ShardTreeAddress{addr.level, addr.index};
+CxxOrchardShardAddress ToRust(const ::brave_wallet::OrchardShardAddress& addr) {
+  return CxxOrchardShardAddress{addr.level, addr.index};
 }
 
-ShardTreeCap ToRust(::brave_wallet::OrchardShardTreeCap& shard_store_cap) {
+CxxOrchardShardTreeCap ToRust(
+    ::brave_wallet::OrchardShardTreeCap& shard_store_cap) {
   ::rust::Vec<uint8_t> data;
   data.reserve(shard_store_cap.size());
   base::ranges::copy(shard_store_cap, std::back_inserter(data));
-  return ShardTreeCap{std::move(data)};
+  return CxxOrchardShardTreeCap{std::move(data)};
 }
 
-::brave_wallet::OrchardShardTreeCap FromRust(const ShardTreeCap& cap) {
+::brave_wallet::OrchardShardTreeCap FromRust(
+    const CxxOrchardShardTreeCap& cap) {
   ::brave_wallet::OrchardShardTreeCap shard_store_cap;
   shard_store_cap.reserve(cap.data.size());
   base::ranges::copy(cap.data, std::back_inserter(shard_store_cap));
   return shard_store_cap;
 }
 
-::brave_wallet::OrchardShard FromRust(const ShardTreeShard& tree) {
+::brave_wallet::OrchardShard FromRust(const CxxOrchardShard& tree) {
   std::optional<OrchardShardRootHash> shard_root_hash;
   if (!tree.hash.empty()) {
     CHECK_EQ(kOrchardShardTreeHashSize, tree.hash.size());
@@ -54,7 +58,7 @@ ShardTreeCap ToRust(::brave_wallet::OrchardShardTreeCap& shard_store_cap) {
                                       std::move(data));
 }
 
-ShardTreeShard ToRust(const ::brave_wallet::OrchardShard& tree) {
+CxxOrchardShard ToRust(const ::brave_wallet::OrchardShard& tree) {
   ::rust::Vec<uint8_t> data;
   data.reserve(tree.shard_data.size());
   base::ranges::copy(tree.shard_data, std::back_inserter(data));
@@ -63,27 +67,28 @@ ShardTreeShard ToRust(const ::brave_wallet::OrchardShard& tree) {
   if (tree.root_hash) {
     base::ranges::copy(tree.root_hash.value(), std::back_inserter(hash));
   }
-  return ShardTreeShard{ToRust(tree.address), std::move(hash), std::move(data)};
+  return CxxOrchardShard{ToRust(tree.address), std::move(hash),
+                         std::move(data)};
 }
 
-ShardTreeCheckpoint ToRust(
+CxxOrchardCheckpoint ToRust(
     const ::brave_wallet::OrchardCheckpoint& checkpoint) {
   ::rust::Vec<uint32_t> marks_removed;
   base::ranges::copy(checkpoint.marks_removed,
                      std::back_inserter(marks_removed));
-  return ShardTreeCheckpoint{!checkpoint.tree_state_position.has_value(),
-                             checkpoint.tree_state_position.value_or(0),
-                             marks_removed};
+  return CxxOrchardCheckpoint{!checkpoint.tree_state_position.has_value(),
+                              checkpoint.tree_state_position.value_or(0),
+                              marks_removed};
 }
 
-ShardTreeCheckpointBundle ToRust(
+CxxOrchardCheckpointBundle ToRust(
     const ::brave_wallet::OrchardCheckpointBundle& checkpoint_bundle) {
-  return ShardTreeCheckpointBundle(checkpoint_bundle.checkpoint_id,
-                                   ToRust(checkpoint_bundle.checkpoint));
+  return CxxOrchardCheckpointBundle(checkpoint_bundle.checkpoint_id,
+                                    ToRust(checkpoint_bundle.checkpoint));
 }
 
 ::brave_wallet::OrchardCheckpoint FromRust(
-    const ShardTreeCheckpoint& checkpoint) {
+    const CxxOrchardCheckpoint& checkpoint) {
   CheckpointTreeState checkpoint_tree_state = std::nullopt;
   if (!checkpoint.empty) {
     checkpoint_tree_state = checkpoint.position;
@@ -103,8 +108,8 @@ CxxOrchardShardTreeDelegate::CxxOrchardShardTreeDelegate(
 
 CxxOrchardShardTreeDelegate::~CxxOrchardShardTreeDelegate() = default;
 
-::rust::Box<ShardTreeShardResultWrapper> CxxOrchardShardTreeDelegate::GetShard(
-    const ShardTreeAddress& addr) const {
+::rust::Box<OrchardShardResultWrapper> CxxOrchardShardTreeDelegate::GetShard(
+    const CxxOrchardShardAddress& addr) const {
   auto shard = storage_->GetShard(account_id_, FromRust(addr));
   if (!shard.has_value()) {
     return wrap_shard_tree_shard_error();
@@ -114,7 +119,7 @@ CxxOrchardShardTreeDelegate::~CxxOrchardShardTreeDelegate() = default;
   return wrap_shard_tree_shard(ToRust(**shard));
 }
 
-::rust::Box<ShardTreeShardResultWrapper> CxxOrchardShardTreeDelegate::LastShard(
+::rust::Box<OrchardShardResultWrapper> CxxOrchardShardTreeDelegate::LastShard(
     uint8_t shard_level) const {
   auto shard = storage_->LastShard(account_id_, shard_level);
   if (!shard.has_value()) {
@@ -126,7 +131,7 @@ CxxOrchardShardTreeDelegate::~CxxOrchardShardTreeDelegate() = default;
 }
 
 ::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::PutShard(
-    const ShardTreeShard& tree) const {
+    const CxxOrchardShard& tree) const {
   auto result = storage_->PutShard(account_id_, FromRust(tree));
   if (!result.has_value()) {
     return wrap_bool_error();
@@ -141,7 +146,7 @@ CxxOrchardShardTreeDelegate::~CxxOrchardShardTreeDelegate() = default;
   if (!shard.has_value()) {
     return wrap_shard_tree_roots_error();
   }
-  ::rust::Vec<ShardTreeAddress> roots;
+  ::rust::Vec<CxxOrchardShardAddress> roots;
   for (const auto& root : *shard) {
     roots.push_back(ToRust(root));
   }
@@ -149,7 +154,7 @@ CxxOrchardShardTreeDelegate::~CxxOrchardShardTreeDelegate() = default;
 }
 
 ::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::Truncate(
-    const ShardTreeAddress& address) const {
+    const CxxOrchardShardAddress& address) const {
   auto result = storage_->TruncateShards(account_id_, address.index);
   if (!result.has_value()) {
     return wrap_bool_error();
@@ -157,8 +162,8 @@ CxxOrchardShardTreeDelegate::~CxxOrchardShardTreeDelegate() = default;
   return wrap_bool(result.value());
 }
 
-::rust::Box<ShardTreeCapResultWrapper> CxxOrchardShardTreeDelegate::GetCap()
-    const {
+::rust::Box<OrchardShardTreeCapResultWrapper>
+CxxOrchardShardTreeDelegate::GetCap() const {
   auto result = storage_->GetCap(account_id_);
   if (!result.has_value()) {
     return wrap_shard_tree_cap_error();
@@ -169,7 +174,7 @@ CxxOrchardShardTreeDelegate::~CxxOrchardShardTreeDelegate() = default;
 }
 
 ::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::PutCap(
-    const ShardTreeCap& tree) const {
+    const CxxOrchardShardTreeCap& tree) const {
   auto result = storage_->PutCap(account_id_, FromRust(tree));
   if (!result.has_value()) {
     return wrap_bool_error();
@@ -201,7 +206,7 @@ CxxOrchardShardTreeDelegate::MaxCheckpointId() const {
 
 ::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::AddCheckpoint(
     uint32_t checkpoint_id,
-    const ShardTreeCheckpoint& checkpoint) const {
+    const CxxOrchardCheckpoint& checkpoint) const {
   auto result =
       storage_->AddCheckpoint(account_id_, checkpoint_id, FromRust(checkpoint));
   if (!result.has_value()) {
@@ -250,7 +255,7 @@ CxxOrchardShardTreeDelegate::GetCheckpoint(uint32_t checkpoint_id) const {
 
 ::rust::Box<BoolResultWrapper> CxxOrchardShardTreeDelegate::UpdateCheckpoint(
     uint32_t checkpoint_id,
-    const ShardTreeCheckpoint& checkpoint) const {
+    const CxxOrchardCheckpoint& checkpoint) const {
   auto result = storage_->UpdateCheckpoint(account_id_, checkpoint_id,
                                            FromRust(checkpoint));
   if (!result.has_value()) {
@@ -283,7 +288,7 @@ CxxOrchardShardTreeDelegate::GetCheckpoints(size_t limit) const {
   if (!checkpoints.has_value()) {
     return wrap_checkpoints_error();
   }
-  ::rust::Vec<ShardTreeCheckpointBundle> result;
+  ::rust::Vec<CxxOrchardCheckpointBundle> result;
   for (const auto& checkpoint : checkpoints.value()) {
     result.push_back(ToRust(checkpoint));
   }

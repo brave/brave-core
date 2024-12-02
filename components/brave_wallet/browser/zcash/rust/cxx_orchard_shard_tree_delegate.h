@@ -16,19 +16,19 @@ class OrchardStorage;
 
 namespace orchard {
 
-struct ShardTreeShard;
-struct ShardTreeCap;
-struct ShardTreeAddress;
-struct ShardTreeCheckpoint;
+struct CxxOrchardShard;
+struct CxxOrchardShardTreeCap;
+struct CxxOrchardShardAddress;
+struct CxxOrchardCheckpoint;
 
 struct BoolResultWrapper;
 struct CheckpointBundleResultWrapper;
 struct CheckpointCountResultWrapper;
 struct CheckpointIdResultWrapper;
 struct CheckpointsResultWrapper;
+struct OrchardShardResultWrapper;
+struct OrchardShardTreeCapResultWrapper;
 struct ShardRootsResultWrapper;
-struct ShardTreeCapResultWrapper;
-struct ShardTreeShardResultWrapper;
 
 class CxxOrchardShardTreeDelegate {
  public:
@@ -36,20 +36,21 @@ class CxxOrchardShardTreeDelegate {
                                        const mojom::AccountIdPtr& account_id);
   ~CxxOrchardShardTreeDelegate();
 
-  ::rust::Box<ShardTreeShardResultWrapper> LastShard(uint8_t shard_level) const;
-  ::rust::Box<BoolResultWrapper> PutShard(const ShardTreeShard& tree) const;
-  ::rust::Box<ShardTreeShardResultWrapper> GetShard(
-      const ShardTreeAddress& addr) const;
+  ::rust::Box<OrchardShardResultWrapper> LastShard(uint8_t shard_level) const;
+  ::rust::Box<BoolResultWrapper> PutShard(const CxxOrchardShard& tree) const;
+  ::rust::Box<OrchardShardResultWrapper> GetShard(
+      const CxxOrchardShardAddress& addr) const;
   ::rust::Box<ShardRootsResultWrapper> GetShardRoots(uint8_t shard_level) const;
   ::rust::Box<BoolResultWrapper> Truncate(
-      const ShardTreeAddress& address) const;
-  ::rust::Box<ShardTreeCapResultWrapper> GetCap() const;
-  ::rust::Box<BoolResultWrapper> PutCap(const ShardTreeCap& tree) const;
+      const CxxOrchardShardAddress& address) const;
+  ::rust::Box<OrchardShardTreeCapResultWrapper> GetCap() const;
+  ::rust::Box<BoolResultWrapper> PutCap(
+      const CxxOrchardShardTreeCap& tree) const;
   ::rust::Box<CheckpointIdResultWrapper> MinCheckpointId() const;
   ::rust::Box<CheckpointIdResultWrapper> MaxCheckpointId() const;
   ::rust::Box<BoolResultWrapper> AddCheckpoint(
       uint32_t checkpoint_id,
-      const ShardTreeCheckpoint& checkpoint) const;
+      const CxxOrchardCheckpoint& checkpoint) const;
   ::rust::Box<CheckpointCountResultWrapper> CheckpointCount() const;
   ::rust::Box<CheckpointBundleResultWrapper> CheckpointAtDepth(
       size_t depth) const;
@@ -57,7 +58,7 @@ class CxxOrchardShardTreeDelegate {
       uint32_t checkpoint_id) const;
   ::rust::Box<BoolResultWrapper> UpdateCheckpoint(
       uint32_t checkpoint_id,
-      const ShardTreeCheckpoint& checkpoint) const;
+      const CxxOrchardCheckpoint& checkpoint) const;
   ::rust::Box<BoolResultWrapper> RemoveCheckpoint(uint32_t checkpoint_id) const;
   ::rust::Box<BoolResultWrapper> TruncateCheckpoint(
       uint32_t checkpoint_id) const;

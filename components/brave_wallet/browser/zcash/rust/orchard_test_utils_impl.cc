@@ -26,12 +26,12 @@ class TestingDecodedBundleBuilderImpl : public TestingDecodedBundleBuilder {
 
   void AddCommitment(
       const ::brave_wallet::OrchardCommitment& commitment) override {
-    ShardTreeCheckpointRetention retention;
+    CxxOrchardCheckpointRetention retention;
     retention.marked = commitment.is_marked;
     retention.checkpoint = commitment.checkpoint_id.has_value();
     retention.checkpoint_id = commitment.checkpoint_id.value_or(0);
 
-    ShardTreeLeaf leaf;
+    CxxOrchardShardTreeLeaf leaf;
     leaf.hash = commitment.cmu;
     leaf.retention = retention;
 
@@ -43,8 +43,8 @@ class TestingDecodedBundleBuilderImpl : public TestingDecodedBundleBuilder {
     base::ranges::copy(prior_tree_state_->frontier,
                        std::back_inserter(frontier));
     auto prior_tree_state =
-        ShardTreeState{frontier, prior_tree_state_->block_height,
-                       prior_tree_state_->tree_size};
+        CxxOrchardShardTreeState{frontier, prior_tree_state_->block_height,
+                                 prior_tree_state_->tree_size};
     return base::WrapUnique<OrchardDecodedBlocksBundle>(
         new OrchardDecodedBlocksBundleImpl(
             create_mock_decode_result(std::move(prior_tree_state),
@@ -54,7 +54,7 @@ class TestingDecodedBundleBuilderImpl : public TestingDecodedBundleBuilder {
 
  private:
   std::optional<::brave_wallet::OrchardTreeState> prior_tree_state_;
-  ShardTreeLeafs leafs_;
+  CxxOrchardShardTreeLeafs leafs_;
 };
 
 std::unique_ptr<TestingDecodedBundleBuilder>

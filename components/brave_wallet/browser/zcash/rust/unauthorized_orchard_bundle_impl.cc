@@ -27,9 +27,9 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
     base::span<const uint8_t> tree_state,
     const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs,
     std::optional<size_t> random_seed_for_testing) {
-  ::rust::Vec<orchard::OrchardOutput> outputs;
+  ::rust::Vec<orchard::CxxOrchardOutput> outputs;
   for (const auto& output : orchard_outputs) {
-    outputs.push_back(orchard::OrchardOutput{
+    outputs.push_back(orchard::CxxOrchardOutput{
         output.value, output.addr, output.memo ? *output.memo : OrchardMemo(),
         output.memo.has_value()});
   }
@@ -37,7 +37,7 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
     CHECK_IS_TEST();
     auto bundle_result = create_testing_orchard_bundle(
         ::rust::Slice<const uint8_t>{tree_state.data(), tree_state.size()},
-        ::rust::Vec<::brave_wallet::orchard::OrchardSpend>(),
+        ::rust::Vec<::brave_wallet::orchard::CxxOrchardSpend>(),
         std::move(outputs), random_seed_for_testing.value());
     if (!bundle_result->is_ok()) {
       return nullptr;
@@ -47,7 +47,7 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
   } else {
     auto bundle_result = create_orchard_bundle(
         ::rust::Slice<const uint8_t>{tree_state.data(), tree_state.size()},
-        ::rust::Vec<::brave_wallet::orchard::OrchardSpend>(),
+        ::rust::Vec<::brave_wallet::orchard::CxxOrchardSpend>(),
         std::move(outputs));
     if (!bundle_result->is_ok()) {
       return nullptr;

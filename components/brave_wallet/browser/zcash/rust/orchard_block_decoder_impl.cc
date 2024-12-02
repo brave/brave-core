@@ -26,13 +26,13 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
     const ::brave_wallet::OrchardTreeState& tree_state,
     const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks) {
   base::AssertLongCPUWorkAllowed();
-  ::rust::Vec<orchard::OrchardCompactAction> orchard_actions;
+  ::rust::Vec<orchard::CxxOrchardCompactAction> orchard_actions;
   for (const auto& block : blocks) {
     bool block_has_orchard_action = false;
     for (const auto& tx : block->vtx) {
       for (const auto& orchard_action : tx->orchard_actions) {
         block_has_orchard_action = true;
-        orchard::OrchardCompactAction orchard_compact_action;
+        orchard::CxxOrchardCompactAction orchard_compact_action;
 
         if (orchard_action->nullifier.size() != kOrchardNullifierSize ||
             orchard_action->cmx.size() != kOrchardCmxSize ||
@@ -59,7 +59,7 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
     }
   }
 
-  ShardTreeState prior_tree_state;
+  CxxOrchardShardTreeState prior_tree_state;
   prior_tree_state.block_height = tree_state.block_height;
   prior_tree_state.tree_size = tree_state.tree_size;
 
