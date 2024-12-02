@@ -21,14 +21,14 @@ struct CxxOrchardShardTreeCap;
 struct CxxOrchardShardAddress;
 struct CxxOrchardCheckpoint;
 
-struct BoolResultWrapper;
-struct CheckpointBundleResultWrapper;
-struct CheckpointCountResultWrapper;
-struct CheckpointIdResultWrapper;
-struct CheckpointsResultWrapper;
-struct OrchardShardResultWrapper;
-struct OrchardShardTreeCapResultWrapper;
-struct ShardRootsResultWrapper;
+struct CxxBoolResultWrapper;
+struct CxxCheckpointBundleResultWrapper;
+struct CxxCheckpointCountResultWrapper;
+struct CxxCheckpointIdResultWrapper;
+struct CxxCheckpointsResultWrapper;
+struct CxxOrchardShardResultWrapper;
+struct CxxOrchardShardTreeCapResultWrapper;
+struct CxxShardRootsResultWrapper;
 
 class CxxOrchardShardTreeDelegate {
  public:
@@ -36,33 +36,36 @@ class CxxOrchardShardTreeDelegate {
                                        const mojom::AccountIdPtr& account_id);
   ~CxxOrchardShardTreeDelegate();
 
-  ::rust::Box<OrchardShardResultWrapper> LastShard(uint8_t shard_level) const;
-  ::rust::Box<BoolResultWrapper> PutShard(const CxxOrchardShard& tree) const;
-  ::rust::Box<OrchardShardResultWrapper> GetShard(
+  ::rust::Box<CxxOrchardShardResultWrapper> LastShard(
+      uint8_t shard_level) const;
+  ::rust::Box<CxxBoolResultWrapper> PutShard(const CxxOrchardShard& tree) const;
+  ::rust::Box<CxxOrchardShardResultWrapper> GetShard(
       const CxxOrchardShardAddress& addr) const;
-  ::rust::Box<ShardRootsResultWrapper> GetShardRoots(uint8_t shard_level) const;
-  ::rust::Box<BoolResultWrapper> Truncate(
+  ::rust::Box<CxxShardRootsResultWrapper> GetShardRoots(
+      uint8_t shard_level) const;
+  ::rust::Box<CxxBoolResultWrapper> Truncate(
       const CxxOrchardShardAddress& address) const;
-  ::rust::Box<OrchardShardTreeCapResultWrapper> GetCap() const;
-  ::rust::Box<BoolResultWrapper> PutCap(
+  ::rust::Box<CxxOrchardShardTreeCapResultWrapper> GetCap() const;
+  ::rust::Box<CxxBoolResultWrapper> PutCap(
       const CxxOrchardShardTreeCap& tree) const;
-  ::rust::Box<CheckpointIdResultWrapper> MinCheckpointId() const;
-  ::rust::Box<CheckpointIdResultWrapper> MaxCheckpointId() const;
-  ::rust::Box<BoolResultWrapper> AddCheckpoint(
+  ::rust::Box<CxxCheckpointIdResultWrapper> MinCheckpointId() const;
+  ::rust::Box<CxxCheckpointIdResultWrapper> MaxCheckpointId() const;
+  ::rust::Box<CxxBoolResultWrapper> AddCheckpoint(
       uint32_t checkpoint_id,
       const CxxOrchardCheckpoint& checkpoint) const;
-  ::rust::Box<CheckpointCountResultWrapper> CheckpointCount() const;
-  ::rust::Box<CheckpointBundleResultWrapper> CheckpointAtDepth(
+  ::rust::Box<CxxCheckpointCountResultWrapper> CheckpointCount() const;
+  ::rust::Box<CxxCheckpointBundleResultWrapper> CheckpointAtDepth(
       size_t depth) const;
-  ::rust::Box<CheckpointBundleResultWrapper> GetCheckpoint(
+  ::rust::Box<CxxCheckpointBundleResultWrapper> GetCheckpoint(
       uint32_t checkpoint_id) const;
-  ::rust::Box<BoolResultWrapper> UpdateCheckpoint(
+  ::rust::Box<CxxBoolResultWrapper> UpdateCheckpoint(
       uint32_t checkpoint_id,
       const CxxOrchardCheckpoint& checkpoint) const;
-  ::rust::Box<BoolResultWrapper> RemoveCheckpoint(uint32_t checkpoint_id) const;
-  ::rust::Box<BoolResultWrapper> TruncateCheckpoint(
+  ::rust::Box<CxxBoolResultWrapper> RemoveCheckpoint(
       uint32_t checkpoint_id) const;
-  ::rust::Box<CheckpointsResultWrapper> GetCheckpoints(size_t limit) const;
+  ::rust::Box<CxxBoolResultWrapper> TruncateCheckpoint(
+      uint32_t checkpoint_id) const;
+  ::rust::Box<CxxCheckpointsResultWrapper> GetCheckpoints(size_t limit) const;
 
  private:
   raw_ref<OrchardStorage> storage_;
