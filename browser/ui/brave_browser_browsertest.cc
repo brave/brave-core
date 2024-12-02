@@ -10,7 +10,9 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/devtools/devtools_window_testing.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/startup/launch_mode_recorder.h"
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
@@ -160,4 +162,53 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
                                  AddTabTypes::ADD_ACTIVE);
   EXPECT_TRUE(
       base::test::RunUntil([] { return chrome::GetTotalBrowserCount() == 1; }));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
+                       CreateAnotherWindowWithExistingTab) {
+  ASSERT_TRUE(embedded_test_server()->Start());
+  browser()->profile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+  TabStripModel* tab_strip = browser()->tab_strip_model();
+
+  auto page_url = embedded_test_server()->GetURL("/empty.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
+
+  ASSERT_EQ(1, tab_strip->count());
+  EXPECT_EQ(page_url,
+            tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
+
+  // Close the last tab.
+  tab_strip->GetActiveWebContents()->Close();
+  ASSERT_EQ(0, tab_strip->count());
+
+  // Wait till another new tab is opened.
+  EXPECT_TRUE(
+      base::test::RunUntil([tab_strip] { return tab_strip->count() == 1; }));
+  EXPECT_EQ(browser()->GetNewTabURL(),
+            tab_strip->GetWebContentsAt(0)->GetURL().possibly_invalid_spec());
+
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("https://www.brave.com/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_EQ(2, tab_strip->count());
+
+  // Create another browser with existing tab.
+  chrome::MoveTabsToNewWindow(browser(), {1});
+  ASSERT_EQ(1, tab_strip->count());
+
+  // Get new browser.
+  Browser* new_browser = nullptr;
+  for (Browser* b : *BrowserList::GetInstance()) {
+    if (b != browser()) {
+      new_browser = b;
+      break;
+    }
+  }
+  ASSERT_TRUE(new_browser);
+  base::RunLoop().RunUntilIdle();
+
+  // Check new browser by detaching a tab from another window has
+  // one tab.
+  EXPECT_EQ(1, new_browser->tab_strip_model()->count());
 }
