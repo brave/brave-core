@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 
+#include <map>
 #include <string>
+#include <utility>
 
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
