@@ -2101,7 +2101,9 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void openBraveLeo() {
         BraveLeoUtils.verifySubscription(null);
-        BraveLeoActivity.showPage(this, BRAVE_AI_CHAT_URL);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("chrome-untrusted://ai-chat"));
+        startActivity(intent);
+        // BraveLeoActivity.showPage(this, BRAVE_AI_CHAT_URL);
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {
