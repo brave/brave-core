@@ -7,7 +7,6 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_cache_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 
 namespace brave_ads::database {
@@ -19,8 +18,6 @@ void PurgeExpiredAdEvents() {
       return BLOG(0, "Failed to purge expired ad events");
     }
 
-    RebuildAdEventCache();
-
     BLOG(3, "Successfully purged expired ad events");
   }));
 }
@@ -31,8 +28,6 @@ void PurgeAllOrphanedAdEvents() {
     if (!success) {
       return BLOG(0, "Failed to purge all orphaned ad events");
     }
-
-    RebuildAdEventCache();
 
     BLOG(3, "Successfully purged all orphaned ad events");
   }));

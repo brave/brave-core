@@ -7,9 +7,6 @@
 
 #include "base/containers/adapters.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
@@ -39,16 +36,6 @@ bool DoesHistoryRespectRollingTimeConstraint(
   }
 
   return true;
-}
-
-bool DoesHistoryRespectRollingTimeConstraint(
-    const mojom::AdType mojom_ad_type,
-    const base::TimeDelta time_constraint,
-    const size_t cap) {
-  const std::vector<base::Time> history = GetAdsClient().GetCachedAdEvents(
-      mojom_ad_type, mojom::ConfirmationType::kServedImpression);
-
-  return DoesHistoryRespectRollingTimeConstraint(history, time_constraint, cap);
 }
 
 }  // namespace brave_ads

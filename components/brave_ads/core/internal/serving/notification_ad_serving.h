@@ -12,11 +12,11 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace base {
@@ -56,11 +56,15 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   void MaybeServeAdAtNextRegularInterval();
 
  private:
-  base::expected<void, std::string> CanServeAd() const;
-
   bool IsSupported() const { return !!eligible_ads_; }
 
+  bool CanServeAd(const AdEventList& ad_events) const;
+
+  void GetAdEvents();
+  void GetAdEventsCallback(bool success, const AdEventList& ad_events);
+
   void GetUserModel();
+  void GetUserModelCallback(UserModelInfo user_model);
 
   void GetEligibleAds(UserModelInfo user_model);
   void GetEligibleAdsCallback(const CreativeNotificationAdList& creative_ads);

@@ -11,7 +11,6 @@
 #include <string>
 #include <string_view>
 #include <utility>
-#include <vector>
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"

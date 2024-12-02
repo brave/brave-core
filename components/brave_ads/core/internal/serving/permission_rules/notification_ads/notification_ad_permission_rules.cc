@@ -5,22 +5,29 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/notification_ad_permission_rules.h"
 
+#include <vector>
+
+#include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_day_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_hour_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/browser_is_active_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/catalog_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/do_not_disturb_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/full_screen_mode_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/media_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/minimum_wait_time_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/network_connection_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/notification_ads_minimum_wait_time_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/notification_ads_per_day_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/notification_ads_per_hour_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/notification_ads_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/notification_ads/can_show_notifications_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/user_activity_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 
 namespace brave_ads {
 
 // static
-bool NotificationAdPermissionRules::HasPermission() {
+bool NotificationAdPermissionRules::HasPermission(
+    const AdEventList& ad_events) {
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }
@@ -33,7 +40,7 @@ bool NotificationAdPermissionRules::HasPermission() {
     return false;
   }
 
-  if (!HasNotificationAdsPermission()) {
+  if (!HasCanShowNotificationsPermission()) {
     return false;
   }
 
@@ -57,15 +64,21 @@ bool NotificationAdPermissionRules::HasPermission() {
     return false;
   }
 
-  if (!HasNotificationAdsPerDayPermission()) {
+  const std::vector<base::Time> history = ToHistory(ad_events);
+
+  if (!HasAdsPerDayPermission(history,
+                              /*cap=*/kMaximumNotificationAdsPerDay.Get())) {
     return false;
   }
 
-  if (!HasNotificationAdsPerHourPermission()) {
+  if (!HasAdsPerHourPermission(history,
+                               /*cap=*/GetMaximumNotificationAdsPerHour())) {
     return false;
   }
 
-  return HasNotificationAdMinimumWaitTimePermission();
+  return HasMinimumWaitTimePermission(
+      history,
+      /*time_constraint=*/base::Hours(1) / GetMaximumNotificationAdsPerHour());
 }
 
 }  // namespace brave_ads

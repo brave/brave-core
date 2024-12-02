@@ -13,10 +13,10 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
@@ -48,13 +48,26 @@ class InlineContentAdServing final {
                     MaybeServeInlineContentAdCallback callback);
 
  private:
-  base::expected<void, std::string> CanServeAd() const;
-
   bool IsSupported() const { return !!eligible_ads_; }
+
+  bool CanServeAd(const AdEventList& ad_events) const;
+
+  void GetAdEvents(int32_t tab_id,
+                   const std::string& dimensions,
+                   MaybeServeInlineContentAdCallback callback);
+  void GetAdEventsCallback(int32_t tab_id,
+                           const std::string& dimensions,
+                           MaybeServeInlineContentAdCallback callback,
+                           bool success,
+                           const AdEventList& ad_events);
 
   void GetUserModel(int32_t tab_id,
                     const std::string& dimensions,
                     MaybeServeInlineContentAdCallback callback);
+  void GetUserModelCallback(int32_t tab_id,
+                            const std::string& dimensions,
+                            MaybeServeInlineContentAdCallback callback,
+                            UserModelInfo user_model) const;
 
   void GetEligibleAds(int32_t tab_id,
                       const std::string& dimensions,

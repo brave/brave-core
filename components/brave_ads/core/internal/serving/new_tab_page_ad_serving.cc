@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 
 namespace brave_ads {
@@ -38,41 +39,69 @@ NewTabPageAdServing::~NewTabPageAdServing() {
 
 void NewTabPageAdServing::MaybeServeAd(
     MaybeServeNewTabPageAdCallback callback) {
-  const auto result = CanServeAd();
-  if (!result.has_value()) {
-    BLOG(1, result.error());
-    return FailedToServeAd(std::move(callback));
-  }
-
-  NotifyOpportunityAroseToServeNewTabPageAd();
-
-  GetUserModel(std::move(callback));
+  GetAdEvents(std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-base::expected<void, std::string> NewTabPageAdServing::CanServeAd() const {
+bool NewTabPageAdServing::CanServeAd(const AdEventList& ad_events) const {
   if (!base::FeatureList::IsEnabled(kNewTabPageAdServingFeature)) {
-    return base::unexpected("New tab page ad not served: Feature is disabled");
+    BLOG(1, "New tab page ad not served: Feature is disabled");
+    return false;
   }
 
   if (!IsSupported()) {
-    return base::unexpected("New tab page ad not served: Unsupported version");
+    BLOG(1, "New tab page ad not served: Unsupported version");
+    return false;
   }
 
-  if (!NewTabPageAdPermissionRules::HasPermission()) {
-    return base::unexpected(
-        "New tab page ad not served: Not allowed due to permission rules");
+  if (!NewTabPageAdPermissionRules::HasPermission(ad_events)) {
+    BLOG(1, "New tab page ad not served: Not allowed due to permission rules");
+    return false;
   }
 
-  return base::ok();
+  return true;
+}
+
+void NewTabPageAdServing::GetAdEvents(MaybeServeNewTabPageAdCallback callback) {
+  const database::table::AdEvents database_table;
+  database_table.Get(
+      mojom::AdType::kNewTabPageAd, mojom::ConfirmationType::kServedImpression,
+      /*time_window=*/base::Days(1),
+      base::BindOnce(&NewTabPageAdServing::GetAdEventsCallback,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void NewTabPageAdServing::GetAdEventsCallback(
+    MaybeServeNewTabPageAdCallback callback,
+    const bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    BLOG(1, "New tab page ad not served: Failed to get ad events");
+    return FailedToServeAd(std::move(callback));
+  }
+
+  if (!CanServeAd(ad_events)) {
+    BLOG(1, "New tab page ad not served: Not allowed");
+    return FailedToServeAd(std::move(callback));
+  }
+
+  GetUserModel(std::move(callback));
 }
 
 void NewTabPageAdServing::GetUserModel(
     MaybeServeNewTabPageAdCallback callback) {
-  BuildUserModel(base::BindOnce(&NewTabPageAdServing::GetEligibleAds,
+  BuildUserModel(base::BindOnce(&NewTabPageAdServing::GetUserModelCallback,
                                 weak_factory_.GetWeakPtr(),
                                 std::move(callback)));
+}
+
+void NewTabPageAdServing::GetUserModelCallback(
+    MaybeServeNewTabPageAdCallback callback,
+    UserModelInfo user_model) const {
+  NotifyOpportunityAroseToServeNewTabPageAd();
+
+  GetEligibleAds(std::move(callback), std::move(user_model));
 }
 
 void NewTabPageAdServing::GetEligibleAds(
@@ -106,8 +135,7 @@ void NewTabPageAdServing::ServeAd(
     const NewTabPageAdInfo& ad,
     MaybeServeNewTabPageAdCallback callback) const {
   if (!ad.IsValid()) {
-    BLOG(0, "Failed to serve new tab page ad due to the ad being invalid");
-
+    BLOG(1, "New tab page ad not served: Invalid ad");
     return FailedToServeAd(std::move(callback));
   }
 

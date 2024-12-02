@@ -29,8 +29,6 @@ class Maintenance final : public DatabaseManagerObserver {
   ~Maintenance() override;
 
  private:
-  void ScheduleOnce();
-
   void RepeatedlyScheduleAfter(base::TimeDelta after);
   void RepeatedlyScheduleAfterCallback();
 

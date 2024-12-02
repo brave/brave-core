@@ -23,6 +23,10 @@ namespace {
 constexpr base::TimeDelta kInitialDelay = base::Minutes(1);
 constexpr base::TimeDelta kRecurringInterval = base::Days(1);
 
+void RunOnce() {
+  PurgeAllOrphanedAdEvents();
+}
+
 }  // namespace
 
 Maintenance::Maintenance() {
@@ -34,10 +38,6 @@ Maintenance::~Maintenance() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-void Maintenance::ScheduleOnce() {
-  PurgeAllOrphanedAdEvents();
-}
 
 void Maintenance::RepeatedlyScheduleAfter(const base::TimeDelta after) {
   const base::Time at =
@@ -59,7 +59,7 @@ void Maintenance::RepeatedlyScheduleAfterCallback() {
 }
 
 void Maintenance::OnDatabaseIsReady() {
-  ScheduleOnce();
+  RunOnce();
 
   RepeatedlyScheduleAfter(kInitialDelay);
 }

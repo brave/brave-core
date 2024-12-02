@@ -8,20 +8,14 @@
 #include <optional>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
-#include "base/containers/extend.h"
 #include "base/files/file.h"
 #include "base/files/file_util.h"
-#include "base/no_destructor.h"
-#include "base/strings/strcat.h"
-#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
-#include "brave/components/brave_ads/core/internal/common/test/internal/current_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_storage_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_value_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_storage_test_util_internal.h"
@@ -31,26 +25,11 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 
 namespace brave_ads::test {
-
-namespace {
-
-using AdEventHistoryMap =
-    base::flat_map</*type_id*/ std::string, std::vector<base::Time>>;
-using AdEventMap = base::flat_map</*uuid*/ std::string, AdEventHistoryMap>;
-
-AdEventMap& AdEventCache() {
-  static base::NoDestructor<AdEventMap> ad_events;
-  return *ad_events;
-}
-
-}  // namespace
 
 void MockFlags() {
   CHECK(GlobalState::HasInstance());
@@ -100,69 +79,6 @@ void MockCloseNotificationAd(AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, CloseNotificationAd)
       .WillByDefault(::testing::Invoke([](const std::string& placement_id) {
         CHECK(!placement_id.empty());
-      }));
-}
-
-void MockCacheAdEventForInstanceId(const AdsClientMock& ads_client_mock) {
-  ON_CALL(ads_client_mock, CacheAdEventForInstanceId)
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& id, const mojom::AdType mojom_ad_type,
-             const mojom::ConfirmationType mojom_confirmation_type,
-             const base::Time time) {
-            CHECK(!id.empty());
-            CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
-            CHECK_NE(mojom::ConfirmationType::kUndefined,
-                     mojom_confirmation_type);
-
-            const std::string uuid = GetUuidForCurrentTestAndValue(id);
-            const std::string type_id = base::StrCat(
-                {ToString(mojom_ad_type), ToString(mojom_confirmation_type)});
-            AdEventCache()[uuid][type_id].push_back(time);
-          }));
-}
-
-void MockGetCachedAdEvents(const AdsClientMock& ads_client_mock) {
-  ON_CALL(ads_client_mock, GetCachedAdEvents)
-      .WillByDefault(::testing::Invoke([](const mojom::AdType mojom_ad_type,
-                                          const mojom::ConfirmationType
-                                              mojom_confirmation_type)
-                                           -> std::vector<base::Time> {
-        CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
-        CHECK_NE(mojom::ConfirmationType::kUndefined, mojom_confirmation_type);
-
-        const std::string uuid_for_current_test = GetUuidForCurrentTest();
-
-        const std::string type_id = base::StrCat(
-            {ToString(mojom_ad_type), ToString(mojom_confirmation_type)});
-
-        std::vector<base::Time> cached_ad_events;
-
-        for (const auto& [ad_event_uuid, ad_event_history] : AdEventCache()) {
-          if (!ad_event_uuid.ends_with(
-                  base::StrCat({":", uuid_for_current_test}))) {
-            // Only get ad events for current test.
-            continue;
-          }
-
-          for (const auto& [ad_event_type_id, ad_event_timestamps] :
-               ad_event_history) {
-            if (ad_event_type_id == type_id) {
-              base::Extend(cached_ad_events, ad_event_timestamps);
-            }
-          }
-        }
-
-        return cached_ad_events;
-      }));
-}
-
-void MockResetAdEventCacheForInstanceId(const AdsClientMock& ads_client_mock) {
-  ON_CALL(ads_client_mock, ResetAdEventCacheForInstanceId)
-      .WillByDefault(::testing::Invoke([](const std::string& id) {
-        CHECK(!id.empty());
-
-        const std::string uuid = GetUuidForCurrentTestAndValue(id);
-        AdEventCache()[uuid].clear();
       }));
 }
 

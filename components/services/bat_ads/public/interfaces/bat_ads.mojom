@@ -83,17 +83,6 @@ interface BatAdsClient {
   ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
   CloseNotificationAd(string placement_id);
 
-  CacheAdEventForInstanceId(
-      string id,
-      brave_ads.mojom.AdType mojom_ad_type,
-      brave_ads.mojom.ConfirmationType mojom_confirmation_type,
-      mojo_base.mojom.Time time);
-  [Sync]
-  GetCachedAdEvents(brave_ads.mojom.AdType mojom_ad_type,
-                    brave_ads.mojom.ConfirmationType mojom_confirmation_type) =>
-      (array<mojo_base.mojom.Time> ad_events);
-  ResetAdEventCacheForInstanceId(string id);
-
   GetSiteHistory(int32 max_count, int32 days_ago) =>
       (array<url.mojom.Url> site_history);
 

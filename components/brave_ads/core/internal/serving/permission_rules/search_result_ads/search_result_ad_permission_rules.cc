@@ -5,24 +5,37 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/search_result_ads/search_result_ad_permission_rules.h"
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/search_result_ads/search_result_ads_per_day_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/search_result_ads/search_result_ads_per_hour_permission_rule.h"
+#include <vector>
+
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_day_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_hour_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
 
 namespace brave_ads {
 
 // static
-bool SearchResultAdPermissionRules::HasPermission() {
+bool SearchResultAdPermissionRules::HasPermission(
+    const AdEventList& ad_events) {
   if (!UserHasJoinedBraveRewards()) {
+    // If the user has not joined Brave Rewards, always grant permission.
     return true;
   }
+
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }
-  if (!HasSearchResultAdsPerDayPermission()) {
+
+  const std::vector<base::Time> history = ToHistory(ad_events);
+
+  if (!HasAdsPerDayPermission(history,
+                              /*cap=*/kMaximumSearchResultAdsPerDay.Get())) {
     return false;
   }
-  if (!HasSearchResultAdsPerHourPermission()) {
+
+  if (!HasAdsPerHourPermission(history,
+                               /*cap=*/kMaximumSearchResultAdsPerHour.Get())) {
     return false;
   }
 
