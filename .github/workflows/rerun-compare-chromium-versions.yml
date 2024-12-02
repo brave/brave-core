@@ -20,6 +20,7 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
+      TARGET_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
       - name: If a major Chromium bump was merged, rerun compare-chromium-versions in all PRs targeting the same branch
         run: |
@@ -29,7 +30,7 @@ jobs:
           chromium_ver() { curl -fsS "https://raw.githubusercontent.com/${GITHUB_REPOSITORY:?}/${1:?}/package.json"|jq -r .config.projects.chrome.tag; }
 
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
-          target_ver="$(chromium_ver "${GITHUB_SHA:?}")"
+          target_ver="$(chromium_ver "${TARGET_SHA:?}")"
 
           echo "::notice::PR branch: ${GITHUB_HEAD_REF:?} (${pr_ver:?}), target branch: ${GITHUB_BASE_REF:?} (${target_ver:?})"
 
