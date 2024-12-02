@@ -47,16 +47,6 @@
     callback:(brave_ads::SaveCallback)callback;
 - (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info;
 - (void)closeNotificationAd:(const std::string&)placement_id;
-- (void)cacheAdEventForInstanceId:(const std::string&)id
-                           adType:(const brave_ads::mojom::AdType)mojom_ad_type
-                 confirmationType:(const brave_ads::mojom::ConfirmationType)
-                                      mojom_confirmation_type
-                             time:(const base::Time)time;
-- (std::vector<base::Time>)
-    getCachedAdEvents:(const brave_ads::mojom::AdType)mojom_ad_type
-     confirmationType:
-         (const brave_ads::mojom::ConfirmationType)mojom_confirmation_type;
-- (void)resetAdEventCacheForInstanceId:(const std::string&)id;
 - (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
           callback:(brave_ads::UrlRequestCallback)callback;
 - (void)runDBTransaction:

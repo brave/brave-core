@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SEGMENTS_SEGMENT_TEST_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SEGMENTS_SEGMENT_TEST_CONSTANTS_H_
 
+#include <array>
+#include <string_view>
+
 namespace brave_ads::test {
 
 inline constexpr auto kSegments =

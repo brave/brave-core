@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
@@ -56,23 +55,6 @@ class ADS_EXPORT AdsClient {
 
   // Close the notification ad for the specified `placement_id`.
   virtual void CloseNotificationAd(const std::string& placement_id) = 0;
-
-  // Cache an ad event for the specified instance `id`, `mojom_ad_type`,
-  // `mojom_confirmation_type` and `time`.
-  virtual void CacheAdEventForInstanceId(
-      const std::string& id,
-      mojom::AdType mojom_ad_type,
-      mojom::ConfirmationType mojom_confirmation_type,
-      base::Time time) const = 0;
-
-  // Get cached ad events for the specified `mojom_ad_type` and
-  // `mojom_confirmation_type`.
-  virtual std::vector<base::Time> GetCachedAdEvents(
-      mojom::AdType mojom_ad_type,
-      mojom::ConfirmationType mojom_confirmation_type) const = 0;
-
-  // Reset ad event cache for the specified instance `id`.
-  virtual void ResetAdEventCacheForInstanceId(const std::string& id) const = 0;
 
   // Get site history from `recent_day_range` limited to `max_count` items. The
   // callback takes one argument - `SiteHistoryList` containing a list of URLs.

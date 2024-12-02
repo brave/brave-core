@@ -49,7 +49,7 @@ class SearchResultAdEventHandler final
 
   void FireEvent(mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                  mojom::SearchResultAdEventType mojom_ad_event_type,
-                 FireSearchResultAdEventHandlerCallback callback) const;
+                 FireSearchResultAdEventHandlerCallback callback);
 
  private:
   void MaybeFiredEventCallback(
@@ -59,9 +59,13 @@ class SearchResultAdEventHandler final
       const std::string& placement_id,
       mojom::SearchResultAdEventType mojom_ad_event_type) const;
 
-  void MaybeFireServedEvent(
+  void MaybeFireServedEvent(const SearchResultAdInfo& ad,
+                            FireSearchResultAdEventHandlerCallback callback);
+  void MaybeFireServedEventCallback(
       const SearchResultAdInfo& ad,
-      FireSearchResultAdEventHandlerCallback callback) const;
+      FireSearchResultAdEventHandlerCallback callback,
+      bool success,
+      const AdEventList& ad_events);
 
   void MaybeFireViewedEvent(
       const SearchResultAdInfo& ad,

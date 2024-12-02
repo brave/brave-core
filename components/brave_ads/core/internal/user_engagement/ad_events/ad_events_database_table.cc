@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
@@ -202,6 +203,46 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
           FROM
             $1;)",
       {GetTableName()}, nullptr);
+  BindColumnTypes(mojom_db_action);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+
+  GetAdsClient().RunDBTransaction(
+      std::move(mojom_db_transaction),
+      base::BindOnce(&GetCallback, std::move(callback)));
+}
+
+void AdEvents::Get(const mojom::AdType mojom_ad_type,
+                   const mojom::ConfirmationType mojom_confirmation_type,
+                   base::TimeDelta time_window,
+                   GetAdEventsCallback callback) const {
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kStepStatement;
+  mojom_db_action->sql = base::ReplaceStringPlaceholders(
+      R"(
+          SELECT
+            placement_id,
+            type,
+            confirmation_type,
+            campaign_id,
+            creative_set_id,
+            creative_instance_id,
+            advertiser_id,
+            segment,
+            created_at
+          FROM
+            $1
+          WHERE
+            type = '$2'
+            AND confirmation_type = '$3'
+            AND created_at > $4
+          ORDER BY
+            created_at ASC;)",
+      {GetTableName(), ToString(mojom_ad_type),
+       ToString(mojom_confirmation_type),
+       TimeToSqlValueAsString(base::Time::Now() - time_window)},
+      nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 

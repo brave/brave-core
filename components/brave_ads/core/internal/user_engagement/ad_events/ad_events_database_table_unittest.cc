@@ -49,6 +49,70 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, RecordEvent) {
   database_table_.GetAll(callback.Get());
 }
 
+TEST_F(BraveAdsAdEventsDatabaseTableTest, Get) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
+
+  base::MockCallback<ResultCallback> record_ad_event_callback;
+  EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(5);
+
+  // Ad event 1: Recorded on 19th March 2024. This ad event should not be
+  // included because it will occur outside the expiry window.
+  const NotificationAdInfo ad_1 =
+      test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad_1, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
+  database_table_.RecordEvent(ad_event_1, record_ad_event_callback.Get());
+
+  // Move the clock forward to when the ad events expire.
+  AdvanceClockBy(base::Days(1));
+
+  // Ad event 2: Recorded on 17th June 2024. This ad event should be included
+  // because it occurred within the expiry window.
+  const NotificationAdInfo ad_2 =
+      test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_2 =
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
+  database_table_.RecordEvent(ad_event_2, record_ad_event_callback.Get());
+
+  // Ad event 3: Recorded on 17th June 2024. This ad event should not be
+  // included because it is not a served impression.
+  const AdEventInfo ad_event_3 =
+      BuildAdEvent(ad_2, mojom::ConfirmationType::kViewedImpression,
+                   /*created_at=*/test::Now());
+  database_table_.RecordEvent(ad_event_3, record_ad_event_callback.Get());
+
+  // Ad event 4: Recorded on 17th June 2024. This ad event should not be
+  // included because it is not a notification ad.
+  const NewTabPageAdInfo ad_3 =
+      test::BuildNewTabPageAd(/*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_4 =
+      BuildAdEvent(ad_3, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
+  database_table_.RecordEvent(ad_event_4, record_ad_event_callback.Get());
+
+  AdvanceClockBy(base::Minutes(1));
+
+  // Ad event 5: Recorded on 17th June 2024. This ad event should be included
+  // because it occurred within the expiry window.
+  const NotificationAdInfo ad_4 =
+      test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_5 =
+      BuildAdEvent(ad_4, mojom::ConfirmationType::kServedImpression,
+                   /*created_at=*/test::Now());
+  database_table_.RecordEvent(ad_event_5, record_ad_event_callback.Get());
+
+  // Act & Assert
+  base::MockCallback<database::table::GetAdEventsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(/*success=*/true, AdEventList{ad_event_2, ad_event_5}));
+  database_table_.Get(mojom::AdType::kNotificationAd,
+                      mojom::ConfirmationType::kServedImpression,
+                      /*time_window=*/base::Days(1), callback.Get());
+}
+
 TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpired) {
   // Arrange
   AdvanceClockTo(test::TimeFromUTCString("Tue, 19 Mar 2024 05:35"));

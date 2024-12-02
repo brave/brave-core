@@ -141,7 +141,6 @@ class AdsImpl final : public Ads {
   void LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                      InitializeCallback callback,
                                      bool success);
-  // TODO(tmancey): Decouple.
   void GetActiveCallback(
       GetInternalsCallback callback,
       bool success,

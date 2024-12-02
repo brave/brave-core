@@ -46,23 +46,6 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, CloseNotificationAd, (const std::string& placement_id));
 
   MOCK_METHOD(void,
-              CacheAdEventForInstanceId,
-              (const std::string& id,
-               const mojom::AdType mojom_ad_type,
-               const mojom::ConfirmationType mojom_confirmation_type,
-               const base::Time time),
-              (const));
-  MOCK_METHOD(std::vector<base::Time>,
-              GetCachedAdEvents,
-              (const mojom::AdType mojom_ad_type,
-               const mojom::ConfirmationType mojom_onfirmation_type),
-              (const));
-  MOCK_METHOD(void,
-              ResetAdEventCacheForInstanceId,
-              (const std::string& id),
-              (const));
-
-  MOCK_METHOD(void,
               GetSiteHistory,
               (const int max_count,
                const int recent_day_range,

@@ -38,7 +38,6 @@
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_ads/core/public/user_engagement/ad_events/ad_event_cache.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
@@ -102,7 +101,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 @interface BraveAds () <AdsClientBridge> {
   std::unique_ptr<brave_ads::AdsClientNotifier> adsClientNotifier;
-  std::unique_ptr<brave_ads::AdEventCache> adEventCache;
   raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
@@ -144,8 +142,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
     [self initObservers];
 
-    adEventCache = std::make_unique<brave_ads::AdEventCache>();
-
     adsClientNotifier = std::make_unique<brave_ads::AdsClientNotifier>();
   }
   return self;
@@ -160,17 +156,11 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   [self deallocAdsClientNotifier];
 
-  [self deallocAdEventCache];
-
   [self cleanupAdsService];
 }
 
 - (void)deallocAdsClientNotifier {
   adsClientNotifier.reset();
-}
-
-- (void)deallocAdEventCache {
-  adEventCache.reset();
 }
 
 - (void)cleanupAdsService {
@@ -1265,34 +1255,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)closeNotificationAd:(const std::string&)placement_id {
   [self.notificationsHandler
       closeNotificationAd:base::SysUTF8ToNSString(placement_id)];
-}
-
-- (void)cacheAdEventForInstanceId:(const std::string&)id
-                           adType:(const brave_ads::mojom::AdType)mojom_ad_type
-                 confirmationType:(const brave_ads::mojom::ConfirmationType)
-                                      mojom_confirmation_type
-                             time:(const base::Time)time {
-  if (adEventCache) {
-    adEventCache->AddEntryForInstanceId(id, mojom_ad_type,
-                                        mojom_confirmation_type, time);
-  }
-}
-
-- (std::vector<base::Time>)
-    getCachedAdEvents:(const brave_ads::mojom::AdType)mojom_ad_type
-     confirmationType:
-         (const brave_ads::mojom::ConfirmationType)mojom_confirmation_type {
-  if (!adEventCache) {
-    return {};
-  }
-
-  return adEventCache->Get(mojom_ad_type, mojom_confirmation_type);
-}
-
-- (void)resetAdEventCacheForInstanceId:(const std::string&)id {
-  if (adEventCache) {
-    return adEventCache->ResetForInstanceId(id);
-  }
 }
 
 - (void)getSiteHistory:(const int)max_count

@@ -37,7 +37,6 @@
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
-#include "brave/components/brave_ads/browser/user_engagement/ad_events/ad_event_cache_helper.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
@@ -1576,27 +1575,6 @@ void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
 void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {
   delegate_->CloseNotificationAd(placement_id,
                                  ShouldShowCustomNotificationAds());
-}
-
-void AdsServiceImpl::CacheAdEventForInstanceId(
-    const std::string& id,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    const base::Time time) {
-  AdEventCacheHelper::GetInstance()->CacheAdEventForInstanceId(
-      id, mojom_ad_type, mojom_confirmation_type, time);
-}
-
-void AdsServiceImpl::GetCachedAdEvents(
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    GetCachedAdEventsCallback callback) {
-  std::move(callback).Run(AdEventCacheHelper::GetInstance()->GetCachedAdEvents(
-      mojom_ad_type, mojom_confirmation_type));
-}
-
-void AdsServiceImpl::ResetAdEventCacheForInstanceId(const std::string& id) {
-  return AdEventCacheHelper::GetInstance()->ResetAdEventCacheForInstanceId(id);
 }
 
 void AdsServiceImpl::GetSiteHistory(const int max_count,

@@ -5,18 +5,23 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
 
+#include <vector>
+
+#include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_day_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_hour_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/catalog_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ads_minimum_wait_time_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ads_per_day_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/new_tab_page_ads/new_tab_page_ads_per_hour_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/minimum_wait_time_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/user_activity_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_util.h"
 
 namespace brave_ads {
 
 // static
-bool NewTabPageAdPermissionRules::HasPermission() {
+bool NewTabPageAdPermissionRules::HasPermission(const AdEventList& ad_events) {
   if (!UserHasJoinedBraveRewards()) {
+    // If the user has not joined Brave Rewards, always grant permission.
     return true;
   }
 
@@ -32,15 +37,21 @@ bool NewTabPageAdPermissionRules::HasPermission() {
     return false;
   }
 
-  if (!HasNewTabPageAdsPerDayPermission()) {
+  const std::vector<base::Time> history = ToHistory(ad_events);
+
+  if (!HasAdsPerDayPermission(history,
+                              /*cap=*/kMaximumNewTabPageAdsPerDay.Get())) {
     return false;
   }
 
-  if (!HasNewTabPageAdsPerHourPermission()) {
+  if (!HasAdsPerHourPermission(history,
+                               /*cap=*/kMaximumNewTabPageAdsPerHour.Get())) {
     return false;
   }
 
-  if (!HasNewTabPageAdMinimumWaitTimePermission()) {
+  if (!HasMinimumWaitTimePermission(
+          history,
+          /*time_constraint=*/kNewTabPageAdMinimumWaitTime.Get())) {
     return false;
   }
 

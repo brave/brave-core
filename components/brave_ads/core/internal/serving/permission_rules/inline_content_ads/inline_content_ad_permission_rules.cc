@@ -5,15 +5,20 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/inline_content_ads/inline_content_ad_permission_rules.h"
 
+#include <vector>
+
+#include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_day_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_hour_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/catalog_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/inline_content_ads/inline_content_ads_per_day_permission_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/inline_content_ads/inline_content_ads_per_hour_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/user_activity_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_util.h"
 
 namespace brave_ads {
 
 // static
-bool InlineContentAdPermissionRules::HasPermission() {
+bool InlineContentAdPermissionRules::HasPermission(
+    const AdEventList& ad_events) {
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }
@@ -26,11 +31,15 @@ bool InlineContentAdPermissionRules::HasPermission() {
     return false;
   }
 
-  if (!HasInlineContentAdsPerDayPermission()) {
+  const std::vector<base::Time> history = ToHistory(ad_events);
+
+  if (!HasAdsPerDayPermission(history,
+                              /*cap=*/kMaximumInlineContentAdsPerDay.Get())) {
     return false;
   }
 
-  return HasInlineContentAdsPerHourPermission();
+  return HasAdsPerHourPermission(history,
+                                 /*cap=*/kMaximumInlineContentAdsPerHour.Get());
 }
 
 }  // namespace brave_ads
