@@ -13,6 +13,9 @@
 /* The title of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenTitle" = "더 적은 광고 및 트래커.";
 
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "나중에";
+
 /* The subtitle of the screen that shows ads embeded in video are blocked */
 "focusOnboarding.noVideoAdsScreenDescription" = "보기 싫은 것을 보지 않을 자유.";
 

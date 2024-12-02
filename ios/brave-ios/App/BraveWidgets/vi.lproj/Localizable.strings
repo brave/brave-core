@@ -1,0 +1,78 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Dấu trang";
+
+/* The name of the feature */
+"widgets.braveLeo" = "Leo AI";
+
+/* The name of the feature */
+"widgets.braveNews" = "Tin tức Brave";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Tải xuống";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Truy cập nhanh các trang web yêu thích của bạn.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Yêu thích";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "Lịch sử";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Thử lại sau";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Đọc thêm";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Tổng hợp tin tức mới nhất";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Tin tức hàng đầu";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Vui lòng mở Brave để xem các trang yêu thích của bạn tại đây";
+
+/* QR Code section title */
+"widgets.QRCode" = "Mã QR";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "Tìm kiếm";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Tổng quan về việc Brave tiết kiệm thời gian và bảo vệ bạn khi trực tuyến.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Thống kê Quyền riêng tư";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Thống kê Quyền riêng tư";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Tìm hoặc nhập URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Thẻ mới";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Danh sách phát";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Thẻ Riêng tư";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Nhanh chóng tìm kiếm trên web hoặc mở các trang web trong Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Phím tắt";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Tổng quan về cách Brave bảo vệ khi bạn trực tuyến.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Thống kê Quyền riêng tư";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Ví Brave";
+

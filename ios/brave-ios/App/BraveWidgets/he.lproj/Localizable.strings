@@ -1,0 +1,78 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "סרגל סימניות";
+
+/* The name of the feature */
+"widgets.braveLeo" = "Leo המבוסס בינה מלאכותית";
+
+/* The name of the feature */
+"widgets.braveNews" = "חדשות Brave";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "הורדות";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "גישה מהירה לאתרים האהובים עליך.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "מועדפים";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "היסטוריה";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "יש לנסות שוב מאוחר יותר";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "לקריאה נוספת";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "לקבל את החדשות הכי חמות";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "חדשות חמות";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "יש לפתוח טת Brave כדי להציג את המועדפים שלך כאן";
+
+/* QR Code section title */
+"widgets.QRCode" = "קוד QR";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "חיפוש";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "סיכום של האופן שבו Brave חוסך לך זמן ומגן עליך ברחבי הרשת.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "סטטיסטיקות פרטיות";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "סטטיסטיקות פרטיות";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "חיפוש או הקלדת URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "כרטיסייה חדשה";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "רשימת השמעה";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "כרטיסייה פרטית";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "גישה מהירה לחיפוש ברשת או לפתיחת דפי אינטרנט ב-Brave.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "קיצור דרך";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "סיכום של האופן שבו Brave הגן עליך ברחבי הרשת.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "סטטיסטיקת פרטיות";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "ארנק Brave";
+

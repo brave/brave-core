@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Pintasan Siri";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Tunjukkan Jalan Pintas Penanda Buku";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Tunjukkan Penanda Halaman";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Salin kepada Papan Klip";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Padam Penyegerakan Akaun";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Padam Penyegerakan Akaun";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Pemadaman akaun anda akan mengalih keluar data tersulit anda daripada pelayan Brave dan menyahdayakan Segerak pada semua peranti anda yang bersambung.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Tindakan ini tidak akan memadamkan data yang disimpan secara setempat pada peranti tersebut.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Padam Penyegerakan Akaun";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Nampaknya kod ini telah dicipta pada peranti yang menjalankan versi Brave lebih lama. Sila kemas kini kepada versi terkini Brave pada peranti anda yang lain dan cipta kod segerak baharu.";

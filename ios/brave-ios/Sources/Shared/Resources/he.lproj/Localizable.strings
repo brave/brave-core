@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "כתובת URL הועתקה ללוח";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "בקשת גרסת שולחן העבודה של האתר";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "בקשת גרסת המובייל של האתר";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "הצגת סימניות שביקרת בהן לאחרונה";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "ביטול";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "בטוח שבא לך לבטל את ההורדה הזו?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "חדש";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "ביטול הורדה";
+
+/* Cancel button */
+"CancelString" = "ביטול";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "החלף";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "נפתחה כרטיסיה חדשה";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "ההורדה בוטלה";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "ההורדה נכשלה";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 מתוך %d קבצים";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "הורדות";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "לפתוח את הקישור הזה באפליקציית App Store?";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "פתיחה";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "לא לשמור";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "לא לעדכן";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "שמירת פרטי התחברות";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "עדכן";
+
+/* OK button */
+"OKString" = "אישור";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "תצוגת קורא זמינה";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "איפוס גודל טקסט";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "לשמור את הסיסמה עבור %@?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "לשמור את ההתחברות %1$@ עבור %2$@?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "אישור";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "יש למקם את קוד ה-QR בתוך המסגרת כדי לסרוק";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "נתונים לא חוקיים";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "יש לאפשר ל-Brave לגשת למצלמת המכשיר שלך ב׳הגדרות׳ -> ׳פרטיות׳ -> ׳מצלמה׳.";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "סריקת קוד QR";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "כללי";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "סיום";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "ביטול הפעולה";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d כרטיסיות סגורות";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "אישור";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "אירעה שגיאה בזמן הוספת הכרטיס לארנק. יש לנסות שוב מאוחר יותר.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "הוספת הכרטיס נכשלה";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave לא יכול לטעון את העמוד מכיוון שיש לו כתובת לא חוקית.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "לא ניתן לפתוח את העמוד";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "לעדכן את שם המשתמש %1$@ עבור %2$@?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "לעדכן את שם המשתמש %1$@ עבור %2$@?";
+

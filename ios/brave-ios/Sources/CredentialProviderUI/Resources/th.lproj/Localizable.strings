@@ -1,0 +1,69 @@
+/* A message shown when a user tries to access their passwords and are presented with a Touch ID or passcode prompt. */
+"CredentialProvider.authenticationReason" = "ตรวจสอบสิทธิ์เพื่อเข้าถึงรหัสผ่านของคุณ";
+
+/* A title for a button shown to a user to authenticate themselves to display their passwords */
+"CredentialProvider.authenticationUnlockButtonTitle" = "ปลดล็อก";
+
+/* A button that cancels the autofill request and dismisses the screen */
+"CredentialProvider.cancelButtonTitle" = "ยกเลิก";
+
+/* A title for a button that when tapped copies the content highlighted into the users clipboard */
+"CredentialProvider.copyMenuItemTitle" = "คัดลอก";
+
+/* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
+"CredentialProvider.credentialListTitle" = "รหัสผ่าน Brave";
+
+/* The password field in the details form. Shows the password (if revealed) or a mask of the users password for the website next to it */
+"CredentialProvider.detailsFormPasswordField" = "รหัสผ่าน";
+
+/* The URL field in the details form. Shows a website URL next to it */
+"CredentialProvider.detailsFormURLField" = "URL";
+
+/* The username field in the details form. Shows the username for the website next to it */
+"CredentialProvider.detailsFormUsernameField" = "ชื่อผู้ใช้";
+
+/* Some text shown when there are no suggested logins for the website the user is trying to autofill on */
+"CredentialProvider.emptySuggestions" = "ไม่มีคำแนะนำ";
+
+/* A title for a button that when tapped hides a password that was previously revealed */
+"CredentialProvider.hidePasswordMenuItemTitle" = "ซ่อนรหัสผ่าน";
+
+/* A header label shown above a list of logins (username/password combinations) for a particular website. '%@' is replaced by a website host for example: 'Logins for apple.com' */
+"CredentialProvider.loginsForWebsite" = "การลงชื่อเข้าใช้กับ %@";
+
+/* The title on a button that dismisses the onboarding view */
+"CredentialProvider.onboardingViewContinueCTA" = "ดำเนินการต่อ";
+
+/* A footnote shown on a screen shown when the user turns on Brave as a password autofill provider. 'iCloud Keychain' is an Apple product. */
+"CredentialProvider.onboardingViewFootnote" = "หากต้องการเข้าถึงรหัสผ่านของคุณได้เร็วขึ้น ให้ยกเลิกการเลือก iCloud Keychain";
+
+/* The subtitle on a screen shown when the user turns on Brave as a password autofill provider */
+"CredentialProvider.onboardingViewSubtitle" = "คุณสามารถใช้รหัสผ่านที่บันทึกไว้ในแอปอื่นๆ บนอุปกรณ์ของคุณ";
+
+/* The title on a screen shown when the user turns on Brave as a password autofill provider */
+"CredentialProvider.onboardingViewTitle" = "การป้อนอัตโนมัติเปิดอยู่";
+
+/* A header label shown above a list of website logins (username/password combinations) */
+"CredentialProvider.otherLogins" = "การลงชื่อเข้าใช้อื่นๆ";
+
+/* A title for a button that when tapped reveals a users password that is currently masked */
+"CredentialProvider.revealPasswordMenuItemTitle" = "เปิดเผยรหัสผ่าน";
+
+/* The placeholder/prompt that is shown in the search bar */
+"CredentialProvider.searchBarPrompt" = "ค้นหาการลงชื่อเข้าใช้";
+
+/* A label shown when the users search has no results */
+"CredentialProvider.searchEmptyResults" = "ไม่พบผลลัพธ์สำหรับ \"%@\"";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"CredentialProvider.setPasscodeAlertMessage" = "หากต้องการเข้าถึงรหัสผ่านของคุณ คุณต้องตั้งรหัสปลดล็อคบนอุปกรณ์ของคุณก่อน";
+
+/* The title displayed in alert when a user needs to set passcode */
+"CredentialProvider.setPasscodeAlertTitle" = "ตั้งรหัสปลดล็อค";
+
+/* A title for a button shown as a confirmation action on a login's detail screen. Tapping it uses the password when autofilling into the website */
+"CredentialProvider.useButtonTitle" = "ใช้";
+
+/* An accessibility label read out when a user activates VoiceOver on a button that when taps drills down into a credentials details */
+"CredentialProvider.viewCredentialDetails" = "ดูรายละเอียด";
+

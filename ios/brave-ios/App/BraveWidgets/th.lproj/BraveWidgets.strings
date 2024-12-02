@@ -1,0 +1,381 @@
+/* (No Comment) */
+"0W40Cl" = "แท็บใหม่";
+
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "มี ${count} ตัวเลือกที่ตรงกับ ‘เวลาที่บันทึกโดยประมาณ’";
+
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ข้อมูลที่บันทึกโดยประมาณ’";
+
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "มี ${count} ตัวเลือกที่ตรงกับ ‘โฆษณาที่ถูกบล็อก’";
+
+/* (No Comment) */
+"7Ds8rk" = "การกำหนดค่ารายการโปรดบนหน้าจอล็อก";
+
+/* (No Comment) */
+"7JYzOv" = "ประเภท";
+
+/* (No Comment) */
+"7MuqiB" = "ทางลัด";
+
+/* (No Comment) */
+"8pcZ6L" = "วิดเจ็ตรายการโปรดบนหน้าจอล็อก";
+
+/* (No Comment) */
+"8vyYRy" = "#3";
+
+/* (No Comment) */
+"9E2oRR" = "#1";
+
+/* (No Comment) */
+"AGMpus" = "การกำหนดค่าทางลัด";
+
+/* (No Comment) */
+"bUXzTx" = "ประเภทสถิติ";
+
+/* (No Comment) */
+"crhbMy" = "บุ๊กมาร์ก";
+
+/* (No Comment) */
+"D5r3nt" = "URL";
+
+/* (No Comment) */
+"e13lS3-0W40Cl" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'แท็บใหม่' ใช่ไหม";
+
+/* (No Comment) */
+"e13lS3-crhbMy" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'บุ๊กมาร์ก' ใช่ไหม";
+
+/* (No Comment) */
+"e13lS3-FGO5qW" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave Playlist' ใช่ไหม";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave Wallet' ใช่ไหม";
+
+/* (No Comment) */
+"e13lS3-nthxSL" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ดาวน์โหลด' ใช่ไหม";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'สแกน QR Code' ใช่ไหม";
+
+/* (No Comment) */
+"e13lS3-U0eRbw" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Leo AI' ใช่ไหม";
+
+/* (No Comment) */
+"e13lS3-VBH4G6" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ประวัติการเข้าชม' ใช่ไหม";
+
+/* (No Comment) */
+"e13lS3-vs094F" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'แท็บส่วนตัวใหม่' ใช่ไหม";
+
+/* (No Comment) */
+"e13lS3-XCyA8c" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave News' ใช่ไหม";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ค้นหา' ใช่ไหม";
+
+/* (No Comment) */
+"EUS9FL" = "ทางลัดวิดเจ็ต";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'แท็บใหม่' ใช่ไหม";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'บุ๊กมาร์ก' ใช่ไหม";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave Playlist' ใช่ไหม";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave Wallet' ใช่ไหม";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ดาวน์โหลด' ใช่ไหม";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'สแกน QR Code' ใช่ไหม";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Leo AI' ใช่ไหม";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ประวัติการเข้าชม' ใช่ไหม";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'แท็บส่วนตัวใหม่' ใช่ไหม";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave News' ใช่ไหม";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ค้นหา' ใช่ไหม";
+
+/* (No Comment) */
+"FGO5qW" = "Brave Playlist";
+
+/* (No Comment) */
+"gpCwrM" = "การกำหนดค่าสถิติ";
+
+/* (No Comment) */
+"hssb67" = "การกำหนดค่าวิดเจ็ตทางลัด";
+
+/* (No Comment) */
+"iB2TOM" = "รายการโปรด";
+
+/* (No Comment) */
+"joEZJM" = "#2";
+
+/* (No Comment) */
+"jXiFQY" = "Brave Wallet";
+
+/* (No Comment) */
+"L1fziM-0W40Cl" = "มี ${count} ตัวเลือกที่ตรงกับ ‘แท็บใหม่’";
+
+/* (No Comment) */
+"L1fziM-crhbMy" = "มี ${count} ตัวเลือกที่ตรงกับ ‘บุ๊กมาร์ก’";
+
+/* (No Comment) */
+"L1fziM-FGO5qW" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave Playlist’";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave Wallet’";
+
+/* (No Comment) */
+"L1fziM-nthxSL" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ดาวน์โหลด’";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "มี ${count} ตัวเลือกที่ตรงกับ ‘สแกน QR Code’";
+
+/* (No Comment) */
+"L1fziM-U0eRbw" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Leo AI’";
+
+/* (No Comment) */
+"L1fziM-VBH4G6" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ประวัติการเยี่ยมชม’";
+
+/* (No Comment) */
+"L1fziM-vs094F" = "มี ${count} ตัวเลือกที่ตรงกับ ‘แท็บส่วนตัวใหม่’";
+
+/* (No Comment) */
+"L1fziM-XCyA8c" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave News’";
+
+/* (No Comment) */
+"L1fziM-Y7TWy8" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ค้นหา’";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
+
+/* (No Comment) */
+"nthxSL" = "ดาวน์โหลด";
+
+/* (No Comment) */
+"nXONef" = "รายการโปรด";
+
+/* (No Comment) */
+"qKrzyX" = "สแกน QR Code";
+
+/* (No Comment) */
+"r2EI05-0W40Cl" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'แท็บใหม่' ใช่ไหม";
+
+/* (No Comment) */
+"r2EI05-crhbMy" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'บุ๊กมาร์ก' ใช่ไหม";
+
+/* (No Comment) */
+"r2EI05-FGO5qW" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave Playlist' ใช่ไหม";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave Wallet' ใช่ไหม";
+
+/* (No Comment) */
+"r2EI05-nthxSL" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ดาวน์โหลด' ใช่ไหม";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'สแกน QR Code' ใช่ไหม";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Leo AI' ใช่ไหม";
+
+/* (No Comment) */
+"r2EI05-VBH4G6" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ประวัติการเข้าชม' ใช่ไหม";
+
+/* (No Comment) */
+"r2EI05-vs094F" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'แท็บส่วนตัวใหม่' ใช่ไหม";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave News' ใช่ไหม";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ค้นหา' ใช่ไหม";
+
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'เวลาที่บันทึกโดยประมาณ' ใช่ไหม";
+
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ข้อมูลที่บันทึกโดยประมาณ' ใช่ไหม";
+
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'โฆษณาที่ถูกบล็อก' ใช่ไหม";
+
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "มี ${count} ตัวเลือกที่ตรงกับ ‘แท็บใหม่’";
+
+/* (No Comment) */
+"tNCrcE-crhbMy" = "มี ${count} ตัวเลือกที่ตรงกับ ‘บุ๊กมาร์ก’";
+
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave Playlist’";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave Wallet’";
+
+/* (No Comment) */
+"tNCrcE-nthxSL" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ดาวน์โหลด’";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "มี ${count} ตัวเลือกที่ตรงกับ ‘สแกน QR Code’";
+
+/* (No Comment) */
+"tNCrcE-U0eRbw" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Leo AI’";
+
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ประวัติการเข้าชม’";
+
+/* (No Comment) */
+"tNCrcE-vs094F" = "มี ${count} ตัวเลือกที่ตรงกับ ‘แท็บส่วนตัวใหม่’";
+
+/* (No Comment) */
+"tNCrcE-XCyA8c" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave News’";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ค้นหา’";
+
+/* (No Comment) */
+"tVvJ9c" = "วิดเจ็ตการกำหนดค่าสถิติ";
+
+/* (No Comment) */
+"TxuMja-0W40Cl" = "มี ${count} ตัวเลือกที่ตรงกับ ‘แท็บใหม่’";
+
+/* (No Comment) */
+"TxuMja-crhbMy" = "มี ${count} ตัวเลือกที่ตรงกับ ‘บุ๊กมาร์ก’";
+
+/* (No Comment) */
+"TxuMja-FGO5qW" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave Playlist’";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave Wallet’";
+
+/* (No Comment) */
+"TxuMja-nthxSL" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ดาวน์โหลด’";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "มี ${count} ตัวเลือกที่ตรงกับ ‘สแกน QR Code’";
+
+/* (No Comment) */
+"TxuMja-U0eRbw" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Leo AI’";
+
+/* (No Comment) */
+"TxuMja-VBH4G6" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ประวัติการเข้าชม’";
+
+/* (No Comment) */
+"TxuMja-vs094F" = "มี ${count} ตัวเลือกที่ตรงกับ ‘แท็บส่วนตัวใหม่’";
+
+/* (No Comment) */
+"TxuMja-XCyA8c" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave News’";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ค้นหา’";
+
+/* (No Comment) */
+"tYwiRd" = "เวลาที่ประหยัดได้โดยประมาณ";
+
+/* (No Comment) */
+"U0eRbw" = "Leo AI";
+
+/* (No Comment) */
+"VBH4G6" = "ประวัติการเข้าชม";
+
+/* (No Comment) */
+"vjA5pZ" = "ข้อมูลที่บันทึกไว้โดยประมาณ";
+
+/* (No Comment) */
+"vs094F" = "แท็บส่วนตัวใหม่";
+
+/* (No Comment) */
+"xcI3h9" = "บล็อกโฆษณาแล้ว";
+
+/* (No Comment) */
+"XCyA8c" = "ข่าว Brave";
+
+/* (No Comment) */
+"XkwBGY" = "การกำหนดค่าทางลัดหน้าจอล็อค";
+
+/* (No Comment) */
+"Y7TWy8" = "ค้นหา";
+
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'แท็บใหม่' ใช่ไหม";
+
+/* (No Comment) */
+"YQiQuz-crhbMy" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'บุ๊กมาร์ก' ใช่ไหม";
+
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave Playlist' ใช่ไหม";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave Wallet' ใช่ไหม";
+
+/* (No Comment) */
+"YQiQuz-nthxSL" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ดาวน์โหลด' ใช่ไหม";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'สแกน QR Code' ใช่ไหม";
+
+/* (No Comment) */
+"YQiQuz-U0eRbw" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Leo AI' ใช่ไหม";
+
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ประวัติการเข้าชม' ใช่ไหม";
+
+/* (No Comment) */
+"YQiQuz-vs094F" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'แท็บส่วนตัวใหม่' ใช่ไหม";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'Brave News' ใช่ไหม";
+
+/* (No Comment) */
+"YQiQuz-Y7TWy8" = "นี่เป็นการถามเพื่อยืนยัน คุณต้องการ 'ค้นหา' ใช่ไหม";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "มี ${count} ตัวเลือกที่ตรงกับ ‘แท็บใหม่’";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "มี ${count} ตัวเลือกที่ตรงกับ ‘บุ๊กมาร์ก’";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave Playlist’";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave Wallet’";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ดาวน์โหลด’";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "มี ${count} ตัวเลือกที่ตรงกับ ‘สแกน QR Code’";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Leo AI’";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ประวัติการเข้าชม’";
+
+/* (No Comment) */
+"z517nu-vs094F" = "มี ${count} ตัวเลือกที่ตรงกับ ‘แท็บส่วนตัวใหม่’";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "มี ${count} ตัวเลือกที่ตรงกับ ‘Brave News’";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "มี ${count} ตัวเลือกที่ตรงกับ ‘ค้นหา’";
+
+/* (No Comment) */
+"ziTvSZ" = "การกำหนดค่าวิดเจ็ตทางลัด";
+

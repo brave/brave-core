@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Skróty Siri";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Pokaż przycisk zakładek";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Pokaż zakładki";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Skopiuj do schowka";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Usuń konto Sync";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Usuń konto Sync";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Usunięcie konta spowoduje wykasowanie zaszyfrowanych danych z serwerów Brave i wyłączy synchronizację na wszystkich połączonych urządzeniach.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Nie spowoduje to usunięcia danych, które są przechowywane lokalnie na tych urządzeniach.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Usuń konto Sync";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Wygląda na to, że ten kod został utworzony na urządzeniu ze starszą wersją aplikacji Brave. Zaktualizuj Brave do najnowszej wersji na innym urządzeniu, a następnie utwórz nowy kod synchronizacji.";
