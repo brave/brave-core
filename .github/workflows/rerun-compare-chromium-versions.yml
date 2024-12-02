@@ -20,7 +20,7 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
-      # TODO: This isn't actually what we want - it's the sha where the PR branched off
+      # TODO: This isn't actually what we want, but works well enough for now
       TARGET_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
       - name: If a major Chromium bump was merged, rerun compare-chromium-versions in all PRs targeting the same branch
