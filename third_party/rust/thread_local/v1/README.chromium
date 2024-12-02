@@ -1,9 +1,10 @@
 Name: thread_local
 URL: https://crates.io/crates/thread_local
-Description: Per-object thread-local storage
 Version: 1.1.7
-Security Critical: yes
-Shipped: yes
+Revision: d9c6ff3e751408c3f2e58b15dcc047e3669b9292
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/thread_local-1.1.7/LICENSE-APACHE
-Revision: d9c6ff3e751408c3f2e58b15dcc047e3669b9292
+Shipped: yes
+Security Critical: yes
+
+Description: Per-object thread-local storage

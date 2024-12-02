@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/regex_automata/v0_4/BUILD.gn b/third_party/rust/regex_automata/v0_4/BUILD.gn
-index 71502f7ea94052d3d4358c32d29402eb95dc2509..00950ce01684a6738c32a1ce0dfb215d95b7b800 100644
+index 9bf955412137cf9bd796e436b8ad9e1836aae599..b2c1283285e6812ae6228f6b576037af2c776f08 100644
 --- a/third_party/rust/regex_automata/v0_4/BUILD.gn
 +++ b/third_party/rust/regex_automata/v0_4/BUILD.gn
 @@ -135,5 +135,4 @@ cargo_crate("lib") {

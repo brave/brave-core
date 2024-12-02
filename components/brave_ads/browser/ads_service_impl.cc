@@ -89,7 +89,7 @@ int ResourceBundleId(const std::string& name) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 std::string URLMethodToRequestType(

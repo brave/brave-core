@@ -22,7 +22,7 @@
 #include "ios/web/public/browser_state.h"
 
 @implementation DebounceServiceFactory
-+ (nullable id)serviceForBrowserState:(ProfileIOS*)profile {
++ (nullable id)serviceForProfile:(ProfileIOS*)profile {
   // Create and start the local data file service and component installer
   debounce::DebounceService* debounceService =
       debounce::DebounceServiceFactory::GetServiceForState(profile);

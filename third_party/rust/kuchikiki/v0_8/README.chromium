@@ -1,9 +1,10 @@
 Name: kuchikiki
 URL: https://crates.io/crates/kuchikiki
-Description: (口利き) HTML tree manipulation library
 Version: 0.8.4-speedreader
-Security Critical: yes
-Shipped: yes
+Revision: 433b57246c8b5530636c8e7339cbeec0b8ac47eb
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/kuchikiki-0.8.4-speedreader/LICENSE
-Revision: 433b57246c8b5530636c8e7339cbeec0b8ac47eb
+Shipped: yes
+Security Critical: yes
+
+Description: (口利き) HTML tree manipulation library

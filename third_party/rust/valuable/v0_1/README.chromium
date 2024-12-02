@@ -1,9 +1,10 @@
 Name: valuable
 URL: https://crates.io/crates/valuable
-Description: Object-safe value inspection, used to pass un-typed structured data across trait-object boundaries.
-
 Version: 0.1.0
-Security Critical: yes
-Shipped: yes
 License: MIT
 License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Object-safe value inspection, used to pass un-typed structured data across trait-object boundaries.
+

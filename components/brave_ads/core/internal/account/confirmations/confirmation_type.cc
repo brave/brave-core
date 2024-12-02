@@ -76,8 +76,7 @@ mojom::ConfirmationType ToMojomConfirmationType(const std::string_view value) {
     return mojom_confirmation_type;
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::ConfirmationType: "
-                        << value;
+  NOTREACHED() << "Unexpected value for mojom::ConfirmationType: " << value;
 }
 
 const char* ToString(const mojom::ConfirmationType mojom_confirmation_type) {
@@ -88,8 +87,8 @@ const char* ToString(const mojom::ConfirmationType mojom_confirmation_type) {
     return confirmation_type.data();
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::ConfirmationType: "
-                        << base::to_underlying(mojom_confirmation_type);
+  NOTREACHED() << "Unexpected value for mojom::ConfirmationType: "
+               << base::to_underlying(mojom_confirmation_type);
 }
 
 }  // namespace brave_ads

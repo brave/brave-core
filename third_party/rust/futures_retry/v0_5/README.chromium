@@ -1,8 +1,9 @@
 Name: futures-retry
 URL: https://crates.io/crates/futures-retry
-Description: Retry your Futures and Streams!
 Version: 0.5.0
-Security Critical: yes
-Shipped: yes
 License: Apache 2.0
 License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Retry your Futures and Streams!

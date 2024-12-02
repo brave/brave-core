@@ -352,7 +352,7 @@ void BraveVideoOverlayWindowViews::UpdateControlIcons() {
 }
 
 void BraveVideoOverlayWindowViews::SetMediaPosition(
-    const std::optional<media_session::MediaPosition>& media_position) {
+    const media_session::MediaPosition& media_position) {
   CHECK(timestamp_);
 
   media_position_ = media_position;
@@ -498,7 +498,8 @@ void BraveVideoOverlayWindowViews::UpdateTimestampPeriodically() {
       timestamp_->SizeToPreferredSize();
     }
 
-    if (!is_seeking_) {
+    if (!is_seeking_ && seeker_->GetWidget() &&
+        seeker_->GetWidget()->IsVisible() && seeker_->GetVisible()) {
       seeker_->SetValue(media_position_->GetPosition().InSecondsF() /
                         media_position_->duration().InSecondsF());
     }

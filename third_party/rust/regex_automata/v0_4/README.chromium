@@ -1,8 +1,9 @@
 Name: regex-automata
 URL: https://crates.io/crates/regex-automata
-Description: Automata construction and matching using regular expressions.
-Version: 0.4.8
-Security Critical: yes
-Shipped: yes
+Version: 0.4.9
 License: Apache 2.0
 License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Automata construction and matching using regular expressions.

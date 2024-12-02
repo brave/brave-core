@@ -28,9 +28,10 @@ namespace {
 // `TipPanelBubbleManager` disables web contents caching for the tip panel.
 class TipPanelBubbleManager : public WebUIBubbleManagerImpl<TipPanelUI> {
  public:
-  TipPanelBubbleManager(views::View* anchor_view, Profile* profile)
+  TipPanelBubbleManager(views::View* anchor_view,
+                        BrowserWindowInterface* browser_window_interface)
       : WebUIBubbleManagerImpl(anchor_view,
-                               profile,
+                               browser_window_interface,
                                GURL(kBraveTipPanelURL),
                                IDS_BRAVE_UI_BRAVE_REWARDS,
                                /*force_load_on_create=*/false) {}
@@ -88,7 +89,7 @@ void TipPanelBubbleHost::OnTipPanelRequested(const std::string& publisher_id) {
   // Create the bubble manager if necessary.
   if (!bubble_manager_) {
     bubble_manager_ = std::make_unique<TipPanelBubbleManager>(
-        GetAnchorView(&GetBrowser()), GetBrowser().profile());
+        GetAnchorView(&GetBrowser()), &GetBrowser());
   }
 
   // Notify the panel coordinator of the browser size, so that it can size

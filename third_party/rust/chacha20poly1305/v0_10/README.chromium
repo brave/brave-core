@@ -1,14 +1,15 @@
 Name: chacha20poly1305
 URL: https://crates.io/crates/chacha20poly1305
+Version: 0.10.1
+Revision: 746f70a5f6c7371e723dc64e04f2115b56f24d27
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-0.10.1/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
 Description: Pure Rust implementation of the ChaCha20Poly1305 Authenticated Encryption
 with Additional Data Cipher (RFC 8439) with optional architecture-specific
 hardware acceleration. Also contains implementations of the XChaCha20Poly1305
 extended nonce variant of ChaCha20Poly1305, and the reduced-round
 ChaCha8Poly1305 and ChaCha12Poly1305 lightweight variants.
 
-Version: 0.10.1
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/chacha20poly1305-0.10.1/LICENSE-APACHE
-Revision: 746f70a5f6c7371e723dc64e04f2115b56f24d27

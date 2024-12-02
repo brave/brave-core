@@ -9,7 +9,6 @@
 #include "base/features.h"
 #include "base/logging.h"
 #include "chrome/browser/browser_features.h"
-#include "chrome/browser/companion/core/features.h"
 #include "chrome/browser/devtools/features.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -80,7 +79,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
       &aggregation_service::kAggregationServiceMultipleCloudProviders,
 #if BUILDFLAG(IS_ANDROID)
-      &android_webview::features::kWebViewEnumerateDevicesCache,
       &android_webview::features::kWebViewMediaIntegrityApiBlinkExtension,
 #endif
       &attribution_reporting::features::kConversionMeasurement,
@@ -110,7 +108,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kSharedStorageAPI,
       &blink::features::kSharedStorageAPIM118,
       &blink::features::kSharedStorageAPIM125,
-      &blink::features::kSharedStorageSelectURLLimit,
       &blink::features::kSpeculationRulesPrefetchFuture,
       &blink::features::kTextFragmentAnchor,
 #if BUILDFLAG(IS_ANDROID)
@@ -127,10 +124,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
 #if !BUILDFLAG(IS_ANDROID)
-      &companion::features::internal::
-          kCompanionEnabledByObservingExpsNavigations,
-      &companion::features::internal::kSidePanelCompanion,
-      &companion::features::internal::kSidePanelCompanion2,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
       &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionManifestV2Unsupported,
@@ -138,7 +131,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kToolbarPinning,
 #endif
       &features::kBookmarkTriggerForPrerender2,
-      &features::kChromeLabs,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,
 #if !BUILDFLAG(IS_ANDROID)
@@ -161,9 +153,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kKAnonymityServiceOHTTPRequests,
       &features::kNewTabPageTriggerForPrerender2,
       &features::kNotificationTriggers,
-#if BUILDFLAG(IS_ANDROID)
-      &features::kPrivacyGuidePreloadAndroid,
-#endif
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
@@ -187,7 +176,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kWebOTP,
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,
-      &history_clusters::kSidePanelJourneys,
       &history_clusters::features::kOnDeviceClustering,
       &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
       &history_clusters::internal::kHistoryClustersInternalsPage,
@@ -222,7 +210,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &ntp_features::kNtpAlphaBackgroundCollections,
       &ntp_features::kNtpBackgroundImageErrorDetection,
       &ntp_features::kNtpChromeCartModule,
-      &omnibox::kDocumentProviderNoSetting,
       &omnibox::kDocumentProviderNoSyncRequirement,
       &omnibox::kMlUrlScoring,
       &omnibox::kRichAutocompletion,
@@ -249,7 +236,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
-      &privacy_sandbox::kPrivacySandboxProactiveTopicsBlocking,
       &privacy_sandbox::kPrivacySandboxSettings4,
       &privacy_sandbox::kTrackingProtectionContentSettingUbControl,
       &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,

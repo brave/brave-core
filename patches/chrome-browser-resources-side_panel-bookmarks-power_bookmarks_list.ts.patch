@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
-index 0a4d1c928bc278b6e89b5b36a77f8e7bbe2e339d..fa439e05d59cfa76bbbac6579591ad659c54d564 100644
+index c7db9028a77e3960a551635d0aa71c7f39e35cda..846f767f5f41ca72a9b9c3e178a4f02797d2f25c 100644
 --- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
 +++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
 @@ -3,6 +3,7 @@
  // found in the LICENSE file.
  
- import '../strings.m.js';
+ import '/strings.m.js';
 +import './brave_overrides/index.js';
  import './commerce/shopping_list.js';
  import './icons.html.js';

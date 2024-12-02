@@ -45,8 +45,8 @@ std::optional<std::string> ToString(const base::Value& value) {
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for base::Value::Type: "
-                        << base::to_underlying(value.type());
+  NOTREACHED() << "Unexpected value for base::Value::Type: "
+               << base::to_underlying(value.type());
 }
 
 std::optional<base::Value> MaybeGetRootPrefValue(

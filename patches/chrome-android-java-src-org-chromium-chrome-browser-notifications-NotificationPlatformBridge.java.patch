@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-index 0f69d6975ee9225e14ae925b5f81f127ead41403..aa56e1c8e829c517efa285ffa7021af16cd19a4d 100644
+index d7eb705ce3a5e7376efd361bc78cb21fdc78ff54..d4c322455d6f545b81dfcc14571cb29682eb050e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-@@ -141,7 +141,7 @@ public class NotificationPlatformBridge {
-     private TrustedWebActivityClient mTwaClient;
+@@ -138,7 +138,7 @@ public class NotificationPlatformBridge {
+     private static long sLastPreUnsubscribePreNativeTaskStartRealMillis = -1;
  
      /** Encapsulates attributes that identify a notification and where it originates from. */
 -    private static class NotificationIdentifyingAttributes {

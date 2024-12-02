@@ -1,9 +1,10 @@
 Name: crypto-common
 URL: https://crates.io/crates/crypto-common
-Description: Common cryptographic traits
 Version: 0.1.6
-Security Critical: yes
-Shipped: yes
+Revision: 950acd038ce5f60ff9a5f2f83e7d468f2977d5fc
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/crypto-common-0.1.6/LICENSE-APACHE
-Revision: 950acd038ce5f60ff9a5f2f83e7d468f2977d5fc
+Shipped: yes
+Security Critical: yes
+
+Description: Common cryptographic traits

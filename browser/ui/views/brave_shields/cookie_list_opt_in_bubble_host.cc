@@ -87,10 +87,11 @@ void ShowBubbleOnSessionRestore(base::WeakPtr<Browser> browser, Profile*, int) {
 
 class BubbleManager : public WebUIBubbleManagerImpl<CookieListOptInUI> {
  public:
-  BubbleManager(views::View* anchor_view, Profile* profile)
+  BubbleManager(views::View* anchor_view,
+                BrowserWindowInterface* browser_window_interface)
       : WebUIBubbleManagerImpl<CookieListOptInUI>(
             anchor_view,
-            profile,
+            browser_window_interface,
             GURL(kCookieListOptInURL),
             IDS_BRAVE_SHIELDS,
             /*force_load_on_create=*/false) {}
@@ -163,7 +164,7 @@ void CookieListOptInBubbleHost::ShowBubble() {
 
   if (!bubble_manager_) {
     bubble_manager_ = std::make_unique<BubbleManager>(
-        GetAnchorView(&GetBrowser()), GetBrowser().profile());
+        GetAnchorView(&GetBrowser()), &GetBrowser());
   }
 
   if (!bubble_manager_->GetBubbleWidget()) {

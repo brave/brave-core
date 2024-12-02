@@ -1,9 +1,10 @@
 Name: crypto-mac
 URL: https://crates.io/crates/crypto-mac
-Description: Trait for Message Authentication Code (MAC) algorithms
-Version: 0.11.1
-Security Critical: yes
-Shipped: yes
+Version: 0.11.0
+Revision: cfbfca49ec674db3c8c3670427afd64cf3472895
 License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/crypto-mac-0.11.1/LICENSE-APACHE
-Revision: 95e57639399c193e22b5ea54c02f74bd7b6a9b6c
+License File: //brave/third_party/rust/chromium_crates_io/vendor/crypto-mac-0.11.0/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: Trait for Message Authentication Code (MAC) algorithms

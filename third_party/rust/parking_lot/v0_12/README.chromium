@@ -1,9 +1,10 @@
 Name: parking_lot
 URL: https://crates.io/crates/parking_lot
-Description: More compact and efficient implementations of the standard synchronization primitives.
 Version: 0.12.1
-Security Critical: yes
-Shipped: yes
+Revision: 336a9b31ff385728d00eb7ef173e4d054584b787
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/parking_lot-0.12.1/LICENSE-APACHE
-Revision: 336a9b31ff385728d00eb7ef173e4d054584b787
+Shipped: yes
+Security Critical: yes
+
+Description: More compact and efficient implementations of the standard synchronization primitives.

@@ -157,8 +157,7 @@ PlaylistDataSource::DataRequest::DataRequest(const GURL& url) {
   } else if (type_string == "favicon") {
     type = DataRequest::Type::kFavicon;
   } else {
-    NOTREACHED_IN_MIGRATION()
-        << "type is not in {thumbnail,media,favicon}: " << type_string;
+    NOTREACHED() << "type is not in {thumbnail,media,favicon}: " << type_string;
   }
 }
 
@@ -192,10 +191,7 @@ void PlaylistDataSource::StartDataRequest(
       GetFavicon(data_request, wc_getter, std::move(got_data_callback));
       break;
     case DataRequest::Type::kMedia:
-      NOTREACHED_IN_MIGRATION()
-          << "This request should call StartRangeDataRequest()";
-      std::move(got_data_callback).Run(nullptr);
-      break;
+      NOTREACHED() << "This request should call StartRangeDataRequest()";
   }
 }
 
@@ -283,8 +279,6 @@ std::string PlaylistDataSource::GetMimeType(const GURL& url) {
     case DataRequest::Type::kFavicon:
       return FaviconSource::GetMimeType(url);
   }
-
-  NOTREACHED_NORETURN();
 }
 
 bool PlaylistDataSource::AllowCaching() {

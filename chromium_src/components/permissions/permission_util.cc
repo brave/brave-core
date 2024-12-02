@@ -103,7 +103,7 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
   }
 }
 
-PermissionType PermissionUtil::ContentSettingTypeToPermissionType(
+PermissionType PermissionUtil::ContentSettingsTypeToPermissionType(
     ContentSettingsType permission) {
   switch (permission) {
     case ContentSettingsType::BRAVE_ADS:
@@ -135,7 +135,7 @@ PermissionType PermissionUtil::ContentSettingTypeToPermissionType(
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return PermissionType::BRAVE_OPEN_AI_CHAT;
     default:
-      return PermissionUtil_ChromiumImpl::ContentSettingTypeToPermissionType(
+      return PermissionUtil_ChromiumImpl::ContentSettingsTypeToPermissionType(
           permission);
   }
 }

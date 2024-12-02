@@ -435,8 +435,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
       }
     }
 
-    NOTREACHED_NORETURN()
-        << "Query key not found. Unable to handle the request.";
+    NOTREACHED() << "Query key not found. Unable to handle the request.";
   }
 
   std::vector<GURL> RedirectChainExpectation(

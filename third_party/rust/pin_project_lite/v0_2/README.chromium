@@ -1,10 +1,11 @@
 Name: pin-project-lite
 URL: https://crates.io/crates/pin-project-lite
-Description: A lightweight version of pin-project written with declarative macros.
-
 Version: 0.2.9
-Security Critical: yes
-Shipped: yes
+Revision: 1ccf058c2ba13fd7eee2154951ac64a84590d886
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/pin-project-lite-0.2.9/LICENSE-APACHE
-Revision: 1ccf058c2ba13fd7eee2154951ac64a84590d886
+Shipped: yes
+Security Critical: yes
+
+Description: A lightweight version of pin-project written with declarative macros.
+

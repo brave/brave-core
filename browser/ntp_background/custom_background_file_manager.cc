@@ -6,6 +6,7 @@
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/files/file.h"
 #include "base/files/file_util.h"
@@ -189,9 +190,10 @@ void CustomBackgroundFileManager::SaveImageAsPNG(
   }
   auto encode_and_save = base::BindOnce(
       [](const SkBitmap& bitmap, const base::FilePath& target_path) {
-        std::vector<unsigned char> encoded;
-        if (!gfx::PNGCodec::EncodeBGRASkBitmap(
-                bitmap, /*discard_transparency=*/false, &encoded)) {
+        std::optional<std::vector<uint8_t>> encoded =
+            gfx::PNGCodec::EncodeBGRASkBitmap(bitmap,
+                                              /*discard_transparency=*/false);
+        if (!encoded) {
           DVLOG(2) << "Failed to encode image as PNG";
           return base::FilePath();
         }
@@ -202,7 +204,7 @@ void CustomBackgroundFileManager::SaveImageAsPNG(
               base::StringPrintf("-%d", i));
         }
 
-        if (!base::WriteFile(modified_path, base::make_span(encoded))) {
+        if (!base::WriteFile(modified_path, *encoded)) {
           DVLOG(2) << "Failed to write image to file " << modified_path;
           return base::FilePath();
         }

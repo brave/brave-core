@@ -1,8 +1,8 @@
 diff --git a/ui/accessibility/platform/ax_platform_node_cocoa.mm b/ui/accessibility/platform/ax_platform_node_cocoa.mm
-index c2be9137078318ef69f22b426d01d414d853f59c..126cdf328858589f9d11983bc13114979b03b612 100644
+index cb564bda62218060251b0558649717ef5bc14af3..84e414e0452ff4e8b276ff51fcfa530f78f06e93 100644
 --- a/ui/accessibility/platform/ax_platform_node_cocoa.mm
 +++ b/ui/accessibility/platform/ax_platform_node_cocoa.mm
-@@ -2640,6 +2640,7 @@ void CollectAncestorRoles(
+@@ -2759,6 +2759,7 @@ const ui::CocoaActionList& GetCocoaActionListForTesting() {
    if (!_node)
      return nil;
  

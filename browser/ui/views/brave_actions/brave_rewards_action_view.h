@@ -41,7 +41,8 @@ class BraveRewardsActionView
       public brave_rewards::RewardsNotificationServiceObserver {
   METADATA_HEADER(BraveRewardsActionView, ToolbarButton)
  public:
-  explicit BraveRewardsActionView(Browser* browser);
+  explicit BraveRewardsActionView(
+      BrowserWindowInterface* browser_window_interface);
 
   ~BraveRewardsActionView() override;
 
@@ -119,7 +120,7 @@ class BraveRewardsActionView
       brave_rewards::RewardsNotificationService,
       brave_rewards::RewardsNotificationServiceObserver>;
 
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
   raw_ptr<brave_rewards::RewardsPanelCoordinator> panel_coordinator_ = nullptr;
   raw_ptr<brave_rewards::RewardsTabHelper> tab_helper_ = nullptr;
   std::unique_ptr<WebUIBubbleManager> bubble_manager_;

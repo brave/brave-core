@@ -88,7 +88,7 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         searchEnginePreference.setEnabled(true);
         searchEnginePreference.setSummary(
                 BraveSearchEngineUtils.getDSEShortName(
-                        getProfile().getPrimaryOTRProfile(/* createIfNeeded= */ true), true));
+                        getProfile().getPrimaryOtrProfile(/* createIfNeeded= */ true), true));
 
         mSearchSuggestions = (ChromeSwitchPreference) findPreference(PREF_SEARCH_SUGGESTIONS);
         mSearchSuggestions.setOnPreferenceChangeListener(this);

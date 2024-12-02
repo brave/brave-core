@@ -17,20 +17,14 @@ namespace {
 
 void GetDATFileData(const base::FilePath& file_path,
                     brave_component_updater::DATFileDataBuffer* buffer) {
-  int64_t size = 0;
-  if (!base::PathExists(file_path) ||
-      !base::GetFileSize(file_path, &size) ||
-      0 == size) {
-    LOG(ERROR) << "GetDATFileData: "
-               << "the dat file is not found or corrupted "
-               << file_path;
+  if (!base::PathExists(file_path)) {
+    LOG(ERROR) << "GetDATFileData: the dat file is not found. " << file_path;
     return;
   }
 
-  buffer->resize(size);
-  if (size != base::ReadFile(file_path,
-                             reinterpret_cast<char*>(&buffer->front()),
-                             size)) {
+  if (auto bytes = base::ReadFileToBytes(file_path)) {
+    *buffer = std::move(*bytes);
+  } else {
     LOG(ERROR) << "GetDATFileData: cannot "
                << "read dat file " << file_path;
   }

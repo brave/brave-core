@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-index 99101411ce40137b106131e12e2f0cd8b16659f3..5e5776c8afed519fe018d75736f03eadcc07068e 100644
+index 24a1de14d83e5317ddb6ce481c4c46c9b3f86768..0cdb5d08be22f08a5f9ce13d898922de8f4795b4 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-@@ -95,6 +95,7 @@ class ChromeBrowsingDataRemoverDelegate
+@@ -96,6 +96,7 @@ class ChromeBrowsingDataRemoverDelegate
    void OverrideDomainReliabilityClearerForTesting(
        DomainReliabilityClearer clearer);
  
@@ -10,7 +10,7 @@ index 99101411ce40137b106131e12e2f0cd8b16659f3..5e5776c8afed519fe018d75736f03ead
   private:
    using WebRtcEventLogManager = webrtc_event_logging::WebRtcEventLogManager;
  
-@@ -150,8 +151,9 @@ class ChromeBrowsingDataRemoverDelegate
+@@ -151,8 +152,9 @@ class ChromeBrowsingDataRemoverDelegate
      kMediaDeviceSalts = 45,
      // See also kDisableAutoSigninForProfilePasswords.
      kDisableAutoSigninForAccountPasswords = 46,

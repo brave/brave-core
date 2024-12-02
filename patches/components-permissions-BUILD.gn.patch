@@ -1,8 +1,8 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index 4efc091de0d3f8f105986886d7b19949863f61aa..ddc7cbad581fa30b45fe73ce385071cbb5e1bded 100644
+index 0d08370edb3d8b381b7d4214313c48113212b7fd..76368ef266ee3629df724b794f89d18fcb7bfb06 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
-@@ -5,7 +5,7 @@
+@@ -6,7 +6,7 @@ import("//components/guest_view/buildflags/buildflags.gni")
  import("//device/vr/buildflags/buildflags.gni")
  import("//services/device/public/cpp/geolocation/buildflags.gni")
  
@@ -11,8 +11,8 @@ index 4efc091de0d3f8f105986886d7b19949863f61aa..ddc7cbad581fa30b45fe73ce385071cb
    sources = [
      "constants.cc",
      "constants.h",
-@@ -163,6 +163,7 @@ source_set("permissions") {
-   if (!is_android) {
+@@ -165,6 +165,7 @@ source_set("permissions") {
+   if (enable_guest_view) {
      deps += [ "//components/guest_view/browser" ]
    }
 +  import("//brave/components/permissions/sources.gni") sources += brave_components_permissions_sources deps += brave_components_permissions_deps

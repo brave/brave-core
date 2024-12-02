@@ -40,13 +40,6 @@
 
 namespace content {
 
-void VideoPictureInPictureWindowControllerImpl::SeekTo(
-    base::TimeDelta seek_time) {
-  if (media_session_action_seek_to_handled_) {
-    MediaSession::Get(web_contents())->SeekTo(seek_time);
-  }
-}
-
 void VideoPictureInPictureWindowControllerImpl::RequestFullscreen() {
   DCHECK(active_session_);
 

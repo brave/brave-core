@@ -27,6 +27,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.components.omnibox.AutocompleteInput;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.omnibox.GroupsProto.GroupConfig;
 import org.chromium.components.omnibox.OmniboxFeatures;
@@ -121,11 +122,12 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     @Override
     @NonNull
-    List<DropdownItemViewInfo> buildDropdownViewInfoList(AutocompleteResult autocompleteResult) {
+    List<DropdownItemViewInfo> buildDropdownViewInfoList(
+            AutocompleteInput input, AutocompleteResult autocompleteResult) {
         mBraveSearchBannerProcessor.onSuggestionsReceived();
         mBraveLeoSuggestionProcessor.onSuggestionsReceived();
         List<DropdownItemViewInfo> viewInfoList =
-                super.buildDropdownViewInfoList(autocompleteResult);
+                super.buildDropdownViewInfoList(input, autocompleteResult);
 
         // We want to show Leo auto suggestion even if the whole auto complete feature
         // is disabled

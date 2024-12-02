@@ -1,9 +1,10 @@
 Name: fvm_ipld_encoding
 URL: https://crates.io/crates/fvm_ipld_encoding
-Description: Sharded IPLD encoding.
-Version: 0.4.0
-Security Critical: yes
-Shipped: yes
+Version: 0.5.1
+Revision: 9172edcb01ede1d7d50744f1182ffca7275f710c
 License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/fvm_ipld_encoding-0.4.0/../../../../../common/licenses/Apache-2.0
-Revision: 3ad5b90f35085e26585e47674844bb72ef09fb06
+License File: //brave/third_party/rust/chromium_crates_io/vendor/fvm_ipld_encoding-0.5.1/../../../../../common/licenses/Apache-2.0
+Shipped: yes
+Security Critical: yes
+
+Description: Sharded IPLD encoding.

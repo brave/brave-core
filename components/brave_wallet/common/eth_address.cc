@@ -45,12 +45,8 @@ EthAddress EthAddress::FromPublicKey(const std::vector<uint8_t>& public_key) {
     return EthAddress();
   }
 
-  std::vector<uint8_t> hash = KeccakHash(public_key);
-  std::vector<uint8_t> result(hash.end() - kEthAddressLength, hash.end());
-
-  DCHECK_EQ(result.size(), kEthAddressLength);
-
-  return EthAddress(std::move(result));
+  return EthAddress(
+      base::as_byte_span(KeccakHash(public_key)).last(kEthAddressLength));
 }
 
 // static

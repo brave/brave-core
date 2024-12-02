@@ -1,10 +1,11 @@
 Name: rand_hc
 URL: https://crates.io/crates/rand_hc
-Description: HC128 random number generator
-
 Version: 0.2.0
-Security Critical: yes
-Shipped: yes
+Revision: 5610bdae3acdb0324f5636bb3e4a21e6324ead72
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/rand_hc-0.2.0/LICENSE-APACHE
-Revision: 5610bdae3acdb0324f5636bb3e4a21e6324ead72
+Shipped: yes
+Security Critical: yes
+
+Description: HC128 random number generator
+

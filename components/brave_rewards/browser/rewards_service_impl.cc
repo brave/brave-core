@@ -1029,7 +1029,7 @@ void RewardsServiceImpl::OnURLLoaderComplete(
             [](std::unique_ptr<std::string> response_body,
                LoadURLCallback callback, mojom::UrlResponsePtr response,
                scoped_refptr<base::SequencedTaskRunner> post_response_runner) {
-              api_request_helper::SanitizeAndParseJson(
+              api_request_helper::ParseJsonNonBlocking(
                   *response_body,
                   base::BindOnce(
                       [](LoadURLCallback callback,
