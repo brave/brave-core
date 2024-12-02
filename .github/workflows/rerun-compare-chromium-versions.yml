@@ -20,6 +20,7 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
+      # TODO: This isn't actually what we want, but works well enough for now
       TARGET_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
       - name: If a major Chromium bump was merged, rerun compare-chromium-versions in all PRs targeting the same branch
@@ -35,13 +36,18 @@ jobs:
           echo "::notice::PR branch: ${GITHUB_HEAD_REF:?} (${pr_ver:?}), target branch: ${GITHUB_BASE_REF:?} (${target_ver:?})"
 
           if [[ "${pr_ver%%.*}" != "${target_ver%%.*}" ]]; then
+              # TODO: Some $(chromium_ver "$GITHUB_BASE_REF") calls in compare-chromium-versions get a stale version.
+              # Seems random, could be a caching issue at GitHub, let's try to sleep as a workaround.
+              sleep 30
+
               echo "::notice::Rerunning compare-chromium-versions in PRs targeting ${GITHUB_BASE_REF:?}"
               while read -r pr_number head_sha; do
                   run_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/compare-chromium-versions.yml/runs?head_sha=${head_sha:?}" -q '.workflow_runs[0].id')"
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
                       echo "Rerunning $run_id for $pr_url"
-                      gh -R "$GITHUB_REPOSITORY" run rerun "$run_id"
+                      # TODO: Workflows older than 30 days will fail to rerun (by design), let's filter them out (using `|| true` for now)
+                      gh -R "$GITHUB_REPOSITORY" run rerun "$run_id" || true
                   else
                       echo "No run found for $pr_url"
                   fi
