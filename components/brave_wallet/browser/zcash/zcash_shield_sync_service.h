@@ -23,7 +23,6 @@ namespace brave_wallet {
 
 class OrchardStorage;
 class ZCashRpc;
-class ZCashWalletService;
 
 // ZCashShieldSyncService downloads and scans blockchain blocks to find
 // spendable notes related to the account.

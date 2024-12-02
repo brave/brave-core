@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_test_utils.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/check_is_test.h"
 #include "base/memory/ptr_util.h"
