@@ -138,9 +138,7 @@ class MacAddressProcessor {
       return keep_going;
     }
 
-    auto mac_address_bytes = base::as_bytes(UNSAFE_TODO(base::make_span(
-        CFDataGetBytePtr(mac_address_data.get()),
-        base::checked_cast<size_t>(CFDataGetLength(mac_address_data.get())))));
+    auto mac_address_bytes = base::apple::CFDataToSpan(mac_address_data.get());
     if (!is_valid_mac_address_callback_.Run(mac_address_bytes)) {
       return keep_going;
     }

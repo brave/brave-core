@@ -170,11 +170,8 @@ RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
       web_ui->GetWebContents()->GetBrowserContext(), kBraveRewardsPanelHost);
   source->AddLocalizedStrings(kStrings);
 
-  webui::SetupWebUIDataSource(
-      source,
-      UNSAFE_TODO(base::make_span(kBraveRewardsPanelGenerated,
-                                  kBraveRewardsPanelGeneratedSize)),
-      IDR_BRAVE_REWARDS_PANEL_HTML);
+  webui::SetupWebUIDataSource(source, kBraveRewardsPanelGenerated,
+                              IDR_BRAVE_REWARDS_PANEL_HTML);
 
   // Adaptive captcha challenges are displayed in an iframe on the Rewards
   // panel. In order to display these challenges we need to specify in CSP that

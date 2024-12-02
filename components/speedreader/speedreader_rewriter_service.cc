@@ -52,8 +52,7 @@ std::string WrapStylesheetWithCSP(const std::string& stylesheet,
 
   const auto make_style_data = [](std::string_view id, std::string_view data) {
     const std::string& hash = crypto::SHA256HashString(data);
-    const std::string& sha256 =
-        base::Base64Encode(base::as_bytes(base::make_span(hash)));
+    const std::string& sha256 = base::Base64Encode(base::as_byte_span(hash));
 
     return base::StrCat({"<script type=\"brave-style-data\" id=\"", id,
                          "\" integrity=\"", sha256, "\">", data, "</script>"});

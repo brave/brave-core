@@ -79,8 +79,7 @@ std::vector<std::string> RequestSigner::GetSignedHeaders(
     const std::string& request_content) {
   CHECK(!request_target.empty());
 
-  std::string digest =
-      GetDigest(base::as_bytes(base::make_span(request_content)));
+  std::string digest = GetDigest(base::as_byte_span(request_content));
 
   std::vector<std::pair<std::string, std::string>> headers = {
       {"digest", digest}, {"(request-target)", request_target}};
@@ -105,8 +104,7 @@ std::string RequestSigner::SignHeaders(
     message += key + ": " + value;
   }
 
-  auto signed_message =
-      signer_.SignMessage(base::as_bytes(base::make_span(message)));
+  auto signed_message = signer_.SignMessage(base::as_byte_span(message));
 
   return base::StrCat(
       {"keyId=\"", key_id_, "\",algorithm=\"ed25519\",headers=\"", header_names,

@@ -196,8 +196,7 @@ std::optional<std::string> ComputeHmacSha256(std::string_view key,
                                              std::string_view text) {
   crypto::HMAC hmac(crypto::HMAC::SHA256);
   std::array<uint8_t, 32u> digest;
-  if (!hmac.Init(key) ||
-      !hmac.Sign(base::as_bytes(base::make_span(text)), digest)) {
+  if (!hmac.Init(key) || !hmac.Sign(base::as_byte_span(text), digest)) {
     return std::nullopt;
   }
 

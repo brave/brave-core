@@ -79,10 +79,7 @@ TipPanelUI::TipPanelUI(content::WebUI* web_ui)
 
   source->AddLocalizedStrings(kStrings);
 
-  webui::SetupWebUIDataSource(
-      source,
-      UNSAFE_TODO(base::make_span(kTipPanelGenerated, kTipPanelGeneratedSize)),
-      IDR_TIP_PANEL_HTML);
+  webui::SetupWebUIDataSource(source, kTipPanelGenerated, IDR_TIP_PANEL_HTML);
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,

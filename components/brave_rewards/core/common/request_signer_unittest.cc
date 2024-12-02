@@ -28,8 +28,8 @@ class RewardsRequestSignerTest : public testing::Test {
 
 TEST_F(RewardsRequestSignerTest, GetDigest) {
   auto seed = Signer::GenerateRecoverySeed();
-  auto digest =
-      RequestSigner::GetDigest(base::as_bytes(base::make_span("hello world")));
+  auto digest = RequestSigner::GetDigest(
+      base::byte_span_with_nul_from_cstring("hello world"));
   EXPECT_EQ(digest, "SHA-256=QwZGhH5wNEwJ9Yc56Z1byW6sjV/nKVzxlrmGJ5h2v5s=");
 }
 
