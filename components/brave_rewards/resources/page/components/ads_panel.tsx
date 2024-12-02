@@ -258,9 +258,11 @@ export function AdsPanel () {
               />
           }
         </style.paymentStatus>
-        <PanelItem label={getString('adsCurrentEarnings')}>
-          {renderEarnings()}
-        </PanelItem>
+        <style.earningsRow>
+          <PanelItem label={getString('adsCurrentEarnings')}>
+            {renderEarnings()}
+          </PanelItem>
+        </style.earningsRow>
         <PanelItem label={getString('adsPaymentDate')}>
           <MonthDay date={new Date(adsData.adsNextPaymentDate)} />
         </PanelItem>

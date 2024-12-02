@@ -30,6 +30,7 @@ export function getInitialState (): HostState {
     },
     earningsInfo: {
       nextPaymentDate: 0,
+      adsReceivedThisMonth: 0,
       minEarningsThisMonth: 0,
       maxEarningsThisMonth: 0,
       minEarningsLastMonth: 0,
