@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri ショートカット";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "ブックマークへのショートカットを表示";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "ブックマークを表示";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "クリップボードにコピーしました";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "同期アカウントを削除";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "同期アカウントを削除";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されたすべてのデバイスで同期が無効になります。";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "ただし、それらのデバイスでローカルに格納されたデータは削除されません。";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "同期アカウントを削除";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "このコードは、古いバージョンのBraveを実行しているデバイスで作成されたようです。他のデバイスでBraveの最新バージョンにアップデートしてから、新しい同期コードを作成してください。";

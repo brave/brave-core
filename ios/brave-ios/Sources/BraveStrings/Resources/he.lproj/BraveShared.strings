@@ -1,0 +1,3744 @@
+/* About settings section title */
+"About" = "מידע כללי";
+
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "אודות Brave Shields";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "אתרים לרוב כוללים קובצי עוגיות וסקריפטים שמנסים לזהות אותך ואת המכשיר שלך במטרה להבין מי את/ה ולעקוב אחריך ברחבי הרשת  — תוך מעקב אחר הפעולות שלך בכל אתר.\n\nBrave חוסם את הדברים האלה כדי שתהיה לך אפשרות לגלוש בלי שיעקבו אחריך.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "זה מאפשר לך לשמור את התמונה בסרט הצילום שלך.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave מעוניין לגשת לתמונות שלך";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addBookmarkTitle" = "הוספת סימנייה";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addFavouritesTitle" = "הוספה למועדפים";
+
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "תיקייה חדשה";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "הוספה למועדפים";
+
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "הוספת סימנייה";
+
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "נתוני מודעות Brave";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "פרסומות ועוקבים";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "לבקש תמיד את גרסת שולחן העבודה של האתר";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "לשלוח תמיד";
+
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "פועל";
+
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "זה מאמת את הגישה שלך ל-Brave";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "ביטול";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "התקבלה בקשה של שם משתמש וסיסמה על ידי %1$@. האתר אומר: %2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "כניסה";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "התקבלה בקשה לשם משתמש וסיסמה על ידי %@.";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "סיסמה";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "נדרש אימות";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "שם משתמש";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "הפניה אוטומטית של דפי AMP";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "בקר/י תמיד בכתובות URL של דפים מקוריים (שאינם AMP), במקום בגרסאות דפי המובייל המואצים של גוגל. ";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "הפניה אוטומטית של כתובת URL למעקב";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "הפעלת תמיכה בעקיפה של כתובות URL למעקב אחר הפניות מחדש";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "חסימת כל קובצי עוגיות צד שלישי";
+
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "חסימת כל קובצי העוגיות";
+
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "חסימת הכול";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "חסימת כל קובצי העוגיות תמנע מאתרים מסוימים לפעול כהלכה.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "לחסום את כל קובצי העוגיות?";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "הגדרת ההעדפה נכשלה. יש לנסות שוב.";
+
+/* A title for a setting that enables cookie consent notices */
+"BlockCookieConsentNotices" = "חסימת התראות הסכמה לקובצי עוגיות";
+
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "זה מונע מאתרים לאחסן מידע על הביקורים הקודמים שלך.";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "מוניטור חסימה";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "חסימת חלונות קופצים";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "חסימת תסריטים";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "זה חוסם את JavaScript (עלול להפריע לפעולה של אתרים).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "הוספת סימנייה עבור כרטיסיות %lld ";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "תיקיית סימניות";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "מידע על סימניות";
+
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "סימניות";
+
+/* title for bookmarks panel */
+"Bookmarks" = "סימניות";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "ייצוא סימניות";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "ייבוא סימניות";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "סימניות";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "שם";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "כתובת";
+
+/* Button to show the brave panel */
+"BravePanel" = "פאנל Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "פתח";
+
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "פרסים";
+
+/* Brave Rewards title */
+"BraveRewardsTitle" = "Brave Rewards";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave Search לא יוצר עבורכם פרופיל.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "אולי מאוחר יותר";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "לתמוך בחיפוש עצמאי עם פרטיות טובה יותר.";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "שווה לנסות את Brave Search";
+
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "אולי מאוחר יותר";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "סגור";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "בקרות מתקדמות";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "מגנים ופרטיות של Brave";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "מגנים ופרטיות";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "פרסומות ומטרדים אחרים נחסמו";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "למידע נוסף";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "שינוי הגדרות ברירת מחדל גלובליות של מגנים";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "הגדרות גלובליות";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "אם האתר לא מופיע כהלכה, אפשר לנסות לכבות את המגנים";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave Shields";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "למטה";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "למעלה";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "יש ללחוץ לחיצה כפולה כדי להפעיל או לכבות את המגנים של Brave";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
+/* Title for setting to enable the browser lock privacy feature */
+"BrowserLock" = "נעילת דפדפן";
+
+/* Description for setting to enable the browser lock privacy feature */
+"BrowserLockDescription" = "ביטול הנעילה של Brave באמצעות זיהוי טביעת אצבע, זיהוי פנים או סיסמה.";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "היסטוריית גלישה";
+
+/* Settings item for clearing the cache */
+"Cache" = "מטמון";
+
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "הזזת סרגל כרטיסיות";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "הזזה של סרגל הכתובת, הכרטיסיות, הסימניות וכלים אחרים לתחתית הדפדפן.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "התאמה אישית של סרגל הכרטיסיות של Brave";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "להגדיר את Brave כדפדפן ברירת המחדל?";
+
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "עם Brave כברירת מחדל, כל קישור שאתם מקישים עליו נפתח עם הגנות הפרטיות של Brave.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "הגדרה כברירת מחדל";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "זו כבר ברירת המחדל?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "דילוג";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "פרטיות. בקלות.";
+
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "זה עוזר לנו ללמוד אילו פיצ׳רים של Brave נמצאים בשימוש הכי הרבה. אפשר לשנות את זה בכל עת בהגדרות Brave תחת מגני Brave והגדרות פרטיות אחרות.";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "מידע נוסף על ניתוח המוצרים משמר הפרטיות (P3A) שלנו.";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "עזרו לנו להפוך את Brave לטוב יותר.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "שיתוף תובנות מוצר פרטיות ואנונימיות";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "להוסיף את הפרטיות של Brave למחשב או או לטאבלט ולסנכרן סימניות והרחבות בין מכשירים.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "סנכרון כעת";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "פרטיות. בכל מקום.";
+
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "התקבלה כרטיסייה";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "ביטול";
+
+/* Title indicating whether the section for the algorithm used */
+"certificateViewer.algorithmTitle" = "אלגוריתם";
+
+/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
+"certificateViewer.anyTitle" = "הכול";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bitsUnitTitle" = "ביטים";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bytesUnitTitle" = "בייטים";
+
+/* The description for when an SSL certificate is valid */
+"certificateViewer.certificateIsValidTitle" = "התעודה הזו תקפה";
+
+/* Section Title displaying common information */
+"certificateViewer.commonInfoTitle" = "מידע נפוץ";
+
+/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
+"certificateViewer.commonNameTitle" = "שם נפוץ";
+
+/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
+"certificateViewer.countryOrRegionTitle" = "מדינה או אזור";
+
+/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
+"certificateViewer.deriveTitle" = "הסקה";
+
+/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
+"certificateViewer.domainComponentTitle" = "רכיב דומיין";
+
+/* Title of the section indication which 'Encryption' algorithm was used. */
+"certificateViewer.encryptionTitle" = "הצפנה";
+
+/* Title indicating whether or not a private key can be used to encrypt data */
+"certificateViewer.encryptTitle" = "הצפנה";
+
+/* Title indicating whether the mathematical exponent used. x³, x², etc. */
+"certificateViewer.exponentTitle" = "אקספוננט";
+
+/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
+"certificateViewer.fingerPrintsTitle" = "טביעות אצבע";
+
+/* Section Title for Issuer Name in the SSL Certificate */
+"certificateViewer.issuerNameTitle" = "שם מנפיק";
+
+/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
+"certificateViewer.keySizeTitle" = "גודל מפתח";
+
+/* Title indicating what the private or public key can be used for. */
+"certificateViewer.keyUsageTitle" = "שימוש מפתח";
+
+/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
+"certificateViewer.localityTitle" = "מיקום";
+
+/* Title indicating 'None' or no information or empty. */
+"certificateViewer.noneTitle" = "ללא";
+
+/* Certificate is 'not valid after' January 31st, 2022 for example. */
+"certificateViewer.notValidAfterTitle" = "לא תקף לאחר";
+
+/* Certificate is 'not valid before' January 1st, 2022 for example. */
+"certificateViewer.notValidBeforeTitle" = "לא תקף לפני";
+
+/* Title of the section for Department of the Company. Example: Human Resources. */
+"certificateViewer.organizationalUnitTitle" = "יחידה ארגונית";
+
+/* Title of the section for Name of the Company. Example: Brave Inc. */
+"certificateViewer.organizationTitle" = "ארגון";
+
+/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
+"certificateViewer.parametersTitle" = "פרמטרים";
+
+/* Information about a Public Key section title. */
+"certificateViewer.publicKeyInfoTitle" = "מידע מפתח ציבורי";
+
+/* Title indicating whether the key used is public (not private) */
+"certificateViewer.publicKeyTitle" = "מפתח ציבורי";
+
+/* Certificates have a serial number to identify that it's unique */
+"certificateViewer.serialNumberTitle" = "מספר סידורי";
+
+/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
+"certificateViewer.signatureAlgorithmEncryptionDescription" = "%1$@ עם הצפנה של %2$@";
+
+/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
+"certificateViewer.signatureAlgorithmSignatureDescription" = "חתימת %1$@ עם %2$@";
+
+/* Title for the section where we display information about the algorithm used to sign the certificate */
+"certificateViewer.signatureAlgorithmTitle" = "אלגוריתם חתימה";
+
+/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
+"certificateViewer.signatureTitle" = "חתימה";
+
+/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
+"certificateViewer.stateOrProvinceTitle" = "מדינה/מחוז";
+
+/* Title of the section for the address of where the certificate came from. */
+"certificateViewer.streetAddressTitle" = "כתובת רחוב";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "שם נושא";
+
+/* Title of the section for the User's ID (Identifier). */
+"certificateViewer.userIDTitle" = "מזהה משתמש";
+
+/* Title of section that determines if the dates on a certificate is valid. */
+"certificateViewer.validityDatesTitle" = "תאריכי תוקף";
+
+/* Title indicating whether or not a private key can be used to verify data is legitimate */
+"certificateViewer.verifyTitle" = "אימות";
+
+/* Certificates have a version number */
+"certificateViewer.versionNumberTitle" = "גרסה";
+
+/* Title indicating whether or not a private key can be used to wrap or enclose some data */
+"certificateViewer.wrapTitle" = "כימוס";
+
+/* No comment provided by engineer. */
+"ClearData" = "ניקוי נתונים";
+
+/* Section title in settings panel */
+"ClearPrivateData" = "ניקוי נתונים פרטיים";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "ביטול";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "האם את/ה בטוח/ה?";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "אישור";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "נקה נתונים";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "כן, למחוק";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "ניקוי נתונים כעת";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "ביטול";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "הפעולה הזו תנקה את כל הנתונים הפרטיים שלך, כולל ההיסטוריה מהמכשירים המסונכרנים שלך.";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "אישור";
+
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "שגיאת לקוח";
+
+/* Button title to close a menu. */
+"Close" = "סגור";
+
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "בטוח שאת/ה רוצה לסגור את כל הכרטיסיות הפתוחות?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "יש לסגור כל הכרטיסיות האחרות";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "בטוח שאת/ה רוצה לסגור את כל הכרטיסיות הפתוחות?";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "סגירת כל %i הכרטיסיות";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "הורדה";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "שיתוף";
+
+/* No comment provided by engineer. */
+"Confirm" = "אישור";
+
+/* Cookie settings option title */
+"CookieControl" = "בקרת עוגיות";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "קובצי Cookie ונתוני אתר";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "העתקת נתוני האפליקציה ללוח.";
+
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "העתקת גודל אפליקציה ללוח הגזירים";
+
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "העתקת קישור נקי";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "העתקת תמונה";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "העתקת קישור";
+
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "העתקת כרטיסיות ללוח הגזירים";
+
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "העתקת נתוני תמיכה";
+
+/* Create PDF share action. */
+"CreatePDF" = "יצירת PDF";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "מנועי חיפוש שנמצאים בשימוש";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "יש לכתוב את כתובת ה-URL לחיפוש ולהחליף את השאילתה ב-%1$s.\nלדוגמה:  https://youtube.com/search?q=%2$s\n(אם האתר תומך ב-OpenSearch, תסופק אפשרות הוספה אוטומטית במהלך עריכת השדה הזה).";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "הוספה אוטומטית";
+
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "שגיאה בהוספת מנוע חיפוש מותאם אישית";
+
+/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
+"customSearchEngine.deleteEngineAlertDescription" = "מחיקת מנוע חיפוש מותאם אישית כאשר הוא מוגדר כברירת המחדל תחליף את מנוע ברירת המחדל באופן אוטומטי.";
+
+/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
+"customSearchEngine.deleteEngineAlertTitle" = "בטוח שאת/ה רוצה למחוק את %@?";
+
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "מנוע חיפוש עם אותו שם כבר קיים.";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "תבנית חיפוש לא בטוחה עבור";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "הצעה של תבנית חיפוש לא בטוחה עבור";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "הוספת מנוע חיפוש";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "תבנית חיפוש:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "תבנית הצעה:";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "מנוע החיפוש החדש יופיע בסרגל החיפוש המהיר";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "להוסיף ספק חיפוש?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "לא ניתן להוסיף מנוע חיפוש מותאם אישית. יש לנסות שוב מאוחר יותר.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "שגיאת מנוע חיפוש מותאם אישית";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "מנוע חיפוש עם הכותרת או כתובת ה-URL הזו כבר נוסף.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "יש לכתוב את כתובת ה-URL לחיפוש ולהחליף את השאילתה ב%s.";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "שגיאה בשאילתה של כתובת URL לחיפוש";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "הטקסט המועתק חייב להכיל כתובת URL חוקית ומאובטחת שמתחילה ב-'https://'";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "יש למלא גם את שדה הכותרת וגם את שדה כתובת ה-URL.";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "הגדרת מנועי חיפוש";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "מנוע חיפוש נוסף!";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "לא עכשיו";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "פתיחת ההגדרות";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "פתיחת קישורים באמצעות Brave תשמור על פרטיותך";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "מגני Brave חוסמים כלי מעקב ומודעות, חוסכים בנתונים וחוסכים לך זמן בכל אתר שבו תבקר/י";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "יש לפתוח את ההגדרות, ללחוץ על אפליקציית ברירת המחדל של הדפדפן ולבחור את Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "‏הגדרה של Brave כדפדפן ברירת המחדל שלך";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "ליהנות מההגנה של Brave, בכל קישור";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "סגירת חלון דפדפן ברירת מחדל";
+
+/* Name for default Brave theme. */
+"defaultThemeName" = "ברירת מחדל Brave";
+
+/* No comment provided by engineer. */
+"Delete" = "מחיקה";
+
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "זה ימחק את כל התיקיות והסימניות שבתוכן. בטוח/ה שמתאים לך להמשיך?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "למחוק תיקייה?";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "ביטול";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "פרטי הכניסה יוסרו לצמיתות.";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "פרטי הכניסה יוסרו מכל המכשירים המקושרים.";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "האם את/ה בטוח/ה?";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "מחיקה";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "מכשיר %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "ביטול שינויים";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "בטוח שמתאים לך לבטל את השינויים האלה? ההתאמות לא יישמרו.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "לבטל שינויים?";
+
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "תעודת אבטחה (SSL)";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "תצוגה";
+
+/* No comment provided by engineer. */
+"Done" = "סיום";
+
+/* cookie settings option */
+"DontBlockCookies" = "לא לחסום קובצי עוגיות";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "לא לשלוח";
+
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "קבצים שהורדו";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "הורדות";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "קבצים שהורדו יופיעו כאן.";
+
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "שכפול כרטיסייה פעילה";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "מוקדם יותר";
+
+/* No comment provided by engineer. */
+"Edit" = "ערוך";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "עריכת סימנייה";
+
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "מיקום";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "עריכת סימנייה";
+
+/* Button to edit a favorite */
+"EditFavorite" = "עריכת אתר מועדף";
+
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "עריכת סימניית אתר מועדף";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "ערוך תיקייה";
+
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "הפעלת משיכה מטה לרענון";
+
+/* Description for new folder popup */
+"EnterFolderName" = "הזנת שם תיקייה";
+
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "כדאי לנסות להקליד מחדש את כתובת ה-URL או לפתוח מנוע חיפוש ולחפש את כתובת ה-URL החדשה.";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "פתיחה באמצעות Safari";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "ניסיון טעינה נוסף";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ בדרך כלל עושה שימוש בהצפנה כדי להגן על המידע שלך. כש-Brave ניסה להתחבר אל %2$@ הפעם, האתר שלח חזרה אישורים לא רגילים ולא נכונים. זה עלול לקרות כשתוקף מנסה להתחזות ל%3$@, או כשמסך התחברות של Wi-Fi הפריע לחיבור. המידע שלך עדיין בטוח כי Brave עצר את החיבור לפני שהתבצע כל חילוף של נתונים. <br /> אין לך אפשרות לבקר ב%4$@ כרגע, משום שהאתר משתמש בהצמדת תעודה. שגיאות רשת ומתקפות הן בדרך כלל זמניות, כך שהדף הזה כנראה יחזור לעבוד מאוחר יותר.";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningDetails" = "השרת הזה לא יכול להוכיח שהוא %@; מערכת ההפעלה של המכשיר שלך לא בוטחת בתעודת האבטחה שלו. זה עלול לנבוע מתצורה שגויה או כיוון שתוקף מנסה ליירט את החיבור שלך.";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "ייתכן שתוקפים מנסים לגנוב את המידע שלך מ%@ (לדוגמה, סיסמאות, הודעות או פרטי אשראי).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "חזרה לבטיחות";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "האתר הזה לא יכול לספק חיבור מאובטח";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "החיבור שלך אינו פרטי";
+
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "הסתר פרטים";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "למידע נוסף";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "פרטים נוספים";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "אין גישה לאינטרנט";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "נראה שאינך מחובר לאינטרנט. כדי לתקן את זה, אפשר לנסות";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "לבדוק את כבלי הרשת, המודם והנתב";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "להתחבר מחדש ל-Wi-Fi";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesProceedAnywayButton" = "להמשיך אל %@ (לא בטוח)";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ יפתח אפליקציה חיצונית";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "לאפשר לקישור להחליף אפליקציות?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "לאפשר";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "לא לאפשר";
+
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "המועדפים ממוקמים במסך הבית שלך. הסימניות האלה לא מסונכרנות עם מכשירים אחרים.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "מועדפים";
+
+/* No comment provided by engineer. */
+"Features" = "תכונות";
+
+/* Share action title */
+"FindInPage" = "חיפוש בדף";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "סיום";
+
+/* Find %@ text in page. */
+"FindInPageFormat" = "חיפוש ״%@״";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "התוצאה הבאה בדף";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "התוצאה הקודמת בדף";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findInPageTitle" = "חיפוש בדף";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findNextTitle" = "החיפוש הבא";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "בדף זה";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findPreviousTitle" = "החיפוש הקודם";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "שיטות Fingerprinting";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "חסום טביעות אצבע";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "מקשה על אתרים לזהות את המאפיינים הייחודיים של המכשיר שלך.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "לאפשר לקישורים אוניברסליים להיפתח באפליקציות חיצוניות";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "הדבקה ישירה";
+
+/* No comment provided by engineer. */
+"genericErrorBody" = "אופס! משהו השתבש. יש לנסות שוב.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "שגיאה";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "חסימת אתרים מסוכנים";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "גלישה בטוחה מגנה נגד אתרים שידועים כמסוכנים. [למידע נוסף](%@)";
+
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "הסתרת תצוגה מקדימה של קישורים";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "הסתר את סמלון Brave Rewards";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "מסתיר את סמל התגמולים של Brave כשהתגמולים של Brave מושבתים";
+
+/* Title for history menu item */
+"HistortMenuItem" = "היסטוריה";
+
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "ניקוי היסטוריה";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "זה ימחק את כל היסטוריית הגלישה.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "ניקוי היסטוריית גלישה";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "ההיסטוריה תופיע כאן.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "ההיסטוריה לא זמינה במצב ׳גלישה פרטית בלבד׳.";
+
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "היסטוריית חיפוש";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "היסטוריה";
+
+/* No comment provided by engineer. */
+"Home" = "בית";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "שדרג חיבורים ל-HTTPS";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "פותח אתרים באמצעות HTTPS בטוח במקום HTTP כשניתן";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "שדרוגי HTTPS";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "אמצעי בקרה פרטניים";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "פרטים לא חוקיים בבקשת תשלום";
+
+/* History tableview section header */
+"LastMonth" = "בחודש שעבר";
+
+/* History tableview section header */
+"LastWeek" = "בשבוע שעבר";
+
+/* No comment provided by engineer. */
+"learnMore" = "פרטים נוספים";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "התחברות שמורה תימחק לצמיתות.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "נוצר %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "פרטי התחברות";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "סיסמה";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "שם משתמש";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "אתר";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "כדי לראות סיסמאות, צריך קודם כול להגדיר סיסמה במכשיר שלך.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "הגדרת סיסמה";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "לא נמצאו אירועי התחברות";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "פרטי התחברות וסיסמאות";
+
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "פריטים שאף פעם לא נשמרו";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "אירועי התחברות שנשמרו";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "סינון";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "שונה לאחרונה %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "סיסמה";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "שם משתמש";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "אתר";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "ביטול בחירה של הכול";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "לא נמצאו כניסות";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "כניסות";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "בחר הכול";
+
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "לאפשר שמע ברקע";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "העתקה";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "הסתר";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "פתיחת אתר";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "חשיפה";
+
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "חודש";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "יש ללחוץ כאן למידע נוסף.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "זו מודעת Brave הראשונה שלך";
+
+/* Bookmark title / Device name */
+"Name" = "שם";
+
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "כבוי";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "סימנייה חדשה";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "סימנייה חדשה";
+
+/* Title for new folder popup */
+"NewFolder" = "תיקייה חדשה";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "תיקייה חדשה";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "תיקייה חדשה";
+
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "חלון פרטי חדש";
+
+/* New Tab title */
+"NewTab" = "כרטיסייה חדשה";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "חלון חדש";
+
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "מצב";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "מצב לילה ישפיע על המראה של האתר ושל המערכת הכללית במקביל.";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "הפעלה/כיבוי של מצב לילה";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "מצב לילה";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "לא";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "לא נמצאו תוצאות חיפוש.";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "מפנה אוטומטית קישורי NPR לגרסה מבוססת הטקסט שלהם (ב-text.npr.org).";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "תמיכת Brave";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "לתבוע אסימונים";
+
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "הרווחת %@ באמצעות גלישה עם Brave.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "כל הכבוד!";
+
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "הסתר תמונות ממומנות";
+
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "האפשרות 'ממומן׳ כוללת רקעים ממותגים נוספים שבאפשרותך להרוויח בעת הפעלה של תגמולי Brave.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "מידע נוסף על תגמולי Brave";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "למד/י עוד על תמונות ממומנות";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "פתיחה אוטומטית של מקלדת";
+
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "רקע";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "סוג מדיה";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "תמונות ברירת מחדל";
+
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "תמונות וסרטונים ממומנים";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "תמונות ממומנות";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "דף כרטיסייה חדשה";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "להציג עוד";
+
+/* No comment provided by engineer. */
+"ntp.sponsoredImageDescription" = "את/ה תומכ/ת ביוצרי תוכן ומפרסמים באמצעות צפייה בתמונה המוממנת הזו.";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "הפעלה של תגמולים מהווה את הסכמתך ל%@.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "להרוויח אסימונים ולתגמל יוצרים על תוכן נהדר בזמן הגלישה.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "להרוויח נקודות ולתגמל יוצרים על תוכן נהדר בזמן הגלישה.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "מודעות Brave כבר כאן!";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave יציג את המודעה הראשונה שלך ב-";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "עכשיו הכול מוכן.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "לא ראיתי פרסומת";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "משהו השתבש במהלך יצירת הארנק שלך. יש לנסות שוב";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "בסדר";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "מצטערים";
+
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "התחל גלישה";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "הצטרפות";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "לאפשר ל-Brave לבדוק את לוח ההעתקה שלי כדי לחפש קוד הפניה תואם";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "ייתכן שהורדת את Brave בתמיכת אדם שהפנה אותך. כדי לזהות את מי שהפנה אותך, Brave מבצעת בדיקה חד-פעמית של לוח ההעתקה שלך כדי לאתר את קוד ההפניה התואם. הבדיקה הזו מוגבלת רק לאותו קוד ולא כוללת העברה של נתונים אישיים כלשהם. אם ביטלת את ההסכמה לכך, האדם שהפנה אותך לא יקבל תגמולים מ-Brave.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "לא לאפשר את הבדיקה הזו";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "בדיקת קוד הפניה אנונימית";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "לאפשר בדיקת לוח חד-פעמית";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "לחיצה על ״כן״ מהווה הסכמה ל";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "תנאי שירות";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "ו";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "הצטרפות למודעות פרטיות של Brave תומכת במפרסמים וביוצרי תוכן עם כל צפייה במודעה.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "להרוויח אסימונים ולתגמל יוצרים על תוכן נהדר בזמן הגלישה.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "מדיניות הפרטיות";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
+
+/* Save button to save current selection */
+"OBSaveButton" = "שמור";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "בחר/י את מנוע החיפוש המוגדר כברירת המחדל שלך";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "ברוכים הבאים לדפדפן Brave";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "לחסום כלי מעקב שפולשים לפרטיות, כך שתהיה לך אפשרות לגלוש בלי שיעקבו אחריך ברחבי הרשת";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Brave Shields";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "תציגו לי";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "התחלה";
+
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ ו-%2$lld פרסומות וכלי מעקב נוספים נחסמו";
+
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "ראו את כל הדברים הרעים שנחסמו על ידי Brave, בכל עמוד, באמצעות Shields.";
+
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "לחץ/י כדי לראות את Brave Shields";
+
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "פרסומות וכלי מעקב נחסמו";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "קשר/י את מינוי ה-VPN שלך";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "מינוי ה-VPN שלך ב-Brave יכול להגן על עד 5 מכשירים ב-Android, ב-iOS ובשולחן העבודה. רק צריך לחבר את מינוי App Store שלך לחשבון Brave שלך.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "הרחבת Brave Firewall + הגנת VPN";
+
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "לחפש את ׳אפליקציית ברירת מחדל של דפדפן׳";
+
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "לוקחים אותך להגדרות...";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "חסימה של כלי מעקב ופרסומות עוזרת לאתרים להשתמש בפחות נתונים ולהיטען הרבה יותר מהר.";
+
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "לראות את ההבדל עם Brave:\nבלי פרסומות. בלי כלי מעקב. טעינת דפים מהירה בהרבה.";
+
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "יש להקליד שם או כתובת אתר";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "‏ברוכים הבאים ל-Brave‏";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "המשך";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "דלג";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "ב-%@";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "פתיחת הכול (%i)";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "פתיחת הגדרות תגמולים של Brave";
+
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "אירעה שגיאה לא ידועה במהלך הפתיחה של תיקיית ההורדות באפליקציית הקבצים.";
+
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%2$lld אומר:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "לאפשר ל-%@ להחליף אפליקציות?";
+
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "פתיחת תמונה בכרטיסיה חדשה";
+
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "פתיחה בחלון פרטי חדש";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "פתיחה בחלון חדש";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "פתיחה בלשונית פרטית חדשה";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "פתח בלשונית חדשה";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "פתיחת ההגדרות";
+
+/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "פעיל לפני %ld ימים";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "פעיל בחודש שעבר";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "פעיל בשבוע שעבר";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "פעיל היום";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "פעיל אתמול";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "יש להפעיל סנכרון כרטיסיות כדי לראות כרטיסיות מהמכשירים האחרים שלך.";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "כדי לראות את המכשירים ואת סוגי הסנכרון המופעלים שלך, יש להצטרף לשרשרת סנכרון.";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "אין מכשירים בשרשרת סנכרון זו";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "כדי להתחיל, יש להגדיר שרשרת סנכרון ולהפעיל את ״פתיחת כרטיסיות״ בהגדרות הסנכרון.";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "יש לנהל את מה ש-Brave מסנכרן בהגדרות.";
+
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "אין סשנים פעילים להציג מהמכשירים האחרים שלך.";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "האזור הזה מציג כרטיסיות פתוחות של Brave ממכשירים אחרים";
+
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "הסתר בינתיים";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "פתיחת הכול";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "השבוע שעבר %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "היום %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "אתמול %@";
+
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "התקנים";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "שליחה למכשיר שלך";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "נשלח!";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "בשליחה...";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "שליחת דף אינטרנט";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "שליחה למכשירים שלך";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "הצגת הגדרות סנכרון";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "התחלת שרשרת סנכרון";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "הפעלת סנכרון כרטיסיות";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "חיפוש כרטיסיות ממכשירים אחרים";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "כרטיסיות פתוחות";
+
+/* Button title to that opens a website. */
+"OpenWebsite" = "פתיחת אתר";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo הוא עוזר חכם המופעל על ידי AI, המובנה ישירות בדפדפן";
+
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "הידיעות החשובות של היום בפיד חדשות פרטי";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "חדשות";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "שמירת פלייליסט לא מקוון של כל סרטון/פריט נגינה";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "רשימת השמעה";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "שיחות וידאו פרטיות, ממש בתוך הדפדפן שלך";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "שיחות";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "הגנה כוללת על המכשיר שלך ברשת";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "ארנק הקריפטו המאובטח, בלי שום תוסף";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "הפיצ׳רים של Brave";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "הגדרות פרטיות אחרות";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "הגדרות אחרות";
+
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "המשך";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "התגובות הפרטיות האלה מסייעות ל-Brave להעריך את השימוש הכולל בתכונות מסוימות ולשפר אותן למענך.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "הפעלת ניתוח נתונים משמר פרטיות (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "סגירת חלון ניתוח מוצרים משמר פרטיות";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "החיבור שלך לאתר הזה לא מאובטח באופן מלא.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "אין להזין מידע רגיש באתר זה (לדוגמה, סיסמאות או פרטי אשראי) מפני שהוא עלול להיגנב על ידי תוקפים.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "החיבור שלך לאתר הזה לא מאובטח.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "החיבור לאתר לא מאומת.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "לא ניתן לאמת באופן מלא את החיבור שלך לאתר הזה. באפשרותך להמשיך או לנסות לטעון מחדש את הדף כדי לייצר חיבור מאובטח.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "כניסה לאתר";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "הצגת תעודה";
+
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "ברירת המחדל למרחק מתצוגה של דף אינטרנט";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "כשהמרחק מתצוגה של אתר השתנתה, האתר יופיע ברשימה זו. כרגע, אין אתרים שהמרחק מהתצוגה שלהם הוגדל או הוקטן.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "לא נוספו אתרים";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "כל האתרים האחרים";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "איפוס הכול";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "איפוס המרחק מתצוגה של האתר";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "הגדרות דפים ספציפיים";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "מרחק מתצוגה בדף";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "מרחק מתצוגה בדף";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "סיסמאות";
+
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "שחזור גלישה פרטית";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "לאפשר ל-Brave לשחזר כרטיסיות גלישה פרטית, אפילו אם סגרת / פתחת מחדש את האפליקציה";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "שחזור כרטיסיות פרטיות";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "תמונה מאת %@";
+
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "הוספה אל  %@";
+
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "האם ברצונך להוסיף את הסרטון הזה לפלייליסט שלך?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "הוספה לפלייליסט Brave";
+
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "אפשרויות נגינה";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "מושבת. יש ללחוץ כדי לאפשר הפעלה מחדש של נגינה.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "מופעל. יש ללחוץ כדי להשבית הפעלה מחדש של נגינה.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "להחליט אם אי-בחירת פריט שמנוגן כרגע תפעיל מחדש את הנגינה או תמשיך לנגן מהמקום שבו היא הופסקה בפעם האחרונה";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "הפעלה מחדש של נגינה";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "הגדרות";
+
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "פלייליסט Brave";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "שינוי פלייליסט";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "מחיקת מטמון לא מקוון";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "הסרטון הזה היה בשידור חי או שמגבלת הזמן פקעה. יש לפתוח מחדש את הקישור כדי לרענן.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "סרטון פג תוקף";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "פג תוקף";
+
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d פריטים";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "פריט %d";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "הייתה בעיה בטעינת המקור!";
+
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "כשאפשרות זו מופעלת, יוצג תג בסמל התפריט הראשי שיצביע על כך שמדיה בדף זה יכולה להתווסף לפלייליסט Brave";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "הצגת תג התראות בתפריט";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "העברה...";
+
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "אפשר להוסיף פריטים לפלייליסט Brave שלך בתוך הדפדפן";
+
+/* Text when there are no items in the playlist */
+"playList.noItemLabelTitle" = "אין פריטים זמינים";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "התראה";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "בסדר";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "פתיחה בפלייליסט";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "מצטערים, אירעה שגיאה בזמן הניסיון להציג תמונה בתוך תמונה.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "הפלייליסט כבר פעיל בחלון אחר";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "מצטערים";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "האפשרות הזו תפעיל/תשבית ניגון אוטומטי כשפלייליסט נמצא במצב פתוח. עם זאת, האפשרות הזו לא תשפיע על נגינה אוטומטית בעת טעינה של הסרטון הבא ברשימה.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "נגינה אוטומטית";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "כבוי";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "פועל";
+
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "רק Wi-Fi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "הוספת קובצי שמע ווידאו עבור שימוש לא מקוון עלולה לעשות שימוש בנפח אחסון רב במכשיר שלך, כמו גם בנתונים ניידים";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "האפשרות הזו תשמור באופן אוטומטי פריטי פלייליסט במכשיר שלך, כך שתהיה לך אפשרות לנגן אותם ללא חיבור לאינטרנט.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsTitle" = "שמירה אוטומטית למצב לא מקוון";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "הוספת קובצי וידאו ושמע עבור שימוש לא מקוון עלולה לנצל נפח אחסון רב במכשיר שלך. יש להסיר קבצים כדי לפנות שטח אחסון.";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "האחסון כמעט מלא";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "שידור חי";
+
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "כשאפשרות זו מופעלת, אפשר ללחוץ לחיצה ארוכה על מרבית קובצי הוידאו/שמע ולהוסיף אותם לפלייליסט שלך.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "הפעלת לחיצה ארוכה";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "מדיה של פלייליסטים ונתונים לא מקוונים";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "נתונים לא מקוונים של פלייליסטים";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "שנה";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "איפוס";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "האפשרות הזו תסיר את כל הסרטונים מהפלייליסט, כמו גם מהאחסון של מצב לא מקוון.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "מצטערים, לא ניתן לשמור את הפריט הזה למצב לא מקוון כעת.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "מצטערים, משהו השתבש";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "רשימות השמעה";
+
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "רשימת השמעה";
+
+/* Body for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsBody" = "התיקייה הזו כבר קיימת בפלייליסט Brave שלך";
+
+/* Title for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsTitle" = "מצטערים";
+
+/* Title for the Section that videos are listed */
+"playList.playlistSharedFolderSectionTitle" = "שותף איתך";
+
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "שותף איתך";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "ההגדרה הזו תזיז את מיקום רשימת הסרטונים בין צד שמאל לצד ימין.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "שמאלה";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "ימינה";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "מיקום סרגל הצד";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "עבור קבצים בודדים, להמשיך את הנגינה מנקודת העצירה האחרונה.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "זכירת מיקום הפעלה בקובץ";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "משבית את ה-API של Webkit MediaSource";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "התאמה לדפי אינטרנט";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "הסרה";
+
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "הוסר מתוך %@";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "זה ימחק את המדיה מהאחסון הלא מקוון שלך. בטוח שבא לך להמשיך?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "הסרת נתונים לא מקוונים";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "זה יסיר את פריט המדיה מהרשימה. בטוח שבא לך להמשיך?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "להסיר את פריט המדיה מהפלייליסט?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "פתיחה מחדש";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "נוסף ל״לא מקוון״";
+
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "שמירה למצב לא מקוון";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "בשמירה עבור מצב לא מקוון...";
+
+/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyDescription" = "מסנכרן את כל תיקיות הפלייליסט שלך באופן אוטומטי";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "סנכרון אוטומטי של תיקיות פלייליסט";
+
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "אפשר לפתוח את הפריט הנוכחי בכרטיסיה חדשה, או לשתף אותו באמצעות תפריט השיתוף של המערכת.";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "תפריט פלייליסט Brave";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "פתיחה בכרטיסיה פרטית";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "פתיחה בכרטיסיה חדשה";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "שיתוף...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "מצטערים";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "נוסף לפלייליסט Brave";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "פתיחה";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "הוספה לפלייליסט Brave";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "הצגה בפלייליסט Brave";
+
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "ביטול הפעולה";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "מוסיף כפתור פלייליסט (נראה כמו 4 קווים עם סמל +) לצד סרגל הכתובת בדפדפן Brave. הכפתור הזה נותן לך גישה מהירה לפתיחה של פלייליסט או להוספה והסרה של מדיה.";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "הפעלת כפתור גישה מהירה";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "העברה אל";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "שם פלייליסט";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "הזנת שם הפלייליסט שלך";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "צור";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "ערוך";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "עריכת תיקיה";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "הוספת פלייליסט";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "מצטערים שלא יכולנו לשמור את השינויים שביצעת בתיקיה זו";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "העבר";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "פלייליסט נוכחי";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "העבר";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@  ועוד פריט 1";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld פריטים";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "פריט 1";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ ועוד %2$lld פריטים";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "רשימת השמעה חדשה";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "רשימת השמעה חדשה";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "יש ללחוץ כדי לבחור סרטונים";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "הוספת סרטונים לפלייליסט זה";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "יש לבחור פלייליסט להעביר אליו %lld פריטים";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "יש לבחור פלייליסט להעביר אליו פריט 1";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld פריטים";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "פריט 1";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "פלייליסט ללא שם";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "כפתור הוספה לפלייליסט Brave";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "שמור";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "הסרת נתונים לא מקוונים";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "מחיקת פלייליסט";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "ערוך";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "כפתור תפריט פלייליסט";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "הוספת פלייליסט כעת";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "שמירת אוטומטית למצב לא מקוון מופעלת, כלומר, תוספות חדשות לפלייליסט, כולל פלייליסטים ששותפו, ישמרו במכשיר שלך לצפייה במצב לא מקוון ועשויות לעשות שימוש בנתונים הניידים שלך.\n\nניתן לנהל שמירה אוטומטית למצב לא מקוון בהגדרות הפלייליסט.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "הגדרות";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "ניהול נתונים הפלייליסט";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "שנה שם";
+
+/* Menu Title for saving offline data/cache */
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "שמירת נתונים לא מקוונים";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "סנכרון כעת";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "סגירת תפריט מגנים";
+
+/* Settings privacy section title */
+"Privacy" = "פרטיות";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "כדי להחליף למצב גלישה פרטית, צריך קודם להגדיר סיסמה במכשיר שלך.";
+
+/* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
+"privacyHub.allTimeListsButtonText" = "כל הרשימות";
+
+/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
+"privacyHub.allTimeListsHeader" = "משחר ההיסטוריה";
+
+/* Title of a section to show total count of trackers blocked by Brave */
+"privacyHub.allTimeListsTrackersView" = "כלי מעקב ומודעות";
+
+/* Title of a section to show websites containing highest amount of trackers */
+"privacyHub.allTimeListsWebsitesView" = "אתרי אינטרנט";
+
+/* Header title for a list of most frequent ads and trackers detected. */
+"privacyHub.allTimeListTrackersHeaderTitle" = "כלי המעקב והמודעות הנפוצים ביותר באתרים שביקרת בהם";
+
+/* Header title for a list of websites with ads and trackers. */
+"privacyHub.allTimeListWebsitesHeaderTitle" = "האתרים עם הכי הרבה כלי מעקב ומודעות";
+
+/* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
+"privacyHub.allTimeSitesCount" = "%lld אתרים";
+
+/* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
+"privacyHub.allTimeTrackersCount" = "%lld כלי מעקב ומודעות";
+
+/* Title under which we display most name of the most blocked tracker or ad. */
+"privacyHub.allTimeTrackerTitle" = "כלי מעקב/מודעה";
+
+/* Title under which we display a website on which there's the highest number of trackers or ads. */
+"privacyHub.allTimeWebsiteTitle" = "אתר";
+
+/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+"privacyHub.allVPNAlertsButtonText" = "כל ההתראות";
+
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+"privacyHub.blockedBy" = "נחסם על ידי";
+
+/* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
+"privacyHub.blockedLabel" = "במצב חסום";
+
+/* Accessibility label for the 'clear all data' button. */
+"privacyHub.clearAllDataAccessibility" = "ניקוי נתוני מרכז פרטיות";
+
+/* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
+"privacyHub.clearAllDataPrompt" = "לנקות את כל נתוני המגנים?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "הסתר";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "הסתרת נתוני פרטיות";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "יש ללחוץ על הסתרה כדי להסיר את ווידג׳ט נתוני הפרטיות. תמיד אפשר להפעיל אותו מחדש בהגדרות, תחת העמוד ׳כרטיסיה חדשה׳.";
+
+/* Header text, under it we display blocked items from last week */
+"privacyHub.lastWeekHeader" = "בשבוע שעבר";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** נחסם על ידי מגני Brave ב-**%2$lld** אתרים.";
+
+/* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
+"privacyHub.mostFrequentTrackerAndAdTitle" = "כלי המעקב/המודעה הנפוצ/ה ביותר";
+
+/* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
+"privacyHub.noDataCalloutBody" = "צריך לבקר באתרים כדי לראות כאן נתונים.";
+
+/* This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them. */
+"privacyHub.noDataToShow" = "אין נתונים להציג בינתיים.";
+
+/* Text of a callout to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutBody" = "לקבל עדכוני פרטיות שבועיים על חסימת כלי מעקב ומודעות.";
+
+/* Text of a button to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutButtonText" = "הפעל התראות";
+
+/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "תקציר על האופן שבו Brave הגן עליך ברחבי הרשת השבוע.";
+
+/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationTitle" = "דוח פרטיות שבועי";
+
+/* Text of a button that opens up a Privacy Reports screen. */
+"privacyHub.onboardingButtonTitle" = "פתיחת מרכז הפרטיות";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "פתיחת מרכז הפרטיות";
+
+/* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
+"privacyHub.privacyReportsDisclaimer" = "נתוני מרכז הפרטיות מאוחסנים באופן מקומי ואף פעם לא נשלחים לשום מקום.";
+
+/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+"privacyHub.privacyReportsTitle" = "מרכז הפרטיות";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
+"privacyHub.riskiestWebsiteBody" = "**%1$@** מכיל ממוצע של **%2$lld** כלי מעקב ומודעות לביקור בודד.";
+
+/* Title of a website that contained the most trackers per visit. */
+"privacyHub.riskiestWebsiteTitle" = "האתר עם הכי הרבה כלי מעקב";
+
+/* This text explains a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsFooter" = "מרכז הפרטיות מציג ספירה של מה שנחסם על ידי מגנים. ההגדרה לא תשפיע על המונה של מגנים בכרטיסיה חדשה. נתוני מגנים לא נספרים בחלונות פרטיים.";
+
+/* Title of a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsTitle" = "הצגת נתוני מגנים";
+
+/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsFooter" = "ההגדרה תחול רק אם רכשת מנוי VPN.";
+
+/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsTitle" = "הצגת התראות VPN";
+
+/* This text explains what the button to clear datain the Privacy Hub is for. */
+"privacyHub.settingsSlearDataFooter" = "מאפס את הספירה של כל מה שנחסם על ידי מגנים.";
+
+/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+"privacyHub.settingsSlearDataTitle" = "ניקוי נתוני מגנים";
+
+/* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
+"privacyHub.shieldsLabel" = "מגנים";
+
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "יש להפעיל את '%@' כדי לראות כאן נתונים";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypePlural" = "כלי מעקב באימייל";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypeSingular" = "כלי מעקב באימייל";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypePlural" = "פינגים של מיקום";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypeSingular" = "פינג מיקום";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "כלי מעקב ומודעות";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypeSingular" = "כלי מעקב או מודעה";
+
+/* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
+"privacyHub.vpnAlertsHeader" = "חומת אש Brave + התראות VPN";
+
+/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+"privacyHub.vpnLabel" = "חומת אש + VPN";
+
+/* It shows a total count of items blocked by our VPN shields */
+"privacyHub.vpvnAlertsTotalCount" = "ספירה כוללת";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "מדיניות הפרטיות";
+
+/* Private button title */
+"Private" = "פרטי";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "גלישה פרטית";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "גלישה פרטית בלבד";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "המצב ׳גלישה פרטית בלבד׳ יסגור את כל הכרטיסיות הנוכחיות שלך וינתק אותך מכל האתרים.";
+
+/* Private tab details */
+"PrivateTabBody" = "כרטיסיות פרטיות לא נשמרות ב-Brave, אבל הן לא הופכות אותך לאנונימי/ת ברשת. אתרים שביקרת בהם בכרטיסייה פרטית לא יופיעו בהיסטוריה שלך וקובצי העוגיות שלהם ייעלמו ברגע שסגרת אותם  — לא יישארו עקבות שלהם ב-Brave. עם זאת, הורדות כן יישמרו.\nספק האינטרנט שלך (הבעלים של רשת ה-Wi-Fi או של ה-VPN שדרכם התחברת) יכול לראות באילו אתרים ביקרת, והאתרים האלה יידעו את כתובת ה-IP הציבורית שלך, אפילו בכרטיסיות פרטיות.";
+
+/* Private tab detail text */
+"PrivateTabDetails" = "השימוש בכרטיסיות פרטיות משנה רק את מה ש-Brave עושה במכשיר שלך, זה לא משנה את ההתנהגות של כל השאר.\n\nאתרים תמיד רואים את כתובת ה-IP שלך בעת הביקור שלך בהם. בהסתמך על כך, הם לרוב יכולים לנחש בערך את המיקום שלך  — בדרך כלל את העיר. לפעמים ניחוש המיקום יכול להיות הרבה יותר מדויק. אתרים יודעים גם את כל מה שאמרת להם באופן מפורש, כמו מונחי החיפוש שהשתמשת בהם. אם הזנת פרטי כניסה לאתר, האתר ידע שאת/ה בעלי החשבון. עדיין תנותק/י בעת סגירת הכרטיסיות הפרטיות כי Brave תמיד ישליך את קובצי העוגיות ששומרים אותך במצב מחובר.\n\nכל מי שיחבר אותך לאינטרנט (ספק שירותי האינטרנט שלך) יוכל לראות את כל הפעילות שלך ברשת. לרוב מדובר בספק האינטרנט או הטלפון הנייד שלך. אם התחברת לרשת Wi-Fi, מדובר בבעלים של אותה רשת, ואם השתמשת ב-VPN, מדובר במי שמנהל את ה-VPN הזה. ספק שירותי האינטרנט שלך יכול לראות באילו אתרים ביקרת במהלך הביקור שלך בהם. אם האתרים האלה משתמשים ב-HTTPS, אין לו אפשרות לבצע יותר מניחוש מושכל לגבי מה שביצעת בהם. אבל אם אתר משתמש רק ב-HTTP, אז ספק שירותי האינטרנט שלך יכול לראות הכול: את מונחי החיפוש שלך, אילו דפים קראת ועל אילו קישורים לחצת.\n\nאם מעסיק מנהל את המכשיר שלך, הוא גם עשוי לשמור תיעוד של מה שאת/ה עושה איתו. השימוש בכרטיסיות פרטיות כנראה לא ימנע ממנו לדעת באילו אתרים ביקרת. ייתכן גם שמישהו אחר עם גישה למכשיר שלך התקין תוכנות למעקב אחרי הפעילות שלך, וכרטיסיות פרטיות לא יגנו עליך גם מהאפשרות הזו.";
+
+/* Private tab information link */
+"PrivateTabLink" = "מידע נוסף על כרטיסיות פרטיות.";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "כרטיסייה פרטית";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "מנועי חיפוש מהיר";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "דרג/י את Brave";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "הגדלת טקסט";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "בהירות";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "הגדרות תצוגה";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "אירעה שגיאה בהמרת העמוד";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "א";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "משנה סוג פונט.";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "התוכן בטעינה...";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "טעינת עמוד מקורי";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "לא ניתן להציג את העמוד בתצוגת קורא.";
+
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "תצוגת קורא";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "הקטנת טקסט";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "משנה את צבעי ערכת הנושא.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "ניקוי";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "למחוק את כל הכרטיסיות שנסגרו לאחרונה?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "אין כרטיסיות שנסגרו לאחרונה";
+
+/* Open Tab action title */
+"recently.closed.open" = "פתיחה";
+
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "פתיחה מחדש של הכרטיסיה האחרונה שנסגרה";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "לפתוח את הכרטיסיה האחרונה שנסגרה?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "כרטיסיות שנסגרו לאחרונה";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "הצגת כרטיסיות שנסגרו לאחרונה";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "ניקוי";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "ניקוי אחרונים";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "נתוני חיפושים אחרונים";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "השבת";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "הפעל";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "מועדפים";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "הסתר";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "הדבקה וכניסה";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "דלוק";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "נסרק";
+
+/* Scanning a QR Code for searching body */
+"RecentSearchScannerDescriptionBody" = "כדי לחפש באמצעות קוד QR, יש למקם את הקוד במרכז מסגרת התמונה.";
+
+/* Scanning a QR Code for title */
+"RecentSearchScannerDescriptionTitle" = "הוראות";
+
+/* Scanning a QR Code for searching */
+"RecentSearchScannerTitle" = "סריקת קוד QR";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "חיפושים אחרונים מאפשרים לך לגשת באופן פרטי לחיפושים מהעבר. רוצה לאפשר חיפושים אחרונים?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "חיפושים אחרונים";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "הצגה";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "הצג יותר";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "הצעות חיפוש";
+
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "מפנה אוטומטית קישורי Reddit אל הממשק הישן (old.reddit.com). כדי לאלץ את פתיחת ממשק Reddit החדש, יש להשתמש ב-new.reddit.com במקום.";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "הסרת מועדף";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "דווח/י על אתר לא תקין";
+
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "דיווח על באג";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "פרטים נוספים (אופציונלי)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "צור איתי קשר בכתובת: (לא חובה)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "דואר אלקטרוני, טוויטר וכו'.";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "הודע/י למפתחים של Brave כי אתר זה אינו עובד בצורה תקינה עם Shields:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "הערה: הדוח שנשלח לשרתי Brave יכלול את כתובת האתר, מספר גרסה של Brave, הגדרות Shields, סטטוס VPN והגדרות שפה.";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "שלח";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "\"%@\" מבקש גישה למצלמה והמיקרופון";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "\"%@\" מבקש גישה למצלמה";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "אפשר";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "\"%@\" מבקש גישה למכשיר צילום או הקלטת מדיה";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "\"%@\" מבקש גישה למיקרופון";
+
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "סימניות ששוחזרו";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "מועדפים ששוחזרו";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "כן";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "לא";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "לצערנו, Brave קרס או לא נסגר כהלכה.\nלשחזר את הכרטיסיות שלך?";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "Brave נסגר באופן לא צפוי.";
+
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "עם תגמולי Brave, יש לך אפשרות לצפות במודעות משמרות-פרטיות מרשת מודעות Brave. בלי כלי מעקב. בלי האטות. והנתונים שלך נשארים בטוחים לחלוטין.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "הפעל את Rewards";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "הקש בכל מקום על המסך על מנת להמשיך ל-Brave Talk";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "כעת תוכל/י להתחיל שיחה בחינם";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "להתחלת שיחה שיחה בחינם, יש להפעיל את Brave Rewards";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "יש להפעיל כדי לתמוך ב-Brave ובקהילת BAT.";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "השימוש בתגמולי Brave עוזר לתמוך ב-Brave ובקהילת BAT.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "את/ה עוזר/ת לתמוך ב-Brave ובקהילת BAT.";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "תודה על הסיוע בתמיכה ב-Brave ובקהילת BAT!";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "הלחיצה מהווה הסכמה ל%1$@ ו%2$@. אפשר להשבית את זה בכל עת בהגדרות.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "לעזור לתמוך ב-Brave ובקהילת BAT באמצעות הפעלת תגמולי Brave וצפייה במודעות Brave.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "הפעלת תגמולי גלישה";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "יוצר/ת התוכן מאומת/ת על ידי יוצרי Brave";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "מספר יוצרי התוכן שאת/ה עוזר/ת לתמוך בהם החודש.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "היוצר/ת לא מאומת/ת והיא או הוא לא יכללו בתמיכת היוצרים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAmount" = "כמות";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "אנונימי";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "מידע על יתרה";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "בטוח שאת/ה רוצה למחוק את כל יומני התגמולים?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "ניקוי יומנים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "סכום התרומה";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "אסימונים של Brave";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "ללא";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Uphold";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "כספי משתמש";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "תרומה אוטומטית כבויה";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "טבלת תרומה אוטומטית ריקה";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "הושלם";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "פרטי התחברות";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "עסקה חיצונית";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "נכשל";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "אין מספיק כספים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "הכן/י";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "שמור";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "תגמולים כבויים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "התחלה";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "תרומות";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "נוצר ב";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "פרטי המכשיר";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "רשום";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "מצב רישום";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "בתוקף עד";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "לא תקף";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "Key Info Seed";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "%dיומנים ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "יומנים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "לא רשום";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "לא נתמך";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "מעבד";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "מפרסם";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "מפרסמים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "מספר ניסיונות חוזרים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "תרומה אוטומטית";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "טיפ חד פעמי";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "טיפ חוזר";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "מידע על פרופיל תגמולים, מכשיר ויתרה (משותף תמיד)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "מידע בסיסי";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "כל התרומות שבוצעו למפרסמים באמצעות טיפים או תרומה אוטומטית";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "אחסון הנתונים הפנימי";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "מסד נתונים של תגמולים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "יומני תגמולים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "שיתוף";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "שיתוף פרטי תגמולים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "המידע בדפים האלה עשוי להיות רגיש. חשוב לנקוט זהירות לגבי מי שמשתפים אותו בו.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "אזהרה";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "סטטוס";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "שלב";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "נתמך";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "פרטי תגמולים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "סכום כולל";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "יתרה כוללת";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "סוג";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "תקף";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "גרסה";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "תאריך יצירה של פרופיל התגמולים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "מידע על פרופיל התגמולים";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "מזהה תשלום תגמולים";
+
+/* Button to show the rewards panel */
+"RewardsPanel" = "לוח תגמולים";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "שמור";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "שמירת שינויים";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "אירועי התחברות שנשמרו";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "כרטיסיות שנשמרו";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "שמירת תמונה";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "שמירת אירועי התחברות";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "סקריפטים חסומים";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "חיפוש סימניות";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "חיפוש %@";
+
+/* Search engines section of settings */
+"SearchEngines" = "מנועי חיפוש";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "חיפוש אחר ההצעה";
+
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "פתיחת כרטיסיות, סימניות והיסטוריה";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "ניקוי חיפוש";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "כניסה למצב חיפוש";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "שדה הקלט של חיפוש";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "חיפוש";
+
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "הוספת מנוע חיפוש מותאם אישית";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "אפשר להפעיל את האפשרות הזו כדי לכלול תוצאות מההיסטוריה ומהסימניות שלך במהלך החיפוש";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "הצגת הצעות דפדפן";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "חיפוש";
+
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "הצגת חיפושים אחרונים";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "הגדרות חיפוש";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "הצגת הצעות חיפוש";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "הצעות חיפוש מאת %@";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "החלפה לכרטיסיה זו";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "חיפוש %@";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "חיפוש";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "הצעות חיפוש";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "חיפוש ב-Brave";
+
+/* Settings security section title */
+"Security" = "אבטחה";
+
+/* No comment provided by engineer. */
+"sendButtonTitle" = "שלח";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "לשלוח דוח קריסה כדי ש-Brave יוכל לתקן את הבעיה?";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "אופס! Brave קרס";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "שליחת דוח";
+
+/* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Brave יכול עכשיו להיות מוגדר כדפדפן ברירת המחדל ב-iOS. יש ללחוץ כאן כדי לפתוח את ההגדרות.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "הגדר כדפדפן ברירת המחדל";
+
+/* No comment provided by engineer. */
+"Settings" = "הגדרות";
+
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "ידנית";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "אחרי יום אחד";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "אחרי חודש אחד";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "אחרי שבוע אחד";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "סגור כרטיסיות";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "מאפשר ל-Brave לסגור אוטומטית כרטיסיות שלא נצפו לאחרונה.";
+
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "הפעלה באיכות הגבוהה ביותר";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "מאפשר רזולציה גבוהה";
+
+/* Header for the general settings section */
+"settings.media.general" = "כללי";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "מדיה";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "פתיחת קישורי יוטיוב ב-Brave";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "הפעלת זמן מסך";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "לראות באילו אתרים בילית את הכי הרבה זמן, ולהגדיר מגבלות גלישה. [למידע נוסף](%@)";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "הגדרות איכות";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "ה-ping הפרטי מאפשר ל-Brave להעריך משתמשים פעילים.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "שלח/י PING של שימוש יומי ל-Brave";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "לא ניתן לטעון את העמוד.";
+
+/* Row name for licenses. */
+"SettingsLicenses" = "רישיונות";
+
+/* Title for settings menu item */
+"SettingsMenuItem" = "הגדרות";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "בר תחתון";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "בר עליון";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "כרטיסיות";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "שיתוף קישור";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "שיתוף עם...";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"shareWithTitle" = "שיתוף עם...";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "ברכות על ההגעה לציון הדרך הזה בפרטיות.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "מזל טוב. הצטרפת למועדון ייחודי.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "מזל טוב. הפכת לרב-אמן/ית.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "מזל טוב. יש לך מעמד של אגדה בחייך.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "מזל טוב. הפכת לאמן/ית.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "מזל טוב. הצטרפת למקצוענים.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "מזל טוב. את/ה די מיוחד/ת.";
+
+/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "ממוצע נתונים שנחסכו\n%@ מגה בייט";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "אל תציג זאת שוב";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "שתף/י את החדשות עם אחרים";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "מגני Brave הרגע הגנו על הפרטיות שלך ברשת.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "מזל טוב. את/ה די מיוחד/ת.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld כלי מעקב ומודעות נחסמו!";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "סרטים בלי פרסומות משתמשים בפחות נתונים.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "באתר זה הפרסומות חסומות בעת צפייה בסרטונים.";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "הגדרות גלובליות של מגני Brave";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "אלו הן הגדרות ברירת המחדל של Shields עבור אתרים חדשים. שינוי הגדרות אלו לא ישפיע על ההגדרות הספציפיות הקיימות עבור אתר מסוים.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "הינך גולש/ת באתר זה ללא הגנת הפרטיות של Brave. האם זה לא עובד כמו שצריך עם Shields?";
+
+/* shields overview message */
+"ShieldsOverview" = "מגני אתרים מאפשרים לך להחליט מתי פרסומות וכלי מעקב ייחסמו בכל אתר שבו תבקר/י. אם תעדיפ/י לראות פרסומות באתר מסוים, ניתן לאפשר אותן כאן. ";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "לתשומת ליבך: אתרים מסוימים עשויים לדרוש סקריפטים כדי לפעול כהלכה, לכן מצב ברירת המחדל של המגן הזה הוא כבוי. ";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "כרטיסייה פרטית חדשה";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "כרטיסייה חדשה";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "סריקת קוד QR";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "לפתוח את חדשות Brave ולגלות את הידיעות המובילות של היום";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "לפתוח את הדפדפן בכרטיסיה חדשה ולמחוק את כל נתוני היסטוריית הגלישה הפרטיים";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "ניקוי היסטוריית הגלישה";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "ניקוי היסטוריית הגלישה של Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "לפתוח את הדפדפן בכרטיסיה חדשה ולאפשר VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "הפעלת VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "לפתוח את דפדפן Brave ולהפעיל VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "פתיחת כרטיסיה פרטית חדשה";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "לפתוח כרטיסיית דפדפן פרטית חדשה";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "פתיחת כרטיסיה חדשה";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "לפתוח כרטיסיית דפדפן חדשה";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "לפתוח את מסך הסימניות בדפדפן";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "פתיחת סימניות";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "לפתוח את הסימניות של דפדפן Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "פתיחת חדשות Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "לפתוח את חדשות Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "לפתוח את מסך ההיסטוריה של הדפדפן";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "פתיחת היסטוריית הדפדפן";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "לפתוח את ההיסטוריה של דפדפן Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "להתחיל לנגן את הסרטונים שלך בפלייליסט";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "פתיחת רשימת ההשמעה";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "פתיחת רשימת ההשמעה";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "לפתוח את הכרטיסיות של Brave במכשירים אחרים";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "פתיחת כרטיסיות ממכשירים אחרים";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "לפתוח כרטיסיות ממכשירים אחרים";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "להתחיל לחפש ברשת באופן מאובטח עם Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "פתיחת אתר מסימניה";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "פתיחת אתר מהיסטוריה";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "פתיחת אתר";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "האפשרות הזו תפתח את ההגדרות של Brave. כדי לשנות אפשרויות של Siri, יש לבחור את הפריט 'Siri וחיפוש׳ בתפריט ולהתאים אישית את הבחירות שלך.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "פתיחת ההגדרות";
+
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "שימוש בקיצורי דרך כדי לפתוח כרטיסיה חדשה ולנקות את היסטוריית הדפדפן דרך Siri - Voice Assistant";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "ניקוי היסטוריית דפדפן";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "שימוש בקיצורי דרך כדי לאפשר את Brave VPN דרך Siri - Voice Assistant";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "הפעלת VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "שימוש בקיצורי דרך כדי לפתוח את מסך הסימניות דרך Siri - Voice Assistant";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "פתיחת סימניות";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "שימוש בקיצורי דרך כדי לפתוח כרטיסיה חדשה ולהציג את פיד חדשות Brave דרך Siri - Voice Assistant";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "פתיחת חדשות Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "שימוש בקיצורי דרך כדי לפתוח את מסך היסטוריית הדפדפן של Brave דרך Siri - Voice Assistant";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "פתיחת היסטוריית דפדפן";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "שימוש בקיצורי דרך כדי לפתוח כרטיסיה פרטית חדשה דרך Siri - Voice Assistant";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "פתיחת כרטיסיה פרטית חדשה";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "שימוש בקיצורי דרך כדי לפתוח כרטיסיה חדשה דרך Siri - Voice Assistant";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "פתיחת כרטיסיה חדשה";
+
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "שימוש בקיצורי דרך כדי לפתוח פלייליסטים דרך Siri - Voice Assistant";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "פתיחת רשימת ההשמעה";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "שימוש בקיצורי דרך כדי לפתוח כרטיסיות ממכשירים אחרים דרך Siri - Voice Assistant";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "פתיחת כרטיסיות ממכשירים אחרים";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "קיצורי דרך של Siri";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "הצגת סימניות";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showDownloadsTitle" = "הצגת הורדות";
+
+/* Button to show the history list */
+"ShowHistory" = "הצגת היסטוריה";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showHistoryTitle" = "הצגת היסטוריה";
+
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "לרוחב בלבד";
+
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "הצגת תצוגה מקדימה של קישורים";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "הצגת כרטיסיות";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "סרגל כרטיסיות";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "תודה שהודעת למפתחים של Brave שמשהו לא תקין באתר זה. נעשה כמיטב יכולתנו לתקן זאת!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "תודה";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "מגנים";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "כל יום נחסכים לי נתונים בזכות הגלישה ב-Brave.";
+
+/* Text used for social sharing together with Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "כל יום נחסכים לי נתונים בזכות הגלישה ב-Brave.";
+
+/* Open search section of settings */
+"StandardTabSearch" = "כרטיסייה רגילה";
+
+/* Support section title */
+"Support" = "תמיכה";
+
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "למנוע מדף זה ליצור התראות נוספות";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "מניעת התראות";
+
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "הוספת התקן חדש";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "הוספת מחשב";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "קוד QR לשרשרת סנכרון ";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "במכשיר הנייד האחר שלך, יש לעבור אל ׳סנכרון׳ בלוח ההגדרות וללחוץ על הכפתור ״סריקת קוד סנכרון״. צריך להשתמש במצלמה שלך כדי לסרוק את קוד ה-QR שלמטה.\n\nיש להתייחס לקוד הזה כמו אל סיסמה. אם מישהו ישיג אותו, הוא או היא יוכלו לקרוא ולשנות את הנתונים המסונכרנים שלך.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "הזנת קוד הסנכרון";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "במכשיר שלך, יש לעבור אל ׳סנכרון׳ בלוח ההגדרות וללחוץ על הכפתור ״%@״. יש להזין את מילות הקוד של שרשרת הסנכרון שמוצגות למטה.\n\nיש להתייחס לקוד הזה כמו אל סיסמה. אם מישהו ישיג אותו, הוא או היא יוכלו לקרוא ולשנות את הנתונים המסונכרנים שלך.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "הזנת מילות הקוד";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "הוספת טאבלט או טלפון";
+
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "הסימניות יוצאו בהצלחה";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "ייצוא הסימניות נכשל";
+
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "סרגל סימניות";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "ייבוא הסימניות נכשל";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "הסימניות יובאו בהצלחה";
+
+/* Alert description for error while deleting sync chain */
+"sync.chainAccountDeletionErrorDescription" = "סנכרון מכשיר";
+
+/* Alert title for error while deleting sync chain */
+"sync.chainAccountDeletionErrorTitle" = "סנכרון מכשיר";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.chainAlreadyDeletedAlertDescription" = "לא ניתן היה להצטרף לשרשרת הזו. החשבון נמחק.";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.chainAlreadyDeletedAlertTitle" = "סנכרון מכשיר";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "בחר/י סוג מכשיר";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "בחר/י את סוג המכשיר שאליו תרצו לסנכרן.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "הקוד פג תוקף. יש לייצר אחד חדש באמצעות לחיצה על הכפתור שלמטה.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "דק׳";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "שעות";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "שניות";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "הקוד הזמני הזה תקף למשך ה-%@ הבאות";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "שעה";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "שנייה";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "הקלד/הקלידי את מילות הקוד של שרשרת הסנכרון שקיבלת בטופס שלהלן.";
+
+/* Code words section title */
+"sync.codeWords" = "מילות קוד";
+
+/* Computer device button title */
+"sync.computerDevice" = "מחשב";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.configurationInformationText" = "נהל/י את המידע שברצונך לסנכרן בין מכשירים. הגדרות אלה משפיעות על מכשיר זה בלבד.";
+
+/* Copied action complete title */
+"sync.copied" = "הועתק!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "הועתק ללוח!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "העתקה ללוח";
+
+/* Delete Sync Account cell title for button. */
+"sync.deleteAccount" = "מחיקת סנכרון חשבון";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertDescriptionPart1" = "מחיקת החשבון שלך תסיר את הנתונים המוצפנים שלך משרתי Brave ותשבית את הסנכרון בכל המכשירים המחוברים שלך.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertDescriptionPart2" = "עם זאת, זה לא ימחק את הנתונים המאוחסנים באופן מקומי במכשירים אלה.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "מחיקת סנכרון חשבון";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "נראה שהקוד הזה נוצר במכשיר שמריץ גרסה ישנה יותר של Brave. יש לעדכן לגרסה האחרונה ביותר של Brave במכשיר האחר שלך, ואז ליצור קוד סנכרון חדש.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "משהו השתבש במהלך שליפת המכשירים בשרשרת הסנכרון.";
+
+/* Sync device settings page title. */
+"sync.devices" = "מכשירים בשרשרת הסנכרון";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "מכשירים בשרשרת הסנכרון";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "הכנס/י מילות קוד";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "יש להזין את מילות הקוד למטה";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "קוד הסנכרון הזה פג תוקף, יש לייצר קוד סנכרון חדש ולנסות שוב.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "מצטערים, משהו השתבש";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "מתן גישה למצלמה";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "סוכן הסנכרון נמצא במצב לא מקוון ולא ניתן לגשת אליו כרגע. יש לנסות שוב מאוחר יותר.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "שגיאת תקשורת בסנכרון";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "פרטי סנכרון";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "קוד סנכרון לא חוקי, נא לבדוק ולנסות שוב.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "לתשומת לבך: יש לוודא שאת/ה מזהה כל מכשיר ברשימה שלמעלה. מכשירים בשרשרת הסנכרון עשויים לקבל מידע אישי כמו סיסמאות והיסטוריית גלישה. ";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "אישור מכשירים";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "הגעת למספר המקסימלי של מכשירים (10) שמותר בשרשרת סנכרון. יש להסיר מכשיר כדי להמשיך.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "מגבלת מכשירים";
+
+/* New sync code button title */
+"sync.newSyncCode" = "התחלת שרשרת סנכרון חדשה";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "יש לבדוק את חיבור האינטרנט ולנסות שוב.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "לא ניתן להתחבר לסנכרון";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "יש להזין את כל המילים ולנסות שוב.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "אין מספיק מילים";
+
+/* Sync pair device settings section title */
+"sync.pair" = "התאמה";
+
+/* QR Code section title */
+"sync.qrCode" = "קוד QR";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "נתוני המכשיר המקומיים יישארו ללא שינוי בכל המכשירים. מכשירים אחרים בשרשרת סנכרון זו יישארו מסונכרנים.";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "להסיר את %@  משרשרת הסנכרון?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "הסרה";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "הסרת מכשיר";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "התקנה";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "הנתונים שמסונכרנים כרגע יישמרו אבל כל הנתונים במטמון הסנכרון של Brave יימחקו. תצטרכ/י להתחיל שרשרת סנכרנון חדש כדי לסנכרן שוב את נתוני המכשיר.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "מחיקת שרשרת סנכרון";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "הסרה של %@ תמחק את שרשרת הסנכרון.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "הסרת המכשיר משרשרת הסנכרון לא תמחק נתונים מסונכרנים קודמים מהמכשיר.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "להסיר את %@ משרשרת הסנכרון?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "הסרת מכשיר זה";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "המכשיר הזה ינותק מקבוצת הסנכרון ולא יקבל או ישלח יותר נתונים לסנכרון. כל הנתונים הקיימים יישארו על המכשיר.";
+
+/* Scan sync code title */
+"sync.scan" = "סריקה";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "יש לי קוד סנכרון";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "כדי להוסיף מכשיר לשרשרת הסנכרון או להפעיל סנכרון סיסמה, צריך קודם כל להגדיר סיסמה במכשיר שלך.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "הגדרת סיסמה";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "רשימת ההתקנים שלהלן כוללת את כל ההתקנים בשרשרת הסנכרון שלכם. כל מכשיר יכול להיות מנוהל מכל מכשיר אחר.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "הגדרות סנכרון";
+
+/* Show code words instead */
+"sync.showCodeWords" = "הצגת מילות קוד במקום";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "אני אשתמש במצלמה שלי...";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "המחיקה הזו היא לצמיתות ואין דרך לשחזר את הנתונים. אם תחליט/י להתחיל להשתמש בסינכרון שוב, תצטרכ/י ליצור חשבון חדש ולהוסיף מחדש כל מכשיר אחד אחד.";
+
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "מכשירים והגדרות";
+
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "להסיר את המכשיר הזה?";
+
+/* Sync settings section title */
+"sync.syncTitle" = "סנכרון";
+
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "נכשל";
+
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "טאבלט או טלפון";
+
+/* This device cell */
+"sync.thisDevice" = "מכשיר זה";
+
+/* Sync to existing device */
+"sync.toDevice" = "סנכרון למכשיר";
+
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "תוך שימוש במכשיר מסונכרן קיים, יש לפתוח את הגדרות Brave ולעבור אל הגדרות > סנכרון. יש לבחור את ״הוספת מכשיר״ ולסרוק את הקוד שמוצג על המסך.";
+
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "לא ניתן לסנכרן מכשיר זה";
+
+/* Sync Alert */
+"sync.unableToConnectDescription" = "לא ניתן להצטרף לקבוצת סנכרון. יש לבדוק את המילים שהוזנו ולנסות שוב.";
+
+/* Sync Alert */
+"sync.unableToConnectTitle" = "לא ניתן להתחבר";
+
+/* Sync Error Description */
+"sync.validForTooLongError" = "קוד זה אינו חוקי. יש לבדוק שהזמן ואזור הזמן מוגדרים כהלכה במכשיר שלך.";
+
+/* Sync settings welcome */
+"sync.welcome" = "כדי להתחיל, צריך להתקין את Brave בכל המכשירים שברצונך לסנכרן. כדי לחבר את המכשירים, יש להפעיל שרשרת סנכרון שבה תשתמש/י כדי לקשר את כל המכשירים שלך בצורה מאובטחת.";
+
+/* Word count title */
+"sync.wordCount" = "ספירת מילים: %i";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "סימניות מיובאות";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "סגור";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "מפעיל או מכבה מצב פרטי";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "מצב פרטי";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "כבוי";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "פועל";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "משאיר את כרטיסיות הגלישה הפרטית פתוחות בעת סגירת האפליקציה, מה שמבטיח שסשנים של גלישה פרטית ימשיכו ללא הפרעות.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "שמירת כרטיסיות פרטיות";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "דרישת זיהוי פנים";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "דרישת קוד PIN";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "דרישת זיהוי טביעת אצבע";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "כרטיסיות פרטיות";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "סרגל הניווט";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "הוספת כרטיסייה";
+
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "הוספה לרשימת השמעה";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "חזרה";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "קדימה";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "חיבור מאובטח";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "תפריט";
+
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "לא מאובטח";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "רשימת השמעה";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "תצוגת קורא";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "הוספה לרשימת קריאה";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "ניסיון טעינה נוסף";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "חיפוש או הזנת כתובת";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "שיתוף";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "הפסק";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "חיפוש קולי";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "חיבור לא מאובטח";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "מגש הכרטיסיות";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "הוספת כרטיסייה";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "יש להחליק ימינה או שמאלה עם שלוש אצבעות כדי לסגור את הכרטיסייה.";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "כרטיסייה נסגרת";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "אין כרטיסיות";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "כרטיסיות %1$@ עד %2$@ מתוך %3$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "כרטיסייה חדשה";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "חיפוש בכרטיסיות";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "כרטיסייה %1$@ מתוך %2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "תנאי שירות";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "תנאי שימוש";
+
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "שיתוף...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "שתפ/י את Brave עם חבריך!";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "אוטומטי";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "כהה";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "מראה";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "ההגדרות האלה לא תקפות למצב גלישה פרטי.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "בהיר";
+
+/* Name for app theme settings */
+"themesSettings" = "ערכות נושא";
+
+/* No comment provided by engineer. */
+"Title" = "כותרת";
+
+/* History tableview section header */
+"Today" = "היום";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "הוספה";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "הוספת מקור נכשלה";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "מצטערים, לא הצלחנו לזהות את כתובת הפיד הזו.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "מצטערים, לא הצלחנו למצוא את כתובת הפיד הזו.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "מצטערים, כתובת הפיד הזו לא מכילה תוכן.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "הוספת מקור לחדשות Brave";
+
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "פידים זמינים של RSS";
+
+/* The name of the feature */
+"today.braveToday" = "חדשות Brave";
+
+/* The name of the feature in settings */
+"today.braveToday.title" = "חדשות";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "לעקוב אחרי נושאים שמעניינים אותך";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "ערוצים";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "ערוצים";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "ערוצים";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "תוכן חדש זמין";
+
+/* No comment provided by engineer. */
+"today.deals" = "דילים";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "חדשות Brave יפסיקו להציג תוכן מאת %@";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "מושבת";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "הסתרת תוכן מאת %@";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "כדאי לנסות להפעיל כמה מקורות של חדשות";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "אין מאמרים להצגה";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "לאפשר תוכן מאת %@";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "לחדשות Brave יש בעיות כרגע. יש לנסות שוב.";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "אופס...";
+
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "נהל/י מקורות עבור הפיד שלך";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "במעקב";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "במעקב";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "עקוב";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "קבלת פידים מ-";
+
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "ייבוא OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "מקורות לא מאובטחים - ההוספה באחריותך";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "לעקוב אחר המקורות האהובים עליך, בפיד אחד. צריך רק לפתוח כרטיסיה ב-Brave, לגלול למטה, ו...זהו!\nחדשות Brave נתמך על ידי מודעות פרטיות ואנונימיות.";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "הפעל/י את Brave News כדי לא לפספס אף סיפור ";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "הצגת Brave News";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "מידע נוסף אודות נתוניך";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "עוד מבצעים של Brave";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "אין אינטרנט";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "כדאי לנסות לבדוק את החיבור או להתחבר מחדש ל-Wi-Fi.";
+
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "לא נמצאו תוצאות";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "רשימה מדורגת של מקורות";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "פופולריים";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "מקורות פופולריים";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "מקודם";
+
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "דירוג Brave ב-App Store";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "הסתר";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "דרג/י את Brave";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "אנו מעוניינים בדעתך!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "אהבת את Brave?";
+
+/* No comment provided by engineer. */
+"today.refresh" = "רענון";
+
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "חיפוש אתר, נושא, או פיד RSS";
+
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "דומה ל-%@";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "מקורות והגדרות";
+
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "מקורות";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "מקורות שאולי תאהב/י";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "הצעות";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "הצעות";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "הפעל את חדשות Brave";
+
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "בטל מעקב";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "מקורות של משתמש/ת";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "הפעלה או כיבוי של תצוגת קורא";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "להפעיל הצעות חיפוש?";
+
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "בטל נעילה";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "אמצעי תשלום לא נתמכים";
+
+/* Bookmark URL */
+"URL" = "כתובת אתר";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "כתובת וחיפוש";
+
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "הפניית אתר";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "בוטל על ידי המשתמש/ת";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "שימוש בחוסם מודעות מקומי";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "סגור";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "הייתה בעיה בכניסה לחשבון Uphold שלך. יש לנסות שוב";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "מצטערים, משהו השתבש";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "גרסה %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "הצגה ב-on %@";
+
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "יש להעניק גישה למיקרופון בהגדרות המערכות של iOS כדי לאפשר ל-Brave לעשות שימוש בחיפוש קולי אנונימי.";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "נדרשת גישה למיקרופון";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Brave לא מאחסן או משתף את החיפושים הקוליים שלך.";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "רוצה להישאר מוגנ/ת? צריך רק לחדש לפני שהמנוי שלך מסתיים. כאות תודה על החידוש, אפילו ניתן לך הנחה של 20% על 3 החודשים הבאים.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "הפעלת חידוש אוטומטי";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "מחדשים אוטומטית את מנוי VPN של Brave עכשיו ומקבלים 20% הנחה למשך 3 חודשים!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "מחשים אוטומטית את מנוי VPN של Brave עכשיו ומקבלים חודש 1 חינם!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "זה אומר שתאבד/י את ההגנה הנוספת של Brave על כל אפליקציה בטלפון שלך.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "אוי לא! מנוי VPN של Brave עומד לפוג תוקף.";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "חומת אש VPN + Brave";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "לא ניתן להתחבר ל-App Store, נא לנסות שוב בעוד מספר דקות.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "שגיאת App Store";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "חוסם חיבורי רשת לא רצויים";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "חסימת מודעות וכלי מעקב בכל האפליקציות";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "תומך במהירויות של עד 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "מהיר וללא הגבלה עד 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "תמיכה 24/7";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "מאבטח את כל החיבורים";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "מופעל באמצעות";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "אוטומטי";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "יש להתחבר לחשבון Brave שלך כדי לרענן את סשן ה-VPN.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "סגור";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "התחבר";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "פג תוקף ההפעלה";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "מושבת";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "מאופשר";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "פג תוקף";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "הרשמה כעת";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "זה לא חלום: מנוי VPN של Brave עכשיו תקף לעד 5 מכשירים. זה אומר שיש לך אפשרות להירשם ב-iOS ולהשתמש במנוי גם ב-Mac, Windows, ומכשירי Android לגמרי בחינם.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "עכשיו אפשר להשתמש ב-VPN של Brave בכל המכשירים עבור אותו מחיר!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "נותנים ל-VPN של Brave עוד צ׳אנס ומקבלים 20% הנחה למשך 3 חודשים!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "מוכנ/ה להגן על כל אפליקציה בטלפון שלך? צריך רק לחזור ל-VPN של Brave ולקבל 20% הנחה למשך 3 החודשים הבאים.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN של Brave תמיד חסם כלי מעקב בכל אפליקציה, גם מחוץ לדפדפן Brave. עכשיו אפשר לראות מי ניסה לעקוב אחריך עם מרכז הפרטיות של Brave.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "ידעת ש-VPN של Brave מגן עליך מחוץ לדפדפן Brave?";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "עדכן";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "אין מה לדאוג. נשאיר את VPN פעיל לעוד כמה ימים בזמן שתעדכנ/י את פרטי התשלום שלך.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "מעדכנים את פרטי התשלום כדי להישאר מוגנים עם VPN של Brave.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "רוצה להמשיך להגן על כל אפליקציה בטלפון שלך? צריך רק לעדכן את פרטי התשלום.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "יש בעיית חיוב בחשבון שלך, מה שאומר שמנוי VPN של Brave עומד לפוג תוקף.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "עדכון תשלום";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "אזור שרת";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "הגדרה נוכחית: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "אזור VPN";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "נא לעדכן את אמצעי התשלום שלך";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "תאריך יצירה של הארנק";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "תוכן אינטרנט";
+
+/* Temporary data that is stored on the users device to speed up future requests and interactions. */
+"websiteData.dataRecordCache" = "מטמון";
+
+/* The word used to describe small bits of state stored locally in a web browser (e.g. Browser cookies) */
+"websiteData.dataRecordCookies" = "עוגיות";
+
+/* Some data stored on disk that is a kind of database (such as WebSQL or IndexedDB.) */
+"websiteData.dataRecordDatabases" = "מסדי נתונים";
+
+/* A kind of browser storage particularely for saving data on the users device for a specific webpage for the given session or longer time periods. */
+"websiteData.dataRecordLocalStorage" = "אחסון מקומי";
+
+/* A message displayed to users while the system fetches all website data to display. */
+"websiteData.loadingWebsiteData" = "נתוני אתר בטעינה...";
+
+/* A button or screen title describing that the user is there to manually manage website data that is persisted to their device. I.e. to manage data specific to a web page the user has visited */
+"websiteData.manageWebsiteDataTitle" = "ניהול נתוני אתר";
+
+/* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
+"websiteData.noSavedWebsiteData" = "אין נתוני אתר שמורים";
+
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeAllDataRecords" = "הסר הכל";
+
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+"websiteData.removeDataRecord" = "הסר";
+
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeSelectedDataRecord" = "הסרת %ld פריטים";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "מועדפים";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "ווידג'טים";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "שנה";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "כן";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "כן, למחוק";
+
+/* History tableview section header */
+"Yesterday" = "אתמול";
+
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "לאפשר סרטוני יוטיוב באיכות גבוהה";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "הפעלת הפיצ׳ר הניסיוני הזה תנגן סרטונים באיכות המרבית הזמינה ותעשה שימוש בנתונים נוספים.";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "כבוי";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "פועל";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "איכות הפעלת סרטוני YouTube";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "פועל בחיבור Wi-Fi";
+

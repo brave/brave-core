@@ -1,5 +1,5 @@
 /* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Marque-pages";
+"widgets.BookmarksMenuItem" = "Favoris";
 
 /* The name of the feature */
 "widgets.braveLeo" = "IA Leo";
@@ -26,10 +26,10 @@
 "widgets.newsClusteringReadMoreButtonTitle" = "En savoir plus";
 
 /* Description for Brave News widgets that display the top news */
-"widgets.newsClusteringWidgetDescription" = "Obtenez les dernières actualités";
+"widgets.newsClusteringWidgetDescription" = "Restez au courant des dernières actualités";
 
 /* Title for Brave News widgets that display the top news */
-"widgets.newsClusteringWidgetTitle" = "Actualités incontournables";
+"widgets.newsClusteringWidgetTitle" = "L'essentiel de l'actu";
 
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Ouvrez Brave pour afficher vos favoris ici";
@@ -56,7 +56,7 @@
 "widgets.shortcutsNewTabButton" = "Nouvel onglet";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Liste de lecture";
+"widgets.shortcutsPlaylistButton" = "Playlist";
 
 /* Button to open new private browser tab. */
 "widgets.shortcutsPrivateTabButton" = "Onglet privé";

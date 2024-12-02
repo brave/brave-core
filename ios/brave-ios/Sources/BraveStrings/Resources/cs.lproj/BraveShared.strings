@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Klávesové zkratky Siri";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Zobrazit klávesovou zkratku k záložce";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Zobrazit záložky";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Zkopírovat do schránky";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Odstranit synchronizační účet";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Odstranit synchronizační účet";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Odstranění účtu odebere vaše šifrovaná data ze serverů Brave a deaktivuje synchronizaci na všech vašich připojených zařízeních.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Neodstraní však data, která jsou v těchto zařízeních uložena lokálně.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Odstranit synchronizační účet";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Zdá se, že tento kód byl vytvořen na zařízení, které má starší verzi Brave. Aktualizujte prosím na nejnovější verzi Brave na svém druhém zařízení a poté vytvořte nový synchronizační kód.";

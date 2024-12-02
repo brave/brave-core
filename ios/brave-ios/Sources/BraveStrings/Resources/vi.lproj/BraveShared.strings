@@ -1,0 +1,3744 @@
+/* About settings section title */
+"About" = "Thông tin";
+
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Thông tin về Lá chắn của Brave";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "Các trang web thường bao gồm cookie và tập lệnh cố gắng xác định bạn và thiết bị của bạn. Các trang đó muốn tìm ra bạn là ai và theo dõi bạn trên khắp môi trường mạng, theo dõi những gì bạn làm trên mọi trang web.\n\nBrave chặn những thứ này để bạn có thể duyệt web mà không bị theo dõi.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "Điều này cho phép bạn lưu ảnh vào Cuộn camera.";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave muốn truy cập Ảnh của bạn";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addBookmarkTitle" = "Thêm Dấu trang";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addFavouritesTitle" = "Thêm vào Yêu thích";
+
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "Thư mục mới";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "Thêm vào Yêu thích";
+
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "Thêm Dấu trang";
+
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Dữ liệu Quảng cáo Brave";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "Quảng cáo và trình theo dõi";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "Luôn yêu cầu trang web cho máy tính";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "Luôn gửi";
+
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "Bật";
+
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Điều này xác thực quyền truy cập của bạn đối với Brave";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "Hủy";
+
+/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
+"AuthPromptAlertFormatRealmMessageText" = "Tên người dùng và mật khẩu đang được yêu cầu bởi %1$@. Trang web thông báo: %2$@";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "Đăng nhập";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "%@ đang yêu cầu tên người dùng và mật khẩu.";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "Mật khẩu";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "Yêu cầu xác thực";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "Tên người dùng";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "Tự động chuyển hướng trang AMP";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Luôn truy cập các URL trang gốc (không phải AMP), thay vì các phiên bản Trang được tăng tốc dành cho thiết bị di động của Google";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "Tự động chuyển hướng URL theo dõi";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "Bật hỗ trợ vượt qua các URL theo dõi chuyển hướng cấp cao nhất";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "Chặn cookie của bên thứ 3";
+
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "Chặn tất cả cookie";
+
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "Chặn tất cả";
+
+/* Information displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertInfo" = "Chặn tất cả Cookie sẽ khiến một số trang web không hoạt động bình thường.";
+
+/* Title of alert displayed to user when block all cookie is enabled. */
+"BlockAllCookiesAlertTitle" = "Chặn tất cả cookie?";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "Không áp dụng được lựa chọn. Vui lòng thử lại.";
+
+/* A title for a setting that enables cookie consent notices */
+"BlockCookieConsentNotices" = "Chặn thông báo chấp thuận cookie";
+
+/* No comment provided by engineer. */
+"BlockCookiesDescription" = "Ngăn các trang web lưu trữ thông tin về những lần truy cập trước của bạn.";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = "Màn hình chặn";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "Chặn cửa sổ bật lên";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "Chặn mã script";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "Chặn JavaScript (có thể làm hỏng một số trang web).";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "Thêm dấu trang cho %lld thẻ";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "Thư mục dấu trang";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "Thông tin dấu trang";
+
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "Dấu trang";
+
+/* title for bookmarks panel */
+"Bookmarks" = "Dấu trang";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "Xuất dấu trang";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "Nhập dấu trang";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "Dấu trang";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "Tên";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "Địa chỉ";
+
+/* Button to show the brave panel */
+"BravePanel" = "Bảng điều khiển Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Phần thưởng Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Mở";
+
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Phần thưởng";
+
+/* Brave Rewards title */
+"BraveRewardsTitle" = "Phần thưởng Brave";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Tìm kiếm Brave không thu thập thông tin về bạn.";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Có lẽ để sau";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "Hỗ trợ tìm kiếm độc lập với quyền riêng tư tốt hơn";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Dùng thử Tìm kiếm Brave";
+
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Có lẽ để sau";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Bỏ qua";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "Nút điều khiển nâng cao";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Lá chắn Brave & Quyền riêng tư";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Lá chắn & Quyền riêng tư";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "Quảng cáo và những thứ đáng sợ khác bị chặn";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Tìm hiểu thêm";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Chỉnh mặc định toàn cầu của Lá chắn";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "Kiểm soát toàn cục";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "Nếu trang web hiển thị lỗi, hãy thử tắt Lá chắn";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Lá chắn Brave";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "Tắt";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "Bật";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Nhấn đúp để hiển thị Lá chắn Brave";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Trò chuyện Brave";
+
+/* Title for setting to enable the browser lock privacy feature */
+"BrowserLock" = "Khóa trình duyệt";
+
+/* Description for setting to enable the browser lock privacy feature */
+"BrowserLockDescription" = "Mở khóa Brave với Touch ID, Face ID hoặc mật mã của hệ thống.";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "Lịch sử duyệt web";
+
+/* Settings item for clearing the cache */
+"Cache" = "Bộ nhớ đệm";
+
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "Di chuyển thanh thẻ";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "Chuyển thanh địa chỉ, thẻ, dấu trang và các công cụ khác xuống phía dưới trình duyệt.";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Tùy chỉnh thanh thẻ của Brave";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Đặt Brave làm trình duyệt mặc định?";
+
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "Với việc đặt Brave làm mặc định, mọi liên kết bạn chạm vào sẽ mở ra với các biện pháp bảo vệ quyền riêng tư của Brave.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Đặt mặc định";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Hiện là mặc định?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Bỏ qua";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "Quyền riêng tư. Đơn giản.";
+
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "Điều này giúp chúng tôi biết được những tính năng nào của Brave được sử dụng thường xuyên nhất. Thay đổi bất kỳ lúc nào trong Cài đặt Brave, ở phần \"Lá chắn Brave và Quyền riêng tư\". ";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "Tìm hiểu thêm về Phân tích Sản phẩm bảo vệ quyền riêng tư (P3A) của chúng tôi.";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Giúp cải thiện Brave.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "Chia sẻ thông tin chi tiết về sản phẩm riêng tư và ẩn danh.";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "Trải nghiệm sự riêng tư Brave mang lại trên máy tính hoặc máy tính bảng của bạn, và đồng bộ hóa dấu trang & tiện ích giữa các thiết bị.";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Đồng bộ hóa ngay";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "Quyền riêng tư. Ở mọi nơi.";
+
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "Thẻ đã nhận được";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "Hủy";
+
+/* Title indicating whether the section for the algorithm used */
+"certificateViewer.algorithmTitle" = "Thuật toán";
+
+/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
+"certificateViewer.anyTitle" = "Bất kỳ";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bitsUnitTitle" = "bit";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bytesUnitTitle" = "byte";
+
+/* The description for when an SSL certificate is valid */
+"certificateViewer.certificateIsValidTitle" = "Chứng chỉ này hợp lệ";
+
+/* Section Title displaying common information */
+"certificateViewer.commonInfoTitle" = "Thông tin chung";
+
+/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
+"certificateViewer.commonNameTitle" = "Tên phổ biến";
+
+/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
+"certificateViewer.countryOrRegionTitle" = "Quốc gia hoặc khu vực";
+
+/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
+"certificateViewer.deriveTitle" = "Tạo";
+
+/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
+"certificateViewer.domainComponentTitle" = "Thành phần của domain";
+
+/* Title of the section indication which 'Encryption' algorithm was used. */
+"certificateViewer.encryptionTitle" = "Mã hóa";
+
+/* Title indicating whether or not a private key can be used to encrypt data */
+"certificateViewer.encryptTitle" = "Mã hóa";
+
+/* Title indicating whether the mathematical exponent used. x³, x², etc. */
+"certificateViewer.exponentTitle" = "Số mũ";
+
+/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
+"certificateViewer.fingerPrintsTitle" = "Dấu vân tay";
+
+/* Section Title for Issuer Name in the SSL Certificate */
+"certificateViewer.issuerNameTitle" = "Tên nhà phát hành";
+
+/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
+"certificateViewer.keySizeTitle" = "Dung lượng khóa";
+
+/* Title indicating what the private or public key can be used for. */
+"certificateViewer.keyUsageTitle" = "Sử dụng mã khóa";
+
+/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
+"certificateViewer.localityTitle" = "Địa phương";
+
+/* Title indicating 'None' or no information or empty. */
+"certificateViewer.noneTitle" = "Không";
+
+/* Certificate is 'not valid after' January 31st, 2022 for example. */
+"certificateViewer.notValidAfterTitle" = "Không hợp lệ sau";
+
+/* Certificate is 'not valid before' January 1st, 2022 for example. */
+"certificateViewer.notValidBeforeTitle" = "Không hợp lệ trước";
+
+/* Title of the section for Department of the Company. Example: Human Resources. */
+"certificateViewer.organizationalUnitTitle" = "Bộ phận trong tổ chức";
+
+/* Title of the section for Name of the Company. Example: Brave Inc. */
+"certificateViewer.organizationTitle" = "Tổ chức";
+
+/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
+"certificateViewer.parametersTitle" = "Parameters";
+
+/* Information about a Public Key section title. */
+"certificateViewer.publicKeyInfoTitle" = "Thông tin khóa công khai";
+
+/* Title indicating whether the key used is public (not private) */
+"certificateViewer.publicKeyTitle" = "Khóa công khai";
+
+/* Certificates have a serial number to identify that it's unique */
+"certificateViewer.serialNumberTitle" = "Số Sê-ri";
+
+/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
+"certificateViewer.signatureAlgorithmEncryptionDescription" = "%1$@ với mã hóa %2$@";
+
+/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
+"certificateViewer.signatureAlgorithmSignatureDescription" = "Chữ ký %1$@ với %2$@";
+
+/* Title for the section where we display information about the algorithm used to sign the certificate */
+"certificateViewer.signatureAlgorithmTitle" = "Thuật toán của Chữ ký";
+
+/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
+"certificateViewer.signatureTitle" = "Chữ ký";
+
+/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
+"certificateViewer.stateOrProvinceTitle" = "Tiểu bang/Tỉnh";
+
+/* Title of the section for the address of where the certificate came from. */
+"certificateViewer.streetAddressTitle" = "Địa chỉ đường";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "Tên chủ đề";
+
+/* Title of the section for the User's ID (Identifier). */
+"certificateViewer.userIDTitle" = "ID người dùng";
+
+/* Title of section that determines if the dates on a certificate is valid. */
+"certificateViewer.validityDatesTitle" = "Tính hợp lệ của thông tin ngày tháng";
+
+/* Title indicating whether or not a private key can be used to verify data is legitimate */
+"certificateViewer.verifyTitle" = "Xác minh";
+
+/* Certificates have a version number */
+"certificateViewer.versionNumberTitle" = "Phiên bản";
+
+/* Title indicating whether or not a private key can be used to wrap or enclose some data */
+"certificateViewer.wrapTitle" = "Đóng gói";
+
+/* No comment provided by engineer. */
+"ClearData" = "Đang xóa dữ liệu";
+
+/* Section title in settings panel */
+"ClearPrivateData" = "Xóa dữ liệu riêng tư";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "Hủy";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "Bạn có chắc không?";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "OK";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "Xóa dữ liệu";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "Có, xóa";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "Xóa dữ liệu ngay";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "Hủy";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "Hành động này sẽ xóa tất cả dữ liệu riêng tư của bạn, bao gồm lịch sử từ các thiết bị đã đồng bộ hóa.";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "OK";
+
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "Lỗi máy khách";
+
+/* Button title to close a menu. */
+"Close" = "Đóng";
+
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Bạn có chắc muốn đóng tất cả thẻ đang mở khác?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Đóng tất cả thẻ khác";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Bạn có chắc muốn đóng tất cả thẻ đang mở?";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "Đóng tất cả %i thẻ";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "Tải xuống";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "Chia sẻ";
+
+/* No comment provided by engineer. */
+"Confirm" = "Xác nhận";
+
+/* Cookie settings option title */
+"CookieControl" = "Kiểm soát Cookie";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "Cookie và dữ liệu trang web";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "Sao chép thông tin ứng dụng vào clipboard.";
+
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "Sao chép thông tin dung lượng ứng dụng vào clipboard.";
+
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "Sao chép liên kết sạch";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "Sao chép ảnh";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "Sao chép liên kết";
+
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Sao chép thông tin của các thẻ vào clipboard.";
+
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "Sao chép thông tin hỗ trợ";
+
+/* Create PDF share action. */
+"CreatePDF" = "Tạo PDF";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "Công cụ tìm kiếm hiện sử dụng";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "Nhập url tìm kiếm và thay thế truy vấn bằng %1$s.\nVí dụ: https://youtube.com/search?q=%2$s \n(Nếu trang web hỗ trợ OpenSearch, sẽ có tùy chọn tự động thêm khi chỉnh sửa trường này.)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "Thêm tự động";
+
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "Lỗi khi thêm công cụ tìm kiếm tùy chỉnh";
+
+/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
+"customSearchEngine.deleteEngineAlertDescription" = "Khi xóa công cụ tìm kiếm tùy chỉnh hiện được đặt làm mặc định, trình duyệt sẽ tự động chuyển công cụ mặc định.";
+
+/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
+"customSearchEngine.deleteEngineAlertTitle" = "Bạn có chắc muốn xóa %@?";
+
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "Công cụ tìm kiếm có cùng tên đã tồn tại.";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Mẫu tìm kiếm tùy chỉnh không bảo mật cho";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Mẫu gợi ý tùy chỉnh không bảo mật cho";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "Thêm công cụ tìm kiếm";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "Mẫu tìm kiếm:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "Mẫu gợi ý:";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Công cụ tìm kiếm mới sẽ xuất hiện trong thanh tìm kiếm nhanh.";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Thêm nhà cung cấp dịch vụ tìm kiếm?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Không thể thêm công cụ tìm kiếm tùy chỉnh. Vui lòng thử lại sau.";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Lỗi công cụ tìm kiếm tùy chỉnh";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "Công cụ tìm kiếm có cùng tiêu đề hoặc URL đã tồn tại.";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Nhập URL tìm kiếm và thay truy vấn với %s.";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "Lỗi truy vấn URL tìm kiếm";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "Văn bản đã sao chép phải là một URL bảo mật, hợp lệ bắt đầu bằng \"https://\"";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "Vui lòng điền cả hai trường Tiêu đề và URL";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "Công cụ tìm kiếm tùy chỉnh";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Đã thêm công cụ tìm kiếm!";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "Không phải Bây giờ";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Mở phần Cài đặt";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "Mở tất cả các đường liên kết bằng Brave để bảo vệ quyền riêng tư của bạn";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Lá chắn Brave chặn trình theo dõi và quảng cáo, tiết kiệm dữ liệu và giúp bạn tiết kiệm thời gian trên mọi trang web bạn truy cập";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "Mở Cài đặt, nhấn vào Ứng dụng trình duyệt mặc định và chọn Brave.";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "Đặt Brave là trình duyệt mặc định của bạn";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Được Brave bảo vệ, với mọi liên kết";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "Đóng hộp thông tin về trình duyệt mặc định";
+
+/* Name for default Brave theme. */
+"defaultThemeName" = "Brave mặc định";
+
+/* No comment provided by engineer. */
+"Delete" = "Xóa";
+
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "Thao tác này sẽ xóa tất cả thư mục và dấu trang bên trong. Bạn có chắc muốn tiếp tục?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "Xóa thư mục?";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "Hủy";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "Thông tin đăng nhập sẽ được xóa vĩnh viễn.";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "Thông tin đăng nhập sẽ được xóa khỏi tất cả thiết bị đã kết nối.";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "Bạn có chắc không?";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "Xóa";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "Thiết bị %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Bỏ thay đổi";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Bạn có chắc muốn bỏ các thay đổi này? Tất cả các điều chỉnh sẽ bị mất.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Bỏ thay đổi?";
+
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "Chứng chỉ bảo mật";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "Hiển thị";
+
+/* No comment provided by engineer. */
+"Done" = "Xong";
+
+/* cookie settings option */
+"DontBlockCookies" = "Không chặn cookie";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "Không gửi";
+
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "Tệp đã tải";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "Tải xuống";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "Các tệp đã tải xuống sẽ hiển thị ở đây.";
+
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "Nhân đôi thẻ đang hoạt động";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "Cũ hơn";
+
+/* No comment provided by engineer. */
+"Edit" = "Chỉnh sửa";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "Sửa Dấu trang";
+
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "Vị trí";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "Chỉnh sửa dấu trang";
+
+/* Button to edit a favorite */
+"EditFavorite" = "Chỉnh sửa trang yêu thích";
+
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "Chỉnh sửa trang yêu thích";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "Chỉnh sửa thư mục";
+
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "Bật kéo để làm mới";
+
+/* Description for new folder popup */
+"EnterFolderName" = "Nhập tên thư mục";
+
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "Thử nhập lại URL hoặc mở công cụ tìm kiếm và tìm URL mới.";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "Mở trong Safari";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "Tải lại";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ thường sử dụng mã hóa để bảo vệ thông tin của bạn. Khi Brave cố gắng kết nối với %2$@ lần này, trang web đã gửi lại thông tin đăng nhập bất thường và không chính xác. Điều này có thể xảy ra khi kẻ tấn công cố gắng giả mạo là %3$@ hoặc màn hình đăng nhập Wi-Fi đã làm gián đoạn kết nối. Thông tin của bạn vẫn an toàn vì Brave đã dừng kết nối trước khi bất kỳ dữ liệu nào được trao đổi.<br />Bạn không thể truy cập %4$@ ngay thời điểm này vì trang web sử dụng cơ chế ghim chứng chỉ. Lỗi mạng và các cuộc tấn công thường là tạm thời, vì vậy trang này có thể sẽ hoạt động sau.";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningDetails" = "Máy chủ này không thể chứng minh rằng đó là %@; chứng chỉ bảo mật không được hệ điều hành của thiết bị của bạn tin tưởng. Điều này có thể do cấu hình sai hoặc có kẻ tấn công cố gắng chặn kết nối của bạn.";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "Kẻ tấn công có thể đang cố gắng đánh cắp thông tin của bạn từ %@ (ví dụ như mật khẩu, tin nhắn hoặc thẻ tín dụng).";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "Quay lại duyệt an toàn";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "Trang web này không thể cung cấp kết nối bảo mật";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "Kết nối của bạn không riêng tư";
+
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "Ẩn chi tiết";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "Tìm hiểu thêm";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "Thông tin thêm";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "Không có kết nối internet";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "Có vẻ như bạn không trực tuyến. Để khắc phục điều này, hãy thử";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "Kiểm tra cáp mạng, modem và router mạng";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "Đang kết nối lại với Wi-Fi";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesProceedAnywayButton" = "Tiếp tục truy cập %@ (không an toàn)";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ sẽ khởi động một ứng dụng bên ngoài";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "Cho phép liên kết chuyển đổi ứng dụng?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "Cho phép";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "Không cho phép";
+
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "Các trang yêu thích có trên màn hình chính của bạn. Các dấu trang này không được đồng bộ hóa với các thiết bị khác.";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "Yêu thích";
+
+/* No comment provided by engineer. */
+"Features" = "Tính năng";
+
+/* Share action title */
+"FindInPage" = "Tìm trong trang";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "Xong";
+
+/* Find %@ text in page. */
+"FindInPageFormat" = "Tìm \"%@\"";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "Kết quả tiếp theo trong trang";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "Kết quả trước trong trang";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findInPageTitle" = "Tìm trong trang";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findNextTitle" = "Tìm tiếp";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "Trên trang này";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findPreviousTitle" = "Tìm trước";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "Phương pháp dấu vân tay";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "Chặn Vân tay";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "Để các trang web khó nhận dạng được các đặc điểm riêng biệt của thiết bị của bạn.";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "Cho phép các universal link mở trong ứng dụng bên ngoài";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "Buộc dán";
+
+/* No comment provided by engineer. */
+"genericErrorBody" = "Ôi! Đã xảy ra sự cố. Vui lòng thử lại.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "Lỗi";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "Chặn các web nguy hiểm";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "Duyệt web an toàn bảo vệ bạn khỏi các trang web đã được ghi nhận là nguy hiểm. [Tìm hiểu thêm](%@)";
+
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "Ẩn xem trước liên kết";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "Ẩn biểu tượng Phần thưởng Brave";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "Ẩn biểu tượng Phần thưởng Brave khi tính năng này không được bật";
+
+/* Title for history menu item */
+"HistortMenuItem" = "Lịch sử";
+
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "Xóa lịch sử";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "Thao tác này sẽ xóa tất cả lịch sử duyệt web.";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "Xóa lịch sử duyệt web";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateTitle" = "Lịch sử sẽ hiển thị ở đây.";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateTitle" = "Lịch sử không khả dụng ở chế độ Chỉ duyệt riêng tư.";
+
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "Lịch sử tìm kiếm";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "Lịch sử";
+
+/* No comment provided by engineer. */
+"Home" = "Trang chủ";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "Nâng cấp các kết nối thành HTTPS";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "Mở các trang web bằng HTTPS thay vì HTTP khi có thể.";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "Nâng cấp lên HTTPS";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "Kiểm soát riêng";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "Thông tin không hợp lệ trong yêu cầu thanh toán";
+
+/* History tableview section header */
+"LastMonth" = "Tháng trước";
+
+/* History tableview section header */
+"LastWeek" = "Tuần trước";
+
+/* No comment provided by engineer. */
+"learnMore" = "Tìm hiểu thêm";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "Thông tin đăng nhập đã lưu sẽ được xóa vĩnh viễn.";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "Đã tạo %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "Thông tin đăng nhập";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "Mật khẩu";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "Tên người dùng";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "Trang web";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "Để xem mật khẩu, trước tiên bạn phải đặt mật mã trên thiết bị của mình.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "Đặt mã bảo mật";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "Không tìm thấy thông tin đăng nhập";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "Thông tin đăng nhập & Mật khẩu";
+
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "Không bao giờ lưu";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "Thông tin đăng nhập đã lưu";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "Bộ lọc";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "Cập nhật lần cuối %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "mật khẩu";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "tên đăng nhập";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "trang web";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "Bỏ chọn tất cả";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "Không tìm thấy thông tin đăng nhập";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "Thông tin đăng nhập";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "Chọn Tất cả";
+
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "Bật âm thanh nền";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "Sao chép";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "Ẩn";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "Mở trang web";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "Hiển thị";
+
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "th";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Nhấn vào đây để tìm hiểu thêm.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Đây là quảng cáo Brave đầu tiên của bạn";
+
+/* Bookmark title / Device name */
+"Name" = "Tên";
+
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "Tắt";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "Dấu trang mới";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "Dấu trang mới";
+
+/* Title for new folder popup */
+"NewFolder" = "Thư mục Mới";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "Thư mục Mới";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "Thư mục mới";
+
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "Cửa sổ Riêng tư Mới";
+
+/* New Tab title */
+"NewTab" = "Thẻ mới";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "Cửa sổ mới";
+
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "Chế độ";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "Chế độ tối sẽ cùng lúc ảnh hưởng đến giao diện của trang web và giao diện chung của hệ thống.";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "Bật/tắt Chế độ tối";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "Chế độ tối";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "No";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "Không tìm thấy kết quả tìm kiếm nào.";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "Tự động chuyển hướng các liên kết NPR đến phiên bản dạng văn bản (tại text.npr.org).";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "Hỗ trợ Brave";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "Nhận token";
+
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Bạn đã kiếm được %@ khi duyệt web bằng Brave.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "Xuất sắc!";
+
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Ẩn hình được tài trợ";
+
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "\"Được tài trợ\" là các hình nền với thông tin về thương hiệu bạn được nhận thêm khi bật Phần thưởng Brave.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Tìm hiểu thêm về Phần thưởng Brave";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Tìm hiểu thêm về hình ảnh được tài trợ";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "Tự động mở bàn phím";
+
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "Nền";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "Loại đa phương tiện";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "Ảnh mặc định";
+
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Hình ảnh & Video được tài trợ";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "Hình ảnh được tài trợ";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "Trang Thẻ Mới";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "Hiển thị thêm";
+
+/* No comment provided by engineer. */
+"ntp.sponsoredImageDescription" = "Bạn đang ủng hộ cho người sáng tạo nội dung và nhà xuất bản bằng cách xem hình ảnh được tài trợ này.";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Khi bật Phần thưởng, bạn đồng ý với %@.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "Nhận được mã thông báo và thưởng cho người sáng tạo có nội dung tuyệt vời khi bạn duyệt web.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "Thu thập điểm và thưởng cho các nhà sáng tạo có nội dung tuyệt vời khi bạn duyệt web.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Xin giới thiệu Quảng cáo Brave!";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave sẽ hiển thị quảng cáo đầu tiên của bạn trong";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Bạn đã sẵn sàng.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Tôi không thấy quảng cáo";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Có vấn đề xảy ra khi tạo ví của bạn. Vui lòng thử lại";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "Ok";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Xin lỗi";
+
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "Bắt đầu duyệt";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Tham gia";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "Cho phép Brave kiểm tra clipboard của tôi để tìm mã giới thiệu phù hợp";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "Bạn có thể đã tải xuống Brave để hỗ trợ người giới thiệu của bạn. Để biết ai là người giới thiệu bạn, Brave sẽ thực hiện kiểm tra một lần clipboard của bạn để tìm mã giới thiệu trùng khớp. Việc kiểm tra này chỉ giới hạn ở nội dung mã và không có dữ liệu cá nhân nào khác được truyền đi. Nếu bạn chọn từ chối, người giới thiệu của bạn sẽ không nhận được phần thưởng từ Brave.";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "Không cho phép bước kiểm tra này";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "Kiểm tra ẩn danh mã giới thiệu";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "Cho phép kiểm tra một lần clipboard";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Khi nhấn Có, bạn đồng ý với";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Điều khoản Dịch vụ";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "và";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Phần thưởng Brave";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Chọn hiển thị Quảng cáo riêng tư Brave góp phần hỗ trợ các nhà xuất bản và nhà sáng tạo nội dung khi quảng cáo được xem.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Nhận được mã thông báo và thưởng cho người sáng tạo có nội dung tuyệt vời khi bạn duyệt web.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "Chính sách quyền riêng tư";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Phần thưởng Brave";
+
+/* Save button to save current selection */
+"OBSaveButton" = "Lưu";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "Chọn công cụ tìm kiếm mặc định của bạn";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "Chào mừng bạn đến với Trình duyệt Brave";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "Chặn các trình theo dõi xâm phạm quyền riêng tư để bạn có thể duyệt web mà không bị theo dõi";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Lá chắn Brave";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Hiển thị cho tôi";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Bắt đầu";
+
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ và %2$lld quảng cáo & trình theo dõi khác đã bị chặn";
+
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "Xem tất cả nội dung xấu mà Brave đã chặn, trên mọi trang, với Lá chắn.";
+
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "Chạm để xem Lá chắn Brave";
+
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Quảng cáo & trình theo dõi đã bị chặn";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "Liên kết gói đăng ký VPN của bạn";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Gói đăng ký Brave VPN của bạn có thể bảo vệ tối đa 5 thiết bị, trên Android, iOS và máy tính. Chỉ cần liên kết gói đăng ký App Store với tài khoản Brave của bạn.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "Mở rộng bảo vệ Tường lửa Brave + VPN của bạn";
+
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "Tìm \"Ứng dụng trình duyệt mặc định\"";
+
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "Đang đưa bạn đến mục Cài đặt...";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Khi chặn trình theo dõi & quảng cáo, các trang web sử dụng ít dữ liệu hơn và tải nhanh hơn nhiều.";
+
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "Sự khác biệt Brave mang lại:\nKhông quảng cáo. Không trình theo dõi. Tải trang nhanh hơn nhiều.";
+
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "Nhập tên trang web hoặc URL";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Chào mứng tới Brave";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "Tiếp tục";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "Bỏ qua";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "trên %@";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "Mở tất cả (%i)";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Mở cài đặt Phần thưởng Brave";
+
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "Đã xảy ra lỗi không xác định khi mở thư mục Tải xuống trong ứng dụng Tệp.";
+
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ nói:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "Cho phép %@ chuyển đổi ứng dụng?";
+
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "Mở ảnh trong thẻ mới";
+
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "Mở trong cửa sổ riêng tư mới";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "Mở trong cửa sổ mới";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "Mở trong thẻ riêng tư mới";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "Mở trong thẻ mới";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "Mở phần Cài đặt";
+
+/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "Hoạt động %ld ngày trước";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "Hoạt động tháng trước";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "Hoạt động tuần trước";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "Hoạt động hôm nay";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "Hoạt động hôm qua";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "Bật tính năng đồng bộ hóa thẻ để xem các thẻ từ các thiết bị khác của bạn.";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "Để xem các thiết bị và các loại đồng bộ hóa đã được bật, hãy tham gia một chuỗi đồng bộ hóa";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "Không có thiết bị nào trong chuỗi đồng bộ hóa này";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "Để bắt đầu, hãy thiết lập chuỗi đồng bộ hóa và bật tùy chọn \"Thẻ đang mở\" trong phần Cài đặt đồng bộ hóa.";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Quản lý nội dung Brave đồng bộ hóa trong phần Cài đặt.";
+
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "Không có phiên hoạt động nào từ các thiết bị khác của bạn để hiển thị.";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Không gian này hiển thị các thẻ Brave mở trên các thiết bị khác";
+
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "Ẩn ngay bây giờ";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "Mở tất cả";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "Tuần trước %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "Hôm nay %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "Hôm qua %@";
+
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "Thiết bị";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "Gửi đến thiết bị của bạn";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "Đã gửi!";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "Đang gửi…";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "Gửi trang web";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "Gửi đến thiết bị của bạn";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "Hiển thị cài đặt đồng bộ hóa";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "Bắt đầu chuỗi đồng bộ hóa";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "Bật đồng bộ hóa thẻ";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "Tìm thẻ từ thiết bị khác";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "Thẻ đang mở";
+
+/* Button title to that opens a website. */
+"OpenWebsite" = "Mở trang web";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo là trợ lý thông minh được hỗ trợ bởi AI, được tích hợp ngay trên trình duyệt";
+
+/* The subtitle description of menu item Brave News */
+"optionsMenu.braveNewsItemDescription" = "Các tin tức hàng đầu hôm nay trong trang tin tức riêng tư";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "Tin tức";
+
+/* The subtitle description of menu item Brave Playlist */
+"optionsMenu.bravePlaylistItemDescription" = "Giữ một danh sách phát ngoại tuyến của bất kỳ video/luồng nào";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "Danh sách phát";
+
+/* The subtitle description of menu item Brave Talk */
+"optionsMenu.braveTalkItemDescription" = "Gọi video riêng tư, ngay trong trình duyệt của bạn";
+
+/* Brave Talk Item Menu title */
+"optionsMenu.braveTalkItemTitle" = "Trò chuyện";
+
+/* The subtitle description of menu item Brave VPN */
+"optionsMenu.braveVPNItemDescription" = "Bảo vệ toàn bộ thiết bị của bạn khi trực tuyến";
+
+/* Brave VPN Item Menu title */
+"optionsMenu.braveVPNItemTitle" = "VPN";
+
+/* The subtitle description of menu item Brave Wallet */
+"optionsMenu.braveWalletItemDescription" = "Ví tiền điện tử bảo mật, không yêu cầu tiện ích";
+
+/* Privacy Features Section title */
+"optionsMenu.menuSectionTitle" = "Tính năng của Brave";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "Cài đặt Quyền riêng tư khác";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "Cài đặt khác";
+
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "Tiếp tục";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "Những phản hồi riêng tư này giúp Brave ước tính mức sử dụng tổng thể của một số tính năng nhất định và cải thiện các tính năng này cho bạn.";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "Cho phép Phân tích Sản phẩm bảo vệ quyền riêng tư (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "Đóng Hộp thông tin về Sản phẩm bảo vệ quyền riêng tư";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "Kết nối của bạn đến trang web này không hoàn toản bảo mật.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "Bạn không nên nhập bất kỳ thông tin nhạy cảm nào trên trang web này (ví dụ như mật khẩu hoặc thẻ tín dụng) vì những thông tin này có thể bị kẻ tấn công đánh cắp.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "Kết nối đến trang web này không bảo mật.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Kết nối đến trang web chưa được xác minh.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Không thể xác minh đầy đủ kết nối của bạn đến trang web này. Bạn có thể tiếp tục hoặc thử tải lại trang để thiết lập kết nối bảo mật.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "Đăng nhập vào trang web";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "Xem chứng chỉ";
+
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "Mức thu phóng trang web mặc định";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "Khi mức thu phóng của một trang web thay đổi, trang web đó sẽ hiển thị trong danh sách ở đây. Hiện tại, không có trang web nào được phóng to hoặc thu nhỏ.";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "Chưa thêm trang web nào";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "Tất cả trang web khác";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "Đặt lại tất cả";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "Đặt lại mức thu phóng trang web";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Cài đặt trang cụ thể";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "Thu phóng trang";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "Thu phóng trang";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "Mật khẩu";
+
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "Duyệt web riêng tư xuyên suốt";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "Cho phép Brave khôi phục các thẻ duyệt riêng tư, ngay cả khi bạn đóng / mở lại ứng dụng";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "Khôi phục Thẻ riêng tư";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "Ảnh của %@";
+
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "Đã thêm vào %@";
+
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "Bạn có muốn thêm video này vào danh sách phát của mình?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Thêm vào Danh sách phát Brave";
+
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "Tùy chọn phát";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "Đã tắt. Nhấn để cho phép phát lại.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "Đã bật. Nhấn để không cho phép phát lại.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "Quyết định xem việc chọn một mục đang phát có bắt đầu lại quá trình phát, hay tiếp tục phát từ điểm đã dừng trước đó hay không";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "Phát lại";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "Cài đặt";
+
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "Danh sách phát Brave";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "Đổi Danh sách phát";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "Xóa bộ nhớ đệm ngoại tuyến";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "Video này là video phát trực tiếp hoặc đã đạt giới hạn thời gian. Vui lòng mở lại liên kết để làm mới.";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "Video đã hết hạn";
+
+/* Text indicator on the table cell If a video is expired */
+"playList.expiredLabelTitle" = "Đã hết hạn";
+
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d mục";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d mục";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "Có vấn đề khi tải tài nguyên!";
+
+/* Description footer for playlist menu badge option */
+"playlist.menuBadgeOptionFooterText" = "Khi được bật, một huy hiệu sẽ hiển thị trên biểu tượng menu chính, cho biết đa phương tiện trên trang có thể được thêm vào Danh sách phát Brave.";
+
+/* Title for playlist menu badge option */
+"playlist.menuBadgeOptionTitle" = "Hiển thị huy hiệu thông báo menu";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "Di chuyển...";
+
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "Bạn có thể thêm các mục vào Danh sách phát Brave của mình bên trong trình duyệt";
+
+/* Text when there are no items in the playlist */
+"playList.noItemLabelTitle" = "Không có mục nào";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "Chú ý";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "Ok";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "Mở trong Danh sách phát";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.pictureInPictureErrorTitle" = "Rất tiếc, đã xảy ra lỗi khi hiển thị hình trong hình.";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "Danh sách phát đã hoạt động trên một cửa sổ khác";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "Xin lỗi";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Tùy chọn này sẽ bật/tắt tính năng tự động phát khi Danh sách phát được mở. Tuy nhiên, tùy chọn này sẽ không ảnh hưởng đến tính năng tự động phát khi tải video tiếp theo trong danh sách.";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "Tự động phát";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "Tắt";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "Bật";
+
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "Chỉ với Wi-Fi";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "Việc thêm các tệp video và âm thanh để sử dụng ngoại tuyến có thể sử dụng nhiều dung lượng lưu trữ trên thiết bị của bạn cũng như sử dụng dữ liệu di động của bạn";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "Tùy chọn này sẽ tự động lưu các mục của danh sách phát trên thiết bị của bạn để bạn có thể phát mà không cần kết nối internet.";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsTitle" = "Tự động lưu cho dùng Ngoại tuyến";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "Việc thêm tệp video và âm thanh để sử dụng ngoại tuyến có thể chiếm nhiều dung lượng lưu trữ trên thiết bị của bạn. Vui lòng xóa một số tệp để giải phóng dung lượng lưu trữ.";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "Sắp đầy dung lượng lưu trữ";
+
+/* When a video or audio is live and has no duration */
+"playlist.playlistLiveMediaStream" = "Phát trực tiếp";
+
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "Khi được bật, bạn có thể nhấn và giữ hầu hết các tệp video/âm thanh để thêm vào Danh sách phát của mình.";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "Bật Nhấn và giữ";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Tệp đa phương tiện & Dữ liệu ngoại tuyến của Danh sách phát";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "Dữ liệu ngoại tuyến của Danh sách phát";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "Thay đổi";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "Đặt lại";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "Tùy chọn này sẽ xóa tất cả video khỏi Danh sách phát cũng như bộ nhớ của chế độ Ngoại tuyến.";
+
+/* Error message when saving a playlist item for offline fails */
+"playlist.playlistSaveForOfflineErrorMessage" = "Rất tiếc, mục này hiện không thể lưu ở chế độ ngoại tuyến.";
+
+/* Title of alert when saving a playlist item for offline mode */
+"playlist.playlistSaveForOfflineErrorTitle" = "Xin lỗi, đã xảy ra sự cố";
+
+/* Title For the Section that videos are listed */
+"playList.playListSectionTitle" = "Danh sách phát";
+
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "Danh sách phát";
+
+/* Body for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsBody" = "Thư mục này hiện đã có trong Danh sách phát Brave của bạn";
+
+/* Title for the error message that shows when a playlist folder already exists */
+"playList.playlistSharedFolderAlreadyExistsTitle" = "Xin lỗi";
+
+/* Title for the Section that videos are listed */
+"playList.playlistSharedFolderSectionTitle" = "Được chia sẻ với bạn";
+
+/* Title For the Section that videos are listed */
+"playList.playListSharedFolderSectionTitle" = "Được chia sẻ với bạn";
+
+/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationFooterText" = "Cài đặt này sẽ thay đổi vị trí danh sách video thành bên trái/bên phải.";
+
+/* Option Text for Sidebar Location Left */
+"playlist.playlistSidebarLocationOptionLeft" = "Trái";
+
+/* Option Text for Sidebar Location Right */
+"playlist.playlistSidebarLocationOptionRight" = "Phải";
+
+/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
+"playlist.playlistSidebarLocationTitle" = "Vị trí thanh bên";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "Đối với tệp riêng lẻ, tiếp tục phát từ điểm dừng cuối cùng.";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "Nhớ vị trí phát tệp";
+
+/* Description for Playlist setting */
+"playlist.playlistWebCompatibilityDescription" = "Tắt WebKit MediaSource API";
+
+/* Title for Playlist setting */
+"playlist.playlistWebCompatibilityTitle" = "Tương thích với web";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "Xóa";
+
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "Đã xóa khỏi %@";
+
+/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertMessage" = "Thao tác này sẽ xóa tệp đa phương tiện khỏi mục lưu trữ ngoại tuyến. Bạn có chắc muốn tiếp tục?";
+
+/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
+"playlist.removePlaylistOfflineDataAlertTitle" = "Xóa dữ liệu ngoại tuyến";
+
+/* Message for the alert shown when the user tries to remove a video from playlist */
+"playlist.removePlaylistVideoAlertMessage" = "Thao tác này sẽ xóa mục đa phương tiện khỏi danh sách. Bạn có chắc muốn tiếp tục?";
+
+/* Title for the alert shown when the user tries to remove an item from playlist */
+"playlist.removePlaylistVideoAlertTitle" = "Xóa tệp đa phương tiện khỏi Danh sách phát?";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "Mở lại";
+
+/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
+"playList.savedForOfflineLabelTitle" = "Đã thêm vào Ngoại tuyến";
+
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "Lưu cho Ngoại tuyến";
+
+/* Text indicator on the table cell while saving a video for offline */
+"playList.savingForOfflineLabelTitle" = "Đang lưu cho Ngoại tuyến…";
+
+/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyDescription" = "Tự động đồng bộ hóa tất cả các thư mục danh sách phát của bạn";
+
+/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
+"playList.sharedFolderSyncAutomaticallyTitle" = "Tự động đồng bộ hóa tất cả thư mục Danh sách phát";
+
+/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionDetailsTitle" = "Bạn có thể mở mục hiện tại trong Tab mới hoặc chia sẻ mục đó qua menu Chia sẻ của hệ thống";
+
+/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistActionTitle" = "Menu Danh sách phát Brave";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Mở trong thẻ riêng tư";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistOpenInNewTabTitle" = "Mở trong thẻ mới";
+
+/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
+"playlist.sharePlaylistShareActionMenuTitle" = "Chia sẻ...";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "Xin lỗi";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "Đã thêm vào Danh sách phát Brave";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "Mở";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "Thêm vào Danh sách phát Brave";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Xem trong Danh sách phát Brave";
+
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "Hoàn tác";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "Thêm nút danh sách phát (đặc điểm nhận dạng là 4 dòng với biểu tượng +) bên cạnh thanh địa chỉ trong trình duyệt Brave. Nút này cho phép bạn nhanh chóng mở Danh sách phát hay thêm hoặc xóa tệp đa phương tiện.";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "Bật nút truy cập nhanh";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "Di chuyển đến";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "Tên Danh sách phát";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "Nhập tên danh sách phát của bạn";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "Tạo";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "Chỉnh sửa";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "Chỉnh sửa thư mục";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Chỉnh sửa Danh sách phát";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "Xin lỗi, chúng tôi không thể lưu các thay đổi bạn thực hiện cho thư mục này";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "Di chuyển";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Danh sách phát hiện tại";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "Di chuyển";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ và 1 mục khác";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld mục";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 mục";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ và %2$lld mục khác";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Danh sách phát mới";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Danh sách phát mới";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "Nhấn để chọn video";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Thêm video vào danh sách phát này";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
+"playlistFolders.selectAFolderTitle" = "Chọn danh sách phát để di chuyển %lld mục đến";
+
+/* The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectASingleFolderTitle" = "Chọn Danh sách phát để di chuyển 1 mục đến";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld mục";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 mục";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Danh sách phát không có tiêu đề";
+
+/* Accessibility Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Nút Thêm vào Danh sách phát Brave";
+
+/* Title for the button that adds the playlist to the database. */
+"playlistFolderSharing.addButtonTitle" = "Lưu";
+
+/* Menu Title for removing offline data/cache */
+"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Xóa dữ liệu ngoại tuyến";
+
+/* Menu Title for deleting the playlist */
+"playlistFolderSharing.deletePlaylistMenuTitle" = "Xóa Danh sách phát";
+
+/* Menu Title for editing a folder */
+"playlistFolderSharing.editMenuTitle" = "Chỉnh sửa";
+
+/* Accessibility Title for the playlist menu. */
+"playlistFolderSharing.menuButtonAccessibilityTitle" = "Nút menu Danh sách phát";
+
+/* Button that adds the playlist to the local database */
+"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Thêm danh sách phát ngay";
+
+/* Description of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewDescription" = "Tự động lưu để sử dụng ngoại tuyến đang bật, nghĩa là các nội dung mới được thêm vào danh sách phát, bao gồm danh sách phát được chia sẻ, được lưu vào thiết bị của bạn để xem ngoại tuyến và có thể sử dụng dữ liệu di động của bạn.\n\nTự động lưu để sử dụng ngoại tuyến có thể được quản lý trong cài đặt Danh sách phát.";
+
+/* Button that takes the user to the settings menu */
+"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Cài đặt";
+
+/* Title of the playlist offline data management view */
+"playlistFolderSharing.offlineManagementViewTitle" = "Quản lý dữ liệu Danh sách phát của bạn";
+
+/* Menu Title for renaming a folder */
+"playlistFolderSharing.renameMenuTitle" = "Đổi tên";
+
+/* Menu Title for saving offline data/cache */
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "Lưu dữ liệu ngoại tuyến";
+
+/* Menu Title for syncing playlist */
+"playlistFolderSharing.syncNowMenuTitle" = "Đồng bộ hóa ngay";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Đóng menu Lá chắn";
+
+/* Settings privacy section title */
+"Privacy" = "Quyền riêng tư";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "Để chuyển chế độ duyệt riêng tư, trước tiên bạn phải đặt mật mã trên thiết bị của mình.";
+
+/* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
+"privacyHub.allTimeListsButtonText" = "Danh sách tổng hợp";
+
+/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
+"privacyHub.allTimeListsHeader" = "Từ trước đến nay";
+
+/* Title of a section to show total count of trackers blocked by Brave */
+"privacyHub.allTimeListsTrackersView" = "Trình theo dõi & quảng cáo";
+
+/* Title of a section to show websites containing highest amount of trackers */
+"privacyHub.allTimeListsWebsitesView" = "Trang web";
+
+/* Header title for a list of most frequent ads and trackers detected. */
+"privacyHub.allTimeListTrackersHeaderTitle" = "Trình theo dõi & quảng cáo thường gặp nhất trên các trang bạn ghé thăm";
+
+/* Header title for a list of websites with ads and trackers. */
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Trang web có nhiều trình theo dõi & quảng cáo nhất";
+
+/* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
+"privacyHub.allTimeSitesCount" = "%lld trang web";
+
+/* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
+"privacyHub.allTimeTrackersCount" = "%lld trình theo dõi & quảng cáo";
+
+/* Title under which we display most name of the most blocked tracker or ad. */
+"privacyHub.allTimeTrackerTitle" = "Trình theo dõi & Quảng cáo";
+
+/* Title under which we display a website on which there's the highest number of trackers or ads. */
+"privacyHub.allTimeWebsiteTitle" = "Trang web";
+
+/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+"privacyHub.allVPNAlertsButtonText" = "Tất cả cảnh báo";
+
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+"privacyHub.blockedBy" = "Đã chặn bởi";
+
+/* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
+"privacyHub.blockedLabel" = "Bị chặn";
+
+/* Accessibility label for the 'clear all data' button. */
+"privacyHub.clearAllDataAccessibility" = "Xóa dữ liệu của Trung tâm Quyền riêng tư";
+
+/* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
+"privacyHub.clearAllDataPrompt" = "Xóa tất cả dữ liệu Lá chắn?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "Ẩn";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "Ẩn Thống kê Quyền riêng tư";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "Nhấn Ẩn để xóa tiện ích Thống kê Quyền riêng tư. Bạn luôn có thể bật lại ở trang Cài đặt, mục Trang thẻ mới";
+
+/* Header text, under it we display blocked items from last week */
+"privacyHub.lastWeekHeader" = "Tuần trước";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** đã bị chặn bởi Lá chắn Brave trên **%2$lld** trang web";
+
+/* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Trình theo dõi & Quảng cáo thường gặp nhất";
+
+/* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
+"privacyHub.noDataCalloutBody" = "Truy cập một số trang web để thấy dữ liệu tại đây.";
+
+/* This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them. */
+"privacyHub.noDataToShow" = "Chưa có dữ liệu để hiển thị.";
+
+/* Text of a callout to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutBody" = "Nhận cập nhật mỗi tuần về việc chặn trình theo dõi & quảng cáo.";
+
+/* Text of a button to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutButtonText" = "Bật thông báo";
+
+/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "Thông tin về việc Brave đã bảo vệ khi bạn trực tuyến thế nào trong tuần này.";
+
+/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationTitle" = "Báo cáo Quyền riêng tư hằng tuần";
+
+/* Text of a button that opens up a Privacy Reports screen. */
+"privacyHub.onboardingButtonTitle" = "Mở Trung tâm Quyền riêng tư";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "Mở Trung tâm Quyền riêng tư";
+
+/* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
+"privacyHub.privacyReportsDisclaimer" = "Dữ liệu của Trung tâm Quyền riêng tư được lưu cục bộ và không được gửi đi bất kỳ đâu.";
+
+/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+"privacyHub.privacyReportsTitle" = "Trung tâm Quyền riêng tư";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
+"privacyHub.riskiestWebsiteBody" = "**%1$@** có trung bình **%2$lld** trình theo dõi & quảng cáo bị chặn mỗi lần truy cập";
+
+/* Title of a website that contained the most trackers per visit. */
+"privacyHub.riskiestWebsiteTitle" = "Trang web có nhiều trình theo dõi nhất";
+
+/* This text explains a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsFooter" = "Trung tâm Quyền riêng tư hiển thị số lượng những gì Lá chắn đã chặn. Cài đặt sẽ không ảnh hưởng đến bộ đếm Lá chắn trên thẻ mới. Dữ liệu Lá chắn không được tính trong cửa sổ riêng tư.";
+
+/* Title of a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsTitle" = "Hiển thị dữ liệu Lá chắn";
+
+/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsFooter" = "Cài đặt chỉ áp dụng nếu bạn đã mua gói đăng ký VPN.";
+
+/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsTitle" = "Hiển thị cảnh báo VPN";
+
+/* This text explains what the button to clear datain the Privacy Hub is for. */
+"privacyHub.settingsSlearDataFooter" = "Đặt lại số lượng mọi thứ Lá chắn đã chặn.";
+
+/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+"privacyHub.settingsSlearDataTitle" = "Xóa dữ liệu Lá chắn";
+
+/* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
+"privacyHub.shieldsLabel" = "Lá chắn";
+
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "Bật \"%@\" để xem dữ liệu ở đây";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypePlural" = "Trình theo dõi trong email";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypeSingular" = "Trình theo dõi trong email";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypePlural" = "Thông tin vị trí";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypeSingular" = "Thông tin vị trí";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Trình theo dõi & quảng cáo";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypeSingular" = "Trình theo dõi hoặc quảng cáo";
+
+/* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
+"privacyHub.vpnAlertsHeader" = "Tường lửa Brave + Cảnh báo VPN";
+
+/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+"privacyHub.vpnLabel" = "Tường lửa + VPN";
+
+/* It shows a total count of items blocked by our VPN shields */
+"privacyHub.vpvnAlertsTotalCount" = "Tổng số";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "Chính sách quyền riêng tư";
+
+/* Private button title */
+"Private" = "Riêng tư";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "Duyệt riêng tư";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "Chỉ duyệt riêng tư";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "Chế độ Chỉ duyệt riêng tư sẽ đóng tất cả thẻ hiện tại của bạn và đăng xuất bạn ra khỏi tất cả các trang web.";
+
+/* Private tab details */
+"PrivateTabBody" = "Các Thẻ riêng tư không được lưu trong Brave, nhưng điều đó không đồng nghĩa với việc làm bạn ẩn danh trong môi trường trực tuyến. Các trang web bạn truy cập trong thẻ riêng tư sẽ không hiển thị trong lịch sử của bạn và cookie của chúng luôn biến mất khi bạn đóng trang — không có dấu vết nào của chúng còn sót lại trong Brave. Tuy nhiên, thông tin tải xuống sẽ được lưu.\nNhà mạng di động của bạn (hoặc chủ sở hữu mạng Wi-Fi hoặc VPN mà bạn kết nối) có thể xem bạn truy cập trang web nào và các trang web đó sẽ biết địa chỉ IP công khai của bạn, ngay cả trong các Thẻ riêng tư.";
+
+/* Private tab detail text */
+"PrivateTabDetails" = "Sử dụng Thẻ riêng tư chỉ thay đổi những gì Brave thực hiện trên thiết bị của bạn, không thay đổi hành vi của bất kỳ ai khác.\n\nCác trang web luôn biết địa chỉ IP của bạn khi bạn truy cập. Từ đó, họ thường có thể đoán sơ bộ vị trí của bạn — thường là thành phố của bạn. Đôi khi, thông tin vị trí đó có thể cụ thể hơn nhiều. Các trang web cũng biết mọi thứ bạn chia sẻ với họ, chẳng hạn như các cụm từ tìm kiếm. Nếu bạn đăng nhập vào một trang web, họ sẽ biết bạn là chủ sở hữu của tài khoản đó. Bạn vẫn sẽ bị đăng xuất khi đóng Thẻ riêng tư vì Brave sẽ xóa cookie có tác dụng giúp bạn duy trì trạng thái đăng nhập.\n\nBất kỳ ai kết nối bạn với Internet (ISP của bạn) đều có thể thấy mọi hoạt động mạng của bạn. Thông thường, đó sẽ là nhà mạng di động của bạn. Nếu bạn kết nối với mạng Wi-Fi, đó là chủ sở hữu của mạng đó và nếu bạn đang sử dụng VPN, thì đó là bên điều hành VPN đó. ISP của bạn có thể thấy những đó là trang web nào ngay khi bạn truy cập. Nếu các trang web đó sử dụng HTTPS, họ chỉ có thể phỏng đoán có căn cứ về những gì bạn làm trên các trang web đó. Nhưng nếu một trang web chỉ sử dụng HTTP thì ISP của bạn có thể thấy mọi thứ: các cụm từ tìm kiếm của bạn, những trang bạn đọc và những liên kết bạn theo dõi.\n\nNếu một nhà tuyển dụng quản lý thiết bị của bạn, họ cũng có thể theo dõi những gì bạn làm với thiết bị đó. Sử dụng Thẻ riêng tư có lẽ sẽ không ngăn họ biết những trang web bạn đã truy cập. Một người khác có quyền truy cập vào thiết bị của bạn cũng có thể đã cài đặt phần mềm theo dõi hoạt động của bạn và Thẻ riêng tư cũng sẽ không bảo vệ bạn khỏi điều này.";
+
+/* Private tab information link */
+"PrivateTabLink" = "Tìm hiểu về Thẻ riêng tư.";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "Thẻ riêng tư";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "Tìm nhanh công cụ tìm kiếm";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Xếp hạng Brave";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "Tăng kích thước chữ";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "Độ sáng";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "Cài đặt hiển thị";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "Có lỗi khi chuyển đổi trang";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "Đổi loại phông chữ.";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "Đang tải nội dung…";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "Tải trang gốc";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "Không thể hiển thị trang ở Giao diện chế độ đọc.";
+
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "Chế độ Đọc";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "Giảm kích thước chữ";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "Đổi chủ đề màu.";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "Xóa";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "Xóa tất cả thẻ đã đóng gần đây?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "Không có thẻ nào vừa đóng gần đây.";
+
+/* Open Tab action title */
+"recently.closed.open" = "Mở ";
+
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "Mở lại thẻ vừa đóng";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "Bạn có muốn mở lại thẻ vừa đóng?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "Thẻ vừa đóng gần đây";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "Xem thẻ vừa đóng gần đây";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "Xóa";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "Xóa gần đây";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "Dữ liệu tìm kiếm gần đây";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "Tắt";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "Bật";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "Yêu thích";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "Ẩn";
+
+/* Recent Search Paste & Go Button Title */
+"RecentSearchPasteAndGo" = "Dán & truy cập";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "trên";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "Đã quét";
+
+/* Scanning a QR Code for searching body */
+"RecentSearchScannerDescriptionBody" = "Để tìm theo Mã QR, hãy căn chỉnh Mã QR vào giữa khung.";
+
+/* Scanning a QR Code for title */
+"RecentSearchScannerDescriptionTitle" = "Hướng dẫn";
+
+/* Scanning a QR Code for searching */
+"RecentSearchScannerTitle" = "Quét mã QR";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "Tìm kiếm gần đây cho phép bạn truy cập riêng tư vào các tìm kiếm trước đây. Bạn có muốn bật Tìm kiếm gần đây không?";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "Tìm kiếm gần đây";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "Hiển thị";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "Hiển thị thêm";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "Gợi ý tìm kiếm";
+
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Tự động chuyển hướng liên kết Reddit đến giao diện cũ hơn (tại old.reddit.com). Để buộc sử dụng giao diện Reddit mới, sử dụng new.reddit.com.";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "Xóa trang yêu thích";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "Báo cáo trang web bị hỏng";
+
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "Báo cáo lỗi";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "Chi tiết bổ sung (tùy chọn)";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "Liên hệ với tôi tại: (tùy chọn)";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "Email, Twitter, v.v.";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Hãy thông báo cho các nhà phát triển của Brave biết trang web này không hoạt động đúng cách với Lá chắn:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "Lưu ý: Báo cáo được gửi đến máy chủ Brave sẽ bao gồm địa chỉ trang web, số phiên bản Brave, cài đặt Lá chắn, trạng thái VPN và cài đặt ngôn ngữ.";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "Gửi";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraAndMicrophonePermissionPrompt" = "\"%@\" muốn truy cập camera và micrô";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCameraPermissionPrompt" = "\"%@\" muốn truy cập camera";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "Cho phép";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestCaptureDevicePermissionPrompt" = "\"%@\" muốn truy cập thiết bị ghi đa phương tiện";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+"requestMicrophonePermissionPrompt" = "\"%@\" muốn truy cập micrô";
+
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "Dấu trang đã khôi phục";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "Trang yêu thích được khôi phục";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "Có";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "Không";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "Thật không may, Brave bị lỗi đóng đột ngột hoặc không được đóng đúng cách.\nKhôi phục các thẻ?";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "Brave đóng đột ngột.";
+
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Với Phần thưởng Brave, bạn có thể xem quảng cáo với cam kết bảo vệ quyền riêng tư từ mạng lưới Quảng cáo Brave. Không có trình theo dõi. Không làm giảm tốc độ. Và dữ liệu của bạn được bảo mật hoàn toàn.";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "Bật Phần thưởng";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Nhấp vào bất cứ đâu trên màn hình để tiếp tục đến Trò chuyện Brave.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "Giờ đây bạn có thể bắt đầu một cuộc gọi miễn phí";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Để bắt đầu một cuộc gọi miễn phí, hãy bật Phần thưởng Brave";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Bật để góp phần hỗ trợ Brave và cộng đồng BAT.";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Sử dụng Phần thưởng Brave góp phần hỗ trợ Brave và cộng đồng BAT.";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "Bạn đang góp phần hỗ trợ Brave và cộng đồng BAT.";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Cảm ơn bạn vì đã góp phần hỗ trợ Brave và cộng đồng BAT!";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "Khi bấm, bạn đồng ý với %1$@ và %2$@. Tắt bất kỳ lúc nào trong Cài đặt.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Góp phần hỗ trợ Brave và cộng đồng BAT bằng cách bật Phần thưởng Brave và xem Quảng cáo Brave.";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Kích hoạt Phần thưởng của Brave";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "Nhà sáng tạo nội dung này đã được xác minh với Nhà sáng tạo Brave";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "Số nhà sáng tạo nội dung bạn góp phần hỗ trợ tháng này.";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "Nhà sáng tạo này chưa được xác minh và sẽ không được đưa vào hỗ trợ nhà sáng tạo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAmount" = "Lượng";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "Ẩn danh";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "Thông tin số dư";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "Bạn có chắc muốn xóa tất cả nhật ký Phần thưởng không?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "Xóa nhật ký";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "Khoản tiền đóng góp";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Mã thông báo Brave";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "Không";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Uphold";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "Quỹ của người dùng";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "Tắt tự động đóng góp";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "Bảng tự động đóng góp trống";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "Đã hoàn thành";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "Thông tin đăng nhập";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "Giao dịch bên ngoài";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "Không thành công";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "Không đủ tiền";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "Chuẩn bị";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "Dự trữ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Đã tắt Phần thưởng";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "Bắt đầu";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "Đóng góp";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "Được tạo lúc";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "Thông tin thiết bị";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "Đã đăng ký";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "Trạng thái đăng ký";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "Hết hạn vào";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "Không hợp lệ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "Key Info Seed";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "%d nhật ký được hiển thị";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "Nhật ký";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "Chưa đăng ký";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "Không hỗ trợ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "Đơn vị xử lý";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "Nhà xuất bản";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "Nhà xuất bản";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "Số lần thử lại";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "Tự động Đóng góp";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "Tip một lần";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "Tiền thưởng thường chọn";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Hồ sơ, thiết bị & thông tin số dư của Phần thưởng (luôn chia sẻ)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "Thông tin cơ bản";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "Bất kỳ đóng góp nào cho nhà xuất bản thông qua việc tip hoặc đóng góp tự động";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "Kho dữ liệu trong";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Cơ sở dữ liệu Phần thưởng";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Lưu nhật ký Phần thưởng cụ thể";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "Chia sẻ";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Chia sẻ thông tin Phần thưởng";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "Dữ liệu trên các trang này có thể nhạy cảm. Hãy cẩn thận khi chia sẻ với người khác.";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "Cảnh báo";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "Trạng thái";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "Bước";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "Hỗ trợ";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Thông tin Phần thưởng";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "Tổng số";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "Tổng số dư";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "Loại";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "Hợp lệ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "Phiên bản";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Ngày tạo hồ sơ Phần thưởng";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Thông tin hồ sơ Phần thưởng";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "ID thanh toán Phần thưởng";
+
+/* Button to show the rewards panel */
+"RewardsPanel" = "Bảng Phần thưởng";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "Lưu";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Lưu thay đổi";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "Thông tin đăng nhập đã lưu";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "Thẻ đã lưu";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "Lưu ảnh";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "Lưu thông tin đăng nhập";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "Các lệnh scripts đã chặn";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "Tìm dấu trang";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "Tìm kiếm %@";
+
+/* Search engines section of settings */
+"SearchEngines" = "Công cụ Tìm kiếm";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "Tìm gợi ý";
+
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "Mở thẻ & dấu trang & lịch sử";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "Xóa tìm kiếm";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "Vào chế độ Tìm kiếm";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "Trường tìm đầu vào";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "Tìm kiếm";
+
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "Thêm công cụ tìm kiếm tùy chỉnh";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "Bật tùy chọn này để bao gồm kết quả từ Lịch sử và Dấu trang khi tìm kiếm";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "Hiển thị gợi ý của trình duyệt";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "Tìm kiếm";
+
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "Hiển thị tìm kiếm gần đây";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "Cài đặt tìm kiếm";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "Hiển thị gợi ý tìm kiếm";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "Gợi ý tìm kiếm từ %@";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "Chuyển sang thẻ này";
+
+/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "%@ Tìm kiếm";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "Tìm kiếm";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "Gợi ý tìm kiếm";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Tìm kiếm với Brave";
+
+/* Settings security section title */
+"Security" = "Bảo mật";
+
+/* No comment provided by engineer. */
+"sendButtonTitle" = "Gửi";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "Gửi báo cáo lỗi đóng đột ngột để Brave khắc phục?";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "Ôi! Brave đã bị lỗi đóng đột ngột";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "Gửi báo cáo";
+
+/* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "Brave hiện có thể được đặt làm trình duyệt mặc định của bạn trong iOS. Nhấn vào đây để mở cài đặt.";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "Đặt làm Trình duyệt mặc định";
+
+/* No comment provided by engineer. */
+"Settings" = "Cài đặt";
+
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "Thủ công";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "Sau một ngày";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "Sau một tháng";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "Sau một tuần";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "Đóng thẻ";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "Cho phép Brave tự động đóng thẻ không được xem gần đây.";
+
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "Chất lượng phát cao nhất";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "Cho phép độ phân giải chất lượng cao";
+
+/* Header for the general settings section */
+"settings.media.general" = "Chung";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "Truyền thông";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "Mở liên kết YouTube trong Brave";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "Bật Thống kê thời gian";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "Xem dành nhiều thời gian nhất ở trang web nào và đặt giới hạn duyệt web. [Tìm hiểu thêm](%@)";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "Cài đặt chất lượng";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "Ping riêng tư này cho phép Brave ước tính người dùng đang hoạt động.";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "Tự động gửi ping sử dụng hằng ngày đến Brave";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "YouTube";
+
+/* Error message that is shown in settings when there was a problem loading */
+"SettingsContentLoadErrorMessage" = "Không thể tải trang.";
+
+/* Row name for licenses. */
+"SettingsLicenses" = "Giấy phép";
+
+/* Title for settings menu item */
+"SettingsMenuItem" = "Cài đặt";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "Thanh phía dưới";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "Thanh phía trên";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "Thẻ";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "Chia sẻ liên kết";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "Chia sẻ với...";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"shareWithTitle" = "Chia sẻ với...";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "Chúc mừng bạn đã đạt cột mốc về quyền riêng tư này.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "Xin chúc mừng. Bạn là thành viên của một câu lạc bộ độc quyền.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "Xin chúc mừng. Bạn đã trở thành một Đại sư.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "Xin chúc mừng. Bạn là huyền thoại.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "Xin chúc mừng. Bạn đã trở thành một bậc thầy.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "Xin chúc mừng. Bạn đã tham gia nhóm chuyên nghiệp.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "Xin chúc mừng. Người đặc biệt.";
+
+/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "Dữ liệu tiết kiệm được trung bình\n%@ MB";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "Không hiển thị lại";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "Chia sẻ tin tức";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Lá chắn Brave vừa bảo vệ quyền riêng tư trực tuyến của bạn.";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "Xin chúc mừng. Người đặc biệt.";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld trình theo dõi & quảng cáo bị chặn!";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "Video không có quảng cáo sử dụng ít dữ liệu hơn.";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "Các quảng cáo đã bị chặn trong khi bạn xem video trên trang web này.";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Mặc định toàn cầu của Lá chắn Brave";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "Đây là những cài đặt Lá chắn mặc định cho các trang web mới. Thay đổi chúng sẽ không ảnh hưởng đến các cài đặt cho từng trang web hiện tại của bạn.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "Bạn đang duyệt trang web này mà không được Brave bảo vệ quyền riêng tư. Mọi thứ không hoạt động đúng khi bật Lá chắn sao?";
+
+/* shields overview message */
+"ShieldsOverview" = "Lá chắn trang web giúp bạn kiểm soát khi nào quảng cáo và trình theo dõi được chặn ở trang web bạn truy cập. Nếu bạn muốn thấy quảng cáo ở một trang nhất định, bạn có thể bật ở đây.";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "Lưu ý: Một số trang web có thể yêu cầu tập lệnh để hoạt động bình thường nên chức năng bảo vệ này sẽ ở trạng thái tắt theo mặc định.";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "Thẻ riêng tư mới";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "Thẻ mới";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "Quét mã QR";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Mở Tin tức Brave và xem các tin tức hàng đầu của hôm nay";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "Mở trình duyệt trong thẻ mới và xóa tất cả dữ liệu lịch sử của trình duyệt riêng tư";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Xóa lịch sử trình duyệt";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Xóa lịch sử duyệt Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "Mở trình duyệt trong thẻ mới và bật VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Bật VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Mở trình duyệt Brave và bật VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Mở trong thẻ riêng tư mới";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "Mở thẻ mới trong trình duyệt riêng tư";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "Mở thẻ mới";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "Mở thẻ mới trong trình duyệt";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "Mở màn hình Dấu trang của trình duyệt";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Mở dấu trang";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Mở Dấu trang của trình duyệt Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Mở Tin tức Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Mở Tin tức Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "Mở màn hình Lịch sử trình duyệt";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Mở lịch sử trình duyệt";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Mở lịch sử trình duyệt Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "Bắt đầu phát video của bạn trong Danh sách phát";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Mở Danh sách phát";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "Mở Danh sách phát";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Mở các thẻ Brave đang mở trên các thiết bị khác";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Mở thẻ từ các thiết bị khác";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "Mở thẻ từ các thiết bị khác";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Bắt đầu tìm kiếm an toàn trên web với Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Mở trang web dấu trang";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Mở trang web từ Lịch sử";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Mở trang web";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Tùy chọn này sẽ mở Cài đặt Brave. Để thay đổi nhiều tùy chọn Siri khác nhau, vui lòng chọn mục \"Siri & Tìm kiếm\" trên menu và tùy chỉnh các lựa chọn của bạn.";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "Mở Cài đặt";
+
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Sử dụng Phím tắt để mở tab mới & xóa lịch sử của trình duyệt qua Siri - Trợ lý giọng nói";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Xóa lịch sử trình duyệt";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Sử dụng Phím tắt để bật Brave VPN qua Siri - Trợ lý giọng nói";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "Bật VPN";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Sử dụng Phím tắt để mở màn hình dấu trang qua Siri - Trợ lý giọng nói";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "Mở dấu trang";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Sử dụng Phím tắt để mở tab mới & hiển thị Tin tức Brave qua Siri - Trợ lý giọng nói";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Mở Tin tức Brave";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Sử dụng Phím tắt để mở màn hình lịch sử của trình duyệt qua Siri - Trợ lý giọng nói";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Mở lịch sử trình duyệt";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Sử dụng Phím tắt để mở tab riêng tư mới qua Siri - Trợ lý giọng nói";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "Mở thẻ riêng tư mới";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Sử dụng Phím tắt để mở tab mới qua Siri - Trợ lý giọng nói";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Mở thẻ mới";
+
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Sử dụng Phím tắt để mở Danh sách phát qua Siri - Trợ lý giọng nói";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Mở Danh sách phát";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Sử dụng Phím tắt để mở tab từ các thiết bị khác qua Siri - Trợ lý giọng nói";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Mở thẻ từ các thiết bị khác";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Phím tắt Siri";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "Hiển thị dấu trang";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showDownloadsTitle" = "Hiển thị Tải xuống";
+
+/* Button to show the history list */
+"ShowHistory" = "Hiển thị lịch sử";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showHistoryTitle" = "Hiển thị lịch sử";
+
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "Chỉ chế độ ngang";
+
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "Hiển thị xem trước liên kết";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "Hiển thị thẻ";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "Thanh thẻ";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "Cảm ơn bạn đã thông báo cho các nhà phát triển của Brave biết rằng đã xảy ra sự cố với trang web này. Chúng tôi sẽ cố gắng hết sức để khắc phục sự cố này!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "Cảm ơn bạn";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "Lá chắn";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "Tôi tiết kiệm được dữ liệu mỗi ngày bằng cách duyệt web với Brave";
+
+/* Text used for social sharing together with Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Tôi tiết kiệm được dữ liệu mỗi ngày bằng cách duyệt web với Brave";
+
+/* Open search section of settings */
+"StandardTabSearch" = "Thẻ tiêu chuẩn";
+
+/* Support section title */
+"Support" = "Hỗ trợ";
+
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "Ngăn trang này tạo thêm cảnh báo";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "Ngăn chặn cảnh báo";
+
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "Thêm Thiết bị Mới";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "Thêm máy tính";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "Đồng bộ hóa mã QR chuỗi";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "Trên thiết bị di động thứ hai của bạn, hãy điều hướng đến mục Đồng bộ hóa trong bảng Cài đặt và nhấn nút \"Quét mã đồng bộ hóa\". Sử dụng camera của bạn để quét Mã QR bên dưới.\n\nHãy xem mã này là mật khẩu. Nếu có người biết được mã này, họ có thể đọc và sửa đổi dữ liệu đã đồng bộ hóa của bạn.";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "Nhập mã đồng bộ hóa";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "Trên thiết bị của bạn, hãy điều hướng đến mục Đồng bộ hóa trong bảng Cài đặt và nhấn nút \"%@\". Nhập các từ mật mã chuỗi đồng bộ hóa được hiển thị bên dưới.\n\nHãy xem mã này là mật khẩu. Nếu có người có được mã này, họ có thể đọc và sửa đổi dữ liệu đã đồng bộ hóa của bạn.";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "Nhập từ mật mã";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "Thêm máy tính bảng hoặc điện thoại";
+
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "Xuất dấu trang thành công";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "Xuất dấu trang không thành công";
+
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "Dấu trang";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "Nhập dấu trang không thành công";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "Nhập dấu trang thành công";
+
+/* Alert description for error while deleting sync chain */
+"sync.chainAccountDeletionErrorDescription" = "Đồng bộ hóa thiết bị";
+
+/* Alert title for error while deleting sync chain */
+"sync.chainAccountDeletionErrorTitle" = "Đồng bộ hóa thiết bị";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.chainAlreadyDeletedAlertDescription" = "Không thể tham gia chuỗi này. Tài khoản đã bị xóa.";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.chainAlreadyDeletedAlertTitle" = "Đồng bộ hóa thiết bị";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "Chọn Loại Thiết bị";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "Chọn loại thiết bị mà bạn muốn đồng bộ hóa.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "Mã đã hết hạn. Tạo mã mới bằng cách nhấn vào nút dưới đây.";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "phút";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "giờ";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "giây";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "Mã tạm thời này có hiệu lực trong %@ nữa";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "giờ";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "giây";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "Nhập từ mật mã chuỗi đồng bộ hóa được cung cấp của bạn vào biểu mẫu bên dưới.";
+
+/* Code words section title */
+"sync.codeWords" = "Từ mật mã";
+
+/* Computer device button title */
+"sync.computerDevice" = "Máy tính";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.configurationInformationText" = "Quản lý các thông tin bạn muốn đồng bộ hóa trên các thiết bị. Các cài đặt này chỉ tác động đến thiết bị này.";
+
+/* Copied action complete title */
+"sync.copied" = "Đã sao chép!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "Đã sao chép vào clipboard!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "Sao chép vào Bộ nhớ đệm";
+
+/* Delete Sync Account cell title for button. */
+"sync.deleteAccount" = "Xóa tài khoản đồng bộ hóa";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertDescriptionPart1" = "Việc xóa tài khoản của bạn sẽ xóa dữ liệu được mã hóa của bạn khỏi máy chủ Brave và tắt Đồng bộ hóa trên tất cả các thiết bị được kết nối của bạn.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertDescriptionPart2" = "Tuy nhiên, việc xóa tài khoản Đồng bộ sẽ không xóa dữ liệu được lưu trữ cục bộ trên các thiết bị đó.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Xóa tài khoản đồng bộ hóa";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "Có vẻ mã này được tạo trên thiết bị chạy phiên bản Brave cũ. Vui lòng cập nhật lên phiên bản Brave mới nhất trên thiết bị khác của bạn, sau đó tạo mã đồng bộ hóa mới.";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "Đã xảy ra sự cố khi truy xuất thiết bị trong chuỗi đồng bộ hóa.";
+
+/* Sync device settings page title. */
+"sync.devices" = "Thiết bị trong chuỗi đồng bộ hóa";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "Thiết bị trong chuỗi đồng bộ hóa";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "Nhập từ mật mã";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "Nhập từ mật mã bên dưới";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "Mã đồng bộ hóa này đã hết hạn, vui lòng tạo mã đồng bộ hóa mới và thử lại.";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "Xin lỗi, đã xảy ra sự cố";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "Bật camera";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "Agent Đồng bộ hóa hiện đang ngoại tuyến hoặc không thể truy cập. Vui lòng thử lại sau.";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "Lỗi đồng bộ hóa truyền thông";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "Đồng bộ hóa thông tin";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "Mã đồng bộ hóa không hợp lệ, xin vui lòng kiểm tra và thử lại.";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "Lưu ý: Bạn nên xác minh rằng bạn nhận ra từng thiết bị trong danh sách trên. Các thiết bị trong chuỗi đồng bộ hóa có thể nhận dữ liệu cá nhân như mật khẩu và lịch sử duyệt web.";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "Xác nhận thiết bị";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "Bạn đã đạt số lượng tối đa (10) thiết bị được phép trong một chuỗi đồng bộ hóa. Hãy xóa một thiết bị để tiếp tục.";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "Giới hạn số thiết bị";
+
+/* New sync code button title */
+"sync.newSyncCode" = "Bắt đầu Chuỗi đồng bộ hóa mới";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "Kiểm tra kết nối internet của bạn và thử lại.";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "Không thể kết nối để đồng bộ hóa";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "Vui lòng nhập tất cả các từ và thử lại.";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "Không đủ số từ";
+
+/* Sync pair device settings section title */
+"sync.pair" = "Ghép đôi";
+
+/* QR Code section title */
+"sync.qrCode" = "Mã QR";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "Dữ liệu cục bộ trên thiết bị sẽ vẫn còn nguyên vẹn trên tất cả các thiết bị. Các thiết bị khác trong chuỗi đồng bộ hóa này sẽ vẫn được duy trì trạng thái đồng bộ hóa.";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "Xóa %@ khỏi chuỗi đồng bộ hóa?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "Xóa";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "Xóa thiết bị";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "Thiết bị";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "Dữ liệu hiện được đồng bộ hóa sẽ được giữ lại nhưng tất cả dữ liệu trong bộ nhớ đệm của tính năng đồng bộ hóa của Brave sẽ bị xóa. Bạn sẽ cần bắt đầu một chuỗi đồng bộ hóa mới để đồng bộ hóa lại dữ liệu thiết bị.";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "Xóa chuỗi đồng bộ hóa";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "Xóa %@ sẽ xóa Chuỗi đồng bộ hóa.";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "Việc xóa thiết bị khỏi chuỗi đồng bộ hóa sẽ không xóa dữ liệu đã được đồng bộ hóa trước đó khỏi thiết bị.";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "Xóa %@ khỏi chuỗi đồng bộ hóa?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "Xóa thiết bị này";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "Thiết bị này sẽ bị ngắt kết nối khỏi nhóm đồng bộ hóa và không còn nhận hoặc gửi dữ liệu đồng bộ hóa nữa. Tất cả dữ liệu hiện có vẫn sẽ còn trên thiết bị.";
+
+/* Scan sync code title */
+"sync.scan" = "Quét";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "Tôi có Mã đồng bộ hóa";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "Để thêm thiết bị vào chuỗi đồng bộ hoặc bật/tắt đồng bộ hóa mật khẩu, trước tiên bạn phải đặt mật mã trên thiết bị của mình.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "Đặt mã bảo mật";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "Danh sách thiết bị bên dưới bao gồm tất cả các thiết bị trong chuỗi đồng bộ của bạn. Mỗi thiết bị có thể được quản lý từ bất kỳ thiết bị nào khác.";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "Cài đặt Đồng bộ hóa";
+
+/* Show code words instead */
+"sync.showCodeWords" = "Hiển thị từ mật mã";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "Tôi sẽ dùng camera của mình...";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Lựa chọn xóa này là vĩnh viễn và không có cách nào để khôi phục dữ liệu. Nếu bạn quyết định sử dụng Đồng bộ hóa trở lại, bạn sẽ cần tạo một tài khoản mới và thêm lại từng thiết bị một.";
+
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "Thiết bị & Cài đặt";
+
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "Xóa thiết bị này?";
+
+/* Sync settings section title */
+"sync.syncTitle" = "Đồng bộ hóa";
+
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "Không thành công";
+
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "Máy tính bảng hoặc điện thoại";
+
+/* This device cell */
+"sync.thisDevice" = "Thiết bị này";
+
+/* Sync to existing device */
+"sync.toDevice" = "Đồng bộ hóa thiết bị";
+
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "Trên thiết bị đã đồng bộ hóa hiện có, mở Cài đặt Brave và điều hướng đến Cài đặt -> Đồng bộ hóa. Chọn \"Thêm thiết bị\" và quét mã hiển thị trên màn hình.";
+
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "Không thể đồng bộ hóa thiết bị này";
+
+/* Sync Alert */
+"sync.unableToConnectDescription" = "Không thể tham gia nhóm đồng bộ hóa. Vui lòng kiểm tra các từ đã nhập và thử lại.";
+
+/* Sync Alert */
+"sync.unableToConnectTitle" = "Không thể kết nối";
+
+/* Sync Error Description */
+"sync.validForTooLongError" = "Mã này không hợp lệ. Vui lòng kiểm tra xem thời gian và múi giờ có được đặt chính xác trên thiết bị của bạn không.";
+
+/* Sync settings welcome */
+"sync.welcome" = "Để bắt đầu, bạn sẽ cần cài đặt Brave trên tất cả các thiết bị bạn dự định đồng bộ hóa. Để liên kết các thiết bị này lại với nhau, hãy bắt đầu chuỗi đồng bộ hóa mà bạn sẽ sử dụng để liên kết bảo mật tất cả các thiết bị của bạn lại với nhau.";
+
+/* Word count title */
+"sync.wordCount" = "Số từ: %i";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Dấu trang đã nhập";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "Đóng";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "Bật hoặc tắt chế độ riêng tư";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "Chế độ riêng tư";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "Tắt";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "Bật";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "Vẫn mở các thẻ duyệt riêng tư khi bạn đóng ứng dụng, đảm bảo phiên duyệt riêng tư tiếp tục không bị gián đoạn.";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "Giữ Thẻ riêng tư";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Yêu cầu Face ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "Yêu cầu mã Pin";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Yêu cầu Touch ID";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "Thẻ riêng tư";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "Thanh công cụ điều hướng";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "Thêm thẻ";
+
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "Thêm vào Danh sách phát";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "Quay lại";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "Chuyển tiếp";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "Kết nối bảo mật";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "Menu";
+
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "Không bảo mật";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Danh sách phát";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "Giao diện chế độ đọc";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "Thêm vào Danh sách đọc";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "Tải lại";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "Tìm hoặc nhập địa chỉ";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "Chia sẻ";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "Dừng";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "Tìm kiếm bằng giọng nói";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "Kết nối không bảo mật";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "Khay thẻ";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "Thêm thẻ";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "Vuốt phải hoặc trái với ba ngón tay để đóng thẻ.";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "Đang đóng thẻ";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "Không có thẻ";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "Thẻ %1$@ đến %2$@ trên tổng số %3$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "Thẻ mới";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "Tìm thẻ";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "Thẻ %1$@ trên tổng số %2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "Điều khoản Dịch vụ";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "Điều khoản Sử dụng";
+
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "Chia sẻ...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "Chia sẻ Brave với bạn bè của bạn!";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "Tự động";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "Tối";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Giao diện";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "Các cài đặt này không được áp dụng ở chế độ duyệt riêng tư.";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "Sáng";
+
+/* Name for app theme settings */
+"themesSettings" = "Chủ đề";
+
+/* No comment provided by engineer. */
+"Title" = "Tiêu đề";
+
+/* History tableview section header */
+"Today" = "Hôm nay";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "Thêm";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "Thêm nguồn không thành công";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "Xin lỗi, chúng tôi không thể nhận ra địa chỉ nguồn cấp dữ liệu.";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "Xin lỗi, chúng tôi không thể tìm được địa chỉ nguồn cấp dữ liệu.";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "Xin lỗi, địa chỉ nguồn dữ liệu đó không có nội dung nào.";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "Thêm nguồn vào Tin tức Brave";
+
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "Nguồn cấp RSS khả dụng";
+
+/* The name of the feature */
+"today.braveToday" = "Tin tức Brave";
+
+/* The name of the feature in settings */
+"today.braveToday.title" = "Tin tức";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "Theo dõi các chủ đề mà bạn quan tâm";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "Kênh";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "Kênh";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "Kênh";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "Có nội dung mới";
+
+/* No comment provided by engineer. */
+"today.deals" = "Ưu đãi";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Tin tức Brave sẽ ngừng hiển thị nội dung từ %@";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "Đã tắt";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "Ẩn nội dung khỏi %@";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "Hãy thử bật một số nguồn tin tức";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "Không có bài viết nào để hiển thị";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "Cho phép nội dung từ %@";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "Tin tức Brave đang gặp một số vấn đề. Hãy thử lại.";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "Ôi...";
+
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "Quản lý nguồn cho bảng tin của bạn";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "Đang theo dõi";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "Đang theo dõi";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "Theo dõi";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "Nhận dữ liệu từ";
+
+/* \"OPML\" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "Nhập OPML";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "Nguồn không bảo mật - Chấp nhận rủi ro khi thêm";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Theo dõi các nguồn tin yêu thích của bạn, chỉ trong một trang tổng hợp. Chỉ cần mở một thẻ trong Brave, cuộn xuống và… ta-da!\nTin tức Brave có hiển thị quảng cáo riêng tư, ẩn danh.";
+
+/* Shown above a button that turns on the \"Brave News\" product in the app. */
+"today.introCardTitle" = "Bật Tin tức Brave để không bỏ lỡ câu chuyện nào";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "Hiển thị Tin tức Brave";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "Tìm hiểu thêm về dữ liệu của bạn";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "Thêm ưu đãi Brave";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "Không có internet";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "Hãy thử kiểm tra kết nối hoặc kết nối lại Wi-Fi.";
+
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "Không tìm thấy kết quả nào";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "Danh sách các nguồn đã xếp hạng";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "Phổ biến";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "Nguồn phổ biến";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "Được quảng bá";
+
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "Đánh giá Brave trên App Store";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "Ẩn";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "Đánh giá Brave";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "Hãy cho chúng tôi biết bạn nghĩ gì!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "Thích Brave?";
+
+/* No comment provided by engineer. */
+"today.refresh" = "Làm mới";
+
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "Tìm kiếm trang web, chủ đề hoặc nguồn cấp RSS";
+
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "Tương tự với %@";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "Nguồn & Cài đặt";
+
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "Nguồn";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "Một số nguồn bạn có thể thích";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "Đã đề xuất";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "Đã đề xuất";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Bật Tin tức Brave";
+
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "Hủy theo dõi";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "Nguồn của người dùng";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "Bật chế độ Đọc";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "Bật gợi ý tìm kiếm?";
+
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "Mở khóa";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Công cụ thanh toán không được hỗ trợ";
+
+/* Bookmark URL */
+"URL" = "URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "Địa chỉ và Tìm kiếm";
+
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "Chuyển hướng trang web";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Người dùng đã hủy";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "Sử dụng chặn quảng cáo theo vùng";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "Đóng";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Đã xảy ra sự cố khi đăng nhập vào tài khoản Uphold của bạn. Vui lòng thử lại";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "Xin lỗi, đã xảy ra sự cố";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "Phiên bản %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "Xem trên %@";
+
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "Vui lòng cho phép truy cập micrô trong Cài đặt hệ thống iOS để Brave sử dụng tìm kiếm bằng giọng nói ẩn danh.";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "Cần có quyền truy cập micrô";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Brave không lưu trữ hoặc chia sẻ tìm kiếm bằng giọng nói của bạn.";
+
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Bạn muốn tiếp tục được bảo vệ? Chỉ cần gia hạn trước khi gói đăng ký của bạn kết thúc. Để cảm ơn bạn vì lựa chọn gia hạn, chúng tôi sẽ giảm giá 20% cho 3 tháng tiếp theo.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Bật tự động gia hạn";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Tự động gia hạn gói đăng ký Brave VPN của bạn ngay bây giờ và được giảm giá 20% cho 3 tháng!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Tự động gia hạn gói đăng ký Brave VPN của bạn ngay bây giờ và nhận 1 tháng miễn phí!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "Điều đó có nghĩa là bạn sẽ mất các lớp bảo vệ bổ sung của Brave cho mọi ứng dụng trên điện thoại.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Ôi không! Gói đăng ký Brave VPN của bạn sắp hết hạn.";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Tường lửa Brave + VPN";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Không thể kết nối với App Store, vui lòng thử lại sau vài phút.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "Lỗi App Store";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Chặn các kết nối mạng không mong muốn";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Chặn quảng cáo & trình theo dõi trên tất cả ứng dụng";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Hỗ trợ tốc độ lên đến 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Nhanh và không giới hạn lên đến 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "Hỗ trợ 24/7";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Bảo vệ an toàn mọi kết nối";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Được cung cấp bởi";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Tự động";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Vui lòng đăng nhập vào Tài khoản Brave của bạn để làm mới phiên VPN.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Bỏ qua";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Đăng nhập";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Phiên hết hạn";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Đã tắt";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Đã bật";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Đã hết hạn";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Đăng ký gói ngay";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Đúng vậy. Gói đăng ký Brave VPN của bạn có thể hoạt động tốt trên tối đa 5 thiết bị. Vì vậy, bạn có thể đăng ký gói trên iOS và sử dụng miễn phí trên các thiết bị Mac, Windows và Android của mình.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Giờ đây bạn có thể sử dụng Brave VPN trên mọi thiết bị của mình với cùng một mức giá!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Thử dùng Brave VPN một lần nữa và được giảm giá 20% cho 3 tháng!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Bạn muốn bảo vệ mọi ứng dụng trên điện thoại của mình? Quay lại Brave VPN và được giảm giá 20% cho 3 tháng tiếp theo.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN luôn chặn trình theo dõi trên mọi ứng dụng, ngay cả ngoài trình duyệt Brave. Giờ đây bạn có thể xem ai đã cố gắng theo dõi bạn, với Trung tâm Quyền riêng tư của Brave.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Bạn có biết Brave VPN cũng bảo vệ bạn bên ngoài Trình duyệt Brave?";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Cập nhật";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Đừng lo lắng. Chúng tôi sẽ giữ VPN hoạt động trong vài ngày trong lúc bạn cập nhật thông tin thanh toán.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Cập nhật thông tin thanh toán của bạn để tiếp tục được bảo vệ với Brave VPN.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Bạn muốn tiếp tục bảo vệ mọi ứng dụng trên điện thoại của mình? Chỉ cần cập nhật thông tin thanh toán.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Tài khoản của bạn có vấn đề về thanh toán, đồng nghĩa với việc gói đăng ký Brave VPN của bạn sắp hết hạn.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Cập nhật thanh toán";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Vùng máy chủ";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Cài đặt hiện tại: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "Vùng VPN";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Vui lòng cập nhật phương thức thanh toán của bạn";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "Ngày tạo Ví";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "Nội dung web";
+
+/* Temporary data that is stored on the users device to speed up future requests and interactions. */
+"websiteData.dataRecordCache" = "Bộ nhớ đệm";
+
+/* The word used to describe small bits of state stored locally in a web browser (e.g. Browser cookies) */
+"websiteData.dataRecordCookies" = "Cookie";
+
+/* Some data stored on disk that is a kind of database (such as WebSQL or IndexedDB.) */
+"websiteData.dataRecordDatabases" = "Cơ sở dữ liệu";
+
+/* A kind of browser storage particularely for saving data on the users device for a specific webpage for the given session or longer time periods. */
+"websiteData.dataRecordLocalStorage" = "Bộ nhớ cục bộ";
+
+/* A message displayed to users while the system fetches all website data to display. */
+"websiteData.loadingWebsiteData" = "Đang tải dữ liệu trang web…";
+
+/* A button or screen title describing that the user is there to manually manage website data that is persisted to their device. I.e. to manage data specific to a web page the user has visited */
+"websiteData.manageWebsiteDataTitle" = "Quản lý dữ liệu trang web";
+
+/* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
+"websiteData.noSavedWebsiteData" = "Không có dữ liệu trang web đã lưu";
+
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeAllDataRecords" = "Xóa Tất cả";
+
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+"websiteData.removeDataRecord" = "Xóa";
+
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeSelectedDataRecord" = "Xóa %ld mục";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Yêu thích";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "Tiện ích";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "năm";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "Có";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "Có, xóa";
+
+/* History tableview section header */
+"Yesterday" = "Hôm qua";
+
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "Bật chất lượng cao cho video YouTube";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "Bật tính năng thử nghiệm này sẽ phát video ở chất lượng cao nhất có thể và sẽ sử dụng thêm dữ liệu.";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "Tắt";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "Bật";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "Chất lượng phát YouTube";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "Cho phép qua Wi-Fi";
+

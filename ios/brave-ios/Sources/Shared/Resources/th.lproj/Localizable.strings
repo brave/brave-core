@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "ตัดลอก URL ไปยังคลิปบอร์ดแล้ว";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "ขอเว็บไซต์เดสก์ท็อป";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "ขอเว็บไซต์มือถือ";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "แสดงบุ๊กมาร์กที่เยี่ยมชมล่าสุด";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "ยกเลิก";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "คุณแน่ใจไหมว่าต้องการยกเลิกการดาวน์โหลดนี้";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "ทำต่อ";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "ยกเลิกดาวน์โหลด";
+
+/* Cancel button */
+"CancelString" = "ยกเลิก";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "สลับ";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "เปิดแท็บใหม่แล้ว";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "ยกเลิกดาวน์โหลดแล้ว";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "ดาวน์โหลดไม่สำเร็จ";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 จาก %d ไฟล์";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "ดาวน์โหลด";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "ต้องการเปิดลิงก์นี้ในแอป App Store หรือไม่";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "ไป";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "ไม่บันทึก";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "ไม่อัปเดต";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "บันทึกการเข้าสู่ระบบ";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "อัปเดต";
+
+/* OK button */
+"OKString" = "ตกลง";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "โหมดผู้อ่านพร้อมใช้งานแล้ว";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "รีเซ้ตขนาดตัวอักษร";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "ต้องการบันทึกรหัสผ่านสำหรับ %@ หรือไม่";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "ต้องการบันทึกการเข้าสู่ระบบ %1$@ สำหรับ %2$@ หรือไม่";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "ตกลง";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "จัดตำแหน่ง QR Code ให้อยู่ภายในกรอบเพื่อทำการสแกน";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "ข้อมูลไม่ถูกต้อง";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "โปรดอนุญาตให้ Brave เข้าถึงกล้องของอุปกรณ์คุณใน ‘การตั้งค่า’ -> ‘ความเป็นส่วนตัว’ -> ‘กล้อง’";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "สแกน QR Code";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "ทั่วไป";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "เสร็จ";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "เลิกทำ";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "ปิด %d แท็บแล้ว";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "ตกลง";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "เกิดข้อผิดพลาดขณะเพิ่มบัตรโดยสารไปที่วอลเล็ท โปรดลองอีกครั้งในภายหลัง";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "เพิ่มบัตรโดยสารไม่สำเร็จ";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave ไม่สามารถเปิดหน้าได้เนื่องจากมีแอดเดรสไม่ถูกต้อง";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "ไม่สามารถเปิดหน้านี้ได้";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "ต้องการอัปเดต %1$@ ของการลงชื่อเข้าใช้สำหรับ %2$@ หรือไม่";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "ต้องการอัปเดต %1$@ ของการลงชื่อเข้าใช้สำหรับ %2$@ หรือไม่";
+

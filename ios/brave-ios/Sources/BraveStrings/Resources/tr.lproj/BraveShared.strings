@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri Kestirmeleri";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Yer İşaretleri Kısayolunu Göster";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Yer İşaretlerini Göster";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Panoya kopyala";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Senkronizasyon Hesabını Sil";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Senkronizasyon Hesabını Sil";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Hesabınızı silmek, şifrelenmiş verilerinizi Brave sunucularından kaldırır ve bağlı tüm cihazlarınızda Senkronizasyonu devre dışı bırakır.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Ancak bu işlem, bu cihazlarda yerel olarak depolanan verileri silmez.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Senkronizasyon Hesabını Sil";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Görünüşe göre bu kod Brave'in eski bir sürümünü çalıştıran bir cihazda oluşturulmuş. Lütfen diğer cihazınızda Brave'i en yeni sürümüne güncelleyin ve bundan sonra yeni bir senkronizasyon kodu oluşturun.";
