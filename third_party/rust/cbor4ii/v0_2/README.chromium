@@ -1,9 +1,10 @@
 Name: cbor4ii
 URL: https://crates.io/crates/cbor4ii
-Description: CBOR: Concise Binary Object Representation
 Version: 0.2.14
-Security Critical: yes
-Shipped: yes
+Revision: ba8a10f7430d3549448965665b2699b37b64c867
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/cbor4ii-0.2.14/LICENSE
-Revision: ba8a10f7430d3549448965665b2699b37b64c867
+Shipped: yes
+Security Critical: yes
+
+Description: CBOR: Concise Binary Object Representation

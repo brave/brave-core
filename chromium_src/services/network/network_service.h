@@ -12,9 +12,14 @@
   GetDnsRequestCountsAndReset(GetDnsRequestCountsAndResetCallback callback) \
       override;                                                             \
   void DisableQuic
+#define UpdateKeyPinsList                              \
+  UpdateKeyPinsList_Unused(mojom::PinListPtr pin_list, \
+                           base::Time update_time);    \
+  void UpdateKeyPinsList
 
 #include "src/services/network/network_service.h"  // IWYU pragma: export
 
+#undef UpdateKeyPinsList
 #undef DisableQuic
 
 #endif  // BRAVE_CHROMIUM_SRC_SERVICES_NETWORK_NETWORK_SERVICE_H_

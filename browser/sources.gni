@@ -494,8 +494,6 @@ if (is_win && is_official_build) {
     "//chrome/browser/google/switches.cc",
     "//chrome/browser/google/switches.h",
   ]
-
-  brave_chrome_browser_deps += [ "//google_update" ]
 }
 
 brave_chrome_browser_public_deps = [

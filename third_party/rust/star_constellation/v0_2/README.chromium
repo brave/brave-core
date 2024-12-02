@@ -1,9 +1,10 @@
 Name: star-constellation
 URL: https://crates.io/crates/star-constellation
-Description: Nested threshold aggregation built on the STAR protocol
 Version: 0.2.3
-Security Critical: yes
-Shipped: yes
+Revision: 4f2220b014fb858bb7aa6de95b433de1d060bd71
 License: Mozilla Public License 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/star-constellation-0.2.3/LICENSE
-Revision: 4f2220b014fb858bb7aa6de95b433de1d060bd71
+Shipped: yes
+Security Critical: yes
+
+Description: Nested threshold aggregation built on the STAR protocol

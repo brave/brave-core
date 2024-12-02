@@ -1,9 +1,10 @@
 Name: bincode
 URL: https://crates.io/crates/bincode
-Description: A binary serialization / deserialization strategy that uses Serde for transforming structs into bytes and vice versa!
 Version: 1.3.3
-Security Critical: yes
-Shipped: yes
+Revision: c44b5e364e7084cdbabf9f94b63a3c7f32b8fb68
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/bincode-1.3.3/LICENSE.md
-Revision: c44b5e364e7084cdbabf9f94b63a3c7f32b8fb68
+Shipped: yes
+Security Critical: yes
+
+Description: A binary serialization / deserialization strategy that uses Serde for transforming structs into bytes and vice versa!

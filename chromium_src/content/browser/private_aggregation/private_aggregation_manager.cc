@@ -5,6 +5,10 @@
 
 #include "content/browser/private_aggregation/private_aggregation_manager.h"
 
+#define GetManager GetManager_ChromiumImpl
+#include "src/content/browser/private_aggregation/private_aggregation_manager.cc"
+#undef GetManager
+
 namespace content {
 
 PrivateAggregationManager* PrivateAggregationManager::GetManager(

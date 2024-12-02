@@ -35,7 +35,6 @@
 #include "components/prefs/pref_service.h"
 #include "extensions/common/constants.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/models/simple_menu_model.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
@@ -43,6 +42,7 @@
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/skia_util.h"
+#include "ui/menus/simple_menu_model.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/controls/button/label_button_border.h"
 #include "ui/views/controls/button/menu_button_controller.h"
@@ -176,31 +176,32 @@ class RewardsActionMenuModel : public ui::SimpleMenuModel,
 
 std::unique_ptr<WebUIBubbleManager> CreateBubbleManager(
     views::View* anchor_view,
-    Profile* profile) {
+    BrowserWindowInterface* browser_window_interface) {
   if (base::FeatureList::IsEnabled(
           brave_rewards::features::kNewRewardsUIFeature)) {
     return WebUIBubbleManager::Create<brave_rewards::RewardsPageTopUI>(
-        anchor_view, profile, GURL(kRewardsPageTopURL),
+        anchor_view, browser_window_interface, GURL(kRewardsPageTopURL),
         IDS_BRAVE_UI_BRAVE_REWARDS);
   }
   return WebUIBubbleManager::Create<brave_rewards::RewardsPanelUI>(
-      anchor_view, profile, GURL(kBraveRewardsPanelURL),
+      anchor_view, browser_window_interface, GURL(kBraveRewardsPanelURL),
       IDS_BRAVE_UI_BRAVE_REWARDS);
 }
 
 }  // namespace
 
-BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
+BraveRewardsActionView::BraveRewardsActionView(
+    BrowserWindowInterface* browser_window_interface)
     : ToolbarButton(
           base::BindRepeating(&BraveRewardsActionView::OnButtonPressed,
                               base::Unretained(this)),
           std::make_unique<RewardsActionMenuModel>(
-              browser->profile()->GetPrefs()),
+              browser_window_interface->GetProfile()->GetPrefs()),
           nullptr,
           false),
-      browser_(browser),
-      bubble_manager_(CreateBubbleManager(this, browser->profile())) {
-  DCHECK(browser_);
+      browser_window_interface_(browser_window_interface),
+      bubble_manager_(CreateBubbleManager(this, browser_window_interface)) {
+  DCHECK(browser_window_interface_);
 
   SetButtonController(std::make_unique<views::MenuButtonController>(
       this,
@@ -213,7 +214,7 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
   SetAccessibleName(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_BRAVE_UI_BRAVE_REWARDS));
 
-  auto* profile = browser_->profile();
+  auto* profile = browser_window_interface_->GetProfile();
 
   pref_change_registrar_.Init(profile->GetPrefs());
   pref_change_registrar_.Add(
@@ -229,7 +230,7 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
       base::BindRepeating(&BraveRewardsActionView::OnPreferencesChanged,
                           base::Unretained(this)));
 
-  browser_->tab_strip_model()->AddObserver(this);
+  browser_window_interface_->GetTabStripModel()->AddObserver(this);
 
   if (auto* rewards_service = GetRewardsService()) {
     rewards_service_observation_.Observe(rewards_service);
@@ -239,7 +240,8 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
     notification_service_observation_.Observe(notification_service);
   }
 
-  panel_coordinator_ = RewardsPanelCoordinator::FromBrowser(browser_);
+  panel_coordinator_ = RewardsPanelCoordinator::FromBrowser(
+      browser_window_interface_->GetBrowserForMigrationOnly());
   if (panel_coordinator_) {
     panel_observation_.Observe(panel_coordinator_);
   }
@@ -280,7 +282,8 @@ gfx::Rect BraveRewardsActionView::GetAnchorBoundsInScreen() const {
   if (!GetVisible()) {
     // If the button is currently hidden, then anchor the bubble to the
     // location bar instead.
-    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(
+        browser_window_interface_->GetBrowserForMigrationOnly());
     DCHECK(browser_view);
     return browser_view->GetLocationBarView()->GetAnchorBoundsInScreen();
   }
@@ -393,11 +396,12 @@ void BraveRewardsActionView::OnPreferencesChanged(const std::string& key) {
 }
 
 content::WebContents* BraveRewardsActionView::GetActiveWebContents() {
-  return browser_->tab_strip_model()->GetActiveWebContents();
+  return browser_window_interface_->GetTabStripModel()->GetActiveWebContents();
 }
 
 brave_rewards::RewardsService* BraveRewardsActionView::GetRewardsService() {
-  return RewardsServiceFactory::GetForProfile(browser_->profile());
+  return RewardsServiceFactory::GetForProfile(
+      browser_window_interface_->GetProfile());
 }
 
 brave_rewards::RewardsNotificationService*
@@ -420,7 +424,7 @@ void BraveRewardsActionView::ToggleRewardsPanel() {
   }
 
   // Clear the default-on-start badge text when the user opens the panel.
-  auto* prefs = browser_->profile()->GetPrefs();
+  auto* prefs = browser_window_interface_->GetProfile()->GetPrefs();
   prefs->SetString(brave_rewards::prefs::kBadgeText, "");
 
   bubble_manager_->ShowBubble();
@@ -439,8 +443,9 @@ gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
 std::pair<std::string, SkColor>
 BraveRewardsActionView::GetBadgeTextAndBackground() {
   // 1. Display the default-on-start Rewards badge text, if specified.
-  std::string text_pref = browser_->profile()->GetPrefs()->GetString(
-      brave_rewards::prefs::kBadgeText);
+  std::string text_pref =
+      browser_window_interface_->GetProfile()->GetPrefs()->GetString(
+          brave_rewards::prefs::kBadgeText);
   if (!text_pref.empty()) {
     return {text_pref, brave::kBadgeNotificationBG};
   }
@@ -471,7 +476,7 @@ size_t BraveRewardsActionView::GetRewardsNotificationCount() {
 
   // Increment the notification count if the user has enabled Rewards but has
   // not declared a country.
-  auto* prefs = browser_->profile()->GetPrefs();
+  auto* prefs = browser_window_interface_->GetProfile()->GetPrefs();
   if (prefs->GetBoolean(brave_rewards::prefs::kEnabled) &&
       prefs->GetString(brave_rewards::prefs::kDeclaredGeo).empty()) {
     ++count;

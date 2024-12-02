@@ -1,9 +1,10 @@
 Name: fpe
 URL: https://crates.io/crates/fpe
-Description: Format-preserving encryption
 Version: 0.6.1
-Security Critical: yes
-Shipped: yes
+Revision: 913e533c9345d5c8e11aac42318fc5743d6f58e9
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/fpe-0.6.1/LICENSE-APACHE
-Revision: 913e533c9345d5c8e11aac42318fc5743d6f58e9
+Shipped: yes
+Security Critical: yes
+
+Description: Format-preserving encryption

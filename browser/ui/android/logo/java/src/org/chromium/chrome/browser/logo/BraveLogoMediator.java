@@ -20,7 +20,6 @@ public class BraveLogoMediator extends LogoMediator {
             Context context,
             Callback<LoadUrlParams> logoClickedCallback,
             PropertyModel logoModel,
-            boolean shouldFetchDoodle,
             Callback<LogoBridge.Logo> onLogoAvailableCallback,
             LogoCoordinator.VisibilityObserver visibilityObserver,
             CachedTintedBitmap defaultGoogleLogo) {
@@ -28,7 +27,6 @@ public class BraveLogoMediator extends LogoMediator {
                 context,
                 logoClickedCallback,
                 logoModel,
-                shouldFetchDoodle,
                 onLogoAvailableCallback,
                 visibilityObserver,
                 defaultGoogleLogo);

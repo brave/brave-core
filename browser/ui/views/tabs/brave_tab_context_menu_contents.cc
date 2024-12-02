@@ -66,8 +66,9 @@ void BraveTabContextMenuContents::Cancel() {
   controller_ = nullptr;
 }
 
-void BraveTabContextMenuContents::RunMenuAt(const gfx::Point& point,
-                                            ui::MenuSourceType source_type) {
+void BraveTabContextMenuContents::RunMenuAt(
+    const gfx::Point& point,
+    ui::mojom::MenuSourceType source_type) {
   menu_runner_->RunMenuAt(tab_->GetWidget(), nullptr,
                           gfx::Rect(point, gfx::Size()),
                           views::MenuAnchorPosition::kTopLeft, source_type);

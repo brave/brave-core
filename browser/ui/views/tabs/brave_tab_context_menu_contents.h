@@ -12,8 +12,9 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "ui/base/models/simple_menu_model.h"
+#include "ui/base/mojom/menu_source_type.mojom.h"
 #include "ui/base/ui_base_types.h"
+#include "ui/menus/simple_menu_model.h"
 
 class BraveBrowserTabStripController;
 class BraveTabMenuModel;
@@ -44,7 +45,8 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
 
   void Cancel();
 
-  void RunMenuAt(const gfx::Point& point, ui::MenuSourceType source_type);
+  void RunMenuAt(const gfx::Point& point,
+                 ui::mojom::MenuSourceType source_type);
 
   // ui::SimpleMenuModel::Delegate overrides:
   bool IsCommandIdChecked(int command_id) const override;

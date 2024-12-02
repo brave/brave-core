@@ -1,9 +1,10 @@
 Name: core-foundation-sys
 URL: https://crates.io/crates/core-foundation-sys
-Description: Bindings to Core Foundation for macOS
 Version: 0.8.3
-Security Critical: yes
-Shipped: yes
+Revision: 3841d2bb3aa76dec2ea6319e757603fb923b5a50
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/core-foundation-sys-0.8.3/LICENSE-APACHE
-Revision: 3841d2bb3aa76dec2ea6319e757603fb923b5a50
+Shipped: yes
+Security Critical: yes
+
+Description: Bindings to Core Foundation for macOS

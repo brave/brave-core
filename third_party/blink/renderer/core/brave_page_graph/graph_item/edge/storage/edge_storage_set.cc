@@ -9,7 +9,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/storage/node_storage.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
 
 namespace brave_page_graph {
 
@@ -31,9 +31,9 @@ ItemName EdgeStorageSet::GetItemName() const {
 }
 
 ItemDesc EdgeStorageSet::GetItemDesc() const {
-  WTF::TextStream ts;
+  StringBuilder ts;
   ts << EdgeStorage::GetItemDesc() << " [value: " << value_ << "]";
-  return ts.Release();
+  return ts.ReleaseString();
 }
 
 void EdgeStorageSet::AddGraphMLAttributes(xmlDocPtr doc,

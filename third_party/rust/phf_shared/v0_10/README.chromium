@@ -1,9 +1,10 @@
 Name: phf_shared
 URL: https://crates.io/crates/phf_shared
-Description: Support code shared by PHF libraries
 Version: 0.10.0
-Security Critical: yes
-Shipped: yes
+Revision: 3ea14b2166553ad6e7b9afe7244144f5d661b6c6
 License: MIT
 License File:
-Revision: 3ea14b2166553ad6e7b9afe7244144f5d661b6c6
+Shipped: yes
+Security Critical: yes
+
+Description: Support code shared by PHF libraries

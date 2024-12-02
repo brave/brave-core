@@ -33,7 +33,7 @@ void BraveProfileMenuView::SetProfileIdentityInfo(
     const std::u16string& title,
     const std::u16string& subtitle,
     const std::u16string& management_label,
-    const ui::ThemedVectorIcon& avatar_header_art) {
+    const gfx::VectorIcon* header_art_icon) {
   // This method is overriden because otherwise we would have to call
   // `SetProfileIdentityInfo` a second time, and this leaves
   // `profile_background_container_`, and `heading_label_` dangling in

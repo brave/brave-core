@@ -22,6 +22,7 @@ class PlaylistUI;
 
 class Browser;
 class SidePanelRegistry;
+class SidePanelEntryScope;
 
 class PlaylistSidePanelCoordinator
     : public BrowserUserData<PlaylistSidePanelCoordinator>,
@@ -73,7 +74,7 @@ class PlaylistSidePanelCoordinator
 
   void DestroyWebContentsIfNeeded();
 
-  std::unique_ptr<views::View> CreateWebView();
+  std::unique_ptr<views::View> CreateWebView(SidePanelEntryScope& scope);
 
   raw_ptr<Browser> browser_ = nullptr;
 

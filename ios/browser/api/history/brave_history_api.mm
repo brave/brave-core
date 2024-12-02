@@ -37,7 +37,7 @@ history::WebHistoryService* WebHistoryServiceGetter(
     base::WeakPtr<ProfileIOS> profile) {
   DCHECK(profile.get())
       << "Getter should not be called after ProfileIOS destruction.";
-  return ios::WebHistoryServiceFactory::GetForBrowserState(profile.get());
+  return ios::WebHistoryServiceFactory::GetForProfile(profile.get());
 }
 
 }  // anonymous namespace
@@ -167,28 +167,27 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 @end
 
 @implementation BraveHistoryAPI {
-  raw_ptr<ProfileIOS> _mainBrowserState;  // NOT OWNED
+  raw_ptr<ProfileIOS> _profile;  // NOT OWNED
 }
 
-- (instancetype)initWithBrowserState:(ProfileIOS*)mainBrowserState {
+- (instancetype)initWithBrowserState:(ProfileIOS*)profile {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    _mainBrowserState = mainBrowserState;
+    _profile = profile;
 
     history_service_ = ios::HistoryServiceFactory::GetForProfile(
-        _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS);
+        _profile, ServiceAccessType::EXPLICIT_ACCESS);
     web_history_service_ =
-        ios::WebHistoryServiceFactory::GetForBrowserState(_mainBrowserState);
+        ios::WebHistoryServiceFactory::GetForProfile(_profile);
 
-    _browsingHistoryDriver =
-        std::make_unique<HistoryDriverIOS>(base::BindRepeating(
-            &WebHistoryServiceGetter, _mainBrowserState->AsWeakPtr()));
+    _browsingHistoryDriver = std::make_unique<HistoryDriverIOS>(
+        base::BindRepeating(&WebHistoryServiceGetter, _profile->AsWeakPtr()));
 
     _browsingHistoryService = std::make_unique<history::BrowsingHistoryService>(
         _browsingHistoryDriver.get(),
         ios::HistoryServiceFactory::GetForProfile(
-            _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS),
-        SyncServiceFactory::GetForBrowserState(_mainBrowserState));
+            _profile, ServiceAccessType::EXPLICIT_ACCESS),
+        SyncServiceFactory::GetForProfile(_profile));
   }
   return self;
 }
@@ -227,9 +226,8 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
       /*transition*/ ui::PAGE_TRANSITION_TYPED,
       /*hidden=*/false, /*visit_source*/ history::VisitSource::SOURCE_BROWSED,
       /*did_replace_entry=*/false, /*consider_for_ntp_most_visited=*/true,
-      /*title*/ base::SysNSStringToUTF16(history.title),
-      /*opener*/ std::nullopt,
-      /*bookmark_id*/ std::nullopt);
+      /*is_ephemeral*/ false,
+      /*title*/ base::SysNSStringToUTF16(history.title));
 
   history_service_->AddPage(args);
 }

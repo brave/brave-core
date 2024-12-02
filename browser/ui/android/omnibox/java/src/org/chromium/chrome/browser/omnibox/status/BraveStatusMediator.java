@@ -33,7 +33,7 @@ public class BraveStatusMediator extends StatusMediator {
             PermissionDialogController permissionDialogController,
             OneshotSupplier<TemplateUrlService> templateUrlServiceSupplier,
             Supplier<Profile> profileSupplier,
-            PageInfoIPHController pageInfoIPHController,
+            PageInfoIphController pageInfoIphController,
             WindowAndroid windowAndroid,
             @Nullable
                     Supplier<MerchantTrustSignalsCoordinator>
@@ -47,7 +47,7 @@ public class BraveStatusMediator extends StatusMediator {
                 permissionDialogController,
                 templateUrlServiceSupplier,
                 profileSupplier,
-                pageInfoIPHController,
+                pageInfoIphController,
                 windowAndroid,
                 merchantTrustSignalsCoordinatorSupplier);
     }

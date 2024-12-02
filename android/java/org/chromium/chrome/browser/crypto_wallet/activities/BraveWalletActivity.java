@@ -176,7 +176,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
     @Override
     protected ActivityWindowAndroid createWindowAndroid() {
-        return new ActivityWindowAndroid(this, true, getIntentRequestTracker()) {
+        return new ActivityWindowAndroid(this, true, getIntentRequestTracker(), null) {
             @Override
             public ModalDialogManager getModalDialogManager() {
                 return mModalDialogManager;

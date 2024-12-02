@@ -1,9 +1,10 @@
 Name: toml_edit
 URL: https://crates.io/crates/toml_edit
-Description: Yet another format-preserving TOML parser.
 Version: 0.22.22
-Security Critical: yes
-Shipped: yes
+Revision: 091a0047931e997fe129f3c8fac2788af8091604
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/toml_edit-0.22.22/LICENSE-APACHE
-Revision: 091a0047931e997fe129f3c8fac2788af8091604
+Shipped: yes
+Security Critical: yes
+
+Description: Yet another format-preserving TOML parser.

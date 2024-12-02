@@ -1,8 +1,9 @@
 Name: byteorder
 URL: https://crates.io/crates/byteorder
-Description: Library for reading/writing numbers in big-endian and little-endian.
 Version: 1.5.0
-Security Critical: yes
-Shipped: yes
 License: MIT
 License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Library for reading/writing numbers in big-endian and little-endian.

@@ -1,9 +1,10 @@
 Name: poly1305
 URL: https://crates.io/crates/poly1305
-Description: The Poly1305 universal hash function and message authentication code
 Version: 0.8.0
-Security Critical: yes
-Shipped: yes
+Revision: 47a72962e8898fc70ab79d4ab40949efe61a23d2
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/poly1305-0.8.0/LICENSE-APACHE
-Revision: 47a72962e8898fc70ab79d4ab40949efe61a23d2
+Shipped: yes
+Security Critical: yes
+
+Description: The Poly1305 universal hash function and message authentication code

@@ -1,8 +1,8 @@
 diff --git a/content/browser/resources/gpu/info_view.ts b/content/browser/resources/gpu/info_view.ts
-index 2e20d0103aa198a6f1afb9d892a5f8f255489f85..2dab6a752bd5380cd13d421c326bc5aeddd31fdb 100644
+index a7d1c70d55d4ea473811c119290211ef9decd0db..a9157986a655bcf4a2c07b8237c32baf9b94a093 100644
 --- a/content/browser/resources/gpu/info_view.ts
 +++ b/content/browser/resources/gpu/info_view.ts
-@@ -537,6 +537,7 @@ export class InfoViewElement extends CustomElement {
+@@ -527,6 +527,7 @@ export class InfoViewElement extends CustomElement {
            value: clientInfo.graphics_backend,
          },
          {description: 'Command Line', value: clientInfo.command_line},

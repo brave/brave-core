@@ -93,6 +93,7 @@ source_set("unit_tests") {
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/l10n/common:test_support",
+    "//chrome/browser/prefs",
     "//chrome/test:test_support",
     "//content/test:test_support",
     "//net",

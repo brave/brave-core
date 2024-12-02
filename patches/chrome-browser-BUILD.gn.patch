@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 54279426733f7eeec00ee2ccf7c82771ae424c65..6cb0f560164665f7744986a2a425be4d30858632 100644
+index 3914cb63eed91e0e8a6eb8b64092c5dbe5348781..a890eb921ffd50ce71c0e2f8974fb9b6fb3a2946 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2517,6 +2517,7 @@ static_library("browser") {
-       "performance_monitor/metric_evaluator_helper_posix.h",
-     ]
+@@ -2506,6 +2506,7 @@ static_library("browser") {
+   } else {
+     sources += [ "net/net_error_diagnostics_dialog_stub.cc" ]
    }
 +  import("//brave/browser/sources.gni") sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps allow_circular_includes_from += brave_chrome_browser_allow_circular_includes_from
  
-   if (!is_chromeos_ash) {
+   if (is_android) {
      sources += [
-@@ -8604,6 +8605,7 @@ static_library("browser_public_dependencies") {
+@@ -8629,6 +8630,7 @@ static_library("browser_public_dependencies") {
        "//rlz:rlz_lib",
      ]
    }

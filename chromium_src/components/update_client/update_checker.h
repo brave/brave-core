@@ -53,11 +53,10 @@ class SequentialUpdateChecker : public UpdateChecker {
 
  private:
   void CheckNext();
-  void UpdateResultAvailable(
-      const std::optional<ProtocolParser::Results>& results,
-      ErrorCategory error_category,
-      int error,
-      int retry_after_sec);
+  void UpdateResultAvailable(std::optional<ProtocolParser::Results> results,
+                             ErrorCategory error_category,
+                             int error,
+                             int retry_after_sec);
 
   THREAD_CHECKER(thread_checker_);
 

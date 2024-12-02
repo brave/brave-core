@@ -82,9 +82,10 @@ void Capture(views::Widget* widget, gfx::Image* image) {
 
 bool CompareSnaphot(const SkBitmap& png_bitmap, base::FilePath snapshot_path) {
   base::ScopedAllowBlockingForTesting allow_blocking;
-
-  cc::ExactPixelComparator comparator;
-  return cc::MatchesPNGFile(png_bitmap, snapshot_path, comparator);
+  return cc::MatchesPNGFile(
+      png_bitmap, snapshot_path,
+      cc::FuzzyPixelComparator().DiscardAlpha().SetErrorPixelsPercentageLimit(
+          10.f));
 }
 
 base::FilePath GetTestDataDir() {

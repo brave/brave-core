@@ -1,9 +1,10 @@
 Name: arrayref
 URL: https://crates.io/crates/arrayref
-Description: Macros to take array references of slices
 Version: 0.3.7
-Security Critical: yes
-Shipped: yes
+Revision: 6a0d5849e359a9ad29ad096997eba3f1c7ca6b64
 License: BSD 2-Clause
 License File: //brave/third_party/rust/chromium_crates_io/vendor/arrayref-0.3.7/LICENSE
-Revision: 6a0d5849e359a9ad29ad096997eba3f1c7ca6b64
+Shipped: yes
+Security Critical: yes
+
+Description: Macros to take array references of slices

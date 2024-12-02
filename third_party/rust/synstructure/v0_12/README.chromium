@@ -1,9 +1,10 @@
 Name: synstructure
 URL: https://crates.io/crates/synstructure
-Description: Helper methods and macros for custom derives
 Version: 0.12.6
-Security Critical: yes
-Shipped: yes
+Revision: 26b84b4dd4e29eef7436b94ba656cd0765a6c4a0
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/synstructure-0.12.6/LICENSE
-Revision: 26b84b4dd4e29eef7436b94ba656cd0765a6c4a0
+Shipped: yes
+Security Critical: yes
+
+Description: Helper methods and macros for custom derives

@@ -1,5 +1,5 @@
 diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
-index ad5d0020c8e140d7fc92eb13e7aa44f697f1a3f3..f80c18be047063dc4a9c5dbce14a278d99444ad4 100644
+index 8266c44cbd1dfb8a53797dbe911ea74c32ce070e..ef069866a1692971c7313e06c1c4cfe4a4199bea 100644
 --- a/build/rust/cargo_crate.gni
 +++ b/build/rust/cargo_crate.gni
 @@ -158,6 +158,7 @@ template("cargo_crate") {
@@ -10,7 +10,7 @@ index ad5d0020c8e140d7fc92eb13e7aa44f697f1a3f3..f80c18be047063dc4a9c5dbce14a278d
  
    # cargo_crate() should set library_configs, executable_configs,
    # proc_macro_configs. Not configs.
-@@ -259,6 +260,7 @@ template("cargo_crate") {
+@@ -253,6 +254,7 @@ template("cargo_crate") {
      testonly = _testonly
      if (defined(invoker.visibility)) {
        visibility = invoker.visibility

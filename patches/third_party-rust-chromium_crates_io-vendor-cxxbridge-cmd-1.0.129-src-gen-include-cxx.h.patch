@@ -1,0 +1,25 @@
+diff --git a/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.129/src/gen/include/cxx.h b/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.129/src/gen/include/cxx.h
+index 3414e4c8a5434f6d43b8bf7a76e634ac0c7d06a5..c67980009525d8b38cdbbe97d7da3a9766055266 100644
+--- a/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.129/src/gen/include/cxx.h
++++ b/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.129/src/gen/include/cxx.h
+@@ -2,6 +2,7 @@
+ #include <algorithm>
+ #include <array>
+ #include <cassert>
++#include <concepts>
+ #include <cstddef>
+ #include <cstdint>
+ #include <exception>
+@@ -244,6 +245,12 @@ public:
+   bool operator>(const iterator &) const noexcept;
+   bool operator>=(const iterator &) const noexcept;
+ 
++  using iterator_concept = std::contiguous_iterator_tag;
++  template <std::integral N>
++  friend iterator operator+(N n, const iterator& it) noexcept {
++      return it + n;
++  }
++
+ private:
+   friend class Slice;
+   void *pos;

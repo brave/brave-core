@@ -1,8 +1,9 @@
 Name: forest_bigint
 URL: https://crates.io/crates/forest_bigint
-Description: BigInt utilities for use in Forest
 Version: 0.1.2
-Security Critical: yes
-Shipped: yes
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/forest_bigint-0.1.2/../../../../../common/licenses/Apache-2.0
+Shipped: yes
+Security Critical: yes
+
+Description: BigInt utilities for use in Forest

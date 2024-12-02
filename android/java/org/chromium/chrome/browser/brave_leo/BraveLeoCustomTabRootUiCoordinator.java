@@ -24,7 +24,6 @@ import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.customtabs.BaseCustomTabRootUiCoordinator;
 import org.chromium.chrome.browser.customtabs.CustomTabFeatureOverridesManager;
-import org.chromium.chrome.browser.customtabs.content.CustomTabActivityNavigationController;
 import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabController;
 import org.chromium.chrome.browser.customtabs.features.minimizedcustomtab.CustomTabMinimizeDelegate;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarCoordinator;
@@ -83,7 +82,6 @@ public class BraveLeoCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoord
             @NonNull StatusBarColorProvider statusBarColorProvider,
             @NonNull IntentRequestTracker intentRequestTracker,
             @NonNull Supplier<CustomTabToolbarCoordinator> customTabToolbarCoordinator,
-            @NonNull Supplier<CustomTabActivityNavigationController> customTabNavigationController,
             @NonNull Supplier<BrowserServicesIntentDataProvider> intentDataProvider,
             @NonNull BackPressManager backPressManager,
             @NonNull Supplier<CustomTabActivityTabController> tabController,
@@ -122,7 +120,6 @@ public class BraveLeoCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoord
                 statusBarColorProvider,
                 intentRequestTracker,
                 customTabToolbarCoordinator,
-                customTabNavigationController,
                 intentDataProvider,
                 backPressManager,
                 tabController,

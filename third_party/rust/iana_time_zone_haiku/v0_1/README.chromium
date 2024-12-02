@@ -1,9 +1,10 @@
 Name: iana-time-zone-haiku
 URL: https://crates.io/crates/iana-time-zone-haiku
-Description: iana-time-zone support crate for Haiku OS
 Version: 0.1.2
-Security Critical: yes
-Shipped: yes
+Revision: 668ef37a89162b7d24fb1cf8ee90054a8a2f3ad9
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/iana-time-zone-haiku-0.1.2/LICENSE-APACHE
-Revision: 668ef37a89162b7d24fb1cf8ee90054a8a2f3ad9
+Shipped: yes
+Security Critical: yes
+
+Description: iana-time-zone support crate for Haiku OS

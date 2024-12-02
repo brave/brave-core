@@ -1,12 +1,13 @@
 Name: nodrop
 URL: https://crates.io/crates/nodrop
+Version: 0.1.14
+Revision: c110696a963b7f3be9410b1a421a2c32a0015ed2
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/nodrop-0.1.14/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
 Description: A wrapper type to inhibit drop (destructor).
 
 ***Deprecated: Use ManuallyDrop or MaybeUninit instead!***
 
-Version: 0.1.14
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/nodrop-0.1.14/LICENSE-APACHE
-Revision: c110696a963b7f3be9410b1a421a2c32a0015ed2

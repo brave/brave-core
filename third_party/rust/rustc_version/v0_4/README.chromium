@@ -1,8 +1,9 @@
 Name: rustc_version
 URL: https://crates.io/crates/rustc_version
-Description: A library for querying the version of a installed rustc compiler
 Version: 0.4.1
-Security Critical: yes
-Shipped: yes
 License: Apache 2.0
 License File:
+Shipped: yes
+Security Critical: yes
+
+Description: A library for querying the version of a installed rustc compiler

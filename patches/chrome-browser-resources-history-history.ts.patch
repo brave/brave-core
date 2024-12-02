@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/history.ts b/chrome/browser/resources/history/history.ts
-index df7ce3f1cfb1adf3cad7f58cdfffb655e4547f3a..ccba80a32d4a9db2c9158dd737059cfab614e2a9 100644
+index 5aa8bff2a95f6016605a70b785af0865a9a5f168..32abc81e135a543388e0fc48be4e7a39edc3e799 100644
 --- a/chrome/browser/resources/history/history.ts
 +++ b/chrome/browser/resources/history/history.ts
 @@ -2,6 +2,7 @@
@@ -9,4 +9,4 @@ index df7ce3f1cfb1adf3cad7f58cdfffb655e4547f3a..ccba80a32d4a9db2c9158dd737059cfa
 +import './brave_overrides/index.js';
  import './app.js';
  
- export {BrowserProxyImpl as ShoppingBrowserProxyImpl} from 'chrome://resources/cr_components/commerce/browser_proxy.js';
+ export {PageCallbackRouter as ProductSpecificationsCallbackRouter} from 'chrome://resources/cr_components/commerce/product_specifications.mojom-webui.js';

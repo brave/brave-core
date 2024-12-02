@@ -866,7 +866,6 @@ public class BraveShieldsHandler
         reportInfo.screenshotPng = isScreenshotAvailable() ? mScreenshotBytes : null;
         reportInfo.details = mEditTextDetails.getText().toString();
         reportInfo.contact = mEditTextContact.getText().toString();
-        Tab currentActiveTab = mIconFetcher.getTab();
         return reportInfo;
     }
 

@@ -33,5 +33,6 @@ source_set("status_icon") {
     ":utils",
     "//base",
     "//ui/gfx",
+    "//ui/menus",
   ]
 }

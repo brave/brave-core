@@ -15,15 +15,13 @@ namespace location_bar_model {
 
 const gfx::VectorIcon& GetSecurityVectorIcon(
     security_state::SecurityLevel security_level,
-    bool use_updated_connection_security_indicators,
     security_state::MaliciousContentStatus malicious_content_status) {
   if (security_level == security_state::SECURE) {
     return kLeoTuneSmallIcon;
   }
 
-  return GetSecurityVectorIcon_Chromium(
-      security_level, use_updated_connection_security_indicators,
-      malicious_content_status);
+  return GetSecurityVectorIcon_Chromium(security_level,
+                                        malicious_content_status);
 }
 
 }  // namespace location_bar_model

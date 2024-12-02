@@ -1,8 +1,8 @@
 diff --git a/components/embedder_support/user_agent_utils.cc b/components/embedder_support/user_agent_utils.cc
-index 0d9ed98759c4bc39ae06b1c554079b6e12d3463d..6db0f586834fac7c787bd52c19d305903cbd8891 100644
+index d46582b54b94321c79442904aa831dd7a1f8158f..bde236879a950bf152092dcc5857d07bebebfa01 100644
 --- a/components/embedder_support/user_agent_utils.cc
 +++ b/components/embedder_support/user_agent_utils.cc
-@@ -190,6 +190,7 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
+@@ -194,6 +194,7 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
  #if !BUILDFLAG(CHROMIUM_BRANDING)
    brand = version_info::GetProductName();
  #endif
@@ -10,7 +10,7 @@ index 0d9ed98759c4bc39ae06b1c554079b6e12d3463d..6db0f586834fac7c787bd52c19d30590
    std::optional<std::string> maybe_brand_override =
        base::GetFieldTrialParamValueByFeature(features::kGreaseUACH,
                                               "brand_override");
-@@ -203,7 +204,7 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
+@@ -207,7 +208,7 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
  
    std::string brand_version =
        output_version_type == blink::UserAgentBrandVersionType::kFullVersion
@@ -18,4 +18,4 @@ index 0d9ed98759c4bc39ae06b1c554079b6e12d3463d..6db0f586834fac7c787bd52c19d30590
 +          ? BRAVE_BRAND_VERSION_OVERRIDE_FOR_FULL_BRAND_VERSION_TYPE
            : major_version;
  
-   return GenerateBrandVersionList(major_version_number, brand, brand_version,
+   return GenerateBrandVersionList(

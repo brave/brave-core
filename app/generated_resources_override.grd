@@ -865,6 +865,7 @@ are declared in tools/grit/grit_rule.gni.
           Unpin group from bookmarks
         </message>
         </if>
+
       <if expr="use_titlecase">
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_PIN_GROUP" desc="The label of the saved tab group button context menu item to pin a gruop">
           Pin Group to Bookmarks
@@ -874,15 +875,25 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         </if>
 
-      <if expr="not use_titlecase">
+    <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+                </if>
+      <message name="IDS_DATA_SHARING_JOIN_WARNING" desc="The warning at the top of join dialog.">
+          Make sure you trust the profile that sent this invitation
+        </message>
+        <message name="IDS_DATA_SHARING_GROUP_FULL_BODY" desc="The body text of the group being full dialog when joining.">
+          Contact the profile who sent this link
+        </message>
+        <message name="IDS_DATA_SHARING_PEOPLE_WITH_ACCESS" desc="Text describing a list of members of a group.">
+          Profiles with access
+        </message>
+        <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
         </if>
       <if expr="is_win or is_macosx or is_linux">
         </if>
-      <if expr="chromeos_lacros">
-        </if>
-
       <if expr="is_macosx">
         </if>
 
@@ -1243,9 +1254,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA_INCOGNITO" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
          This passkey will only be saved on this device. It will remain on this device after you close all Private windows.
       </message>
-      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA_WIN_INCOGNITO" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'. 'Windows Hello' is a feature of the Microsoft Windows operating system (https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0).">
-         This passkey will be saved only in Windows Hello. It will remain on this device after you close all Private windows.
-      </message>
       <message name="IDS_WEBAUTHN_GPM_INCOGNITO_CREATE_TITLE" desc="The title of a dialog that is shown when a user is creating a Brave Password Manager passkey while browsing in Private mode. The title is asking the user to confirm that they want to perform the action, while suggesting that the new passkey will exist outside of Private mode.">
         Save this passkey outside Private?
       </message>
@@ -1349,6 +1357,7 @@ are declared in tools/grit/grit_rule.gni.
 
     <if expr="is_android">
         </if>
-  </messages>
+
+    </messages>
 </release>
 </grit>

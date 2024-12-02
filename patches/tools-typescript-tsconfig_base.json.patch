@@ -1,0 +1,12 @@
+diff --git a/tools/typescript/tsconfig_base.json b/tools/typescript/tsconfig_base.json
+index e67b7e261fdb21c4ceb675fdaa0ec1d8a31883e7..24d47787f0bfaec33bb77781dc80bba99cc34213 100644
+--- a/tools/typescript/tsconfig_base.json
++++ b/tools/typescript/tsconfig_base.json
+@@ -13,7 +13,6 @@
+     "noImplicitReturns": true,
+     "noPropertyAccessFromIndexSignature": true,
+     "noUncheckedIndexedAccess": true,
+-    "noUncheckedSideEffectImports": true,
+     "noUnusedLocals": true,
+     "noUnusedParameters": true,
+     "preserveSymlinks": true,

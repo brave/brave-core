@@ -15,7 +15,7 @@
 #include "brave/browser/brave_vpn/win/storage_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/models/simple_menu_model.h"
+#include "ui/menus/simple_menu_model.h"
 #include "ui/native_theme/native_theme.h"
 
 namespace brave_vpn {

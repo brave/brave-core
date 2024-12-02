@@ -32,5 +32,13 @@ injectStyle(ExtensionsSidebarElement, css`
   .cr-nav-menu-item cr-ripple {
     display: none !important;
   }
-  `
+
+  .separator {
+    display: none !important;
+  }
+
+  #moreExtensions {
+    display: none !important;
+  }
+`
 )

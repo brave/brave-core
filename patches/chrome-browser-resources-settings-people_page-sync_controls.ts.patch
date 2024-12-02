@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
-index 6227bb90a5bdedd03cf15522502166a80fd2a4a2..bf6b8bc86871714deeda4de5e38afd1ebeb3a4ed 100644
+index 7ddd141129a0efd475849b991c0b92a325c30a32..2ae494a21f67b099a4f7c6126aeabda027b8d337 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.ts
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
-@@ -117,7 +117,7 @@ export class SettingsSyncControlsElement extends
+@@ -98,7 +98,7 @@ export class SettingsSyncControlsElement extends
  
      const router = Router.getInstance();
      if (router.getCurrentRoute() ===

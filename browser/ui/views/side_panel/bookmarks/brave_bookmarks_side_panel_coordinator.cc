@@ -32,8 +32,9 @@ void BraveBookmarksSidePanelCoordinator::CreateAndRegisterEntry(
 }
 
 std::unique_ptr<views::View>
-BraveBookmarksSidePanelCoordinator::CreateBookmarksPanelView() {
-  return std::make_unique<BraveBookmarksSidePanelView>(&GetBrowser());
+BraveBookmarksSidePanelCoordinator::CreateBookmarksPanelView(
+    SidePanelEntryScope& scope) {
+  return std::make_unique<BraveBookmarksSidePanelView>(&GetBrowser(), scope);
 }
 
 BROWSER_USER_DATA_KEY_IMPL(BraveBookmarksSidePanelCoordinator);

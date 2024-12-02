@@ -1,9 +1,10 @@
 Name: android_system_properties
 URL: https://crates.io/crates/android_system_properties
-Description: Minimal Android system properties wrapper
 Version: 0.1.5
-Security Critical: yes
-Shipped: yes
+Revision: fb87625f1807dff7623db2d80df682a199358515
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/android_system_properties-0.1.5/LICENSE-APACHE
-Revision: fb87625f1807dff7623db2d80df682a199358515
+Shipped: yes
+Security Critical: yes
+
+Description: Minimal Android system properties wrapper

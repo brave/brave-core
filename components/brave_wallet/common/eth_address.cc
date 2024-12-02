@@ -41,7 +41,8 @@ EthAddress EthAddress::FromPublicKey(base::span<const uint8_t> public_key) {
     return EthAddress();
   }
 
-  return EthAddress(base::span(KeccakHash(public_key)).last(kEthAddressLength));
+  return EthAddress(
+      base::as_byte_span(KeccakHash(public_key)).last(kEthAddressLength));
 }
 
 // static

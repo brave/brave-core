@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/notifications/notification_display_service_impl.cc b/chrome/browser/notifications/notification_display_service_impl.cc
-index 2689c1b3d1d12ede89245df1d16c687b7e4d2b8f..e5f70850ea00a59a797ef424ccd166c3deb432a0 100644
+index 52f7fc857ec38cd9be2cb9b0fbbc8498fabac0c4..30c6c9052408d5b3bcf1265b200c86538350073a 100644
 --- a/chrome/browser/notifications/notification_display_service_impl.cc
 +++ b/chrome/browser/notifications/notification_display_service_impl.cc
-@@ -123,6 +123,7 @@ NotificationDisplayServiceImpl::NotificationDisplayServiceImpl(Profile* profile)
+@@ -115,6 +115,7 @@ NotificationDisplayServiceImpl::NotificationDisplayServiceImpl(Profile* profile)
                               std::make_unique<NearbyNotificationHandler>());
      }
  #endif

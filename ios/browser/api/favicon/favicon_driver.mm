@@ -86,7 +86,7 @@ void FaviconDriverObserver::OnFaviconUpdated(
 
     brave_favicon::BraveIOSWebFaviconDriver::CreateForWebState(
         real_web_state,
-        ios::FaviconServiceFactory::GetForBrowserState(
+        ios::FaviconServiceFactory::GetForProfile(
             original_profile, ServiceAccessType::EXPLICIT_ACCESS));
   }
   return self;

@@ -1,9 +1,10 @@
 Name: slab
 URL: https://crates.io/crates/slab
-Description: Pre-allocated storage for a uniform data type
 Version: 0.4.8
-Security Critical: yes
-Shipped: yes
+Revision: 151a9cea914bb8017470caeb467a208fd1ad99b3
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/LICENSE
-Revision: 151a9cea914bb8017470caeb467a208fd1ad99b3
+Shipped: yes
+Security Critical: yes
+
+Description: Pre-allocated storage for a uniform data type

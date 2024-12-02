@@ -1,9 +1,10 @@
 Name: group
 URL: https://crates.io/crates/group
-Description: Elliptic curve group traits and utilities
 Version: 0.12.1
-Security Critical: yes
-Shipped: yes
+Revision: 3ec0ce7dec5865b2100e266cad82fc7af1b96f71
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/group-0.12.1/LICENSE-APACHE
-Revision: 3ec0ce7dec5865b2100e266cad82fc7af1b96f71
+Shipped: yes
+Security Critical: yes
+
+Description: Elliptic curve group traits and utilities

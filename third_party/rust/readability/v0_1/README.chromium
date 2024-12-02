@@ -1,8 +1,9 @@
 Name: readability
 URL: https://crates.io/crates/readability
-Description: Port of arc90's readability project to rust
 Version: 0.1.4
-Security Critical: yes
-Shipped: yes
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/readability-0.1.4/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Port of arc90's readability project to rust

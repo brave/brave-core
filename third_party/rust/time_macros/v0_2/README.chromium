@@ -1,11 +1,12 @@
 Name: time-macros
 URL: https://crates.io/crates/time-macros
+Version: 0.2.18
+Revision: 131049ea15d9a445fee306f87707d6751637f9fd
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/LICENSE-Apache
+Shipped: yes
+Security Critical: yes
+
 Description:     Procedural macros for the time crate.
     This crate is an implementation detail and should not be relied upon directly.
 
-Version: 0.2.18
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/time-macros-0.2.18/LICENSE-Apache
-Revision: 131049ea15d9a445fee306f87707d6751637f9fd

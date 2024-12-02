@@ -1,9 +1,10 @@
 Name: bitvec
 URL: https://crates.io/crates/bitvec
-Description: Addresses memory by bits, for packed collections and bitfields
 Version: 1.0.1
-Security Critical: yes
-Shipped: yes
+Revision: c922de6998be994cb5be1a349c7a0a0d16a19f07
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/bitvec-1.0.1/LICENSE.txt
-Revision: c922de6998be994cb5be1a349c7a0a0d16a19f07
+Shipped: yes
+Security Critical: yes
+
+Description: Addresses memory by bits, for packed collections and bitfields

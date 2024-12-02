@@ -55,6 +55,8 @@ import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUi;
 import org.chromium.chrome.browser.tasks.tab_management.TabManagementDelegateProvider;
+import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
+import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsContentDelegate;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
@@ -74,7 +76,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
-import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateProvider;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
@@ -113,6 +115,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private LayoutStateProvider mLayoutStateProvider;
     private ObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
+    private TopUiThemeColorProvider mTopUiThemeColorProvider;
 
     // Own members.
     private TabGroupUi mTabGroupUi;
@@ -153,7 +156,6 @@ public class BraveToolbarManager extends ToolbarManager {
             FindToolbarManager findToolbarManager,
             ObservableSupplier<Profile> profileSupplier,
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
-            @Nullable Supplier<Boolean> canAnimateNativeBrowserControls,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             boolean canShowUpdateBadge,
@@ -180,7 +182,7 @@ public class BraveToolbarManager extends ToolbarManager {
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             @Nullable View baseChromeLayout,
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
-            @Nullable DesktopWindowStateProvider desktopWindowStateProvider) {
+            @Nullable DesktopWindowStateManager desktopWindowStateManager) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -200,7 +202,6 @@ public class BraveToolbarManager extends ToolbarManager {
                 findToolbarManager,
                 profileSupplier,
                 bookmarkModelSupplier,
-                canAnimateNativeBrowserControls,
                 layoutStateProviderSupplier,
                 appMenuCoordinatorSupplier,
                 canShowUpdateBadge,
@@ -225,7 +226,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 overviewColorSupplier,
                 baseChromeLayout,
                 readAloudControllerSupplier,
-                desktopWindowStateProvider);
+                desktopWindowStateManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -270,13 +271,20 @@ public class BraveToolbarManager extends ToolbarManager {
                     (ViewStub) mActivity.findViewById(R.id.bottom_controls_stub);
             mBottomControls =
                     (BraveScrollingBottomViewResourceFrameLayout) bottomControlsStub.inflate();
+
+            ThemeColorProvider bottomUiThemeColorProvider =
+                    new BottomUiThemeColorProvider(
+                            mTopUiThemeColorProvider,
+                            mBrowserControlsSizer,
+                            mIncognitoStateProvider,
+                            mActivity);
+
             mTabGroupUi =
                     TabManagementDelegateProvider.getDelegate()
                             .createTabGroupUi(
                                     mActivity,
                                     mBottomControls.findViewById(R.id.bottom_container_slot),
                                     mBrowserControlsSizer,
-                                    mIncognitoStateProvider,
                                     mScrimCoordinator,
                                     mOmniboxFocusStateSupplier,
                                     mBottomSheetController,
@@ -285,8 +293,8 @@ public class BraveToolbarManager extends ToolbarManager {
                                     mTabContentManager,
                                     mTabCreatorManager,
                                     mLayoutStateProviderSupplier,
-                                    mModalDialogManagerSupplier.get());
-
+                                    mModalDialogManagerSupplier.get(),
+                                    bottomUiThemeColorProvider);
             mContentDelegateSupplier.set(mTabGroupUi);
 
             BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate =

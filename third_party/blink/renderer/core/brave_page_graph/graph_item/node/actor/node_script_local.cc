@@ -8,7 +8,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/execute/edge_execute.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
 
 using ::blink::DynamicTo;
 
@@ -59,14 +59,14 @@ ItemName NodeScriptLocal::GetItemName() const {
 }
 
 ItemDesc NodeScriptLocal::GetItemDesc() const {
-  WTF::TextStream ts;
+  StringBuilder ts;
   ts << NodeScript::GetItemDesc();
 
   if (!script_data_.source.url.IsEmpty()) {
-    ts << " [" << script_data_.source.url << "]";
+    ts << " [" << script_data_.source.url.GetString() << "]";
   }
 
-  return ts.Release();
+  return ts.ReleaseString();
 }
 
 void NodeScriptLocal::AddInEdge(const GraphEdge* in_edge) {

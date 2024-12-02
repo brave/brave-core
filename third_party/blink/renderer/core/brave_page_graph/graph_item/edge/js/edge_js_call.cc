@@ -9,7 +9,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/js/node_js.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
-#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
 
 using ::blink::To;
 
@@ -37,9 +37,9 @@ ItemName EdgeJSCall::GetItemName() const {
 }
 
 ItemDesc EdgeJSCall::GetItemDesc() const {
-  WTF::TextStream ts;
+  StringBuilder ts;
   ts << GetItemName() << " [arguments: " << arguments_ << "]";
-  return ts.Release();
+  return ts.ReleaseString();
 }
 
 void EdgeJSCall::AddGraphMLAttributes(xmlDocPtr doc,

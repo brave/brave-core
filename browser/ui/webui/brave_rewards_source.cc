@@ -19,7 +19,9 @@ namespace {
 
 scoped_refptr<base::RefCountedMemory> BitmapToMemory(const SkBitmap& image) {
   scoped_refptr<base::RefCountedBytes> image_bytes(new base::RefCountedBytes());
-  gfx::PNGCodec::EncodeBGRASkBitmap(image, false, &image_bytes->as_vector());
+  if (auto encoded = gfx::PNGCodec::EncodeBGRASkBitmap(image, false)) {
+    image_bytes->as_vector() = std::move(*encoded);
+  }
   return image_bytes;
 }
 

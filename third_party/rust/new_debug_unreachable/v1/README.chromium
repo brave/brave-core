@@ -1,9 +1,10 @@
 Name: new_debug_unreachable
 URL: https://crates.io/crates/new_debug_unreachable
-Description: panic in debug, intrinsics::unreachable() in release (fork of debug_unreachable)
 Version: 1.0.4
-Security Critical: yes
-Shipped: yes
+Revision: d82486c6d9a87b245ab04555d210626fafcc4758
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/new_debug_unreachable-1.0.4/LICENSE-MIT
-Revision: d82486c6d9a87b245ab04555d210626fafcc4758
+Shipped: yes
+Security Critical: yes
+
+Description: panic in debug, intrinsics::unreachable() in release (fork of debug_unreachable)

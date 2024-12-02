@@ -1,18 +1,6 @@
-From ae708ca095ac6d0285d39d95818c1bb63cd01861 Mon Sep 17 00:00:00 2001
-From: Claudio DeSouza <cdesouza@brave.com>
-Date: Mon, 4 Nov 2024 22:12:21 +0000
-Subject: [PATCH] [CodeHealth][rust] Brave `BUILD.gn` handlebars changes
-
-This change contains the handlebars changes we apply to our own
-handlebars file. This commit also adds a patch that can be used to
-update the handlebar files, based on new upstream additions.
----
- .../rust/chromium_crates_io/BUILD.gn.hbs      | 37 ++++++++-----------
- 1 file changed, 16 insertions(+), 21 deletions(-)
-
-diff --git a/third_party/rust/chromium_crates_io/BUILD.gn.hbs b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
-index 4cf2f4f5f8b..ecf0f026241 100644
---- a/third_party/rust/chromium_crates_io/BUILD.gn.hbs
+diff --git a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
+index dd894938f41..ecf0f026241 100644
+--- a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs
 +++ b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
 @@ -53,14 +53,14 @@ cargo_crate("{{this.name}}") {
      ":lib",
@@ -57,32 +45,41 @@ index 4cf2f4f5f8b..ecf0f026241 100644
      {{/each}}
      ]
    }
-@@ -119,23 +119,32 @@ cargo_crate("{{this.name}}") {
+@@ -119,21 +119,32 @@ cargo_crate("{{this.name}}") {
    ]
    {{/with}}
    {{/if}}
--  {{#if rustenv}}
+-  {{#with extra_kv.allow_unstable_features}}
+-  {{#if this}}
+-    library_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
+-    executable_configs -= [
+-      "//build/config/compiler:disallow_unstable_features"
+-    ]
+-    proc_macro_configs -= [
+-      "//build/config/compiler:disallow_unstable_features"
+-    ]
+-    rustflags = [ "-Zallow-features={{this}}" ]
 +  {{#if (or rustenv extra_kv.rustenv)}}
-   rustenv = [
-     {{#each rustenv}}
-     "{{this}}",
-     {{/each}}
++  rustenv = [
++    {{#each rustenv}}
++    "{{this}}",
++    {{/each}}
 +    {{#each extra_kv.rustenv}}
 +    "{{this}}",
 +    {{/each}}
-   ]
-   {{/if}}
--  {{#if rustflags}}
++  ]
++  {{/if}}
 +  {{#if (or rustflags extra_kv.rustflags)}}
-   rustflags = [
-     {{#each rustflags}}
-     "{{this}}",
-     {{/each}}
++  rustflags = [
++    {{#each rustflags}}
++    "{{this}}",
++    {{/each}}
 +    {{#each extra_kv.rustflags}}
 +    "{{this}}",
 +    {{/each}}
-   ]
++  ]
    {{/if}}
+-  {{/with}}
    {{#if output_dir}}
    output_dir = "{{output_dir}}"
    {{/if}}
@@ -92,7 +89,7 @@ index 4cf2f4f5f8b..ecf0f026241 100644
    {{#if native_libs}}
    native_libs = [
    {{#each native_libs}}
-@@ -144,20 +153,6 @@ cargo_crate("{{this.name}}") {
+@@ -142,20 +153,6 @@ cargo_crate("{{this.name}}") {
    ]
    {{/if}}
    {{/with}}
@@ -113,6 +110,3 @@ index 4cf2f4f5f8b..ecf0f026241 100644
    {{#if gn_visibility.testonly}}
    testonly = true
    {{/if}}
--- 
-2.43.0
-
