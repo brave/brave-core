@@ -67,8 +67,11 @@ extension NTPSectionProvider {
       sectionInset = .zero
     }
     return CGSize(
-      width: collectionView.bounds.width - collectionView.safeAreaInsets.left
-        - collectionView.safeAreaInsets.right - sectionInset.left - sectionInset.right,
+      width: max(
+        0,
+        collectionView.bounds.width - collectionView.safeAreaInsets.left
+          - collectionView.safeAreaInsets.right - sectionInset.left - sectionInset.right
+      ),
       height: 1000
     )
   }
@@ -946,7 +949,7 @@ class NewTabPageViewController: UIViewController {
     }
 
     switch (oldValue, newValue) {
-    case (.loading, .loading):
+    case (.initial, .initial), (.loading, .loading):
       // Nothing to do
       break
     case (
