@@ -17,15 +17,14 @@ class BtcLikeSerializerStream {
  public:
   explicit BtcLikeSerializerStream(std::vector<uint8_t>* to) : to_(to) {}
 
-  void Push8AsLE(uint8_t i);
-  void Push16AsLE(uint16_t i);
-  void Push32AsLE(uint32_t i);
-  void Push64AsLE(uint64_t i);
-  void PushVarInt(uint64_t i);
+  void Push8(uint8_t i);
+  void Push16(uint16_t i);
+  void Push32(uint32_t i);
+  void Push64(uint64_t i);
+  void PushCompactSize(uint64_t i);
   void PushSizeAndBytes(base::span<const uint8_t> bytes);
   void PushBytes(base::span<const uint8_t> bytes);
   void PushBytesReversed(base::span<const uint8_t> bytes);
-  void PushCompactSize(uint64_t i);
 
   uint32_t serialized_bytes() const { return serialized_bytes_; }
 

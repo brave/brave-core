@@ -9,41 +9,41 @@
 
 namespace brave_wallet {
 
-void BtcLikeSerializerStream::Push8AsLE(uint8_t i) {
+void BtcLikeSerializerStream::Push8(uint8_t i) {
   PushBytes(base::byte_span_from_ref(i));
 }
 
-void BtcLikeSerializerStream::Push16AsLE(uint16_t i) {
+void BtcLikeSerializerStream::Push16(uint16_t i) {
   PushBytes(base::byte_span_from_ref(i));
 }
 
-void BtcLikeSerializerStream::Push32AsLE(uint32_t i) {
+void BtcLikeSerializerStream::Push32(uint32_t i) {
   PushBytes(base::byte_span_from_ref(i));
 }
 
-void BtcLikeSerializerStream::Push64AsLE(uint64_t i) {
+void BtcLikeSerializerStream::Push64(uint64_t i) {
   PushBytes(base::byte_span_from_ref(i));
 }
 
 // https://developer.bitcoin.org/reference/transactions.html#compactsize-unsigned-integers
-void BtcLikeSerializerStream::PushVarInt(uint64_t i) {
+void BtcLikeSerializerStream::PushCompactSize(uint64_t i) {
   if (i < 0xfd) {
-    Push8AsLE(i);
+    Push8(i);
   } else if (i <= 0xffff) {
-    Push8AsLE(0xfd);
-    Push16AsLE(i);
+    Push8(0xfd);
+    Push16(i);
   } else if (i <= 0xffffffff) {
-    Push8AsLE(0xfe);
-    Push32AsLE(i);
+    Push8(0xfe);
+    Push32(i);
   } else {
-    Push8AsLE(0xff);
-    Push64AsLE(i);
+    Push8(0xff);
+    Push64(i);
   }
 }
 
 void BtcLikeSerializerStream::PushSizeAndBytes(
     base::span<const uint8_t> bytes) {
-  PushVarInt(bytes.size());
+  PushCompactSize(bytes.size());
   PushBytes(bytes);
 }
 
@@ -60,22 +60,6 @@ void BtcLikeSerializerStream::PushBytesReversed(
     to()->insert(to()->end(), bytes.rbegin(), bytes.rend());
   }
   serialized_bytes_ += bytes.size();
-}
-
-void BtcLikeSerializerStream::PushCompactSize(uint64_t i) {
-  if (i < 253) {
-    Push8AsLE(static_cast<uint8_t>(i));
-  } else if (i < 0xFFFF) {
-    Push8AsLE(253);
-    Push16AsLE(static_cast<uint16_t>(i));
-
-  } else if (i < 0xFFFFFFFF) {
-    Push8AsLE(254);
-    Push32AsLE(static_cast<uint32_t>(i));
-  } else {
-    Push8AsLE(255);
-    Push32AsLE(static_cast<uint64_t>(i));
-  }
 }
 
 }  // namespace brave_wallet

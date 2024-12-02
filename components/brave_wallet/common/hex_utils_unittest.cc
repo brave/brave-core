@@ -172,14 +172,31 @@ TEST(HexUtilsUnitTest, HexValueToInt256) {
 }
 
 TEST(HexUtilsUnitTest, Uint256ValueToHex) {
-  ASSERT_EQ(Uint256ValueToHex(1), "0x1");
-  ASSERT_EQ(Uint256ValueToHex(4660), "0x1234");
-  ASSERT_EQ(Uint256ValueToHex(11), "0xb");
+  EXPECT_EQ(Uint256ValueToHex(0), "0x0");
+  EXPECT_EQ(Uint256ValueToHex(1), "0x1");
+  EXPECT_EQ(Uint256ValueToHex(4660), "0x1234");
+  EXPECT_EQ(Uint256ValueToHex(11), "0xb");
   // "10240000000000000000000000"
   uint256_t input_val = 102400000000000;
   input_val *= static_cast<uint256_t>(100000000000);
-  ASSERT_EQ(Uint256ValueToHex(input_val), "0x878678326eac900000000");
-  ASSERT_EQ(Uint256ValueToHex(3735928559), "0xdeadbeef");
+  EXPECT_EQ(Uint256ValueToHex(input_val), "0x878678326eac900000000");
+  EXPECT_EQ(Uint256ValueToHex(3735928559), "0xdeadbeef");
+  EXPECT_EQ(
+      Uint256ValueToHex(
+          0x0000BEEFCAFEBABE'DEADF00DABCDEF89'1234567898765432'F00DCAFED00DFABAu__wb),
+      "0xbeefcafebabedeadf00dabcdef891234567898765432f00dcafed00dfaba");
+  EXPECT_EQ(
+      Uint256ValueToHex(
+          0x0001BEEFCAFEBABE'DEADF00DABCDEF89'1234567898765432'F00DCAFED00DFABAu__wb),
+      "0x1beefcafebabedeadf00dabcdef891234567898765432f00dcafed00dfaba");
+  EXPECT_EQ(
+      Uint256ValueToHex(
+          0X0FFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFFu__wb),
+      "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+  EXPECT_EQ(
+      Uint256ValueToHex(
+          0xFFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFFu__wb),
+      "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 }
 
 TEST(HexUtilsUnitTest, PrefixedHexStringToBytes) {

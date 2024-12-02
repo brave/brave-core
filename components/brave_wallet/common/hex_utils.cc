@@ -5,15 +5,25 @@
 
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
-#include <limits>
 #include <optional>
 
-#include "base/compiler_specific.h"
+#include "base/containers/adapters.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 
 namespace brave_wallet {
+
+namespace {
+
+char NibbleToChar(uint8_t val) {
+  if (val >= 0 && val < 0xa) {
+    return '0' + val;
+  }
+  return 'a' + val - 0xa;
+}
+
+}  // namespace
 
 std::string ToHex(std::string_view data) {
   if (data.empty()) {
@@ -147,30 +157,26 @@ bool HexValueToInt256(std::string_view hex_input, int256_t* out) {
 }
 
 std::string Uint256ValueToHex(uint256_t input) {
-  std::string result;
-  result.reserve(34);
-  result.append("0x");
-
-  auto input_span = base::byte_span_from_ref(input);
-  bool skipping_zeros = true;
-  for (auto& byte : base::Reversed(input_span)) {
-    if (skipping_zeros && !byte) {
-      continue;
-    }
-    if (skipping_zeros && byte) {
-      skipping_zeros = false;
-      if (byte <= 0xf) {
-        std::string one_char_byte;
-        base::AppendHexEncodedByte(byte, one_char_byte, false);
-        result += one_char_byte[1];
-        continue;
-      }
-    }
-    base::AppendHexEncodedByte(byte, result, false);
+  if (input == 0) {
+    return "0x0";  // Special case for zero.
   }
 
-  if (result.size() == 2) {
-    return result += '0';  // 0x0 case
+  std::string result;
+  result.reserve(66);
+  result.append("0x");
+
+  // Ignore leading zero bytes.
+  auto input_span =
+      base::byte_span_from_ref(input).first(32u - __builtin_clzg(input) / 8);
+
+  for (uint8_t byte : base::Reversed(input_span)) {
+    if (result.size() == 2 && byte <= 0xf) {
+      // For the first most significant byte skip leading zero.
+      result += NibbleToChar(byte & 0xf);
+    } else {
+      result += NibbleToChar(byte >> 4);
+      result += NibbleToChar(byte & 0xf);
+    }
   }
 
   return result;
