@@ -2818,8 +2818,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AUTO_CONTRIBUTE" desc="Title text for `Auto-Contribute` section in Brave rewards panel">
       Auto-Contribute
     </message>
-    <message name="IDS_ESTIMATED_EARNINGS" desc="Title text for `Estimated earnings` section in Brave rewards panel">
-      Earnings so far
+    <message name="IDS_ADS_SEEN_THIS_MONTH" desc="Title text for `Ads seen this month` section in Brave rewards panel">
+      Ads seen this month
     </message>
     <message name="IDS_TIP" desc="Text for `Tip` button in Brave rewards panel">
       Contribute

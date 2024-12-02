@@ -352,7 +352,6 @@ brave_java_resources = [
   "java/res/drawable/brave_privacy_tabs_unlock_image.xml",
   "java/res/drawable/brave_rating_emoji_bg.xml",
   "java/res/drawable/brave_rating_rate_now_bg.xml",
-  "java/res/drawable/brave_rewards_ads_month_background.xml",
   "java/res/drawable/brave_rewards_circle.xml",
   "java/res/drawable/brave_rewards_onboarding_default.xml",
   "java/res/drawable/brave_rewards_onboarding_selected.xml",

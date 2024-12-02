@@ -47,7 +47,7 @@
             app:srcCompat="@drawable/ic_arrow_down" />
 
         <TextView
-            android:id="@+id/estimated_earnings"
+            android:id="@+id/ads_seen_this_month_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
@@ -55,27 +55,28 @@
             android:drawablePadding="4dp"
             android:letterSpacing="0.02"
             android:fontFamily="sans-serif"
-            android:text="@string/estimated_earnings"
+            android:text="@string/ads_seen_this_month"
             android:textColor="@android:color/white"
+            android:paddingEnd="16dp"
             android:textSize="11sp"
             app:drawableEndCompat="@drawable/ic_reward_info_outline"
-            app:layout_constraintStart_toStartOf="@+id/ads_monthly_statement_text"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
             <ImageView
-            android:id="@+id/estimated_earnings_tooltip_triangle"
+            android:id="@+id/ads_tooltip_triangle"
             android:layout_width="12sp"
             android:layout_height="6dp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/tooltip_arrow"
             android:contentDescription="@null"
             android:layout_marginEnd="46dp"
-            app:layout_constraintBottom_toTopOf="@id/estimated_earnings_tooltip"
-            app:layout_constraintEnd_toEndOf="@id/estimated_earnings_tooltip"/>
+            app:layout_constraintBottom_toTopOf="@id/ads_tooltip"
+            app:layout_constraintEnd_toEndOf="@id/ads_tooltip"/>
 
         <TextView
-            android:id="@+id/estimated_earnings_tooltip"
+            android:id="@+id/ads_tooltip"
             android:layout_width="194dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -91,7 +92,7 @@
             android:text="@string/estimated_tooltip_text"
             android:textColor="@color/terms_of_service_text_color"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/estimated_earnings" />
+            app:layout_constraintTop_toBottomOf="@id/ads_seen_this_month_text" />
 
         <TextView
             android:id="@+id/manage_ads_text"
@@ -107,8 +108,8 @@
             android:textColor="@color/rewards_manage_ads_color"
             android:textSize="12sp"
             app:drawableRightCompat="@drawable/carat_right"
-            app:layout_constraintBottom_toBottomOf="@id/estimated_earnings_tooltip"
-            app:layout_constraintStart_toStartOf="@id/estimated_earnings_tooltip" />
+            app:layout_constraintBottom_toBottomOf="@id/ads_tooltip"
+            app:layout_constraintStart_toStartOf="@id/ads_tooltip" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/manage_ads_close_button"
@@ -118,47 +119,30 @@
             android:layout_marginEnd="10dp"
             android:contentDescription="@null"
             android:elevation="90dp"
-            app:layout_constraintEnd_toEndOf="@+id/estimated_earnings_tooltip"
-            app:layout_constraintTop_toTopOf="@+id/estimated_earnings_tooltip"
+            app:layout_constraintEnd_toEndOf="@+id/ads_tooltip"
+            app:layout_constraintTop_toTopOf="@+id/ads_tooltip"
             app:srcCompat="@drawable/ic_baseline_close_24"
             app:tint="@color/rewards_estimated_earning_close_color" />
 
         <androidx.constraintlayout.widget.Group
-            android:id="@+id/estimated_tooltip_group"
+            android:id="@+id/ads_tooltip_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="estimated_earnings_tooltip_triangle,estimated_earnings_tooltip,manage_ads_text,manage_ads_close_button" />
+            app:constraint_referenced_ids="ads_tooltip_triangle,ads_tooltip,manage_ads_text,manage_ads_close_button" />
 
 
         <TextView
-            android:id="@+id/ads_monthly_statement_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/brave_rewards_ads_month_background"
-            android:paddingHorizontal="4dp"
-            android:letterSpacing="0.02"
-            android:paddingVertical="2dp"
-            android:alpha="0.65"
-            android:fontFamily="sans-serif"
-            android:textColor="@android:color/white"
-            android:textSize="11sp"
-            app:layout_constraintEnd_toStartOf="@+id/estimated_range"
-            app:layout_constraintTop_toBottomOf="@id/estimated_earnings" />
-
-        <TextView
-            android:id="@+id/estimated_range"
+            android:id="@+id/ads_count_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:textColor="@android:color/white"
             android:textSize="12sp"
             android:fontFamily="sans-serif"
-            app:layout_constraintBottom_toBottomOf="@id/ads_monthly_statement_text"
-            app:layout_constraintEnd_toStartOf="@+id/bat_text1"
-            app:layout_constraintTop_toTopOf="@id/ads_monthly_statement_text" />
+            android:paddingEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ads_seen_this_month_text" />
 
         <TextView
             android:id="@+id/empty_unverified_state_text"
@@ -171,9 +155,8 @@
             android:textColor="@android:color/white"
             android:alpha="0.65"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/ads_monthly_statement_text"
-            app:layout_constraintEnd_toStartOf="@id/bat_ads_balance_learn_more_text"
-            app:layout_constraintTop_toTopOf="@id/ads_monthly_statement_text" />
+            app:layout_constraintBottom_toTopOf="@id/brave_rewards_panel_summary_layout_id"
+            app:layout_constraintEnd_toStartOf="@id/bat_ads_balance_learn_more_text" />
 
         <TextView
             android:id="@+id/bat_ads_balance_learn_more_text"
@@ -185,23 +168,9 @@
             android:text="@string/menu_learn_more"
             android:textColor="@android:color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/estimated_range"
+            app:layout_constraintBottom_toBottomOf="@id/ads_count_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/estimated_range" />
-
-        <TextView
-            android:id="@+id/bat_text1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:alpha="0.65"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/bat_text"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/estimated_range"
-            app:layout_constraintEnd_toStartOf="@id/empty_unverified_state_text"
-            app:layout_constraintTop_toTopOf="@id/estimated_range" />
+            app:layout_constraintTop_toTopOf="@id/ads_count_text" />
 
 
         <TextView
@@ -327,11 +296,11 @@
             app:constraint_referenced_ids="bat_balance_text,bat_text2,usd_balance_text" />
 
         <androidx.constraintlayout.widget.Group
-            android:id="@+id/estimated_earnings_range_group"
+            android:id="@+id/ads_seen_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            app:constraint_referenced_ids="estimated_range,bat_text1" />
+            app:constraint_referenced_ids="ads_count_text" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/wallet_progress_bar_group"
@@ -341,7 +310,7 @@
             app:constraint_referenced_ids="wallet_balance_progress,loading_text" />
 
         <androidx.constraintlayout.widget.Group
-            android:id="@+id/estimated_not_connected_group"
+            android:id="@+id/rewards_not_connected_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
