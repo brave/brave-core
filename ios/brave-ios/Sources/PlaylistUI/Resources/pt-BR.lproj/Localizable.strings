@@ -71,7 +71,7 @@
 "playlist.doneButtonTitle" = "Concluído";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylist" = "Editar lista de reprodução";
+"playlist.editPlaylist" = "Editar playlist";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Editar";

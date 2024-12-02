@@ -355,6 +355,12 @@
 /* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
 "wallet.confirmationViewModeTransaction" = "Transacció";
 
+/* The warning shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
+"wallet.confirmationViewSolAccountOwnershipChangeWarning" = "Aquesta transacció reassignarà la propietat del compte a un programa nou. Aquesta acció és irreversible i pot provocar la pèrdua de fons.";
+
+/* The warning title shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
+"wallet.confirmationViewSolAccountOwnershipChangeWarningTitle" = "S'ha sol·licitat un canvi de propietat del compte";
+
 /* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
 "wallet.confirmationViewSolSplTokenAccountCreationWarning" = "El compte associat de tokens encara no existeix. Es gastarà una petita quantitat de SOL per crear-lo i finançar-lo.";
 
@@ -456,6 +462,9 @@
 
 /* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
 "wallet.customNetworkInvalidAddressErrMsg" = "Adreça invàlida.";
+
+/* The error message for the input field when users input an unsecure address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkNotSecureErrMsg" = "No és segur.";
 
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "RPC URLs";
@@ -883,8 +892,8 @@
 /* A label shown inside of a box when there is no input data for a given transaction */
 "wallet.inputDataPlaceholder" = "No hi ha dades.";
 
-/* A label shown inside of a box when there is no input data for a given Solana transaction */
-"wallet.inputDataPlaceholderSolana" = "Tipus de funció: %d";
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholderTx" = "Tipus de funció:\n%@";
 
 /* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
 "wallet.inputLabel" = "Entrada";
@@ -1974,6 +1983,42 @@
 
 /* The short name of one of the on ramp provider. */
 "wallet.transakProviderShortName" = "Transak";
+
+/* Blockchain function name for Solana compressed NFT transfers. */
+"wallet.txFunctionTypeCompressedNFTTransfer" = "Transferència de NFT comprimida";
+
+/* Blockchain function name for ERC-20 token approvals. */
+"wallet.txFunctionTypeERC20Approve" = "Aprova";
+
+/* Blockchain function name for moving FIL from an  Ethereum-based f4 address to a Filecoin address of a different type. Don't need to translate the symbol `FIL`. */
+"wallet.txFunctionTypeForwardFil" = "FIL endavant";
+
+/* Blockchain function name for NFT transfers */
+"wallet.txFunctionTypeNFTTransfer" = "Transferència NFT";
+
+/* Blockchain function name for an unknown transaction type or an FIL transaction. */
+"wallet.txFunctionTypeOther" = "Altres";
+
+/* Blockchain function name for SafeTransferFrom in ERC-721 and ERC-1155 tokens. */
+"wallet.txFunctionTypeSafeTransfer" = "Transferència segura";
+
+/* Blockchain function name for send native token. `%@` will be replaced with native token symbol. */
+"wallet.txFunctionTypeSend" = "Envia %@";
+
+/* Blockchain function name for signing and sending a Solana DApp transaction. */
+"wallet.txFunctionTypeSignAndSendDapp" = "Signa i envia transacció de DApp";
+
+/* Blockchain function name for Solana Sign DApp transactions. */
+"wallet.txFunctionTypeSignDappTransaction" = "Signa transacció de DApp";
+
+/* Blockchain function name for Solana SPL token transfer with associated token account creation. */
+"wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation" = "Transferència de token SPL amb creació de compte de token associat";
+
+/* Blockchain function name for swap. */
+"wallet.txFunctionTypeSwap" = "Intercanvi";
+
+/* Blockchain function name for non-native token transfers. */
+"wallet.txFunctionTypeTokenTransfer" = "Transferència de token";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave utilitzarà Infura per resoldre els noms de domini .crypto (i també %1$@) d'Unstoppable Domains. Brave amaga la teva adreça IP. Si actives això, Infura veurà que algú està intentant visitar aquests dominis però res més. Mostra <a href=%2$@>%3$@</a> i <a href=%4$@>%5$@</a> d'Infura.";

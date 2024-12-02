@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri 바로가기";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "북마크 바로가기 표시";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "북마크 표시";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "클립보드에 복사";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "동기화 계정 삭제";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "동기화 계정 삭제";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "계정을 삭제하면 암호화된 데이터가 Brave 서버에서 제거되고 연결된 모든 디바이스에서 동기화가 비활성화됩니다.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "이들 디바이스에 로컬로 저장된 데이터는 삭제되지 않습니다.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "동기화 계정 삭제";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "이 코드는 구버전 Brave를 실행 중인 기기에서 만들어진 것 같습니다. 다른 기기에서 최신 버전의 Brave로 업데이트한 다음, 새 동기화 코드를 만드세요.";

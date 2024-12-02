@@ -40,6 +40,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Konum Çubuğu Seç";
 
+/* An option in a list of shortcut actions that hides the button */
+"shortcutsButton.hideButtonTitle" = "Kısayol Düğmesini Gizle";
+
+/* A title shown when letting the user choose a button's purpose from a list of destinations */
+"shortcutsButton.shortcutButtonTitle" = "Kısayol Düğmesi";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "Yer İşaretlerini Göster";
 
@@ -54,6 +60,60 @@
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Tüm Sekmeleri Göster";
+
+/* The title of the label that shows the Application Version */
+"storekitReceiptViewer.applicationVersionTitle" = "Uygulama Sürümü";
+
+/* The title of the product subscription the user purchased (Monthly subscription) */
+"storekitReceiptViewer.leoMonthlySubscriptionName" = "Brave Leo (Aylık)";
+
+/* The title of the product subscription the user purchased (Yearly subscription) */
+"storekitReceiptViewer.leoYearlySubscriptionName" = "Brave Aslan (Yıllık)";
+
+/* The error message when the App Store Receipt was not found in the Application Bundle */
+"storekitReceiptViewer.noReceiptFoundTitle" = "Üzgünüz, App Store fişi bulunamadı";
+
+/* The title of the label that shows the date when the product subscription was cancelled */
+"storekitReceiptViewer.receiptCancellationDate" = "İptal Tarihi";
+
+/* The title of the label that shows the date the receipt was created */
+"storekitReceiptViewer.receiptDateTitle" = "Makbuz Tarihi";
+
+/* The title of the label that shows the date when the product subscription expired */
+"storekitReceiptViewer.receiptExpirationDate" = "Son Kullanma Tarihi";
+
+/* The title of the label that shows any invalid date - Not Available or N/A for short is displayed */
+"storekitReceiptViewer.receiptInvalidDate" = "Bilinmiyor";
+
+/* The error message when the App Store Receipt was found in the Application Bundle, but could not be loaded */
+"storekitReceiptViewer.receiptLoadingErrorTitle" = "Üzgünüz, App Store fişi yüklenemedi";
+
+/* The title of the label that shows the Order ID of the user's purchase */
+"storekitReceiptViewer.receiptOrderIDTitle" = "Sipariş Kimliği";
+
+/* The title of the label that shows the date when the product subscription was first purchased */
+"storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "Orijinal Satın Alma Tarihi";
+
+/* The title of the label that shows the date when the product subscription was recently purchased or renewed */
+"storekitReceiptViewer.receiptPurchaseDate" = "Satın Alma Tarihi";
+
+/* The title of the label that shows the Transaction ID of the user's purchase */
+"storekitReceiptViewer.receiptTransactionIDTitle" = "İşlem Kimliği";
+
+/* The title of the label that shows when the Receipt Viewer is still loading resources and subscription information */
+"storekitReceiptViewer.receiptViewerLoadingTitle" = "Yükleniyor Lütfen Bekleyin...";
+
+/* The title of the screen that shows the App Store Receipt */
+"storekitReceiptViewer.receiptViewerTitle" = "App Store Makbuzu";
+
+/* The title of the button that shows a system action sheet, to share the receipt */
+"storekitReceiptViewer.shareReceiptTitle" = "Hisse Makbuzu";
+
+/* The title of the product subscription the user purchased (Monthly subscription) */
+"storekitReceiptViewer.vpnMonthlySubscriptionName" = "Brave VPN (Aylık)";
+
+/* The title of the product subscription the user purchased (Yearly subscription) */
+"storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN (Yıllık)";
 
 /* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToNonPBMKeyCodeTitle" = "Normal Gezinme Modu";

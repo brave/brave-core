@@ -40,6 +40,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "ロケーションバーの選択";
 
+/* An option in a list of shortcut actions that hides the button */
+"shortcutsButton.hideButtonTitle" = "ショートカットボタンを隠す";
+
+/* A title shown when letting the user choose a button's purpose from a list of destinations */
+"shortcutsButton.shortcutButtonTitle" = "ショートカットボタン";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "ブックマークを表示";
 
@@ -54,6 +60,60 @@
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "すべてのタブを表示";
+
+/* The title of the label that shows the Application Version */
+"storekitReceiptViewer.applicationVersionTitle" = "アプリケーション・バージョン";
+
+/* The title of the product subscription the user purchased (Monthly subscription) */
+"storekitReceiptViewer.leoMonthlySubscriptionName" = "Brave Leo (月額プラン)";
+
+/* The title of the product subscription the user purchased (Yearly subscription) */
+"storekitReceiptViewer.leoYearlySubscriptionName" = "Brave Leo (年間購読)";
+
+/* The error message when the App Store Receipt was not found in the Application Bundle */
+"storekitReceiptViewer.noReceiptFoundTitle" = "申し訳ありませんが、App Storeのレシートは見つかりませんでした";
+
+/* The title of the label that shows the date when the product subscription was cancelled */
+"storekitReceiptViewer.receiptCancellationDate" = "キャンセル日";
+
+/* The title of the label that shows the date the receipt was created */
+"storekitReceiptViewer.receiptDateTitle" = "受取日";
+
+/* The title of the label that shows the date when the product subscription expired */
+"storekitReceiptViewer.receiptExpirationDate" = "有効期限";
+
+/* The title of the label that shows any invalid date - Not Available or N/A for short is displayed */
+"storekitReceiptViewer.receiptInvalidDate" = "該当なし";
+
+/* The error message when the App Store Receipt was found in the Application Bundle, but could not be loaded */
+"storekitReceiptViewer.receiptLoadingErrorTitle" = "申し訳ありませんが、App Storeの領収書を読み込むことができませんでした。";
+
+/* The title of the label that shows the Order ID of the user's purchase */
+"storekitReceiptViewer.receiptOrderIDTitle" = "オーダーID";
+
+/* The title of the label that shows the date when the product subscription was first purchased */
+"storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "当初の購入日";
+
+/* The title of the label that shows the date when the product subscription was recently purchased or renewed */
+"storekitReceiptViewer.receiptPurchaseDate" = "購入日";
+
+/* The title of the label that shows the Transaction ID of the user's purchase */
+"storekitReceiptViewer.receiptTransactionIDTitle" = "トランザクションID";
+
+/* The title of the label that shows when the Receipt Viewer is still loading resources and subscription information */
+"storekitReceiptViewer.receiptViewerLoadingTitle" = "読み込み中です。";
+
+/* The title of the screen that shows the App Store Receipt */
+"storekitReceiptViewer.receiptViewerTitle" = "AppStoreレシート";
+
+/* The title of the button that shows a system action sheet, to share the receipt */
+"storekitReceiptViewer.shareReceiptTitle" = "株式領収書";
+
+/* The title of the product subscription the user purchased (Monthly subscription) */
+"storekitReceiptViewer.vpnMonthlySubscriptionName" = "月刊Brave VPN";
+
+/* The title of the product subscription the user purchased (Yearly subscription) */
+"storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN年鑑";
 
 /* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToNonPBMKeyCodeTitle" = "標準ブラウジングモード";

@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Ярлики Siri";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Показувати ярлик закладок";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Показати закладки";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Копіювати в буфер";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Видалити обліковий запис для синхронізації";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Видалити обліковий запис для синхронізації";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Видалення облікового запису призведе до видалення ваших зашифрованих даних із серверів Brave і вимкнення синхронізації на всіх під’єднаних пристроях.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Однак дані, що зберігаються на цих пристроях, не будуть видалені.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Видалити обліковий запис для синхронізації";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Схоже, що цей код було створено на пристрої зі старою версією Brave. Оновіть Brave до найновішої версії на іншому пристрої, а потім створіть новий код синхронізації.";

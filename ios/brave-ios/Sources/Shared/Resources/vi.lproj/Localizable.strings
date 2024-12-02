@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "Đã sao chép URL vào clipboard";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "Yêu cầu trang web cho máy tính";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "Yêu cầu trang web cho thiết bị di động";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Hiển thị dấu trang truy cập gần nhất";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "Hủy";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "Bạn có chắc chắn muốn hủy quá trình tải xuống này không?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "Tiếp tục";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "Hủy tải xuống";
+
+/* Cancel button */
+"CancelString" = "Hủy";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Chuyển đổi";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Đã mở thẻ mới";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "Tải xuống đã hủy";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "Tải xuống không thành công";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 trên tổng số %d tệp";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "Tải xuống";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "Mở liên kết này trong ứng dụng App Store?";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "Truy cập";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "Không lưu";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "Không cập nhật";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "Lưu thông tin đăng nhập";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "Cập nhật";
+
+/* OK button */
+"OKString" = "OK";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "Có thể sử dụng chế độ Đọc";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "Đặt lại kích thước chữ";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "Lưu mật khẩu cho %@?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "Lưu thông tin đăng nhập %1$@ cho %2$@?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "OK";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "Căn chỉnh mã QR ở trong khung để quét";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "Dữ liệu không hợp lệ";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "Vui lòng cho phép Brave truy cập vào camera của thiết bị của bạn trong Cài đặt -> Quyền riêng tư -> Camera.";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "Quét mã QR";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "Chung";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "Xong";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "Hoàn tác";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "Đã đóng %d thẻ";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "OK";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "Đã xảy ra lỗi khi thêm thẻ vào Ví. Vui lòng thử lại sau.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "Thêm thẻ không thành công";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave không thể mở trang này vì địa chỉ không hợp lệ.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "Không thể mở trang";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "Cập nhật thông tin đăng nhập %1$@ cho %2$@?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "Cập nhật thông tin đăng nhập %1$@ cho %2$@?";
+

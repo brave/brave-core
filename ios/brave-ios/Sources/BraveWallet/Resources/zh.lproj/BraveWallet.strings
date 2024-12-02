@@ -355,6 +355,12 @@
 /* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
 "wallet.confirmationViewModeTransaction" = "交易";
 
+/* The warning shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
+"wallet.confirmationViewSolAccountOwnershipChangeWarning" = "这项交易将把帐户所有权重新分配给一个新程序。此操作不可逆，并可能导致资金损失。";
+
+/* The warning title shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
+"wallet.confirmationViewSolAccountOwnershipChangeWarningTitle" = "请求更改帐户所有权";
+
 /* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
 "wallet.confirmationViewSolSplTokenAccountCreationWarning" = "尚未與任何代幣帳戶建立關聯。您需使用小額 SOL 建立帳戶及存入資金。";
 
@@ -885,9 +891,6 @@
 
 /* A label shown inside of a box when there is no input data for a given transaction */
 "wallet.inputDataPlaceholder" = "无数据。";
-
-/* A label shown inside of a box when there is no input data for a given Solana transaction */
-"wallet.inputDataPlaceholderSolana" = "功能类型：%d";
 
 /* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
 "wallet.inputLabel" = "输入";
@@ -1977,6 +1980,33 @@
 
 /* The short name of one of the on ramp provider. */
 "wallet.transakProviderShortName" = "Transak";
+
+/* Blockchain function name for Solana compressed NFT transfers. */
+"wallet.txFunctionTypeCompressedNFTTransfer" = "压缩 NFT 传输";
+
+/* Blockchain function name for ERC-20 token approvals. */
+"wallet.txFunctionTypeERC20Approve" = "审批";
+
+/* Blockchain function name for moving FIL from an  Ethereum-based f4 address to a Filecoin address of a different type. Don't need to translate the symbol `FIL`. */
+"wallet.txFunctionTypeForwardFil" = "转移 FIL";
+
+/* Blockchain function name for an unknown transaction type or an FIL transaction. */
+"wallet.txFunctionTypeOther" = "其他";
+
+/* Blockchain function name for SafeTransferFrom in ERC-721 and ERC-1155 tokens. */
+"wallet.txFunctionTypeSafeTransfer" = "安全转账";
+
+/* Blockchain function name for signing and sending a Solana DApp transaction. */
+"wallet.txFunctionTypeSignAndSendDapp" = "签署并发送 DApp 交易";
+
+/* Blockchain function name for Solana Sign DApp transactions. */
+"wallet.txFunctionTypeSignDappTransaction" = "签署 DApp 交易";
+
+/* Blockchain function name for Solana SPL token transfer with associated token account creation. */
+"wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation" = "SPL 代币转移及相关代币账户创建";
+
+/* Blockchain function name for swap. */
+"wallet.txFunctionTypeSwap" = "兑换";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave 将使用 Infura 来解析 Unstoppable Domains 上的.crypto（还有 %1$@）域名。Brave 将隐藏你的 IP 地址。如果你启用这个功能，Infura 将看到有人试图访问这些域名，但没有其他内容。查看 Infura 的 <a href=%2$@>%3$@</a> 和 <a href=%4$@>%5$@</a>。";

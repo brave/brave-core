@@ -8,7 +8,7 @@
 "AddFilterByURL" = "Ajouter un filtre par URL";
 
 /* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "Le **lecteur Brave** est votre ticket pour une expérience vidéo sans publicité et sans interruption.";
+"AntiAdBlockWarningBravePlayerDescription" = "Avec le **lecteur Brave**, regardez vos vidéos sans publicité ni interruption.";
 
 /* A button that disables ad-blocking and uses brave player. */
 "AntiAdBlockWarningConfirmationButton" = "Ajuster les boucliers pour moi";
@@ -26,7 +26,7 @@
 "AntiAdBlockWarningTitle" = "Ajuster les paramètres de blocage des publicités pour ce site";
 
 /* A picker title for selecting a automatic shred setting option */
-"AutoShred" = "Destruction automatique";
+"AutoShred" = "Suppression automatique";
 
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agressif";
@@ -161,7 +161,7 @@
 "ListsUpdated" = "Listes mises à jour";
 
 /* A button title when confirming to shred website data */
-"ShredDataButtonTitle" = "Détruire les données";
+"ShredDataButtonTitle" = "Effacer les données";
 
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Jamais";
@@ -173,16 +173,16 @@
 "ShredOnSiteTabsClosed" = "Onglets du site fermés";
 
 /* A list row label for accessing the shred settings screen */
-"ShredSiteData" = "Détruire les données du site";
+"ShredSiteData" = "Effacer les données du site";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
-"ShredSiteDataConfirmationMessage" = "La destruction fermera tous les onglets ouverts sur ce site et supprimera toutes les données du site. Cette action est irréversible.";
+"ShredSiteDataConfirmationMessage" = "La suppression fermera tous les onglets ouverts sur ce site et effacera toutes les données du site. Cette action est irréversible.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
-"ShredSiteDataConfirmationTitle" = "Détruire les données du site ?";
+"ShredSiteDataConfirmationTitle" = "Effacer les données du site ?";
 
 /* A button title that shreds site data immediately */
-"ShredSiteDataNow" = "Détruire les données maintenant";
+"ShredSiteDataNow" = "Effacer les données du site maintenant";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Le site n'est pas sécurisé";

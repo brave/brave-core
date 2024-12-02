@@ -892,8 +892,8 @@
 /* A label shown inside of a box when there is no input data for a given transaction */
 "wallet.inputDataPlaceholder" = "No hay datos.";
 
-/* A label shown inside of a box when there is no input data for a given Solana transaction */
-"wallet.inputDataPlaceholderSolana" = "Tipo de función: %d";
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholderTx" = "Tipo de función: \n%@";
 
 /* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
 "wallet.inputLabel" = "Entrada";
@@ -1983,6 +1983,42 @@
 
 /* The short name of one of the on ramp provider. */
 "wallet.transakProviderShortName" = "Transak";
+
+/* Blockchain function name for Solana compressed NFT transfers. */
+"wallet.txFunctionTypeCompressedNFTTransfer" = "Transferencia de NFT comprimidos";
+
+/* Blockchain function name for ERC-20 token approvals. */
+"wallet.txFunctionTypeERC20Approve" = "Aprobar";
+
+/* Blockchain function name for moving FIL from an  Ethereum-based f4 address to a Filecoin address of a different type. Don't need to translate the symbol `FIL`. */
+"wallet.txFunctionTypeForwardFil" = "Expedir FIL";
+
+/* Blockchain function name for NFT transfers */
+"wallet.txFunctionTypeNFTTransfer" = "Transferencia de NFT";
+
+/* Blockchain function name for an unknown transaction type or an FIL transaction. */
+"wallet.txFunctionTypeOther" = "Otro";
+
+/* Blockchain function name for SafeTransferFrom in ERC-721 and ERC-1155 tokens. */
+"wallet.txFunctionTypeSafeTransfer" = "Transferencia segura";
+
+/* Blockchain function name for send native token. `%@` will be replaced with native token symbol. */
+"wallet.txFunctionTypeSend" = "Enviar %@";
+
+/* Blockchain function name for signing and sending a Solana DApp transaction. */
+"wallet.txFunctionTypeSignAndSendDapp" = "Firmar y remitir transacción de aplicación descentralizada";
+
+/* Blockchain function name for Solana Sign DApp transactions. */
+"wallet.txFunctionTypeSignDappTransaction" = "Firmar transacción de aplicación descentralizada";
+
+/* Blockchain function name for Solana SPL token transfer with associated token account creation. */
+"wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation" = "Transferencia de tokens SPL con creación de cuenta de tokens asociados";
+
+/* Blockchain function name for swap. */
+"wallet.txFunctionTypeSwap" = "Intercambiar";
+
+/* Blockchain function name for non-native token transfers. */
+"wallet.txFunctionTypeTokenTransfer" = "Transferencia de token";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave utilizará Infura para resolver los nombres de dominio .crypto (así como %1$@) que están en Unstoppable Domains. Brave oculta tu dirección IP. Si lo activas, Infura verá que alguien está intentando visitar estos dominios, pero nada más. Consulta las <a href=%2$@>%3$@</a> y <a href=%4$@>%5$@</a> de Infura.";

@@ -497,10 +497,10 @@
 "wallet.dappsConnectionNotificationOriginTitle" = "%@ souhaite interagir avec le portefeuille Brave";
 
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
-"wallet.dappsConnectionNotificationTitle" = "Cette page souhaite interagir avec le Portefeuille Brave";
+"wallet.dappsConnectionNotificationTitle" = "Cette page souhaite interagir avec le portefeuille Brave.";
 
 /* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
-"wallet.dappsSettingsConnectedSitesSectionEmpty" = "Les DApps que vous connectez au Portefeuille Brave s'affichent ici";
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "Les DApps que vous connectez au portefeuille Brave s'affichent ici";
 
 /* The title of the section that will list all the permitted dapp connections */
 "wallet.dappsSettingsConnectedSitesSectionTitle" = "DApps connectés";
@@ -892,8 +892,8 @@
 /* A label shown inside of a box when there is no input data for a given transaction */
 "wallet.inputDataPlaceholder" = "Aucune donnée.";
 
-/* A label shown inside of a box when there is no input data for a given Solana transaction */
-"wallet.inputDataPlaceholderSolana" = "Type de fonction : %d";
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholderTx" = "Type de fonction :\n%@";
 
 /* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
 "wallet.inputLabel" = "Entrée";
@@ -920,7 +920,7 @@
 "wallet.legalDescription" = "Nous vous demandons de prendre acte des éléments ci-dessous";
 
 /* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
-"wallet.legalTermOfUse" = "J'ai lu et j'accepte les [Conditions d'utilisation](%@)";
+"wallet.legalTermOfUse" = "J'ai lu et j'accepte les [conditions d'utilisation](%@)";
 
 /* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
 "wallet.legalTitle" = "Avant de commencer";
@@ -1983,6 +1983,42 @@
 
 /* The short name of one of the on ramp provider. */
 "wallet.transakProviderShortName" = "Transak";
+
+/* Blockchain function name for Solana compressed NFT transfers. */
+"wallet.txFunctionTypeCompressedNFTTransfer" = "Transfert de NFT compressé";
+
+/* Blockchain function name for ERC-20 token approvals. */
+"wallet.txFunctionTypeERC20Approve" = "Approuver";
+
+/* Blockchain function name for moving FIL from an  Ethereum-based f4 address to a Filecoin address of a different type. Don't need to translate the symbol `FIL`. */
+"wallet.txFunctionTypeForwardFil" = "Transfert de FIL";
+
+/* Blockchain function name for NFT transfers */
+"wallet.txFunctionTypeNFTTransfer" = "Transfert NFT";
+
+/* Blockchain function name for an unknown transaction type or an FIL transaction. */
+"wallet.txFunctionTypeOther" = "Autre";
+
+/* Blockchain function name for SafeTransferFrom in ERC-721 and ERC-1155 tokens. */
+"wallet.txFunctionTypeSafeTransfer" = "Transfert sécurisé";
+
+/* Blockchain function name for send native token. `%@` will be replaced with native token symbol. */
+"wallet.txFunctionTypeSend" = "Envoyer %@";
+
+/* Blockchain function name for signing and sending a Solana DApp transaction. */
+"wallet.txFunctionTypeSignAndSendDapp" = "Signer et envoyer une transaction DApp";
+
+/* Blockchain function name for Solana Sign DApp transactions. */
+"wallet.txFunctionTypeSignDappTransaction" = "Signer une transaction DApp";
+
+/* Blockchain function name for Solana SPL token transfer with associated token account creation. */
+"wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation" = "Transfert de jeton SPL avec création d'un compte de jetons associé";
+
+/* Blockchain function name for swap. */
+"wallet.txFunctionTypeSwap" = "Échanger";
+
+/* Blockchain function name for non-native token transfers. */
+"wallet.txFunctionTypeTokenTransfer" = "Transfert de jetons";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave utilisera Infura pour résoudre les noms de domaine en .crypto (ainsi que ceux en %1$@) enregistrés sur Unstoppable Domains. Brave masque votre adresse IP. Si vous activez cette option, Infura verra que quelqu'un essaie d'accéder à ces domaines, mais n'aura accès à aucune autre information. Consultez les <a href=%2$@>%3$@</a> et la <a href=%4$@>%5$@</a> d'Infura.";

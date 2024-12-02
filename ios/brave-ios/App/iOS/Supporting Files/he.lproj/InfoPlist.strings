@@ -1,0 +1,27 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "פעולת מילוי דפדפן של 1Password";
+
+/* Privacy - NFC Scan Usage Description */
+"NFCReaderUsageDescription" = "האפליקציה צריכה גישה לקורא NFC כדי לתקשר עם YubiKey שלך.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "זה מאפשר לך לצלם ולהעלות תמונות.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "זה מאמת את הגישה שלך ל-Brave";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "אתרים שתבקר/י בהם עשויים לבקש את המיקום שלך.";
+
+/* Privacy - Microphone Usage Description */
+"NSMicrophoneUsageDescription" = "זה מאפשר שימוש במיקרופון שלך בעת השימוש ב-Brave.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "זה מאפשר לך לשמור תמונות.";
+
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "ההרשאה הזו משמשת כדי לאפשר את זיהוי הדיבור המתקדם של Apple. אם ההרשאה אינה מופעלת, זיהוי ׳במכשיר׳ יופעל והחיפושים יהיו פרטיים לחלוטין. Brave לא מאחסן או משתף את החיפושים הקוליים שלך.";
+
+/* (No Comment) */
+"OPML File" = "קובץ OPML";
+

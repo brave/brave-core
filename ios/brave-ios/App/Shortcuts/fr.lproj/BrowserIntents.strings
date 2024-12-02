@@ -14,7 +14,7 @@
 "4HScaO" = "URL du site Web";
 
 /* (No Comment) */
-"9iPSKS" = "Ouvrir un site Web à partir des marque-pages";
+"9iPSKS" = "Ouvrir un site à partir des favoris";
 
 /* (No Comment) */
 "azhMra" = "Ouvrir ${websiteURL} dans un nouvel onglet";
@@ -56,7 +56,7 @@
 "Paq749" = "URL du site Web";
 
 /* (No Comment) */
-"pvi3Ug" = "Cette action ouvrira ${websiteURL} à partir des marque-pages.";
+"pvi3Ug" = "Cette action ouvrira ${websiteURL} depuis les favoris.";
 
 /* (No Comment) */
 "t7aARA" = "Impossible d'ouvrir ${websiteURL} dans un nouvel onglet.";
@@ -68,7 +68,7 @@
 "uT0Oi7" = "Cette action ouvrira ${websiteURL} dans un nouvel onglet.";
 
 /* (No Comment) */
-"VgH3NH" = "Ouvrir le site Web à partir du marque-page";
+"VgH3NH" = "Ouvrir le favori";
 
 /* (No Comment) */
 "Wh3wb1" = "Ouvrir le site Web";
@@ -83,11 +83,11 @@
 "Xx8bbW" = "URL du site Web";
 
 /* (No Comment) */
-"ycaNZf" = "Ouvrir à partir des marque-pages";
+"ycaNZf" = "Ouvrir depuis les favoris";
 
 /* (No Comment) */
 "YCxX7a" = "${websiteURL}";
 
 /* (No Comment) */
-"ZgJKfY" = "Cette action ouvrira ${websiteURL} à partir des marque-pages.";
+"ZgJKfY" = "Cette action ouvrira ${websiteURL} depuis les favoris.";
 
