@@ -23,7 +23,7 @@ class OrchardDecodedBlocksBundleImpl : public OrchardDecodedBlocksBundle {
   BatchOrchardDecodeBundle& GetDecodeBundle();
 
  private:
-  friend class OrchardBlockDecoderImpl;
+  friend class OrchardBlockDecoder;
   friend class TestingDecodedBundleBuilderImpl;
   explicit OrchardDecodedBlocksBundleImpl(rust::Box<BatchOrchardDecodeBundle>);
   rust::Box<BatchOrchardDecodeBundle> batch_decode_result_;

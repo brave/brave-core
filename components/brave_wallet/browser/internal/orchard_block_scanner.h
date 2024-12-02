@@ -13,9 +13,9 @@
 
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 
 namespace brave_wallet {
 
@@ -54,7 +54,7 @@ class OrchardBlockScanner {
       const std::vector<zcash::mojom::CompactBlockPtr>& blocks);
 
  private:
-  std::unique_ptr<orchard::OrchardBlockDecoder> decoder_;
+  OrchardFullViewKey fvk_;
 };
 
 }  // namespace brave_wallet

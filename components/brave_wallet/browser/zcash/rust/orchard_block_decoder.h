@@ -17,15 +17,14 @@ namespace brave_wallet::orchard {
 
 class OrchardBlockDecoder {
  public:
-  virtual ~OrchardBlockDecoder() = default;
-
-  virtual std::unique_ptr<OrchardDecodedBlocksBundle> ScanBlocks(
+  static std::unique_ptr<OrchardDecodedBlocksBundle> DecodeBlocks(
+      const OrchardFullViewKey& fvk,
       const ::brave_wallet::OrchardTreeState& tree_state,
-      const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>&
-          blocks) = 0;
+      const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks);
 
-  static std::unique_ptr<OrchardBlockDecoder> FromFullViewKey(
-      const OrchardFullViewKey& fvk);
+ private:
+  OrchardBlockDecoder();
+  ~OrchardBlockDecoder();
 };
 
 }  // namespace brave_wallet::orchard

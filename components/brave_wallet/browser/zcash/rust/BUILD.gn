@@ -34,7 +34,7 @@ source_set("test_support_headers") {
 
 source_set("test_support_impl") {
   visibility = [ ":test_support" ]
-  sources = [ "orchard_test_utils_impl.cc" ]
+  sources = [ "orchard_test_utils.cc" ]
 
   deps = [
     ":orchard_impl",
@@ -75,8 +75,7 @@ source_set("orchard_impl") {
     "cxx_orchard_shard_tree_delegate.cc",
     "extended_spending_key_impl.cc",
     "extended_spending_key_impl.h",
-    "orchard_block_decoder_impl.cc",
-    "orchard_block_decoder_impl.h",
+    "orchard_block_decoder.cc",
     "orchard_decoded_blocks_bundle_impl.cc",
     "orchard_decoded_blocks_bundle_impl.h",
     "orchard_shard_tree_impl.cc",

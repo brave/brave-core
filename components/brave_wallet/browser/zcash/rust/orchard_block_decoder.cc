@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder_impl.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
 
 #include <memory>
 #include <utility>
@@ -17,12 +17,12 @@
 
 namespace brave_wallet::orchard {
 
-OrchardBlockDecoderImpl::OrchardBlockDecoderImpl(const OrchardFullViewKey& fvk)
-    : full_view_key_(fvk) {}
+OrchardBlockDecoder::OrchardBlockDecoder() = default;
+OrchardBlockDecoder::~OrchardBlockDecoder() = default;
 
-OrchardBlockDecoderImpl::~OrchardBlockDecoderImpl() = default;
-
-std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
+// static
+std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodeBlocks(
+    const OrchardFullViewKey& fvk,
     const ::brave_wallet::OrchardTreeState& tree_state,
     const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks) {
   base::AssertLongCPUWorkAllowed();
@@ -67,20 +67,13 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoderImpl::ScanBlocks(
                      std::back_inserter(prior_tree_state.frontier));
 
   ::rust::Box<BatchOrchardDecodeBundleResult> decode_result = batch_decode(
-      full_view_key_, std::move(prior_tree_state), std::move(orchard_actions));
+      fvk, std::move(prior_tree_state), std::move(orchard_actions));
 
   if (decode_result->is_ok()) {
     return base::WrapUnique<OrchardDecodedBlocksBundle>(
         new OrchardDecodedBlocksBundleImpl(decode_result->unwrap()));
   }
   return nullptr;
-}
-
-// static
-std::unique_ptr<OrchardBlockDecoder> OrchardBlockDecoder::FromFullViewKey(
-    const OrchardFullViewKey& fvk) {
-  return base::WrapUnique<OrchardBlockDecoder>(
-      new OrchardBlockDecoderImpl(fvk));
 }
 
 }  // namespace brave_wallet::orchard
