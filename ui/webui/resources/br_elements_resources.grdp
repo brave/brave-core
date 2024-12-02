@@ -8,8 +8,4 @@
              file="br_elements/shared_vars_css.html"
              type="chrome_html"
              compress="gzip" />
-  <structure name="IDR_BR_ELEMENTS_BR_TOOLBAR_SELECTION_OVERLAY_OVERRIDES_CSS"
-             file="br_elements/br_toolbar/br_toolbar_selection_overlay_overrides.css"
-             type="chrome_html"
-             compress="gzip" />
 </grit-part>

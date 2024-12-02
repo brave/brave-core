@@ -11,6 +11,8 @@ import { CrLitElement, css, type PropertyValues } from '//resources/lit/v3_0/lit
 export interface CrButtonElement {
   $: {
     button: HTMLElement
+    prefixIcon: HTMLSlotElement
+    suffixIcon: HTMLSlotElement
   };
 }
 
@@ -122,6 +124,10 @@ leo-button {
 
     this.$.button.setAttribute('kind', kind)
   }
+
+  // Shim for Chromium
+  getRipple() { return null as any }
+  hasRipple() { return false }
 }
 
 declare global {

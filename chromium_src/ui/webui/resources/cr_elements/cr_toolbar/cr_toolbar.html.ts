@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import type { CrToolbarElement } from "./br_toolbar.js";
+import type { CrToolbarElement } from "./cr_toolbar.js";
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js';
 
 export function getHtml(this: CrToolbarElement) {

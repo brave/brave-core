@@ -1,5 +1,8 @@
 {
   "extends": "./tsconfig",
-  "include": ["./components/**/*"],
+  "include": [
+    "./components/**/*",
+    "./chromium_src/**/*"
+  ],
   "exclude": []
 }

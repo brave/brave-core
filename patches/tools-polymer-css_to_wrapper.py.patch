@@ -1,0 +1,11 @@
+diff --git a/tools/polymer/css_to_wrapper.py b/tools/polymer/css_to_wrapper.py
+index 51b625b3d460d..bf443881ebd8e 100644
+--- a/tools/polymer/css_to_wrapper.py
++++ b/tools/polymer/css_to_wrapper.py
+@@ -325,5 +325,6 @@ def main(argv):
+   return
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   main(sys.argv[1:])

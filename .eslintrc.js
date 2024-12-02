@@ -116,6 +116,8 @@ module.exports = {
     'multiline-ternary': 0,
     '@typescript-eslint/prefer-readonly': 0,
     '@typescript-eslint/key-spacing': 0,
+    'import/no-absolute-path': 0,
+    '@typescript-eslint/class-literal-property-style': 1,
     /* TODO(nullhook): ENABLE the below rules in the future */
     'no-useless-call': 0,
     '@typescript-eslint/consistent-type-assertions': 0,

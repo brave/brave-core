@@ -1,0 +1,11 @@
+diff --git a/tools/grit/preprocess_if_expr.py b/tools/grit/preprocess_if_expr.py
+index 35c1b20bc2c83..2f1b9749715c6 100644
+--- a/tools/grit/preprocess_if_expr.py
++++ b/tools/grit/preprocess_if_expr.py
+@@ -149,5 +149,6 @@ def main(argv):
+   return
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   main(sys.argv[1:])

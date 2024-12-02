@@ -8,9 +8,12 @@ import '//resources/brave/leo.bundle.js'
 import { CrLitElement, css } from '//resources/lit/v3_0/lit.rollup.js';
 import { getHtml } from './cr_toggle.html.js';
 
+export const MOVE_THRESHOLD_PX: number = 5;
+
 export interface CrToggleElement {
   $: {
     toggle: HTMLElement
+    knob: HTMLElement
   }
 }
 
