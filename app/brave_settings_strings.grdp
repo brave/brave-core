@@ -1411,7 +1411,7 @@ Leo AI. This action can't be undone.
     The name of the model as it should appear in the request to the serving framework, e.g. phi-3 (note that if this name doesn’t match exactly what is expected by the serving framework the integration won't work)
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_SERVER_ENDPOINT_TOOLTIP_INFO" desc="A brief description for the input title for adding server endpoint url">
-    The url where your serving framework is listening for requests. If you're not sure, check the serving framework documentation. E.g. for Ollama, this is always http://localhost:11434/v1/chat/completions
+    The URL where your serving framework is listening for requests. If you're not sure, check the serving framework documentation. E.g. for Ollama, this is always http://localhost:11434/v1/chat/completions
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_API_KEY_TOOLTIP_INFO" desc="A brief description for the input title for adding API key">
     Some serving frameworks may require authentication credentials, such as an API key or an access token. These will be added to the request header.
