@@ -1,0 +1,102 @@
+[package]
+name = "ahash"
+version = "0.8.6"
+authors = ["Tom Kaitchuck <Tom.Kaitchuck@gmail.com>"]
+license = "MIT OR Apache-2.0"
+description = "A non-cryptographic hash function using AES-NI for high performance"
+documentation = "https://docs.rs/ahash"
+repository = "https://github.com/tkaitchuck/ahash"
+keywords = ["hash", "hasher", "hashmap", "aes", "no-std"]
+categories = ["algorithms", "data-structures", "no-std"]
+edition = "2018"
+readme = "README.md"
+build = "./build.rs"
+exclude = ["/smhasher", "/benchmark_tools"]
+
+[lib]
+name = "ahash"
+path = "src/lib.rs"
+test = true
+doctest = true
+bench = true
+doc = true
+
+[features]
+default = ["std", "runtime-rng"]
+
+# Enabling this will enable `AHashMap` and `AHashSet`.
+std = []
+
+# Runtime random key generation using getrandom.
+runtime-rng = ["getrandom"]
+
+# This is an alternative to runtime key generation which does compile time key generation if runtime-rng is not available.
+# (If runtime-rng is enabled this does nothing.)
+# If this is on (and runtime-rng is off) it implies the produced binary will not be identical.
+# If this is disabled and runtime-rng is unavailable constant keys are used.
+compile-time-rng = ["const-random"]
+
+# Do not use any random number generator (either at compile time or runtime)
+# If either runtime-rng or compile-time-rng are enabled this does nothing.
+no-rng = []
+
+# in case this is being used on an architecture lacking core::sync::atomic::AtomicUsize and friends
+atomic-polyfill = [ "dep:atomic-polyfill", "once_cell/atomic-polyfill"]
+
+[[bench]]
+name = "ahash"
+path = "tests/bench.rs"
+harness = false
+
+[[bench]]
+name = "map"
+path = "tests/map_tests.rs"
+harness = false
+
+[profile.test]
+opt-level = 2
+lto = 'fat'
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = 'fat'
+debug-assertions = false
+codegen-units = 1
+
+[profile.bench]
+opt-level = 3
+debug = false
+lto = 'fat'
+debug-assertions = false
+codegen-units = 1
+
+[build-dependencies]
+version_check = "0.9.4"
+
+[dependencies]
+const-random = { version = "0.1.12", optional = true }
+serde = { version = "1.0.117", optional = true }
+cfg-if = "1.0"
+atomic-polyfill = { version="1.0.1", optional=true}
+getrandom = { version = "0.2.7", optional = true }
+zerocopy = { version = "0.7.14", default-features = false, features = ["simd"] }
+
+[target.'cfg(not(all(target_arch = "arm", target_os = "none")))'.dependencies]
+once_cell = { version = "1.13.1", default-features = false, features = ["unstable", "alloc"] }
+
+[dev-dependencies]
+no-panic = "0.1.10"
+criterion = {version =  "0.3.2", features = ["html_reports"] }
+seahash = "4.0"
+fnv = "1.0.5"
+fxhash = "0.2.1"
+hex = "0.4.2"
+rand = "0.8.5"
+serde_json = "1.0.59"
+hashbrown = "0.12.3"
+
+[package.metadata.docs.rs]
+rustc-args = ["-C", "target-feature=+aes"]
+rustdoc-args = ["-C", "target-feature=+aes"]
+features = ["std"]

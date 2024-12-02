@@ -51,4 +51,9 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [ "//brave/third_party/rust/foldhash/v0_1:lib" ]
+  features = [
+    "default-hasher",
+    "raw-entry",
+  ]
 }

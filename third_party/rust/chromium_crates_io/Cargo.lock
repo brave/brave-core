@@ -9,7 +9,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "base64",
  "bitflags 1.3.2",
- "cssparser 0.28.1",
+ "cssparser",
  "idna 0.2.3",
  "itertools",
  "memchr",
@@ -18,7 +18,7 @@ dependencies = [
  "regex",
  "rmp-serde",
  "seahash",
- "selectors 0.23.0",
+ "selectors",
  "serde",
  "serde_json",
  "thiserror",
@@ -74,16 +74,6 @@ dependencies = [
  "cfg-if",
  "cipher",
  "cpufeatures",
-]
-
-[[package]]
-name = "ahash"
-version = "0.7.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "getrandom 0.2.15",
- "once_cell",
- "version_check",
 ]
 
 [[package]]
@@ -389,6 +379,7 @@ dependencies = [
  "challenge-bypass-ristretto-cxx",
  "constellation-cxx",
  "filecoin-cxx",
+ "foldhash",
  "json-cxx",
  "skus-cxx",
  "speedreader-ffi",
@@ -504,22 +495,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "generic-array",
  "subtle",
-]
-
-[[package]]
-name = "cssparser"
-version = "0.27.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "cssparser-macros",
- "dtoa-short",
- "itoa 0.4.8",
- "matches",
- "phf",
- "proc-macro2",
- "quote",
- "smallvec",
- "syn 1.0.109",
 ]
 
 [[package]]
@@ -821,6 +796,11 @@ version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "foldhash"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "forest_bigint"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1105,16 +1085,11 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.12.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "ahash",
-]
-
-[[package]]
-name = "hashbrown"
 version = "0.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "foldhash",
+]
 
 [[package]]
 name = "hex"
@@ -1238,20 +1213,11 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "1.9.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "autocfg",
- "hashbrown 0.12.3",
-]
-
-[[package]]
-name = "indexmap"
 version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "equivalent",
- "hashbrown 0.15.1",
+ "hashbrown",
 ]
 
 [[package]]
@@ -1330,14 +1296,13 @@ dependencies = [
 
 [[package]]
 name = "kuchikiki"
-version = "0.8.4-speedreader"
+version = "0.8.6-speedreader"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "cssparser 0.27.2",
+ "cssparser",
  "html5ever",
- "indexmap 1.9.3",
- "matches",
- "selectors 0.22.0",
+ "indexmap",
+ "selectors",
 ]
 
 [[package]]
@@ -1433,19 +1398,19 @@ version = "0.4.22"
 
 [[package]]
 name = "lol_html"
-version = "0.3.1"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags 2.6.0",
  "cfg-if",
- "cssparser 0.27.2",
+ "cssparser",
  "encoding_rs",
- "hashbrown 0.12.3",
+ "hashbrown",
  "lazy_static",
  "lazycell",
  "memchr",
- "safemem",
- "selectors 0.22.0",
+ "mime",
+ "selectors",
  "thiserror",
 ]
 
@@ -2071,11 +2036,6 @@ name = "ryu"
 version = "1.0.18"
 
 [[package]]
-name = "safemem"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
 name = "scopeguard"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2087,30 +2047,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "selectors"
-version = "0.22.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "bitflags 1.3.2",
- "cssparser 0.27.2",
- "derive_more",
- "fxhash",
- "log",
- "matches",
- "phf",
- "phf_codegen",
- "precomputed-hash",
- "servo_arc",
- "smallvec",
- "thin-slice",
-]
-
-[[package]]
-name = "selectors"
 version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 1.3.2",
- "cssparser 0.28.1",
+ "cssparser",
  "derive_more",
  "fxhash",
  "log",
@@ -2482,11 +2423,6 @@ dependencies = [
  "mac",
  "utf-8",
 ]
-
-[[package]]
-name = "thin-slice"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "thiserror"
