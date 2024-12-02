@@ -26,6 +26,10 @@ export const statusIndicator = styled.div`
 export const earnings = styled.div`
   font-size: 11px;
   line-height: 16px;
+
+  &.hidden {
+    visibility: hidden;
+  }
 `
 
 export const earningsHeader = styled.div`
@@ -39,6 +43,7 @@ export const earningsHeaderTitle = styled.div`
 
 export const earningsInfo = styled.div`
   position: relative;
+  display: none;
 
   leo-icon {
     opacity: 0.65;
@@ -116,10 +121,12 @@ export const earningsDisplay = styled.div`
   margin-top: 4px;
   display: flex;
   align-items: center;
+  justify-content: end;
   gap: 4px;
 `
 
 export const earningsMonth = styled.div`
+  display: none;
   padding: 2px 4px;
   background: rgba(255, 255, 255, 0.15);
   border-radius: 4px;
