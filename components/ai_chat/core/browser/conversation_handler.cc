@@ -52,6 +52,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/grit/brave_components_strings.h"
@@ -267,6 +268,20 @@ void ConversationHandler::Bind(
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   receivers_.Add(this, std::move(receiver));
   Bind(std::move(conversation_ui_handler));
+}
+
+void ConversationHandler::Bind(
+    mojo::PendingReceiver<mojom::UntrustedConversationHandler> receiver) {
+  untrusted_receivers_.Add(this, std::move(receiver));
+}
+
+void ConversationHandler::BindUntrustedConversationUI(
+    mojo::PendingRemote<mojom::UntrustedConversationUI>
+        untrusted_conversation_ui_handler,
+    BindUntrustedConversationUICallback callback) {
+  untrusted_conversation_ui_handlers_.Add(
+      std::move(untrusted_conversation_ui_handler));
+  std::move(callback).Run(GetStateForConversationEntries());
 }
 
 void ConversationHandler::OnConversationMetadataUpdated() {
@@ -1508,12 +1523,16 @@ void ConversationHandler::OnModelDataChanged() {
                    [](auto& model) { return model.Clone(); });
     client->OnModelDataChanged(model_key_, std::move(models_copy));
   }
+  OnStateForConversationEntriesChanged();
 }
 
 void ConversationHandler::OnHistoryUpdate() {
   // TODO(petemill): Provide the updated converation history item so that
   // we don't need to clone every entry.
   for (auto& client : conversation_ui_handlers_) {
+    client->OnConversationHistoryUpdate();
+  }
+  for (auto& client : untrusted_conversation_ui_handlers_) {
     client->OnConversationHistoryUpdate();
   }
 }
@@ -1611,12 +1630,36 @@ void ConversationHandler::BuildAssociatedContentInfo() {
   }
 }
 
+mojom::ConversationEntriesStatePtr
+ConversationHandler::GetStateForConversationEntries() {
+  auto& model = GetCurrentModel();
+  bool is_leo_model = model.options->is_leo_model_options();
+
+  mojom::ConversationEntriesStatePtr entries_state =
+      mojom::ConversationEntriesState::New();
+  entries_state->is_generating = IsRequestInProgress();
+  entries_state->is_leo_model = is_leo_model;
+  entries_state->content_used_percentage =
+      (metadata_->associated_content->is_content_association_possible == true)
+          ? std::make_optional(
+                metadata_->associated_content->content_used_percentage)
+          : std::nullopt;
+  // Can't submit if not a premium user and the model is premium-only
+  entries_state->can_submit_user_entries =
+      !IsRequestInProgress() &&
+      (ai_chat_service_->IsPremiumStatus() || !is_leo_model ||
+       model.options->get_leo_model_options()->access !=
+           mojom::ModelAccess::PREMIUM);
+  return entries_state;
+}
+
 void ConversationHandler::OnAssociatedContentInfoChanged() {
   BuildAssociatedContentInfo();
   for (auto& client : conversation_ui_handlers_) {
     client->OnAssociatedContentInfoChanged(
         metadata_->associated_content->Clone(), should_send_page_contents_);
   }
+  OnStateForConversationEntriesChanged();
 }
 
 void ConversationHandler::OnClientConnectionChanged() {
@@ -1648,6 +1691,9 @@ void ConversationHandler::OnAssociatedContentFaviconImageDataChanged() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnFaviconImageDataChanged();
   }
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnFaviconImageDataChanged();
+  }
 }
 
 void ConversationHandler::OnSuggestedQuestionsChanged() {
@@ -1662,11 +1708,19 @@ void ConversationHandler::OnSuggestedQuestionsChanged() {
 }
 
 void ConversationHandler::OnAPIRequestInProgressChanged() {
+  OnStateForConversationEntriesChanged();
   for (auto& client : conversation_ui_handlers_) {
     client->OnAPIRequestInProgress(is_request_in_progress_);
   }
   for (auto& observer : observers_) {
     observer.OnRequestInProgressChanged(this, is_request_in_progress_);
+  }
+}
+
+void ConversationHandler::OnStateForConversationEntriesChanged() {
+  auto entries_state = GetStateForConversationEntries();
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnEntriesUIStateChanged(entries_state->Clone());
   }
 }
 

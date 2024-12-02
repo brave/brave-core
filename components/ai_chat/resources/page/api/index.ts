@@ -5,8 +5,8 @@
 
 import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
 export * from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
-import { debounce } from '$web-common/debounce'
 import { loadTimeData } from '$web-common/loadTimeData'
+import API from '../../common/api'
 
 // State that is owned by this class because it is global to the UI
 // (loadTimeData / Service / UIHandler).
@@ -37,24 +37,25 @@ export const defaultUIState: State = {
   allActions: [],
 }
 
-export type UIStateChangeEvent = CustomEvent<State>
-
-class API {
+// Owns connections to the browser via mojom as well as global state
+class PageAPI extends API<State> {
   public service: mojom.ServiceRemote
-  public observer: mojom.ServiceObserverCallbackRouter
-  public uiHandler: mojom.AIChatUIHandlerRemote
-  public uiObserver: mojom.ChatUICallbackRouter
-  public state: State = { ...defaultUIState }
+    = mojom.Service.getRemote()
 
-  private eventTarget = new EventTarget()
+  public observer: mojom.ServiceObserverCallbackRouter
+    = new mojom.ServiceObserverCallbackRouter()
+
+  public uiHandler: mojom.AIChatUIHandlerRemote
+    = mojom.AIChatUIHandler.getRemote()
+
+  public uiObserver: mojom.ChatUICallbackRouter
+    = new mojom.ChatUICallbackRouter()
+
+  public conversationEntriesFrameObserver: mojom.ParentUIFrameCallbackRouter
+    = new mojom.ParentUIFrameCallbackRouter()
 
   constructor() {
-    // Connect to service
-    this.service = mojom.Service.getRemote()
-    this.observer = new mojom.ServiceObserverCallbackRouter()
-    // Connect to platform UI handler
-    this.uiHandler = mojom.AIChatUIHandler.getRemote()
-    this.uiObserver = new mojom.ChatUICallbackRouter()
+    super(defaultUIState)
     this.initialize()
     this.updateCurrentPremiumStatus()
   }
@@ -98,6 +99,10 @@ class API {
       }
     )
 
+    this.uiObserver.onChildFrameBound.addListener((parentPagePendingReceiver: mojom.ParentUIFramePendingReceiver) => {
+      this.conversationEntriesFrameObserver.$.bindHandle(parentPagePendingReceiver.handle)
+    })
+
     // Since there is no browser-side event for premium status changing,
     // we should check often. And since purchase or login is performed in
     // a separate WebContents, we can check when focus is returned here.
@@ -110,26 +115,6 @@ class API {
         this.updateCurrentPremiumStatus()
       }
     })
-  }
-
-  addStateChangeListener(callback: (event: UIStateChangeEvent) => void) {
-    this.eventTarget.addEventListener('uistatechange', callback)
-  }
-
-  removeStateChangeListener(callback: (event: UIStateChangeEvent) => void) {
-    this.eventTarget.removeEventListener('uistatechange', callback)
-  }
-
-  private dispatchDebouncedStateChange = debounce(() => {
-    console.debug('dispatching uistatechange event', {...this.state})
-    this.eventTarget.dispatchEvent(
-      new Event('uistatechange')
-    )
-  }, 0)
-
-  public setPartialState(partialState: Partial<State>) {
-    this.state = { ...this.state, ...partialState }
-    this.dispatchDebouncedStateChange()
   }
 
   private async getCurrentPremiumStatus() {
@@ -146,11 +131,11 @@ class API {
   }
 }
 
-let apiInstance: API
+let apiInstance: PageAPI
 
 export default function getAPI() {
   if (!apiInstance) {
-    apiInstance = new API()
+    apiInstance = new PageAPI()
   }
   return apiInstance
 }

@@ -343,18 +343,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     hasDismissedLongConversationInfo
   ])
 
-  const shouldShowLongPageWarning = React.useMemo(
-    () =>
-      context.conversationHistory.length >= 1 &&
-      (context.associatedContentInfo?.isContentAssociationPossible ?? false) &&
-      (context.associatedContentInfo?.contentUsedPercentage ?? 0) < 100,
-    [
-      context.conversationHistory.length,
-      context.associatedContentInfo?.isContentAssociationPossible,
-      context.associatedContentInfo?.contentUsedPercentage
-    ]
-  )
-
   const apiHasError = context.currentError !== mojom.APIError.None
   const shouldDisableUserInput = !!(
     apiHasError ||
@@ -470,7 +458,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     inputTextCharCountDisplay,
     isCurrentModelLeo,
     shouldShowLongConversationInfo,
-    shouldShowLongPageWarning,
     dismissLongConversationInfo: () =>
       setHasDismissedLongConversationInfo(true),
     retryAPIRequest: () => conversationHandler.retryAPIRequest(),

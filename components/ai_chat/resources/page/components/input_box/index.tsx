@@ -13,7 +13,7 @@ import Button from '@brave/leo/react/button'
 import styles from './style.module.scss'
 import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
-import ActionTypeLabel from '../action_type_label'
+import ActionTypeLabel from '../../../untrusted_conversation_frame/components/action_type_label'
 
 type Props = Pick<
   ConversationContext,

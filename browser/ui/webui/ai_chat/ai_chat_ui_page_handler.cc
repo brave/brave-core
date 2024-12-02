@@ -38,8 +38,7 @@ namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 32;
 constexpr char kURLRefreshPremiumSession[] =
     "https://account.brave.com/?intent=recover&product=leo";
-constexpr char kURLLearnMoreBraveSearchLeo[] =
-    "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo";
+
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kURLGoPremium[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
@@ -116,7 +115,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
   CHECK(active_chat_tab_helper_);
   active_chat_tab_helper_->web_contents()->OpenURL(
       {
-          GURL(kChatUIURL).Resolve(conversation_uuid),
+          GURL(kAIChatUIURL).Resolve(conversation_uuid),
           content::Referrer(),
           WindowOpenDisposition::NEW_FOREGROUND_TAB,
           ui::PAGE_TRANSITION_TYPED,
@@ -170,10 +169,6 @@ void AIChatUIPageHandler::ManagePremium() {
                                    : owner_web_contents_.get();
   ai_chat::ManagePremium(contents_to_navigate);
 #endif
-}
-
-void AIChatUIPageHandler::OpenLearnMoreAboutBraveSearchWithLeo() {
-  OpenURL(GURL(kURLLearnMoreBraveSearchLeo));
 }
 
 void AIChatUIPageHandler::OpenModelSupportUrl() {
@@ -262,6 +257,11 @@ void AIChatUIPageHandler::GetFaviconImageData(
   conversation->GetAssociatedContentInfo(base::BindOnce(
       &AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(
+    mojo::PendingReceiver<mojom::ParentUIFrame> receiver) {
+  chat_ui_->OnChildFrameBound(std::move(receiver));
 }
 
 void AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent(

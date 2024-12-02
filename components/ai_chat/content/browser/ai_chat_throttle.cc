@@ -38,9 +38,8 @@ std::unique_ptr<AiChatThrottle> AiChatThrottle::MaybeCreateThrottleFor(
   }
 
   // We need this throttle to work only for chrome-untrusted://chat page
-  if (!navigation_handle->GetURL().SchemeIs(
-          content::kChromeUIUntrustedScheme) ||
-      navigation_handle->GetURL().host_piece() != kChatUIHost) {
+  if (!navigation_handle->GetURL().SchemeIs(content::kChromeUIScheme) ||
+      navigation_handle->GetURL().host_piece() != kAIChatUIHost) {
     return nullptr;
   }
 

@@ -54,6 +54,16 @@
     calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2)
     0
     calc(var(--conversation-content-margin) + var(--scrollbar-width) / 2);
+
+  // Hide until content is ready
+  opacity: 0;
+  transition: opacity 0.125s ease-out;
+
+  &.contentReady {
+    opacity: 1;
+    // Hide immediately when changing content
+    transition: none;
+  }
 }
 
 .flushBottom {

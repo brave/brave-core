@@ -47,7 +47,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void OpenAIChatSettings() override;
   void OpenConversationFullPage(const std::string& conversation_uuid) override;
   void OpenURL(const GURL& url) override;
-  void OpenLearnMoreAboutBraveSearchWithLeo() override;
   void OpenModelSupportUrl() override;
   void GoPremium() override;
   void RefreshPremiumSession() override;
@@ -66,6 +65,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       override;
   void GetFaviconImageData(const std::string& conversation_id,
                            GetFaviconImageDataCallback callback) override;
+
+  void BindParentUIFrameFromChildFrame(
+      mojo::PendingReceiver<mojom::ParentUIFrame> receiver);
 
  private:
   class ChatContextObserver : public content::WebContentsObserver {

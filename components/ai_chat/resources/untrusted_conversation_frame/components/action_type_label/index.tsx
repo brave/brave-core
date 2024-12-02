@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
-import * as mojom from '../../api'
+import * as mojom from '../../../common/mojom'
 import styles from './style.module.scss'
 import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'

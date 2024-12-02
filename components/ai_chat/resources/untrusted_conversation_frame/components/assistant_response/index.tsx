@@ -8,20 +8,17 @@ import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
-import { Url } from 'gen/url/mojom/url.mojom.m.js'
-import * as mojom from '../../api/'
-import { useAIChat } from '../../state/ai_chat_context'
+import * as mojom from '../../../common/mojom'
+import { useConversationEntriesContext } from '../../conversation_entries_context'
 import MarkdownRenderer from '../markdown_renderer'
 import styles from './style.module.scss'
 
 function SearchSummary (props: { searchQueries: string[] }) {
-  const context = useAIChat()
+  const context = useConversationEntriesContext()
 
   const handleOpenSearchQuery = React.useCallback((e: React.MouseEvent, query: string) => {
     e.preventDefault()
-    const queryUrl = new Url()
-    queryUrl.url = `https://search.brave.com/search?q=${encodeURIComponent(query)}`
-    context.uiHandler?.openURL(queryUrl)
+    context.uiHandler?.openSearchURL(query)
   }, [])
 
   const handleLearnMore = () => {

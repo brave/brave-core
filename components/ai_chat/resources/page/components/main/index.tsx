@@ -20,7 +20,6 @@ import ErrorRateLimit from '../alerts/error_rate_limit'
 import LongConversationInfo from '../alerts/long_conversation_info'
 import NoticeConversationStorage from '../notices/notice_conversation_storage'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
-import ConversationEntries from '../conversation_entries'
 import ConversationsList from '../conversations_list'
 import { ConversationHeader } from '../header'
 import InputBox from '../input_box'
@@ -28,17 +27,24 @@ import ModelIntro from '../model_intro'
 import PageContextToggle from '../page_context_toggle'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
+import { SuggestedQuestion, SuggestionButton } from '../suggested_question'
 import ToolsButtonMenu from '../tools_button_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
+import SiteTitle from '../site_title'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
 
+const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
+  mojom.SuggestionGenerationStatus.CanGenerate,
+  mojom.SuggestionGenerationStatus.IsGenerating
+]
 
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
+  const [isContentReady, setIsContentReady] = React.useState(false)
 
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
@@ -112,6 +118,11 @@ function Main() {
   // Ask for opt-in once the first message is sent
   const showAgreementModal = !aiChatContext.hasAcceptedAgreement &&
     !!conversationContext.conversationHistory.length
+
+  const showSuggestions: boolean =
+    aiChatContext.hasAcceptedAgreement &&
+    (conversationContext.suggestedQuestions.length > 0 ||
+      SUGGESTION_STATUS_SHOW_BUTTON.includes(conversationContext.suggestionStatus))
 
   const viewPortWithoutKeyboard = React.useRef(0)
   const keyboardSize = React.useRef(0)
@@ -195,15 +206,45 @@ function Main() {
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
         <div
-          className={styles.conversationContent}
+          className={classnames({
+            [styles.conversationContent]: true,
+            [styles.contentReady]: !conversationContext.conversationUuid || isContentReady
+          })}
           ref={conversationContentElement}
         >
           {aiChatContext.hasAcceptedAgreement && (
             <>
               <ModelIntro />
-              <ConversationEntries
-                onLastElementHeightChange={handleLastElementHeightChange}
+              {conversationContext.associatedContentInfo?.isContentAssociationPossible && conversationContext.shouldSendPageContents && (
+                    <div className={styles.siteTitleContainer}>
+                      <SiteTitle size='default' />
+                    </div>
+              )}
+              {!!conversationContext.conversationUuid &&
+              <aiChatContext.conversationEntriesComponent
+                onLoad={() => setIsContentReady(true)}
+                onGeneratedConversationEntryHeightChanged={handleLastElementHeightChange}
               />
+              }
+              {showSuggestions && (
+              <div className={styles.suggestedQuestionsBox}>
+                <div className={styles.questionsList}>
+                  {conversationContext.suggestedQuestions.map((question, i) => <SuggestedQuestion key={question} question={question} />)}
+                  {SUGGESTION_STATUS_SHOW_BUTTON.includes(
+                    conversationContext.suggestionStatus
+                  ) && conversationContext.shouldSendPageContents && (
+                      <SuggestionButton
+                        onClick={() => conversationContext.generateSuggestedQuestions()}
+                        isLoading={conversationContext.suggestionStatus === mojom.SuggestionGenerationStatus.IsGenerating}
+                      >
+                        <span className={styles.buttonText}>
+                          {getLocale('suggestQuestionsLabel')}
+                        </span>
+                      </SuggestionButton>
+                    )}
+                </div>
+              </div>
+            )}
             </>
           )}
           {currentErrorElement && (

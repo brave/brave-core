@@ -9,21 +9,21 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import '@brave/leo/tokens/css/variables.css'
 import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
-import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
 import getAPI from './api'
-import { AIChatContextProvider, useAIChat } from './state/ai_chat_context'
+import { AIChatContextProvider, ConversationEntriesProps, useAIChat } from './state/ai_chat_context'
 import {
-  ConversationContextProvider
+  ConversationContextProvider,
+  useConversation
 } from './state/conversation_context'
 import Main from './components/main'
 import FullScreen from './components/full_page'
 import Loading from './components/loading'
 import { ActiveChatProviderFromUrl } from './state/active_chat_context'
 
-setIconBasePath('chrome-untrusted://resources/brave-icons')
+setIconBasePath('chrome://resources/brave-icons')
 
 // Make sure we're fetching data as early as possible
-getAPI()
+const api = getAPI()
 
 function App() {
   React.useEffect(() => {
@@ -31,12 +31,10 @@ function App() {
   }, [])
 
   return (
-    <AIChatContextProvider>
+    <AIChatContextProvider conversationEntriesComponent={ConversationEntries}>
       <ActiveChatProviderFromUrl>
         <ConversationContextProvider>
-          <BraveCoreThemeProvider>
             <Content />
-          </BraveCoreThemeProvider>
         </ConversationContextProvider>
       </ActiveChatProviderFromUrl>
     </AIChatContextProvider>
@@ -55,6 +53,46 @@ function Content() {
   }
 
   return <FullScreen />
+}
+
+function ConversationEntries(props: ConversationEntriesProps) {
+  const conversationContext = useConversation()
+  const iframeRef = React.useRef<HTMLIFrameElement>(null)
+
+  React.useEffect(() => {
+    const listener = (height: number) => {
+      console.log('new iframe height', height)
+      if (iframeRef.current) {
+        iframeRef.current.style.height = height + 'px'
+      }
+    }
+    const id = api.conversationEntriesFrameObserver.childHeightChanged.addListener(listener)
+
+    return () => {
+      console.log('iframe unloaded')
+      api.conversationEntriesFrameObserver.removeListener(id)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    const listener = () => {
+      props.onGeneratedConversationEntryHeightChanged()
+    }
+    const id = api.conversationEntriesFrameObserver.generatedConversationEntryHeightChanged
+      .addListener(listener)
+
+    return () => {
+      api.conversationEntriesFrameObserver.removeListener(id)
+    }
+  }, [props.onGeneratedConversationEntryHeightChanged])
+
+  return (
+    <iframe
+      src={"chrome-untrusted://leo-ai-conversation-entries/" + conversationContext.conversationUuid}
+      ref={iframeRef}
+      onLoad={props.onLoad}
+    />
+  )
 }
 
 function initialize() {

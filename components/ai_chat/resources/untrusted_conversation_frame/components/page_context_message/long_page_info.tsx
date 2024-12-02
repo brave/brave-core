@@ -7,26 +7,23 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
-import { useConversation } from '../../state/conversation_context'
-import styles from './alerts.module.scss'
+import { useConversationEntriesContext } from '../../conversation_entries_context'
+import styles from './style.module.scss'
 
 export default function LongPageInfo() {
-  const context = useConversation()
-
-  const warningText = context.associatedContentInfo?.isContentRefined
-    ? getLocale('pageContentRefinedWarning')
-    : formatMessage(getLocale('pageContentTooLongWarning'), {
+  const context = useConversationEntriesContext()
+  const warningText = // context.contentUsedPercentage
+    // ? getLocale('pageContentRefinedWarning') :
+    formatMessage(getLocale('pageContentTooLongWarning'), {
     placeholders: {
-      $1: context.associatedContentInfo?.contentUsedPercentage + '%'
+      $1: context.contentUsedPercentage + '%'
     }
   })
 
   return (
     <div className={styles.info}>
-      <div className={styles.infoIcon}>
-        <Icon name='info-outline' />
-      </div>
-      <div className={styles.infoText}>{warningText}</div>
+      <Icon name='info-outline' />
+      <div>{warningText}</div>
     </div>
   )
 }
