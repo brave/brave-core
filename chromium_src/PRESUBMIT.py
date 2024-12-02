@@ -6,7 +6,6 @@
 import brave_chromium_utils
 import chromium_presubmit_overrides
 
-USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
 
 
