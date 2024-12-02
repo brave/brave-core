@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_manager.cc b/components/permissions/permission_manager.cc
-index d5da5d60d7fe087ffbceaedd8c4d3ec7bc7afa55..173436e73409b96a341ee48b89948fceadfeb896 100644
+index ae652d36719701f39f6b902e159bbc05ade1ca46..6054021aba6254d8dd3f61f3d38370035c6c9e01 100644
 --- a/components/permissions/permission_manager.cc
 +++ b/components/permissions/permission_manager.cc
 @@ -295,6 +295,7 @@ void PermissionManager::RequestPermissionsFromCurrentDocument(
@@ -11,7 +11,7 @@ index d5da5d60d7fe087ffbceaedd8c4d3ec7bc7afa55..173436e73409b96a341ee48b89948fce
                               std::move(permission_status_callback));
  }
 @@ -346,6 +347,7 @@ PermissionManager::GetPermissionResultForCurrentDocument(
-       PermissionUtil::PermissionTypeToContentSettingType(permission);
+       PermissionUtil::PermissionTypeToContentSettingsType(permission);
  
    const GURL requesting_origin =
 +      BRAVE_GET_PERMISSION_RESULT_FOR_CURRENT_DOCUMENT

@@ -16,7 +16,7 @@
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/autofill_prediction_improvements/chrome_autofill_prediction_improvements_client.h"
+#include "chrome/browser/autofill_ai/chrome_autofill_ai_client.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace autofill {

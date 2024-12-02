@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index 10be695f75e069887a669e14c84840ea51d16715..c643439aacff2017ef756933bd59e73bb6e543e6 100644
+index 7a59c628db8ff711e5e06945ea5f21cf79ba65f2..31f40e61d45478c0e5db85b2a58a244546f1e2da 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
 @@ -172,6 +172,7 @@ bool CanTrackLastVisit(ContentSettingsType type) {

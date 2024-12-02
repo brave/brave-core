@@ -57,8 +57,11 @@ BraveConfigurator::BraveConfigurator(
     : configurator_impl_(ComponentUpdaterCommandLineConfigPolicy(cmdline),
                          false),
       pref_service_(raw_ref<PrefService>::from_ptr(pref_service)),
-      persisted_data_(
-          update_client::CreatePersistedData(pref_service, nullptr)),
+      persisted_data_(update_client::CreatePersistedData(
+          base::BindRepeating(
+              [](PrefService* pref_service) { return pref_service; },
+              pref_service),
+          nullptr)),
       url_loader_factory_(std::move(url_loader_factory)) {}
 
 BraveConfigurator::~BraveConfigurator() = default;
@@ -165,10 +168,6 @@ BraveConfigurator::GetPatcherFactory() {
         base::BindRepeating(&patch::LaunchFilePatcher));
   }
   return patch_factory_;
-}
-
-bool BraveConfigurator::EnabledDeltas() const {
-  return configurator_impl_.EnabledDeltas();
 }
 
 bool BraveConfigurator::EnabledBackgroundDownloader() const {

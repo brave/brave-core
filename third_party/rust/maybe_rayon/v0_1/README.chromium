@@ -1,9 +1,10 @@
 Name: maybe-rayon
 URL: https://crates.io/crates/maybe-rayon
-Description: Either acts as rayon or creates a single-threaded facade
 Version: 0.1.1
-Security Critical: yes
-Shipped: yes
+Revision: 73128cfb26624d9ceef7d0796e868904841f611d
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/maybe-rayon-0.1.1/LICENSE
-Revision: 73128cfb26624d9ceef7d0796e868904841f611d
+Shipped: yes
+Security Critical: yes
+
+Description: Either acts as rayon or creates a single-threaded facade

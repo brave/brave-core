@@ -1,12 +1,13 @@
 Name: unicode-xid
 URL: https://crates.io/crates/unicode-xid
+Version: 0.2.4
+Revision: 781b5b3bd7a1dc6d9ea9288d32f2fb7964607202
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/unicode-xid-0.2.4/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
 Description: Determine whether characters have the XID_Start
 or XID_Continue properties according to
 Unicode Standard Annex #31.
 
-Version: 0.2.4
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/unicode-xid-0.2.4/LICENSE-APACHE
-Revision: 781b5b3bd7a1dc6d9ea9288d32f2fb7964607202

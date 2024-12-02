@@ -78,11 +78,11 @@ void BraveTabGroupHeader::VisualsChanged() {
   // vertical layout to maintain the group header height.
   if (!title_->GetText().empty()) {
     const gfx::Insets title_chip_insets =
-        group_style_->GetInsetsForHeaderChip(ShouldShowSyncIcon());
+        group_style_->GetInsetsForHeaderChip(ShouldShowHeaderIcon());
     title_chip_->SetSize(
         {title_chip_->width(), title_->height() + 2 * title_chip_insets.top()});
     title_->SetY(title_chip_insets.top());
-    if (ShouldShowSyncIcon()) {
+    if (ShouldShowHeaderIcon()) {
       sync_icon_->SetY(title_chip_insets.top());
     }
   }
@@ -91,7 +91,7 @@ void BraveTabGroupHeader::VisualsChanged() {
     LayoutTitleChipForVerticalTabs();
   }
 
-  if (ShouldShowSyncIcon()) {
+  if (ShouldShowHeaderIcon()) {
     sync_icon_->SetImage(ui::ImageModel::FromVectorIcon(
         kLeoProductSyncIcon, SkColorSetA(GetGroupColor(), 0.6 * 255),
         group_style_->GetSyncIconWidth()));

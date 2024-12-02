@@ -1,9 +1,10 @@
 Name: incrementalmerkletree
 URL: https://crates.io/crates/incrementalmerkletree
-Description: Common types, interfaces, and utilities for Merkle tree data structures
 Version: 0.5.1
-Security Critical: yes
-Shipped: yes
+Revision: 17429d08ad262981a7db3c3201689dc3349d0151
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/incrementalmerkletree-0.5.1/LICENSE-APACHE
-Revision: 17429d08ad262981a7db3c3201689dc3349d0151
+Shipped: yes
+Security Critical: yes
+
+Description: Common types, interfaces, and utilities for Merkle tree data structures

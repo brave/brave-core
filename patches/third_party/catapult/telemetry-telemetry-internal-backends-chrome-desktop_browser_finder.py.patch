@@ -1,8 +1,8 @@
 diff --git a/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py b/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
-index acff26c6c9af9290a44a2c9f9fb155c5a25acee2..956620c2d08fb3cf02d8b213833dcb8cdba6ec6f 100644
+index 6e2cf84b2da3297fda0f0fedd1096c083ab705d7..e2f1fdf6f6de77bb70629dfcc39fb6a55d3cea16 100644
 --- a/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
 +++ b/telemetry/telemetry/internal/backends/chrome/desktop_browser_finder.py
-@@ -466,3 +466,4 @@ def FindAllAvailableBrowsers(finder_options, device):
+@@ -480,3 +480,4 @@ def FindAllAvailableBrowsers(finder_options, device):
      return []
  
    return browsers

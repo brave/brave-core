@@ -6,7 +6,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/js/node_js_webapi.h"
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
 
 namespace brave_page_graph {
 
@@ -24,9 +24,9 @@ ItemName NodeJSWebAPI::GetItemName() const {
 }
 
 ItemDesc NodeJSWebAPI::GetItemDesc() const {
-  WTF::TextStream ts;
+  StringBuilder ts;
   ts << GraphNode::GetItemDesc() << " [" << method_name_ << "]";
-  return ts.Release();
+  return ts.ReleaseString();
 }
 
 void NodeJSWebAPI::AddGraphMLAttributes(xmlDocPtr doc,

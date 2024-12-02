@@ -75,7 +75,8 @@ void PlaylistSidePanelCoordinator::LoadPlaylist(const std::string& playlist_id,
       {}, ui::PageTransition::PAGE_TRANSITION_AUTO_BOOKMARK, {}));
 }
 
-std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView() {
+std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView(
+    SidePanelEntryScope& scope) {
   const bool should_create_contents_wrapper = !contents_wrapper_;
   if (should_create_contents_wrapper) {
     contents_wrapper_ = std::make_unique<PlaylistContentsWrapper>(
@@ -90,7 +91,7 @@ std::unique_ptr<views::View> PlaylistSidePanelCoordinator::CreateWebView() {
   }
 
   auto web_view = std::make_unique<PlaylistSidePanelWebView>(
-      &GetBrowser(), base::DoNothing(), contents_wrapper_.get());
+      &GetBrowser(), scope, base::DoNothing(), contents_wrapper_.get());
   side_panel_web_view_ = web_view->GetWeakPtr();
 
   if (!should_create_contents_wrapper) {

@@ -19,7 +19,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
-import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateProvider;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
@@ -36,7 +36,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             ObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             MenuOrKeyboardActionController menuOrKeyboardActionController,
-            Supplier<DesktopWindowStateProvider> desktopWindowStateProviderSupplier) {
+            Supplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier) {
         super(
                 activity,
                 tabModelOrchestratorSupplier,
@@ -44,7 +44,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                 activityLifecycleDispatcher,
                 modalDialogManagerSupplier,
                 menuOrKeyboardActionController,
-                desktopWindowStateProviderSupplier);
+                desktopWindowStateManagerSupplier);
     }
 
     @Override

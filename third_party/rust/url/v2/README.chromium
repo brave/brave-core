@@ -1,9 +1,10 @@
 Name: url
 URL: https://crates.io/crates/url
-Description: URL library for Rust, based on the WHATWG URL Standard
 Version: 2.3.1
-Security Critical: yes
-Shipped: yes
+Revision: 359bc90a4f07224f79cc79c45dc873d44bcd6f14
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/url-2.3.1/LICENSE-APACHE
-Revision: 359bc90a4f07224f79cc79c45dc873d44bcd6f14
+Shipped: yes
+Security Critical: yes
+
+Description: URL library for Rust, based on the WHATWG URL Standard

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "android_webview/browser/aw_permission_manager.h"
+
 #include "components/permissions/permission_util.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
@@ -23,5 +25,25 @@
   case PermissionType::BRAVE_OPEN_AI_CHAT:              \
   case PermissionType::NUM
 
+namespace android_webview {
+
+void AwPermissionManager::SetOriginCanReadEnumerateDevicesAudioLabels(
+    const url::Origin& origin,
+    bool audio) {}
+
+void AwPermissionManager::SetOriginCanReadEnumerateDevicesVideoLabels(
+    const url::Origin& origin,
+    bool video) {}
+
+}  // namespace android_webview
+
+#define SetOriginCanReadEnumerateDevicesAudioLabels \
+  SetOriginCanReadEnumerateDevicesAudioLabels_ChromiumImpl
+#define SetOriginCanReadEnumerateDevicesVideoLabels \
+  SetOriginCanReadEnumerateDevicesVideoLabels_ChromiumImpl
+
 #include "src/android_webview/browser/aw_permission_manager.cc"
+
+#undef SetOriginCanReadEnumerateDevicesAudioLabels
+#undef SetOriginCanReadEnumerateDevicesVideoLabels
 #undef NUM

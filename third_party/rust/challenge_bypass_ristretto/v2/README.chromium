@@ -1,9 +1,10 @@
 Name: challenge-bypass-ristretto
 URL: https://crates.io/crates/challenge-bypass-ristretto
-Description: A rust implemention of the privacy pass cryptographic protocol using the Ristretto group (WIP)
 Version: 2.0.0
-Security Critical: yes
-Shipped: yes
+Revision: 6e5b0fbf4a7c974cb2c18f23431e68ac37aac615
 License: Mozilla Public License 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/challenge-bypass-ristretto-2.0.0/LICENSE
-Revision: 6e5b0fbf4a7c974cb2c18f23431e68ac37aac615
+Shipped: yes
+Security Critical: yes
+
+Description: A rust implemention of the privacy pass cryptographic protocol using the Ristretto group (WIP)

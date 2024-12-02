@@ -1,9 +1,10 @@
 Name: utf-8
 URL: https://crates.io/crates/utf-8
-Description: Incremental, zero-copy UTF-8 decoding with error handling
 Version: 0.7.6
-Security Critical: yes
-Shipped: yes
+Revision: 9b4165786edaea2ef9cf48f75756537eacf7f20d
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/utf-8-0.7.6/LICENSE-APACHE
-Revision: 9b4165786edaea2ef9cf48f75756537eacf7f20d
+Shipped: yes
+Security Critical: yes
+
+Description: Incremental, zero-copy UTF-8 decoding with error handling

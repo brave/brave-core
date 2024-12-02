@@ -1,10 +1,11 @@
 Name: tracing-subscriber
 URL: https://crates.io/crates/tracing-subscriber
-Description: Utilities for implementing and composing `tracing` subscribers.
-
 Version: 0.2.25
-Security Critical: yes
-Shipped: yes
+Revision: 6692aaf738cc852aa6d2612e0d17cb299db98fe3
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/tracing-subscriber-0.2.25/LICENSE
-Revision: 6692aaf738cc852aa6d2612e0d17cb299db98fe3
+Shipped: yes
+Security Critical: yes
+
+Description: Utilities for implementing and composing `tracing` subscribers.
+

@@ -1,8 +1,8 @@
 diff --git a/third_party/lottie/lottie_worker.js b/third_party/lottie/lottie_worker.js
-index 29dffcca9a1fa439005be613fef042839735dd45..3a456decfd89b58e9784bde7c03ee508d22271a9 100644
+index 2f09b122f54e9f5231933591c69303ac6b4d630c..7578873a7e88beb31cbbf54f1bfa18aef5044a1c 100644
 --- a/third_party/lottie/lottie_worker.js
 +++ b/third_party/lottie/lottie_worker.js
-@@ -13455,6 +13455,7 @@ function initAnimation(animationData, initParams, canvas) {
+@@ -13457,6 +13457,7 @@ function initAnimation(animationData, initParams, canvas) {
      },
    });
  

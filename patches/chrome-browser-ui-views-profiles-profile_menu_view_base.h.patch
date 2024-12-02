@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view_base.h b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-index 018c931550032c7cea3c42ef3367f175d5d6c6f3..7c1963d01ba1a4d37ca52ead14a0a27ecb34c445 100644
+index 58cdfb2a74ae56bfa0b08f97215b3ffb5a752875..293c05b807a9fa77e37310049b0965bc15d1ae0b 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view_base.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-@@ -196,6 +196,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
+@@ -198,6 +198,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
    void set_perform_menu_actions_for_testing(bool perform_menu_actions) {
      perform_menu_actions_ = perform_menu_actions;
    }
@@ -10,7 +10,7 @@ index 018c931550032c7cea3c42ef3367f175d5d6c6f3..7c1963d01ba1a4d37ca52ead14a0a27e
  
   private:
    class AXMenuWidgetObserver;
-@@ -251,10 +252,10 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
+@@ -253,10 +254,10 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
    raw_ptr<views::View> profile_mgmt_features_container_ = nullptr;
  
    // Child components of `identity_info_container_`.

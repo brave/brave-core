@@ -602,7 +602,7 @@ void EthereumProviderImpl::Decrypt(
     return;
   }
 
-  api_request_helper::SanitizeAndParseJson(
+  api_request_helper::ParseJsonNonBlocking(
       untrusted_encrypted_data_json,
       base::BindOnce(&EthereumProviderImpl::ContinueDecryptWithSanitizedJson,
                      weak_factory_.GetWeakPtr(), std::move(callback),

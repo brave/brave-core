@@ -27,6 +27,7 @@ source_set("status_tray") {
     "//chrome/common:channel_info",
     "//components/version_info:channel",
     "//ui/base",
+    "//ui/menus",
     "//ui/native_theme",
     "//ui/native_theme:native_theme_browser",
   ]
@@ -46,6 +47,7 @@ source_set("unit_tests") {
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//testing/gtest",
+    "//ui/menus",
     "//ui/native_theme",
   ]
 }

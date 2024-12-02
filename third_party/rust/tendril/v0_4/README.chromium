@@ -1,9 +1,10 @@
 Name: tendril
 URL: https://crates.io/crates/tendril
-Description: Compact buffer/string type for zero-copy parsing
 Version: 0.4.3
-Security Critical: yes
-Shipped: yes
+Revision: f882b602039a56dd00927461ed9631c6259ed67f
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/LICENSE-APACHE
-Revision: f882b602039a56dd00927461ed9631c6259ed67f
+Shipped: yes
+Security Critical: yes
+
+Description: Compact buffer/string type for zero-copy parsing

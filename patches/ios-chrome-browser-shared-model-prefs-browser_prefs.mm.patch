@@ -1,19 +1,19 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 9aafc20ca26d84604047661f0a5d0ee56363bec3..8da6a690fd25727e5a048464777c6db8779c3ee1 100644
+index c5b452b53983e5e348f437087a1e7715ce25bce7..024b81c4dda7133421aafc4ab6ebeaba3c6ba86f 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -778,6 +778,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -781,6 +781,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
-   registry->RegisterIntegerPref(prefs::kAddressBarSettingsNewBadgeShownCount,
-                                 0);
+   registry->RegisterIntegerPref(
+       prefs::kProminenceNotificationAlertImpressionCount, 0);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1126,6 +1127,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterStringPref(
-       send_tab_to_self::prefs::kIOSSendTabToSelfLastReceivedTabURLPref,
+@@ -1134,6 +1135,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
        std::string());
+ 
+   registry->RegisterIntegerPref(prefs::kIOSLastKnownNTPWebStateIndex, -1);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  

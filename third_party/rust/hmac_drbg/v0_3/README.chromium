@@ -1,9 +1,10 @@
 Name: hmac-drbg
 URL: https://crates.io/crates/hmac-drbg
-Description: Pure Rust implementation of Hmac DRBG.
 Version: 0.3.0
-Security Critical: yes
-Shipped: yes
+Revision: 16e288cce61054d4df29d02e1cb08056ea696629
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/hmac-drbg-0.3.0/LICENSE
-Revision: 16e288cce61054d4df29d02e1cb08056ea696629
+Shipped: yes
+Security Critical: yes
+
+Description: Pure Rust implementation of Hmac DRBG.

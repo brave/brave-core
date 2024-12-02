@@ -208,6 +208,6 @@ void BraveTab::SetData(TabRendererData data) {
   if (data_changed &&
       tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
       data_.pinned) {
-    SetGroup(std::nullopt);
+    set_group(std::nullopt);
   }
 }

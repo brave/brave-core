@@ -32,7 +32,7 @@ public class AsyncUtils {
         private Runnable mWhenAllCompletedRunnable;
         private int mTotalElements;
         private int mCurrentElements;
-        private Object mLock = new Object();
+        private final Object mLock = new Object();
 
         public MultiResponseHandler(int totalElements) {
             synchronized (mLock) {

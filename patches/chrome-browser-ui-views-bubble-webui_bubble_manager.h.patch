@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bubble/webui_bubble_manager.h b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-index edd7d37a12e182cc663db4e565b8a9edb12e0c70..043ec6578181c02b4bad4d59769287cee6f91907 100644
+index dbda307510db6bacf70a4eee109e48cdbee2ef4b..c2c3a9f1aa0175a4760c232ce0377d55c61f3753 100644
 --- a/chrome/browser/ui/views/bubble/webui_bubble_manager.h
 +++ b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-@@ -165,11 +165,13 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
+@@ -164,10 +164,12 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
  
   private:
    // WebUIBubbleManager:
@@ -10,10 +10,8 @@ index edd7d37a12e182cc663db4e565b8a9edb12e0c70..043ec6578181c02b4bad4d59769287ce
    base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
        const std::optional<gfx::Rect>& anchor,
        views::BubbleBorder::Arrow arrow) override;
+   WebUIContentsWrapper* GetContentsWrapper() override;
 + private:
  
--  const raw_ptr<views::View> anchor_view_;
-+  const raw_ptr<views::View, DanglingUntriaged> anchor_view_;
-   const raw_ptr<Profile, DanglingUntriaged> profile_;
-   const GURL webui_url_;
-   const int task_manager_string_id_;
+   const raw_ptr<views::View> anchor_view_;
+   const raw_ptr<BrowserWindowInterface> browser_window_interface_;

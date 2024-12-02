@@ -89,6 +89,9 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mReadAloudControllerSupplier");
         makeProtectedField(sToolbarManagerClassName, "mReadAloudControllerSupplier");
 
+        deleteField(sBraveToolbarManagerClassName, "mTopUiThemeColorProvider");
+        makeProtectedField(sToolbarManagerClassName, "mTopUiThemeColorProvider");
+
         makePublicMethod(sToolbarManagerClassName, "onOrientationChange");
         addMethodAnnotation(
                 sBraveToolbarManagerClassName, "onOrientationChange", "Ljava/lang/Override;");

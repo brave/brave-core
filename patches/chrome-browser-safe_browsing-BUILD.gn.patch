@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/safe_browsing/BUILD.gn b/chrome/browser/safe_browsing/BUILD.gn
-index 19cc1b47ecf4a970f930f7c0b7e802d2739d5802..d37aff1fb03b7383ee5a33ddabc9ac1a13e292a6 100644
+index ba573c282402ef797caaa4d7c3d9ee3f78eb60a1..de29bfee4b8ab1b5a78cf56ad4bbccfbe1774c6b 100644
 --- a/chrome/browser/safe_browsing/BUILD.gn
 +++ b/chrome/browser/safe_browsing/BUILD.gn
-@@ -485,6 +485,7 @@ static_library("safe_browsing") {
+@@ -497,6 +497,7 @@ static_library("safe_browsing") {
          "//components/safe_browsing/android:safe_browsing_mobile",
        ]
      }

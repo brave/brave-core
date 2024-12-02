@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.tasks.tab_management;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
@@ -19,11 +18,10 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
-import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
-import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider.IncognitoStateObserver;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorObserver;
+import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -36,15 +34,12 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     private TabGroupUiToolbarView mToolbarView;
 
     // Own members.
-    private IncognitoStateProvider mIncognitoStateProvider;
-    private IncognitoStateObserver mIncognitoStateObserver;
     private TabModelSelector mTabModelSelector;
 
     public BraveTabGroupUiCoordinator(
             @NonNull Activity activity,
             @NonNull ViewGroup parentView,
             @NonNull BrowserControlsStateProvider browserControlsStateProvider,
-            @NonNull IncognitoStateProvider incognitoStateProvider,
             @NonNull ScrimCoordinator scrimCoordinator,
             @NonNull ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             @NonNull BottomSheetController bottomSheetController,
@@ -53,12 +48,12 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull TabContentManager tabContentManager,
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
-            @NonNull ModalDialogManager modalDialogManager) {
+            @NonNull ModalDialogManager modalDialogManager,
+            @NonNull ThemeColorProvider themeColorProvider) {
         super(
                 activity,
                 parentView,
                 browserControlsStateProvider,
-                incognitoStateProvider,
                 scrimCoordinator,
                 omniboxFocusStateSupplier,
                 bottomSheetController,
@@ -67,9 +62,9 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 tabContentManager,
                 tabCreatorManager,
                 layoutStateProviderSupplier,
-                modalDialogManager);
+                modalDialogManager,
+                themeColorProvider);
 
-        mIncognitoStateProvider = incognitoStateProvider;
         mTabModelSelector = tabModelSelector;
 
         assert mToolbarView != null : "Make sure mToolbarView is properly patched in bytecode.";
@@ -133,20 +128,6 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             BottomControlsCoordinator.BottomControlsVisibilityController visibilityController,
             Callback<Object> onModelTokenChange) {
         super.initializeWithNative(activity, visibilityController, onModelTokenChange);
-
-        mIncognitoStateObserver =
-                (isIncognito) -> {
-                    if (!isIncognito) {
-                        // Make sure that background color match bottom toolbar color.
-                        LinearLayout mainContent = mToolbarView.findViewById(R.id.main_content);
-                        assert mainContent != null : "Something has changed in upstream!";
-                        if (mainContent != null) {
-                            mainContent.setBackgroundColor(
-                                    activity.getColor(R.color.dialog_bg_color_baseline));
-                        }
-                    }
-                };
-        mIncognitoStateProvider.addIncognitoStateObserverAndTrigger(mIncognitoStateObserver);
     }
 
     @Override
@@ -157,6 +138,5 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             // mTabStripCoordinator could be null in a base class.
             // https://github.com/brave/brave-browser/issues/40673
         }
-        mIncognitoStateProvider.removeObserver(mIncognitoStateObserver);
     }
 }

@@ -1,9 +1,10 @@
 Name: unsigned-varint
 URL: https://crates.io/crates/unsigned-varint
-Description: unsigned varint encoding
-Version: 0.7.1
-Security Critical: yes
-Shipped: yes
+Version: 0.8.0
+Revision: 10d55e5dbdd7f61b6495bd12a49d06df82e08612
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-0.7.1/LICENSE
-Revision: cfde4c7bb214e5348b4e34f345c54d236069a0b2
+License File: //brave/third_party/rust/chromium_crates_io/vendor/unsigned-varint-0.8.0/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: unsigned varint encoding

@@ -18,6 +18,8 @@
 #include <utility>
 
 #include "base/containers/span.h"
+#include "base/containers/span_reader.h"
+#include "base/memory/raw_span.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -70,7 +72,7 @@ struct DecoderResult {
         consumed(consumed) {}
 
   T result;            // decoded value
-  ByteView remaining;  // remaining calldata
+  base::raw_span<const uint8_t> remaining;  // remaining calldata
   size_t consumed;     // number of bytes consumed
 };
 

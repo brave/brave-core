@@ -1,9 +1,10 @@
 Name: serde_ipld_dagcbor
 URL: https://crates.io/crates/serde_ipld_dagcbor
-Description: IPLD DAG-CBOR support for Serde.
-Version: 0.4.2
-Security Critical: yes
-Shipped: yes
+Version: 0.6.1
+Revision: 8930ea80e02d38dc0791fc11ffd93a72f55f17e9
 License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/serde_ipld_dagcbor-0.4.2/LICENSE-APACHE
-Revision: 1708a2bc7e8eb7ff60d4409eecef9f62d5451be5
+License File: //brave/third_party/rust/chromium_crates_io/vendor/serde_ipld_dagcbor-0.6.1/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: IPLD DAG-CBOR support for Serde.

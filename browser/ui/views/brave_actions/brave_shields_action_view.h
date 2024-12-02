@@ -28,8 +28,8 @@ class BraveShieldsActionView
   METADATA_HEADER(BraveShieldsActionView, views::LabelButton)
  public:
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kShieldsActionIcon);
-  explicit BraveShieldsActionView(Profile& profile,
-                                  TabStripModel& tab_strip_model);
+  explicit BraveShieldsActionView(
+      BrowserWindowInterface* browser_window_interface);
   BraveShieldsActionView(const BraveShieldsActionView&) = delete;
   BraveShieldsActionView& operator=(const BraveShieldsActionView&) = delete;
   ~BraveShieldsActionView() override;
@@ -49,7 +49,7 @@ class BraveShieldsActionView
   }
 
  private:
-  void ButtonPressed();
+  void ButtonPressed(BrowserWindowInterface* browser_window_interface);
   bool SchemeIsLocal(GURL url);
   void UpdateIconState();
   gfx::ImageSkia GetIconImage(bool is_enabled);

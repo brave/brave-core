@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/vendor.rs b/tools/crates/gnrt/vendor.rs
-index be4dbf2dba2a67804e684d743d815fc7fdace87e..3b10471f6535679fe4a56bea80fa653d929c5291 100644
+index 057957da712ab5afca997ddb5c1ac49c1d694fcb..72baf9387b17a9533d210256d15b00d901130572 100644
 --- a/tools/crates/gnrt/vendor.rs
 +++ b/tools/crates/gnrt/vendor.rs
 @@ -96,7 +96,7 @@ fn vendor_impl(args: VendorCommandArgs, paths: &paths::ChromiumPaths) -> Result<
@@ -11,7 +11,7 @@ index be4dbf2dba2a67804e684d743d815fc7fdace87e..3b10471f6535679fe4a56bea80fa653d
              println!("Downloading {}-{}", p.name, p.version);
              download_crate(&p.name, &p.version, paths)?;
              let skip_patches = match &args.no_patches {
-@@ -266,7 +266,7 @@ fn apply_patches(
+@@ -270,7 +270,7 @@ fn apply_patches(
      let crate_dir = vendor_dir.join(format!("{name}-{version}"));
  
      let mut patches = Vec::new();

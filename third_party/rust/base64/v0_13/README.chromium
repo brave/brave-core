@@ -1,8 +1,9 @@
 Name: base64
 URL: https://crates.io/crates/base64
-Description: encodes and decodes base64 as bytes or utf8
 Version: 0.13.1
-Security Critical: yes
-Shipped: yes
 License: Apache 2.0
 License File:
+Shipped: yes
+Security Critical: yes
+
+Description: encodes and decodes base64 as bytes or utf8

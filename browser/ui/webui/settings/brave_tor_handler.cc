@@ -203,16 +203,16 @@ class BridgeRequest {
 
   void OnCaptchaDecoded(const gfx::Image& image) {
     // Re-encode image as PNG and send.
-    std::vector<unsigned char> encoded;
-    if (!gfx::PNGCodec::EncodeBGRASkBitmap(image.AsBitmap(),
-                                           /*discard_transparency=*/false,
-                                           &encoded)) {
+    std::optional<std::vector<uint8_t>> encoded =
+        gfx::PNGCodec::EncodeBGRASkBitmap(image.AsBitmap(),
+                                          /*discard_transparency=*/false);
+    if (!encoded) {
       return std::move(captcha_callback_).Run(base::Value());
     }
 
     base::Value::Dict result;
     result.Set("captcha",
-               "data:image/png;base64," + base::Base64Encode(encoded));
+               "data:image/png;base64," + base::Base64Encode(*encoded));
     std::move(captcha_callback_).Run(base::Value(std::move(result)));
     state_ = State::kProvideCaptcha;
   }

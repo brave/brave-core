@@ -345,6 +345,24 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Task Manager - Brave
         </message>
       </if>
+      <message name="IDS_TASK_MANAGER_SEARCH_PLACEHOLDER" desc="The placeholder text for the Search bar in the Task Manager window" translateable="false">
+        Search
+      </message>
+      <message name="IDS_TASK_MANAGER_SEARCH_ACCESSIBILITY_NAME" desc="The accessibility description for the Search bar in the Task Manager window" translateable="false">
+        Look up the name of any tab title or extension to highlight it in the process table.
+      </message>
+      <message name="IDS_TASK_MANAGER_KILL_ACCESSIBILITY_NAME" desc="The accessibility description for the End Process button in the Task Manager window" translateable="false">
+        Ends the highlighted process.
+      </message>
+      <message name="IDS_TASK_MANAGER_CATEGORY_TABS_NAME" desc="The title of the 'Tabs' filter category." translateable="false">
+        Tabs
+      </message>
+      <message name="IDS_TASK_MANAGER_CATEGORY_EXTENSIONS_NAME" desc="The title of the 'Extensions' filter category." translateable="false">
+        Extensions
+      </message>
+      <message name="IDS_TASK_MANAGER_CATEGORY_SYSTEM_NAME" desc="The title of the 'System' filter category." translateable="false">
+        System
+      </message>
       <message name="IDS_SESSION_CRASHED_VIEW_UMA_OPTIN" desc="Text besides the checkbox to let users optin to UMA in the restore from previous crash bubble.">
         Help make Brave better by sending crash reports and <ph name="UMA_LINK">$1<ex>usage statistics</ex></ph> to Brave
       </message>
@@ -988,11 +1006,14 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_ENTERPRISE_SIGNIN_WORK_PROFILE_EXPLANATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. This message is followed by a 'Learn more' link.">
           Any Brave data that is generated during the use of this profile (such as the creation of bookmarks, history, passwords, and other settings) can be removed by the work profile administrator. <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
         </message>
-        <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_PROFILE_REQUIRED_BY_ORG_TITLE" desc="Title the value proposition dialog for creating an enterprise profile where profile creattion is mandatory.">
+        <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_PROFILE_REQUIRED_BY_ORG_TITLE" desc="Title of the screen in the profile creation flow where the user is asked whether they want to confirm signing in to Brave with their enterprise account when it is mandatory to sign in to Brave with the enterprise account.">
           Your organization requires you to sign into Brave
         </message>
-        <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_PROFILE_REQUIRED_BY_ORG_KNOWN_DOMAIN_TITLE" desc="Title the value proposition dialog for creating an enterprise profile where profile creattion is mandatory.">
+        <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_PROFILE_REQUIRED_BY_ORG_KNOWN_DOMAIN_TITLE" desc="Title of the screen in the profile creation flow where the user is asked whether they want to confirm signing in to Brave with their enterprise account when it is mandatory to sign in to Brave with the enterprise account.">
           Your organization, <ph name="MANAGER">$1<ex>manager.com</ex></ph>, requires you to sign into Brave
+        </message>
+        <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_PROFILE_SUGGESTED_TITLE" desc="Title of the screen in the profile creation flow where the user is asked whether they want to confirm signing in to Brave with their enterprise account.">
+          Sign in to Brave?
         </message>
         <!-- New one-click sign-in dialog contents for SAML support -->
         <message name="IDS_ONE_CLICK_SIGNIN_DIALOG_TITLE_NEW" desc="The title of the modal dialog window that opens when the user chooses to use one click sign-in.">
@@ -1012,6 +1033,11 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
       <message name="IDS_MANAGEMENT_DIALOG_BROWSER_MANAGED_BY_MULTIPLE_ORGANIZATIONS" desc="Disclosure that multiple organization are managing the browser and profile.">
         Multiple organizations manage Brave
+      </message>
+
+      <!-- Managed profile required interstitial -->
+      <message name="IDS_MANAGED_PROFILE_INTERSTITIAL_PRIMARY_PARAGRAPH" desc="The main text of the interstitial that tells the user that their organization requires them to sign in to Brave with their managed account in order to access it.">
+        You can sign in to get your stuff, or use Brave without an account
       </message>
 
       <!-- Extension requests sign in to Brave through chrome.identity API -->
@@ -1616,6 +1642,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_LENS_OVERLAY_COPY" desc="Command in the Lens Overlay context menu to copy text.">
           Copy
         </message>
+        <message name="IDS_LENS_OVERLAY_COPY_TEXT" desc="Command in the Lens Overlay context menu to copy text.">
+          Copy text
+        </message>
         <message name="IDS_LENS_OVERLAY_COPY_TOAST_MESSAGE" desc="Notification shown in the Lens Overlay when the user has copied selected text to the clipboard.">
           Text copied
         </message>
@@ -1717,6 +1746,9 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_LENS_OVERLAY_TARGET_LANGUAGE_ACCESSIBILITY_LABEL" desc="Accessibility label for the button that shows the target translate language when in translate mode. Informs the user of the current target translate language that is set on the UI which is the language the screen will be translated to.">
           Translated language: <ph name="LANGUAGE"><ex>English</ex>$1</ph>
+        </message>
+        <message name="IDS_LENS_OVERLAY_SEARCH_LANGUAGE_PICKER_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label for the button that opens a searchbox on the language picker so the user can search through the defined languages to find one that matches the text they enter into the searchbox.">
+          Search language list
         </message>
 
         <!-- IPH Strings -->
@@ -1938,10 +1970,9 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <if expr="not chromeos_ash and not is_android">
         <!-- Enterprise profile welcome screen -->
-        <message name="IDS_ENTERPRISE_OIDC_WELCOME_TIMEOUT_SUBTITLE" desc="Subtitle of a section telling the user that their work profile was created but is not fully ready yet.">
-          While we're setting up account access, you can still use Brave. You may not be able to access some resources until setup is complete.
+        <message name="IDS_ENTERPRISE_WELCOME_PROFILE_INFORMATION_DETAILS" desc="Paragraph disclaiming to the user what their organization can do with their profile information.">
+          Your organization can see and manage browsing data, such as your bookmarks, history, and passwords. It can't see browsing data in personal Brave profiles.
         </message>
-
         <!-- Profile Picker -->
         <if expr="chromeos_lacros">
           <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_LACROS" desc="Profile picker main view subtitle">
@@ -2054,6 +2085,14 @@ Permissions you've already given to websites and apps may apply to this account.
           ChromeOS system
         </message>
       </if>
+
+      <!-- Notification quiet permission IPH -->
+      <message name="IDS_QUIET_NOTIFICATION_IPH_TEXT" desc="Text of the blocked notifications indicator promo, that shows under the blocked notifications indicator in the address bar, when a site requests notifications permission. The promo informs the user that as a result of them usually blocking notifications, the request from the site is automatically blocked, and the user can click on the icon to allow notifications.">
+        You usually block notifications. To let this site notify you, click here.
+      </message>
+      <message name="IDS_QUIET_NOTIFICATION_IPH_TEXT_SCREENREADER" desc="Text of the blocked notifications indicator promo, that shows under the blocked notifications indicator in the address bar, when a site requests notifications permission. The promo informs the user that as a result of them usually blocking notifications, the request from the site is automatically blocked, and the user can click on the icon to allow notifications.">
+        You usually block notifications. To let this site notify you, click the notification icon on the right corner of your location bar.
+      </message>
 
       <!-- BraveLabs bubble -->
       <message name="IDS_CHROMELABS_RELAUNCH_FOOTER_MESSAGE" desc="Text that shows in the footer of the Brave Labs bubble when relaunch is needed for changes to take effect.">
@@ -2417,6 +2456,16 @@ Permissions you've already given to websites and apps may apply to this account.
       <if expr="not is_android">
         <message name="IDS_CLEAR_BROWSING_DATA_TOAST_BODY" desc="Text on a toast notification that is shown when browsing data is successfully cleared.">
           Cleared Brave data
+        </message>
+      </if>
+
+      <!-- UNO Promo strings for extensions -->
+      <message name="IDS_EXTENSIONS_EXPLICIT_SIGNIN_BUTTON" desc="Button in the profile user menu to explicitly sign in.">
+        Sign in to Brave
+      </message>
+      <if expr="enable_extensions">
+        <message name="IDS_EXTENSION_INSTALLED_PROMO_EXPLICIT_SIGNIN_MESSAGE" desc="Text of the promo displayed at the bottom of the extension installed bubble asking the user to enable UNO.">
+          To get your extensions on all your computers, sign in to Brave
         </message>
       </if>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">

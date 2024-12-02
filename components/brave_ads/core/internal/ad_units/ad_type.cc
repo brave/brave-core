@@ -50,7 +50,7 @@ mojom::AdType ToMojomAdType(std::string_view value) {
     return mojom_ad_type;
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::AdType: " << value;
+  NOTREACHED() << "Unexpected value for mojom::AdType: " << value;
 }
 
 const char* ToString(mojom::AdType mojom_ad_type) {
@@ -60,8 +60,8 @@ const char* ToString(mojom::AdType mojom_ad_type) {
     return ad_type.data();
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::AdType: "
-                        << base::to_underlying(mojom_ad_type);
+  NOTREACHED() << "Unexpected value for mojom::AdType: "
+               << base::to_underlying(mojom_ad_type);
 }
 
 }  // namespace brave_ads

@@ -929,6 +929,9 @@
   <message name="IDS_SETTINGS_BRAVE_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing apps between multiple browser instances.">
     Web apps (PWAs)
   </message>
+  <message name="IDS_SETTINGS_BRAVE_PASSWORDS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables syncing passwords between multiple browser instances.">
+    Passwords
+  </message>
 
   <!-- Settings / Search engine -->
   <message name="IDS_SETTINGS_BRAVE_SEARCH_ENGINES_SEARCH_SUGGEST_LABEL" desc="The label of the option to enable/disable sending omnibox input to the user's default search engine to get additional suggestions.">

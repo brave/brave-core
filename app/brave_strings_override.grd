@@ -437,6 +437,9 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <if expr="not is_android">
         </if>
+
+      <if expr="enable_extensions">
+        </if>
     </messages>
   </release>
 </grit>

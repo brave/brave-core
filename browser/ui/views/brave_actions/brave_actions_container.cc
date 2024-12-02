@@ -23,8 +23,10 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/view.h"
 
-BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
-    : browser_(browser) {}
+BraveActionsContainer::BraveActionsContainer(
+    BrowserWindowInterface* browser_window_interface,
+    Profile* profile)
+    : browser_window_interface_(browser_window_interface) {}
 
 BraveActionsContainer::~BraveActionsContainer() = default;
 
@@ -59,31 +61,32 @@ void BraveActionsContainer::Init() {
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(
       brave_rewards::prefs::kShowLocationBarButton,
-      browser_->profile()->GetPrefs(),
+      browser_window_interface_->GetProfile()->GetPrefs(),
       base::BindRepeating(
           &BraveActionsContainer::OnBraveRewardsPreferencesChanged,
           base::Unretained(this)));
 }
 
 bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
-  if (!brave_rewards::IsSupportedForProfile(browser_->profile())) {
+  if (!brave_rewards::IsSupportedForProfile(
+          browser_window_interface_->GetProfile())) {
     return false;
   }
-  const PrefService* prefs = browser_->profile()->GetPrefs();
+  const PrefService* prefs =
+      browser_window_interface_->GetProfile()->GetPrefs();
   return prefs->GetBoolean(brave_rewards::prefs::kShowLocationBarButton);
 }
 
 void BraveActionsContainer::AddActionViewForShields() {
-  shields_action_btn_ =
-      AddChildViewAt(std::make_unique<BraveShieldsActionView>(
-                         *browser_->profile(), *browser_->tab_strip_model()),
-                     1);
+  shields_action_btn_ = AddChildViewAt(
+      std::make_unique<BraveShieldsActionView>(browser_window_interface_), 1);
   shields_action_btn_->SetPreferredSize(GetActionSize());
   shields_action_btn_->Init();
 }
 
 void BraveActionsContainer::AddActionViewForRewards() {
-  auto button = std::make_unique<BraveRewardsActionView>(browser_);
+  auto button =
+      std::make_unique<BraveRewardsActionView>(browser_window_interface_);
   rewards_action_btn_ = AddChildViewAt(std::move(button), 2);
   rewards_action_btn_->SetPreferredSize(GetActionSize());
   rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());

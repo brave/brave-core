@@ -1,9 +1,10 @@
 Name: mime
 URL: https://crates.io/crates/mime
-Description: Strongly Typed Mimes
 Version: 0.3.17
-Security Critical: yes
-Shipped: yes
+Revision: ce5062d216bf757a0ed3fc70f0fe255d1c8d74ae
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/mime-0.3.17/LICENSE-APACHE
-Revision: ce5062d216bf757a0ed3fc70f0fe255d1c8d74ae
+Shipped: yes
+Security Critical: yes
+
+Description: Strongly Typed Mimes

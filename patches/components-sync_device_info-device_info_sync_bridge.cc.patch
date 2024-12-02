@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index 510ec2ca914af71b66360ea9648629e11fb49e8c..041a019626bfa13b30be5a09575050403b363b04 100644
+index 929c94fb319f49ba75692b36fb137b6d54516eee..c5fcb7422b1282ae6a029ad539517f6d14748521 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
-@@ -301,6 +301,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
+@@ -300,6 +300,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
          GetSpecificsFieldNumberFromDataType(data_type));
    }
  
@@ -10,7 +10,7 @@ index 510ec2ca914af71b66360ea9648629e11fb49e8c..041a019626bfa13b30be5a0957505040
    return specifics;
  }
  
-@@ -491,6 +492,7 @@ std::optional<ModelError> DeviceInfoSyncBridge::ApplyIncrementalSyncChanges(
+@@ -463,6 +464,7 @@ std::optional<ModelError> DeviceInfoSyncBridge::ApplyIncrementalSyncChanges(
    for (const std::unique_ptr<EntityChange>& change : entity_changes) {
      const std::string guid = change->storage_key();
  
@@ -18,7 +18,7 @@ index 510ec2ca914af71b66360ea9648629e11fb49e8c..041a019626bfa13b30be5a0957505040
      // Reupload local device if it was deleted from the server.
      if (local_cache_guid_ == guid &&
          change->type() == EntityChange::ACTION_DELETE) {
-@@ -501,7 +503,7 @@ std::optional<ModelError> DeviceInfoSyncBridge::ApplyIncrementalSyncChanges(
+@@ -473,7 +475,7 @@ std::optional<ModelError> DeviceInfoSyncBridge::ApplyIncrementalSyncChanges(
      // Ignore any remote changes that have a cache guid that is or was this
      // local device.
      if (device_info_prefs_->IsRecentLocalCacheGuid(guid)) {
@@ -27,7 +27,7 @@ index 510ec2ca914af71b66360ea9648629e11fb49e8c..041a019626bfa13b30be5a0957505040
      }
  
      if (change->type() == EntityChange::ACTION_DELETE) {
-@@ -794,6 +796,7 @@ void DeviceInfoSyncBridge::OnReadAllMetadata(
+@@ -766,6 +768,7 @@ void DeviceInfoSyncBridge::OnReadAllMetadata(
      return;
    }
  
@@ -35,7 +35,7 @@ index 510ec2ca914af71b66360ea9648629e11fb49e8c..041a019626bfa13b30be5a0957505040
    // In the regular case for sync being disabled, wait for MergeFullSyncData()
    // before initializing the LocalDeviceInfoProvider.
    if (!syncer::IsInitialSyncDone(
-@@ -1029,6 +1032,7 @@ DeviceInfoSyncBridge::CountActiveDevicesByType() const {
+@@ -1000,6 +1003,7 @@ DeviceInfoSyncBridge::CountActiveDevicesByType() const {
  void DeviceInfoSyncBridge::ExpireOldEntries() {
    CHECK(store_);
    TRACE_EVENT0("sync", "DeviceInfoSyncBridge::ExpireOldEntries");

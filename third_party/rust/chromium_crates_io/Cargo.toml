@@ -84,7 +84,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.
 package = "aho-corasick"
 
 [patch.crates-io.anyhow_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/anyhow-1.0.89"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/anyhow-1.0.93"
 package = "anyhow"
 
 [patch.crates-io.base64_v0_13]
@@ -108,15 +108,15 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/cfg-if-1.0.0"
 package = "cfg-if"
 
 [patch.crates-io.cxx_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/cxx-1.0.128"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxx-1.0.129"
 package = "cxx"
 
 [patch.crates-io.cxxbridge-flags_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-flags-1.0.128"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-flags-1.0.129"
 package = "cxxbridge-flags"
 
 [patch.crates-io.cxxbridge-macro_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-macro-1.0.128"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-macro-1.0.129"
 package = "cxxbridge-macro"
 
 [patch.crates-io.getrandom_v0_2]
@@ -136,7 +136,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/lazy_static-1.5.0
 package = "lazy_static"
 
 [patch.crates-io.libc_v0_2]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/libc-0.2.159"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/libc-0.2.162"
 package = "libc"
 
 [patch.crates-io.log_v0_4]
@@ -152,7 +152,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/ppv-lite86-0.2.20
 package = "ppv-lite86"
 
 [patch.crates-io.proc_macro2_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-1.0.87"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-1.0.89"
 package = "proc-macro2"
 
 [patch.crates-io.quote_v1]
@@ -172,11 +172,11 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/rand-0.8.5"
 package = "rand"
 
 [patch.crates-io.regex_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-1.11.0"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-1.11.1"
 package = "regex"
 
 [patch.crates-io.regex_automata_v0_4]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-automata-0.4.8"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-automata-0.4.9"
 package = "regex-automata"
 
 [patch.crates-io.regex_syntax_v0_8]
@@ -196,15 +196,15 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/semver-1.0.23"
 package = "semver"
 
 [patch.crates-io.serde_derive_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_derive-1.0.210"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_derive-1.0.214"
 package = "serde_derive"
 
 [patch.crates-io.serde_json_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_json-1.0.128"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_json-1.0.132"
 package = "serde_json"
 
 [patch.crates-io.serde_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/serde-1.0.210"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde-1.0.214"
 package = "serde"
 
 [patch.crates-io.static_assertions_v0_1]
@@ -212,7 +212,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/static_assertions
 package = "static_assertions"
 
 [patch.crates-io.syn_v2]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-2.0.79"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-2.0.87"
 package = "syn"
 
 [patch.crates-io.unicode-ident_v1]

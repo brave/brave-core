@@ -610,6 +610,7 @@ source_set("ui") {
       "//chrome/browser/devtools",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
+      "//chrome/browser/ui/javascript_dialogs",
       "//chrome/browser/ui/views/bubble",
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
@@ -1209,10 +1210,7 @@ source_set("ui") {
 
   if (is_win && is_official_build) {
     sources += [ "//chrome/browser/ui/webui/help/version_updater_win.cc" ]
-    deps += [
-      "//chrome/updater/app/server/win:updater_legacy_idl",
-      "//google_update",
-    ]
+    deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
   }
 
   if (enable_tor) {
@@ -1445,6 +1443,7 @@ source_set("unit_tests") {
         "//brave/components/brave_vpn/browser/connection:api",
         "//brave/components/brave_vpn/browser/connection/ikev2:sim",
         "//brave/components/skus/browser",
+        "//chrome/browser/prefs",
         "//chrome/browser/themes",
         "//chrome/test:test_support",
         "//skia",

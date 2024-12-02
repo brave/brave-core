@@ -10,11 +10,9 @@
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_page_metrics_observer.h"
 
-namespace chrome {
-
 namespace {
 
-class BravePageLoadMetricsEmbedder : public chrome::PageLoadMetricsEmbedder {
+class BravePageLoadMetricsEmbedder : public PageLoadMetricsEmbedder {
  public:
   explicit BravePageLoadMetricsEmbedder(content::WebContents* web_contents);
   BravePageLoadMetricsEmbedder(const BravePageLoadMetricsEmbedder&) = delete;
@@ -30,7 +28,7 @@ class BravePageLoadMetricsEmbedder : public chrome::PageLoadMetricsEmbedder {
 
 BravePageLoadMetricsEmbedder::BravePageLoadMetricsEmbedder(
     content::WebContents* web_contents)
-    : chrome::PageLoadMetricsEmbedder(web_contents) {}
+    : PageLoadMetricsEmbedder(web_contents) {}
 
 BravePageLoadMetricsEmbedder::~BravePageLoadMetricsEmbedder() = default;
 
@@ -56,5 +54,3 @@ void InitializePageLoadMetricsForWebContents(
       web_contents,
       std::make_unique<BravePageLoadMetricsEmbedder>(web_contents));
 }
-
-}  // namespace chrome

@@ -1,0 +1,21 @@
+diff --git a/third_party/blink/renderer/core/frame/cached_permission_status.cc b/third_party/blink/renderer/core/frame/cached_permission_status.cc
+index e0bf619731dcefa800c1590d334433fcc46f8eaf..c44d6b0754a694c6f9539984f3870e9cba75da7c 100644
+--- a/third_party/blink/renderer/core/frame/cached_permission_status.cc
++++ b/third_party/blink/renderer/core/frame/cached_permission_status.cc
+@@ -15,7 +15,6 @@ using mojom::blink::PermissionDescriptorPtr;
+ using mojom::blink::PermissionName;
+ using mojom::blink::PermissionObserver;
+ using mojom::blink::PermissionService;
+-using mojom::blink::PermissionStatus;
+ 
+ // static
+ const char CachedPermissionStatus::kSupplementName[] = "CachedPermissionStatus";
+@@ -49,7 +48,7 @@ void CachedPermissionStatus::Trace(Visitor* visitor) const {
+ void CachedPermissionStatus::RegisterClient(
+     Client* client,
+     const Vector<PermissionDescriptorPtr>& permissions) {
+-  HashMap<mojom::blink::PermissionName, mojom::blink::PermissionStatus>
++  HashMap<mojom::blink::PermissionName, PermissionStatus>
+       initialized_map;
+   for (const PermissionDescriptorPtr& descriptor : permissions) {
+     auto status_it = permission_status_map_.find(descriptor->name);
