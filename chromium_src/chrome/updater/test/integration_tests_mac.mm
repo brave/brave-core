@@ -12,8 +12,7 @@
 #include <optional>
 
 #include "base/files/file_path.h"
-#include "base/functional/callback.h"
-#include "base/functional/callback_helpers.h"
+#include "base/auto_reset.h"
 #include "chrome/updater/updater_scope.h"
 #include "chrome/updater/util/mac_util.h"
 
@@ -50,9 +49,7 @@ void ExpectInstalled(UpdaterScope scope) {
 
   // Call the original implementation in such a way that it believes the wake
   // job is registered:
-  g_in_expect_installed = true;
-  base::ScopedClosureRunner cleanup(
-      base::BindOnce([]() { g_in_expect_installed = false; }));
+  base::AutoReset<bool> auto_reset(&g_in_expect_installed, true);
   ExpectInstalled_ChromiumImpl(scope);
 }
 
