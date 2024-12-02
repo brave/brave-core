@@ -4,13 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
-import Data
 import Foundation
 import Playlist
 import Preferences
 import TestHelpers
 import XCTest
 
+@testable import Data
 @testable import PlaylistUI
 
 class PlayerModelTests: CoreDataTestCase {
@@ -355,6 +355,44 @@ class PlayerModelTests: CoreDataTestCase {
     await playerModel.prepareItemQueue()
 
     XCTAssertEqual(playerModel.currentTime, 3)
+  }
+
+  /// Tests that playback is correctly saved when the app resigns being active
+  @MainActor func testSavingPlaybackOnAppResign() async throws {
+    let folder = try await addFolder()
+    await addMockItems(count: 1, to: folder)
+
+    Preferences.Playlist.playbackLeftOff.value = true
+
+    let item = try XCTUnwrap(PlaylistItem.getItems(parentFolder: folder).first)
+    XCTAssertEqual(item.lastPlayedOffset, 0)
+
+    let playerModel = PlayerModel(mediaStreamer: nil, initialPlaybackInfo: nil)
+    playerModel.selectedFolderID = folder.id
+    await playerModel.prepareItemQueue()
+
+    XCTAssertEqual(playerModel.currentTime, 0)
+    await playerModel.seek(to: 3, accurately: true)
+    XCTAssertEqual(playerModel.currentTime, 3)
+
+    NotificationCenter.default.post(name: UIApplication.willResignActiveNotification, object: nil)
+
+    let mergeExpectation = expectation(description: "merge")
+    let saveExpectation = expectation(
+      forNotification: .NSManagedObjectContextDidSave,
+      object: nil
+    ) { notification in
+      DispatchQueue.main.async {
+        DataController.viewContext.mergeChanges(fromContextDidSave: notification)
+        mergeExpectation.fulfill()
+      }
+      return true
+    }
+
+    await fulfillment(of: [mergeExpectation, saveExpectation], timeout: 1)
+
+    let lastPlayedOffset = PlaylistItem.getItem(id: item.id)?.lastPlayedOffset
+    XCTAssertEqual(lastPlayedOffset, 3)
   }
 
   /// Test having both an initial offset passed in and the playbackLeftOff preference being enabled
