@@ -29,11 +29,6 @@ extension AdblockEngine {
       return false
     }
 
-    guard sourceURL.absoluteString != "about:blank" else {
-      // TODO: @JS Investigate why sometimes `sourceURL` is `about:blank` and find out how to deal with it
-      return false
-    }
-
     guard let requestDomain = requestURL.baseDomain, let sourceDomain = sourceURL.baseDomain else {
       return false
     }

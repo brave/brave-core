@@ -15,7 +15,7 @@ import os.log
 class CosmeticFiltersScriptHandler: TabContentScript {
   struct CosmeticFiltersDTO: Decodable {
     struct CosmeticFiltersDTOData: Decodable, Hashable {
-      let sourceURL: String
+      let windowOrigin: String
       let ids: [String]
       let classes: [String]
     }
@@ -51,7 +51,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       let data = try JSONSerialization.data(withJSONObject: message.body)
       let dto = try JSONDecoder().decode(CosmeticFiltersDTO.self, from: data)
 
-      guard let frameURL = URL(string: dto.data.sourceURL) else {
+      guard let frameURL = URL(string: dto.data.windowOrigin) else {
         replyHandler(nil, nil)
         return
       }

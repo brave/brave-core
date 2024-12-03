@@ -105,5 +105,41 @@
         </div>
       </div>
     </div>
+    
+    <h1>Test Local Frames</h1>
+    <script>
+    const displaySvalInBody = () => {
+      const div = document.createElement('div');
+      div.id = "scriptlet-main-div";
+      div.textContent = `First party body: ${window.sval}`;
+      document.body.appendChild(div);
+    }
+
+    const displaySvalInLocalFrame = () => {
+      const localFrame = document.getElementById('local-iframe')
+      const div = localFrame.contentDocument.createElement('div');
+      div.id = "scriptlet-local-frame-div";
+      div.textContent = `First local frame body: ${window.sval}`;
+      localFrame.contentDocument.body.appendChild(div);
+    }
+      
+    const onload = () => {
+      const localFrame = document.createElement('iframe');
+      localFrame.id = 'local-iframe';
+      localFrame.src = 'about:blank';
+      localFrame.width = 400;
+      localFrame.height = 400;
+      document.body.appendChild(localFrame);
+
+      const localFrameAd = document.createElement('test-local-frame-ad');
+      localFrameAd.id = "test-local-frame-ad";
+      localFrameAd.innerText = 'This should be hidden';
+      localFrame.contentDocument.body.appendChild(localFrameAd);
+      
+      setTimeout(displaySvalInBody, 100);
+      setTimeout(displaySvalInLocalFrame, 200);
+    };
+    window.onload = onload;
+    </script>
   </body>
 </html>
