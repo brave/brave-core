@@ -19,11 +19,13 @@ BraveTabSearchButton::BraveTabSearchButton(
     TabStripController* tab_strip_controller,
     BrowserWindowInterface* browser_window_interface,
     Edge fixed_flat_edge,
-    Edge animated_flat_edge)
+    Edge animated_flat_edge,
+    views::View* anchor_view)
     : TabSearchButton(tab_strip_controller,
                       browser_window_interface,
                       fixed_flat_edge,
-                      animated_flat_edge) {
+                      animated_flat_edge,
+                      anchor_view) {
   // Resetting the tab search bubble host first, to avoid a dangling in
   // `BraveTabSearchButton`, triggered `TabSearchBubbleHost` calling
   // `SetButtonController` and in the process destroying the still alive
@@ -32,7 +34,7 @@ BraveTabSearchButton::BraveTabSearchButton(
   tab_search_bubble_host_ = nullptr;
 
   tab_search_bubble_host_ = std::make_unique<BraveTabSearchBubbleHost>(
-      this, browser_window_interface);
+      this, browser_window_interface, anchor_view);
 
   // Apply toolbar's icon color to search button.
   SetForegroundFrameActiveColorId(kColorToolbarButtonIcon);
