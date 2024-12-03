@@ -80,7 +80,7 @@ void RecentTabsSubMenuModelTest::VerifyModel(
 
   // The first two commands are History and History Clusters, but we disable
   // History Clusters and upstream won't show it, so we should skip one command.
-  ::VerifyModel(model, base::span(data).subspan(1));
+  ::VerifyModel(model, base::span(data).subspan(1u));
 }
 
 void RecentTabsSubMenuModelTest::VerifyModel(const ui::MenuModel* model,

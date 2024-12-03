@@ -267,7 +267,7 @@ std::optional<SquidSwapData> SquidDecodeCall(const base::Value::List& call) {
   }
 
   auto [selector_span, calldata] =
-      base::span(*calldata_with_selector).split_at(4);
+      base::span(*calldata_with_selector).split_at<4>();
 
   auto selector = ToHex(selector_span);
 
@@ -544,7 +544,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                            std::vector<std::string>(), nullptr);
   }
 
-  auto [selector_span, calldata] = base::span(data).split_at(4);
+  auto [selector_span, calldata] = base::span(data).split_at<4>();
 
   std::string selector = ToHex(selector_span);
   if (selector == kFilForwarderTransferSelector) {

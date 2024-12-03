@@ -97,7 +97,7 @@ TorControl::TorControl(base::WeakPtr<TorControl::Delegate> delegate,
       io_task_runner_(task_runner),
       writing_(false),
       reading_(false),
-      read_start_(-1),
+      read_start_(0u),
       read_cr_(false),
       delegate_(delegate) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(owner_sequence_checker_);
@@ -730,7 +730,7 @@ void TorControl::StartRead() {
   DCHECK(!cmdq_.empty() || !async_events_.empty());
   readiobuf_ = base::MakeRefCounted<net::GrowableIOBuffer>();
   readiobuf_->SetCapacity(kTorBufferSize);
-  read_start_ = 0;
+  read_start_ = 0u;
   DCHECK(readiobuf_->RemainingCapacity());
 }
 
@@ -860,8 +860,8 @@ void TorControl::ReadDone(int rv) {
   // If we've processed every byte in the input so far, and there's no
   // more command callbacks queued or asynchronous events registered,
   // stop.
-  if (read_start_ == readiobuf_->offset() && cmdq_.empty() &&
-      async_events_.empty()) {
+  if (read_start_ == base::checked_cast<size_t>(readiobuf_->offset()) &&
+      cmdq_.empty() && async_events_.empty()) {
     reading_ = false;
     readiobuf_.reset();
     read_start_ = 0;
@@ -1068,7 +1068,7 @@ void TorControl::Error() {
   }
   reading_ = false;
   readiobuf_.reset();
-  read_start_ = -1;
+  read_start_ = 0u;
   read_cr_ = false;
 
   // Clear write state.
