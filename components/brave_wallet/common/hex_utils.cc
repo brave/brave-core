@@ -161,22 +161,14 @@ std::string Uint256ValueToHex(uint256_t input) {
     return "0x0";  // Special case for zero.
   }
 
+  uint32_t significant_bits_count = 256 - (__builtin_clzg(input) / 4) * 4;
+
   std::string result;
-  result.reserve(66);
+  result.reserve(2 + significant_bits_count / 4);
   result.append("0x");
 
-  // Ignore leading zero bytes.
-  auto input_span =
-      base::byte_span_from_ref(input).first(32u - __builtin_clzg(input) / 8);
-
-  for (uint8_t byte : base::Reversed(input_span)) {
-    if (result.size() == 2 && byte <= 0xf) {
-      // For the first most significant byte skip leading zero.
-      result += NibbleToChar(byte & 0xf);
-    } else {
-      result += NibbleToChar(byte >> 4);
-      result += NibbleToChar(byte & 0xf);
-    }
+  for (uint32_t i = 4; i <= significant_bits_count; i += 4) {
+    result += NibbleToChar((input >> (significant_bits_count - i)) & 0xF);
   }
 
   return result;

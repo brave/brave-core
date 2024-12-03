@@ -174,6 +174,7 @@ TEST(HexUtilsUnitTest, HexValueToInt256) {
 TEST(HexUtilsUnitTest, Uint256ValueToHex) {
   EXPECT_EQ(Uint256ValueToHex(0), "0x0");
   EXPECT_EQ(Uint256ValueToHex(1), "0x1");
+  EXPECT_EQ(Uint256ValueToHex(15), "0xf");
   EXPECT_EQ(Uint256ValueToHex(4660), "0x1234");
   EXPECT_EQ(Uint256ValueToHex(11), "0xb");
   // "10240000000000000000000000"
@@ -191,12 +192,24 @@ TEST(HexUtilsUnitTest, Uint256ValueToHex) {
       "0x1beefcafebabedeadf00dabcdef891234567898765432f00dcafed00dfaba");
   EXPECT_EQ(
       Uint256ValueToHex(
-          0X0FFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFFu__wb),
+          0x0FFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFFu__wb),
       "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+  EXPECT_EQ(
+      Uint256ValueToHex(
+          0xEFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFFu__wb),
+      "0xefffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
   EXPECT_EQ(
       Uint256ValueToHex(
           0xFFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFF'FFFFFFFFFFFFFFFFu__wb),
       "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+  EXPECT_EQ(
+      Uint256ValueToHex(
+          0xf000000000000000'0000000000000000'0000000000000000'0000000000000000u__wb),
+      "0xf000000000000000000000000000000000000000000000000000000000000000");
+  EXPECT_EQ(
+      Uint256ValueToHex(
+          0x1000000000000000'0000000000000000'0000000000000000'0000000000000000u__wb),
+      "0x1000000000000000000000000000000000000000000000000000000000000000");
 }
 
 TEST(HexUtilsUnitTest, PrefixedHexStringToBytes) {
