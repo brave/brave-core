@@ -59,77 +59,8 @@
             android:textColor="@android:color/white"
             android:paddingEnd="16dp"
             android:textSize="11sp"
-            app:drawableEndCompat="@drawable/ic_reward_info_outline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
-            <ImageView
-            android:id="@+id/ads_tooltip_triangle"
-            android:layout_width="12sp"
-            android:layout_height="6dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/tooltip_arrow"
-            android:contentDescription="@null"
-            android:layout_marginEnd="46dp"
-            app:layout_constraintBottom_toTopOf="@id/ads_tooltip"
-            app:layout_constraintEnd_toEndOf="@id/ads_tooltip"/>
-
-        <TextView
-            android:id="@+id/ads_tooltip"
-            android:layout_width="194dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/p2p_rewards_inside_background"
-            android:elevation="39dp"
-            android:fontFamily="sans-serif"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="32dp"
-            android:paddingEnd="40dp"
-            android:textSize="12sp"
-            android:text="@string/estimated_tooltip_text"
-            android:textColor="@color/terms_of_service_text_color"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ads_seen_this_month_text" />
-
-        <TextView
-            android:id="@+id/manage_ads_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="39dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/manage_ads"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="12dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:textColor="@color/rewards_manage_ads_color"
-            android:textSize="12sp"
-            app:drawableRightCompat="@drawable/carat_right"
-            app:layout_constraintBottom_toBottomOf="@id/ads_tooltip"
-            app:layout_constraintStart_toStartOf="@id/ads_tooltip" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/manage_ads_close_button"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:contentDescription="@null"
-            android:elevation="90dp"
-            app:layout_constraintEnd_toEndOf="@+id/ads_tooltip"
-            app:layout_constraintTop_toTopOf="@+id/ads_tooltip"
-            app:srcCompat="@drawable/ic_baseline_close_24"
-            app:tint="@color/rewards_estimated_earning_close_color" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/ads_tooltip_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="ads_tooltip_triangle,ads_tooltip,manage_ads_text,manage_ads_close_button" />
 
 
         <TextView

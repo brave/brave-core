@@ -149,9 +149,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CONTEXTMENU_COPY_CLEAN_LINK"  desc="Text for Copy clean link">
         Copy clean link
       </message>
-      <message name="IDS_ESTIMATED_TOOLTIP_TEXT"  desc="Text for This reflects your estimated earnings range for Brave Ads this month.">
-        This reflects your estimated earnings range for Brave Ads this month.
-      </message>
       <message name="IDS_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Notifications are disabled">
         Notifications are disabled
       </message>
