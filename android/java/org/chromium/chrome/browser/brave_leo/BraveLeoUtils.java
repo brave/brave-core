@@ -61,8 +61,8 @@ public class BraveLeoUtils {
         BraveLeoUtilsJni.get().openLeoQuery(webContents, conversationUuid, query);
     }
 
-    public static String getLeoUrlForTab(WebContents webContents) {
-        return BraveLeoUtilsJni.get().getLeoUrlForTab(webContents);
+    public static void openLeoUrlForTab(WebContents webContents) {
+        BraveLeoUtilsJni.get().openLeoUrlForTab(webContents);
     }
 
     public static String getDefaultModelName(ModelWithSubtitle[] models, String defaultModelKey) {
@@ -107,6 +107,6 @@ public class BraveLeoUtils {
     public interface Natives {
         void openLeoQuery(WebContents webContents, String conversationUuid, String query);
 
-        String getLeoUrlForTab(WebContents webContents);
+        void openLeoUrlForTab(WebContents webContents);
     }
 }

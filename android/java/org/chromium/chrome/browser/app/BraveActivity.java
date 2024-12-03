@@ -2101,9 +2101,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void openBraveLeo() {
         BraveLeoUtils.verifySubscription(null);
-        String url = BraveLeoUtils.getLeoUrlForTab(getActivityTab().getWebContents());
-        TabUtils.openUrlInNewTab(getActivityTab().isIncognito(), url);
-        // BraveLeoActivity.showPage(this, BRAVE_AI_CHAT_URL);
+        BraveLeoUtils.openLeoUrlForTab(getActivityTab().getWebContents());
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {

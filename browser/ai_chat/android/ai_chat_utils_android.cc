@@ -61,8 +61,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   CHECK(web_contents->OpenURL(params, {}));
 }
 
-static base::android::ScopedJavaLocalRef<jstring>
-JNI_BraveLeoUtils_GetLeoUrlForTab(
+static void JNI_BraveLeoUtils_OpenLeoUrlForTab(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jweb_contents) {
   content::WebContents* web_contents =
@@ -77,7 +76,10 @@ JNI_BraveLeoUtils_GetLeoUrlForTab(
       ai_chat_service->GetOrCreateConversationHandlerForContent(
           chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
 
-  return base::android::ConvertUTF8ToJavaString(
-      env, base::StrCat({kChatUIURL, conversation->get_conversation_uuid()}));
+  content::OpenURLParams params(
+      GURL(base::StrCat({kChatUIURL, conversation->get_conversation_uuid()})),
+      content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PAGE_TRANSITION_FROM_API, false);
+  web_contents->OpenURL(params, {});
 }
 }  // namespace ai_chat
