@@ -71,7 +71,7 @@
             android:textColor="@android:color/white"
             android:textSize="12sp"
             android:fontFamily="sans-serif"
-            android:paddingEnd="32dp"
+            android:paddingEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ads_seen_this_month_text" />
 

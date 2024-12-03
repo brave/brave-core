@@ -143,9 +143,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
-      <message name="IDS_MANAGE_ADS"  desc="Text for manage ads">
-        Manage ads
-      </message>
       <message name="IDS_CONTEXTMENU_COPY_CLEAN_LINK"  desc="Text for Copy clean link">
         Copy clean link
       </message>
