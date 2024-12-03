@@ -114,7 +114,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
-      &commerce::kCommercePriceTracking,
+      &commerce::kPriceAnnotations,
       &commerce::kShoppingList,
       &commerce::kShoppingPDPMetrics,
       &commerce::kRetailCoupons,

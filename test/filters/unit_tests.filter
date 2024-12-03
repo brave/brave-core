@@ -192,7 +192,7 @@
 -All/SiteSettingsHandlerTest.ZoomLevels/*
 -DownloadItemModelTailoredWarningTest.GetBubbleUIInfoForTailoredWarning_SuspiciousArchive
 
-# These tests fail because we've disabled the commerce::kCommercePriceTracking
+# These tests fail because we've disabled the commerce::kPriceAnnotations
 # feature
 -PriceTrackingIconViewIntegrationTest.*
 
