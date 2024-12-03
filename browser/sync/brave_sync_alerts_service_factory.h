@@ -40,6 +40,7 @@ class BraveSyncAlertsServiceFactory : public BrowserContextKeyedServiceFactory {
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
+  bool ServiceIsNULLWhileTesting() const override;
 };
 
 #endif  // BRAVE_BROWSER_SYNC_BRAVE_SYNC_ALERTS_SERVICE_FACTORY_H_
