@@ -49,7 +49,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
   selectedConversationId: string | undefined
   updateSelectedConversationId: (selectedId: string | undefined) => void,
 }>) {
-  const { visibleConversations, initialized } = useAIChat()
+  const { initialized } = useAIChat()
   const [conversationAPI, setConversationAPI] =
     React.useState<Pick<SelectedChatDetails, 'callbackRouter' | 'conversationHandler'>>()
 
@@ -109,11 +109,18 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     // Special case the default conversation - it gets treated specially as
     // the chat is rebound as the tab navigates.
     if (selectedConversationId === tabAssociatedChatId) return
-
-    if (selectedConversationId && !visibleConversations.find(c => c.uuid === selectedConversationId)) {
+    if (!selectedConversationId) return
+    let cancelled = false
+    getAPI().uiHandler.conversationExists(selectedConversationId).then(exists => {
+      if (cancelled) return
+      if (exists) return
       updateSelectedConversationId(undefined)
+    })
+
+    return () => {
+      cancelled = true
     }
-  }, [visibleConversations, selectedConversationId, initialized])
+  }, [selectedConversationId, initialized])
 
   return <ActiveChatContext.Provider value={details as any}>
     {conversationAPI && children}

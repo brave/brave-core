@@ -61,6 +61,10 @@ public class BraveLeoUtils {
         BraveLeoUtilsJni.get().openLeoQuery(webContents, conversationUuid, query);
     }
 
+    public static String getLeoUrlForTab(WebContents webContents) {
+        return BraveLeoUtilsJni.get().getLeoUrlForTab(webContents);
+    }
+
     public static String getDefaultModelName(ModelWithSubtitle[] models, String defaultModelKey) {
         for (ModelWithSubtitle model : models) {
             if (model.model.key.equals(defaultModelKey)) {
@@ -74,9 +78,10 @@ public class BraveLeoUtils {
     public static void openManageSubscription() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            Intent browserIntent = new Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(InAppPurchaseWrapper.MANAGE_SUBSCRIPTION_PAGE));
+            Intent browserIntent =
+                    new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(InAppPurchaseWrapper.MANAGE_SUBSCRIPTION_PAGE));
             activity.startActivity(browserIntent);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openManageSubscription get BraveActivity exception", e);
@@ -101,5 +106,7 @@ public class BraveLeoUtils {
     @NativeMethods
     public interface Natives {
         void openLeoQuery(WebContents webContents, String conversationUuid, String query);
+
+        String getLeoUrlForTab(WebContents webContents);
     }
 }

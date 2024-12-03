@@ -110,7 +110,6 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
-import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsConnectionErrorHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
@@ -208,6 +207,7 @@ import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.util.KeyboardVisibilityHelper;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -2101,9 +2101,9 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void openBraveLeo() {
         BraveLeoUtils.verifySubscription(null);
-        // Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("chrome-untrusted://ai-chat"));
-        // startActivity(intent);
-        BraveLeoActivity.showPage(this, BRAVE_AI_CHAT_URL);
+        String url = BraveLeoUtils.getLeoUrlForTab(getActivityTab().getWebContents());
+        TabUtils.openUrlInNewTab(getActivityTab().isIncognito(), url);
+        // BraveLeoActivity.showPage(this, BRAVE_AI_CHAT_URL);
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {

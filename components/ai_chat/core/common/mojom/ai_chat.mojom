@@ -354,6 +354,11 @@ interface AIChatUIHandler {
   // so that we can use [EnableIfNot=is_android] here.
   OpenConversationFullPage(string conversation_uuid);
 
+  // Determines whether a conversation exists - we need this so we can determine
+  // whether a URL is bogus (i.e. made up) or if it corresponds to a
+  // not-visible-in-sidebar conversation.
+  ConversationExists(string conversation_uuid) => (bool exists);
+
   OpenURL(url.mojom.Url url);
   OpenLearnMoreAboutBraveSearchWithLeo();
   OpenModelSupportUrl();
