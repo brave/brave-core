@@ -1633,12 +1633,25 @@ IN_PROC_BROWSER_TEST_F(Default1pBlockingFlagDisabledTest, Custom1pBlocking) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 2ULL);
 }
 
+class AdBlockServiceSignedComponentsTest : public AdBlockServiceTest {
+ public:
+  AdBlockServiceSignedComponentsTest() {
+    feature_list_.InitAndEnableFeature(
+        component_updater::kComponentContentsVerifier);
+  }
+  ~AdBlockServiceSignedComponentsTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #define MAYBE_SafeResourcesComponentAccess SafeResourcesComponentAccess
 #else
 #define MAYBE_SafeResourcesComponentAccess DISABLED_SafeResourcesComponentAccess
 #endif
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_SafeResourcesComponentAccess) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSignedComponentsTest,
+                       MAYBE_SafeResourcesComponentAccess) {
   const auto components_path =
       GetTestDataDir().AppendASCII("adblock-components");
   {

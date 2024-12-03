@@ -33,7 +33,6 @@ class ComponentContentsAccessor
   ComponentContentsAccessor& operator=(ComponentContentsAccessor&&) = delete;
 
   virtual bool IsComponentSignatureValid() const;
-  virtual void IgnoreInvalidSignature(bool ignore);
   virtual bool VerifyContents(const base::FilePath& relative_path,
                               base::span<const uint8_t> contents);
 

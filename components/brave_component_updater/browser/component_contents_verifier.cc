@@ -23,8 +23,6 @@ bool ComponentContentsAccessor::IsComponentSignatureValid() const {
   return true;
 }
 
-void ComponentContentsAccessor::IgnoreInvalidSignature(bool ignore) {}
-
 bool ComponentContentsAccessor::VerifyContents(
     const base::FilePath& relative_path,
     base::span<const uint8_t> contents) {

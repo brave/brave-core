@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_CONTENTS_VERIFIER_H_
 #define BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_CONTENTS_VERIFIER_H_
 
+#include "base/feature_list.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
 
@@ -14,6 +15,11 @@ class FilePath;
 }
 
 namespace component_updater {
+
+BASE_DECLARE_FEATURE(kComponentContentsVerifier);
+
+inline constexpr char kBypassComponentContentsVerifier[] =
+    "bypass-component-contents-verifier";
 
 scoped_refptr<brave_component_updater::ComponentContentsAccessor>
 CreateComponentContentsAccessor(bool with_verifier,
