@@ -21,7 +21,8 @@
       'removedElement': results.removedElement,
       'styledElement': results.styledElement,
       'upwardInt': results.upwardInt,
-      'upwardSelector': results.upwardSelector
+      'upwardSelector': results.upwardSelector,
+      'localFrameElement': results.localFrameElement
     })
   }
 
@@ -39,7 +40,8 @@
       removedAttribute: false,
       styledElement: false,
       upwardInt: false,
-      upwardSelector: false
+      upwardSelector: false,
+      localFrameElement: false
     }
 
     elements.forEach((node) => {
@@ -75,6 +77,18 @@
 
       if (node.id === 'test-upward-selector') {
         results.upwardSelector = window.getComputedStyle(node).display === 'none'
+      }
+
+      if (node.id === 'local-iframe') {
+        const localIframeElements = node.contentDocument.querySelectorAll('[id]');
+        localIframeElements.forEach((node) => {
+          if (!node.hasAttribute('id')) {
+            return
+          }
+          if (node.id === 'test-local-frame-ad') {
+            results.localFrameElement = window.getComputedStyle(node).display === 'none'
+          }
+        })
       }
     })
 

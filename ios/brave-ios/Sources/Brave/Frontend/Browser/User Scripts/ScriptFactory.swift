@@ -190,27 +190,19 @@ class ScriptFactory {
         "})();",
       ].joined(separator: "\n")
 
-      if configuration.isMainFrame {
-        resultingScript = WKUserScript(
-          source: source,
-          injectionTime: .atDocumentStart,
-          forMainFrameOnly: true,
-          in: .page
-        )
-      } else {
-        var sourceWrapper = try makeScriptSource(of: .frameCheckWrapper)
-        sourceWrapper = sourceWrapper.replacingOccurrences(of: "$<scriplet>", with: source)
-        sourceWrapper = sourceWrapper.replacingOccurrences(
-          of: "$<required_href>",
-          with: configuration.frameURL.absoluteString
-        )
-        resultingScript = WKUserScript(
-          source: sourceWrapper,
-          injectionTime: .atDocumentStart,
-          forMainFrameOnly: false,
-          in: .page
-        )
-      }
+      var sourceWrapper = try makeScriptSource(of: .frameCheckWrapper)
+      sourceWrapper = sourceWrapper.replacingOccurrences(of: "$<scriplet>", with: source)
+      sourceWrapper = sourceWrapper.replacingOccurrences(
+        of: "$<required_href>",
+        with: configuration.frameURL.domainURL.absoluteString
+      )
+      // when `isMainFrame` is true, we still need to inject to all frames to handle `about:blank` first-party frames
+      resultingScript = WKUserScript(
+        source: sourceWrapper,
+        injectionTime: .atDocumentStart,
+        forMainFrameOnly: false,
+        in: .page
+      )
     }
 
     cachedDomainScriptsSources.addElement(resultingScript, forKey: domainType)

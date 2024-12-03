@@ -15,7 +15,7 @@ import os.log
 class URLPartinessScriptHandler: TabContentScript {
   struct PartinessDTO: Decodable {
     struct PartinessDTOData: Decodable, Hashable {
-      let sourceURL: String
+      let windowOrigin: String
       let urls: [String]
     }
 
@@ -51,7 +51,7 @@ class URLPartinessScriptHandler: TabContentScript {
       let dto = try JSONDecoder().decode(PartinessDTO.self, from: data)
       var results: [String: Bool] = [:]
 
-      guard let frameURL = NSURL(idnString: dto.data.sourceURL) as URL? else {
+      guard let frameURL = NSURL(idnString: dto.data.windowOrigin) as URL? else {
         // Since we can't create a url from the source,
         // we will assume they are all 3rd party
         for urlString in dto.data.urls {

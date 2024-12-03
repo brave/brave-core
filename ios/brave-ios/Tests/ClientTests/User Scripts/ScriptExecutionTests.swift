@@ -32,6 +32,7 @@ final class ScriptExecutionTests: XCTestCase {
     let styledElement: Bool
     let upwardInt: Bool
     let upwardSelector: Bool
+    let localFrameElement: Bool
   }
 
   @MainActor func testSiteStateListenerScript() async throws {
@@ -191,7 +192,7 @@ final class ScriptExecutionTests: XCTestCase {
     let testScript = WKUserScript(
       source: source,
       injectionTime: .atDocumentEnd,
-      forMainFrameOnly: true,
+      forMainFrameOnly: false,
       in: RequestBlockingContentScriptHandler.scriptSandbox
     )
     viewController.add(userScript: testScript)
@@ -223,13 +224,14 @@ final class ScriptExecutionTests: XCTestCase {
   }
 
   @MainActor func testCosmeticFilteringScript() async throws {
-    // Given
     let viewController = MockScriptsViewController()
     let invalidSelectors = Set([
       "div.invalid-selector:has(span.update-components-actor__description:-abp-contains(/Anzeige|Sponsored|Promoted|Dipromosikan|Propagováno|Promoveret|Gesponsert|Promocionado|促銷內容|Post sponsorisé|프로모션|Post sponsorizzato|广告|プロモーション|Treść promowana|Patrocinado|Promovat|Продвигается|Marknadsfört|Nai-promote|ได้รับการโปรโมท|Öne çıkarılan içerik|Gepromoot|الترويج/))"
     ])
     let initialStandardSelectors = Set([".test-ads-primary-standard div"])
-    let initialAggressiveSelectors = Set([".test-ads-primary-aggressive div"])
+    let initialAggressiveSelectors = Set([
+      ".test-ads-primary-aggressive div", "test-local-frame-ad",
+    ])
     let polledAggressiveIds = ["test-ad-aggressive"]
     let polledStandardIds = [
       "test-ad-1st-party", "test-ad-3rd-party", "test-ad-3rd-party-sig-text", "test-ad-simple",
@@ -247,7 +249,6 @@ final class ScriptExecutionTests: XCTestCase {
       aggressiveSelectors: initialAggressiveSelectors,
       standardSelectors: initialStandardSelectors.union(invalidSelectors)
     )
-
     AdblockEngine.setDomainResolver()
     let engine = try AdblockEngine(
       rules: [
@@ -262,10 +263,14 @@ final class ScriptExecutionTests: XCTestCase {
     let proceduralFilters = try engine.cosmeticFilterModel(
       forFrameURL: URL(string: "https://brave.com")!
     )?.proceduralActions
-
     XCTAssertNotNil(proceduralFilters)
 
-    // Attach fake message handlers for our CF script
+    // Add mock SiteStateListenerScriptHandler and inject the SiteStateListener script so we get a message from each frame with the `WKFrameInfo`.
+    let siteStateListenerMockMessageHandler = viewController.attachScriptHandler(
+      contentWorld: SiteStateListenerScriptHandler.scriptSandbox,
+      name: SiteStateListenerScriptHandler.messageHandlerName
+    )
+    // Attach mock message handlers for our selectors messages & url partiness messages
     let selectorsMessageHandler = viewController.attachScriptHandler(
       contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
       name: CosmeticFiltersScriptHandler.messageHandlerName,
@@ -277,14 +282,16 @@ final class ScriptExecutionTests: XCTestCase {
             from: data
           )
 
-          for id in polledAggressiveIds {
-            XCTAssertTrue(dto.data.ids.contains(id))
-          }
-          for id in polledStandardIds {
-            XCTAssertTrue(dto.data.ids.contains(id))
-          }
-          for id in nestedIds {
-            XCTAssertTrue(dto.data.ids.contains(id))
+          if message.frameInfo.isMainFrame {
+            for id in polledAggressiveIds {
+              XCTAssertTrue(dto.data.ids.contains(id))
+            }
+            for id in polledStandardIds {
+              XCTAssertTrue(dto.data.ids.contains(id))
+            }
+            for id in nestedIds {
+              XCTAssertTrue(dto.data.ids.contains(id))
+            }
           }
 
           // Return selectors to hide
@@ -298,7 +305,6 @@ final class ScriptExecutionTests: XCTestCase {
         }
       })
     )
-
     viewController.attachScriptHandler(
       contentWorld: URLPartinessScriptHandler.scriptSandbox,
       name: URLPartinessScriptHandler.messageHandlerName,
@@ -325,9 +331,7 @@ final class ScriptExecutionTests: XCTestCase {
         }
       })
     )
-
-    // When
-    // Attach a result message handler
+    // Add test result message handler to receive result from the `cosmetic-filter-tests` testing script
     let testResultMessageHandler = viewController.attachScriptHandler(
       contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
       name: "SendCosmeticFiltersResult",
@@ -335,44 +339,56 @@ final class ScriptExecutionTests: XCTestCase {
         return nil
       })
     )
+    // Debug/Logging script for `sendDebugMessage` message in `cosmetic-filter-tests`
     viewController.attachScriptHandler(
       contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
       name: "LoggingHandler",
       messageHandler: MockMessageHandler(callback: { message in
         print("Script Message: \(message.body)")
+        return nil
       })
     )
-
-    // Load the view and add scripts
+    // Load the web view and it's message handlers
     viewController.loadViewIfNeeded()
+    viewController.add(scripts: [.siteStateListener])
 
-    // Load the sample htmls page and await the first page load result
+    // Load test html in the web view
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
     try await viewController.loadHTMLStringAndWait(htmlString)
 
-    // Execute the selectors poller script
-    let script = try ScriptFactory.shared.makeScript(
-      for: .selectorsPoller(setup, proceduralActions: Set(proceduralFilters ?? []))
-    )
-    try await viewController.webView.evaluateSafeJavaScriptThrowing(
-      functionName: script.source,
-      contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
-      asFunction: false
-    )
-
-    // Await the execution of the selectors message handler
-    // (so we know we already hid our elements)
-    for try await _ in selectorsMessageHandler {
-      // We only care about the first script handler result
-      break
+    // Inject selectors poller script into each frame received from SiteStateListener script/handler
+    var frameInfos: Set<WKFrameInfo> = .init()
+    for try await message in siteStateListenerMockMessageHandler {
+      frameInfos.insert(message.frameInfo)
+      let script = try ScriptFactory.shared.makeScript(
+        for: .selectorsPoller(setup, proceduralActions: Set(proceduralFilters ?? []))
+      )
+      try await viewController.webView.evaluateSafeJavaScriptThrowing(
+        functionName: script.source,
+        frame: message.frameInfo,
+        contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
+        asFunction: false
+      )
+      // Expecting 2 frames (main frame & about:blank iframe)
+      if frameInfos.count == 2 {
+        break
+      }
     }
 
-    // Now wait for the pump which takes a few seconds.
-    // The pump unhides 1st party elements.
+    // Await the execution of the selectors message handler (so we know we already hid our elements)
+    var count = 0
+    for try await _ in selectorsMessageHandler {
+      count += 1
+      // We only care about the first script handler result for each frame
+      if count == frameInfos.count {
+        break
+      }
+    }
+
+    // Now wait for the pump which takes a few seconds (The pump unhides 1st party elements).
     try await Task.sleep(seconds: 5)
 
-    // Then
     // Execute a script that will test the cosmetic filters page
     let testURL = Bundle.module.url(forResource: "cosmetic-filter-tests", withExtension: "js")!
     let source = try String(contentsOf: testURL)
@@ -428,5 +444,69 @@ final class ScriptExecutionTests: XCTestCase {
     XCTAssertTrue(resultsAfterPump?.styledElement ?? false)
     XCTAssertTrue(resultsAfterPump?.upwardInt ?? false)
     XCTAssertTrue(resultsAfterPump?.upwardSelector ?? false)
+    // Test for local frames
+    XCTAssertTrue(resultsAfterPump?.localFrameElement ?? false)
+  }
+
+  @MainActor func testScriptlets() async throws {
+    AdblockEngine.setDomainResolver()
+    let engine = try AdblockEngine(
+      rules: [
+        "example.com##+js(set, sval, 1)"
+      ].joined(separator: "\n")
+    )
+    try await engine.useResources(
+      fromFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!
+    )
+
+    let viewController = MockScriptsViewController()
+    viewController.loadViewIfNeeded()
+    // create & inject the scriptlets user script before page load begins
+    guard let frameURL = URL(string: "https://example.com"),
+      let cosmeticFilterModel = try engine.cosmeticFilterModel(
+        forFrameURL: frameURL
+      ),
+      case let source = cosmeticFilterModel.injectedScript,
+      !source.isEmpty
+    else {
+      XCTFail("Injected script expected. Check test setup.")
+      return
+    }
+    let configuration = UserScriptType.EngineScriptConfiguration(
+      frameURL: frameURL,
+      isMainFrame: false,
+      source: source,
+      order: 0,
+      isDeAMPEnabled: false
+    )
+    let script = try viewController.scriptFactory.makeScript(for: .engineScript(configuration))
+    viewController.add(userScript: script)
+
+    // Load test html in the web view
+    let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
+    let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
+    try await viewController.loadHTMLStringAndWait(htmlString)
+
+    try await Task.sleep(seconds: 2)
+
+    // check that the main frame & local frame (about:blank) have set value from scriptlet
+    guard
+      let mainFrameResult = await viewController.webView.evaluateSafeJavaScript(
+        functionName: "document.getElementById('scriptlet-main-div').innerText",
+        contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
+        asFunction: false
+      ).0 as? String,
+      let localFrameResult = await viewController.webView.evaluateSafeJavaScript(
+        functionName:
+          "document.getElementById('local-iframe').contentDocument.getElementById('scriptlet-local-frame-div').innerText",
+        contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
+        asFunction: false
+      ).0 as? String
+    else {
+      XCTFail("Elements should be available. Check test setup.")
+      return
+    }
+    XCTAssertEqual(mainFrameResult, "First party body: 1")
+    XCTAssertEqual(localFrameResult, "First local frame body: 1")
   }
 }

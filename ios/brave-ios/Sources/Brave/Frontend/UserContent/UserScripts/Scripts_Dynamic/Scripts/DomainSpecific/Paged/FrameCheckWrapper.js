@@ -9,7 +9,7 @@ window.__firefox__.execute(function ($) {
     // we need to check if this script belongs to this specific frame
     // so that it doesn't execute on the wrong frame.
     const requiredHref = "$<required_href>"
-    if (window.location.href !== requiredHref) {
+    if (window.origin !== requiredHref) {
       return
     }
 
