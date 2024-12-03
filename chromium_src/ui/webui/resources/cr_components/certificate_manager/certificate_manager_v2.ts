@@ -37,3 +37,5 @@ RegisterStyleOverride(
     </style>
   `
 )
+
+export * from './certificate_manager_v2-chromium.js'
