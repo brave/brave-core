@@ -9,6 +9,45 @@ import Shared
 import StoreKit
 import os.log
 
+public class BraveVPNIAPObserverManager: NSObject, ObservableObject {
+
+  public enum BraveVPNPaymentStatus: Equatable {
+    case ongoing
+    case success(receiptValidationRequired: Bool)
+    case failure(_ error: BraveVPNInAppPurchaseObserver.PurchaseError?)
+    case unknown
+  }
+
+  @Published var paymentStatus: BraveVPNPaymentStatus = .unknown
+
+  private let iapObserver: BraveVPNInAppPurchaseObserver
+
+  public init(iapObserver: BraveVPNInAppPurchaseObserver) {
+    self.iapObserver = iapObserver
+    super.init()
+    self.iapObserver.delegate = self
+  }
+}
+
+// MARK: - IAPObserverDelegate
+extension BraveVPNIAPObserverManager: BraveVPNInAppPurchaseObserverDelegate {
+  public func purchasedOrRestoredProduct(validateReceipt: Bool) {
+    DispatchQueue.main.async {
+      self.paymentStatus = .success(receiptValidationRequired: validateReceipt)
+    }
+  }
+
+  public func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
+    DispatchQueue.main.async {
+      self.paymentStatus = .failure(error)
+    }
+  }
+
+  public func handlePromotedInAppPurchase() {
+    // No-op In app purchase promotion is handled on bvc
+  }
+}
+
 public protocol BraveVPNInAppPurchaseObserverDelegate: AnyObject {
   func purchasedOrRestoredProduct(validateReceipt: Bool)
   func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError)
@@ -17,7 +56,7 @@ public protocol BraveVPNInAppPurchaseObserverDelegate: AnyObject {
 
 public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserver {
 
-  public enum PurchaseError {
+  public enum PurchaseError: Equatable {
     case transactionError(error: SKError?)
     case receiptError
   }

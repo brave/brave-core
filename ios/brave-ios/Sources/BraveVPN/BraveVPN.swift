@@ -96,12 +96,12 @@ public class BraveVPN {
 
     case expired
 
-    /// What view controller to show once user taps on `Enable VPN` button at one of places in the app.
-    public var enableVPNDestinationVC: BuyVPNViewController? {
+    /// What view  to show once user taps on `Enable VPN` button at one of places in the app.
+    public var isPaywallEnabled: Bool {
       switch self {
-      case .notPurchased, .expired: return BuyVPNViewController(iapObserver: iapObserver)
+      case .notPurchased, .expired: return true
       // Show nothing, the `Enable` button will now be used to connect and disconnect the vpn.
-      case .purchased: return nil
+      case .purchased: return false
       }
     }
   }

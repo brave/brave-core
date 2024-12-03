@@ -20,7 +20,7 @@ struct VPNMenuButton: View {
   var description: String?
   /// A closure executed when the parent must display a VPN-specific view controller due to some
   /// user action
-  var displayVPNDestination: (UIViewController) -> Void
+  var displayVPNDestination: (BraveVPNPaywallHostingController) -> Void
   /// A closure executed when VPN is toggled and status is installed. This will be used to set
   /// current activity for user
   var enableInstalledVPN: () -> Void
@@ -28,6 +28,8 @@ struct VPNMenuButton: View {
   var displayAlert: (UIAlertController) -> Void
   /// A closure to open a URL.
   var openURL: (URL) -> Void
+  /// A closure to handle VPN profile installation
+  var installVPNProfile: () -> Void
 
   @State private var isVPNStatusChanging: Bool = BraveVPN.reconnectPending
   @State private var isVPNEnabled = BraveVPN.isConnected
@@ -66,11 +68,18 @@ struct VPNMenuButton: View {
       // Disconnect VPN before showing Purchase
       BraveVPN.disconnect(skipChecks: true)
 
-      guard let vc = vpnState.enableVPNDestinationVC else { return }
-      vc.openAuthenticationVPNInNewTab = {
-        openURL(.brave.braveVPNRefreshCredentials)
-      }
-      displayVPNDestination(vc)
+      guard vpnState.isPaywallEnabled else { return }
+
+      let vpnPaywallView = BraveVPNPaywallView(
+        openVPNAuthenticationInNewTab: {
+          openURL(.brave.braveVPNRefreshCredentials)
+        },
+        installVPNProfile: {
+          installVPNProfile()
+        }
+      )
+      let vpnHostingVC = BraveVPNPaywallHostingController(paywallView: vpnPaywallView)
+      displayVPNDestination(vpnHostingVC)
     case .purchased:
       isVPNStatusChanging = true
       // Do not modify UISwitch state here, update it based on vpn status observer.
