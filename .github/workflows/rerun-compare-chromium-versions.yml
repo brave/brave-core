@@ -27,7 +27,7 @@ jobs:
           set -eEo pipefail
 
           chromium_ver() {
-              gh api -H "Accept: application/vnd.github.raw+json" "https://api.github.com/repos/${GITHUB_REPOSITORY:?}/contents/package.json?ref=${1:?}"|jq -r .config.projects.chrome.tag;
+              gh api -H "Accept: application/vnd.github.raw+json" "https://api.github.com/repos/${GITHUB_REPOSITORY:?}/contents/package.json?ref=${1:?}"|jq -r .config.projects.chrome.tag
           }
 
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
