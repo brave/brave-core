@@ -30,6 +30,7 @@
     "test:scripts": "cross-env NODE_OPTIONS=--no-experimental-fetch jest build/commands/lib build/commands/scripts",
     "tslint": "npm run eslint",
     "eslint": "eslint ./components",
+    "ios_eslint": "eslint ./ios",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui-gen-tsconfig": "node build/commands/scripts/genTsConfig",

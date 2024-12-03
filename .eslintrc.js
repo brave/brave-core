@@ -13,7 +13,8 @@ module.exports = {
     'ui/webui/resources/*',
     '*.js',
     '*.d.ts',
-    '!components/playlist/resources/media_detector/*.js' /* allow js scripts which will be bundled into playlist */
+    '!components/playlist/resources/media_detector/*.js', /* allow js scripts which will be bundled into playlist */
+    '!ios/**/*.js' /* allow js linting on iOS */
   ],
   'env': {
     'browser': false,
