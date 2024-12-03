@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,9 +30,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONException;
 
@@ -168,17 +164,12 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
 
     private void setMonthlyInformationClick(View view) {
         View informationButton = view.findViewById(R.id.info_outline);
-        informationButton.setOnClickListener(v -> {
-            MonthlyContributionToolTip toolTip = new MonthlyContributionToolTip(view.getContext());
-            toolTip.show(informationButton);
-        });
-    }
-
-    private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
-        FrameLayout bottomSheet =
-                (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        informationButton.setOnClickListener(
+                v -> {
+                    MonthlyContributionToolTip toolTip =
+                            new MonthlyContributionToolTip(view.getContext());
+                    toolTip.show(informationButton);
+                });
     }
 
     private void updateTermsOfServicePlaceHolder(View view) {

@@ -11,20 +11,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
-import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -46,61 +39,6 @@ public class NTPImageUtil {
 
     public static HashMap<String, SoftReference<Bitmap>> imageCache =
             new HashMap<String, SoftReference<Bitmap>>();
-
-    // This function is not used, but removing it completely causes errors for unused resources:
-    // The resource R.string.earn_tokens_for_viewing appears to be unused [UnusedResources]
-    // The resource R.string.you_are_earning_tokens appears to be unused [UnusedResources]
-    // This is related to rewards, so I keep it till review
-    @SuppressWarnings("UnusedVariable")
-    private static SpannableString getBannerText(
-            ChromeActivity chromeActivity,
-            int ntpType,
-            View bannerLayout,
-            SponsoredTab sponsoredTab,
-            NewTabPageListener newTabPageListener) {
-        String bannerText = "";
-        if (ntpType == SponsoredImageUtil.BR_ON_ADS_ON) {
-            bannerText =
-                    String.format(
-                            chromeActivity
-                                    .getResources()
-                                    .getString(R.string.you_are_earning_tokens),
-                            chromeActivity.getResources().getString(R.string.learn_more));
-        } else if (ntpType == SponsoredImageUtil.BR_ON_ADS_OFF) {
-            bannerText =
-                    String.format(
-                            chromeActivity
-                                    .getResources()
-                                    .getString(R.string.earn_tokens_for_viewing),
-                            chromeActivity.getResources().getString(R.string.learn_more));
-        }
-        int learnMoreIndex =
-                bannerText.indexOf(chromeActivity.getResources().getString(R.string.learn_more));
-        Spanned learnMoreSpanned = BraveRewardsHelper.spannedFromHtmlString(bannerText);
-        SpannableString learnMoreTextSS = new SpannableString(learnMoreSpanned.toString());
-
-        ForegroundColorSpan brOffForegroundSpan =
-                new ForegroundColorSpan(chromeActivity.getColor(R.color.brave_theme_color));
-        // setSpan gives us IndexOutOfBoundsException in case of end or start are > length and in
-        // some other cases.
-        int length = learnMoreTextSS.length();
-        int endIndex = learnMoreIndex
-                + chromeActivity.getResources().getString(R.string.learn_more).length();
-        if (endIndex < learnMoreIndex || learnMoreIndex >= length || endIndex >= length
-                || learnMoreIndex < 0 || endIndex < 0) {
-            return learnMoreTextSS;
-        }
-        try {
-            learnMoreTextSS.setSpan(brOffForegroundSpan, learnMoreIndex, endIndex,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } catch (IndexOutOfBoundsException e) {
-            Log.e(TAG,
-                    "getBannerText: learnMoreIndex == " + learnMoreIndex
-                            + ", endIndex == " + endIndex + ". Error: " + e.getMessage());
-        }
-
-        return learnMoreTextSS;
-    }
 
     public static Bitmap getWallpaperBitmap(NTPImage ntpImage, int layoutWidth, int layoutHeight) {
         Context mContext = ContextUtils.getApplicationContext();

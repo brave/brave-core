@@ -96,11 +96,6 @@ public class BraveStatsPreferences extends BravePreferenceFragment
         return mPageTitle;
     }
 
-    private void removePreferenceIfPresent(String key) {
-        Preference preference = getPreferenceScreen().findPreference(key);
-        if (preference != null) getPreferenceScreen().removePreference(preference);
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
