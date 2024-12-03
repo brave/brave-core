@@ -150,12 +150,6 @@
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize"/>
 
 <activity
-    android:name="org.chromium.chrome.browser.brave_leo.BraveLeoActivity"
-    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize|uiMode|navigation"
-    android:theme="@style/Theme.Chromium.Activity.FakeTranslucent"
-    android:exported="false"/>
-
-<activity
     android:name="org.chromium.chrome.browser.brave_leo.BraveLeoPlansActivity"
     android:theme="@style/Theme.Chromium.Activity"
     android:noHistory="true"

@@ -30,7 +30,7 @@ export const defaultUIState: State = {
   isPremiumStatusFetching: true,
   isPremiumUser: false,
   isPremiumUserDisconnected: false,
-  isStorageNoticeDismissed: false,
+isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
