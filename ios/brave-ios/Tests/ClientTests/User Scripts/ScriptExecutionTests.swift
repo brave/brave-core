@@ -447,4 +447,66 @@ final class ScriptExecutionTests: XCTestCase {
     // Test for local frames
     XCTAssertTrue(resultsAfterPump?.localFrameElement ?? false)
   }
+
+  @MainActor func testScriptlets() async throws {
+    AdblockEngine.setDomainResolver()
+    let engine = try AdblockEngine(
+      rules: [
+        "example.com##+js(set, sval, 1)"
+      ].joined(separator: "\n")
+    )
+    try await engine.useResources(
+      fromFileURL: Bundle.module.url(forResource: "resources", withExtension: "json")!
+    )
+
+    let viewController = MockScriptsViewController()
+    viewController.loadViewIfNeeded()
+    // create & inject the scriptlets user script before page load begins
+    guard let frameURL = URL(string: "https://example.com"),
+      let cosmeticFilterModel = try engine.cosmeticFilterModel(
+        forFrameURL: frameURL
+      ),
+      case let source = cosmeticFilterModel.injectedScript,
+      !source.isEmpty
+    else {
+      XCTFail("Injected script expected. Check test setup.")
+      return
+    }
+    let configuration = UserScriptType.EngineScriptConfiguration(
+      frameURL: frameURL,
+      isMainFrame: false,
+      source: source,
+      order: 0,
+      isDeAMPEnabled: false
+    )
+    let script = try viewController.scriptFactory.makeScript(for: .engineScript(configuration))
+    viewController.add(userScript: script)
+
+    // Load test html in the web view
+    let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
+    let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
+    try await viewController.loadHTMLStringAndWait(htmlString)
+
+    try await Task.sleep(seconds: 2)
+
+    // check that the main frame & local frame (about:blank) have set value from scriptlet
+    guard
+      let mainFrameResult = await viewController.webView.evaluateSafeJavaScript(
+        functionName: "document.getElementById('scriptlet-main-div').innerText",
+        contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
+        asFunction: false
+      ).0 as? String,
+      let localFrameResult = await viewController.webView.evaluateSafeJavaScript(
+        functionName:
+          "document.getElementById('local-iframe').contentDocument.getElementById('scriptlet-local-frame-div').innerText",
+        contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
+        asFunction: false
+      ).0 as? String
+    else {
+      XCTFail("Elements should be available. Check test setup.")
+      return
+    }
+    XCTAssertEqual(mainFrameResult, "First party body: 1")
+    XCTAssertEqual(localFrameResult, "First local frame body: 1")
+  }
 }
