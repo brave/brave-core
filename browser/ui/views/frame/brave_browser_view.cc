@@ -154,7 +154,13 @@ class ActivatableContentsWebView : public ContentsWebView {
   // ContentsWebView:
   void OnFocus() override {
     ContentsWebView::OnFocus();
-    if (web_contents() && web_contents()->GetDelegate()) {
+
+    // Only activate if this focus comes from direct request such as clicking
+    // over web contents. Except that case, we should not make this focus change
+    // affect active tab state. TabStripModel will do it.
+    if (web_contents() && web_contents()->GetDelegate() && GetFocusManager() &&
+        GetFocusManager()->focus_change_reason() ==
+            views::FocusManager::FocusChangeReason::kDirectFocusChange) {
       web_contents()->GetDelegate()->ActivateContents(web_contents());
     }
   }
