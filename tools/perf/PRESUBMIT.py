@@ -7,7 +7,6 @@ import pathlib
 import platform
 import os
 
-USE_PYTHON3 = True
 PRESUBMIT_VERSION = '2.0.0'
 
 
