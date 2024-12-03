@@ -21,24 +21,13 @@ jobs:
           shopt -s inherit_errexit
           set -eEo pipefail
 
-          chromium_ver() {
-              gh api -H "Accept: application/vnd.github.raw+json" "https://api.github.com/repos/${GITHUB_REPOSITORY:?}/contents/package.json?ref=${1:?}"|jq -r .config.projects.chrome.tag;
-          }
+          chromium_ver() { gh api -H "Accept: application/vnd.github.raw+json" "https://api.github.com/repos/${GITHUB_REPOSITORY:?}/contents/package.json?ref=${1:?}"|jq -r .config.projects.chrome.tag; }
+          status() { echo "::${1:?}::${2:?}"; echo "$2" >>"${GITHUB_STEP_SUMMARY:?}"; }
+          has_label() { gh pr view "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" --json labels -q '.labels[].name'|grep -qxF chromium-version-mismatch; }
+          label() { gh pr edit "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" "--${1:?}-label" chromium-version-mismatch >/dev/null; }
 
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
           target_ver="$(chromium_ver "${GITHUB_BASE_REF:?}")"
-
-          status() {
-              echo "::${1:?}::${2:?}"; echo "$2" >>"${GITHUB_STEP_SUMMARY:?}"
-          }
-
-          has_label() {
-              gh pr view "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" --json labels -q '.labels[].name'|grep -qxF chromium-version-mismatch
-          }
-
-          label() {
-              gh pr edit "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" "--${1:?}-label" chromium-version-mismatch >/dev/null
-          }
 
           comment() {
               local -r comment="Chromium major version is behind target branch ($pr_ver vs $target_ver). Please rebase."
