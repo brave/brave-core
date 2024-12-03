@@ -10,7 +10,7 @@ window.__firefox__.execute(function($) {
   const blockingCache = new Map();
   const sendMessage = $((resourceURL) => {
     // when location.href does not match origin, we include origin in console
-    const originDisplay = window.location.href !== window.origin ? ` (${window.origin})` : ``;
+    const originDisplay = window.location.href !== $.windowOrigin ? ` (${$.windowOrigin})` : ``;
     if (blockingCache.has(resourceURL.href)) {
       return Promise.resolve(blockingCache.get(resourceURL.href)).then(blocked => {
         if (blocked) {
@@ -24,7 +24,7 @@ window.__firefox__.execute(function($) {
       "securityToken": SECURITY_TOKEN,
       "data": {
         resourceURL: resourceURL.href,
-        windowOrigin: window.origin,
+        windowOrigin: $.windowOrigin,
         resourceType: 'xmlhttprequest'
       }
     }).then(blocked => {

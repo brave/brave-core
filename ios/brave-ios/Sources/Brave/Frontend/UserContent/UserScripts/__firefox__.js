@@ -445,6 +445,11 @@ if (!window.__firefox__) {
     return originalAddEventListener;
   }
 
+  // Create and freeze a copy of window.origin before it can be replaced
+  $.windowOrigin = Object.freeze(window.origin);
+  $($.windowOrigin);
+  $.deepFreeze($.windowOrigin);
+
   // Start securing functions before any other code can use them
   $($.deepFreeze);
   $($.extensiveFreeze);
