@@ -24,6 +24,8 @@ interface CosmeticFiltersHandler {
 
   // Opens the custom filter section in Shields settings .
   ManageCustomFilters();
+
+  GetElementPickerThemeInfo() => (int32 background_color);
 };
 
 // An interface to render frame agent `CosmeticFiltersJSHandler` to control

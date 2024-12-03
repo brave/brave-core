@@ -30,6 +30,17 @@ public class BraveCosmeticFiltersUtils {
         }
     }
 
+    @CalledByNative
+    public static int getThemeBackgroundColor() {
+        int backgroundColor = 0;
+        try {
+            backgroundColor = BraveActivity.getBraveActivity().getBraveThemeBackgroundColor();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "Get theme background color" + e);
+        }
+        return backgroundColor;
+    }
+
     @NativeMethods
     interface Natives {
         boolean launchContentPickerForWebContent(Tab tab);

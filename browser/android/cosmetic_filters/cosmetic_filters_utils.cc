@@ -30,4 +30,9 @@ void ShowCustomFilterSettings() {
   Java_BraveCosmeticFiltersUtils_showCustomFilterSettings(env);
 }
 
+int32_t GetThemeBackgroundColor() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  return Java_BraveCosmeticFiltersUtils_getThemeBackgroundColor(env);
+}
+
 }  // namespace cosmetic_filters

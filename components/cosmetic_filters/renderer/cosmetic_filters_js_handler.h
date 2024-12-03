@@ -17,6 +17,7 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
 #include "v8/include/v8.h"
@@ -76,6 +77,8 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
   bool OnIsFirstParty(const std::string& url_string);
   void OnAddSiteCosmeticFilter(const std::string& selector);
   void OnManageCustomFilters();
+  void GetCosmeticFilterThemeInfo();
+  void OnGetCosmeticFilterThemeInfo(int32_t background_color);
   int OnEventBegin(const std::string& event_name);
   void OnEventEnd(const std::string& event_name, int);
 
@@ -83,6 +86,10 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
 
   bool generichide_ = false;
 
+  mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
+  GetRemoteHandler();
+  mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>
+      handler_;
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   mojo::Remote<mojom::CosmeticFiltersResources> cosmetic_filters_resources_;
   mojo::AssociatedReceiver<mojom::CosmeticFiltersAgent> receiver_{this};

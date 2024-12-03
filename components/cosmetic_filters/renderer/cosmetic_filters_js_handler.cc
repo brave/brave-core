@@ -119,6 +119,11 @@ constexpr char kHideSelectorsInjectScript[] =
                 ...document.adoptedStyleSheets];
           };
         })();)";
+constexpr char kSePickerThemeInfoScript[] =
+    R"((function() {
+          const CC = window.content_cosmetic
+          CC.setTheme(%d)
+        })();)";
 
 std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
@@ -274,13 +279,36 @@ bool CosmeticFiltersJSHandler::OnIsFirstParty(const std::string& url_string) {
 void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
     const std::string& selector) {
   const auto host = url_.host();
-  auto handler = MakeCosmeticFiltersHandler(render_frame_);
-  handler->AddSiteCosmeticFilter(selector);
+  GetRemoteHandler()->AddSiteCosmeticFilter(selector);
 }
 
 void CosmeticFiltersJSHandler::OnManageCustomFilters() {
-  auto handler = MakeCosmeticFiltersHandler(render_frame_);
-  handler->ManageCustomFilters();
+  GetRemoteHandler()->ManageCustomFilters();
+}
+
+mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
+CosmeticFiltersJSHandler::GetRemoteHandler() {
+  if (!handler_ || !handler_.is_bound() || !handler_.is_connected()) {
+    handler_ = MakeCosmeticFiltersHandler(render_frame_);
+  }
+  return handler_;
+}
+
+void CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo() {
+  GetRemoteHandler()->GetElementPickerThemeInfo(
+      base::BindOnce(&CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo(
+    int32_t background_color) {
+  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
+  std::string new_selectors_script =
+      base::StringPrintf(kSePickerThemeInfoScript, background_color);
+  web_frame->ExecuteScriptInIsolatedWorld(
+      isolated_world_id_,
+      blink::WebScriptSource(blink::WebString::FromUTF8(new_selectors_script)),
+      blink::BackForwardCacheAware::kAllow);
 }
 
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
@@ -354,6 +382,11 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
   BindFunctionToObject(
       isolate, javascript_object, "manageCustomFilters",
       base::BindRepeating(&CosmeticFiltersJSHandler::OnManageCustomFilters,
+                          base::Unretained(this)));
+
+  BindFunctionToObject(
+      isolate, javascript_object, "getElementPickerThemeInfo",
+      base::BindRepeating(&CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo,
                           base::Unretained(this)));
 
   if (perf_tracker_) {

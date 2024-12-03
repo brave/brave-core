@@ -6,6 +6,7 @@ const NSSVG = 'http://www.w3.org/2000/svg'
 
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
+const isAndroid = /(android)/i.test(navigator.userAgent)
 
 const api = {
   cosmeticFilterCreate: (selector: string) => {
@@ -14,6 +15,9 @@ const api = {
   cosmeticFilterManage: () => {
     cf_worker.manageCustomFilters()
   },
+  getElementPickerThemeInfo: () => {
+    cf_worker.getElementPickerThemeInfo()
+  }
 }
 
 // When the picker is activated, it eats all pointer events and takes up the
@@ -275,7 +279,6 @@ const elementPickerOnKeydown = (event: KeyboardEvent): void => {
 }
 
 const elementPickerViewportChanged = () => {
-  endLongPress()
   recalculateAndSendTargets(null)
 }
 
@@ -300,7 +303,9 @@ const attachElementPicker = () => {
   // Will be resolved by webpack to the file content.
   // It's a trusted content so it's safe to use innerHTML.
   // eslint-disable-next-line no-unsanitized/property
-  shadowRoot.innerHTML = require('./element_picker.html')
+  shadowRoot.innerHTML = isAndroid ?
+    require('./android_element_picker.html') :
+    require('./element_picker.html')
 
   const pickerCSSStyle: string = [
     'background: transparent',
@@ -329,11 +334,10 @@ const attachElementPicker = () => {
   pickerDiv.setAttribute('style', pickerCSSStyle)
   document.documentElement.appendChild(pickerDiv)
 
-
   // Setup listeners to assist element picker
   document.addEventListener('keydown', elementPickerOnKeydown, true)
   window.addEventListener('resize', elementPickerViewportChanged)
-  document.addEventListener('scroll', elementPickerViewportChanged)
+  window.addEventListener('scroll', elementPickerViewportChanged)
 
   return shadowRoot
 }
@@ -348,12 +352,10 @@ interface TargetRect {
 class Target {
   element: Element
   rectElem: Element
-  isMarked: boolean
   coord: TargetRect
 
   constructor (elem: Element) {
     this.element = elem
-    this.isMarked = false
     this.coord = targetRectFromElement(this.element)
   }
 
@@ -364,6 +366,7 @@ class Target {
 
 class TargetsCollection {
   targets: Target[] = []
+  togglePicker: ((val: boolean) => void) | null = null
   reset(elems: Element[]) {
     this.targets.length = 0
     elems.forEach((elem: Element) => {
@@ -371,23 +374,19 @@ class TargetsCollection {
     });
   }
 
-  toggleElementMark(rectElem: Element): boolean | null {
-    const targetToMark = this.targets.find(t => t.rectElem === rectElem)
-    if (targetToMark) {
-      targetToMark.isMarked = !targetToMark.isMarked
-      return targetToMark.isMarked
-    }
-    return null
-  }
-
   getXpathsForMarked(): string[] {
-    const markedTargets = this.targets.filter(t => t.isMarked)
-    return markedTargets.map((el) => getElementXpath(el.element))
+    return this.targets.map((el) => getElementXpath(el.element))
       .filter((item): item is string => item !== null)
   }
 
   forceRecalcCoords() {
     this.targets.forEach(t => t.forceRecalcCoords())
+    // for case when element no longer in the DOM
+    this.targets = this.targets.filter(item =>
+        item.coord.height !== 0 && item.coord.width !== 0)
+    if(this.targets.length === 0 && this.togglePicker) {
+      this.togglePicker(false)
+    }
   }
 
   size() {
@@ -405,13 +404,8 @@ const targetRectFromElement = (elem: Element): TargetRect => {
   }
 }
 
-let pressTimer: ReturnType<typeof setTimeout>;
 let lastHoveredElem: HTMLElement | null = null
 const targetedElems = new TargetsCollection
-
-const endLongPress = () => {
-  clearTimeout(pressTimer); // Clear the timer if the user releases early
-}
 
 const recalculateAndSendTargets = (elems: Element[] | null) => {
   if(elems) {
@@ -456,9 +450,22 @@ const hideByXPath = (xpath: string): void => {
   }
 }
 
-const getElementXpath = (element: Element): string | null => {
-  if (!(element instanceof Element)) {
-    return null
+const getElementByXpath = (xpath: string) => {
+  const result = document.evaluate(
+    xpath,
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  );
+
+  // Return the single node found, or null if none
+  return result.singleNodeValue as Element | null;
+}
+
+const getElementXpath = (element: Element | null): string => {
+  if (!element || !(element instanceof Element)) {
+    return ''
   }
 
   const getXPathSegment = (el: Element): string => {
@@ -491,6 +498,10 @@ const getElementXpath = (element: Element): string | null => {
 
 const onTargetSelected = (selected: Element | null, index: number): string => {
   if (lastHoveredElem === null) { return '' }
+
+  if (isAndroid) {
+    return getElementXpath(selected)
+  }
 
   let elem: Element | null = selected
   const selectorBuilders = []
@@ -541,13 +552,24 @@ const elementPickerHoverCoordsChanged = (x: number, y: number) => {
   }
 }
 
+const getElementBySelector = (selector: string) => {
+  let elements: Element[] | null;
+  if (isAndroid) {
+      const singleElement = getElementByXpath(selector);
+      elements = singleElement ? [singleElement] : null;
+  } else {
+      const nodeList = document.querySelectorAll(selector);
+      elements = nodeList.length > 0 ? Array.from(nodeList) : null;
+  }
+  return elements
+}
+
 const elementPickerUserSelectedTarget = (specificity: number) => {
   if (lastHoveredElem instanceof HTMLElement) {
     const selector = onTargetSelected(lastHoveredElem, specificity)
     if (selector !== '') {
       try {
-        recalculateAndSendTargets(
-          Array.from(document.querySelectorAll(selector)))
+        recalculateAndSendTargets(getElementBySelector(selector))
       } catch {}
     }
     return {
@@ -569,15 +591,7 @@ const elementPickerUserModifiedRule = (selector: string) => {
   }
 }
 
-const isSelectedElementChecked = (elem: HTMLElement) => {
-  if (!elem) {
-    return false
-  }
-  return elem.classList.contains('marked-target')
-}
-
 const launchElementPicker = (root: ShadowRoot) => {
-  const isAndroid = /(android)/i.test(navigator.userAgent)
   let hasSelectedTarget = false
 
   const btnShowRulesBox = root.getElementById('btnShowRulesBox')
@@ -631,12 +645,39 @@ const launchElementPicker = (root: ShadowRoot) => {
     togglePopup(true)
   })
 
-  const section = root.querySelector('section')!
+  const section = root.getElementById('main-section')!
   const togglePopup = (show: boolean) => {
+    if(isAndroid) {
+      if (show) {
+        createButton.classList.remove('block-button-disabled')
+        createButton.textContent = "Block Element"
+      } else {
+        createButton.classList.add('block-button-disabled')
+        createButton.textContent = "Select element you want to block"
+      }
+      return
+    }
     section.style.setProperty('opacity', show ? '1' : '0.2')
   }
+  targetedElems.togglePicker = togglePopup
 
   const slider = root.getElementById('sliderSpecificity') as HTMLInputElement
+  if (isAndroid) {
+    slider.style.display = 'none'
+  }
+
+  const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+  const handleColorSchemeChange = () => {
+    api.getElementPickerThemeInfo()
+  };
+  prefersDarkScheme.addEventListener('change', handleColorSchemeChange);
+  window.content_cosmetic.setTheme = (bgcolor: number) => {
+    const colorHex = `#${(bgcolor & 0xFFFFFF).toString(16).padStart(6, '0')}`
+    section.style.setProperty('background-color', colorHex)
+    root.querySelectorAll('.secondary-button').forEach(e =>
+        (e as HTMLElement).style.setProperty('background-color', colorHex))
+  }
+  handleColorSchemeChange()
 
   const dispatchSelect = () => {
     const { isValid, selector } = elementPickerUserSelectedTarget(
@@ -656,7 +697,7 @@ const launchElementPicker = (root: ShadowRoot) => {
     dispatchSelect()
   })
 
-  const doubleOrLongClickEventHandler = (event: MouseEvent | TouchEvent) => {
+  const oneClickEventHandler = (event: MouseEvent | TouchEvent) => {
     let elem: Element | null = null
     if (event instanceof MouseEvent) {
       elem = elementFromFrameCoords(event.clientX, event.clientY)
@@ -673,63 +714,25 @@ const launchElementPicker = (root: ShadowRoot) => {
     dispatchSelect()
   }
 
-  const oneClickEventHandler = (sourceEvent: MouseEvent) => {
-    const clickedElement = sourceEvent.target as HTMLElement
-    if (!clickedElement || !hasSelectedTarget) {
-      return
-    }
-
-    if (targetedElems.toggleElementMark(clickedElement) === null) {
-      hasSelectedTarget = false
-      slider.value = '4'
-      togglePopup(false)
-      targetedElems.targets.length = 0
-      highlightElements()
-      return
-    }
-
-    if (!isSelectedElementChecked(clickedElement)) {
-      clickedElement.classList.add('marked-target')
-      clickedElement.classList.remove('target')
-    } else {
-      clickedElement.classList.remove('marked-target')
-      clickedElement.classList.add('target')
-    }
-  }
-
-  const startLongPress = (event: MouseEvent | TouchEvent) => {
-    pressTimer = setTimeout(() => {
-        doubleOrLongClickEventHandler(event)
-    }, 800);
-  }
-
-  if (isAndroid) {
-    svg.addEventListener('mousedown', startLongPress)
-    svg.addEventListener('mouseup', endLongPress)
-    svg.addEventListener('mouseleave', endLongPress)
-
-    svg.addEventListener('touchstart', startLongPress)
-    svg.addEventListener('touchend', endLongPress)
-    svg.addEventListener('touchcancel', endLongPress)
-  } else {
-    svg.addEventListener('dblclick', doubleOrLongClickEventHandler)
-  }
-
   svg.addEventListener('click', oneClickEventHandler)
 
   const createButton = root.getElementById('btnCreate')!
   createButton.addEventListener('click', () => {
-    const selectedXpaths = targetedElems.getXpathsForMarked()
-    if(selectedXpaths && selectedXpaths.length > 0) {
-      for(const expr of selectedXpaths) {
-        const rule = `:xpath(${expr})`
-        api.cosmeticFilterCreate(rule)
-        hideByXPath(expr)
-      }
-      quitElementPicker()
+    if (createButton.classList.contains('block-button-disabled')) {
       return
     }
-
+    if (isAndroid) {
+      const selectedXpaths = targetedElems.getXpathsForMarked()
+      if(selectedXpaths && selectedXpaths.length > 0) {
+        for(const expr of selectedXpaths) {
+          const rule = `:xpath(${expr})`
+          api.cosmeticFilterCreate(rule)
+          hideByXPath(expr)
+        }
+        quitElementPicker()
+      }
+      return
+    }
     const selector = rulesTextArea.value.trim()
     if (selector.length > 0) {
       api.cosmeticFilterCreate(selector)
@@ -746,7 +749,6 @@ const launchElementPicker = (root: ShadowRoot) => {
   const manageButton = root.getElementById('btnManage')!
   manageButton.addEventListener('click', () => {
     api.cosmeticFilterManage();
-    quitElementPicker()
   })
 
   const toggleDisplay = (target: HTMLElement | null,
@@ -801,7 +803,7 @@ const highlightElements = () => {
     // Use the same element, but add the target class which turns the
     // target rectangle orange
     const targetingArea = mask.cloneNode(false) as SVGRectElement
-    targetingArea.classList.add(target.isMarked ? 'marked-target' : 'target')
+    targetingArea.classList.add('target')
     target.rectElem = targetingArea
 
     svgFragment.appendChild(targetingArea)

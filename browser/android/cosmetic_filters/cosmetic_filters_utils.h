@@ -11,7 +11,7 @@
 namespace cosmetic_filters {
 
 void ShowCustomFilterSettings();
-
-}
+int GetThemeBackgroundColor();
+}  // namespace cosmetic_filters
 
 #endif  // BRAVE_BROWSER_ANDROID_COSMETIC_FILTERS_COSMETIC_FILTERS_UTILS_H_

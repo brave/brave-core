@@ -1623,6 +1623,11 @@ public abstract class BraveActivity extends ChromeActivity
         settingsLauncher.startSettings(this, ContentFilteringFragment.class);
     }
 
+    public int getBraveThemeBackgroundColor() {
+        return ContextUtils.getApplicationContext()
+                .getColor(R.color.toolbar_background_color_for_ntp);
+    }
+
     public void openBraveCreateCustomFiltersSettings() {
         SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
         settingsLauncher.startSettings(this, CreateCustomFiltersFragment.class);

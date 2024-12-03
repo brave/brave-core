@@ -16,7 +16,13 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_pages.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
+#include "ui/color/color_provider.h"
 #else
 #include "brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
@@ -24,6 +30,7 @@
 namespace cosmetic_filters {
 
 namespace {
+
 bool IsValidFilterText(std::string_view selector) {
   if (!base::IsStringUTF8(selector)) {
     return false;
@@ -88,6 +95,17 @@ void CosmeticFiltersTabHelper::ManageCustomFilters() {
   }
 #else   // !BUILDFLAG(IS_ANDROID)
   ShowCustomFilterSettings();
+#endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(
+    GetElementPickerThemeInfoCallback callback) {
+#if !BUILDFLAG(IS_ANDROID)
+  auto& color_provider = GetWebContents().GetColorProvider();
+  std::move(callback).Run(
+      color_provider.GetColor(kColorSidePanelBadgeBackground));
+#else   // !BUILDFLAG(IS_ANDROID)
+  std::move(callback).Run(GetThemeBackgroundColor());
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 

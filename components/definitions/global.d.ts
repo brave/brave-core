@@ -72,7 +72,8 @@ declare global {
       fetchNewClassIdRulesThrottlingMs : number | undefined
       tryScheduleQueuePump: (() => void)
       proceduralActionFilters?: ProceduralActionFilter[]
-      hasProceduralActions: boolean
+      hasProceduralActions: boolean,
+      setTheme: (bgcolor: number) => void
     }
   }
 }

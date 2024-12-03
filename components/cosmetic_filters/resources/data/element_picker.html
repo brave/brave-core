@@ -57,6 +57,13 @@
     justify-content: space-between;
     flex-direction: column;
   }
+    
+  .buttons-line {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-bottom: 6px;
+  }
 
   #main-buttons {
     display: flex;
@@ -93,11 +100,6 @@
     padding-bottom: 4px;
   }
   .target {
-    stroke: #FF6200;
-    stroke-width: 2px;
-    fill: rgba(255, 130, 63, 0.25);
-  }
-  .marked-target {
     stroke: #3d39c8;
     stroke-width: 2px;
     fill: rgba(121, 116, 224, 0.25);
@@ -111,7 +113,7 @@
   </defs>
   <rect id="darken" x="0" y="0" width="100%" height="100%" mask="url(#highlight-mask)">
 </svg>
-<section>
+<section id="main-section">
   <div id="rules-box">
     <textarea></textarea>
   </div>
@@ -120,12 +122,14 @@
       <input id="sliderSpecificity" type="range" min="0" max="4" value="4">
     </div>
     <div id="buttons">
-		<div id="main-buttons">
-	      <button id="btnCreate">Block</button>
-    	  <button id="btnManage">Manage filters</button>
-      	  <button id="btnShowRulesBox">Show rules</button>
-		</div>
-      <button id="btnQuit" >Cancel</button>
+      <div id="main-buttons">
+        <button id="btnCreate" class="block-button">Block</button>
+      </div>
+      <div class="buttons-line">
+        <button id="btnManage">Manage filters</button>
+        <button id="btnShowRulesBox">Show rules</button>
+        <button id="btnQuit">Cancel</button>
+      </div>
     </div>
   </div>
 </section>
