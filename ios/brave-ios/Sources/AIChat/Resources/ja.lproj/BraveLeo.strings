@@ -31,6 +31,9 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "稼働状況";
 
+/* The title for the button that allows the user to view the AppStore Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "App Storeのレシートを見る";
+
 /* The subtitle for the error showing there is an error from App Store */
 "aichat.appStoreErrorSubTitle" = "App Storeに接続できませんでした。後でもう一度お試しください。";
 
@@ -181,6 +184,12 @@
 /* The default title displayed above a code block when the language of the code is not known. */
 "aichat.leoCodeExampleDefaultTitle" = "コードサンプル";
 
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
+"aichat.leoDisabledMessageDescription" = "レオは現在、機能フラグによって無効化されています。Leoを再度有効にするには、brave://flagsにアクセスして有効にしてください。";
+
+/* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
+"aichat.leoDisabledMessageTitle" = "レオ・ディスエーブルド";
+
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "次のクエリについて、より良い回答を検索しています:";
 
@@ -189,6 +198,9 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo AI";
+
+/* An indicator to show page content refined is in progress */
+"aichat.leoPageContentRefineInProgress" = "Webページの関連する部分を探しています...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "このページについて質問するには、トグルをクリックしてください。あなたが入力したメッセージとともに、ページのコンテンツがBrave Leoに送信されます。";
@@ -242,6 +254,9 @@
 "aichat.paywallPremiumUpsellTitle" = "プレミアムでLeoの全機能を利用しましょう:";
 
 /* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionIntroOfferTitle" = "7日間無料でお試し";
+
+/* The title of the button for action triggering purchase */
 "aichat.paywallPurchaseActionTitle" = "今すぐアップグレード";
 
 /* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
@@ -286,8 +301,8 @@
 /* The text which will be used to indicate period of payments like 150 / year */
 "aichat.paywallYearlyPriceDividend" = "年";
 
-/* The description indicating yearly subscription that show how much user is saving percentage */
-"aichat.paywallYearlySubscriptionDescription" = "最大25%割引";
+/* The description indicating how valuable the yearly subscription is, compared to purchasing monthly */
+"aichat.paywallYearlySubscriptionDescription" = "一番お得";
 
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "1 年";

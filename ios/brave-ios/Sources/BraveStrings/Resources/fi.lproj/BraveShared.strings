@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri-pikavalinnat";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Näytä kirjanmerkkien pikakuvake";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Näytä kirjanmerkit";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Kopioi leikepöydälle";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Poista synkronointitili";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Poista synkronointitili";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Kun poistat tilisi, salatut tietosi poistetaan Brave-palvelimilta ja synkronointi poistetaan käytöstä kaikilta yhdistetyiltä laitteiltasi.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Paikallisesti tallennettuja tietoja ei kuitenkaan poisteta näiltä laitteilta.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Poista synkronointitili";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Vaikuttaa siltä, että tämä koodi luotiin vanhaa Brave-versiota käyttävällä laitteella. Päivitä Brave uusimpaan versioon toisella laitteella ja luo uusi synkronointikoodi.";

@@ -1,0 +1,207 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Thêm danh sách bổ sung được tạo và duy trì bởi cộng đồng đáng tin cậy của bạn.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Chỉ đăng ký danh sách từ các thực thể bạn tin tưởng**. Trình duyệt của bạn sẽ kiểm tra định kỳ các bản cập nhật danh sách từ URL bạn nhập.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Thêm bộ lọc theo URL";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** là tấm vé cho trải nghiệm video không quảng cáo và không bị gián đoạn.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Điều chỉnh Lá chắn giúp tôi";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Trang web này đã bắt đầu chặn một số trình chặn quảng cáo, điều này có nghĩa là trang web của họ có thể không hoạt động như mong đợi.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Để giải quyết vấn đề này, Brave có thể điều chỉnh cài đặt lá chắn cho bạn. Sau khi điều chỉnh, bạn có thể thử xem nội dung này trong Brave Player.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Giữ cài đặt hiện tại";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Điều chỉnh cài đặt chặn quảng cáo cho trang web này";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Hủy tự động";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Nghiêm ngặt";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Không cho phép tải quảng cáo, cửa sổ bật lên và trình theo dõi.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Đã tắt";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Tiêu chuẩn";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Chặn thông báo 'Chuyển sang ứng dụng'";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Luôn mở video từ trang này bằng Brave Player";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Thử ngay";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Không phải Bây giờ";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Brave Player cho phép bạn xem video không bị gián đoạn.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Xem bằng Brave Player";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Lọc nội dung";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Bật bộ lọc tùy chỉnh chặn các trình theo dõi theo khu vực và ngôn ngữ cụ thể và Yếu tố gây khó chịu";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Danh sách bộ lọc tùy chỉnh";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL danh sách bộ lọc tùy chỉnh";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Bộ lọc Tùy chỉnh";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Thêm bộ lọc tùy chỉnh ở đây. Đảm bảo việc sử dụng cú pháp bộ lọc Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Quy tắc không hợp lệ `%1$@` ở dòng %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Thêm bộ lọc tùy chỉnh ở đây, theo từng dòng.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Bộ lọc tùy chỉnh không hỗ trợ hơn %i dòng";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Danh sách bộ lọc mặc định";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Quay Lại";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Bởi vì bạn đã yêu cầu chặn nghiêm ngặt các trình theo dõi và quảng cáo, Brave sẽ chặn trang web này trước lần kết nối mạng đầu tiên.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave đã ngăn không cho website sau đây được tải:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Trang web này có thể cố gắng theo dõi bạn trên các trang web khác";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Tiến hành";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Tên miền Đã chặn";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Bật API JS Kiểm soát Quyền riêng tư toàn cầu";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Bật Kiểm soát Quyền riêng tư toàn cầu";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Danh sách bộ lọc ngoài";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "URL đã nhập không hợp lệ";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Chỉ có thể sử dụng URL bảo mật (https) cho danh sách bộ lọc tùy chỉnh";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Thêm";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Danh sách bổ sung các cộng đồng phổ biến. Lưu ý rằng việc bật quá nhiều bộ lọc sẽ làm giảm tốc độ duyệt web.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Tải xuống không thành công";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Đang chờ tải xuống";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Chỉnh sửa";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Nhập URL danh sách bộ lọc";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Cập nhật lần cuối %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Nhập danh sách bộ lọc ở đây";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Xóa cookie và dữ liệu trang web khác khi bạn đóng một trang web.";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Quên tôi khi tôi đóng trang web này";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Nghiêm ngặt";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Danh sách đã được cập nhật";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Hủy dữ liệu";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Không bao giờ";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Khi ứng dụng đã đóng";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Khi các thẻ đã đóng";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Hủy dữ liệu trang";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Thao tác hủy sẽ đóng tất cả thẻ đang mở của trang này, và xóa tất cả dữ liệu của trang. Quá trình này không thể được hoàn tác.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Hủy dữ liệu trang?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Hủy dữ liệu trang ngay";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Trang web không bảo mật";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Kết nối đến %@ không bảo mật";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Chặn Trình theo dõi & Quảng cáo";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Cập nhật danh sách";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Đang cập nhật danh sách";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Nâng cấp các kết nối thành HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Bạn thấy cảnh báo này vì trang web này không hỗ trợ HTTPS.";
+

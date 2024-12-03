@@ -1,0 +1,51 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "המשך";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "לפתוח כל קישור שלוחצים עליו עם הגנות הפרטיות של Brave";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "‏הגדרה של Brave כדפדפן ברירת המחדל שלך";
+
+/* The subtitle of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenDescription" = "לגלוש מהר יותר, להשתמש בפחות נתונים.";
+
+/* The title of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenTitle" = "פחות מודעות וכלי מעקב.";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "לא עכשיו";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "ברצינות, נפטרנו מהם.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "הסוף למודעות וידאו.";
+
+/* The title of the button that opens the website abouyt privacy preserving analytics. */
+"focusOnboarding.p3aInformationButtonTitle" = "למידע נוסף על ניתוח המוצרים משמר הפרטיות (P3A) שלנו.";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "נשמח לשמוע מאילו פיצ׳רים הכי נהנית.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "לעזור לנו לשפר את Brave.";
+
+/* The title of the toggle for enable / disable privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "אפשר לשנות את זה בכל עת בהגדרות Brave תחת ׳מגנים ופרטיות של Brave׳.";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "שיתוף תובנות מוצר פרטיות ואנונימיות.";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "להתחיל לגלוש";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "מעבר להגדרות המערכת";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "יש להזין כתובת URL כדי ליהנות מפחות מודעות וכלי מעקב";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "לראות את ההבדל עם Brave";
+

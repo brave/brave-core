@@ -256,6 +256,9 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Protocol de transport";
 
+/* Button to allow the user to view the app-store receipt. */
+"vpn.settingsViewReceipt" = "Veure el rebut de l'AppStore";
+
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Actualitza el mètode de pagament";
 
@@ -297,6 +300,9 @@
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Codi de bescanvi";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "Regió de la VPN canviada";
 
 /* Message for alert to reset vpn configuration */
 "vpn.vpnResetAlertBody" = "Això restablirà la configuració del Tallafoc + VPN de Brave i solucionarà qualsevol error. Aquest procés pot trigar un minut.";

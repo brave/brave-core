@@ -256,6 +256,9 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "بروتوكول النقل";
 
+/* Button to allow the user to view the app-store receipt. */
+"vpn.settingsViewReceipt" = "عرض إيصال آب ستور";
+
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "تحديث طريقة الدفع";
 

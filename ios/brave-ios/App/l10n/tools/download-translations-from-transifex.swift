@@ -61,6 +61,9 @@ struct LanguageMapping {
       LanguageMapping(source: "sk"),
       LanguageMapping(source: "ro"),
       LanguageMapping(source: "ar"),
+      LanguageMapping(source: "he"),
+      LanguageMapping(source: "th"),
+      LanguageMapping(source: "vi"),
     ]
 
     if providedLocales.isEmpty {

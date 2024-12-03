@@ -190,6 +190,9 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo 人工智能";
 
+/* An indicator to show page content refined is in progress */
+"aichat.leoPageContentRefineInProgress" = "正在尋找網頁的相關部分...…";
+
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "点击询问本页内容。其内容将与您的信息一起发送给 Brave Leo。";
 
@@ -242,6 +245,9 @@
 "aichat.paywallPremiumUpsellTitle" = "释放 Leo 高级版全部效能：";
 
 /* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionIntroOfferTitle" = "免费试用 7 天";
+
+/* The title of the button for action triggering purchase */
 "aichat.paywallPurchaseActionTitle" = "立即升级";
 
 /* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
@@ -286,8 +292,8 @@
 /* The text which will be used to indicate period of payments like 150 / year */
 "aichat.paywallYearlyPriceDividend" = "年";
 
-/* The description indicating yearly subscription that show how much user is saving percentage */
-"aichat.paywallYearlySubscriptionDescription" = "优惠高达 25%";
+/* The description indicating how valuable the yearly subscription is, compared to purchasing monthly */
+"aichat.paywallYearlySubscriptionDescription" = "最佳價值";
 
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "一年";

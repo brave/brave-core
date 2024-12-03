@@ -32,7 +32,7 @@
 "playlist.accessibilityPlaybackSpeed" = "Vitesse de lecture";
 
 /* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the All option (repeats entire playlist) */
-"playlist.accessibilityRepeatModeAll" = "Mode Répéter la liste de lecture";
+"playlist.accessibilityRepeatModeAll" = "Mode Répéter la playlist";
 
 /* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled off */
 "playlist.accessibilityRepeatModeOff" = "Mode Répéter désactivé";
@@ -62,16 +62,16 @@
 "playlist.deleteItem" = "Supprimer";
 
 /* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
-"playlist.deletePlaylist" = "Supprimer la liste de lecture";
+"playlist.deletePlaylist" = "Supprimer la playlist";
 
 /* A message display when the user attempts to delete a playlist. */
-"playlist.deletePlaylistConfirmationMessage" = "Tous les éléments de cette liste de lecture seront supprimés";
+"playlist.deletePlaylistConfirmationMessage" = "Tous les éléments de cette playlist seront supprimés";
 
 /* A button call to action that allows the user to dismiss the active modal */
 "playlist.doneButtonTitle" = "Terminé";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylist" = "Modifier la liste de lecture";
+"playlist.editPlaylist" = "Modifier la playlist";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Modifier";
@@ -80,7 +80,7 @@
 "playlist.fillNewPlaylistSubtitle" = "Appuyer pour sélectionner le média";
 
 /* A title shown above a list of videos in your default playlist. '%@' will be replaced with the default playlist name which has already been localized, for example: 'Add from your Play Later playlist' */
-"playlist.fillNewPlaylistTitle" = "Ajouter depuis votre liste de lecture **%@**";
+"playlist.fillNewPlaylistTitle" = "Ajouter depuis votre playlist **%@**";
 
 /* A count of how many items there are in the playlist. '%lld' would be replaced with a number, for example: 10 items */
 "playlist.itemCountPlural" = "%lld éléments";
@@ -104,10 +104,10 @@
 "playlist.newPlaylistButtonTitle" = "Créer";
 
 /* A placeholder shown in the text field when creating a new playlist. */
-"playlist.newPlaylistPlaceholder" = "Ma nouvelle liste de lecture";
+"playlist.newPlaylistPlaceholder" = "Ma nouvelle playlist";
 
 /* Shown when the user has not selected any media to play. */
-"playlist.noMediaSelectedEmptyState" = "Appuyez sur un élément de votre liste de lecture pour le lire";
+"playlist.noMediaSelectedEmptyState" = "Appuyez sur un élément de votre playlist pour le lire";
 
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Ajoutez des contenus depuis vos sites préférés pour les voir apparaître ici";
@@ -122,7 +122,7 @@
 "playlist.removeOfflineData" = "Supprimer les données hors ligne";
 
 /* A menu button that when tapped will present the user with a text box to change the name of the selected playlist */
-"playlist.renamePlaylist" = "Renommer la liste de lecture";
+"playlist.renamePlaylist" = "Renommer la playlist";
 
 /* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
 "playlist.repeatModeOptionAll" = "Tout";
@@ -152,7 +152,7 @@
 "playlist.sleepTimerEndOfItem" = "À la fin du média en cours de lecture";
 
 /* A title shown above a set of time based options that describe when playback should stop. */
-"playlist.sleepTimerStopPlaybackAfter" = "Arrêter la liste de lecture…";
+"playlist.sleepTimerStopPlaybackAfter" = "Arrêter la lecture…";
 
 /* A fallback error message displayed when a video fails to play */
 "playlist.somethingWentWrong" = "Un problème est survenu";

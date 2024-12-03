@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri 快捷方式";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "显示书签快捷方式";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "显示书签";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "复制到剪切板";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "删除 Sync 帐户";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "删除 Sync 帐户";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "若删除您的账户将删除 Brave 服务器上的加密数据，并禁用您的所有连接设备上的同步功能。";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "但是，将不会删除本地存储在这些设备上的数据。";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "删除 Sync 帐户";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "代码可能创建于使用较低版本 Brave 的设备。请在您的设备上将 Brave 更新至最新版本，再创建同步代码。";

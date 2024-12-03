@@ -1,0 +1,402 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Phiên tài khoản Brave của bạn đã hết hạn. Vui lòng truy cập trang tài khoản của bạn để làm mới, sau đó quay lại để sử dụng các tính năng cao cấp.";
+
+/* The title for button that submits feedback */
+"aichat.addFeedbackActionTitle" = "Thêm phản hồi";
+
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "Bật để hiển thị lối tắt khởi động Leo từ thanh địa chỉ.";
+
+/* The title for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteTitle" = "Hiển thị trong thanh địa chỉ";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "Mô hình mặc định";
+
+/* The title for the header for adjusting leo ai settings */
+"aichat.advancedSettingsHeaderTitle" = "Leo là trợ lý thông minh được hỗ trợ bởi AI, được tích hợp ngay trên trình duyệt.";
+
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Liên kết giao dịch mua trên App Store với tài khoản Brave của bạn để sử dụng Leo trên các thiết bị khác.";
+
+/* The title for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Liên kết mua hàng với tài khoản Brave của bạn";
+
+/* The title for the label showing the date which subscription expires */
+"aichat.advancedSettingsSubscriptionExpiresTitle" = "Hết hạn";
+
+/* The title for the header for subscription details */
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "Gói đăng ký";
+
+/* The title for the label showing status if the subscription */
+"aichat.advancedSettingsSubscriptionStatusTitle" = "Trạng thái";
+
+/* The title for the button that allows the user to view the AppStore Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "Xem biên lai App Store";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Không thể kết nối đến App Store, vui lòng thử lại sau.";
+
+/* The title for the error showing there is an error from App Store */
+"aichat.appStoreErrorTitle" = "Lỗi App Store";
+
+/* The title of the search bar suggestion when prompting to Ask Leo */
+"aichat.askLeoSearchSuggestionTitle" = "Hỏi Leo";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leo hiện đang rất bận. Vui lòng thử lại trong ít phút.";
+
+/* The subtitle for intro view which triggers just chat */
+"aichat.chatIntroJustTalkSubTitle" = "Hỏi tôi bất cứ điều gì! Chúng ta có thể nói về bất kỳ chủ đề nào bạn muốn. Tôi luôn học hỏi và cải thiện để đưa ra câu trả lời tốt hơn.";
+
+/* The title for intro view which triggers just chat */
+"aichat.chatIntroJustTalkTitle" = "Chỉ muốn trò chuyện?";
+
+/* The subtitle for intro view */
+"aichat.chatIntroSubTitle" = "Trợ lý thông minh được hỗ trợ bởi AI, tích hợp ngay trong Brave.";
+
+/* The title for intro view */
+"aichat.chatIntroTitle" = "Xin chào, tôi là Leo!";
+
+/* The subtitle for intro view which triggers website help for article */
+"aichat.chatIntroWebsiteHelpSubtitleArticleSummarize" = "Tôi có thể giúp bạn tóm tắt các bài viết, mở rộng nội dung của trang web và hơn thế nữa.";
+
+/* The subtitle for intro view which triggers website help for summary */
+"aichat.chatIntroWebsiteHelpSubtitlePageSummarize" = "Tôi có thể giúp bạn tóm tắt các bài viết, mở rộng nội dung của trang web và hơn thế nữa. Không biết chắc nên bắt đầu từ đâu? Hãy thử cái này:";
+
+/* The title for intro view which triggers website help */
+"aichat.chatIntroWebsiteHelpTitle" = "Cần trợ giúp với trang web?";
+
+/* The title for the chat section in the menu */
+"aichat.chatMenuSectionTitle" = "Trò chuyện";
+
+/* The title shown on limit reached error view, which is suggesting user to change default model */
+"aichat.contextLimitErrorTitle" = "Cuộc trò chuyện này quá dài và không thể tiếp tục. \nCó thể có sẵn các mô hình khác mà Leo có khả năng duy trì độ chính xác cho các cuộc trò chuyện dài hơn.";
+
+/* The title of the section where custom models are displayed as a list. */
+"aichat.customModelChatSectionTitle" = "Mô hình tùy chỉnh";
+
+/* The title for the custom models section in the menu */
+"aichat.customModelsMenuSectionTitle" = "Mô hình tùy chỉnh";
+
+/* The title of the section where chat models are displayed as a list. */
+"aichat.defaultModelChatSectionTitle" = "Trò chuyện";
+
+/* The title of the section where language models are displayed as a list. */
+"aichat.defaultModelLanguageSectionTitle" = "MÔ HÌNH NGÔN NGỮ";
+
+/* The title of the menu where user can change the default model */
+"aichat.defaultModelViewTitle" = "Mô hình mặc định";
+
+/* The text displayed under an edited user prompt/message beside a timestamp. */
+"aichat.editedMessageCaption" = "Đã sửa";
+
+/* The title for view which user type feedback */
+"aichat.feedbackInputViewTitle" = "Cung cấp phản hồi tại đây";
+
+/* The title for view which listsfeedback option list */
+"aichat.feedbackOptionsViewTitle" = "Phản hồi của bạn là gì?";
+
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Không chính xác";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Không hữu dụng";
+
+/* The title for other feedback option */
+"aichat.feedbackOptionTitleOther" = "Khác";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Không an toàn/có hại";
+
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+"aichat.feedbackPremiumAdTitle" = "Leo Premium cho phép người dùng truy cập mô hình ngôn ngữ đa dạng hơn để có câu trả lời ấn tượng hơn nữa. [Tìm hiểu thêm](https://brave.com/) - [Bỏ qua](braveai://dismiss)";
+
+/* The title for the button that submits feedback */
+"aichat.feedbackSubmitActionTitle" = "Gửi";
+
+/* The title for feedback view when it fails to submit feedback */
+"aichat.feedbackSubmittedErrorTitle" = "Đã xảy ra sự cố. Vui lòng thử lại.";
+
+/* The title for feedback view when it is submitted */
+"aichat.feedbackSubmittedTitle" = "Phản hồi đã được gửi thành công";
+
+/* The title for feedback view when response is sucessfull but disliked */
+"aichat.feedbackSuccessAnswerDisLikedTitle" = "Câu trả lời không thích";
+
+/* The title for feedback view when response is sucessfull also liked */
+"aichat.feedbackSuccessAnswerLikedTitle" = "Câu trả lời đã thích";
+
+/* The title for view which user type feedback */
+"aichat.feedbackViewMainTitle" = "Cung cấp phản hồi Brave AI";
+
+/* The button title for opening paywall screen */
+"aichat.goPremiumButtonTitle" = "Nâng cấp lên Premium";
+
+/* Description about answers are changing with page context */
+"aichat.infoAboutPageContext" = "Định hình câu trả lời dựa trên nội dung của trang";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeHaikuMessageDescription" = "Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude 3 Haiku, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại.";
+
+/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku của Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Trò chuyện nhanh như chớp";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude 3.5 Sonnet, một mô hình do Anthropic tạo ra để hỗ trợ các tác vụ xử lý văn bản và đàm thoại.";
+
+/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet của Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Cân bằng tốc độ và trí thông minh";
+
+/* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
+"aichat.introMessageGenericMessageDescription" = "Xin chào, tôi là Leo, trợ lý AI của Brave. Tôi được hỗ trợ bởi %@. Hãy hỏi tôi bất cứ điều gì, tôi sẽ cố gắng hết sức để trả lời.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "Xin chào, tôi là Leo. Tôi là trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama 3.1 8B, một mô hình do Meta tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng.";
+
+/* The model and creator for intro message - Llama 3.1 8B is the model name -- Meta is the creator */
+"aichat.introMessageLlamaModelDescription" = "Llama 3.1 8B của Meta";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "Trò chuyện cho mục đích chung";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageMixtralMessageDescription" = "Xin chào, tôi là Leo. Tôi là trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Mixtral 8x7B, một mô hình do Mistral AI tạo ra để xử lý các tác vụ nâng cao.";
+
+/* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
+"aichat.introMessageMixtralModelDescription" = "Mixtral của Mistral AI";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageMixtralModelPurposeDescription" = "Tác vụ trò chuyện nâng cao";
+
+/* The title for intro message */
+"aichat.introMessageTitle" = "Trò chuyện";
+
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The default title displayed above a code block when the language of the code is not known. */
+"aichat.leoCodeExampleDefaultTitle" = "Mã ví dụ";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
+"aichat.leoDisabledMessageDescription" = "Hiện Leo hiện được tắt thông qua việc gắn cờ tính năng. Để bật lại Leo, vui lòng vào brave://flags và bật lại.";
+
+/* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
+"aichat.leoDisabledMessageTitle" = "Đã tắt Leo";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "Cải thiện tìm kiếm câu trả lời cho";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Đang cải thiện câu trả lời với Tìm kiếm Brave...";
+
+/* The title of the advanced settings view */
+"aichat.leoNavigationTitle" = "Leo AI";
+
+/* An indicator to show page content refined is in progress */
+"aichat.leoPageContentRefineInProgress" = "Tìm các phần có liên quan của trang web...";
+
+/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Bật để hỏi về trang này. Nội dung của trang sẽ được gửi đến Brave Leo cùng với tin nhắn của bạn.";
+
+/* The accessibility text to read out loud when the user taps on the info icon on the page context view */
+"aichat.leoPageContextInfoIconAccessibilityTitle" = "Thông tin bối cảnh trang";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "Công cụ dấu gạch chéo";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "Không";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "Không xác định";
+
+/* The title to display when the duration of the subscription is unknown */
+"aichat.leoSubscriptionUnknownDateTitle" = "N/A";
+
+/* The button title for managing subscriptions */
+"aichat.manageSubscriptionsButtonTitle" = "Quản lý Gói đăng kí";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertDescription" = "Vui lòng cho phép truy cập micrô trong cài đặt hệ thống iOS để Brave có thể sử dụng tính năng nhập giọng nói ẩn danh.";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertTitle" = "Cần có quyền truy cập micrô";
+
+/* Title showing monthly subscription */
+"aichat.monthlySubscriptionTitle" = "Gói đăng ký hằng tháng";
+
+/* The title for view that shows network - connection error and suggesting to try again */
+"aichat.networkErrorViewTitle" = "Đã xảy ra sự cố mạng khi kết nối với Leo. Hãy kiểm tra kết nối của bạn và thử lại.";
+
+/* The title for button that starts a new chat */
+"aichat.newChatActionTitle" = "Cuộc trò chuyện mới";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"aichat.paywallMonthlyPriceDividend" = "tháng";
+
+/* Title indicating monthly subscription */
+"aichat.paywallMontlySubscriptionTitle" = "Hằng tháng";
+
+/* The title for dismiss button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellDismissAction" = "Có lẽ để sau";
+
+/* The title for button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellPrimaryAction" = "Nâng cấp";
+
+/* The title for premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellTitle" = "Khai phóng toàn bộ sức mạnh của Leo với gói Premium:";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionIntroOfferTitle" = "Dùng thử 7 ngày miễn phí!";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionTitle" = "Nâng cấp ngay";
+
+/* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
+"aichat.paywallPurchaseDeepNote" = "Tất cả các gói đăng ký đều được tự động gia hạn nhưng có thể bị hủy bất kỳ lúc nào trước khi gia hạn.";
+
+/* The error description when in app purcahse is erroneous. */
+"aichat.paywallPurchaseErrorDescription" = "Không thể hoàn tất giao dịch mua hàng. Vui lòng thử lại hoặc kiểm tra thông tin thanh toán của bạn trên Apple và thử lại.";
+
+/* The subtitle for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitSubTitle" = "Mở khóa tốc độ phản hồi cao hơn bằng cách đăng ký gói Premium, hoặc thử lại sau.";
+
+/* The title for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitTitle" = "Đã đạt giới hạn tốc độ phản hồi";
+
+/* The subtitle accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicSubTitle" = "Nhận câu trả lời chính xác hơn cho các cuộc trò chuyện có nhiều sắc thái hơn.";
+
+/* The title accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicTitle" = "Tập trung vào chủ đề";
+
+/* The subtitle chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicSubTitle" = "Nhận giới hạn chữ cao hơn cho các cuộc trò chuyện dài hơn.";
+
+/* The title chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicTitle" = "Trò chuyện lâu hơn";
+
+/* The subtitle creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicSubTitle" = "Các mô hình truy cập phù hợp hơn cho các nhiệm vụ sáng tạo và tạo nội dung.";
+
+/* The title creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicTitle" = "Mở khóa sự sáng tạo của bạn";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Ưu tiên truy cập vào các mô hình mạnh mẽ với các kỹ năng khác nhau.";
+
+/* The title model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicTitle" = "Khám phá các mô hình AI khác nhau";
+
+/* The title for paywall view */
+"aichat.paywallViewTitle" = "Leo Premium";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"aichat.paywallYearlyPriceDividend" = "năm";
+
+/* The description indicating how valuable the yearly subscription is, compared to purchasing monthly */
+"aichat.paywallYearlySubscriptionDescription" = "GIÁ TỐT NHẤT";
+
+/* Title indicating yearly subscription */
+"aichat.paywallYearlySubscriptionTitle" = "Một năm";
+
+/* The title of the badge where a model which can be used limited */
+"aichat.premiumModelStatusTitle" = "Premium";
+
+/* Title shown next to Leo in navigation bar when user has premium subcription */
+"aichat.premiumNavigationBarBadgeTitle" = "Premium";
+
+/* Title showing premium subscription - not determined monthly por yearly */
+"aichat.premiumSubscriptionTitle" = "Gói đăng ký Premium";
+
+/* The text for placeholder on textfield for entering questions for AI */
+"aichat.promptPlaceHolderDescription" = "Nhập văn bản tại đây";
+
+/* The title of action for quick menu which displaying advanced settings */
+"aichat.quickMenuAdvancedSettingsActionTitle" = "Cài đặt nâng cao";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"aichat.quickMenuGoPremiumActionTitle" = "Nâng cấp lên Premium";
+
+/* The title of action for quick menu which display subscription management view */
+"aichat.quickMenuManageSubscriptionActionTitle" = "Quản lý Gói đăng kí";
+
+/* The title for error when rating a response is not success */
+"aichat.rateAnswerActionErrorText" = "Lỗi khi đánh giá câu trả lời";
+
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "Làm mới";
+
+/* The title for the button where it triggers reset leo data */
+"aichat.resetLeoDataActionTitle" = "Đặt lại và xóa dữ liệu của Leo";
+
+/* The title of a button that will reset data for leo */
+"aichat.resetLeoDataAlertButtonTitle" = "Đặt lại";
+
+/* The description for the error whre leo data reset */
+"aichat.resetLeoDataErrorDescription" = "Bạn có chắc muốn đặt lại và xóa dữ liệu của Leo?";
+
+/* The title for the error whre leo data reset */
+"aichat.resetLeoDataErrorTitle" = "Đặt lại dữ liệu của Leo";
+
+/* The title for copying response to clipboard action */
+"aichat.responseContextMenuCopyTitle" = "Sao chép";
+
+/* The title for disliking response to clipboard action */
+"aichat.responseContextMenuDislikeAnswerTitle" = "Không thích câu trả lời";
+
+/* The title for editing AI response action from context menu */
+"aichat.responseContextMenuEditAnswerTitle" = "Sửa câu trả lời";
+
+/* The title for editing user prompt action from context menu */
+"aichat.responseContextMenuEditPromptTitle" = "Chỉnh sửa câu lệnh";
+
+/* The title for liking response to clipboard action */
+"aichat.responseContextMenuLikeAnswerTitle" = "Thích câu trả lời";
+
+/* The title for regenerating response action from context menu */
+"aichat.responseContextMenuRegenerateTitle" = "Tạo lại";
+
+/* The button title for restoring ai-app purchse for Leo. */
+"aichat.restorePaywallButtonTitle" = "Phục hồi";
+
+/* The title for button for re-try */
+"aichat.retryActionTitle" = "Thử lại";
+
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Brave không lưu trữ hoặc chia sẻ dữ liệu đầu vào giọng nói của bạn.";
+
+/* The title for the button to generate suggestions */
+"aichat.suggestionsGenerationButtonTitle" = "Gợi ý câu hỏi...";
+
+/* The title for button that start summarizing page */
+"aichat.summarizePageActionTitle" = "Tóm tắt trang này";
+
+/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+"aichat.termsConditionsApproveActionTitle" = "Tôi hiểu";
+
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leo là trợ lý thông minh AI riêng tư giúp bạn sử dụng web hiệu quả hơn. Có thể sử dụng Leo miễn phí với quyền truy cập hạn chế. Brave Leo Premium cho phép chọn trong số nhiều mô hình AI hơn, có giới hạn chữ cao hơn và cho phép người đăng ký sử dụng sớm các tính năng mới. Mô hình mặc định cho tất cả người dùng hiện đang là Mixtral 8x7B. Tham khảo **[Trung tâm trợ giúp](%1$@)** của Brave để biết thêm chi tiết.\n\nTheo mặc định, khi bạn hỏi Leo một câu hỏi, Leo có thể gửi và sử dụng nội dung của trang web bạn đang xem hoặc bất kỳ văn bản nào bạn đánh dấu trên trang đến Brave Leo để phản hồi. Một số trường hợp, Leo sẽ gửi các truy vấn bắt nguồn từ thông tin bạn nhập đến Brave Search và sử dụng kết quả tìm kiếm để trả lời câu hỏi của bạn tốt hơn. Độ chính xác của phản hồi không được đảm bảo, có thể có thông tin không chính xác, gây hiểu lầm hoặc sai lệch. Không gửi thông tin nhạy cảm hoặc riêng tư và hãy thận trọng với bất kỳ câu trả lời nào liên quan đến sức khỏe, tài chính, an toàn cá nhân hoặc tương tự. Bạn có thể điều chỉnh các tùy chọn của Leo trong mục Cài đặt bất kỳ lúc nào. Vào mục Cài đặt > Leo.\n\nLeo không thu thập các dữ liệu định danh như địa chỉ IP có thể được liên kết với bạn. Không có dữ liệu nào được sử dụng để đào tạo các mô hình AI và không có dữ liệu cá nhân nào được các mô hình AI lưu giữ (ngoại trừ Anthropic lưu giữ dữ liệu trong 30 ngày trước khi xóa). Tham khảo **[chính sách quyền riêng tư](%2$@)** để biết thêm thông tin.";
+
+/* The title terms and conditions for AI chat usage */
+"aichat.termsConditionsTitle" = "Trò chuyện riêng với Brave Leo";
+
+/* The title of the badge where a model which can be used unlimited */
+"aichat.unlimitedModelStatusTitle" = "Không giới hạn";
+
+/* The accessibility description when pressing the microphone button to access voice entry. */
+"aichat.voiceInputButtonTitle" = "Đầu vào giọng nói";
+
+/* Title showing yearly subscription - annual */
+"aichat.yearlySubscriptionTitle" = "Gói đăng ký hằng năm";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "Bạn";
+
