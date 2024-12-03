@@ -334,7 +334,11 @@ function BraveDefineCustomElements(name, component, options, useIgnoreList = tru
       delete allBehaviorsMap[name]
     }
   }
-  oldDefine.call(this, name, component, options)
+
+  // Allow a tick for overrides to be registered before we define the component.
+  setTimeout(() => {
+    oldDefine.call(this, name, component, options)
+  })
 }
 
 window.customElements.define = BraveDefineCustomElements
