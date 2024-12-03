@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Συντομεύσεις Siri";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Εμφάνιση συντόμευσης σελιδοδεικτών";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Εμφάνιση σελιδοδεικτών";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Αντιγραφή στο πρόχειρο";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Διαγραφή λογαριασμού συγχρονισμού";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Διαγραφή λογαριασμού συγχρονισμού";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Η διαγραφή του λογαριασμού σας θα καταργήσει τα κρυπτογραφημένα δεδομένα σας από τους διακομιστές Brave και θα απενεργοποιήσει τον Συγχρονισμό σε όλες τις συνδεδεμένες συσκευές σας.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Ωστόσο, δεν θα διαγράψει τα δεδομένα που είναι αποθηκευμένα τοπικά σε αυτές τις συσκευές.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Διαγραφή λογαριασμού συγχρονισμού";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Φαίνεται ότι αυτός ο κωδικός δημιουργήθηκε σε συσκευή με παλιότερη εκδοχή του Brave. Ενημερώστε τον Brave στη συσκευή σας, με την τελευταία εκδοχή, και στη συνέχεια, δημιουργήστε έναν νέο κωδικό συγχρονισμού.";

@@ -31,6 +31,9 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Állapot";
 
+/* The title for the button that allows the user to view the AppStore Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "AppStore nyugta megtekintése";
+
 /* The subtitle for the error showing there is an error from App Store */
 "aichat.appStoreErrorSubTitle" = "Nem sikerült csatlakozni az App Store-hoz, próbálja újra később.";
 
@@ -181,6 +184,12 @@
 /* The default title displayed above a code block when the language of the code is not known. */
 "aichat.leoCodeExampleDefaultTitle" = "Kód példa";
 
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
+"aichat.leoDisabledMessageDescription" = "Leo jelenleg le van tiltva a funkciójelzőkkel. A Leo újbóli engedélyezéséhez kérjük, látogasson el a brave://flags oldalra, és engedélyezze.";
+
+/* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
+"aichat.leoDisabledMessageTitle" = "Leo Disabled";
+
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "Továbbfejlesztett válaszkeresés:";
 
@@ -189,6 +198,9 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo MI";
+
+/* An indicator to show page content refined is in progress */
+"aichat.leoPageContentRefineInProgress" = "A weboldal releváns részeinek megtalálása...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Kapcsolja be az oldallal kapcsolatos kérdésekhez. A tartalom továbbítva lesz a Brave Leónak az Ön üzeneteivel együtt.";
@@ -242,6 +254,9 @@
 "aichat.paywallPremiumUpsellTitle" = "Fedezze fel a Leo teljes erejét a Premiummal:";
 
 /* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionIntroOfferTitle" = "Próbálja ki 7 nap ingyen";
+
+/* The title of the button for action triggering purchase */
 "aichat.paywallPurchaseActionTitle" = "Frissítés most";
 
 /* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
@@ -286,8 +301,8 @@
 /* The text which will be used to indicate period of payments like 150 / year */
 "aichat.paywallYearlyPriceDividend" = "év";
 
-/* The description indicating yearly subscription that show how much user is saving percentage */
-"aichat.paywallYearlySubscriptionDescription" = "AKÁR 25% MEGTAKARÍTÁS";
+/* The description indicating how valuable the yearly subscription is, compared to purchasing monthly */
+"aichat.paywallYearlySubscriptionDescription" = "A LEGJOBB ÉRTÉK";
 
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "Egy év";

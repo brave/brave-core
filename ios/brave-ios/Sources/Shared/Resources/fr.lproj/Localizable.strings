@@ -8,7 +8,7 @@
 "AppMenuViewMobileSiteTitleString" = "Demander la version pour mobile";
 
 /* General settings bookmarks last visited folder toggle title */
-"BookmarksLastVisitedFolderTitle" = "Afficher les derniers marque-pages consultés";
+"BookmarksLastVisitedFolderTitle" = "Afficher les derniers favoris consultés";
 
 /* Button confirming the cancellation of the download. */
 "CancelDownloadDialogCancel" = "Annuler";
@@ -113,7 +113,7 @@
 "UnableToAddPassErrorDismiss" = "OK";
 
 /* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorMessage" = "Une erreur s'est produite lors de l'ajout du pass à l'application Wallet. Réessayez ultérieurement.";
+"UnableToAddPassErrorMessage" = "Une erreur s'est produite lors de l'ajout du pass à l'application Cartes. Réessayez ultérieurement.";
 
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorTitle" = "Échec de l'ajout du pass";

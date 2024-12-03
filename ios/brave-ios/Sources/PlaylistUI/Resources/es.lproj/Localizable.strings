@@ -62,16 +62,16 @@
 "playlist.deleteItem" = "Eliminar";
 
 /* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
-"playlist.deletePlaylist" = "Eliminar lista de reproducción...";
+"playlist.deletePlaylist" = "Eliminar playlist...";
 
 /* A message display when the user attempts to delete a playlist. */
-"playlist.deletePlaylistConfirmationMessage" = "Se eliminarán todos los vídeos de esta lista de reproducción";
+"playlist.deletePlaylistConfirmationMessage" = "Se eliminarán todos los vídeos de esta playlist";
 
 /* A button call to action that allows the user to dismiss the active modal */
 "playlist.doneButtonTitle" = "Hecho";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylist" = "Editar lista de reproducción";
+"playlist.editPlaylist" = "Editar playlist";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Editar";
@@ -80,7 +80,7 @@
 "playlist.fillNewPlaylistSubtitle" = "Toque para seleccionar los elementos multimedia";
 
 /* A title shown above a list of videos in your default playlist. '%@' will be replaced with the default playlist name which has already been localized, for example: 'Add from your Play Later playlist' */
-"playlist.fillNewPlaylistTitle" = "Añadir de su lista de reproducción **%@**";
+"playlist.fillNewPlaylistTitle" = "Añadir de su playlist de **%@**";
 
 /* A count of how many items there are in the playlist. '%lld' would be replaced with a number, for example: 10 items */
 "playlist.itemCountPlural" = "%lld elementos";
@@ -104,10 +104,10 @@
 "playlist.newPlaylistButtonTitle" = "Crear";
 
 /* A placeholder shown in the text field when creating a new playlist. */
-"playlist.newPlaylistPlaceholder" = "Mi nueva lista de reproducción";
+"playlist.newPlaylistPlaceholder" = "Mi nueva playlist";
 
 /* Shown when the user has not selected any media to play. */
-"playlist.noMediaSelectedEmptyState" = "Pulse en vídeos de su lista de reproducción para reproducirlos.";
+"playlist.noMediaSelectedEmptyState" = "Pulse en vídeos de su playlist para reproducirlos.";
 
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Añada elementos multimedia de sus sitios favoritos para reproducirlos aquí.";
@@ -122,7 +122,7 @@
 "playlist.removeOfflineData" = "Eliminar datos sin conexión";
 
 /* A menu button that when tapped will present the user with a text box to change the name of the selected playlist */
-"playlist.renamePlaylist" = "Cambiar nombre de lista de reproducción";
+"playlist.renamePlaylist" = "Cambiar nombre de la playlist";
 
 /* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
 "playlist.repeatModeOptionAll" = "Todo";

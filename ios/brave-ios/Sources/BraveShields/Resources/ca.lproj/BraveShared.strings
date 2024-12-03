@@ -25,6 +25,9 @@
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
 "AntiAdBlockWarningTitle" = "Ajusta la configuració del bloquejador d'anuncis per a aquest lloc";
 
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Shred automàtic";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agressiu ";
 
@@ -89,7 +92,7 @@
 "DefaultFilterLists" = "Llistes de filtres per defecte";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
-"DomainBlockedGoBackAction" = "Torna";
+"DomainBlockedGoBackAction" = "Endarrere";
 
 /* A description in the warning page that appears when a page was blocked */
 "DomainBlockedPageDescription" = "Com que has demanat bloquejar agressivament els elements de rastrejament i anuncis, Brave està bloquejant aquest lloc abans de la primera connexió de xarxa.";
@@ -148,11 +151,38 @@
 /* A description of what the forget me toggle does */
 "ForgetMeDescription" = "Esborra les galetes i altres dades dels llocs quan tanquis un lloc";
 
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Oblida'm quan tanqui aquest lloc";
+
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Estricte";
 
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Llistes actualitzades";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Dades del shred";
+
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Mai";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Tancament de l'app";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Pestanyes del lloc tancades";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Dades del lloc shred";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "El shred tancarà totes les pestanyes obertes en aquest lloc i suprimirà totes les dades del lloc. Això no es pot desfer.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Dades del lloc shred?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Dades actuals del lloc shred";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "El lloc no és segur";
@@ -162,6 +192,12 @@
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Rastrejadors i anuncis bloquejats";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Llistes actualitzades";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Actualització de les llistes";
 
 /* The option the user can select for the type of https upgrading */
 "UpgradeConnectionsToHTTPS" = "Actualitza les connexions a HTTPS";

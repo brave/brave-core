@@ -31,6 +31,9 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
+/* The title for the button that allows the user to view the AppStore Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "View App Store Receipt";
+
 /* The subtitle for the error showing there is an error from App Store */
 "aichat.appStoreErrorSubTitle" = "Tidak dapat bersambung dengan App Store, sila cuba lagi kemudian.";
 
@@ -181,6 +184,12 @@
 /* The default title displayed above a code block when the language of the code is not known. */
 "aichat.leoCodeExampleDefaultTitle" = "Contoh kod";
 
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
+"aichat.leoDisabledMessageDescription" = "Leo is currently disabled via feature flags. To re-enable Leo, please visit brave://flags and enable it.";
+
+/* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
+"aichat.leoDisabledMessageTitle" = "Leo Disabled";
+
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "Pencarian jawapan yang ditingkatkan untuk";
 
@@ -189,6 +198,9 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "AI Leo";
+
+/* An indicator to show page content refined is in progress */
+"aichat.leoPageContentRefineInProgress" = "Mendapatkan bahagian berkaitan daripada halaman web…";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Togol untuk bertanya tentang halaman ini. Kandungannya akan dihantar kepada Brave Leo bersama-sama dengan mesej anda.";
@@ -242,6 +254,9 @@
 "aichat.paywallPremiumUpsellTitle" = "Gunakan Kuasa Penuh Leo Dengan Premium:";
 
 /* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionIntroOfferTitle" = "Cuba gunakan selama 7 Hari secara Percuma";
+
+/* The title of the button for action triggering purchase */
 "aichat.paywallPurchaseActionTitle" = "Naik Taraf Sekarang";
 
 /* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
@@ -286,8 +301,8 @@
 /* The text which will be used to indicate period of payments like 150 / year */
 "aichat.paywallYearlyPriceDividend" = "tahun";
 
-/* The description indicating yearly subscription that show how much user is saving percentage */
-"aichat.paywallYearlySubscriptionDescription" = "JIMAT HINGGA 25%";
+/* The description indicating how valuable the yearly subscription is, compared to purchasing monthly */
+"aichat.paywallYearlySubscriptionDescription" = "NILAI TERBAIK";
 
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "Satu Tahun";

@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "اختصارات Siri";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "اختصار إظهار الإشارات المرجعية";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "إظهار الإشارات المرجعية";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "نسخ إلى الحافظة";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "حذف حساب المزامنة";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "حذف حساب المزامنة";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "سيؤدي حذف حسابك إلى إزالة بياناتك المشفرة من خوادم Brave وتعطيل المزامنة على جميع أجهزتك المتصلة.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "ومع ذلك لن يحذف البيانات المخزنة محليًا على تلك الأجهزة.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "حذف حساب المزامنة";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "يبدو أنه تم إنشاء هذا الرمز على جهاز يعمل بإصدار أقدم من Brave. يرجى التحديث إلى أحدث إصدار من Brave على جهازك الآخر، ثم إنشاء رمز مزامنة جديد.";

@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri-parancsikonok";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Könyvjelzők parancsikon megjelenítése";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Könyvjelzők megjelenítése";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Másolás vágólapra";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Szinkronizálási fiók törlése";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Szinkronizálási fiók törlése";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Ha törli a fiókját, azzal eltávolítja a Brave szerverein található titkosított adatait, és letiltja a Szinkronizálást az összes csatlakoztatott eszközén.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Az ezeken az eszközökön helyileg tárolt adatokat azonban ezúton nem törli.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Szinkronizálási fiók törlése";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Úgy tűnik, ezt a kódot a Brave régebbi verzióját használó eszközön hozták létre. Frissítsen a legújabb Brave-verzióra a másik eszközén, majd hozzon létre új szinkronizálási kódot.";

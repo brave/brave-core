@@ -1,0 +1,207 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "הוספה של רשימות נוספות שנוצרו על ידי הקהילה המהימנה שלך ומתוחזקות על ידה.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**חשוב להירשם רק לרשימות שמגיעות מישויות מהימנות**. הדפדפן שלך יבדוק באופן תקופתי אם קיימים עדכונים לרשימות מכתובת ה-URL שהזנת.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "הוספת סינון על פי URL";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**נגן Brave** הוא כרטיס הכניסה שלך לחוויית וידאו חלקה ללא פרסומות.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "התאימו עבורי את המגנים";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "האתר התחיל לחסום חוסמי-פרסומות, אז ייתכן שהאתר שלהם לא עובד כפי שמצופה.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "כדי לטפל בבעיה, Brave יכול להתאים עבורך את הגדרות המגנים שלך. לאחר ההתאמה, תהיה לך אפשרות לנסות לצפות בתוכן הזה בנגן Brave במקום זאת.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "שמירת ההגדרות הנוכחיות";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "התאמת הגדרות חוסם המודעות עבור אתר זה";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "גריסה אוטומטית";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "אגרסיבי";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "מניעת טעינה של מודעות, חלונות קופצים וכלי מעקב.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "מושבת";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "רגיל";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "חסום הודעות 'עבור לאפליקציה'";
+
+/* Title for the brave player feature */
+"BravePlayer" = "נגן Brave";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "פתיחה תמידית של סרטונים מתוך אתר זה עם נגן Brave";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "לנסות את זה";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "לא עכשיו";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "נגן Brave מאפשר לך לצפות בסרטונים ללא הפרעות.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "צפייה בנגן Brave במקום זאת";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "סינון תוכן";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "מאפשר הפעלה של מסננים מותאמים אישית שחוסמים מטרדים ומעקבים מבוססי מיקום או שפה.";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "רשימת מסננים מותאמים אישית";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "כתובת URL של רשימת סינון מותאמת אישית";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "התאמה אישית של מסננים";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "אפשר להוסיף מסננים מותאמים אישית כאן. חשוב לוודא שמשתמשים בתחביר המסננים של חוסם המודעות.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "כלל לא חוקי `%1$@` בשורה %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "אפשר להוסיף את המסננים המותאמים אישית שלך כאן, אחד לכל שורה.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "מסננים מותאמים אישית לא תומכים ביותר מ-%i שורות";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "רשימות ברירת מחדל של מסננים";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "חזור";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "מכיוון שביקשת לחסום באגרסיביות עוקבים ופרסומות, Brave חוסמת את האתר הזה לפני החיבור הראשון לרשת.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave מנע את טעינת האתר הבא";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "ייתכן שהאתר הזה ינסה לעקוב אחריך במהלך השימוש באתרים אחרים";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "המשך";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "הדומיין חסום";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "הפעלת API JS של Global Privacy Control";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "הפעלת Global Privacy Control";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "רשימות מסננים חיצוניים";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "ה-URL שהוזן אינו חוקי";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "רק כתובות URL בטוחות (https) מותרות עבור רשימות מסננים מותאמים אישית";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "הוספה";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "רשימות פופולריות נוספות מאת הקהילה. לתשומך ליבך, הפעלת מסננים רבים מדי תפחית את מהירויות הגלישה.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "ההורדה נכשלה";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "הורדה בהמתנה";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "ערוך";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "יש להזין את כתובת ה-URL של רשימת הסינון";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "עדכון אחרון %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "יש להזין URL של רשימת מסננים כאן";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "מנקה קובצי Cookie ונתוני אתר אחרים עם סגירת האתר";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "תשכחו אותי לאחר סגירת האתר הזה";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "חמור";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "רשימות עודכנו";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "גריסת נתונים";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "אף פעם";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "כשהאפליקציה סגורה";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "כשכרטיסיות האתר סגורות";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "נתוני גריסת אתר";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "גריסה תסגור את כל הכרטיסיות הפתוחות של אתר זה ותמחק את כל נתוני האתר. פעולה זו לא ניתנת לביטול.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "לגרוס נתוני אתר?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "גריסת נתוני אתר כעת";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "האתר אינו מאובטח";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "החיבור אל %@ אינו מאובטח";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "כלי מעקב וחסימת מודעות";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "עדכון רשימות";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "רשימות בתהליך עדכון";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "שדרוג חיבורים אל HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "האזהרה הזו מוצגת לך מכיוון שהאתר הזה לא תומך ב-HTTPS.";
+

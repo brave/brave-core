@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "บล็อกแอปติดตามและโฆษณาแล้ว";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "บล็อก\nโฆษณาแล้ว";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "บันทึก\nข้อมูลโดยประมาณแล้ว";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "บันทึก\nเวลาโดยประมาณแล้ว";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "วัน";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "ชม.";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "นาที";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "วิ.";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "บล็อก\nตัวติดตามแล้ว";
+

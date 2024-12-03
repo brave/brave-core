@@ -31,6 +31,9 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
+/* The title for the button that allows the user to view the AppStore Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "Wyświetl paragon AppStore";
+
 /* The subtitle for the error showing there is an error from App Store */
 "aichat.appStoreErrorSubTitle" = "Nie można połączyć się ze sklepem App Store. Spróbuj ponownie później.";
 
@@ -181,6 +184,12 @@
 /* The default title displayed above a code block when the language of the code is not known. */
 "aichat.leoCodeExampleDefaultTitle" = "Przykład kodu";
 
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
+"aichat.leoDisabledMessageDescription" = "Leo jest obecnie wyłączony poprzez flagi funkcji. Aby ponownie włączyć Leo, odwiedź stronę brave://flags i włącz ją.";
+
+/* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
+"aichat.leoDisabledMessageTitle" = "Leo Niepełnosprawny";
+
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "Ulepszone wyszukiwanie odpowiedzi dla";
 
@@ -189,6 +198,9 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Sztuczna inteligencja Leo";
+
+/* An indicator to show page content refined is in progress */
+"aichat.leoPageContentRefineInProgress" = "Znajdowanie odpowiednich części strony internetowej...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Włącz, aby zadać pytanie dotyczące tej strony. Jej treść zostanie wysłana do Leo wraz z Twoimi wiadomościami.";
@@ -242,6 +254,9 @@
 "aichat.paywallPremiumUpsellTitle" = "Odblokuj pełny potencjał Leo dzięki Premium:";
 
 /* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionIntroOfferTitle" = "Wypróbuj 7 dni za darmo";
+
+/* The title of the button for action triggering purchase */
 "aichat.paywallPurchaseActionTitle" = "Uaktualnij teraz";
 
 /* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
@@ -286,8 +301,8 @@
 /* The text which will be used to indicate period of payments like 150 / year */
 "aichat.paywallYearlyPriceDividend" = "rok";
 
-/* The description indicating yearly subscription that show how much user is saving percentage */
-"aichat.paywallYearlySubscriptionDescription" = "ZAOSZCZĘDŹ NAWET 25% ";
+/* The description indicating how valuable the yearly subscription is, compared to purchasing monthly */
+"aichat.paywallYearlySubscriptionDescription" = "NAJLEPSZA WARTOŚĆ";
 
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "Jeden rok";
