@@ -165,7 +165,7 @@ struct MediaScrubber<Label: View>: View {
         Slider(
           value: $currentTime,
           in: 0.0...duration,
-          step: 1
+          step: min(1, duration / 2)
         ) {
           Text(Strings.Playlist.accessibilityCurrentMediaTime)
         } minimumValueLabel: {
