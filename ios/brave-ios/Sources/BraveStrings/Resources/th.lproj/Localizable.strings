@@ -1,0 +1,129 @@
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"BackTitle" = "กลับ";
+
+/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseAllTabsFromTabTrayKeyCodeTitle" = "ปิดแท็บทั้งหมด";
+
+/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseTabFromTabTrayKeyCodeTitle" = "ปิดแท็บที่เลือก";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"CloseTabTitle" = "ปิดแท็บ";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ForwardTitle" = "ส่งต่อ";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewPrivateTabTitle" = "แท็บส่วนตัวใหม่";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewTabTitle" = "แท็บใหม่";
+
+/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenNewTabFromTabTrayKeyCodeTitle" = "เปิดแท็บใหม่";
+
+/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "เปิดแท็บที่เลือก";
+
+/* Title label text for refreshing credentials from brave site. */
+"paywall.alreadyPurchasedTitle" = "เคยทำการซื้อกับ brave.com แล้วเหรอ";
+
+/* Button action text for refreshing credentials from brave site. */
+"paywall.refreshCredentialsButtonTitle" = "รีเฟรชข้อมูลประจำตัวของคุณ";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
+"RecentlyClosedTabTitle" = "เปิดแท็บที่ปิดไปแล้วอีกครั้ง";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ReloadPageTitle" = "โหลดหน้าใหม่";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"SelectLocationBarTitle" = "เลือกแถบตำแหน่ง";
+
+/* An option in a list of shortcut actions that hides the button */
+"shortcutsButton.hideButtonTitle" = "ซ่อนปุ่มทางลัด";
+
+/* A title shown when letting the user choose a button's purpose from a list of destinations */
+"shortcutsButton.shortcutButtonTitle" = "ปุ่มทางลัด";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "แสดงบุ๊กมาร์ก";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowNextTabTitle" = "แสดงแท็บถัดไป";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowPreviousTabTitle" = "แสดงแท็บก่อนหน้า";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
+"showShieldsTitle" = "เปิด Brave Shields";
+
+/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"ShowTabTrayFromTabKeyCodeTitle" = "แสดงแท็บทั้งหมด";
+
+/* The title of the label that shows the Application Version */
+"storekitReceiptViewer.applicationVersionTitle" = "เวอร์ชันแอปพลิเคชัน";
+
+/* The title of the product subscription the user purchased (Monthly subscription) */
+"storekitReceiptViewer.leoMonthlySubscriptionName" = "Brave Leo รายเดือน";
+
+/* The title of the product subscription the user purchased (Yearly subscription) */
+"storekitReceiptViewer.leoYearlySubscriptionName" = "Brave Leo รายปี";
+
+/* The error message when the App Store Receipt was not found in the Application Bundle */
+"storekitReceiptViewer.noReceiptFoundTitle" = "ขออภัย ไม่พบใบเสร็จจาก App Store";
+
+/* The title of the label that shows the date when the product subscription was cancelled */
+"storekitReceiptViewer.receiptCancellationDate" = "วันที่ยกเลิก";
+
+/* The title of the label that shows the date the receipt was created */
+"storekitReceiptViewer.receiptDateTitle" = "วันที่ใบเสร็จ";
+
+/* The title of the label that shows the date when the product subscription expired */
+"storekitReceiptViewer.receiptExpirationDate" = "วันที่หมดอายุ";
+
+/* The title of the label that shows any invalid date - Not Available or N/A for short is displayed */
+"storekitReceiptViewer.receiptInvalidDate" = "N/A";
+
+/* The error message when the App Store Receipt was found in the Application Bundle, but could not be loaded */
+"storekitReceiptViewer.receiptLoadingErrorTitle" = "ขออภัย ไม่สามารถโหลดใบเสร็จจาก App Store ได้";
+
+/* The title of the label that shows the Order ID of the user's purchase */
+"storekitReceiptViewer.receiptOrderIDTitle" = "รหัสคำสั่งซื้อ";
+
+/* The title of the label that shows the date when the product subscription was first purchased */
+"storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "วันที่ซื้อครั้งแรก";
+
+/* The title of the label that shows the date when the product subscription was recently purchased or renewed */
+"storekitReceiptViewer.receiptPurchaseDate" = "วันที่ซื้อ";
+
+/* The title of the label that shows the Transaction ID of the user's purchase */
+"storekitReceiptViewer.receiptTransactionIDTitle" = "รหัสธุรกรรม";
+
+/* The title of the label that shows when the Receipt Viewer is still loading resources and subscription information */
+"storekitReceiptViewer.receiptViewerLoadingTitle" = "กำลังโหลด กรุณารอ...";
+
+/* The title of the screen that shows the App Store Receipt */
+"storekitReceiptViewer.receiptViewerTitle" = "ใบเสร็จ App Store";
+
+/* The title of the button that shows a system action sheet, to share the receipt */
+"storekitReceiptViewer.shareReceiptTitle" = "แชร์ใบเสร็จ";
+
+/* The title of the product subscription the user purchased (Monthly subscription) */
+"storekitReceiptViewer.vpnMonthlySubscriptionName" = "Brave VPN รายเดือน";
+
+/* The title of the product subscription the user purchased (Yearly subscription) */
+"storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN รายปี";
+
+/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToNonPBMKeyCodeTitle" = "โหมดการท่องเว็บแบบปกติ";
+
+/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToPBMKeyCodeTitle" = "โหมดการท่องเว็บแบบส่วนตัว";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ZoomInTitle" = "ซูมเข้า";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ZoomOutTitle" = "ซูมออก";
+

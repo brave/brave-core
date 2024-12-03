@@ -1442,7 +1442,7 @@
 "playList.addToPlayListAlertDescription" = "Você deseja adicionar este vídeo à sua playlist?";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "Adicionar à Playlist do Brave";
+"playList.addToPlayListAlertTitle" = "Adicionar à Brave Playlist";
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Opções de reprodução";
@@ -1463,10 +1463,10 @@
 "playlist.carplaySettingsSectionTitle" = "Configurações";
 
 /* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Playlist do Brave";
+"playlist.carplayTitle" = "Brave Playlist";
 
 /* Title for changing the folder of the current media playlist item */
-"playList.changeFoldersButtonTitle" = "Alterar lista de reprodução";
+"playList.changeFoldersButtonTitle" = "Alterar playlist";
 
 /* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
 "playlist.deleteForOfflineButtonTitle" = "Excluir cache off-line";
@@ -1490,7 +1490,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Houve um problema ao carregar o recurso.";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Quando essa opção for ativada, um aviso será exibido no ícone do menu principal, indicando que a mídia presente na página poderá ser adicionada à Playlist do Brave.";
+"playlist.menuBadgeOptionFooterText" = "Quando essa opção for ativada, um aviso será exibido no ícone do menu principal, indicando que a mídia presente na página poderá ser adicionada à Brave Playlist.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Mostrar aviso de notificação no menu";
@@ -1499,7 +1499,7 @@
 "playlist.movePlaylistShareActionMenuTitle" = "Mover...";
 
 /* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "Você pode adicionar itens à sua Playlist do Brave no navegador.";
+"playList.noItemLabelDetailLabel" = "Você pode adicionar itens à sua Brave Playlist no navegador.";
 
 /* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Nenhum item disponível";
@@ -1511,7 +1511,7 @@
 "playList.okayButtonTitle" = "OK";
 
 /* Title for opening the playlist */
-"playList.openInPlaylistButtonTitle" = "Abrir na lista de reprodução";
+"playList.openInPlaylistButtonTitle" = "Abrir na Playlist";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.pictureInPictureErrorTitle" = "Ocorreu um erro ao tentar exibir o picture-in-picture.";
@@ -1589,7 +1589,7 @@
 "playList.playListSettingTitle" = "Playlist";
 
 /* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Esta pasta já existe na sua Playlist do Brave";
+"playList.playlistSharedFolderAlreadyExistsBody" = "Esta pasta já existe na sua Brave Playlist";
 
 /* Title for the error message that shows when a playlist folder already exists */
 "playList.playlistSharedFolderAlreadyExistsTitle" = "Lamentamos";
@@ -1664,7 +1664,7 @@
 "playlist.sharePlaylistActionDetailsTitle" = "Você pode abrir o item atual em uma nova aba ou compartilhá-lo por meio do menu de compartilhamento do sistema";
 
 /* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Menu da Playlist do Brave";
+"playlist.sharePlaylistActionTitle" = "Menu da Brave Playlist";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Abrir em uma aba privada";
@@ -1679,13 +1679,13 @@
 "playList.sorryAlertTitle" = "Lamentamos";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Adicionado à Playlist do Brave";
+"playList.toastAddedToPlaylistTitle" = "Adicionado à Brave Playlist";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Abrir";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Adicionar à Playlist do Brave";
+"playList.toastAddToPlaylistTitle" = "Adicionar à Brave Playlist";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Ver na Brave Playlist";
@@ -1703,10 +1703,10 @@
 "playlistFolders.changeFoldersTitle" = "Mover para";
 
 /* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
-"playlistFolders.createFolderTextFieldLabel" = "Nome da lista de reprodução";
+"playlistFolders.createFolderTextFieldLabel" = "Nome da playlist";
 
 /* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
-"playlistFolders.createFolderTextFieldPlaceholder" = "Introduza o nome da lista de reprodução";
+"playlistFolders.createFolderTextFieldPlaceholder" = "Introduza o nome da playlist";
 
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "Criar";
@@ -1718,7 +1718,7 @@
 "playlistFolders.editFolderScreenTitle" = "Editar pasta";
 
 /* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "Editar lista de reprodução";
+"playlistFolders.editMenuTitle" = "Editar playlist";
 
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "Infelizmente, não possível salvar as alterações que você fez nesta pasta";
@@ -1727,7 +1727,7 @@
 "playlistFolders.moveFolderButtonTitle" = "Mover";
 
 /* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "Lista de reprodução atual";
+"playlistFolders.moveFolderCurrentSectionTitle" = "Playlist atual";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Mover";
@@ -1745,22 +1745,22 @@
 "playlistFolders.moveMultipleItemDescription" = "%1$@ e mais %2$lld itens";
 
 /* The title of the button to create a new folder */
-"playlistFolders.newFolderButtonTitle" = "Nova lista de reprodução";
+"playlistFolders.newFolderButtonTitle" = "Nova playlist";
 
 /* The title of the screen to create a new folder */
-"playlistFolders.newFolderScreenTitle" = "Nova lista de reprodução";
+"playlistFolders.newFolderScreenTitle" = "Nova playlist";
 
 /* The sub-title of the section where the user can select videos to add to the new folder being created */
 "playlistFolders.newFolderSectionSubtitle" = "Toque para selecionar vídeos";
 
 /* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "Adicione vídeos a esta lista de reprodução";
+"playlistFolders.newFolderSectionTitle" = "Adicione vídeos a esta playlist";
 
 /* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "Selecione uma lista de reprodução para a qual %lld elementos serão movidos";
+"playlistFolders.selectAFolderTitle" = "Selecione uma playlist para a qual %lld elementos serão movidos";
 
 /* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "Selecione uma lista de reprodução para a qual 1 elemento será movido";
+"playlistFolders.selectASingleFolderTitle" = "Selecione uma playlist para a qual 1 elemento será movido";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld itens";
@@ -1769,10 +1769,10 @@
 "playlistFolders.subtitleItemSingleCount" = "1 item";
 
 /* The title of a folder when the user enters no name (untitled) */
-"playlistFolders.untitledFolderTitle" = "Lista de reprodução sem título";
+"playlistFolders.untitledFolderTitle" = "Playlist sem título";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Botão \"Adicionar à Playlist do Brave\"";
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Botão \"Adicionar à Brave Playlist\"";
 
 /* Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonTitle" = "Salvar";
@@ -2822,7 +2822,7 @@
 "shortcuts.shortcutSettingsOpenPlaylistDescription" = "Usar atalhos para abrir a playlist com a Siri - Assistente de voz";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Abrir playlist";
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Abrir Playlist";
 
 /* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Usar atalhos para abrir Abas de outros dispositivos com a Siri – Assistente de voz";
@@ -2832,9 +2832,6 @@
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Atalhos da Siri";
-
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Mostrar atalho de favoritos";
 
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Mostrar favoritos";
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Copiar para a área de transferência";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Eliminar a conta da sincronização";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Eliminar a conta da sincronização";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "A exclusão da sua conta removerá seus dados criptografados dos servidores do Brave e desativará a Sincronização em todos os seus dispositivos conectados.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "No entanto, isso não excluirá os dados que estiverem armazenados localmente nesses dispositivos.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Eliminar a conta da sincronização";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Parece que este código foi criado em um dispositivo executando uma versão mais antiga do Brave. Atualize para a versão mais recente do Brave em seu outro dispositivo e crie um novo código de sincronização.";
@@ -3219,7 +3215,7 @@
 "TabToolbarAddTabButtonAccessibilityLabel" = "Adicionar aba";
 
 /* Accessibility Label for the tab toolbar Add to Playlist button */
-"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "Adicionar à lista de reprodução";
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "Adicionar à Playlist";
 
 /* Accessibility label for the Back button in the tab toolbar. */
 "TabToolbarBackButtonAccessibilityLabel" = "Voltar";

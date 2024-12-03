@@ -40,6 +40,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Выбрать адресную строку";
 
+/* An option in a list of shortcut actions that hides the button */
+"shortcutsButton.hideButtonTitle" = "Скрыть кнопку быстрого доступа";
+
+/* A title shown when letting the user choose a button's purpose from a list of destinations */
+"shortcutsButton.shortcutButtonTitle" = "Кнопка быстрого доступа";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "Показать закладки";
 
@@ -54,6 +60,60 @@
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Показать все вкладки";
+
+/* The title of the label that shows the Application Version */
+"storekitReceiptViewer.applicationVersionTitle" = "Версия приложения";
+
+/* The title of the product subscription the user purchased (Monthly subscription) */
+"storekitReceiptViewer.leoMonthlySubscriptionName" = "Ежемесячная подписка на Brave Leo ";
+
+/* The title of the product subscription the user purchased (Yearly subscription) */
+"storekitReceiptViewer.leoYearlySubscriptionName" = "Ежегодная подписка на Brave Leo ";
+
+/* The error message when the App Store Receipt was not found in the Application Bundle */
+"storekitReceiptViewer.noReceiptFoundTitle" = "К сожалению, квитанции из App Store не найдены";
+
+/* The title of the label that shows the date when the product subscription was cancelled */
+"storekitReceiptViewer.receiptCancellationDate" = "Дата аннулирования";
+
+/* The title of the label that shows the date the receipt was created */
+"storekitReceiptViewer.receiptDateTitle" = "Дата квитанции";
+
+/* The title of the label that shows the date when the product subscription expired */
+"storekitReceiptViewer.receiptExpirationDate" = "Дата истечения срока действия";
+
+/* The title of the label that shows any invalid date - Not Available or N/A for short is displayed */
+"storekitReceiptViewer.receiptInvalidDate" = "Н/Д";
+
+/* The error message when the App Store Receipt was found in the Application Bundle, but could not be loaded */
+"storekitReceiptViewer.receiptLoadingErrorTitle" = "Извините, квитанцию из App Store загрузить не удалось";
+
+/* The title of the label that shows the Order ID of the user's purchase */
+"storekitReceiptViewer.receiptOrderIDTitle" = "Идентификатор заказа";
+
+/* The title of the label that shows the date when the product subscription was first purchased */
+"storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "Дата первоначальной покупки";
+
+/* The title of the label that shows the date when the product subscription was recently purchased or renewed */
+"storekitReceiptViewer.receiptPurchaseDate" = "Дата покупки";
+
+/* The title of the label that shows the Transaction ID of the user's purchase */
+"storekitReceiptViewer.receiptTransactionIDTitle" = "Идентификатор транзакции";
+
+/* The title of the label that shows when the Receipt Viewer is still loading resources and subscription information */
+"storekitReceiptViewer.receiptViewerLoadingTitle" = "Идёт загрузка. Пожалуйста, подождите.";
+
+/* The title of the screen that shows the App Store Receipt */
+"storekitReceiptViewer.receiptViewerTitle" = "Чек App Store";
+
+/* The title of the button that shows a system action sheet, to share the receipt */
+"storekitReceiptViewer.shareReceiptTitle" = "Поделиться квитанцией";
+
+/* The title of the product subscription the user purchased (Monthly subscription) */
+"storekitReceiptViewer.vpnMonthlySubscriptionName" = "Ежемесячная подписка на Brave VPN";
+
+/* The title of the product subscription the user purchased (Yearly subscription) */
+"storekitReceiptViewer.vpnYearlySubscriptionName" = "Ежегодная подписка на Brave VPN";
 
 /* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToNonPBMKeyCodeTitle" = "Обычный режим просмотра";

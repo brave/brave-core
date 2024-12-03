@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Prečaci glasovnog pomoćnika Siri";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Pokaži prečac knjižnih oznaka";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Pokaži knjižne oznake";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Kopiraj u međuspremnik";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Brisanje računa za sinkronizaciju";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Brisanje računa za sinkronizaciju";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Brisanjem vašeg računa uklanjanju se vaši šifrirani podaci s poslužitelja Brave i onemogućuje se sinkronizacija na svim vašim povezanim uređajima.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Međutim, neće se izbrisati podaci koji su lokalno pohranjeni na tim uređajima.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Brisanje računa za sinkronizaciju";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Izgleda da je ovaj kȏd nastao na uređaju s instaliranom starijom inačicom preglednika Brave. Ažurirajte na najnoviju inačicu preglednika Brave na svom drugom uređaju, a zatim stvorite novi kȏd za sinkronizaciju.";

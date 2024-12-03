@@ -5,10 +5,10 @@
 "advanceStep2OnboardingButtonTitle" = "Faites un essai !";
 
 /* A button title that when tapped opens Brave Playlist */
-"confirmationActionButtonTitle" = "Redirigez-moi vers ma liste de lecture";
+"confirmationActionButtonTitle" = "Afficher la playlist";
 
 /* Shown above a button that will let the user open the playlist feature */
-"confirmationPrompt" = "À présent, jetons un coup d'œil à votre liste de lecture.";
+"confirmationPrompt" = "Jetons maintenant un œil à votre playlist.";
 
 /* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
 "confirmationSubtitle" = "Contenu ajouté à %@";
@@ -26,10 +26,10 @@
 "dismissStep4OnboardingButtonTitle" = "Fermer";
 
 /* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
-"introducingBravePlaylist" = "Présentation de la liste de lecture Brave";
+"introducingBravePlaylist" = "Présentation de la playlist Brave";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointSubtitleOne" = "Créez des listes de lecture reprenant vos contenus favoris. Enregistrez des données mobiles. Visionnez vos vidéos sans publicités.";
+"playlistInfoFeaturePointSubtitleOne" = "Créez des playlists avec vos contenus préférés. Économisez vos données mobiles et regardez vos vidéos sans publicité.";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointSubtitleThree" = "Affichage multiple, lecture en arrière-plan, contrôle depuis l'écran de verrouillage et plus encore…";
@@ -38,20 +38,20 @@
 "playlistInfoFeaturePointSubtitleTwo" = "Gardez le rythme : ajoutez des vidéos lorsque vous parcourez Internet et regardez-les plus tard";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleOne" = "Ajoutez des vidéos à Liste de lecture Brave. Regardez-les à tout moment, même hors ligne.";
+"playlistInfoFeaturePointTitleOne" = "Ajoutez des vidéos à la playlist Brave. Regardez-les à tout moment, même hors ligne.";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleThree" = "La lecture est encore plus pratique avec les listes de lecture";
+"playlistInfoFeaturePointTitleThree" = "Regarder des vidéos devient encore plus facile avec la playlist";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleTwo" = "Il vous suffit d'appuyer sur le bouton pour ajouter des vidéos à une liste de lecture";
+"playlistInfoFeaturePointTitleTwo" = "Il vous suffit d'appuyer sur le bouton pour ajouter des vidéos à votre playlist";
 
 /* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
-"playlistOnboardingDescription" = "Créez des listes de lecture avec le contenu qui vous plaît. Ajoutez des contenus multimédias à partir de n'importe quelle page.\nRegardez-les à tout moment, même hors ligne !";
+"playlistOnboardingDescription" = "Créez des playlists avec le contenu qui vous plaît. Ajoutez des contenus multimédias à partir de n'importe quelle page.\nRegardez-les à tout moment, même hors ligne !";
 
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Appuyez sur %@ pour ajouter votre premier élément";
 
 /* Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\" */
-"userActionPromptFill" = "Ajouter à la liste de lecture";
+"userActionPromptFill" = "Ajouter à la playlist";
 

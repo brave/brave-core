@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Comenzi rapide Siri";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Afișează scurtătură marcaje";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Afișează marcajele";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Copiază în Clipboard";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Șterge contul de sincronizare";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Șterge contul de sincronizare";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Ștergerea contului tău va elimina datele tale criptate de pe serverele Brave și va dezactiva Sync de pe toate dispozitivele conectate.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "În schimb, nu vor fi șterse datele stocate local pe dispozitivele respective.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Șterge contul de sincronizare";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Se pare că acest cod a fost creat pe un dispozitiv care rulează o versiune mai veche a lui Brave. Actualizează Brave la cea mai recentă versiune pe celălalt dispozitiv apoi generează un cod nou de sincronizare.";

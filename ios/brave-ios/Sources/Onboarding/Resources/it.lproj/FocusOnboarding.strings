@@ -13,6 +13,9 @@
 /* The title of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenTitle" = "Meno annunci e tracker.";
 
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "Non adesso";
+
 /* The subtitle of the screen that shows ads embeded in video are blocked */
 "focusOnboarding.noVideoAdsScreenDescription" = "Sul serio, ce ne siamo liberati.";
 

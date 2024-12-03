@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri-genvägar";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Visa genväg till bokmärken";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "Visa bokmärken";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "Kopiera till urklipp";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "Ta bort Sync-konto";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "Ta bort Sync-konto";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "Om du tar bort ditt konto kommer dina krypterade data att tas bort från Brave-servrar och synkronisering inaktiveras på alla dina anslutna enheter.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Data som lagras lokalt på dessa enheter kommer dock inte att tas bort.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "Ta bort Sync-konto";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Det ser ut som att den här koden skapades på en enhet som kör en äldre version av Brave. Uppdatera till den senaste versionen av Brave på din andra enhet och skapa sedan en ny synkroniseringskod.";

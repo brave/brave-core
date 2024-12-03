@@ -892,8 +892,8 @@
 /* A label shown inside of a box when there is no input data for a given transaction */
 "wallet.inputDataPlaceholder" = "沒有資料。";
 
-/* A label shown inside of a box when there is no input data for a given Solana transaction */
-"wallet.inputDataPlaceholderSolana" = "功能類型：%d";
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholderTx" = "功能类型：\n%@";
 
 /* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
 "wallet.inputLabel" = "輸入";
@@ -1983,6 +1983,42 @@
 
 /* The short name of one of the on ramp provider. */
 "wallet.transakProviderShortName" = "Transak";
+
+/* Blockchain function name for Solana compressed NFT transfers. */
+"wallet.txFunctionTypeCompressedNFTTransfer" = "壓縮 NFT 轉移";
+
+/* Blockchain function name for ERC-20 token approvals. */
+"wallet.txFunctionTypeERC20Approve" = "核准";
+
+/* Blockchain function name for moving FIL from an  Ethereum-based f4 address to a Filecoin address of a different type. Don't need to translate the symbol `FIL`. */
+"wallet.txFunctionTypeForwardFil" = "轉傳 FIL";
+
+/* Blockchain function name for NFT transfers */
+"wallet.txFunctionTypeNFTTransfer" = "NFT 转移";
+
+/* Blockchain function name for an unknown transaction type or an FIL transaction. */
+"wallet.txFunctionTypeOther" = "其他";
+
+/* Blockchain function name for SafeTransferFrom in ERC-721 and ERC-1155 tokens. */
+"wallet.txFunctionTypeSafeTransfer" = "安全轉帳";
+
+/* Blockchain function name for send native token. `%@` will be replaced with native token symbol. */
+"wallet.txFunctionTypeSend" = "发送 %@";
+
+/* Blockchain function name for signing and sending a Solana DApp transaction. */
+"wallet.txFunctionTypeSignAndSendDapp" = "簽署並傳送 DApp 交易";
+
+/* Blockchain function name for Solana Sign DApp transactions. */
+"wallet.txFunctionTypeSignDappTransaction" = "簽署 DApp 交易";
+
+/* Blockchain function name for Solana SPL token transfer with associated token account creation. */
+"wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation" = "SPL 代幣轉帳並建立相關聯代幣帳戶";
+
+/* Blockchain function name for swap. */
+"wallet.txFunctionTypeSwap" = "交換";
+
+/* Blockchain function name for non-native token transfers. */
+"wallet.txFunctionTypeTokenTransfer" = "令牌转移";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave 將會使用 Infura 來解析 Unstoppable Domains 上的 .crypto (以及 %1$@) 網域名稱。如果您啟用這項功能，Infura 將會看到有人正在嘗試造訪這些網域，但不會看到其他資料。查看 Infura 的<a href=%2$@>%3$@</a>和<a href=%4$@>%5$@</a>。";

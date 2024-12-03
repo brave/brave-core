@@ -2833,9 +2833,6 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Siri 快速鍵";
 
-/* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "顯示書籤捷徑";
-
 /* Button to show the bookmarks list */
 "ShowBookmarks" = "顯示書籤";
 
@@ -2986,18 +2983,17 @@
 /* Copy codewords title */
 "sync.copyToClipboard" = "複製到剪貼簿";
 
-/* Delete Sync Account cell title for button.
-   Title for Alert used action Delete Sync Account. */
+/* Delete Sync Account cell title for button. */
 "sync.deleteAccount" = "刪除 Sync 帳戶";
-
-/* "Title for Alert used action Delete Sync Account." */
-"sync.deleteAccountAlertTitle" = "刪除 Sync 帳戶";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart1" = "刪除帳戶會從 Brave 伺服器移除加密資料，且所有連結的裝置都會停用 Sync。";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "不過，儲存在這些本機裝置的資料不會刪除。";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "刪除 Sync 帳戶";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "此代碼似乎是使用執行舊版 Brave 的裝置所建立的。請在您的其他裝置上將 Brave 更新至最新版本，然後建立新的同步代碼。";

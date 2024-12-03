@@ -1,0 +1,330 @@
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "kích hoạt";
+
+/* Text for toggle which indicating the toggle action is for selecting region in automatic */
+"vpn.automaticServerSelectionToggleTitle" = "Tự động";
+
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "MÁY CHỦ KHẢ DỤNG";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Mua";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "Bảo vệ 5 thiết bị với 1 gói đăng ký";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Chọn vị trí địa lý/quốc gia của bạn";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Brave không bao giờ lưu lại hoạt động của bạn";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Bảo vệ mọi ứng dụng & toàn bộ thiết bị của bạn";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "An toàn hơn cho Wi-Fi gia đình hoặc công cộng";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Nhanh như chớp, lên tới 100 Mbps";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld thành phố";
+
+/* Text showing the vpn region is connected */
+"vpn.connectedRegionDescription" = "Đã kết nối";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Biên lai App Store";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Phiên bản ứng dụng";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Nhà mạng di động";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave không theo dõi bạn hoặc không biết cách bạn sử dụng ứng dụng của chúng tôi, vì vậy chúng tôi không biết bạn đã thiết lập VPN như thế nào. Vui lòng chia sẻ thông tin về sự cố bạn đang gặp phải và chúng tôi sẽ cố gắng hết sức để giải quyết ngay khi có thể.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "Không thể gửi email. Vui lòng kiểm tra cấu hình email của bạn.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Vui lòng chọn thông tin bạn có thể thoải mái chia sẻ với chúng tôi.\n\nBạn chia sẻ càng nhiều thông tin ban đầu thì đội ngũ hỗ trợ của chúng tôi càng dễ giúp bạn giải quyết vấn đề.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Cùng sự hỗ trợ của đội ngũ Guardian.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "Tên máy chủ VPN";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Vấn đề";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Vấn đề về độ tin cậy của kết nối";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Vui lòng chọn danh mục mô tả vấn đề.";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Không có internet khi kết nối";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Khác";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Không thể kết nối với VPN (Lỗi khác)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Kết nối chậm";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Trang web không hoạt động";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Nhật ký lỗi";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Loại mạng";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Nền tảng";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Tiếp tục đến email";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Loại gói đăng ký";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "Múi giờ của iOS";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Vấn đề Tường lửa Brave + VPN";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Bật";
+
+/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
+"vpn.freeTrialDetail" = "Tất cả gói đăng ký đều có %@!";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "dùng thử miễn phí 7 ngày!";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "dùng thử 7 ngày miễn phí";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Tất cả gói đăng ký đều tự động gia hạn nhưng có thể được hủy trước thời điểm gia hạn.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Cấu hình này cho phép VPN tự động kết nối và bảo mật lưu lượng truy cập trên toàn thiết bị của bạn mọi lúc. Kết nối VPN này sẽ được mã hóa và định tuyến qua tường lửa thông minh của Brave để chặn các kết nối có khả năng gây hại và xâm phạm.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Cài đặt cấu hình VPN";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave giờ sẽ cài đặt một cấu hình VPN.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN giờ đã được bật";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Cài đặt VPN";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Dùng thử MIỄN PHÍ";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Gia hạn mỗi tháng";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Gói đăng ký hằng tháng";
+
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "%ld thành phố";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "%ld máy chủ";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Đã hết hạn";
+
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "Vui lòng chọn giao thức truyền tải bạn thích. Sau khi chuyển đổi, thông tin xác thực VPN hiện tại của bạn sẽ được xóa và bạn sẽ được kết nối lại nếu có kết nối VPN hiện đang được thiết lập.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Không thể chuyển đổi giao thức đường hầm, vui lòng thử lại sau.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Lỗi máy chủ";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Giao thức vận chuyển";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "Giao thức đường hầm VPN đã thay đổi.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Vùng máy chủ gần bạn nhất sẽ được tự động chọn dựa trên múi giờ hệ thống của bạn. Điều này được khuyến nghị để đảm bảo internet có tốc độ nhanh.";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Không thể chuyển đổi máy chủ, vui lòng thử lại sau.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Lỗi máy chủ";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Vùng máy chủ";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Đã đổi vùng VPN.";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "Không thể đặt lại cấu hình VPN. Vui lòng thử lại. Nếu sự cố vẫn còn, hãy liên hệ với bộ phận hỗ trợ để được trợ giúp.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Thử lại";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Đặt lại không thành công";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Cấu hình VPN đã được đặt lại thành công.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Đặt lại thành công";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Phục hồi";
+
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "Máy chủ %@";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "Tự động chọn vùng máy chủ VPN gần nhất với bạn dựa trên múi giờ của bạn. Tùy chọn này được khuyến nghị để tối đa hóa tốc độ Internet.";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "%ld máy chủ";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Nâng cấp lên VPN để bảo vệ kết nối của bạn và chặn các trình theo dõi xâm phạm ở mọi nơi.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Liên hệ hỗ trợ kỹ thuật";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Không thể lấy danh sách máy chủ, vui lòng thử lại sau.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "Hỗ trợ VPN";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Liên kết mua hàng với tài khoản Brave của bạn";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Liên kết giao dịch mua trên App Store với tài khoản Brave của bạn để sử dụng Brave VPN trên các thiết bị khác.";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Quản lý gói đăng ký";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Quy đổi mã ưu đãi";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Đặt lại cấu hình";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Máy chủ lưu trữ";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Vị trí";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Máy chủ";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Hết hạn";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Gói đăng ký";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Trạng thái";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Giao thức vận chuyển";
+
+/* Button to allow the user to view the app-store receipt. */
+"vpn.settingsViewReceipt" = "Xem biên lai App Store";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Cập nhật phương thức thanh toán";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Ngay cả khi ở chế độ nền, Brave vẫn sẽ tiếp tục bảo vệ bạn.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave Tường lửa + VPN hiện đang BẬT";
+
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "Sử dụng máy chủ tốt nhất hiện có";
+
+/* Text for title of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalTitle" = "Tối ưu";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "Đã xảy ra sự cố khi khởi tạo VPN. Vui lòng thử lại hoặc thử đặt lại cấu hình trong trang cài đặt VPN.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Lỗi";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Tường lửa Brave + VPN cần có cấu hình VPN được cài đặt trên thiết bị của bạn để hoạt động.";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Quyền bị từ chối";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Không thể đổi mã ưu đãi. Vui lòng thử lại hoặc kiểm tra thông tin chi tiết của mã ưu đãi và thử lại.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Không thể hoàn tất giao dịch mua hàng. Vui lòng thử lại hoặc kiểm tra thông tin thanh toán của bạn trên Apple và thử lại.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Lỗi";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Gói đăng ký sẽ được tính phí qua tài khoản iTunes của bạn.\n\nBất kỳ phần nào chưa sử dụng của bản dùng thử miễn phí, nếu được cung cấp, sẽ bị hủy bỏ khi bạn mua gói đăng ký.\n\nGói đăng ký của bạn sẽ tự động gia hạn trừ khi được hủy ít nhất 24 giờ trước khi kết thúc kỳ hiện tại.\n\nBạn có thể quản lý gói đăng ký của mình trong Cài đặt.\n\nBằng cách sử dụng Brave, bạn đồng ý với Điều khoản Sử dụng và Chính sách Bảo mật.";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Quy đổi mã";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "Đã đổi vùng VPN.";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Thao tác này sẽ đặt lại cấu hình Brave Firewall + VPN của bạn và sửa mọi lỗi. Quá trình này có thể mất một phút.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Đặt lại cấu hình";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Đặt lại";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Gói đăng ký hằng tháng";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Gói đăng ký hằng năm";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Gia hạn hằng năm tiết kiệm %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Giá trị tốt nhất";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Một năm";
+

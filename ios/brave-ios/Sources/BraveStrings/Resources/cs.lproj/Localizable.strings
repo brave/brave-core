@@ -40,6 +40,12 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Vybrat panel umístění";
 
+/* An option in a list of shortcut actions that hides the button */
+"shortcutsButton.hideButtonTitle" = "Skrýt tlačítko zkratky";
+
+/* A title shown when letting the user choose a button's purpose from a list of destinations */
+"shortcutsButton.shortcutButtonTitle" = "Tlačítko zkratky";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "Zobrazit záložky";
 
@@ -54,6 +60,60 @@
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Zobrazit všechny karty";
+
+/* The title of the label that shows the Application Version */
+"storekitReceiptViewer.applicationVersionTitle" = "Verze aplikace";
+
+/* The title of the product subscription the user purchased (Monthly subscription) */
+"storekitReceiptViewer.leoMonthlySubscriptionName" = "Brave Leo (Měsíční)";
+
+/* The title of the product subscription the user purchased (Yearly subscription) */
+"storekitReceiptViewer.leoYearlySubscriptionName" = "Brave Leo (Roční)";
+
+/* The error message when the App Store Receipt was not found in the Application Bundle */
+"storekitReceiptViewer.noReceiptFoundTitle" = "Je nám líto, ale nebyly nalezeny žádné účtenky z App Store";
+
+/* The title of the label that shows the date when the product subscription was cancelled */
+"storekitReceiptViewer.receiptCancellationDate" = "Datum zrušení";
+
+/* The title of the label that shows the date the receipt was created */
+"storekitReceiptViewer.receiptDateTitle" = "Datum přijetí";
+
+/* The title of the label that shows the date when the product subscription expired */
+"storekitReceiptViewer.receiptExpirationDate" = "Datum vypršení platnosti";
+
+/* The title of the label that shows any invalid date - Not Available or N/A for short is displayed */
+"storekitReceiptViewer.receiptInvalidDate" = "N/A";
+
+/* The error message when the App Store Receipt was found in the Application Bundle, but could not be loaded */
+"storekitReceiptViewer.receiptLoadingErrorTitle" = "Omlouváme se, účtenku z App Store se nepodařilo načíst.";
+
+/* The title of the label that shows the Order ID of the user's purchase */
+"storekitReceiptViewer.receiptOrderIDTitle" = "ID objednávky";
+
+/* The title of the label that shows the date when the product subscription was first purchased */
+"storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "Původní datum nákupu";
+
+/* The title of the label that shows the date when the product subscription was recently purchased or renewed */
+"storekitReceiptViewer.receiptPurchaseDate" = "Datum nákupu";
+
+/* The title of the label that shows the Transaction ID of the user's purchase */
+"storekitReceiptViewer.receiptTransactionIDTitle" = "ID transakce";
+
+/* The title of the label that shows when the Receipt Viewer is still loading resources and subscription information */
+"storekitReceiptViewer.receiptViewerLoadingTitle" = "Načítání Počkejte prosím...";
+
+/* The title of the screen that shows the App Store Receipt */
+"storekitReceiptViewer.receiptViewerTitle" = "Stvrzenka App Store";
+
+/* The title of the button that shows a system action sheet, to share the receipt */
+"storekitReceiptViewer.shareReceiptTitle" = "Příjem akcií";
+
+/* The title of the product subscription the user purchased (Monthly subscription) */
+"storekitReceiptViewer.vpnMonthlySubscriptionName" = "Brave VPN (Měsíční)";
+
+/* The title of the product subscription the user purchased (Yearly subscription) */
+"storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN (Roční)";
 
 /* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToNonPBMKeyCodeTitle" = "Režim normálního prohlížení";

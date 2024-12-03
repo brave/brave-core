@@ -13,6 +13,9 @@
 /* The title of the screen that shows ads are blocked */
 "focusOnboarding.movingAdsScreenTitle" = "Moins de publicités et de traqueurs.";
 
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "Pas maintenant";
+
 /* The subtitle of the screen that shows ads embeded in video are blocked */
 "focusOnboarding.noVideoAdsScreenDescription" = "Vraiment, nous nous en sommes débarrassés.";
 
@@ -29,7 +32,7 @@
 "focusOnboarding.p3aScreenTitle" = "Améliorez Brave.";
 
 /* The title of the toggle for enable / disable privacy preserving analytics. */
-"focusOnboarding.p3aToggleDescription" = "Vous pouvez modifier ceci à tout moment dans les paramètres Brave, section \"Boucliers Brave et confidentialité\".";
+"focusOnboarding.p3aToggleDescription" = "Vous pouvez modifier ceci à tout moment dans les paramètres Brave > Boucliers Brave et confidentialité.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
 "focusOnboarding.p3aToggleTitle" = "Partagez des données de produits privées et anonymes.";

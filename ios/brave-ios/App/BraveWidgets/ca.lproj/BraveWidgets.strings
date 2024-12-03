@@ -59,6 +59,9 @@
 "e13lS3-qKrzyX" = "Només per confirmar, volies 'Escaneja el codi QR'?";
 
 /* (No Comment) */
+"e13lS3-U0eRbw" = "Només per confirmar, volies \"Leo AI\"?";
+
+/* (No Comment) */
 "e13lS3-VBH4G6" = "Només per confirmar, volies 'Historial'?";
 
 /* (No Comment) */
@@ -90,6 +93,9 @@
 
 /* (No Comment) */
 "EvESs0-qKrzyX" = "Només per confirmar, volies 'Escaneja el codi QR'?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Només per confirmar, volies 'Leo AI'?";
 
 /* (No Comment) */
 "EvESs0-VBH4G6" = "Només per confirmar, volies 'Historial'?";
@@ -140,6 +146,9 @@
 "L1fziM-qKrzyX" = "Hi ha ${count} opcions que coincideixen amb 'Escaneja el codi QR’.";
 
 /* (No Comment) */
+"L1fziM-U0eRbw" = "Hi ha ${count} opcions que coincideixen amb 'Leo AI'.";
+
+/* (No Comment) */
 "L1fziM-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
 
 /* (No Comment) */
@@ -182,6 +191,9 @@
 "r2EI05-qKrzyX" = "Només per confirmar, volies 'Escaneja el codi QR'?";
 
 /* (No Comment) */
+"r2EI05-U0eRbw" = "Només per confirmar, volies \"Leo AI\"?";
+
+/* (No Comment) */
 "r2EI05-VBH4G6" = "Només per confirmar, volies 'Historial'?";
 
 /* (No Comment) */
@@ -221,6 +233,9 @@
 "tNCrcE-qKrzyX" = "Hi ha ${count} opcions que coincideixen amb 'Escaneja el codi QR’.";
 
 /* (No Comment) */
+"tNCrcE-U0eRbw" = "Hi ha ${count} opcions que coincideixen amb 'Leo AI'.";
+
+/* (No Comment) */
 "tNCrcE-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
 
 /* (No Comment) */
@@ -252,6 +267,9 @@
 
 /* (No Comment) */
 "TxuMja-qKrzyX" = "Hi ha ${count} opcions que coincideixen amb 'Escaneja el codi QR’.";
+
+/* (No Comment) */
+"TxuMja-U0eRbw" = "Hi ha ${count} opcions que coincideixen amb 'Leo AI'.";
 
 /* (No Comment) */
 "TxuMja-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
@@ -311,6 +329,9 @@
 "YQiQuz-qKrzyX" = "Només per confirmar, volies 'Escaneja el codi QR'?";
 
 /* (No Comment) */
+"YQiQuz-U0eRbw" = "Només per confirmar, volies \"Leo AI\"?";
+
+/* (No Comment) */
 "YQiQuz-VBH4G6" = "Només per confirmar, volies 'Historial'?";
 
 /* (No Comment) */
@@ -339,6 +360,9 @@
 
 /* (No Comment) */
 "z517nu-qKrzyX" = "Hi ha ${count} opcions que coincideixen amb 'Escaneja el codi QR’.";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "Hi ha ${count} opcions que coincideixen amb 'Leo AI'.";
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
