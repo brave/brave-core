@@ -11,6 +11,9 @@
 
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
+-AutofillBubbleSignInPromoControllerTest.DoesNotMovePasswordUponSignInWithExistingAccountAndPasswordsDisabled
+-AutofillBubbleSignInPromoControllerTest.DoesNotMovePasswordWhenSyncServiceIsInactive
+-AutofillBubbleSignInPromoControllerTest.MovesPasswordUponSignInWithExistingAccountAndPasswordsEnabled
 -AutofillBubbleSignInPromoControllerTest.RunsCallbackUponSignInWithExistingAccount
 
 # This test fails because we don't use kChromeUINewTabPageThirdPartyURL
