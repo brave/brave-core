@@ -109,6 +109,7 @@ public class JavaUtils {
      * @param items of string values.
      * @return a combined or empty string.
      */
+    @SuppressWarnings("NoStreams")
     public static String concatStrings(String separator, String... items) {
         if (items == null) return "";
         return Arrays.stream(items)

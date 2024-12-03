@@ -1052,6 +1052,7 @@ public class Utils {
         return null;
     }
 
+    @SuppressWarnings("NoStreams")
     public static List<AccountInfo> filterAccountsByCoin(
             AccountInfo[] accounts, @CoinType.EnumType int coinType) {
         return Arrays.stream(accounts)
