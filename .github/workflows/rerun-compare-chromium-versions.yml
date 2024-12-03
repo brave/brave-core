@@ -20,26 +20,22 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
-      # TODO: This isn't actually what we want, but works well enough for now
-      TARGET_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
       - name: If a major Chromium bump was merged, rerun compare-chromium-versions in all PRs targeting the same branch
         run: |
           shopt -s inherit_errexit
           set -eEo pipefail
 
-          chromium_ver() { curl -fsS "https://raw.githubusercontent.com/${GITHUB_REPOSITORY:?}/${1:?}/package.json"|jq -r .config.projects.chrome.tag; }
+          chromium_ver() {
+              gh api -H "Accept: application/vnd.github.raw+json" "https://api.github.com/repos/${GITHUB_REPOSITORY:?}/contents/package.json?ref=${1:?}"|jq -r .config.projects.chrome.tag;
+          }
 
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
-          target_ver="$(chromium_ver "${TARGET_SHA:?}")"
+          target_ver="$(chromium_ver "${GITHUB_BASE_REF:?}")"
 
           echo "::notice::PR branch: ${GITHUB_HEAD_REF:?} (${pr_ver:?}), target branch: ${GITHUB_BASE_REF:?} (${target_ver:?})"
 
           if [[ "${pr_ver%%.*}" != "${target_ver%%.*}" ]]; then
-              # TODO: Some $(chromium_ver "$GITHUB_BASE_REF") calls in compare-chromium-versions get a stale version.
-              # Seems random, could be a caching issue at GitHub, let's try to sleep as a workaround.
-              sleep 30
-
               echo "::notice::Rerunning compare-chromium-versions in PRs targeting ${GITHUB_BASE_REF:?}"
               while read -r pr_number head_sha; do
                   run_id="$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/compare-chromium-versions.yml/runs?head_sha=${head_sha:?}" -q '.workflow_runs[0].id')"
