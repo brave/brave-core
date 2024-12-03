@@ -8,31 +8,62 @@
 window.__firefox__.execute(function($) {
   const messageHandler = '$<message_handler>';
   const blockingCache = new Map();
-  const sendMessage = $((resourceURL) => {
-    if (blockingCache.has(resourceURL.href)) {
-      return Promise.resolve(blockingCache.get(resourceURL.href)).then(blocked => {
-        if (blocked) {
-          console.info(`Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href} (cached)`)
-        }
-        return blocked
-      })
-    }
-
+  const strippedBlockingCache = new Map();
+  const sendMessage = $((resourceURL, strippedResourceURL) => {
     return $.postNativeMessage(messageHandler, {
       "securityToken": SECURITY_TOKEN,
       "data": {
         resourceURL: resourceURL.href,
+        strippedResourceURL: strippedResourceURL.href,
         sourceURL: window.location.href,
         resourceType: 'xmlhttprequest'
       }
-    }).then(blocked => {
-      blockingCache.set(resourceURL.href, blocked)
-
-      if (blocked) {
-        console.info(`Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href}`)
+    }).then(response => {
+      blockingCache.set(resourceURL.href, response.isBlocked)
+      if (response.isBlocked === response.isStrippedURLBlocked) {
+        strippedBlockingCache.set(strippedResourceURL.href, response.isStrippedURLBlocked)
       }
 
-      return blocked
+      if (response.isBlocked) {
+        console.info(
+          `Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href}`
+        )
+      }
+
+      return response.isBlocked
+    });
+  });
+  const isBlocked = $((resourceURL) => {
+    let strippedResourceURL = new URL(resourceURL)
+    strippedResourceURL.hash = ''
+    strippedResourceURL.search = ''
+
+    if (blockingCache.has(resourceURL.href)) {
+      return Promise.resolve(blockingCache.get(resourceURL.href)).then(blocked => {
+        if (blocked) {
+          console.info(
+            `Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href} (cached)`
+          )
+        }
+        return blocked
+      })
+    } else if (
+      strippedBlockingCache.has(strippedResourceURL.href) 
+        && strippedBlockingCache.get(strippedResourceURL.href) === false
+    ) {
+      // We only check false because if we are supposed to block this request, 
+      // content blockers will still kick in and block it. The opposite is not true.
+      return Promise.resolve(false)
+    }
+
+    return sendMessage(resourceURL, strippedResourceURL).then(isBlocked => {
+      if (isBlocked) {
+        console.info(
+          `Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href}`
+        )
+      }
+
+      return isBlocked
     });
   });
   const patchProgressEvent = $((progressEvent) =>{
@@ -61,7 +92,7 @@ window.__firefox__.execute(function($) {
     }
 
     const url = new URL(urlString, window.location.href)
-    return sendMessage(url).then(blocked => {
+    return isBlocked(url).then(blocked => {
       if (blocked) {
         return Promise.reject(new TypeError('Load failed'))
       } else {
@@ -105,7 +136,7 @@ window.__firefox__.execute(function($) {
     }
 
     // Ask iOS if we need to block this request
-    sendMessage(resourceURL).then(blocked => {
+    isBlocked(resourceURL).then(blocked => {
       if (blocked) {
         Object.defineProperties(this, {
           readyState: { value: 4 }
