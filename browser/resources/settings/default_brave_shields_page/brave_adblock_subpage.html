@@ -339,15 +339,13 @@
   </div>
 </div>
 
-<template is="dom-if" if="[[prefs.brave.ad_block.developer_mode.value]]">
-  <template is="dom-if" if="[[cosmeticFilteringCustomScriptletsEnabled_]]">
-    <div class="settings-box">
-      <div class="flex">
-        <div class="label shields-primary-title">
-          $i18n{adblockCustomSciptletsListLabel}
-        </div>
-        <adblock-scriptlet-list></adblock-scriptlet-list>
+<template is="dom-if" if="[[cosmeticFilteringCustomScriptletsEnabled_]]">
+  <div class="settings-box">
+    <div class="flex">
+      <div class="label shields-primary-title">
+        $i18n{adblockCustomSciptletsListLabel}
       </div>
+      <adblock-scriptlet-list prefs="{{prefs}}"></adblock-scriptlet-list>
     </div>
-  </template>
+  </div>
 </template>

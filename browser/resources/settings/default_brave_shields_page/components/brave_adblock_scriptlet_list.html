@@ -39,7 +39,8 @@
         </template>
     </div>
 
-    <cr-button id="add-custom-scriptlet" on-click="handleAdd_">
+    <cr-button id="add-custom-scriptlet" on-click="handleAdd_"
+        disabled="[[!prefs.brave.ad_block.developer_mode.value]]">
         $i18n{adblockAddCustomScriptletButton}
     </cr-button>
 </div>

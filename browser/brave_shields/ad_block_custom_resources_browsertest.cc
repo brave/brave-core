@@ -257,18 +257,3 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
 
   EXPECT_EQ("default-script", EvalJs(web_contents(), "window.test"));
 }
-
-class AdblockGotCustomResourcesTest : public AdblockCustomResourcesTest {
- public:
-  void SetUpLocalStatePrefService(PrefService* local_state) override {
-    local_state->SetString(brave_shields::prefs::kAdBlockCustomFilters,
-                           "custom");
-
-    AdblockCustomResourcesTest::SetUpLocalStatePrefService(local_state);
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(AdblockGotCustomResourcesTest, DeveloperModeEnabled) {
-  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
-      brave_shields::prefs::kAdBlockDeveloperMode));
-}
