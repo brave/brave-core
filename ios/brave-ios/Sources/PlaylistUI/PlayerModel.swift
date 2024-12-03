@@ -391,9 +391,8 @@ public final class PlayerModel: ObservableObject {
         let currentTime = currentTime
         let duration = duration.seconds ?? 0
         // Reset the current item's last played time if you changed videos in the last 10s
-        PlaylistManager.shared.updateLastPlayed(
-          item: .init(item: selectedItem),
-          playTime: (duration - 10...duration).contains(currentTime) ? 0 : currentTime
+        persistPlaybackTimeForSelectedItem(
+          (duration - 10...duration).contains(currentTime) ? 0 : currentTime
         )
       }
     }
@@ -682,6 +681,11 @@ public final class PlayerModel: ObservableObject {
     return .seconds(duration.seconds)
   }
 
+  @MainActor func persistPlaybackTimeForSelectedItem(_ time: TimeInterval) {
+    guard let selectedItem else { return }
+    PlaylistManager.shared.updateLastPlayed(item: .init(item: selectedItem), playTime: time)
+  }
+
   // MARK: -
 
   private let player: AVPlayer = .init()
@@ -712,10 +716,7 @@ public final class PlayerModel: ObservableObject {
       MainActor.assumeIsolated {
         if let selectedItem = self.selectedItem {
           // Reset the play time of the item that just finished
-          PlaylistManager.shared.updateLastPlayed(
-            item: .init(item: selectedItem),
-            playTime: 0
-          )
+          self.persistPlaybackTimeForSelectedItem(0)
         }
         if case .itemPlaybackCompletion = self.sleepTimerCondition {
           self.pause()
@@ -779,11 +780,35 @@ public final class PlayerModel: ObservableObject {
       playerLayer.player = player
     }
 
+    let willResignActive = center.addObserver(
+      forName: UIApplication.willResignActiveNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      guard let self else { return }
+      MainActor.assumeIsolated {
+        self.persistPlaybackTimeForSelectedItem(self.currentTime)
+      }
+    }
+
+    let willTerminate = center.addObserver(
+      forName: UIApplication.willTerminateNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      guard let self else { return }
+      MainActor.assumeIsolated {
+        self.persistPlaybackTimeForSelectedItem(self.currentTime)
+      }
+    }
+
     cancellables.formUnion([
       .init { _ = didPlayToEndTime },
       .init { _ = interruption },
       .init { _ = didEnterBackground },
       .init { _ = willEnterForeground },
+      .init { _ = willResignActive },
+      .init { _ = willTerminate },
     ])
   }
 

@@ -161,10 +161,7 @@ struct PlaylistContentView: View {
     }
     .onDisappear {
       if let selectedItem {
-        PlaylistManager.shared.updateLastPlayed(
-          item: .init(item: selectedItem),
-          playTime: playerModel.currentTime
-        )
+        playerModel.persistPlaybackTimeForSelectedItem(playerModel.currentTime)
       }
     }
     .sheet(isPresented: $isEditModePresented) {
