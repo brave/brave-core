@@ -29,11 +29,7 @@ jobs:
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
           target_ver="$(chromium_ver "${GITHUB_BASE_REF:?}")"
 
-          comment() {
-              local -r comment="Chromium major version is behind target branch ($pr_ver vs $target_ver). Please rebase."
-              gh pr comment "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" -b "${comment:?}"
-          }
-
+          comment() { gh pr comment "${PR_NUMBER:?}" -R "${GITHUB_REPOSITORY:?}" -b "Chromium major version is behind target branch ($pr_ver vs $target_ver). Please rebase."; }
           success() { status notice "${1:?}: CI ✅ | Merge ✅"; label remove; }
 
           failure() {
