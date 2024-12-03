@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider.ThemeColorObserver;
 
