@@ -38,7 +38,7 @@ index 6aef73a782904554d4ccae7ad127a3ce72273cc7..46695640b54e0d45e52a53448fc5bd2b
          dom_storage_context, params->session_storage_namespace_id);
    }
  
-+  params->no_javascript_access = no_javascript_access;
++  BRAVE_RENDER_FRAME_HOST_IMPL_CREATE_NEW_WINDOW
    if (IsCredentialless() || IsNestedWithinFencedFrame() ||
        CoopSuppressOpener(/*opener=*/this)) {
      params->opener_suppressed = true;
