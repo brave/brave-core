@@ -20,17 +20,18 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
-      TARGET_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
       - name: If a major Chromium bump was merged, rerun compare-chromium-versions in all PRs targeting the same branch
         run: |
           shopt -s inherit_errexit
           set -eEo pipefail
 
-          chromium_ver() { curl -fsS "https://raw.githubusercontent.com/${GITHUB_REPOSITORY:?}/${1:?}/package.json"|jq -r .config.projects.chrome.tag; }
+          chromium_ver() {
+              gh api -H "Accept: application/vnd.github.raw+json" "https://api.github.com/repos/${GITHUB_REPOSITORY:?}/contents/package.json?ref=${1:?}"|jq -r .config.projects.chrome.tag
+          }
 
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
-          target_ver="$(chromium_ver "${TARGET_SHA:?}")"
+          target_ver="$(chromium_ver "${GITHUB_BASE_REF:?}")"
 
           echo "::notice::PR branch: ${GITHUB_HEAD_REF:?} (${pr_ver:?}), target branch: ${GITHUB_BASE_REF:?} (${target_ver:?})"
 
@@ -41,7 +42,8 @@ jobs:
                   pr_url="https://github.com/brave/brave-core/pull/${pr_number:?}"
                   if [[ "$run_id" ]]; then
                       echo "Rerunning $run_id for $pr_url"
-                      gh -R "$GITHUB_REPOSITORY" run rerun "$run_id"
+                      # TODO: Workflows older than 30 days will fail to rerun (by design), let's filter them out (using `|| true` for now)
+                      gh -R "$GITHUB_REPOSITORY" run rerun "$run_id" || true
                   else
                       echo "No run found for $pr_url"
                   fi
