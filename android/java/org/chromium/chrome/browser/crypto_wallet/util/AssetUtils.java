@@ -63,6 +63,7 @@ public class AssetUtils {
         }
     }
 
+    @SuppressWarnings("NoStreams")
     public static AccountInfo[] filterAccountsByNetwork(
             AccountInfo[] accounts, @CoinType.EnumType int coinType, @Nullable String chainId) {
         @KeyringId.EnumType int keyringId = AssetUtils.getKeyring(coinType, chainId);

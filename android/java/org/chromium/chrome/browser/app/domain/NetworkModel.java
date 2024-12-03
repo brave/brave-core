@@ -21,6 +21,7 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.JsonRpcServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.chrome.browser.app.domain.NetworkModel.NetworkLists;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
@@ -65,6 +66,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
     public final LiveData<NetworkLists> mNetworkLists;
 
+    @SuppressWarnings("NoStreams")
     public NetworkModel(
             BraveWalletService braveWalletService,
             @NonNull JsonRpcService jsonRpcService,
@@ -228,6 +230,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         init();
     }
 
+    @SuppressWarnings("NoStreams")
     static void getAllNetworks(
             JsonRpcService jsonRpcService, Callbacks.Callback1<List<NetworkInfo>> callback) {
         if (jsonRpcService == null) {

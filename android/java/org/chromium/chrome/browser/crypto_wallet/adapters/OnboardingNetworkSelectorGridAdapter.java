@@ -330,6 +330,7 @@ public class OnboardingNetworkSelectorGridAdapter
         mHandler.postDelayed(mFilteringRunnable, DEBOUNCE_SEARCH_MILLIS);
     }
 
+    @SuppressWarnings("NoStreams")
     private void performFiltering(
             @NonNull final List<NetworkInfo> source,
             @NonNull final List<NetworkInfo> filtered,
