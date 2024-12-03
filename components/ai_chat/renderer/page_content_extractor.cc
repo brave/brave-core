@@ -185,7 +185,7 @@ void PageContentExtractor::ExtractPageContent(
           ai_chat::mojom::PageContentType::VideoTranscriptYouTube);
       // Main world so that we can access a global variable
       main_frame->RequestExecuteScript(
-          global_world_id_, base::make_span(&source, 1u),
+          global_world_id_, base::span_from_ref(source),
           blink::mojom::UserActivationOption::kDoNotActivate,
           blink::mojom::EvaluationTiming::kAsynchronous,
           blink::mojom::LoadEventBlockingOption::kDoNotBlock,
@@ -208,7 +208,7 @@ void PageContentExtractor::ExtractPageContent(
           ai_chat::mojom::PageContentType::VideoTranscriptYouTube);
       // Main world so that we can access a global variable
       main_frame->RequestExecuteScript(
-          isolated_world_id_, base::make_span(&source, 1u),
+          isolated_world_id_, base::span_from_ref(source),
           blink::mojom::UserActivationOption::kDoNotActivate,
           blink::mojom::EvaluationTiming::kAsynchronous,
           blink::mojom::LoadEventBlockingOption::kDoNotBlock,

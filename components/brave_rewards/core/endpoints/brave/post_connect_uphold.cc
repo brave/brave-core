@@ -57,8 +57,7 @@ std::optional<std::string> PostConnectUphold::Content() const {
     return std::nullopt;
   }
 
-  std::string digest =
-      RequestSigner::GetDigest(base::as_bytes(base::make_span(octets)));
+  std::string digest = RequestSigner::GetDigest(base::as_byte_span(octets));
 
   signer->set_key_id("primary");
 

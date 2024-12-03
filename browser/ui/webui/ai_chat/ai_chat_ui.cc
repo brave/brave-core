@@ -68,10 +68,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       content::WebUIDataSource::CreateAndAdd(
           web_ui->GetWebContents()->GetBrowserContext(), kChatUIURL);
 
-  webui::SetupWebUIDataSource(
-      untrusted_source,
-      UNSAFE_TODO(base::make_span(kAiChatUiGenerated, kAiChatUiGeneratedSize)),
-      IDR_CHAT_UI_HTML);
+  webui::SetupWebUIDataSource(untrusted_source, kAiChatUiGenerated,
+                              IDR_CHAT_UI_HTML);
 
   untrusted_source->AddResourcePath("styles.css", IDR_CHAT_UI_CSS);
 

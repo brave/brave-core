@@ -515,7 +515,7 @@ void ConversationHandler::RateMessage(bool is_liked,
 
   if (current_turn_id <= history.size()) {
     base::span<const mojom::ConversationTurnPtr> history_slice =
-        base::make_span(history).first(current_turn_id);
+        base::span(history).first(current_turn_id);
 
     feedback_api_->SendRating(
         is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,

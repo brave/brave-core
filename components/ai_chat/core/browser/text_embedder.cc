@@ -154,7 +154,7 @@ void TextEmbedder::GetTopSimilarityWithPromptTilContextLimitInternal(
         base::unexpected("TextEmbedder is not initialized."));
     return;
   }
-  auto text_hash = base::FastHash(base::as_bytes(base::make_span(text)));
+  auto text_hash = base::FastHash(base::as_byte_span(text));
   if (text_hash != text_hash_) {
     text_hash_ = text_hash;
     segments_ = SplitSegments(text);

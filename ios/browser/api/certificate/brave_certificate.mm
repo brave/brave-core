@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/certificate/brave_certificate.h"
 
+#include "base/apple/foundation_util.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
@@ -54,9 +55,8 @@
         SecCertificateCopyKey(certificate));
 
     bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(
-        net::x509_util::CreateCryptoBuffer(UNSAFE_TODO(base::make_span(
-            CFDataGetBytePtr(cert_data_.get()),
-            base::checked_cast<size_t>(CFDataGetLength(cert_data_.get()))))));
+        net::x509_util::CreateCryptoBuffer(
+            base::apple::CFDataToSpan(cert_data_.get())));
 
     if (!cert_buffer) {
       return nullptr;

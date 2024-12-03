@@ -125,8 +125,7 @@ std::wstring HashString(base::wcstring_view input) {
   }
 
   uint32_t hash[2] = {h0 ^ h1, h0_acc ^ h1_acc};
-  return base::UTF8ToWide(
-      base::Base64Encode(base::as_bytes(base::make_span(hash))));
+  return base::UTF8ToWide(base::Base64Encode(base::as_byte_span(hash)));
 }
 
 std::wstring FormatUserChoiceString(std::wstring_view ext,
