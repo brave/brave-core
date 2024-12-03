@@ -61,6 +61,7 @@ import org.chromium.chrome.browser.playlist.kotlin.view.bottomsheet.MoveOrCopyTo
 import org.chromium.playlist.mojom.Playlist
 import org.chromium.playlist.mojom.PlaylistEvent
 import org.chromium.playlist.mojom.PlaylistItem
+import org.chromium.base.Log;
 
 import java.util.LinkedList
 
@@ -150,10 +151,9 @@ class PlaylistActivity :
                         mPlaylistId,
                         playlistItem.id,
                         index.toShort()
-                    ) {
-                        fetchPlaylistData();
-                    }
+                    ) {}
                 }
+                fetchPlaylistData();
                 VideoPlaybackService.reorderPlaylistItemModel(playlistItems)
             }
         }

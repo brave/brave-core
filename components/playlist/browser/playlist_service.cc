@@ -253,7 +253,6 @@ void PlaylistService::ReorderItemFromPlaylist(
 
   auto target_playlist_id =
       playlist_id.empty() ? kDefaultPlaylistID : playlist_id;
-
   {
     ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
     base::Value::Dict* playlist_value =
@@ -270,7 +269,9 @@ void PlaylistService::ReorderItemFromPlaylist(
 
     auto old_position = std::distance(target_playlist->items.begin(), it);
     if (old_position == position) {
+#if !BUILDFLAG(IS_ANDROID)
       return;
+#endif  // !BUILDFLAG(IS_ANDROID)
     }
 
     if (old_position < position) {
