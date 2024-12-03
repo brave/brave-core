@@ -81,6 +81,26 @@
       }
     }
   },
+  "//": [
+    "Why we need webpack@5.97.1:",
+    "ERROR in ./pkg/opaque_ke_bg.wasm",
+    "Module parse failed: Unknown element type in table: 0xNaN",
+    "You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders",
+    "Error: Unknown element type in table: 0xNaN",
+    "at parseTableType (/Users/szilard/git/brave-browser/src/brave/node_modules/@webassemblyjs/wasm-parser/lib/decoder.js:1018:13)",
+    "at parseTableSection (/Users/szilard/git/brave-browser/src/brave/node_modules/@webassemblyjs/wasm-parser/lib/decoder.js:1274:24)",
+    "at parseSection (/Users/szilard/git/brave-browser/src/brave/node_modules/@webassemblyjs/wasm-parser/lib/decoder.js:1406:24)",
+    "at Object.decode (/Users/szilard/git/brave-browser/src/brave/node_modules/@webassemblyjs/wasm-parser/lib/decoder.js:1740:25)",
+    "at decode (/Users/szilard/git/brave-browser/src/brave/node_modules/@webassemblyjs/wasm-parser/lib/index.js:253:21)",
+    "at WebAssemblyParser.parse (/Users/szilard/git/brave-browser/src/brave/node_modules/webpack/lib/wasm-async/AsyncWebAssemblyParser.js:61:19)",
+    "at /Users/szilard/git/brave-browser/src/brave/node_modules/webpack/lib/NormalModule.js:1299:19",
+    "at processResult (/Users/szilard/git/brave-browser/src/brave/node_modules/webpack/lib/NormalModule.js:933:11)",
+    "at /Users/szilard/git/brave-browser/src/brave/node_modules/webpack/lib/NormalModule.js:1026:5",
+    "at /Users/szilard/git/brave-browser/src/brave/node_modules/loader-runner/lib/LoaderRunner.js:407:3",
+    "@ ./pkg/opaque_ke.js 1:0-44 4:15-19 5:0-21",
+    "@ ./src/index.js 1:0-33 2:0-19 4:12-20",
+    "webpack 5.94.0 compiled with 1 error in 3071 ms"
+  ],
   "devDependencies": {
     "@storybook/addon-essentials": "8.3.5",
     "@storybook/addon-knobs": "8.0.1",
@@ -109,6 +129,7 @@
     "@types/redux-logger": "3.0.9",
     "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "5.51.0",
+    "@wasm-tool/wasm-pack-plugin": "1.7.0",
     "acorn": "8.0.5",
     "browserify-zlib": "0.2.0",
     "buffer": "6.0.3",
@@ -172,7 +193,7 @@
     "typescript": "4.9.4",
     "typescript-plugin-css-modules": "5.1.0",
     "typescript-plugin-styled-components": "2.0.0",
-    "webpack": "5.94.0",
+    "webpack": "^5.97.1",
     "webpack-cli": "5.1.4"
   },
   "dependencies": {

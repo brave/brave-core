@@ -134,6 +134,10 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   }
 
   protected onEmailInput(detail: { value: string }) {
+    // @ts-ignore
+    import('chrome://resources/brave/opaque-ke/bundle/opaque_ke.bundle.js')
+      .then(opaque_ke => console.log(opaque_ke.return42()))
+
     this.email = detail.value.trim()
     this.isEmailValid = isEmailValid(this.email)
     this.isEmailBraveAlias = (/@bravealias\.com$/i).test(this.email)
