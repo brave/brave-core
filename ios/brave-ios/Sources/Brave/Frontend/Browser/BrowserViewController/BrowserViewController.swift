@@ -1620,47 +1620,6 @@ public class BrowserViewController: UIViewController {
     )
   }
 
-  /// Shows a vpn screen based on vpn state.
-  public func presentCorrespondingVPNViewController() {
-    if BraveSkusManager.keepShowingSessionExpiredState {
-      let alert = BraveSkusManager.sessionExpiredStateAlert(loginCallback: { [unowned self] _ in
-        self.openURLInNewTab(
-          .brave.account,
-          isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
-          isPrivileged: false
-        )
-      })
-
-      present(alert, animated: true)
-      return
-    }
-
-    guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
-    vc.openAuthenticationVPNInNewTab = { [weak self] in
-      guard let self = self else { return }
-
-      self.openURLInNewTab(
-        .brave.braveVPNRefreshCredentials,
-        isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
-        isPrivileged: false
-      )
-    }
-
-    let navigationController = SettingsNavigationController(rootViewController: vc)
-    navigationController.navigationBar.topItem?.leftBarButtonItem =
-      .init(
-        barButtonSystemItem: .cancel,
-        target: navigationController,
-        action: #selector(navigationController.done)
-      )
-    let idiom = UIDevice.current.userInterfaceIdiom
-
-    DeviceOrientation.shared.changeOrientationToPortraitOnPhone()
-
-    navigationController.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
-    present(navigationController, animated: true)
-  }
-
   func updateInContentHomePanel(_ url: URL?) {
     let isAboutHomeURL = { () -> Bool in
       if let url = url {
@@ -2586,6 +2545,8 @@ extension BrowserViewController {
 
 extension BrowserViewController: SettingsDelegate {
   func settingsOpenURLInNewTab(_ url: URL) {
+    popToBVC()
+
     self.openURLInNewTab(
       url,
       isPrivate: privateBrowsingManager.isPrivateBrowsing,
