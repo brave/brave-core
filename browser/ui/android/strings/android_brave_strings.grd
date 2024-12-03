@@ -143,14 +143,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
-      <message name="IDS_MANAGE_ADS"  desc="Text for manage ads">
-        Manage ads
-      </message>
       <message name="IDS_CONTEXTMENU_COPY_CLEAN_LINK"  desc="Text for Copy clean link">
         Copy clean link
-      </message>
-      <message name="IDS_ESTIMATED_TOOLTIP_TEXT"  desc="Text for This reflects your estimated earnings range for Brave Ads this month.">
-        This reflects your estimated earnings range for Brave Ads this month.
       </message>
       <message name="IDS_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Notifications are disabled">
         Notifications are disabled
@@ -2791,8 +2785,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_AUTO_CONTRIBUTE" desc="Title text for `Auto-Contribute` section in Brave rewards panel">
       Auto-Contribute
     </message>
-    <message name="IDS_ESTIMATED_EARNINGS" desc="Title text for `Estimated earnings` section in Brave rewards panel">
-      Earnings so far
+    <message name="IDS_ADS_SEEN_THIS_MONTH" desc="Title text for `Ads seen this month` section in Brave rewards panel">
+      Ads seen this month
     </message>
     <message name="IDS_TIP" desc="Text for `Tip` button in Brave rewards panel">
       Contribute

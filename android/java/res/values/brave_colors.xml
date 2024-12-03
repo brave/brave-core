@@ -382,7 +382,6 @@
     <color name="rewards_private_ads_icon_color11">#D41C80</color>
     <color name="rewards_private_ads_icon_color12">#F092C5</color>
     <color name="rewards_private_ads_icon_color13">#6AB6F4</color>
-    <color name="rewards_manage_ads_color">#3F39E8</color>
     <color name="rewards_estimated_earning_close_color">#697284</color>
     <color name="rewards_tipping_progress_bar">@android:color/black</color>
 
