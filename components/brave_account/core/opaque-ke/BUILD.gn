@@ -4,7 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 wasm_pack_target_dir = "$root_build_dir/wasm_pack"
-wasm_pack_exe = "$wasm_pack_target_dir/release/wasm-pack"
+wasm_pack_exe_dir = "$wasm_pack_target_dir/release"
+wasm_pack_exe = "$wasm_pack_exe_dir/wasm-pack"
 wasm_pack_src = "//brave/tools/crates/wasm_pack/v0_13/crate"
 if (host_os == "win") {
   wasm_pack_exe += ".exe"
@@ -36,34 +37,43 @@ action("build_wasm_pack") {
   ]
 }
 
-action("build_opaque_ke") {
+action("build_opaque_ke_bundle") {
   deps = [ ":build_wasm_pack" ]
 
   script = "//build/gn_run_binary.py"
 
+  webpack_exe = "//brave/node_modules/.bin/webpack"
+  if (host_os == "win") {
+    webpack_exe += ".exe"
+  }
+
   inputs = [
-    wasm_pack_exe,
-    "Cargo.lock",
+    webpack_exe,
+    "src/index.js",
+    "src/lib.rs",
+    "webpack.config.js",
   ]
 
   outputs = [
-    "$target_gen_dir/pkg/opaque_ke_bg.wasm",
-    "$target_gen_dir/pkg/opaque_ke_bg.wasm.d.ts",
-    "$target_gen_dir/pkg/opaque_ke.d.ts",
-    "$target_gen_dir/pkg/opaque_ke.js",
-    "$target_gen_dir/pkg/package.json",
+    "$target_gen_dir/bundle/dist/opaque_ke.bundle.js",
+    "$target_gen_dir/bundle/dist/opaque_ke.bundle.js.map",
+    "$target_gen_dir/bundle/dist/opaque_ke.module.wasm",
+    "$target_gen_dir/bundle/pkg/opaque_ke_bg.js",
+    "$target_gen_dir/bundle/pkg/opaque_ke_bg.wasm",
+    "$target_gen_dir/bundle/pkg/opaque_ke_bg.wasm.d.ts",
+    "$target_gen_dir/bundle/pkg/opaque_ke.d.ts",
+    "$target_gen_dir/bundle/pkg/opaque_ke.js",
+    "$target_gen_dir/bundle/pkg/package.json",
   ]
 
+  output_path = rebase_path("$target_gen_dir/bundle")
+  wasm_pack_path = rebase_path(wasm_pack_exe_dir)
+
   args = [
-    rebase_path(wasm_pack_exe),
-    "build",
-    rebase_path("."),
-    "--target",
-    "web",
-    "--out-dir",
-    rebase_path("$target_gen_dir/pkg"),
-    "--",
-    "--target-dir",
-    rebase_path("$target_gen_dir/target"),
+    rebase_path(webpack_exe),
+    "--config",
+    rebase_path("webpack.config.js"),
+    "--env=output_path=$output_path",
+    "--env=wasm_pack_path=$wasm_pack_path",
   ]
 }
