@@ -30,6 +30,8 @@
       "CheckTreeIsOpen",
       // We run our own format check.
       "CheckPatchFormatted",
+      // We don't use Chromium LSC process for Brave repository.
+      "CheckLargeScaleChange",
     ],
   },
 
