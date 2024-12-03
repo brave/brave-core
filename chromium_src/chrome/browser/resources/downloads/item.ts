@@ -5,7 +5,7 @@
 
 import { injectStyle } from '//resources/brave/lit_overriding.js'
 import { css } from '//resources/lit/v3_0/lit.rollup.js'
-import { DownloadsItemElement } from '../item.js'
+import { DownloadsItemElement } from './item-chromium.js'
 
 injectStyle(DownloadsItemElement, css`
     #progress {
@@ -18,3 +18,5 @@ injectStyle(DownloadsItemElement, css`
         }
     }
 `)
+
+export * from './item-chromium.js'
