@@ -719,14 +719,6 @@ public class BytecodeTest {
                         Intent.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
-                        "wrapDialogDismissalCallback",
-                        MethodModifier.REGULAR,
-                        true,
-                        Callback.class,
-                        Callback.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl",
                         "isVisibleToUser",
                         MethodModifier.REGULAR,

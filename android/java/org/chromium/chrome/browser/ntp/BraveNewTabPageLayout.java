@@ -1485,22 +1485,6 @@ public class BraveNewTabPageLayout
         }
     }
 
-    private int getMaxRowsForMostVisitedTiles() {
-        try {
-            if (!ProfileManager.isInitialized()
-                    || !UserPrefs.get(BraveActivity.getBraveActivity().getCurrentProfile())
-                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
-                return 2;
-            } else {
-                return 1;
-            }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "getMaxRowsForMostVisitedTiles ", e);
-        }
-
-        return 2;
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mIsTablet) {

@@ -58,19 +58,6 @@ public final class PopupWindowTooltipUtils {
         }
     }
 
-    private static ViewGroup.MarginLayoutParams getOrCreateMarginLayoutParams(View view) {
-        ViewGroup.LayoutParams lp = view.getLayoutParams();
-        if (lp != null) {
-            if (lp instanceof ViewGroup.MarginLayoutParams) {
-                return (ViewGroup.MarginLayoutParams) lp;
-            } else {
-                return new ViewGroup.MarginLayoutParams(lp);
-            }
-        } else {
-            return new ViewGroup.MarginLayoutParams(view.getWidth(), view.getHeight());
-        }
-    }
-
     public static int getColor(Context context, @ColorRes int colorRes) {
         return context.getColor(colorRes);
     }

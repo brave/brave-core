@@ -1519,12 +1519,6 @@ Are you sure you want to do this?
       <message name="IDS_MAYBE_LATER" desc="Text for rate brave dialog button.">
         Maybe Later
       </message>
-      <message name="IDS_EARN_TOKENS_FOR_VIEWING" desc="Text for brave rewards banner.">
-        Earn tokens for viewing this image and pay it forward to creators. <ph name="LEARN_MORE">%1$s</ph>
-      </message>
-      <message name="IDS_YOU_ARE_EARNING_TOKENS" desc="Title for brave rewards banner.">
-        You're earning tokens for viewing this image.\n<ph name="LEARN_MORE">%1$s</ph>
-      </message>
       <message name="IDS_REWARDS_PANEL_PAYOUT_PENDING_TEXT" desc="Text for rewards panel payout pending text">
         The payout for <ph name="CURRENT_MONTH">%1$s</ph> rewards will begin processing by <ph name="PAYOUT_DATE">%2$s</ph>.
       </message>
@@ -3418,9 +3412,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SELECT_YOUR_COUNTRY_TITLE" desc="Declare geo modal title">
       Select your country
     </message>
-    <message name="IDS_DECLARE_GEO_SUCCESS_RESPONSE_TEXT" desc="Declare geo success modal text">
-      Your Brave Rewards region has been set to <ph name="COUNTRY_NAME">%1$s</ph>.
-    </message>
     <message name="IDS_DECLARE_GEO_FAILED_RESPONSE_TEXT" desc="Declare geo failed modal text">
       Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.
     </message>
@@ -3618,18 +3609,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_TEST" desc="Network filter title for test networks">
       Test Networks
-    </message>
-    <message name="IDS_VBAT_SUPPORTED_REGION_TITLE" desc="Vbat modal title text for supported region">
-      Action required: Connect a custodial account or your vBAT will be lost
-    </message>
-    <message name="IDS_VBAT_SUPPORTED_REGION_TEXT" desc="Vbat modal text for supported region">
-      On <ph name="DUE_DATE">%1$s</ph>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.
-    </message>
-    <message name="IDS_VBAT_UNSUPPORTED_REGION_TITLE" desc="Vbat modal title text for unsupported region">
-      You still have time to contribute your vBAT to your favorite creators
-    </message>
-    <message name="IDS_VBAT_UNSUPPORTED_REGION_TEXT" desc="Vbat modal text for unsupported region">
-      On <ph name="DUE_DATE">%1$s</ph>, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (<ph name="REGION">%2$s</ph>) to withdraw your earnings. Until then, you can still contribute to your favorite creators.
     </message>
     <message name="IDS_SPEEDREADER_MESSAGE_TITLE" desc="Message shown on the speedreader prompt.">
       View page with Speedreader?

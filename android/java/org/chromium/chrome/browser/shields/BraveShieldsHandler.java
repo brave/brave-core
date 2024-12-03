@@ -510,11 +510,6 @@ public class BraveShieldsHandler
         initWebcompatReporterService();
     }
 
-    private void shareStats() {
-        View shareStatsLayout = BraveStatsUtil.getLayout(R.layout.brave_stats_share_layout);
-        BraveStatsUtil.updateBraveShareStatsLayoutAndShare(shareStatsLayout);
-    }
-
     private void setToggleView(boolean shouldShow) {
         if (shouldShow) {
             mSecondaryLayout.setVisibility(View.VISIBLE);
