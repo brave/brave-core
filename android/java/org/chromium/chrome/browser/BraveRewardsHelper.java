@@ -245,17 +245,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         }
     }
 
-    /** we don't destroy sLargeIconBridge sisnce it's static */
-    private void destroy() {
-        if (sLargeIconBridge != null) {
-            sLargeIconBridge.destroy();
-            sLargeIconBridge = null;
-        }
-        mCallback =  null;
-    }
-
     public void detach() {
-        mCallback =  null;
+        mCallback = null;
     }
 
     public void retrieveLargeIcon(String favIconURL, LargeIconReadyCallback callback) {
