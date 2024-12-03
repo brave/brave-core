@@ -5,13 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_util.h"
 
-#include "base/containers/contains.h"
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 
 namespace brave_ads {
 
 bool ShouldTargetSubdivisionCountryCode(const std::string& country_code) {
-  return base::Contains(GetSupportedSubdivisions(), country_code);
+  return GetSupportedSubdivisions().contains(country_code);
 }
 
 bool ShouldTargetSubdivision(const std::string& country_code,
@@ -26,7 +25,7 @@ bool ShouldTargetSubdivision(const std::string& country_code,
 
   const auto& [_, subdivisions] = *iter;
 
-  return base::Contains(subdivisions, subdivision);
+  return subdivisions.contains(subdivision);
 }
 
 }  // namespace brave_ads

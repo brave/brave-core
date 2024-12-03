@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
@@ -29,9 +28,9 @@ bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
 
 bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad,
                                      const std::string& subdivision) {
-  return base::Contains(creative_ad.geo_targets, subdivision) ||
-         base::Contains(creative_ad.geo_targets,
-                        GetSubdivisionCountryCode(subdivision));
+  return creative_ad.geo_targets.contains(subdivision) ||
+         creative_ad.geo_targets.contains(
+             GetSubdivisionCountryCode(subdivision));
 }
 
 }  // namespace
