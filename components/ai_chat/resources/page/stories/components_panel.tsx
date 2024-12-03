@@ -508,7 +508,9 @@ const preview: Meta<CustomArgs> = {
         dismissStorageNotice: () => {},
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},
-        setEditingConversationId: () => {}
+        setEditingConversationId: () => {},
+        showSidebar: false,
+        toggleSidebar: () => {}
       }
 
       const activeChatContext: SelectedChatDetails = {

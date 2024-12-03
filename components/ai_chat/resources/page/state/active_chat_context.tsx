@@ -111,7 +111,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     if (selectedConversationId === tabAssociatedChatId) return
     if (!selectedConversationId) return
     let cancelled = false
-    getAPI().uiHandler.conversationExists(selectedConversationId).then(exists => {
+    getAPI().uiHandler.conversationExists(selectedConversationId).then(({ exists }) => {
       if (cancelled) return
       if (exists) return
       updateSelectedConversationId(undefined)
