@@ -27,6 +27,7 @@ group("grdp") {
     ":fonts_grdp",
     ":icons_grdp",
     ":leo_web_components",
+    ":opaque_ke_grdp",
     ":static_grdp",
   ]
   if (!is_android && !is_ios) {
@@ -512,6 +513,19 @@ generate_grd("icons_grdp") {
       rebase_path("$brave_resources_extra_grdps_path/icons/", root_build_dir)
 
   deps = [ ":icons_copy" ]
+}
+
+generate_grd("opaque_ke_grdp") {
+  grd_prefix = "opaque_ke"
+  out_grd = "$brave_resources_extra_grdps_path/${grd_prefix}_resources.grdp"
+  input_files = [
+    "opaque_ke.bundle.js",
+    "opaque_ke.module.wasm",
+  ]
+  resource_path_prefix = "brave"
+  input_files_base_dir = rebase_path("$root_gen_dir/brave/components/brave_account/core/opaque-ke/dist", root_build_dir)
+
+  deps = [ "//brave/components/brave_account/core/opaque-ke:build_opaque_ke" ]
 }
 
 # Static files should be put relative to //ui/webui/resources main resources GRD
