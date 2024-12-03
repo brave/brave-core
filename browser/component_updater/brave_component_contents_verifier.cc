@@ -11,15 +11,17 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/span_reader.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
-#include "crypto/secure_hash.h"
-#include "crypto/sha2.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+
+#include "base/command_line.h"
+#include "base/containers/span_reader.h"
+#include "crypto/secure_hash.h"
+#include "crypto/sha2.h"
 #include "extensions/browser/content_hash_tree.h"
 #include "extensions/browser/verified_contents.h"
 
@@ -106,18 +108,14 @@ class ComponentContentsAccessorImpl
     return !!verified_contents_.get();
   }
 
-  void IgnoreInvalidSignature(bool ignore) override {
-    ignore_invalid_signature_ = ignore;
-  }
-
   bool VerifyContents(const base::FilePath& relative_path,
                       base::span<const uint8_t> contents) override {
     if (!IsComponentSignatureValid()) {
-      return ignore_invalid_signature_;
+      return false;
     }
 
     if (!verified_contents_->HasTreeHashRoot(relative_path)) {
-      return true;
+      return false;
     }
 
     const auto root_hash =
@@ -129,8 +127,16 @@ class ComponentContentsAccessorImpl
   ~ComponentContentsAccessorImpl() override = default;
 
   std::unique_ptr<extensions::VerifiedContents> verified_contents_;
-  bool ignore_invalid_signature_ = false;
 };
+
+bool ShouldBypassSignature() {
+  static const bool kBypass =
+      !base::FeatureList::IsEnabled(
+          component_updater::kComponentContentsVerifier) ||
+      base::CommandLine::ForCurrentProcess()->HasSwitch(
+          component_updater::kBypassComponentContentsVerifier);
+  return kBypass;
+}
 
 }  // namespace
 
@@ -138,11 +144,16 @@ class ComponentContentsAccessorImpl
 
 namespace component_updater {
 
+BASE_FEATURE(kComponentContentsVerifier,
+             "ComponentContentsVerifier",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 scoped_refptr<brave_component_updater::ComponentContentsAccessor>
 CreateComponentContentsAccessor(bool with_verifier,
                                 const base::FilePath& component_root) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (with_verifier) {
+  static const bool kBypassSignature = ShouldBypassSignature();
+  if (with_verifier && !kBypassSignature) {
     return base::MakeRefCounted<ComponentContentsAccessorImpl>(component_root);
   }
 #endif
