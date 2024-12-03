@@ -13,6 +13,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_contents.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 
@@ -51,5 +52,12 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       base::android::ConvertJavaStringToUTF8(query), std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false);
   conversation->SubmitHumanConversationEntry(std::move(turn));
+
+  content::OpenURLParams params(
+      GURL(base::StrCat(
+          {"chrome-untrusted://chat/", conversation->get_conversation_uuid()})),
+      content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+      ui::PAGE_TRANSITION_FROM_API, false);
+  CHECK(web_contents->OpenURL(params, {}));
 }
 }  // namespace ai_chat

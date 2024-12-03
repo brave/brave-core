@@ -58,15 +58,7 @@ public class BraveLeoUtils {
             String conversationUuid,
             String query,
             boolean openLeoChatWindow) {
-        try {
-            BraveLeoUtilsJni.get().openLeoQuery(webContents, conversationUuid, query);
-            if (openLeoChatWindow) {
-                BraveActivity activity = BraveActivity.getBraveActivity();
-                activity.openBraveLeo();
-            }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "get BraveActivity exception", e);
-        }
+        BraveLeoUtilsJni.get().openLeoQuery(webContents, conversationUuid, query);
     }
 
     public static String getDefaultModelName(ModelWithSubtitle[] models, String defaultModelKey) {
@@ -82,10 +74,9 @@ public class BraveLeoUtils {
     public static void openManageSubscription() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            Intent browserIntent =
-                    new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(InAppPurchaseWrapper.MANAGE_SUBSCRIPTION_PAGE));
+            Intent browserIntent = new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(InAppPurchaseWrapper.MANAGE_SUBSCRIPTION_PAGE));
             activity.startActivity(browserIntent);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openManageSubscription get BraveActivity exception", e);
