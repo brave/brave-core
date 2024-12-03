@@ -7,9 +7,8 @@ import {RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 RegisterStyleOverride(
-  'settings-subpage',
-  html`
-    <style include="settings-shared">
+  'settings-subpage', html`
+  <style include="settings-shared">
     :host {
         min-height: auto !important;
         display: inline;
@@ -19,7 +18,7 @@ RegisterStyleOverride(
         background-color: var(--leo-color-page-background) !important;
         box-shadow: none !important;
     }
-    slot:has(:not(settings-safety-hub-page)) {
+    :host(:not([id=safetyHub])) slot {
         box-shadow: var(--leo-effect-elevation-01) !important;
         background-color: var(--leo-color-container-background) !important;
         border-radius: var(--leo-radius-m) !important;
@@ -38,6 +37,5 @@ RegisterStyleOverride(
         font-weight: 600 !important;
         font-size: var(--leo-typography-heading-h4-font-size) !important;
     }
-  </style>
-  `
+  </style>`
 )
