@@ -91,7 +91,7 @@ hooks = [
     'pattern': '.',
     'condition': 'checkout_mac',
     'action': ['vpython3', 'build/download_dep.py',
-               'omaha4/BraveUpdater-128.1.70.58.zip',
+               'omaha4/BraveUpdater-132.1.75.66.zip',
                '//build/mac_files/omaha4'],
   },
   {
