@@ -12,6 +12,7 @@ import SwiftUI
 struct EditFolderView: View {
   @ObservedObject var folder: PlaylistFolder
   var folders: [PlaylistFolder]
+  var onPlaylistUpdated: () -> Void
 
   @FetchRequest private var items: FetchedResults<PlaylistItem>
 
@@ -21,7 +22,7 @@ struct EditFolderView: View {
 
   @Environment(\.dismiss) private var dismiss
 
-  init(folder: PlaylistFolder, folders: [PlaylistFolder]) {
+  init(folder: PlaylistFolder, folders: [PlaylistFolder], onPlaylistUpdated: @escaping () -> Void) {
     self.folder = folder
     self.folders = folders
     self._items = FetchRequest<PlaylistItem>(
@@ -32,6 +33,7 @@ struct EditFolderView: View {
       predicate: .init(format: "playlistFolder.uuid == %@", folder.uuid ?? ""),
       animation: .default
     )
+    self.onPlaylistUpdated = onPlaylistUpdated
   }
 
   private func deleteSelectedItems() async {
@@ -40,6 +42,7 @@ struct EditFolderView: View {
       await PlaylistManager.shared.delete(item: .init(item: item))
     }
     selectedItems = []
+    onPlaylistUpdated()
   }
 
   var body: some View {
@@ -57,7 +60,9 @@ struct EditFolderView: View {
           )
         }
         .onMove { indexSet, offset in
-          PlaylistItem.reorderItems(in: folder, fromOffsets: indexSet, toOffset: offset)
+          PlaylistItem.reorderItems(in: folder, fromOffsets: indexSet, toOffset: offset) {
+            onPlaylistUpdated()
+          }
         }
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
@@ -112,7 +117,9 @@ struct EditFolderView: View {
               selection: Binding(
                 get: { folder.id },
                 set: {
-                  PlaylistItem.moveItems(items: Array(selectedItems), to: $0)
+                  PlaylistItem.moveItems(items: Array(selectedItems), to: $0) {
+                    onPlaylistUpdated()
+                  }
                   selectedItems = []
                 }
               )

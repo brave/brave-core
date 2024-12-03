@@ -450,13 +450,21 @@ public class PlaylistManager: NSObject {
       // Do NOT delete the item if we can't delete it's local cache.
       // That will cause zombie items.
       if await deleteCache(item: item) {
-        PlaylistItem.removeItems([item])
+        await withCheckedContinuation { continuation in
+          PlaylistItem.removeItems([item]) {
+            continuation.resume()
+          }
+        }
         onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
         return true
       }
       return false
     } else {
-      PlaylistItem.removeItems([item])
+      await withCheckedContinuation { continuation in
+        PlaylistItem.removeItems([item]) {
+          continuation.resume()
+        }
+      }
       onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
       return true
     }
