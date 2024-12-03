@@ -78,10 +78,8 @@ namespace {
     return nil;
   }
 
-  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(
-      net::x509_util::CreateCryptoBuffer(base::make_span(
-          CFDataGetBytePtr(cert_data.get()),
-          base::checked_cast<size_t>(CFDataGetLength(cert_data.get())))));
+  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(net::x509_util::CreateCryptoBuffer(
+      base::apple::CFDataToSpan(cert_data.get())));
 
   if (!cert_buffer) {
     return nil;
@@ -104,10 +102,8 @@ namespace {
     return nil;
   }
 
-  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(
-      net::x509_util::CreateCryptoBuffer(base::make_span(
-          CFDataGetBytePtr(cert_data.get()),
-          base::checked_cast<size_t>(CFDataGetLength(cert_data.get())))));
+  bssl::UniquePtr<CRYPTO_BUFFER> cert_buffer(net::x509_util::CreateCryptoBuffer(
+      base::apple::CFDataToSpan(cert_data.get())));
 
   if (!cert_buffer) {
     return nil;

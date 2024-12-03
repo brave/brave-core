@@ -131,8 +131,8 @@ class MacAddressProcessor {
     }
 
     constexpr size_t kMacLength = 6u;
-    auto mac_address_bytes = base::as_bytes(
-        UNSAFE_TODO(base::make_span(ifinfo.ifr_hwaddr.sa_data, kMacLength)));
+    auto mac_address_bytes =
+        base::as_byte_span(ifinfo.ifr_hwaddr.sa_data).first<kMacLength>();
     if (!is_valid_mac_address_callback_.Run(mac_address_bytes)) {
       return keep_going;
     }

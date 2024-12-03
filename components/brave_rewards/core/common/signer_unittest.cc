@@ -33,8 +33,8 @@ TEST_F(RewardsSignerTest, SignMessage) {
             "vasRmhvzIy1J8ij2pSBPvSHPk5DI5l3a08fGSj5JPex+"
             "ZsQSLeH43VfOCuzGBuFunm1cTEMafWN4zTY++3Oz6A==");
 
-  auto signed_message = base::Base64Encode(
-      signer->SignMessage(base::as_bytes(base::make_span("hello world"))));
+  auto signed_message = base::Base64Encode(signer->SignMessage(
+      base::byte_span_with_nul_from_cstring("hello world")));
 
   EXPECT_EQ(signed_message,
             "Yskxukdvz9rLYytvkpsvn2QztIhSbEd9GyUhQ/dX18z/"

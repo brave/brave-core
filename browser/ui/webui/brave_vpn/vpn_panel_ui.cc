@@ -41,11 +41,8 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
       web_ui->GetWebContents()->GetBrowserContext(), kVPNPanelURL);
 
   brave_vpn::AddLocalizedStrings(source);
-  webui::SetupWebUIDataSource(
-      source,
-      UNSAFE_TODO(base::make_span(kBraveVpnPanelGenerated,
-                                  kBraveVpnPanelGeneratedSize)),
-      IDR_VPN_PANEL_HTML);
+  webui::SetupWebUIDataSource(source, kBraveVpnPanelGenerated,
+                              IDR_VPN_PANEL_HTML);
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,

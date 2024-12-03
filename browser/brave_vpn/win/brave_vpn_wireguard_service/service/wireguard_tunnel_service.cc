@@ -391,8 +391,8 @@ bool WireguardGenerateKeypair(std::string* public_key,
     return false;
   }
 
-  *public_key = base::Base64Encode(base::make_span(public_key_bytes));
-  *private_key = base::Base64Encode(base::make_span(private_key_bytes));
+  *public_key = base::Base64Encode(public_key_bytes);
+  *private_key = base::Base64Encode(private_key_bytes);
   return true;
 }
 

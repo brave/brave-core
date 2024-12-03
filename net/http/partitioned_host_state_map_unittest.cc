@@ -24,8 +24,7 @@ HostHash HashHost(std::string_view canonicalized_host) {
   if (canonicalized_host.empty()) {
     return {};
   }
-  return crypto::SHA256Hash(
-      base::as_bytes(base::make_span(canonicalized_host)));
+  return crypto::SHA256Hash(base::as_byte_span(canonicalized_host));
 }
 
 }  // namespace

@@ -340,8 +340,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
       auto itr = favicons_map_->find(*url_string);
       if (itr != favicons_map_->end()) {
         scoped_refptr<base::RefCountedMemory> data(itr->second.get());
-        GURL favicon_url("data:image/png;base64," +
-                         base::Base64Encode(base::make_span(*data)));
+        GURL favicon_url("data:image/png;base64," + base::Base64Encode(*data));
         favicon_string = favicon_url.spec();
       }
 
