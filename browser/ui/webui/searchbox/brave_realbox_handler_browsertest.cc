@@ -50,7 +50,7 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
         url, nullptr, WindowOpenDisposition::CURRENT_TAB,
         ui::PageTransition::PAGE_TRANSITION_TYPED,
         AutocompleteMatchType::SEARCH_SUGGEST, base::TimeTicks::Now(), false,
-        false, u"", match, match, IDNA2008DeviationCharacter::kNone);
+        false, u"", match, match);
     content::WaitForLoadStop(contents());
   }
 

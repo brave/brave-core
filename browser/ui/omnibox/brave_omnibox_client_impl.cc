@@ -113,8 +113,7 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
     bool destination_url_entered_with_http_scheme,
     const std::u16string& text,
     const AutocompleteMatch& match,
-    const AutocompleteMatch& alternative_nav_match,
-    IDNA2008DeviationCharacter deviation_char_in_hostname) {
+    const AutocompleteMatch& alternative_nav_match) {
   if (IsSearchEvent(match)) {
     // TODO(iefremov): Optimize this.
     search_storage_.AddDelta(1);
@@ -130,5 +129,5 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
       destination_url, post_content, disposition, transition, match_type,
       match_selection_timestamp, destination_url_entered_without_scheme,
       destination_url_entered_with_http_scheme, text, match,
-      alternative_nav_match, deviation_char_in_hostname);
+      alternative_nav_match);
 }
