@@ -136,7 +136,7 @@ TEST(TorControlTest, ReadDone) {
             "250-SOCKSPORT=9050\r\n250 ORPORT=0\r\n250 OK";
         control->reading_ = true;
         // StartRead()
-        control->read_start_ = 0;
+        control->read_start_ = 0u;
         control->async_events_[tor::TorControlEvent::NETWORK_LIVENESS] = 1;
         control->readiobuf_ = base::MakeRefCounted<net::GrowableIOBuffer>();
         control->readiobuf_->SetCapacity(sizeof test_str - 1);
@@ -147,7 +147,7 @@ TEST(TorControlTest, ReadDone) {
         // Read so far: 250-SOCKSP
         control->ReadDone(10);
         EXPECT_EQ(control->readiobuf_->offset(), 10);
-        EXPECT_EQ(control->read_start_, 0);
+        EXPECT_EQ(control->read_start_, 0u);
 
         // First CRLF
         // Read this time: ORT=9050\r\n
@@ -156,7 +156,7 @@ TEST(TorControlTest, ReadDone) {
         EXPECT_CALL(delegate, OnTorRawMid("250", "SOCKSPORT=9050")).Times(1);
         control->ReadDone(10);
         EXPECT_EQ(control->readiobuf_->offset(), 20);
-        EXPECT_EQ(control->read_start_, 20);
+        EXPECT_EQ(control->read_start_, 20u);
 
         // Second CRLF
         // Read this time: 250 ORPORT=0\r\n2
@@ -165,17 +165,17 @@ TEST(TorControlTest, ReadDone) {
         EXPECT_CALL(delegate, OnTorRawEnd("250", "ORPORT=0")).Times(1);
         control->ReadDone(15);
         EXPECT_EQ(control->readiobuf_->offset(), 35);
-        EXPECT_EQ(control->read_start_, 34);
+        EXPECT_EQ(control->read_start_, 34u);
 
         // Buffer will be full
         // Read this time: 50 OK
         // Read so far: 250 OK
         control->ReadDone(5);
         EXPECT_EQ(control->readiobuf_->offset(), 6);
-        EXPECT_EQ(control->read_start_, 0);
-        EXPECT_EQ(base::as_string_view(
-                      control->readiobuf_->everything().subspan(0, 6)),
-                  "250 OK");
+        EXPECT_EQ(control->read_start_, 0u);
+        EXPECT_EQ(
+            base::as_string_view(control->readiobuf_->everything().first<6>()),
+            "250 OK");
         run_loop.Quit();
       }));
   run_loop.Run();

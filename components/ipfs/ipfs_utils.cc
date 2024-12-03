@@ -47,7 +47,7 @@ base::span<const uint8_t> DecodeVarInt(base::span<const uint8_t> from,
     shift += 7;
   } while (*it++ & 0x80);
   *into = static_cast<int64_t>(ret);
-  return from.subspan(it - from.begin());
+  return from.subspan(static_cast<size_t>(std::distance(from.begin(), it)));
 }
 
 // Extracts cid and path from ipfs URLs like:

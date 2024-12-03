@@ -187,7 +187,8 @@ void TabDragController::DetachAndAttachToNewContext(
     std::vector<tabs::TabHandle> tabs;
     auto* tab_strip_model = browser->tab_strip_model();
     DCHECK_EQ(tab_strip_model, attached_context_->GetTabStripModel());
-    auto drag_data = base::span(drag_data_).subspan(first_tab_index());
+    auto drag_data =
+        base::span(drag_data_).subspan(static_cast<size_t>(first_tab_index()));
     for (const auto& data : drag_data) {
       tabs.push_back(tab_strip_model->GetTabHandleAt(
           tab_strip_model->GetIndexOfWebContents(data.contents)));
