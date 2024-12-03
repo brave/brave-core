@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/common/typescript.gni")
+
 wasm_pack_target_dir = "$root_build_dir/wasm_pack"
 wasm_pack_exe = "$wasm_pack_target_dir/release/wasm-pack"
 wasm_pack_src = "//brave/tools/crates/wasm_pack/v0_13/crate"
@@ -66,4 +68,18 @@ action("build_opaque_ke") {
     "--target-dir",
     rebase_path("$target_gen_dir/target"),
   ]
+}
+
+transpile_web_ui("opaque_ke") {
+  public_deps = [ ":build_opaque_ke" ]
+
+  generate_grdp = true
+  resource_path_prefix = "brave"
+
+  entry_points = [ [
+        "opaque_ke",
+        rebase_path("$target_gen_dir/pkg/opaque_ke.js"),
+      ] ]
+
+  resource_name = "opaque_ke"
 }

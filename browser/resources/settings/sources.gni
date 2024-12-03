@@ -162,6 +162,8 @@ if (enable_pin_shortcut) {
 brave_settings_ts_definitions = [
   "//brave/components/definitions/chrome_brave_theme.d.ts",
   "//brave/components/definitions/chrome_brave_wallet.d.ts",
+  "$root_gen_dir/brave/components/brave_account/core/opaque-ke/pkg/opaque_ke_bg.wasm.d.ts",
+  "$root_gen_dir/brave/components/brave_account/core/opaque-ke/pkg/opaque_ke.d.ts",
 ]
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's preprocess
@@ -174,8 +176,10 @@ foreach(component_file, brave_settings_web_component_files) {
       [ string_replace(component_file, ".ts", ".html") ]
 }
 
-brave_settings_ts_extra_deps =
-    [ "//brave/browser/resources/settings:preprocess" ]
+brave_settings_ts_extra_deps = [
+  "//brave/browser/resources/settings:preprocess",
+  "//brave/components/brave_account/core/opaque-ke:opaque_ke"
+]
 
 brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/settings_helper.mojom-webui.ts",

@@ -14,6 +14,8 @@ import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
 import { isEmailValid } from './brave_account_common.js'
 
+// import init, { return42 } from 'chrome://resources/brave/opaque_ke.bundle.js'
+
 class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
   static get is() {
     return 'password-strength-meter'
@@ -134,6 +136,10 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   }
 
   protected onEmailInput(detail: { value: string }) {
+    // init().then(() => {
+    //   console.log(return42())
+    // })
+
     this.email = detail.value.trim()
     this.isEmailValid = isEmailValid(this.email)
     this.isEmailBraveAlias = (/@bravealias\.com$/i).test(this.email)
