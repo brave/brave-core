@@ -18,6 +18,8 @@ if (!is_ios) {
     "$brave_resources_extra_grdps_path/brave_fonts_resources.grdp",
     "$brave_resources_extra_grdps_path/brave_static_resources.grdp",
     "$brave_resources_extra_grdps_path/brave_icons_resources.grdp",
+    "$brave_resources_extra_grdps_path/opaque_ke_bundle_resources.grdp",
+    "$brave_resources_extra_grdps_path/opaque_ke_web_resources.grdp",
     "$root_gen_dir/brave/web-ui-leo/leo.grdp",
   ]
   brave_resources_extra_grdps_deps += [ "//brave/ui/webui/resources:grdp" ]

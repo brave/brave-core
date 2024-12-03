@@ -14,6 +14,38 @@ import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
 import { isEmailValid } from './brave_account_common.js'
 
+// @ts-ignore
+import init, { return42 } from 'chrome://resources/brave/opaque-ke/web/opaque_ke.js'
+
+// const importObject = {
+//   env: {
+//     abort: () => console.log("Abort!")
+//   }
+// };
+// const request = new XMLHttpRequest();
+// request.open("GET", 'chrome://resources/brave/opaque_ke_bg.wasm');
+// request.responseType = "arraybuffer";
+// request.send();
+// request.onload = () => {
+//   const bytes = request.response;
+//   WebAssembly.instantiate(bytes, importObject).then(module => {
+//     // @ts-ignore
+//     console.log('loaded: ' + module.instance.exports.return42())
+//   });
+// };
+
+// async function loadWasm() {
+//   // @ts-ignore
+//   let wasm = (await import('chrome://resources/brave/opaque_ke.js')).default;
+//   await wasm('chrome://resources/brave/opaque_ke_bg.wasm');
+
+//   console.log('loaded')
+
+//   // Use wasm functions...
+// }
+
+// loadWasm()
+
 class PasswordStrengthMeter extends I18nMixinLit(CrLitElement) {
   static get is() {
     return 'password-strength-meter'
@@ -134,6 +166,14 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   }
 
   protected onEmailInput(detail: { value: string }) {
+    // init().then(() => {
+    //   console.log(return42())
+    // })
+
+    // @ts-ignore
+    import('chrome://resources/brave/opaque-ke/bundle/opaque_ke.bundle.js')
+      .then(module => console.log(module.return42()))
+
     this.email = detail.value.trim()
     this.isEmailValid = isEmailValid(this.email)
     this.isEmailBraveAlias = (/@bravealias\.com$/i).test(this.email)

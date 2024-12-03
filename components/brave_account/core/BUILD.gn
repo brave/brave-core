@@ -14,8 +14,4 @@ component("brave_account") {
     "brave_account.cc",
     "brave_account.h",
   ]
-
-  deps = [
-    "//brave/components/brave_account/core/opaque-ke:build_opaque_ke"
-  ]
 }
