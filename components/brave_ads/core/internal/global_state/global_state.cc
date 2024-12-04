@@ -28,6 +28,7 @@ namespace brave_ads {
 
 GlobalState::GlobalState(
     AdsClient& ads_client,
+    const base::FilePath& database_path,
     std::unique_ptr<TokenGeneratorInterface> token_generator)
     : ads_client_(ads_client),
       global_state_holder_(std::make_unique<GlobalStateHolder>(this)) {
@@ -35,7 +36,7 @@ GlobalState::GlobalState(
   browser_manager_ = std::make_unique<BrowserManager>();
   client_state_manager_ = std::make_unique<ClientStateManager>();
   confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
-  database_manager_ = std::make_unique<DatabaseManager>();
+  database_manager_ = std::make_unique<DatabaseManager>(database_path);
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
   ad_history_manager_ = std::make_unique<AdHistoryManager>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();

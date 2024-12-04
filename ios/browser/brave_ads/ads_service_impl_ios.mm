@@ -23,7 +23,6 @@
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
-#include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
@@ -40,7 +39,7 @@ constexpr char kAdsDatabaseFilename[] = "Ads.db";
 AdsServiceImplIOS::AdsServiceImplIOS(PrefService* prefs)
     : AdsService(/*delegate=*/nullptr),
       prefs_(prefs),
-      database_queue_(base::ThreadPool::CreateSequencedTaskRunner(
+      file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
   CHECK(prefs_);
@@ -80,14 +79,6 @@ void AdsServiceImplIOS::ShutdownAds(ShutdownCallback callback) {
   ads_->Shutdown(base::BindOnce(&AdsServiceImplIOS::ShutdownAdsCallback,
                                 weak_ptr_factory_.GetWeakPtr(),
                                 std::move(callback)));
-}
-
-void AdsServiceImplIOS::RunDBTransaction(
-    mojom::DBTransactionInfoPtr mojom_db_transaction,
-    RunDBTransactionCallback callback) {
-  database_.AsyncCall(&brave_ads::Database::RunDBTransaction)
-      .WithArgs(std::move(mojom_db_transaction))
-      .Then(std::move(callback));
 }
 
 void AdsServiceImplIOS::MaybeGetNotificationAd(
@@ -441,15 +432,13 @@ void AdsServiceImplIOS::NotifyDidSolveAdaptiveCaptcha() {
 
 void AdsServiceImplIOS::Shutdown() {
   ads_.reset();
-  database_.Reset();
 }
 
 void AdsServiceImplIOS::InitializeAds(InitializeCallback callback) {
   CHECK(!IsInitialized());
 
-  InitializeDatabase();
-
-  ads_ = Ads::CreateInstance(*ads_client_);
+  ads_ = Ads::CreateInstance(*ads_client_,
+                             storage_path_.AppendASCII(kAdsDatabaseFilename));
 
   ads_->SetSysInfo(mojom_sys_info_.Clone());
   ads_->SetBuildChannel(mojom_build_channel_.Clone());
@@ -470,12 +459,6 @@ void AdsServiceImplIOS::InitializeAdsCallback(InitializeCallback callback,
   std::move(callback).Run(success);
 }
 
-void AdsServiceImplIOS::InitializeDatabase() {
-  database_ = base::SequenceBound<brave_ads::Database>(
-      database_queue_,
-      base::FilePath(storage_path_.Append(kAdsDatabaseFilename)));
-}
-
 void AdsServiceImplIOS::ShutdownAdsCallback(ShutdownCallback callback,
                                             bool success) {
   Shutdown();
@@ -493,7 +476,7 @@ void AdsServiceImplIOS::ClearAdsData(ClearDataCallback callback, bool success) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  database_queue_->PostTaskAndReply(
+  file_task_runner_->PostTaskAndReply(
       FROM_HERE,
       base::BindOnce(
           [](const base::FilePath& storage_path) {

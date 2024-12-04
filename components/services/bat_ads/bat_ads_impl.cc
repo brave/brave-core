@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/ads_observer_interface.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/bat_ads_observer.h"
@@ -28,13 +29,16 @@ namespace bat_ads {
 class BatAdsImpl::AdsInstance final {
  public:
   AdsInstance(
+      const base::FilePath& service_path,
       mojo::PendingAssociatedRemote<mojom::BatAdsClient>
           bat_ads_client_pending_associated_remote,
       mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
       : bat_ads_client_mojo_proxy_(std::make_unique<BatAdsClientMojoBridge>(
             std::move(bat_ads_client_pending_associated_remote),
             std::move(client_notifier))),
-        ads_(brave_ads::Ads::CreateInstance(*bat_ads_client_mojo_proxy_)) {}
+        ads_(brave_ads::Ads::CreateInstance(
+            *bat_ads_client_mojo_proxy_,
+            service_path.AppendASCII(brave_ads::kDatabaseFilename))) {}
 
   AdsInstance(const AdsInstance&) = delete;
   AdsInstance& operator=(const AdsInstance&) = delete;
@@ -51,12 +55,14 @@ class BatAdsImpl::AdsInstance final {
   std::unique_ptr<brave_ads::Ads> ads_;
 };
 
-BatAdsImpl::BatAdsImpl(mojo::PendingAssociatedRemote<mojom::BatAdsClient>
+BatAdsImpl::BatAdsImpl(const base::FilePath& service_path,
+                       mojo::PendingAssociatedRemote<mojom::BatAdsClient>
                            bat_ads_client_pending_associated_remote,
                        mojo::PendingReceiver<mojom::BatAdsClientNotifier>
                            bat_ads_client_notifier_pending_receiver)
     : ads_instance_(std::unique_ptr<AdsInstance, base::OnTaskRunnerDeleter>(
-          new AdsInstance(std::move(bat_ads_client_pending_associated_remote),
+          new AdsInstance(service_path,
+                          std::move(bat_ads_client_pending_associated_remote),
                           std::move(bat_ads_client_notifier_pending_receiver)),
           base::OnTaskRunnerDeleter(
               base::SequencedTaskRunner::GetCurrentDefault()))) {}

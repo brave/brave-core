@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/files/file_path.h"
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
@@ -33,6 +34,7 @@ BatAdsServiceImpl::BatAdsServiceImpl(mojo::PendingReceiver<mojom::BatAdsService>
 BatAdsServiceImpl::~BatAdsServiceImpl() = default;
 
 void BatAdsServiceImpl::Create(
+    const base::FilePath& service_path,
     mojo::PendingAssociatedRemote<mojom::BatAdsClient>
         bat_ads_client_pending_associated_remote,
     mojo::PendingAssociatedReceiver<mojom::BatAds>
@@ -44,7 +46,7 @@ void BatAdsServiceImpl::Create(
 
   bat_ads_associated_receivers_.Add(
       std::make_unique<BatAdsImpl>(
-          std::move(bat_ads_client_pending_associated_remote),
+          service_path, std::move(bat_ads_client_pending_associated_remote),
           std::move(bat_ads_client_notifier_pending_receiver)),
       std::move(bat_ads_pending_associated_receiver));
 

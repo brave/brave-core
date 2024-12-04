@@ -68,10 +68,6 @@ class AdsClientMock : public AdsClient {
               ShowScheduledCaptcha,
               (const std::string& payment_id, const std::string& captcha_id));
 
-  MOCK_METHOD(void,
-              RunDBTransaction,
-              (mojom::DBTransactionInfoPtr, RunDBTransactionCallback));
-
   MOCK_METHOD(void, RecordP2AEvents, (const std::vector<std::string>& events));
 
   MOCK_METHOD(bool, FindProfilePref, (const std::string& path), (const));

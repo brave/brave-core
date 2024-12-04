@@ -32,6 +32,7 @@ class Maintenance;
 class AdsImpl final : public Ads {
  public:
   AdsImpl(AdsClient& ads_client,
+          const base::FilePath& database_path,
           std::unique_ptr<TokenGeneratorInterface> token_generator);
 
   AdsImpl(const AdsImpl&) = delete;

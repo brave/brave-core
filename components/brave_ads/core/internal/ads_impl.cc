@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 
+#include <memory>
 #include <optional>
 #include <utility>
 
@@ -41,8 +42,9 @@ void FailedToInitialize(InitializeCallback callback) {
 }  // namespace
 
 AdsImpl::AdsImpl(AdsClient& ads_client,
+                 const base::FilePath& database_path,
                  std::unique_ptr<TokenGeneratorInterface> token_generator)
-    : global_state_(ads_client, std::move(token_generator)),
+    : global_state_(ads_client, database_path, std::move(token_generator)),
       database_maintenance_(std::make_unique<database::Maintenance>()) {}
 
 AdsImpl::~AdsImpl() = default;

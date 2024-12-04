@@ -33,8 +33,6 @@ void MockLoadResourceComponent(AdsClientMock& ads_client_mock,
 
 void MockLoadDataResource(AdsClientMock& ads_client_mock);
 
-void MockRunDBTransaction(AdsClientMock& ads_client_mock, Database& database);
-
 void MockFindProfilePref(const AdsClientMock& ads_client_mock);
 void MockGetProfilePref(const AdsClientMock& ads_client_mock);
 void MockSetProfilePref(const AdsClientMock& ads_client_mock,

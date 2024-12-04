@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
@@ -33,7 +32,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads::database::table {
 
@@ -395,9 +393,8 @@ void ConfirmationQueue::GetAll(GetConfirmationQueueCallback callback) const {
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient().RunDBTransaction(
-      std::move(mojom_db_transaction),
-      base::BindOnce(&GetCallback, std::move(callback)));
+  RunDBTransaction(std::move(mojom_db_transaction),
+                   base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void ConfirmationQueue::GetNext(GetConfirmationQueueCallback callback) const {
@@ -432,9 +429,8 @@ void ConfirmationQueue::GetNext(GetConfirmationQueueCallback callback) const {
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient().RunDBTransaction(
-      std::move(mojom_db_transaction),
-      base::BindOnce(&GetCallback, std::move(callback)));
+  RunDBTransaction(std::move(mojom_db_transaction),
+                   base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 std::string ConfirmationQueue::GetTableName() const {

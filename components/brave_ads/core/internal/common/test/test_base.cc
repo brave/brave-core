@@ -32,7 +32,6 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
-#include "brave/components/brave_ads/core/public/database/database.h"
 
 namespace brave_ads::test {
 
@@ -234,10 +233,6 @@ void TestBase::MockAdsClient() {
 
   MockLoadDataResource(ads_client_mock_);
 
-  database_ =
-      std::make_unique<Database>(ProfilePath().AppendASCII(kDatabaseFilename));
-  MockRunDBTransaction(ads_client_mock_, *database_);
-
   MockFindProfilePref(ads_client_mock_);
   MockGetProfilePref(ads_client_mock_);
   MockSetProfilePref(ads_client_mock_, *this);
@@ -298,7 +293,8 @@ void TestBase::SetUpIntegrationTest() {
       << "SetUpIntegrationTest should only be called if SetUp is initialized "
          "for integration testing";
 
-  ads_ = Ads::CreateInstance(ads_client_mock_);
+  ads_ = Ads::CreateInstance(ads_client_mock_,
+                             ProfilePath().AppendASCII(kDatabaseFilename));
   CHECK(ads_) << "Failed to create ads instance";
 
   // Must be called after `Ads` is instantiated but prior to `Initialize`.
@@ -328,7 +324,8 @@ void TestBase::SetUpUnitTest() {
                                   "SetUp is initialized for unit testing";
 
   global_state_ = std::make_unique<GlobalState>(
-      ads_client_mock_, std::make_unique<TokenGeneratorMock>());
+      ads_client_mock_, ProfilePath().AppendASCII(kDatabaseFilename),
+      std::make_unique<TokenGeneratorMock>());
 
   // Must be called after `GlobalState` is instantiated but prior to
   // `MockDefaultAdsServiceState`.
