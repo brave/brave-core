@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
   <message name="IDS_BRAVE_VPN" translateable="false" desc="Title for VPN the product">
-    Brave Firewall + VPN
-  </message>
-
-  <message name="IDS_BRAVE_VPN_MAIN_PANEL_TITLE" translateable="false" desc="Title for VPN the product">
-    Firewall + VPN
+    Brave VPN
   </message>
 
   <message name="IDS_BRAVE_VPN_CONNECTED_TOOLTIP" desc="Status tooltip label when VPN has connected to a region">
-    Brave Firewall + VPN: Connected
+    Brave VPN: Connected
   </message>
 
   <message name="IDS_BRAVE_VPN_DISCONNECTED_TOOLTIP" desc="Status tooltip label when VPN has disconnected">
-    Brave Firewall + VPN: Disconnected
+    Brave VPN: Disconnected
   </message>
 
   <message name="IDS_BRAVE_VPN_PANEL_NAME" desc="The name of VPN panel">
@@ -76,10 +72,6 @@
 
   <message name="IDS_BRAVE_VPN_SETTINGS_PANEL_BACK_BUTTON_ARIA_LABEL" desc="Text for back button in settings panel">
     Close settings
-  </message>
-
-  <message name="IDS_BRAVE_VPN_ERROR_PANEL_HEADER" desc="Text shown in header for error panel">
-    Firewall + VPN
   </message>
 
   <message name="IDS_BRAVE_VPN_PANEL_GO_TO_MAIN_BUTTON_ARIA_LABEL" desc="Text for go to main button in panels">
@@ -417,4 +409,25 @@ Let's get you connected!
       Remove icon
     </message>
   </if>
+
+  <!-- Brave VPN Card widget -->
+  <message name="IDS_BRAVE_VPN_WIDGET_FEATURE_3" desc="Last feature statement for setting advertising">
+    Protect every app on your device
+  </message>
+  <message name="IDS_BRAVE_VPN_WIDGET_TITLE" desc="The text for the vpn card title">
+    Brave VPN
+  </message>
+  <message name="IDS_BRAVE_VPN_WIDGET_SETTING_DESC" desc="The text for vpn card description in customize menu">
+    Extra privacy &amp; security online.
+  </message>
+  <message name="IDS_BRAVE_VPN_WIDGET_CHANGE_LABEL" desc="The text for change link in vpn card">
+    Change
+  </message>
+  <message name="IDS_BRAVE_VPN_WIDGET_CTA" desc="The text for vpn promo card cta">
+    Start free trial
+  </message>
+  <message name="IDS_BRAVE_VPN_WIDGET_FREE_TRIAL" desc="The text for vpn promo card free trial label">
+    7-day free trial
+  </message>
+
 </grit-part>

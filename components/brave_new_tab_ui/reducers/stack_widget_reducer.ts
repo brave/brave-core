@@ -7,7 +7,8 @@ import { types } from '../constants/stack_widget_types'
 
 const widgets = {
   'rewards': 'showRewards',
-  'braveTalk': 'showBraveTalk'
+  'braveTalk': 'showBraveTalk',
+  'braveVPN': 'showBraveVPN'
 }
 
 const removeStackWidget = (widget: NewTab.StackWidget, state: NewTab.State): NewTab.State => {

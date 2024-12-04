@@ -5,8 +5,7 @@
 import { provideStrings } from '../../../../../.storybook/locale'
 
 provideStrings({
-  braveVpn: 'Brave Firewall + VPN',
-  braveVpnMainPanelTitle: 'Firewall + VPN',
+  braveVpn: 'Brave VPN',
   braveVpnConnect: 'Connect',
   braveVpnConnecting: 'Connecting',
   braveVpnConnected: 'Connected',
@@ -30,7 +29,6 @@ provideStrings({
   braveVpnReconnectAutomatically: 'Reconnect automatically',
   braveVpnContactSupport: 'Contact technical support',
   braveVpnAbout: 'About',
-  braveVpnErrorPanelHeader: 'Firewall + VPN',
   braveVpnErrorPanelBackButtonAriaLabel: 'Go to main',
   braveVpnFeature1: 'Extra privacy & security online',
   braveVpnFeature2: 'Hide your IP & change your location',
@@ -83,5 +81,11 @@ provideStrings({
     'VPN connection failed. Please try connecting again, and be sure to click "Allow" to enable Brave\'s VPN configuration.',
   braveVpnSessionExpiredTitle: 'Session expired',
   braveVpnSessionExpiredContent:
-    'Please log in to your $1Brave Account$2 to refresh your VPN session.'
+    'Please log in to your $1Brave Account$2 to refresh your VPN session.',
+  braveVpnWidgetTitle: 'Brave VPN',
+  braveVpnWidgetFeature3: 'Protect every app on your device',
+  braveVpnOptimal: 'Optimal',
+  braveVpnChangeRegion: 'Change',
+  braveVpnCTA: 'Start free trial',
+  braveVpnFreeTrial: '7-day free trial'
 })

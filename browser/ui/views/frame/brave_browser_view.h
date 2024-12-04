@@ -76,6 +76,8 @@ class BraveBrowserView : public BrowserView,
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
+
+  void ShowBraveVPNBubble(bool show_select = false);
   void CreateWalletBubble();
   void CreateApproveWalletBubble();
   void CloseWalletBubble();
@@ -163,7 +165,6 @@ class BraveBrowserView : public BrowserView,
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
-  void ShowBraveVPNBubble() override;
   views::CloseRequestResult OnWindowCloseRequested() override;
   void ConfirmBrowserCloseWithPendingDownloads(
       int download_count,

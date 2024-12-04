@@ -24,6 +24,7 @@ static_library("webui") {
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_rewards/resources:static_resources",
+    "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/constants",
     "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",

@@ -8,6 +8,7 @@ import { AddSiteTile, Tile, TileActionsContainer, TileAction, TileImageContainer
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 import { Clock } from './clock'
 import { RewardsWidget } from './rewards'
+import { VPNWidget } from './vpn'
 import { BraveTalkWidget } from './braveTalk'
 import EditTopSite from './editTopSite'
 import SearchPromotion from './searchPromotion'
@@ -33,6 +34,7 @@ export {
   Clock,
   RewardsWidget,
   BraveTalkWidget,
+  VPNWidget,
   createWidget,
   EditTopSite,
   SearchPromotion

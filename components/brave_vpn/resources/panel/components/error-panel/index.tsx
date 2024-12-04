@@ -40,7 +40,7 @@ function ErrorPanel(props: Props) {
     <S.Box>
       <S.PanelContent>
         <PanelHeader
-          title={getLocale('braveVpnErrorPanelHeader')}
+          title={getLocale('braveVpn')}
           buttonAriaLabel={getLocale('braveVpnErrorPanelBackButtonAriaLabel')}
           onClick={handleShowMainView}
 

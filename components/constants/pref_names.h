@@ -71,6 +71,8 @@ inline constexpr char kNewTabPageShowRewards[] =
     "brave.new_tab_page.show_rewards";
 inline constexpr char kNewTabPageShowBraveTalk[] =
     "brave.new_tab_page.show_together";
+inline constexpr char kNewTabPageShowBraveVPN[] =
+    "brave.new_tab_page.show_brave_vpn";
 inline constexpr char kNewTabPageHideAllWidgets[] =
     "brave.new_tab_page.hide_all_widgets";
 inline constexpr char kNewTabPageShowsOptions[] =

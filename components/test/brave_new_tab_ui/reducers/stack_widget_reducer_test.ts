@@ -63,6 +63,24 @@ describe('stackWidgetReducer', () => {
     })
   })
 
+  describe('addNewStackWidget', () => {
+    it('puts new widget at the top at first', () => {
+      const state = {
+        ...storage.defaultState,
+        widgetStackOrder: ['braveTalk', 'rewards']
+      }
+
+      // Last item in |widgetStackOrder| is top-most card.
+      const expectedState = {
+        ...storage.defaultState,
+        widgetStackOrder: ['braveTalk', 'rewards', 'braveVPN']
+      }
+
+      const assertion = storage.addNewStackWidget(state)
+      expect(assertion).toEqual(expectedState)
+    })
+  })
+
   describe('handleWidgetPrefsChange', () => {
     it('puts a widget in the forgeround if it is being turned back on', () => {
       const oldState = {
@@ -76,10 +94,20 @@ describe('stackWidgetReducer', () => {
       const expectedState = {
         ...storage.defaultState,
         showBraveTalk: true,
-        widgetStackOrder: ['rewards', 'braveTalk']
+        widgetStackOrder: ['rewards', 'braveVPN', 'braveTalk']
       }
       const assertion = handleWidgetPrefsChange(newState, oldState)
       expect(assertion).toEqual(expectedState)
+
+      // Test again for vpn widget.
+      newState.showBraveTalk = false
+      expectedState.showBraveTalk = false;
+      newState.showBraveVPN = true
+      expectedState.showBraveVPN = true
+      expectedState.widgetStackOrder = ['rewards', 'braveVPN']
+
+      const assertionForVPN = handleWidgetPrefsChange(newState, oldState)
+      expect(assertionForVPN).toEqual(expectedState)
     })
     it('removes a widget from the stack if its being turned off', () => {
       const oldState = {
