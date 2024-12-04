@@ -29,7 +29,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.AIChat.AcquisitionSource", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.AvgPromptCount", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.ChatCount", MetricConfig{.ephemeral = true}},
-    {"Brave.AIChat.ChatCount.Nebula", MetricConfig{.nebula = true}},
+    {"Brave.AIChat.ChatCount.Nebula", MetricConfig{.ephemeral = true,.nebula = true}},
     {"Brave.AIChat.ContextMenu.FreeUsages", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.ContextMenu.MostUsedAction", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.ContextMenu.PremiumUsages", MetricConfig{.ephemeral = true}},

@@ -412,7 +412,7 @@ std::string MessageManager::SerializeLog(std::string_view histogram_name,
 }
 
 const std::optional<MetricConfig>* MessageManager::GetMetricConfig(
-    const std::string_view histogram_name) const {
+    std::string_view histogram_name) const {
   const std::optional<MetricConfig>* metric_config = nullptr;
 
   auto it = p3a::kCollectedTypicalHistograms.find(histogram_name);
