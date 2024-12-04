@@ -5,9 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
@@ -171,7 +174,7 @@ void Conversions::CheckForConversions(
          GetCreativeSetConversionsWithinObservationWindow(
              creative_set_conversion_bucket, ad_event)) {
       std::optional<VerifiableConversionInfo> verifiable_conversion;
-      if (const std::optional<ConversionResourceInfo>& conversion_resource =
+      if (base::optional_ref<const ConversionResourceInfo> conversion_resource =
               resource_.get()) {
         // Attempt to build a verifiable conversion only if the conversion
         // resource is available.
@@ -180,7 +183,7 @@ void Conversions::CheckForConversions(
             creative_set_conversion);
       }
 
-      Convert(ad_event, verifiable_conversion);
+      Convert(ad_event, std::move(verifiable_conversion));
 
       did_convert = true;
 
@@ -207,17 +210,17 @@ void Conversions::CheckForConversions(
 
 void Conversions::Convert(
     const AdEventInfo& ad_event,
-    const std::optional<VerifiableConversionInfo>& verifiable_conversion) {
+    std::optional<VerifiableConversionInfo> verifiable_conversion) {
   RecordAdEvent(
       RebuildAdEvent(ad_event, mojom::ConfirmationType::kConversion,
                      /*created_at=*/base::Time::Now()),
       base::BindOnce(&Conversions::ConvertCallback, weak_factory_.GetWeakPtr(),
-                     ad_event, verifiable_conversion));
+                     ad_event, std::move(verifiable_conversion)));
 }
 
 void Conversions::ConvertCallback(
     const AdEventInfo& ad_event,
-    const std::optional<VerifiableConversionInfo>& verifiable_conversion,
+    std::optional<VerifiableConversionInfo> verifiable_conversion,
     const bool success) {
   if (!success) {
     BLOG(0, "Failed to record ad conversion event");
@@ -226,7 +229,7 @@ void Conversions::ConvertCallback(
   }
 
   const ConversionInfo conversion =
-      BuildConversion(ad_event, verifiable_conversion);
+      BuildConversion(ad_event, std::move(verifiable_conversion));
   NotifyDidConvertAd(conversion);
 }
 

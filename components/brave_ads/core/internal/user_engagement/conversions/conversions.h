@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_H_
 
 #include <cstdint>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -72,12 +71,11 @@ class Conversions final : public TabManagerObserver {
       const std::string& html,
       const CreativeSetConversionList& creative_set_conversions,
       const AdEventList& ad_events);
-  void Convert(
-      const AdEventInfo& ad_event,
-      const std::optional<VerifiableConversionInfo>& verifiable_conversion);
+  void Convert(const AdEventInfo& ad_event,
+               std::optional<VerifiableConversionInfo> verifiable_conversion);
   void ConvertCallback(
       const AdEventInfo& ad_event,
-      const std::optional<VerifiableConversionInfo>& verifiable_conversion,
+      std::optional<VerifiableConversionInfo> verifiable_conversion,
       bool success);
 
   void NotifyDidConvertAd(const ConversionInfo& conversion) const;

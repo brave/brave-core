@@ -7,6 +7,7 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
@@ -122,7 +123,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([&](const std::optional<NewTabPageAdInfo>& ad) {
+      .WillOnce([&](base::optional_ref<const NewTabPageAdInfo> ad) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
@@ -173,7 +174,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([&](const std::optional<NewTabPageAdInfo>& ad) {
+      .WillOnce([&](base::optional_ref<const NewTabPageAdInfo> ad) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
@@ -244,7 +245,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   EXPECT_CALL(callback, Run)
-      .WillOnce([&](const std::optional<NewTabPageAdInfo>& ad) {
+      .WillOnce([&](base::optional_ref<const NewTabPageAdInfo> ad) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 

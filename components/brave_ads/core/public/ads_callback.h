@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/functional/callback.h"
+#include "base/types/optional_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
@@ -29,14 +30,14 @@ using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr mojom_statement)>;
 
 using MaybeServeNewTabPageAdCallback =
-    base::OnceCallback<void(const std::optional<NewTabPageAdInfo>& ad)>;
+    base::OnceCallback<void(base::optional_ref<const NewTabPageAdInfo> ad)>;
 
 using MaybeServeInlineContentAdCallback =
     base::OnceCallback<void(const std::string& dimensions,
-                            const std::optional<InlineContentAdInfo>& ad)>;
+                            base::optional_ref<const InlineContentAdInfo> ad)>;
 
 using MaybeGetNotificationAdCallback =
-    base::OnceCallback<void(const std::optional<NotificationAdInfo>& ad)>;
+    base::OnceCallback<void(base::optional_ref<const NotificationAdInfo> ad)>;
 
 using MaybeGetSearchResultAdCallback = base::OnceCallback<void(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad)>;
@@ -47,7 +48,7 @@ using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(bool success)>;
 
 using GetAdHistoryCallback =
-    base::OnceCallback<void(const std::optional<AdHistoryList>& ad_history)>;
+    base::OnceCallback<void(std::optional<AdHistoryList> ad_history)>;
 
 }  // namespace brave_ads
 

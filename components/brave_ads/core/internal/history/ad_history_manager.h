@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/observer_list.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -69,7 +70,7 @@ class AdHistoryManager final {
                 const std::string& description) const;
 
   static void GetForUICallback(GetAdHistoryForUICallback callback,
-                               const std::optional<AdHistoryList>& ad_history);
+                               std::optional<AdHistoryList> ad_history);
 
   void NotifyDidAddAdHistoryItem(
       const AdHistoryItemInfo& ad_history_item) const;

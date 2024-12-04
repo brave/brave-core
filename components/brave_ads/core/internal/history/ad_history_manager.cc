@@ -119,7 +119,7 @@ void AdHistoryManager::MaybeAdd(
 // static
 void AdHistoryManager::GetForUICallback(
     GetAdHistoryForUICallback callback,
-    const std::optional<AdHistoryList>& ad_history) {
+    std::optional<AdHistoryList> ad_history) {
   if (!ad_history) {
     return std::move(callback).Run(/*ad_history=*/std::nullopt);
   }
