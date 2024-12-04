@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.rewards;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,7 +21,6 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
@@ -219,7 +217,6 @@ public class BraveRewardsPanel
 
     private View mWalletBalanceProgress;
     private View mBalanceDataViewGroups;
-    private View mEstimatedToolTip;
     private PopupWindowTippingTabletUI mPopupWindowTippingTabletUI;
     private boolean mIsTablet;
 
@@ -240,23 +237,6 @@ public class BraveRewardsPanel
         }
         mIconFetcher =
                 new BraveRewardsHelper(BraveRewardsHelper.currentActiveChromeTabbedActivityTab());
-
-        mPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                View estimatedTooltipGroup = mPopupView.findViewById(R.id.estimated_tooltip_group);
-                if (mEstimatedToolTip != null && mEstimatedToolTip.isShown()
-                        && !isWithinViewBounds((int) event.getRawX(), (int) event.getRawY())) {
-                    estimatedTooltipGroup.setVisibility(View.GONE);
-                }
-                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
         mPopupWindow.setOnDismissListener(
                 new PopupWindow.OnDismissListener() {
                     @Override
@@ -294,17 +274,6 @@ public class BraveRewardsPanel
             mBraveRewardsNativeWorker.addObserver(this);
         }
         setUpViews();
-    }
-
-    private Boolean isWithinViewBounds(int xPoint, int yPoint) {
-        View estimatedTooltip = mPopupView.findViewById(R.id.estimated_earnings_tooltip);
-        int[] location = new int[2];
-        estimatedTooltip.getLocationOnScreen(location);
-        int x = location[0];
-        int y = location[1];
-        int w = estimatedTooltip.getWidth();
-        int h = estimatedTooltip.getHeight();
-        return !(xPoint < x || xPoint > x + w || yPoint < y || yPoint > y + h);
     }
 
     public void showLikePopDownMenu() {
@@ -375,8 +344,6 @@ public class BraveRewardsPanel
             return;
         }
         mRewardsMainLayout.setVisibility(View.VISIBLE);
-        mEstimatedToolTip = mPopupView.findViewById(R.id.estimated_earnings_tooltip);
-        maybeShowEstimatedToolTip();
 
         TextView loggedOutStateText = mPopupView.findViewById(R.id.logged_out_state_text);
         if (mExternalWallet != null) {
@@ -449,47 +416,10 @@ public class BraveRewardsPanel
         mBtnTip.setEnabled(false);
 
         String monthName = (String) android.text.format.DateFormat.format("MMMM", new Date());
-        String monthNameShort = (String) android.text.format.DateFormat.format("MMM", new Date());
-        int lastDate = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-
-        String adsMonthlyStatement = monthNameShort.replaceAll("\\.", "");
         String monthYear = monthName + " " + currentYear;
-
-        TextView adsMonthlyStatementText = mPopupView.findViewById(R.id.ads_monthly_statement_text);
-        adsMonthlyStatementText.setText(adsMonthlyStatement);
-
         TextView monthYearText = mPopupView.findViewById(R.id.month_year_text);
         monthYearText.setText(monthYear);
-    }
-    @SuppressLint("ClickableViewAccessibility")
-    private void maybeShowEstimatedToolTip() {
-        View estimatedEarningsText = mPopupView.findViewById(R.id.estimated_earnings);
-        View estimatedTooltipGroup = mPopupView.findViewById(R.id.estimated_tooltip_group);
-        clickManageAds();
-        clickOnCloseButton();
-        estimatedEarningsText.setOnClickListener(
-                v -> { estimatedTooltipGroup.setVisibility(View.VISIBLE); });
-    }
-
-    private void clickManageAds() {
-        View manageAds = mPopupView.findViewById(R.id.manage_ads_text);
-        manageAds.setOnClickListener(v -> {
-            if (mBraveActivity != null) {
-                mBraveActivity.openNewOrSelectExistingTab(BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
-                View estimatedTooltipGroup = mPopupView.findViewById(R.id.estimated_tooltip_group);
-                estimatedTooltipGroup.setVisibility(View.GONE);
-                dismiss();
-            }
-        });
-    }
-
-    private void clickOnCloseButton() {
-        View closeButton = mPopupView.findViewById(R.id.manage_ads_close_button);
-        closeButton.setOnClickListener(v -> {
-            View estimatedTooltipGroup = mPopupView.findViewById(R.id.estimated_tooltip_group);
-            estimatedTooltipGroup.setVisibility(View.GONE);
-        });
     }
 
     private void setVisibilityForLoggedOutState() {
@@ -952,8 +882,8 @@ public class BraveRewardsPanel
         if (mExternalWallet != null
                 && mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED
                 && !PackageUtils.isFirstInstall(mActivity)) {
-            mPopupView.findViewById(R.id.estimated_earnings_range_group).setVisibility(View.GONE);
-            mPopupView.findViewById(R.id.estimated_not_connected_group).setVisibility(View.VISIBLE);
+            mPopupView.findViewById(R.id.ads_seen_group).setVisibility(View.GONE);
+            mPopupView.findViewById(R.id.rewards_not_connected_group).setVisibility(View.VISIBLE);
             TextView batAdsBalanceLearnMoreText =
                     mPopupView.findViewById(R.id.bat_ads_balance_learn_more_text);
             batAdsBalanceLearnMoreText.setOnClickListener(
@@ -964,16 +894,8 @@ public class BraveRewardsPanel
                         }
                     });
         } else {
-            TextView estimatedRange = mPopupView.findViewById(R.id.estimated_range);
-            String minValue = BraveRewardsHelper.getFormattedAmount(minEarningsThisMonth);
-            String maxValue = BraveRewardsHelper.getFormattedAmount(maxEarningsThisMonth);
-
-            if (maxEarningsThisMonth == 0.0) { // don't show range just show 0.000
-                estimatedRange.setText(maxValue);
-            } else {
-                final String estimatedValue = minValue + " - " + maxValue;
-                estimatedRange.setText(estimatedValue);
-            }
+            TextView adsCountText = mPopupView.findViewById(R.id.ads_count_text);
+            adsCountText.setText(String.valueOf(adsReceivedThisMonth));
         }
 
         if (minEarningsLastMonth > 0) {
@@ -2334,7 +2256,8 @@ public class BraveRewardsPanel
     }
 
     private void adjustTouchTargets() {
-        BraveTouchUtils.ensureMinTouchTarget(mPopupView.findViewById(R.id.estimated_earnings));
+        BraveTouchUtils.ensureMinTouchTarget(
+                mPopupView.findViewById(R.id.ads_seen_this_month_text));
         BraveTouchUtils.ensureMinTouchTarget(
                 mPopupView.findViewById(R.id.bat_ads_balance_learn_more_text));
         BraveTouchUtils.ensureMinTouchTarget(mPopupView.findViewById(R.id.btn_verify_wallet));
