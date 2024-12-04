@@ -15,6 +15,10 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
+namespace base {
+class TimeDelta;
+}  // namespace base
+
 namespace brave_ads::database::table {
 
 using GetAdEventsCallback =
@@ -25,7 +29,12 @@ class AdEvents final : public TableInterface {
   void RecordEvent(const AdEventInfo& ad_event, ResultCallback callback);
 
   void GetAll(GetAdEventsCallback callback) const;
-  // Get unexpired ad events, sorted in descending order.
+
+  void Get(mojom::AdType mojom_ad_type,
+           mojom::ConfirmationType mojom_confirmation_type,
+           base::TimeDelta time_window,
+           GetAdEventsCallback callback) const;
+
   void GetUnexpired(GetAdEventsCallback callback) const;
   void GetUnexpired(mojom::AdType mojom_ad_type,
                     GetAdEventsCallback callback) const;

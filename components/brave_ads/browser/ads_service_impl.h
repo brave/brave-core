@@ -333,16 +333,6 @@ class AdsServiceImpl final : public AdsService,
   void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
-  void CacheAdEventForInstanceId(
-      const std::string& id,
-      mojom::AdType mojom_ad_type,
-      mojom::ConfirmationType mojom_confirmation_type,
-      base::Time time) override;
-  void GetCachedAdEvents(mojom::AdType mojom_ad_type,
-                         mojom::ConfirmationType mojom_confirmation_type,
-                         GetCachedAdEventsCallback callback) override;
-  void ResetAdEventCacheForInstanceId(const std::string& id) override;
-
   void GetSiteHistory(int max_count,
                       int recent_day_range,
                       GetSiteHistoryCallback callback) override;

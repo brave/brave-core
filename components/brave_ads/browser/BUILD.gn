@@ -27,8 +27,6 @@ static_library("browser") {
     "component_updater/resource_info.h",
     "reminder/reminder_util.cc",
     "reminder/reminder_util.h",
-    "user_engagement/ad_events/ad_event_cache_helper.cc",
-    "user_engagement/ad_events/ad_event_cache_helper.h",
   ]
 
   configs += [ "//build/config/compiler:wexit_time_destructors" ]

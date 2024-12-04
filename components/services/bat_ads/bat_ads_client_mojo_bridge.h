@@ -19,10 +19,6 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
-namespace base {
-class Time;
-}  // namespace base
-
 namespace brave_ads {
 class AdsClientNotifierObserver;
 struct NotificationAdInfo;
@@ -61,17 +57,6 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
   void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
-
-  void CacheAdEventForInstanceId(
-      const std::string& id,
-      brave_ads::mojom::AdType mojom_ad_type,
-      brave_ads::mojom::ConfirmationType mojom_confirmation_type,
-      base::Time time) const override;
-  std::vector<base::Time> GetCachedAdEvents(
-      brave_ads::mojom::AdType mojom_ad_type,
-      brave_ads::mojom::ConfirmationType mojom_confirmation_type)
-      const override;
-  void ResetAdEventCacheForInstanceId(const std::string& id) const override;
 
   void GetSiteHistory(int max_count,
                       int days_ago,

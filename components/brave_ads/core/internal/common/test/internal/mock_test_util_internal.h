@@ -24,10 +24,6 @@ void MockNotifyPendingObservers(AdsClientMock& ads_client_mock,
 void MockShowNotificationAd(AdsClientMock& ads_client_mock);
 void MockCloseNotificationAd(AdsClientMock& ads_client_mock);
 
-void MockCacheAdEventForInstanceId(const AdsClientMock& ads_client_mock);
-void MockGetCachedAdEvents(const AdsClientMock& ads_client_mock);
-void MockResetAdEventCacheForInstanceId(const AdsClientMock& ads_client_mock);
-
 void MockSave(AdsClientMock& ads_client_mock);
 void MockLoad(AdsClientMock& ads_client_mock,
               const base::FilePath& profile_path);

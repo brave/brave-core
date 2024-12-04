@@ -54,6 +54,18 @@ class PromotedContentAdEventHandler final
                  FirePromotedContentAdEventHandlerCallback callback);
 
  private:
+  void GetAdEvents(const std::string& placement_id,
+                   const std::string& creative_instance_id,
+                   mojom::PromotedContentAdEventType mojom_ad_event_type,
+                   FirePromotedContentAdEventHandlerCallback callback);
+  void GetAdEventsCallback(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      mojom::PromotedContentAdEventType mojom_ad_event_type,
+      FirePromotedContentAdEventHandlerCallback callback,
+      bool success,
+      const AdEventList& ad_events);
+
   void GetForCreativeInstanceIdCallback(
       const std::string& placement_id,
       mojom::PromotedContentAdEventType mojom_ad_event_type,

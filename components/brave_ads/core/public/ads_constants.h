@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CONSTANTS_H_
 
-#include "brave/components/brave_ads/core/public/export.h"
-
 namespace brave_ads {
 
 inline constexpr char kDatabaseFilename[] = "database.sqlite";

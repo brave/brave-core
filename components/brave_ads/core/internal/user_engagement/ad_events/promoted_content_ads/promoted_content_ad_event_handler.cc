@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/promoted_content_ads/promoted_content_ad_permission_rules.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/promoted_content_ads/promoted_content_ad_event_factory.h"
 
 namespace brave_ads {
@@ -45,9 +46,44 @@ void PromotedContentAdEventHandler::FireEvent(
                              mojom_ad_event_type, std::move(callback));
   }
 
+  GetAdEvents(placement_id, creative_instance_id, mojom_ad_event_type,
+              std::move(callback));
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void PromotedContentAdEventHandler::GetAdEvents(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
+    FirePromotedContentAdEventHandlerCallback callback) {
+  const database::table::AdEvents database_table;
+  database_table.Get(
+      mojom::AdType::kPromotedContentAd,
+      mojom::ConfirmationType::kServedImpression,
+      /*time_window=*/base::Days(1),
+      base::BindOnce(&PromotedContentAdEventHandler::GetAdEventsCallback,
+                     weak_factory_.GetWeakPtr(), placement_id,
+                     creative_instance_id, mojom_ad_event_type,
+                     std::move(callback)));
+}
+
+void PromotedContentAdEventHandler::GetAdEventsCallback(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::PromotedContentAdEventType mojom_ad_event_type,
+    FirePromotedContentAdEventHandlerCallback callback,
+    const bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    BLOG(1, "Promoted content ad: Failed to get ad events");
+    return FailedToFireEvent(placement_id, creative_instance_id,
+                             mojom_ad_event_type, std::move(callback));
+  }
+
   if (mojom_ad_event_type ==
           mojom::PromotedContentAdEventType::kServedImpression &&
-      !PromotedContentAdPermissionRules::HasPermission()) {
+      !PromotedContentAdPermissionRules::HasPermission(ad_events)) {
     BLOG(1, "Promoted content ad: Not allowed due to permission rules");
     return FailedToFireEvent(placement_id, creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
@@ -60,8 +96,6 @@ void PromotedContentAdEventHandler::FireEvent(
           weak_factory_.GetWeakPtr(), placement_id, mojom_ad_event_type,
           std::move(callback)));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void PromotedContentAdEventHandler::GetForCreativeInstanceIdCallback(
     const std::string& placement_id,

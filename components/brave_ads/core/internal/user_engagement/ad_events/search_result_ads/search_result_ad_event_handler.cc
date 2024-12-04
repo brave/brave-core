@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/search_result_ads/search_result_ad_permission_rules.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_factory.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -31,7 +32,7 @@ SearchResultAdEventHandler::~SearchResultAdEventHandler() {
 void SearchResultAdEventHandler::FireEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     const mojom::SearchResultAdEventType mojom_ad_event_type,
-    FireSearchResultAdEventHandlerCallback callback) const {
+    FireSearchResultAdEventHandlerCallback callback) {
   CHECK(mojom_creative_ad);
 
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
@@ -97,8 +98,29 @@ void SearchResultAdEventHandler::MaybeFiredEventCallback(
 
 void SearchResultAdEventHandler::MaybeFireServedEvent(
     const SearchResultAdInfo& ad,
-    FireSearchResultAdEventHandlerCallback callback) const {
-  if (!SearchResultAdPermissionRules::HasPermission()) {
+    FireSearchResultAdEventHandlerCallback callback) {
+  const database::table::AdEvents database_table;
+  database_table.Get(
+      mojom::AdType::kSearchResultAd,
+      mojom::ConfirmationType::kServedImpression,
+      /*time_window=*/base::Days(1),
+      base::BindOnce(&SearchResultAdEventHandler::MaybeFireServedEventCallback,
+                     weak_factory_.GetWeakPtr(), ad, std::move(callback)));
+}
+
+void SearchResultAdEventHandler::MaybeFireServedEventCallback(
+    const SearchResultAdInfo& ad,
+    FireSearchResultAdEventHandlerCallback callback,
+    const bool success,
+    const AdEventList& ad_events) {
+  if (!success) {
+    BLOG(1, "Search result ad: Failed to get ad events");
+    return FailedToFireEvent(ad,
+                             mojom::SearchResultAdEventType::kServedImpression,
+                             std::move(callback));
+  }
+
+  if (!SearchResultAdPermissionRules::HasPermission(ad_events)) {
     BLOG(1, "Search result ad: Not allowed due to permission rules");
     return FailedToFireEvent(ad,
                              mojom::SearchResultAdEventType::kServedImpression,

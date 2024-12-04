@@ -9,7 +9,6 @@
 #include <limits>
 #include <string>
 
-#include "base/containers/contains.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/strcat.h"
@@ -33,7 +32,7 @@ bool ShouldRecordAndEmitP2AHistogramName(const PrefService* const prefs,
                                          std::string_view name) {
   CHECK(prefs);
 
-  return kP2AAllowedNames.count(name) &&
+  return kP2AAllowedNames.count(name) > 0 &&
          prefs->FindPreference(GetPrefPath(name)) != nullptr;
 }
 

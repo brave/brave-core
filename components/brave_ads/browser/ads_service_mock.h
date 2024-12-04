@@ -12,9 +12,7 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
