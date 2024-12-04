@@ -47,9 +47,7 @@ XmlUtf8String::XmlUtf8String(std::string_view str) {
 
 XmlUtf8String::XmlUtf8String(const String& str)
     : XmlUtf8String(
-          StringUTF8Adaptor(
-              str,
-              WTF::kStrictUTF8ConversionReplacingUnpairedSurrogatesWithFFFD)
+          StringUTF8Adaptor(str, Utf8ConversionMode::kStrictReplacingErrors)
               .AsStringView()) {}
 
 XmlUtf8String::XmlUtf8String(int value)
