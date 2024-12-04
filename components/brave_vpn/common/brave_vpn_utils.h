@@ -10,6 +10,7 @@
 
 #include "build/build_config.h"
 
+class GURL;
 class PrefRegistrySimple;
 class PrefService;
 namespace user_prefs {
@@ -40,6 +41,7 @@ std::string GetSkusCredential(PrefService* local_prefs);
 bool IsBraveVPNWireguardEnabled(PrefService* local_state);
 std::string_view GetMigratedNameIfNeeded(PrefService* local_prefs,
                                          const std::string& name);
+GURL GetManageURLForUIType(const std::string& type, const GURL& manage_url);
 
 #if BUILDFLAG(IS_WIN)
 void EnableWireguardIfPossible(PrefService* local_prefs);

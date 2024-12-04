@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_VPN_BRAVE_VPN_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_BRAVE_VPN_BRAVE_VPN_CONTROLLER_H_
 
+#include <string>
+
 #include "base/memory/raw_ptr.h"
 
 class BraveBrowserView;
@@ -19,7 +21,7 @@ class BraveVPNController {
   BraveVPNController& operator=(const BraveVPNController&) = delete;
 
   void ShowBraveVPNBubble(bool show_select = false);
-  void OpenVPNAccountPage();
+  void OpenVPNAccountPage(const std::string& intent);
 
  private:
   BraveBrowserView* GetBraveBrowserView();

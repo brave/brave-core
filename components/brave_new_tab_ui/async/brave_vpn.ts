@@ -42,10 +42,13 @@ handler.on(Actions.launchVPNPanel.getType(), async (store) => {
   getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
 })
 
-handler.on(Actions.openVPNAccountPage.getType(), async (store) => {
-  getNTPBrowserAPI().pageHandler.openVPNAccountPage()
-  getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
-})
+handler.on<string>(
+  Actions.openVPNAccountPage.getType(),
+  async (store, payload) => {
+    getNTPBrowserAPI().pageHandler.openVPNAccountPage(payload)
+    getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
+  }
+)
 
 handler.on(Actions.toggleConnection.getType(), async (store) => {
   const state = store.getState() as ApplicationState
