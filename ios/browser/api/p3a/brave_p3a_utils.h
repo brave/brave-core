@@ -35,6 +35,10 @@ OBJC_EXPORT
                       logType:(P3AMetricLogType)logType
               mainThreadBound:(BOOL)mainThreadBound;
 - (void)removeDynamicMetric:(NSString*)histogramName;
+- (void)updateMetricValueForSingleFormat:(NSString*)histogramName
+                                  bucket:(size_t)bucket
+                         isConstellation:(BOOL)isConstellation
+    NS_SWIFT_NAME(updateMetricValueForSingleFormat(name:bucket:isConstellation:));
 - (instancetype)init NS_UNAVAILABLE;
 @end
 
