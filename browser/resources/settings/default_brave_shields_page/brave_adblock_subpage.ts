@@ -167,17 +167,6 @@ class AdBlockSubpage extends AdBlockSubpageBase {
   isLastAttemptFailed_(item) {
     return item.last_successful_update_attempt !== 0 && item.last_successful_update_attempt === item.last_update_attempt
   }
-
-  onDeveloperModeChange_(event: Event) {
-    const target = event.target as SettingsToggleButtonElement
-    if (target.checked) {
-      setTimeout(() => {
-        this.browserProxy_.getCustomFilters().then((value) => {
-          this.customFilters_ = value
-        })
-      })
-    }
-  }
 }
 
 customElements.define(AdBlockSubpage.is, AdBlockSubpage)

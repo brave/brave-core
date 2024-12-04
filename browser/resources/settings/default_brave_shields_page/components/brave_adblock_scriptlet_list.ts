@@ -46,6 +46,10 @@ class AdblockScriptletList extends AdblockScriptletListBase {
     }
   }
 
+  static get observers() {
+    return ['onDevModeChanged_(prefs.brave.ad_block.developer_mode.value)']
+  }
+
   customScriptletsList_: Scriptlet[]
   editingScriptlet_: Scriptlet | null = null
   isEditing_: boolean = false
@@ -64,6 +68,18 @@ class AdblockScriptletList extends AdblockScriptletListBase {
     this.browserProxy_.getCustomScriptlets().then((scriptlets) => {
       this.customScriptletsList_ = scriptlets
     })
+  }
+
+  private onDevModeChanged_(value: boolean) {
+    if (!value) {
+      this.customScriptletsList_ = []
+    } else {
+      setTimeout(() => {
+        this.browserProxy_.getCustomScriptlets().then((scriptlets) => {
+          this.customScriptletsList_ = scriptlets
+        })
+      })
+    }
   }
 
   handleAdd_(_: any) {
