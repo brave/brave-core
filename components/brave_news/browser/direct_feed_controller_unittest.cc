@@ -78,10 +78,21 @@ constexpr char kFeedURL[] = "https://example.com/feed";
 class BraveNewsDirectFeedControllerTest : public testing::Test {
  public:
   BraveNewsDirectFeedControllerTest()
-      : direct_feed_controller_(test_url_loader_factory_.GetSafeWeakWrapper()) {
-  }
+      : direct_feed_controller_(
+
+            test_url_loader_factory_.GetSafeWeakWrapper(),
+            &direct_feed_fetcher_delegate_) {}
 
  protected:
+  class MockDirectFeedFetcherDelegate : public DirectFeedFetcher::Delegate {
+   public:
+    ~MockDirectFeedFetcherDelegate() override = default;
+
+    bool ShouldUpgradeToHttps(const GURL& url) override { return true; }
+
+    void Shutdown() override {}
+  };
+
   std::tuple<bool, std::string> VerifyFeedUrl(GURL feed_url) {
     return WaitForCallback(base::BindOnce(
         &DirectFeedController::VerifyFeedUrl,
@@ -99,6 +110,7 @@ class BraveNewsDirectFeedControllerTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   data_decoder::test::InProcessDataDecoder data_decoder_;
   network::TestURLLoaderFactory test_url_loader_factory_;
+  MockDirectFeedFetcherDelegate direct_feed_fetcher_delegate_;
   DirectFeedController direct_feed_controller_;
 };
 
@@ -138,6 +150,17 @@ TEST_F(BraveNewsDirectFeedControllerTest, CanFindFeedFromFeedURL) {
   ASSERT_EQ(1u, result.size());
   auto feed = std::move(result.at(0));
   EXPECT_EQ(kFeedURL, feed->feed_url.spec());
+  EXPECT_EQ("Hacker News", feed->feed_title);
+}
+
+TEST_F(BraveNewsDirectFeedControllerTest, CanUpgradeToHTTPS) {
+  // Find an RSS feed
+  test_url_loader_factory_.AddResponse(kFeedURL, GetBasicFeed());
+  auto result = FindFeeds(GURL("http://example.com/feed"));
+
+  ASSERT_EQ(1u, result.size());
+  auto feed = std::move(result.at(0));
+  EXPECT_EQ("http://example.com/feed", feed->feed_url.spec());
   EXPECT_EQ("Hacker News", feed->feed_title);
 }
 

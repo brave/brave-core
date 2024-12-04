@@ -37,7 +37,8 @@ class FeedController {
   FeedController(
       PublishersController* publishers_controller,
       BackgroundHistoryQuerier& history_querier,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      DirectFeedFetcher::Delegate* direct_feed_fetcher_delegate);
   ~FeedController();
   FeedController(const FeedController&) = delete;
   FeedController& operator=(const FeedController&) = delete;

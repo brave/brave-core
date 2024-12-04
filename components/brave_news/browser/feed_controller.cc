@@ -34,10 +34,13 @@ namespace brave_news {
 FeedController::FeedController(
     PublishersController* publishers_controller,
     BackgroundHistoryQuerier& history_querier,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    DirectFeedFetcher::Delegate* direct_feed_fetcher_delegate)
     : publishers_controller_(publishers_controller),
       history_querier_(history_querier),
-      feed_fetcher_(*publishers_controller, url_loader_factory),
+      feed_fetcher_(*publishers_controller,
+                    url_loader_factory,
+                    direct_feed_fetcher_delegate),
       on_current_update_complete_(new base::OneShotEvent()) {}
 
 FeedController::~FeedController() = default;
