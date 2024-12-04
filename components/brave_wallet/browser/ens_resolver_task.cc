@@ -11,8 +11,6 @@
 
 #include "base/compiler_specific.h"
 #include "base/containers/contains.h"
-#include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
@@ -117,13 +115,13 @@ EnsResolverTaskError::~EnsResolverTaskError() = default;
 std::vector<uint8_t> MakeAddrCall(const std::string& domain) {
   return eth_abi::TupleEncoder()
       .AddFixedBytes(Namehash(domain))
-      .EncodeWithSelector(base::span(kAddrBytes32Selector));
+      .EncodeWithSelector(kAddrBytes32Selector);
 }
 
 std::vector<uint8_t> MakeContentHashCall(const std::string& domain) {
   return eth_abi::TupleEncoder()
       .AddFixedBytes(Namehash(domain))
-      .EncodeWithSelector(base::span(kContentHashBytes32Selector));
+      .EncodeWithSelector(kContentHashBytes32Selector);
 }
 
 OffchainLookupData::OffchainLookupData() = default;
@@ -156,18 +154,22 @@ std::optional<OffchainLookupData> OffchainLookupData::ExtractFromJson(
 
 std::optional<OffchainLookupData> OffchainLookupData::ExtractFromEthAbiPayload(
     eth_abi::Span bytes) {
-  auto [selector, args] =
+  auto selector_and_args =
       eth_abi::ExtractFunctionSelectorAndArgsFromCall(bytes);
+  if (!selector_and_args) {
+    return std::nullopt;
+  }
+  auto [selector, args] = *selector_and_args;
 
   // error OffchainLookup(address sender, string[] urls, bytes callData,
   // bytes4 callbackFunction, bytes extraData)
-  if (!base::ranges::equal(selector, kOffchainLookupSelector)) {
+  if (selector != kOffchainLookupSelector) {
     return std::nullopt;
   }
   auto sender = eth_abi::ExtractAddressFromTuple(args, 0);
   auto urls = eth_abi::ExtractStringArrayFromTuple(args, 1);
   auto call_data = eth_abi::ExtractBytesFromTuple(args, 2);
-  auto callback_function = eth_abi::ExtractFixedBytesFromTuple(args, 4, 3);
+  auto callback_function = eth_abi::ExtractFixedBytesFromTuple<4>(args, 3);
   auto extra_data = eth_abi::ExtractBytesFromTuple(args, 4);
 
   if (!sender.IsValid() || !urls || !call_data || !callback_function ||
@@ -460,7 +462,7 @@ void EnsResolverTask::FetchOffchainData() {
   DCHECK(offchain_lookup_data_);
 
   GURL offchain_url;
-  bool data_substitued = false;
+  bool data_substituted = false;
   bool valid_sender = true;
 
   if (!allow_offchain_.has_value()) {
@@ -470,7 +472,7 @@ void EnsResolverTask::FetchOffchainData() {
     ScheduleWorkOnTask();
     return;
   } else if (!allow_offchain_.value()) {
-    // Offchain lookup explicily disabled.
+    // Offchain lookup explicitly disabled.
     task_error_.emplace(MakeInternalError());
     ScheduleWorkOnTask();
     return;
@@ -495,7 +497,7 @@ void EnsResolverTask::FetchOffchainData() {
   for (auto url_string : offchain_lookup_data_->urls) {
     base::ReplaceSubstringsAfterOffset(&url_string, 0, "{sender}",
                                        offchain_lookup_data_->sender.ToHex());
-    data_substitued = base::Contains(url_string, "{data}");
+    data_substituted = base::Contains(url_string, "{data}");
     base::ReplaceSubstringsAfterOffset(&url_string, 0, "{data}",
                                        ToHex(offchain_lookup_data_->call_data));
     GURL url(url_string);
@@ -513,7 +515,7 @@ void EnsResolverTask::FetchOffchainData() {
   }
 
   std::string payload;
-  if (!data_substitued) {
+  if (!data_substituted) {
     base::Value::Dict payload_dict;
     payload_dict.Set("sender", offchain_lookup_data_->sender.ToHex());
     payload_dict.Set("data", ToHex(offchain_lookup_data_->call_data));

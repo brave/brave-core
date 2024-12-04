@@ -188,8 +188,7 @@ std::vector<uint8_t> EthTransaction::GetMessageToSign(uint256_t chain_id,
     list.Append(RLPUint256ToBlob(0));
   }
 
-  const std::string message = RLPEncode(base::Value(std::move(list)));
-  auto result = std::vector<uint8_t>(message.begin(), message.end());
+  auto result = RLPEncode(list);
   return hash ? base::ToVector(KeccakHash(result)) : result;
 }
 

@@ -3,19 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
-#include <memory>
 #include <optional>
 #include <utility>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -76,7 +70,7 @@ namespace brave_wallet::eth_abi {
 TEST(EthAbiUtilsTest, OffchainLookup) {
   auto bytes = ToBytes(GetOffchainLookupResponse());
 
-  auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+  auto [selector, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
 
   EXPECT_EQ("0x556f1830", ToHex(selector));
 
@@ -97,7 +91,7 @@ TEST(EthAbiUtilsTest, OffchainLookup) {
             "3b3b57de42041b0018edd29d7c17154b0c671acc0502ea0b3693cafbeadf58e6be"
             "aaa16c00000000000000000000000000000000000000000000000000000000");
 
-  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple(args, 4, 3)), "0xf4d4d2f8");
+  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple<4>(args, 3)), "0xf4d4d2f8");
 
   EXPECT_EQ(ToHex(*ExtractBytesFromTuple(args, 4)),
             "0x9061b92300000000000000000000000000000000000000000000000000000000"
@@ -118,12 +112,12 @@ TEST(EthAbiUtilsTest, OffchainLookupBy1Test) {
       auto bytes = bytes_base;
       bytes[i] += d;
 
-      auto [_, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+      auto [_, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
 
       ExtractAddressFromTuple(args, 0);
       ExtractStringArrayFromTuple(args, 1);
       ExtractBytesFromTuple(args, 2);
-      ExtractFixedBytesFromTuple(args, 4, 3);
+      ExtractFixedBytesFromTuple<4>(args, 3);
       ExtractBytesFromTuple(args, 4);
     }
   }
@@ -132,7 +126,7 @@ TEST(EthAbiUtilsTest, OffchainLookupBy1Test) {
 TEST(EthAbiUtilsTest, ExtractFunctionSelectorAndArgsFromCall) {
   {
     std::vector<uint8_t> bytes = ToBytes(GetOffchainLookupResponse());
-    auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+    auto [selector, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
     EXPECT_EQ(GetOffchainLookupResponse().substr(0, 8),
               ToHex(selector).substr(2));
     EXPECT_EQ(GetOffchainLookupResponse().substr(8), ToHex(args).substr(2));
@@ -141,7 +135,7 @@ TEST(EthAbiUtilsTest, ExtractFunctionSelectorAndArgsFromCall) {
   {
     // Only selector.
     std::vector<uint8_t> bytes = {0x01, 0x02, 0x03, 0x04};
-    auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+    auto [selector, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
     EXPECT_TRUE(base::ranges::equal(bytes, selector));
     EXPECT_TRUE(args.empty());
   }
@@ -149,25 +143,19 @@ TEST(EthAbiUtilsTest, ExtractFunctionSelectorAndArgsFromCall) {
   {
     // Not enough for selector.
     std::vector<uint8_t> bytes = {0x01, 0x02, 0x03};
-    auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
-    EXPECT_TRUE(selector.empty());
-    EXPECT_TRUE(args.empty());
+    EXPECT_FALSE(ExtractFunctionSelectorAndArgsFromCall(bytes));
   }
 
   {
     // Bad args alignment.
     std::vector<uint8_t> bytes = {0x01, 0x02, 0x03, 0x04, 0x05};
-    auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
-    EXPECT_TRUE(selector.empty());
-    EXPECT_TRUE(args.empty());
+    EXPECT_FALSE(ExtractFunctionSelectorAndArgsFromCall(bytes));
   }
 
   {
     // Empty case.
     std::vector<uint8_t> bytes = {};
-    auto [selector, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
-    EXPECT_TRUE(selector.empty());
-    EXPECT_TRUE(args.empty());
+    EXPECT_FALSE(ExtractFunctionSelectorAndArgsFromCall(bytes));
   }
 }
 
@@ -477,7 +465,7 @@ TEST(EthAbiUtilsTest, ExtractStringArray) {
 TEST(EthAbiUtilsTest, ExtractStringArrayFromTuple) {
   auto bytes = ToBytes(GetOffchainLookupResponse());
 
-  auto [_, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+  auto [_, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
 
   EXPECT_THAT(
       *ExtractStringArrayFromTuple(args, 1),
@@ -503,7 +491,7 @@ TEST(EthAbiUtilsTest, ExtractStringArrayFromTuple) {
 TEST(EthAbiUtilsTest, ExtractBytesFromTuple) {
   auto bytes = ToBytes(GetOffchainLookupResponse());
 
-  auto [_, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+  auto [_, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
 
   EXPECT_EQ(ToHex(*ExtractBytesFromTuple(args, 2)).substr(2),
             "9061b92300000000000000000000000000000000000000000000000000000000"
@@ -693,29 +681,28 @@ TEST(EthAbiUtilsTest, ExtractBoolBytesTupleArray) {
 TEST(EthAbiUtilsTest, ExtractFixedBytesFromTuple) {
   auto bytes = ToBytes(GetOffchainLookupResponse());
 
-  auto [_, args] = ExtractFunctionSelectorAndArgsFromCall(bytes);
+  auto [_, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
 
-  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple(args, 4, 3)), "0xf4d4d2f8");
+  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple<4>(args, 3)), "0xf4d4d2f8");
 
   // Bad tuple pos.
-  EXPECT_FALSE(ExtractFixedBytesFromTuple(args, 4, 0));
-  EXPECT_FALSE(ExtractFixedBytesFromTuple(args, 4, 1000));
+  EXPECT_FALSE(ExtractFixedBytesFromTuple<4>(args, 0));
+  EXPECT_FALSE(ExtractFixedBytesFromTuple<4>(args, 1000));
 
   // Empty data.
-  EXPECT_FALSE(ExtractFixedBytesFromTuple({}, 4, 0));
+  EXPECT_FALSE(ExtractFixedBytesFromTuple<4>({}, 0));
 
   bytes[101] = 0;
-  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple(args, 4, 3)), "0xf400d2f8");
+  EXPECT_EQ(ToHex(*ExtractFixedBytesFromTuple<4>(args, 3)), "0xf400d2f8");
 
   // Bad padding.
   bytes[111] = 1;
-  EXPECT_FALSE(ExtractFixedBytesFromTuple(args, 4, 3));
+  EXPECT_FALSE(ExtractFixedBytesFromTuple<4>(args, 3));
 }
 
 TEST(EthAbiTupleEncoderTest, EncodeCall) {
   std::vector<uint8_t> data(33, 0xbb);
-  auto selector_bytes = ToBytes("f400d2f8");
-  Span4 selector(selector_bytes.begin(), 4u);
+  Bytes4 selector({0xf4, 0x00, 0xd2, 0xf8});
   // f(bytes,bytes)
   EXPECT_EQ(
       "f400d2f8"
@@ -746,7 +733,7 @@ TEST(EthAbiTupleEncoderTest, EncodeCall) {
       "f400d2f8"
       "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       ToHex(TupleEncoder()
-                .AddFixedBytes(Span32(data.begin(), 32u))
+                .AddFixedBytes(base::span(data).first(32u))
                 .EncodeWithSelector(selector))
           .substr(2));
 }
