@@ -141,7 +141,7 @@ extension AVAsset {
   }
 
   public static var defaultOptions: [String: Any] {
-    let userAgent = UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile
+    let userAgent = UserAgent.userAgentForIdiom()
     var options: [String: Any] = [:]
     options[AVURLAssetHTTPUserAgentKey] = userAgent
     return options
