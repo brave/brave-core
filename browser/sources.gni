@@ -20,7 +20,6 @@ import("//brave/browser/download/sources.gni")
 import("//brave/browser/ephemeral_storage/sources.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/gcm_driver/sources.gni")
-import("//brave/browser/importer/sources.gni")
 import("//brave/browser/infobars/sources.gni")
 import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
@@ -524,7 +523,6 @@ brave_chrome_browser_sources += brave_browser_debounce_sources
 brave_chrome_browser_sources += brave_browser_download_sources
 brave_chrome_browser_sources += brave_browser_ephemeral_storage_sources
 brave_chrome_browser_sources += brave_browser_gcm_driver_sources
-brave_chrome_browser_sources += brave_browser_importer_sources
 brave_chrome_browser_sources += brave_browser_infobar_sources
 brave_chrome_browser_sources += brave_browser_misc_metrics_sources
 brave_chrome_browser_sources += brave_browser_net_sources
@@ -556,7 +554,6 @@ brave_chrome_browser_deps += brave_browser_debounce_deps
 brave_chrome_browser_deps += brave_browser_download_deps
 brave_chrome_browser_deps += brave_browser_ephemeral_storage_deps
 brave_chrome_browser_deps += brave_browser_gcm_driver_deps
-brave_chrome_browser_deps += brave_browser_importer_deps
 brave_chrome_browser_deps += brave_browser_infobar_deps
 brave_chrome_browser_deps += brave_browser_misc_metrics_deps
 brave_chrome_browser_deps += brave_browser_net_deps
