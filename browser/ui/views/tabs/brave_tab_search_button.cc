@@ -11,6 +11,7 @@
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -20,12 +21,14 @@ BraveTabSearchButton::BraveTabSearchButton(
     BrowserWindowInterface* browser_window_interface,
     Edge fixed_flat_edge,
     Edge animated_flat_edge,
-    views::View* anchor_view)
+    views::View* anchor_view,
+    TabStrip* tab_strip)
     : TabSearchButton(tab_strip_controller,
                       browser_window_interface,
                       fixed_flat_edge,
                       animated_flat_edge,
-                      anchor_view) {
+                      anchor_view,
+                      tab_strip) {
   // Resetting the tab search bubble host first, to avoid a dangling in
   // `BraveTabSearchButton`, triggered `TabSearchBubbleHost` calling
   // `SetButtonController` and in the process destroying the still alive
@@ -34,7 +37,7 @@ BraveTabSearchButton::BraveTabSearchButton(
   tab_search_bubble_host_ = nullptr;
 
   tab_search_bubble_host_ = std::make_unique<BraveTabSearchBubbleHost>(
-      this, browser_window_interface, anchor_view);
+      this, browser_window_interface, anchor_view, tab_strip->AsWeakPtr());
 
   // Apply toolbar's icon color to search button.
   SetForegroundFrameActiveColorId(kColorToolbarButtonIcon);

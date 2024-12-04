@@ -18,7 +18,8 @@ class BraveTabSearchButton : public TabSearchButton {
       BrowserWindowInterface* browser_window_interface,
       Edge fixed_flat_edge,
       Edge animated_flat_edge,
-      views::View* anchor_view);
+      views::View* anchor_view,
+      TabStrip* tab_strip);
   ~BraveTabSearchButton() override;
   BraveTabSearchButton(const BraveTabSearchButton&) = delete;
   BraveTabSearchButton& operator=(const BraveTabSearchButton&) = delete;
