@@ -62,6 +62,12 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:text="@string/brave_sync_start_new_chain"
+               style="@style/BraveSyncButtonTransparent" />
+
+           <android.widget.Button android:id="@+id/brave_sync_btn_advanced_options"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="@string/brave_sync_advanced_options"
                style="@style/BraveSyncBottomButton"
                android:background="@android:color/transparent"
                android:textColor="@color/modern_grey_600" />

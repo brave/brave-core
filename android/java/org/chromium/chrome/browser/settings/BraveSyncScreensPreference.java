@@ -101,6 +101,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     // The have a sync code button displayed in the Sync view.
     private Button mScanChainCodeButton;
     private Button mStartNewChainButton;
+    private Button mAdvancedOptionsButton;
     private Button mEnterCodeWordsButton;
     private Button mDoneButton;
     private Button mDoneLaptopButton;
@@ -373,6 +374,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mStartNewChainButton = getView().findViewById(R.id.brave_sync_btn_start_new_chain);
         if (mStartNewChainButton != null) {
             mStartNewChainButton.setOnClickListener(this);
+        }
+
+        mAdvancedOptionsButton = getView().findViewById(R.id.brave_sync_btn_advanced_options);
+        if (mAdvancedOptionsButton != null) {
+            mAdvancedOptionsButton.setOnClickListener(this);
         }
 
         mEnterCodeWordsButton = getView().findViewById(R.id.brave_sync_btn_enter_code_words);
