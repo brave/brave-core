@@ -1113,6 +1113,11 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
+      // load cancelled / user stopped load. Cancel https upgrade fallback timer.
+      tab.upgradedHTTPSRequest = nil
+      tab.upgradeHTTPSTimeoutTimer?.invalidate()
+      tab.upgradeHTTPSTimeoutTimer = nil
+
       if tab === tabManager.selectedTab {
         updateToolbarCurrentURL(tab.url?.displayURL)
         updateWebViewPageZoom(tab: tab)
