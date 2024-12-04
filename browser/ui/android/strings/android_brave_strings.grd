@@ -1178,6 +1178,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SYNC_START_NEW_CHAIN" desc="Text for Brave Sync start new chain message.">
         Start a new sync chain
       </message>
+      <message name="IDS_BRAVE_SYNC_ADVANCED_OPTIONS" desc="Text for Brave Sync advanced options button.">
+        Advanced options
+      </message>
       <message name="IDS_BRAVE_SYNC_BTN_MOBILE" desc="Text for Brave Sync add a mobile device button.">
         Add a Mobile Device
       </message>
