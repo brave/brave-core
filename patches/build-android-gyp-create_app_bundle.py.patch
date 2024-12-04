@@ -1,0 +1,12 @@
+diff --git a/build/android/gyp/create_app_bundle.py b/build/android/gyp/create_app_bundle.py
+index 279898876b70c759dcfd1762a6ac36eee2559caf..cf713df3441a8d5f8b3b461ad28e4c3da9d3a83d 100755
+--- a/build/android/gyp/create_app_bundle.py
++++ b/build/android/gyp/create_app_bundle.py
+@@ -78,6 +78,7 @@ _ALLOWLISTED_NON_BASE_SERVICES = {
+     'androidx.room.MultiInstanceInvalidationService',
+     'com.google.apps.tiktok.concurrent.AndroidFuturesService',
+     'com.google.apps.tiktok.concurrent.InternalForegroundService',
++    'com.brave.playlist.playback_service.VideoPlaybackService', 'org.chromium.chrome.browser.media.ui.BraveMediaNotificationControllerServices$PlaybackListenerMicService',
+ }
+ 
+ 
