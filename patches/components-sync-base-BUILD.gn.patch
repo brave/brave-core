@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/BUILD.gn b/components/sync/base/BUILD.gn
-index a7e85ebc47c9e40263e5572f7491fd6d14906512..397809fc8bfaaf46774ec8030278af0524e92a36 100644
+index 9527404b4a514a944ac121f396b154745ba58c84..d587f23be94d7f623854ef93d5b316f9187fa804 100644
 --- a/components/sync/base/BUILD.gn
 +++ b/components/sync/base/BUILD.gn
-@@ -88,5 +88,7 @@ static_library("base") {
+@@ -104,5 +104,7 @@ static_library("base") {
      "//ui/base",
    ]
  

@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/bundle_js.gni b/ui/webui/resources/tools/bundle_js.gni
-index dc7540cfe05c6..d35b4bca42d4e 100644
+index dc7540cfe05c6e8779814cc432c1dbb8e0460a47..d35b4bca42d4ea323a8b302d8087f98bb3987c19 100644
 --- a/ui/webui/resources/tools/bundle_js.gni
 +++ b/ui/webui/resources/tools/bundle_js.gni
 @@ -123,6 +123,7 @@ template("bundle_js") {
