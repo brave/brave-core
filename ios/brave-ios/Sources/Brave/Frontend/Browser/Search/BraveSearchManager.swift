@@ -122,7 +122,7 @@ class BraveSearchManager: NSObject {
       request.setValue($0.value, forHTTPHeaderField: $0.key)
     }
 
-    request.setValue(UserAgent.userAgentForDesktopMode, forHTTPHeaderField: "User-Agent")
+    request.setValue(UserAgent.userAgentForIdiom(), forHTTPHeaderField: "User-Agent")
 
     let session = URLSession(configuration: .ephemeral, delegate: authManager, delegateQueue: .main)
 
@@ -203,7 +203,7 @@ class BraveSearchManager: NSObject {
     )
 
     // Must be set, without it the fallback results may be not retrieved correctly.
-    request.addValue(UserAgent.userAgentForDesktopMode, forHTTPHeaderField: "User-Agent")
+    request.addValue(UserAgent.userAgentForIdiom(), forHTTPHeaderField: "User-Agent")
 
     request.addValue(
       "text/html;charset=UTF-8, text/plain;charset=UTF-8",

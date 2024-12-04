@@ -109,63 +109,26 @@ class UserAgentTests: XCTestCase {
     waitForExpectations(timeout: 60, handler: nil)
   }
 
-  // MARK: iPad only tests - must run on iPad
-
-  func testDesktopUserAgent() {
-    // Must run on iPad iOS 13+
-    if UIDevice.current.userInterfaceIdiom != .pad
-      || ProcessInfo().operatingSystemVersion.majorVersion < 13
-    {
-      return
-    }
+  func testDesktopUserAgentOnPad() {
+    Preferences.UserAgent.alwaysRequestDesktopSite.value = true
 
     XCTAssertTrue(desktopUARegex(UserAgent.desktop), "User agent computes correctly.")
 
-    let expectation = self.expectation(description: "Found Firefox user agent")
-    let webView = BraveWebView(frame: .zero, isPrivate: false)
+    let userAgent = UserAgent.userAgentForIdiom(.pad)
 
-    webView.evaluateSafeJavaScript(
-      functionName: "navigator.userAgent",
-      contentWorld: .page,
-      asFunction: false
-    ) { result, error in
-      let userAgent = result as! String
-      if self.mobileUARegex(userAgent) || !self.desktopUARegex(userAgent) {
-        XCTFail("User agent did not match expected pattern! \(userAgent)")
-      }
-      expectation.fulfill()
+    if self.mobileUARegex(userAgent) || !self.desktopUARegex(userAgent) {
+      XCTFail("User agent did not match expected pattern! \(userAgent)")
     }
-
-    waitForExpectations(timeout: 60, handler: nil)
   }
 
-  func testIpadMobileUserAgent() {
-    // Must run on iPad iOS 13+
-    if UIDevice.current.userInterfaceIdiom != .pad
-      || ProcessInfo().operatingSystemVersion.majorVersion < 13
-    {
-      return
-    }
-
+  func testMobileUserAgentOnPad() {
     Preferences.UserAgent.alwaysRequestDesktopSite.value = false
 
     XCTAssertTrue(mobileUARegex(UserAgent.mobile), "User agent computes correctly.")
+    let userAgent = UserAgent.userAgentForIdiom(.pad)
 
-    let expectation = self.expectation(description: "Found Firefox user agent")
-    let webView = BraveWebView(frame: .zero, isPrivate: false)
-
-    webView.evaluateSafeJavaScript(
-      functionName: "navigator.userAgent",
-      contentWorld: .page,
-      asFunction: false
-    ) { result, error in
-      let userAgent = result as! String
-      if !self.mobileUARegex(userAgent) || self.desktopUARegex(userAgent) {
-        XCTFail("User agent did not match expected pattern! \(userAgent)")
-      }
-      expectation.fulfill()
+    if !self.mobileUARegex(userAgent) || self.desktopUARegex(userAgent) {
+      XCTFail("User agent did not match expected pattern! \(userAgent)")
     }
-
-    waitForExpectations(timeout: 60, handler: nil)
   }
 }
