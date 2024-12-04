@@ -32,8 +32,7 @@ ConversionActionType ToConversionActionType(
                << base::to_underlying(mojom_confirmation_type);
 }
 
-ConversionActionType ToConversionActionType(
-    const std::string_view action_type) {
+ConversionActionType ToConversionActionType(std::string_view action_type) {
   if (action_type == kViewThroughConversionActionType) {
     return ConversionActionType::kViewThrough;
   }

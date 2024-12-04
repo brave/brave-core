@@ -260,26 +260,26 @@ mojom::CreativeSearchResultAdInfoPtr ExtractMojomEntity(
       return {};
     }
 
-    const std::string_view property_name = mojom_property->name;
-    if (base::Contains(kRequiredCreativeAdPropertyNames, property_name)) {
+    if (base::Contains(kRequiredCreativeAdPropertyNames,
+                       mojom_property->name)) {
       if (!ExtractCreativeAdMojomProperty(mojom_property,
                                           mojom_creative_ad.get())) {
         VLOG(6) << "Failed to extract creative search result ad property "
-                << property_name;
+                << mojom_property->name;
         return {};
       }
 
-      creative_ad_property_names.insert(property_name);
+      creative_ad_property_names.insert(mojom_property->name);
     } else if (base::Contains(kCreativeSetConversionPropertyNames,
-                              property_name)) {
+                              mojom_property->name)) {
       if (!ExtractCreativeSetConversionMojomProperty(
               mojom_property, mojom_creative_set_conversion.get())) {
         VLOG(6) << "Failed to extract creative set conversion property "
-                << property_name;
+                << mojom_property->name;
         return {};
       }
 
-      creative_set_conversion_property_names.insert(property_name);
+      creative_set_conversion_property_names.insert(mojom_property->name);
     }
   }
 

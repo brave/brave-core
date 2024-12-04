@@ -25,7 +25,7 @@ constexpr auto kAllowedHeaders = base::MakeFixedFlatSet<std::string_view>(
 
 bool ShouldAllowHeader(const std::string& header) {
   return base::ranges::any_of(kAllowedHeaders,
-                              [&header](const std::string_view allowed_header) {
+                              [&header](std::string_view allowed_header) {
                                 return header.starts_with(allowed_header);
                               });
 }

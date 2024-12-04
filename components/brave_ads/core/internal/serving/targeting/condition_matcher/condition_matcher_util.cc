@@ -36,12 +36,11 @@ std::string MaybeStripOperatorPrefix(const std::string& pref_path) {
   return pref_path.substr(pos + 1);
 }
 
-bool HasNotOperator(const std::string_view pref_path) {
+bool HasNotOperator(std::string_view pref_path) {
   return pref_path.starts_with(kPrefPathNotOperatorPrefix);
 }
 
-bool MatchCondition(const std::string_view value,
-                    const std::string_view condition) {
+bool MatchCondition(std::string_view value, std::string_view condition) {
   return MatchEpochOperator(value, condition) ||
          MatchNumericalOperator(value, condition) ||
          MatchPattern(value, condition) || MatchRegex(value, condition);
