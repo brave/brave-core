@@ -32,7 +32,7 @@ import org.chromium.ui.UiUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.modaldialog.ModalDialogProperties;
 import org.chromium.ui.modelutil.PropertyModel;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.util.ColorUtils;
 
@@ -75,15 +75,22 @@ class BravePermissionDialogModel {
 
         String messageText = delegate.getMessageText();
         // Override Allow button text
-        String primaryButtonText = context.getResources().getString(
-                R.string.widevine_permission_request_primary_button_text);
+        String primaryButtonText =
+                context.getResources()
+                        .getString(R.string.widevine_permission_request_primary_button_text);
         assert !TextUtils.isEmpty(messageText) && !TextUtils.isEmpty(primaryButtonText);
-        SpannableString learnMoreLink = SpanApplier.applySpans(
-                context.getResources().getString(R.string.widevine_permission_request_link),
-                new SpanApplier.SpanInfo("<LINK>", "</LINK>",
-                        new NoUnderlineClickableSpan(context, R.color.brave_link, result -> {
-                            openUrlInCustomTab(context, URL_WIDEVINE_LEARN_MORE);
-                        })));
+        SpannableString learnMoreLink =
+                SpanApplier.applySpans(
+                        context.getResources().getString(R.string.widevine_permission_request_link),
+                        new SpanApplier.SpanInfo(
+                                "<LINK>",
+                                "</LINK>",
+                                new ChromeClickableSpan(
+                                        context,
+                                        R.color.brave_link,
+                                        result -> {
+                                            openUrlInCustomTab(context, URL_WIDEVINE_LEARN_MORE);
+                                        })));
 
         TextView messageTextView = customView.findViewById(R.id.message);
         messageTextView.setText(messageText);

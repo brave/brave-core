@@ -76,7 +76,7 @@ import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
@@ -1026,16 +1026,16 @@ public class BraveRewardsPanel
         enableControls(false, mRewardsMainLayout);
         mRewardsTosModal.setVisibility(View.VISIBLE);
 
-        NoUnderlineClickableSpan resetClickableSpan =
-                new NoUnderlineClickableSpan(
+        ChromeClickableSpan resetClickableSpan =
+                new ChromeClickableSpan(
                         mActivity,
                         R.color.rewards_panel_notification_secondary_text_color,
                         (textView) -> {
                             TabUtils.openUrlInNewTab(false, BraveActivity.BRAVE_REWARDS_RESET_PAGE);
                             dismiss();
                         });
-        NoUnderlineClickableSpan tosClickableSpan =
-                new NoUnderlineClickableSpan(
+        ChromeClickableSpan tosClickableSpan =
+                new ChromeClickableSpan(
                         mActivity,
                         R.color.brave_blue_tint_color,
                         (textView) -> {
@@ -1572,10 +1572,13 @@ public class BraveRewardsPanel
 
         SpannableString ss = new SpannableString(textToAgree.toString());
 
-        NoUnderlineClickableSpan clickableSpan = new NoUnderlineClickableSpan(
-                mActivity, R.color.brave_rewards_modal_theme_color, (textView) -> {
-                    CustomTabActivity.showInfoPage(mActivity, NEW_SIGNUP_DISABLED_URL);
-                });
+        ChromeClickableSpan clickableSpan =
+                new ChromeClickableSpan(
+                        mActivity,
+                        R.color.brave_rewards_modal_theme_color,
+                        (textView) -> {
+                            CustomTabActivity.showInfoPage(mActivity, NEW_SIGNUP_DISABLED_URL);
+                        });
         int learnMoreIndex = text.indexOf(mActivity.getResources().getString(R.string.learn_more));
 
         ss.setSpan(clickableSpan, learnMoreIndex,
@@ -1590,9 +1593,13 @@ public class BraveRewardsPanel
 
         SpannableString ss = new SpannableString(textMain.toString());
 
-        NoUnderlineClickableSpan clickableSpan =
-                new NoUnderlineClickableSpan(mActivity, R.color.brave_rewards_modal_theme_color,
-                        (textView) -> { CustomTabActivity.showInfoPage(mActivity, clickUrl); });
+        ChromeClickableSpan clickableSpan =
+                new ChromeClickableSpan(
+                        mActivity,
+                        R.color.brave_rewards_modal_theme_color,
+                        (textView) -> {
+                            CustomTabActivity.showInfoPage(mActivity, clickUrl);
+                        });
         int clickableTextIndex = mainText.indexOf(clickableText);
 
         ss.setSpan(clickableSpan, clickableTextIndex, clickableTextIndex + clickableText.length(),
