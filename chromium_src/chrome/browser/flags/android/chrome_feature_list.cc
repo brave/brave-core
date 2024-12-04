@@ -17,6 +17,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/request_otr/common/features.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -46,6 +47,7 @@
     &playlist::features::kPlaylist,                                     \
     &download::features::kParallelDownloading,                          \
     &preferences::features::kBraveBackgroundVideoPlayback,              \
+    &brave_rewards::features::kNewRewardsUIFeature,                     \
     &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
     &speedreader::kSpeedreaderFeature,                                  \
