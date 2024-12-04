@@ -1475,7 +1475,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void onCompleteReset(boolean success) {
         if (success) {
             BraveRewardsHelper.resetRewards();
-            showOrHideRewardsBadge(false);
+            if (!BraveRewardsHelper.shouldShowNewRewardsUI()) {
+                showOrHideRewardsBadge(false);
+            }
         }
     }
 
