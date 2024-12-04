@@ -182,7 +182,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
               mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
               mojom::AccountKind::kDerived, 0);
           OrchardBlockScanner::Result result = CreateResultForTesting(
-              tree_state, std::vector<OrchardCommitment>());
+              std::move(tree_state), std::vector<OrchardCommitment>());
           for (const auto& block : blocks) {
             // 3 notes in the blockchain
             if (block->height == kNu5BlockUpdate + 105) {
@@ -292,7 +292,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                 mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
                 mojom::AccountKind::kDerived, 0);
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                tree_state, std::vector<OrchardCommitment>());
+                std::move(tree_state), std::vector<OrchardCommitment>());
             for (const auto& block : blocks) {
               // 3 notes in the blockchain
               if (block->height == kNu5BlockUpdate + 605) {
@@ -363,7 +363,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                  base::expected<OrchardBlockScanner::Result,
                                 OrchardBlockScanner::ErrorCode>)> callback) {
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                tree_state, std::vector<OrchardCommitment>());
+                std::move(tree_state), std::vector<OrchardCommitment>());
             std::move(callback).Run(std::move(result));
           })));
 
@@ -407,7 +407,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                 mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
                 mojom::AccountKind::kDerived, 0);
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                tree_state, std::vector<OrchardCommitment>());
+                std::move(tree_state), std::vector<OrchardCommitment>());
             for (const auto& block : blocks) {
               // First block is the current chain tip - kChainReorgBlockDelta
               EXPECT_GE(block->height,

@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet::orchard {

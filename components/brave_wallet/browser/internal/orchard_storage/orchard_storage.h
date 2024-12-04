@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
@@ -75,6 +76,8 @@ class OrchardStorage {
     kConsistencyError
   };
 
+  enum class Result { kSuccess, kFailure };
+
   struct Error {
     ErrorCode error_code;
     std::string message;
@@ -88,7 +91,7 @@ class OrchardStorage {
       uint32_t account_birthday_block);
   base::expected<AccountMeta, Error> GetAccountMeta(
       const mojom::AccountIdPtr& account_id);
-  base::expected<bool, Error> ResetAccountSyncState(
+  base::expected<Result, Error> ResetAccountSyncState(
       const mojom::AccountIdPtr& account_id);
 
   // Removes database records which are under effect of chain reorg
@@ -108,8 +111,8 @@ class OrchardStorage {
   // Also updates account info with latest scanned block info
   std::optional<Error> UpdateNotes(
       const mojom::AccountIdPtr& account_id,
-      const std::vector<OrchardNote>& notes_to_add,
-      const std::vector<OrchardNoteSpend>& found_nullifiers,
+      base::span<const OrchardNote> notes_to_add,
+      base::span<const OrchardNoteSpend> found_nullifiers,
       const uint32_t latest_scanned_block,
       const std::string& latest_scanned_block_hash);
   void ResetDatabase();
@@ -117,16 +120,16 @@ class OrchardStorage {
   // Shard tree
   base::expected<std::optional<OrchardShardTreeCap>, Error> GetCap(
       const mojom::AccountIdPtr& account_id);
-  base::expected<bool, Error> PutCap(const mojom::AccountIdPtr& account_id,
-                                     const OrchardShardTreeCap& cap);
+  base::expected<Result, Error> PutCap(const mojom::AccountIdPtr& account_id,
+                                       const OrchardShardTreeCap& cap);
 
-  base::expected<bool, Error> TruncateShards(
+  base::expected<Result, Error> TruncateShards(
       const mojom::AccountIdPtr& account_id,
       uint32_t shard_index);
   base::expected<std::optional<uint32_t>, Error> GetLatestShardIndex(
       const mojom::AccountIdPtr& account_id);
-  base::expected<bool, Error> PutShard(const mojom::AccountIdPtr& account_id,
-                                       const OrchardShard& shard);
+  base::expected<Result, Error> PutShard(const mojom::AccountIdPtr& account_id,
+                                         const OrchardShard& shard);
   base::expected<std::optional<OrchardShard>, Error> GetShard(
       const mojom::AccountIdPtr& account_id,
       const OrchardShardAddress& address);
@@ -147,17 +150,17 @@ class OrchardStorage {
       const mojom::AccountIdPtr& account_id,
       uint32_t chain_tip_height,
       uint32_t min_confirmations);
-  base::expected<bool, Error> RemoveCheckpoint(
+  base::expected<Result, Error> RemoveCheckpoint(
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
-  base::expected<bool, Error> TruncateCheckpoints(
+  base::expected<Result, Error> TruncateCheckpoints(
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
-  base::expected<bool, Error> AddCheckpoint(
+  base::expected<Result, Error> AddCheckpoint(
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id,
       const OrchardCheckpoint& checkpoint);
-  base::expected<bool, Error> UpdateCheckpoint(
+  base::expected<Result, Error> UpdateCheckpoint(
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id,
       const OrchardCheckpoint& checkpoint);
@@ -171,7 +174,7 @@ class OrchardStorage {
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
 
-  base::expected<bool, Error> UpdateSubtreeRoots(
+  base::expected<Result, Error> UpdateSubtreeRoots(
       const mojom::AccountIdPtr& account_id,
       uint32_t start_index,
       const std::vector<zcash::mojom::SubtreeRootPtr>& roots);

@@ -8,11 +8,12 @@
 
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet::orchard {
+
+struct CxxBatchOrchardDecodeBundle;
 
 class OrchardDecodedBlocksBundleImpl : public OrchardDecodedBlocksBundle {
  public:
@@ -26,8 +27,8 @@ class OrchardDecodedBlocksBundleImpl : public OrchardDecodedBlocksBundle {
   friend class OrchardBlockDecoder;
   friend class TestingDecodedBundleBuilderImpl;
   explicit OrchardDecodedBlocksBundleImpl(
-      rust::Box<CxxBatchOrchardDecodeBundle>);
-  rust::Box<CxxBatchOrchardDecodeBundle> batch_decode_result_;
+      ::rust::Box<CxxBatchOrchardDecodeBundle>);
+  ::rust::Box<CxxBatchOrchardDecodeBundle> batch_decode_result_;
 };
 
 }  // namespace brave_wallet::orchard

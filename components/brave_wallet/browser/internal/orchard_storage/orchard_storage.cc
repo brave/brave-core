@@ -14,6 +14,7 @@
 #include "base/containers/to_vector.h"
 #include "base/files/file_util.h"
 #include "base/threading/scoped_blocking_call.h"
+#include "base/types/expected_macros.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -357,7 +358,7 @@ std::optional<OrchardStorage::Error> OrchardStorage::HandleChainReorg(
   return std::nullopt;
 }
 
-base::expected<bool, OrchardStorage::Error>
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
 OrchardStorage::ResetAccountSyncState(const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -417,7 +418,7 @@ OrchardStorage::ResetAccountSyncState(const mojom::AccountIdPtr& account_id) {
                                   database_.GetErrorMessage()});
   }
 
-  return base::ok(true);
+  return base::ok(Result::kSuccess);
 }
 
 base::expected<std::vector<OrchardNoteSpend>, OrchardStorage::Error>
@@ -523,8 +524,8 @@ OrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
 
 std::optional<OrchardStorage::Error> OrchardStorage::UpdateNotes(
     const mojom::AccountIdPtr& account_id,
-    const std::vector<OrchardNote>& found_notes,
-    const std::vector<OrchardNoteSpend>& found_nullifiers,
+    base::span<const OrchardNote> found_notes,
+    base::span<const OrchardNoteSpend> found_nullifiers,
     const uint32_t latest_scanned_block,
     const std::string& latest_scanned_block_hash) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
@@ -671,9 +672,9 @@ OrchardStorage::GetCap(const mojom::AccountIdPtr& account_id) {
   return base::ok(std::move(result));
 }
 
-base::expected<bool, OrchardStorage::Error> OrchardStorage::PutCap(
-    const mojom::AccountIdPtr& account_id,
-    const OrchardShardTreeCap& cap) {
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::PutCap(const mojom::AccountIdPtr& account_id,
+                       const OrchardShardTreeCap& cap) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -689,9 +690,7 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::PutCap(
   }
 
   auto existing_cap = GetCap(account_id);
-  if (!existing_cap.has_value()) {
-    return base::unexpected(existing_cap.error());
-  }
+  RETURN_IF_ERROR(existing_cap);
 
   sql::Statement stmnt;
   if (!existing_cap.value()) {
@@ -720,10 +719,11 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::PutCap(
                                   database_.GetErrorMessage()});
   }
 
-  return base::ok(true);
+  return base::ok(Result::kSuccess);
 }
 
-base::expected<bool, OrchardStorage::Error> OrchardStorage::UpdateSubtreeRoots(
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::UpdateSubtreeRoots(
     const mojom::AccountIdPtr& account_id,
     uint32_t start_index,
     const std::vector<zcash::mojom::SubtreeRootPtr>& roots) {
@@ -794,12 +794,12 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::UpdateSubtreeRoots(
                                   database_.GetErrorMessage()});
   }
 
-  return base::ok(true);
+  return base::ok(Result::kSuccess);
 }
 
-base::expected<bool, OrchardStorage::Error> OrchardStorage::TruncateShards(
-    const mojom::AccountIdPtr& account_id,
-    uint32_t shard_index) {
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::TruncateShards(const mojom::AccountIdPtr& account_id,
+                               uint32_t shard_index) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -832,12 +832,12 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::TruncateShards(
                                   database_.GetErrorMessage()});
   }
 
-  return base::ok(true);
+  return base::ok(Result::kSuccess);
 }
 
-base::expected<bool, OrchardStorage::Error> OrchardStorage::PutShard(
-    const mojom::AccountIdPtr& account_id,
-    const OrchardShard& shard) {
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::PutShard(const mojom::AccountIdPtr& account_id,
+                         const OrchardShard& shard) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -848,9 +848,7 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::PutShard(
   }
 
   auto existing_shard = GetShard(account_id, shard.address);
-  if (!existing_shard.has_value()) {
-    return base::unexpected(existing_shard.error());
-  }
+  RETURN_IF_ERROR(existing_shard);
 
   sql::Transaction transaction(&database_);
   if (!transaction.Begin()) {
@@ -907,7 +905,7 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::PutShard(
                                   database_.GetErrorMessage()});
   }
 
-  return base::ok(true);
+  return base::ok(Result::kSuccess);
 }
 
 base::expected<std::optional<OrchardShard>, OrchardStorage::Error>
@@ -957,9 +955,7 @@ OrchardStorage::LastShard(const mojom::AccountIdPtr& account_id,
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   auto shard_index = GetLatestShardIndex(account_id);
-  if (!shard_index.has_value()) {
-    return base::unexpected(shard_index.error());
-  }
+  RETURN_IF_ERROR(shard_index);
 
   if (!shard_index.value()) {
     return base::ok(std::nullopt);
@@ -1004,10 +1000,10 @@ OrchardStorage::GetShardRoots(const mojom::AccountIdPtr& account_id,
   return base::ok(std::move(result));
 }
 
-base::expected<bool, OrchardStorage::Error> OrchardStorage::AddCheckpoint(
-    const mojom::AccountIdPtr& account_id,
-    uint32_t checkpoint_id,
-    const OrchardCheckpoint& checkpoint) {
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
+                              uint32_t checkpoint_id,
+                              const OrchardCheckpoint& checkpoint) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -1079,9 +1075,7 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::AddCheckpoint(
           Error{ErrorCode::kConsistencyError, "Consistency error"});
     }
     auto marks_removed_result = GetMarksRemoved(account_id, checkpoint_id);
-    if (!marks_removed_result.has_value()) {
-      return base::unexpected(marks_removed_result.error());
-    }
+    RETURN_IF_ERROR(marks_removed_result);
 
     if (!marks_removed_result.value()) {
       return base::unexpected(
@@ -1099,39 +1093,31 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::AddCheckpoint(
                                   database_.GetErrorMessage()});
   }
 
-  return base::ok(true);
+  return base::ok(Result::kSuccess);
 }
 
-base::expected<bool, OrchardStorage::Error> OrchardStorage::UpdateCheckpoint(
-    const mojom::AccountIdPtr& account_id,
-    uint32_t checkpoint_id,
-    const OrchardCheckpoint& checkpoint) {
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::UpdateCheckpoint(const mojom::AccountIdPtr& account_id,
+                                 uint32_t checkpoint_id,
+                                 const OrchardCheckpoint& checkpoint) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   auto get_checkpoint_result = GetCheckpoint(account_id, checkpoint_id);
-  if (!get_checkpoint_result.has_value()) {
-    return base::unexpected(get_checkpoint_result.error());
-  }
+  RETURN_IF_ERROR(get_checkpoint_result);
   if (!get_checkpoint_result.value()) {
-    return false;
+    return base::ok(Result::kFailure);
   }
 
   auto remove_result = RemoveCheckpoint(account_id, checkpoint_id);
-  if (!remove_result.has_value()) {
-    return base::unexpected(base::unexpected(remove_result.error()));
-  }
-  if (!remove_result.value()) {
-    return false;
+  RETURN_IF_ERROR(remove_result);
+  if (remove_result.value() != Result::kSuccess) {
+    return base::ok(Result::kFailure);
   }
 
   auto add_result = AddCheckpoint(account_id, checkpoint_id, checkpoint);
-  if (!add_result.has_value()) {
-    return base::unexpected(base::unexpected(add_result.error()));
-  }
-  if (!add_result.value()) {
-    return false;
-  }
-  return true;
+  RETURN_IF_ERROR(add_result);
+
+  return *add_result;
 }
 
 base::expected<size_t, OrchardStorage::Error> OrchardStorage::CheckpointCount(
@@ -1454,9 +1440,9 @@ OrchardStorage::GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
   return base::ok(*value);
 }
 
-base::expected<bool, OrchardStorage::Error> OrchardStorage::RemoveCheckpoint(
-    const mojom::AccountIdPtr& account_id,
-    uint32_t checkpoint_id) {
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
+                                 uint32_t checkpoint_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -1472,7 +1458,7 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::RemoveCheckpoint(
   }
 
   if (!existing_checkpoint.value()) {
-    return base::ok(false);
+    return base::ok(Result::kFailure);
   }
 
   sql::Statement remove_checkpoint_by_id(database_.GetCachedStatement(
@@ -1497,12 +1483,12 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::RemoveCheckpoint(
                                   database_.GetErrorMessage()});
   }
 
-  return base::ok(true);
+  return base::ok(Result::kSuccess);
 }
 
-base::expected<bool, OrchardStorage::Error> OrchardStorage::TruncateCheckpoints(
-    const mojom::AccountIdPtr& account_id,
-    uint32_t checkpoint_id) {
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::TruncateCheckpoints(const mojom::AccountIdPtr& account_id,
+                                    uint32_t checkpoint_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -1534,7 +1520,7 @@ base::expected<bool, OrchardStorage::Error> OrchardStorage::TruncateCheckpoints(
                                   database_.GetErrorMessage()});
   }
 
-  return base::ok(true);
+  return base::ok(Result::kSuccess);
 }
 
 }  // namespace brave_wallet

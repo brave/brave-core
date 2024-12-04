@@ -20,10 +20,9 @@ class TestingDecodedBundleBuilder {
  public:
   TestingDecodedBundleBuilder() = default;
   virtual ~TestingDecodedBundleBuilder() = default;
-  virtual void AddCommitment(
-      const ::brave_wallet::OrchardCommitment& commitment) = 0;
+  virtual void AddCommitment(::brave_wallet::OrchardCommitment commitment) = 0;
   virtual void SetPriorTreeState(
-      const ::brave_wallet::OrchardTreeState& tree_state) = 0;
+      ::brave_wallet::OrchardTreeState tree_state) = 0;
   virtual std::unique_ptr<OrchardDecodedBlocksBundle> Complete() = 0;
 };
 

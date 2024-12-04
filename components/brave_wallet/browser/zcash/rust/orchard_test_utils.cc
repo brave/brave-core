@@ -21,13 +21,11 @@ class TestingDecodedBundleBuilderImpl : public TestingDecodedBundleBuilder {
 
   ~TestingDecodedBundleBuilderImpl() override = default;
 
-  void SetPriorTreeState(
-      const ::brave_wallet::OrchardTreeState& tree_state) override {
-    prior_tree_state_ = tree_state;
+  void SetPriorTreeState(::brave_wallet::OrchardTreeState tree_state) override {
+    prior_tree_state_ = std::move(tree_state);
   }
 
-  void AddCommitment(
-      const ::brave_wallet::OrchardCommitment& commitment) override {
+  void AddCommitment(::brave_wallet::OrchardCommitment commitment) override {
     CxxOrchardCheckpointRetention retention;
     retention.marked = commitment.is_marked;
     retention.checkpoint = commitment.checkpoint_id.has_value();

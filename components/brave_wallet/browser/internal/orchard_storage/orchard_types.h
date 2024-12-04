@@ -24,11 +24,12 @@ struct OrchardCheckpoint {
   OrchardCheckpoint();
   OrchardCheckpoint(CheckpointTreeState, std::vector<uint32_t>);
   ~OrchardCheckpoint();
-  OrchardCheckpoint(const OrchardCheckpoint& other);
-  OrchardCheckpoint& operator=(const OrchardCheckpoint& other);
+  OrchardCheckpoint(const OrchardCheckpoint& other) = delete;
+  OrchardCheckpoint& operator=(const OrchardCheckpoint& other) = delete;
   OrchardCheckpoint(OrchardCheckpoint&& other);
   OrchardCheckpoint& operator=(OrchardCheckpoint&& other);
 
+  OrchardCheckpoint Clone();
   bool operator==(const OrchardCheckpoint& other) const = default;
 
   // Leaf position of the checkpoint.
@@ -40,8 +41,9 @@ struct OrchardCheckpoint {
 struct OrchardCheckpointBundle {
   OrchardCheckpointBundle(uint32_t checkpoint_id, OrchardCheckpoint);
   ~OrchardCheckpointBundle();
-  OrchardCheckpointBundle(const OrchardCheckpointBundle& other);
-  OrchardCheckpointBundle& operator=(const OrchardCheckpointBundle& other);
+  OrchardCheckpointBundle(const OrchardCheckpointBundle& other) = delete;
+  OrchardCheckpointBundle& operator=(const OrchardCheckpointBundle& other) =
+      delete;
   OrchardCheckpointBundle(OrchardCheckpointBundle&& other);
   OrchardCheckpointBundle& operator=(OrchardCheckpointBundle&& other);
 
@@ -72,8 +74,8 @@ struct OrchardShard {
                std::vector<uint8_t> shard_data);
   ~OrchardShard();
 
-  OrchardShard(const OrchardShard& other);
-  OrchardShard& operator=(const OrchardShard& other);
+  OrchardShard(const OrchardShard& other) = delete;
+  OrchardShard& operator=(const OrchardShard& other) = delete;
   OrchardShard(OrchardShard&& other);
   OrchardShard& operator=(OrchardShard&& other);
 
@@ -89,9 +91,20 @@ struct OrchardShard {
 };
 
 struct OrchardCommitment {
+  OrchardCommitment(OrchardCommitmentValue cmu,
+                    bool is_marked,
+                    std::optional<uint32_t> checkpoint_id);
+  OrchardCommitment();
+  ~OrchardCommitment();
+
   OrchardCommitmentValue cmu;
   bool is_marked = false;
   std::optional<uint32_t> checkpoint_id;
+
+  OrchardCommitment(const OrchardCommitment& other) = delete;
+  OrchardCommitment& operator=(const OrchardCommitment& other) = delete;
+  OrchardCommitment(OrchardCommitment&& other);
+  OrchardCommitment& operator=(OrchardCommitment&& other);
 };
 
 // Compact representation of the Merkle tree on some point.
@@ -101,7 +114,10 @@ struct OrchardCommitment {
 struct OrchardTreeState {
   OrchardTreeState();
   ~OrchardTreeState();
-  OrchardTreeState(const OrchardTreeState&);
+  OrchardTreeState(OrchardTreeState&& other);
+  OrchardTreeState& operator=(OrchardTreeState&& other);
+  OrchardTreeState(const OrchardTreeState&) = delete;
+  OrchardTreeState& operator=(const OrchardTreeState&) = delete;
 
   // Tree state is linked to the end of some block.
   uint32_t block_height = 0u;

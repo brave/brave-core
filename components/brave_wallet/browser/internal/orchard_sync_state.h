@@ -58,8 +58,8 @@ class OrchardSyncState {
       const std::string& latest_scanned_block_hash);
 
   // Clears sync data related to the account except it's birthday.
-  base::expected<bool, OrchardStorage::Error> ResetAccountSyncState(
-      const mojom::AccountIdPtr& account_id);
+  base::expected<OrchardStorage::Result, OrchardStorage::Error>
+  ResetAccountSyncState(const mojom::AccountIdPtr& account_id);
 
   // Drops underlying database.
   void ResetDatabase();
@@ -69,7 +69,7 @@ class OrchardSyncState {
                                 const std::vector<OrchardInput>& notes,
                                 uint32_t checkpoint_position);
 
-  base::expected<bool, OrchardStorage::Error> Truncate(
+  base::expected<OrchardStorage::Result, OrchardStorage::Error> Truncate(
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
 

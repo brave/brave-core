@@ -383,10 +383,10 @@ TEST_F(OrchardStorageTest, InsertSubtreeRoots) {
     for (uint32_t i = 0; i < 10; i++) {
       level_1_roots.push_back(CreateSubtreeRoot(9, i));
     }
-    EXPECT_TRUE(
-        orchard_storage_
-            ->UpdateSubtreeRoots(account_id, 0, std::move(level_1_roots))
-            .value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_
+                  ->UpdateSubtreeRoots(account_id, 0, std::move(level_1_roots))
+                  .value());
   }
 
   {
@@ -411,13 +411,14 @@ TEST_F(OrchardStorageTest, TruncateSubtreeRoots) {
     for (int i = 0; i < 10; i++) {
       level_1_roots.push_back(CreateSubtreeRoot(1, i));
     }
-    EXPECT_TRUE(
-        orchard_storage_
-            ->UpdateSubtreeRoots(account_id, 0, std::move(level_1_roots))
-            .value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_
+                  ->UpdateSubtreeRoots(account_id, 0, std::move(level_1_roots))
+                  .value());
   }
 
-  EXPECT_TRUE(orchard_storage_->TruncateShards(account_id, 5).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->TruncateShards(account_id, 5).value());
   {
     std::vector<OrchardShardAddress> addresses_after_truncate;
     for (uint32_t i = 0; i < 5; i++) {
@@ -436,12 +437,14 @@ TEST_F(OrchardStorageTest, TruncateShards) {
 
   {
     for (uint32_t i = 0; i < 10; i++) {
-      EXPECT_TRUE(
+      EXPECT_EQ(
+          OrchardStorage::Result::kSuccess,
           orchard_storage_->PutShard(account_id, CreateShard(i, 1)).value());
     }
   }
 
-  EXPECT_TRUE(orchard_storage_->TruncateShards(account_id, 5).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->TruncateShards(account_id, 5).value());
   for (uint32_t i = 0; i < 5; i++) {
     EXPECT_EQ(CreateShard(i, 1), **(orchard_storage_->GetShard(
                                      account_id, OrchardShardAddress(1, i))));
@@ -462,10 +465,10 @@ TEST_F(OrchardStorageTest, ShardOverridesSubtreeRoot) {
     for (uint32_t i = 0; i < 10; i++) {
       level_1_roots.push_back(CreateSubtreeRoot(1, i));
     }
-    EXPECT_TRUE(
-        orchard_storage_
-            ->UpdateSubtreeRoots(account_id, 0, std::move(level_1_roots))
-            .value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_
+                  ->UpdateSubtreeRoots(account_id, 0, std::move(level_1_roots))
+                  .value());
   }
 
   // Update existing shard
@@ -475,7 +478,8 @@ TEST_F(OrchardStorageTest, ShardOverridesSubtreeRoot) {
   new_shard.address.level = 1;
   new_shard.root_hash->fill(5);
   new_shard.shard_data = std::vector<uint8_t>({5, 5, 5, 5});
-  EXPECT_TRUE(orchard_storage_->PutShard(account_id, new_shard).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->PutShard(account_id, new_shard).value());
 
   auto result =
       orchard_storage_->GetShard(account_id, OrchardShardAddress{1, 5});
@@ -500,10 +504,10 @@ TEST_F(OrchardStorageTest, InsertShards) {
     for (uint32_t i = 0; i < 10; i++) {
       level_1_roots.push_back(CreateSubtreeRoot(1, i));
     }
-    EXPECT_TRUE(
-        orchard_storage_
-            ->UpdateSubtreeRoots(account_id, 0, std::move(level_1_roots))
-            .value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_
+                  ->UpdateSubtreeRoots(account_id, 0, std::move(level_1_roots))
+                  .value());
   }
 
   OrchardShard new_shard;
@@ -513,7 +517,8 @@ TEST_F(OrchardStorageTest, InsertShards) {
   new_shard.root_hash->fill(11);
   new_shard.shard_data = std::vector<uint8_t>({1, 1, 1, 1});
 
-  EXPECT_TRUE(orchard_storage_->PutShard(account_id, new_shard).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->PutShard(account_id, new_shard).value());
 
   {
     auto result =
@@ -546,22 +551,26 @@ TEST_F(OrchardStorageTest, RemoveChekpoint) {
   OrchardCheckpoint checkpoint1;
   checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
   checkpoint1.tree_state_position = 4;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1.Clone())
+                .value());
 
   OrchardCheckpoint checkpoint2;
   checkpoint2.marks_removed = std::vector<uint32_t>({4, 5, 6});
   checkpoint2.tree_state_position = std::nullopt;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 2, checkpoint2).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 2, checkpoint2.Clone())
+                .value());
 
-  EXPECT_TRUE(orchard_storage_->RemoveCheckpoint(account_id, 1).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->RemoveCheckpoint(account_id, 1).value());
   EXPECT_EQ(std::nullopt,
             orchard_storage_->GetCheckpoint(account_id, 1).value());
-  EXPECT_EQ(OrchardCheckpointBundle(2, checkpoint2),
+  EXPECT_EQ(OrchardCheckpointBundle(2, checkpoint2.Clone()),
             orchard_storage_->GetCheckpoint(account_id, 2).value().value());
   // Unexisting checkpoint.
-  EXPECT_FALSE(orchard_storage_->RemoveCheckpoint(account_id, 3).value());
+  EXPECT_EQ(OrchardStorage::Result::kFailure,
+            orchard_storage_->RemoveCheckpoint(account_id, 3).value());
 }
 
 TEST_F(OrchardStorageTest, CheckpointId) {
@@ -578,26 +587,30 @@ TEST_F(OrchardStorageTest, CheckpointId) {
   OrchardCheckpoint checkpoint1;
   checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
   checkpoint1.tree_state_position = 4;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1.Clone())
+                .value());
 
   OrchardCheckpoint checkpoint2;
   checkpoint2.marks_removed = std::vector<uint32_t>({1, 2, 3});
   checkpoint2.tree_state_position = 2;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 2, checkpoint2).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 2, checkpoint2.Clone())
+                .value());
 
   OrchardCheckpoint checkpoint3;
   checkpoint3.marks_removed = std::vector<uint32_t>({5});
   checkpoint3.tree_state_position = 3;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 3, checkpoint3).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 3, checkpoint3.Clone())
+                .value());
 
   OrchardCheckpoint checkpoint4;
   checkpoint4.marks_removed = std::vector<uint32_t>();
   checkpoint4.tree_state_position = std::nullopt;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 4, checkpoint4).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 4, checkpoint4.Clone())
+                .value());
 
   EXPECT_EQ(1, orchard_storage_->MinCheckpointId(account_id).value());
   EXPECT_EQ(4, orchard_storage_->MaxCheckpointId(account_id).value());
@@ -612,18 +625,21 @@ TEST_F(OrchardStorageTest, CheckpointAtPosition) {
   OrchardCheckpoint checkpoint1;
   checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
   checkpoint1.tree_state_position = 4;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1.Clone())
+                .value());
   OrchardCheckpoint checkpoint2;
   checkpoint2.marks_removed = std::vector<uint32_t>({4, 5, 6});
   checkpoint2.tree_state_position = 4;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 2, checkpoint2).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 2, checkpoint2.Clone())
+                .value());
   OrchardCheckpoint checkpoint3;
   checkpoint3.marks_removed = std::vector<uint32_t>({7, 8, 9});
   checkpoint3.tree_state_position = 4;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 3, checkpoint3).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 3, checkpoint3.Clone())
+                .value());
 
   EXPECT_EQ(
       1u,
@@ -641,12 +657,14 @@ TEST_F(OrchardStorageTest, TruncateCheckpoints_OutOfBoundary) {
   OrchardCheckpoint checkpoint1;
   checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
   checkpoint1.tree_state_position = 4;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1.Clone())
+                .value());
 
-  EXPECT_TRUE(orchard_storage_->TruncateCheckpoints(account_id, 3).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->TruncateCheckpoints(account_id, 3).value());
 
-  EXPECT_EQ(OrchardCheckpointBundle(1, checkpoint1),
+  EXPECT_EQ(OrchardCheckpointBundle(1, checkpoint1.Clone()),
             orchard_storage_->GetCheckpoint(account_id, 1).value().value());
 }
 
@@ -659,32 +677,37 @@ TEST_F(OrchardStorageTest, TruncateCheckpoints) {
   OrchardCheckpoint checkpoint1;
   checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
   checkpoint1.tree_state_position = 4;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1.Clone())
+                .value());
 
   OrchardCheckpoint checkpoint2;
   checkpoint2.marks_removed = std::vector<uint32_t>({1, 2, 3});
   checkpoint2.tree_state_position = 2;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 2, checkpoint2).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 2, checkpoint2.Clone())
+                .value());
 
   OrchardCheckpoint checkpoint3;
   checkpoint3.marks_removed = std::vector<uint32_t>({5});
   checkpoint3.tree_state_position = 3;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 3, checkpoint3).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 3, checkpoint3.Clone())
+                .value());
 
   OrchardCheckpoint checkpoint4;
   checkpoint4.marks_removed = std::vector<uint32_t>();
   checkpoint4.tree_state_position = std::nullopt;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 4, checkpoint4).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 4, checkpoint4.Clone())
+                .value());
 
-  EXPECT_TRUE(orchard_storage_->TruncateCheckpoints(account_id, 3).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->TruncateCheckpoints(account_id, 3).value());
 
-  EXPECT_EQ(OrchardCheckpointBundle(1, checkpoint1),
+  EXPECT_EQ(OrchardCheckpointBundle(1, checkpoint1.Clone()),
             orchard_storage_->GetCheckpoint(account_id, 1).value().value());
-  EXPECT_EQ(OrchardCheckpointBundle(2, checkpoint2),
+  EXPECT_EQ(OrchardCheckpointBundle(2, checkpoint2.Clone()),
             orchard_storage_->GetCheckpoint(account_id, 2).value().value());
   EXPECT_EQ(std::nullopt,
             orchard_storage_->GetCheckpoint(account_id, 3).value());
@@ -701,24 +724,27 @@ TEST_F(OrchardStorageTest, AddCheckpoint) {
   OrchardCheckpoint checkpoint1;
   checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
   checkpoint1.tree_state_position = 4;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1.Clone())
+                .value());
   OrchardCheckpoint checkpoint2;
   checkpoint2.marks_removed = std::vector<uint32_t>({4, 5, 6});
   checkpoint2.tree_state_position = std::nullopt;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 2, checkpoint2).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 2, checkpoint2.Clone())
+                .value());
   OrchardCheckpoint checkpoint3;
   checkpoint3.marks_removed = std::vector<uint32_t>();
   checkpoint3.tree_state_position = 4;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 3, checkpoint3).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 3, checkpoint3.Clone())
+                .value());
 
-  EXPECT_EQ(OrchardCheckpointBundle(1, checkpoint1),
+  EXPECT_EQ(OrchardCheckpointBundle(1, checkpoint1.Clone()),
             orchard_storage_->GetCheckpoint(account_id, 1).value().value());
-  EXPECT_EQ(OrchardCheckpointBundle(2, checkpoint2),
+  EXPECT_EQ(OrchardCheckpointBundle(2, checkpoint2.Clone()),
             orchard_storage_->GetCheckpoint(account_id, 2).value().value());
-  EXPECT_EQ(OrchardCheckpointBundle(3, checkpoint3),
+  EXPECT_EQ(OrchardCheckpointBundle(3, checkpoint3.Clone()),
             orchard_storage_->GetCheckpoint(account_id, 3).value().value());
 }
 
@@ -731,12 +757,14 @@ TEST_F(OrchardStorageTest, AddSameCheckpoint) {
     OrchardCheckpoint checkpoint;
     checkpoint.marks_removed = std::vector<uint32_t>({1, 2, 3});
     checkpoint.tree_state_position = 4;
-    EXPECT_TRUE(
-        orchard_storage_->AddCheckpoint(account_id, 1, checkpoint).value());
-    EXPECT_TRUE(
-        orchard_storage_->AddCheckpoint(account_id, 1, checkpoint).value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddCheckpoint(account_id, 1, checkpoint.Clone())
+                  .value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddCheckpoint(account_id, 1, checkpoint.Clone())
+                  .value());
 
-    EXPECT_EQ(OrchardCheckpointBundle(1, checkpoint),
+    EXPECT_EQ(OrchardCheckpointBundle(1, checkpoint.Clone()),
               orchard_storage_->GetCheckpoint(account_id, 1).value().value());
   }
 
@@ -744,12 +772,14 @@ TEST_F(OrchardStorageTest, AddSameCheckpoint) {
     OrchardCheckpoint checkpoint;
     checkpoint.marks_removed = std::vector<uint32_t>({1, 2, 3});
     checkpoint.tree_state_position = std::nullopt;
-    EXPECT_TRUE(
-        orchard_storage_->AddCheckpoint(account_id, 2, checkpoint).value());
-    EXPECT_TRUE(
-        orchard_storage_->AddCheckpoint(account_id, 2, checkpoint).value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddCheckpoint(account_id, 2, checkpoint.Clone())
+                  .value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddCheckpoint(account_id, 2, checkpoint.Clone())
+                  .value());
 
-    EXPECT_EQ(OrchardCheckpointBundle(2, checkpoint),
+    EXPECT_EQ(OrchardCheckpointBundle(2, checkpoint.Clone()),
               orchard_storage_->GetCheckpoint(account_id, 2).value().value());
   }
 
@@ -757,12 +787,14 @@ TEST_F(OrchardStorageTest, AddSameCheckpoint) {
     OrchardCheckpoint checkpoint;
     checkpoint.marks_removed = std::vector<uint32_t>();
     checkpoint.tree_state_position = std::nullopt;
-    EXPECT_TRUE(
-        orchard_storage_->AddCheckpoint(account_id, 3, checkpoint).value());
-    EXPECT_TRUE(
-        orchard_storage_->AddCheckpoint(account_id, 3, checkpoint).value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddCheckpoint(account_id, 3, checkpoint.Clone())
+                  .value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddCheckpoint(account_id, 3, checkpoint.Clone())
+                  .value());
 
-    EXPECT_EQ(OrchardCheckpointBundle(3, checkpoint),
+    EXPECT_EQ(OrchardCheckpointBundle(3, checkpoint.Clone()),
               orchard_storage_->GetCheckpoint(account_id, 3).value().value());
   }
 }
@@ -776,32 +808,37 @@ TEST_F(OrchardStorageTest, AddChekpoint_ErrorOnConflict) {
   OrchardCheckpoint checkpoint1;
   checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
   checkpoint1.tree_state_position = 4;
-  EXPECT_TRUE(
-      orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->AddCheckpoint(account_id, 1, checkpoint1.Clone())
+                .value());
 
-  OrchardCheckpoint checkpoint_different_marks_removed = checkpoint1;
+  OrchardCheckpoint checkpoint_different_marks_removed;
+  checkpoint_different_marks_removed.tree_state_position =
+      checkpoint1.tree_state_position;
   checkpoint_different_marks_removed.marks_removed =
       std::vector<uint32_t>({1, 2});
-  EXPECT_FALSE(
-      orchard_storage_
-          ->AddCheckpoint(account_id, 1, checkpoint_different_marks_removed)
-          .has_value());
+  EXPECT_FALSE(orchard_storage_
+                   ->AddCheckpoint(account_id, 1,
+                                   checkpoint_different_marks_removed.Clone())
+                   .has_value());
 
-  OrchardCheckpoint checkpoint_different_position1 = checkpoint1;
+  OrchardCheckpoint checkpoint_different_position1;
+  checkpoint_different_position1.marks_removed = checkpoint1.marks_removed;
   checkpoint_different_position1.tree_state_position = 7;
   EXPECT_FALSE(
       orchard_storage_
-          ->AddCheckpoint(account_id, 1, checkpoint_different_position1)
+          ->AddCheckpoint(account_id, 1, checkpoint_different_position1.Clone())
           .has_value());
 
-  OrchardCheckpoint checkpoint_different_position2 = checkpoint1;
+  OrchardCheckpoint checkpoint_different_position2;
   checkpoint_different_position2.tree_state_position = std::nullopt;
+  checkpoint_different_position2.marks_removed = checkpoint1.marks_removed;
   EXPECT_FALSE(
       orchard_storage_
-          ->AddCheckpoint(account_id, 1, checkpoint_different_position2)
+          ->AddCheckpoint(account_id, 1, checkpoint_different_position2.Clone())
           .has_value());
 
-  EXPECT_EQ(OrchardCheckpointBundle(1, checkpoint1),
+  EXPECT_EQ(OrchardCheckpointBundle(1, checkpoint1.Clone()),
             orchard_storage_->GetCheckpoint(account_id, 1).value().value());
 }
 
@@ -831,11 +868,13 @@ TEST_F(OrchardStorageTest, ResetAccountSyncState) {
     OrchardCheckpoint checkpoint;
     checkpoint.marks_removed = std::vector<uint32_t>();
     checkpoint.tree_state_position = std::nullopt;
-    EXPECT_TRUE(
-        orchard_storage_->AddCheckpoint(account_id, 3, checkpoint).value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddCheckpoint(account_id, 3, checkpoint.Clone())
+                  .value());
   }
 
-  EXPECT_TRUE(orchard_storage_->ResetAccountSyncState(account_id).value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->ResetAccountSyncState(account_id).value());
 
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id);
@@ -860,8 +899,9 @@ TEST_F(OrchardStorageTest, UpdateCheckpoint) {
     OrchardCheckpoint checkpoint;
     checkpoint.marks_removed = std::vector<uint32_t>();
     checkpoint.tree_state_position = std::nullopt;
-    EXPECT_TRUE(
-        orchard_storage_->AddCheckpoint(account_id, 3, checkpoint).value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddCheckpoint(account_id, 3, checkpoint.Clone())
+                  .value());
   }
 
   // Update existing checkpoint.
@@ -869,11 +909,13 @@ TEST_F(OrchardStorageTest, UpdateCheckpoint) {
     OrchardCheckpoint checkpoint;
     checkpoint.marks_removed = std::vector<uint32_t>({1});
     checkpoint.tree_state_position = 15;
-    EXPECT_TRUE(
+    EXPECT_EQ(
+        OrchardStorage::Result::kSuccess,
         orchard_storage_->UpdateCheckpoint(account_id, 3, checkpoint).value());
     auto get_checkpoint_result = orchard_storage_->GetCheckpoint(account_id, 3);
     EXPECT_TRUE(get_checkpoint_result.has_value());
-    OrchardCheckpointBundle checkpoint_bundle = **get_checkpoint_result;
+    OrchardCheckpointBundle checkpoint_bundle =
+        std::move(**get_checkpoint_result);
     EXPECT_EQ(3u, checkpoint_bundle.checkpoint_id);
     EXPECT_EQ(15, checkpoint_bundle.checkpoint.tree_state_position);
     EXPECT_EQ(std::vector<uint32_t>({1}),
@@ -885,7 +927,8 @@ TEST_F(OrchardStorageTest, UpdateCheckpoint) {
     OrchardCheckpoint checkpoint;
     checkpoint.marks_removed = std::vector<uint32_t>({1});
     checkpoint.tree_state_position = 15;
-    EXPECT_FALSE(
+    EXPECT_EQ(
+        OrchardStorage::Result::kFailure,
         orchard_storage_->UpdateCheckpoint(account_id, 5, checkpoint).value());
   }
 }

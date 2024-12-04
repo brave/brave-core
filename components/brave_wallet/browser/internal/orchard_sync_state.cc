@@ -25,12 +25,11 @@ OrchardSyncState::~OrchardSyncState() = default;
 orchard::OrchardShardTree& OrchardSyncState::GetOrCreateShardTree(
     const mojom::AccountIdPtr& account_id) LIFETIME_BOUND {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (shard_trees_.find(account_id->unique_key) == shard_trees_.end()) {
-    shard_trees_[account_id->unique_key] =
-        orchard::OrchardShardTree::Create(*storage_, account_id);
+  std::unique_ptr<orchard::OrchardShardTree>& manager =
+      shard_trees_[account_id->unique_key];
+  if (!manager) {
+    manager = orchard::OrchardShardTree::Create(*storage_, account_id);
   }
-  auto* manager = shard_trees_[account_id->unique_key].get();
-  CHECK(manager);
   return *manager;
 }
 
@@ -79,17 +78,18 @@ std::optional<OrchardStorage::Error> OrchardSyncState::ApplyScanResults(
     return existing_notes.error();
   }
 
-  std::vector<OrchardNote> notes_to_add =
-      block_scanner_results.discovered_notes;
-  base::Extend(existing_notes.value(), notes_to_add);
+  size_t offset = existing_notes.value().size();
+  base::Extend(existing_notes.value(),
+               std::move(block_scanner_results.discovered_notes));
 
+  base::span<const OrchardNote> notes_to_add =
+      base::span(existing_notes.value()).subspan(offset);
   std::vector<OrchardNoteSpend> nf_to_add;
 
   for (const auto& nf : block_scanner_results.found_spends) {
-    if (std::find_if(existing_notes.value().begin(),
-                     existing_notes.value().end(), [&nf](const auto& v) {
-                       return v.nullifier == nf.nullifier;
-                     }) != existing_notes.value().end()) {
+    if (base::ranges::find_if(*existing_notes, [&nf](const auto& v) {
+          return v.nullifier == nf.nullifier;
+        }) != existing_notes.value().end()) {
       nf_to_add.push_back(nf);
     }
   }
@@ -100,11 +100,12 @@ std::optional<OrchardStorage::Error> OrchardSyncState::ApplyScanResults(
                                  "Failed to insert commitments"};
   }
 
-  return storage_->UpdateNotes(account_id, notes_to_add, std::move(nf_to_add),
-                               latest_scanned_block, latest_scanned_block_hash);
+  return storage_->UpdateNotes(account_id, std::move(notes_to_add),
+                               std::move(nf_to_add), latest_scanned_block,
+                               latest_scanned_block_hash);
 }
 
-base::expected<bool, OrchardStorage::Error>
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
 OrchardSyncState::ResetAccountSyncState(const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return storage_->ResetAccountSyncState(account_id);
@@ -138,11 +139,13 @@ void OrchardSyncState::ResetDatabase() {
   storage_->ResetDatabase();
 }
 
-base::expected<bool, OrchardStorage::Error> OrchardSyncState::Truncate(
-    const mojom::AccountIdPtr& account_id,
-    uint32_t checkpoint_id) {
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardSyncState::Truncate(const mojom::AccountIdPtr& account_id,
+                           uint32_t checkpoint_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return GetOrCreateShardTree(account_id).TruncateToCheckpoint(checkpoint_id);
+  return GetOrCreateShardTree(account_id).TruncateToCheckpoint(checkpoint_id)
+             ? OrchardStorage::Result::kSuccess
+             : OrchardStorage::Result::kFailure;
 }
 
 // Testing

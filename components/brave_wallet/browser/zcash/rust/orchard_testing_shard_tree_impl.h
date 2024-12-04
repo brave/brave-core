@@ -10,10 +10,12 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet::orchard {
+
+struct CxxOrchardTestingShardTreeBundle;
 
 class OrchardTestingShardTreeImpl : public OrchardShardTree {
  public:
@@ -32,7 +34,7 @@ class OrchardTestingShardTreeImpl : public OrchardShardTree {
   friend class OrchardShardTree;
 
   explicit OrchardTestingShardTreeImpl(
-      rust::Box<CxxOrchardTestingShardTreeBundle> orcard_shard_tree);
+      ::rust::Box<CxxOrchardTestingShardTreeBundle> orcard_shard_tree);
   ::rust::Box<CxxOrchardTestingShardTreeBundle> orchard_shard_tree_;
 };
 }  // namespace brave_wallet::orchard

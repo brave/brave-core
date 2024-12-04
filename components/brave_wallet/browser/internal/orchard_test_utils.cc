@@ -5,18 +5,20 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 
+#include <utility>
+
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_test_utils.h"
 
 namespace brave_wallet {
 
 OrchardBlockScanner::Result CreateResultForTesting(
-    const OrchardTreeState& tree_state,
-    const std::vector<OrchardCommitment>& commitments) {
+    OrchardTreeState tree_state,
+    std::vector<OrchardCommitment> commitments) {
   auto builder = orchard::CreateTestingDecodedBundleBuilder();
-  for (const auto& commitment : commitments) {
-    builder->AddCommitment(commitment);
+  for (auto& commitment : commitments) {
+    builder->AddCommitment(std::move(commitment));
   }
-  builder->SetPriorTreeState(tree_state);
+  builder->SetPriorTreeState(std::move(tree_state));
   return OrchardBlockScanner::Result{{}, {}, builder->Complete()};
 }
 

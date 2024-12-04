@@ -11,29 +11,27 @@ namespace brave_wallet {
 
 OrchardTreeState::OrchardTreeState() = default;
 OrchardTreeState::~OrchardTreeState() = default;
-OrchardTreeState::OrchardTreeState(const OrchardTreeState&) = default;
+OrchardTreeState::OrchardTreeState(OrchardTreeState&& other) = default;
+OrchardTreeState& OrchardTreeState::operator=(OrchardTreeState&& other) =
+    default;
 
 OrchardCheckpoint::OrchardCheckpoint() = default;
 OrchardCheckpoint::OrchardCheckpoint(CheckpointTreeState tree_state_position,
                                      std::vector<uint32_t> marks_removed)
     : tree_state_position(tree_state_position),
       marks_removed(std::move(marks_removed)) {}
-OrchardCheckpoint::~OrchardCheckpoint() {}
-OrchardCheckpoint::OrchardCheckpoint(const OrchardCheckpoint& other) = default;
-OrchardCheckpoint& OrchardCheckpoint::operator=(
-    const OrchardCheckpoint& other) = default;
+OrchardCheckpoint::~OrchardCheckpoint() = default;
 OrchardCheckpoint::OrchardCheckpoint(OrchardCheckpoint&& other) = default;
 OrchardCheckpoint& OrchardCheckpoint::operator=(OrchardCheckpoint&& other) =
     default;
+OrchardCheckpoint OrchardCheckpoint::Clone() {
+  return OrchardCheckpoint(tree_state_position, marks_removed);
+}
 
 OrchardCheckpointBundle::OrchardCheckpointBundle(uint32_t checkpoint_id,
                                                  OrchardCheckpoint checkpoint)
     : checkpoint_id(checkpoint_id), checkpoint(std::move(checkpoint)) {}
 OrchardCheckpointBundle::~OrchardCheckpointBundle() = default;
-OrchardCheckpointBundle::OrchardCheckpointBundle(
-    const OrchardCheckpointBundle& other) = default;
-OrchardCheckpointBundle& OrchardCheckpointBundle::operator=(
-    const OrchardCheckpointBundle& other) = default;
 OrchardCheckpointBundle::OrchardCheckpointBundle(
     OrchardCheckpointBundle&& other) = default;
 OrchardCheckpointBundle& OrchardCheckpointBundle::operator=(
@@ -47,9 +45,17 @@ OrchardShard::OrchardShard(OrchardShardAddress address,
       root_hash(std::move(root_hash)),
       shard_data(std::move(shard_data)) {}
 OrchardShard::~OrchardShard() = default;
-OrchardShard::OrchardShard(const OrchardShard& other) = default;
-OrchardShard& OrchardShard::operator=(const OrchardShard& other) = default;
 OrchardShard::OrchardShard(OrchardShard&& other) = default;
 OrchardShard& OrchardShard::operator=(OrchardShard&& other) = default;
+
+OrchardCommitment::OrchardCommitment(OrchardCommitmentValue cmu,
+                                     bool is_marked,
+                                     std::optional<uint32_t> checkpoint_id)
+    : cmu(cmu), is_marked(is_marked), checkpoint_id(checkpoint_id) {}
+OrchardCommitment::OrchardCommitment() = default;
+OrchardCommitment::~OrchardCommitment() = default;
+OrchardCommitment::OrchardCommitment(OrchardCommitment&& other) = default;
+OrchardCommitment& OrchardCommitment::operator=(OrchardCommitment&& other) =
+    default;
 
 }  // namespace brave_wallet

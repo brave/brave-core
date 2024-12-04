@@ -16,6 +16,9 @@ specific_include_rules = {
   ],
   "orchard_shard_tree_impl.h": [
     "+third_party/rust/cxx/v1/cxx.h",
+  ],
+    "orchard_testing_shard_tree_impl.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
   ]
 }
 

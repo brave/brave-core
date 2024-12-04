@@ -137,7 +137,7 @@ CxxOrchardShardTreeDelegate::LastShard(uint8_t shard_level) const {
     return wrap_bool_error();
   }
 
-  return wrap_bool(result.value());
+  return wrap_bool(result.value() == OrchardStorage::Result::kSuccess);
 }
 
 ::rust::Box<CxxShardRootsResultWrapper>
@@ -159,7 +159,7 @@ CxxOrchardShardTreeDelegate::GetShardRoots(uint8_t shard_level) const {
   if (!result.has_value()) {
     return wrap_bool_error();
   }
-  return wrap_bool(result.value());
+  return wrap_bool(result.value() == OrchardStorage::Result::kSuccess);
 }
 
 ::rust::Box<CxxOrchardShardTreeCapResultWrapper>
@@ -179,7 +179,7 @@ CxxOrchardShardTreeDelegate::GetCap() const {
   if (!result.has_value()) {
     return wrap_bool_error();
   }
-  return wrap_bool(result.value());
+  return wrap_bool(result.value() == OrchardStorage::Result::kSuccess);
 }
 
 ::rust::Box<CxxCheckpointIdResultWrapper>
@@ -212,7 +212,7 @@ CxxOrchardShardTreeDelegate::MaxCheckpointId() const {
   if (!result.has_value()) {
     return wrap_bool_error();
   }
-  return wrap_bool(result.value());
+  return wrap_bool(result.value() == OrchardStorage::Result::kSuccess);
 }
 
 ::rust::Box<CxxCheckpointCountResultWrapper>
@@ -261,7 +261,7 @@ CxxOrchardShardTreeDelegate::GetCheckpoint(uint32_t checkpoint_id) const {
   if (!result.has_value()) {
     return wrap_bool_error();
   }
-  return wrap_bool(result.value());
+  return wrap_bool(result.value() == OrchardStorage::Result::kSuccess);
 }
 
 ::rust::Box<CxxBoolResultWrapper> CxxOrchardShardTreeDelegate::RemoveCheckpoint(
@@ -270,7 +270,7 @@ CxxOrchardShardTreeDelegate::GetCheckpoint(uint32_t checkpoint_id) const {
   if (!result.has_value()) {
     return wrap_bool_error();
   }
-  return wrap_bool(result.value());
+  return wrap_bool(result.value() == OrchardStorage::Result::kSuccess);
 }
 
 ::rust::Box<CxxBoolResultWrapper>
@@ -279,7 +279,7 @@ CxxOrchardShardTreeDelegate::TruncateCheckpoint(uint32_t checkpoint_id) const {
   if (!result.has_value()) {
     return wrap_bool_error();
   }
-  return wrap_bool(result.value());
+  return wrap_bool(result.value() == OrchardStorage::Result::kSuccess);
 }
 
 ::rust::Box<CxxCheckpointsResultWrapper>
