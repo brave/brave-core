@@ -38,7 +38,7 @@ import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.TabUtils;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -289,11 +289,14 @@ public class RewardsOnboarding implements BraveRewardsObserver {
 
         SpannableString ss = new SpannableString(textToAgree.toString());
 
-        NoUnderlineClickableSpan clickableSpan = new NoUnderlineClickableSpan(
-                context, R.color.brave_rewards_modal_theme_color, (textView) -> {
-                    CustomTabActivity.showInfoPage(
-                            context, BraveRewardsPanel.NEW_SIGNUP_DISABLED_URL);
-                });
+        ChromeClickableSpan clickableSpan =
+                new ChromeClickableSpan(
+                        context,
+                        R.color.brave_rewards_modal_theme_color,
+                        (textView) -> {
+                            CustomTabActivity.showInfoPage(
+                                    context, BraveRewardsPanel.NEW_SIGNUP_DISABLED_URL);
+                        });
         int learnMoreIndex = text.indexOf(context.getResources().getString(R.string.learn_more));
 
         ss.setSpan(clickableSpan, learnMoreIndex,
