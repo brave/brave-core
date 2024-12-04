@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 
+#include <map>
 #include <string>
+#include <utility>
 
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
@@ -52,22 +54,22 @@ std::array<uint8_t, kZCashDigestSize> blake2b256(
 }
 
 void PushHeader(const ZCashTransaction& tx, BtcLikeSerializerStream& stream) {
-  stream.Push32AsLE(kV5TxVersion);
-  stream.Push32AsLE(kV5VersionGroupId);
-  stream.Push32AsLE(kConsensusBranchId);
-  stream.Push32AsLE(tx.locktime());
-  stream.Push32AsLE(tx.expiry_height());
+  stream.Push32(kV5TxVersion);
+  stream.Push32(kV5VersionGroupId);
+  stream.Push32(kConsensusBranchId);
+  stream.Push32(tx.locktime());
+  stream.Push32(tx.expiry_height());
 }
 
 void PushOutpoint(const ZCashTransaction::Outpoint& outpoint,
                   BtcLikeSerializerStream& stream) {
   stream.PushBytes(outpoint.txid);
-  stream.Push32AsLE(outpoint.index);
+  stream.Push32(outpoint.index);
 }
 
 void PushOutput(const ZCashTransaction::TxOutput& output,
                 BtcLikeSerializerStream& stream) {
-  stream.Push64AsLE(output.amount);
+  stream.Push64(output.amount);
   stream.PushSizeAndBytes(output.script_pubkey);
 }
 
@@ -76,7 +78,7 @@ std::array<uint8_t, 32> HashAmounts(const ZCashTransaction& tx) {
   std::vector<uint8_t> data;
   BtcLikeSerializerStream stream(&data);
   for (const auto& input : tx.transparent_part().inputs) {
-    stream.Push64AsLE(input.utxo_value);
+    stream.Push64(input.utxo_value);
   }
   return blake2b256(data, base::byte_span_from_cstring("ZTxTrAmountsHash"));
 }
@@ -101,9 +103,9 @@ void ZCashSerializer::SerializeSignature(
     const std::vector<uint8_t>& signature) {
   DCHECK(input.script_sig.empty());
   BtcLikeSerializerStream stream(&input.script_sig);
-  stream.PushVarInt(signature.size() + 1);
+  stream.PushCompactSize(signature.size() + 1);
   stream.PushBytes(signature);
-  stream.Push8AsLE(tx.sighash_type());
+  stream.Push8(tx.sighash_type());
   stream.PushSizeAndBytes(pubkey);
 }
 
@@ -116,11 +118,11 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::HashTxIn(
     BtcLikeSerializerStream stream(&data);
 
     PushOutpoint(tx_in->utxo_outpoint, stream);
-    stream.Push64AsLE(tx_in->utxo_value);
+    stream.Push64(tx_in->utxo_value);
 
     stream.PushSizeAndBytes(tx_in->script_pub_key);
 
-    stream.Push32AsLE(tx_in->n_sequence);
+    stream.Push32(tx_in->n_sequence);
   }
 
   return blake2b256(data, base::byte_span_from_cstring("Zcash___TxInHash"));
@@ -191,7 +193,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::HashSequences(
   std::vector<uint8_t> data;
   BtcLikeSerializerStream stream(&data);
   for (const auto& input : tx.transparent_part().inputs) {
-    stream.Push32AsLE(input.n_sequence);
+    stream.Push32(input.n_sequence);
   }
   return blake2b256(data, base::byte_span_from_cstring("ZTxIdSequencHash"));
 }
@@ -279,7 +281,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
   {
     std::vector<uint8_t> data;
     BtcLikeSerializerStream stream(&data);
-    stream.Push8AsLE(zcash_transaction.sighash_type());
+    stream.Push8(zcash_transaction.sighash_type());
     stream.PushBytes(HashPrevouts(zcash_transaction));
 
     stream.PushBytes(HashAmounts(zcash_transaction));
@@ -332,33 +334,33 @@ std::vector<uint8_t> ZCashSerializer::SerializeRawTransaction(
   // Tx In
   {
     // Inputs size
-    stream.PushVarInt(zcash_transaction.transparent_part().inputs.size());
+    stream.PushCompactSize(zcash_transaction.transparent_part().inputs.size());
     for (const auto& input : zcash_transaction.transparent_part().inputs) {
       // Outpoint
       PushOutpoint(input.utxo_outpoint, stream);
       stream.PushSizeAndBytes(input.script_sig);
       // Sequence
-      stream.Push32AsLE(input.n_sequence);
+      stream.Push32(input.n_sequence);
     }
   }
 
   // Tx Out
 
   // Outputs size
-  stream.PushVarInt(zcash_transaction.transparent_part().outputs.size());
+  stream.PushCompactSize(zcash_transaction.transparent_part().outputs.size());
   for (const auto& output : zcash_transaction.transparent_part().outputs) {
     PushOutput(output, stream);
   }
 
   // Sapling
-  stream.PushVarInt(0);
-  stream.PushVarInt(0);
+  stream.PushCompactSize(0);
+  stream.PushCompactSize(0);
 
   // Orchard
   if (zcash_transaction.orchard_part().raw_tx) {
     stream.PushBytes(zcash_transaction.orchard_part().raw_tx.value());
   } else {
-    stream.PushVarInt(0);
+    stream.PushCompactSize(0);
   }
 
   return data;

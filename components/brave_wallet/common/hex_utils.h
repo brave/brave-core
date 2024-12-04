@@ -36,7 +36,7 @@ std::string PadHexEncodedParameter(std::string_view hex_input);
 
 // Takes 2 inputs prefixed by 0x and combines them into an output with a single
 // 0x. For example 0x1 and 0x2 would return 0x12.
-// Note thta this doesn't do any special casing like 0x and 0x will make 0x00
+// Note that this doesn't do any special casing like 0x and 0x will make 0x00
 // and not 0x.
 bool ConcatHexStrings(std::string_view hex_input1,
                       std::string_view hex_input2,
@@ -48,7 +48,12 @@ bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
 bool HexValueToUint256(std::string_view hex_input, uint256_t* out);
 // Takes a hex string as input and converts it to a int256_t
 bool HexValueToInt256(std::string_view hex_input, int256_t* out);
-// Takes a uint256_t and converts it to a hex string
+
+// TODO(apamyshev): this call is misused in many places(like in conjuction with
+// `PadHexEncodedParameter`). All call sites need review. Also needs better
+// name.
+// Takes a uint256_t and converts it to a hex string starting with the
+// first significand digit. `0` results in `0x0`.
 std::string Uint256ValueToHex(uint256_t input);
 
 // Same as base::HexStringToBytes but with a 0x prefix

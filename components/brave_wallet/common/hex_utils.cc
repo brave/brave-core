@@ -5,15 +5,25 @@
 
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
-#include <limits>
 #include <optional>
 
-#include "base/compiler_specific.h"
+#include "base/containers/adapters.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 
 namespace brave_wallet {
+
+namespace {
+
+char NibbleToChar(uint8_t val) {
+  if (val >= 0 && val < 0xa) {
+    return '0' + val;
+  }
+  return 'a' + val - 0xa;
+}
+
+}  // namespace
 
 std::string ToHex(std::string_view data) {
   if (data.empty()) {
@@ -147,19 +157,21 @@ bool HexValueToInt256(std::string_view hex_input, int256_t* out) {
 }
 
 std::string Uint256ValueToHex(uint256_t input) {
-  std::string result;
-  result.reserve(32);
+  if (input == 0) {
+    return "0x0";  // Special case for zero.
+  }
 
-  static constexpr char kHexChars[] = "0123456789abcdef";
-  while (input) {
-    uint8_t i = static_cast<uint8_t>(input & static_cast<uint256_t>(0x0F));
-    UNSAFE_TODO(result.insert(result.begin(), kHexChars[i]));
-    input >>= 4;
+  uint32_t significant_bits_count = 256 - (__builtin_clzg(input) / 4) * 4;
+
+  std::string result;
+  result.reserve(2 + significant_bits_count / 4);
+  result.append("0x");
+
+  for (uint32_t i = 4; i <= significant_bits_count; i += 4) {
+    result += NibbleToChar((input >> (significant_bits_count - i)) & 0xF);
   }
-  if (result.empty()) {
-    return "0x0";
-  }
-  return "0x" + result;
+
+  return result;
 }
 
 bool PrefixedHexStringToBytes(std::string_view input,

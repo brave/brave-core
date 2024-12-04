@@ -5,8 +5,7 @@
 
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 
-#include <memory>
-#include <string>
+#include <vector>
 
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
@@ -17,9 +16,9 @@ namespace brave_wallet {
 TEST(BtcLikeSerializerStreamTest, Push8AsLE) {
   std::vector<uint8_t> data;
   BtcLikeSerializerStream stream(&data);
-  stream.Push8AsLE(0xab);
+  stream.Push8(0xab);
   EXPECT_EQ(base::HexEncode(data), "AB");
-  stream.Push8AsLE(0x12);
+  stream.Push8(0x12);
   EXPECT_EQ(base::HexEncode(data), "AB12");
 
   EXPECT_EQ(stream.serialized_bytes(), 2u);
@@ -28,9 +27,9 @@ TEST(BtcLikeSerializerStreamTest, Push8AsLE) {
 TEST(BtcLikeSerializerStreamTest, Push16AsLE) {
   std::vector<uint8_t> data;
   BtcLikeSerializerStream stream(&data);
-  stream.Push16AsLE(0xab);
+  stream.Push16(0xab);
   EXPECT_EQ(base::HexEncode(data), "AB00");
-  stream.Push16AsLE(0x1234);
+  stream.Push16(0x1234);
   EXPECT_EQ(base::HexEncode(data), "AB003412");
 
   EXPECT_EQ(stream.serialized_bytes(), 4u);
@@ -39,9 +38,9 @@ TEST(BtcLikeSerializerStreamTest, Push16AsLE) {
 TEST(BtcLikeSerializerStreamTest, Push32AsLE) {
   std::vector<uint8_t> data;
   BtcLikeSerializerStream stream(&data);
-  stream.Push32AsLE(0xabcd);
+  stream.Push32(0xabcd);
   EXPECT_EQ(base::HexEncode(data), "CDAB0000");
-  stream.Push32AsLE(0x12345678);
+  stream.Push32(0x12345678);
   EXPECT_EQ(base::HexEncode(data), "CDAB000078563412");
 
   EXPECT_EQ(stream.serialized_bytes(), 8u);
@@ -50,24 +49,24 @@ TEST(BtcLikeSerializerStreamTest, Push32AsLE) {
 TEST(BtcLikeSerializerStreamTest, Push64AsLE) {
   std::vector<uint8_t> data;
   BtcLikeSerializerStream stream(&data);
-  stream.Push64AsLE(0xabcd);
+  stream.Push64(0xabcd);
   EXPECT_EQ(base::HexEncode(data), "CDAB000000000000");
-  stream.Push64AsLE(0x1234567890abcdef);
+  stream.Push64(0x1234567890abcdef);
   EXPECT_EQ(base::HexEncode(data), "CDAB000000000000EFCDAB9078563412");
 
   EXPECT_EQ(stream.serialized_bytes(), 16u);
 }
 
-TEST(BtcLikeSerializerStreamTest, PushVarInt) {
+TEST(BtcLikeSerializerStreamTest, PushCompactSize) {
   std::vector<uint8_t> data;
   BtcLikeSerializerStream stream(&data);
-  stream.PushVarInt(0xab);
+  stream.PushCompactSize(0xab);
   EXPECT_EQ(base::HexEncode(data), "AB");
-  stream.PushVarInt(0xabcd);
+  stream.PushCompactSize(0xabcd);
   EXPECT_EQ(base::HexEncode(data), "ABFDCDAB");
-  stream.PushVarInt(0xabcdef01);
+  stream.PushCompactSize(0xabcdef01);
   EXPECT_EQ(base::HexEncode(data), "ABFDCDABFE01EFCDAB");
-  stream.PushVarInt(0xabcdef0123456789);
+  stream.PushCompactSize(0xabcdef0123456789);
   EXPECT_EQ(base::HexEncode(data), "ABFDCDABFE01EFCDABFF8967452301EFCDAB");
 
   EXPECT_EQ(stream.serialized_bytes(), 18u);
@@ -136,16 +135,16 @@ TEST(BtcLikeSerializerStreamTest, NoVectorInCtor) {
 
   BtcLikeSerializerStream stream(nullptr);
 
-  stream.Push8AsLE(0xab);
+  stream.Push8(0xab);
   EXPECT_EQ(stream.serialized_bytes(), 1u);
 
-  stream.Push16AsLE(0xab);
+  stream.Push16(0xab);
   EXPECT_EQ(stream.serialized_bytes(), 3u);
 
-  stream.Push32AsLE(0x12345678);
+  stream.Push32(0x12345678);
   EXPECT_EQ(stream.serialized_bytes(), 7u);
 
-  stream.Push64AsLE(0xabcd);
+  stream.Push64(0xabcd);
   EXPECT_EQ(stream.serialized_bytes(), 15u);
 
   stream.PushBytes(bytes);
@@ -157,7 +156,7 @@ TEST(BtcLikeSerializerStreamTest, NoVectorInCtor) {
   stream.PushSizeAndBytes(bytes);
   EXPECT_EQ(stream.serialized_bytes(), 31u);
 
-  stream.PushVarInt(0xabcdef01);
+  stream.PushCompactSize(0xabcdef01);
   EXPECT_EQ(stream.serialized_bytes(), 36u);
 }
 
