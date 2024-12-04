@@ -3,10 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
-import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
-import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from '//resources/brave/polymer_overriding.js'
+import {html} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 RegisterStyleOverride(
   'password-manager-side-bar',
@@ -51,3 +49,5 @@ RegisterPolymerTemplateModifications({
     }
   }
 })
+
+export * from './side_bar-chromium.js'
