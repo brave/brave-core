@@ -2659,11 +2659,12 @@ extension BrowserViewController: TabDelegate {
       tab.requestBlockingContentHelper,
     ]
 
-    let braveTranslateScriptHandler = BraveTranslateScriptHandler(tab: tab, delegate: self)
+    let braveTranslateTabHelper = BraveTranslateTabHelper(tab: tab, delegate: self)
+
     injectedScripts.append(
-      BraveTranslateScriptLanguageDetectionHandler(tab: tab, delegate: braveTranslateScriptHandler)
+      BraveTranslateScriptLanguageDetectionHandler(tabHelper: braveTranslateTabHelper)
     )
-    injectedScripts.append(braveTranslateScriptHandler)
+    injectedScripts.append(BraveTranslateScriptHandler(tabHelper: braveTranslateTabHelper))
 
     #if canImport(BraveTalk)
     injectedScripts.append(
