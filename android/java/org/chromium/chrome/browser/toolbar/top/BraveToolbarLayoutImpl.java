@@ -79,6 +79,7 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
+import org.chromium.chrome.browser.rewards.RewardsPageActivity;
 import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
@@ -205,6 +206,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        if (context instanceof RewardsPageActivity) {
+            // Make sure initial state matches previously set flags.
+            mIsBottomToolbarVisible =
+                    BottomToolbarConfiguration.isBottomToolbarEnabled()
+                            && BraveMenuButtonCoordinator.isMenuFromBottom();
+        }
     }
 
     @Override
@@ -1069,7 +1077,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             hideRewardsOnboardingIcon();
             OnboardingPrefManager.getInstance().setOnboardingShown(true);
             if (BraveRewardsHelper.shouldShowNewRewardsUI()) {
-                BraveLeoActivity.showPage(getContext(), BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
+                RewardsPageActivity.showPage(
+                        getContext(), BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
             } else {
                 mRewardsPopup = new BraveRewardsPanel(v);
                 mRewardsPopup.showLikePopDownMenu();

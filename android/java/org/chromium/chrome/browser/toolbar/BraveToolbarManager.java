@@ -44,6 +44,7 @@ import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinat
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
+import org.chromium.chrome.browser.rewards.RewardsPageActivity;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
@@ -453,6 +454,12 @@ public class BraveToolbarManager extends ToolbarManager {
             boolean isBraveBottomControlsVisible =
                     mCurrentOrientation != Configuration.ORIENTATION_LANDSCAPE;
             setBraveBottomControlsVisible(isBraveBottomControlsVisible);
+        }
+
+        if (mActivity instanceof RewardsPageActivity) {
+            // When rewards page is shown on rotated screen we don't care about
+            // the toolbar.
+            return;
         }
 
         if (mActivity instanceof BraveActivity) {

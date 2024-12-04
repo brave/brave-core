@@ -168,6 +168,7 @@ import org.chromium.chrome.browser.quick_search_engines.utils.QuickSearchEngines
 import org.chromium.chrome.browser.quick_search_engines.views.QuickSearchEnginesViewAdapter;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
+import org.chromium.chrome.browser.rewards.RewardsPageActivity;
 import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
@@ -2112,7 +2113,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void showRewardsPage() {
         if (BraveRewardsHelper.shouldShowNewRewardsUI()) {
-            BraveLeoActivity.showPage(this, BRAVE_REWARDS_SETTINGS_URL);
+            RewardsPageActivity.showPage(this, BRAVE_REWARDS_SETTINGS_URL);
         } else {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         }
