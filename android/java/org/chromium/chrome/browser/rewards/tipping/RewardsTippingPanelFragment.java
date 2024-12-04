@@ -48,7 +48,7 @@ import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder
 import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -331,12 +331,15 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     private SpannableString stringMonthlyToSpannableString(String text) {
         Spanned textSpanned = BraveRewardsHelper.spannedFromHtmlString(text);
         SpannableString textSpannableString = new SpannableString(textSpanned.toString());
-        NoUnderlineClickableSpan monthlyContributionClickableSpan = new NoUnderlineClickableSpan(
-                getActivity(), R.color.monthly_contributions_text_color, (textView) -> {
-                    TabUtils.openUrlInNewTab(
-                            false, BraveActivity.BRAVE_REWARDS_SETTINGS_MONTHLY_URL);
-                    dismissRewardsPanel();
-                });
+        ChromeClickableSpan monthlyContributionClickableSpan =
+                new ChromeClickableSpan(
+                        getActivity(),
+                        R.color.monthly_contributions_text_color,
+                        (textView) -> {
+                            TabUtils.openUrlInNewTab(
+                                    false, BraveActivity.BRAVE_REWARDS_SETTINGS_MONTHLY_URL);
+                            dismissRewardsPanel();
+                        });
 
         BraveRewardsHelper.setSpan(getActivity(), text, textSpannableString,
                 R.string.monthly_contributions, monthlyContributionClickableSpan);

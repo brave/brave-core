@@ -28,7 +28,7 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.widget.Toast;
 
 public class CreateCustomFiltersFragment extends BravePreferenceFragment
@@ -72,8 +72,8 @@ public class CreateCustomFiltersFragment extends BravePreferenceFragment
                 new SpannableString(summaryTextSpanned.toString());
 
         if (getActivity() != null) {
-            NoUnderlineClickableSpan summaryTextClickableSpan =
-                    new NoUnderlineClickableSpan(
+            ChromeClickableSpan summaryTextClickableSpan =
+                    new ChromeClickableSpan(
                             getActivity(),
                             R.color.brave_link,
                             (textView) -> {
