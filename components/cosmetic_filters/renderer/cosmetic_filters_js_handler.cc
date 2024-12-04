@@ -122,7 +122,7 @@ constexpr char kHideSelectorsInjectScript[] =
 constexpr char kSePickerThemeInfoScript[] =
     R"((function() {
           const CC = window.content_cosmetic
-          CC.setTheme(%d)
+          CC.setTheme(%d, %d)
         })();)";
 
 std::string LoadDataResource(const int id) {
@@ -279,32 +279,42 @@ bool CosmeticFiltersJSHandler::OnIsFirstParty(const std::string& url_string) {
 void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
     const std::string& selector) {
   const auto host = url_.host();
-  GetRemoteHandler()->AddSiteCosmeticFilter(selector);
+  GetElementPickerRemoteHandler()->AddSiteCosmeticFilter(selector);
 }
 
 void CosmeticFiltersJSHandler::OnManageCustomFilters() {
-  GetRemoteHandler()->ManageCustomFilters();
+  GetElementPickerRemoteHandler()->ManageCustomFilters();
 }
 
 mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
-CosmeticFiltersJSHandler::GetRemoteHandler() {
-  if (!handler_ || !handler_.is_bound() || !handler_.is_connected()) {
-    handler_ = MakeCosmeticFiltersHandler(render_frame_);
+CosmeticFiltersJSHandler::GetElementPickerRemoteHandler() {
+  if (!element_picker_actions_handler_ ||
+      !element_picker_actions_handler_.is_bound() ||
+      !element_picker_actions_handler_.is_connected()) {
+    element_picker_actions_handler_ = MakeCosmeticFiltersHandler(render_frame_);
+    element_picker_actions_handler_.set_disconnect_handler(
+        base::BindOnce(&CosmeticFiltersJSHandler::OnRemoteHandlerDisconnect,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
-  return handler_;
+  return element_picker_actions_handler_;
+}
+
+void CosmeticFiltersJSHandler::OnRemoteHandlerDisconnect() {
+  element_picker_actions_handler_.reset();
 }
 
 void CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo() {
-  GetRemoteHandler()->GetElementPickerThemeInfo(
+  GetElementPickerRemoteHandler()->GetElementPickerThemeInfo(
       base::BindOnce(&CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
 void CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo(
+    bool is_dark_mode_enabled,
     int32_t background_color) {
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  std::string new_selectors_script =
-      base::StringPrintf(kSePickerThemeInfoScript, background_color);
+  std::string new_selectors_script = base::StringPrintf(
+      kSePickerThemeInfoScript, is_dark_mode_enabled, background_color);
   web_frame->ExecuteScriptInIsolatedWorld(
       isolated_world_id_,
       blink::WebScriptSource(blink::WebString::FromUTF8(new_selectors_script)),

@@ -35,4 +35,9 @@ int32_t GetThemeBackgroundColor() {
   return Java_BraveCosmeticFiltersUtils_getThemeBackgroundColor(env);
 }
 
+bool IsDarkModeEnabled() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  return Java_BraveCosmeticFiltersUtils_isNightlyModeEnabled(env);
+}
+
 }  // namespace cosmetic_filters

@@ -73,7 +73,7 @@ declare global {
       tryScheduleQueuePump: (() => void)
       proceduralActionFilters?: ProceduralActionFilter[]
       hasProceduralActions: boolean,
-      setTheme: (bgcolor: number) => void
+      setTheme: (isDarkModeEnabled: boolean, bgcolor: number) => void
     }
   }
 }

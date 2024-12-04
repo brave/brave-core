@@ -103,9 +103,10 @@ void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(
 #if !BUILDFLAG(IS_ANDROID)
   auto& color_provider = GetWebContents().GetColorProvider();
   std::move(callback).Run(
+      GetWebContents().GetColorMode() == ui::ColorProviderKey::ColorMode::kDark,
       color_provider.GetColor(kColorSidePanelBadgeBackground));
 #else   // !BUILDFLAG(IS_ANDROID)
-  std::move(callback).Run(GetThemeBackgroundColor());
+  std::move(callback).Run(IsDarkModeEnabled(), GetThemeBackgroundColor());
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 

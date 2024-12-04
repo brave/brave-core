@@ -41,6 +41,17 @@ public class BraveCosmeticFiltersUtils {
         return backgroundColor;
     }
 
+    @CalledByNative
+    public static boolean isNightlyModeEnabled() {
+        boolean isDarkModeEnabled = false;
+        try {
+            isDarkModeEnabled = BraveActivity.getBraveActivity().isNightlyModeEnabled();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "Get nightly mode status" + e);
+        }
+        return isDarkModeEnabled;
+    }
+
     @NativeMethods
     interface Natives {
         boolean launchContentPickerForWebContent(Tab tab);

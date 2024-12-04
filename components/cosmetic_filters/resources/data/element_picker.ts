@@ -303,9 +303,7 @@ const attachElementPicker = () => {
   // Will be resolved by webpack to the file content.
   // It's a trusted content so it's safe to use innerHTML.
   // eslint-disable-next-line no-unsanitized/property
-  shadowRoot.innerHTML = isAndroid ?
-    require('./android_element_picker.html') :
-    require('./element_picker.html')
+  shadowRoot.innerHTML = require('./element_picker.html')
 
   const pickerCSSStyle: string = [
     'background: transparent',
@@ -645,39 +643,66 @@ const launchElementPicker = (root: ShadowRoot) => {
     togglePopup(true)
   })
 
+  const setDarkModeButtons = (isDarkModeEnabled: boolean) => {
+    const elements = root.querySelectorAll('.button');
+    elements.forEach(element => {
+      if (element.classList.contains(isDarkModeEnabled ? 'light' : 'dark')) {
+        element.classList.remove(isDarkModeEnabled ? 'light' : 'dark');
+      }
+      element.classList.add(isDarkModeEnabled ? 'dark' : 'light')
+    });
+  }
+
+  const enableButtons = (isDisabled: boolean) => {
+    const elements = root.querySelectorAll('.button');
+    elements.forEach(element => {
+      if(isDisabled) {
+        element.classList.add('disabled')
+      } else {
+        element.classList.remove('disabled');
+      }
+    });
+  }
+
   const section = root.getElementById('main-section')!
+  if (!isAndroid) {
+    section.classList.add('desktop')
+  }
   const togglePopup = (show: boolean) => {
-    if(isAndroid) {
+      enableButtons(!show)
       if (show) {
-        createButton.classList.remove('block-button-disabled')
         createButton.textContent = "Block Element"
       } else {
-        createButton.classList.add('block-button-disabled')
         createButton.textContent = "Select element you want to block"
       }
-      return
+    if (!isAndroid) {
+      section.style.setProperty('opacity', show ? '1' : '0.2')
     }
-    section.style.setProperty('opacity', show ? '1' : '0.2')
   }
   targetedElems.togglePicker = togglePopup
 
   const slider = root.getElementById('sliderSpecificity') as HTMLInputElement
   if (isAndroid) {
-    slider.style.display = 'none'
+    const sc = root.getElementById('slider-container') as HTMLInputElement
+    sc.style.display = 'none'
   }
 
   const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-  const handleColorSchemeChange = () => {
+  const handleColorSchemeChange = (event: MediaQueryListEvent) => {
     api.getElementPickerThemeInfo()
   };
   prefersDarkScheme.addEventListener('change', handleColorSchemeChange);
-  window.content_cosmetic.setTheme = (bgcolor: number) => {
+  window.content_cosmetic.setTheme = (
+    isDarkModeEnabled: boolean, bgcolor: number) => {
     const colorHex = `#${(bgcolor & 0xFFFFFF).toString(16).padStart(6, '0')}`
     section.style.setProperty('background-color', colorHex)
     root.querySelectorAll('.secondary-button').forEach(e =>
         (e as HTMLElement).style.setProperty('background-color', colorHex))
+
+    setDarkModeButtons(isDarkModeEnabled)
   }
-  handleColorSchemeChange()
+
+  api.getElementPickerThemeInfo()
 
   const dispatchSelect = () => {
     const { isValid, selector } = elementPickerUserSelectedTarget(

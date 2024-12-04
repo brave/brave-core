@@ -78,7 +78,8 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
   void OnAddSiteCosmeticFilter(const std::string& selector);
   void OnManageCustomFilters();
   void GetCosmeticFilterThemeInfo();
-  void OnGetCosmeticFilterThemeInfo(int32_t background_color);
+  void OnGetCosmeticFilterThemeInfo(bool is_dark_mode_enabled,
+                                    int32_t background_color);
   int OnEventBegin(const std::string& event_name);
   void OnEventEnd(const std::string& event_name, int);
 
@@ -87,9 +88,10 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
   bool generichide_ = false;
 
   mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
-  GetRemoteHandler();
+  GetElementPickerRemoteHandler();
+  void OnRemoteHandlerDisconnect();
   mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>
-      handler_;
+      element_picker_actions_handler_;
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   mojo::Remote<mojom::CosmeticFiltersResources> cosmetic_filters_resources_;
   mojo::AssociatedReceiver<mojom::CosmeticFiltersAgent> receiver_{this};
