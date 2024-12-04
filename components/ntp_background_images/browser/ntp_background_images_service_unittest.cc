@@ -192,7 +192,7 @@ class TestObserver : public NTPBackgroundImagesService::Observer {
 
   raw_ptr<NTPBackgroundImagesData> bi_data_ = nullptr;
   bool on_bi_updated_ = false;
-  raw_ptr<NTPSponsoredImagesData> si_data_ = nullptr;
+  raw_ptr<NTPSponsoredImagesData, DanglingUntriaged> si_data_ = nullptr;
   bool on_si_updated_ = false;
   bool on_super_referral_ended_ = false;
 };

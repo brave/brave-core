@@ -115,8 +115,8 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
     }
   }
 
-  raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
+  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService, DanglingUntriaged> service_ = nullptr;
 };
 
 const ui::ColorProvider* GetColorProviderForView(

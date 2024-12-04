@@ -225,7 +225,8 @@ class BraveVpnService :
                           BraveVPNConnectionManager::Observer>
       observed_{this};
   bool wait_region_data_ready_ = false;
-  raw_ptr<BraveVPNConnectionManager> connection_manager_ = nullptr;
+  raw_ptr<BraveVPNConnectionManager, DanglingUntriaged> connection_manager_ =
+      nullptr;
 
   PrefChangeRegistrar policy_pref_change_registrar_;
 #endif  // !BUILDFLAG(IS_ANDROID)

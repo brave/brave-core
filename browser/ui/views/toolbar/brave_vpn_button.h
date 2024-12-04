@@ -74,8 +74,8 @@ class BraveVPNButton : public ToolbarButton,
   bool is_connected_ = false;
   std::optional<brave_vpn::mojom::ConnectionState>
       connection_state_for_testing_;
-  raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
+  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService, DanglingUntriaged> service_ = nullptr;
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
   base::WeakPtrFactory<BraveVPNButton> weak_ptr_factory_{this};
 };
