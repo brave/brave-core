@@ -33,8 +33,7 @@ class ConfirmationStateManager final {
 
   static ConfirmationStateManager& GetInstance();
 
-  void LoadState(const std::optional<WalletInfo>& wallet,
-                 InitializeCallback callback);
+  void LoadState(std::optional<WalletInfo> wallet, InitializeCallback callback);
 
   bool IsInitialized() const { return is_initialized_; }
 

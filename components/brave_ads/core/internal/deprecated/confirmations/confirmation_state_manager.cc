@@ -35,12 +35,11 @@ ConfirmationStateManager& ConfirmationStateManager::GetInstance() {
   return GlobalState::GetInstance()->GetConfirmationStateManager();
 }
 
-void ConfirmationStateManager::LoadState(
-    const std::optional<WalletInfo>& wallet,
-    InitializeCallback callback) {
+void ConfirmationStateManager::LoadState(std::optional<WalletInfo> wallet,
+                                         InitializeCallback callback) {
   BLOG(3, "Loading confirmation state");
 
-  wallet_ = wallet;
+  wallet_ = std::move(wallet);
 
   GetAdsClient().Load(
       kConfirmationsJsonFilename,

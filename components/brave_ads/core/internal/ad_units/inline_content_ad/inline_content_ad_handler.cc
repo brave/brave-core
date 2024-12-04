@@ -109,7 +109,7 @@ void InlineContentAdHandler::TriggerEvent(
 void InlineContentAdHandler::MaybeServeCallback(
     MaybeServeInlineContentAdCallback callback,
     const std::string& dimensions,
-    const std::optional<InlineContentAdInfo>& ad) {
+    base::optional_ref<const InlineContentAdInfo> ad) {
   if (!ad) {
     return std::move(callback).Run(dimensions, ad);
   }

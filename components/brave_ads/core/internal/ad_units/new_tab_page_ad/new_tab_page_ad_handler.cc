@@ -119,7 +119,7 @@ void NewTabPageAdHandler::TriggerEvent(
 
 void NewTabPageAdHandler::MaybeServeCallback(
     MaybeServeNewTabPageAdCallback callback,
-    const std::optional<NewTabPageAdInfo>& ad) {
+    base::optional_ref<const NewTabPageAdInfo> ad) {
   if (!ad) {
     return std::move(callback).Run(ad);
   }

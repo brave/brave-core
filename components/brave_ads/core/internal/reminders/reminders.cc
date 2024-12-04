@@ -65,7 +65,7 @@ void Reminders::MaybeShowUserClickTheSameAdMultipleTimesReminder(
 
 void Reminders::MaybeShowUserClickTheSameAdMultipleTimesReminderCallback(
     const std::string& creative_instance_id,
-    const std::optional<AdHistoryList>& ad_history) {
+    std::optional<AdHistoryList> ad_history) {
   if (!ad_history) {
     return;
   }

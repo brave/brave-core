@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
@@ -99,7 +100,7 @@ void BatAdsImpl::MaybeGetNotificationAd(
       placement_id,
       base::BindOnce(
           [](MaybeGetNotificationAdCallback callback,
-             const std::optional<brave_ads::NotificationAdInfo>& ad) {
+             base::optional_ref<const brave_ads::NotificationAdInfo> ad) {
             if (!ad) {
               return std::move(callback).Run(/*ad*/ std::nullopt);
             }
@@ -125,7 +126,7 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
     MaybeServeNewTabPageAdCallback callback) {
   GetAds()->MaybeServeNewTabPageAd(base::BindOnce(
       [](MaybeServeNewTabPageAdCallback callback,
-         const std::optional<brave_ads::NewTabPageAdInfo>& ad) {
+         base::optional_ref<const brave_ads::NewTabPageAdInfo> ad) {
         if (!ad) {
           std::move(callback).Run(/*ad*/ std::nullopt);
           return;
@@ -169,7 +170,7 @@ void BatAdsImpl::MaybeServeInlineContentAd(
       base::BindOnce(
           [](MaybeServeInlineContentAdCallback callback,
              const std::string& dimensions,
-             const std::optional<brave_ads::InlineContentAdInfo>& ad) {
+             base::optional_ref<const brave_ads::InlineContentAdInfo> ad) {
             if (!ad) {
               std::move(callback).Run(dimensions,
                                       /*ads*/ std::nullopt);

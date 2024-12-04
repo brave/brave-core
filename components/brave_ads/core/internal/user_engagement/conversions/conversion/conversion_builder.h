@@ -16,7 +16,7 @@ struct VerifiableConversionInfo;
 
 ConversionInfo BuildConversion(
     const AdEventInfo& ad_event,
-    const std::optional<VerifiableConversionInfo>& verifiable_conversion);
+    std::optional<VerifiableConversionInfo> verifiable_conversion);
 
 }  // namespace brave_ads
 

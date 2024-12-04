@@ -6,6 +6,7 @@
 #include <optional>
 
 #include "base/test/mock_callback.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
@@ -103,7 +104,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](const std::string& dimensions,
-                    const std::optional<InlineContentAdInfo>& ad) {
+                    base::optional_ref<const InlineContentAdInfo> ad) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
@@ -125,7 +126,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](const std::string& dimensions,
-                    const std::optional<InlineContentAdInfo>& ad) {
+                    base::optional_ref<const InlineContentAdInfo> ad) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
@@ -153,7 +154,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](const std::string& dimensions,
-                    const std::optional<InlineContentAdInfo>& ad) {
+                    base::optional_ref<const InlineContentAdInfo> ad) {
         ASSERT_EQ(kDimensions, dimensions);
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
