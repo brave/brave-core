@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.components.embedder_support.util.UrlConstants;
+import org.chromium.content.browser.MediaSessionImpl;
 import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.MediaSessionObserver;
 import org.chromium.content_public.browser.WebContents;
@@ -81,6 +82,10 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                                 mediaSession);
         assert mediaSessionObserver != null;
 
+        if (!isBraveTalk()) {
+            return mediaSessionObserver;
+        }
+        ((MediaSessionImpl) mediaSession).removeObserver(mediaSessionObserver);
         return new MediaSessionObserver(mediaSession) {
             @Override
             public void mediaSessionDestroyed() {
@@ -89,10 +94,8 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
 
             @Override
             public void mediaSessionStateChanged(boolean isControllable, boolean isPaused) {
-                if (isBraveTalk()) {
-                    isControllable = true;
-                    isPaused = false;
-                }
+                isControllable = true;
+                isPaused = false;
                 mediaSessionObserver.mediaSessionStateChanged(isControllable, isPaused);
             }
 
