@@ -866,7 +866,7 @@ class Tab: NSObject {
       return
     }
 
-    let desktopMode = userAgentOverrides[baseDomain] ?? UserAgent.shouldUseDesktopMode
+    let desktopMode = userAgentOverrides[baseDomain] ?? UserAgent.shouldUseDesktopMode()
     webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
   }
 
@@ -954,7 +954,7 @@ class Tab: NSObject {
         userAgentOverrides[urlString] = !siteOverride
       } else {
         // First time switch, adding the basedomain to dictionary with flipped value.
-        userAgentOverrides[urlString] = !UserAgent.shouldUseDesktopMode
+        userAgentOverrides[urlString] = !UserAgent.shouldUseDesktopMode()
       }
     }
 

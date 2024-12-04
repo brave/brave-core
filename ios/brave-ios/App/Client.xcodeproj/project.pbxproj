@@ -183,7 +183,6 @@
 		0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A5E04FA23FEB53700E5A3E9 /* LaunchScreen.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = LaunchScreen.xcassets; sourceTree = "<group>"; };
 		0A60A1882358AF9E00953CA8 /* Brave.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Brave.xctestplan; path = Client.xcodeproj/Brave.xctestplan; sourceTree = "<group>"; };
-		0A66550D23E9EA540047EF2A /* Brave_iPad.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Brave_iPad.xctestplan; sourceTree = "<group>"; };
 		0A6AC4E824484FBC003D1ED7 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		2703FC14284FDB6300970FD2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Shortcuts/ru.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		270ECFC628381E270089B8B7 /* brave-ios */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "brave-ios"; path = ..; sourceTree = "<group>"; };
@@ -790,7 +789,6 @@
 				270ECFC628381E270089B8B7 /* brave-ios */,
 				27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */,
 				0A60A1882358AF9E00953CA8 /* Brave.xctestplan */,
-				0A66550D23E9EA540047EF2A /* Brave_iPad.xctestplan */,
 				0A24F836233EB5B4004D2F3A /* Configuration */,
 				270ECFC9283824F00089B8B7 /* iOS */,
 				2FE7D51E2B509DA50039FBA4 /* ActionExtension */,

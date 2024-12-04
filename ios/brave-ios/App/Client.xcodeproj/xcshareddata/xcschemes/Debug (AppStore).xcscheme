@@ -72,9 +72,6 @@
             reference = "container:Client.xcodeproj/Brave.xctestplan"
             default = "YES">
          </TestPlanReference>
-         <TestPlanReference
-            reference = "container:Brave_iPad.xctestplan">
-         </TestPlanReference>
       </TestPlans>
    </TestAction>
    <LaunchAction

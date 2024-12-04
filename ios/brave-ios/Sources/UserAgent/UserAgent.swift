@@ -10,14 +10,15 @@ public struct UserAgent {
   public static let mobile = UserAgentBuilder().build(desktopMode: false)
   public static let desktop = UserAgentBuilder().build(desktopMode: true)
 
-  public static var userAgentForDesktopMode: String {
-    UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile
+  public static func userAgentForIdiom(
+    _ idiom: UIUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom
+  ) -> String {
+    return shouldUseDesktopMode(idiom: idiom) ? UserAgent.desktop : UserAgent.mobile
   }
 
-  public static var shouldUseDesktopMode: Bool {
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      return Preferences.UserAgent.alwaysRequestDesktopSite.value
-    }
-    return false
+  public static func shouldUseDesktopMode(
+    idiom: UIUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom
+  ) -> Bool {
+    return idiom == .pad ? Preferences.UserAgent.alwaysRequestDesktopSite.value : false
   }
 }
