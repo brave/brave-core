@@ -384,12 +384,12 @@ std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
   BtcLikeSerializerStream stream(&data);
   CHECK_EQ(decoded_address->pubkey_hash.size(), 20u);
 
-  stream.Push8AsLE(0x76);                          // OP_DUP
-  stream.Push8AsLE(0xa9);                          // OP_HASH
-  stream.Push8AsLE(0x14);                          // hash size
+  stream.Push8(0x76);                              // OP_DUP
+  stream.Push8(0xa9);                              // OP_HASH
+  stream.Push8(0x14);                              // hash size
   stream.PushBytes(decoded_address->pubkey_hash);  // hash
-  stream.Push8AsLE(0x88);                          // OP_EQUALVERIFY
-  stream.Push8AsLE(0xac);                          // OP_CHECKSIG
+  stream.Push8(0x88);                              // OP_EQUALVERIFY
+  stream.Push8(0xac);                              // OP_CHECKSIG
 
   return data;
 }

@@ -409,8 +409,9 @@ bool ParseEthDecryptParams(const std::string& json,
   }
 
   // IsValidHexString guarantees at least 2 bytes and starts with 0x
-  if (!UNSAFE_TODO(base::HexStringToString(untrusted_hex_json_str->data() + 2,
-                                           &untrusted_json))) {
+  if (!base::HexStringToString(
+          base::as_string_view(*untrusted_hex_json_str).substr(2),
+          &untrusted_json)) {
     return false;
   }
 
