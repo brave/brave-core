@@ -6,16 +6,26 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_MANAGER_H_
 
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/threading/sequence_bound.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
+
+namespace base {
+class FilePath;
+class SequencedTaskRunner;
+}  // namespace base
 
 namespace brave_ads {
 
+class Database;
+
 class DatabaseManager final {
  public:
-  DatabaseManager();
+  explicit DatabaseManager(const base::FilePath& path);
 
   DatabaseManager(const DatabaseManager&) = delete;
   DatabaseManager& operator=(const DatabaseManager&) = delete;
@@ -29,6 +39,11 @@ class DatabaseManager final {
 
   // Create or open the database.
   void CreateOrOpen(ResultCallback callback);
+
+  // Run a database transaction. The callback takes one argument -
+  // `mojom::DBTransactionResultInfoPtr` containing the info of the transaction.
+  void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
+                        RunDBTransactionCallback callback);
 
  private:
   void CreateOrOpenCallback(
@@ -59,6 +74,10 @@ class DatabaseManager final {
   void NotifyDidMigrateDatabase(int from_version, int to_version) const;
   void NotifyFailedToMigrateDatabase(int from_version, int to_version) const;
   void NotifyDatabaseIsReady() const;
+
+  const scoped_refptr<base::SequencedTaskRunner> database_task_runner_;
+
+  const base::SequenceBound<Database> database_;
 
   base::ObserverList<DatabaseManagerObserver> observers_;
 

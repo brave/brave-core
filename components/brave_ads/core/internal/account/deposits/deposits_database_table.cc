@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
@@ -19,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads::database::table {
 
@@ -188,10 +186,9 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient().RunDBTransaction(
-      std::move(mojom_db_transaction),
-      base::BindOnce(&GetForCreativeInstanceIdCallback, creative_instance_id,
-                     std::move(callback)));
+  RunDBTransaction(std::move(mojom_db_transaction),
+                   base::BindOnce(&GetForCreativeInstanceIdCallback,
+                                  creative_instance_id, std::move(callback)));
 }
 
 void Deposits::PurgeExpired(ResultCallback callback) const {

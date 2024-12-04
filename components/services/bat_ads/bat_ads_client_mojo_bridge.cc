@@ -210,18 +210,6 @@ std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
   return value;
 }
 
-void BatAdsClientMojoBridge::RunDBTransaction(
-    brave_ads::mojom::DBTransactionInfoPtr mojom_db_transaction,
-    brave_ads::RunDBTransactionCallback callback) {
-  if (!bat_ads_client_associated_remote_.is_bound()) {
-    std::move(callback).Run(brave_ads::mojom::DBTransactionResultInfoPtr());
-    return;
-  }
-
-  bat_ads_client_associated_remote_->RunDBTransaction(
-      std::move(mojom_db_transaction), std::move(callback));
-}
-
 void BatAdsClientMojoBridge::ShowScheduledCaptcha(
     const std::string& payment_id,
     const std::string& captcha_id) {

@@ -7,12 +7,14 @@ module bat_ads.mojom;
 import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
 import "mojo/public/mojom/base/big_string.mojom";
 import "mojo/public/mojom/base/file.mojom";
+import "mojo/public/mojom/base/file_path.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
 interface BatAdsService {
-  Create(pending_associated_remote<BatAdsClient>
+  Create(mojo_base.mojom.FilePath service_path,
+         pending_associated_remote<BatAdsClient>
              bat_ads_client_pending_associated_remote,
          pending_associated_receiver<BatAds>
              bat_ads_pending_associated_receiver,
@@ -99,9 +101,6 @@ interface BatAdsClient {
   LoadDataResource(string name) => (mojo_base.mojom.BigString value);
 
   ShowScheduledCaptcha(string payment_id, string captcha_id);
-
-  RunDBTransaction(brave_ads.mojom.DBTransactionInfo mojom_db_transaction) =>
-      (brave_ads.mojom.DBTransactionResultInfo mojom_db_transaction_result);
 
   RecordP2AEvents(array<string> events);
 

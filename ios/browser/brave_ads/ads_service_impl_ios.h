@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/threading/sequence_bound.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -28,7 +27,6 @@ namespace brave_ads {
 
 class Ads;
 class AdsClient;
-class Database;
 
 class AdsServiceImplIOS : public AdsService {
  public:
@@ -163,7 +161,6 @@ class AdsServiceImplIOS : public AdsService {
 
   void InitializeAds(InitializeCallback callback);
   void InitializeAdsCallback(InitializeCallback callback, bool success);
-  void InitializeDatabase();
 
   void ShutdownAdsCallback(ShutdownCallback callback, bool success);
 
@@ -172,15 +169,13 @@ class AdsServiceImplIOS : public AdsService {
 
   const raw_ptr<PrefService> prefs_ = nullptr;  // Not owned.
 
-  const scoped_refptr<base::SequencedTaskRunner> database_queue_;
+  const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
   base::FilePath storage_path_;
   std::unique_ptr<AdsClient> ads_client_;
   mojom::SysInfoPtr mojom_sys_info_;
   mojom::BuildChannelInfoPtr mojom_build_channel_;
   mojom::WalletInfoPtr mojom_wallet_;
-
-  base::SequenceBound<Database> database_;
 
   std::unique_ptr<Ads> ads_;
 

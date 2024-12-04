@@ -22,6 +22,11 @@ bool IsSuccess(
 bool IsError(
     const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
 
+// Run a database transaction. The callback takes one argument -
+// `mojom::DBTransactionResultInfoPtr` containing the info of the transaction.
+void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
+                      RunDBTransactionCallback callback);
+
 // Run a database transaction.
 void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
                       ResultCallback callback);

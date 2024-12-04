@@ -19,7 +19,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
-#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
@@ -61,7 +60,6 @@ namespace brave_ads {
 class AdsServiceObserver;
 class AdsTooltipsDelegate;
 class BatAdsServiceFactory;
-class Database;
 class DeviceId;
 class ResourceComponent;
 struct NewTabPageAdInfo;
@@ -124,7 +122,6 @@ class AdsServiceImpl final : public AdsService,
   void InitializeBasePathDirectoryCallback(size_t current_start_number,
                                            bool success);
   void Initialize(size_t current_start_number);
-  void InitializeDatabase();
   void InitializeRewardsWallet(size_t current_start_number);
   void InitializeRewardsWalletCallback(
       size_t current_start_number,
@@ -357,9 +354,6 @@ class AdsServiceImpl final : public AdsService,
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
 
-  void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
-                        RunDBTransactionCallback callback) override;
-
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple P2A
   // business logic.
   void RecordP2AEvents(const std::vector<std::string>& events) override;
@@ -426,8 +420,6 @@ class AdsServiceImpl final : public AdsService,
   PrefChangeRegistrar local_state_pref_change_registrar_;
 
   mojom::SysInfo sys_info_;
-
-  base::SequenceBound<Database> database_;
 
   base::RepeatingTimer idle_state_timer_;
   ui::IdleState last_idle_state_ = ui::IdleState::IDLE_STATE_ACTIVE;

@@ -9,9 +9,10 @@
 
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/database/database_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
 namespace brave_ads::database {
 
@@ -44,8 +45,14 @@ bool IsError(
 }
 
 void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
+                      ::brave_ads::RunDBTransactionCallback callback) {
+  GlobalState::GetInstance()->GetDatabaseManager().RunDBTransaction(
+      std::move(mojom_db_transaction), std::move(callback));
+}
+
+void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
                       ResultCallback callback) {
-  GetAdsClient().RunDBTransaction(
+  GlobalState::GetInstance()->GetDatabaseManager().RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&RunDBTransactionCallback, std::move(callback)));
 }
