@@ -69,7 +69,7 @@ constexpr auto kMojomConfirmationTypeToStringMap =
 
 }  // namespace
 
-mojom::ConfirmationType ToMojomConfirmationType(const std::string_view value) {
+mojom::ConfirmationType ToMojomConfirmationType(std::string_view value) {
   const auto iter = kStringToMojomConfirmationTypeMap.find(value);
   if (iter != kStringToMojomConfirmationTypeMap.cend()) {
     const auto [_, mojom_confirmation_type] = *iter;

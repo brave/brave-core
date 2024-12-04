@@ -290,7 +290,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
     chrome::CloseWebContents(browser(), web_contents, /*add_to_history=*/false);
   }
 
-  void NavigateToURL(const std::string_view relative_url,
+  void NavigateToURL(std::string_view relative_url,
                      const bool has_user_gesture) {
     content::WebContents* const web_contents = GetActiveWebContents();
     EXPECT_TRUE(web_contents);
@@ -437,7 +437,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
   }
 
   std::vector<GURL> RedirectChainExpectation(
-      const std::string_view relative_url) const {
+      std::string_view relative_url) const {
     const GURL url = test_server_.GetURL(kHostName, relative_url);
     return {url};
   }

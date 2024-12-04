@@ -15,7 +15,7 @@
 
 namespace brave_ads {
 
-std::optional<double> ParseNumber(const std::string_view condition) {
+std::optional<double> ParseNumber(std::string_view condition) {
   CHECK(base::MatchPattern(condition,
                            kNumericalOperatorConditionMatcherPrefixPattern));
 
