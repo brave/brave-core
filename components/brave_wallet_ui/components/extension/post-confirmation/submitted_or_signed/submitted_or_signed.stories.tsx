@@ -7,6 +7,7 @@ import * as React from 'react'
 // Types
 import {
   BraveWallet,
+  StorybookCoinTypeOptions,
   StorybookTransactionArgs,
   StorybookTransactionOptions
 } from '../../../../constants/types'
@@ -29,12 +30,13 @@ import { PanelWrapper } from '../../../../panel/style'
 export const _TransactionSubmittedOrSigned = {
   render: (args: StorybookTransactionArgs) => {
     // Props
-    const { transactionType } = args
+    const { transactionType, coinType } = args
 
     // Computed
     const transaction = getPostConfirmationStatusMockTransaction(
       transactionType,
-      BraveWallet.TransactionStatus.Submitted
+      BraveWallet.TransactionStatus.Submitted,
+      coinType
     )
 
     return (
@@ -64,6 +66,10 @@ export default {
   argTypes: {
     transactionType: {
       options: StorybookTransactionOptions,
+      control: { type: 'select' }
+    },
+    coinType: {
+      options: StorybookCoinTypeOptions,
       control: { type: 'select' }
     }
   }

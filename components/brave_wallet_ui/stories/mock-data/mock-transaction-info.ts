@@ -7,6 +7,7 @@
 import {
   BraveWallet,
   SerializableTransactionInfo,
+  StorybookCoinTypes,
   StorybookTransactionTypes
 } from '../../constants/types'
 import { deserializeTransaction } from '../../utils/model-serialization-utils'
@@ -478,26 +479,57 @@ export const createMockTransactionInfo = (arg: {
 
 const getMockTransactionType = (
   isSwapOrBridge: boolean,
-  transactionType: StorybookTransactionTypes
+  transactionType: StorybookTransactionTypes,
+  coinType: BraveWallet.CoinType
 ) => {
+  if (isSwapOrBridge && coinType === BraveWallet.CoinType.SOL) {
+    return BraveWallet.TransactionType.SolanaSwap
+  }
   if (isSwapOrBridge) {
     return BraveWallet.TransactionType.ETHSwap
   }
   if (transactionType === 'Approve') {
     return BraveWallet.TransactionType.ERC20Approve
   }
+  if (coinType === BraveWallet.CoinType.SOL) {
+    return BraveWallet.TransactionType.SolanaSystemTransfer
+  }
   return BraveWallet.TransactionType.ETHSend
 }
 
 export const getPostConfirmationStatusMockTransaction = (
   transactionType: StorybookTransactionTypes,
-  transactionStatus: BraveWallet.TransactionStatus
+  transactionStatus: BraveWallet.TransactionStatus,
+  transactionCoinType: StorybookCoinTypes
 ) => {
   const isSwapOrBridge =
     transactionType === 'Swap' || transactionType === 'Bridge'
 
+  const coin =
+    transactionCoinType === 'BTC'
+      ? BraveWallet.CoinType.BTC
+      : transactionCoinType === 'FIL'
+      ? BraveWallet.CoinType.FIL
+      : transactionCoinType === 'SOL'
+      ? BraveWallet.CoinType.SOL
+      : transactionCoinType === 'ZEC'
+      ? BraveWallet.CoinType.ZEC
+      : BraveWallet.CoinType.ETH
+
+  const chain =
+    transactionCoinType === 'BTC'
+      ? BraveWallet.BITCOIN_MAINNET
+      : transactionCoinType === 'FIL'
+      ? BraveWallet.FILECOIN_MAINNET
+      : transactionCoinType === 'SOL'
+      ? BraveWallet.SOLANA_MAINNET
+      : transactionCoinType === 'ZEC'
+      ? BraveWallet.Z_CASH_MAINNET
+      : BraveWallet.MAINNET_CHAIN_ID
+
   return {
     ...mockTransactionInfo,
+    chainId: chain,
     txArgs: [
       BraveWallet.TransactionType.ERC20Approve
         ? LiFiExchangeProxy
@@ -506,16 +538,23 @@ export const getPostConfirmationStatusMockTransaction = (
     ],
     txDataUnion: {
       ...mockTransactionInfo.txDataUnion,
-      ethTxData1559: {
-        ...mockTransactionInfo.txDataUnion.ethTxData1559,
-        baseData: {
-          ...mockTransactionInfo.txDataUnion.ethTxData1559?.baseData,
-          to: mockBasicAttentionToken.contractAddress
-        }
-      }
+      ethTxData1559:
+        coin === BraveWallet.CoinType.ETH
+          ? {
+              ...mockTransactionInfo.txDataUnion.ethTxData1559,
+              baseData: {
+                ...mockTransactionInfo.txDataUnion.ethTxData1559?.baseData,
+                to: mockBasicAttentionToken.contractAddress
+              }
+            }
+          : undefined,
+      solanaTxData:
+        coin === BraveWallet.CoinType.SOL
+          ? mockSolanaTransactionInfo.txDataUnion.solanaTxData
+          : undefined
     },
     txStatus: transactionStatus,
-    txType: getMockTransactionType(isSwapOrBridge, transactionType),
+    txType: getMockTransactionType(isSwapOrBridge, transactionType, coin),
     swapInfo: isSwapOrBridge
       ? ({
           fromCoin: BraveWallet.CoinType.ETH,
