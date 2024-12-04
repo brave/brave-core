@@ -5,7 +5,7 @@ on:
     branches:
       - master
       - '[0-9]+.[0-9]+.x'
-## TODO: If a PR touches >300 files, this filter may prevent the workflow from being executed
+## TODO: If a PR touches >300 files, this filter may prevent the workflow from being executed (https://github.com/orgs/community/discussions/57830)
 #    paths:
 #      - package.json
     types:
@@ -43,6 +43,7 @@ jobs:
                   if [[ "$run_id" ]]; then
                       echo "Rerunning $run_id for $pr_url"
                       # TODO: Workflows older than 30 days will fail to rerun (by design), let's filter them out (using `|| true` for now)
+                      # https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/re-running-workflows-and-jobs
                       gh -R "$GITHUB_REPOSITORY" run rerun "$run_id" || true
                   else
                       echo "No run found for $pr_url"
