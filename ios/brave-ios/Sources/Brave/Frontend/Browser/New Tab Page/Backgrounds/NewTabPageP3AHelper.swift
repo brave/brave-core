@@ -51,7 +51,11 @@ final class NewTabPageP3AHelper {
       return
     }
     let creativeInstanceId = sponsoredImage.creativeInstanceId
-    updateMetricCount(creativeInstanceId: creativeInstanceId, event: event)
+    // Perform updates for both JSON & Constellation dictionaries
+    // The counts need to be monitored separately, as JSON and Constellation
+    // epochs do not perfectly align.
+    updateMetricCount(creativeInstanceId: creativeInstanceId, event: event, isConstellation: false)
+    updateMetricCount(creativeInstanceId: creativeInstanceId, event: event, isConstellation: true)
     if event == .tapped {
       expectedLandingURL = sponsoredImage.logo.destinationURL
       landingTimer?.invalidate()
@@ -69,26 +73,34 @@ final class NewTabPageP3AHelper {
 
   private func updateMetricCount(
     creativeInstanceId: String,
-    event: EventType
+    event: EventType,
+    isConstellation: Bool
   ) {
     let name = DynamicHistogramName(creativeInstanceId: creativeInstanceId, eventType: event)
 
     p3aUtils.registerDynamicMetric(name.histogramName, logType: .express)
 
-    var countsStorage = fetchEventsCountStorage()
+    var countsStorage = fetchEventsCountStorage(isConstellation: isConstellation)
     var eventCounts = countsStorage.eventCounts[name.creativeInstanceId, default: .init()]
 
     eventCounts.counts[name.eventType, default: 0] += 1
 
     countsStorage.eventCounts[name.creativeInstanceId] = eventCounts
 
-    updateEventsCountStorage(countsStorage)
+    updateEventsCountStorage(countsStorage, isConstellation: isConstellation)
   }
 
   // MARK: - Storage
 
-  private func fetchEventsCountStorage() -> Storage {
-    guard let json = Preferences.NewTabPage.sponsoredImageEventCountJSON.value, !json.isEmpty else {
+  private func storagePreference(isConstellation: Bool) -> Preferences.Option<String?> {
+    isConstellation
+      ? Preferences.NewTabPage.sponsoredImageEventCountConstellation
+      : Preferences.NewTabPage.sponsoredImageEventCountJSON
+  }
+
+  private func fetchEventsCountStorage(isConstellation: Bool) -> Storage {
+    let pref = storagePreference(isConstellation: isConstellation)
+    guard let json = pref.value, !json.isEmpty else {
       return .init()
     }
     do {
@@ -99,23 +111,41 @@ final class NewTabPageP3AHelper {
     }
   }
 
-  private func updateEventsCountStorage(_ storage: Storage) {
+  private func updateEventsCountStorage(_ storage: Storage, isConstellation: Bool) {
+    let pref = storagePreference(isConstellation: isConstellation)
     do {
       let json = String(data: try JSONEncoder().encode(storage), encoding: .utf8)
-      Preferences.NewTabPage.sponsoredImageEventCountJSON.value = json
+      pref.value = json
     } catch {
       Logger.module.error("Failed to encode NTP SI Event storage: \(error)")
     }
   }
 
+  private func removeMetricIfInstanceDoesNotExist(name: DynamicHistogramName) {
+    let eventType = name.eventType
+    let creativeInstanceId = name.creativeInstanceId
+
+    let jsonStorage = fetchEventsCountStorage(isConstellation: false)
+    let constellationStorage = fetchEventsCountStorage(isConstellation: true)
+
+    for storage in [jsonStorage, constellationStorage] {
+      if let eventCounts = storage.eventCounts[creativeInstanceId],
+        eventCounts.counts.keys.contains(where: { $0 == eventType })
+      {
+        return
+      }
+    }
+    p3aUtils.removeDynamicMetric(name.histogramName)
+  }
+
   // MARK: - P3A Observers
 
   private func rotated(type: P3AMetricLogType, isConstellation: Bool) {
-    if type != .express || isConstellation {
+    if type != .express {
       return
     }
     if !p3aUtils.isP3AEnabled {
-      Preferences.NewTabPage.sponsoredImageEventCountJSON.value = nil
+      storagePreference(isConstellation: isConstellation).value = nil
       return
     }
 
@@ -130,7 +160,7 @@ final class NewTabPageP3AHelper {
       .r(17...),
     ]
 
-    var countsStorage = fetchEventsCountStorage()
+    var countsStorage = fetchEventsCountStorage(isConstellation: isConstellation)
     var totalActiveCreatives = 0
     for (creativeInstanceId, eventCounts) in countsStorage.eventCounts {
       for (eventType, count) in eventCounts.counts {
@@ -139,13 +169,19 @@ final class NewTabPageP3AHelper {
           eventType: eventType
         )
         countsStorage.eventCounts[creativeInstanceId]?.inflightCounts[eventType] = count
-        UmaHistogramRecordValueToBucket(name.histogramName, buckets: countBuckets, value: count)
+        if let bucket = countBuckets.firstIndex(where: { $0.contains(count) }) {
+          p3aUtils.updateMetricValueForSingleFormat(
+            name: name.histogramName,
+            bucket: bucket,
+            isConstellation: isConstellation
+          )
+        }
       }
       if !eventCounts.counts.isEmpty {
         totalActiveCreatives += 1
       }
     }
-    updateEventsCountStorage(countsStorage)
+    updateEventsCountStorage(countsStorage, isConstellation: isConstellation)
 
     let creativeTotalHistogramName = DynamicHistogramName(
       creativeInstanceId: "total",
@@ -155,27 +191,25 @@ final class NewTabPageP3AHelper {
     // or send the total if there were outstanding events sent
     if !rewards.isEnabled || totalActiveCreatives > 0 {
       p3aUtils.registerDynamicMetric(creativeTotalHistogramName, logType: .express)
-      UmaHistogramRecordValueToBucket(
-        creativeTotalHistogramName,
-        buckets: countBuckets,
-        value: totalActiveCreatives
-      )
-    } else {
-      p3aUtils.removeDynamicMetric(creativeTotalHistogramName)
+      if let bucket = countBuckets.firstIndex(where: { $0.contains(totalActiveCreatives) }) {
+        p3aUtils.updateMetricValueForSingleFormat(
+          name: creativeTotalHistogramName,
+          bucket: bucket,
+          isConstellation: isConstellation
+        )
+      }
     }
   }
 
   private func metricCycled(histogramName: String, isConstellation: Bool) {
-    if isConstellation {
-      // Monitor both STAR and JSON metric cycles once STAR is supported for express metrics
-      return
-    }
     guard let name = DynamicHistogramName(computedHistogramName: histogramName) else {
       return
     }
-    var countsStorage = fetchEventsCountStorage()
+    defer {
+      removeMetricIfInstanceDoesNotExist(name: name)
+    }
+    var countsStorage = fetchEventsCountStorage(isConstellation: isConstellation)
     guard var eventCounts = countsStorage.eventCounts[name.creativeInstanceId] else {
-      p3aUtils.removeDynamicMetric(histogramName)
       return
     }
     let fullCount = eventCounts.counts[name.eventType] ?? 0
@@ -187,7 +221,6 @@ final class NewTabPageP3AHelper {
     if newCount > 0 {
       eventCounts.counts[name.eventType] = newCount
     } else {
-      p3aUtils.removeDynamicMetric(histogramName)
       eventCounts.counts.removeValue(forKey: name.eventType)
       if eventCounts.counts.isEmpty {
         countsStorage.eventCounts.removeValue(forKey: name.creativeInstanceId)
@@ -198,7 +231,7 @@ final class NewTabPageP3AHelper {
       countsStorage.eventCounts[name.creativeInstanceId] = eventCounts
     }
 
-    updateEventsCountStorage(countsStorage)
+    updateEventsCountStorage(countsStorage, isConstellation: isConstellation)
   }
 
   // MARK: -

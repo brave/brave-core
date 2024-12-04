@@ -303,6 +303,10 @@ extension Preferences {
       key: "newtabpage.si-p3a.event-count",
       default: nil
     )
+    public static let sponsoredImageEventCountConstellation = Option<String?>(
+      key: "newtabpage.si-p3a.event-count-constellation",
+      default: nil
+    )
   }
 
   final public class AdblockDebug {

@@ -21,7 +21,7 @@ public func UmaHistogramEnumeration<E: RawRepresentable & CaseIterable>(
 ///
 /// Essentially a type eraser around `RangeExpression`
 public struct Bucket {
-  var contains: (Int) -> Bool
+  public var contains: (Int) -> Bool
   public static func equals(_ value: Int) -> Self {
     .init(contains: { value == $0 })
   }
