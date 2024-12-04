@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#define BRAVE_MATCHES_STORAGE_KEY                                      \
-  /* Add StorageKey matching mode to cleanup ONLY third-party data. */ \
-  if (match_mode == OriginMatchingMode::kThirdPartiesOnly &&           \
-      storage_key.IsThirdPartyContext() &&                             \
-      storage_key.MatchesOriginForTrustedStorageDeletion(origin)) {    \
-    return is_delete_list;                                             \
-  }
+#define BRAVE_MATCHES_STORAGE_KEY                                        \
+  /* Add StorageKey matching mode to cleanup ONLY third-party data. */   \
+  case BrowsingDataFilterBuilder::OriginMatchingMode::kThirdPartiesOnly: \
+    if (storage_key.IsThirdPartyContext() &&                             \
+        storage_key.MatchesOriginForTrustedStorageDeletion(origin)) {    \
+      return is_delete_list;                                             \
+    }                                                                    \
+    break;
 
 #define BRAVE_MATCHES_STORAGE_KEY_SWITCH                                     \
   case OriginMatchingMode::kThirdPartiesOnly: {                              \
