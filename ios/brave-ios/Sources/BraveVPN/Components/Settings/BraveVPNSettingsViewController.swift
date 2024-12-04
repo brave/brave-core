@@ -153,18 +153,20 @@ public class BraveVPNSettingsViewController: TableViewController {
       }
     )
 
-    let vpnSmartProxyToggleView = SwitchAccessoryView(
-      initialValue: BraveVPN.isSmartProxyRoutingEnabled,
+    let vpnSmartProxyToggleView = BraveVPNLinkSwitchView(
+      isOn: { BraveVPN.isSmartProxyRoutingEnabled },
       valueChange: { isSmartProxyEnabled in
         BraveVPN.isSmartProxyRoutingEnabled = isSmartProxyEnabled
-      }
+      },
+      openURL: openURL
     )
 
-    let vpnKillSwitchToggleView = SwitchAccessoryView(
-      initialValue: BraveVPN.isKillSwitchEnabled,
+    let vpnKillSwitchToggleView = BraveVPNLinkSwitchView(
+      isOn: { BraveVPN.isKillSwitchEnabled },
       valueChange: { isKillSwitchEnabled in
         BraveVPN.isKillSwitchEnabled = isKillSwitchEnabled
-      }
+      },
+      openURL: openURL
     )
 
     if Preferences.VPN.vpnReceiptStatus.value
@@ -184,16 +186,22 @@ public class BraveVPNSettingsViewController: TableViewController {
         ),
         Row(
           text: Strings.VPN.settingsVPNSmartProxyEnabled,
-          detailText: Strings.VPN.settingsVPNSmartProxyDescription,
+          detailText: String.localizedStringWithFormat(
+            Strings.VPN.settingsVPNSmartProxyDescription,
+            URL.brave.braveVPNSmartProxySupport.absoluteString
+          ),
           accessory: .view(vpnSmartProxyToggleView),
-          cellClass: MultilineSubtitleCell.self,
+          cellClass: BraveVPNLinkSwitchCell.self,
           uuid: vpnSmartProxySectionCellId
         ),
         Row(
           text: Strings.VPN.settingsVPNKillSwitchTitle,
-          detailText: Strings.VPN.settingsVPNKillSwitchDescription,
+          detailText: String.localizedStringWithFormat(
+            Strings.VPN.settingsVPNKillSwitchDescription,
+            URL.brave.braveVPNKillSwitchSupport.absoluteString
+          ),
           accessory: .view(vpnKillSwitchToggleView),
-          cellClass: MultilineSubtitleCell.self,
+          cellClass: BraveVPNLinkSwitchCell.self,
           uuid: vpnKillSwitchSectionCellId
         ),
       ],

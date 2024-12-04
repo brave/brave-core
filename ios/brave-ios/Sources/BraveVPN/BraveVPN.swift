@@ -34,7 +34,7 @@ public class BraveVPN {
   /// This function can have side effects if the receipt has expired(removes the vpn connection then).
   public static func initialize(customCredential: BraveVPNSkusCredential?) {
     @Sendable func clearConfiguration() {
-      GRDVPNHelper.clearVpnConfiguration()
+      GRDVPNHelper.clearVPNConfiguration()
       clearCredentials()
 
       NEVPNManager.shared().removeFromPreferences { error in
@@ -154,11 +154,11 @@ public class BraveVPN {
 
   public static var isKillSwitchEnabled: Bool {
     get {
-      helper.killSwitchEnabled
+      helper.vpnKillSwitchEnabled
     }
 
     set {
-      helper.killSwitchEnabled = newValue
+      helper.setVPNKillSwitchEnabled(newValue)
     }
   }
 
@@ -306,7 +306,7 @@ public class BraveVPN {
   /// and reconnects automatically after reconfiguration is done.
   public static func reconfigureVPN(completion: ((Bool) -> Void)? = nil) {
     helper.forceDisconnectVPNIfNecessary()
-    GRDVPNHelper.clearVpnConfiguration()
+    GRDVPNHelper.clearVPNConfiguration()
 
     connectToVPN { status in
       completion?(status)
@@ -318,7 +318,7 @@ public class BraveVPN {
     completion: ((Bool) -> Void)? = nil
   ) {
     helper.forceDisconnectVPNIfNecessary()
-    GRDVPNHelper.clearVpnConfiguration()
+    GRDVPNHelper.clearVPNConfiguration()
 
     GRDTransportProtocol.setUserPreferred(transportProtocol)
 

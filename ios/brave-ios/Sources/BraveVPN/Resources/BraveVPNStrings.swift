@@ -1242,7 +1242,7 @@ extension Strings {
         "vpn.settingsVPNSmartProxyDescription",
         bundle: .module,
         value:
-          "Smart Proxy Routing ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third-party services, such as Netflix, Hulu, BBC iPlayer, Pandora, etc.",
+          "Smart Proxy Routing ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third-party services, such as Netflix, Hulu, BBC iPlayer, Pandora, etc. [Learn More](%@)",
         comment:
           "The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings."
       )
@@ -1262,7 +1262,7 @@ extension Strings {
         "vpn.settingsVPNKillSwitchDescription",
         bundle: .module,
         value:
-          "When enabled, if your VPN connection drops unexpectedly, your device will automatically be disconnected from the internet, to prevent IP-Address and Data leaks.",
+          "When enabled, if your VPN connection drops unexpectedly, your device will automatically be disconnected from the internet, to prevent IP-Address and Data leaks. [Learn More](%@)",
         comment:
           "The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc."
       )
