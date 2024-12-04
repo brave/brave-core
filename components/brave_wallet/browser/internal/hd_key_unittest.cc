@@ -75,7 +75,7 @@ std::vector<DerivationIndex> ParsePath(std::string_view path) {
   }
 
   std::vector<DerivationIndex> result;
-  for (auto entry : base::span(entries).subspan(1)) {
+  for (auto entry : base::span(entries).subspan(1u)) {
     bool is_hardened = entry.length() > 1 && entry.back() == '\'';
     if (is_hardened) {
       entry.remove_suffix(1);
