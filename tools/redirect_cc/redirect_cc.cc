@@ -301,7 +301,9 @@ class RedirectCC {
 #define main wmain
 #endif  // BUILDFLAG(IS_WIN)
 int main(int argc, base::FilePath::CharType* argv[]) {
+  // SAFETY: These are runtime-provided pointers that are guaranteed to be
+  // valid.
   RedirectCC redirect_cc(
-      UNSAFE_BUFFERS(base::make_span(argv, static_cast<size_t>(argc))));
+      UNSAFE_BUFFERS(base::span(argv, static_cast<size_t>(argc))));
   return redirect_cc.Run();
 }
