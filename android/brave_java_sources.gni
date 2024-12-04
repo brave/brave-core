@@ -77,7 +77,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUiPrefs.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoCustomTabRootUiCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoMojomHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPlansActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPrefUtils.java",
