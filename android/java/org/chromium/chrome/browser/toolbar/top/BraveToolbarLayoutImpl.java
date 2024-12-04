@@ -542,7 +542,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             mBraveRewardsNativeWorker.onNotifyFrontTabUrlChanged(
                                     tab.getId(), tab.getUrl().getSpec());
                         }
-                        if (PackageUtils.isFirstInstall(getContext())
+                        if (!BraveRewardsHelper.shouldShowNewRewardsUI()
+                                && PackageUtils.isFirstInstall(getContext())
                                 && tab.getUrl().getSpec() != null
                                 && tab.getUrl()
                                         .getSpec()
@@ -1067,8 +1068,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
             hideRewardsOnboardingIcon();
             OnboardingPrefManager.getInstance().setOnboardingShown(true);
-            mRewardsPopup = new BraveRewardsPanel(v);
-            mRewardsPopup.showLikePopDownMenu();
+            if (BraveRewardsHelper.shouldShowNewRewardsUI()) {
+                BraveLeoActivity.showPage(getContext(), BraveActivity.BRAVE_REWARDS_SETTINGS_URL);
+            } else {
+                mRewardsPopup = new BraveRewardsPanel(v);
+                mRewardsPopup.showLikePopDownMenu();
+            }
+
             if (mBraveRewardsNotificationsCount.isShown()) {
                 ChromeSharedPreferences.getInstance()
                         .writeBoolean(
