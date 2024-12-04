@@ -141,9 +141,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kFewerUpdateConfirmations,
       &features::kShortcutsNotApps,
 #endif
-#if !BUILDFLAG(IS_ANDROID)
-      &features::kHaTSWebUI,
-#endif
       &features::kHttpsFirstBalancedMode,
       &features::kIdentifiabilityStudyMetaExperiment,
       &features::kIdleDetection,
