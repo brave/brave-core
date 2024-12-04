@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser;
 
+import static org.junit.Assert.fail;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -136,6 +138,7 @@ import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeStateProvider;
+import org.chromium.components.browser_ui.media.MediaNotificationInfo;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
@@ -158,6 +161,8 @@ import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.content_public.browser.BrowserContextHandle;
+import org.chromium.content_public.browser.MediaSession;
+import org.chromium.content_public.browser.MediaSessionObserver;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.InsetObserver;
 import org.chromium.ui.ViewProvider;
@@ -173,6 +178,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
@@ -351,6 +357,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/notifications/NotificationPlatformBridge"));
 
         Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/SettingsIntentUtil"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/browser_ui/media/MediaSessionHelper"));
     }
 
     @Test
@@ -872,6 +880,21 @@ public class BytecodeTest {
                         Context.class,
                         String.class,
                         Bundle.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/media/MediaSessionHelper",
+                        "showNotification",
+                        MethodModifier.REGULAR,
+                        true,
+                        void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/media/MediaSessionHelper",
+                        "createMediaSessionObserver",
+                        MethodModifier.REGULAR,
+                        true,
+                        MediaSessionObserver.class,
+                        MediaSession.class));
     }
 
     @Test
@@ -2111,6 +2134,22 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
                         "mTabModelSelector"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/components/browser_ui/media/MediaSessionHelper",
+                        "mWebContents",
+                        true,
+                        WebContents.class));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/components/browser_ui/media/MediaSessionHelper",
+                        "mNotificationInfoBuilder",
+                        true,
+                        MediaNotificationInfo.Builder.class));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/components/browser_ui/media/MediaSessionHelper",
+                        "mMediaSessionActions"));
     }
 
     @Test
@@ -2252,10 +2291,56 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBase")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/components/browser_ui/media/MediaSessionHelper",
+                        "org/chromium/components/browser_ui/media/BraveMediaSessionHelper"));
+    }
+
+    @Test
+    @SmallTest
+    public void testContainsOnlyMethods() throws Exception {
+        final List<String> methods =
+                Arrays.asList(
+                        "mediaSessionDestroyed",
+                        "mediaSessionStateChanged",
+                        "mediaSessionMetadataChanged",
+                        "mediaSessionActionsChanged",
+                        "mediaSessionArtworkChanged",
+                        "mediaSessionPositionChanged",
+                        "getMediaSession",
+                        "stopObserving");
+        doesHaveOnlyListedMethods(
+                "org/chromium/content_public/browser/MediaSessionObserver",
+                methods,
+                "BraveMediaSessionHelper.createMediaSessionObserver",
+                "MediaSessionHelper.createMediaSessionObserver");
     }
 
     private boolean classExists(String className) {
         return getClassForPath(className) != null;
+    }
+
+    private void doesHaveOnlyListedMethods(
+            String className, List<String> methods, String whereToOverride, String overrideIf) {
+        Class c = getClassForPath(className);
+        if (c == null) {
+            fail("Get class " + className + "error");
+        }
+        for (Method m : c.getDeclaredMethods()) {
+            if (!methods.contains(m.getName())) {
+                fail(
+                        "Override method "
+                                + m.getName()
+                                + " in "
+                                + whereToOverride
+                                + " only"
+                                + " if there is an Override for it in "
+                                + overrideIf
+                                + " and add it to the"
+                                + " `List<String> methods` above in the test");
+            }
+        }
     }
 
     private boolean methodExists(

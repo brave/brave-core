@@ -66,6 +66,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveMainPreferenceBaseClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveManageAccountDevicesLinkViewClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveManageSyncSettingsClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveMediaSessionHelperClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveMenuButtonCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveMimeUtilsClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveMostVisitedTilesLayoutBaseClassAdapter.java",
