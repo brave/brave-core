@@ -9,14 +9,13 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "base/timer/timer.h"
+#include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -141,7 +140,8 @@ class NTPBackgroundImagesService {
   bool IsValidSuperReferralComponentInfo(
       const base::Value::Dict& component_info) const;
 
-  void CheckImagesComponentUpdate(const std::string& component_id);
+  void ScheduleNextSponsoredImagesComponentUpdate();
+  void CheckSponsoredImagesComponentUpdate(const std::string& component_id);
 
   // virtual for test.
   virtual void CheckSuperReferralComponent();
@@ -154,7 +154,7 @@ class NTPBackgroundImagesService {
   virtual void MarkThisInstallIsNotSuperReferralForever();
 
   base::Time last_update_check_time_;
-  base::RepeatingTimer si_update_check_timer_;
+  base::WallClockTimer si_update_check_timer_;
   base::RepeatingClosure si_update_check_callback_;
   bool test_data_used_ = false;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_ =
