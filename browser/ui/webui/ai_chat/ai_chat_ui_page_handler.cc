@@ -94,9 +94,13 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
 void AIChatUIPageHandler::ConversationExists(
     const std::string& conversation_uuid,
     ConversationExistsCallback callback) {
-  std::move(callback).Run(
-      AIChatServiceFactory::GetForBrowserContext(profile_)->GetConversation(
-          conversation_uuid) != nullptr);
+  AIChatServiceFactory::GetForBrowserContext(profile_)->GetConversation(
+      conversation_uuid, base::BindOnce(
+                             [](ConversationExistsCallback callback,
+                                ConversationHandler* conversation) {
+                               std::move(callback).Run(conversation != nullptr);
+                             },
+                             std::move(callback)));
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
