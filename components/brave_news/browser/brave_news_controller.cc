@@ -108,7 +108,8 @@ BraveNewsController::BraveNewsController(
     favicon::FaviconService* favicon_service,
     brave_ads::AdsService* ads_service,
     history::HistoryService* history_service,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
     : favicon_service_(favicon_service),
       ads_service_(ads_service),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
@@ -116,12 +117,15 @@ BraveNewsController::BraveNewsController(
                                   url_loader_factory),
       history_service_(history_service),
       url_loader_factory_(url_loader_factory),
-      pref_manager_(*prefs),
-      news_metrics_(prefs, pref_manager_),
-      direct_feed_controller_(url_loader_factory),
       task_runner_(base::ThreadPool::CreateSingleThreadTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})),
+      direct_feed_fetcher_delegate_(direct_feed_fetcher_delegate.release(),
+                                    base::OnTaskRunnerDeleter(task_runner_)),
+      pref_manager_(*prefs),
+      news_metrics_(prefs, pref_manager_),
+      direct_feed_controller_(url_loader_factory,
+                              direct_feed_fetcher_delegate_.get()),
       engine_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
       initialization_promise_(
           3,
@@ -143,6 +147,7 @@ BraveNewsController::BraveNewsController(
 }
 
 BraveNewsController::~BraveNewsController() {
+  direct_feed_fetcher_delegate_->Shutdown();
   net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
 }
 
@@ -795,8 +800,9 @@ void BraveNewsController::Prefetch() {
 }
 
 void BraveNewsController::ResetEngine() {
-  engine_.reset(
-      new BraveNewsEngine(url_loader_factory_->Clone(), MakeHistoryQuerier()));
+  engine_.reset(new BraveNewsEngine(url_loader_factory_->Clone(),
+                                    MakeHistoryQuerier(),
+                                    direct_feed_fetcher_delegate_.get()));
 }
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {

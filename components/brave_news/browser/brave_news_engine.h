@@ -15,6 +15,7 @@
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
+#include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace api_request_helper {
@@ -49,7 +50,8 @@ class BraveNewsEngine {
   explicit BraveNewsEngine(
       std::unique_ptr<network::PendingSharedURLLoaderFactory>
           pending_shared_url_loader_factory,
-      BackgroundHistoryQuerier history_querier);
+      BackgroundHistoryQuerier history_querier,
+      DirectFeedFetcher::Delegate* direct_feed_fetcher_delegate);
   BraveNewsEngine(const BraveNewsEngine&) = delete;
   BraveNewsEngine& operator=(const BraveNewsEngine&) = delete;
   ~BraveNewsEngine();
@@ -104,6 +106,8 @@ class BraveNewsEngine {
 
   BackgroundHistoryQuerier history_querier_
       GUARDED_BY_CONTEXT(sequence_checker_);
+
+  raw_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate_;
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_
       GUARDED_BY_CONTEXT(sequence_checker_);

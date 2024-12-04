@@ -22,6 +22,8 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/abseil-cpp/absl/types/variant.h"
 #include "ui/base/l10n/time_format.h"
+#include "url/gurl.h"
+#include "url/url_constants.h"
 
 namespace brave_news {
 
@@ -143,15 +145,27 @@ DirectFeedResponse::~DirectFeedResponse() = default;
 DirectFeedResponse::DirectFeedResponse(DirectFeedResponse&&) = default;
 
 DirectFeedFetcher::DirectFeedFetcher(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(url_loader_factory) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    Delegate* delegate)
+    : url_loader_factory_(url_loader_factory), delegate_(delegate) {}
 DirectFeedFetcher::~DirectFeedFetcher() = default;
 
-void DirectFeedFetcher::DownloadFeed(const GURL& url,
+void DirectFeedFetcher::DownloadFeed(GURL url,
                                      std::string publisher_id,
+                                     bool no_https_upgrade,
                                      DownloadFeedCallback callback) {
   // Make request
   auto request = std::make_unique<network::ResourceRequest>();
+  bool https_upgraded = false;
+
+  if (!no_https_upgrade && url.SchemeIs(url::kHttpScheme) &&
+      delegate_->ShouldUpgradeToHttps(url)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(url::kHttpsScheme);
+    url = url.ReplaceComponents(replacements);
+    https_upgraded = true;
+  }
+
   request->url = url;
   request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
@@ -164,20 +178,22 @@ void DirectFeedFetcher::DownloadFeed(const GURL& url,
   url_loader->SetTimeoutDuration(GetDefaultRequestTimeout());
   url_loader->SetAllowHttpErrorResults(true);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
+
   iter->get()->DownloadToString(
       url_loader_factory_.get(),
       // Handle response
       base::BindOnce(&DirectFeedFetcher::OnFeedDownloaded,
                      weak_ptr_factory_.GetWeakPtr(), iter, std::move(callback),
-                     url, std::move(publisher_id)),
+                     url, std::move(publisher_id), https_upgraded),
       5 * 1024 * 1024);
 }
 
 void DirectFeedFetcher::OnFeedDownloaded(
     SimpleURLLoaderList::iterator iter,
     DownloadFeedCallback callback,
-    const GURL& feed_url,
+    GURL feed_url,
     std::string publisher_id,
+    bool https_upgraded,
     std::unique_ptr<std::string> response_body) {
   auto* loader = iter->get();
   auto response_code = -1;
@@ -201,6 +217,13 @@ void DirectFeedFetcher::OnFeedDownloaded(
 
   if (response_code < 200 || response_code >= 300 || body_content.empty()) {
     VLOG(1) << feed_url.spec() << " invalid response, state: " << response_code;
+    if (https_upgraded) {
+      GURL::Replacements replacements;
+      replacements.SetSchemeStr(url::kHttpScheme);
+      feed_url = feed_url.ReplaceComponents(replacements);
+      DownloadFeed(feed_url, publisher_id, true, std::move(callback));
+      return;
+    }
     DirectFeedError error;
     error.body_content = std::move(body_content);
     result.result = std::move(error);

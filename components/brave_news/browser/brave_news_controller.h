@@ -68,7 +68,9 @@ class BraveNewsController
       favicon::FaviconService* favicon_service,
       brave_ads::AdsService* ads_service,
       history::HistoryService* history_service,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::unique_ptr<DirectFeedFetcher::Delegate>
+          direct_feed_fetcher_delegate);
   ~BraveNewsController() override;
   BraveNewsController(const BraveNewsController&) = delete;
   BraveNewsController& operator=(const BraveNewsController&) = delete;
@@ -183,6 +185,10 @@ class BraveNewsController
   raw_ptr<history::HistoryService> history_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  std::unique_ptr<DirectFeedFetcher::Delegate, base::OnTaskRunnerDeleter>
+      direct_feed_fetcher_delegate_;
+
   BraveNewsPrefManager pref_manager_;
   SubscriptionsSnapshot last_subscriptions_;
 
@@ -190,7 +196,6 @@ class BraveNewsController
 
   DirectFeedController direct_feed_controller_;
 
-  scoped_refptr<base::SequencedTaskRunner> task_runner_;
   // Created on this sequence but lives on |task_runner_|.
   std::unique_ptr<BraveNewsEngine, base::OnTaskRunnerDeleter> engine_;
 

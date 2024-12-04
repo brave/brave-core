@@ -105,10 +105,11 @@ std::tuple<FeedItems, ETags> FeedFetcher::CombineFeedSourceResults(
 
 FeedFetcher::FeedFetcher(
     PublishersController& publishers_controller,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    DirectFeedFetcher::Delegate* direct_feed_fetcher_delegate)
     : publishers_controller_(publishers_controller),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      direct_feed_fetcher_(url_loader_factory) {}
+      direct_feed_fetcher_(url_loader_factory, direct_feed_fetcher_delegate) {}
 
 FeedFetcher::~FeedFetcher() = default;
 
@@ -161,7 +162,7 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(
 
   for (const auto& direct_publisher : direct_publishers) {
     direct_feed_fetcher_.DownloadFeed(
-        direct_publisher->feed_source, direct_publisher->publisher_id,
+        direct_publisher->feed_source, direct_publisher->publisher_id, false,
         base::BindOnce(
             [](base::RepeatingCallback<void(FeedSourceResult)> cb,
                std::string publisher_id, DirectFeedResponse response) {
