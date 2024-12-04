@@ -12,6 +12,8 @@ import { NewTabContext } from './components/new_tab_context'
 import { createNewTabModel } from './webui/webui_new_tab_model'
 import { SearchContext } from './components/search_context'
 import { createSearchModel } from './webui/webui_search_model'
+import { TopSitesContext } from './components/top_sites_context'
+import { createTopSitesModel } from './webui/webui_top_sites_model'
 import { createLocale } from './webui/webui_locale'
 import { App } from './components/app'
 
@@ -19,11 +21,13 @@ setIconBasePath('chrome://resources/brave-icons')
 
 const newTabModel = createNewTabModel()
 const searchModel = createSearchModel()
+const topSitesModel = createTopSitesModel()
 
 Object.assign(self, {
   [Symbol.for('ntpInternals')]: {
     newTabModel,
-    searchModel
+    searchModel,
+    topSitesModel
   }
 })
 
@@ -31,7 +35,9 @@ createRoot(document.getElementById('root')!).render(
   <LocaleContext locale={createLocale()}>
     <NewTabContext model={newTabModel}>
       <SearchContext model={searchModel}>
-        <App />
+        <TopSitesContext model={topSitesModel}>
+          <App />
+        </TopSitesContext>
       </SearchContext>
     </NewTabContext>
   </LocaleContext>

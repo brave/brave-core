@@ -52,21 +52,8 @@ export const style = scoped.css`
     }
   }
 
-  .selected-marker {
-    --leo-icon-color: #fff;
-    --leo-icon-size: 24px;
-
-    position: absolute;
-    inset-block-start: 10px;
-    inset-inline-end: 10px;
-    background: ${color.icon.interactive};
-    border-radius: 50%;
-    padding: 6px;
-
-
-    .allow-remove:hover & {
-      visibility: hidden;
-    }
+  .allow-remove:hover .selected-marker {
+    visibility: hidden;
   }
 
   .remove-image {

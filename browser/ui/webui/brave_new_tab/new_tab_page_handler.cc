@@ -11,9 +11,11 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/brave_new_tab/background_adapter.h"
 #include "brave/browser/ui/webui/brave_new_tab/custom_image_chooser.h"
+#include "brave/browser/ui/webui/brave_new_tab/top_sites_adapter.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -32,6 +34,7 @@ NewTabPageHandler::NewTabPageHandler(
     mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
     std::unique_ptr<CustomImageChooser> custom_image_chooser,
     std::unique_ptr<BackgroundAdapter> background_adapter,
+    std::unique_ptr<TopSitesAdapter> top_sites_adapter,
     std::unique_ptr<brave_private_cdn::PrivateCDNRequestHelper> pcdn_helper,
     tabs::TabInterface& tab,
     PrefService& pref_service,
@@ -40,6 +43,7 @@ NewTabPageHandler::NewTabPageHandler(
       update_observer_(pref_service),
       custom_image_chooser_(std::move(custom_image_chooser)),
       background_adapter_(std::move(background_adapter)),
+      top_sites_adapter_(std::move(top_sites_adapter)),
       pcdn_helper_(std::move(pcdn_helper)),
       tab_(tab),
       pref_service_(pref_service),
@@ -50,6 +54,10 @@ NewTabPageHandler::NewTabPageHandler(
 
   update_observer_.SetCallback(base::BindRepeating(&NewTabPageHandler::OnUpdate,
                                                    weak_factory_.GetWeakPtr()));
+  if (top_sites_adapter_) {
+    top_sites_adapter_->SetSitesUpdatedCallback(base::BindRepeating(
+        &NewTabPageHandler::OnTopSitesListUpdated, weak_factory_.GetWeakPtr()));
+  }
 }
 
 NewTabPageHandler::~NewTabPageHandler() = default;
@@ -278,6 +286,113 @@ void NewTabPageHandler::OpenURLFromSearch(const std::string& url,
   std::move(callback).Run();
 }
 
+void NewTabPageHandler::GetShowTopSites(GetShowTopSitesCallback callback) {
+  if (top_sites_adapter_) {
+    std::move(callback).Run(top_sites_adapter_->GetTopSitesVisible());
+  } else {
+    std::move(callback).Run(false);
+  }
+}
+
+void NewTabPageHandler::SetShowTopSites(bool show_top_sites,
+                                        SetShowTopSitesCallback callback) {
+  if (top_sites_adapter_) {
+    top_sites_adapter_->SetTopSitesVisible(show_top_sites);
+  }
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetTopSitesListKind(
+    GetTopSitesListKindCallback callback) {
+  if (top_sites_adapter_) {
+    std::move(callback).Run(top_sites_adapter_->GetListKind());
+  } else {
+    std::move(callback).Run(mojom::TopSitesListKind::kMostVisited);
+  }
+}
+
+void NewTabPageHandler::SetTopSitesListKind(
+    mojom::TopSitesListKind list_kind,
+    SetTopSitesListKindCallback callback) {
+  if (top_sites_adapter_) {
+    top_sites_adapter_->SetListKind(list_kind);
+  }
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetTopSites(GetTopSitesCallback callback) {
+  if (!top_sites_adapter_) {
+    std::move(callback).Run({});
+    return;
+  }
+  top_sites_adapter_->GetSites(std::move(callback));
+}
+
+void NewTabPageHandler::AddCustomTopSite(const std::string& url,
+                                         const std::string& title,
+                                         AddCustomTopSiteCallback callback) {
+  if (top_sites_adapter_) {
+    top_sites_adapter_->AddCustomSite(url, title);
+  }
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::UpdateCustomTopSite(
+    const std::string& url,
+    const std::string& new_url,
+    const std::string& title,
+    UpdateCustomTopSiteCallback callback) {
+  if (top_sites_adapter_) {
+    top_sites_adapter_->UpdateCustomSite(url, new_url, title);
+  }
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::RemoveCustomTopSite(
+    const std::string& url,
+    RemoveCustomTopSiteCallback callback) {
+  if (top_sites_adapter_) {
+    top_sites_adapter_->RemoveCustomSite(url);
+  }
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::UndoCustomTopSiteAction(
+    UndoCustomTopSiteActionCallback callback) {
+  if (top_sites_adapter_) {
+    top_sites_adapter_->UndoCustomSiteAction();
+  }
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::ExcludeMostVisitedTopSite(
+    const std::string& url,
+    ExcludeMostVisitedTopSiteCallback callback) {
+  if (top_sites_adapter_) {
+    top_sites_adapter_->ExcludeMostVisitedSite(url);
+  }
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::IncludeMostVisitedTopSite(
+    const std::string& url,
+    IncludeMostVisitedTopSiteCallback callback) {
+  if (top_sites_adapter_) {
+    top_sites_adapter_->IncludeMostVisitedTopSite(url);
+  }
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::SetCustomTopSitePosition(
+    const std::string& url,
+    int32_t position,
+    SetCustomTopSitePositionCallback callback) {
+  if (top_sites_adapter_) {
+    top_sites_adapter_->SetCustomSitePosition(url, position);
+  }
+  std::move(callback).Run();
+}
+
 void NewTabPageHandler::OnCustomBackgroundsSelected(
     ShowCustomBackgroundChooserCallback callback,
     std::vector<base::FilePath> paths) {
@@ -292,6 +407,26 @@ void NewTabPageHandler::OnCustomBackgroundsSelected(
   }
 }
 
+void NewTabPageHandler::GetShowClock(GetShowClockCallback callback) {
+  std::move(callback).Run(pref_service_->GetBoolean(kNewTabPageShowClock));
+}
+
+void NewTabPageHandler::SetShowClock(bool show_clock,
+                                     SetShowClockCallback callback) {
+  pref_service_->SetBoolean(kNewTabPageShowClock, show_clock);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetClockFormat(GetClockFormatCallback callback) {
+  std::move(callback).Run(pref_service_->GetString(kNewTabPageClockFormat));
+}
+
+void NewTabPageHandler::SetClockFormat(const std::string& clock_format,
+                                       SetClockFormatCallback callback) {
+  pref_service_->SetString(kNewTabPageClockFormat, clock_format);
+  std::move(callback).Run();
+}
+
 void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
   if (!page_.is_bound()) {
     return;
@@ -300,10 +435,23 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
     case UpdateObserver::Source::kBackgroundPrefs:
       page_->OnBackgroundPrefsUpdated();
       break;
+    case UpdateObserver::Source::kClockPrefs:
+      page_->OnClockPrefsUpdated();
+      break;
     case UpdateObserver::Source::kSearchPrefs:
       page_->OnSearchPrefsUpdated();
       break;
+    case UpdateObserver::Source::kTopSitesPrefs:
+      page_->OnTopSitesPrefsUpdated();
+      break;
   }
+}
+
+void NewTabPageHandler::OnTopSitesListUpdated() {
+  if (!page_.is_bound()) {
+    return;
+  }
+  page_->OnTopSitesListUpdated();
 }
 
 }  // namespace brave_new_tab

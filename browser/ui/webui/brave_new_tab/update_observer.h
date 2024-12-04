@@ -20,7 +20,12 @@ namespace brave_new_tab {
 // new tab page.
 class UpdateObserver {
  public:
-  enum class Source { kBackgroundPrefs, kSearchPrefs };
+  enum class Source {
+    kBackgroundPrefs,
+    kClockPrefs,
+    kSearchPrefs,
+    kTopSitesPrefs
+  };
 
   explicit UpdateObserver(PrefService& pref_service);
   ~UpdateObserver();

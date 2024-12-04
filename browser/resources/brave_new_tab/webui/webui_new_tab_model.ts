@@ -93,6 +93,22 @@ export function createNewTabModel(): NewTabModel {
     })
   }
 
+  async function updateClockPrefs() {
+    const [
+      { showClock },
+      { clockFormat }
+    ] = await Promise.all([
+      handler.getShowClock(),
+      handler.getClockFormat()
+    ])
+
+    store.update({
+      showClock,
+      clockFormat:
+        clockFormat === 'h12' || clockFormat === 'h24' ? clockFormat : ''
+    })
+  }
+
   newTabProxy.addListeners({
     onBackgroundPrefsUpdated: debounce(async () => {
       await Promise.all([
@@ -100,7 +116,8 @@ export function createNewTabModel(): NewTabModel {
         updateSelectedBackground(),
       ])
       updateCurrentBackground()
-    }, 10)
+    }, 10),
+    onClockPrefsUpdated: debounce(updateClockPrefs, 10)
   })
 
   async function loadData() {
@@ -111,7 +128,8 @@ export function createNewTabModel(): NewTabModel {
       updateBraveBackgrounds(),
       updateCustomBackgrounds(),
       updateSelectedBackground(),
-      updateSponsoredImageBackground()
+      updateSponsoredImageBackground(),
+      updateClockPrefs()
     ])
 
     updateCurrentBackground()
@@ -164,6 +182,14 @@ export function createNewTabModel(): NewTabModel {
 
     async removeCustomBackground(background) {
       await handler.removeCustomBackground(background)
+    },
+
+    async setShowClock(showClock) {
+      await handler.setShowClock(showClock)
+    },
+
+    async setClockFormat(format) {
+      await handler.setClockFormat(format)
     }
   }
 }

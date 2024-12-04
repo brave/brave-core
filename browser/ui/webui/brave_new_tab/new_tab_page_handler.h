@@ -34,6 +34,7 @@ namespace brave_new_tab {
 
 class BackgroundAdapter;
 class CustomImageChooser;
+class TopSitesAdapter;
 
 class NewTabPageHandler : public mojom::NewTabPageHandler {
  public:
@@ -41,6 +42,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
       mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
       std::unique_ptr<CustomImageChooser> custom_image_chooser,
       std::unique_ptr<BackgroundAdapter> background_adapter,
+      std::unique_ptr<TopSitesAdapter> top_sites_adapter,
       std::unique_ptr<brave_private_cdn::PrivateCDNRequestHelper> pcdn_helper,
       tabs::TabInterface& tab,
       PrefService& pref_service,
@@ -100,6 +102,39 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void OpenURLFromSearch(const std::string& url,
                          mojom::EventDetailsPtr details,
                          OpenURLFromSearchCallback callback) override;
+  void GetShowTopSites(GetShowTopSitesCallback callback) override;
+  void SetShowTopSites(bool show_top_sites,
+                       SetShowTopSitesCallback callback) override;
+  void GetTopSitesListKind(GetTopSitesListKindCallback callback) override;
+  void SetTopSitesListKind(mojom::TopSitesListKind list_kind,
+                           SetTopSitesListKindCallback callback) override;
+  void GetTopSites(GetTopSitesCallback callback) override;
+  void AddCustomTopSite(const std::string& url,
+                        const std::string& title,
+                        AddCustomTopSiteCallback callback) override;
+  void UpdateCustomTopSite(const std::string& url,
+                           const std::string& new_url,
+                           const std::string& title,
+                           UpdateCustomTopSiteCallback callback) override;
+  void SetCustomTopSitePosition(
+      const std::string& url,
+      int32_t position,
+      SetCustomTopSitePositionCallback callback) override;
+  void RemoveCustomTopSite(const std::string& url,
+                           RemoveCustomTopSiteCallback callback) override;
+  void UndoCustomTopSiteAction(
+      UndoCustomTopSiteActionCallback callback) override;
+  void ExcludeMostVisitedTopSite(
+      const std::string& url,
+      ExcludeMostVisitedTopSiteCallback callback) override;
+  void IncludeMostVisitedTopSite(
+      const std::string& url,
+      IncludeMostVisitedTopSiteCallback callback) override;
+  void GetShowClock(GetShowClockCallback callback) override;
+  void SetShowClock(bool show_clock, SetShowClockCallback callback) override;
+  void GetClockFormat(GetClockFormatCallback callback) override;
+  void SetClockFormat(const std::string& clock_format,
+                      SetClockFormatCallback callback) override;
 
  private:
   void OnCustomBackgroundsSelected(ShowCustomBackgroundChooserCallback callback,
@@ -107,11 +142,14 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
 
   void OnUpdate(UpdateObserver::Source update_source);
 
+  void OnTopSitesListUpdated();
+
   mojo::Receiver<mojom::NewTabPageHandler> receiver_;
   mojo::Remote<mojom::NewTabPage> page_;
   UpdateObserver update_observer_;
   std::unique_ptr<CustomImageChooser> custom_image_chooser_;
   std::unique_ptr<BackgroundAdapter> background_adapter_;
+  std::unique_ptr<TopSitesAdapter> top_sites_adapter_;
   std::unique_ptr<brave_private_cdn::PrivateCDNRequestHelper> pcdn_helper_;
   raw_ref<tabs::TabInterface> tab_;
   raw_ref<PrefService> pref_service_;
