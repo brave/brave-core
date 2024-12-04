@@ -25,30 +25,24 @@ def CheckPatchFile(input_api, output_api):
     for f in input_api.AffectedSourceFiles(file_filter):
         contents = list(f.NewContents())
         for lineno, line in enumerate(contents, 1):
-            # Prevent removing empty lines, it's a guaranteed git conflict.
-            if line == '-':
-                items.append(f'{f.LocalPath()}:{lineno} (removed empty line)')
+            # Only check empty added/removed lines.
+            if line not in ('+', '-'):
                 continue
 
-            # Prevent adding empty lines at diff block boundaries. This doesn't
-            # affect git conflict resolution, but adds unnecessary noise. It's
-            # okay to have empty lines in the middle of a diff block.
-            if line != '+':
-                continue
+            # Check if this empty line is part of a diff hunk.
+            is_in_hunk = False
+            if 1 < lineno < len(contents):
+                is_in_hunk = (contents[lineno - 2].startswith(line)
+                              and contents[lineno].startswith(line))
 
-            # Look at previous and next lines to determine if this empty line is
-            # at diff block boundary.
-            prev_line = contents[lineno - 2] if lineno > 1 else ''
-            next_line = contents[lineno] if lineno < len(contents) else ''
-
-            # Empty line at block boundary or single-line block.
-            if not (prev_line.startswith('+') and next_line.startswith('+')):
-                items.append(f'{f.LocalPath()}:{lineno} (added empty line)')
+            if not is_in_hunk:
+                items.append(f'{f.LocalPath()}:{lineno} ({line}empty line)')
 
     if not items:
         return []
 
     return [
         output_api.PresubmitError(
-            'Patch file should not add or remove empty lines', items)
+            'Patch should not add or remove empty lines at hunk boundaries',
+            items)
     ]
