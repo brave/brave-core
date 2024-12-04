@@ -8,14 +8,19 @@ import { scoped, global } from '../lib/scoped_css'
 
 export const style = scoped.css`
 
-  .settings {
-    --leo-icon-size: 20px;
-
+  .top-controls {
     position: absolute;
     inset-block-start: 4px;
     inset-inline-end: 4px;
-    block-size: 20px;
-    inline-size: 20px;
+    min-height: 24px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .settings {
+    --leo-icon-size: 20px;
+
     opacity: 0.5;
     color: #fff;
     filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.60));
@@ -24,6 +29,12 @@ export const style = scoped.css`
       opacity: 0.7;
       cursor: pointer;
     }
+  }
+
+  .clock {
+    font: ${font.large.semibold};
+    color: #fff;
+    opacity: .8;
   }
 
   main {
@@ -35,7 +46,10 @@ export const style = scoped.css`
   }
 
   .topsites-container {
-    margin: 16px 0;
+    margin: 16px 24px;
+    align-self: stretch;
+    display: flex;
+    gap: 16px;
   }
 
   .searchbox-container {
@@ -60,6 +74,7 @@ global.css`
     & {
       font: ${font.default.regular};
       color: ${color.text.primary};
+      interpolate-size: allow-keywords;
     }
 
     button {

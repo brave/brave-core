@@ -44,7 +44,8 @@ export function createNewTabModel(): NewTabModel {
         link: 'https://brave.com'
       }
     ],
-    sponsoredImageBackground: sampleSponsoredImage && null
+    sponsoredImageBackground: sampleSponsoredImage && null,
+    showClock: true
   })
 
   store.update({
@@ -99,6 +100,14 @@ export function createNewTabModel(): NewTabModel {
         customBackgrounds:
           state.customBackgrounds.filter((elem) => elem !== background)
       }))
+    },
+
+    setClockFormat(format) {
+      store.update({ clockFormat: format })
+    },
+
+    setShowClock(showClock) {
+      store.update({ showClock })
     }
   }
 }

@@ -42,6 +42,8 @@ export type Background =
   CustomBackground |
   SponsoredImageBackground
 
+export type ClockFormat = '' | 'h12' | 'h24'
+
 export interface NewTabState {
   backgroundsEnabled: boolean
   backgroundsCustomizable: boolean
@@ -52,6 +54,8 @@ export interface NewTabState {
   selectedBackground: string
   currentBackground: Background | null
   sponsoredImageBackground: SponsoredImageBackground | null
+  showClock: boolean
+  clockFormat: ClockFormat
 }
 
 export function defaultState(): NewTabState {
@@ -64,7 +68,9 @@ export function defaultState(): NewTabState {
     selectedBackgroundType: 'none',
     selectedBackground: '',
     currentBackground: null,
-    sponsoredImageBackground: null
+    sponsoredImageBackground: null,
+    showClock: false,
+    clockFormat: ''
   }
 }
 
@@ -77,6 +83,8 @@ export interface NewTabModel {
   selectBackground: (type: BackgroundType, value: string) => void
   showCustomBackgroundChooser: () => Promise<boolean>
   removeCustomBackground: (background: string) => Promise<void>
+  setShowClock: (showClock: boolean) => void
+  setClockFormat: (format: ClockFormat) => void
 }
 
 export function defaultModel(): NewTabModel {
@@ -89,6 +97,8 @@ export function defaultModel(): NewTabModel {
     setSponsoredImagesEnabled(enabled) {},
     selectBackground(type, value) {},
     async showCustomBackgroundChooser() { return false },
-    async removeCustomBackground(background) {}
+    async removeCustomBackground(background) {},
+    setShowClock(showClock) {},
+    setClockFormat(format) {}
   }
 }

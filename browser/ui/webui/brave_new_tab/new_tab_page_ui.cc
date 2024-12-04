@@ -13,12 +13,14 @@
 #include "brave/browser/ui/webui/brave_new_tab/background_adapter.h"
 #include "brave/browser/ui/webui/brave_new_tab/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab/new_tab_page_handler.h"
+#include "brave/browser/ui/webui/brave_new_tab/top_sites_adapter.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_new_tab/new_tab_prefs.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
+#include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/tabs/public/tab_interface.h"
@@ -28,6 +30,7 @@
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/ntp_tiles/most_visited_sites.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/web_ui.h"
@@ -40,16 +43,30 @@ namespace brave_new_tab {
 namespace {
 
 static constexpr webui::LocalizedString kStrings[] = {
+    {"addTopSiteLabel", IDS_NEW_TAB_ADD_TOP_SITE_LABEL},
+    {"addTopSiteTitle", IDS_NEW_TAB_ADD_TOP_SITE_TITLE},
     {"backgroundSettingsTitle", IDS_NEW_TAB_BACKGROUND_SETTINGS_TITLE},
     {"braveBackgroundLabel", IDS_NEW_TAB_BRAVE_BACKGROUND_LABEL},
+    {"cancelButtonLabel", IDS_NEW_TAB_CANCEL_BUTTON_LABEL},
+    {"clockFormatLabel", IDS_NEW_TAB_CLOCK_FORMAT_LABEL},
+    {"clockFormatOption12HourText", IDS_NEW_TAB_CLOCK_FORMAT_OPTION12HOUR_TEXT},
+    {"clockFormatOption24HourText", IDS_NEW_TAB_CLOCK_FORMAT_OPTION24HOUR_TEXT},
+    {"clockFormatOptionAutomaticText",
+     IDS_NEW_TAB_CLOCK_FORMAT_OPTION_AUTOMATIC_TEXT},
+    {"clockSettingsTitle", IDS_NEW_TAB_CLOCK_SETTINGS_TITLE},
     {"customBackgroundLabel", IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL},
     {"customBackgroundTitle", IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL},
     {"customizeSearchEnginesLink", IDS_NEW_TAB_CUSTOMIZE_SEARCH_ENGINES_LINK},
+    {"editTopSiteLabel", IDS_NEW_TAB_EDIT_TOP_SITE_LABEL},
+    {"editTopSiteTitle", IDS_NEW_TAB_EDIT_TOP_SITE_TITLE},
     {"enabledSearchEnginesLabel", IDS_NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL},
     {"gradientBackgroundLabel", IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL},
     {"gradientBackgroundTitle", IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL},
+    {"hideTopSitesLabel", IDS_NEW_TAB_HIDE_TOP_SITES_LABEL},
     {"photoCreditsText", IDS_NEW_TAB_PHOTO_CREDITS_TEXT},
     {"randomizeBackgroundLabel", IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL},
+    {"removeTopSiteLabel", IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL},
+    {"saveChangesButtonLabel", IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL},
     {"searchAskLeoDescription", IDS_OMNIBOX_ASK_LEO_DESCRIPTION},
     {"searchBoxPlaceholderText", IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT},
     {"searchBoxPlaceholderTextBrave",
@@ -66,12 +83,28 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TITLE},
     {"settingsTitle", IDS_NEW_TAB_SETTINGS_TITLE},
     {"showBackgroundsLabel", IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL},
+    {"showClockLabel", IDS_NEW_TAB_SHOW_CLOCK_LABEL},
     {"showSearchBoxLabel", IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL},
     {"showSponsoredImagesLabel", IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL},
+    {"showTopSitesLabel", IDS_NEW_TAB_SHOW_TOP_SITES_LABEL},
     {"solidBackgroundLabel", IDS_NEW_TAB_SOLID_BACKGROUND_LABEL},
     {"solidBackgroundTitle", IDS_NEW_TAB_SOLID_BACKGROUND_LABEL},
-    {"uploadBackgroundLabel", IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL},
-};
+    {"topSiteRemovedText", IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT},
+    {"topSiteRemovedTitle", IDS_NEW_TAB_TOP_SITE_REMOVED_TITLE},
+    {"topSitesCustomOptionText", IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT},
+    {"topSitesCustomOptionTitle", IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE},
+    {"topSitesMostVisitedOptionText",
+     IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TEXT},
+    {"topSitesMostVisitedOptionTitle",
+     IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE},
+    {"topSitesSettingsTitle", IDS_NEW_TAB_TOP_SITES_SETTINGS_TITLE},
+    {"topSitesShowCustomLabel", IDS_NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL},
+    {"topSitesShowMostVisitedLabel",
+     IDS_NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL},
+    {"topSitesTitleLabel", IDS_NEW_TAB_TOP_SITES_TITLE_LABEL},
+    {"topSitesURLLabel", IDS_NEW_TAB_TOP_SITES_URL_LABEL},
+    {"undoButtonLabel", IDS_NEW_TAB_UNDO_BUTTON_LABEL},
+    {"uploadBackgroundLabel", IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL}};
 
 constexpr auto kPcdnImageLoaderTrafficAnnotation =
     net::DefineNetworkTrafficAnnotation("brave_new_tab_pcdn_loader",
@@ -151,7 +184,6 @@ void NewTabPageUI::BindInterface(
     mojo::PendingReceiver<mojom::NewTabPageHandler> pending_receiver) {
   auto* web_contents = web_ui()->GetWebContents();
   auto* profile = Profile::FromWebUI(web_ui());
-
   auto* prefs = profile->GetPrefs();
 
   auto image_chooser =
@@ -161,13 +193,17 @@ void NewTabPageUI::BindInterface(
       std::make_unique<CustomBackgroundFileManager>(profile), *prefs,
       ntp_background_images::ViewCounterServiceFactory::GetForProfile(profile));
 
+  auto top_sites_adapter = std::make_unique<TopSitesAdapter>(
+      ChromeMostVisitedSitesFactory::NewForProfile(profile), *prefs);
+
   auto pcdn_helper =
       std::make_unique<brave_private_cdn::PrivateCDNRequestHelper>(
           kPcdnImageLoaderTrafficAnnotation, profile->GetURLLoaderFactory());
 
   page_handler_ = std::make_unique<NewTabPageHandler>(
       std::move(pending_receiver), std::move(image_chooser),
-      std::move(background_adapter), std::move(pcdn_helper),
+      std::move(background_adapter), std::move(top_sites_adapter),
+      std::move(pcdn_helper),
       *tabs::TabInterface::GetFromContents(web_contents), *prefs,
       *TemplateURLServiceFactory::GetForProfile(profile));
 }

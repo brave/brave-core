@@ -9,7 +9,9 @@
 
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 
 namespace brave_new_tab {
@@ -29,6 +31,10 @@ UpdateObserver::UpdateObserver(PrefService& pref_service) {
   AddPrefListener(prefs::kSearchSuggestEnabled, Source::kSearchPrefs);
   AddPrefListener(brave_search_conversion::prefs::kDismissed,
                   Source::kSearchPrefs);
+  AddPrefListener(ntp_prefs::kNtpShortcutsVisible, Source::kTopSitesPrefs);
+  AddPrefListener(ntp_prefs::kNtpUseMostVisitedTiles, Source::kTopSitesPrefs);
+  AddPrefListener(kNewTabPageShowClock, Source::kClockPrefs);
+  AddPrefListener(kNewTabPageClockFormat, Source::kClockPrefs);
 }
 
 UpdateObserver::~UpdateObserver() = default;

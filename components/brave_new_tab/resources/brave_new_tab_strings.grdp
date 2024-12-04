@@ -1,11 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+  <message name="IDS_NEW_TAB_ADD_TOP_SITE_LABEL" desc="">
+    Add site
+  </message>
+
+  <message name="IDS_NEW_TAB_ADD_TOP_SITE_TITLE" desc="">
+    Add site
+  </message>
+
   <message name="IDS_NEW_TAB_BACKGROUND_SETTINGS_TITLE" desc="Title for background image settings">
     Background Image
   </message>
 
   <message name="IDS_NEW_TAB_BRAVE_BACKGROUND_LABEL" desc="Label for Brave background option">
     Brave backgrounds
+  </message>
+
+  <message name="IDS_NEW_TAB_CANCEL_BUTTON_LABEL" desc="">
+    Cancel
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_LABEL" desc="">
+    Format
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION12HOUR_TEXT" desc="">
+    12-hour clock
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION24HOUR_TEXT" desc="">
+    24-hour clock
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_FORMAT_OPTION_AUTOMATIC_TEXT" desc="">
+    Automatic (<ph name="LOCALE">$1<ex>en-US</ex></ph>)
+  </message>
+
+  <message name="IDS_NEW_TAB_CLOCK_SETTINGS_TITLE" desc="">
+    Clock
   </message>
 
   <message name="IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL" desc="Label for custom background option">
@@ -16,6 +48,14 @@
     Customize available engines
   </message>
 
+  <message name="IDS_NEW_TAB_EDIT_TOP_SITE_LABEL" desc="">
+    Edit site
+  </message>
+
+  <message name="IDS_NEW_TAB_EDIT_TOP_SITE_TITLE" desc="">
+    Edit site
+  </message>
+
   <message name="IDS_NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL" desc="Label for the list of search engines">
     Enabled search engines
   </message>
@@ -24,12 +64,24 @@
     Gradients
   </message>
 
+  <message name="IDS_NEW_TAB_HIDE_TOP_SITES_LABEL" desc="">
+    Hide top sites
+  </message>
+
   <message name="IDS_NEW_TAB_PHOTO_CREDITS_TEXT" desc="Photographer credits for Brave background images">
     Photo by <ph name="AUTHOR">$1</ph>
   </message>
 
   <message name="IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL" desc="Label for random toggle button">
     Refresh on every new tab
+  </message>
+
+  <message name="IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL" desc="">
+    Remove
+  </message>
+
+  <message name="IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL" desc="">
+    Save changes
   </message>
 
   <message name="IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT" desc="Placeholder text for when Brave is not the selected search engine">
@@ -72,6 +124,10 @@
     Show Background Images
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_CLOCK_LABEL" desc="">
+    Show clock
+  </message>
+
   <message name="IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL" desc="Label for enabling the searchbox on the NTP">
     Show search widget in new tabs
   </message>
@@ -80,8 +136,60 @@
     Show Sponsored Images
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_TOP_SITES_LABEL" desc="">
+    Show top sites
+  </message>
+
   <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title">
     Solid colors
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT" desc="">
+    Top site removed
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TITLE" desc="">
+    Removed
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT" desc="">
+    Top sites are curated by you
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE" desc="">
+    Favorites
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TEXT" desc="">
+    Top sites are suggested based on websites you visit often.
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE" desc="">
+    Frequently Visited
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SETTINGS_TITLE" desc="">
+    Top Sites
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL" desc="">
+    Show favorites
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL" desc="">
+    Show frequently visited
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_TITLE_LABEL" desc="">
+    Name
+  </message>
+
+  <message name="IDS_NEW_TAB_TOP_SITES_URL_LABEL" desc="">
+    URL
+  </message>
+
+  <message name="IDS_NEW_TAB_UNDO_BUTTON_LABEL" desc="">
+    Undo
   </message>
 
   <message name="IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL" desc="Text for custom background option upload">

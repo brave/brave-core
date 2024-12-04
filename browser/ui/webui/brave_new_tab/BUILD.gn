@@ -18,6 +18,8 @@ source_set("brave_new_tab") {
     "new_tab_page_handler.h",
     "new_tab_page_ui.cc",
     "new_tab_page_ui.h",
+    "top_sites_adapter.cc",
+    "top_sites_adapter.h",
     "update_observer.cc",
     "update_observer.h",
   ]

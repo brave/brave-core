@@ -4,16 +4,29 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export type StringKey =
+  'addTopSiteLabel' |
+  'addTopSiteTitle' |
   'backgroundSettingsTitle' |
   'braveBackgroundLabel' |
+  'cancelButtonLabel' |
+  'clockFormatLabel' |
+  'clockFormatOption12HourText' |
+  'clockFormatOption24HourText' |
+  'clockFormatOptionAutomaticText' |
+  'clockSettingsTitle' |
   'customBackgroundLabel' |
   'customBackgroundTitle' |
   'customizeSearchEnginesLink' |
+  'editTopSiteLabel' |
+  'editTopSiteTitle' |
   'enabledSearchEnginesLabel' |
   'gradientBackgroundLabel' |
   'gradientBackgroundTitle' |
+  'hideTopSitesLabel' |
   'photoCreditsText' |
   'randomizeBackgroundLabel' |
+  'removeTopSiteLabel' |
+  'saveChangesButtonLabel' |
   'searchAskLeoDescription' |
   'searchBoxPlaceholderText' |
   'searchBoxPlaceholderTextBrave' |
@@ -25,8 +38,22 @@ export type StringKey =
   'searchSuggestionsPromptTitle' |
   'settingsTitle' |
   'showBackgroundsLabel' |
+  'showClockLabel' |
   'showSearchBoxLabel' |
   'showSponsoredImagesLabel' |
+  'showTopSitesLabel' |
   'solidBackgroundLabel' |
   'solidBackgroundTitle' |
+  'topSiteRemovedText' |
+  'topSiteRemovedTitle' |
+  'topSitesCustomOptionText' |
+  'topSitesCustomOptionTitle' |
+  'topSitesMostVisitedOptionText' |
+  'topSitesMostVisitedOptionTitle' |
+  'topSitesSettingsTitle' |
+  'topSitesShowCustomLabel' |
+  'topSitesShowMostVisitedLabel' |
+  'topSitesTitleLabel' |
+  'topSitesURLLabel' |
+  'undoButtonLabel' |
   'uploadBackgroundLabel'

@@ -10,6 +10,8 @@ import { SearchBox } from './search/search_box'
 import { Background } from './background'
 import { BackgroundCaption } from './background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
+import { TopSites } from './top_sites/top_sites'
+import { Clock } from './clock'
 
 import { style } from './app.style'
 
@@ -19,14 +21,24 @@ export function App() {
 
   return (
     <div {...style}>
-      <button
-        className='settings'
-        onClick={() => setSettingsView('background')}
-      >
-        <Icon name='settings' />
-      </button>
+      <div className='top-controls'>
+        <button
+          className='clock'
+          onClick={() => setSettingsView('clock')}
+        >
+          <Clock />
+        </button>
+        <button
+          className='settings'
+          onClick={() => setSettingsView('background')}
+        >
+          <Icon name='settings' />
+        </button>
+      </div>
       <main>
-        <div className='topsites-container' />
+        <div className='topsites-container'>
+          <TopSites />
+        </div>
         <div className='searchbox-container'>
           <SearchBox
             onCustomizeSearchEngineList={() => setSettingsView('search')}

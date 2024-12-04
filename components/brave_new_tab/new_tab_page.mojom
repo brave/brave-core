@@ -52,14 +52,34 @@ struct EventDetails {
   bool shift_key;
 };
 
+struct TopSite {
+  string title;
+  string url;
+  string favicon;
+};
+
+enum TopSitesListKind {
+  kCustom,
+  kMostVisited
+};
+
 // WebUI-side handler for notifications from the browser.
 interface NewTabPage {
 
   // Called when a background-related profile preference has been updated.
   OnBackgroundPrefsUpdated();
 
-  // Called when search-related profile preference has been updated.
+  // Called when a clock-related profile preference has been updated.
+  OnClockPrefsUpdated();
+
+  // Called when a search-related profile preference has been updated.
   OnSearchPrefsUpdated();
+
+  // Called when a top-sites-related profile preference has been updated.
+  OnTopSitesPrefsUpdated();
+
+  // Called when the list of most-visited sites has been updated.
+  OnTopSitesListUpdated();
 
 };
 
@@ -137,5 +157,47 @@ interface NewTabPageHandler {
 
   // Opens a URL from the search box.
   OpenURLFromSearch(string url, EventDetails details) => ();
+
+  // Gets or sets whether top sites are shown on the NTP
+  GetShowTopSites() => (bool show_top_sites);
+  SetShowTopSites(bool show_top_sites) => ();
+
+  // Gets or sets the top sites list kind.
+  GetTopSitesListKind() => (TopSitesListKind list_kind);
+  SetTopSitesListKind(TopSitesListKind list_kind) => ();
+
+  // Returns the current list of top sites for the user.
+  GetTopSites() => (array<TopSite> top_sites);
+
+  // Adds a site to the list of custom top sites.
+  AddCustomTopSite(string url, string title) => ();
+
+  // Updates the custom top site entry with the specified URL.
+  UpdateCustomTopSite(string url, string new_url, string title) => ();
+
+  // Sets the position for a custom top site URL. Allows the user to reorder
+  // custom top sites.
+  SetCustomTopSitePosition(string url, int32 position) => ();
+
+  // Removes a custom top sites entry.
+  RemoveCustomTopSite(string url) => ();
+
+  // Reverses the most recent action on the custom top sites list.
+  UndoCustomTopSiteAction() => ();
+
+  // Excludes a site from the "most visited" top sites list.
+  ExcludeMostVisitedTopSite(string url) => ();
+
+  // Includes a site in the "most visited" top sites list, after it was excluded
+  // by a call to `ExcludeMostVisitedTopSite`.
+  IncludeMostVisitedTopSite(string url) => ();
+
+  // Gets or sets whether the clock is displayed on the new tab page.
+  GetShowClock() => (bool show_clock);
+  SetShowClock(bool show_clock) => ();
+
+  // Gets or sets the clock time format.
+  GetClockFormat() => (string clock_format);
+  SetClockFormat(string clock_format) => ();
 
 };
