@@ -342,14 +342,14 @@ void BraveNewTabPageHandler::LaunchVPNPanel() {
 #endif
 }
 
-void BraveNewTabPageHandler::OpenVPNAccountPage() {
+void BraveNewTabPageHandler::OpenVPNAccountPage(const std::string& intent) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto* tab = tabs::TabInterface::GetFromContents(web_contents_);
   CHECK(tab);
   tab->GetBrowserWindowInterface()
       ->GetFeatures()
       .GetBraveVPNController()
-      ->OpenVPNAccountPage();
+      ->OpenVPNAccountPage(intent);
 #endif
 }
 
