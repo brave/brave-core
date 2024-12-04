@@ -54,7 +54,7 @@ class PatchFileTest(unittest.TestCase):
                 'expected_errors': 1
             },
             {
-                'name': 'empty line at start of block',
+                'name': 'empty line at start of hunk',
                 'contents': [
                     'diff --git a/file.cc b/file.cc',
                     '+',
@@ -65,7 +65,7 @@ class PatchFileTest(unittest.TestCase):
                 'expected_errors': 1
             },
             {
-                'name': 'empty line at end of block',
+                'name': 'empty line at end of hunk',
                 'contents': [
                     'diff --git a/file.cc b/file.cc',
                     '+void func() {',
@@ -94,6 +94,29 @@ class PatchFileTest(unittest.TestCase):
                     '-',
                     '   DoSomething();',
                     ' }',
+                ],
+                'expected_errors': 1
+            },
+            {
+                'name': 'removed empty line in a hunk',
+                'contents': [
+                    'diff --git a/file.cc b/file.cc',
+                    '-void func() {',
+                    '-',
+                    '-  DoSomething();',
+                    '-}',
+                ],
+                'expected_errors': 0
+            },
+            {
+                'name': 'removed empty line at hunk boundary',
+                'contents': [
+                    'diff --git a/file.cc b/file.cc',
+                    '-void func() {',
+                    '-',
+                    '-  DoSomething();',
+                    '-}',
+                    '-',
                 ],
                 'expected_errors': 1
             },
