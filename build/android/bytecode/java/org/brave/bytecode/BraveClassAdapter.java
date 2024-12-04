@@ -65,11 +65,12 @@ public class BraveClassAdapter {
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
         chain = new BraveManageAccountDevicesLinkViewClassAdapter(chain);
         chain = new BraveManageSyncSettingsClassAdapter(chain);
-        chain = new BraveMultiInstanceManagerApi31ClassAdapter(chain);
+        chain = new BraveMediaSessionHelperClassAdapter(chain);
         chain = new BraveMenuButtonCoordinatorClassAdapter(chain);
         chain = new BraveMimeUtilsClassAdapter(chain);
         chain = new BraveMostVisitedTilesLayoutBaseClassAdapter(chain);
         chain = new BraveMostVisitedTilesMediatorClassAdapter(chain);
+        chain = new BraveMultiInstanceManagerApi31ClassAdapter(chain);
         chain = new BraveMultiWindowUtilsClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);

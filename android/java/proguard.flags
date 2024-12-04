@@ -88,3 +88,11 @@
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedNavigationBarColorController {
     *** getNavigationBarColor(...);
 }
+
+-keep class org.chromium.components.browser_ui.media.MediaSessionHelper {
+    *** mWebContents;
+    *** mNotificationInfoBuilder;
+    *** mMediaSessionActions;
+    *** showNotification(...);
+    *** createMediaSessionObserver(...);
+}
