@@ -9,6 +9,8 @@ import * as privateTabDataAPI from './privateTabData'
 import * as wallpaper from './wallpaper'
 import * as newTabAdsDataAPI from './newTabAdsData'
 import getNTPBrowserAPI from './background'
+import getVPNServiceHandler, * as BraveVPN from '../api/braveVpn'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 export type InitialData = {
   preferences: NewTab.Preferences
@@ -20,6 +22,7 @@ export type InitialData = {
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
   searchPromotionEnabled: boolean
+  purchasedState: BraveVPN.PurchasedState
 }
 
 export type PreInitialRewardsData = {
@@ -56,7 +59,8 @@ export async function getInitialData (): Promise<InitialData> {
       braveTalkSupported,
       searchPromotionEnabled,
       braveBackgrounds,
-      customImageBackgrounds
+      customImageBackgrounds,
+      purchasedState
     ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
@@ -83,6 +87,15 @@ export async function getInitialData (): Promise<InitialData> {
       }),
       getNTPBrowserAPI().pageHandler.getCustomImageBackgrounds().then(({ backgrounds }) => {
         return backgrounds.map(background => ({ type: 'image', wallpaperImageUrl: background.url.url }))
+      }),
+      new Promise((resolve) => {
+        if (loadTimeData.getBoolean('vpnWidgetSupported')) {
+          getVPNServiceHandler().getPurchasedState().then(({state}) => {
+            resolve(state.state)
+          })
+        } else {
+          resolve(BraveVPN.PurchasedState.NOT_PURCHASED)
+        }
       })
     ])
     console.timeStamp('Got all initial data.')
@@ -95,7 +108,8 @@ export async function getInitialData (): Promise<InitialData> {
       customImageBackgrounds,
       braveRewardsSupported,
       braveTalkSupported,
-      searchPromotionEnabled
+      searchPromotionEnabled,
+      purchasedState
     } as InitialData
   } catch (e) {
     console.error(e)

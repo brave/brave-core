@@ -39,6 +39,12 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
+
 using ntp_background_images::NTPCustomImagesSource;
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
@@ -73,6 +79,17 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 
   AddBackgroundColorToSource(source, web_contents);
 
+  // Lottie animations tick on a worker thread and requires the document CSP to
+  // be set to "worker-src blob: 'self';".
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::WorkerSrc,
+      "worker-src blob: chrome://resources 'self';");
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::TrustedTypes,
+      "trusted-types static-types lottie-worker-script-loader lit-html-desktop "
+      "default; ");
+
   source->AddBoolean(
       "featureCustomBackgroundEnabled",
       !profile->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(
@@ -90,6 +107,14 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean(
       "featureFlagSearchWidget",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
+
+  source->AddBoolean("vpnWidgetSupported",
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+                     brave_vpn::IsBraveVPNEnabled(profile->GetPrefs())
+#else
+                     false
+#endif
+  );
 
   web_ui->AddMessageHandler(base::WrapUnique(
       BraveNewTabMessageHandler::Create(source, profile, was_restored)));
@@ -139,6 +164,19 @@ void BraveNewTabUI::BindInterface(
       /*metrics_reporter=*/nullptr, /*lens_searchbox_client=*/nullptr,
       /*omnibox_controller=*/nullptr);
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+void BraveNewTabUI::BindInterface(
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
+        pending_vpn_service_handler) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  CHECK(profile);
+  auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
+  if (vpn_service) {
+    vpn_service->BindInterface(std::move(pending_vpn_service_handler));
+  }
+}
+#endif
 
 void BraveNewTabUI::CreatePageHandler(
     mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,

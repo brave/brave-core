@@ -28,6 +28,7 @@ export const defaultState: NewTab.State = {
   customLinksNum: 0,
   showRewards: false,
   showBraveTalk: false,
+  showBraveVPN: false,
   showSearchBox: true,
   lastUsedNtpSearchEngine: braveSearchHost,
   promptEnableSearchSuggestions: true,
@@ -87,7 +88,7 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['rewards'],
+  widgetStackOrder: ['rewards', 'braveVPN'],
   customImageBackgrounds: []
 }
 
@@ -95,14 +96,14 @@ if (chrome.extension.inIncognitoContext) {
   defaultState.isTor = loadTimeData.getBoolean('isTor')
 }
 
-// Ensure any new stack widgets introduced are put behind
+// Ensure any new stack widgets introduced are put in front of
 // the others, and not re-added unecessarily if removed
 // at one point.
 export const addNewStackWidget = (state: NewTab.State) => {
   defaultState.widgetStackOrder.map((widget: NewTab.StackWidget) => {
     if (!state.widgetStackOrder.includes(widget) &&
       !state.removedStackWidgets.includes(widget)) {
-      state.widgetStackOrder.unshift(widget)
+      state.widgetStackOrder.push(widget)
     }
   })
   return state

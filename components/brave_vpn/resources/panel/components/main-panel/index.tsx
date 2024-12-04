@@ -166,7 +166,7 @@ function MainPanel() {
           tooltip={getLocale('braveVpnSettingsTooltip')}
           onClick={handleSettingsButtonClick}
         />
-        <PanelHeader title={getLocale('braveVpnMainPanelTitle')} />
+        <PanelHeader title={getLocale('braveVpn')} />
         <Toggle disabled={expired} />
         {connectionStatus === ConnectionState.CONNECT_NOT_ALLOWED && (
           <S.StyledAlert

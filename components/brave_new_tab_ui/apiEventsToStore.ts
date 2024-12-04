@@ -12,6 +12,7 @@ import * as newTabAdsDataAPI from './api/newTabAdsData'
 import getNTPBrowserAPI, { Background, CustomBackground } from './api/background'
 import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
 import * as backgroundData from './data/backgrounds'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 async function updatePreferences (prefData: NewTab.Preferences) {
   getActions().preferencesUpdated(prefData)
@@ -71,6 +72,9 @@ export function wireApiEventsToStore () {
     getNTPBrowserAPI().addBackgroundUpdatedListener(onBackgroundUpdated)
     getNTPBrowserAPI().addCustomImageBackgroundsUpdatedListener(onCustomImageBackgroundsUpdated)
     getNTPBrowserAPI().addSearchPromotionDisabledListener(() => getActions().searchPromotionDisabled())
+    if (loadTimeData.getBoolean('vpnWidgetSupported')) {
+      getActions().braveVPN.initialize(initialData.purchasedState)
+    }
   })
   .catch(e => {
     console.error('New Tab Page fatal error:', e)

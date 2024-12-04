@@ -7,6 +7,7 @@ import * as gridSitesActions from '../actions/grid_sites_actions'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as stackWidgetActions from '../actions/stack_widget_actions'
 import * as todayActions from '../actions/today_actions'
+import * as braveVPNActions from '../actions/brave_vpn_actions'
 
 export const enum types {
   NEW_TAB_STATS_UPDATED = '@@newtab/NEW_TAB_STATS_UPDATED',
@@ -35,4 +36,5 @@ export type NewTabActions =
   typeof stackWidgetActions &
   {
     today: typeof todayActions
+    braveVPN: typeof braveVPNActions
   }
