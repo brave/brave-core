@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts b/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts
+index 508f0ad9a58a6..8b3cf28211f8f 100644
+--- a/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts
++++ b/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts
+@@ -485,5 +485,5 @@ declare global {
+   }
+ }
+ 
+-customElements.define(
+-    CertificateManagerV2Element.is, CertificateManagerV2Element);
++// customElements.define(
++//     CertificateManagerV2Element.is, CertificateManagerV2Element);

@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {RegisterStyleOverride} from '//resources/brave/polymer_overriding.js'
-import {html} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { RegisterStyleOverride } from '//resources/brave/polymer_overriding.js'
+import { html } from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { CertificateManagerV2Element } from './certificate_manager_v2-chromium.js'
 
 RegisterStyleOverride(
   'certificate-manager-v2',
@@ -38,4 +39,10 @@ RegisterStyleOverride(
   `
 )
 
+// Note: This is a dynamic import so the style override is registered before the
+// component is defined.
 export * from './certificate_manager_v2-chromium.js'
+
+// Note: This needs to be defined after we register the style override.
+customElements.define(
+    CertificateManagerV2Element.is, CertificateManagerV2Element);
