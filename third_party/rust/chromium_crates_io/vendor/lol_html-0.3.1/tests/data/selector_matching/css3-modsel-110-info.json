@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - Substring matching attribute selector on middle with universal namespace (css3-modsel-110)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s, *|t": "css3-modsel-110.expected0.html",
-    "*|p, *|r, *|s": "css3-modsel-110.expected1.html",
-    "*|*[*|title*=\"on ch\"]": "css3-modsel-110.expected2.html"
-  },
-  "src": "css3-modsel-110.src.html"
-}

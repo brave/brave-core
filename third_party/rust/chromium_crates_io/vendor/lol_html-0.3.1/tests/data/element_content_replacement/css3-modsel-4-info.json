@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Omitted universal selector (css3-modsel-4)",
-  "selectors": {
-    "#foo": "css3-modsel-4.expected0.html",
-    "p": "css3-modsel-4.expected1.html"
-  },
-  "src": "css3-modsel-4.src.html"
-}

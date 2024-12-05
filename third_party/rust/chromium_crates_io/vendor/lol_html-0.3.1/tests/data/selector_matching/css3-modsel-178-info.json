@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - Parsing: :not and pseudo-elements (css3-modsel-178)",
-  "selectors": {
-    "div": "css3-modsel-178.expected0.html"
-  },
-  "src": "css3-modsel-178.src.html"
-}

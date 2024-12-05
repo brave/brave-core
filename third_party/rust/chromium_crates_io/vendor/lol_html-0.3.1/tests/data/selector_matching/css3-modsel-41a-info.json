@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - :before pseudo-element (css3-modsel-41a)",
-  "selectors": {
-    "p:before": "css3-modsel-41a.expected0.html"
-  },
-  "src": "css3-modsel-41a.src.html"
-}

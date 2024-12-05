@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - Universal selector without declared namespace (css3-modsel-96)",
-  "selectors": {
-    "div.green *": "css3-modsel-96.expected0.html",
-    "div.test *": "css3-modsel-96.expected1.html",
-    "div.test |*": "css3-modsel-96.expected2.html"
-  },
-  "src": "css3-modsel-96.src.html"
-}

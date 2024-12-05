@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED Attribute dash-separated value selector with declared namespace (css3-modsel-126b)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s": "css3-modsel-126b.expected0.html",
-    "*|q, *|s": "css3-modsel-126b.expected1.html"
-  },
-  "src": "css3-modsel-126b.src.html"
-}

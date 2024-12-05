@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED :nth-last-of-type() pseudo-class (css3-modsel-76b)",
-  "selectors": {
-    ".green": "css3-modsel-76b.expected0.html",
-    "p:not(:nth-last-of-type(3))": "css3-modsel-76b.expected1.html",
-    "dl > *:not(:nth-last-of-type(3n+1))": "css3-modsel-76b.expected2.html"
-  },
-  "src": "css3-modsel-76b.src.html"
-}

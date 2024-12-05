@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED :lang() pseudo-class (css3-modsel-67)",
-  "selectors": {
-    "div.stub *": "css3-modsel-67.expected0.html",
-    "div.stub *:not(:lang(fr))": "css3-modsel-67.expected1.html"
-  },
-  "src": "css3-modsel-67.src.html"
-}

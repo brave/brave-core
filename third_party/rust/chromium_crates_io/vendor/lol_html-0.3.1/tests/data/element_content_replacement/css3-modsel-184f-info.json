@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED contains attribute selector with empty value (css3-modsel-184f)",
-  "selectors": {
-    "p": "css3-modsel-184f.expected0.html",
-    "p:not([class*=\"\"])": "css3-modsel-184f.expected1.html"
-  },
-  "src": "css3-modsel-184f.src.html"
-}

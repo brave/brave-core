@@ -1,7 +1,0 @@
-{
-  "description": "Element content replacement - Syntax and parsing of class selectors (css3-modsel-183)",
-  "selectors": {
-    "p": "css3-modsel-183.expected0.html"
-  },
-  "src": "css3-modsel-183.src.html"
-}

@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED type element selector with declared namespace (css3-modsel-118)",
-  "selectors": {
-    "*|p, *|l": "css3-modsel-118.expected0.html",
-    "div.test *": "css3-modsel-118.expected1.html"
-  },
-  "src": "css3-modsel-118.src.html"
-}

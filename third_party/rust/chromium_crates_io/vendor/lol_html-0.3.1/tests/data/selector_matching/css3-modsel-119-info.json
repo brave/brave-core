@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED type element selector with universal namespace (css3-modsel-119)",
-  "selectors": {
-    "div.test > *:not(*|p):not(*|div)": "css3-modsel-119.expected0.html",
-    "div.stub > *:not(*|div)": "css3-modsel-119.expected1.html"
-  },
-  "src": "css3-modsel-119.src.html"
-}

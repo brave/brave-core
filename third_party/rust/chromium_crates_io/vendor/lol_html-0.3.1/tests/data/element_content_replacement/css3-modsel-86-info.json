@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Nondeterministic matching of descendant and child combinators (css3-modsel-86)",
-  "selectors": {
-    "p": "css3-modsel-86.expected0.html",
-    "blockquote > div p": "css3-modsel-86.expected1.html"
-  },
-  "src": "css3-modsel-86.src.html"
-}

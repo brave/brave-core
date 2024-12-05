@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - :target pseudo-class (css3-modsel-21b)",
-  "selectors": {
-    "p": "css3-modsel-21b.expected0.html",
-    "p:target": "css3-modsel-21b.expected1.html"
-  },
-  "src": "css3-modsel-21b.src.html"
-}

@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED Substring matching attribute selector on end without declared namespace (css3-modsel-142)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s, *|t": "css3-modsel-142.expected0.html",
-    "*|q, *|s, *|t": "css3-modsel-142.expected1.html",
-    "div.stub *|*:not([|title$=\"tait\"])": "css3-modsel-142.expected2.html"
-  },
-  "src": "css3-modsel-142.src.html"
-}

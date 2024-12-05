@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - ::first-line on inlines (css3-modsel-179)",
-  "selectors": {
-    "p": "css3-modsel-179.expected0.html",
-    "span:first-line": "css3-modsel-179.expected1.html",
-    "span::first-line": "css3-modsel-179.expected2.html"
-  },
-  "src": "css3-modsel-179.src.html"
-}

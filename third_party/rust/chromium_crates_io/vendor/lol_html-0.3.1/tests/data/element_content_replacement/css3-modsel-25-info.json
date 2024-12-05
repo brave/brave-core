@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - :checked pseudo-class (css3-modsel-25)",
-  "selectors": {
-    "input, span": "css3-modsel-25.expected0.html",
-    "input:checked, input:checked + span": "css3-modsel-25.expected1.html"
-  },
-  "src": "css3-modsel-25.src.html"
-}

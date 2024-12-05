@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED :visited pseudo-class (css3-modsel-62)",
-  "selectors": {
-    "div.stub > *": "css3-modsel-62.expected0.html",
-    "div.stub *:not(:visited)": "css3-modsel-62.expected1.html"
-  },
-  "src": "css3-modsel-62.src.html"
-}

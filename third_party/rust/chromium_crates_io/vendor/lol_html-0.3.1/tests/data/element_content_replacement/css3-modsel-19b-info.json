@@ -1,7 +1,0 @@
-{
-  "description": "Element content replacement - :active pseudo-class on controls (css3-modsel-19b)",
-  "selectors": {
-    "button:active": "css3-modsel-19b.expected0.html"
-  },
-  "src": "css3-modsel-19b.src.html"
-}

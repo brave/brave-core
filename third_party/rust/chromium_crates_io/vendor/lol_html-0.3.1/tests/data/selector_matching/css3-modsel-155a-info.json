@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Syntax and parsing (css3-modsel-155a)",
-  "selectors": {
-    "p": "css3-modsel-155a.expected0.html",
-    ".\\5cm": "css3-modsel-155a.expected1.html"
-  },
-  "src": "css3-modsel-155a.src.html"
-}

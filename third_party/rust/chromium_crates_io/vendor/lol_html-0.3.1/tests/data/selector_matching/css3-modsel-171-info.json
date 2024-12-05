@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Classes: XHTML global class attribute (css3-modsel-171)",
-  "selectors": {
-    "p": "css3-modsel-171.expected0.html",
-    ".fail": "css3-modsel-171.expected1.html"
-  },
-  "src": "css3-modsel-171.src.html"
-}

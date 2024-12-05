@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Child combinatior and IDs (css3-modsel-44d)",
-  "selectors": {
-    "#fail > div": "css3-modsel-44d.expected0.html",
-    "p": "css3-modsel-44d.expected1.html"
-  },
-  "src": "css3-modsel-44d.src.html"
-}

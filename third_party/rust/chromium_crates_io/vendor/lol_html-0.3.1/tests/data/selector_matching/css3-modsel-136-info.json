@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - NEGATED Substring matching attribute selector on middle with universal namespace (css3-modsel-136)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s, *|t": "css3-modsel-136.expected0.html",
-    "*|p.red, *|q, *|t": "css3-modsel-136.expected1.html",
-    "div.stub *|*:not([*|title*=\"on ch\"])": "css3-modsel-136.expected2.html"
-  },
-  "src": "css3-modsel-136.src.html"
-}

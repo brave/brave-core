@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - Attribute space-separated value selector without declared namespace (css3-modsel-113b)",
-  "selectors": {
-    "*|p, *|address, *|q, *|r": "css3-modsel-113b.expected0.html",
-    "*|p, *|q": "css3-modsel-113b.expected1.html",
-    "*|*[|class~=\"foo\"]": "css3-modsel-113b.expected2.html"
-  },
-  "src": "css3-modsel-113b.src.html"
-}

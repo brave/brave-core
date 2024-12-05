@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED ID selector (css3-modsel-60)",
-  "selectors": {
-    "div.stub > *": "css3-modsel-60.expected0.html",
-    "div.stub *:not(#foo)": "css3-modsel-60.expected1.html"
-  },
-  "src": "css3-modsel-60.src.html"
-}

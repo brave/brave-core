@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - NEGATED attribute existence selector (css3-modsel-50)",
-  "selectors": {
-    "div.stub *|*:not([test])": "css3-modsel-50.expected0.html"
-  },
-  "src": "css3-modsel-50.src.html"
-}
