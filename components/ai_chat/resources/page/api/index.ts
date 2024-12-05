@@ -3,23 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
-export * from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
-import { loadTimeData } from '$web-common/loadTimeData'
-import API from '../../common/api'
+ import { loadTimeData } from '$web-common/loadTimeData'
+ import API from '../../common/api'
+ import * as Mojom from '../../common/mojom'
 
 // State that is owned by this class because it is global to the UI
 // (loadTimeData / Service / UIHandler).
-export type State = mojom.ServiceState & {
+export type State = Mojom.ServiceState & {
   initialized: boolean
   isStandalone?: boolean
-  visibleConversations: mojom.Conversation[]
+  visibleConversations: Mojom.Conversation[]
   isPremiumStatusFetching: boolean
   isPremiumUser: boolean
   isPremiumUserDisconnected: boolean
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
-  allActions: mojom.ActionGroup[]
+  allActions: Mojom.ActionGroup[]
 }
 
 export const defaultUIState: State = {
@@ -39,20 +38,20 @@ export const defaultUIState: State = {
 
 // Owns connections to the browser via mojom as well as global state
 class PageAPI extends API<State> {
-  public service: mojom.ServiceRemote
-    = mojom.Service.getRemote()
+  public service: Mojom.ServiceRemote
+    = Mojom.Service.getRemote()
 
-  public observer: mojom.ServiceObserverCallbackRouter
-    = new mojom.ServiceObserverCallbackRouter()
+  public observer: Mojom.ServiceObserverCallbackRouter
+    = new Mojom.ServiceObserverCallbackRouter()
 
-  public uiHandler: mojom.AIChatUIHandlerRemote
-    = mojom.AIChatUIHandler.getRemote()
+  public uiHandler: Mojom.AIChatUIHandlerRemote
+    = Mojom.AIChatUIHandler.getRemote()
 
-  public uiObserver: mojom.ChatUICallbackRouter
-    = new mojom.ChatUICallbackRouter()
+  public uiObserver: Mojom.ChatUICallbackRouter
+    = new Mojom.ChatUICallbackRouter()
 
-  public conversationEntriesFrameObserver: mojom.ParentUIFrameCallbackRouter
-    = new mojom.ParentUIFrameCallbackRouter()
+  public conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter
+    = new Mojom.ParentUIFrameCallbackRouter()
 
   constructor() {
     super(defaultUIState)
@@ -87,19 +86,19 @@ class PageAPI extends API<State> {
       allActions
     })
 
-    this.observer.onStateChanged.addListener((state: mojom.ServiceState) => {
+    this.observer.onStateChanged.addListener((state: Mojom.ServiceState) => {
       this.setPartialState(state)
     })
 
     this.observer.onConversationListChanged.addListener(
-      (conversations: mojom.Conversation[]) => {
+      (conversations: Mojom.Conversation[]) => {
         this.setPartialState({
           visibleConversations: conversations
         })
       }
     )
 
-    this.uiObserver.onChildFrameBound.addListener((parentPagePendingReceiver: mojom.ParentUIFramePendingReceiver) => {
+    this.uiObserver.onChildFrameBound.addListener((parentPagePendingReceiver: Mojom.ParentUIFramePendingReceiver) => {
       this.conversationEntriesFrameObserver.$.bindHandle(parentPagePendingReceiver.handle)
     })
 
@@ -121,8 +120,8 @@ class PageAPI extends API<State> {
     const { status } = await this.service.getPremiumStatus()
     return {
       isPremiumStatusFetching: false,
-      isPremiumUser: (status !== undefined && status !== mojom.PremiumStatus.Inactive),
-      isPremiumUserDisconnected: status === mojom.PremiumStatus.ActiveDisconnected
+      isPremiumUser: (status !== undefined && status !== Mojom.PremiumStatus.Inactive),
+      isPremiumUserDisconnected: status === Mojom.PremiumStatus.ActiveDisconnected
     }
   }
 
@@ -141,9 +140,9 @@ export default function getAPI() {
 }
 
 export function bindConversation(id: string | undefined) {
-  let conversationHandler: mojom.ConversationHandlerRemote =
-    new mojom.ConversationHandlerRemote()
-  let callbackRouter = new mojom.ConversationUICallbackRouter()
+  let conversationHandler: Mojom.ConversationHandlerRemote =
+    new Mojom.ConversationHandlerRemote()
+  let callbackRouter = new Mojom.ConversationUICallbackRouter()
 
   if (id !== undefined) {
     getAPI().service.bindConversation(
@@ -164,9 +163,9 @@ export function bindConversation(id: string | undefined) {
 }
 
 export function newConversation() {
-  let conversationHandler: mojom.ConversationHandlerRemote =
-    new mojom.ConversationHandlerRemote()
-  let callbackRouter = new mojom.ConversationUICallbackRouter()
+  let conversationHandler: Mojom.ConversationHandlerRemote =
+    new Mojom.ConversationHandlerRemote()
+  let callbackRouter = new Mojom.ConversationUICallbackRouter()
   getAPI().uiHandler.newConversation(
     conversationHandler.$.bindNewPipeAndPassReceiver(),
     callbackRouter.$.bindNewPipeAndPassRemote()

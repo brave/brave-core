@@ -1,15 +1,15 @@
 // Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at haptps://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
 import { loadTimeData } from '$web-common/loadTimeData'
 import API from '../common/api'
+import * as Mojom from '../common/mojom'
 
 // Global state for this UI
-export type ConversationEntriesUIState = mojom.ConversationEntriesState & {
-  conversationHistory: mojom.ConversationTurn[]
+export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
+  conversationHistory: Mojom.ConversationTurn[]
   isMobile: boolean
 }
 
@@ -25,16 +25,17 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
 
 // Define how to get the initial data and update the state from events
 export default class APIConversationEntriesUI extends API<ConversationEntriesUIState> {
-  public conversationHandler: mojom.UntrustedConversationHandlerRemote =
-    mojom.UntrustedConversationHandler.getRemote()
+  public conversationHandler: Mojom.UntrustedConversationHandlerRemote
+    = Mojom.UntrustedConversationHandler.getRemote()
 
-  public uiHandler: mojom.UntrustedUIHandlerRemote =
-    mojom.UntrustedUIHandler.getRemote()
+  public uiHandler: Mojom.UntrustedUIHandlerRemote
+    = Mojom.UntrustedUIHandler.getRemote()
 
-  public parentUIFrame: mojom.ParentUIFrameRemote = new mojom.ParentUIFrameRemote()
+  public parentUIFrame: Mojom.ParentUIFrameRemote
+    = new Mojom.ParentUIFrameRemote()
 
-  private conversationObserver: mojom.UntrustedConversationUICallbackRouter =
-    new mojom.UntrustedConversationUICallbackRouter
+  private conversationObserver: Mojom.UntrustedConversationUICallbackRouter
+    = new Mojom.UntrustedConversationUICallbackRouter
 
   constructor() {
     super(defaultConversationEntriesUIState)

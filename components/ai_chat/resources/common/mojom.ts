@@ -4,3 +4,4 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 export * from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
+export * from 'gen/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.m.js'

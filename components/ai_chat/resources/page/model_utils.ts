@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
+import * as Mojom from '../common/mojom'
 
-export function isLeoModel(model: mojom.Model) {
+export function isLeoModel(model: Mojom.Model) {
   return !!(model.options.leoModelOptions)
 }

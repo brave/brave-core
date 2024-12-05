@@ -1,0 +1,24 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+// Interfaces for communication between the untrusted content frame and both
+// the Browser and the parent trusted UI frame.
+
+// Trusted WebUI-side handler for messages from the untrusted child frame
+interface ParentUIFrame {
+  ChildHeightChanged(uint32 height);
+  GeneratedConversationEntryHeightChanged();
+  RateMessage(string turn_id, bool is_liked);
+};
+
+// Browser-side handler for untrusted frame that handles rendering of
+// conversation entries.
+interface UntrustedUIHandler {
+  OpenSearchURL(string query);
+  OpenLearnMoreAboutBraveSearchWithLeo();
+  BindParentPage(pending_receiver<ParentUIFrame> parent_frame);
+};

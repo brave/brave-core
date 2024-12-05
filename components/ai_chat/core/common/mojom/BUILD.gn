@@ -17,6 +17,7 @@ mojom_component("mojom") {
     "ai_chat.mojom",
     "page_content_extractor.mojom",
     "settings_helper.mojom",
+    "untrusted_frame.mojom",
   ]
 
   deps = [

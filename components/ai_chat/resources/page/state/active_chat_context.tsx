@@ -4,7 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import getAPI, * as AIChat from '../api'
+import * as Mojom from '../../common/mojom'
+import getAPI, * as API from '../api'
 import { useRoute } from '$web-common/useRoute'
 import { useAIChat } from './ai_chat_context'
 
@@ -13,8 +14,8 @@ export const tabAssociatedChatId = 'tab'
 export interface SelectedChatDetails {
   selectedConversationId: string | undefined
   updateSelectedConversationId: (conversationId: string | undefined) => void
-  conversationHandler: AIChat.ConversationHandlerRemote
-  callbackRouter: AIChat.ConversationUICallbackRouter
+  conversationHandler: Mojom.ConversationHandlerRemote
+  callbackRouter: Mojom.ConversationUICallbackRouter
   createNewConversation: () => void,
   isTabAssociated: boolean
 }
@@ -58,7 +59,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     selectedConversationId,
     updateSelectedConversationId,
     createNewConversation: () => {
-      setConversationAPI(AIChat.newConversation())
+      setConversationAPI(API.newConversation())
     },
     isTabAssociated: selectedConversationId === tabAssociatedChatId
   }), [selectedConversationId, updateSelectedConversationId, conversationAPI])
@@ -66,12 +67,12 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
   React.useEffect(() => {
     // Handle creating a new conversation
     if (!selectedConversationId) {
-      setConversationAPI(AIChat.newConversation())
+      setConversationAPI(API.newConversation())
       return
     }
 
     // Select a specific conversation
-    setConversationAPI(AIChat.bindConversation(selectedConversationId === tabAssociatedChatId
+    setConversationAPI(API.bindConversation(selectedConversationId === tabAssociatedChatId
       ? undefined
       : selectedConversationId))
 
@@ -80,7 +81,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     if (selectedConversationId === tabAssociatedChatId) {
       const onNewDefaultConversationListenerId =
         getAPI().uiObserver.onNewDefaultConversation.addListener(() => {
-          setConversationAPI(AIChat.bindConversation(undefined))
+          setConversationAPI(API.bindConversation(undefined))
         })
 
       return () => {

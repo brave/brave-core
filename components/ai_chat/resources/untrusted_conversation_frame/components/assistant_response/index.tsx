@@ -8,7 +8,7 @@ import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
-import * as mojom from '../../../common/mojom'
+import * as Mojom from '../../../common/mojom'
 import { useConversationEntriesContext } from '../../conversation_entries_context'
 import MarkdownRenderer from '../markdown_renderer'
 import styles from './style.module.scss'
@@ -47,7 +47,7 @@ function SearchSummary (props: { searchQueries: string[] }) {
   )
 }
 
-export default function AssistantResponse(props: { entry: mojom.ConversationTurn, isEntryInProgress: boolean }) {
+export default function AssistantResponse(props: { entry: Mojom.ConversationTurn, isEntryInProgress: boolean }) {
   const searchQueriesEvent = props.entry.events?.find(event => !!event.searchQueriesEvent)?.searchQueriesEvent
   const hasCompletionStarted = !props.isEntryInProgress || props.entry.events?.find(event => !!event.completionEvent)
 

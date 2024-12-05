@@ -7,7 +7,7 @@ import * as React from 'react'
 import classnames from '$web-common/classnames'
 import Icon from '@brave/leo/react/icon'
 import useLongPress from '$web-common/useLongPress'
-import * as mojom from '../../../common/mojom'
+import * as Mojom from '../../../common/mojom'
 import ContextMenuAssistant from '../context_menu_assistant'
 import { getLocale } from '$web-common/locale'
 import Quote from '../quote'
@@ -75,7 +75,7 @@ function ConversationEntries(props: ConversationEntriesProps) {
     ) {
       if (
         conversationContext.conversationHistory[i].characterType ===
-        mojom.CharacterType.ASSISTANT
+        Mojom.CharacterType.ASSISTANT
       ) {
         return i
       }
@@ -83,7 +83,7 @@ function ConversationEntries(props: ConversationEntriesProps) {
     return -1
   }, [conversationContext.conversationHistory])
 
-  const getCompletion = (turn: mojom.ConversationTurn) => {
+  const getCompletion = (turn: Mojom.ConversationTurn) => {
     const event = turn.events?.find((event) => event.completionEvent)
     return event?.completionEvent?.completion ?? ''
   }
@@ -94,10 +94,10 @@ function ConversationEntries(props: ConversationEntriesProps) {
         {conversationContext.conversationHistory.map((turn, id) => {
           const isLastEntry = id === lastAssistantId
           const isAIAssistant =
-            turn.characterType === mojom.CharacterType.ASSISTANT
+            turn.characterType === Mojom.CharacterType.ASSISTANT
           const isEntryInProgress =
             isLastEntry && isAIAssistant && conversationContext.isGenerating
-          const isHuman = turn.characterType === mojom.CharacterType.HUMAN
+          const isHuman = turn.characterType === Mojom.CharacterType.HUMAN
           const showLongPageContentInfo =
             id === 1 &&
             isAIAssistant &&

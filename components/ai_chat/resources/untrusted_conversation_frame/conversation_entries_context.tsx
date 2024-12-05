@@ -5,14 +5,14 @@
 
 import * as React from 'react'
 import API, {ConversationEntriesUIState, defaultConversationEntriesUIState} from './api_conversation_entries_ui'
-import * as mojom from '../common/mojom'
+import * as Mojom from '../common/mojom'
 import useAPIState from '../common/useAPIState'
 
 export type ConversationEntriesContext = ConversationEntriesUIState & {
   // Access to interface functions, optional because it will not be available
   // in storybook.
-  conversationHandler?: mojom.UntrustedConversationHandlerRemote
-  uiHandler?: mojom.UntrustedUIHandlerRemote
+  conversationHandler?: Mojom.UntrustedConversationHandlerRemote
+  uiHandler?: Mojom.UntrustedUIHandlerRemote
 }
 
 const defaultContext: ConversationEntriesContext = {

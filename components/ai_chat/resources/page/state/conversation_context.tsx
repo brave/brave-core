@@ -4,12 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
-import * as API from '../api/'
-import { useAIChat } from './ai_chat_context'
+import * as Mojom from '../../common/mojom'
+import useIsConversationVisible from '../hooks/useIsConversationVisible'
 import { isLeoModel } from '../model_utils'
 import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
-import useIsConversationVisible from '../hooks/useIsConversationVisible'
+import { useAIChat } from './ai_chat_context'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -22,16 +21,16 @@ export interface CharCountContext {
 
 export interface ConversationContext extends CharCountContext {
   conversationUuid?: string
-  conversationHistory: mojom.ConversationTurn[]
-  associatedContentInfo?: mojom.SiteInfo
-  allModels: mojom.Model[]
-  currentModel?: mojom.Model
+  conversationHistory: Mojom.ConversationTurn[]
+  associatedContentInfo?: Mojom.SiteInfo
+  allModels: Mojom.Model[]
+  currentModel?: Mojom.Model
   suggestedQuestions: string[]
   isGenerating: boolean
-  suggestionStatus: mojom.SuggestionGenerationStatus
+  suggestionStatus: Mojom.SuggestionGenerationStatus
   faviconUrl?: string
   faviconCacheKey?: string
-  currentError: mojom.APIError | undefined
+  currentError: Mojom.APIError | undefined
   apiHasError: boolean
   shouldDisableUserInput: boolean
   shouldShowLongPageWarning: boolean
@@ -39,11 +38,11 @@ export interface ConversationContext extends CharCountContext {
   shouldSendPageContents: boolean
   inputText: string
   // TODO(petemill): rename to `filteredActions`?
-  actionList: mojom.ActionGroup[]
-  selectedActionType: mojom.ActionType | undefined
+  actionList: Mojom.ActionGroup[]
+  selectedActionType: Mojom.ActionType | undefined
   isToolsMenuOpen: boolean
   isCurrentModelLeo: boolean
-  setCurrentModel: (model: mojom.Model) => void
+  setCurrentModel: (model: Mojom.Model) => void
   switchToBasicModel: () => void
   generateSuggestedQuestions: () => void
   dismissLongConversationInfo: () => void
@@ -53,10 +52,10 @@ export interface ConversationContext extends CharCountContext {
   setInputText: (text: string) => void
   submitInputTextToAPI: () => void
   resetSelectedActionType: () => void
-  handleActionTypeClick: (actionType: mojom.ActionType) => void
+  handleActionTypeClick: (actionType: Mojom.ActionType) => void
   setIsToolsMenuOpen: (isOpen: boolean) => void
   handleVoiceRecognition?: () => void
-  conversationHandler?: API.ConversationHandlerRemote
+  conversationHandler?: Mojom.ConversationHandlerRemote
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -70,10 +69,10 @@ const defaultContext: ConversationContext = {
   allModels: [],
   suggestedQuestions: [],
   isGenerating: false,
-  suggestionStatus: mojom.SuggestionGenerationStatus.None,
+  suggestionStatus: Mojom.SuggestionGenerationStatus.None,
   apiHasError: false,
   shouldDisableUserInput: false,
-  currentError: mojom.APIError.None,
+  currentError: Mojom.APIError.None,
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,
   shouldSendPageContents: true,
@@ -113,14 +112,14 @@ function normalizeText(text: string) {
   return text.trim().replace(/\s/g, '').toLocaleLowerCase()
 }
 
-export const getFirstValidAction = (actionList: mojom.ActionGroup[]) =>
+export const getFirstValidAction = (actionList: Mojom.ActionGroup[]) =>
   actionList
     .flatMap((actionGroup) => actionGroup.entries)
     .find((entries) => entries.details)?.details?.type
 
 export function useActionMenu(
   filter: string,
-  actionList: mojom.ActionGroup[]
+  actionList: Mojom.ActionGroup[]
 ) {
   return React.useMemo(() => {
     const reg = new RegExp(/^\/\w+/)
@@ -168,7 +167,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   const getModelContext = (
     currentModelKey: string,
-    allModels: mojom.Model[]
+    allModels: Mojom.Model[]
   ): Partial<ConversationContext> => {
     return {
       allModels,
@@ -230,7 +229,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     )
     listenerIds.push(id)
 
-    id = callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) =>
+    id = callbackRouter.onAPIResponseError.addListener((error: Mojom.APIError) =>
       setPartialContext({
         currentError: error
       })
@@ -238,13 +237,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     listenerIds.push(id)
 
     id = callbackRouter.onModelDataChanged.addListener(
-      (conversationModelKey: string, allModels: mojom.Model[]) =>
+      (conversationModelKey: string, allModels: Mojom.Model[]) =>
         setPartialContext(getModelContext(conversationModelKey, allModels))
     )
     listenerIds.push(id)
 
     id = callbackRouter.onSuggestedQuestionsChanged.addListener(
-      (questions: string[], status: mojom.SuggestionGenerationStatus) =>
+      (questions: string[], status: Mojom.SuggestionGenerationStatus) =>
         setPartialContext({
           suggestedQuestions: questions,
           suggestionStatus: status
@@ -254,7 +253,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
     id = callbackRouter.onAssociatedContentInfoChanged.addListener(
       (
-        associatedContentInfo: mojom.SiteInfo,
+        associatedContentInfo: Mojom.SiteInfo,
         shouldSendPageContents: boolean
       ) => {
         setPartialContext({
@@ -343,13 +342,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     hasDismissedLongConversationInfo
   ])
 
-  const apiHasError = context.currentError !== mojom.APIError.None
+  const apiHasError = context.currentError !== Mojom.APIError.None
   const shouldDisableUserInput = !!(
     apiHasError ||
     context.isGenerating ||
     (!aiChatContext.isPremiumUser &&
       context.currentModel?.options.leoModelOptions?.access ===
-      mojom.ModelAccess.PREMIUM)
+      Mojom.ModelAccess.PREMIUM)
   )
   const isCharLimitExceeded = context.inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching =
@@ -364,7 +363,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     })
   }
 
-  const handleActionTypeClick = (actionType: mojom.ActionType) => {
+  const handleActionTypeClick = (actionType: Mojom.ActionType) => {
     setPartialContext({
       selectedActionType: actionType
     })
@@ -424,7 +423,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const switchToBasicModel = () => {
     // Select the first non-premium model
     const nonPremium = context.allModels.find(
-      (m) => m.options.leoModelOptions?.access !== mojom.ModelAccess.PREMIUM
+      (m) => m.options.leoModelOptions?.access !== Mojom.ModelAccess.PREMIUM
     )
     if (!nonPremium) {
       console.error('Could not find a non-premium model!')

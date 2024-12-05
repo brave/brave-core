@@ -9,7 +9,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
-import * as mojom from '../../api'
+import * as Mojom from '../../../common/mojom'
 import { useConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
 import { isLeoModel } from '../../model_utils'
@@ -35,9 +35,9 @@ import SiteTitle from '../site_title'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
 
-const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
-  mojom.SuggestionGenerationStatus.CanGenerate,
-  mojom.SuggestionGenerationStatus.IsGenerating
+const SUGGESTION_STATUS_SHOW_BUTTON: Mojom.SuggestionGenerationStatus[] = [
+  Mojom.SuggestionGenerationStatus.CanGenerate,
+  Mojom.SuggestionGenerationStatus.IsGenerating
 ]
 
 function Main() {
@@ -50,7 +50,7 @@ function Main() {
     aiChatContext.hasAcceptedAgreement &&
     !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
     !aiChatContext.isPremiumUser &&
-    conversationContext.currentModel?.options.leoModelOptions?.access === mojom.ModelAccess.PREMIUM
+    conversationContext.currentModel?.options.leoModelOptions?.access === Mojom.ModelAccess.PREMIUM
 
   const shouldShowPremiumSuggestionStandalone =
     aiChatContext.hasAcceptedAgreement &&
@@ -82,17 +82,17 @@ function Main() {
   // Determine which, if any, error message should be displayed
   if (aiChatContext.hasAcceptedAgreement && conversationContext.apiHasError) {
     switch (conversationContext.currentError) {
-      case mojom.APIError.ConnectionIssue:
+      case Mojom.APIError.ConnectionIssue:
         currentErrorElement = <ErrorConnection
           onRetry={conversationContext.retryAPIRequest} />
         break
-      case mojom.APIError.RateLimitReached:
+      case Mojom.APIError.RateLimitReached:
         currentErrorElement = <ErrorRateLimit />
         break
-      case mojom.APIError.ContextLimitReached:
+      case Mojom.APIError.ContextLimitReached:
         currentErrorElement = <ErrorConversationEnd />
         break
-      case mojom.APIError.InvalidEndpointURL:
+      case Mojom.APIError.InvalidEndpointURL:
         currentErrorElement = <ErrorInvalidEndpointURL />
         break
     }
@@ -235,7 +235,7 @@ function Main() {
                   ) && conversationContext.shouldSendPageContents && (
                       <SuggestionButton
                         onClick={() => conversationContext.generateSuggestedQuestions()}
-                        isLoading={conversationContext.suggestionStatus === mojom.SuggestionGenerationStatus.IsGenerating}
+                        isLoading={conversationContext.suggestionStatus === Mojom.SuggestionGenerationStatus.IsGenerating}
                       >
                         <span className={styles.buttonText}>
                           {getLocale('suggestQuestionsLabel')}

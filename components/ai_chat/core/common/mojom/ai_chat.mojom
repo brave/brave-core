@@ -5,9 +5,9 @@
 
 module ai_chat.mojom;
 
+import "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
-import "mojo/public/mojom/base/time.mojom";
 
 enum CharacterType {
   HUMAN,
@@ -390,21 +390,6 @@ interface AIChatUIHandler {
   // ID is associated with the UI, so no arguments needed.
   GetFaviconImageData(string conversation_uuid) => (
       array<uint8>? favicon_image_data);
-};
-
-// Browser-side handler for untrusted frame that handles rendering of
-// conversation entries.
-interface UntrustedUIHandler {
-  OpenSearchURL(string query);
-  OpenLearnMoreAboutBraveSearchWithLeo();
-  BindParentPage(pending_receiver<ParentUIFrame> parent_frame);
-};
-
-// UI-side handler for messages from the untrusted child frame
-interface ParentUIFrame {
-  ChildHeightChanged(uint32 height);
-  GeneratedConversationEntryHeightChanged();
-  RateMessage(string turn_id, bool is_liked);
 };
 
 // UI-side handler for messages from the browser WebUI

@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import useAPIState from '../../common/useAPIState'
+import * as Mojom from '../../common/mojom'
 import getAPI, * as AIChat from '../api'
 import useMediaQuery from '$web-common/useMediaQuery'
 
@@ -27,7 +28,8 @@ type AIChatContextInternal = AIChatContextProps & {
   dismissStorageNotice: () => void
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
-  uiHandler?: AIChat.AIChatUIHandlerRemote
+  uiHandler?: Mojom.AIChatUIHandlerRemote
+  service?: Mojom.ServiceRemote
 
   editingConversationId: string | null
   setEditingConversationId: (uuid: string | null) => void,
@@ -90,6 +92,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
     userRefreshPremiumSession: () => api.uiHandler.refreshPremiumSession(),
     handleAgreeClick: () => api.service.markAgreementAccepted(),
     uiHandler: api.uiHandler,
+    service: api.service,
     editingConversationId,
     setEditingConversationId,
     showSidebar,
