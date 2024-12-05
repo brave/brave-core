@@ -5,16 +5,16 @@
 
 #include "brave/browser/ui/startup/brave_startup_tab_provider_impl.h"
 
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/startup/startup_tab.h"
-#include "chrome/common/webui_url_constants.h"
 
 StartupTabs BraveStartupTabProviderImpl::GetDistributionFirstRunTabs(
     StartupBrowserCreator* browser_creator) const {
   StartupTabs tabs =
       StartupTabProviderImpl::GetDistributionFirstRunTabs(browser_creator);
   if (first_run::IsChromeFirstRun()) {
-    tabs.emplace_back(GURL(chrome::kChromeUIWelcomeURL));
+    tabs.emplace_back(GURL(kWelcomeURL));
   }
   return tabs;
 }

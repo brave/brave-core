@@ -684,10 +684,6 @@
 # This test fails because our badge doesn't match the upstream badge
 -IconBadgingTest.VerifyFromDisk
 
-# This test fails because it no longer modifies its expectations now that the
-# kForYouFre feature flag was removed
--StartupBrowserCreatorImplTest.DetermineStartupTabs_NewFeaturesPage
-
 # These tests fail because we stub signin::ShouldShowSyncPromo to always return
 # false
 -ShowSyncPromoTest.*
