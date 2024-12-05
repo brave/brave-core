@@ -141,20 +141,33 @@ void EnableWireguardIfPossible(PrefService* local_prefs) {
 }
 #endif  // BUILDFLAG(IS_WIN)
 
-GURL GetManageURLForUIType(const std::string& type, const GURL& manage_url) {
-  if (type == "recover" || type == "checkout") {
-    DCHECK(manage_url.is_valid());
-    std::string query = "intent=" + type + "&product=vpn";
-    GURL::Replacements replacements;
-    replacements.SetQueryStr(query);
-    return manage_url.ReplaceComponents(replacements);
-  } else if (type == "privacy") {
-    return GURL("https://brave.com/privacy/browser/#vpn");
-  } else if (type == "about") {
-    return GURL(brave_vpn::kAboutUrl);
+GURL GetManageURLForUIType(mojom::ManageURLType type, const GURL& manage_url) {
+  CHECK(manage_url.is_valid());
+
+  switch (type) {
+    case mojom::ManageURLType::CHECKOUT: {
+      std::string query = "intent=checkout&product=vpn";
+      GURL::Replacements replacements;
+      replacements.SetQueryStr(query);
+      return manage_url.ReplaceComponents(replacements);
+    }
+    case mojom::ManageURLType::RECOVER: {
+      std::string query = "intent=recover&product=vpn";
+      GURL::Replacements replacements;
+      replacements.SetQueryStr(query);
+      return manage_url.ReplaceComponents(replacements);
+    }
+    case mojom::ManageURLType::PRIVACY:
+      return GURL("https://brave.com/privacy/browser/#vpn");
+    case mojom::ManageURLType::ABOUT:
+      return GURL(brave_vpn::kAboutUrl);
+    case mojom::ManageURLType::MANAGE:
+      return manage_url;
+    default:
+      break;
   }
-  DCHECK_EQ(type, "manage");
-  return manage_url;
+
+  NOTREACHED();
 }
 
 void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {

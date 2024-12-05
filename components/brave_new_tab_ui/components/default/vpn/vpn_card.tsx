@@ -14,7 +14,7 @@ import Icon from '@brave/leo/react/icon'
 import { color, font, gradient, spacing } from '@brave/leo/tokens/css/variables'
 import VPNShieldsConnecting from './vpn-shields-connecting'
 import * as Actions from '../../../actions/brave_vpn_actions'
-import { ConnectionState, Region } from '../../../api/braveVpn'
+import { ConnectionState, ManageURLType, Region } from '../../../api/braveVpn'
 import guardianLogoUrl from '../vpn/assets/guardian-logo.svg'
 import vpnShieldsConnectedUrl from '../vpn/assets/vpn-shields-connected.svg'
 import vpnShieldsDisconnectedUrl from '../vpn/assets/vpn-shields-disconnected.svg'
@@ -227,13 +227,17 @@ export const VPNPromoWidget = () => {
         <FeatureList />
         <ActionArea>
           <ActionButton
-            onClick={() => dispatch(Actions.openVPNAccountPage('checkout'))}
+            onClick={() =>
+              dispatch(Actions.openVPNAccountPage(ManageURLType.CHECKOUT))
+            }
           >
             {getLocale('braveVpnCTA')}
           </ActionButton>
           <ActionLink
             href='#'
-            onClick={() => dispatch(Actions.openVPNAccountPage('recover'))}
+            onClick={() =>
+              dispatch(Actions.openVPNAccountPage(ManageURLType.RECOVER))
+            }
           >
             {getLocale('braveVpnPurchased')}
           </ActionLink>

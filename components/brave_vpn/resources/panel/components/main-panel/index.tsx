@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
 import getPanelBrowserAPI, {
   ConnectionState,
+  ManageURLType,
   REGION_PRECISION_COUNTRY
 } from '../../api/panel_browser_api'
 import Flag from '../flag'
@@ -46,7 +47,7 @@ function SessionExpiredContent() {
   const productUrls = useSelector((state) => state.productUrls)
   const message = getLocale('braveVpnSessionExpiredContent')
 
-  const handleClick = (intent: string) => {
+  const handleClick = (intent: ManageURLType) => {
     if (!productUrls) return
     getPanelBrowserAPI().panelHandler.openVpnUI(intent)
   }
@@ -59,7 +60,7 @@ function SessionExpiredContent() {
             <a
               href='#'
               key='recoverAccount'
-              onClick={() => handleClick('manage')}
+              onClick={() => handleClick(ManageURLType.MANAGE)}
             >
               {content}
             </a>

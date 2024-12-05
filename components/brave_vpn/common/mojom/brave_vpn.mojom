@@ -22,7 +22,7 @@ interface PanelHandler {
   CloseUI();
 
   // Run purchase action.
-  OpenVpnUI(string type);
+  OpenVpnUI(ManageURLType type);
 };
 
 interface ServiceObserver {
@@ -116,6 +116,15 @@ enum PurchasedState {
   FAILED,
   // Desktop only - person ran out of SKU credentials.
   OUT_OF_CREDENTIALS,
+};
+
+enum ManageURLType {
+  CHECKOUT,
+  RECOVER,
+  PRIVACY,
+  ABOUT,
+  MANAGE,
+  SUPPORT,
 };
 
 struct PurchasedInfo {

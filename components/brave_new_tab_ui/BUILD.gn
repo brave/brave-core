@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
@@ -33,5 +34,11 @@ pack_web_resources("generated_resources") {
 
 mojom("mojom") {
   sources = [ "brave_new_tab_page.mojom" ]
-  public_deps = [ "//url/mojom:url_mojom_gurl" ]
+  public_deps = [
+    "//brave/components/brave_vpn/common/mojom",
+    "//url/mojom:url_mojom_gurl",
+  ]
+  if (enable_brave_vpn) {
+    enabled_features = [ "enable_brave_vpn" ]
+  }
 }
