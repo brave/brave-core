@@ -1242,7 +1242,7 @@ extension Strings {
         "vpn.settingsVPNSmartProxyDescription",
         bundle: .module,
         value:
-          "Smart Proxy Routing ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third-party services, such as Netflix, Hulu, BBC iPlayer, Pandora, etc. [Learn More](%@)",
+          "Smart Proxy Routing ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third-party services. [Learn More](%@)",
         comment:
           "The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings."
       )
