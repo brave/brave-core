@@ -9,8 +9,7 @@
 
 namespace brave_ads {
 
-bool MatchPattern(const std::string_view value,
-                  const std::string_view condition) {
+bool MatchPattern(std::string_view value, std::string_view condition) {
   return base::MatchPattern(value, condition);
 }
 

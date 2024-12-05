@@ -25,6 +25,7 @@
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
+#include "base/types/optional_ref.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -1499,7 +1500,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       base::SysNSStringToUTF8(dimensionsArg),
       base::BindOnce(
           ^(const std::string& dimensions,
-            const std::optional<brave_ads::InlineContentAdInfo>& ad) {
+            base::optional_ref<const brave_ads::InlineContentAdInfo> ad) {
             if (!ad) {
               return completion(base::SysUTF8ToNSString(dimensions),
                                 /*inlineContentAd=*/nil);
@@ -1552,7 +1553,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   adsService->MaybeGetNotificationAd(
       base::SysNSStringToUTF8(identifier),
-      base::BindOnce(^(const std::optional<brave_ads::NotificationAdInfo>& ad) {
+      base::BindOnce(^(
+          base::optional_ref<const brave_ads::NotificationAdInfo> ad) {
         if (!ad) {
           return completion(/*notificationAd=*/nil);
         }

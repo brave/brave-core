@@ -28,10 +28,6 @@ class BraveAdsConversionsTestBase : public TestBase {
   BraveAdsConversionsTestBase& operator=(const BraveAdsConversionsTestBase&) =
       delete;
 
-  BraveAdsConversionsTestBase(BraveAdsConversionsTestBase&&) noexcept = delete;
-  BraveAdsConversionsTestBase& operator=(
-      BraveAdsConversionsTestBase&&) noexcept = delete;
-
   ~BraveAdsConversionsTestBase() override;
 
   // TestBase:

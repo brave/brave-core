@@ -34,9 +34,6 @@ class SigningKey {
   SigningKey(const SigningKey&) = delete;
   SigningKey& operator=(const SigningKey&) = delete;
 
-  SigningKey(SigningKey&&) noexcept = delete;
-  SigningKey& operator=(SigningKey&&) noexcept = delete;
-
   ~SigningKey();
 
   bool operator==(const SigningKey&) const;

@@ -27,10 +27,6 @@ class AntiTargetingExclusionRule final
   AntiTargetingExclusionRule& operator=(const AntiTargetingExclusionRule&) =
       delete;
 
-  AntiTargetingExclusionRule(AntiTargetingExclusionRule&&) noexcept = delete;
-  AntiTargetingExclusionRule& operator=(AntiTargetingExclusionRule&&) noexcept =
-      delete;
-
   ~AntiTargetingExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

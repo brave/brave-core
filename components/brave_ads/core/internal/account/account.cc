@@ -57,7 +57,6 @@ void Account::SetWallet(const std::string& payment_id,
       CreateWalletFromRecoverySeed(payment_id, recovery_seed_base64);
   if (!wallet) {
     BLOG(0, "Failed to initialize wallet");
-
     return NotifyFailedToInitializeWallet();
   }
 

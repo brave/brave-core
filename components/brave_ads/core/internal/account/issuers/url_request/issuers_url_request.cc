@@ -80,7 +80,6 @@ void IssuersUrlRequest::FetchCallback(
 
   if (mojom_url_response.status_code == net::HTTP_UPGRADE_REQUIRED) {
     BLOG(1, "Failed to fetch issuers as a browser upgrade is required");
-
     return AdsNotifierManager::GetInstance()
         .NotifyBrowserUpgradeRequiredToServeAds();
   }
@@ -94,7 +93,6 @@ void IssuersUrlRequest::FetchCallback(
       json::reader::ReadIssuers(mojom_url_response.body);
   if (!issuers) {
     BLOG(0, "Failed to parse issuers");
-
     return FailedToFetchIssuers();
   }
 

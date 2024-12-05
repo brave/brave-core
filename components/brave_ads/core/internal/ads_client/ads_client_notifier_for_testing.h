@@ -32,10 +32,6 @@ class AdsClientNotifierForTesting : public AdsClientNotifier {
   AdsClientNotifierForTesting& operator=(const AdsClientNotifierForTesting&) =
       delete;
 
-  AdsClientNotifierForTesting(AdsClientNotifierForTesting&&) noexcept = delete;
-  AdsClientNotifierForTesting& operator=(
-      AdsClientNotifierForTesting&&) noexcept = delete;
-
   ~AdsClientNotifierForTesting() override;
 
   // Must be set before calling `Notify*` functions.

@@ -21,7 +21,7 @@ namespace {
 constexpr int32_t kMaxUnixEpochTimestamp = std::numeric_limits<int32_t>::max();
 }  // namespace
 
-std::optional<int> ParseDays(const std::string_view condition) {
+std::optional<int> ParseDays(std::string_view condition) {
   CHECK(base::MatchPattern(condition,
                            kEpochOperatorConditionMatcherPrefixPattern));
 
@@ -72,7 +72,7 @@ base::TimeDelta TimeDeltaSinceEpoch(const int64_t timestamp) {
          base::Time::FromSecondsSinceUnixEpoch(static_cast<double>(timestamp));
 }
 
-std::optional<base::TimeDelta> ParseTimeDelta(const std::string_view value) {
+std::optional<base::TimeDelta> ParseTimeDelta(std::string_view value) {
   double timestamp;
   if (base::StringToDouble(value, &timestamp)) {
     return TimeDeltaSinceEpoch(static_cast<int64_t>(timestamp));

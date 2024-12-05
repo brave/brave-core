@@ -19,9 +19,6 @@ class PurchaseIntentHelper final {
   PurchaseIntentHelper(const PurchaseIntentHelper&) = delete;
   PurchaseIntentHelper& operator=(const PurchaseIntentHelper&) = delete;
 
-  PurchaseIntentHelper(PurchaseIntentHelper&&) noexcept = delete;
-  PurchaseIntentHelper& operator=(PurchaseIntentHelper&&) noexcept = delete;
-
   ~PurchaseIntentHelper();
 
   void Mock();

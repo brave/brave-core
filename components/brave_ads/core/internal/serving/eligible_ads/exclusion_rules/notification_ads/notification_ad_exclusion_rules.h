@@ -25,11 +25,6 @@ class NotificationAdExclusionRules final : public ExclusionRulesBase {
   NotificationAdExclusionRules& operator=(const NotificationAdExclusionRules&) =
       delete;
 
-  NotificationAdExclusionRules(NotificationAdExclusionRules&&) noexcept =
-      delete;
-  NotificationAdExclusionRules& operator=(
-      NotificationAdExclusionRules&&) noexcept = delete;
-
   ~NotificationAdExclusionRules() override;
 };
 

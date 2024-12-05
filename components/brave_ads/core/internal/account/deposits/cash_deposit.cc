@@ -19,7 +19,7 @@ void CashDeposit::GetValue(const std::string& creative_instance_id,
       creative_instance_id,
       base::BindOnce(
           [](GetDepositCallback callback, const bool success,
-             const std::optional<DepositInfo>& deposit) {
+             std::optional<DepositInfo> deposit) {
             if (!success || !deposit) {
               return std::move(callback).Run(/*success=*/false,
                                              /*value=*/0.0);

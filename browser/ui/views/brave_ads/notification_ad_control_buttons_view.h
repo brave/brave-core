@@ -33,11 +33,6 @@ class NotificationAdControlButtonsView : public views::View {
   NotificationAdControlButtonsView& operator=(
       const NotificationAdControlButtonsView&) = delete;
 
-  NotificationAdControlButtonsView(
-      NotificationAdControlButtonsView&&) noexcept = delete;
-  NotificationAdControlButtonsView& operator=(
-      NotificationAdControlButtonsView&&) noexcept = delete;
-
   ~NotificationAdControlButtonsView() override;
 
   // views::View:

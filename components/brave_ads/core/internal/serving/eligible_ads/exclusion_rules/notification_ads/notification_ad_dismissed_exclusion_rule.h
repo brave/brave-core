@@ -25,11 +25,6 @@ class NotificationAdDismissedExclusionRule final
   NotificationAdDismissedExclusionRule& operator=(
       const NotificationAdDismissedExclusionRule&) = delete;
 
-  NotificationAdDismissedExclusionRule(
-      NotificationAdDismissedExclusionRule&&) noexcept = delete;
-  NotificationAdDismissedExclusionRule& operator=(
-      NotificationAdDismissedExclusionRule&&) noexcept = delete;
-
   ~NotificationAdDismissedExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

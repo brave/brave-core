@@ -25,16 +25,11 @@ class ConfirmationStateManager final {
   ConfirmationStateManager(const ConfirmationStateManager&) = delete;
   ConfirmationStateManager& operator=(const ConfirmationStateManager&) = delete;
 
-  ConfirmationStateManager(ConfirmationStateManager&&) noexcept = delete;
-  ConfirmationStateManager& operator=(ConfirmationStateManager&&) noexcept =
-      delete;
-
   ~ConfirmationStateManager();
 
   static ConfirmationStateManager& GetInstance();
 
-  void LoadState(const std::optional<WalletInfo>& wallet,
-                 InitializeCallback callback);
+  void LoadState(std::optional<WalletInfo> wallet, InitializeCallback callback);
 
   bool IsInitialized() const { return is_initialized_; }
 

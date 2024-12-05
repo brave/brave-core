@@ -19,10 +19,6 @@ class ConfirmationsDelegateMock : public ConfirmationDelegate {
   ConfirmationsDelegateMock& operator=(const ConfirmationsDelegateMock&) =
       delete;
 
-  ConfirmationsDelegateMock(ConfirmationsDelegateMock&&) noexcept = delete;
-  ConfirmationsDelegateMock& operator=(ConfirmationsDelegateMock&&) noexcept =
-      delete;
-
   ~ConfirmationsDelegateMock() override;
 
   MOCK_METHOD(void, OnDidConfirm, (const ConfirmationInfo& confirmation));

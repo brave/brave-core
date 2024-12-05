@@ -22,11 +22,6 @@ class NotificationAdPlatformBridge {
   NotificationAdPlatformBridge& operator=(const NotificationAdPlatformBridge&) =
       delete;
 
-  NotificationAdPlatformBridge(NotificationAdPlatformBridge&&) noexcept =
-      delete;
-  NotificationAdPlatformBridge& operator=(
-      NotificationAdPlatformBridge&&) noexcept = delete;
-
   ~NotificationAdPlatformBridge();
 
   void ShowNotificationAd(NotificationAd notification_ad);

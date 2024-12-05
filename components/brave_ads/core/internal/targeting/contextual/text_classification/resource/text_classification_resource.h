@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/threading/sequence_bound.h"
 #include "base/types/expected.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
@@ -20,7 +21,7 @@
 namespace brave_ads {
 
 using ClassifyPageCallback =
-    base::OnceCallback<void(const std::optional<ml::PredictionMap>&)>;
+    base::OnceCallback<void(base::optional_ref<const ml::PredictionMap>)>;
 
 class TextClassificationResource final : public AdsClientNotifierObserver {
  public:
@@ -28,10 +29,6 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   TextClassificationResource(const TextClassificationResource&) = delete;
   TextClassificationResource& operator=(const TextClassificationResource&) =
-      delete;
-
-  TextClassificationResource(TextClassificationResource&&) noexcept = delete;
-  TextClassificationResource& operator=(TextClassificationResource&&) noexcept =
       delete;
 
   ~TextClassificationResource() override;

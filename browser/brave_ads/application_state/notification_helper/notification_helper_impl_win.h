@@ -21,10 +21,6 @@ class NotificationHelperImplWin final : public NotificationHelperImpl {
   NotificationHelperImplWin& operator=(const NotificationHelperImplWin&) =
       delete;
 
-  NotificationHelperImplWin(NotificationHelperImplWin&&) noexcept = delete;
-  NotificationHelperImplWin& operator=(NotificationHelperImplWin&&) noexcept =
-      delete;
-
   ~NotificationHelperImplWin() override;
 
  protected:

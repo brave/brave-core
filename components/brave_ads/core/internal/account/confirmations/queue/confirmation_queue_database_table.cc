@@ -217,7 +217,6 @@ void GetCallback(
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get confirmation queue");
-
     return std::move(callback).Run(/*success=*/false,
                                    /*confirmations_queue_items=*/{});
   }

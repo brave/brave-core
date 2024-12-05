@@ -16,11 +16,6 @@ class NotificationHelperImplAndroid final : public NotificationHelperImpl {
   NotificationHelperImplAndroid& operator=(
       const NotificationHelperImplAndroid&) = delete;
 
-  NotificationHelperImplAndroid(NotificationHelperImplAndroid&&) noexcept =
-      delete;
-  NotificationHelperImplAndroid& operator=(
-      NotificationHelperImplAndroid&&) noexcept = delete;
-
   ~NotificationHelperImplAndroid() override;
 
  protected:

@@ -8,12 +8,12 @@
 
 #include <cstdint>
 #include <map>
-#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
@@ -41,9 +41,6 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
   InlineContentAdHandler(const InlineContentAdHandler&) = delete;
   InlineContentAdHandler& operator=(const InlineContentAdHandler&) = delete;
 
-  InlineContentAdHandler(InlineContentAdHandler&&) noexcept = delete;
-  InlineContentAdHandler& operator=(InlineContentAdHandler&&) noexcept = delete;
-
   ~InlineContentAdHandler() override;
 
   void MaybeServe(const std::string& dimensions,
@@ -57,7 +54,7 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
  private:
   void MaybeServeCallback(MaybeServeInlineContentAdCallback callback,
                           const std::string& dimensions,
-                          const std::optional<InlineContentAdInfo>& ad);
+                          base::optional_ref<const InlineContentAdInfo> ad);
 
   void CacheAdPlacement(int32_t tab_id, const InlineContentAdInfo& ad);
   void PurgeOrphanedCachedAdPlacements(int32_t tab_id);

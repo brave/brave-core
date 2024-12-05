@@ -36,10 +36,6 @@ class SearchResultAdEventHandler final
   SearchResultAdEventHandler& operator=(const SearchResultAdEventHandler&) =
       delete;
 
-  SearchResultAdEventHandler(SearchResultAdEventHandler&&) noexcept = delete;
-  SearchResultAdEventHandler& operator=(SearchResultAdEventHandler&&) noexcept =
-      delete;
-
   ~SearchResultAdEventHandler() override;
 
   void SetDelegate(SearchResultAdEventHandlerDelegate* delegate) {

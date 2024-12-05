@@ -40,9 +40,6 @@ class SiteVisit final : public BrowserManagerObserver,
   SiteVisit(const SiteVisit&) = delete;
   SiteVisit& operator=(const SiteVisit&) = delete;
 
-  SiteVisit(SiteVisit&&) noexcept = delete;
-  SiteVisit& operator=(SiteVisit&&) noexcept = delete;
-
   ~SiteVisit() override;
 
   void AddObserver(SiteVisitObserver* observer);

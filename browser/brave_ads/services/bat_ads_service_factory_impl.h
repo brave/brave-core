@@ -19,10 +19,6 @@ class BatAdsServiceFactoryImpl : public BatAdsServiceFactory {
   BatAdsServiceFactoryImpl(const BatAdsServiceFactoryImpl&) = delete;
   BatAdsServiceFactoryImpl& operator=(const BatAdsServiceFactoryImpl&) = delete;
 
-  BatAdsServiceFactoryImpl(BatAdsServiceFactoryImpl&&) noexcept = delete;
-  BatAdsServiceFactoryImpl& operator=(BatAdsServiceFactoryImpl&&) noexcept =
-      delete;
-
   ~BatAdsServiceFactoryImpl() override;
 
   // BatAdsServiceFactory:

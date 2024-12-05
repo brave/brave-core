@@ -25,7 +25,6 @@ void BuildStatement(BuildStatementCallback callback) {
              const TransactionList& transactions) {
             if (!success) {
               BLOG(0, "Failed to get transactions");
-
               return std::move(callback).Run(/*statement=*/nullptr);
             }
 

@@ -19,8 +19,7 @@
 namespace brave_ads::database::table {
 
 using GetDepositsCallback =
-    base::OnceCallback<void(bool success,
-                            const std::optional<DepositInfo>& deposit)>;
+    base::OnceCallback<void(bool success, std::optional<DepositInfo> deposit)>;
 
 class Deposits final : public TableInterface {
  public:

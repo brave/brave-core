@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_NOTIFICATION_AD_BACKGROUND_PAINTER_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_NOTIFICATION_AD_BACKGROUND_PAINTER_H_
 
-#include "ui/gfx/color_palette.h"
 #include "ui/views/painter.h"
 
 namespace brave_ads {
@@ -23,11 +22,6 @@ class NotificationAdBackgroundPainter : public views::Painter {
       delete;
   NotificationAdBackgroundPainter& operator=(
       const NotificationAdBackgroundPainter&) = delete;
-
-  NotificationAdBackgroundPainter(NotificationAdBackgroundPainter&&) noexcept =
-      delete;
-  NotificationAdBackgroundPainter& operator=(
-      NotificationAdBackgroundPainter&&) noexcept = delete;
 
   ~NotificationAdBackgroundPainter() override;
 

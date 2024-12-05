@@ -32,8 +32,8 @@ bool IsNumericalOperator(std::string_view condition) {
                             kNumericalOperatorConditionMatcherPrefixPattern);
 }
 
-bool MatchNumericalOperator(const std::string_view value,
-                            const std::string_view condition) {
+bool MatchNumericalOperator(std::string_view value,
+                            std::string_view condition) {
   if (!base::MatchPattern(condition,
                           kNumericalOperatorConditionMatcherPrefixPattern)) {
     // Not an operator.

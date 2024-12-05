@@ -28,9 +28,6 @@ class AdsClientNotifier {
   AdsClientNotifier(const AdsClientNotifier&) = delete;
   AdsClientNotifier& operator=(const AdsClientNotifier&) = delete;
 
-  AdsClientNotifier(AdsClientNotifier&&) noexcept = delete;
-  AdsClientNotifier& operator=(AdsClientNotifier&&) noexcept = delete;
-
   virtual ~AdsClientNotifier();
 
   void AddObserver(AdsClientNotifierObserver* observer);

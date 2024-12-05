@@ -57,7 +57,6 @@ void EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback(
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(0, "Failed to get ad events");
-
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
@@ -90,7 +89,6 @@ void EligibleInlineContentAdsV2::GetEligibleAdsCallback(
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
     BLOG(0, "Failed to get ads");
-
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 

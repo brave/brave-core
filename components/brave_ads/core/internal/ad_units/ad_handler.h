@@ -43,9 +43,6 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   AdHandler(const AdHandler&) = delete;
   AdHandler& operator=(const AdHandler&) = delete;
 
-  AdHandler(AdHandler&&) noexcept = delete;
-  AdHandler& operator=(AdHandler&&) noexcept = delete;
-
   ~AdHandler() override;
 
   void MaybeServeInlineContentAd(const std::string& dimensions,

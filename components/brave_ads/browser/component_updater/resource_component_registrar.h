@@ -31,10 +31,6 @@ class ResourceComponentRegistrar
   ResourceComponentRegistrar& operator=(const ResourceComponentRegistrar&) =
       delete;
 
-  ResourceComponentRegistrar(ResourceComponentRegistrar&&) noexcept = delete;
-  ResourceComponentRegistrar& operator=(ResourceComponentRegistrar&&) noexcept =
-      delete;
-
   ~ResourceComponentRegistrar() override;
 
   void RegisterResourceComponent(const std::string& resource_id);

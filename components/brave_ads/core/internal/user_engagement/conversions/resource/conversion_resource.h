@@ -23,9 +23,6 @@ class ConversionResource final : public AdsClientNotifierObserver {
   ConversionResource(const ConversionResource&) = delete;
   ConversionResource& operator=(const ConversionResource&) = delete;
 
-  ConversionResource(ConversionResource&&) noexcept = delete;
-  ConversionResource& operator=(ConversionResource&&) noexcept = delete;
-
   ~ConversionResource() override;
 
   bool IsLoaded() const { return !!resource_; }

@@ -42,9 +42,6 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
   NotificationAdHandler(const NotificationAdHandler&) = delete;
   NotificationAdHandler& operator=(const NotificationAdHandler&) = delete;
 
-  NotificationAdHandler(NotificationAdHandler&&) noexcept = delete;
-  NotificationAdHandler& operator=(NotificationAdHandler&&) noexcept = delete;
-
   ~NotificationAdHandler() override;
 
   void TriggerEvent(const std::string& placement_id,

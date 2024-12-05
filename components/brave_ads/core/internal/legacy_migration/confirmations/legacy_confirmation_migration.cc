@@ -70,7 +70,6 @@ void MigrateConfirmationState(InitializeCallback callback) {
             if (!ConfirmationStateManager::GetInstance().FromJson(
                     mutable_json)) {
               BLOG(0, "Failed to parse confirmation state");
-
               return FailedToMigrate(std::move(callback));
             }
 
@@ -83,7 +82,6 @@ void MigrateConfirmationState(InitializeCallback callback) {
                        const bool success) {
                       if (!success) {
                         BLOG(0, "Failed to migrate confirmation state");
-
                         return FailedToMigrate(std::move(callback));
                       }
 

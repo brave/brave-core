@@ -23,9 +23,6 @@ class AdsClientMock : public AdsClient {
   AdsClientMock(const AdsClientMock&) = delete;
   AdsClientMock& operator=(const AdsClientMock&) = delete;
 
-  AdsClientMock(AdsClientMock&&) noexcept = delete;
-  AdsClientMock& operator=(AdsClientMock&&) noexcept = delete;
-
   ~AdsClientMock() override;
 
   MOCK_METHOD(void, AddObserver, (AdsClientNotifierObserver*));

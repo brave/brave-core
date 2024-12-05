@@ -76,7 +76,6 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr mojom_wallet,
 
   if (is_initialized_) {
     BLOG(1, "Already initialized ads");
-
     return FailedToInitialize(std::move(callback));
   }
 
@@ -405,7 +404,6 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
                                            const bool success) {
   if (!success) {
     BLOG(0, "Failed to create or open database");
-
     return FailedToInitialize(std::move(callback));
   }
 
@@ -475,7 +473,6 @@ void AdsImpl::MigrateConfirmationStateCallback(
     wallet = CreateWalletFromRecoverySeed(&*mojom_wallet);
     if (!wallet) {
       BLOG(0, "Invalid wallet");
-
       return FailedToInitialize(std::move(callback));
     }
   }
@@ -497,7 +494,6 @@ void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to load confirmation state");
-
     return FailedToInitialize(std::move(callback));
   }
 

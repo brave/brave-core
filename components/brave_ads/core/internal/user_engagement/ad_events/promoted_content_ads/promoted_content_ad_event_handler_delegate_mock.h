@@ -23,11 +23,6 @@ class PromotedContentAdEventHandlerDelegateMock
   PromotedContentAdEventHandlerDelegateMock& operator=(
       const PromotedContentAdEventHandlerDelegateMock&) = delete;
 
-  PromotedContentAdEventHandlerDelegateMock(
-      PromotedContentAdEventHandlerDelegateMock&&) noexcept = delete;
-  PromotedContentAdEventHandlerDelegateMock& operator=(
-      PromotedContentAdEventHandlerDelegateMock&&) noexcept = delete;
-
   ~PromotedContentAdEventHandlerDelegateMock() override;
 
   MOCK_METHOD(void,

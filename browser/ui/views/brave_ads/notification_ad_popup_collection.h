@@ -20,11 +20,6 @@ class NotificationAdPopupCollection final {
   NotificationAdPopupCollection& operator=(
       const NotificationAdPopupCollection&) = delete;
 
-  NotificationAdPopupCollection(NotificationAdPopupCollection&&) noexcept =
-      delete;
-  NotificationAdPopupCollection& operator=(
-      NotificationAdPopupCollection&&) noexcept = delete;
-
   ~NotificationAdPopupCollection();
 
   static void Add(NotificationAdPopup* popup,

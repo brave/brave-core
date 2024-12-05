@@ -27,9 +27,6 @@ class TargetingHelper final {
   TargetingHelper(const TargetingHelper&) = delete;
   TargetingHelper& operator=(const TargetingHelper&) = delete;
 
-  TargetingHelper(TargetingHelper&&) noexcept = delete;
-  TargetingHelper& operator=(TargetingHelper&&) noexcept = delete;
-
   ~TargetingHelper();
 
   void Mock();

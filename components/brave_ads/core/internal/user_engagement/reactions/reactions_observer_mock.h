@@ -20,9 +20,6 @@ class ReactionsObserverMock : public ReactionsObserver {
   ReactionsObserverMock(const ReactionsObserverMock&) = delete;
   ReactionsObserverMock& operator=(const ReactionsObserverMock&) = delete;
 
-  ReactionsObserverMock(ReactionsObserverMock&&) noexcept = delete;
-  ReactionsObserverMock& operator=(ReactionsObserverMock&&) noexcept = delete;
-
   ~ReactionsObserverMock() override;
 
   MOCK_METHOD(void, OnDidLikeAd, (const std::string& advertiser_id));

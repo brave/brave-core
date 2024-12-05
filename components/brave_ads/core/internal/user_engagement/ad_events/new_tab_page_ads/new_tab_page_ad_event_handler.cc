@@ -71,7 +71,6 @@ void NewTabPageAdEventHandler::GetCreativeAdCallback(
   const NewTabPageAdInfo ad = BuildNewTabPageAd(placement_id, creative_ad);
   if (!ad.IsValid()) {
     BLOG(1, "Failed to fire new tab page ad event due to the ad being invalid");
-
     return FailedToFireEvent(placement_id, creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
   }

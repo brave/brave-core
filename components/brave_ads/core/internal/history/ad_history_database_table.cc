@@ -133,7 +133,6 @@ void GetCallback(
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get ad history");
-
     return std::move(callback).Run(/*ad_history=*/std::nullopt);
   }
 
@@ -169,7 +168,7 @@ void GetCallback(
     ad_history.push_back(ad_history_item);
   }
 
-  std::move(callback).Run(ad_history);
+  std::move(callback).Run(std::move(ad_history));
 }
 
 void MigrateToV42(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {

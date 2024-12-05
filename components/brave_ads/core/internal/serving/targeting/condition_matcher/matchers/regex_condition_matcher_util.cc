@@ -9,8 +9,7 @@
 
 namespace brave_ads {
 
-bool MatchRegex(const std::string_view value,
-                const std::string_view condition) {
+bool MatchRegex(std::string_view value, std::string_view condition) {
   const re2::RE2 re(condition, re2::RE2::Quiet);
   if (!re.ok()) {
     return false;

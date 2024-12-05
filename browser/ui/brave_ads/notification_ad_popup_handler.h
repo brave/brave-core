@@ -28,10 +28,6 @@ class NotificationAdPopupHandler final {
   NotificationAdPopupHandler& operator=(const NotificationAdPopupHandler&) =
       delete;
 
-  NotificationAdPopupHandler(NotificationAdPopupHandler&&) noexcept = delete;
-  NotificationAdPopupHandler& operator=(NotificationAdPopupHandler&&) noexcept =
-      delete;
-
   ~NotificationAdPopupHandler();
 
   // Show the notification popup view for the given `profile` and

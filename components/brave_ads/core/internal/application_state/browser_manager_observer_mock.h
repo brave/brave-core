@@ -19,10 +19,6 @@ class BrowserManagerObserverMock : public BrowserManagerObserver {
   BrowserManagerObserverMock& operator=(const BrowserManagerObserverMock&) =
       delete;
 
-  BrowserManagerObserverMock(BrowserManagerObserverMock&&) noexcept = delete;
-  BrowserManagerObserverMock& operator=(BrowserManagerObserverMock&&) noexcept =
-      delete;
-
   ~BrowserManagerObserverMock() override;
 
   MOCK_METHOD(void, OnBrowserDidBecomeActive, ());

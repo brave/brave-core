@@ -39,9 +39,6 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   NotificationAdServing(const NotificationAdServing&) = delete;
   NotificationAdServing& operator=(const NotificationAdServing&) = delete;
 
-  NotificationAdServing(NotificationAdServing&&) noexcept = delete;
-  NotificationAdServing& operator=(NotificationAdServing&&) noexcept = delete;
-
   ~NotificationAdServing() override;
 
   void SetDelegate(NotificationAdServingDelegate* delegate) {

@@ -37,9 +37,6 @@ class BatchDLEQProof {
   BatchDLEQProof(const BatchDLEQProof&) = delete;
   BatchDLEQProof& operator=(const BatchDLEQProof&) = delete;
 
-  BatchDLEQProof(BatchDLEQProof&&) noexcept = delete;
-  BatchDLEQProof& operator=(BatchDLEQProof&&) noexcept = delete;
-
   ~BatchDLEQProof();
 
   bool operator==(const BatchDLEQProof&) const;

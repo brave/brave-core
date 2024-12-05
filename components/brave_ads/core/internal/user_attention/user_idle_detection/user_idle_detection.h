@@ -21,9 +21,6 @@ class UserIdleDetection : public AdsClientNotifierObserver {
   UserIdleDetection(const UserIdleDetection&) = delete;
   UserIdleDetection& operator=(const UserIdleDetection&) = delete;
 
-  UserIdleDetection(UserIdleDetection&&) noexcept = delete;
-  UserIdleDetection& operator=(UserIdleDetection&&) noexcept = delete;
-
   ~UserIdleDetection() override;
 
  private:

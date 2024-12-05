@@ -29,9 +29,6 @@ class Catalog final : public AdsClientNotifierObserver,
   Catalog(const Catalog&) = delete;
   Catalog& operator=(const Catalog&) = delete;
 
-  Catalog(Catalog&&) noexcept = delete;
-  Catalog& operator=(Catalog&&) noexcept = delete;
-
   ~Catalog() override;
 
   void AddObserver(CatalogObserver* observer);

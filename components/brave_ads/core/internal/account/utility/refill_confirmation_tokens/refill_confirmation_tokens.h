@@ -30,10 +30,6 @@ class RefillConfirmationTokens final {
   RefillConfirmationTokens(const RefillConfirmationTokens&) = delete;
   RefillConfirmationTokens& operator=(const RefillConfirmationTokens&) = delete;
 
-  RefillConfirmationTokens(RefillConfirmationTokens&&) noexcept = delete;
-  RefillConfirmationTokens& operator=(RefillConfirmationTokens&&) noexcept =
-      delete;
-
   ~RefillConfirmationTokens();
 
   void SetDelegate(RefillConfirmationTokensDelegate* delegate) {

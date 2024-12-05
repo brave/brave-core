@@ -20,10 +20,6 @@ class AdsTooltipsDelegateImpl : public AdsTooltipsDelegate {
   AdsTooltipsDelegateImpl(const AdsTooltipsDelegateImpl&) = delete;
   AdsTooltipsDelegateImpl& operator=(const AdsTooltipsDelegateImpl&) = delete;
 
-  AdsTooltipsDelegateImpl(AdsTooltipsDelegateImpl&&) noexcept = delete;
-  AdsTooltipsDelegateImpl& operator=(AdsTooltipsDelegateImpl&&) noexcept =
-      delete;
-
   ~AdsTooltipsDelegateImpl() override = default;
 
   void ShowCaptchaTooltip(

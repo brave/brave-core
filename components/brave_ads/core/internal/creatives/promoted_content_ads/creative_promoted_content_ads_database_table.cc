@@ -174,7 +174,6 @@ void GetForCreativeInstanceIdCallback(
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative promoted content ad");
-
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
                                    /*creative_ads=*/{});
   }
@@ -184,7 +183,6 @@ void GetForCreativeInstanceIdCallback(
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative promoted content ad");
-
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
                                    /*creative_ads=*/{});
   }
@@ -200,7 +198,6 @@ void GetForSegmentsCallback(
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative promoted content ads");
-
     return std::move(callback).Run(/*success=*/false, segments,
                                    /*creative_ads=*/{});
   }
@@ -216,7 +213,6 @@ void GetAllCallback(
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get all creative new tab page ads");
-
     return std::move(callback).Run(/*success=*/false, /*segments=*/{},
                                    /*creative_ads=*/{});
   }

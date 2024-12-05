@@ -28,9 +28,6 @@ class RedeemPaymentTokens final {
   RedeemPaymentTokens(const RedeemPaymentTokens&) = delete;
   RedeemPaymentTokens& operator=(const RedeemPaymentTokens&) = delete;
 
-  RedeemPaymentTokens(RedeemPaymentTokens&&) noexcept = delete;
-  RedeemPaymentTokens& operator=(RedeemPaymentTokens&&) noexcept = delete;
-
   ~RedeemPaymentTokens();
 
   void SetDelegate(RedeemPaymentTokensDelegate* delegate) {

@@ -26,9 +26,6 @@ class AdsInternalsUI : public web::WebUIIOSController {
   AdsInternalsUI(const AdsInternalsUI&) = delete;
   AdsInternalsUI& operator=(const AdsInternalsUI&) = delete;
 
-  AdsInternalsUI(AdsInternalsUI&&) noexcept = delete;
-  AdsInternalsUI& operator=(AdsInternalsUI&&) noexcept = delete;
-
   ~AdsInternalsUI() override;
 
   void BindInterface(

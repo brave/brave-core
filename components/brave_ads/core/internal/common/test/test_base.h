@@ -41,9 +41,6 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   TestBase(const TestBase&) = delete;
   TestBase& operator=(const TestBase&) = delete;
 
-  TestBase(TestBase&&) noexcept = delete;
-  TestBase& operator=(TestBase&&) noexcept = delete;
-
   ~TestBase() override;
 
   // ::testing::Test:

@@ -621,7 +621,7 @@ void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
   }
   auto on_ad_received = base::BindOnce(
       [](GetDisplayAdCallback callback, const std::string& dimensions,
-         const std::optional<brave_ads::InlineContentAdInfo>&
+         base::optional_ref<const brave_ads::InlineContentAdInfo>
              inline_content_ad) {
         if (!inline_content_ad) {
           VLOG(1) << "GetDisplayAd: no ad";

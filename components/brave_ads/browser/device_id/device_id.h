@@ -21,9 +21,6 @@ class DeviceId {
   DeviceId(const DeviceId&) = delete;
   DeviceId& operator=(const DeviceId&) = delete;
 
-  DeviceId(DeviceId&&) noexcept = delete;
-  DeviceId& operator=(DeviceId&&) noexcept = delete;
-
   virtual ~DeviceId();
 
   // Calls `callback` with a unique device identifier as argument. The device

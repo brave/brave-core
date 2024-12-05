@@ -19,7 +19,7 @@ namespace brave_ads {
 
 TEST(BraveAdsSearchEngineUtilTest, IsMultilingualAmazonSearchEngine) {
   // Act & Assert
-  for (const auto& domain_extension : GetAmazonSearchEngineDomainExtensions()) {
+  for (const auto& domain_extension : kAmazonSearchEngineDomainExtensions) {
     EXPECT_TRUE(IsSearchEngine(
         GURL(base::StrCat({"https://www.amazon.", domain_extension, "/"}))));
   }
@@ -32,7 +32,7 @@ TEST(BraveAdsSearchEngineUtilTest, IsNotMultilingualAmazonSearchEngine) {
 
 TEST(BraveAdsSearchEngineUtilTest, IsMultilingualGoogleSearchEngine) {
   // Act & Assert
-  for (const auto& domain_extension : GetGoogleSearchEngineDomainExtensions()) {
+  for (const auto& domain_extension : kGoogleSearchEngineDomainExtensions) {
     EXPECT_TRUE(IsSearchEngine(
         GURL(base::StrCat({"https://www.google.", domain_extension, "/"}))));
   }
@@ -45,7 +45,7 @@ TEST(BraveAdsSearchEngineUtilTest, IsNotMultilingualGoogleSearchEngine) {
 
 TEST(BraveAdsSearchEngineUtilTest, IsMultilingualMojeekSearchEngine) {
   // Act & Assert
-  for (const auto& domain_extension : GetMojeekSearchEngineDomainExtensions()) {
+  for (const auto& domain_extension : kMojeekSearchEngineDomainExtensions) {
     EXPECT_TRUE(IsSearchEngine(
         GURL(base::StrCat({"https://www.mojeek.", domain_extension, "/"}))));
   }
@@ -58,7 +58,7 @@ TEST(BraveAdsSearchEngineUtilTest, IsNotMultilingualMojeekSearchEngine) {
 
 TEST(BraveAdsSearchEngineUtilTest, IsMultilingualWikipediaSearchEngine) {
   // Act & Assert
-  for (const auto& subdomain : GetWikipediaSearchEngineSubdomains()) {
+  for (const auto& subdomain : kWikipediaSearchEngineSubdomains) {
     EXPECT_TRUE(IsSearchEngine(
         GURL(base::StrCat({"https://", subdomain, ".wikipedia.org/"}))));
   }
@@ -71,7 +71,7 @@ TEST(BraveAdsSearchEngineUtilTest, IsNotMultilingualWikipediaSearchEngine) {
 
 TEST(BraveAdsSearchEngineUtilTest, IsMultilingualYahooSearchEngine) {
   // Act & Assert
-  for (const auto& subdomain : GetYahooSearchEngineSubdomains()) {
+  for (const auto& subdomain : kYahooSearchEngineSubdomains) {
     EXPECT_TRUE(IsSearchEngine(
         GURL(base::StrCat({"https://", subdomain, ".search.yahoo.com/"}))));
   }

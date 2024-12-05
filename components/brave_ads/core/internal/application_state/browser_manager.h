@@ -21,9 +21,6 @@ class BrowserManager final : public AdsClientNotifierObserver {
   BrowserManager(const BrowserManager&) = delete;
   BrowserManager& operator=(const BrowserManager&) = delete;
 
-  BrowserManager(BrowserManager&&) noexcept = delete;
-  BrowserManager& operator=(BrowserManager&&) noexcept = delete;
-
   ~BrowserManager() override;
 
   static BrowserManager& GetInstance();

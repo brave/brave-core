@@ -80,7 +80,7 @@ bool ShouldSupportInternalUrl(const GURL& url) {
   return false;
 }
 
-bool HostHasRegistryControlledDomain(const std::string_view host) {
+bool HostHasRegistryControlledDomain(std::string_view host) {
   return net::registry_controlled_domains::HostHasRegistryControlledDomain(
       host, net::registry_controlled_domains::EXCLUDE_UNKNOWN_REGISTRIES,
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);

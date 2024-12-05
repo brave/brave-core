@@ -34,10 +34,6 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
   NewTabPageAdEventHandler(const NewTabPageAdEventHandler&) = delete;
   NewTabPageAdEventHandler& operator=(const NewTabPageAdEventHandler&) = delete;
 
-  NewTabPageAdEventHandler(NewTabPageAdEventHandler&&) noexcept = delete;
-  NewTabPageAdEventHandler& operator=(NewTabPageAdEventHandler&&) noexcept =
-      delete;
-
   ~NewTabPageAdEventHandler() override;
 
   void SetDelegate(NewTabPageAdEventHandlerDelegate* delegate) {

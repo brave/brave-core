@@ -20,11 +20,6 @@ class RedeemConfirmationDelegateMock : public RedeemConfirmationDelegate {
   RedeemConfirmationDelegateMock& operator=(
       const RedeemConfirmationDelegateMock&) = delete;
 
-  RedeemConfirmationDelegateMock(RedeemConfirmationDelegateMock&&) noexcept =
-      delete;
-  RedeemConfirmationDelegateMock& operator=(
-      RedeemConfirmationDelegateMock&&) noexcept = delete;
-
   ~RedeemConfirmationDelegateMock() override;
 
   MOCK_METHOD(void,

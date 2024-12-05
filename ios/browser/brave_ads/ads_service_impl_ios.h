@@ -37,9 +37,6 @@ class AdsServiceImplIOS : public AdsService {
   AdsServiceImplIOS(const AdsServiceImplIOS&) = delete;
   AdsServiceImplIOS& operator=(const AdsServiceImplIOS&) = delete;
 
-  AdsServiceImplIOS(AdsServiceImplIOS&&) noexcept = delete;
-  AdsServiceImplIOS& operator=(AdsServiceImplIOS&&) noexcept = delete;
-
   ~AdsServiceImplIOS() override;
 
   bool IsInitialized() const;
