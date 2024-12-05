@@ -45,11 +45,11 @@ class TestingDecodedBundleBuilderImpl : public TestingDecodedBundleBuilder {
     auto prior_tree_state =
         CxxOrchardShardTreeState{frontier, prior_tree_state_->block_height,
                                  prior_tree_state_->tree_size};
-    return base::WrapUnique<OrchardDecodedBlocksBundle>(
-        new OrchardDecodedBlocksBundleImpl(
-            create_mock_decode_result(std::move(prior_tree_state),
-                                      std::move(leafs_))
-                ->unwrap()));
+    return std::make_unique<OrchardDecodedBlocksBundleImpl>(
+        base::PassKey<class TestingDecodedBundleBuilderImpl>(),
+        create_mock_decode_result(std::move(prior_tree_state),
+                                  std::move(leafs_))
+            ->unwrap());
   }
 
  private:

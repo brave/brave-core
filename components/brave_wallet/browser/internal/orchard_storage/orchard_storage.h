@@ -67,16 +67,14 @@ class OrchardStorage {
 
   enum class ErrorCode {
     kDbInitError,
-    kAccountNotFound,
     kFailedToExecuteStatement,
     kFailedToCreateTransaction,
     kFailedToCommitTransaction,
     kInternalError,
-    kNoCheckpoints,
     kConsistencyError
   };
 
-  enum class Result { kSuccess, kFailure };
+  enum class Result { kSuccess, kNone };
 
   struct Error {
     ErrorCode error_code;
@@ -89,7 +87,7 @@ class OrchardStorage {
   base::expected<AccountMeta, Error> RegisterAccount(
       const mojom::AccountIdPtr& account_id,
       uint32_t account_birthday_block);
-  base::expected<AccountMeta, Error> GetAccountMeta(
+  base::expected<std::optional<AccountMeta>, Error> GetAccountMeta(
       const mojom::AccountIdPtr& account_id);
   base::expected<Result, Error> ResetAccountSyncState(
       const mojom::AccountIdPtr& account_id);
@@ -97,9 +95,10 @@ class OrchardStorage {
   // Removes database records which are under effect of chain reorg
   // Removes spendable notes and nullifiers with block_height > reorg_block
   // Updates account's last scanned block to chain reorg block
-  std::optional<Error> HandleChainReorg(const mojom::AccountIdPtr& account_id,
-                                        uint32_t reorg_block_id,
-                                        const std::string& reorg_block_hash);
+  base::expected<Result, Error> HandleChainReorg(
+      const mojom::AccountIdPtr& account_id,
+      uint32_t reorg_block_id,
+      const std::string& reorg_block_hash);
   // Calculates a list of discovered spendable notes that don't have nullifiers
   // in the blockchain
   base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
@@ -109,7 +108,7 @@ class OrchardStorage {
       const mojom::AccountIdPtr& account_id);
   // Updates database with discovered spendable notes and nullifiers
   // Also updates account info with latest scanned block info
-  std::optional<Error> UpdateNotes(
+  base::expected<Result, Error> UpdateNotes(
       const mojom::AccountIdPtr& account_id,
       base::span<const OrchardNote> notes_to_add,
       base::span<const OrchardNoteSpend> found_nullifiers,
@@ -170,7 +169,7 @@ class OrchardStorage {
   base::expected<std::optional<OrchardCheckpointBundle>, Error> GetCheckpoint(
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
-  base::expected<std::optional<std::vector<uint32_t>>, Error> GetMarksRemoved(
+  base::expected<std::vector<uint32_t>, Error> GetMarksRemoved(
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
 

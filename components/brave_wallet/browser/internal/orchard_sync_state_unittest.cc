@@ -51,7 +51,7 @@ class OrchardSyncStateTest : public testing::Test {
 
   OrchardSyncState* sync_state() { return sync_state_.get(); }
 
-  OrchardStorage* storage() { return sync_state_->orchard_storage(); }
+  OrchardStorage& storage() { return sync_state_->orchard_storage(); }
 
   mojom::AccountIdPtr account_id() { return account_id_.Clone(); }
 
@@ -60,7 +60,6 @@ class OrchardSyncStateTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
   mojom::AccountIdPtr account_id_;
 
-  std::unique_ptr<OrchardStorage> storage_;
   std::unique_ptr<OrchardSyncState> sync_state_;
 };
 
@@ -91,11 +90,15 @@ TEST_F(OrchardSyncStateTest, CheckpointsPruned) {
   OrchardTreeState orchard_tree_state;
   auto result = CreateResultForTesting(std::move(orchard_tree_state),
                                        std::move(commitments));
-  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
+  EXPECT_EQ(
+      OrchardStorage::Result::kSuccess,
+      sync_state()
+          ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+          .value());
 
-  EXPECT_EQ(10u, storage()->CheckpointCount(account_id()).value());
-  EXPECT_EQ(40u, storage()->MinCheckpointId(account_id()).value().value());
-  EXPECT_EQ(76u, storage()->MaxCheckpointId(account_id()).value().value());
+  EXPECT_EQ(10u, storage().CheckpointCount(account_id()).value());
+  EXPECT_EQ(40u, storage().MinCheckpointId(account_id()).value().value());
+  EXPECT_EQ(76u, storage().MaxCheckpointId(account_id()).value().value());
 }
 
 TEST_F(OrchardSyncStateTest, InsertWithFrontier) {
@@ -138,7 +141,11 @@ TEST_F(OrchardSyncStateTest, InsertWithFrontier) {
 
   auto result = CreateResultForTesting(std::move(prior_tree_state),
                                        std::move(commitments));
-  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
+  EXPECT_EQ(
+      OrchardStorage::Result::kSuccess,
+      sync_state()
+          ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+          .value());
 
   OrchardInput input;
   input.note.orchard_commitment_tree_position = 50;
@@ -181,7 +188,11 @@ TEST_F(OrchardSyncStateTest, Checkpoint_WithMarked) {
 
   auto result =
       CreateResultForTesting(OrchardTreeState(), std::move(commitments));
-  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
+  EXPECT_EQ(
+      OrchardStorage::Result::kSuccess,
+      sync_state()
+          ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+          .value());
 
   OrchardInput input;
   input.note.orchard_commitment_tree_position = 3;
@@ -218,11 +229,15 @@ TEST_F(OrchardSyncStateTest, MinCheckpoint) {
   }
   auto result =
       CreateResultForTesting(OrchardTreeState(), std::move(commitments));
-  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
+  EXPECT_EQ(
+      OrchardStorage::Result::kSuccess,
+      sync_state()
+          ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+          .value());
 
-  EXPECT_EQ(10u, storage()->CheckpointCount(account_id()).value());
-  EXPECT_EQ(40u, storage()->MinCheckpointId(account_id()).value().value());
-  EXPECT_EQ(76u, storage()->MaxCheckpointId(account_id()).value().value());
+  EXPECT_EQ(10u, storage().CheckpointCount(account_id()).value());
+  EXPECT_EQ(40u, storage().MinCheckpointId(account_id()).value().value());
+  EXPECT_EQ(76u, storage().MaxCheckpointId(account_id()).value().value());
 }
 
 TEST_F(OrchardSyncStateTest, MaxCheckpoint) {
@@ -238,8 +253,11 @@ TEST_F(OrchardSyncStateTest, MaxCheckpoint) {
         CreateMockCommitmentValue(5, kDefaultCommitmentSeed), false, 1u));
     auto result =
         CreateResultForTesting(OrchardTreeState(), std::move(commitments));
-    sync_state()->ApplyScanResults(account_id(), std::move(result), 1000,
-                                   "1000");
+    EXPECT_EQ(
+        OrchardStorage::Result::kSuccess,
+        sync_state()
+            ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+            .value());
   }
 
   {
@@ -257,8 +275,11 @@ TEST_F(OrchardSyncStateTest, MaxCheckpoint) {
     tree_state.tree_size = 6;
     auto result =
         CreateResultForTesting(std::move(tree_state), std::move(commitments));
-    sync_state()->ApplyScanResults(account_id(), std::move(result), 1000,
-                                   "1000");
+    EXPECT_EQ(
+        OrchardStorage::Result::kSuccess,
+        sync_state()
+            ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+            .value());
   }
 
   {
@@ -276,13 +297,16 @@ TEST_F(OrchardSyncStateTest, MaxCheckpoint) {
     tree_state.tree_size = 11;
     auto result =
         CreateResultForTesting(std::move(tree_state), std::move(commitments));
-    sync_state()->ApplyScanResults(account_id(), std::move(result), 1000,
-                                   "1000");
+    EXPECT_EQ(
+        OrchardStorage::Result::kSuccess,
+        sync_state()
+            ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+            .value());
   }
 
-  EXPECT_EQ(3u, storage()->CheckpointCount(account_id()).value());
-  EXPECT_EQ(1u, storage()->MinCheckpointId(account_id()).value().value());
-  EXPECT_EQ(3u, storage()->MaxCheckpointId(account_id()).value().value());
+  EXPECT_EQ(3u, storage().CheckpointCount(account_id()).value());
+  EXPECT_EQ(1u, storage().MinCheckpointId(account_id()).value().value());
+  EXPECT_EQ(3u, storage().MaxCheckpointId(account_id()).value().value());
 }
 
 TEST_F(OrchardSyncStateTest, NoWitnessOnNonMarked) {
@@ -305,7 +329,11 @@ TEST_F(OrchardSyncStateTest, NoWitnessOnNonMarked) {
 
   auto result =
       CreateResultForTesting(OrchardTreeState(), std::move(commitments));
-  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
+  EXPECT_EQ(
+      OrchardStorage::Result::kSuccess,
+      sync_state()
+          ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+          .value());
 
   {
     OrchardInput input;
@@ -336,7 +364,11 @@ TEST_F(OrchardSyncStateTest, NoWitnessOnWrongCheckpoint) {
 
   auto result =
       CreateResultForTesting(OrchardTreeState(), std::move(commitments));
-  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
+  EXPECT_EQ(
+      OrchardStorage::Result::kSuccess,
+      sync_state()
+          ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+          .value());
 
   {
     OrchardInput input;
@@ -376,12 +408,14 @@ TEST_F(OrchardSyncStateTest, TruncateTree) {
 
     auto result =
         CreateResultForTesting(OrchardTreeState(), std::move(commitments));
-    sync_state()->ApplyScanResults(account_id(), std::move(result), 1000,
-                                   "1000");
+    EXPECT_EQ(
+        OrchardStorage::Result::kSuccess,
+        sync_state()
+            ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+            .value());
   }
 
-  EXPECT_EQ(OrchardStorage::Result::kSuccess,
-            sync_state()->Truncate(account_id(), 2).value());
+  EXPECT_TRUE(sync_state()->Truncate(account_id(), 2));
 
   {
     std::vector<OrchardCommitment> commitments;
@@ -402,8 +436,11 @@ TEST_F(OrchardSyncStateTest, TruncateTree) {
     tree_state.tree_size = 5;
     auto result =
         CreateResultForTesting(std::move(tree_state), std::move(commitments));
-    sync_state()->ApplyScanResults(account_id(), std::move(result), 2000,
-                                   "2000");
+    EXPECT_EQ(
+        OrchardStorage::Result::kSuccess,
+        sync_state()
+            ->ApplyScanResults(account_id(), std::move(result), 2000, "2000")
+            .value());
   }
 
   {
@@ -454,10 +491,13 @@ TEST_F(OrchardSyncStateTest, TruncateTreeWrongCheckpoint) {
 
   auto result =
       CreateResultForTesting(OrchardTreeState(), std::move(commitments));
-  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
+  EXPECT_EQ(
+      OrchardStorage::Result::kSuccess,
+      sync_state()
+          ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+          .value());
 
-  EXPECT_EQ(OrchardStorage::Result::kFailure,
-            sync_state()->Truncate(account_id(), 2).value());
+  EXPECT_FALSE(sync_state()->Truncate(account_id(), 2));
 }
 
 TEST_F(OrchardSyncStateTest, SimpleInsert) {
@@ -480,7 +520,11 @@ TEST_F(OrchardSyncStateTest, SimpleInsert) {
 
   auto result =
       CreateResultForTesting(OrchardTreeState(), std::move(commitments));
-  sync_state()->ApplyScanResults(account_id(), std::move(result), 1000, "1000");
+  EXPECT_EQ(
+      OrchardStorage::Result::kSuccess,
+      sync_state()
+          ->ApplyScanResults(account_id(), std::move(result), 1000, "1000")
+          .value());
 
   OrchardInput input;
   input.note.orchard_commitment_tree_position = 2;

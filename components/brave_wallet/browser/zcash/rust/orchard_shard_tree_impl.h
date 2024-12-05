@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/types/pass_key.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_types.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
 #include "third_party/rust/cxx/v1/cxx.h"
@@ -19,6 +20,8 @@ struct CxxOrchardShardTreeBundle;
 
 class OrchardShardTreeImpl : public OrchardShardTree {
  public:
+  OrchardShardTreeImpl(base::PassKey<class OrchardShardTree>,
+                       rust::Box<CxxOrchardShardTreeBundle> orcard_shard_tree);
   ~OrchardShardTreeImpl() override;
 
   bool TruncateToCheckpoint(uint32_t checkpoint_id) override;
@@ -31,9 +34,6 @@ class OrchardShardTreeImpl : public OrchardShardTree {
       uint32_t checkpoint) override;
 
  private:
-  friend class OrchardShardTree;
-  explicit OrchardShardTreeImpl(
-      rust::Box<CxxOrchardShardTreeBundle> orcard_shard_tree);
   ::rust::Box<CxxOrchardShardTreeBundle> orhcard_shard_tree_;
 };
 

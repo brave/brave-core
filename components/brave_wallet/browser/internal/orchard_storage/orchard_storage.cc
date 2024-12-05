@@ -218,6 +218,7 @@ OrchardStorage::RegisterAccount(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -226,7 +227,8 @@ OrchardStorage::RegisterAccount(const mojom::AccountIdPtr& account_id,
 
   sql::Transaction transaction(&database_);
   if (!transaction.Begin()) {
-    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction, ""});
+    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction,
+                                  database_.GetErrorMessage()});
   }
 
   sql::Statement register_account_statement(database_.GetCachedStatement(
@@ -252,11 +254,13 @@ OrchardStorage::RegisterAccount(const mojom::AccountIdPtr& account_id,
   return meta;
 }
 
-base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error>
+base::expected<std::optional<OrchardStorage::AccountMeta>,
+               OrchardStorage::Error>
 OrchardStorage::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -271,8 +275,12 @@ OrchardStorage::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
   resolve_account_statement.BindString(0, account_id->unique_key);
 
   if (!resolve_account_statement.Step()) {
-    return base::unexpected(
-        Error{ErrorCode::kAccountNotFound, "Account not found."});
+    if (!resolve_account_statement.Succeeded()) {
+      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                    database_.GetErrorMessage()});
+    } else {
+      return base::ok(std::nullopt);
+    }
   }
 
   AccountMeta account_meta;
@@ -287,7 +295,7 @@ OrchardStorage::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
     auto latest_scanned_block = ReadUint32(resolve_account_statement, 1);
     if (!latest_scanned_block) {
       return base::unexpected(Error{ErrorCode::kConsistencyError,
-                                    "Wrong latest scanned block format."});
+                                    "Wrong latest scanned block format"});
     }
     account_meta.latest_scanned_block_id = latest_scanned_block.value();
   }
@@ -297,26 +305,28 @@ OrchardStorage::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
         resolve_account_statement.ColumnString(2);
   }
 
-  return account_meta;
+  return base::ok(account_meta);
 }
 
-std::optional<OrchardStorage::Error> OrchardStorage::HandleChainReorg(
-    const mojom::AccountIdPtr& account_id,
-    uint32_t reorg_block_id,
-    const std::string& reorg_block_hash) {
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::HandleChainReorg(const mojom::AccountIdPtr& account_id,
+                                 uint32_t reorg_block_id,
+                                 const std::string& reorg_block_hash) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
   if (!EnsureDbInit()) {
-    return Error{ErrorCode::kDbInitError, database_.GetErrorMessage()};
+    return base::unexpected(
+        Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
   sql::Transaction transaction(&database_);
 
   if (!transaction.Begin()) {
-    return Error{ErrorCode::kFailedToCreateTransaction, ""};
+    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction,
+                                  database_.GetErrorMessage()});
   }
 
   sql::Statement remove_from_spent_notes(database_.GetCachedStatement(
@@ -346,16 +356,16 @@ std::optional<OrchardStorage::Error> OrchardStorage::HandleChainReorg(
 
   if (!remove_from_notes.Run() || !remove_from_spent_notes.Run() ||
       !update_account_meta.Run()) {
-    return Error{ErrorCode::kFailedToExecuteStatement,
-                 database_.GetErrorMessage()};
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
   if (!transaction.Commit()) {
-    return Error{ErrorCode::kFailedToCommitTransaction,
-                 database_.GetErrorMessage()};
+    return base::unexpected(Error{ErrorCode::kFailedToCommitTransaction,
+                                  database_.GetErrorMessage()});
   }
 
-  return std::nullopt;
+  return base::ok(Result::kSuccess);
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
@@ -363,6 +373,8 @@ OrchardStorage::ResetAccountSyncState(const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
+
   if (!EnsureDbInit()) {
     return base::unexpected(
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
@@ -403,7 +415,8 @@ OrchardStorage::ResetAccountSyncState(const mojom::AccountIdPtr& account_id) {
 
   sql::Transaction transaction(&database_);
   if (!transaction.Begin()) {
-    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction, ""});
+    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction,
+                                  database_.GetErrorMessage()});
   }
 
   if (!clear_cap_statement.Run() || !clear_shards_statement.Run() ||
@@ -426,6 +439,7 @@ OrchardStorage::GetNullifiers(const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -445,13 +459,13 @@ OrchardStorage::GetNullifiers(const mojom::AccountIdPtr& account_id) {
     auto block_id = ReadUint32(resolve_note_spents, 0);
     if (!block_id) {
       return base::unexpected(
-          Error{ErrorCode::kDbInitError, "Wrong database format"});
+          Error{ErrorCode::kConsistencyError, "Wrong block id format"});
     }
     spend.block_id = block_id.value();
     auto nullifier_blob = resolve_note_spents.ColumnBlob(1);
     if (nullifier_blob.size() != kOrchardNullifierSize) {
       return base::unexpected(
-          Error{ErrorCode::kConsistencyError, "Consistency error"});
+          Error{ErrorCode::kConsistencyError, "Wrong nullifier size"});
     }
     base::span(spend.nullifier).copy_from(nullifier_blob);
     result.push_back(std::move(spend));
@@ -468,6 +482,7 @@ OrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -519,27 +534,35 @@ OrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
     note.addr = **addr;
     result.push_back(std::move(note));
   }
+
+  if (!resolve_unspent_notes.Succeeded()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
+  }
+
   return base::ok(std::move(result));
 }
 
-std::optional<OrchardStorage::Error> OrchardStorage::UpdateNotes(
-    const mojom::AccountIdPtr& account_id,
-    base::span<const OrchardNote> found_notes,
-    base::span<const OrchardNoteSpend> found_nullifiers,
-    const uint32_t latest_scanned_block,
-    const std::string& latest_scanned_block_hash) {
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::UpdateNotes(const mojom::AccountIdPtr& account_id,
+                            base::span<const OrchardNote> found_notes,
+                            base::span<const OrchardNoteSpend> found_nullifiers,
+                            const uint32_t latest_scanned_block,
+                            const std::string& latest_scanned_block_hash) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
   if (!EnsureDbInit()) {
-    return Error{ErrorCode::kDbInitError, database_.GetErrorMessage()};
+    return base::unexpected(
+        Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
   sql::Transaction transaction(&database_);
   if (!transaction.Begin()) {
-    return Error{ErrorCode::kDbInitError, database_.GetErrorMessage()};
+    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction,
+                                  database_.GetErrorMessage()});
   }
 
   // Insert found notes to the notes table.
@@ -562,8 +585,8 @@ std::optional<OrchardStorage::Error> OrchardStorage::UpdateNotes(
     statement_populate_notes.BindBlob(7, note.addr);
 
     if (!statement_populate_notes.Run()) {
-      return Error{ErrorCode::kFailedToExecuteStatement,
-                   database_.GetErrorMessage()};
+      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                    database_.GetErrorMessage()});
     }
   }
 
@@ -579,8 +602,8 @@ std::optional<OrchardStorage::Error> OrchardStorage::UpdateNotes(
     statement_populate_spent_notes.BindInt64(1, spent.block_id);
     statement_populate_spent_notes.BindBlob(2, spent.nullifier);
     if (!statement_populate_spent_notes.Run()) {
-      return Error{ErrorCode::kFailedToExecuteStatement,
-                   database_.GetErrorMessage()};
+      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                    database_.GetErrorMessage()});
     }
   }
 
@@ -596,16 +619,16 @@ std::optional<OrchardStorage::Error> OrchardStorage::UpdateNotes(
   statement_update_account_meta.BindString(1, latest_scanned_block_hash);
   statement_update_account_meta.BindString(2, account_id->unique_key);
   if (!statement_update_account_meta.Run()) {
-    return Error{ErrorCode::kFailedToExecuteStatement,
-                 database_.GetErrorMessage()};
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
   if (!transaction.Commit()) {
-    return Error{ErrorCode::kFailedToExecuteStatement,
-                 database_.GetErrorMessage()};
+    return base::unexpected(Error{ErrorCode::kFailedToCommitTransaction,
+                                  database_.GetErrorMessage()});
   }
 
-  return std::nullopt;
+  return base::ok(Result::kSuccess);
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
@@ -613,6 +636,7 @@ OrchardStorage::GetLatestShardIndex(const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -626,19 +650,21 @@ OrchardStorage::GetLatestShardIndex(const mojom::AccountIdPtr& account_id) {
                                    "WHERE account_id = ?;"));
 
   resolve_max_shard_id.BindString(0, account_id->unique_key);
-  if (resolve_max_shard_id.Step()) {
-    if (resolve_max_shard_id.GetColumnType(0) == sql::ColumnType::kNull) {
-      return base::ok(std::nullopt);
-    }
-    auto shard_index = ReadUint32(resolve_max_shard_id, 0);
-    if (!shard_index) {
-      return base::unexpected(
-          Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
-    }
-    return base::ok(shard_index.value());
+  if (!resolve_max_shard_id.Step()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
-  return base::ok(std::nullopt);
+  if (resolve_max_shard_id.GetColumnType(0) == sql::ColumnType::kNull) {
+    return base::ok(std::nullopt);
+  }
+
+  auto shard_index = ReadUint32(resolve_max_shard_id, 0);
+  if (!shard_index) {
+    return base::unexpected(
+        Error{ErrorCode::kConsistencyError, "Wrong shard index format"});
+  }
+  return base::ok(shard_index.value());
 }
 
 base::expected<std::optional<OrchardShardTreeCap>, OrchardStorage::Error>
@@ -646,6 +672,7 @@ OrchardStorage::GetCap(const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -667,9 +694,7 @@ OrchardStorage::GetCap(const mojom::AccountIdPtr& account_id) {
     return base::ok(std::nullopt);
   }
 
-  OrchardShardTreeCap result = base::ToVector(resolve_cap.ColumnBlob(0));
-
-  return base::ok(std::move(result));
+  return base::ok(base::ToVector(resolve_cap.ColumnBlob(0)));
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
@@ -678,6 +703,7 @@ OrchardStorage::PutCap(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -686,7 +712,8 @@ OrchardStorage::PutCap(const mojom::AccountIdPtr& account_id,
 
   sql::Transaction transaction(&database_);
   if (!transaction.Begin()) {
-    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction, ""});
+    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction,
+                                  database_.GetErrorMessage()});
   }
 
   auto existing_cap = GetCap(account_id);
@@ -730,6 +757,7 @@ OrchardStorage::UpdateSubtreeRoots(
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -738,7 +766,8 @@ OrchardStorage::UpdateSubtreeRoots(
 
   sql::Transaction transaction(&database_);
   if (!transaction.Begin()) {
-    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction, ""});
+    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction,
+                                  database_.GetErrorMessage()});
   }
 
   sql::Statement statement_populate_roots(database_.GetCachedStatement(
@@ -761,7 +790,8 @@ OrchardStorage::UpdateSubtreeRoots(
   for (size_t i = 0; i < roots.size(); i++) {
     if (!roots[i] ||
         roots[i]->complete_block_hash.size() != kOrchardCompleteBlockHashSize) {
-      return base::unexpected(Error{ErrorCode::kInternalError, "Wrong data"});
+      return base::unexpected(
+          Error{ErrorCode::kInternalError, "Complete block hash differs"});
     }
 
     statement_populate_roots.Reset(true);
@@ -803,6 +833,7 @@ OrchardStorage::TruncateShards(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -815,20 +846,20 @@ OrchardStorage::TruncateShards(const mojom::AccountIdPtr& account_id,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  sql::Statement remove_checkpoint_by_id(database_.GetCachedStatement(
+  sql::Statement remove_shard_by_id(database_.GetCachedStatement(
       SQL_FROM_HERE, "DELETE FROM " kShardTree " "
                      "WHERE shard_index >= ? AND account_id = ?;"));
 
-  remove_checkpoint_by_id.BindInt64(0, shard_index);
-  remove_checkpoint_by_id.BindString(1, account_id->unique_key);
+  remove_shard_by_id.BindInt64(0, shard_index);
+  remove_shard_by_id.BindString(1, account_id->unique_key);
 
-  if (!remove_checkpoint_by_id.Run()) {
-    return base::unexpected(
-        Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
+  if (!remove_shard_by_id.Run()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
   if (!transaction.Commit()) {
-    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+    return base::unexpected(Error{ErrorCode::kFailedToCommitTransaction,
                                   database_.GetErrorMessage()});
   }
 
@@ -841,6 +872,7 @@ OrchardStorage::PutShard(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -914,6 +946,7 @@ OrchardStorage::GetShard(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -927,24 +960,23 @@ OrchardStorage::GetShard(const mojom::AccountIdPtr& account_id,
   resolve_shard_statement.BindString(0, account_id->unique_key);
   resolve_shard_statement.BindInt64(1, address.index);
 
-  if (!resolve_shard_statement.Step()) {
-    if (!resolve_shard_statement.Succeeded()) {
-      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
-                                    database_.GetErrorMessage()});
+  if (resolve_shard_statement.Step()) {
+    auto hash = ReadRootHash(resolve_shard_statement, 0);
+    if (!hash.has_value()) {
+      return base::unexpected(
+          Error{ErrorCode::kConsistencyError, "Wrong root hash format"});
     }
-    return base::ok(std::nullopt);
+    return base::ok(
+        OrchardShard(address, hash.value(),
+                     base::ToVector(resolve_shard_statement.ColumnBlob(1))));
   }
 
-  auto hash = ReadRootHash(resolve_shard_statement, 0);
-  if (!hash.has_value()) {
-    return base::unexpected(Error{ErrorCode::kDbInitError, hash.error()});
+  if (!resolve_shard_statement.Succeeded()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
-  auto shard = OrchardShard(address, hash.value(), std::vector<uint8_t>());
-
-  shard.shard_data = base::ToVector(resolve_shard_statement.ColumnBlob(1));
-
-  return base::ok(std::move(shard));
+  return base::ok(std::nullopt);
 }
 
 base::expected<std::optional<OrchardShard>, OrchardStorage::Error>
@@ -953,6 +985,7 @@ OrchardStorage::LastShard(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   auto shard_index = GetLatestShardIndex(account_id);
   RETURN_IF_ERROR(shard_index);
@@ -971,6 +1004,7 @@ OrchardStorage::GetShardRoots(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -988,13 +1022,15 @@ OrchardStorage::GetShardRoots(const mojom::AccountIdPtr& account_id,
   while (resolve_shards_statement.Step()) {
     auto shard_index = ReadUint32(resolve_shards_statement, 0);
     if (!shard_index) {
-      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement, ""});
+      return base::unexpected(
+          Error{ErrorCode::kConsistencyError, "Wrong shard index format"});
     }
     result.push_back(OrchardShardAddress{shard_level, shard_index.value()});
   }
 
-  if (!resolve_shards_statement.is_valid()) {
-    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement, ""});
+  if (!resolve_shards_statement.Succeeded()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
   return base::ok(std::move(result));
@@ -1007,6 +1043,7 @@ OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1031,7 +1068,8 @@ OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
 
   sql::Transaction transaction(&database_);
   if (!transaction.Begin()) {
-    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction, ""});
+    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction,
+                                  database_.GetErrorMessage()});
   }
 
   // Checkpoint with same id didn't exist.
@@ -1072,19 +1110,14 @@ OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
     // Existing checkpoint should be the same.
     if (extant_tree_state_position.value() != checkpoint.tree_state_position) {
       return base::unexpected(
-          Error{ErrorCode::kConsistencyError, "Consistency error"});
+          Error{ErrorCode::kConsistencyError, "Tree state position differs"});
     }
     auto marks_removed_result = GetMarksRemoved(account_id, checkpoint_id);
     RETURN_IF_ERROR(marks_removed_result);
 
-    if (!marks_removed_result.value()) {
+    if (marks_removed_result.value() != checkpoint.marks_removed) {
       return base::unexpected(
-          Error{ErrorCode::kConsistencyError, "Consistency error"});
-    }
-
-    if (marks_removed_result.value().value() != checkpoint.marks_removed) {
-      return base::unexpected(
-          Error{ErrorCode::kConsistencyError, "Consistency error"});
+          Error{ErrorCode::kConsistencyError, "Marks removed differs"});
     }
   }
 
@@ -1105,13 +1138,13 @@ OrchardStorage::UpdateCheckpoint(const mojom::AccountIdPtr& account_id,
   auto get_checkpoint_result = GetCheckpoint(account_id, checkpoint_id);
   RETURN_IF_ERROR(get_checkpoint_result);
   if (!get_checkpoint_result.value()) {
-    return base::ok(Result::kFailure);
+    return base::ok(Result::kNone);
   }
 
   auto remove_result = RemoveCheckpoint(account_id, checkpoint_id);
   RETURN_IF_ERROR(remove_result);
   if (remove_result.value() != Result::kSuccess) {
-    return base::ok(Result::kFailure);
+    return base::ok(Result::kNone);
   }
 
   auto add_result = AddCheckpoint(account_id, checkpoint_id, checkpoint);
@@ -1125,6 +1158,7 @@ base::expected<size_t, OrchardStorage::Error> OrchardStorage::CheckpointCount(
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1136,15 +1170,14 @@ base::expected<size_t, OrchardStorage::Error> OrchardStorage::CheckpointCount(
       "SELECT COUNT(*) FROM " kShardTreeCheckpoints " WHERE account_id = ?;"));
   resolve_checkpoints_count.BindString(0, account_id->unique_key);
   if (!resolve_checkpoints_count.Step()) {
-    return base::unexpected(
-        Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
   auto value = ReadUint32(resolve_checkpoints_count, 0);
-
   if (!value) {
     return base::unexpected(
-        Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
+        Error{ErrorCode::kConsistencyError, "Wrong checkpoint count"});
   }
 
   return *value;
@@ -1155,6 +1188,7 @@ OrchardStorage::MinCheckpointId(const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1168,19 +1202,20 @@ OrchardStorage::MinCheckpointId(const mojom::AccountIdPtr& account_id) {
   resolve_min_checkpoint_id.BindString(0, account_id->unique_key);
 
   if (!resolve_min_checkpoint_id.Step()) {
-    if (!resolve_min_checkpoint_id.Succeeded()) {
-      return base::unexpected(
-          Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
-    } else {
-      return base::ok(std::nullopt);
-    }
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
   if (resolve_min_checkpoint_id.GetColumnType(0) == sql::ColumnType::kNull) {
     return base::ok(std::nullopt);
-  } else {
-    return ReadUint32(resolve_min_checkpoint_id, 0);
   }
+
+  auto checkpoint_id = ReadUint32(resolve_min_checkpoint_id, 0);
+  if (!checkpoint_id) {
+    return base::unexpected(
+        Error{ErrorCode::kConsistencyError, "Wrong checkpoint id format"});
+  }
+  return *checkpoint_id;
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
@@ -1188,6 +1223,7 @@ OrchardStorage::MaxCheckpointId(const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1200,19 +1236,20 @@ OrchardStorage::MaxCheckpointId(const mojom::AccountIdPtr& account_id) {
   resolve_max_checkpoint_id.BindString(0, account_id->unique_key);
 
   if (!resolve_max_checkpoint_id.Step()) {
-    if (!resolve_max_checkpoint_id.Succeeded()) {
-      return base::unexpected(
-          Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
-    } else {
-      return base::ok(std::nullopt);
-    }
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
   if (resolve_max_checkpoint_id.GetColumnType(0) == sql::ColumnType::kNull) {
     return base::ok(std::nullopt);
-  } else {
-    return ReadUint32(resolve_max_checkpoint_id, 0);
   }
+
+  auto checkpoint_id = ReadUint32(resolve_max_checkpoint_id, 0);
+  if (!checkpoint_id) {
+    return base::unexpected(
+        Error{ErrorCode::kConsistencyError, "Wrong checkpoint id format"});
+  }
+  return *checkpoint_id;
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
@@ -1221,6 +1258,7 @@ OrchardStorage::GetCheckpointAtDepth(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1229,7 +1267,7 @@ OrchardStorage::GetCheckpointAtDepth(const mojom::AccountIdPtr& account_id,
 
   sql::Statement get_checkpoint_at_depth_statement(
       database_.GetCachedStatement(SQL_FROM_HERE,
-                                   "SELECT checkpoint_id, position "
+                                   "SELECT checkpoint_id "
                                    "FROM " kShardTreeCheckpoints " "
                                    "WHERE account_id = ? "
                                    "ORDER BY checkpoint_id DESC "
@@ -1239,29 +1277,30 @@ OrchardStorage::GetCheckpointAtDepth(const mojom::AccountIdPtr& account_id,
   get_checkpoint_at_depth_statement.BindString(0, account_id->unique_key);
   get_checkpoint_at_depth_statement.BindInt64(1, depth);
 
-  if (!get_checkpoint_at_depth_statement.Step()) {
-    if (!get_checkpoint_at_depth_statement.Succeeded()) {
+  if (get_checkpoint_at_depth_statement.Step()) {
+    auto value = ReadUint32(get_checkpoint_at_depth_statement, 0);
+    if (!value) {
       return base::unexpected(
-          Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
+          Error{ErrorCode::kConsistencyError, "Wrong checkpoint id format"});
     }
-    return base::ok(std::nullopt);
+    return *value;
   }
 
-  auto value = ReadUint32(get_checkpoint_at_depth_statement, 0);
-
-  if (!value) {
-    return base::ok(std::nullopt);
+  if (!get_checkpoint_at_depth_statement.Succeeded()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
-  return *value;
+  return base::ok(std::nullopt);
 }
 
-base::expected<std::optional<std::vector<uint32_t>>, OrchardStorage::Error>
+base::expected<std::vector<uint32_t>, OrchardStorage::Error>
 OrchardStorage::GetMarksRemoved(const mojom::AccountIdPtr& account_id,
                                 uint32_t checkpoint_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1281,9 +1320,15 @@ OrchardStorage::GetMarksRemoved(const mojom::AccountIdPtr& account_id,
   while (get_marks_removed_statement.Step()) {
     auto position = ReadUint32(get_marks_removed_statement, 0);
     if (!position) {
-      return base::unexpected(Error{ErrorCode::kDbInitError, "Format error"});
+      return base::unexpected(
+          Error{ErrorCode::kConsistencyError, "Wrong position format"});
     }
     result.push_back(*position);
+  }
+
+  if (!get_marks_removed_statement.Succeeded()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
   return base::ok(std::move(result));
@@ -1295,6 +1340,7 @@ OrchardStorage::GetCheckpoint(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1311,13 +1357,17 @@ OrchardStorage::GetCheckpoint(const mojom::AccountIdPtr& account_id,
   get_checkpoint_statement.BindInt64(0, checkpoint_id);
   get_checkpoint_statement.BindString(1, account_id->unique_key);
   if (!get_checkpoint_statement.Step()) {
+    if (!get_checkpoint_statement.Succeeded()) {
+      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                    database_.GetErrorMessage()});
+    }
     return base::ok(std::nullopt);
   }
   auto checkpoint_position =
       ReadCheckpointTreeState(get_checkpoint_statement, 0);
   if (!checkpoint_position.has_value()) {
-    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
-                                  database_.GetErrorMessage()});
+    return base::unexpected(
+        Error{ErrorCode::kConsistencyError, "Wrong position format"});
   }
 
   sql::Statement marks_removed_statement(database_.GetCachedStatement(
@@ -1336,9 +1386,14 @@ OrchardStorage::GetCheckpoint(const mojom::AccountIdPtr& account_id,
     if (position) {
       positions.push_back(*position);
     } else {
-      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
-                                    database_.GetErrorMessage()});
+      return base::unexpected(
+          Error{ErrorCode::kConsistencyError, "Wrong position format"});
     }
+  }
+
+  if (!marks_removed_statement.Succeeded()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
   return OrchardCheckpointBundle{
@@ -1352,6 +1407,7 @@ OrchardStorage::GetCheckpoints(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1372,27 +1428,30 @@ OrchardStorage::GetCheckpoints(const mojom::AccountIdPtr& account_id,
   std::vector<OrchardCheckpointBundle> checkpoints;
   while (get_checkpoints_statement.Step()) {
     auto checkpoint_id = ReadUint32(get_checkpoints_statement, 0);
-    auto checkpoint_position =
-        ReadCheckpointTreeState(get_checkpoints_statement, 1);
     if (!checkpoint_id) {
-      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement, ""});
-    }
-    if (!checkpoint_position.has_value()) {
-      return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement, ""});
-    }
-    auto found_marks_removed = GetMarksRemoved(account_id, *checkpoint_id);
-    if (!found_marks_removed.has_value()) {
-      return base::unexpected(found_marks_removed.error());
-    }
-    std::vector<uint32_t> marks_removed;
-    if (found_marks_removed.value()) {
-      marks_removed = **found_marks_removed;
+      return base::unexpected(
+          Error{ErrorCode::kConsistencyError, "Wrong checkpoint id format"});
     }
 
+    auto checkpoint_position =
+        ReadCheckpointTreeState(get_checkpoints_statement, 1);
+    if (!checkpoint_position.has_value()) {
+      return base::unexpected(Error{ErrorCode::kConsistencyError,
+                                    "Wrong checkpoint position format"});
+    }
+    auto found_marks_removed = GetMarksRemoved(account_id, *checkpoint_id);
+    RETURN_IF_ERROR(found_marks_removed);
     checkpoints.push_back(OrchardCheckpointBundle{
-        *checkpoint_id, OrchardCheckpoint(checkpoint_position.value(),
-                                          std::move(marks_removed))});
+        *checkpoint_id,
+        OrchardCheckpoint(checkpoint_position.value(),
+                          std::move(found_marks_removed.value()))});
   }
+
+  if (!get_checkpoints_statement.Succeeded()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
+  }
+
   return base::ok(std::move(checkpoints));
 }
 
@@ -1403,6 +1462,7 @@ OrchardStorage::GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1421,23 +1481,21 @@ OrchardStorage::GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
   get_max_checkpointed_height.BindInt64(0, max_checkpointed_height);
   get_max_checkpointed_height.BindString(1, account_id->unique_key);
 
-  if (!get_max_checkpointed_height.Step()) {
-    if (!get_max_checkpointed_height.Succeeded()) {
+  if (get_max_checkpointed_height.Step()) {
+    auto value = ReadUint32(get_max_checkpointed_height, 0);
+    if (!value) {
       return base::unexpected(
-          Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
-    } else {
-      return base::ok(std::nullopt);
+          Error{ErrorCode::kConsistencyError, "Wrong checkpoint height"});
     }
+    return base::ok(*value);
   }
 
-  auto value = ReadUint32(get_max_checkpointed_height, 0);
-
-  if (!value) {
-    return base::unexpected(
-        Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
+  if (!get_max_checkpointed_height.Succeeded()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
-  return base::ok(*value);
+  return base::ok(std::nullopt);
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
@@ -1446,6 +1504,7 @@ OrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1453,25 +1512,23 @@ OrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
   }
 
   auto existing_checkpoint = GetCheckpoint(account_id, checkpoint_id);
-  if (!existing_checkpoint.has_value()) {
-    return base::unexpected(existing_checkpoint.error());
-  }
+  RETURN_IF_ERROR(existing_checkpoint);
 
   if (!existing_checkpoint.value()) {
-    return base::ok(Result::kFailure);
+    return base::ok(Result::kNone);
+  }
+
+  sql::Transaction transaction(&database_);
+  if (!transaction.Begin()) {
+    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction,
+                                  database_.GetErrorMessage()});
   }
 
   sql::Statement remove_checkpoint_by_id(database_.GetCachedStatement(
       SQL_FROM_HERE, "DELETE FROM " kShardTreeCheckpoints " "
                      "WHERE checkpoint_id = ? AND account_id= ?;"));
-
   remove_checkpoint_by_id.BindInt64(0, checkpoint_id);
   remove_checkpoint_by_id.BindString(1, account_id->unique_key);
-
-  sql::Transaction transaction(&database_);
-  if (!transaction.Begin()) {
-    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction, ""});
-  }
 
   if (!remove_checkpoint_by_id.Run()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -1492,6 +1549,7 @@ OrchardStorage::TruncateCheckpoints(const mojom::AccountIdPtr& account_id,
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(account_id);
 
   if (!EnsureDbInit()) {
     return base::unexpected(
@@ -1500,7 +1558,8 @@ OrchardStorage::TruncateCheckpoints(const mojom::AccountIdPtr& account_id,
 
   sql::Transaction transaction(&database_);
   if (!transaction.Begin()) {
-    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction, ""});
+    return base::unexpected(Error{ErrorCode::kFailedToCreateTransaction,
+                                  database_.GetErrorMessage()});
   }
 
   sql::Statement truncate_checkpoints(database_.GetCachedStatement(
@@ -1511,8 +1570,8 @@ OrchardStorage::TruncateCheckpoints(const mojom::AccountIdPtr& account_id,
   truncate_checkpoints.BindString(1, account_id->unique_key);
 
   if (!truncate_checkpoints.Run()) {
-    return base::unexpected(
-        Error{ErrorCode::kNoCheckpoints, database_.GetErrorMessage()});
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
   }
 
   if (!transaction.Commit()) {

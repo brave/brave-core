@@ -17,6 +17,7 @@
 namespace brave_wallet::orchard {
 
 UnauthorizedOrchardBundleImpl::UnauthorizedOrchardBundleImpl(
+    base::PassKey<class UnauthorizedOrchardBundle>,
     ::rust::Box<CxxOrchardUnauthorizedBundle> orchard_unauthorized_bundle)
     : orchard_unauthorized_bundle_(std::move(orchard_unauthorized_bundle)) {}
 
@@ -42,8 +43,9 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
     if (!bundle_result->is_ok()) {
       return nullptr;
     }
-    return base::WrapUnique<UnauthorizedOrchardBundle>(
-        new UnauthorizedOrchardBundleImpl(bundle_result->unwrap()));
+    return std::make_unique<UnauthorizedOrchardBundleImpl>(
+        base::PassKey<class UnauthorizedOrchardBundle>(),
+        bundle_result->unwrap());
   } else {
     auto bundle_result = create_orchard_bundle(
         ::rust::Slice<const uint8_t>{tree_state.data(), tree_state.size()},
@@ -52,8 +54,9 @@ std::unique_ptr<UnauthorizedOrchardBundle> UnauthorizedOrchardBundle::Create(
     if (!bundle_result->is_ok()) {
       return nullptr;
     }
-    return base::WrapUnique<UnauthorizedOrchardBundle>(
-        new UnauthorizedOrchardBundleImpl(bundle_result->unwrap()));
+    return std::make_unique<UnauthorizedOrchardBundleImpl>(
+        base::PassKey<class UnauthorizedOrchardBundle>(),
+        bundle_result->unwrap());
   }
 }
 
@@ -70,9 +73,9 @@ UnauthorizedOrchardBundleImpl::Complete(
   if (!authorized_orchard_bundle_result->is_ok()) {
     return nullptr;
   }
-  return base::WrapUnique<AuthorizedOrchardBundle>(
-      new AuthorizedOrchardBundleImpl(
-          authorized_orchard_bundle_result->unwrap()));
+  return std::make_unique<AuthorizedOrchardBundleImpl>(
+      base::PassKey<class UnauthorizedOrchardBundleImpl>(),
+      authorized_orchard_bundle_result->unwrap());
 }
 
 }  // namespace brave_wallet::orchard

@@ -99,8 +99,9 @@ class ZCashShieldSyncService {
 
   // Setup account info
   void GetOrCreateAccount();
-  void OnGetAccountMeta(base::expected<OrchardStorage::AccountMeta,
-                                       OrchardStorage::Error> result);
+  void OnGetAccountMeta(
+      base::expected<std::optional<OrchardStorage::AccountMeta>,
+                     OrchardStorage::Error> result);
   void InitAccount();
   void OnAccountInit(
       base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error> error);
@@ -127,7 +128,7 @@ class ZCashShieldSyncService {
       base::expected<zcash::mojom::TreeStatePtr, std::string> tree_state);
   void OnDatabaseUpdatedForChainReorg(
       uint32_t new_block_height,
-      std::optional<OrchardStorage::Error> error);
+      base::expected<OrchardStorage::Result, OrchardStorage::Error> result);
 
   // Update spendable notes state
   void UpdateSpendableNotes();
@@ -150,8 +151,9 @@ class ZCashShieldSyncService {
   void UpdateNotes(OrchardBlockScanner::Result result,
                    uint32_t latest_scanned_block,
                    std::string latest_scanned_block_hash);
-  void UpdateNotesComplete(uint32_t new_latest_scanned_block,
-                           std::optional<OrchardStorage::Error> error);
+  void UpdateNotesComplete(
+      uint32_t new_latest_scanned_block,
+      base::expected<OrchardStorage::Result, OrchardStorage::Error> result);
 
   ZCashRpc& zcash_rpc();
   base::SequenceBound<OrchardSyncState>& sync_state();

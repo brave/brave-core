@@ -35,13 +35,14 @@ class OrchardSyncState {
   RegisterAccount(const mojom::AccountIdPtr& account_id,
                   uint64_t account_birthday_block);
 
-  base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error>
+  base::expected<std::optional<OrchardStorage::AccountMeta>,
+                 OrchardStorage::Error>
   GetAccountMeta(const mojom::AccountIdPtr& account_id);
 
-  std::optional<OrchardStorage::Error> HandleChainReorg(
-      const mojom::AccountIdPtr& account_id,
-      uint32_t reorg_block_id,
-      const std::string& reorg_block_hash);
+  base::expected<OrchardStorage::Result, OrchardStorage::Error>
+  HandleChainReorg(const mojom::AccountIdPtr& account_id,
+                   uint32_t reorg_block_id,
+                   const std::string& reorg_block_hash);
 
   base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
   GetSpendableNotes(const mojom::AccountIdPtr& account_id);
@@ -49,13 +50,13 @@ class OrchardSyncState {
   base::expected<std::vector<OrchardNoteSpend>, OrchardStorage::Error>
   GetNullifiers(const mojom::AccountIdPtr& account_id);
 
-  std::optional<OrchardStorage::Error> ApplyScanResults(
-      const mojom::AccountIdPtr& account_id,
-      // Value is used here to allow moving scanned_blocks which wraps rust
-      // object.
-      OrchardBlockScanner::Result block_scanner_results,
-      const uint32_t latest_scanned_block,
-      const std::string& latest_scanned_block_hash);
+  base::expected<OrchardStorage::Result, OrchardStorage::Error>
+  ApplyScanResults(const mojom::AccountIdPtr& account_id,
+                   // Value is used here to allow moving scanned_blocks which
+                   // wraps rust object.
+                   OrchardBlockScanner::Result block_scanner_results,
+                   const uint32_t latest_scanned_block,
+                   const std::string& latest_scanned_block_hash);
 
   // Clears sync data related to the account except it's birthday.
   base::expected<OrchardStorage::Result, OrchardStorage::Error>
@@ -69,21 +70,19 @@ class OrchardSyncState {
                                 const std::vector<OrchardInput>& notes,
                                 uint32_t checkpoint_position);
 
-  base::expected<OrchardStorage::Result, OrchardStorage::Error> Truncate(
-      const mojom::AccountIdPtr& account_id,
-      uint32_t checkpoint_id);
+  bool Truncate(const mojom::AccountIdPtr& account_id, uint32_t checkpoint_id);
 
  private:
   friend class OrchardSyncStateTest;
 
   // Testing
   void OverrideShardTreeForTesting(const mojom::AccountIdPtr& account_id);
-  OrchardStorage* orchard_storage();
+  OrchardStorage& orchard_storage();
 
   orchard::OrchardShardTree& GetOrCreateShardTree(
       const mojom::AccountIdPtr& account_id) LIFETIME_BOUND;
 
-  std::unique_ptr<OrchardStorage> storage_;
+  OrchardStorage storage_;
   std::map<std::string, std::unique_ptr<orchard::OrchardShardTree>>
       shard_trees_;
 

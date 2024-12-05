@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/types/pass_key.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/authorized_orchard_bundle.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 
@@ -15,15 +16,14 @@ namespace brave_wallet::orchard {
 
 class AuthorizedOrchardBundleImpl : public AuthorizedOrchardBundle {
  public:
+  AuthorizedOrchardBundleImpl(
+      base::PassKey<class UnauthorizedOrchardBundleImpl>,
+      ::rust::Box<CxxOrchardAuthorizedBundle> orchard_authorized_bundle);
   ~AuthorizedOrchardBundleImpl() override;
 
   std::vector<uint8_t> GetOrchardRawTxPart() override;
 
  private:
-  explicit AuthorizedOrchardBundleImpl(
-      ::rust::Box<CxxOrchardAuthorizedBundle> orchard_authorized_bundle);
-  friend class UnauthorizedOrchardBundleImpl;
-
   ::rust::Box<CxxOrchardAuthorizedBundle> orchard_authorized_bundle_;
 };
 

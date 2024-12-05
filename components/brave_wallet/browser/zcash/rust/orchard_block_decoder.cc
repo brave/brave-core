@@ -70,8 +70,8 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodeBlocks(
       fvk, std::move(prior_tree_state), std::move(orchard_actions));
 
   if (decode_result->is_ok()) {
-    return base::WrapUnique<OrchardDecodedBlocksBundle>(
-        new OrchardDecodedBlocksBundleImpl(decode_result->unwrap()));
+    return std::make_unique<OrchardDecodedBlocksBundleImpl>(
+        base::PassKey<class OrchardBlockDecoder>(), decode_result->unwrap());
   }
   return nullptr;
 }

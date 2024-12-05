@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/types/pass_key.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
@@ -18,16 +19,16 @@ struct CxxBatchOrchardDecodeBundle;
 class OrchardDecodedBlocksBundleImpl : public OrchardDecodedBlocksBundle {
  public:
   ~OrchardDecodedBlocksBundleImpl() override;
+  OrchardDecodedBlocksBundleImpl(
+      absl::variant<base::PassKey<class OrchardBlockDecoder>,
+                    base::PassKey<class TestingDecodedBundleBuilderImpl>>,
+      ::rust::Box<CxxBatchOrchardDecodeBundle>);
 
   std::optional<std::vector<::brave_wallet::OrchardNote>> GetDiscoveredNotes()
       override;
   CxxBatchOrchardDecodeBundle& GetDecodeBundle();
 
  private:
-  friend class OrchardBlockDecoder;
-  friend class TestingDecodedBundleBuilderImpl;
-  explicit OrchardDecodedBlocksBundleImpl(
-      ::rust::Box<CxxBatchOrchardDecodeBundle>);
   ::rust::Box<CxxBatchOrchardDecodeBundle> batch_decode_result_;
 };
 

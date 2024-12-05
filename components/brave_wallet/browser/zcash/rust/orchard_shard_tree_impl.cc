@@ -52,7 +52,8 @@ bool OrchardShardTreeImpl::TruncateToCheckpoint(uint32_t checkpoint_id) {
 }
 
 OrchardShardTreeImpl::OrchardShardTreeImpl(
-    rust::Box<CxxOrchardShardTreeBundle> orcard_shard_tree)
+    base::PassKey<class OrchardShardTree>,
+    ::rust::Box<CxxOrchardShardTreeBundle> orcard_shard_tree)
     : orhcard_shard_tree_(std::move(orcard_shard_tree)) {}
 
 OrchardShardTreeImpl::~OrchardShardTreeImpl() {}
@@ -66,8 +67,8 @@ std::unique_ptr<OrchardShardTree> OrchardShardTree::Create(
   if (!shard_tree_result->is_ok()) {
     return nullptr;
   }
-  return base::WrapUnique<OrchardShardTree>(
-      new OrchardShardTreeImpl(shard_tree_result->unwrap()));
+  return std::make_unique<OrchardShardTreeImpl>(
+      base::PassKey<class OrchardShardTree>(), shard_tree_result->unwrap());
 }
 
 }  // namespace brave_wallet::orchard

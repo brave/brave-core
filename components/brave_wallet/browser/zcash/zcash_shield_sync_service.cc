@@ -171,24 +171,21 @@ void ZCashShieldSyncService::GetOrCreateAccount() {
 }
 
 void ZCashShieldSyncService::OnGetAccountMeta(
-    base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error> result) {
-  if (result.has_value()) {
-    account_meta_ = *result;
-    if (account_meta_->latest_scanned_block_id.value() &&
-        (account_meta_->latest_scanned_block_id.value() <
-         account_meta_->account_birthday)) {
-      error_ = Error{ErrorCode::kFailedToRetrieveAccount, ""};
-    }
+    base::expected<std::optional<OrchardStorage::AccountMeta>,
+                   OrchardStorage::Error> result) {
+  if (!result.has_value()) {
+    error_ = Error{ErrorCode::kFailedToRetrieveAccount, result.error().message};
     ScheduleWorkOnTask();
-    return;
   }
-
-  if (result.error().error_code ==
-      OrchardStorage::ErrorCode::kAccountNotFound) {
+  if (!result.value()) {
     InitAccount();
     return;
-  } else {
-    error_ = Error{ErrorCode::kFailedToRetrieveAccount, result.error().message};
+  }
+  account_meta_ = *result;
+  if (account_meta_->latest_scanned_block_id.value() &&
+      (account_meta_->latest_scanned_block_id.value() <
+       account_meta_->account_birthday)) {
+    error_ = Error{ErrorCode::kFailedToRetrieveAccount, ""};
   }
   ScheduleWorkOnTask();
 }
@@ -303,9 +300,9 @@ void ZCashShieldSyncService::OnGetTreeStateForChainReorg(
 
 void ZCashShieldSyncService::OnDatabaseUpdatedForChainReorg(
     uint32_t new_block_height,
-    std::optional<OrchardStorage::Error> error) {
-  if (error) {
-    error_ = Error{ErrorCode::kFailedToUpdateDatabase, error->message};
+    base::expected<OrchardStorage::Result, OrchardStorage::Error> result) {
+  if (!result.has_value()) {
+    error_ = Error{ErrorCode::kFailedToUpdateDatabase, result.error().message};
     ScheduleWorkOnTask();
     return;
   }
@@ -417,9 +414,9 @@ void ZCashShieldSyncService::UpdateNotes(
 
 void ZCashShieldSyncService::UpdateNotesComplete(
     uint32_t new_latest_scanned_block,
-    std::optional<OrchardStorage::Error> error) {
-  if (error) {
-    error_ = Error{ErrorCode::kFailedToUpdateDatabase, error->message};
+    base::expected<OrchardStorage::Result, OrchardStorage::Error> result) {
+  if (!result.has_value()) {
+    error_ = Error{ErrorCode::kFailedToUpdateDatabase, result.error().message};
   } else {
     latest_scanned_block_ = new_latest_scanned_block;
     spendable_notes_ = std::nullopt;

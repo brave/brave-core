@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/types/pass_key.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/unauthorized_orchard_bundle.h"
 #include "third_party/rust/cxx/v1/cxx.h"
@@ -16,6 +17,9 @@ namespace brave_wallet::orchard {
 
 class UnauthorizedOrchardBundleImpl : public UnauthorizedOrchardBundle {
  public:
+  UnauthorizedOrchardBundleImpl(
+      base::PassKey<class UnauthorizedOrchardBundle>,
+      ::rust::Box<CxxOrchardUnauthorizedBundle> orchard_unauthorized_bundle);
   ~UnauthorizedOrchardBundleImpl() override;
 
   std::array<uint8_t, kZCashDigestSize> GetDigest() override;
@@ -23,10 +27,6 @@ class UnauthorizedOrchardBundleImpl : public UnauthorizedOrchardBundle {
       const std::array<uint8_t, kZCashDigestSize>& sighash) override;
 
  private:
-  friend class UnauthorizedOrchardBundle;
-  explicit UnauthorizedOrchardBundleImpl(
-      ::rust::Box<CxxOrchardUnauthorizedBundle> orchard_unauthorized_bundle);
-
   ::rust::Box<CxxOrchardUnauthorizedBundle> orchard_unauthorized_bundle_;
 };
 

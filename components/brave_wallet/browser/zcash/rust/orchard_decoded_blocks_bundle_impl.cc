@@ -14,6 +14,8 @@
 namespace brave_wallet::orchard {
 
 OrchardDecodedBlocksBundleImpl::OrchardDecodedBlocksBundleImpl(
+    absl::variant<base::PassKey<class OrchardBlockDecoder>,
+                  base::PassKey<class TestingDecodedBundleBuilderImpl>>,
     rust::Box<CxxBatchOrchardDecodeBundle> v)
     : batch_decode_result_(std::move(v)) {}
 

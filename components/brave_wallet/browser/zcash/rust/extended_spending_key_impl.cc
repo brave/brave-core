@@ -12,6 +12,8 @@
 namespace brave_wallet::orchard {
 
 ExtendedSpendingKeyImpl::ExtendedSpendingKeyImpl(
+    absl::variant<base::PassKey<class ExtendedSpendingKey>,
+                  base::PassKey<class ExtendedSpendingKeyImpl>>,
     rust::Box<CxxOrchardExtendedSpendingKey> esk)
     : extended_spending_key_(std::move(esk)) {}
 
@@ -21,8 +23,8 @@ std::unique_ptr<ExtendedSpendingKey>
 ExtendedSpendingKeyImpl::DeriveHardenedChild(uint32_t index) {
   auto esk = extended_spending_key_->derive(index);
   if (esk->is_ok()) {
-    return base::WrapUnique<ExtendedSpendingKey>(
-        new ExtendedSpendingKeyImpl(esk->unwrap()));
+    return std::make_unique<ExtendedSpendingKeyImpl>(
+        base::PassKey<class ExtendedSpendingKeyImpl>(), esk->unwrap());
   }
   return nullptr;
 }
@@ -41,8 +43,8 @@ std::unique_ptr<ExtendedSpendingKey> ExtendedSpendingKey::GenerateFromSeed(
   auto mk = generate_orchard_extended_spending_key_from_seed(
       rust::Slice<const uint8_t>{seed.data(), seed.size()});
   if (mk->is_ok()) {
-    return base::WrapUnique<ExtendedSpendingKey>(
-        new ExtendedSpendingKeyImpl(mk->unwrap()));
+    return std::make_unique<ExtendedSpendingKeyImpl>(
+        base::PassKey<class ExtendedSpendingKey>(), mk->unwrap());
   }
   return nullptr;
 }

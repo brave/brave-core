@@ -45,7 +45,7 @@ TEST_F(OrchardStorageTest, AccountMeta) {
 
   {
     auto result = orchard_storage_->GetAccountMeta(account_id_1);
-    EXPECT_FALSE(result.has_value());
+    EXPECT_FALSE(result.value());
   }
 
   EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_1, 100).has_value());
@@ -53,9 +53,9 @@ TEST_F(OrchardStorageTest, AccountMeta) {
   {
     auto result = orchard_storage_->GetAccountMeta(account_id_1);
     EXPECT_TRUE(result.has_value());
-    EXPECT_EQ(result->account_birthday, 100u);
-    EXPECT_FALSE(result->latest_scanned_block_id);
-    EXPECT_FALSE(result->latest_scanned_block_hash);
+    EXPECT_EQ(result.value()->account_birthday, 100u);
+    EXPECT_FALSE(result.value()->latest_scanned_block_id);
+    EXPECT_FALSE(result.value()->latest_scanned_block_hash);
   }
 
   {
@@ -70,9 +70,9 @@ TEST_F(OrchardStorageTest, AccountMeta) {
   {
     auto result = orchard_storage_->GetAccountMeta(account_id_2);
     EXPECT_TRUE(result.has_value());
-    EXPECT_EQ(result->account_birthday, 200u);
-    EXPECT_FALSE(result->latest_scanned_block_id);
-    EXPECT_FALSE(result->latest_scanned_block_hash);
+    EXPECT_EQ(result.value()->account_birthday, 200u);
+    EXPECT_FALSE(result.value()->latest_scanned_block_id);
+    EXPECT_FALSE(result.value()->latest_scanned_block_hash);
   }
 }
 
@@ -93,7 +93,9 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
     notes.push_back(GenerateMockOrchardNote(account_id_1, 101, 1));
     notes.push_back(GenerateMockOrchardNote(account_id_1, 105, 2));
 
-    orchard_storage_->UpdateNotes(account_id_1, notes, {}, 200, "hash200");
+    EXPECT_TRUE(
+        orchard_storage_->UpdateNotes(account_id_1, notes, {}, 200, "hash200")
+            .has_value());
   }
 
   // Update notes for account 2
@@ -103,7 +105,9 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
     notes.push_back(GenerateMockOrchardNote(account_id_2, 115, 2));
     notes.push_back(GenerateMockOrchardNote(account_id_2, 117, 3));
 
-    orchard_storage_->UpdateNotes(account_id_2, notes, {}, 200, "hash200");
+    EXPECT_TRUE(
+        orchard_storage_->UpdateNotes(account_id_2, notes, {}, 200, "hash200")
+            .has_value());
   }
 
   // Check account_1 spendable notes
@@ -142,7 +146,9 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
     spends.push_back(
         OrchardNoteSpend{203, GenerateMockNullifier(account_id_1, 1)});
 
-    orchard_storage_->UpdateNotes(account_id_1, notes, spends, 300, "hash300");
+    EXPECT_TRUE(orchard_storage_
+                    ->UpdateNotes(account_id_1, notes, spends, 300, "hash300")
+                    .has_value());
   }
 
   // Update notes for account 2
@@ -157,7 +163,9 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
     spends.push_back(
         OrchardNoteSpend{233, GenerateMockNullifier(account_id_2, 3)});
 
-    orchard_storage_->UpdateNotes(account_id_2, notes, spends, 300, "hash300");
+    EXPECT_TRUE(orchard_storage_
+                    ->UpdateNotes(account_id_2, notes, spends, 300, "hash300")
+                    .has_value());
   }
 
   // Check account_1 spendable notes
@@ -187,14 +195,14 @@ TEST_F(OrchardStorageTest, PutDiscoveredNotes) {
   // Accounts meta updated
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
-    EXPECT_EQ(account_meta->latest_scanned_block_id, 300u);
-    EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash300");
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_id, 300u);
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_hash, "hash300");
   }
 
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
-    EXPECT_EQ(account_meta->latest_scanned_block_id, 300u);
-    EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash300");
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_id, 300u);
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_hash, "hash300");
   }
 }
 
@@ -226,7 +234,9 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
     spends.push_back(
         OrchardNoteSpend{103, GenerateMockNullifier(account_id_1, 3)});
 
-    orchard_storage_->UpdateNotes(account_id_1, notes, spends, 450, "hash450");
+    EXPECT_TRUE(orchard_storage_
+                    ->UpdateNotes(account_id_1, notes, spends, 450, "hash450")
+                    .has_value());
   }
 
   // Update notes for account 2
@@ -245,13 +255,15 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
     spends.push_back(
         OrchardNoteSpend{333, GenerateMockNullifier(account_id_2, 3)});
 
-    orchard_storage_->UpdateNotes(account_id_2, notes, spends, 500, "hash500");
+    EXPECT_TRUE(orchard_storage_
+                    ->UpdateNotes(account_id_2, notes, spends, 500, "hash500")
+                    .has_value());
   }
 
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
-    EXPECT_EQ(account_meta->latest_scanned_block_id, 500u);
-    EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash500");
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_id, 500u);
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_hash, "hash500");
     auto account_2_spendable_notes =
         orchard_storage_->GetSpendableNotes(account_id_2);
     EXPECT_EQ(2u, account_2_spendable_notes->size());
@@ -261,19 +273,20 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
 
   // Call handle chain reorg so notes and spends with index > 300 will be
   // deleted
-  orchard_storage_->HandleChainReorg(account_id_2, 300u, "hash300");
+  EXPECT_TRUE(orchard_storage_->HandleChainReorg(account_id_2, 300u, "hash300")
+                  .has_value());
 
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_2);
-    EXPECT_EQ(account_meta->latest_scanned_block_id, 300u);
-    EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash300");
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_id, 300u);
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_hash, "hash300");
   }
 
   // Unused account is untouched
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
-    EXPECT_EQ(account_meta->latest_scanned_block_id, 450u);
-    EXPECT_EQ(account_meta->latest_scanned_block_hash, "hash450");
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_id, 450u);
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_hash, "hash450");
   }
 
   // Check account_1 spendable notes
@@ -314,12 +327,13 @@ TEST_F(OrchardStorageTest, HandleChainReorg) {
               GenerateMockOrchardNote(account_id_2, 213, 3));
   }
 
-  orchard_storage_->HandleChainReorg(account_id_1, 0u, "hash0");
+  EXPECT_TRUE(orchard_storage_->HandleChainReorg(account_id_1, 0u, "hash0")
+                  .has_value());
   // Account 1 was reorged on 0
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id_1);
-    EXPECT_EQ(account_meta->latest_scanned_block_id.value(), 0u);
-    EXPECT_EQ(account_meta->latest_scanned_block_hash.value(), "hash0");
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_id.value(), 0u);
+    EXPECT_EQ(account_meta.value()->latest_scanned_block_hash.value(), "hash0");
   }
 
   // Check account_1 spendable notes
@@ -445,6 +459,7 @@ TEST_F(OrchardStorageTest, TruncateShards) {
 
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
             orchard_storage_->TruncateShards(account_id, 5).value());
+
   for (uint32_t i = 0; i < 5; i++) {
     EXPECT_EQ(CreateShard(i, 1), **(orchard_storage_->GetShard(
                                      account_id, OrchardShardAddress(1, i))));
@@ -569,7 +584,7 @@ TEST_F(OrchardStorageTest, RemoveChekpoint) {
   EXPECT_EQ(OrchardCheckpointBundle(2, checkpoint2.Clone()),
             orchard_storage_->GetCheckpoint(account_id, 2).value().value());
   // Unexisting checkpoint.
-  EXPECT_EQ(OrchardStorage::Result::kFailure,
+  EXPECT_EQ(OrchardStorage::Result::kNone,
             orchard_storage_->RemoveCheckpoint(account_id, 3).value());
 }
 
@@ -583,6 +598,9 @@ TEST_F(OrchardStorageTest, CheckpointId) {
             orchard_storage_->MinCheckpointId(account_id).value());
   EXPECT_EQ(std::nullopt,
             orchard_storage_->MaxCheckpointId(account_id).value());
+  EXPECT_EQ(std::nullopt,
+            orchard_storage_->GetMaxCheckpointedHeight(account_id, 100000, 0)
+                .value());
 
   OrchardCheckpoint checkpoint1;
   checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
@@ -614,6 +632,10 @@ TEST_F(OrchardStorageTest, CheckpointId) {
 
   EXPECT_EQ(1, orchard_storage_->MinCheckpointId(account_id).value());
   EXPECT_EQ(4, orchard_storage_->MaxCheckpointId(account_id).value());
+  EXPECT_EQ(4, orchard_storage_->GetMaxCheckpointedHeight(account_id, 100000, 0)
+                   .value());
+  EXPECT_EQ(
+      2, orchard_storage_->GetMaxCheckpointedHeight(account_id, 3, 0).value());
 }
 
 TEST_F(OrchardStorageTest, CheckpointAtPosition) {
@@ -621,6 +643,9 @@ TEST_F(OrchardStorageTest, CheckpointAtPosition) {
                                             mojom::KeyringId::kZCashMainnet,
                                             mojom::AccountKind::kDerived, 0);
   EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id, 100).has_value());
+
+  EXPECT_EQ(std::nullopt,
+            orchard_storage_->GetCheckpointAtDepth(account_id, 2).value());
 
   OrchardCheckpoint checkpoint1;
   checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
@@ -720,6 +745,8 @@ TEST_F(OrchardStorageTest, AddCheckpoint) {
                                             mojom::KeyringId::kZCashMainnet,
                                             mojom::AccountKind::kDerived, 0);
   EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id, 100).has_value());
+  EXPECT_EQ(std::nullopt,
+            orchard_storage_->GetCheckpoint(account_id, 1).value());
 
   OrchardCheckpoint checkpoint1;
   checkpoint1.marks_removed = std::vector<uint32_t>({1, 2, 3});
@@ -861,7 +888,9 @@ TEST_F(OrchardStorageTest, ResetAccountSyncState) {
     spends.push_back(
         OrchardNoteSpend{333, GenerateMockNullifier(account_id, 3)});
 
-    orchard_storage_->UpdateNotes(account_id, notes, spends, 200, "hash200");
+    EXPECT_TRUE(
+        orchard_storage_->UpdateNotes(account_id, notes, spends, 200, "hash200")
+            .has_value());
   }
 
   {
@@ -878,8 +907,8 @@ TEST_F(OrchardStorageTest, ResetAccountSyncState) {
 
   {
     auto account_meta = orchard_storage_->GetAccountMeta(account_id);
-    EXPECT_FALSE(account_meta->latest_scanned_block_id);
-    EXPECT_FALSE(account_meta->latest_scanned_block_hash);
+    EXPECT_FALSE(account_meta.value()->latest_scanned_block_id);
+    EXPECT_FALSE(account_meta.value()->latest_scanned_block_hash);
   }
 
   EXPECT_EQ(0u,
@@ -928,7 +957,7 @@ TEST_F(OrchardStorageTest, UpdateCheckpoint) {
     checkpoint.marks_removed = std::vector<uint32_t>({1});
     checkpoint.tree_state_position = 15;
     EXPECT_EQ(
-        OrchardStorage::Result::kFailure,
+        OrchardStorage::Result::kNone,
         orchard_storage_->UpdateCheckpoint(account_id, 5, checkpoint).value());
   }
 }

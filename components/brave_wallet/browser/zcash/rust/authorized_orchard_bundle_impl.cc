@@ -10,6 +10,7 @@
 namespace brave_wallet::orchard {
 
 AuthorizedOrchardBundleImpl::AuthorizedOrchardBundleImpl(
+    base::PassKey<class UnauthorizedOrchardBundleImpl>,
     ::rust::Box<CxxOrchardAuthorizedBundle> orchard_authorized_bundle)
     : orchard_authorized_bundle_(std::move(orchard_authorized_bundle)) {}
 

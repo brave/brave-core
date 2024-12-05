@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/types/pass_key.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/extended_spending_key.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "third_party/rust/cxx/v1/cxx.h"
@@ -16,8 +17,12 @@ namespace brave_wallet::orchard {
 
 // Implements Orchard key generation from
 // https://zips.z.cash/zip-0032#orchard-child-key-derivation
-class ExtendedSpendingKeyImpl : ExtendedSpendingKey {
+class ExtendedSpendingKeyImpl : public ExtendedSpendingKey {
  public:
+  ExtendedSpendingKeyImpl(
+      absl::variant<base::PassKey<class ExtendedSpendingKey>,
+                    base::PassKey<class ExtendedSpendingKeyImpl>>,
+      rust::Box<CxxOrchardExtendedSpendingKey> esk);
   ExtendedSpendingKeyImpl(const ExtendedSpendingKeyImpl&) = delete;
   ExtendedSpendingKeyImpl& operator=(const ExtendedSpendingKeyImpl&) = delete;
 
@@ -36,9 +41,6 @@ class ExtendedSpendingKeyImpl : ExtendedSpendingKey {
   OrchardFullViewKey GetFullViewKey() override;
 
  private:
-  friend class ExtendedSpendingKey;
-  explicit ExtendedSpendingKeyImpl(
-      rust::Box<CxxOrchardExtendedSpendingKey> esk);
   // Extended spending key is a root key of an account, all other keys can be
   // derived from esk
   rust::Box<CxxOrchardExtendedSpendingKey> extended_spending_key_;
