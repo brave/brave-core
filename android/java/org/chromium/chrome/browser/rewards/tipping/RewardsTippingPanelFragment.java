@@ -341,8 +341,12 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                             dismissRewardsPanel();
                         });
 
-        BraveRewardsHelper.setSpan(getActivity(), text, textSpannableString,
-                R.string.monthly_contributions, monthlyContributionClickableSpan);
+        BraveRewardsHelper.setSpan(
+                getActivity(),
+                text,
+                textSpannableString,
+                R.string.monthly_contributions,
+                monthlyContributionClickableSpan);
 
         return textSpannableString;
     }

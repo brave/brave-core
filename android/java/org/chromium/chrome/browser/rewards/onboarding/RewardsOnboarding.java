@@ -299,7 +299,9 @@ public class RewardsOnboarding implements BraveRewardsObserver {
                         });
         int learnMoreIndex = text.indexOf(context.getResources().getString(R.string.learn_more));
 
-        ss.setSpan(clickableSpan, learnMoreIndex,
+        ss.setSpan(
+                clickableSpan,
+                learnMoreIndex,
                 learnMoreIndex + context.getResources().getString(R.string.learn_more).length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return ss;
