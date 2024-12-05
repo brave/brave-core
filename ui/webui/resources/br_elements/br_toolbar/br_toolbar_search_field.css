@@ -13,6 +13,7 @@
     --search-icon-padding: 4px;
     --search-button-width: calc(var(--search-icon-size) + 2 * var(--search-padding) + 2 * var(--search-icon-padding));
     --leo-icon-size: var(--search-icon-size);
+    --animation-duration: 200ms;
 
     position: absolute;
     bottom: 0;
@@ -40,7 +41,7 @@
     position: relative;
     height: 100%;
     width: var(--search-button-width);
-    transition: width 400ms ease-in-out 0s;
+    transition: width var(--animation-duration) ease-in-out 0s;
     display: flex;
     align-items: center;
 }
@@ -67,7 +68,7 @@
 
 .page-search_box {
     background-image: var(--toolbar-background);
-    transition: opacity 400ms ease-in-out 0s;
+    transition: opacity var(--animation-duration) ease-in-out 0s;
     opacity: 0;
     position: absolute;
     top: 0;

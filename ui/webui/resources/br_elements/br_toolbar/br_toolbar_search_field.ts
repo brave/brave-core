@@ -121,8 +121,6 @@ export class BraveToolbarSearchField extends BraveToolbarSearchFieldBase {
   onInputBlur_() {
     this.isBlurring_ = true
     this.searchFocused_ = false
-    if (!this.hasSearchText)
-      this.showingSearch = false
   }
 
   onSearchTermKeydown_(e: KeyboardEvent) {
