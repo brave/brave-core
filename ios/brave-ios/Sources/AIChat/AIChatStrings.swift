@@ -612,8 +612,8 @@ extension Strings {
       "aichat.advancedSettingsViewReceiptTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "View AppStore Receipt",
-      comment: "The title for the button that allows the user to view the AppStore Receipt"
+      value: "View App Store Receipt",
+      comment: "The title for the button that allows the user to view the App Store Receipt"
     )
     public static let appStoreErrorTitle = NSLocalizedString(
       "aichat.appStoreErrorTitle",

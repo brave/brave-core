@@ -592,8 +592,8 @@ extension Strings {
     public static let settingsViewReceipt = NSLocalizedString(
       "vpn.settingsViewReceipt",
       bundle: .module,
-      value: "View AppStore Receipt",
-      comment: "Button to allow the user to view the app-store receipt."
+      value: "View App Store Receipt",
+      comment: "Button to allow the user to view the App Store receipt."
     )
 
     public static let settingsServerHost = NSLocalizedString(
