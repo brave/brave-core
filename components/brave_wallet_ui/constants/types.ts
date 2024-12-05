@@ -1100,6 +1100,17 @@ export const StorybookTransactionOptions: StorybookTransactionTypes[] = [
   'Bridge',
   'Approve'
 ]
+
+export type StorybookCoinTypes = 'ETH' | 'SOL' | 'BTC' | 'ZEC' | 'FIL'
+export const StorybookCoinTypeOptions: StorybookCoinTypes[] = [
+  'ETH',
+  'SOL',
+  'BTC',
+  'ZEC',
+  'FIL'
+]
+
 export type StorybookTransactionArgs = {
   transactionType: StorybookTransactionTypes
+  coinType: StorybookCoinTypes
 }

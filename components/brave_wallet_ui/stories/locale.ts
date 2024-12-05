@@ -1235,6 +1235,11 @@ provideStrings({
   braveWalletCancelTransactionDescription:
     'A new transaction will be created to cancel your existing transaction.',
   braveWalletPendingTransactions: '$1 more transactions pending.',
+  braveWalletSwapping: 'Swapping',
+  braveWalletBridging: 'Bridging',
+  braveWalletSwappingOrBridgingOnNetwork: '$1$5$2 on $3$6$4',
+  braveWalletErrorAttemptingToTransactOnNetwork:
+    'There was an error attempting to $1$5$2 on $3$6$4',
   // Submitted
   braveWalletTransactionSubmittedTitle: 'Transaction submitted',
   braveWalletTransactionSignedTitle: 'Transaction signed',
