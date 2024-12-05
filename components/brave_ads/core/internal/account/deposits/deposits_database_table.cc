@@ -89,7 +89,6 @@ void GetForCreativeInstanceIdCallback(
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get deposit value");
-
     return std::move(callback).Run(/*success=*/false,
                                    /*deposit=*/std::nullopt);
   }
@@ -105,7 +104,6 @@ void GetForCreativeInstanceIdCallback(
   DepositInfo deposit = FromMojomRow(mojom_db_row);
   if (!deposit.IsValid()) {
     BLOG(0, "Invalid deposit");
-
     return std::move(callback).Run(/*success=*/false, /*deposit=*/std::nullopt);
   }
 
@@ -129,7 +127,6 @@ void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
     BLOG(0, "Invalid deposit");
-
     return std::move(callback).Run(/*success=*/false);
   }
 

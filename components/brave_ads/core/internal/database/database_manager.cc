@@ -152,7 +152,6 @@ void DatabaseManager::RazeAndCreateCallback(ResultCallback callback,
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Failed to raze database for schema version " << from_version);
-
     return std::move(callback).Run(/*success=*/false);
   }
 

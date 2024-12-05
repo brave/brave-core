@@ -148,7 +148,6 @@ void SearchResultAdEventHandler::MaybeFireViewedEventCallback(
     const bool success) const {
   if (!success) {
     BLOG(0, "Failed to save search result ad deposit");
-
     return FailedToFireEvent(ad,
                              mojom::SearchResultAdEventType::kViewedImpression,
                              std::move(callback));

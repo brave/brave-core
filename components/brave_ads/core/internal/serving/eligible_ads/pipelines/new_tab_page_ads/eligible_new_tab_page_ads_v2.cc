@@ -55,7 +55,6 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsForUserModelCallback(
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(0, "Failed to get ad events");
-
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
@@ -87,7 +86,6 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
     const CreativeNewTabPageAdList& creative_ads) {
   if (!success) {
     BLOG(0, "Failed to get ads");
-
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 

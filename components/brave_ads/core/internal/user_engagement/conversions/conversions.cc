@@ -224,7 +224,6 @@ void Conversions::ConvertCallback(
     const bool success) {
   if (!success) {
     BLOG(0, "Failed to record ad conversion event");
-
     return NotifyFailedToConvertAd(ad_event.creative_instance_id);
   }
 

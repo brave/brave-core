@@ -137,7 +137,6 @@ void SiteVisit::LandedOnPageCallback(const int32_t tab_id,
                                      const bool success) const {
   if (!success) {
     BLOG(0, "Failed to record ad page land event");
-
     return NotifyDidNotLandOnPage(tab_id, ad);
   }
 
