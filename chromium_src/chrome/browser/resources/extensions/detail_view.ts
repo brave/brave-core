@@ -1,13 +1,10 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
-
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js';
-
 
 RegisterPolymerTemplateModifications({
   'extensions-detail-view': (templateContent: DocumentFragment) => {
@@ -42,3 +39,5 @@ RegisterPolymerTemplateModifications({
     incognitoWarningDiv.appendChild(privateAndTorWarningSpan)
   }
 })
+
+export * from './detail_view-chromium.js'

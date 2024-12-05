@@ -5,9 +5,11 @@
 
 import { injectStyle } from '//resources/brave/lit_overriding.js'
 import { css } from '//resources/lit/v3_0/lit.rollup.js'
-import { ExtensionsToolbarElement } from '../toolbar.js'
+import { ExtensionsToolbarElement } from './toolbar.js'
 
 injectStyle(ExtensionsToolbarElement, css`
   :host #devDrawer {
     overflow: hidden
   }`)
+
+export * from './toolbar-chromium.js'

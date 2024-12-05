@@ -5,7 +5,7 @@
 
 import { injectStyle } from '//resources/brave/lit_overriding.js'
 import { css } from '//resources/lit/v3_0/lit.rollup.js'
-import { ExtensionsSidebarElement } from '../sidebar.js'
+import { ExtensionsSidebarElement } from './sidebar-chromium.js'
 
 injectStyle(ExtensionsSidebarElement, css`
   .cr-nav-menu-item {
@@ -40,5 +40,6 @@ injectStyle(ExtensionsSidebarElement, css`
   #moreExtensions {
     display: none !important;
   }
-`
-)
+`)
+
+export * from './sidebar-chromium.js'
