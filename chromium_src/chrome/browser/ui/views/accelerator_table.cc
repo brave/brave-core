@@ -16,6 +16,7 @@
 namespace {
 
 constexpr AcceleratorMapping kBraveAcceleratorMap[] = {
+    {ui::VKEY_S, ui::EF_CONTROL_DOWN | ui::EF_SHIFT_DOWN, IDC_SHARING_HUB_SCREENSHOT},
     {ui::VKEY_M, ui::EF_CONTROL_DOWN, IDC_TOGGLE_TAB_MUTE},
     // Ctrl+B(or Cmd+B)
     {ui::VKEY_B, ui::EF_PLATFORM_ACCELERATOR, IDC_TOGGLE_SIDEBAR},
