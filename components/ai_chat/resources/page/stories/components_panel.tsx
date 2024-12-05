@@ -21,6 +21,7 @@ import Main from '../components/main'
 import './story_utils/locale'
 import ACTIONS_LIST from './story_utils/actions'
 import styles from './style.module.scss'
+import StorybookConversationEntries from './story_utils/ConversationEntries'
 import { ConversationEntriesContext, ConversationEntriesReactContext } from '../../untrusted_conversation_frame/conversation_entries_context'
 
 function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
@@ -487,6 +488,7 @@ const preview: Meta<CustomArgs> = {
 
       const [showSidebar, setShowSidebar] = useState(false)
       const aiChatContext: AIChatContext = {
+        conversationEntriesComponent: StorybookConversationEntries,
         initialized: options.args.initialized,
         editingConversationId: null,
         visibleConversations: options.args.hasConversationListItems ? CONVERSATIONS : [],
@@ -562,13 +564,22 @@ const preview: Meta<CustomArgs> = {
         setIsToolsMenuOpen: () => {}
       }
 
+      const conversationEntriesContext: ConversationEntriesContext = {
+        conversationHistory: conversationContext.conversationHistory,
+        isGenerating: conversationContext.isGenerating,
+        isLeoModel: conversationContext.isCurrentModelLeo,
+        contentUsedPercentage: conversationContext.associatedContentInfo?.contentUsedPercentage ?? 100,
+        canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
+        isMobile: aiChatContext.isMobile
+      }
+
       return (
         <AIChatReactContext.Provider value={aiChatContext}>
           <ActiveChatContext.Provider value={activeChatContext}>
             <ConversationReactContext.Provider value={conversationContext}>
-            <ThemeProvider>
-              <Story />
-            </ThemeProvider>
+              <ConversationEntriesReactContext.Provider value={conversationEntriesContext}>
+                <Story />
+              </ConversationEntriesReactContext.Provider>
             </ConversationReactContext.Provider>
           </ActiveChatContext.Provider>
         </AIChatReactContext.Provider>
