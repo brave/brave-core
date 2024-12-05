@@ -105,6 +105,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
 
         checkReferral();
+        maybeUpdateFirstRunDefaultValues();
     }
 
     private void checkReferral() {
@@ -558,5 +559,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     @Override
     public int getSecondaryActivity() {
         return SecondaryActivity.FIRST_RUN;
+    }
+
+    private void maybeUpdateFirstRunDefaultValues() {
+        if (PackageUtils.isFirstInstall(this)) {
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(
+                            BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED_DEFAULT_VALUE, false);
+        }
     }
 }

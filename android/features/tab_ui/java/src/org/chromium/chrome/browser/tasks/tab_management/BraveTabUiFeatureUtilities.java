@@ -11,6 +11,11 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 public class BraveTabUiFeatureUtilities {
     public static boolean isBraveTabGroupsEnabled() {
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true);
+                .readBoolean(
+                        BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED,
+                        ChromeSharedPreferences.getInstance()
+                                .readBoolean(
+                                        BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED_DEFAULT_VALUE,
+                                        true));
     }
 }
