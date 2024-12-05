@@ -21,10 +21,10 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
       topToolbar.updateTranslateButtonState(state)
 
       showTranslateOnboarding(tab: tab) { [weak tab] translateEnabled in
-        let scriptHandler =
-          tab?.getContentScript(name: BraveTranslateScriptHandler.scriptName)
-          as? BraveTranslateScriptHandler
-        if let tabHelper = scriptHandler?.tabHelper {
+        let tabHelper =
+          tab?.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
+          as? BraveTranslateTabHelper
+        if let tabHelper {
           tabHelper.startTranslation(canShowToast: true)
         }
       }
@@ -63,12 +63,11 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
               self.topToolbar.locationView.translateButton.setOnboardingState(enabled: false)
               Preferences.Translate.translateEnabled.value = true
 
-              let scriptHandler =
-                tab.getContentScript(
-                  name: BraveTranslateScriptHandler.scriptName
-                ) as? BraveTranslateScriptHandler
+              let tabHelper =
+                tab.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
+                as? BraveTranslateTabHelper
 
-              scriptHandler?.tabHelper.presentUI(on: self)
+              tabHelper?.presentUI(on: self)
             },
             onDisableFeature: { [weak self, weak tab] in
               guard let tab = tab, let self = self else { return }
@@ -102,13 +101,11 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
           self.topToolbar.locationView.translateButton.setOnboardingState(enabled: false)
 
           if Preferences.Translate.translateEnabled.value {
-            let scriptHandler =
-              tab.getContentScript(
-                name: BraveTranslateScriptHandler.scriptName
-              )
-              as? BraveTranslateScriptHandler
+            let tabHelper =
+              tab.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
+              as? BraveTranslateTabHelper
 
-            scriptHandler?.tabHelper.presentUI(on: self)
+            tabHelper?.presentUI(on: self)
 
             completion(true)
             return
@@ -127,13 +124,11 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     let popover = PopoverController(
       content: TranslateToast(languageInfo: languageInfo) { [weak tab] languageInfo in
 
-        let scriptHandler =
-          tab?.getContentScript(
-            name: BraveTranslateScriptHandler.scriptName
-          )
-          as? BraveTranslateScriptHandler
+        let tabHelper =
+          tab?.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
+          as? BraveTranslateTabHelper
 
-        scriptHandler?.tabHelper.startTranslation(canShowToast: false)
+        tabHelper?.startTranslation(canShowToast: false)
       },
       autoLayoutConfiguration: nil
     )

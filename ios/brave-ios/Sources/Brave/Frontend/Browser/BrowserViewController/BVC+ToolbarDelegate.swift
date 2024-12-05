@@ -263,11 +263,10 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarDidPressTranslateButton(_ urlBar: TopToolbarView) {
     guard let tab = tabManager.selectedTab else { return }
-    let scriptHandler =
-      tab.getContentScript(name: BraveTranslateScriptHandler.scriptName)
-      as? BraveTranslateScriptHandler
+    let tabHelper =
+      tab.getTabHelper(named: BraveTranslateTabHelper.tabHelperName) as? BraveTranslateTabHelper
 
-    if let tabHelper = scriptHandler?.tabHelper {
+    if let tabHelper {
       tabHelper.presentUI(on: self)
 
       if tab.translationState == .active {

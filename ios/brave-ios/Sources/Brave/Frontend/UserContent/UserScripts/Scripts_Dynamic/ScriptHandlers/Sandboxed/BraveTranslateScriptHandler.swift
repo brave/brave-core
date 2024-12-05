@@ -18,11 +18,11 @@ protocol BraveTranslateScriptHandlerDelegate: NSObject {
 }
 
 class BraveTranslateScriptHandler: NSObject, TabContentScript {
-  let tabHelper: BraveTranslateTabHelper
+  private weak var tab: Tab?
   private static var elementScriptTask: Task<String, Error> = downloadElementScript()
 
-  init(tabHelper: BraveTranslateTabHelper) {
-    self.tabHelper = tabHelper
+  init(tab: Tab) {
+    self.tab = tab
     super.init()
   }
 
@@ -93,8 +93,10 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     }
 
     if command == "ready" {
-      Task { @MainActor [weak tabHelper] in
-        try await tabHelper?.setupTranslate()
+      Task { @MainActor [weak tab] in
+        try await
+          (tab?.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
+          as? BraveTranslateTabHelper)?.setupTranslate()
         replyHandler(nil, nil)
       }
 
@@ -102,12 +104,20 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     }
 
     if command == "request" {
-      Task { @MainActor in
+      Task { @MainActor [weak tab] in
         do {
           let message = try JSONDecoder().decode(
             BraveTranslateSession.RequestMessage.self,
             from: JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
           )
+
+          guard let tab = tab,
+            let tabHelper = tab.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
+              as? BraveTranslateTabHelper
+          else {
+            replyHandler(nil, BraveTranslateError.otherError.rawValue)
+            return
+          }
 
           let (data, response) = try await tabHelper.processTranslationRequest(message)
 
@@ -163,11 +173,11 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 }
 
 class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
-  private let tabHelper: BraveTranslateTabHelper
+  private weak var tab: Tab?
   private static let namespace = "translate_\(uniqueID)"
 
-  init(tabHelper: BraveTranslateTabHelper) {
-    self.tabHelper = tabHelper
+  init(tab: Tab) {
+    self.tab = tab
     super.init()
   }
 
@@ -187,6 +197,13 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
 
     guard let body = message.body as? [String: Any] else {
       Logger.module.error("Invalid Brave Translate Language Detection Message")
+      return
+    }
+
+    guard
+      let tabHelper = tab?.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
+        as? BraveTranslateTabHelper
+    else {
       return
     }
 

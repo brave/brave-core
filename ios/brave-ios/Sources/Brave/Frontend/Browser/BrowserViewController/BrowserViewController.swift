@@ -2659,12 +2659,8 @@ extension BrowserViewController: TabDelegate {
       tab.requestBlockingContentHelper,
     ]
 
-    let braveTranslateTabHelper = BraveTranslateTabHelper(tab: tab, delegate: self)
-
-    injectedScripts.append(
-      BraveTranslateScriptLanguageDetectionHandler(tabHelper: braveTranslateTabHelper)
-    )
-    injectedScripts.append(BraveTranslateScriptHandler(tabHelper: braveTranslateTabHelper))
+    injectedScripts.append(BraveTranslateScriptLanguageDetectionHandler(tab: tab))
+    injectedScripts.append(BraveTranslateScriptHandler(tab: tab))
 
     #if canImport(BraveTalk)
     injectedScripts.append(
@@ -2714,6 +2710,9 @@ extension BrowserViewController: TabDelegate {
       as? PlaylistFolderSharingScriptHandler)?.delegate = self
     (tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
       as? Web3NameServiceScriptHandler)?.delegate = self
+
+    // Tab Helpers
+    tab.addTabHelper(BraveTranslateTabHelper(tab: tab, delegate: self))
   }
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
