@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {loadTimeData} from '//resources/js/load_time_data.js';
+import {loadTimeData} from '//resources/js/load_time_data.js'
 import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 
 RegisterPolymerTemplateModifications({
@@ -21,7 +21,9 @@ RegisterPolymerTemplateModifications({
       const safeBrowsingReportingToggle = safeBrowsingReportingToggleSetting.
         content.getElementById('safeBrowsingReportingToggle')
       if (!safeBrowsingReportingToggle) {
-        console.error('[Brave Settings Overrides] Could not find safeBrowsingReportingToggle id on security page.')
+        console.error(
+          '[Brave Settings Overrides] Could not find ' +
+          ' safeBrowsingReportingToggle id on security page.')
       } else {
         safeBrowsingReportingToggle.setAttribute('hidden', 'true')
       }
@@ -32,24 +34,31 @@ RegisterPolymerTemplateModifications({
     } else {
       safeBrowsingEnhanced.setAttribute('hidden', 'true')
     }
-    const passwordsLeakSettings = templateContent.
-      querySelector(
-        'template[is=dom-if][if="[[!enablePasswordLeakToggleMove_]]"]'
-    )
-    if (!passwordsLeakSettings) {
+    const safeBrowsingStandard =
+      templateContent.getElementById('safeBrowsingStandard')
+    if (!safeBrowsingStandard) {
       console.error(
-        '[Brave Settings Overrides] Could not find template with ' +
-        'if=[[!enablePasswordLeakToggleMove_]] on security page.')
+        '[Brave Settings Overrides] Could not find safeBrowsingStandard id ' +
+        'on security page.')
     } else {
-      const passwordsLeakToggleOld = passwordsLeakSettings.content.
-        getElementById('passwordsLeakToggleOld')
-      if (!passwordsLeakToggleOld) {
-          console.error('[Brave Settings Overrides] Could not find' +
-            'passwordsLeakToggleOld on security page.')
+      const passwordsLeakSettings = safeBrowsingStandard.
+        querySelector(
+          'template[is=dom-if][if="[[!enablePasswordLeakToggleMove_]]"]')
+      if (!passwordsLeakSettings) {
+        console.error(
+          '[Brave Settings Overrides] Could not find template with ' +
+          'if=[[!enablePasswordLeakToggleMove_]] on security page.')
+      } else {
+        const passwordsLeakToggleOld = passwordsLeakSettings.content.
+          getElementById('passwordsLeakToggleOld')
+        if (!passwordsLeakToggleOld) {
+          console.error(
+            '[Brave Settings Overrides] Could not find passwordsLeakToggleOld ' +
+            'on security page.')
         } else {
           passwordsLeakToggleOld.setAttribute('hidden', 'true')
         }
-      passwordsLeakToggleOld.setAttribute('hidden', 'true')
+      }
     }
     if (loadTimeData.getBoolean("isHttpsByDefaultEnabled")) {
       const enableHttpsFirstModeNewSettings = templateContent.
