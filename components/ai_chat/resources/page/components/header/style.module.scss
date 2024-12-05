@@ -68,7 +68,7 @@
   gap: 16px;
   padding-left: 36px;
 
-  aside & {
+  &:not(:first-child) {
     padding-left: 16px;
   }
 }

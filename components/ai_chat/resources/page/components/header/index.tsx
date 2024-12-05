@@ -37,20 +37,13 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
     conversationContext.conversationHistory.length >= 1
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
-  const showTitle = !isTabAssociated || aiChatContext.isStandalone
+  const showTitle = (!isTabAssociated || aiChatContext.isStandalone) && !aiChatContext.isMobile
   const canShowFullScreenButton = aiChatContext.isHistoryFeatureEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
 
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
         <div className={styles.conversationTitle}>
-          {aiChatContext.isMobile && aiChatContext.isStandalone && <Button
-            fab
-            kind='plain-faint'
-            onClick={aiChatContext.toggleSidebar}
-          >
-            <Icon name='hamburger-menu' />
-          </Button>}
           {!isTabAssociated && !aiChatContext.isStandalone && <Button
             kind='plain-faint'
             fab
@@ -62,7 +55,22 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
           <div className={styles.conversationTitleText} title={getTitle(activeConversation)}>{getTitle(activeConversation)}</div>
         </div>
       )
-        : <Logo isPremium={aiChatContext.isPremiumUser} />}
+        : (aiChatContext.isMobile && aiChatContext.isStandalone
+          ? <>
+            <Button
+              fab
+              kind='plain-faint'
+              onClick={aiChatContext.toggleSidebar}
+            >
+              <Icon name='hamburger-menu' />
+            </Button>
+            <div className={styles.logoBody}>
+              <div className={styles.divider} />
+              <Logo isPremium={aiChatContext.isPremiumUser} />
+            </div>
+          </>
+          : <Logo isPremium={aiChatContext.isPremiumUser} />
+        )}
       <div className={styles.actions}>
         {aiChatContext.hasAcceptedAgreement && (
           <>
