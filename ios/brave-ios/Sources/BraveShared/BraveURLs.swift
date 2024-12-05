@@ -73,6 +73,14 @@ extension URL {
     public static let braveLeoModelCategorySupport = URL(
       string: "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo"
     )!
+    public static let braveVPNSmartProxySupport = URL(
+      string:
+        "https://support.brave.com/hc/en-us/articles/32105253704333-What-is-Smart-Proxy-Routing"
+    )!
+    public static let braveVPNKillSwitchSupport = URL(
+      string:
+        "https://support.brave.com/hc/en-us/articles/32389914657549-What-is-the-Brave-VPN-Kill-Switch"
+    )!
   }
   public enum Apple {
     public static let manageSubscriptions = URL(

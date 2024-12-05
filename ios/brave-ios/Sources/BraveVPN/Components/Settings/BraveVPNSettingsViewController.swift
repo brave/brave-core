@@ -35,6 +35,8 @@ public class BraveVPNSettingsViewController: TableViewController {
   private let protocolCellId = "protocol"
   private let resetCellId = "reset"
   private let vpnStatusSectionCellId = "vpnStatus"
+  private let vpnSmartProxySectionCellId = "vpnSmartProxy"
+  private let vpnKillSwitchSectionCellId = "vpnKillSwitch"
 
   private var vpnConnectionStatusSwitch: SwitchAccessoryView?
 
@@ -140,7 +142,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       object: nil
     )
 
-    let switchView = SwitchAccessoryView(
+    let vpnEnabledToggleView = SwitchAccessoryView(
       initialValue: BraveVPN.isConnected,
       valueChange: { vpnOn in
         if vpnOn {
@@ -151,21 +153,57 @@ public class BraveVPNSettingsViewController: TableViewController {
       }
     )
 
+    let vpnSmartProxyToggleView = BraveVPNLinkSwitchView(
+      isOn: { BraveVPN.isSmartProxyRoutingEnabled },
+      valueChange: { isSmartProxyEnabled in
+        BraveVPN.isSmartProxyRoutingEnabled = isSmartProxyEnabled
+      },
+      openURL: openURL
+    )
+
+    let vpnKillSwitchToggleView = BraveVPNLinkSwitchView(
+      isOn: { BraveVPN.isKillSwitchEnabled },
+      valueChange: { isKillSwitchEnabled in
+        BraveVPN.isKillSwitchEnabled = isKillSwitchEnabled
+      },
+      openURL: openURL
+    )
+
     if Preferences.VPN.vpnReceiptStatus.value
       == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
     {
-      switchView.onTintColor = .braveErrorLabel
+      vpnEnabledToggleView.onTintColor = .braveErrorLabel
     }
 
-    self.vpnConnectionStatusSwitch = switchView
+    self.vpnConnectionStatusSwitch = vpnEnabledToggleView
 
     let vpnStatusSection = Section(
       rows: [
         Row(
           text: Strings.VPN.settingsVPNEnabled,
-          accessory: .view(switchView),
+          accessory: .view(vpnEnabledToggleView),
           uuid: vpnStatusSectionCellId
-        )
+        ),
+        Row(
+          text: Strings.VPN.settingsVPNSmartProxyEnabled,
+          detailText: String.localizedStringWithFormat(
+            Strings.VPN.settingsVPNSmartProxyDescription,
+            URL.brave.braveVPNSmartProxySupport.absoluteString
+          ),
+          accessory: .view(vpnSmartProxyToggleView),
+          cellClass: BraveVPNLinkSwitchCell.self,
+          uuid: vpnSmartProxySectionCellId
+        ),
+        Row(
+          text: Strings.VPN.settingsVPNKillSwitchTitle,
+          detailText: String.localizedStringWithFormat(
+            Strings.VPN.settingsVPNKillSwitchDescription,
+            URL.brave.braveVPNKillSwitchSupport.absoluteString
+          ),
+          accessory: .view(vpnKillSwitchToggleView),
+          cellClass: BraveVPNLinkSwitchCell.self,
+          uuid: vpnKillSwitchSectionCellId
+        ),
       ],
       uuid: vpnStatusSectionCellId
     )

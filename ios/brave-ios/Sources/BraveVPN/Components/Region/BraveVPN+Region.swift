@@ -14,8 +14,11 @@ extension BraveVPN {
   }
 
   /// List of regions the VPN can connect to
-  /// This list is not static and it will be fetcghed with every app launch
+  /// This list is not static and it will be fetched with every app launch
   static var allRegions: [GRDRegion] = []
+
+  /// List of smart proxy routing hosts that are applied to the VPN connection
+  static var smartProxyRoutingHosts: [GRDSmartProxyHost] = []
 
   /// Record last used region
   /// It is used to hold details of the region when automatic selection is used
@@ -54,15 +57,15 @@ extension BraveVPN {
     // Otherwise faulty configuration will be added while connecting
     let activeTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
 
-    helper.configureFirstTimeUser(for: activeTunnelProtocol, with: region) { success, error in
+    helper.configureFirstTimeUser(for: activeTunnelProtocol, with: region) { status, error in
       let subcredentials =
         "Credentials \(GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) ?? "Empty")"
 
-      if success {
+      if status == .success {
         Logger.module.debug("Changed VPN region to \(region?.regionName ?? "default selection")")
         completion(true)
       } else {
-        Logger.module.debug("Connection failed: \(error ?? "nil")")
+        Logger.module.debug("Connection failed: \(error?.localizedDescription ?? "nil")")
         Logger.module.debug("Region change connection failed for subcredentials \(subcredentials)")
         completion(false)
       }
@@ -109,14 +112,21 @@ extension BraveVPN {
     case .expired, .notPurchased:
       break
     case .purchased(_):
-      housekeepingApi.requestTimeZonesForRegions { timeZones, success, responseStatusCode in
-        guard success, let timeZones = timeZones else {
+      housekeepingApi.requestTimeZonesForRegions { timeZones, error in
+        if let error = error {
           logAndStoreError(
-            "Failed to get timezones while fetching region: \(responseStatusCode)",
+            "Failed to get timezones while fetching region: \(error)",
             printToConsole: true
           )
           completion?(nil, false)
+        }
 
+        guard let timeZones = timeZones else {
+          logAndStoreError(
+            "Failed to get timezones while fetching region",
+            printToConsole: true
+          )
+          completion?(nil, false)
           return
         }
 
