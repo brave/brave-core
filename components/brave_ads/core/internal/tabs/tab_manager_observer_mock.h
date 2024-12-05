@@ -22,9 +22,6 @@ class TabManagerObserverMock : public TabManagerObserver {
   TabManagerObserverMock(const TabManagerObserverMock&) = delete;
   TabManagerObserverMock& operator=(const TabManagerObserverMock&) = delete;
 
-  TabManagerObserverMock(TabManagerObserverMock&&) noexcept = delete;
-  TabManagerObserverMock& operator=(TabManagerObserverMock&&) noexcept = delete;
-
   ~TabManagerObserverMock() override;
 
   MOCK_METHOD(void, OnDidOpenNewTab, (const TabInfo& tab));

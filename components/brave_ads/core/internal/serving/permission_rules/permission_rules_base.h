@@ -13,9 +13,6 @@ class PermissionRulesBase {
   PermissionRulesBase(const PermissionRulesBase&) = delete;
   PermissionRulesBase& operator=(const PermissionRulesBase&) = delete;
 
-  PermissionRulesBase(PermissionRulesBase&&) noexcept = delete;
-  PermissionRulesBase& operator=(PermissionRulesBase&&) noexcept = delete;
-
   virtual ~PermissionRulesBase();
 
  protected:

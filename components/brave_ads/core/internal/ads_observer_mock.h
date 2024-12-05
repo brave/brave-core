@@ -18,9 +18,6 @@ class AdsObserverMock : public AdsObserverInterface {
   AdsObserverMock(const AdsObserverMock&) = delete;
   AdsObserverMock& operator=(const AdsObserverMock&) = delete;
 
-  AdsObserverMock(AdsObserverMock&&) noexcept = delete;
-  AdsObserverMock& operator=(AdsObserverMock&&) noexcept = delete;
-
   ~AdsObserverMock() override;
 
   MOCK_METHOD(void, OnAdRewardsDidChange, ());

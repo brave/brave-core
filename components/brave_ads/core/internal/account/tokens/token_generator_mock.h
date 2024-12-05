@@ -21,9 +21,6 @@ class TokenGeneratorMock : public TokenGeneratorInterface {
   TokenGeneratorMock(const TokenGeneratorMock&) = delete;
   TokenGeneratorMock& operator=(const TokenGeneratorMock&) = delete;
 
-  TokenGeneratorMock(TokenGeneratorMock&&) noexcept = delete;
-  TokenGeneratorMock& operator=(TokenGeneratorMock&&) noexcept = delete;
-
   ~TokenGeneratorMock() override;
 
   MOCK_METHOD(cbr::TokenList, Generate, (const size_t count), (const));

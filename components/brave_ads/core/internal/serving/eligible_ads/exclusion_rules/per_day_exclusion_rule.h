@@ -23,9 +23,6 @@ class PerDayExclusionRule final
   PerDayExclusionRule(const PerDayExclusionRule&) = delete;
   PerDayExclusionRule& operator=(const PerDayExclusionRule&) = delete;
 
-  PerDayExclusionRule(PerDayExclusionRule&&) noexcept = delete;
-  PerDayExclusionRule& operator=(PerDayExclusionRule&&) noexcept = delete;
-
   ~PerDayExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

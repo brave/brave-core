@@ -18,9 +18,6 @@ class BackgroundHelperLinux final : public BackgroundHelper,
   BackgroundHelperLinux(const BackgroundHelperLinux&) = delete;
   BackgroundHelperLinux& operator=(const BackgroundHelperLinux&) = delete;
 
-  BackgroundHelperLinux(BackgroundHelperLinux&&) noexcept = delete;
-  BackgroundHelperLinux& operator=(BackgroundHelperLinux&&) noexcept = delete;
-
   ~BackgroundHelperLinux() override;
 
  protected:

@@ -40,7 +40,6 @@ class PassThroughDelegate : public NotificationAdDelegate {
       : profile_(profile), notification_ad_(notification_ad) {}
 
   PassThroughDelegate(const PassThroughDelegate&) = delete;
-
   PassThroughDelegate& operator=(const PassThroughDelegate&) = delete;
 
   void OnShow() override {

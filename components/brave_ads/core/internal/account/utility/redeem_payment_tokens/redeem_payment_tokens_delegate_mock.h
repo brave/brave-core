@@ -20,11 +20,6 @@ class RedeemPaymentTokensDelegateMock : public RedeemPaymentTokensDelegate {
   RedeemPaymentTokensDelegateMock& operator=(
       const RedeemPaymentTokensDelegateMock&) = delete;
 
-  RedeemPaymentTokensDelegateMock(RedeemPaymentTokensDelegateMock&&) noexcept =
-      delete;
-  RedeemPaymentTokensDelegateMock& operator=(
-      RedeemPaymentTokensDelegateMock&&) noexcept = delete;
-
   ~RedeemPaymentTokensDelegateMock() override;
 
   MOCK_METHOD(void,

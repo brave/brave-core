@@ -32,15 +32,11 @@ class AdsService;
 
 class CreativeSearchResultAdHandler final {
  public:
-  ~CreativeSearchResultAdHandler();
-
   CreativeSearchResultAdHandler(const CreativeSearchResultAdHandler&) = delete;
   CreativeSearchResultAdHandler& operator=(
       const CreativeSearchResultAdHandler&) = delete;
-  CreativeSearchResultAdHandler(CreativeSearchResultAdHandler&&) noexcept =
-      delete;
-  CreativeSearchResultAdHandler& operator=(
-      CreativeSearchResultAdHandler&&) noexcept = delete;
+
+  ~CreativeSearchResultAdHandler();
 
   static std::unique_ptr<CreativeSearchResultAdHandler> MaybeCreate(
       AdsService* ads_service,

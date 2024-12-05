@@ -17,9 +17,6 @@ class Studies final : public AdsClientNotifierObserver {
   Studies(const Studies&) = delete;
   Studies& operator=(const Studies&) = delete;
 
-  Studies(Studies&&) noexcept = delete;
-  Studies& operator=(Studies&&) noexcept = delete;
-
   ~Studies() override;
 
  private:

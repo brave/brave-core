@@ -36,11 +36,6 @@ class PromotedContentAdEventHandler final
   PromotedContentAdEventHandler& operator=(
       const PromotedContentAdEventHandler&) = delete;
 
-  PromotedContentAdEventHandler(PromotedContentAdEventHandler&&) noexcept =
-      delete;
-  PromotedContentAdEventHandler& operator=(
-      PromotedContentAdEventHandler&&) noexcept = delete;
-
   ~PromotedContentAdEventHandler() override;
 
   void SetDelegate(PromotedContentAdEventHandlerDelegate* delegate) {

@@ -34,9 +34,6 @@ class Conversions final : public TabManagerObserver {
   Conversions(const Conversions&) = delete;
   Conversions& operator=(const Conversions&) = delete;
 
-  Conversions(Conversions&&) noexcept = delete;
-  Conversions& operator=(Conversions&&) noexcept = delete;
-
   ~Conversions() override;
 
   void AddObserver(ConversionsObserver* observer);

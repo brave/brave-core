@@ -22,9 +22,6 @@ class AdsTooltipsController final
   AdsTooltipsController(const AdsTooltipsController&) = delete;
   AdsTooltipsController& operator=(const AdsTooltipsController&) = delete;
 
-  AdsTooltipsController(AdsTooltipsController&&) noexcept = delete;
-  AdsTooltipsController& operator=(AdsTooltipsController&&) noexcept = delete;
-
   ~AdsTooltipsController() override;
 
   // AdsTooltipDelegate:

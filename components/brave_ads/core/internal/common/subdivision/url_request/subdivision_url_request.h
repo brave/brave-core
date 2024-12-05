@@ -24,9 +24,6 @@ class SubdivisionUrlRequest final {
   SubdivisionUrlRequest(const SubdivisionUrlRequest&) = delete;
   SubdivisionUrlRequest& operator=(const SubdivisionUrlRequest&) = delete;
 
-  SubdivisionUrlRequest(SubdivisionUrlRequest&&) noexcept = delete;
-  SubdivisionUrlRequest& operator=(SubdivisionUrlRequest&&) noexcept = delete;
-
   ~SubdivisionUrlRequest();
 
   void SetDelegate(SubdivisionUrlRequestDelegate* delegate) {

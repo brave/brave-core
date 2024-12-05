@@ -24,11 +24,6 @@ class CreativeInstanceExclusionRule final
   CreativeInstanceExclusionRule& operator=(
       const CreativeInstanceExclusionRule&) = delete;
 
-  CreativeInstanceExclusionRule(CreativeInstanceExclusionRule&&) noexcept =
-      delete;
-  CreativeInstanceExclusionRule& operator=(
-      CreativeInstanceExclusionRule&&) noexcept = delete;
-
   ~CreativeInstanceExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;

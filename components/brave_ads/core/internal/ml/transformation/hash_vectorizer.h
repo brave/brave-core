@@ -21,9 +21,6 @@ class HashVectorizer final {
   HashVectorizer(const HashVectorizer&) = delete;
   HashVectorizer& operator=(const HashVectorizer&) = delete;
 
-  HashVectorizer(HashVectorizer&&) noexcept = delete;
-  HashVectorizer& operator=(HashVectorizer&&) noexcept = delete;
-
   ~HashVectorizer();
 
   std::map<uint32_t, double> GetFrequencies(const std::string& html) const;

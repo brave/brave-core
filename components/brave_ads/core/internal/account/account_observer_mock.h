@@ -21,9 +21,6 @@ class AccountObserverMock : public AccountObserver {
   AccountObserverMock(const AccountObserverMock&) = delete;
   AccountObserverMock& operator=(const AccountObserverMock&) = delete;
 
-  AccountObserverMock(AccountObserverMock&&) noexcept = delete;
-  AccountObserverMock& operator=(AccountObserverMock&&) noexcept = delete;
-
   ~AccountObserverMock() override;
 
   MOCK_METHOD(void, OnDidInitializeWallet, (const WalletInfo& wallet));

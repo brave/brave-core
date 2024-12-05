@@ -29,9 +29,6 @@ class TextNotificationAdView : public NotificationAdView {
   TextNotificationAdView(const TextNotificationAdView&) = delete;
   TextNotificationAdView& operator=(const TextNotificationAdView&) = delete;
 
-  TextNotificationAdView(TextNotificationAdView&&) noexcept = delete;
-  TextNotificationAdView& operator=(TextNotificationAdView&&) noexcept = delete;
-
   ~TextNotificationAdView() override;
 
   // NotificationAdView:

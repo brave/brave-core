@@ -24,9 +24,6 @@ class CatalogUrlRequest final {
   CatalogUrlRequest(const CatalogUrlRequest&) = delete;
   CatalogUrlRequest& operator=(const CatalogUrlRequest&) = delete;
 
-  CatalogUrlRequest(CatalogUrlRequest&&) noexcept = delete;
-  CatalogUrlRequest& operator=(CatalogUrlRequest&&) noexcept = delete;
-
   ~CatalogUrlRequest();
 
   void SetDelegate(CatalogUrlRequestDelegate* delegate) {

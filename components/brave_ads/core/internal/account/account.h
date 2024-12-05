@@ -34,9 +34,6 @@ class Account final : public AdsClientNotifierObserver,
   Account(const Account&) = delete;
   Account& operator=(const Account&) = delete;
 
-  Account(Account&&) noexcept = delete;
-  Account& operator=(Account&&) noexcept = delete;
-
   ~Account() override;
 
   void AddObserver(AccountObserver* observer);

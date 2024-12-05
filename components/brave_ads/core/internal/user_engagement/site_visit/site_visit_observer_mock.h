@@ -20,9 +20,6 @@ class SiteVisitObserverMock : public SiteVisitObserver {
   SiteVisitObserverMock(const SiteVisitObserverMock&) = delete;
   SiteVisitObserverMock& operator=(const SiteVisitObserverMock&) = delete;
 
-  SiteVisitObserverMock(SiteVisitObserverMock&&) noexcept = delete;
-  SiteVisitObserverMock& operator=(SiteVisitObserverMock&&) noexcept = delete;
-
   ~SiteVisitObserverMock() override;
 
   MOCK_METHOD(void,

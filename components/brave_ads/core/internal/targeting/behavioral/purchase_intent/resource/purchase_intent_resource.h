@@ -23,9 +23,6 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
   PurchaseIntentResource(const PurchaseIntentResource&) = delete;
   PurchaseIntentResource& operator=(const PurchaseIntentResource&) = delete;
 
-  PurchaseIntentResource(PurchaseIntentResource&&) noexcept = delete;
-  PurchaseIntentResource& operator=(PurchaseIntentResource&&) noexcept = delete;
-
   ~PurchaseIntentResource() override;
 
   bool IsLoaded() const { return !!resource_; }

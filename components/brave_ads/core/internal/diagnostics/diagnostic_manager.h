@@ -20,9 +20,6 @@ class DiagnosticManager final {
   DiagnosticManager(const DiagnosticManager&) = delete;
   DiagnosticManager& operator=(const DiagnosticManager&) = delete;
 
-  DiagnosticManager(DiagnosticManager&&) noexcept = delete;
-  DiagnosticManager& operator=(DiagnosticManager&&) noexcept = delete;
-
   ~DiagnosticManager();
 
   static DiagnosticManager& GetInstance();

@@ -19,9 +19,6 @@ class ConfirmationTokens final {
   ConfirmationTokens(const ConfirmationTokens&) = delete;
   ConfirmationTokens& operator=(const ConfirmationTokens&) = delete;
 
-  ConfirmationTokens(ConfirmationTokens&&) noexcept = delete;
-  ConfirmationTokens& operator=(ConfirmationTokens&&) noexcept = delete;
-
   ~ConfirmationTokens();
 
   const ConfirmationTokenInfo& Get() const;

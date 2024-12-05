@@ -23,9 +23,6 @@ class Maintenance final : public DatabaseManagerObserver {
   Maintenance(const Maintenance&) = delete;
   Maintenance& operator=(const Maintenance&) = delete;
 
-  Maintenance(Maintenance&&) noexcept = delete;
-  Maintenance& operator=(Maintenance&&) noexcept = delete;
-
   ~Maintenance() override;
 
  private:

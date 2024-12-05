@@ -23,11 +23,6 @@ class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
   AdsClientNotifierObserverMock& operator=(
       const AdsClientNotifierObserverMock&) = delete;
 
-  AdsClientNotifierObserverMock(AdsClientNotifierObserverMock&&) noexcept =
-      delete;
-  AdsClientNotifierObserverMock& operator=(
-      AdsClientNotifierObserverMock&&) noexcept = delete;
-
   ~AdsClientNotifierObserverMock() override;
 
   MOCK_METHOD(void, OnNotifyDidInitializeAds, ());

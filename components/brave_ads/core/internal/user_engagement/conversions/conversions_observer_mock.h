@@ -20,10 +20,6 @@ class ConversionsObserverMock : public ConversionsObserver {
   ConversionsObserverMock(const ConversionsObserverMock&) = delete;
   ConversionsObserverMock& operator=(const ConversionsObserverMock&) = delete;
 
-  ConversionsObserverMock(ConversionsObserverMock&&) noexcept = delete;
-  ConversionsObserverMock& operator=(ConversionsObserverMock&&) noexcept =
-      delete;
-
   ~ConversionsObserverMock() override;
 
   MOCK_METHOD(void, OnDidConvertAd, (const ConversionInfo& conversion));

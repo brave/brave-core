@@ -28,10 +28,6 @@ class PromotedContentAdHandler final
   PromotedContentAdHandler(const PromotedContentAdHandler&) = delete;
   PromotedContentAdHandler& operator=(const PromotedContentAdHandler&) = delete;
 
-  PromotedContentAdHandler(PromotedContentAdHandler&&) noexcept = delete;
-  PromotedContentAdHandler& operator=(PromotedContentAdHandler&&) noexcept =
-      delete;
-
   ~PromotedContentAdHandler() override;
 
   void TriggerEvent(const std::string& placement_id,

@@ -21,11 +21,6 @@ class SearchResultAdEventHandlerDelegateMock
   SearchResultAdEventHandlerDelegateMock& operator=(
       const SearchResultAdEventHandlerDelegateMock&) = delete;
 
-  SearchResultAdEventHandlerDelegateMock(
-      SearchResultAdEventHandlerDelegateMock&&) noexcept = delete;
-  SearchResultAdEventHandlerDelegateMock& operator=(
-      SearchResultAdEventHandlerDelegateMock&&) noexcept = delete;
-
   ~SearchResultAdEventHandlerDelegateMock() override;
 
   MOCK_METHOD(void,

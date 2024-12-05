@@ -20,11 +20,6 @@ class NewTabPageAdServingDelegateMock : public NewTabPageAdServingDelegate {
   NewTabPageAdServingDelegateMock& operator=(
       const NewTabPageAdServingDelegateMock&) = delete;
 
-  NewTabPageAdServingDelegateMock(NewTabPageAdServingDelegateMock&&) noexcept =
-      delete;
-  NewTabPageAdServingDelegateMock& operator=(
-      NewTabPageAdServingDelegateMock&&) noexcept = delete;
-
   ~NewTabPageAdServingDelegateMock() override;
 
   MOCK_METHOD(void, OnOpportunityAroseToServeNewTabPageAd, ());

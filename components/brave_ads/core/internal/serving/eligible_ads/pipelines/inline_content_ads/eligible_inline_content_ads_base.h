@@ -25,11 +25,6 @@ class EligibleInlineContentAdsBase {
   EligibleInlineContentAdsBase& operator=(const EligibleInlineContentAdsBase&) =
       delete;
 
-  EligibleInlineContentAdsBase(EligibleInlineContentAdsBase&&) noexcept =
-      delete;
-  EligibleInlineContentAdsBase& operator=(
-      EligibleInlineContentAdsBase&&) noexcept = delete;
-
   virtual ~EligibleInlineContentAdsBase();
 
   virtual void GetForUserModel(

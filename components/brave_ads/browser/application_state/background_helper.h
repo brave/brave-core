@@ -23,9 +23,6 @@ class BackgroundHelper {
   BackgroundHelper(const BackgroundHelper&) = delete;
   BackgroundHelper& operator=(const BackgroundHelper&) = delete;
 
-  BackgroundHelper(BackgroundHelper&&) noexcept = delete;
-  BackgroundHelper& operator=(BackgroundHelper&&) noexcept = delete;
-
   virtual ~BackgroundHelper();
 
   static BackgroundHelper* GetInstance();

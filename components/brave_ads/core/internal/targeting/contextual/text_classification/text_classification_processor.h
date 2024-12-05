@@ -30,10 +30,6 @@ class TextClassificationProcessor final : public TabManagerObserver {
   TextClassificationProcessor& operator=(const TextClassificationProcessor&) =
       delete;
 
-  TextClassificationProcessor(TextClassificationProcessor&&) noexcept = delete;
-  TextClassificationProcessor& operator=(
-      TextClassificationProcessor&&) noexcept = delete;
-
   ~TextClassificationProcessor() override;
 
   void Process(const std::string& text);

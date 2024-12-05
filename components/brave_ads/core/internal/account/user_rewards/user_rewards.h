@@ -33,9 +33,6 @@ class UserRewards final : public AdsClientNotifierObserver,
   UserRewards(const UserRewards&) = delete;
   UserRewards& operator=(const UserRewards&) = delete;
 
-  UserRewards(UserRewards&&) noexcept = delete;
-  UserRewards& operator=(UserRewards&&) noexcept = delete;
-
   ~UserRewards() override;
 
   void FetchIssuers();

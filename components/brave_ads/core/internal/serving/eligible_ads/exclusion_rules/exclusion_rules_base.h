@@ -26,9 +26,6 @@ class ExclusionRulesBase {
   ExclusionRulesBase(const ExclusionRulesBase&) = delete;
   ExclusionRulesBase& operator=(const ExclusionRulesBase&) = delete;
 
-  ExclusionRulesBase(ExclusionRulesBase&&) noexcept = delete;
-  ExclusionRulesBase& operator=(ExclusionRulesBase&&) noexcept = delete;
-
   virtual ~ExclusionRulesBase();
 
   virtual bool ShouldExcludeCreativeAd(const CreativeAdInfo& creative_ad);

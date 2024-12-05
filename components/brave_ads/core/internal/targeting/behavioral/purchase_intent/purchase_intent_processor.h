@@ -31,9 +31,6 @@ class PurchaseIntentProcessor final : public TabManagerObserver {
 
   PurchaseIntentProcessor(const PurchaseIntentProcessor&) = delete;
   PurchaseIntentProcessor& operator=(const PurchaseIntentProcessor&) = delete;
-  PurchaseIntentProcessor(PurchaseIntentProcessor&&) noexcept = delete;
-  PurchaseIntentProcessor& operator=(PurchaseIntentProcessor&&) noexcept =
-      delete;
 
   ~PurchaseIntentProcessor() override;
 

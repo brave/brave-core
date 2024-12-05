@@ -19,10 +19,6 @@ class TextClassificationHelper final {
   TextClassificationHelper(const TextClassificationHelper&) = delete;
   TextClassificationHelper& operator=(const TextClassificationHelper&) = delete;
 
-  TextClassificationHelper(TextClassificationHelper&&) noexcept = delete;
-  TextClassificationHelper& operator=(TextClassificationHelper&&) noexcept =
-      delete;
-
   ~TextClassificationHelper();
 
   void Mock();

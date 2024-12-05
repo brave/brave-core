@@ -27,9 +27,6 @@ class ConfirmationQueue final : public AdsClientNotifierObserver,
   ConfirmationQueue(const ConfirmationQueue&) = delete;
   ConfirmationQueue& operator=(const ConfirmationQueue&) = delete;
 
-  ConfirmationQueue(ConfirmationQueue&&) noexcept = delete;
-  ConfirmationQueue& operator=(ConfirmationQueue&&) noexcept = delete;
-
   ~ConfirmationQueue() override;
 
   void SetDelegate(ConfirmationQueueDelegate* delegate) {

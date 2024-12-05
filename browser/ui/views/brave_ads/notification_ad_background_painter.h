@@ -23,11 +23,6 @@ class NotificationAdBackgroundPainter : public views::Painter {
   NotificationAdBackgroundPainter& operator=(
       const NotificationAdBackgroundPainter&) = delete;
 
-  NotificationAdBackgroundPainter(NotificationAdBackgroundPainter&&) noexcept =
-      delete;
-  NotificationAdBackgroundPainter& operator=(
-      NotificationAdBackgroundPainter&&) noexcept = delete;
-
   ~NotificationAdBackgroundPainter() override;
 
   // views::Painter:

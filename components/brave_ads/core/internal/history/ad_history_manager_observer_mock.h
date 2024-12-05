@@ -21,11 +21,6 @@ class AdHistoryManagerObserverMock : public AdHistoryManagerObserver {
   AdHistoryManagerObserverMock& operator=(const AdHistoryManagerObserverMock&) =
       delete;
 
-  AdHistoryManagerObserverMock(AdHistoryManagerObserverMock&&) noexcept =
-      delete;
-  AdHistoryManagerObserverMock& operator=(
-      AdHistoryManagerObserverMock&&) noexcept = delete;
-
   ~AdHistoryManagerObserverMock() override;
 
   MOCK_METHOD(void,

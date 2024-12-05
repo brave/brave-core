@@ -21,9 +21,6 @@ class CountryCode final : public AdsClientNotifierObserver,
   CountryCode(const CountryCode&) = delete;
   CountryCode& operator=(const CountryCode&) = delete;
 
-  CountryCode(CountryCode&&) noexcept = delete;
-  CountryCode& operator=(CountryCode&&) noexcept = delete;
-
   ~CountryCode() override;
 
  private:

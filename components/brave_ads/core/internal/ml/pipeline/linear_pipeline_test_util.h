@@ -18,14 +18,12 @@ namespace brave_ads::ml::pipeline {
 class LinearPipelineBufferBuilder final {
  public:
   LinearPipelineBufferBuilder();
-  ~LinearPipelineBufferBuilder();
 
   LinearPipelineBufferBuilder(const LinearPipelineBufferBuilder&) = delete;
   LinearPipelineBufferBuilder& operator=(const LinearPipelineBufferBuilder&) =
       delete;
-  LinearPipelineBufferBuilder(LinearPipelineBufferBuilder&&) noexcept = delete;
-  LinearPipelineBufferBuilder& operator=(LinearPipelineBufferBuilder&&) =
-      delete;
+
+  ~LinearPipelineBufferBuilder();
 
   LinearPipelineBufferBuilder& CreateClassifier(
       const std::map<std::string, VectorData>& raw_weights,

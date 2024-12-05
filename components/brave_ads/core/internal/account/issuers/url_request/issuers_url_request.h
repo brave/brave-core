@@ -24,9 +24,6 @@ class IssuersUrlRequest final {
   IssuersUrlRequest(const IssuersUrlRequest&) = delete;
   IssuersUrlRequest& operator=(const IssuersUrlRequest&) = delete;
 
-  IssuersUrlRequest(IssuersUrlRequest&&) noexcept = delete;
-  IssuersUrlRequest& operator=(IssuersUrlRequest&&) noexcept = delete;
-
   ~IssuersUrlRequest();
 
   void SetDelegate(IssuersUrlRequestDelegate* delegate) {

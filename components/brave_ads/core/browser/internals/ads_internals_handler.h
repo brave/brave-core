@@ -30,9 +30,6 @@ class AdsInternalsHandler : public bat_ads::mojom::AdsInternals {
   AdsInternalsHandler(const AdsInternalsHandler&) = delete;
   AdsInternalsHandler& operator=(const AdsInternalsHandler&) = delete;
 
-  AdsInternalsHandler(AdsInternalsHandler&&) noexcept = delete;
-  AdsInternalsHandler& operator=(AdsInternalsHandler&&) noexcept = delete;
-
   ~AdsInternalsHandler() override;
 
   void BindInterface(

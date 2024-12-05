@@ -20,11 +20,6 @@ class NotificationAdServingDelegateMock : public NotificationAdServingDelegate {
   NotificationAdServingDelegateMock& operator=(
       const NotificationAdServingDelegateMock&) = delete;
 
-  NotificationAdServingDelegateMock(
-      NotificationAdServingDelegateMock&&) noexcept = delete;
-  NotificationAdServingDelegateMock& operator=(
-      NotificationAdServingDelegateMock&&) noexcept = delete;
-
   ~NotificationAdServingDelegateMock() override;
 
   MOCK_METHOD(void,

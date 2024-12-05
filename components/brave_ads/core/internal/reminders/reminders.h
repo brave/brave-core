@@ -23,9 +23,6 @@ class Reminders : public AdHistoryManagerObserver {
   Reminders(const Reminders&) = delete;
   Reminders& operator=(const Reminders&) = delete;
 
-  Reminders(Reminders&&) noexcept = delete;
-  Reminders& operator=(Reminders&&) noexcept = delete;
-
   ~Reminders() override;
 
  private:

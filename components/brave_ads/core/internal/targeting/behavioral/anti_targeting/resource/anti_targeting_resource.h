@@ -23,9 +23,6 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
   AntiTargetingResource(const AntiTargetingResource&) = delete;
   AntiTargetingResource& operator=(const AntiTargetingResource&) = delete;
 
-  AntiTargetingResource(AntiTargetingResource&&) noexcept = delete;
-  AntiTargetingResource& operator=(AntiTargetingResource&&) noexcept = delete;
-
   ~AntiTargetingResource() override;
 
   bool IsLoaded() const { return !!resource_; }

@@ -28,9 +28,6 @@ class TabManager final : public AdsClientNotifierObserver {
   TabManager(const TabManager&) = delete;
   TabManager& operator=(const TabManager&) = delete;
 
-  TabManager(TabManager&&) noexcept = delete;
-  TabManager& operator=(TabManager&&) noexcept = delete;
-
   ~TabManager() override;
 
   static TabManager& GetInstance();

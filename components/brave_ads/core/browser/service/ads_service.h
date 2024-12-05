@@ -58,9 +58,6 @@ class AdsService : public KeyedService {
   AdsService(const AdsService&) = delete;
   AdsService& operator=(const AdsService&) = delete;
 
-  AdsService(AdsService&&) noexcept = delete;
-  AdsService& operator=(AdsService&&) noexcept = delete;
-
   ~AdsService() override;
 
   AdsService::Delegate* delegate() { return delegate_.get(); }
