@@ -1,5 +1,5 @@
 diff --git a/tools/polymer/css_to_wrapper.py b/tools/polymer/css_to_wrapper.py
-index 51b625b3d460d..bf443881ebd8e 100644
+index 51b625b3d460d923c7c033260068149d237e87dc..bf443881ebd8e58ff867222aa88dd6eb5f18218a 100644
 --- a/tools/polymer/css_to_wrapper.py
 +++ b/tools/polymer/css_to_wrapper.py
 @@ -325,5 +325,6 @@ def main(argv):

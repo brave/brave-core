@@ -6211,8 +6211,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_CUSTOM_TABS_SIGNED_OUT_MESSAGE_SUBTITLE" desc="This string is the body of a message promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to passwords, etc.). We want users to understand why signing in is beneficial, and click 'Sign in' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
               Sign in to get your passwords and more on all your devices
             </message>
-      <message name="IDS_CUSTOM_TABS_SIGNED_OUT_MESSAGE_TITLE" desc="This string is the title of a message promotion about signing in to Brave with the user's Brave sync chain. It indicates that the current Activity may use Brave data (the rest of the app may not be).">
-        Running in Brave
+      <message name="IDS_CUSTOM_TABS_SIGNED_OUT_MESSAGE_TITLE" desc="This string is the title of a message promotion about signing in to Brave with the user's Brave sync chain.">
+        Sign in to Brave
       </message>
 
       <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials.">
