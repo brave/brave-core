@@ -969,6 +969,7 @@ brave_java_resources = [
   "java/res/values/brave_attrs.xml",
   "java/res/values/brave_colors.xml",
   "java/res/values/brave_dimens.xml",
+  "java/res/values-land/brave_dimens.xml",
   "java/res/values/brave_ids.xml",
   "java/res/values/brave_styles.xml",
   "java/res/values/shimmer_attrs.xml",
