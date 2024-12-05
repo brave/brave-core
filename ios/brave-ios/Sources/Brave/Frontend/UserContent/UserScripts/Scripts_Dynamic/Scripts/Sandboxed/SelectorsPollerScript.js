@@ -24,7 +24,7 @@ window.__firefox__.execute(function($) {
     return $.postNativeMessage(messageHandler, {
       "securityToken": SECURITY_TOKEN,
       "data": {
-        windowOrigin: window.origin,
+        windowOrigin: $.windowOrigin,
         ids: ids,
         classes: classes
       }
@@ -40,7 +40,7 @@ window.__firefox__.execute(function($) {
     return $.postNativeMessage(partinessMessageHandler, {
       "securityToken": SECURITY_TOKEN,
       "data": {
-        windowOrigin: window.origin,
+        windowOrigin: $.windowOrigin,
         urls: urls,
       }
     })
