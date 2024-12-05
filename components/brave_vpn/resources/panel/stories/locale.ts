@@ -87,5 +87,4 @@ provideStrings({
   braveVpnOptimal: 'Optimal',
   braveVpnChangeRegion: 'Change',
   braveVpnCTA: 'Start free trial',
-  braveVpnFreeTrial: '7-day free trial'
 })
