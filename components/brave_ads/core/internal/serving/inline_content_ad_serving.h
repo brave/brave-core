@@ -34,9 +34,6 @@ class InlineContentAdServing final {
   InlineContentAdServing(const InlineContentAdServing&) = delete;
   InlineContentAdServing& operator=(const InlineContentAdServing&) = delete;
 
-  InlineContentAdServing(InlineContentAdServing&&) noexcept = delete;
-  InlineContentAdServing& operator=(InlineContentAdServing&&) noexcept = delete;
-
   ~InlineContentAdServing();
 
   void SetDelegate(InlineContentAdServingDelegate* delegate) {

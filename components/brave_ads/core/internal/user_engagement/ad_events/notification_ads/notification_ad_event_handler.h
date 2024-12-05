@@ -33,10 +33,6 @@ class NotificationAdEventHandler final
   NotificationAdEventHandler& operator=(const NotificationAdEventHandler&) =
       delete;
 
-  NotificationAdEventHandler(NotificationAdEventHandler&&) noexcept = delete;
-  NotificationAdEventHandler& operator=(NotificationAdEventHandler&&) noexcept =
-      delete;
-
   ~NotificationAdEventHandler() override;
 
   void SetDelegate(NotificationAdEventHandlerDelegate* delegate) {

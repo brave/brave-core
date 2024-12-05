@@ -19,11 +19,6 @@ class ConfirmationQueueDelegateMock : public ConfirmationQueueDelegate {
   ConfirmationQueueDelegateMock& operator=(
       const ConfirmationQueueDelegateMock&) = delete;
 
-  ConfirmationQueueDelegateMock(ConfirmationQueueDelegateMock&&) noexcept =
-      delete;
-  ConfirmationQueueDelegateMock& operator=(
-      ConfirmationQueueDelegateMock&&) noexcept = delete;
-
   ~ConfirmationQueueDelegateMock() override;
 
   MOCK_METHOD(void,

@@ -24,10 +24,6 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   AdsClientNotifierObserver& operator=(const AdsClientNotifierObserver&) =
       delete;
 
-  AdsClientNotifierObserver(AdsClientNotifierObserver&&) noexcept = delete;
-  AdsClientNotifierObserver& operator=(AdsClientNotifierObserver&&) noexcept =
-      delete;
-
   ~AdsClientNotifierObserver() override;
 
   // Called when ads did initialize.

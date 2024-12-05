@@ -22,9 +22,6 @@ class NotificationAdManager final {
   NotificationAdManager(const NotificationAdManager&) = delete;
   NotificationAdManager& operator=(const NotificationAdManager&) = delete;
 
-  NotificationAdManager(NotificationAdManager&&) noexcept = delete;
-  NotificationAdManager& operator=(NotificationAdManager&&) noexcept = delete;
-
   ~NotificationAdManager();
 
   static NotificationAdManager& GetInstance();

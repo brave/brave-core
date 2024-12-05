@@ -23,11 +23,6 @@ class RefillConfirmationTokensDelegateMock
   RefillConfirmationTokensDelegateMock& operator=(
       const RefillConfirmationTokensDelegateMock&) = delete;
 
-  RefillConfirmationTokensDelegateMock(
-      RefillConfirmationTokensDelegateMock&&) noexcept = delete;
-  RefillConfirmationTokensDelegateMock& operator=(
-      RefillConfirmationTokensDelegateMock&&) noexcept = delete;
-
   ~RefillConfirmationTokensDelegateMock() override;
 
   MOCK_METHOD(void, OnDidRefillConfirmationTokens, ());

@@ -26,9 +26,6 @@ class Subdivision final : public AdsClientNotifierObserver,
   Subdivision(const Subdivision&) = delete;
   Subdivision& operator=(const Subdivision&) = delete;
 
-  Subdivision(Subdivision&&) noexcept = delete;
-  Subdivision& operator=(Subdivision&&) noexcept = delete;
-
   ~Subdivision() override;
 
   void AddObserver(SubdivisionObserver* observer);

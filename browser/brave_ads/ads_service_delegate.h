@@ -42,9 +42,6 @@ class AdsServiceDelegate : public AdsService::Delegate {
   AdsServiceDelegate(const AdsServiceDelegate&) = delete;
   AdsServiceDelegate& operator=(const AdsServiceDelegate&) = delete;
 
-  AdsServiceDelegate(AdsServiceDelegate&&) noexcept = delete;
-  AdsServiceDelegate& operator=(AdsServiceDelegate&&) noexcept = delete;
-
   ~AdsServiceDelegate() override;
 
   std::string GetDefaultSearchEngineName();

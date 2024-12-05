@@ -19,11 +19,6 @@ class CatalogUrlRequestDelegateMock : public CatalogUrlRequestDelegate {
   CatalogUrlRequestDelegateMock& operator=(
       const CatalogUrlRequestDelegateMock&) = delete;
 
-  CatalogUrlRequestDelegateMock(CatalogUrlRequestDelegateMock&&) noexcept =
-      delete;
-  CatalogUrlRequestDelegateMock& operator=(
-      CatalogUrlRequestDelegateMock&&) noexcept = delete;
-
   ~CatalogUrlRequestDelegateMock() override;
 
   MOCK_METHOD(void, OnWillFetchCatalog, (const base::Time fetch_at));

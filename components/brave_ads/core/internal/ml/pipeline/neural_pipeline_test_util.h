@@ -18,14 +18,12 @@ namespace brave_ads::ml::pipeline {
 class NeuralPipelineBufferBuilder final {
  public:
   NeuralPipelineBufferBuilder();
-  ~NeuralPipelineBufferBuilder();
 
   NeuralPipelineBufferBuilder(const NeuralPipelineBufferBuilder&) = delete;
   NeuralPipelineBufferBuilder& operator=(const NeuralPipelineBufferBuilder&) =
       delete;
-  NeuralPipelineBufferBuilder(NeuralPipelineBufferBuilder&&) noexcept = delete;
-  NeuralPipelineBufferBuilder& operator=(NeuralPipelineBufferBuilder&&) =
-      delete;
+
+  ~NeuralPipelineBufferBuilder();
 
   NeuralPipelineBufferBuilder& CreateClassifier(
       const std::vector<std::vector<VectorData>>& raw_matrices,

@@ -19,11 +19,6 @@ class IssuersUrlRequestDelegateMock : public IssuersUrlRequestDelegate {
   IssuersUrlRequestDelegateMock& operator=(
       const IssuersUrlRequestDelegateMock&) = delete;
 
-  IssuersUrlRequestDelegateMock(IssuersUrlRequestDelegateMock&&) noexcept =
-      delete;
-  IssuersUrlRequestDelegateMock& operator=(
-      IssuersUrlRequestDelegateMock&&) noexcept = delete;
-
   ~IssuersUrlRequestDelegateMock() override;
 
   MOCK_METHOD(void, OnWillFetchIssuers, (const base::Time fetch_at));

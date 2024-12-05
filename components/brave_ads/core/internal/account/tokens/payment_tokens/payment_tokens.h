@@ -19,9 +19,6 @@ class PaymentTokens final {
   PaymentTokens(const PaymentTokens&) = delete;
   PaymentTokens& operator=(const PaymentTokens&) = delete;
 
-  PaymentTokens(PaymentTokens&&) noexcept = delete;
-  PaymentTokens& operator=(PaymentTokens&&) noexcept = delete;
-
   ~PaymentTokens();
 
   const PaymentTokenInfo& GetToken() const;

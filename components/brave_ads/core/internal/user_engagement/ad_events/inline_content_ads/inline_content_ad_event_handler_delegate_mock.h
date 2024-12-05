@@ -23,11 +23,6 @@ class InlineContentAdEventHandlerDelegateMock
   InlineContentAdEventHandlerDelegateMock& operator=(
       const InlineContentAdEventHandlerDelegateMock&) = delete;
 
-  InlineContentAdEventHandlerDelegateMock(
-      InlineContentAdEventHandlerDelegateMock&&) noexcept = delete;
-  InlineContentAdEventHandlerDelegateMock& operator=(
-      InlineContentAdEventHandlerDelegateMock&&) noexcept = delete;
-
   ~InlineContentAdEventHandlerDelegateMock() override;
 
   MOCK_METHOD(void,

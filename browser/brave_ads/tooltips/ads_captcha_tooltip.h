@@ -27,9 +27,6 @@ class AdsCaptchaTooltip : public brave_tooltips::BraveTooltip {
   AdsCaptchaTooltip(const AdsCaptchaTooltip&) = delete;
   AdsCaptchaTooltip& operator=(const AdsCaptchaTooltip&) = delete;
 
-  AdsCaptchaTooltip(AdsCaptchaTooltip&&) noexcept = delete;
-  AdsCaptchaTooltip& operator=(AdsCaptchaTooltip&&) noexcept = delete;
-
   ~AdsCaptchaTooltip() override;
 
   const std::string& payment_id() const { return payment_id_; }

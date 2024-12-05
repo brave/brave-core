@@ -23,11 +23,6 @@ class NewTabPageAdEventHandlerDelegateMock
   NewTabPageAdEventHandlerDelegateMock& operator=(
       const NewTabPageAdEventHandlerDelegateMock&) = delete;
 
-  NewTabPageAdEventHandlerDelegateMock(
-      NewTabPageAdEventHandlerDelegateMock&&) noexcept = delete;
-  NewTabPageAdEventHandlerDelegateMock& operator=(
-      NewTabPageAdEventHandlerDelegateMock&&) noexcept = delete;
-
   ~NewTabPageAdEventHandlerDelegateMock() override;
 
   MOCK_METHOD(void,

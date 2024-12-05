@@ -26,9 +26,6 @@ class Confirmations final : public ConfirmationQueueDelegate,
   Confirmations(const Confirmations&) = delete;
   Confirmations& operator=(const Confirmations&) = delete;
 
-  Confirmations(Confirmations&&) noexcept = delete;
-  Confirmations& operator=(Confirmations&&) noexcept = delete;
-
   ~Confirmations() override;
 
   void SetDelegate(ConfirmationDelegate* delegate) {

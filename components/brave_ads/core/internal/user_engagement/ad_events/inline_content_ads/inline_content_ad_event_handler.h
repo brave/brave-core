@@ -36,10 +36,6 @@ class InlineContentAdEventHandler final
   InlineContentAdEventHandler& operator=(const InlineContentAdEventHandler&) =
       delete;
 
-  InlineContentAdEventHandler(InlineContentAdEventHandler&&) noexcept = delete;
-  InlineContentAdEventHandler& operator=(
-      InlineContentAdEventHandler&&) noexcept = delete;
-
   ~InlineContentAdEventHandler() override;
 
   void SetDelegate(InlineContentAdEventHandlerDelegate* delegate) {

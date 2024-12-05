@@ -19,10 +19,6 @@ class BackgroundHelperAndroid final : public BackgroundHelper {
   BackgroundHelperAndroid(const BackgroundHelperAndroid&) = delete;
   BackgroundHelperAndroid& operator=(const BackgroundHelperAndroid&) = delete;
 
-  BackgroundHelperAndroid(BackgroundHelperAndroid&&) noexcept = delete;
-  BackgroundHelperAndroid& operator=(BackgroundHelperAndroid&&) noexcept =
-      delete;
-
   ~BackgroundHelperAndroid() override;
 
  protected:

@@ -32,9 +32,6 @@ class NewTabPageAdServing final {
   NewTabPageAdServing(const NewTabPageAdServing&) = delete;
   NewTabPageAdServing& operator=(const NewTabPageAdServing&) = delete;
 
-  NewTabPageAdServing(NewTabPageAdServing&&) noexcept = delete;
-  NewTabPageAdServing& operator=(NewTabPageAdServing&&) noexcept = delete;
-
   ~NewTabPageAdServing();
 
   void SetDelegate(NewTabPageAdServingDelegate* delegate) {

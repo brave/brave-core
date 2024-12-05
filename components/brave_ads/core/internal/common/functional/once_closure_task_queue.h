@@ -18,9 +18,6 @@ class OnceClosureTaskQueue final {
   OnceClosureTaskQueue(const OnceClosureTaskQueue&) = delete;
   OnceClosureTaskQueue& operator=(const OnceClosureTaskQueue&) = delete;
 
-  OnceClosureTaskQueue(OnceClosureTaskQueue&&) noexcept = delete;
-  OnceClosureTaskQueue& operator=(OnceClosureTaskQueue&&) noexcept = delete;
-
   ~OnceClosureTaskQueue();
 
   void Add(base::OnceClosure closure);

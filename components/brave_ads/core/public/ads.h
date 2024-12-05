@@ -31,9 +31,6 @@ class ADS_EXPORT Ads {
   Ads(const Ads&) = delete;
   Ads& operator=(const Ads&) = delete;
 
-  Ads(Ads&&) noexcept = delete;
-  Ads& operator=(Ads&&) noexcept = delete;
-
   virtual ~Ads() = default;
 
   static std::unique_ptr<Ads> CreateInstance(AdsClient& ads_client);

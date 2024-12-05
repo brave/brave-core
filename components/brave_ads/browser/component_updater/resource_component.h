@@ -29,9 +29,6 @@ class ResourceComponent : public ResourceComponentRegistrarDelegate {
   ResourceComponent(const ResourceComponent&) = delete;
   ResourceComponent& operator=(const ResourceComponent&) = delete;
 
-  ResourceComponent(ResourceComponent&&) noexcept = delete;
-  ResourceComponent& operator=(ResourceComponent&&) noexcept = delete;
-
   ~ResourceComponent() override;
 
   void AddObserver(ResourceComponentObserver* observer);

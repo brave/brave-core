@@ -26,9 +26,6 @@ class NotificationHelper final {
   NotificationHelper(const NotificationHelper&) = delete;
   NotificationHelper& operator=(const NotificationHelper&) = delete;
 
-  NotificationHelper(NotificationHelper&&) noexcept = delete;
-  NotificationHelper& operator=(NotificationHelper&&) noexcept = delete;
-
   static NotificationHelper* GetInstance();
 
   void InitForProfile(Profile* profile);

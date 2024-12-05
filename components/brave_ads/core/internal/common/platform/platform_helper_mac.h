@@ -19,9 +19,6 @@ class PlatformHelperMac final : public PlatformHelper {
   PlatformHelperMac(const PlatformHelperMac&) = delete;
   PlatformHelperMac& operator=(const PlatformHelperMac&) = delete;
 
-  PlatformHelperMac(PlatformHelperMac&&) noexcept = delete;
-  PlatformHelperMac& operator=(PlatformHelperMac&&) noexcept = delete;
-
  protected:
   friend class base::NoDestructor<PlatformHelperMac>;
 

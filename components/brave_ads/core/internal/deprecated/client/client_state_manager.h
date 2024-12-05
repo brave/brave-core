@@ -24,9 +24,6 @@ class ClientStateManager final {
   ClientStateManager(const ClientStateManager&) = delete;
   ClientStateManager& operator=(const ClientStateManager&) = delete;
 
-  ClientStateManager(ClientStateManager&&) noexcept = delete;
-  ClientStateManager& operator=(ClientStateManager&&) noexcept = delete;
-
   ~ClientStateManager();
 
   static ClientStateManager& GetInstance();

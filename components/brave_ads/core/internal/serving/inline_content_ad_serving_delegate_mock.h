@@ -23,11 +23,6 @@ class InlineContentAdServingDelegateMock
   InlineContentAdServingDelegateMock& operator=(
       const InlineContentAdServingDelegateMock&) = delete;
 
-  InlineContentAdServingDelegateMock(
-      InlineContentAdServingDelegateMock&&) noexcept = delete;
-  InlineContentAdServingDelegateMock& operator=(
-      InlineContentAdServingDelegateMock&&) noexcept = delete;
-
   ~InlineContentAdServingDelegateMock() override;
 
   MOCK_METHOD(void, OnOpportunityAroseToServeInlineContentAd, ());

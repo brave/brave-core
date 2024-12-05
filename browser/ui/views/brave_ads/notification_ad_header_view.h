@@ -26,10 +26,6 @@ class NotificationAdHeaderView : public views::View {
   NotificationAdHeaderView(const NotificationAdHeaderView&) = delete;
   NotificationAdHeaderView& operator=(const NotificationAdHeaderView&) = delete;
 
-  NotificationAdHeaderView(NotificationAdHeaderView&&) noexcept = delete;
-  NotificationAdHeaderView& operator=(NotificationAdHeaderView&&) noexcept =
-      delete;
-
   ~NotificationAdHeaderView() override;
 
   void SetTitle(const std::u16string& name);

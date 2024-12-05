@@ -28,9 +28,6 @@ class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
   SearchResultAdHandler(const SearchResultAdHandler&) = delete;
   SearchResultAdHandler& operator=(const SearchResultAdHandler&) = delete;
 
-  SearchResultAdHandler(SearchResultAdHandler&&) noexcept = delete;
-  SearchResultAdHandler& operator=(SearchResultAdHandler&&) noexcept = delete;
-
   ~SearchResultAdHandler() override;
 
   static void DeferTriggeringAdViewedEventForTesting();

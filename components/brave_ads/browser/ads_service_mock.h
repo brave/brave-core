@@ -25,9 +25,6 @@ class AdsServiceMock : public AdsService {
   AdsServiceMock(const AdsServiceMock&) = delete;
   AdsServiceMock& operator=(const AdsServiceMock&) = delete;
 
-  AdsServiceMock(AdsServiceMock&&) noexcept = delete;
-  AdsServiceMock& operator=(AdsServiceMock&&) noexcept = delete;
-
   ~AdsServiceMock() override;
 
   MOCK_METHOD(void,

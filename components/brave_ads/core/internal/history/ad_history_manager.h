@@ -35,9 +35,6 @@ class AdHistoryManager final {
   AdHistoryManager(const AdHistoryManager&) = delete;
   AdHistoryManager& operator=(const AdHistoryManager&) = delete;
 
-  AdHistoryManager(AdHistoryManager&&) noexcept = delete;
-  AdHistoryManager& operator=(AdHistoryManager&&) noexcept = delete;
-
   ~AdHistoryManager();
 
   static AdHistoryManager& GetInstance();

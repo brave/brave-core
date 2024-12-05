@@ -26,9 +26,6 @@ class ADS_EXPORT Database final {
   Database(const Database&) = delete;
   Database& operator=(const Database&) = delete;
 
-  Database(Database&&) noexcept = delete;
-  Database& operator=(Database&&) noexcept = delete;
-
   ~Database();
 
   mojom::DBTransactionResultInfoPtr RunDBTransaction(

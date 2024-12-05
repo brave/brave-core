@@ -23,11 +23,6 @@ class NotificationAdEventHandlerDelegateMock
   NotificationAdEventHandlerDelegateMock& operator=(
       const NotificationAdEventHandlerDelegateMock&) = delete;
 
-  NotificationAdEventHandlerDelegateMock(
-      NotificationAdEventHandlerDelegateMock&&) noexcept = delete;
-  NotificationAdEventHandlerDelegateMock& operator=(
-      NotificationAdEventHandlerDelegateMock&&) noexcept = delete;
-
   ~NotificationAdEventHandlerDelegateMock() override;
 
   MOCK_METHOD(void,

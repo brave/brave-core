@@ -26,9 +26,6 @@ class NotificationAdView : public views::View {
   NotificationAdView(const NotificationAdView&) = delete;
   NotificationAdView& operator=(const NotificationAdView&) = delete;
 
-  NotificationAdView(NotificationAdView&&) noexcept = delete;
-  NotificationAdView& operator=(NotificationAdView&&) noexcept = delete;
-
   ~NotificationAdView() override;
 
   // Update notification contents to `notification_ad`

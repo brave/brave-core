@@ -32,9 +32,6 @@ class Reactions final {
   Reactions(const Reactions&) = delete;
   Reactions& operator=(const Reactions&) = delete;
 
-  Reactions(Reactions&&) noexcept = delete;
-  Reactions& operator=(Reactions&&) noexcept = delete;
-
   ~Reactions();
 
   void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,

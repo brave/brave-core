@@ -31,10 +31,6 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
   TextClassificationResource& operator=(const TextClassificationResource&) =
       delete;
 
-  TextClassificationResource(TextClassificationResource&&) noexcept = delete;
-  TextClassificationResource& operator=(TextClassificationResource&&) noexcept =
-      delete;
-
   ~TextClassificationResource() override;
 
   bool IsLoaded() const { return !!text_processing_pipeline_; }

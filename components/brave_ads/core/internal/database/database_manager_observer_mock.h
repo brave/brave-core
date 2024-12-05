@@ -19,10 +19,6 @@ class DatabaseManagerObserverMock : public DatabaseManagerObserver {
   DatabaseManagerObserverMock& operator=(const DatabaseManagerObserverMock&) =
       delete;
 
-  DatabaseManagerObserverMock(DatabaseManagerObserverMock&&) noexcept = delete;
-  DatabaseManagerObserverMock& operator=(
-      DatabaseManagerObserverMock&&) noexcept = delete;
-
   ~DatabaseManagerObserverMock() override;
 
   MOCK_METHOD(void, OnWillCreateOrOpenDatabase, ());

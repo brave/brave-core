@@ -23,10 +23,6 @@ class EligibleNewTabPageAdsBase {
   EligibleNewTabPageAdsBase& operator=(const EligibleNewTabPageAdsBase&) =
       delete;
 
-  EligibleNewTabPageAdsBase(EligibleNewTabPageAdsBase&&) noexcept = delete;
-  EligibleNewTabPageAdsBase& operator=(EligibleNewTabPageAdsBase&&) noexcept =
-      delete;
-
   virtual ~EligibleNewTabPageAdsBase();
 
   virtual void GetForUserModel(

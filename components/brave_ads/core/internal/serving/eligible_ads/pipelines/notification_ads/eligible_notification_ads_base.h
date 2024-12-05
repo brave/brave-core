@@ -23,10 +23,6 @@ class EligibleNotificationAdsBase {
   EligibleNotificationAdsBase& operator=(const EligibleNotificationAdsBase&) =
       delete;
 
-  EligibleNotificationAdsBase(EligibleNotificationAdsBase&&) noexcept = delete;
-  EligibleNotificationAdsBase& operator=(
-      EligibleNotificationAdsBase&&) noexcept = delete;
-
   virtual ~EligibleNotificationAdsBase();
 
   virtual void GetForUserModel(

@@ -61,9 +61,6 @@ class NotificationAdPopup : public views::WidgetDelegateView,
   NotificationAdPopup(const NotificationAdPopup&) = delete;
   NotificationAdPopup& operator=(const NotificationAdPopup&) = delete;
 
-  NotificationAdPopup(NotificationAdPopup&&) noexcept = delete;
-  NotificationAdPopup& operator=(NotificationAdPopup&&) noexcept = delete;
-
   ~NotificationAdPopup() override;
 
   // Disables fade in animation for snapshot tests.

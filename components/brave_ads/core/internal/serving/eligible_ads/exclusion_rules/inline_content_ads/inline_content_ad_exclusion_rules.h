@@ -25,11 +25,6 @@ class InlineContentAdExclusionRules final : public ExclusionRulesBase {
   InlineContentAdExclusionRules& operator=(
       const InlineContentAdExclusionRules&) = delete;
 
-  InlineContentAdExclusionRules(InlineContentAdExclusionRules&&) noexcept =
-      delete;
-  InlineContentAdExclusionRules& operator=(
-      InlineContentAdExclusionRules&&) noexcept = delete;
-
   ~InlineContentAdExclusionRules() override;
 };
 

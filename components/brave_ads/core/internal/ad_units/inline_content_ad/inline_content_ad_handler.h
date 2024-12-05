@@ -41,9 +41,6 @@ class InlineContentAdHandler final : public InlineContentAdEventHandlerDelegate,
   InlineContentAdHandler(const InlineContentAdHandler&) = delete;
   InlineContentAdHandler& operator=(const InlineContentAdHandler&) = delete;
 
-  InlineContentAdHandler(InlineContentAdHandler&&) noexcept = delete;
-  InlineContentAdHandler& operator=(InlineContentAdHandler&&) noexcept = delete;
-
   ~InlineContentAdHandler() override;
 
   void MaybeServe(const std::string& dimensions,

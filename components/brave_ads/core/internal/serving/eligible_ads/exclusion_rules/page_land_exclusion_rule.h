@@ -23,9 +23,6 @@ class PageLandExclusionRule final
   PageLandExclusionRule(const PageLandExclusionRule&) = delete;
   PageLandExclusionRule& operator=(const PageLandExclusionRule&) = delete;
 
-  PageLandExclusionRule(PageLandExclusionRule&&) noexcept = delete;
-  PageLandExclusionRule& operator=(PageLandExclusionRule&&) noexcept = delete;
-
   ~PageLandExclusionRule() override;
 
   std::string GetUuid(const CreativeAdInfo& creative_ad) const override;
