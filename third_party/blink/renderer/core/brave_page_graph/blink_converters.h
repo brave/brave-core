@@ -204,11 +204,20 @@ base::Value ToPageGraphValue(ScriptState* script_state,
 template <>
 CORE_EXPORT base::Value ToPageGraphValue(ScriptState* script_state,
                                          const v8::Local<v8::Value>& arg);
+// Convert v8::Object.
+template <>
+CORE_EXPORT base::Value ToPageGraphValue(ScriptState* script_state,
+                                         const v8::Local<v8::Object>& arg);
 
 // Convert ScriptValue.
 template <>
 CORE_EXPORT base::Value ToPageGraphValue(ScriptState* script_state,
                                          const ScriptValue& script_value);
+
+// Convert ScriptValue.
+template <>
+CORE_EXPORT base::Value ToPageGraphValue(ScriptState* script_state,
+                                         const ScriptObject& script_object);
 
 // Convert NativeValueTraitsAnyAdapter types.
 template <>
