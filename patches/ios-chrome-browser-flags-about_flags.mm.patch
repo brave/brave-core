@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index c9af85ed0c30802206781ae22a0cc6e1644910a5..d4c996da5c84b3cac8fecefacddc897ff27a54ed 100644
+index b8623bea50b3e41ea666733343669f2ff4e61ad5..bb6aef315a2ca97a6bb329f6c3724f726ce6f802 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1232,6 +1232,7 @@ const FeatureEntry::FeatureVariation kNewFeedPositioningVariations[] = {
