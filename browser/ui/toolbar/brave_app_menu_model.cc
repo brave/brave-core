@@ -353,6 +353,12 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     RemoveItemAt(*index);
   }
 
+  // Remove upstream's "Tab groups" menu item, as this functionality is already
+  // available in multiple other places
+  if (const auto index = GetIndexOfCommandId(IDC_SAVED_TAB_GROUPS_MENU)) {
+    RemoveItemAt(*index);
+  }
+
   // Remove upstream's dev tools menu and associated separator.
   // It'll be changed its position in more tools.
   if (const auto index = more_tools_model->GetIndexOfCommandId(IDC_DEV_TOOLS)) {

@@ -48,12 +48,25 @@ using views::MenuItemView;
 
 namespace {
 
+constexpr int kBookmarksCommandIdOffset =
+    AppMenuModel::kMinBookmarksCommandId - IDC_FIRST_UNBOUNDED_MENU;
+constexpr int kTabGroupsCommandIdOffset =
+    AppMenuModel::kMinTabGroupsCommandId - IDC_FIRST_UNBOUNDED_MENU;
+
 // Copied from app_menu.cc to dump w/o crashing
 bool IsBookmarkCommand(int command_id) {
   return command_id >= IDC_FIRST_UNBOUNDED_MENU &&
          ((command_id - IDC_FIRST_UNBOUNDED_MENU) %
               AppMenuModel::kNumUnboundedMenuTypes ==
-          0);
+          kBookmarksCommandIdOffset);
+}
+
+// Copied from app_menu.cc to dump w/o crashing
+bool IsTabGroupsCommand(int command_id) {
+  return command_id >= IDC_FIRST_UNBOUNDED_MENU &&
+         ((command_id - IDC_FIRST_UNBOUNDED_MENU) %
+              AppMenuModel::kNumUnboundedMenuTypes ==
+          kTabGroupsCommandIdOffset);
 }
 
 // A button that resides inside menu item.
@@ -192,10 +205,11 @@ void BraveAppMenu::ExecuteCommand(int command_id, int mouse_event_flags) {
   // Suspect that the entry is null but can't imagine which command causes it.
   // See
   // https://github.com/brave/brave-browser/issues/37862#issuecomment-2078553575
-  if (!IsBookmarkCommand(command_id) && command_id != IDC_EDIT_MENU &&
+  if (!IsBookmarkCommand(command_id) && !IsTabGroupsCommand(command_id) &&
+      command_id != IDC_CREATE_NEW_TAB_GROUP && command_id != IDC_EDIT_MENU &&
       command_id != IDC_ZOOM_MENU &&
       command_id_to_entry_.find(command_id) == command_id_to_entry_.end()) {
-    LOG(ERROR) << __func__ << " entry should be exsit for " << command_id;
+    LOG(ERROR) << __func__ << " entry should exist for " << command_id;
     SCOPED_CRASH_KEY_NUMBER("BraveAppMenu", "command_id", command_id);
     base::debug::DumpWithoutCrashing();
     return;
