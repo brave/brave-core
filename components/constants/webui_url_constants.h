@@ -23,6 +23,7 @@ inline constexpr char kRewardsPageTopHost[] = "rewards.top-chrome";
 inline constexpr char kRewardsPageTopURL[] = "chrome://rewards.top-chrome";
 inline constexpr char kRewardsInternalsHost[] = "rewards-internals";
 inline constexpr char kWelcomeHost[] = "welcome";
+inline constexpr char kWelcomeURL[] = "chrome://welcome/";
 inline constexpr char kWelcomeJS[] = "brave_welcome.js";
 inline constexpr char kBraveRewardsPanelURL[] =
     "chrome://rewards-panel.top-chrome";
