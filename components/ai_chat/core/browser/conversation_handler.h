@@ -237,7 +237,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetState(GetStateCallback callback) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void RateMessage(bool is_liked,
-                   uint32_t turn_id,
+                   const std::string& turn_uuid,
                    RateMessageCallback callback) override;
   void SendFeedback(const std::string& category,
                     const std::string& feedback,

@@ -6,9 +6,11 @@
 import * as React from 'react'
 import * as Mojom from '../../common/mojom'
 import useIsConversationVisible from '../hooks/useIsConversationVisible'
+import useSendFeedback, { defaultSendFeedbackState, SendFeedbackState } from './useSendFeedback'
 import { isLeoModel } from '../model_utils'
 import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
 import { useAIChat } from './ai_chat_context'
+import getAPI from '../api'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -19,7 +21,7 @@ export interface CharCountContext {
   inputTextCharCountDisplay: string
 }
 
-export interface ConversationContext extends CharCountContext {
+export type ConversationContext = SendFeedbackState & CharCountContext & {
   conversationUuid?: string
   conversationHistory: Mojom.ConversationTurn[]
   associatedContentInfo?: Mojom.SiteInfo
@@ -93,6 +95,7 @@ const defaultContext: ConversationContext = {
   resetSelectedActionType: () => { },
   handleActionTypeClick: () => { },
   setIsToolsMenuOpen: () => { },
+  ...defaultSendFeedbackState,
   ...defaultCharCountContext
 }
 
@@ -151,7 +154,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const [context, setContext] =
     React.useState<ConversationContext>(defaultContext)
 
+  const aiChatContext = useAIChat()
   const { conversationHandler, callbackRouter, selectedConversationId, updateSelectedConversationId } = useActiveChat()
+  const sendFeedbackState = useSendFeedback(conversationHandler, getAPI().conversationEntriesFrameObserver)
 
   const [
     hasDismissedLongConversationInfo,
@@ -284,8 +289,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       }
     }
   }, [conversationHandler, callbackRouter])
-
-  const aiChatContext = useAIChat()
 
   // Update favicon
   React.useEffect(() => {
@@ -449,6 +452,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   const store: ConversationContext = {
     ...context,
+    ...sendFeedbackState,
     actionList,
     apiHasError,
     shouldDisableUserInput,

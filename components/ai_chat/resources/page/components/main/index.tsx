@@ -21,17 +21,18 @@ import LongConversationInfo from '../alerts/long_conversation_info'
 import NoticeConversationStorage from '../notices/notice_conversation_storage'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import ConversationsList from '../conversations_list'
+import FeedbackForm from '../feedback_form'
 import { ConversationHeader } from '../header'
 import InputBox from '../input_box'
 import ModelIntro from '../model_intro'
 import PageContextToggle from '../page_context_toggle'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
+import SiteTitle from '../site_title'
 import { SuggestedQuestion, SuggestionButton } from '../suggested_question'
 import ToolsButtonMenu from '../tools_button_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
-import SiteTitle from '../site_title'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
 
@@ -225,6 +226,11 @@ function Main() {
                 onLoad={() => setIsContentReady(true)}
                 onGeneratedConversationEntryHeightChanged={handleLastElementHeightChange}
               />
+              }
+              {conversationContext.isFeedbackFormVisible &&
+                <div className={styles.feedbackForm}>
+                  <FeedbackForm />
+                </div>
               }
               {showSuggestions && (
               <div className={styles.suggestedQuestionsBox}>

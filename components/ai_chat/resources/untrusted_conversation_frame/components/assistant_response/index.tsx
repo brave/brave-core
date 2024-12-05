@@ -9,12 +9,12 @@ import Icon from '@brave/leo/react/icon'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
-import { useConversationEntriesContext } from '../../conversation_entries_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
 import styles from './style.module.scss'
 
 function SearchSummary (props: { searchQueries: string[] }) {
-  const context = useConversationEntriesContext()
+  const context = useUntrustedConversationContext()
 
   const handleOpenSearchQuery = React.useCallback((e: React.MouseEvent, query: string) => {
     e.preventDefault()

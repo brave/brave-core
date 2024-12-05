@@ -473,7 +473,7 @@ interface ConversationHandler {
   // Send a user-rating for a chat
   // message. |turn_id| is the index of the message in the
   // specified conversation.
-  RateMessage(bool is_liked, uint32 turn_id)
+  RateMessage(bool is_liked, string turn_uuid)
       => (string? rating_id);
   SendFeedback(
       string category,

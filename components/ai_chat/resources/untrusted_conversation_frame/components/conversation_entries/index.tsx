@@ -19,16 +19,14 @@ import CopyButton from '../copy_button'
 import EditButton from '../edit_button'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
-import { useConversationEntriesContext } from '../../conversation_entries_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 
 interface ConversationEntriesProps {
   onLastElementHeightChange: () => void
 }
 
 function ConversationEntries(props: ConversationEntriesProps) {
-  const conversationContext = useConversationEntriesContext()
-
-  const portalRefs = React.useRef<Map<number, Element>>(new Map())
+  const conversationContext = useUntrustedConversationContext()
 
   const lastEntryElementRef = React.useRef<HTMLDivElement>(null)
   const [activeMenuId, setActiveMenuId] = React.useState<number | null>()
@@ -179,8 +177,7 @@ function ConversationEntries(props: ConversationEntriesProps) {
                         {isAIAssistant &&
                           conversationContext.isLeoModel && (
                             <ContextMenuAssistant
-                              ref={portalRefs}
-                              turnId={id}
+                              turnUuid={turn.uuid}
                               isOpen={activeMenuId === id}
                               onClick={() => showAssistantMenu(id)}
                               onClose={hideAssistantMenu}
@@ -219,12 +216,6 @@ function ConversationEntries(props: ConversationEntriesProps) {
                   {showLongPageContentInfo && <LongPageInfo />}
                 </div>
               </div>
-              {isAIAssistant ? (
-                <div
-                  ref={(el) => el && portalRefs.current.set(id, el)}
-                  className={styles.feedbackFormPortal}
-                />
-              ) : null}
             </div>
           )
         })}

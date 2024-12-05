@@ -22,7 +22,7 @@ import './story_utils/locale'
 import ACTIONS_LIST from './story_utils/actions'
 import styles from './style.module.scss'
 import StorybookConversationEntries from './story_utils/ConversationEntries'
-import { ConversationEntriesContext, ConversationEntriesReactContext } from '../../untrusted_conversation_frame/conversation_entries_context'
+import { UntrustedConversationContext, UntrustedConversationReactContext } from '../../untrusted_conversation_frame/untrusted_conversation_context'
 
 function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
   return {
@@ -400,6 +400,7 @@ type CustomArgs = {
   hasConversationListItems: boolean
   hasSuggestedQuestions: boolean
   hasSiteInfo: boolean
+  isFeedbackFormVisible: boolean
   isStorageNoticeDismissed: boolean
   canShowPremiumPrompt: boolean
   hasAcceptedAgreement: boolean
@@ -423,6 +424,7 @@ const args: CustomArgs = {
   hasConversationListItems: true,
   hasSuggestedQuestions: true,
   hasSiteInfo: true,
+  isFeedbackFormVisible: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
   isStoragePrefEnabled: true,
@@ -538,6 +540,7 @@ const preview: Meta<CustomArgs> = {
         suggestionStatus: Mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
         currentError,
         apiHasError,
+        isFeedbackFormVisible: options.args.isFeedbackFormVisible,
         shouldDisableUserInput: false,
         shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
         shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
@@ -561,14 +564,16 @@ const preview: Meta<CustomArgs> = {
         submitInputTextToAPI: () => {},
         resetSelectedActionType: () => {},
         handleActionTypeClick: () => {},
-        setIsToolsMenuOpen: () => {}
+        setIsToolsMenuOpen: () => {},
+        handleFeedbackFormCancel: () => {},
+        handleFeedbackFormSubmit: () => {}
       }
 
-      const conversationEntriesContext: ConversationEntriesContext = {
+      const conversationEntriesContext: UntrustedConversationContext = {
         conversationHistory: conversationContext.conversationHistory,
         isGenerating: conversationContext.isGenerating,
         isLeoModel: conversationContext.isCurrentModelLeo,
-        contentUsedPercentage: conversationContext.associatedContentInfo?.contentUsedPercentage ?? 100,
+        contentUsedPercentage: options.args.shouldShowLongPageWarning ? 48 : 100,
         canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
         isMobile: aiChatContext.isMobile
       }
@@ -577,9 +582,9 @@ const preview: Meta<CustomArgs> = {
         <AIChatReactContext.Provider value={aiChatContext}>
           <ActiveChatContext.Provider value={activeChatContext}>
             <ConversationReactContext.Provider value={conversationContext}>
-              <ConversationEntriesReactContext.Provider value={conversationEntriesContext}>
+              <UntrustedConversationReactContext.Provider value={conversationEntriesContext}>
                 <Story />
-              </ConversationEntriesReactContext.Provider>
+              </UntrustedConversationReactContext.Provider>
             </ConversationReactContext.Provider>
           </ActiveChatContext.Provider>
         </AIChatReactContext.Provider>

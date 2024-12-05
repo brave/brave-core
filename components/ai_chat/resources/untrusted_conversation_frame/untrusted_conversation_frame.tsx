@@ -11,19 +11,19 @@ import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
 import API from './api_conversation_entries_ui'
 import ConversationEntries from './components/conversation_entries'
-import { ConversationEntriesContextProvider } from './conversation_entries_context'
+import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
 
 setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 function App() {
   return (
-    <ConversationEntriesContextProvider>
+    <UntrustedConversationContextProvider>
       <ConversationEntries
         onLastElementHeightChange={
           () => API.getInstance().parentUIFrame.generatedConversationEntryHeightChanged()
         }
       />
-    </ConversationEntriesContextProvider>
+    </UntrustedConversationContextProvider>
   )
 }
 

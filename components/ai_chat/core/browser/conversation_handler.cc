@@ -523,8 +523,9 @@ void ConversationHandler::GetState(GetStateCallback callback) {
 }
 
 void ConversationHandler::RateMessage(bool is_liked,
-                                      uint32_t turn_id,
+                                      const std::string& turn_uuid,
                                       RateMessageCallback callback) {
+  DVLOG(2) << __func__ << ": " << is_liked << ", " << turn_uuid;
   auto& model = GetCurrentModel();
 
   // We only allow Leo models to be rated.
@@ -532,33 +533,33 @@ void ConversationHandler::RateMessage(bool is_liked,
 
   const std::vector<mojom::ConversationTurnPtr>& history = chat_history_;
 
-  // TODO(petemill): Something more robust than relying on message index,
-  // and probably a message uuid.
-  uint32_t current_turn_id = turn_id + 1;
+  auto entry_it =
+      base::ranges::find(history, turn_uuid, &mojom::ConversationTurn::uuid);
 
-  if (current_turn_id <= history.size()) {
-    base::span<const mojom::ConversationTurnPtr> history_slice =
-        base::span(history).first(current_turn_id);
-
-    feedback_api_->SendRating(
-        is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,
-        model.options->get_leo_model_options()->name, selected_language_,
-        base::BindOnce(
-            [](RateMessageCallback callback, APIRequestResult result) {
-              if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
-                std::string id =
-                    *result.value_body().GetDict().FindString("id");
-                std::move(callback).Run(id);
-                return;
-              }
-              std::move(callback).Run(std::nullopt);
-            },
-            std::move(callback)));
-
+  if (entry_it == history.end()) {
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
-  std::move(callback).Run(std::nullopt);
+  const size_t count = std::distance(history.begin(), entry_it) + 1;
+
+  base::span<const mojom::ConversationTurnPtr> history_slice =
+      base::span(history).first(count);
+
+  feedback_api_->SendRating(
+      is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,
+      model.options->get_leo_model_options()->name, selected_language_,
+      base::BindOnce(
+          [](RateMessageCallback callback, APIRequestResult result) {
+            if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
+              std::string id = *result.value_body().GetDict().FindString("id");
+              std::move(callback).Run(id);
+              return;
+            }
+            DLOG(ERROR) << "Failed to send rating: " << result.response_code();
+            std::move(callback).Run(std::nullopt);
+          },
+          std::move(callback)));
 }
 
 void ConversationHandler::SendFeedback(const std::string& category,
@@ -566,13 +567,15 @@ void ConversationHandler::SendFeedback(const std::string& category,
                                        const std::string& rating_id,
                                        bool send_hostname,
                                        SendFeedbackCallback callback) {
+  DVLOG(2) << __func__ << ": " << rating_id << ", " << send_hostname << ", "
+           << category << ", " << feedback;
   auto on_complete = base::BindOnce(
       [](SendFeedbackCallback callback, APIRequestResult result) {
         if (result.Is2XXResponseCode()) {
           std::move(callback).Run(true);
           return;
         }
-
+        DLOG(ERROR) << "Failed to send feedback: " << result.response_code();
         std::move(callback).Run(false);
       },
       std::move(callback));

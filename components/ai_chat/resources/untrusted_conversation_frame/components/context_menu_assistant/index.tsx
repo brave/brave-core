@@ -11,124 +11,43 @@ import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
-import { useConversationEntriesContext } from '../../conversation_entries_context'
-// import FeedbackForm from '../feedback_form'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './style.module.scss'
 
+enum RatingStatus {
+  Liked,
+  Disliked,
+  None
+}
+
 interface ContextMenuAssistantProps {
-  turnId: number
+  turnUuid?: string
   isOpen: boolean
   onClick: () => void
   onClose: () => void
   onEditAnswerClicked: () => void
 }
 
-// enum RatingStatus {
-//   Liked,
-//   Disliked,
-//   None
-// }
+export default function ContextMenuAssistant(props: ContextMenuAssistantProps) {
+  const conversationContext = useUntrustedConversationContext()
+  const [currentRatingStatus, setCurrentRatingStatus] =
+    React.useState<RatingStatus>(RatingStatus.None)
 
-function ContextMenuAssistant_(
-  props: ContextMenuAssistantProps,
-  ref: React.RefObject<Map<number, Element>>
-) {
-  const conversationContext = useConversationEntriesContext()
-  const {canSubmitUserEntries} = conversationContext
-  // const [feedbackId, setFeedbackId] = React.useState<string | null>()
-  // const [isFormVisible, setIsFormVisible] = React.useState(false)
-  // const [currentRatingStatus, setCurrentRatingStatus] =
-  //   React.useState<RatingStatus>(RatingStatus.None)
+  const hasSentRating = currentRatingStatus !== RatingStatus.None
 
-  // const formContainerElement = ref.current?.get(props.turnId)
+  function handleLikeAnswer() {
+    if (!props.turnUuid) return
+    if (hasSentRating) return
+    setCurrentRatingStatus(RatingStatus.Liked)
+    conversationContext.parentUiFrame?.rateMessage(props.turnUuid, true)
+  }
 
-  // const hasSentRating = currentRatingStatus !== RatingStatus.None
-
-  // const handleLikeAnswer = () => {
-  //   if (hasSentRating) return
-
-  //   conversationContext.conversationHandler
-  //     ?.rateMessage(true, props.turnId)
-  //     .then((resp) => {
-  //       if (!resp.ratingId) {
-  //         showAlert({
-  //           type: 'error',
-  //           content: getLocale('ratingError'),
-  //           actions: []
-  //         })
-
-  //         return
-  //       }
-
-  //       setCurrentRatingStatus(RatingStatus.Liked)
-  //       showAlert({
-  //         type: 'info',
-  //         content: getLocale('answerLiked'),
-  //         actions: []
-  //       })
-  //     })
-  // }
-
-  // const handleDislikeAnswer = () => {
-  //   if (hasSentRating) return
-
-  //   conversationContext.conversationHandler
-  //     ?.rateMessage(false, props.turnId)
-  //     .then((resp) => {
-  //       if (!resp.ratingId) {
-  //         showAlert({
-  //           type: 'error',
-  //           content: getLocale('ratingError'),
-  //           actions: []
-  //         })
-
-  //         return
-  //       }
-
-  //       setFeedbackId(resp.ratingId)
-  //       setCurrentRatingStatus(RatingStatus.Disliked)
-  //       showAlert({
-  //         type: 'info',
-  //         content: getLocale('answerDisliked'),
-  //         actions: [
-  //           {
-  //             text: getLocale('addFeedbackButtonLabel'),
-  //             kind: 'plain-faint',
-  //             action: () => setIsFormVisible(true)
-  //           }
-  //         ]
-  //       }, 5000)
-  //     })
-  // }
-
-  // const handleFormCancelClick = () => {
-  //   setIsFormVisible(false)
-  // }
-
-  // const handleOnSubmit = (selectedCategory: string, feedbackText: string, shouldSendUrl: boolean) => {
-  //   if (feedbackId) {
-  //     conversationContext.conversationHandler
-  //       ?.sendFeedback(selectedCategory, feedbackText, feedbackId, shouldSendUrl)
-  //       .then((resp) => {
-  //         if (!resp.isSuccess) {
-  //           showAlert({
-  //             type: 'error',
-  //             content: getLocale('feedbackError'),
-  //             actions: []
-  //           })
-
-  //           return
-  //         }
-
-  //         showAlert({
-  //           type: 'success',
-  //           content: getLocale('feedbackSent'),
-  //           actions: []
-  //         })
-  //       })
-  //     setIsFormVisible(false)
-  //   }
-  // }
+  function handleDislikeAnswer() {
+    if (!props.turnUuid) return
+    if (hasSentRating) return
+    setCurrentRatingStatus(RatingStatus.Disliked)
+    conversationContext.parentUiFrame?.rateMessage(props.turnUuid, false)
+  }
 
   return (
     <>
@@ -151,7 +70,7 @@ function ContextMenuAssistant_(
         >
           <Icon name='more-vertical' />
         </Button>
-        {canSubmitUserEntries && (
+        {conversationContext.canSubmitUserEntries && (
           <leo-menu-item
             onClick={props.onEditAnswerClicked}
           >
@@ -161,9 +80,9 @@ function ContextMenuAssistant_(
         )}
         <leo-menu-item
           class={classnames({
-            // [styles.liked]: currentRatingStatus === RatingStatus.Liked
+            [styles.liked]: currentRatingStatus === RatingStatus.Liked
           })}
-          // onClick={handleLikeAnswer}
+          onClick={handleLikeAnswer}
           title={getLocale('likeDislikeAnswerButtonTitle')}
         >
           <Icon name='thumb-up' />
@@ -171,29 +90,15 @@ function ContextMenuAssistant_(
         </leo-menu-item>
         <leo-menu-item
           class={classnames({
-            // [styles.disliked]: currentRatingStatus === RatingStatus.Disliked
+            [styles.disliked]: currentRatingStatus === RatingStatus.Disliked
           })}
-          // onClick={handleDislikeAnswer}
+          onClick={handleDislikeAnswer}
           title={getLocale('likeDislikeAnswerButtonTitle')}
         >
           <Icon name='thumb-down' />
           <span>{getLocale('dislikeAnswerButtonLabel')}</span>
         </leo-menu-item>
       </ButtonMenu>
-      {/* {formContainerElement &&
-        isFormVisible &&
-        ReactDOM.createPortal(
-          <FeedbackForm
-            onSubmit={handleOnSubmit}
-            onCancel={handleFormCancelClick}
-            isDisabled={!Boolean(feedbackId).valueOf()}
-          />,
-          formContainerElement
-        )} */}
     </>
   )
 }
-
-const ContextMenuAssistant = React.forwardRef(ContextMenuAssistant_)
-
-export default ContextMenuAssistant

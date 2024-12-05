@@ -10,9 +10,21 @@ module ai_chat.mojom;
 
 // Trusted WebUI-side handler for messages from the untrusted child frame
 interface ParentUIFrame {
+  // <iframe> cannot be sized to the natural height of its content, so the child
+  // must let the parent know whenever the body height changes so that the parent
+  // can manually set the same height on the <iframe> to avoid scrolling.
   ChildHeightChanged(uint32 height);
+
+  // Separately, let the parent know when the height of the content changes
+  // as a result of active generation, so that the parent can automatically
+  // scroll to the most recent content as it's being generated.
   GeneratedConversationEntryHeightChanged();
-  RateMessage(string turn_id, bool is_liked);
+
+  // This is sent to the UI rather than straight to the browser to allow
+  // for further rating feedback to be attached. The parent frame deals
+  // with it instead of the child frame, due to UI space as well as sensitive
+  // user information being captured.
+  RateMessage(string turn_uuid, bool is_liked);
 };
 
 // Browser-side handler for untrusted frame that handles rendering of

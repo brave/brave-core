@@ -7,11 +7,11 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
-import { useConversationEntriesContext } from '../../conversation_entries_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './style.module.scss'
 
 export default function LongPageInfo() {
-  const context = useConversationEntriesContext()
+  const context = useUntrustedConversationContext()
   const warningText = // context.contentUsedPercentage
     // ? getLocale('pageContentRefinedWarning') :
     formatMessage(getLocale('pageContentTooLongWarning'), {

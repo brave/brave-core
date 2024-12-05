@@ -8,37 +8,42 @@ import API, {ConversationEntriesUIState, defaultConversationEntriesUIState} from
 import * as Mojom from '../common/mojom'
 import useAPIState from '../common/useAPIState'
 
-export type ConversationEntriesContext = ConversationEntriesUIState & {
+/**
+ * UI state and functions exposed to UI in the untrusted conversation entries frame
+ */
+export type UntrustedConversationContext = ConversationEntriesUIState & {
   // Access to interface functions, optional because it will not be available
   // in storybook.
   conversationHandler?: Mojom.UntrustedConversationHandlerRemote
   uiHandler?: Mojom.UntrustedUIHandlerRemote
+  parentUiFrame?: Mojom.ParentUIFrameRemote
 }
 
-const defaultContext: ConversationEntriesContext = {
+const defaultContext: UntrustedConversationContext = {
   ...defaultConversationEntriesUIState
 }
 
-export const ConversationEntriesReactContext =
-  React.createContext<ConversationEntriesContext>(defaultContext)
+export const UntrustedConversationReactContext =
+  React.createContext<UntrustedConversationContext>(defaultContext)
 
-export function ConversationEntriesContextProvider(props: React.PropsWithChildren) {
+export function UntrustedConversationContextProvider(props: React.PropsWithChildren) {
   const api = API.getInstance()
   const context = useAPIState(api, defaultContext)
 
-  const store: ConversationEntriesContext = {
+  const store: UntrustedConversationContext = {
     ...context,
     conversationHandler: api.conversationHandler,
-    uiHandler: api.uiHandler
+    uiHandler: api.uiHandler,
+    parentUiFrame: api.parentUIFrame
   }
 
   return (
-    <ConversationEntriesReactContext.Provider value={store}>
+    <UntrustedConversationReactContext.Provider value={store}>
       {props.children}
-    </ConversationEntriesReactContext.Provider>
+    </UntrustedConversationReactContext.Provider>
   )
 }
 
-export function useConversationEntriesContext() {
-  return React.useContext(ConversationEntriesReactContext)
+export function useUntrustedConversationContext() {
+  return React.useContext(UntrustedConversationReactContext)
 }
