@@ -34,7 +34,7 @@ public class BraveVPN {
   /// This function can have side effects if the receipt has expired(removes the vpn connection then).
   public static func initialize(customCredential: BraveVPNSkusCredential?) {
     @Sendable func clearConfiguration() {
-      GRDVPNHelper.clearVpnConfiguration()
+      GRDVPNHelper.clearVPNConfiguration()
       clearCredentials()
 
       NEVPNManager.shared().removeFromPreferences { error in
@@ -66,6 +66,11 @@ public class BraveVPN {
     helper.grdTunnelProviderManagerLocalizedDescription = connectionName
     helper.tunnelProviderBundleIdentifier = AppInfo.baseBundleIdentifier + ".BraveWireGuard"
     helper.appGroupIdentifier = AppInfo.sharedContainerIdentifier
+    helper.timezoneChangedBlock = { (changed, oldRegion, newRegion) in
+      Logger.module.debug(
+        "VPN Region Updated. Timezone changed from: \(oldRegion.timeZoneName) to: \(newRegion.timeZoneName)"
+      )
+    }
 
     if case .notPurchased = vpnState {
       // Unlikely if user has never bought the vpn, we clear vpn config here for safety.
@@ -129,6 +134,32 @@ public class BraveVPN {
     }
 
     return .purchased(enabled: isConnected)
+  }
+
+  public static var isSmartProxyRoutingEnabled: Bool {
+    get {
+      GRDVPNHelper.smartProxyRoutingEnabled()
+    }
+
+    set {
+      if newValue {
+        GRDVPNHelper.enableSmartProxyRouting()
+        BraveVPN.smartProxyRoutingHosts = BraveVPN.helper.smartProxyRoutingHosts ?? []
+      } else {
+        GRDVPNHelper.disableSmartProxyRouting()
+        BraveVPN.smartProxyRoutingHosts = []
+      }
+    }
+  }
+
+  public static var isKillSwitchEnabled: Bool {
+    get {
+      helper.vpnKillSwitchEnabled
+    }
+
+    set {
+      helper.setVPNKillSwitchEnabled(newValue)
+    }
   }
 
   /// Returns true if the user is connected to Brave's vpn at the moment.
@@ -226,7 +257,7 @@ public class BraveVPN {
     // 1. Existing user, check if credentials and connection are available.
     if GRDVPNHelper.activeConnectionPossible() {
       // just configure & connect, no need for 'first user' setup
-      helper.configureAndConnectVPN { error, status in
+      helper.configureAndConnectVPNTunnel { status, error in
         if let error = error {
           logAndStoreError("configureAndConnectVPN: \(error)")
         }
@@ -246,14 +277,14 @@ public class BraveVPN {
       GRDTransportProtocol.setUserPreferred(.wireGuard)
 
       // New user or no credentials and have to remake them.
-      helper.configureFirstTimeUser(
+      helper.configureUserFirstTime(
         for: GRDTransportProtocol.getUserPreferredTransportProtocol(),
-        postCredential: nil
-      ) { success, error in
+        postCredentialCallback: nil
+      ) { error in
         if let error = error {
           logAndStoreError("configureFirstTimeUserPostCredential \(error)")
         } else {
-          helper.ikev2VPNManager.removeFromPreferences()
+          NEVPNManager.shared().removeFromPreferences()
         }
 
         reconnectPending = false
@@ -261,10 +292,9 @@ public class BraveVPN {
         // First time user will connect automatic region - detail is pulled
         fetchLastUsedRegionDetail { _, _ in
           DispatchQueue.main.async {
-            completion?(success)
+            completion?(error == nil)
           }
         }
-
       }
     }
   }
@@ -276,7 +306,7 @@ public class BraveVPN {
   /// and reconnects automatically after reconfiguration is done.
   public static func reconfigureVPN(completion: ((Bool) -> Void)? = nil) {
     helper.forceDisconnectVPNIfNecessary()
-    GRDVPNHelper.clearVpnConfiguration()
+    GRDVPNHelper.clearVPNConfiguration()
 
     connectToVPN { status in
       completion?(status)
@@ -288,12 +318,12 @@ public class BraveVPN {
     completion: ((Bool) -> Void)? = nil
   ) {
     helper.forceDisconnectVPNIfNecessary()
-    GRDVPNHelper.clearVpnConfiguration()
+    GRDVPNHelper.clearVPNConfiguration()
 
     GRDTransportProtocol.setUserPreferred(transportProtocol)
 
     // New user or no credentials and have to remake them.
-    helper.configureFirstTimeUser(for: transportProtocol, postCredential: nil) { success, error in
+    helper.configureUserFirstTime(for: transportProtocol, postCredentialCallback: nil) { error in
       if let error = error {
         logAndStoreError("Change Preferred transport FirstTimeUserPostCredential \(error)")
       } else {
@@ -301,13 +331,13 @@ public class BraveVPN {
       }
 
       reconnectPending = false
-      completion?(success)
+      completion?(error == nil)
     }
 
     func removeConfigurationFromPreferences(for transportProtocol: TransportProtocol) {
       switch transportProtocol {
       case .wireGuard:
-        helper.ikev2VPNManager.removeFromPreferences()
+        NEVPNManager.shared().removeFromPreferences()
       case .ikEv2:
         tunnelManager.removeTunnel()
       default:
