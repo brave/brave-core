@@ -303,6 +303,17 @@
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
+    <style name="BottomSheetAnimation">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+    <style name="BottomSheetActivityTheme" parent="Theme.Chromium.Activity.FakeTranslucent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/BottomSheetAnimation</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
     <style name="BraveWalletDAppNotificationDialogTop" parent="@android:style/Theme.Dialog">
         <item name="android:windowMinWidthMajor">98%</item>
         <item name="android:windowMinWidthMinor">98%</item>
