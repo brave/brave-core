@@ -181,7 +181,7 @@ function ContactSupport(props: Props) {
   }
 
   const handlePrivacyPolicyClick = () => {
-    getPanelBrowserAPI().panelHandler.openVpnUI('privacy')
+    getPanelBrowserAPI().panelHandler.openVpnUI(BraveVPN.ManageURLType.PRIVACY)
   }
 
   // Setup any individual field error message.

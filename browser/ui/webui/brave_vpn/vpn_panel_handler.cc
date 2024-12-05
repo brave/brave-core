@@ -20,8 +20,10 @@
 
 namespace {
 
-bool ShouldOpenSingletonTab(const std::string& type) {
-  return type == "manage" || type == "privacy" || type == "about";
+bool ShouldOpenSingletonTab(brave_vpn::mojom::ManageURLType type) {
+  return type == brave_vpn::mojom::ManageURLType::MANAGE ||
+         type == brave_vpn::mojom::ManageURLType::PRIVACY ||
+         type == brave_vpn::mojom::ManageURLType::ABOUT;
 }
 
 void ShowSingletonVPNTab(Browser* browser, const GURL& url) {
@@ -70,7 +72,7 @@ void VPNPanelHandler::CloseUI() {
 }
 
 void VPNPanelHandler::OpenVpnUIUrl(
-    const std::string& type,
+    brave_vpn::mojom::ManageURLType type,
     brave_vpn::mojom::ProductUrlsPtr product_urls) {
   auto* browser = chrome::FindLastActiveWithProfile(profile_);
   const auto url =
@@ -82,7 +84,7 @@ void VPNPanelHandler::OpenVpnUIUrl(
   }
 }
 
-void VPNPanelHandler::OpenVpnUI(const std::string& type) {
+void VPNPanelHandler::OpenVpnUI(brave_vpn::mojom::ManageURLType type) {
   brave_vpn::BraveVpnService* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
   CHECK(vpn_service);

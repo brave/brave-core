@@ -8,6 +8,7 @@ import * as Actions from '../actions/brave_vpn_actions'
 import { ApplicationState } from '../reducers'
 import AsyncActionHandler from '../../common/AsyncActionHandler'
 import getNTPBrowserAPI from '../api/background'
+import * as BraveVPN from '../api/braveVpn'
 import store from '../store'
 
 const observer = {
@@ -42,7 +43,7 @@ handler.on(Actions.launchVPNPanel.getType(), async (store) => {
   getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
 })
 
-handler.on<string>(
+handler.on<BraveVPN.ManageURLType>(
   Actions.openVPNAccountPage.getType(),
   async (store, payload) => {
     getNTPBrowserAPI().pageHandler.openVPNAccountPage(payload)

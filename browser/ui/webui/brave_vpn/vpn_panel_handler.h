@@ -6,9 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_VPN_VPN_PANEL_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_VPN_VPN_PANEL_HANDLER_H_
 
-#include <string>
-#include <vector>
-
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -39,10 +36,10 @@ class VPNPanelHandler : public brave_vpn::mojom::PanelHandler {
   // brave_vpn::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
-  void OpenVpnUI(const std::string& type) override;
+  void OpenVpnUI(brave_vpn::mojom::ManageURLType type) override;
 
  private:
-  void OpenVpnUIUrl(const std::string& type,
+  void OpenVpnUIUrl(brave_vpn::mojom::ManageURLType type,
                     brave_vpn::mojom::ProductUrlsPtr product_urls);
   mojo::Receiver<brave_vpn::mojom::PanelHandler> receiver_;
   raw_ptr<VPNPanelUI> const panel_controller_;

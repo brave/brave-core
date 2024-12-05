@@ -6,9 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_VPN_BRAVE_VPN_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_BRAVE_VPN_BRAVE_VPN_CONTROLLER_H_
 
-#include <string>
-
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 
 class BraveBrowserView;
 class BrowserView;
@@ -21,7 +20,7 @@ class BraveVPNController {
   BraveVPNController& operator=(const BraveVPNController&) = delete;
 
   void ShowBraveVPNBubble(bool show_select = false);
-  void OpenVPNAccountPage(const std::string& intent);
+  void OpenVPNAccountPage(brave_vpn::mojom::ManageURLType type);
 
  private:
   BraveBrowserView* GetBraveBrowserView();

@@ -21,13 +21,14 @@ void BraveVPNController::ShowBraveVPNBubble(bool show_select) {
   GetBraveBrowserView()->ShowBraveVPNBubble(show_select);
 }
 
-void BraveVPNController::OpenVPNAccountPage(const std::string& intent) {
+void BraveVPNController::OpenVPNAccountPage(
+    brave_vpn::mojom::ManageURLType type) {
   auto* browser = browser_view_->browser();
   auto* profile = browser->profile();
   auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
   const auto url =
       GURL(brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment()));
-  ShowSingletonTab(browser, brave_vpn::GetManageURLForUIType(intent, url));
+  ShowSingletonTab(browser, brave_vpn::GetManageURLForUIType(type, url));
 }
 
 BraveBrowserView* BraveVPNController::GetBraveBrowserView() {

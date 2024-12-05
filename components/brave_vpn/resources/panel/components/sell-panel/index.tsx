@@ -8,7 +8,7 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import * as S from './style'
 import { useSelector } from '../../state/hooks'
-import getPanelBrowserAPI from '../../api/panel_browser_api'
+import getPanelBrowserAPI, { ManageURLType } from '../../api/panel_browser_api'
 
 function SellPanel () {
   const productUrls = useSelector(state => state.productUrls)
@@ -21,7 +21,7 @@ function SellPanel () {
     getLocale('braveVpnFeature5')
   ]), [])
 
-  const handleClick = (intent: string) => {
+  const handleClick = (intent: ManageURLType) => {
     if (!productUrls) return
     getPanelBrowserAPI().panelHandler.openVpnUI(intent)
   }
@@ -52,11 +52,14 @@ function SellPanel () {
             slot='actions'
             kind='filled'
             size='large'
-            onClick={() => handleClick('checkout')}
+            onClick={() => handleClick(ManageURLType.CHECKOUT)}
           >
             {getLocale('braveVpnBuy')}
           </S.ActionButton>
-          <S.ActionLink href="#" onClick={() => handleClick('recover')}>
+          <S.ActionLink
+            href="#"
+            onClick={() => handleClick(ManageURLType.RECOVER)}
+          >
             {getLocale('braveVpnPurchased')}
           </S.ActionLink>
         </S.ActionArea>

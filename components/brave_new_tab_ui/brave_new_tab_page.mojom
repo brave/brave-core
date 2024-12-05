@@ -6,6 +6,7 @@
 module brave_new_tab_page.mojom;
 
 import "url/mojom/url.mojom";
+import "brave/components/brave_vpn/common/mojom/brave_vpn.mojom";
 
 const string kRandomSolidColorValue = "solid";
 const string kRandomGradientColorValue = "gradient";
@@ -83,9 +84,16 @@ interface PageHandler {
   SearchWhatYouTyped(string host, string query, bool alt_key, bool ctrl_key, bool meta_key, bool shift_key);
 
   // BraveVPN
+  [EnableIf=enable_brave_vpn]
   RefreshVPNState();
+
+  [EnableIf=enable_brave_vpn]
   LaunchVPNPanel();
-  OpenVPNAccountPage(string intent);
+
+  [EnableIf=enable_brave_vpn]
+  OpenVPNAccountPage(brave_vpn.mojom.ManageURLType type);
+
+  [EnableIf=enable_brave_vpn]
   ReportVPNWidgetUsage();
 };
 
