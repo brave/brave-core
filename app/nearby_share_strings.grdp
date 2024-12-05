@@ -3,10 +3,10 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
   <!-- Confirmation page -->
-  <message name="IDS_NEARBY_CONFIRMATION_PAGE_ADD_CONTACT_SUBTITLE" desc="Subtitle of the checkbox to add the profile to a users contacts. This will make the local device visible to them once they are nearby.">
+  <message name="IDS_NEARBY_CONFIRMATION_PAGE_ADD_CONTACT_SUBTITLE" desc="Subtitle of the checkbox to add the person to a users contacts. This will make the local device visible to them once they are nearby.">
     Adding this contact will remember the next time they share
   </message>
-  <message name="IDS_NEARBY_CONFIRMATION_PAGE_ADD_CONTACT_TITLE" desc="Title of the checkbox to add the profile to a users contacts.">
+  <message name="IDS_NEARBY_CONFIRMATION_PAGE_ADD_CONTACT_TITLE" desc="Title of the checkbox to add the person to a users contacts.">
     Add <ph name="CONTACT_NAME">$1<ex>Richard</ex></ph> to your contacts
   </message>
   <message name="IDS_NEARBY_CONFIRMATION_PAGE_TITLE" desc="Title of the Nearby Share confirmation page after selecting a device to share with.">

@@ -4792,7 +4792,7 @@ are declared in tools/grit/grit_rule.gni.
           App: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_TOOL_PREFIX" desc="The prefix for a tool process row in the Task Manager">
-          Tool: <ph name="PRINT_NAME">$1<ex>Manage Profiles</ex></ph>
+          Tool: <ph name="PRINT_NAME">$1<ex>Manage People</ex></ph>
         </message>
         <message name="IDS_TASK_MANAGER_ARC_PREFIX_BACKGROUND_SERVICE" desc="The prefix for an ARC service process row">
           Service: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
@@ -11901,7 +11901,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           Something went wrong. Try again.
         </message>
         <message name="IDS_DATA_SHARING_JOIN_WARNING" desc="The warning at the top of join dialog.">
-          Make sure you trust the profile that sent this invitation
+          Make sure you trust the person that sent this invitation
         </message>
         <message name="IDS_DATA_SHARING_ORGANIZATION_DISALLOW_SIGN_IN_BODY" desc="The body text of the organization disallowing signin dialog.">
           To share or join tab groups, you must be able to sign in to Brave
@@ -11916,7 +11916,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           Settings
         </message>
         <message name="IDS_DATA_SHARING_GROUP_FULL_BODY" desc="The body text of the group being full dialog when joining.">
-          Contact the profile who sent this link
+          Contact the person who sent this link
         </message>
         <message name="IDS_DATA_SHARING_OWNER_CANNOT_SHARE" desc="The warning on the manage dialog that warns the owner cannot share the link because group is full.">
           Your tab group is full, new members can’t join with the link
@@ -12010,7 +12010,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           Learn about shared tab groups
         </message>
         <message name="IDS_DATA_SHARING_PEOPLE_WITH_ACCESS" desc="Text describing a list of members of a group.">
-          Profiles with access
+          People with access
         </message>
         <message name="IDS_DATA_SHARING_LINK_EDIT_ACCESS" desc="Text describing how link sharing works.">
           Anyone with the link can edit all tabs
@@ -13062,16 +13062,16 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_APP_LAUNCHER_TAB_TITLE" desc="Default name for stand alone web page to serve as an App launcher when the new tab doesn't show apps.">
           Apps
         </message>
-        <message name="IDS_NEW_TAB_GUEST_SESSION_HEADING" desc="Heading used when a profile enters Guest Session">
+        <message name="IDS_NEW_TAB_GUEST_SESSION_HEADING" desc="Heading used when a person enters Guest Session">
           You're browsing as a Guest
         </message>
         <if expr="chromeos_ash">
-          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a profile enters Guest Session">
+          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a person enters Guest Session">
             Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you sign out. Files you download and bookmarks you create won't be preserved.
           </message>
         </if>
         <if expr="not chromeos_ash">
-          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a profile enters Guest Session">
+          <message name="IDS_NEW_TAB_GUEST_SESSION_DESCRIPTION" desc="Used when a person enters Guest Session">
             Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however.
           </message>
         </if>

@@ -2195,7 +2195,7 @@
     Brave Advanced Protection Program
   </message>
   <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Brave     Advanced Protection Program">
-    Provides Brave’s strongest account security for profiles at risk of targeted attacks
+    Provides Brave’s strongest account security for people at risk of targeted attacks
   </message>
 
   <!-- Secure Connections -->
@@ -3847,7 +3847,7 @@
         other {{NUM_COOKIES} cookies}}
   </message>
 
-  <!-- Sync / Profiles Page -->
+  <!-- Sync / People Page -->
   <message name="IDS_SETTINGS_PEOPLE" desc="Name of the settings page which manages the user's relationship to Brave.">
     You and Brave
   </message>
