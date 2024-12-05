@@ -22,12 +22,16 @@
 
 using brave_component_updater::BraveOnDemandUpdater;
 
+namespace brave_component_updater {
+class ComponentContentsAccessor;
+}
+
 namespace brave_shields {
 
 namespace {
 
-using OnComponentReadyCallback =
-    base::RepeatingCallback<void(const base::FilePath&)>;
+using OnComponentReadyCallback = base::RepeatingCallback<void(
+    scoped_refptr<brave_component_updater::ComponentContentsAccessor>)>;
 
 constexpr size_t kHashSize = 32;
 
@@ -69,6 +73,8 @@ class AdBlockComponentInstallerPolicy
   const std::string component_name_;
   OnComponentReadyCallback ready_callback_;
   uint8_t component_hash_[kHashSize];
+  mutable scoped_refptr<brave_component_updater::ComponentContentsAccessor>
+      accessor_;
 };
 
 AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
@@ -109,12 +115,16 @@ void AdBlockComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     base::Value::Dict manifest) {
-  ready_callback_.Run(path);
+  CHECK(accessor_);
+  CHECK_EQ(accessor_->GetComponentRoot(), path);
+  ready_callback_.Run(std::move(accessor_));
 }
 
 bool AdBlockComponentInstallerPolicy::VerifyInstallation(
     const base::Value::Dict& manifest,
     const base::FilePath& install_dir) const {
+  accessor_ = brave_component_updater::ComponentContentsVerifier::GetInstance()
+                  ->CreateContentsAccessor(install_dir);
   return true;
 }
 
@@ -158,18 +168,10 @@ void RegisterAdBlockComponentInternal(
   if (!cus) {
     return;
   }
-
-  auto on_ready = base::BindRepeating(
-      [](OnSecureComponentReadyCallback callback, const base::FilePath& path) {
-        brave_component_updater::ComponentContentsVerifier::GetInstance()
-            ->CreateContentsAccessor(path, std::move(callback));
-      },
-      std::move(callback));
-
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<AdBlockComponentInstallerPolicy>(
           component_public_key, component_id, component_name,
-          std::move(on_ready)));
+          std::move(callback)));
   installer->Register(cus, base::BindOnce(&OnRegistered, component_id));
 }
 

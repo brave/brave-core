@@ -59,10 +59,9 @@ class ComponentContentsVerifier {
   static void Setup(ComponentContentsAccessorFactory cca_factory);
   static ComponentContentsVerifier* GetInstance();
 
-  void CreateContentsAccessor(
-      const base::FilePath& component_root,
-      base::OnceCallback<void(scoped_refptr<ComponentContentsAccessor>)>
-          on_created);
+  // Should be called on MAY_BLOCK sequence.
+  scoped_refptr<ComponentContentsAccessor> CreateContentsAccessor(
+      const base::FilePath& component_root);
 
  private:
   friend base::NoDestructor<ComponentContentsVerifier>;
