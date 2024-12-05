@@ -69,6 +69,8 @@ export const TransactionIntent = (props: Props) => {
   const txApprovalTarget = getTransactionApprovalTargetAddress(transaction)
   const txCoinType = getCoinFromTxDataUnion(transaction.txDataUnion)
   const txToAddress = getTransactionToAddress(transaction)
+  const isSOLSwapOrBridge =
+    txCoinType === BraveWallet.CoinType.SOL && isSwapOrBridge
 
   // Queries
   const { account: txAccount } = useAccountQuery(transaction.fromAccountId)
@@ -171,9 +173,32 @@ export const TransactionIntent = (props: Props) => {
       }`
     : formattedSendAmount
 
+  const sendSwapOrBridgeLocale = React.useMemo(() => {
+    if (isBridge) {
+      return getLocale('braveWalletBridge').toLocaleLowerCase()
+    }
+    if (isSwap) {
+      return getLocale('braveWalletSwap').toLocaleLowerCase()
+    }
+    return getLocale('braveWalletSend').toLocaleLowerCase()
+  }, [isBridge, isSwap])
+
+  const swappingOrBridgingLocale = React.useMemo(() => {
+    if (isBridge) {
+      return getLocale('braveWalletBridging')
+    }
+    return getLocale('braveWalletSwapping')
+  }, [isBridge])
+
   const firstDuringValue = React.useMemo(() => {
     if (isERC20Approval) {
       return formattedApprovalAmount
+    }
+    if (isSOLSwapOrBridge && transactionFailed) {
+      return sendSwapOrBridgeLocale
+    }
+    if (isSOLSwapOrBridge) {
+      return swappingOrBridgingLocale
     }
     if (isSwapOrBridge && transactionConfirmed) {
       return formattedBuyAmount
@@ -189,10 +214,17 @@ export const TransactionIntent = (props: Props) => {
     transactionConfirmed,
     formattedBuyAmount,
     formattedSellAmount,
-    formattedSendAmount
+    formattedSendAmount,
+    isSOLSwapOrBridge,
+    sendSwapOrBridgeLocale,
+    transactionFailed,
+    swappingOrBridgingLocale
   ])
 
   const secondDuringValue = React.useMemo(() => {
+    if (isSOLSwapOrBridge) {
+      return txNetwork?.chainName ?? ''
+    }
     if (isSwapOrBridge && transactionConfirmed) {
       return recipientLabel
     }
@@ -210,22 +242,20 @@ export const TransactionIntent = (props: Props) => {
     isBridge,
     bridgeToNetwork,
     isSwap,
-    formattedBuyAmount
+    formattedBuyAmount,
+    isSOLSwapOrBridge,
+    txNetwork
   ])
 
-  const sendSwapOrBridgeLocale = React.useMemo(() => {
-    if (isBridge) {
-      return getLocale('braveWalletBridge').toLocaleLowerCase()
-    }
-    if (isSwap) {
-      return getLocale('braveWalletSwap').toLocaleLowerCase()
-    }
-    return getLocale('braveWalletSend').toLocaleLowerCase()
-  }, [isBridge, isSwap])
-
   const descriptionLocale = React.useMemo(() => {
+    if (transactionFailed && isSOLSwapOrBridge) {
+      return 'braveWalletErrorAttemptingToTransactOnNetwork'
+    }
     if (transactionFailed) {
       return 'braveWalletErrorAttemptingToTransact'
+    }
+    if (isSOLSwapOrBridge) {
+      return 'braveWalletSwappingOrBridgingOnNetwork'
     }
     if (isSwapOrBridge && transactionConfirmed) {
       return 'braveWalletAmountAddedToAccount'
@@ -249,7 +279,8 @@ export const TransactionIntent = (props: Props) => {
     transactionConfirmed,
     isBridge,
     isSwap,
-    isERC20Approval
+    isERC20Approval,
+    isSOLSwapOrBridge
   ])
 
   const descriptionString = getLocale(descriptionLocale)
