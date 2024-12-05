@@ -40,7 +40,7 @@ public class HTTPBlockedHandler: InternalSchemeResponse {
         of: "%blocked_title%",
         with: String.localizedStringWithFormat(
           Strings.Shields.theConnectionIsNotSecure,
-          "<tt>\(originalURL.domainURL.absoluteDisplayString)</tt>"
+          "<tt>\(originalURL.host ?? originalURL.domainURL.absoluteDisplayString)</tt>"
         )
       )
       .replacingOccurrences(
