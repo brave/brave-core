@@ -31,6 +31,8 @@ public final class BravePreferenceKeys {
             "org.chromium.chrome.browser.Brave_Double_Restart";
     public static final String BRAVE_TAB_GROUPS_ENABLED =
             "org.chromium.chrome.browser.Brave_Tab_Groups_Enabled";
+    public static final String BRAVE_TAB_GROUPS_ENABLED_DEFAULT_VALUE =
+            "org.chromium.chrome.browser.Brave_Tab_Groups_Enabled_Default_Value";
     public static final String BRAVE_DISABLE_SHARING_HUB =
             "org.chromium.chrome.browser.Brave_Disable_Sharing_Hub";
     public static final String BRAVE_NEWS_CHANGE_SOURCE = "brave_news_change_source";
