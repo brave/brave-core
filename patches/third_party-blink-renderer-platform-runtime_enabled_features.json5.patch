@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 8a8d18a9522d7b038f893f66480823ad4dc93c0d..b92e6b0777a5b860838b668fe2117c90c1b90bb8 100644
+index 97628214830f09d4f74e77ffe1877125aceaf637..49a9b96e84579857a42db84ea2a3daaf64018c6c 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -1965,6 +1965,7 @@
@@ -18,7 +18,7 @@ index 8a8d18a9522d7b038f893f66480823ad4dc93c0d..b92e6b0777a5b860838b668fe2117c90
      },
      {
        name: "FileSystemAccessLockingScheme",
-@@ -2784,6 +2786,7 @@
+@@ -2788,6 +2790,7 @@
      {
        name: "MiddleClickAutoscroll",
        status: "test",
@@ -26,7 +26,7 @@ index 8a8d18a9522d7b038f893f66480823ad4dc93c0d..b92e6b0777a5b860838b668fe2117c90
      },
      // Killswitch. Remove after 1 or 2 stable releases.
      {
-@@ -3872,6 +3875,7 @@
+@@ -3876,6 +3879,7 @@
      {
        name: "Serial",
        status: {"Android": "", "default": "stable"},

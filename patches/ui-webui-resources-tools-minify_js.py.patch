@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/minify_js.py b/ui/webui/resources/tools/minify_js.py
-index e484efaf58f74..9bbe58c7f23c4 100755
+index e484efaf58f74da001d7964c0ae226e583c4c47d..9bbe58c7f23c46be7e87f0ceebcc553612baea85 100755
 --- a/ui/webui/resources/tools/minify_js.py
 +++ b/ui/webui/resources/tools/minify_js.py
 @@ -74,5 +74,6 @@ def main(argv):
