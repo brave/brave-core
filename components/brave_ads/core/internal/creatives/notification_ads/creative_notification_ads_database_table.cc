@@ -173,7 +173,6 @@ void GetForSegmentsCallback(
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative notification ads");
-
     return std::move(callback).Run(/*success=*/false, segments,
                                    /*creative_ads=*/{});
   }
@@ -189,7 +188,6 @@ void GetAllCallback(
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (IsError(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get all creative notification ads");
-
     return std::move(callback).Run(/*success=*/false, /*segments=*/{},
                                    /*creative_ads=*/{});
   }

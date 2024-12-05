@@ -52,13 +52,11 @@ std::optional<RewardInfo> BuildReward(const ConfirmationInfo& confirmation) {
       MaybeGetConfirmationToken();
   if (!confirmation_token) {
     BLOG(0, "Failed to get confirmation token");
-
     return std::nullopt;
   }
 
   if (!RemoveConfirmationToken(*confirmation_token)) {
     BLOG(0, "Failed to remove confirmation token");
-
     return std::nullopt;
   }
 
@@ -90,7 +88,6 @@ std::optional<std::string> BuildRewardCredential(
           json::writer::WriteConfirmationPayload(confirmation));
   if (!reward_credential) {
     BLOG(0, "Failed to build reward credential");
-
     return std::nullopt;
   }
 
@@ -119,7 +116,6 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
   const std::optional<RewardInfo> reward = BuildReward(confirmation);
   if (!reward) {
     BLOG(0, "Failed to build reward");
-
     return std::nullopt;
   }
   confirmation.reward = reward;
