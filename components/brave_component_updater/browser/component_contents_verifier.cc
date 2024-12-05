@@ -78,14 +78,11 @@ ComponentContentsVerifier* ComponentContentsVerifier::GetInstance() {
   return instance.get();
 }
 
-void ComponentContentsVerifier::CreateContentsAccessor(
-    const base::FilePath& component_root,
-    base::OnceCallback<void(scoped_refptr<ComponentContentsAccessor>)>
-        on_created) {
+scoped_refptr<ComponentContentsAccessor>
+ComponentContentsVerifier::CreateContentsAccessor(
+    const base::FilePath& component_root) {
   CHECK(cca_factory_);
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(cca_factory_, component_root), std::move(on_created));
+  return cca_factory_.Run(component_root);
 }
 
 }  // namespace brave_component_updater
