@@ -785,7 +785,7 @@
   </message>
 
   <message name="IDS_REWARDS_EARNINGS_ADS_RECEIVED_TEXT" desc="">
-    <ph name="NUM">$1</ph> ads received this month
+    <ph name="NUM">$1</ph> Ads received this month
   </message>
 
   <message name="IDS_REWARDS_PAYOUT_ACCOUNT_BALANCE_LABEL" desc="">

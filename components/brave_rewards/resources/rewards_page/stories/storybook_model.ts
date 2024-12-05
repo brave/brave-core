@@ -57,7 +57,7 @@ export function createModel(): AppModel {
       url: ''
     },
     externalWalletProviders: ['uphold', 'gemini', 'solana'],
-    balance: optional(4.167),
+    balance: optional(4.123),
     tosUpdateRequired: false,
     selfCustodyInviteDismissed: false,
     recurringContributions: [
