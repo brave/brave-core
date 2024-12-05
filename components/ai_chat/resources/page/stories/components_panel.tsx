@@ -413,6 +413,7 @@ type CustomArgs = {
   isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
+  showSidebar: boolean
 }
 
 const args: CustomArgs = {
@@ -438,6 +439,7 @@ const args: CustomArgs = {
   isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
+  showSidebar: false,
 }
 
 const preview: Meta<CustomArgs> = {
@@ -509,7 +511,7 @@ const preview: Meta<CustomArgs> = {
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},
         setEditingConversationId: () => {},
-        showSidebar: false,
+        showSidebar: options.args.showSidebar,
         toggleSidebar: () => {}
       }
 

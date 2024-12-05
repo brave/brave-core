@@ -95,7 +95,7 @@ export default function FullScreen() {
   }, [isSmall])
 
   React.useEffect(() => {
-    const isOpen = asideAnimationRef.current?.playbackRate === 1
+    const isOpen = asideAnimationRef.current?.playbackRate !== 1
     if (isOpen !== aiChatContext.showSidebar) {
       toggleAside()
     }
