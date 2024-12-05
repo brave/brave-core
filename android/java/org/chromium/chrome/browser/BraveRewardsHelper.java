@@ -587,9 +587,17 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
                                     context, BraveActivity.BRAVE_PRIVACY_POLICY);
                         });
 
-        setSpan(context, text, textSpannableString, R.string.terms_of_service,
+        setSpan(
+                context,
+                text,
+                textSpannableString,
+                R.string.terms_of_service,
                 termsOfServiceClickableSpan); // terms of service
-        setSpan(context, text, textSpannableString, R.string.privacy_policy,
+        setSpan(
+                context,
+                text,
+                textSpannableString,
+                R.string.privacy_policy,
                 privacyPolicyClickableSpan); // privacy policy
         return textSpannableString;
     }
