@@ -430,7 +430,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                 IDS_BRAVE_VPN_SERVER_SELECTION_OPTIMAL_LABEL},
                {"braveVpnChangeRegion", IDS_BRAVE_VPN_WIDGET_CHANGE_LABEL},
                {"braveVpnCTA", IDS_BRAVE_VPN_WIDGET_CTA},
-               {"braveVpnFreeTrial", IDS_BRAVE_VPN_WIDGET_FREE_TRIAL},
+               {"braveVpnPurchased", IDS_BRAVE_VPN_HAS_PURCHASED},
 #endif
 
                // Brave Talk  Widget

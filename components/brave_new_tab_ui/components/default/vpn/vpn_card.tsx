@@ -102,7 +102,7 @@ const ActionArea = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: ${spacing.s};
+  gap: ${spacing.m};
   align-self: stretch;
 `
 
@@ -110,10 +110,21 @@ const ActionButton = styled(Button)`
   align-self: stretch;
 `
 
-const ActionLabel = styled.div`
+const ActionLink = styled.a`
   color: #fff;
   opacity: 0.5;
-  font: ${font.xSmall.regular};
+  font: ${font.small.link};
+  line-height: 18px;
+  letter-spacing: 0px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+
+  &:focus-visible {
+    outline: 1.5px solid ${color.primary[40]};
+  }
 `
 
 const VPNShileldsIcon = styled.div<{ connectionState: ConnectionState }>`
@@ -215,10 +226,17 @@ export const VPNPromoWidget = () => {
         </PoweredBy>
         <FeatureList />
         <ActionArea>
-          <ActionButton onClick={() => dispatch(Actions.openVPNAccountPage())}>
+          <ActionButton
+            onClick={() => dispatch(Actions.openVPNAccountPage('checkout'))}
+          >
             {getLocale('braveVpnCTA')}
           </ActionButton>
-          <ActionLabel>{getLocale('braveVpnFreeTrial')}</ActionLabel>
+          <ActionLink
+            href='#'
+            onClick={() => dispatch(Actions.openVPNAccountPage('recover'))}
+          >
+            {getLocale('braveVpnPurchased')}
+          </ActionLink>
         </ActionArea>
       </WidgetContent>
     </WidgetWrapper>
