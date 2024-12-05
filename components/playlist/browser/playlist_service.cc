@@ -1317,10 +1317,13 @@ std::vector<std::string> PlaylistService::GetAllHlsContent() {
 }
 
 void PlaylistService::RemoveHlsContent(const std::string& playlist_item_id) {
-  ScopedListPrefUpdate hls_contents(prefs_, kHlsContentsPref);
-  hls_contents->erase(
-      base::ranges::remove(hls_contents.Get(), playlist_item_id),
-      hls_contents.Get().end());
+  auto* product_id = prefs_->FindPreference(kHlsContentsPref);
+  if (product_id && !product_id->IsDefaultValue()) {
+    ScopedListPrefUpdate hls_contents(prefs_, kHlsContentsPref);
+    hls_contents->erase(
+        base::ranges::remove(hls_contents.Get(), playlist_item_id),
+        hls_contents.Get().end());
+  }
 }
 
 void PlaylistService::RequestStreamingQuery(

@@ -22,7 +22,6 @@ import org.chromium.chrome.browser.playlist.kotlin.model.HlsContentProgressModel
 import org.chromium.chrome.browser.playlist.kotlin.model.MoveOrCopyModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistItemModel
 import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOnboardingModel
-import org.chromium.chrome.browser.util.ServiceUtils
 import org.chromium.chrome.browser.playlist.hls_content.HlsService
 
 object PlaylistUtils {
@@ -139,7 +138,7 @@ object PlaylistUtils {
     fun checkAndStartHlsDownload(context: Context) {
         try {
             val hlsServiceClass = HlsService::class.java
-            if (!ServiceUtils.isServiceRunning(context, hlsServiceClass)) {
+            if (!isServiceRunning(context, hlsServiceClass)) {
                 context.startService(Intent(context, hlsServiceClass))
             }
         } catch (ex: Exception) {
