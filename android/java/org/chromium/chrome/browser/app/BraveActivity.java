@@ -2627,9 +2627,12 @@ public abstract class BraveActivity extends ChromeActivity
         if (position == 0) {
             BraveLeoUtils.openLeoQuery(getActivityTab().getWebContents(), "", query, true);
         } else {
+            String quickSearchEngineUrl =
+                    GOOGLE_SEARCH_ENGINE_KEYWORD.equals(quickSearchEnginesModel.getKeyword())
+                            ? QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_URL
+                            : quickSearchEnginesModel.getUrl();
             LoadUrlParams loadUrlParams =
-                    new LoadUrlParams(
-                            quickSearchEnginesModel.getUrl().replace("{searchTerms}", query));
+                    new LoadUrlParams(quickSearchEngineUrl.replace("{searchTerms}", query));
             getActivityTab().loadUrl(loadUrlParams);
         }
         getBraveToolbarLayout().clearOmniboxFocus();
