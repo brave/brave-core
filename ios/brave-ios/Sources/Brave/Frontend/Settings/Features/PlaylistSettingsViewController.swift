@@ -185,17 +185,6 @@ class PlaylistSettingsViewController: TableViewController {
       Section(
         rows: [
           .boolRow(
-            title: Strings.PlayList.playlistWebCompatibilityTitle,
-            detailText: Strings.PlayList.playlistWebCompatibilityDescription,
-            option: Preferences.Playlist.webMediaSourceCompatibility
-          )
-        ])
-    )
-
-    dataSource.sections.append(
-      Section(
-        rows: [
-          .boolRow(
             title: Strings.PlaylistFolderSharing.sharedFolderSyncAutomaticallyTitle,
             option: Preferences.Playlist.syncSharedFoldersAutomatically
           )
