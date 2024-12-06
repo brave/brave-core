@@ -113,6 +113,12 @@ void YouTubeTabHelper::DidFinishNavigation(
                      blink::mojom::UserActivationOption::kDoNotActivate));
 }
 
+void YouTubeTabHelper::DidToggleFullscreenModeForTab(bool entered_fullscreen,
+                                                     bool /*is_user_initiated*/) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  chrome::android::Java_BackgroundVideoPlaybackTabHelper_showYouTubeFeaturesLayout(env, !entered_fullscreen);
+}
+
 void YouTubeTabHelper::MediaStartedPlaying(
     const MediaPlayerInfo& /*video_type*/,
     const content::MediaPlayerId& id) {
