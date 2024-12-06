@@ -20,7 +20,6 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.developer.BraveRewardsDebugPreferences;
 
 public abstract class BravePreferenceFragment extends ChromeBaseSettingsFragment {
@@ -54,9 +53,7 @@ public abstract class BravePreferenceFragment extends ChromeBaseSettingsFragment
     public void onResume() {
         super.onResume();
         BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (braveRewardsNativeWorker == null
-                || !braveRewardsNativeWorker.isSupported()
-                || BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+        if (braveRewardsNativeWorker == null || !braveRewardsNativeWorker.isSupported()) {
             if (getPreferenceScreen() == null) return;
             Preference braveRewardsDebugPreference =
                     getPreferenceScreen().findPreference(BraveRewardsDebugPreferences.KEY);
