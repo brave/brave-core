@@ -94,7 +94,7 @@
     "@testing-library/react": "15.0.6",
     "@types/array-move": "2.0.0",
     "@types/async": "3.2.20",
-    "@types/bs58": "^4.0.4",
+    "@types/bs58": "4.0.4",
     "@types/chrome": "0.0.241",
     "@types/dom-navigation": "1.0.3",
     "@types/jest": "27.5.2",
