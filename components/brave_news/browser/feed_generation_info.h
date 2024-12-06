@@ -62,11 +62,11 @@ class FeedGenerationInfo {
   FeedItems& raw_feed_items() { return feed_items_; }
 
   // A modifiable span of the available topics.
-  base::span<TopicAndArticles> topics() { return topics_span_; }
+  base::span<TopicAndArticles> topics() { return topics_; }
 
   // A modifiable span
   base::span<std::string> suggested_publisher_ids() {
-    return suggested_publisher_ids_span_;
+    return suggested_publisher_ids_;
   }
 
  private:
@@ -85,12 +85,10 @@ class FeedGenerationInfo {
   FeedItems feed_items_;
 
   std::vector<std::string> suggested_publisher_ids_;
-  base::raw_span<std::string> suggested_publisher_ids_span_;
 
   Signals signals_;
 
   TopicsResult topics_;
-  base::raw_span<TopicAndArticles> topics_span_;
 
   std::optional<ArticleInfos> article_infos_;
   std::optional<std::vector<ContentGroup>> content_groups_;
