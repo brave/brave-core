@@ -20,7 +20,7 @@ namespace brave_ads {
 
 void MaybeBuildAndSaveCreativeSetConversion(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type) {
+    mojom::SearchResultAdEventType mojom_ad_event_type) {
   const bool user_has_joined_rewards = UserHasJoinedBraveRewards();
 
   // Save only if:
@@ -51,7 +51,7 @@ void MaybeBuildAndSaveCreativeSetConversion(
 
 bool IsAllowedToFireAdEvent(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type) {
+    mojom::SearchResultAdEventType mojom_ad_event_type) {
   CHECK(mojom_creative_ad);
 
   if (UserHasJoinedBraveRewards()) {
@@ -77,10 +77,9 @@ bool IsAllowedToFireAdEvent(
   return true;
 }
 
-bool ShouldFireAdEvent(
-    const SearchResultAdInfo& ad,
-    const AdEventList& ad_events,
-    const mojom::SearchResultAdEventType mojom_ad_event_type) {
+bool ShouldFireAdEvent(const SearchResultAdInfo& ad,
+                       const AdEventList& ad_events,
+                       mojom::SearchResultAdEventType mojom_ad_event_type) {
   if (UserHasJoinedBraveRewards() &&
       !WasAdServed(ad, ad_events, mojom_ad_event_type)) {
     BLOG(1,

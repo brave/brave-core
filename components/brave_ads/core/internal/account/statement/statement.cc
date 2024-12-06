@@ -21,7 +21,7 @@ void BuildStatement(BuildStatementCallback callback) {
   GetTransactionsForDateRange(
       /*from_time=*/base::Time(), /*to_time=*/LocalTimeAtEndOfThisMonth(),
       base::BindOnce(
-          [](BuildStatementCallback callback, const bool success,
+          [](BuildStatementCallback callback, bool success,
              const TransactionList& transactions) {
             if (!success) {
               BLOG(0, "Failed to get transactions");

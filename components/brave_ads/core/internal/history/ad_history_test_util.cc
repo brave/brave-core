@@ -18,17 +18,17 @@
 namespace brave_ads::test {
 
 AdHistoryItemInfo BuildAdHistoryItem(
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    const bool should_generate_random_uuids) {
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type,
+    bool should_generate_random_uuids) {
   const AdInfo ad = BuildAd(mojom_ad_type, should_generate_random_uuids);
   return BuildAdHistoryItem(ad, mojom_confirmation_type, kTitle, kDescription);
 }
 
 AdHistoryList BuildAdHistory(
-    const mojom::AdType mojom_ad_type,
+    mojom::AdType mojom_ad_type,
     const std::vector<mojom::ConfirmationType>& mojom_confirmation_types,
-    const bool should_generate_random_uuids) {
+    bool should_generate_random_uuids) {
   AdHistoryList ad_history;
 
   for (const auto& mojom_confirmation_type : mojom_confirmation_types) {
@@ -41,9 +41,9 @@ AdHistoryList BuildAdHistory(
 }
 
 AdHistoryList BuildAdHistoryForSamePlacement(
-    const mojom::AdType mojom_ad_type,
+    mojom::AdType mojom_ad_type,
     const std::vector<mojom::ConfirmationType>& mojom_confirmation_types,
-    const bool should_generate_random_uuids) {
+    bool should_generate_random_uuids) {
   AdHistoryList ad_history = BuildAdHistory(
       mojom_ad_type, mojom_confirmation_types, should_generate_random_uuids);
 

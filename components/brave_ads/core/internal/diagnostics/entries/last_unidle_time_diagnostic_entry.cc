@@ -16,7 +16,7 @@ constexpr char kNever[] = "Never";
 
 }  // namespace
 LastUnIdleTimeDiagnosticEntry::LastUnIdleTimeDiagnosticEntry(
-    const base::Time last_unidle_at) {
+    base::Time last_unidle_at) {
   last_unidle_at_ = last_unidle_at;
 }
 

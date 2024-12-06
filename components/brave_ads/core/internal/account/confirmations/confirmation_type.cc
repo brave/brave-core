@@ -79,7 +79,7 @@ mojom::ConfirmationType ToMojomConfirmationType(std::string_view value) {
   NOTREACHED() << "Unexpected value for mojom::ConfirmationType: " << value;
 }
 
-const char* ToString(const mojom::ConfirmationType mojom_confirmation_type) {
+const char* ToString(mojom::ConfirmationType mojom_confirmation_type) {
   const auto iter =
       kMojomConfirmationTypeToStringMap.find(mojom_confirmation_type);
   if (iter != kMojomConfirmationTypeToStringMap.cend()) {

@@ -21,9 +21,9 @@ namespace {
 
 void FireEventCallback(
     TriggerAdEventCallback callback,
-    const bool success,
+    bool success,
     const std::string& /*placement_id*/,
-    const mojom::PromotedContentAdEventType /*mojom_ad_event_type*/) {
+    mojom::PromotedContentAdEventType /*mojom_ad_event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -39,7 +39,7 @@ PromotedContentAdHandler::~PromotedContentAdHandler() = default;
 void PromotedContentAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType mojom_ad_event_type,
+    mojom::PromotedContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK_NE(mojom::PromotedContentAdEventType::kServedImpression,
            mojom_ad_event_type)
@@ -76,9 +76,9 @@ void PromotedContentAdHandler::TriggerEvent(
 void PromotedContentAdHandler::TriggerServedEventCallback(
     const std::string& creative_instance_id,
     TriggerAdEventCallback callback,
-    const bool success,
+    bool success,
     const std::string& placement_id,
-    const mojom::PromotedContentAdEventType /*mojom_ad_event_type*/) {
+    mojom::PromotedContentAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }

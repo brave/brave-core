@@ -15,7 +15,7 @@ struct CatalogInfo;
 class CatalogUrlRequestDelegate {
  public:
   // Invoked to tell the delegate we will fetch the catalog at `fetch_at`.
-  virtual void OnWillFetchCatalog(const base::Time fetch_at) {}
+  virtual void OnWillFetchCatalog(base::Time fetch_at) {}
 
   // Invoked to tell the delegate we successfully fetched the `catalog`.
   virtual void OnDidFetchCatalog(const CatalogInfo& catalog) {}
@@ -25,7 +25,7 @@ class CatalogUrlRequestDelegate {
 
   // Invoked to tell the delegate we will retry fetching the catalog at
   // `retry_at`.
-  virtual void OnWillRetryFetchingCatalog(const base::Time retry_at) {}
+  virtual void OnWillRetryFetchingCatalog(base::Time retry_at) {}
 
   // Invoked to tell the delegate we retried fetching the catalog.
   virtual void OnDidRetryFetchingCatalog() {}

@@ -465,7 +465,7 @@ void CreativePromotedContentAds::Create(
 
 void CreativePromotedContentAds::Migrate(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const int to_version) {
+    int to_version) {
   CHECK(mojom_db_transaction);
 
   switch (to_version) {

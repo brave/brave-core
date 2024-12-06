@@ -74,7 +74,7 @@ void TestBase::TearDown() {
   ResetCommandLineSwitches();
 }
 
-void TestBase::SetUp(const bool is_integration_test) {
+void TestBase::SetUp(bool is_integration_test) {
   setup_called_ = true;
 
   is_integration_test_ = is_integration_test;
@@ -123,7 +123,7 @@ bool TestBase::CopyFileFromTestDataPathToProfilePath(
 bool TestBase::CopyDirectoryFromTestDataPathToProfilePath(
     const std::string& from_path,
     const std::string& to_path,
-    const bool recursive) const {
+    bool recursive) const {
   CHECK(setup_called_) << "CopyDirectoryFromTestDataPathToProfilePath should "
                           "be called after SetUp";
 
@@ -135,27 +135,27 @@ bool TestBase::CopyDirectoryFromTestDataPathToProfilePath(
 
 bool TestBase::CopyDirectoryFromTestDataPathToProfilePath(
     const std::string& path,
-    const bool recursive) const {
+    bool recursive) const {
   return CopyDirectoryFromTestDataPathToProfilePath(/*from_path=*/path,
                                                     /*to_path=*/path,
                                                     recursive);
 }
 
-void TestBase::FastForwardClockBy(const base::TimeDelta time_delta) {
+void TestBase::FastForwardClockBy(base::TimeDelta time_delta) {
   CHECK(!time_delta.is_zero()) << kIfTimeStoodStill;
   CHECK(time_delta.is_positive()) << kYouCantTravelBackInTime;
 
   task_environment_.FastForwardBy(time_delta);
 }
 
-void TestBase::SuspendedFastForwardClockBy(const base::TimeDelta time_delta) {
+void TestBase::SuspendedFastForwardClockBy(base::TimeDelta time_delta) {
   CHECK(!time_delta.is_zero()) << kIfTimeStoodStill;
   CHECK(time_delta.is_positive()) << kYouCantTravelBackInTime;
 
   task_environment_.SuspendedFastForwardBy(time_delta);
 }
 
-void TestBase::FastForwardClockTo(const base::Time time) {
+void TestBase::FastForwardClockTo(base::Time time) {
   FastForwardClockBy(time - Now());
 }
 
@@ -177,14 +177,14 @@ bool TestBase::HasPendingTasks() const {
   return GetPendingTaskCount() > 0;
 }
 
-void TestBase::AdvanceClockBy(const base::TimeDelta time_delta) {
+void TestBase::AdvanceClockBy(base::TimeDelta time_delta) {
   CHECK(!time_delta.is_zero()) << kIfTimeStoodStill;
   CHECK(time_delta.is_positive()) << kYouCantTravelBackInTime;
 
   task_environment_.AdvanceClock(time_delta);
 }
 
-void TestBase::AdvanceClockTo(const base::Time time) {
+void TestBase::AdvanceClockTo(base::Time time) {
   return AdvanceClockBy(time - Now());
 }
 
@@ -274,21 +274,21 @@ void TestBase::MockDefaultAdsServiceState() const {
       << "Must be called after GlobalState is instantiated";
 
   GlobalState::GetInstance()->GetDatabaseManager().CreateOrOpen(
-      base::BindOnce([](const bool success) {
+      base::BindOnce([](bool success) {
         ASSERT_TRUE(success) << "Failed to create or open database";
       }));
 
   // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
   // from using JSON state to a more efficient data approach.
   GlobalState::GetInstance()->GetClientStateManager().LoadState(
-      base::BindOnce([](const bool success) {
+      base::BindOnce([](bool success) {
         ASSERT_TRUE(success) << "Failed to load client state";
       }));
 
   // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
   // from using JSON state to a more efficient data approach.
   GlobalState::GetInstance()->GetConfirmationStateManager().LoadState(
-      Wallet(), base::BindOnce([](const bool success) {
+      Wallet(), base::BindOnce([](bool success) {
         ASSERT_TRUE(success) << "Failed to load confirmation state";
       }));
 }
@@ -309,7 +309,7 @@ void TestBase::SetUpIntegrationTest() {
                                   weak_factory_.GetWeakPtr()));
 }
 
-void TestBase::SetUpIntegrationTestCallback(const bool success) {
+void TestBase::SetUpIntegrationTestCallback(bool success) {
   CHECK(success) << "Failed to initialize ads";
 
   // By default, integration tests are run while the browser is in the

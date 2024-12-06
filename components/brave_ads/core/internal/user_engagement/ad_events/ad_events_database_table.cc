@@ -210,8 +210,8 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
       base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void AdEvents::Get(const mojom::AdType mojom_ad_type,
-                   const mojom::ConfirmationType mojom_confirmation_type,
+void AdEvents::Get(mojom::AdType mojom_ad_type,
+                   mojom::ConfirmationType mojom_confirmation_type,
                    base::TimeDelta time_window,
                    GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
@@ -290,7 +290,7 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
       base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void AdEvents::GetUnexpired(const mojom::AdType mojom_ad_type,
+void AdEvents::GetUnexpired(mojom::AdType mojom_ad_type,
                             GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
@@ -356,7 +356,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
   RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
-void AdEvents::PurgeOrphaned(const mojom::AdType mojom_ad_type,
+void AdEvents::PurgeOrphaned(mojom::AdType mojom_ad_type,
                              ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
@@ -486,7 +486,7 @@ void AdEvents::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 }
 
 void AdEvents::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-                       const int to_version) {
+                       int to_version) {
   CHECK(mojom_db_transaction);
 
   switch (to_version) {

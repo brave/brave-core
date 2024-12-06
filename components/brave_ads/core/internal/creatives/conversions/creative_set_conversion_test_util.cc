@@ -15,16 +15,15 @@ namespace brave_ads::test {
 CreativeSetConversionInfo BuildCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
-    const base::TimeDelta observation_window) {
+    base::TimeDelta observation_window) {
   return BuildVerifiableCreativeSetConversion(
       creative_set_id, url_pattern, observation_window,
       /*verifiable_advertiser_public_key_base64=*/std::nullopt);
 }
 
-void BuildAndSaveCreativeSetConversion(
-    const std::string& creative_set_id,
-    const std::string& url_pattern,
-    const base::TimeDelta observation_window) {
+void BuildAndSaveCreativeSetConversion(const std::string& creative_set_id,
+                                       const std::string& url_pattern,
+                                       base::TimeDelta observation_window) {
   BuildAndSaveVerifiableCreativeSetConversion(
       creative_set_id, url_pattern, observation_window,
       /*verifiable_advertiser_public_key_base64=*/std::nullopt);
@@ -33,7 +32,7 @@ void BuildAndSaveCreativeSetConversion(
 CreativeSetConversionInfo BuildVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
-    const base::TimeDelta observation_window,
+    base::TimeDelta observation_window,
     std::optional<std::string> verifiable_advertiser_public_key_base64) {
   CreativeSetConversionInfo creative_set_conversion;
 
@@ -51,7 +50,7 @@ CreativeSetConversionInfo BuildVerifiableCreativeSetConversion(
 void BuildAndSaveVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
     const std::string& url_pattern,
-    const base::TimeDelta observation_window,
+    base::TimeDelta observation_window,
     std::optional<std::string> verifiable_advertiser_public_key_base64) {
   CreativeSetConversionList creative_set_conversions;
 

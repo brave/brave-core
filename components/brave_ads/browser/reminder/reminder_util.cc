@@ -51,7 +51,7 @@ base::Value::Dict BuildExternalWalletConnectedReminder() {
 
 }  // namespace
 
-base::Value::Dict BuildReminder(const mojom::ReminderType mojom_reminder_type) {
+base::Value::Dict BuildReminder(mojom::ReminderType mojom_reminder_type) {
   switch (mojom_reminder_type) {
     case mojom::ReminderType::kClickedSameAdMultipleTimes: {
       return BuildClickedSameAdMultipleTimesReminder();

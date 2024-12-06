@@ -13,8 +13,8 @@ namespace brave_ads::test {
 
 std::vector<mojom::ConfirmationType>
 BuildConfirmationTypeForCountAndIntersperseOtherTypes(
-    const mojom::ConfirmationType mojom_confirmation_type,
-    const int count) {
+    mojom::ConfirmationType mojom_confirmation_type,
+    int count) {
   CHECK_GT(count, 0);
 
   const int confirmation_type_max_value =

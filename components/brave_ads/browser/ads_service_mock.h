@@ -83,7 +83,7 @@ class AdsServiceMock : public AdsService {
   MOCK_METHOD(void,
               TriggerSearchResultAdEvent,
               (mojom::CreativeSearchResultAdInfoPtr,
-               const mojom::SearchResultAdEventType,
+               mojom::SearchResultAdEventType,
                TriggerAdEventCallback));
 
   MOCK_METHOD(void,

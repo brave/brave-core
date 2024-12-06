@@ -112,7 +112,7 @@ void RedeemNonRewardConfirmation::SuccessfullyRedeemedConfirmation(
 
 void RedeemNonRewardConfirmation::FailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
-    const bool should_retry) {
+    bool should_retry) {
   BLOG(1, "Failed to redeem non-reward "
               << confirmation.type << " confirmation for "
               << confirmation.ad_type << " with transaction id "
@@ -131,7 +131,7 @@ void RedeemNonRewardConfirmation::NotifyDidRedeemConfirmation(
 
 void RedeemNonRewardConfirmation::NotifyFailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
-    const bool should_retry) const {
+    bool should_retry) const {
   if (delegate_) {
     delegate_->OnFailedToRedeemConfirmation(confirmation, should_retry);
   }

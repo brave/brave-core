@@ -12,7 +12,7 @@
 namespace brave_ads {
 
 bool HasAdsPerDayPermission(const std::vector<base::Time>& history,
-                            const size_t cap) {
+                            size_t cap) {
   if (!DoesHistoryRespectRollingTimeConstraint(
           history, /*time_constraint=*/base::Days(1), cap)) {
     BLOG(2, "You have exceeded the allowed ads per day");

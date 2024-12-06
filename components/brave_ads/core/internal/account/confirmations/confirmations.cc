@@ -74,7 +74,7 @@ void Confirmations::OnDidAddConfirmationToQueue(
 
 void Confirmations::OnWillProcessConfirmationQueue(
     const ConfirmationInfo& confirmation,
-    const base::Time process_at) {
+    base::Time process_at) {
   BLOG(1, "Process " << confirmation.type << " confirmation for "
                      << confirmation.ad_type << " with transaction id "
                      << confirmation.transaction_id

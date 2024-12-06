@@ -68,7 +68,7 @@ std::optional<CreativeAdVariant> CreativeAdCache::MaybeGetCreativeAdVariant(
   return Clone(creative_ad_variant);
 }
 
-void CreativeAdCache::PurgePlacements(const int32_t tab_id) {
+void CreativeAdCache::PurgePlacements(int32_t tab_id) {
   if (!placement_ids_.contains(tab_id)) {
     return;
   }
@@ -79,7 +79,7 @@ void CreativeAdCache::PurgePlacements(const int32_t tab_id) {
   placement_ids_.erase(tab_id);
 }
 
-void CreativeAdCache::OnDidCloseTab(const int32_t tab_id) {
+void CreativeAdCache::OnDidCloseTab(int32_t tab_id) {
   PurgePlacements(tab_id);
 }
 

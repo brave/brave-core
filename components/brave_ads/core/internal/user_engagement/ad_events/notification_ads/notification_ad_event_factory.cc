@@ -16,7 +16,7 @@ namespace brave_ads {
 
 std::unique_ptr<AdEventInterface<NotificationAdInfo>>
 NotificationAdEventFactory::Build(
-    const mojom::NotificationAdEventType mojom_ad_event_type) {
+    mojom::NotificationAdEventType mojom_ad_event_type) {
   switch (mojom_ad_event_type) {
     case mojom::NotificationAdEventType::kServedImpression: {
       return std::make_unique<NotificationAdEventServed>();

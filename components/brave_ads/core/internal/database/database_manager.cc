@@ -103,7 +103,7 @@ void DatabaseManager::Create(ResultCallback callback) const {
 }
 
 void DatabaseManager::CreateCallback(ResultCallback callback,
-                                     const bool success) const {
+                                     bool success) const {
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
     // potential defects using `DumpWithoutCrashing`.
@@ -130,8 +130,7 @@ void DatabaseManager::CreateCallback(ResultCallback callback,
   std::move(callback).Run(/*success=*/true);
 }
 
-void DatabaseManager::RazeAndCreate(const int from_version,
-                                    ResultCallback callback) {
+void DatabaseManager::RazeAndCreate(int from_version, ResultCallback callback) {
   BLOG(1, "Razing database for schema version " << from_version);
 
   database::Raze(base::BindOnce(&DatabaseManager::RazeAndCreateCallback,
@@ -140,8 +139,8 @@ void DatabaseManager::RazeAndCreate(const int from_version,
 }
 
 void DatabaseManager::RazeAndCreateCallback(ResultCallback callback,
-                                            const int from_version,
-                                            const bool success) const {
+                                            int from_version,
+                                            bool success) const {
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
     // potential defects using `DumpWithoutCrashing`.
@@ -160,7 +159,7 @@ void DatabaseManager::RazeAndCreateCallback(ResultCallback callback,
   Create(std::move(callback));
 }
 
-void DatabaseManager::MaybeMigrate(const int from_version,
+void DatabaseManager::MaybeMigrate(int from_version,
                                    ResultCallback callback) const {
   const int to_version = database::kVersionNumber;
   if (from_version == to_version) {
@@ -191,9 +190,9 @@ void DatabaseManager::MaybeMigrate(const int from_version,
                                    std::move(callback)));
 }
 
-void DatabaseManager::MigrateFromVersionCallback(const int from_version,
+void DatabaseManager::MigrateFromVersionCallback(int from_version,
                                                  ResultCallback callback,
-                                                 const bool success) const {
+                                                 bool success) const {
   const int to_version = database::kVersionNumber;
 
   if (!success) {
@@ -249,15 +248,15 @@ void DatabaseManager::NotifyFailedToCreateOrOpenDatabase() const {
   }
 }
 
-void DatabaseManager::NotifyWillMigrateDatabase(const int from_version,
-                                                const int to_version) const {
+void DatabaseManager::NotifyWillMigrateDatabase(int from_version,
+                                                int to_version) const {
   for (DatabaseManagerObserver& observer : observers_) {
     observer.OnWillMigrateDatabase(from_version, to_version);
   }
 }
 
-void DatabaseManager::NotifyDidMigrateDatabase(const int from_version,
-                                               const int to_version) const {
+void DatabaseManager::NotifyDidMigrateDatabase(int from_version,
+                                               int to_version) const {
   CHECK_NE(from_version, to_version);
 
   for (DatabaseManagerObserver& observer : observers_) {
@@ -265,9 +264,8 @@ void DatabaseManager::NotifyDidMigrateDatabase(const int from_version,
   }
 }
 
-void DatabaseManager::NotifyFailedToMigrateDatabase(
-    const int from_version,
-    const int to_version) const {
+void DatabaseManager::NotifyFailedToMigrateDatabase(int from_version,
+                                                    int to_version) const {
   for (DatabaseManagerObserver& observer : observers_) {
     observer.OnFailedToMigrateDatabase(from_version, to_version);
   }

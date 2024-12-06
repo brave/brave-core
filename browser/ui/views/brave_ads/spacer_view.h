@@ -12,8 +12,8 @@ class View;
 
 namespace brave_ads {
 
-views::View* CreateFlexibleSpacerView(const int spacing);
-views::View* CreateFixedSizeSpacerView(const int spacing);
+views::View* CreateFlexibleSpacerView(int spacing);
+views::View* CreateFixedSizeSpacerView(int spacing);
 
 }  // namespace brave_ads
 

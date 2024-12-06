@@ -74,7 +74,7 @@ void NewTabPageAdServing::GetAdEvents(MaybeServeNewTabPageAdCallback callback) {
 
 void NewTabPageAdServing::GetAdEventsCallback(
     MaybeServeNewTabPageAdCallback callback,
-    const bool success,
+    bool success,
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "New tab page ad not served: Failed to get ad events");

@@ -13,7 +13,7 @@
 namespace brave_ads {
 
 ConversionActionType ToConversionActionType(
-    const mojom::ConfirmationType mojom_confirmation_type) {
+    mojom::ConfirmationType mojom_confirmation_type) {
   switch (mojom_confirmation_type) {
     case mojom::ConfirmationType::kViewedImpression: {
       return ConversionActionType::kViewThrough;
@@ -44,7 +44,7 @@ ConversionActionType ToConversionActionType(std::string_view action_type) {
   NOTREACHED() << "Unexpected value for action_type: " << action_type;
 }
 
-std::string ToString(const ConversionActionType action_type) {
+std::string ToString(ConversionActionType action_type) {
   switch (action_type) {
     case ConversionActionType::kViewThrough: {
       return kViewThroughConversionActionType;

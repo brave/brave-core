@@ -29,8 +29,8 @@ class BraveAdsNotificationAdEventHandlerTest : public test::TestBase {
 
   void FireEventAndVerifyExpectations(
       const std::string& placement_id,
-      const mojom::NotificationAdEventType mojom_ad_event_type,
-      const bool should_fire_event) {
+      mojom::NotificationAdEventType mojom_ad_event_type,
+      bool should_fire_event) {
     base::MockCallback<FireNotificationAdEventHandlerCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event, placement_id,
                               mojom_ad_event_type));

@@ -13,7 +13,7 @@ namespace brave_ads::database {
 
 void TableInterface::Migrate(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const int to_version) {
+    int to_version) {
   CHECK(mojom_db_transaction);
 
   if (to_version == kVersionNumber) {

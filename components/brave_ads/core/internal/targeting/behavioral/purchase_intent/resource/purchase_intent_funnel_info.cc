@@ -12,7 +12,7 @@ namespace brave_ads {
 PurchaseIntentFunnelInfo::PurchaseIntentFunnelInfo() = default;
 
 PurchaseIntentFunnelInfo::PurchaseIntentFunnelInfo(SegmentList segments,
-                                                   const int weight)
+                                                   int weight)
     : segments(std::move(segments)), weight(weight) {}
 
 PurchaseIntentFunnelInfo::PurchaseIntentFunnelInfo(

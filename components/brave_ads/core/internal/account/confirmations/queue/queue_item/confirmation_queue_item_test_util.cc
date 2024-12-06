@@ -15,7 +15,7 @@ namespace brave_ads::test {
 
 ConfirmationQueueItemList BuildConfirmationQueueItems(
     const ConfirmationInfo& confirmation,
-    const size_t count) {
+    size_t count) {
   ConfirmationQueueItemList confirmation_queue_items;
 
   for (size_t i = 0; i < count; ++i) {
@@ -33,11 +33,11 @@ void SaveConfirmationQueueItems(
   const database::table::ConfirmationQueue database_table;
   database_table.Save(
       confirmation_queue_items,
-      base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
+      base::BindOnce([](bool success) { ASSERT_TRUE(success); }));
 }
 
 void BuildAndSaveConfirmationQueueItems(const ConfirmationInfo& confirmation,
-                                        const int count) {
+                                        int count) {
   const ConfirmationQueueItemList confirmation_queue_items =
       BuildConfirmationQueueItems(confirmation, count);
 

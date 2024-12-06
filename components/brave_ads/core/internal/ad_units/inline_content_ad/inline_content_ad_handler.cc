@@ -31,9 +31,9 @@ void FireServedEventCallback(
     const std::string& dimensions,
     const InlineContentAdInfo& ad,
     MaybeServeInlineContentAdCallback callback,
-    const bool success,
+    bool success,
     const std::string& /*placement_id*/,
-    const mojom::InlineContentAdEventType /*mojom_ad_event_type*/) {
+    mojom::InlineContentAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(dimensions, /*ad=*/std::nullopt);
   }
@@ -43,9 +43,9 @@ void FireServedEventCallback(
 
 void FireEventCallback(
     TriggerAdEventCallback callback,
-    const bool success,
+    bool success,
     const std::string& /*placement_id*/,
-    const mojom::InlineContentAdEventType /*mojom_ad_event_type*/) {
+    mojom::InlineContentAdEventType /*mojom_ad_event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -82,7 +82,7 @@ void InlineContentAdHandler::MaybeServe(
 void InlineContentAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType mojom_ad_event_type,
+    mojom::InlineContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK_NE(mojom::InlineContentAdEventType::kServedImpression,
            mojom_ad_event_type)
@@ -120,7 +120,7 @@ void InlineContentAdHandler::MaybeServeCallback(
                                           *ad, std::move(callback)));
 }
 
-void InlineContentAdHandler::CacheAdPlacement(const int32_t tab_id,
+void InlineContentAdHandler::CacheAdPlacement(int32_t tab_id,
                                               const InlineContentAdInfo& ad) {
   BLOG(1, "Cached inline content ad placement id " << ad.placement_id
                                                    << " for tab id " << tab_id);
@@ -128,8 +128,7 @@ void InlineContentAdHandler::CacheAdPlacement(const int32_t tab_id,
   placement_ids_[tab_id].push_back(ad.placement_id);
 }
 
-void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(
-    const int32_t tab_id) {
+void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(int32_t tab_id) {
   if (placement_ids_[tab_id].empty()) {
     return;
   }
@@ -140,8 +139,7 @@ void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(
   PurgeOrphanedAdEvents(
       placement_ids_[tab_id],
       base::BindOnce(
-          [](const std::vector<std::string>& placement_ids,
-             const bool success) {
+          [](const std::vector<std::string>& placement_ids, bool success) {
             const std::string joined_placement_ids =
                 base::JoinString(placement_ids, ", ");
 
@@ -166,7 +164,7 @@ void InlineContentAdHandler::OnOpportunityAroseToServeInlineContentAd() {
 }
 
 void InlineContentAdHandler::OnDidServeInlineContentAd(
-    const int32_t tab_id,
+    int32_t tab_id,
     const InlineContentAdInfo& ad) {
   CacheAdPlacement(tab_id, ad);
 
@@ -223,7 +221,7 @@ void InlineContentAdHandler::OnTabDidChange(const TabInfo& tab) {
   PurgeOrphanedCachedAdPlacements(tab.id);
 }
 
-void InlineContentAdHandler::OnDidCloseTab(const int32_t tab_id) {
+void InlineContentAdHandler::OnDidCloseTab(int32_t tab_id) {
   PurgeOrphanedCachedAdPlacements(tab_id);
 }
 

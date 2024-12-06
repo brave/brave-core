@@ -19,10 +19,10 @@
 
 namespace brave_ads {
 
-using FireNewTabPageAdEventHandlerCallback = base::OnceCallback<void(
-    const bool success,
-    const std::string& placement_id,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type)>;
+using FireNewTabPageAdEventHandlerCallback =
+    base::OnceCallback<void(bool success,
+                            const std::string& placement_id,
+                            mojom::NewTabPageAdEventType mojom_ad_event_type)>;
 
 struct CreativeNewTabPageAdInfo;
 struct NewTabPageAdInfo;

@@ -14,7 +14,7 @@ namespace brave_ads {
 
 AdHistoryItemInfo BuildAdHistoryItem(
     const AdInfo& ad,
-    const mojom::ConfirmationType mojom_confirmation_type,
+    mojom::ConfirmationType mojom_confirmation_type,
     const std::string& title,
     const std::string& description) {
   CHECK(ad.IsValid());

@@ -29,8 +29,8 @@ class BraveAdsInlineContentAdEventHandlerTest : public test::TestBase {
   void FireEventAndVerifyExpectations(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::InlineContentAdEventType mojom_ad_event_type,
-      const bool should_fire_event) {
+      mojom::InlineContentAdEventType mojom_ad_event_type,
+      bool should_fire_event) {
     base::MockCallback<FireInlineContentAdEventHandlerCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event, placement_id,
                               mojom_ad_event_type));

@@ -123,7 +123,7 @@ void RedeemRewardConfirmation::CreateConfirmationCallback(
 
 // static
 void RedeemRewardConfirmation::FetchPaymentTokenAfter(
-    const base::TimeDelta delay,
+    base::TimeDelta delay,
     RedeemRewardConfirmation redeem_confirmation,
     const ConfirmationInfo& confirmation) {
   BLOG(1, "Fetch payment token in " << delay);
@@ -276,7 +276,7 @@ void RedeemRewardConfirmation::SuccessfullyRedeemedConfirmation(
 
 void RedeemRewardConfirmation::FailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
-    const bool should_retry) {
+    bool should_retry) {
   NotifyFailedToRedeemConfirmation(confirmation, should_retry);
 }
 
@@ -289,7 +289,7 @@ void RedeemRewardConfirmation::NotifyDidRedeemConfirmation(
 
 void RedeemRewardConfirmation::NotifyFailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
-    const bool should_retry) const {
+    bool should_retry) const {
   if (delegate_) {
     delegate_->OnFailedToRedeemConfirmation(confirmation, should_retry);
   }

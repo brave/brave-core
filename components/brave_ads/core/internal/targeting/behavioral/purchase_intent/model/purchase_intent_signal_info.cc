@@ -11,9 +11,9 @@ namespace brave_ads {
 
 PurchaseIntentSignalInfo::PurchaseIntentSignalInfo() = default;
 
-PurchaseIntentSignalInfo::PurchaseIntentSignalInfo(const base::Time at,
+PurchaseIntentSignalInfo::PurchaseIntentSignalInfo(base::Time at,
                                                    SegmentList segments,
-                                                   const int weight)
+                                                   int weight)
     : at(at), segments(std::move(segments)), weight(weight) {}
 
 PurchaseIntentSignalInfo::PurchaseIntentSignalInfo(

@@ -12,7 +12,7 @@ namespace brave_ads {
 
 bool DoesHistoryRespectRollingTimeConstraint(
     const std::vector<base::Time>& history,
-    const base::TimeDelta time_constraint,
+    base::TimeDelta time_constraint,
     size_t cap) {
   if (cap == 0) {
     // If the cap is set to 0, then there is no time constraint.

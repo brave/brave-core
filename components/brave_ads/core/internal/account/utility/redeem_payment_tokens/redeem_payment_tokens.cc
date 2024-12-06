@@ -131,7 +131,7 @@ void RedeemPaymentTokens::SuccessfullyRedeemed(
   ScheduleNextRedemption();
 }
 
-void RedeemPaymentTokens::FailedToRedeem(const bool should_retry) {
+void RedeemPaymentTokens::FailedToRedeem(bool should_retry) {
   is_redeeming_ = false;
 
   if (!should_retry) {
@@ -200,14 +200,14 @@ void RedeemPaymentTokens::NotifyFailedToRedeemPaymentTokens() const {
 }
 
 void RedeemPaymentTokens::NotifyDidScheduleNextPaymentTokenRedemption(
-    const base::Time redeem_at) const {
+    base::Time redeem_at) const {
   if (delegate_) {
     delegate_->OnDidScheduleNextPaymentTokenRedemption(redeem_at);
   }
 }
 
 void RedeemPaymentTokens::NotifyWillRetryRedeemingPaymentTokens(
-    const base::Time retry_at) const {
+    base::Time retry_at) const {
   if (delegate_) {
     delegate_->OnWillRetryRedeemingPaymentTokens(retry_at);
   }

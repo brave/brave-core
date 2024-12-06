@@ -114,7 +114,7 @@ void AdsClientNotifier::NotifyDidUnregisterResourceComponent(
 }
 
 void AdsClientNotifier::NotifyTabTextContentDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   if (task_queue_->should_queue()) {
@@ -129,7 +129,7 @@ void AdsClientNotifier::NotifyTabTextContentDidChange(
 }
 
 void AdsClientNotifier::NotifyTabHtmlContentDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   if (task_queue_->should_queue()) {
@@ -143,7 +143,7 @@ void AdsClientNotifier::NotifyTabHtmlContentDidChange(
   }
 }
 
-void AdsClientNotifier::NotifyTabDidStartPlayingMedia(const int32_t tab_id) {
+void AdsClientNotifier::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyTabDidStartPlayingMedia,
@@ -155,7 +155,7 @@ void AdsClientNotifier::NotifyTabDidStartPlayingMedia(const int32_t tab_id) {
   }
 }
 
-void AdsClientNotifier::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
+void AdsClientNotifier::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyTabDidStopPlayingMedia,
@@ -168,11 +168,11 @@ void AdsClientNotifier::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
 }
 
 void AdsClientNotifier::NotifyTabDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const bool is_new_navigation,
-    const bool is_restoring,
-    const bool is_visible) {
+    bool is_new_navigation,
+    bool is_restoring,
+    bool is_visible) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(base::BindOnce(
         &AdsClientNotifier::NotifyTabDidChange, weak_factory_.GetWeakPtr(),
@@ -185,8 +185,7 @@ void AdsClientNotifier::NotifyTabDidChange(
   }
 }
 
-void AdsClientNotifier::NotifyTabDidLoad(const int32_t tab_id,
-                                         const int http_status_code) {
+void AdsClientNotifier::NotifyTabDidLoad(int32_t tab_id, int http_status_code) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(base::BindOnce(&AdsClientNotifier::NotifyTabDidLoad,
                                            weak_factory_.GetWeakPtr(), tab_id,
@@ -198,7 +197,7 @@ void AdsClientNotifier::NotifyTabDidLoad(const int32_t tab_id,
   }
 }
 
-void AdsClientNotifier::NotifyDidCloseTab(const int32_t tab_id) {
+void AdsClientNotifier::NotifyDidCloseTab(int32_t tab_id) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyDidCloseTab,
@@ -211,7 +210,7 @@ void AdsClientNotifier::NotifyDidCloseTab(const int32_t tab_id) {
 }
 
 void AdsClientNotifier::NotifyUserGestureEventTriggered(
-    const int32_t page_transition_type) {
+    int32_t page_transition_type) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(
         base::BindOnce(&AdsClientNotifier::NotifyUserGestureEventTriggered,
@@ -235,9 +234,8 @@ void AdsClientNotifier::NotifyUserDidBecomeIdle() {
   }
 }
 
-void AdsClientNotifier::NotifyUserDidBecomeActive(
-    const base::TimeDelta idle_time,
-    const bool screen_was_locked) {
+void AdsClientNotifier::NotifyUserDidBecomeActive(base::TimeDelta idle_time,
+                                                  bool screen_was_locked) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(base::BindOnce(
         &AdsClientNotifier::NotifyUserDidBecomeActive,

@@ -12,7 +12,7 @@ namespace brave_ads {
 
 ConfirmationQueueItemInfo BuildConfirmationQueueItem(
     const ConfirmationInfo& confirmation,
-    const base::Time process_at) {
+    base::Time process_at) {
   ConfirmationQueueItemInfo confirmation_queue_item;
   confirmation_queue_item.confirmation = confirmation;
   confirmation_queue_item.process_at = process_at;

@@ -158,7 +158,7 @@ void SubdivisionUrlRequest::StopRetrying() {
 }
 
 void SubdivisionUrlRequest::NotifyWillFetchSubdivision(
-    const base::Time fetch_at) const {
+    base::Time fetch_at) const {
   if (delegate_) {
     delegate_->OnWillFetchSubdivision(fetch_at);
   }
@@ -178,7 +178,7 @@ void SubdivisionUrlRequest::NotifyFailedToFetchSubdivision() const {
 }
 
 void SubdivisionUrlRequest::NotifyWillRetryFetchingSubdivision(
-    const base::Time retry_at) const {
+    base::Time retry_at) const {
   if (delegate_) {
     delegate_->OnWillRetryFetchingSubdivision(retry_at);
   }

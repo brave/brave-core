@@ -26,8 +26,7 @@ class RefillConfirmationTokensDelegate {
 
   // Invoked to tell the delegate that we will retry refilling the confirmation
   // tokens at `retry_at`.
-  virtual void OnWillRetryRefillingConfirmationTokens(
-      const base::Time retry_at) {}
+  virtual void OnWillRetryRefillingConfirmationTokens(base::Time retry_at) {}
 
   // Invoked to tell the delegate that we retried refilling the confirmation
   // tokens.

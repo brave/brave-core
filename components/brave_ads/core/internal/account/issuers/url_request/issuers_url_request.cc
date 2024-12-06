@@ -174,15 +174,14 @@ void IssuersUrlRequest::NotifyFailedToFetchIssuers() const {
   }
 }
 
-void IssuersUrlRequest::NotifyWillFetchIssuers(
-    const base::Time fetch_at) const {
+void IssuersUrlRequest::NotifyWillFetchIssuers(base::Time fetch_at) const {
   if (delegate_) {
     delegate_->OnWillFetchIssuers(fetch_at);
   }
 }
 
 void IssuersUrlRequest::NotifyWillRetryFetchingIssuers(
-    const base::Time retry_at) const {
+    base::Time retry_at) const {
   if (delegate_) {
     delegate_->OnWillRetryFetchingIssuers(retry_at);
   }

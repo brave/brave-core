@@ -19,9 +19,9 @@ namespace brave_ads {
 TransactionInfo BuildTransaction(
     const std::string& creative_instance_id,
     const std::string& segment,
-    const double value,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type) {
+    double value,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type) {
   CHECK(!creative_instance_id.empty());
   CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
   CHECK_NE(mojom::ConfirmationType::kUndefined, mojom_confirmation_type);
@@ -38,13 +38,12 @@ TransactionInfo BuildTransaction(
   return transaction;
 }
 
-TransactionInfo AddTransaction(
-    const std::string& creative_instance_id,
-    const std::string& segment,
-    const double value,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    AddTransactionCallback callback) {
+TransactionInfo AddTransaction(const std::string& creative_instance_id,
+                               const std::string& segment,
+                               double value,
+                               mojom::AdType mojom_ad_type,
+                               mojom::ConfirmationType mojom_confirmation_type,
+                               AddTransactionCallback callback) {
   CHECK(!creative_instance_id.empty());
   CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
   CHECK_NE(mojom::ConfirmationType::kUndefined, mojom_confirmation_type);
@@ -54,26 +53,25 @@ TransactionInfo AddTransaction(
                        mojom_confirmation_type);
 
   database::table::Transactions database_table;
-  database_table.Save(
-      {transaction},
-      base::BindOnce(
-          [](AddTransactionCallback callback,
-             const TransactionInfo& transaction, const bool success) {
-            std::move(callback).Run(success, transaction);
-          },
-          std::move(callback), transaction));
+  database_table.Save({transaction},
+                      base::BindOnce(
+                          [](AddTransactionCallback callback,
+                             const TransactionInfo& transaction, bool success) {
+                            std::move(callback).Run(success, transaction);
+                          },
+                          std::move(callback), transaction));
 
   return transaction;
 }
 
-void GetTransactionsForDateRange(const base::Time from_time,
-                                 const base::Time to_time,
+void GetTransactionsForDateRange(base::Time from_time,
+                                 base::Time to_time,
                                  GetTransactionsCallback callback) {
   const database::table::Transactions database_table;
   database_table.GetForDateRange(
       from_time, to_time,
       base::BindOnce(
-          [](GetTransactionsCallback callback, const bool success,
+          [](GetTransactionsCallback callback, bool success,
              const TransactionList& transactions) {
             std::move(callback).Run(success, transactions);
           },

@@ -27,7 +27,7 @@ double GeneratePacingRandomNumber() {
 }
 
 ScopedPacingRandomNumberSetterForTesting::
-    ScopedPacingRandomNumberSetterForTesting(const double number) {
+    ScopedPacingRandomNumberSetterForTesting(double number) {
   CHECK_IS_TEST();
 
   g_pacing_random_number_for_testing = number;

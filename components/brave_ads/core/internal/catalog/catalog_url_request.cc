@@ -173,8 +173,7 @@ void CatalogUrlRequest::StopRetrying() {
   timer_.Stop();
 }
 
-void CatalogUrlRequest::NotifyWillFetchCatalog(
-    const base::Time fetch_at) const {
+void CatalogUrlRequest::NotifyWillFetchCatalog(base::Time fetch_at) const {
   if (delegate_) {
     delegate_->OnWillFetchCatalog(fetch_at);
   }
@@ -194,7 +193,7 @@ void CatalogUrlRequest::NotifyFailedToFetchCatalog() const {
 }
 
 void CatalogUrlRequest::NotifyWillRetryFetchingCatalog(
-    const base::Time retry_at) const {
+    base::Time retry_at) const {
   if (delegate_) {
     delegate_->OnWillRetryFetchingCatalog(retry_at);
   }

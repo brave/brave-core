@@ -16,7 +16,7 @@
 namespace brave_ads::test {
 
 std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
-    const bool should_generate_random_uuids) {
+    bool should_generate_random_uuids) {
   CHECK(!UserHasJoinedBraveRewards());
 
   const TransactionInfo transaction = BuildUnreconciledTransaction(

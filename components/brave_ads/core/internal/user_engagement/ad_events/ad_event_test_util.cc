@@ -21,15 +21,14 @@ namespace brave_ads::test {
 namespace {
 
 void RecordAdEvent(const AdEventInfo& ad_event) {
-  RecordAdEvent(ad_event, base::BindOnce([](const bool success) {
-                  ASSERT_TRUE(success);
-                }));
+  RecordAdEvent(ad_event,
+                base::BindOnce([](bool success) { ASSERT_TRUE(success); }));
 }
 
 }  // namespace
 
 void RecordAdEvent(const AdInfo& ad,
-                   const mojom::ConfirmationType mojom_confirmation_type) {
+                   mojom::ConfirmationType mojom_confirmation_type) {
   const AdEventInfo ad_event =
       BuildAdEvent(ad, mojom_confirmation_type, /*created_at=*/Now());
   RecordAdEvent(ad_event);

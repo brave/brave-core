@@ -15,11 +15,11 @@
 namespace brave_ads::test {
 
 TransactionInfo BuildTransaction(
-    const double value,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    const base::Time reconciled_at,
-    const bool should_generate_random_uuids) {
+    double value,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type,
+    base::Time reconciled_at,
+    bool should_generate_random_uuids) {
   TransactionInfo transaction;
 
   transaction.id = RandomUuidOr(should_generate_random_uuids, kTransactionId);
@@ -38,10 +38,10 @@ TransactionInfo BuildTransaction(
 }
 
 TransactionInfo BuildUnreconciledTransaction(
-    const double value,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    const bool should_generate_random_uuids) {
+    double value,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type,
+    bool should_generate_random_uuids) {
   return BuildTransaction(value, mojom_ad_type, mojom_confirmation_type,
                           /*reconciled_at=*/{}, should_generate_random_uuids);
 }

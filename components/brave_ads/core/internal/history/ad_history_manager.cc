@@ -50,16 +50,16 @@ void AdHistoryManager::RemoveObserver(
 }
 
 // static
-void AdHistoryManager::Get(const base::Time from_time,
-                           const base::Time to_time,
+void AdHistoryManager::Get(base::Time from_time,
+                           base::Time to_time,
                            GetAdHistoryCallback callback) {
   database::table::AdHistory database_table;
   database_table.GetForDateRange(from_time, to_time, std::move(callback));
 }
 
 // static
-void AdHistoryManager::GetForUI(const base::Time from_time,
-                                const base::Time to_time,
+void AdHistoryManager::GetForUI(base::Time from_time,
+                                base::Time to_time,
                                 GetAdHistoryForUICallback callback) {
   database::table::AdHistory database_table;
   database_table.GetHighestRankedPlacementsForDateRange(
@@ -69,41 +69,40 @@ void AdHistoryManager::GetForUI(const base::Time from_time,
 
 void AdHistoryManager::Add(
     const InlineContentAdInfo& ad,
-    const mojom::ConfirmationType mojom_confirmation_type) const {
+    mojom::ConfirmationType mojom_confirmation_type) const {
   MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.description);
 }
 
 void AdHistoryManager::Add(
     const NewTabPageAdInfo& ad,
-    const mojom::ConfirmationType mojom_confirmation_type) const {
+    mojom::ConfirmationType mojom_confirmation_type) const {
   MaybeAdd(ad, mojom_confirmation_type, ad.company_name, ad.alt);
 }
 
 void AdHistoryManager::Add(
     const NotificationAdInfo& ad,
-    const mojom::ConfirmationType mojom_confirmation_type) const {
+    mojom::ConfirmationType mojom_confirmation_type) const {
   MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.body);
 }
 
 void AdHistoryManager::Add(
     const PromotedContentAdInfo& ad,
-    const mojom::ConfirmationType mojom_confirmation_type) const {
+    mojom::ConfirmationType mojom_confirmation_type) const {
   MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.description);
 }
 
 void AdHistoryManager::Add(
     const SearchResultAdInfo& ad,
-    const mojom::ConfirmationType mojom_confirmation_type) const {
+    mojom::ConfirmationType mojom_confirmation_type) const {
   MaybeAdd(ad, mojom_confirmation_type, ad.headline_text, ad.description);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdHistoryManager::MaybeAdd(
-    const AdInfo& ad,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    const std::string& title,
-    const std::string& description) const {
+void AdHistoryManager::MaybeAdd(const AdInfo& ad,
+                                mojom::ConfirmationType mojom_confirmation_type,
+                                const std::string& title,
+                                const std::string& description) const {
   if (!UserHasJoinedBraveRewards()) {
     // User has not joined Brave Rewards, so we don't need to add history.
     return;

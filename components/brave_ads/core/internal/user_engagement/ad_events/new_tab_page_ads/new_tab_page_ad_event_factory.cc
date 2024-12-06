@@ -17,7 +17,7 @@ namespace brave_ads {
 
 std::unique_ptr<AdEventInterface<NewTabPageAdInfo>>
 NewTabPageAdEventFactory::Build(
-    const mojom::NewTabPageAdEventType mojom_ad_event_type) {
+    mojom::NewTabPageAdEventType mojom_ad_event_type) {
   switch (mojom_ad_event_type) {
     case mojom::NewTabPageAdEventType::kServedImpression: {
       return std::make_unique<NewTabPageAdEventServed>();

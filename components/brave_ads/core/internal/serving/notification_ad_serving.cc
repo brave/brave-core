@@ -109,7 +109,7 @@ void NotificationAdServing::GetAdEvents() {
                                     weak_factory_.GetWeakPtr()));
 }
 
-void NotificationAdServing::GetAdEventsCallback(const bool success,
+void NotificationAdServing::GetAdEventsCallback(bool success,
                                                 const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "Notification ad not served: Failed to get ad events");
@@ -187,8 +187,7 @@ void NotificationAdServing::RetryServingAdAtNextInterval() {
   BLOG(1, "Maybe serve notification ad " << FriendlyDateAndTime(serve_ad_at));
 }
 
-base::Time NotificationAdServing::MaybeServeAdAfter(
-    const base::TimeDelta delay) {
+base::Time NotificationAdServing::MaybeServeAdAfter(base::TimeDelta delay) {
   SetServeAdAt(base::Time::Now() + delay);
 
   return timer_.Start(FROM_HERE, delay,

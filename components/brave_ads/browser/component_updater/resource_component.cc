@@ -73,7 +73,7 @@ void ResourceComponent::RegisterComponentForLanguageCode(
 
 std::optional<base::FilePath> ResourceComponent::MaybeGetPath(
     const std::string& id,
-    const int version) {
+    int version) {
   const std::string index = GetResourceKey(id, version);
   const auto iter = resources_.find(index);
   if (iter == resources_.cend()) {

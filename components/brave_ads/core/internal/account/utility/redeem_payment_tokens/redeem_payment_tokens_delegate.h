@@ -23,12 +23,11 @@ class RedeemPaymentTokensDelegate {
 
   // Invoked to tell the delegate that payment token redemption is scheduled for
   // `redeem_at`.
-  virtual void OnDidScheduleNextPaymentTokenRedemption(
-      const base::Time redeem_at) {}
+  virtual void OnDidScheduleNextPaymentTokenRedemption(base::Time redeem_at) {}
 
   // Invoked to tell the delegate that we will retry redeeming payment tokens at
   // `retry_at`.
-  virtual void OnWillRetryRedeemingPaymentTokens(const base::Time retry_at) {}
+  virtual void OnWillRetryRedeemingPaymentTokens(base::Time retry_at) {}
 
   // Invoked to tell the delegate that we retried redeeming payment tokens.
   virtual void OnDidRetryRedeemingPaymentTokens() {}

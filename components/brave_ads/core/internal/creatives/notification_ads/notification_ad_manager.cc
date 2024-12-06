@@ -73,7 +73,7 @@ void NotificationAdManager::Add(const NotificationAdInfo& ad) {
 }
 
 void NotificationAdManager::Remove(const std::string& placement_id,
-                                   const bool should_close) {
+                                   bool should_close) {
   CHECK(!placement_id.empty());
 
   if (should_close) {

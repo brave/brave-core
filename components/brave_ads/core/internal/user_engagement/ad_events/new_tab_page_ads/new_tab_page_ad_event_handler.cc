@@ -26,7 +26,7 @@ NewTabPageAdEventHandler::~NewTabPageAdEventHandler() {
 void NewTabPageAdEventHandler::FireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type,
+    mojom::NewTabPageAdEventType mojom_ad_event_type,
     FireNewTabPageAdEventHandlerCallback callback) {
   if (placement_id.empty()) {
     BLOG(1,
@@ -54,9 +54,9 @@ void NewTabPageAdEventHandler::FireEvent(
 
 void NewTabPageAdEventHandler::GetCreativeAdCallback(
     const std::string& placement_id,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type,
+    mojom::NewTabPageAdEventType mojom_ad_event_type,
     FireNewTabPageAdEventHandlerCallback callback,
-    const bool success,
+    bool success,
     const std::string& creative_instance_id,
     const CreativeNewTabPageAdInfo& creative_ad) {
   if (!success) {
@@ -84,9 +84,9 @@ void NewTabPageAdEventHandler::GetCreativeAdCallback(
 
 void NewTabPageAdEventHandler::GetAdEventsCallback(
     const NewTabPageAdInfo& ad,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type,
+    mojom::NewTabPageAdEventType mojom_ad_event_type,
     FireNewTabPageAdEventHandlerCallback callback,
-    const bool success,
+    bool success,
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "New tab page ad: Failed to get ad events");
@@ -116,7 +116,7 @@ void NewTabPageAdEventHandler::GetAdEventsCallback(
 
 void NewTabPageAdEventHandler::FireEvent(
     const NewTabPageAdInfo& ad,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type,
+    mojom::NewTabPageAdEventType mojom_ad_event_type,
     FireNewTabPageAdEventHandlerCallback callback) const {
   const auto ad_event = NewTabPageAdEventFactory::Build(mojom_ad_event_type);
   ad_event->FireEvent(
@@ -127,9 +127,9 @@ void NewTabPageAdEventHandler::FireEvent(
 
 void NewTabPageAdEventHandler::FireEventCallback(
     const NewTabPageAdInfo& ad,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type,
+    mojom::NewTabPageAdEventType mojom_ad_event_type,
     FireNewTabPageAdEventHandlerCallback callback,
-    const bool success) const {
+    bool success) const {
   if (!success) {
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
@@ -140,7 +140,7 @@ void NewTabPageAdEventHandler::FireEventCallback(
 
 void NewTabPageAdEventHandler::SuccessfullyFiredEvent(
     const NewTabPageAdInfo& ad,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type,
+    mojom::NewTabPageAdEventType mojom_ad_event_type,
     FireNewTabPageAdEventHandlerCallback callback) const {
   NotifyDidFireNewTabPageAdEvent(ad, mojom_ad_event_type);
 
@@ -151,7 +151,7 @@ void NewTabPageAdEventHandler::SuccessfullyFiredEvent(
 void NewTabPageAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type,
+    mojom::NewTabPageAdEventType mojom_ad_event_type,
     FireNewTabPageAdEventHandlerCallback callback) const {
   BLOG(1, "Failed to fire new tab page ad "
               << mojom_ad_event_type << " event for placement id "
@@ -207,7 +207,7 @@ void NewTabPageAdEventHandler::NotifyDidFireNewTabPageAdEvent(
 void NewTabPageAdEventHandler::NotifyFailedToFireNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type) const {
+    mojom::NewTabPageAdEventType mojom_ad_event_type) const {
   if (delegate_) {
     delegate_->OnFailedToFireNewTabPageAdEvent(
         placement_id, creative_instance_id, mojom_ad_event_type);

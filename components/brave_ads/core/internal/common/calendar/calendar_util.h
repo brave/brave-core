@@ -15,7 +15,7 @@ class Time;
 
 namespace brave_ads {
 
-constexpr bool IsLeapYear(const int year) noexcept {
+constexpr bool IsLeapYear(int year) noexcept {
   return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
 }
 
@@ -23,7 +23,7 @@ constexpr bool IsLeapYear(const int year) noexcept {
 int DayOfWeek(base::Time time, bool is_local);
 
 // Expects a 1-based month (1 = January, etc.).
-constexpr int DaysInMonth(const int year, const int month) noexcept {
+constexpr int DaysInMonth(int year, int month) noexcept {
   CHECK((month >= 1 && month <= 12));
 
   constexpr int kDaysInMonth[] = {

@@ -17,7 +17,7 @@
 namespace brave_ads {
 
 void RecordAdEvent(const AdInfo& ad,
-                   const mojom::ConfirmationType mojom_confirmation_type,
+                   mojom::ConfirmationType mojom_confirmation_type,
                    AdEventCallback callback) {
   RecordAdEvent(BuildAdEvent(ad, mojom_confirmation_type,
                              /*created_at=*/base::Time::Now()),
@@ -29,7 +29,7 @@ void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
   database_table.RecordEvent(ad_event, std::move(callback));
 }
 
-void PurgeOrphanedAdEvents(const mojom::AdType mojom_ad_type,
+void PurgeOrphanedAdEvents(mojom::AdType mojom_ad_type,
                            AdEventCallback callback) {
   const database::table::AdEvents database_table;
   database_table.PurgeOrphaned(mojom_ad_type, std::move(callback));

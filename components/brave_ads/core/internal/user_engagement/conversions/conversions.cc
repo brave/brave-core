@@ -74,7 +74,7 @@ void Conversions::GetCreativeSetConversions(
 void Conversions::GetCreativeSetConversionsCallback(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
-    const bool success,
+    bool success,
     const CreativeSetConversionList& creative_set_conversions) {
   if (!success) {
     return BLOG(0, "Failed to get creative set conversions");
@@ -100,7 +100,7 @@ void Conversions::GetAdEventsCallback(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const CreativeSetConversionList& creative_set_conversions,
-    const bool success,
+    bool success,
     const AdEventList& ad_events) {
   if (!success) {
     return BLOG(0, "Failed to get ad events");
@@ -221,7 +221,7 @@ void Conversions::Convert(
 void Conversions::ConvertCallback(
     const AdEventInfo& ad_event,
     std::optional<VerifiableConversionInfo> verifiable_conversion,
-    const bool success) {
+    bool success) {
   if (!success) {
     BLOG(0, "Failed to record ad conversion event");
     return NotifyFailedToConvertAd(ad_event.creative_instance_id);
@@ -246,7 +246,7 @@ void Conversions::NotifyFailedToConvertAd(
 }
 
 void Conversions::OnHtmlContentDidChange(
-    const int32_t /*tab_id*/,
+    int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   MaybeConvert(redirect_chain, html);

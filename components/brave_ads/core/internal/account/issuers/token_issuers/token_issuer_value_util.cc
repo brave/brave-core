@@ -28,7 +28,7 @@ constexpr char kUndefinedTokenIssuerType[] = "";
 constexpr char kConfirmationTokenIssuerType[] = "confirmations";
 constexpr char kPaymentTokenIssuerType[] = "payments";
 
-std::optional<std::string> ToString(const TokenIssuerType token_issuer_type) {
+std::optional<std::string> ToString(TokenIssuerType token_issuer_type) {
   switch (token_issuer_type) {
     case TokenIssuerType::kUndefined: {
       return std::nullopt;

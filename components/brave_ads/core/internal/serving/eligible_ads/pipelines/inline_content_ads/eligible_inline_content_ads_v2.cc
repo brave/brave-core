@@ -53,7 +53,7 @@ void EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback(
     UserModelInfo user_model,
     const std::string& dimensions,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
-    const bool success,
+    bool success,
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(0, "Failed to get ad events");
@@ -85,7 +85,7 @@ void EligibleInlineContentAdsV2::GetEligibleAdsCallback(
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
-    const bool success,
+    bool success,
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
     BLOG(0, "Failed to get ads");

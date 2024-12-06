@@ -228,7 +228,7 @@ void AdsServiceDelegate::SnoozeScheduledCaptcha() {
 void AdsServiceDelegate::ShowNotificationAd(const std::string& id,
                                             const std::u16string& title,
                                             const std::u16string& body,
-                                            const bool is_custom) {
+                                            bool is_custom) {
   if (is_custom) {
     notification_ad_platform_bridge_->ShowNotificationAd(
         NotificationAd(id, title, body, nullptr));
@@ -262,7 +262,7 @@ void AdsServiceDelegate::ShowNotificationAd(const std::string& id,
 }
 
 void AdsServiceDelegate::CloseNotificationAd(const std::string& id,
-                                             const bool is_custom) {
+                                             bool is_custom) {
   if (is_custom) {
     notification_ad_platform_bridge_->CloseNotificationAd(id);
   } else {

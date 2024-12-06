@@ -33,7 +33,7 @@ class PromotedContentAdEventHandlerDelegate {
   virtual void OnFailedToFirePromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const mojom::PromotedContentAdEventType mojom_ad_event_type) {}
+      mojom::PromotedContentAdEventType mojom_ad_event_type) {}
 
  protected:
   virtual ~PromotedContentAdEventHandlerDelegate() = default;

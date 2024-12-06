@@ -45,7 +45,7 @@ ConfirmationTokenInfo BuildConfirmationToken(
 
 }  // namespace
 
-ConfirmationTokenList RefillConfirmationTokens(const int count) {
+ConfirmationTokenList RefillConfirmationTokens(int count) {
   CHECK_GT(count, 0);
 
   ConfirmationTokenList confirmation_tokens = BuildConfirmationTokens(count);
@@ -60,7 +60,7 @@ ConfirmationTokenInfo BuildConfirmationToken() {
   return confirmation_tokens.front();
 }
 
-ConfirmationTokenList BuildConfirmationTokens(const int count) {
+ConfirmationTokenList BuildConfirmationTokens(int count) {
   CHECK_GT(count, 0);
 
   const WalletInfo wallet = Wallet();

@@ -28,9 +28,9 @@ namespace {
 void FireServedEventCallback(
     const NewTabPageAdInfo& ad,
     MaybeServeNewTabPageAdCallback callback,
-    const bool success,
+    bool success,
     const std::string& /*placement_id*/,
-    const mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
+    mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*ad=*/std::nullopt);
   }
@@ -38,11 +38,10 @@ void FireServedEventCallback(
   std::move(callback).Run(ad);
 }
 
-void FireEventCallback(
-    TriggerAdEventCallback callback,
-    const bool success,
-    const std::string& /*placement_id*/,
-    const mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
+void FireEventCallback(TriggerAdEventCallback callback,
+                       bool success,
+                       const std::string& /*placement_id*/,
+                       mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -79,7 +78,7 @@ void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
 void NewTabPageAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type,
+    mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (creative_instance_id.empty()) {
     // No-op if `creative_instance_id` is empty. This should only occur for
@@ -133,9 +132,9 @@ void NewTabPageAdHandler::MaybeServeCallback(
 void NewTabPageAdHandler::TriggerServedEventCallback(
     const std::string& creative_instance_id,
     TriggerAdEventCallback callback,
-    const bool success,
+    bool success,
     const std::string& placement_id,
-    const mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
+    mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }

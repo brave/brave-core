@@ -16,7 +16,7 @@
 
 namespace brave_ads {
 
-bool IsAllowedToLandOnPage(const mojom::AdType mojom_ad_type) {
+bool IsAllowedToLandOnPage(mojom::AdType mojom_ad_type) {
   switch (mojom_ad_type) {
     case mojom::AdType::kInlineContentAd:
     case mojom::AdType::kPromotedContentAd: {
@@ -55,13 +55,13 @@ bool IsAllowedToLandOnPage(const mojom::AdType mojom_ad_type) {
                << base::to_underlying(mojom_ad_type);
 }
 
-bool ShouldResumePageLand(const int32_t tab_id) {
+bool ShouldResumePageLand(int32_t tab_id) {
   return TabManager::GetInstance().IsVisible(tab_id) &&
          BrowserManager::GetInstance().IsActive() &&
          BrowserManager::GetInstance().IsInForeground();
 }
 
-bool DidLandOnPage(const int32_t tab_id, const GURL& url) {
+bool DidLandOnPage(int32_t tab_id, const GURL& url) {
   const std::optional<TabInfo> tab =
       TabManager::GetInstance().MaybeGetForId(tab_id);
   if (!tab) {

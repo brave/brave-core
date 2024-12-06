@@ -67,7 +67,7 @@ void UserRewards::OnDidFetchIssuers(const IssuersInfo& issuers) {
 void UserRewards::OnDidRedeemPaymentTokens(
     const PaymentTokenList& payment_tokens) {
   transactions_database_table_.Reconcile(
-      payment_tokens, base::BindOnce([](const bool success) {
+      payment_tokens, base::BindOnce([](bool success) {
         if (!success) {
           // TODO(https://github.com/brave/brave-browser/issues/32066):
           // Detect potential defects using `DumpWithoutCrashing`.
@@ -94,8 +94,7 @@ void UserRewards::OnFailedToRefillConfirmationTokens() {
   BLOG(1, "Failed to refill confirmation tokens");
 }
 
-void UserRewards::OnWillRetryRefillingConfirmationTokens(
-    const base::Time retry_at) {
+void UserRewards::OnWillRetryRefillingConfirmationTokens(base::Time retry_at) {
   BLOG(1,
        "Retry refilling confirmation tokens " << FriendlyDateAndTime(retry_at));
 }

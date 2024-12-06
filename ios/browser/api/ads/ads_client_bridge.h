@@ -28,19 +28,19 @@
 - (bool)isNetworkConnectionAvailable;
 - (bool)canShowNotificationAds;
 - (void)loadResourceComponent:(const std::string&)id
-                      version:(const int)version
+                      version:(int)version
                      callback:(brave_ads::LoadFileCallback)callback;
 - (void)showScheduledCaptcha:(const std::string&)payment_id
                    captchaId:(const std::string&)captcha_id;
-- (void)getSiteHistory:(const int)max_count
-               forDays:(const int)days_ago
+- (void)getSiteHistory:(int)max_count
+               forDays:(int)days_ago
               callback:(brave_ads::GetSiteHistoryCallback)callback;
 - (void)load:(const std::string&)name
     callback:(brave_ads::LoadCallback)callback;
 - (std::string)loadDataResource:(const std::string&)name;
 - (void)log:(const char*)file
-            line:(const int)line
-    verboseLevel:(const int)verbose_level
+            line:(int)line
+    verboseLevel:(int)verbose_level
          message:(const std::string&)message;
 - (void)save:(const std::string&)name
        value:(const std::string&)value

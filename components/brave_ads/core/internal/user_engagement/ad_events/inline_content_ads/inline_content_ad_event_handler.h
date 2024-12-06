@@ -22,7 +22,7 @@ namespace brave_ads {
 using FireInlineContentAdEventHandlerCallback = base::OnceCallback<void(
     bool success,
     const std::string& placement_id,
-    const mojom::InlineContentAdEventType mojom_ad_event_type)>;
+    mojom::InlineContentAdEventType mojom_ad_event_type)>;
 
 struct CreativeInlineContentAdInfo;
 struct InlineContentAdInfo;
