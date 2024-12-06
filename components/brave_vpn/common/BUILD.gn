@@ -18,6 +18,8 @@ source_set("common") {
     "pref_names.h",
   ]
 
+  public_deps = [ "mojom" ]
+
   deps = [
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/p3a_utils",

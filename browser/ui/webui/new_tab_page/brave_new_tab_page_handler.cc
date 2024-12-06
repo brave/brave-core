@@ -24,7 +24,6 @@
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -323,43 +322,38 @@ void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
   web_contents_->OpenURL(params, /*navigation_handle_callback=*/{});
 }
 
-void BraveNewTabPageHandler::RefreshVPNState() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+void BraveNewTabPageHandler::RefreshVPNState() {
   auto* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
   vpn_service->ReloadPurchasedState();
-#endif
 }
 
 void BraveNewTabPageHandler::LaunchVPNPanel() {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto* tab = tabs::TabInterface::GetFromContents(web_contents_);
   CHECK(tab);
   tab->GetBrowserWindowInterface()
       ->GetFeatures()
       .GetBraveVPNController()
       ->ShowBraveVPNBubble(/* show_select */ true);
-#endif
 }
 
-void BraveNewTabPageHandler::OpenVPNAccountPage(const std::string& intent) {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+void BraveNewTabPageHandler::OpenVPNAccountPage(
+    brave_vpn::mojom::ManageURLType type) {
   auto* tab = tabs::TabInterface::GetFromContents(web_contents_);
   CHECK(tab);
   tab->GetBrowserWindowInterface()
       ->GetFeatures()
       .GetBraveVPNController()
-      ->OpenVPNAccountPage(intent);
-#endif
+      ->OpenVPNAccountPage(type);
 }
 
 void BraveNewTabPageHandler::ReportVPNWidgetUsage() {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
   vpn_service->brave_vpn_metrics()->RecordWidgetUsage(true);
-#endif
 }
+#endif
 
 bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {
   if (profile_->GetPrefs()->IsManagedPreference(GetThemePrefNameInMigration(

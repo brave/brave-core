@@ -3,12 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import getVPNServiceHandler, { ConnectionState, PurchasedState, Region, ServiceObserverReceiver } from '../api/braveVpn'
+import getVPNServiceHandler, { ConnectionState, PurchasedState, ManageURLType, Region, ServiceObserverReceiver } from '../api/braveVpn'
 import * as Actions from '../actions/brave_vpn_actions'
 import { ApplicationState } from '../reducers'
 import AsyncActionHandler from '../../common/AsyncActionHandler'
 import getNTPBrowserAPI from '../api/background'
 import store from '../store'
+
+// We added @ts-ignore to avoid build failure on linux as
+// we don't support vpn on that platform. VPN related methods
+// in PageHandler aren't defined on linux. And we don't call
+// them all in linux. So, safe to ignore here.
 
 const observer = {
   onConnectionStateChanged: (state: ConnectionState) => {
@@ -32,20 +37,30 @@ handler.on<PurchasedState>(Actions.initialize.getType(),
     const serviceObserver = new ServiceObserverReceiver(observer)
     getVPNServiceHandler().addObserver(
       serviceObserver.$.bindNewPipeAndPassRemote())
+    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+    // @ts-ignore
     getNTPBrowserAPI().pageHandler.refreshVPNState()
     store.dispatch(Actions.purchasedStateChanged(payload))
   }
 )
 
 handler.on(Actions.launchVPNPanel.getType(), async (store) => {
+  // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+  // @ts-ignore
   getNTPBrowserAPI().pageHandler.launchVPNPanel()
+  // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+  // @ts-ignore
   getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
 })
 
-handler.on<string>(
+handler.on<ManageURLType>(
   Actions.openVPNAccountPage.getType(),
   async (store, payload) => {
+    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+    // @ts-ignore
     getNTPBrowserAPI().pageHandler.openVPNAccountPage(payload)
+    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+    // @ts-ignore
     getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
   }
 )
@@ -61,6 +76,8 @@ handler.on(Actions.toggleConnection.getType(), async (store) => {
   } else {
     getVPNServiceHandler().connect()
   }
+  // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+  // @ts-ignore
   getNTPBrowserAPI().pageHandler.reportVPNWidgetUsage()
 })
 

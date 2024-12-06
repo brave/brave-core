@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import * as S from './style'
 import { PanelHeader } from '../select-region-list'
-import getPanelBrowserAPI from '../../api/panel_browser_api'
+import getPanelBrowserAPI, { ManageURLType } from '../../api/panel_browser_api'
 import { getLocale } from '$web-common/locale'
 import Toggle from '@brave/leo/react/toggle'
 
@@ -26,18 +26,18 @@ function SettingsPanel(props: Props) {
     getPanelBrowserAPI().serviceHandler.getOnDemandState().then(setOnDemand)
   }, [])
 
-  const handleClick = (entry: string) => {
+  const handleClick = (entry: ManageURLType) => {
     getPanelBrowserAPI().panelHandler.openVpnUI(entry)
   }
 
   function handleKeyDown(
-    entry: string,
+    entry: ManageURLType,
     event: React.KeyboardEvent<HTMLDivElement>
   ) {
     if (event.code !== 'Enter') {
       return
     }
-    if (entry === 'support') {
+    if (entry === ManageURLType.SUPPORT) {
       props.showContactSupport()
       return
     }
@@ -80,8 +80,10 @@ function SettingsPanel(props: Props) {
               <S.Divider />
             </>
           )}
-          <S.Setting tabIndex={0} onClick={e => handleClick('manage')}
-            onKeyDown={e => handleKeyDown('manage', e)}
+          <S.Setting
+            tabIndex={0}
+            onClick={(e) => handleClick(ManageURLType.MANAGE)}
+            onKeyDown={(e) => handleKeyDown(ManageURLType.MANAGE, e)}
           >
             <S.SettingLabel>
               {getLocale('braveVpnManageSubscription')}
@@ -89,8 +91,10 @@ function SettingsPanel(props: Props) {
             <S.StyledIcon name='launch'></S.StyledIcon>
           </S.Setting>
           <S.Divider />
-          <S.Setting tabIndex={0} onClick={props.showContactSupport}
-            onKeyDown={e => handleKeyDown('support', e)}
+          <S.Setting
+            tabIndex={0}
+            onClick={props.showContactSupport}
+            onKeyDown={(e) => handleKeyDown(ManageURLType.SUPPORT, e)}
           >
             <S.SettingLabel>
               {getLocale('braveVpnContactSupport')}
@@ -98,8 +102,10 @@ function SettingsPanel(props: Props) {
             <S.StyledIcon name='carat-right'></S.StyledIcon>
           </S.Setting>
           <S.Divider />
-          <S.Setting tabIndex={0} onClick={e => handleClick('about')}
-            onKeyDown={e => handleKeyDown('about', e)}
+          <S.Setting
+            tabIndex={0}
+            onClick={(e) => handleClick(ManageURLType.ABOUT)}
+            onKeyDown={(e) => handleKeyDown(ManageURLType.ABOUT, e)}
           >
             <S.SettingLabel>
               {getLocale('braveVpnAbout')} {getLocale('braveVpn')}
