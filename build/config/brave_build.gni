@@ -9,7 +9,6 @@
 import("//brave/app/entitlements.gni")
 import("//brave/brave_repack_locales.gni")
 import("//brave/browser/extensions/resources.gni")
-import("//brave/browser/resources/extensions/sources.gni")
 import("//brave/browser/resources/settings/sources.gni")
 import("//brave/browser/ui/color/sources.gni")
 import("//brave/build/mac/config.gni")
