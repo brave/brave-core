@@ -54,6 +54,7 @@
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/browser/brave_search_default_host_private.h"
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
@@ -1168,10 +1169,15 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
-  throttles.insert(
-      throttles.begin(),
-      std::make_unique<brave_rewards::RewardsProtocolNavigationThrottle>(
-          handle));
+  content::BrowserContext* context =
+      handle->GetWebContents()->GetBrowserContext();
+  PrefService* pref_service = user_prefs::UserPrefs::Get(context);
+  if (pref_service->GetBoolean(brave_rewards::prefs::kEnabled)) {
+    throttles.insert(
+        throttles.begin(),
+        std::make_unique<brave_rewards::RewardsProtocolNavigationThrottle>(
+            handle));
+  }
 
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =
@@ -1185,9 +1191,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   throttles.push_back(
       std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
-
-  content::BrowserContext* context =
-      handle->GetWebContents()->GetBrowserContext();
 
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
