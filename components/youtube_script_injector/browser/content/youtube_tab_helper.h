@@ -54,6 +54,10 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
   YouTubeTabHelper(content::WebContents*, const int32_t world_id);
   friend class content::WebContentsUserData<YouTubeTabHelper>;
 
+  // Override fullscreen toggle notification.
+    void DidToggleFullscreenModeForTab(bool entered_fullscreen,
+                                       bool /*is_user_initiated*/) override;
+
   // content::WebContentsObserver overrides
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
