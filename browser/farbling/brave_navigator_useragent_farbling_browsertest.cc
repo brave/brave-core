@@ -235,7 +235,8 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   void TestExtensionOffscreenDocument(std::string_view page_path,
-                                      std::string_view script_path) {
+                                      std::string_view script_path,
+                                      std::string_view script_path2 = {}) {
     extensions::TestExtensionDir test_extension_dir;
     test_extension_dir.WriteManifest(R"({
       "name": "Offscreen Document Test",
@@ -253,6 +254,12 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
         base::PathService::CheckedGet(brave::DIR_TEST_DATA)
             .AppendASCII(script_path),
         base::FilePath::FromASCII(script_path).BaseName().value());
+    if (!script_path2.empty()) {
+      test_extension_dir.CopyFileTo(
+          base::PathService::CheckedGet(brave::DIR_TEST_DATA)
+              .AppendASCII(script_path2),
+          base::FilePath::FromASCII(script_path2).BaseName().value());
+    }
 
     extensions::ChromeTestExtensionLoader extension_loader(
         browser()->profile());
@@ -355,6 +362,17 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
   TitleWatcher watcher4(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher4.WaitAndGetTitle());
+
+  // test that shared workers also inherit the farbled user agent
+  // (farbling level is still maximum)
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL(
+                     domain_b, "/navigator/shared-workers-useragent.html")));
+  // HTTP User-Agent header we just sent in that request should be the same as
+  // the unfarbled user agent
+  EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
+  TitleWatcher watcher5(contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher5.WaitAndGetTitle());
 
   // Farbling level: off
   // verify that user agent is reset properly after having been farbled
@@ -518,5 +536,12 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
                        ExtensionOffscreenDocumentRemoteIframe) {
   TestExtensionOffscreenDocument("navigator/workers-remote-iframe.html",
                                  "navigator/workers-remote-iframe.js");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
+                       ExtensionOffscreenDocumentSharedWorker) {
+  TestExtensionOffscreenDocument("navigator/shared-workers-useragent.html",
+                                 "navigator/shared-workers-useragent.js",
+                                 "navigator/shared-workers-worker.js");
 }
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)

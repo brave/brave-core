@@ -35,22 +35,20 @@ void EventSource::ConnectTimerFired(TimerBase* timer_base) {
 void EventSource::BraveConnect() {
   if (base::FeatureList::IsEnabled(blink::features::kRestrictEventSourcePool)) {
     ExecutionContext* execution_context = GetExecutionContext();
-    if (blink::WebContentSettingsClient* settings =
-            brave::GetContentSettingsClientFor(execution_context)) {
-      const bool is_extension = CommonSchemeRegistry::IsExtensionScheme(
-          execution_context->GetSecurityOrigin()->Protocol().Ascii());
-      if (!is_extension &&
-          settings->GetBraveShieldsSettings(
-                      ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL)
-                  ->farbling_level != BraveFarblingLevel::OFF) {
-        event_source_in_use_tracker_ =
-            ResourcePoolLimiter::GetInstance().IssueResourceInUseTracker(
-                execution_context,
-                ResourcePoolLimiter::ResourceType::kEventSource);
-        if (!event_source_in_use_tracker_) {
-          AbortConnectionAttempt();
-          return;
-        }
+    const bool is_extension = CommonSchemeRegistry::IsExtensionScheme(
+        execution_context->GetSecurityOrigin()->Protocol().Ascii());
+    if (!is_extension &&
+        brave::GetBraveFarblingLevelFor(
+            execution_context,
+            ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL,
+            BraveFarblingLevel::OFF) != BraveFarblingLevel::OFF) {
+      event_source_in_use_tracker_ =
+          ResourcePoolLimiter::GetInstance().IssueResourceInUseTracker(
+              execution_context,
+              ResourcePoolLimiter::ResourceType::kEventSource);
+      if (!event_source_in_use_tracker_) {
+        AbortConnectionAttempt();
+        return;
       }
     }
   }

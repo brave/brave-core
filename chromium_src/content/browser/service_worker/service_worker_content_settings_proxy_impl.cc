@@ -15,13 +15,11 @@ void ServiceWorkerContentSettingsProxyImpl::GetBraveShieldsSettings(
     std::move(callback).Run(brave_shields::mojom::ShieldsSettings::New());
     return;
   }
-  if (origin_.opaque()) {
-    std::move(callback).Run(brave_shields::mojom::ShieldsSettings::New());
-    return;
-  }
+  // Shields should also work in opaque origins.
+  const GURL url = origin_.GetTupleOrPrecursorTupleIfOpaque().GetURL();
   std::move(callback).Run(
       GetContentClient()->browser()->WorkerGetBraveShieldSettings(
-          origin_.GetURL(), context_wrapper_->browser_context()));
+          url, context_wrapper_->browser_context()));
 }
 
 }  // namespace content
