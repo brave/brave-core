@@ -58,6 +58,9 @@ RegisterPolymerTemplateModifications({
         } else {
           passwordsLeakToggleOld.setAttribute('hidden', 'true')
         }
+        // We don't want to show the separator or arrow icon for this
+        // collapsible radio button, as we've hidden what's under it
+        safeBrowsingStandard.setAttribute('no-collapse', 'true')
       }
     }
     if (loadTimeData.getBoolean("isHttpsByDefaultEnabled")) {
