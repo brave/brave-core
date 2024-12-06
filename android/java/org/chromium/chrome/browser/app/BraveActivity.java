@@ -229,6 +229,7 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
 
 import java.util.Arrays;
@@ -1307,7 +1308,8 @@ public abstract class BraveActivity extends ChromeActivity
                             if (query.toString().isEmpty()) {
                                 removeQuickActionSearchEnginesView();
                             } else {
-                                if (getBraveToolbarLayout().isUrlBarFocused()) {
+                                if (getBraveToolbarLayout().isUrlBarFocused()
+                                        && KeyboardUtils.isAndroidSoftKeyboardShowing(urlBar)) {
                                     View rootView = findViewById(android.R.id.content);
                                     Rect r = new Rect();
                                     rootView.getWindowVisibleDisplayFrame(r);
