@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
-import org.chromium.chrome.browser.playlist.R;
+import org.chromium.chrome.R;
 
 /** The preference used to reset Brave Playlist. */
 public class BravePlaylistResetPreference extends Preference

@@ -295,6 +295,13 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/password_manager/settings/BraveExportFlow.java",
   "../../brave/android/java/org/chromium/chrome/browser/password_manager/settings/BravePasswordSettingsBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistHostActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceObserverImpl.java",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistStreamingObserverImpl.java",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsServiceImpl.java",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/settings/BravePlaylistPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/playlist/settings/BravePlaylistResetPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettingsObserver.java",
@@ -545,8 +552,6 @@ brave_java_base_module_sources = [
   "//brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsService.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",
 ]
-
-brave_java_base_module_sources += brave_java_base_module_playlist_sources
 
 brave_java_base_module_deps = [
   "//brave/third_party/android_deps:com_wireguard_android_java",
