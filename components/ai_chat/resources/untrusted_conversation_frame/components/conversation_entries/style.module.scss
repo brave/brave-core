@@ -27,17 +27,6 @@
   background-color: transparent;
 }
 
-.suggestedQuestionsBox {
-  padding: var(--leo-spacing-2xl);
-}
-
-.questionsList {
-  --leo-button-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: var(--leo-spacing-m);
-}
 
 .avatarContainer {
   display: flex;
@@ -75,10 +64,6 @@
 
 .humanMessageContent {
   white-space: pre-wrap;
-}
-
-.siteTitleContainer {
-  margin-top: var(--leo-spacing-m);
 }
 
 .rightContainer {

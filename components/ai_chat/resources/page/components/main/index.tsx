@@ -107,6 +107,7 @@ function Main() {
   }
 
   const handleLastElementHeightChange = () => {
+    console.log('scrolling', scrollerElement)
     if (!scrollerElement) {
       return
     }
@@ -216,24 +217,28 @@ function Main() {
           {aiChatContext.hasAcceptedAgreement && (
             <>
               <ModelIntro />
+
               {conversationContext.associatedContentInfo?.isContentAssociationPossible && conversationContext.shouldSendPageContents && (
-                    <div className={styles.siteTitleContainer}>
-                      <SiteTitle size='default' />
-                    </div>
+                <div className={styles.siteTitleContainer}>
+                  <SiteTitle size='default' />
+                </div>
               )}
+
               {!!conversationContext.conversationUuid &&
               <aiChatContext.conversationEntriesComponent
                 onLoad={() => setIsContentReady(true)}
                 onGeneratedConversationEntryHeightChanged={handleLastElementHeightChange}
               />
               }
+
               {conversationContext.isFeedbackFormVisible &&
-                <div className={styles.feedbackForm}>
+                <div className={classnames([styles.promptContainer, styles.feedbackForm])}>
                   <FeedbackForm />
                 </div>
               }
+
               {showSuggestions && (
-              <div className={styles.suggestedQuestionsBox}>
+              <div className={styles.suggestionsContainer}>
                 <div className={styles.questionsList}>
                   {conversationContext.suggestedQuestions.map((question, i) => <SuggestedQuestion key={question} question={question} />)}
                   {SUGGESTION_STATUS_SHOW_BUTTON.includes(
