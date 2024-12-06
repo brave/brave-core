@@ -47,6 +47,10 @@ function Main() {
   const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
   const [isContentReady, setIsContentReady] = React.useState(false)
 
+  React.useEffect(() => {
+    setIsContentReady(false)
+  }, [conversationContext.conversationUuid])
+
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
     !aiChatContext.isPremiumStatusFetching && // Avoid flash of content

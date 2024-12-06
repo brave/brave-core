@@ -62,12 +62,12 @@
 
   // Hide until content is ready
   opacity: 0;
-  transition: opacity 0.125s ease-out;
+  // Hide immediately when changing content
+  transition: none;
 
   &.contentReady {
     opacity: 1;
-    // Hide immediately when changing content
-    transition: none;
+    transition: opacity 0.125s ease-out;
   }
 }
 

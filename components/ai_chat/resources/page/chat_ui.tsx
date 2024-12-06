@@ -58,9 +58,20 @@ function Content() {
 function ConversationEntries(props: ConversationEntriesProps) {
   const conversationContext = useConversation()
   const iframeRef = React.useRef<HTMLIFrameElement>(null)
+  const hasNotifiedLoaded = React.useRef(false)
+
+  React.useEffect(() => {
+    hasNotifiedLoaded.current = false
+  }, [conversationContext.conversationUuid])
 
   React.useEffect(() => {
     const listener = (height: number) => {
+      // Use the first height change to notify that the iframe has loaded,
+      // in lieu of an actual "has rendered the conversation entries" event.
+      if (!hasNotifiedLoaded.current && height > 0) {
+        hasNotifiedLoaded.current = true
+        props.onLoad()
+      }
       if (iframeRef.current) {
         iframeRef.current.style.height = height + 'px'
         props.onHeightChanged()
@@ -71,13 +82,13 @@ function ConversationEntries(props: ConversationEntriesProps) {
     return () => {
       api.conversationEntriesFrameObserver.removeListener(id)
     }
-  }, [props.onHeightChanged])
+  }, [props.onHeightChanged, props.onLoad])
 
   return (
     <iframe
+      key={conversationContext.conversationUuid}
       src={"chrome-untrusted://leo-ai-conversation-entries/" + conversationContext.conversationUuid}
       ref={iframeRef}
-      onLoad={props.onLoad}
     />
   )
 }
