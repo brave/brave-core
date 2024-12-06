@@ -120,10 +120,20 @@ export function createModel(): AppModel {
   }
 
   async function updateAdsInfo() {
-    const [{ statement }, { settings }] = await Promise.all([
+    let [{ statement }, { settings }] = await Promise.all([
       await pageHandler.getAdsStatement(),
       await pageHandler.getAdsSettings()
     ])
+
+    // TODO(https://github.com/brave/brave-browser/issues/42702): Remove this
+    // retry after a listener is added for Ads initialization, or after the Ads
+    // service queues these calls during service restart.
+    // If statement data was not returned, the Ads service might be restarting.
+    // Try again after a short delay.
+    if (!statement) {
+      await new Promise<void>((resolve) => setTimeout(resolve, 500))
+      statement = (await pageHandler.getAdsStatement()).statement
+    }
 
     if (statement && settings) {
       const { adTypeSummaryThisMonth } = statement
