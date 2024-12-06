@@ -7,6 +7,7 @@
 
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "content/public/browser/browser_thread.h"
 
 namespace brave_news {
 
@@ -17,6 +18,7 @@ DirectFeedFetcherDelegateImpl::DirectFeedFetcherDelegateImpl(
           g_brave_browser_process->https_upgrade_exceptions_service()) {}
 
 bool DirectFeedFetcherDelegateImpl::ShouldUpgradeToHttps(const GURL& url) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!host_content_settings_map_ || !https_upgrade_exceptions_service_) {
     return true;
   }
@@ -25,6 +27,7 @@ bool DirectFeedFetcherDelegateImpl::ShouldUpgradeToHttps(const GURL& url) {
 }
 
 void DirectFeedFetcherDelegateImpl::Shutdown() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   host_content_settings_map_ = nullptr;
   https_upgrade_exceptions_service_ = nullptr;
 }

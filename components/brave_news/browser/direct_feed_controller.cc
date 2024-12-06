@@ -71,7 +71,7 @@ void DirectFeedController::FindFeedsImpl(
     const GURL& possible_feed_or_site_url) {
   DVLOG(2) << __FUNCTION__ << " " << possible_feed_or_site_url.spec();
   fetcher_.DownloadFeed(
-      possible_feed_or_site_url, "", false,
+      possible_feed_or_site_url, "",
       base::BindOnce(&DirectFeedController::OnFindFeedsImplDownloadedFeed,
                      weak_ptr_factory_.GetWeakPtr(),
                      possible_feed_or_site_url));
@@ -123,7 +123,7 @@ void DirectFeedController::OnFindFeedsImplDownloadedFeed(
     auto feed_handler = base::BarrierCallback<DirectFeedResponse>(
         feed_urls.size(), std::move(all_done_handler));
     for (auto& url : feed_urls) {
-      fetcher_.DownloadFeed(url, "", false, feed_handler);
+      fetcher_.DownloadFeed(url, "", feed_handler);
     }
     return;
   }
@@ -179,7 +179,7 @@ void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
   // will likely add to their user feed sources. Unless this is already
   // cached via network service?
   fetcher_.DownloadFeed(
-      feed_url, "", false,
+      feed_url, "",
       base::BindOnce(
           [](IsValidCallback callback, DirectFeedResponse response) {
             // Handle response

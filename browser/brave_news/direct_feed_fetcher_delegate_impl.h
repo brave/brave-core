@@ -27,6 +27,7 @@ class DirectFeedFetcherDelegateImpl : public DirectFeedFetcher::Delegate {
   DirectFeedFetcherDelegateImpl& operator=(
       const DirectFeedFetcherDelegateImpl&) = delete;
 
+  // Must be called on UI thread
   bool ShouldUpgradeToHttps(const GURL& url) override;
   void Shutdown() override;
 

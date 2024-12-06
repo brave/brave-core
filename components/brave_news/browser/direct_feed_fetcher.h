@@ -86,12 +86,16 @@ class DirectFeedFetcher {
   // This |publisher_id| will be used for any returned articles.
   void DownloadFeed(GURL url,
                     std::string publisher_id,
-                    bool no_https_upgrade,
                     DownloadFeedCallback callback);
 
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
+
+  void DownloadFeedHelper(GURL url,
+                          std::string publisher_id,
+                          DownloadFeedCallback callback,
+                          bool should_https_upgrade);
   void OnFeedDownloaded(SimpleURLLoaderList::iterator iter,
                         DownloadFeedCallback callback,
                         GURL feed_url,
