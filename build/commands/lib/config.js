@@ -431,7 +431,7 @@ Config.prototype.buildArgs = function () {
     generate_about_credits: true,
   }
 
-  const danglingPtrEnabledPlatforms = ['android', 'linux', 'mac']
+  const danglingPtrEnabledPlatforms = ['android', 'linux', 'mac', 'ios']
 
   if (!danglingPtrEnabledPlatforms.includes(this.getTargetOS())) {
     // We explicitly disabled the check for certain other OSes, while leaving
