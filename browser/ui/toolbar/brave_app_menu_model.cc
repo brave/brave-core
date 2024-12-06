@@ -375,8 +375,12 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
   }
 
   // Remove upstream's `Reading Mode` item as we have our own `Speed reader`.
+  // Also remove associated separator.
   if (const auto index = more_tools_model->GetIndexOfCommandId(
           IDC_SHOW_READING_MODE_SIDE_PANEL)) {
+    CHECK_EQ(ui::MenuModel::TYPE_SEPARATOR,
+             more_tools_model->GetTypeAt(*index + 1));
+    more_tools_model->RemoveItemAt(*index + 1);
     more_tools_model->RemoveItemAt(*index);
   }
 
