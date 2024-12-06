@@ -67,6 +67,7 @@ export const UnlockedWalletRoutes = ({
     setModalOpen(false)
     setShouldBlock(false)
     if (nextLocation) {
+      history.block(() => {})
       history.push(nextLocation.pathname)
     }
   }
