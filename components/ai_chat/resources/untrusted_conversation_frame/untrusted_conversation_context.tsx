@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import API, {ConversationEntriesUIState, defaultConversationEntriesUIState} from './api_conversation_entries_ui'
+import API, {ConversationEntriesUIState, defaultConversationEntriesUIState} from './untrusted_conversation_frame_api'
 import * as Mojom from '../common/mojom'
 import useAPIState from '../common/useAPIState'
 

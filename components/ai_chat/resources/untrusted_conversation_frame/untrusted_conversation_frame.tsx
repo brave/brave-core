@@ -9,7 +9,6 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import '@brave/leo/tokens/css/variables.css'
 import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
-import API from './api_conversation_entries_ui'
 import ConversationEntries from './components/conversation_entries'
 import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
 

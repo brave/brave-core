@@ -25,7 +25,7 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
 }
 
 // Define how to get the initial data and update the state from events
-export default class APIConversationEntriesUI extends API<ConversationEntriesUIState> {
+export default class UntrustedConversationFrameAPI extends API<ConversationEntriesUIState> {
   public conversationHandler: Mojom.UntrustedConversationHandlerRemote
     = Mojom.UntrustedConversationHandler.getRemote()
 
@@ -80,10 +80,10 @@ export default class APIConversationEntriesUI extends API<ConversationEntriesUIS
 
   static getInstance() {
     if (!apiInstance) {
-      apiInstance = new APIConversationEntriesUI()
+      apiInstance = new UntrustedConversationFrameAPI()
     }
     return apiInstance
   }
 }
 
-let apiInstance: APIConversationEntriesUI
+let apiInstance: UntrustedConversationFrameAPI
