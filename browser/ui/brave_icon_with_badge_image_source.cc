@@ -34,9 +34,6 @@ constexpr int kMaxIncrementAttempts = 5;
 
 namespace brave {
 
-const SkColor kBadgeNotificationBG = SkColorSetRGB(0xfb, 0x54, 0x2b);
-const SkColor kBadgeTextColor = SK_ColorWHITE;
-
 BraveIconWithBadgeImageSource::BraveIconWithBadgeImageSource(
     const gfx::Size& size,
     GetColorProviderCallback get_color_provider_callback,

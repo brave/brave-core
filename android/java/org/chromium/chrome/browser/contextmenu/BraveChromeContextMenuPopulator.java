@@ -15,7 +15,6 @@ import org.chromium.chrome.browser.tab.TabContextMenuItemDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
-import org.chromium.components.externalauth.ExternalAuthUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
@@ -29,18 +28,10 @@ public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator
             TabContextMenuItemDelegate itemDelegate,
             Supplier<ShareDelegate> shareDelegate,
             @ContextMenuMode int mode,
-            ExternalAuthUtils externalAuthUtils,
             Context context,
             ContextMenuParams params,
             ContextMenuNativeDelegate nativeDelegate) {
-        super(
-                itemDelegate,
-                shareDelegate,
-                mode,
-                externalAuthUtils,
-                context,
-                params,
-                nativeDelegate);
+        super(itemDelegate, shareDelegate, mode, context, params, nativeDelegate);
 
         mItemDelegate = itemDelegate;
         mParams = params;

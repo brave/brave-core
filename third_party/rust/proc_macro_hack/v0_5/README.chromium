@@ -1,9 +1,10 @@
 Name: proc-macro-hack
 URL: https://crates.io/crates/proc-macro-hack
-Description: Procedural macros in expression position
 Version: 0.5.20+deprecated
-Security Critical: yes
-Shipped: yes
+Revision: fe0889cb7a67adfe070fad449066034e7a662f56
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/proc-macro-hack-0.5.20+deprecated/LICENSE-APACHE
-Revision: fe0889cb7a67adfe070fad449066034e7a662f56
+Shipped: yes
+Security Critical: yes
+
+Description: Procedural macros in expression position

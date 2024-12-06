@@ -10,7 +10,9 @@
 
 namespace brave_rewards::test_util {
 
-static const char kWaitForElementToAppearScript[] = R"(
+namespace {
+
+constexpr char kWaitForElementToAppearScript[] = R"(
     const waitForElementToAppear = (selector) => {
       const TIMEOUT_SECONDS = 10;
 
@@ -44,6 +46,8 @@ static const char kWaitForElementToAppearScript[] = R"(
       });
     };
 )";
+
+}  // namespace
 
 void WaitForElementToAppear(
     content::WebContents* context,
@@ -449,7 +453,7 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
       content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
 
   std::vector<double> result;
-  for (const auto& value : options.GetList()) {
+  for (const auto& value : options) {
     result.push_back(value.GetDouble());
   }
   return result;

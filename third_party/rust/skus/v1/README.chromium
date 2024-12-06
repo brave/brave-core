@@ -1,8 +1,9 @@
 Name: skus
 URL: https://crates.io/crates/skus
-Description: 
 Version: 1.0.0
-Security Critical: yes
-Shipped: yes
 License: Mozilla Public License 2.0
 License File:
+Shipped: yes
+Security Critical: yes
+
+Description: 

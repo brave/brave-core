@@ -65,12 +65,10 @@ public class RewardsOnboarding implements BraveRewardsObserver {
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
     private ChromeTabbedActivity mActivity;
-    private int mDeviceWidth;
 
     private static final String SUCCESS = "success";
 
     public RewardsOnboarding(View anchorView, int deviceWidth) {
-        mDeviceWidth = deviceWidth;
         mAnchorView = anchorView;
         mPopupWindow = new PopupWindow(anchorView.getContext());
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);

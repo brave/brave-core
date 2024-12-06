@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index 875fd23fc501c93ed2dd22e91d44352f904e97d4..5e5203f5fe0a1f7dc276a53f172f88af75834481 100644
+index ee8cbb304d95e41884ba56331d7c187940e1f33f..ecd5657c519d894485bb656674a4732898f111aa 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
-@@ -126,4 +126,5 @@ build_webui("build") {
+@@ -163,4 +163,5 @@ build_webui("build") {
      optimize_webui_host = "extensions"
      optimize_webui_in_files = [ "extensions.js" ]
    }
-+  import("//brave/browser/resources/extensions/sources.gni") web_component_files += brave_extensions_web_component_files non_web_component_files += brave_extensions_non_web_component_files exclude_ts_preprocess_files = brave_extensions_local_ts_files exclude_html_css_preprocess_files = brave_extensions_local_html_files preprocess_deps = brave_extensions_preprocess_extra_deps
++  import("//brave/browser/resources/extensions/sources.gni") non_web_component_files += brave_extensions_non_web_component_files css_files += brave_extensions_css_files exclude_ts_preprocess_files = brave_extensions_local_ts_files exclude_html_css_preprocess_files = brave_extensions_local_html_css_files preprocess_deps = brave_extensions_preprocess_extra_deps
  }

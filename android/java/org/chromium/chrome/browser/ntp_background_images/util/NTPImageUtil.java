@@ -42,23 +42,37 @@ import java.util.Set;
 public class NTPImageUtil {
     private static final String TAG = "NTPUtil";
 
-    private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
     private static final String REMOVED_SITES = "removed_sites";
 
     public static HashMap<String, SoftReference<Bitmap>> imageCache =
             new HashMap<String, SoftReference<Bitmap>>();
 
-    private static SpannableString getBannerText(ChromeActivity chromeActivity, int ntpType,
-            View bannerLayout, SponsoredTab sponsoredTab, NewTabPageListener newTabPageListener) {
+    // This function is not used, but removing it completely causes errors for unused resources:
+    // The resource R.string.earn_tokens_for_viewing appears to be unused [UnusedResources]
+    // The resource R.string.you_are_earning_tokens appears to be unused [UnusedResources]
+    // This is related to rewards, so I keep it till review
+    @SuppressWarnings("UnusedVariable")
+    private static SpannableString getBannerText(
+            ChromeActivity chromeActivity,
+            int ntpType,
+            View bannerLayout,
+            SponsoredTab sponsoredTab,
+            NewTabPageListener newTabPageListener) {
         String bannerText = "";
         if (ntpType == SponsoredImageUtil.BR_ON_ADS_ON) {
-            bannerText = String.format(
-                    chromeActivity.getResources().getString(R.string.you_are_earning_tokens),
-                    chromeActivity.getResources().getString(R.string.learn_more));
+            bannerText =
+                    String.format(
+                            chromeActivity
+                                    .getResources()
+                                    .getString(R.string.you_are_earning_tokens),
+                            chromeActivity.getResources().getString(R.string.learn_more));
         } else if (ntpType == SponsoredImageUtil.BR_ON_ADS_OFF) {
-            bannerText = String.format(
-                    chromeActivity.getResources().getString(R.string.earn_tokens_for_viewing),
-                    chromeActivity.getResources().getString(R.string.learn_more));
+            bannerText =
+                    String.format(
+                            chromeActivity
+                                    .getResources()
+                                    .getString(R.string.earn_tokens_for_viewing),
+                            chromeActivity.getResources().getString(R.string.learn_more));
         }
         int learnMoreIndex =
                 bannerText.indexOf(chromeActivity.getResources().getString(R.string.learn_more));
@@ -139,28 +153,16 @@ public class NTPImageUtil {
     private static Bitmap getBitmapFromImagePath(String imagePath, BitmapFactory.Options options) {
         Context mContext = ContextUtils.getApplicationContext();
         Bitmap imageBitmap = null;
-        InputStream inputStream = null;
-        try {
-            Uri imageFileUri = Uri.parse("file://" + imagePath);
-            inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
+        Uri imageFileUri = Uri.parse("file://" + imagePath);
+        try (InputStream inputStream =
+                mContext.getContentResolver().openInputStream(imageFileUri)) {
             imageBitmap = BitmapFactory.decodeStream(inputStream, null, options);
-            inputStream.close();
         } catch (IOException exc) {
             Log.e(TAG, "getBitmapFromImagePath: IOException: " + exc.getMessage());
         } catch (IllegalArgumentException exc) {
             Log.e(TAG, "getBitmapFromImagePath: IllegalArgumentException: " + exc.getMessage());
         } catch (OutOfMemoryError exc) {
             Log.e(TAG, "getBitmapFromImagePath: OutOfMemoryError: " + exc.getMessage());
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException exception) {
-                Log.e(TAG,
-                        "getBitmapFromImagePath IOException in finally: " + exception.getMessage());
-                return null;
-            }
         }
         return imageBitmap;
     }

@@ -16,9 +16,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kHttpsFirstBalancedMode, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityService, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityServiceOHTTPRequests, base::FEATURE_DISABLED_BY_DEFAULT},
-#if BUILDFLAG(IS_ANDROID)
-    {kPrivacyGuidePreloadAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
     {kSCTAuditing, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
     {kTrustSafetySentimentSurvey, base::FEATURE_DISABLED_BY_DEFAULT},

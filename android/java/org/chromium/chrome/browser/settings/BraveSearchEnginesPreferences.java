@@ -30,8 +30,6 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
     private static final String PREF_ADD_OPEN_SEARCH_ENGINES = "brave.other_search_engines_enabled";
 
-    private static final String PREF_QUICK_SEARCH_ENGINE = "quick_search_engine";
-
     private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
 
     private ChromeSwitchPreference mShowAutocompleteInAddressBar;
@@ -88,7 +86,7 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         searchEnginePreference.setEnabled(true);
         searchEnginePreference.setSummary(
                 BraveSearchEngineUtils.getDSEShortName(
-                        getProfile().getPrimaryOTRProfile(/* createIfNeeded= */ true), true));
+                        getProfile().getPrimaryOtrProfile(/* createIfNeeded= */ true), true));
 
         mSearchSuggestions = (ChromeSwitchPreference) findPreference(PREF_SEARCH_SUGGESTIONS);
         mSearchSuggestions.setOnPreferenceChangeListener(this);

@@ -3,15 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import 'chrome://resources/cr_elements/cr_shared_style.css.js'
-import 'chrome://resources/js/cr.js'
-import {getTemplate} from './brave_item_list_more_items.html.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { I18nMixinLit, I18nMixinLitInterface } from '//resources/cr_elements/i18n_mixin_lit.js'
+import '//resources/js/cr.js'
+
+import {getCss} from './brave_item_list_more_items.css.js'
+import { getHtml } from './brave_item_list_more_items.html.js'
 
 const ExtensionsBraveItemListMoreItemsElementBase =
-  I18nMixin(PolymerElement) as {
-    new(): PolymerElement & I18nMixinInterface
+  I18nMixinLit(CrLitElement) as {
+    new(): CrLitElement & I18nMixinLitInterface
   }
 
 export class ExtensionsBraveItemListMoreItemsElement extends ExtensionsBraveItemListMoreItemsElementBase {
@@ -19,22 +20,26 @@ export class ExtensionsBraveItemListMoreItemsElement extends ExtensionsBraveItem
     return 'extensions-brave-item-list-more-items'
   }
 
-  static get template() {
-    return getTemplate()
+  // @ts-ignore
+  static override get styles() {
+    return getCss()
   }
 
-  static get properties() {
-    return {
-      /** @type {!Array<!chrome.developerPrivate.ExtensionInfo>} */
-      apps: Array,
+  // @ts-ignore
+  override render() {
+    return getHtml.bind(this)()
+  }
 
-      /** @type {!Array<!chrome.developerPrivate.ExtensionInfo>} */
-      extensions: Array,
+  // @ts-ignore
+  static override get properties() {
+    return {
+      apps: { type: Array },
+      extensions: { type: Array },
     };
   }
 
-  private apps: chrome.developerPrivate.ExtensionInfo[];
-  private extensions: chrome.developerPrivate.ExtensionInfo[];
+  private apps: chrome.developerPrivate.ExtensionInfo[] = [];
+  private extensions: chrome.developerPrivate.ExtensionInfo[] = [];
 
   shouldShowMoreItemsMessage_() {
     if (!this.apps || !this.extensions)

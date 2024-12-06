@@ -43,9 +43,8 @@ AutocompleteMatch::Type MatchTypeFromBraveType(
       return AutocompleteMatch::Type::CLIPBOARD_TEXT;
     case BraveIOSAutocompleteMatchTypeOpenTab:
       return AutocompleteMatch::Type::OPEN_TAB;
-    default:
-      NOTREACHED_NORETURN();
   }
+  NOTREACHED();
 }
 
 BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
@@ -74,7 +73,7 @@ BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
     case AutocompleteMatch::Type::OPEN_TAB:
       return BraveIOSAutocompleteMatchTypeOpenTab;
     default:
-      NOTREACHED_NORETURN();
+      NOTREACHED();
   }
 }
 }  // namespace brave
@@ -100,7 +99,7 @@ BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
   ProfileIOS* last_used_profile = profiles.at(0);
 
   AutocompleteClassifier* classifier =
-      ios::AutocompleteClassifierFactory::GetForBrowserState(last_used_profile);
+      ios::AutocompleteClassifierFactory::GetForProfile(last_used_profile);
   if (classifier) {
     AutocompleteMatch match;
     classifier->Classify(base::SysNSStringToUTF16(text), false, false,

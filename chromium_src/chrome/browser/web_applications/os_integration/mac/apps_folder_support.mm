@@ -18,20 +18,17 @@ base::FilePath GetLocalizableBraveAppShortcutsSubdirName();
 #undef BRAVE_GET_CHROME_APPS_FOLDER_IMPL
 
 namespace {
-base::FilePath GetLocalizableBraveAppShortcutsSubdirName() {
-  // clang-format off
-  static const char kBraveBrowserDevelopmentAppDirName[] =
-      "Brave Browser Development Apps.localized";
-  static const char kBraveBrowserAppDirName[] =
-      "Brave Browser Apps.localized";
-  static const char kBraveBrowserBetaAppDirName[] =
-      "Brave Browser Beta Apps.localized";
-  static const char kBraveBrowserDevAppDirName[] =
-      "Brave Browser Dev Apps.localized";
-  static const char kBraveBrowserNightlyAppDirName[] =
-      "Brave Browser Nightly Apps.localized";
-  // clang-format on
+constexpr char kBraveBrowserDevelopmentAppDirName[] =
+    "Brave Browser Development Apps.localized";
+constexpr char kBraveBrowserAppDirName[] = "Brave Browser Apps.localized";
+constexpr char kBraveBrowserBetaAppDirName[] =
+    "Brave Browser Beta Apps.localized";
+constexpr char kBraveBrowserDevAppDirName[] =
+    "Brave Browser Dev Apps.localized";
+constexpr char kBraveBrowserNightlyAppDirName[] =
+    "Brave Browser Nightly Apps.localized";
 
+base::FilePath GetLocalizableBraveAppShortcutsSubdirName() {
   switch (chrome::GetChannel()) {
     case version_info::Channel::STABLE:
       return base::FilePath(kBraveBrowserAppDirName);

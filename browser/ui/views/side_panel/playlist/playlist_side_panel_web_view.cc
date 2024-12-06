@@ -7,12 +7,13 @@
 
 PlaylistSidePanelWebView::PlaylistSidePanelWebView(
     Browser* browser,
+    SidePanelEntryScope& scope,
     base::RepeatingClosure close_cb,
     WebUIContentsWrapper* contents_wrapper)
-    : SidePanelWebUIView(
-          /* on_show_cb = */ base::RepeatingClosure(),
-          close_cb,
-          contents_wrapper) {}
+    : SidePanelWebUIView(scope,
+                         /* on_show_cb = */ base::RepeatingClosure(),
+                         close_cb,
+                         contents_wrapper) {}
 
 PlaylistSidePanelWebView::~PlaylistSidePanelWebView() = default;
 

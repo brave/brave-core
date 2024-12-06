@@ -1,9 +1,10 @@
 Name: pasta_curves
 URL: https://crates.io/crates/pasta_curves
-Description: Implementation of the Pallas and Vesta (Pasta) curve cycle
 Version: 0.5.1
-Security Critical: yes
-Shipped: yes
+Revision: 7e3fc6a4919f6462a32b79dd226cb2587b7961eb
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/pasta_curves-0.5.1/LICENSE-APACHE
-Revision: 7e3fc6a4919f6462a32b79dd226cb2587b7961eb
+Shipped: yes
+Security Critical: yes
+
+Description: Implementation of the Pallas and Vesta (Pasta) curve cycle

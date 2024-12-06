@@ -24,7 +24,7 @@
 #endif
 
 @implementation URLSanitizerServiceFactory
-+ (nullable id)serviceForBrowserState:(ProfileIOS*)profile {
++ (nullable id)serviceForProfile:(ProfileIOS*)profile {
   // Create and start the local data file service and component installer
   brave::URLSanitizerService* urlSanitizer =
       brave::URLSanitizerServiceFactory::GetServiceForState(profile);

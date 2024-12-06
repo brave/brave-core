@@ -6,7 +6,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
 
 using ::blink::DynamicTo;
 
@@ -16,10 +16,10 @@ NodeScript::NodeScript(GraphItemContext* context, const ScriptId script_id)
     : NodeActor(context), script_id_(script_id) {}
 
 ItemDesc NodeScript::GetItemDesc() const {
-  WTF::TextStream ts;
+  StringBuilder ts;
   ts << NodeActor::GetItemDesc();
   ts << " [ script_id: " << script_id_ << "]";
-  return ts.Release();
+  return ts.ReleaseString();
 }
 
 void NodeScript::AddGraphMLAttributes(xmlDocPtr doc,

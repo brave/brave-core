@@ -1,9 +1,10 @@
 Name: ansi_term
 URL: https://crates.io/crates/ansi_term
-Description: Library for ANSI terminal colours and styles (bold, underline)
 Version: 0.12.1
-Security Critical: yes
-Shipped: yes
+Revision: ff7eba98d55ad609c7fcc8c7bb0859b37c7545cc
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/ansi_term-0.12.1/LICENCE
-Revision: ff7eba98d55ad609c7fcc8c7bb0859b37c7545cc
+Shipped: yes
+Security Critical: yes
+
+Description: Library for ANSI terminal colours and styles (bold, underline)

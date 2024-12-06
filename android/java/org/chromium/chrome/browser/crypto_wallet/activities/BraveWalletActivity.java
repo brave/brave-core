@@ -16,8 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.appbar.MaterialToolbar;
-
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -46,8 +44,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     public static final String SHOW_WALLET_ACTIVITY_BACKUP = "showWalletActivityBackup";
 
     private static final String TAG = "BWalletBaseActivity";
-
-    private MaterialToolbar mToolbar;
 
     private View mCryptoOnboardingLayout;
     private ImageView mOnboardingCloseButton;
@@ -180,7 +176,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
     @Override
     protected ActivityWindowAndroid createWindowAndroid() {
-        return new ActivityWindowAndroid(this, true, getIntentRequestTracker()) {
+        return new ActivityWindowAndroid(this, true, getIntentRequestTracker(), null) {
             @Override
             public ModalDialogManager getModalDialogManager() {
                 return mModalDialogManager;

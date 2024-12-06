@@ -277,6 +277,7 @@ test("brave_unit_tests") {
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/favicon",
     "//chrome/browser/permissions",
+    "//chrome/browser/prefs",
     "//chrome/browser/sync",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
@@ -929,6 +930,8 @@ test("brave_browser_tests") {
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/enterprise/connectors/analysis:features",
     "//chrome/browser/media/router:media_router_feature",
+    "//chrome/browser/prefetch",
+    "//chrome/browser/preloading:prefs",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search_engines",
     "//chrome/browser/sync:sync",
@@ -1136,6 +1139,7 @@ test("brave_browser_tests") {
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/ui/ai_rewriter:browsertest",
       "//brave/browser/ui/geolocation:browser_tests",
+      "//brave/browser/ui/toolbar:brave_app_menu_browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/browser/url_sanitizer:browser_tests",
       "//brave/components/brave_wallet/browser:test_support",
@@ -1220,7 +1224,6 @@ if (is_android) {
     variables += [
       "manifest_package=$brave_public_test_manifest_package",
       "min_sdk_version=19",
-      "target_sdk_version=$android_sdk_version",
     ]
   }
 

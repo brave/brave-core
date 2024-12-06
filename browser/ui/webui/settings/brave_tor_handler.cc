@@ -42,14 +42,14 @@ namespace {
 
 // https://gitlab.torproject.org/tpo/anti-censorship/rdsys/-/blob/main/doc/moat.md
 
-constexpr const char kTorBridgesFetchUrl[] =
+constexpr char kTorBridgesFetchUrl[] =
     "https://bridges.torproject.org/moat/fetch";
-constexpr const char kTorBridgesCheckUrl[] =
+constexpr char kTorBridgesCheckUrl[] =
     "https://bridges.torproject.org/moat/check";
 
-constexpr const char kMoatVersion[] = "0.1.0";
+constexpr char kMoatVersion[] = "0.1.0";
 
-constexpr const char kMoatShimToken[] = "LVOippNS8UiKLH6kXf1D8pI1clLc";
+constexpr char kMoatShimToken[] = "LVOippNS8UiKLH6kXf1D8pI1clLc";
 
 constexpr net::NetworkTrafficAnnotationTag kTorBridgesMoatAnnotation =
     net::DefineNetworkTrafficAnnotation("brave_tor_bridges", R"(
@@ -66,7 +66,7 @@ constexpr net::NetworkTrafficAnnotationTag kTorBridgesMoatAnnotation =
       cookies_allowed: NO
     })");
 
-constexpr const size_t kMaxBodySize = 256 * 1024;
+constexpr size_t kMaxBodySize = 256 * 1024;
 
 base::Value FetchCaptchaData() {
   base::Value::Dict data;
@@ -203,16 +203,16 @@ class BridgeRequest {
 
   void OnCaptchaDecoded(const gfx::Image& image) {
     // Re-encode image as PNG and send.
-    std::vector<unsigned char> encoded;
-    if (!gfx::PNGCodec::EncodeBGRASkBitmap(image.AsBitmap(),
-                                           /*discard_transparency=*/false,
-                                           &encoded)) {
+    std::optional<std::vector<uint8_t>> encoded =
+        gfx::PNGCodec::EncodeBGRASkBitmap(image.AsBitmap(),
+                                          /*discard_transparency=*/false);
+    if (!encoded) {
       return std::move(captcha_callback_).Run(base::Value());
     }
 
     base::Value::Dict result;
     result.Set("captcha",
-               "data:image/png;base64," + base::Base64Encode(encoded));
+               "data:image/png;base64," + base::Base64Encode(*encoded));
     std::move(captcha_callback_).Run(base::Value(std::move(result)));
     state_ = State::kProvideCaptcha;
   }

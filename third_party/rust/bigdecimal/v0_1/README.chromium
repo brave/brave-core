@@ -1,9 +1,10 @@
 Name: bigdecimal
 URL: https://crates.io/crates/bigdecimal
-Description: Arbitrary percision decimal numbers
 Version: 0.1.2
-Security Critical: yes
-Shipped: yes
+Revision: 22b43be0fefb1611b393b0cb5f6b1143a1f993d0
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/bigdecimal-0.1.2/LICENSE-APACHE
-Revision: 22b43be0fefb1611b393b0cb5f6b1143a1f993d0
+Shipped: yes
+Security Critical: yes
+
+Description: Arbitrary percision decimal numbers

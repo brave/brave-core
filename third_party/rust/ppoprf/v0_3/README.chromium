@@ -1,9 +1,10 @@
 Name: ppoprf
 URL: https://crates.io/crates/ppoprf
-Description: Puncturable Partially-Oblivious Pseudo-Random Function
 Version: 0.3.1
-Security Critical: yes
-Shipped: yes
+Revision: f49fb7fdc14a89c3f0a367ab0059df02477521ec
 License: Mozilla Public License 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/ppoprf-0.3.1/LICENSE
-Revision: f49fb7fdc14a89c3f0a367ab0059df02477521ec
+Shipped: yes
+Security Critical: yes
+
+Description: Puncturable Partially-Oblivious Pseudo-Random Function

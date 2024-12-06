@@ -1,9 +1,9 @@
 Name: thiserror-impl
 URL: https://crates.io/crates/thiserror-impl
-Description: Implementation detail of the `thiserror` crate
-Version: 1.0.38
+Version: 1.0.65
+Revision: 5088592a4efb6a5c40b4d869eb1a0e2eacf622cb
 Security Critical: yes
 Shipped: yes
 License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.38/LICENSE-APACHE
-Revision: 74bfe75eb25ba9d39b0ae5b570d611855cbc5086
+License File: //brave/third_party/rust/chromium_crates_io/vendor/thiserror-impl-1.0.65/LICENSE-APACHE
+Revision: 5088592a4efb6a5c40b4d869eb1a0e2eacf622cb

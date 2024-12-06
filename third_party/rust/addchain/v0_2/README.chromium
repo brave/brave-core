@@ -1,9 +1,10 @@
 Name: addchain
 URL: https://crates.io/crates/addchain
-Description: Generate addition chains
 Version: 0.2.0
-Security Critical: yes
-Shipped: yes
+Revision: 6579407ef2149ee06d5aba0fd795b6a4c3be3964
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/addchain-0.2.0/LICENSE-APACHE
-Revision: 6579407ef2149ee06d5aba0fd795b6a4c3be3964
+Shipped: yes
+Security Critical: yes
+
+Description: Generate addition chains

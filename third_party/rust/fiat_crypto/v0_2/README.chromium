@@ -1,9 +1,10 @@
 Name: fiat-crypto
 URL: https://crates.io/crates/fiat-crypto
-Description: Fiat-crypto generated Rust
 Version: 0.2.5
-Security Critical: yes
-Shipped: yes
+Revision: 28c3657605f19498b0e31045c448a98df128ea97
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/fiat-crypto-0.2.5/LICENSE-APACHE
-Revision: 28c3657605f19498b0e31045c448a98df128ea97
+Shipped: yes
+Security Critical: yes
+
+Description: Fiat-crypto generated Rust

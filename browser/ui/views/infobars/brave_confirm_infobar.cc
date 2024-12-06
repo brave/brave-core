@@ -119,9 +119,8 @@ views::MdTextButton* BraveConfirmInfoBar::GetButtonById(int id) {
       return cancel_button_;
     case ConfirmInfoBarDelegate::BUTTON_EXTRA:
       return extra_button_;
-    default:
-      NOTREACHED_NORETURN();
   }
+  NOTREACHED();
 }
 
 void BraveConfirmInfoBar::Layout(PassKey) {

@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/types/expected.h"
@@ -39,7 +40,7 @@ std::array<uint8_t, kPaddedHrpSize> GetPaddedHRP(bool is_testnet) {
                 "Wrong kPaddedHrpSize size");
   std::string hrp = is_testnet ? kTestnetHRP : kMainnetHRP;
   std::array<uint8_t, kPaddedHrpSize> padded_hrp = {};
-  base::ranges::copy(base::make_span(hrp), padded_hrp.begin());
+  base::ranges::copy(base::as_byte_span(hrp), padded_hrp.begin());
   return padded_hrp;
 }
 
@@ -189,8 +190,8 @@ std::string PubkeyToTransparentAddress(base::span<const uint8_t> pubkey,
                                        bool testnet) {
   std::vector<uint8_t> result = GetNetworkPrefix(testnet);
 
-  std::vector<uint8_t> data_part = Hash160(pubkey);
-  result.insert(result.end(), data_part.begin(), data_part.end());
+  base::Extend(result, Hash160(pubkey));
+
   return Base58EncodeWithCheck(result);
 }
 
@@ -282,18 +283,15 @@ std::optional<std::vector<ParsedAddress>> ExtractParsedAddresses(
     return std::nullopt;
   }
 
-  auto padded_hrp = GetPaddedHRP(is_testnet);
+  auto [body, hrp] =
+      base::span(*reverted).split_at(reverted->size() - kPaddedHrpSize);
 
   // Check that HRP is similar to the padded HRP
-  if (!std::equal(padded_hrp.begin(), padded_hrp.end(),
-                  reverted->end() - kPaddedHrpSize)) {
+  if (GetPaddedHRP(is_testnet) != hrp) {
     return std::nullopt;
   }
 
-  auto parts = ParseUnifiedAddressBody(
-      base::make_span(*reverted).subspan(0, reverted->size() - kPaddedHrpSize));
-
-  return parts;
+  return ParseUnifiedAddressBody(body);
 }
 
 // https://zips.z.cash/zip-0316#encoding-of-unified-addresses

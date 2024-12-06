@@ -410,12 +410,25 @@ inline constexpr char kSyncGoogleDashboardURL[] = "https://support.brave.com/";
 // The URL for the "Learn more" page for sync setup on the personal stuff page.
 inline constexpr char16_t kSyncLearnMoreURL[] = u"https://support.brave.com/";
 
+// The URL for the "Learn more" page for AI settings for managed users.
+inline constexpr char16_t kAiSettingsLearnMorePageManagedUrl[] =
+    u"https://support.brave.com/";
+
 // The URL for the "Learn more" page for Help me Write.
 inline constexpr char kComposeLearnMorePageURL[] = "https://support.brave.com/";
+
+// The URL for the "Learn more" page for Help me Write for managed users.
+inline constexpr char kComposeLearnMorePageManagedURL[] =
+    "https://support.brave.com/";
 
 // The URL for the "Learn more" links for pages related to History search.
 // TODO(crbug.com/328300718): Update help article URL.
 inline constexpr char kHistorySearchLearnMorePageURL[] =
+    "https://support.brave.com/";
+
+// The URL for the "Learn more" links for pages related to History search for
+// managed users.
+inline constexpr char kHistorySearchLearnMorePageManagedURL[] =
     "https://support.brave.com/";
 
 // The URL for the Settings page to enable history search.
@@ -431,8 +444,16 @@ inline constexpr char16_t kHistorySearchV2SettingURL[] =
 inline constexpr char kWallpaperSearchLearnMorePageURL[] =
     "https://support.brave.com/";
 
+// The URL for the "Learn more" page for Wallpaper Search for managed users.
+inline constexpr char kWallpaperSearchLearnMorePageManagedURL[] =
+    "https://support.brave.com/";
+
 // The URL for the "Learn more" page for Tab Organization.
 inline constexpr char kTabOrganizationLearnMorePageURL[] =
+    "https://support.brave.com/";
+
+// The URL for the "Learn more" page for Tab Organization for managed users.
+inline constexpr char kTabOrganizationLearnMorePageManagedURL[] =
     "https://support.brave.com/";
 
 // The URL for the "Learn more" link in the enterprise disclaimer for managed

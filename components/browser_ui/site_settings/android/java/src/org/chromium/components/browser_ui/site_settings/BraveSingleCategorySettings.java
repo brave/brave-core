@@ -9,7 +9,6 @@ import android.os.Bundle;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.build.annotations.UsedByReflection;
-import org.chromium.content_public.browser.BrowserContextHandle;
 
 @UsedByReflection("brave_site_settings_preferences.xml")
 public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
@@ -19,12 +18,12 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
 
-    public String getAddExceptionDialogMessage() {
-        BrowserContextHandle browserContextHandle =
-                getSiteSettingsDelegate().getBrowserContextHandle();
+    public int getAddExceptionDialogMessageResourceId() {
         int resource = 0;
-        SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
-                SingleCategorySettings.class, "mCategory", this);
+        SiteSettingsCategory mCategory =
+                (SiteSettingsCategory)
+                        BraveReflectionUtil.getField(
+                                SingleCategorySettings.class, "mCategory", this);
 
         if (mCategory.getType() == SiteSettingsCategory.Type.AUTOPLAY) {
             resource = R.string.website_settings_add_site_description_autoplay;
@@ -33,21 +32,23 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
         } else if (mCategory.getType() == SiteSettingsCategory.Type.BRAVE_LOCALHOST_ACCESS) {
             resource = R.string.website_settings_localhost_allow_exceptions;
         } else {
-            return (String)
+            return (int)
                     BraveReflectionUtil.invokeMethod(
-                            SingleCategorySettings.class, this, "getAddExceptionDialogMessage");
+                            SingleCategorySettings.class,
+                            this,
+                            "getAddExceptionDialogMessageResourceId");
         }
         assert resource > 0;
-        return getString(resource);
+        return resource;
     }
 
     public void resetList() {
         BraveReflectionUtil.invokeMethod(SingleCategorySettings.class, this, "resetList");
-        BrowserContextHandle browserContextHandle =
-                getSiteSettingsDelegate().getBrowserContextHandle();
         boolean exception = false;
-        SiteSettingsCategory mCategory = (SiteSettingsCategory) BraveReflectionUtil.getField(
-                SingleCategorySettings.class, "mCategory", this);
+        SiteSettingsCategory mCategory =
+                (SiteSettingsCategory)
+                        BraveReflectionUtil.getField(
+                                SingleCategorySettings.class, "mCategory", this);
 
         if (mCategory.getType() == SiteSettingsCategory.Type.AUTOPLAY
                 || mCategory.getType() == SiteSettingsCategory.Type.BRAVE_GOOGLE_SIGN_IN
@@ -55,9 +56,14 @@ public class BraveSingleCategorySettings extends BaseSiteSettingsFragment
             exception = true;
         }
         if (exception) {
-            getPreferenceScreen().addPreference(
-                    new AddExceptionPreference(getPreferenceManager().getContext(),
-                            ADD_EXCEPTION_KEY, getAddExceptionDialogMessage(), mCategory, this));
+            getPreferenceScreen()
+                    .addPreference(
+                            new AddExceptionPreference(
+                                    getPreferenceManager().getContext(),
+                                    ADD_EXCEPTION_KEY,
+                                    getString(getAddExceptionDialogMessageResourceId()),
+                                    mCategory,
+                                    this));
         }
     }
 

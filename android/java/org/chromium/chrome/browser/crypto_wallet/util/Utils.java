@@ -173,7 +173,6 @@ public class Utils {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = clipboard.getPrimaryClip();
-        String pasteData = "";
         if (clipData != null
                 && clipData.getDescription().hasMimeType(MIMETYPE_TEXT_PLAIN)
                 && clipData.getItemCount() > 0) {

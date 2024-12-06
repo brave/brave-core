@@ -295,6 +295,8 @@ public class SolanaInstructionPresenter {
         private String mPubKey;
         private SolanaAccountMeta mSolanaAccountMeta;
         private String mLocalizeAccountHeader;
+
+        @SuppressWarnings("UnusedVariable")
         private String mAccountHeader;
 
         private SolanaInstructionAccountPresenter(

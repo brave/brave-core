@@ -19,11 +19,15 @@ namespace ai_chat {
 base::span<const webui::LocalizedString> GetLocalizedStrings();
 std::vector<mojom::ActionGroupPtr> GetActionMenuList();
 
-extern const base::fixed_flat_set<std::string_view, 1>
-    kPrintPreviewRetrievalHosts;
+inline constexpr auto kPrintPreviewRetrievalHosts =
+    base::MakeFixedFlatSet<std::string_view>({
+        "docs.google.com",
+    });
 
-constexpr uint8_t kMaxPreviewPages = 20;
-extern const char kLeoModelSupportUrl[];
+inline constexpr uint8_t kMaxPreviewPages = 20;
+inline constexpr char kLeoModelSupportUrl[] =
+    "https://support.brave.com/hc/en-us/categories/"
+    "20990938292237-Brave-Leo";
 
 // Upon registering a custom model, users have the ability to explicitly
 // provide a context size (in tokens). When present, we'll use this value to

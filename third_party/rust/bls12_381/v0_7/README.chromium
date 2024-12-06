@@ -1,9 +1,10 @@
 Name: bls12_381
 URL: https://crates.io/crates/bls12_381
-Description: Implementation of the BLS12-381 pairing-friendly elliptic curve construction
 Version: 0.7.0
-Security Critical: yes
-Shipped: yes
+Revision: 34dab74ae44cd77dfa867928dd2e6c8383d8dc9d
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/bls12_381-0.7.0/LICENSE-APACHE
-Revision: 34dab74ae44cd77dfa867928dd2e6c8383d8dc9d
+Shipped: yes
+Security Critical: yes
+
+Description: Implementation of the BLS12-381 pairing-friendly elliptic curve construction

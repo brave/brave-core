@@ -62,6 +62,7 @@ source_set("util") {
 
   deps = [
     "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/prefs",
     "//components/policy/core/common",
     "//components/user_prefs",
     "//content/public/browser",

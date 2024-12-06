@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h b/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h
-index a3a0b5fd4dc91befcb491cf60b4d7b7cfc7ecbcf..11fd4977aca68e2b6dae027c9bfeb60e00390698 100644
+index 758be4e94a7881cb8c185d453caa889bedd4703e..93f20c99d9b5c8ada5cb4b507ce1679a0b9b9fd5 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h
 +++ b/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h
-@@ -196,7 +196,7 @@ class TabGroupEditorBubbleView : public views::BubbleDialogDelegateView {
+@@ -197,7 +197,7 @@ class TabGroupEditorBubbleView : public views::BubbleDialogDelegateView {
    // RebuildMenuContents
    raw_ptr<TitleField> title_field_ = nullptr;
    raw_ptr<ColorPickerView> color_selector_ = nullptr;

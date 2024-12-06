@@ -610,7 +610,7 @@ if (is_mac) {
 
 cargo_audit_target_dir = "$root_build_dir/cargo_audit"
 cargo_audit_exe = "$cargo_audit_target_dir/release/cargo-audit"
-cargo_audit_src = "//brave/tools/crates/cargo_audit/v0_20/crate"
+cargo_audit_src = "//brave/tools/crates/cargo_audit/v0_21/crate"
 if (host_os == "win") {
   cargo_audit_exe += ".exe"
 }

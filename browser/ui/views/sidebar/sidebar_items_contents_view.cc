@@ -169,7 +169,7 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
 void SidebarItemsContentsView::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& point,
-    ui::MenuSourceType source_type) {
+    ui::mojom::MenuSourceType source_type) {
   if (context_menu_runner_ && context_menu_runner_->IsRunning()) {
     return;
   }
@@ -226,8 +226,6 @@ void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
     LaunchEditItemDialog();
     return;
   }
-
-  NOTREACHED_IN_MIGRATION();
 }
 
 bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
@@ -245,8 +243,7 @@ bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
     return GetSidebarService(browser_)->IsEditableItemAt(*index);
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return false;
+  NOTREACHED() << "No more commands now.";
 }
 
 void SidebarItemsContentsView::OnContextMenuClosed() {
@@ -439,8 +436,7 @@ SidebarItemsContentsView::CalculateTargetDragIndicatorIndex(
     }
   }
 
-  NOTREACHED_IN_MIGRATION();
-  return std::nullopt;
+  NOTREACHED() << "screen_position must be included in child views";
 }
 
 std::optional<size_t> SidebarItemsContentsView::DrawDragIndicator(
@@ -566,9 +562,10 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
       return get_image_model(kLeoProductPlaylistIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kChatUI:
       return get_image_model(kLeoProductBraveLeoIcon, state);
-    case sidebar::SidebarItem::BuiltInItemType::kNone:
-      NOTREACHED_NORETURN();
+    default:
+      break;
   }
+  NOTREACHED() << "we don't ask image for other types";
 }
 
 void SidebarItemsContentsView::OnWidgetDestroying(views::Widget* widget) {

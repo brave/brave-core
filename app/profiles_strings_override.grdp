@@ -61,18 +61,9 @@
     <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the Private button in profile card menu">
       Private
     </message>
-    <if expr="not chromeos_lacros">
+    <if expr="not use_titlecase">
       </if>
-
-    <if expr="chromeos_lacros">
+    <if expr="use_titlecase">
       </if>
-
-    <if expr="not chromeos_lacros">
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
-        </if>
-      </if>
-
     </if>
 </grit-part>

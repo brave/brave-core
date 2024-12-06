@@ -24,14 +24,20 @@ void GpuServiceImpl::InitializeWithHost(
     mojo::PendingRemote<mojom::GpuHost> pending_gpu_host,
     gpu::GpuProcessShmCount use_shader_cache_shm_count,
     scoped_refptr<gl::GLSurface> default_offscreen_surface,
+    mojom::GpuServiceCreationParamsPtr creation_params,
+#if BUILDFLAG(IS_ANDROID)
     gpu::SyncPointManager* sync_point_manager,
     gpu::SharedImageManager* shared_image_manager,
     gpu::Scheduler* scheduler,
+#endif
     base::WaitableEvent* shutdown_event) {
   InitializeWithHost_ChromiumImpl(
       std::move(pending_gpu_host), std::move(use_shader_cache_shm_count),
-      std::move(default_offscreen_surface), sync_point_manager,
-      shared_image_manager, scheduler, shutdown_event);
+      std::move(default_offscreen_surface), std::move(creation_params),
+#if BUILDFLAG(IS_ANDROID)
+      sync_point_manager, shared_image_manager, scheduler,
+#endif
+      shutdown_event);
 #if BUILDFLAG(IS_WIN)
   if (gpu_host_) {
     std::string result;

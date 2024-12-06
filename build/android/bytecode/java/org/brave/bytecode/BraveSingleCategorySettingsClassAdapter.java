@@ -8,18 +8,26 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveSingleCategorySettingsClassAdapter extends BraveClassVisitor {
-    static String sSingleCategorySettingsClassName = "org/chromium/components/browser_ui/site_settings/SingleCategorySettings";
-    static String sBraveSingleCategorySettingsClassName = "org/chromium/components/browser_ui/site_settings/BraveSingleCategorySettings";
+    static String sSingleCategorySettingsClassName =
+            "org/chromium/components/browser_ui/site_settings/SingleCategorySettings";
+    static String sBraveSingleCategorySettingsClassName =
+            "org/chromium/components/browser_ui/site_settings/BraveSingleCategorySettings";
 
     public BraveSingleCategorySettingsClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
         changeSuperName(sSingleCategorySettingsClassName, sBraveSingleCategorySettingsClassName);
-        changeMethodOwner(sSingleCategorySettingsClassName, "onOptionsItemSelected",
+        changeMethodOwner(
+                sSingleCategorySettingsClassName,
+                "onOptionsItemSelected",
                 sBraveSingleCategorySettingsClassName);
-        changeMethodOwner(sSingleCategorySettingsClassName, "getAddExceptionDialogMessage",
+        changeMethodOwner(
+                sSingleCategorySettingsClassName,
+                "getAddExceptionDialogMessageResourceId",
                 sBraveSingleCategorySettingsClassName);
-        changeMethodOwner(sSingleCategorySettingsClassName, "resetList",
+        changeMethodOwner(
+                sSingleCategorySettingsClassName,
+                "resetList",
                 sBraveSingleCategorySettingsClassName);
     }
 }

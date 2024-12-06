@@ -1,9 +1,10 @@
 Name: deranged
 URL: https://crates.io/crates/deranged
-Description: Ranged integers
 Version: 0.3.11
-Security Critical: yes
-Shipped: yes
+Revision: c25ef2cefe36d92ebf3de6df2faaf293881f7349
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/deranged-0.3.11/LICENSE-Apache
-Revision: c25ef2cefe36d92ebf3de6df2faaf293881f7349
+Shipped: yes
+Security Critical: yes
+
+Description: Ranged integers

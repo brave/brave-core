@@ -99,6 +99,14 @@ license_files = ['LICENSE']
 [crate.adss]
 license_files = ['LICENSE']
 
+[crate.ahash]
+extra_kv = { raw_gn = '''
+  library_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
+  executable_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
+  proc_macro_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
+  rustflags = [ "-Zallow-features=min_specialization" ]
+'''}
+
 [crate.ansi_term]
 license_files = ['LICENCE']
 
@@ -111,6 +119,9 @@ extra_input_roots = [ "../README.md" ]
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
 license_files = ['LICENSE.txt']
+
+[crate.cid]
+license_files = ['LICENSE']
 
 [crate.const-oid]
 extra_input_roots = [ "../README.md" ]
@@ -238,6 +249,9 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_build_script_src_roots = [ "../macros/match_token.rs" ]
 build_script_outputs = [ "rules.rs" ]
 
+[crate.ipld-core]
+extra_input_roots = [ "../README.md" ]
+
 [crate.itoa]
 license_files = ['LICENSE-APACHE']
 
@@ -267,7 +281,19 @@ extra_build_script_src_roots = [ "entities.rs" ]
 build_script_outputs = [ "generated.rs", "named_entities.rs", ]
 
 [crate.multihash]
-extra_kv = { rustenv = [ "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.18.1\") + \"" ]}
+extra_kv = { rustenv = [ "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.19.2\") + \"" ]}
+
+[crate.multihash-codetable]
+license_files = ['LICENSE']
+extra_kv = { rustenv = [
+  "CARGO=\" + rebase_path(\"//third_party/rust-toolchain/bin/cargo\")  + \"",
+  "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-codetable-0.1.4\") + \"" ]}
+
+[crate.multihash-derive]
+license_files = ['LICENSE']
+
+[crate.multihash-derive-impl]
+license_files = ['LICENSE']
 
 [crate.num-bigint]
 extra_input_roots = [ "../README.md" ]
@@ -407,6 +433,9 @@ license_files = ['license-apache-2.0']
 
 [crate.windows-targets]
 license_files = ['license-apache-2.0']
+
+[crate.winnow]
+extra_src_roots = ['../examples']
 
 [crate.wyz]
 license_files = ['LICENSE.txt']

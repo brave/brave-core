@@ -157,21 +157,26 @@ public class SearchEngineOnboardingFragment extends Fragment {
     }
 
     private void setActions() {
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mSelectedSearchEngine == null) {
-                    mSelectedSearchEngine = BraveSearchEngineUtils.getTemplateUrlByShortName(
-                            mProfile, BraveSearchEngineUtils.getDSEShortName(mProfile, false));
-                }
-                if (mSelectedSearchEngine != null) {
-                    BraveSearchEngineUtils.setDSEPrefs(mSelectedSearchEngine, mProfile);
-                    BraveSearchEngineUtils.setDSEPrefs(mSelectedSearchEngine,
-                            mProfile.getPrimaryOTRProfile(/* createIfNeeded= */ true));
-                }
-                getActivity().finish();
-            }
-        });
+        btnSave.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mSelectedSearchEngine == null) {
+                            mSelectedSearchEngine =
+                                    BraveSearchEngineUtils.getTemplateUrlByShortName(
+                                            mProfile,
+                                            BraveSearchEngineUtils.getDSEShortName(
+                                                    mProfile, false));
+                        }
+                        if (mSelectedSearchEngine != null) {
+                            BraveSearchEngineUtils.setDSEPrefs(mSelectedSearchEngine, mProfile);
+                            BraveSearchEngineUtils.setDSEPrefs(
+                                    mSelectedSearchEngine,
+                                    mProfile.getPrimaryOtrProfile(/* createIfNeeded= */ true));
+                        }
+                        getActivity().finish();
+                    }
+                });
     }
 
     private void searchEngineSelected(int position, List<TemplateUrl> templateUrls) {

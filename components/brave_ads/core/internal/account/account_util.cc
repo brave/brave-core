@@ -53,8 +53,8 @@ bool IsAllowedToDeposit(const mojom::AdType mojom_ad_type,
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::AdType: "
-                        << base::to_underlying(mojom_ad_type);
+  NOTREACHED() << "Unexpected value for mojom::AdType: "
+               << base::to_underlying(mojom_ad_type);
 }
 
 }  // namespace brave_ads

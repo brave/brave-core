@@ -32,7 +32,6 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabWindowManager;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.ui.base.WindowAndroid;
-import org.chromium.ui.base.WindowDelegate;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
@@ -60,7 +59,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             ObservableSupplier<Profile> profileObservableSupplier,
             LocationBarDataProvider locationBarDataProvider,
             ActionMode.Callback actionModeCallback,
-            WindowDelegate windowDelegate,
             WindowAndroid windowAndroid,
             @NonNull Supplier<Tab> activityTabSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
@@ -96,7 +94,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 profileObservableSupplier,
                 locationBarDataProvider,
                 actionModeCallback,
-                windowDelegate,
                 windowAndroid,
                 activityTabSupplier,
                 modalDialogManagerSupplier,

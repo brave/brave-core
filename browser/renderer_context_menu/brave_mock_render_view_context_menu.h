@@ -14,7 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "components/renderer_context_menu/render_view_context_menu_proxy.h"
 #include "ui/base/models/image_model.h"
-#include "ui/base/models/simple_menu_model.h"
+#include "ui/menus/simple_menu_model.h"
 
 class BraveMockRenderViewContextMenu;
 class PrefService;

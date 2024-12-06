@@ -92,7 +92,7 @@ import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
-import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
+import org.chromium.chrome.browser.omnibox.status.PageInfoIphController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownEmbedder;
@@ -117,6 +117,7 @@ import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
+import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
@@ -133,7 +134,7 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
-import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateProvider;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeStateProvider;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
@@ -151,7 +152,6 @@ import org.chromium.components.commerce.core.ShoppingService;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
-import org.chromium.components.externalauth.ExternalAuthUtils;
 import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
@@ -164,7 +164,6 @@ import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
-import org.chromium.ui.base.WindowDelegate;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -557,10 +556,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                        "getAddExceptionDialogMessage",
+                        "getAddExceptionDialogMessageResourceId",
                         MethodModifier.REGULAR,
-                        false,
-                        null));
+                        true,
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
@@ -900,7 +899,6 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         true,
                         ViewProvider.class,
-                        Context.class,
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
@@ -926,13 +924,6 @@ public class BytecodeTest {
                         getClassForPath(
                                 "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
                         int.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                        "getAddExceptionDialogMessage",
-                        MethodModifier.REGULAR,
-                        true,
-                        String.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
@@ -1133,7 +1124,6 @@ public class BytecodeTest {
                         FindToolbarManager.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        Supplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         boolean.class,
@@ -1158,7 +1148,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         View.class,
                         ObservableSupplier.class,
-                        DesktopWindowStateProvider.class));
+                        DesktopWindowStateManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1198,7 +1188,6 @@ public class BytecodeTest {
                         Activity.class,
                         ViewGroup.class,
                         BrowserControlsStateProvider.class,
-                        IncognitoStateProvider.class,
                         ScrimCoordinator.class,
                         ObservableSupplier.class,
                         BottomSheetController.class,
@@ -1207,7 +1196,8 @@ public class BytecodeTest {
                         TabContentManager.class,
                         TabCreatorManager.class,
                         OneshotSupplier.class,
-                        ModalDialogManager.class));
+                        ModalDialogManager.class,
+                        ThemeColorProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
@@ -1231,7 +1221,7 @@ public class BytecodeTest {
                         PermissionDialogController.class,
                         OneshotSupplier.class,
                         Supplier.class,
-                        PageInfoIPHController.class,
+                        PageInfoIphController.class,
                         WindowAndroid.class,
                         Supplier.class));
         Assert.assertTrue(
@@ -1288,9 +1278,10 @@ public class BytecodeTest {
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         FullscreenManager.class,
                         TabObscuringHandler.class,
-                        DesktopWindowStateProvider.class,
+                        DesktopWindowStateManager.class,
                         OneshotSupplier.class,
-                        OnLongClickListener.class));
+                        OnLongClickListener.class,
+                        ToolbarProgressBar.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
@@ -1420,7 +1411,6 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         LocationBarDataProvider.class,
                         ActionMode.Callback.class,
-                        WindowDelegate.class,
                         WindowAndroid.class,
                         Supplier.class,
                         Supplier.class,
@@ -1500,7 +1490,6 @@ public class BytecodeTest {
                         Context.class,
                         Callback.class,
                         PropertyModel.class,
-                        boolean.class,
                         Callback.class,
                         LogoCoordinator.VisibilityObserver.class,
                         CachedTintedBitmap.class));
@@ -1557,6 +1546,7 @@ public class BytecodeTest {
                         IntentRequestTracker.class,
                         InsetObserver.class,
                         Function.class,
+                        Callback.class,
                         boolean.class,
                         BackPressManager.class,
                         Bundle.class,
@@ -1658,7 +1648,6 @@ public class BytecodeTest {
                         TabContextMenuItemDelegate.class,
                         Supplier.class,
                         int.class,
-                        ExternalAuthUtils.class,
                         Context.class,
                         ContextMenuParams.class,
                         ContextMenuNativeDelegate.class));
@@ -1703,7 +1692,9 @@ public class BytecodeTest {
                         LayoutRenderHost.class,
                         BrowserControlsStateProvider.class,
                         LayoutManager.class,
-                        TopUiThemeColorProvider.class));
+                        TopUiThemeColorProvider.class,
+                        Supplier.class,
+                        ViewGroup.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/embedder_support/view/ContentView",
@@ -1904,6 +1895,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mTabObscuringHandler"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
+                        "mTopUiThemeColorProvider"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",

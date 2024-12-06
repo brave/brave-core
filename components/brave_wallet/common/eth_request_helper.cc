@@ -12,6 +12,7 @@
 
 #include "base/base64.h"
 #include "base/compiler_specific.h"
+#include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
@@ -528,12 +529,12 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     result->meta = nullptr;
   }
 
-  result->domain_hash = domain_hash->first;
+  result->domain_hash = base::ToVector(domain_hash->first);
   if (!base::JSONWriter::Write(domain_hash->second, &result->domain_json)) {
     return nullptr;
   }
 
-  result->primary_hash = primary_hash->first;
+  result->primary_hash = base::ToVector(primary_hash->first);
   if (!base::JSONWriter::Write(primary_hash->second, &result->message_json)) {
     return nullptr;
   }

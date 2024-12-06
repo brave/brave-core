@@ -91,7 +91,7 @@ IN_PROC_BROWSER_TEST_F(AiChatBrowserTest, YoutubeNavigations) {
   const std::string initial_content = FetchPageContent();
   EXPECT_EQ("Initial content", initial_content);
 
-  constexpr const char kClick[] =
+  static constexpr char kClick[] =
       R"js(
         document.getElementById('config').click()
       )js";

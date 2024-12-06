@@ -24,8 +24,23 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 
-void BraveProfileMenuView::BuildIdentity() {
-  ProfileMenuView::BuildIdentity();
+void BraveProfileMenuView::SetProfileIdentityInfo(
+    const std::u16string& profile_name,
+    SkColor profile_background_color,
+    std::optional<EditButtonParams> edit_button_params,
+    const ui::ImageModel& image_model,
+    const ui::ImageModel& management_badge,
+    const std::u16string& title,
+    const std::u16string& subtitle,
+    const std::u16string& management_label,
+    const gfx::VectorIcon* header_art_icon) {
+  // This method is overriden because otherwise we would have to call
+  // `SetProfileIdentityInfo` a second time, and this leaves
+  // `profile_background_container_`, and `heading_label_` dangling in
+  // `ProfileMenuViewBase` for a while in between
+  // `identity_info_container_->RemoveAllChildViews()` being called, and the new
+  // pointers being assigned to those members.
+
   Profile* profile = browser()->profile();
   ProfileAttributesEntry* profile_attributes =
       g_browser_process->profile_manager()
@@ -33,7 +48,7 @@ void BraveProfileMenuView::BuildIdentity() {
           .GetProfileAttributesWithPath(profile->GetPath());
   // Reset IdentityInfo to get rid of the subtitle string
   // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in").
-  SetProfileIdentityInfo(
+  ProfileMenuView::SetProfileIdentityInfo(
       /*profile_name=*/std::u16string(),
       profile_attributes->GetProfileThemeColors().profile_highlight_color,
       /*edit_button_params=*/std::nullopt,

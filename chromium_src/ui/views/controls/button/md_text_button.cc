@@ -352,11 +352,10 @@ MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
   MdTextButtonStyleKey style_lookup{GetBraveStyle(), color_scheme, state};
   auto it = GetButtonThemes().find(style_lookup);
   if (it == GetButtonThemes().end()) {
-    NOTREACHED_IN_MIGRATION()
-        << "No button theme found for : " << static_cast<int>(GetBraveStyle())
-        << ", ColorScheme: "
-        << (color_scheme == ColorScheme::kDark ? "dark" : "light")
-        << ", ButtonState: " << state;
+    NOTREACHED() << "No button theme found for : "
+                 << static_cast<int>(GetBraveStyle()) << ", ColorScheme: "
+                 << (color_scheme == ColorScheme::kDark ? "dark" : "light")
+                 << ", ButtonState: " << state;
   }
   const auto& style = it->second;
   return {.background_color = AddOpacity(

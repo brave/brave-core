@@ -25,8 +25,8 @@ mojom::ReactionType ToggleLikedReactionType(
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::ReactionType: "
-                        << mojom_reaction_type;
+  NOTREACHED() << "Unexpected value for mojom::ReactionType: "
+               << mojom_reaction_type;
 }
 
 mojom::ReactionType ToggleDislikedReactionType(
@@ -44,8 +44,8 @@ mojom::ReactionType ToggleDislikedReactionType(
     }
   }
 
-  NOTREACHED_NORETURN() << "Unexpected value for mojom::ReactionType: "
-                        << mojom_reaction_type;
+  NOTREACHED() << "Unexpected value for mojom::ReactionType: "
+               << mojom_reaction_type;
 }
 
 }  // namespace brave_ads

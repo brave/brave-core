@@ -1,0 +1,92 @@
+name: Continuous integration
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+        toolchain: [stable]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies & build outputs
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          components: rustfmt, clippy
+
+      - name: Check code format
+        run: cargo fmt --all -- --check
+
+      - name: Code lint with default features
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Code lint without default features
+        run: cargo clippy --no-default-features --workspace -- -D warnings
+
+      - name: Code lint with all features
+        run: cargo clippy --no-default-features --workspace --all-features -- -D warnings
+
+      - name: Test with default features
+        run: cargo test --all-features
+
+      - name: Test with without default features
+        run: cargo test --no-default-features
+
+      - name: Test with all features
+        run: cargo test --all-features
+
+  build-no-std:
+    name: Build no_std
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: thumbv6m-none-eabi
+
+      - name: Build
+        run: cargo build --no-default-features --target thumbv6m-none-eabi
+
+  build-no-std-serde:
+    name: Build no_std, but with `serde` feature enabled
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build
+        # `thumbv6m-none-eabi` can't be used as Serde doesn't compile there.
+        run: cargo build --no-default-features --features serde
+
+  check-lockfile:
+    name: Make sure the lockfile is up-to-date
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Error if checked-in lockfile is not up-to-date
+        run: cargo build --locked

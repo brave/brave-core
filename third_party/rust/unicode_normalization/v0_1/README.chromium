@@ -1,13 +1,14 @@
 Name: unicode-normalization
 URL: https://crates.io/crates/unicode-normalization
+Version: 0.1.22
+Revision: d4318ad5a57f21b3f24ccdc55032b600b075e66d
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
 Description: This crate provides functions for normalization of
 Unicode strings, including Canonical and Compatible
 Decomposition and Recomposition, as described in
 Unicode Standard Annex #15.
 
-Version: 0.1.22
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/LICENSE-APACHE
-Revision: d4318ad5a57f21b3f24ccdc55032b600b075e66d

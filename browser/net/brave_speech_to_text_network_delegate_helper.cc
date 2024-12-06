@@ -28,9 +28,9 @@ void AddSpeechToTextBraveHeaders(network::ResourceRequest* request) {
   request->credentials_mode = network::mojom::CredentialsMode::kInclude;
   request->site_for_cookies = net::SiteForCookies::FromUrl(request->url);
 
-  constexpr const char kRequestKey[] = "request-key";
+  static constexpr char kRequestKey[] = "request-key";
   request->headers.SetHeader(kRequestKey, request_key);
-  constexpr const char kRequestDate[] = "request-date";
+  static constexpr char kRequestDate[] = "request-date";
   const auto request_date = base::TimeFormatHTTP(base::Time::Now());
   request->headers.SetHeader(kRequestDate, request_date);
 
@@ -52,7 +52,7 @@ void OnBeforeURLRequest_SpoofSpeechToText(network::ResourceRequest* request) {
   if (!base::FeatureList::IsEnabled(stt::kSttFeature)) {
     return;
   }
-  constexpr const char kSttPrefix[] =
+  static constexpr char kSttPrefix[] =
       "https://www.google.com/speech-api/full-duplex/v1/*";
   static base::NoDestructor<URLPattern> stt_pattern(URLPattern::SCHEME_HTTPS,
                                                     kSttPrefix);

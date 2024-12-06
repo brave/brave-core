@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
+import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
@@ -39,7 +40,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
-import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateProvider;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.ui.resources.ResourceManager;
 import org.chromium.ui.util.ColorUtils;
 
@@ -49,7 +50,6 @@ import java.util.function.BooleanSupplier;
 public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     // To delete in bytecode. Variables from the parent class will be used instead.
     private OptionalBrowsingModeButtonController mOptionalButtonController;
-    private ToolbarColorObserverManager mToolbarColorObserverManager;
 
     // Own members.
     private ToolbarLayout mBraveToolbarLayout;
@@ -85,9 +85,10 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                     browserStateBrowserControlsVisibilityDelegate,
             FullscreenManager fullscreenManager,
             TabObscuringHandler tabObscuringHandler,
-            @Nullable DesktopWindowStateProvider desktopWindowStateProvider,
+            @Nullable DesktopWindowStateManager desktopWindowStateManager,
             OneshotSupplier<TabStripTransitionDelegate> tabStripTransitionDelegateSupplier,
-            @Nullable OnLongClickListener onLongClickListener) {
+            @Nullable OnLongClickListener onLongClickListener,
+            ToolbarProgressBar progressBar) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -112,9 +113,10 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 browserStateBrowserControlsVisibilityDelegate,
                 fullscreenManager,
                 tabObscuringHandler,
-                desktopWindowStateProvider,
+                desktopWindowStateManager,
                 tabStripTransitionDelegateSupplier,
-                onLongClickListener);
+                onLongClickListener,
+                progressBar);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
@@ -199,7 +201,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             LayoutManager layoutManager,
             ObservableSupplier<Tab> tabSupplier,
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
-            TopUiThemeColorProvider topUiThemeColorProvider) {
+            TopUiThemeColorProvider topUiThemeColorProvider,
+            Supplier<Integer> bottomToolbarControlsOffsetSupplier) {
         super.initializeWithNative(
                 profile,
                 layoutUpdater,
@@ -208,7 +211,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 layoutManager,
                 tabSupplier,
                 browserControlsVisibilityManager,
-                topUiThemeColorProvider);
+                topUiThemeColorProvider,
+                bottomToolbarControlsOffsetSupplier);
 
         assert mBraveToolbarLayout instanceof BraveToolbarLayoutImpl
                 : "Something has changed in the upstream!";

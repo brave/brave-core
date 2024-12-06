@@ -61,11 +61,6 @@ void BraveVPNHelperCrashReporterClient::InitializeCrashReportingForProcess(
       base::FilePath());
 }
 
-bool BraveVPNHelperCrashReporterClient::ShouldCreatePipeName(
-    const std::wstring& process_type) {
-  return false;
-}
-
 bool BraveVPNHelperCrashReporterClient::GetAlternativeCrashDumpLocation(
     std::wstring* crash_dir) {
   return false;
@@ -92,33 +87,9 @@ void BraveVPNHelperCrashReporterClient::GetProductNameAndVersion(
       install_static::GetChromeChannelName(/*with_extended_stable=*/true);
 }
 
-bool BraveVPNHelperCrashReporterClient::ShouldShowRestartDialog(
-    std::wstring* title,
-    std::wstring* message,
-    bool* is_rtl_locale) {
-  // There is no UX associated with brave_vpn_helper, so no dialog should be
-  // shown.
-  return false;
-}
-
-bool BraveVPNHelperCrashReporterClient::AboutToRestart() {
-  // The brave_vpn_helper should never be restarted after a crash.
-  return false;
-}
-
-bool BraveVPNHelperCrashReporterClient::GetIsPerUserInstall() {
-  return !install_static::IsSystemInstall();
-}
-
 bool BraveVPNHelperCrashReporterClient::GetShouldDumpLargerDumps() {
   // Use large dumps for all but the stable channel.
   return install_static::GetChromeChannel() != version_info::Channel::STABLE;
-}
-
-int BraveVPNHelperCrashReporterClient::GetResultCodeRespawnFailed() {
-  // The restart dialog is never shown.
-  NOTREACHED_IN_MIGRATION();
-  return 0;
 }
 
 bool BraveVPNHelperCrashReporterClient::GetCrashDumpLocation(

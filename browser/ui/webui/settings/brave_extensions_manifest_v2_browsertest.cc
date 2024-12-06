@@ -21,7 +21,7 @@
 
 namespace {
 
-constexpr const char kExtensionId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
+constexpr char kExtensionId[] = "doojmbjmlfjjnbmnoijecmcbfeoakpjm";
 
 bool ClickExtensionToggle(content::WebContents* web_contents) {
   return EvalJs(web_contents,

@@ -50,7 +50,7 @@ class WithHelperKey {
   static const void* GetHelperKey() { return std::addressof(kHelperKey); }
 
  private:
-  static inline const int kHelperKey = 0;
+  static constexpr int kHelperKey = 0;
 };
 
 }  // namespace brave_rewards::internal

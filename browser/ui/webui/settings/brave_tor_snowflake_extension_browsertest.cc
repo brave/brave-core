@@ -21,8 +21,7 @@
 
 namespace {
 
-constexpr const char kSnowflakeExtensionId[] =
-    "mafpmfcccpbjnhfhjnllmmalhifmlcie";
+constexpr char kSnowflakeExtensionId[] = "mafpmfcccpbjnhfhjnllmmalhifmlcie";
 
 bool ClickSnowflakeToggle(content::WebContents* web_contents) {
   return EvalJs(

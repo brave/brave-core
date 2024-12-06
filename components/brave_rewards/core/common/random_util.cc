@@ -14,6 +14,8 @@
 
 namespace {
 
+constexpr size_t kLengthHexString = 32;
+
 std::string EncodeStringForPKCE(const std::string& data) {
   std::string encoded_data;
 
@@ -30,8 +32,7 @@ std::string EncodeStringForPKCE(const std::string& data) {
 namespace brave_rewards::internal::util {
 
 std::string GenerateRandomHexString() {
-  const size_t kLength = 32;
-  uint8_t bytes[kLength];
+  uint8_t bytes[kLengthHexString];
   crypto::RandBytes(bytes);
   return base::HexEncode(bytes, sizeof(bytes));
 }

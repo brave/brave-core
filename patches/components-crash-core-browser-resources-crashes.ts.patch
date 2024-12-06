@@ -1,5 +1,5 @@
 diff --git a/components/crash/core/browser/resources/crashes.ts b/components/crash/core/browser/resources/crashes.ts
-index abd0ff7e76afe945fe6f36a9ff1d4d33a0d6e524..a6e3d9561b8e60dccccccde058287a9fdd4d2241 100644
+index 87a7170b4eb59cffb92e5a56ba9091c2809c4f95..ccdd96225f6bef6f7f638a65ca92d0f99ead5093 100644
 --- a/components/crash/core/browser/resources/crashes.ts
 +++ b/components/crash/core/browser/resources/crashes.ts
 @@ -160,7 +160,7 @@ function updateCrashList({

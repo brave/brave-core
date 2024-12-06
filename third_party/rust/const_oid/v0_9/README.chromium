@@ -1,12 +1,13 @@
 Name: const-oid
 URL: https://crates.io/crates/const-oid
+Version: 0.9.6
+Revision: 4432bcc0b2b721865740517e609e166e01726ccc
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/const-oid-0.9.6/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
 Description: Const-friendly implementation of the ISO/IEC Object Identifier (OID) standard
 as defined in ITU X.660, with support for BER/DER encoding/decoding as well as
 heapless no_std (i.e. embedded) support
 
-Version: 0.9.6
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/const-oid-0.9.6/LICENSE-APACHE
-Revision: 4432bcc0b2b721865740517e609e166e01726ccc

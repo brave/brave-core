@@ -16,12 +16,12 @@
 namespace brave_wallet {
 
 // Equivalent to web3.utils.toHex(string);
+// TODO(apaymyshev): rename it to To0xHex or something like that.
 std::string ToHex(const std::string& data);
 std::string ToHex(base::span<const uint8_t> data);
 
 // Returns a hex string representation of a binary buffer. The returned hex
 // string will be in lower case, without the 0x prefix.
-std::string HexEncodeLower(const void* bytes, size_t size);
 std::string HexEncodeLower(base::span<const uint8_t> bytes);
 
 // Determines if the passed in hex string is valid

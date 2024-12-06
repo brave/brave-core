@@ -1165,7 +1165,7 @@ v8::Local<v8::Value> JSSolanaProvider::CreateTransaction(
                                      versioned_transaction_module, kDeserialize,
                                      std::move(args));
   } else {
-    NOTREACHED_NORETURN();
+    NOTREACHED();
   }
 
   if (transaction.IsEmpty()) {

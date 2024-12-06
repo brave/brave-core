@@ -48,7 +48,7 @@ std::unique_ptr<ConnectionAPIImpl> CreateConnectionAPIImpl(
 #endif
 
   // VPN is not supported on other platforms.
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 #endif
 

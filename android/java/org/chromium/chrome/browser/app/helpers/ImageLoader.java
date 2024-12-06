@@ -61,16 +61,13 @@ import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ImageLoader {
     private static final String TAG = "ImageLoader";
-    private static final List<String> ANIMATED_LIST = Arrays.asList(".gif");
     private static final String UNUSED_CLIENT_NAME = "unused";
     private static final String BASE64_ENCODING_PATTERN =
             "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$";
@@ -113,9 +110,8 @@ public class ImageLoader {
                 validUrl = url;
             }
 
-            WebContentsFactory webContentsFactory = new WebContentsFactory();
             WebContents webContents =
-                    webContentsFactory.createWebContentsWithWarmRenderer(
+                    WebContentsFactory.createWebContentsWithWarmRenderer(
                             profile, true, NetId.INVALID);
             webContents.downloadImage(
                     new GURL(validUrl), // Url
@@ -333,36 +329,50 @@ public class ImageLoader {
         }
     }
 
-    private static void loadImage(ImageFetcherFacade imageFetcherFacade,
-            RequestManager requestManager, boolean isCircular, final int roundedCorners,
-            ImageView imageView, CustomTarget<Drawable> customTarget, Callback callback) {
+    private static void loadImage(
+            ImageFetcherFacade imageFetcherFacade,
+            RequestManager requestManager,
+            boolean isCircular,
+            final int roundedCorners,
+            ImageView imageView,
+            CustomTarget<Drawable> customTarget,
+            Callback callback) {
         if (imageFetcherFacade == null
-                || (imageFetcherFacade.data == null && imageFetcherFacade.drawable == null)) {
+                || (imageFetcherFacade.mData == null && imageFetcherFacade.mDrawable == null)) {
             if (callback != null) callback.onLoadFailed();
             return;
         }
         RequestBuilder<Drawable> request =
                 requestManager
-                        .load(imageFetcherFacade.data != null ? imageFetcherFacade.data
-                                                              : imageFetcherFacade.drawable)
+                        .load(
+                                imageFetcherFacade.mData != null
+                                        ? imageFetcherFacade.mData
+                                        : imageFetcherFacade.mDrawable)
                         .transform(getTransformations(isCircular, roundedCorners))
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .priority(Priority.IMMEDIATE)
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(GlideException glideException, Object model,
-                                    Target<Drawable> target, boolean isFirstResource) {
-                                return callback != null && callback.onLoadFailed();
-                            }
+                        .listener(
+                                new RequestListener<Drawable>() {
+                                    @Override
+                                    public boolean onLoadFailed(
+                                            GlideException glideException,
+                                            Object model,
+                                            Target<Drawable> target,
+                                            boolean isFirstResource) {
+                                        return callback != null && callback.onLoadFailed();
+                                    }
 
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model,
-                                    Target<Drawable> target, DataSource dataSource,
-                                    boolean isFirstResource) {
-                                return callback != null
-                                        && callback.onResourceReady(resource, target);
-                            }
-                        });
+                                    @Override
+                                    public boolean onResourceReady(
+                                            Drawable resource,
+                                            Object model,
+                                            Target<Drawable> target,
+                                            DataSource dataSource,
+                                            boolean isFirstResource) {
+                                        return callback != null
+                                                && callback.onResourceReady(resource, target);
+                                    }
+                                });
 
         if (imageView != null) {
             request.into(imageView);
@@ -516,16 +526,17 @@ public class ImageLoader {
     }
 
     private static class ImageFetcherFacade {
-        final byte[] data;
-        final Drawable drawable;
+        final byte[] mData;
+        final Drawable mDrawable;
+
         public ImageFetcherFacade(byte[] data) {
-            this.data = data;
-            this.drawable = null;
+            mData = data;
+            mDrawable = null;
         }
 
         ImageFetcherFacade(Drawable drawable) {
-            this.drawable = drawable;
-            this.data = null;
+            mDrawable = drawable;
+            mData = null;
         }
     }
 }

@@ -1,9 +1,10 @@
 Name: bumpalo
 URL: https://crates.io/crates/bumpalo
-Description: A fast bump allocation arena for Rust.
 Version: 3.14.0
-Security Critical: yes
-Shipped: yes
+Revision: c610d5adc54b9428465d72c4666c305df04c792a
 License: Apache 2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/bumpalo-3.14.0/LICENSE-APACHE
-Revision: c610d5adc54b9428465d72c4666c305df04c792a
+Shipped: yes
+Security Critical: yes
+
+Description: A fast bump allocation arena for Rust.

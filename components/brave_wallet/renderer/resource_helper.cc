@@ -35,14 +35,14 @@ std::optional<std::string> LoadImageResourceAsDataUrl(const int id) {
     return std::nullopt;
   }
 
-  std::vector<uint8_t> data;
-  if (!gfx::PNGCodec::EncodeBGRASkBitmap(image.AsBitmap(),
-                                         /*discard_transparency=*/false,
-                                         &data)) {
+  std::optional<std::vector<uint8_t>> data =
+      gfx::PNGCodec::EncodeBGRASkBitmap(image.AsBitmap(),
+                                        /*discard_transparency=*/false);
+  if (!data) {
     return std::nullopt;
   }
 
-  return "data:image/png;base64," + base::Base64Encode(data);
+  return "data:image/png;base64," + base::Base64Encode(*data);
 }
 
 }  // namespace brave_wallet

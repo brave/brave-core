@@ -1,9 +1,10 @@
 Name: nonempty
 URL: https://crates.io/crates/nonempty
-Description: Correct by construction non-empty vector
 Version: 0.7.0
-Security Critical: yes
-Shipped: yes
+Revision: e54c5a1146f62247b02f0cd787c05ab7c74a7dcb
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/nonempty-0.7.0/LICENSE
-Revision: e54c5a1146f62247b02f0cd787c05ab7c74a7dcb
+Shipped: yes
+Security Critical: yes
+
+Description: Correct by construction non-empty vector

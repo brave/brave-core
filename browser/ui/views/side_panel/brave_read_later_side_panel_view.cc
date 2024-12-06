@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/side_panel/brave_read_later_side_panel_view.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -117,14 +118,15 @@ END_METADATA
 
 BraveReadLaterSidePanelView::BraveReadLaterSidePanelView(
     Browser* browser,
+    SidePanelEntryScope& scope,
     base::RepeatingClosure close_cb) {
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
   AddChildView(std::make_unique<ReadLaterSidePanelHeaderView>(browser));
   AddChildView(std::make_unique<views::Separator>())
       ->SetColorId(kColorSidebarPanelHeaderSeparator);
-  auto* web_view = AddChildView(
-      std::make_unique<ReadLaterSidePanelWebView>(browser, close_cb));
+  auto* web_view = AddChildView(std::make_unique<ReadLaterSidePanelWebView>(
+      browser, scope, std::move(close_cb)));
   web_view->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,

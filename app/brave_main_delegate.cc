@@ -73,7 +73,7 @@ constexpr char kBraveSyncServiceStagingURL[] =
 
 void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url) {
   DCHECK_NE(brave_sync_service_url, nullptr);
-  const char kProcessTypeSwitchName[] = "type";
+  static constexpr char kProcessTypeSwitchName[] = "type";
 
   // On Android we can detect data dir only on host process, and we cannot
   // for example on renderer or gpu-process, because JNI is not initialized

@@ -40,5 +40,4 @@ cargo_crate("lib") {
     "//brave/third_party/rust/data_encoding/v2:lib",
     "//brave/third_party/rust/data_encoding_macro/v0_1:lib",
   ]
-  features = [ "std" ]
 }

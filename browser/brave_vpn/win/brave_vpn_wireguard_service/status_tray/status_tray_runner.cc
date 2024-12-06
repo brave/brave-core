@@ -6,9 +6,9 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_tray_runner.h"
 
 #include <windows.h>  // Should be before shellapi.h
-#include <wrl/client.h>
 
 #include <shellapi.h>
+#include <wrl/client.h>
 
 #include <memory>
 #include <string>
@@ -31,7 +31,7 @@
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/models/simple_menu_model.h"
+#include "ui/menus/simple_menu_model.h"
 #include "ui/native_theme/native_theme.h"
 
 namespace brave_vpn {
@@ -67,7 +67,7 @@ int GetStatusIconTooltip(brave_vpn::mojom::ConnectionState state) {
       return IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 int GetStatusTrayIcon(brave_vpn::mojom::ConnectionState state) {
@@ -89,7 +89,7 @@ int GetStatusTrayIcon(brave_vpn::mojom::ConnectionState state) {
                         : IDR_BRAVE_VPN_TRAY_DARK_ERROR;
   }
 
-  NOTREACHED_NORETURN();
+  NOTREACHED();
 }
 
 }  // namespace
