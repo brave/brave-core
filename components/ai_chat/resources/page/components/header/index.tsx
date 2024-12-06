@@ -9,7 +9,7 @@ import Button from '@brave/leo/react/button'
 import getAPI, { Conversation } from '../../api'
 import FeatureButtonMenu, { Props as FeatureButtonMenuProps } from '../feature_button_menu'
 import styles from './style.module.scss'
-import { useAIChat } from '../../state/ai_chat_context'
+import { useAIChat, useIsSmall } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import { tabAssociatedChatId, useActiveChat } from '../../state/active_chat_context'
@@ -33,13 +33,14 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const { createNewConversation, isTabAssociated } = useActiveChat()
-  const shouldDisplayEraseAction = !aiChatContext.isStandalone &&
+  const isMobile = useIsSmall() && aiChatContext.isMobile
+
+  const shouldDisplayEraseAction = (!aiChatContext.isStandalone || isMobile) &&
     conversationContext.conversationHistory.length >= 1
 
   const activeConversation = aiChatContext.visibleConversations.find(c => c.uuid === conversationContext.conversationUuid)
-  const showTitle = (!isTabAssociated || aiChatContext.isStandalone) && !aiChatContext.isMobile
-  const canShowFullScreenButton = aiChatContext.isHistoryFeatureEnabled && !aiChatContext.isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
-
+  const showTitle = (!isTabAssociated || aiChatContext.isStandalone) && !isMobile
+  const canShowFullScreenButton = aiChatContext.isHistoryFeatureEnabled && !isMobile && !aiChatContext.isStandalone && conversationContext.conversationUuid
   return (
     <div className={styles.header} ref={ref}>
       {showTitle ? (
@@ -55,7 +56,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
           <div className={styles.conversationTitleText} title={getTitle(activeConversation)}>{getTitle(activeConversation)}</div>
         </div>
       )
-        : (aiChatContext.isMobile && aiChatContext.isStandalone
+        : (isMobile && aiChatContext.isStandalone
           ? <>
             <Button
               fab
@@ -122,10 +123,11 @@ export function NavigationHeader() {
 
   const canStartNewConversation = conversationContext.conversationHistory.length >= 1
     && aiChatContext.hasAcceptedAgreement
+  const isMobile = useIsSmall() && aiChatContext.isMobile
 
   return (
     <div className={styles.header}>
-      {aiChatContext.isMobile && <Button
+      {isMobile && <Button
         fab
         kind='plain-faint'
         onClick={aiChatContext.toggleSidebar}

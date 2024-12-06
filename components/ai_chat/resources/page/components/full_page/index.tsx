@@ -102,9 +102,9 @@ export default function FullScreen() {
   }, [aiChatContext.showSidebar])
 
   return (
-    <div className={classNames(styles.fullscreen, aiChatContext.isMobile && styles.mobile)}>
+    <div className={classNames(styles.fullscreen, aiChatContext.isMobile && isSmall && styles.mobile)}>
       <div className={styles.left}>
-        {!aiChatContext.isMobile && <div className={styles.controls}>
+        {(!aiChatContext.isMobile || !isSmall) && <div className={styles.controls}>
           <Button
             fab
             kind='plain-faint'

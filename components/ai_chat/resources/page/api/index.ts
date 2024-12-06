@@ -30,9 +30,9 @@ export const defaultUIState: State = {
   isPremiumStatusFetching: true,
   isPremiumUser: false,
   isPremiumUserDisconnected: false,
-isStorageNoticeDismissed: false,
+  isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
-  isMobile: loadTimeData.getBoolean('isMobile'),
+  isMobile: true,// loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
   allActions: [],
 }
@@ -121,7 +121,7 @@ class API {
   }
 
   private dispatchDebouncedStateChange = debounce(() => {
-    console.debug('dispatching uistatechange event', {...this.state})
+    console.debug('dispatching uistatechange event', { ...this.state })
     this.eventTarget.dispatchEvent(
       new Event('uistatechange')
     )

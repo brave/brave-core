@@ -51,7 +51,7 @@ export const AIChatReactContext =
   React.createContext<AIChatContext>(defaultContext)
 
 export function useIsSmall() {
-  return useMediaQuery('(max-width: 1024px)') || defaultContext.isMobile
+  return useMediaQuery('(max-width: 1024px)')
 }
 
 export function AIChatContextProvider(props: React.PropsWithChildren) {
