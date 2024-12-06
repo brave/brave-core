@@ -82,12 +82,12 @@ public class BraveRewardsBannerInfo {
         return mWeb3Url;
     }
 
-    public BraveRewardsBannerInfo(String json_external_wallet) throws JSONException {
-        fromJson(json_external_wallet);
+    public BraveRewardsBannerInfo(String jsonExternalWallet) throws JSONException {
+        fromJson(jsonExternalWallet);
     }
 
-    private void fromJson(String json_external_wallet) throws JSONException {
-        JSONObject jsonObj = new JSONObject(json_external_wallet);
+    private void fromJson(String jsonExternalWallet) throws JSONException {
+        JSONObject jsonObj = new JSONObject(jsonExternalWallet);
         mPublisherKey = jsonObj.getString(PUBLISHER_KEY);
         mTitle = jsonObj.getString(TITLE);
         mName = jsonObj.getString(NAME);
