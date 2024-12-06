@@ -15,11 +15,6 @@ interface ParentUIFrame {
   // can manually set the same height on the <iframe> to avoid scrolling.
   ChildHeightChanged(uint32 height);
 
-  // Separately, let the parent know when the height of the content changes
-  // as a result of active generation, so that the parent can automatically
-  // scroll to the most recent content as it's being generated.
-  GeneratedConversationEntryHeightChanged();
-
   // This is sent to the UI rather than straight to the browser to allow
   // for further rating feedback to be attached. The parent frame deals
   // with it instead of the child frame, due to UI space as well as sensitive

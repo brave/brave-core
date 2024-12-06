@@ -21,14 +21,9 @@ import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 
-interface ConversationEntriesProps {
-  onLastElementHeightChange: () => void
-}
-
-function ConversationEntries(props: ConversationEntriesProps) {
+function ConversationEntries() {
   const conversationContext = useUntrustedConversationContext()
 
-  const lastEntryElementRef = React.useRef<HTMLDivElement>(null)
   const [activeMenuId, setActiveMenuId] = React.useState<number | null>()
   const [editInputId, setEditInputId] = React.useState<number | null>()
 
@@ -54,15 +49,6 @@ function ConversationEntries(props: ConversationEntriesProps) {
     },
     onTouchMove: () => setActiveMenuId(null)
   })
-
-  React.useEffect(() => {
-    if (lastEntryElementRef.current === null) return
-    if (!conversationContext.isGenerating) return
-    props.onLastElementHeightChange()
-  }, [
-    conversationContext.conversationHistory.length,
-    lastEntryElementRef.current?.clientHeight
-  ])
 
   const lastAssistantId = React.useMemo(() => {
     // Get the last entry that is an assistant entry
@@ -141,7 +127,6 @@ function ConversationEntries(props: ConversationEntriesProps) {
             <div
               key={id}
               className={turnContainer}
-              ref={isLastEntry ? lastEntryElementRef : null}
             >
               <div
                 data-id={id}

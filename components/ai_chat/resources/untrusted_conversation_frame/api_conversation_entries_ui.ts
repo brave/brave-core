@@ -19,6 +19,7 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   isGenerating: false,
   isLeoModel: true,
   contentUsedPercentage: undefined,
+  isContentRefined: false,
   canSubmitUserEntries: false,
   isMobile: loadTimeData.getBoolean('isMobile')
 }
@@ -59,6 +60,10 @@ export default class APIConversationEntriesUI extends API<ConversationEntriesUIS
     this.conversationObserver.onConversationHistoryUpdate.addListener(
       async () => this.setPartialState(await this.conversationHandler.getConversationHistory())
     )
+
+    this.conversationObserver.onEntriesUIStateChanged.addListener((state: Mojom.ConversationEntriesState) => {
+      this.setPartialState(state)
+    })
 
     // Set up communication with the parent frame
     this.uiHandler.bindParentPage(this.parentUIFrame.$.bindNewPipeAndPassReceiver())

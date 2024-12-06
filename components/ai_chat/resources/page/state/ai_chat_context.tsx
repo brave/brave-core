@@ -11,7 +11,7 @@ import useMediaQuery from '$web-common/useMediaQuery'
 
 export interface ConversationEntriesProps {
   onLoad: () => unknown
-  onGeneratedConversationEntryHeightChanged: () => unknown
+  onHeightChanged: () => unknown
 }
 
 type AIChatContextProps = {

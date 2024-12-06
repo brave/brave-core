@@ -61,30 +61,17 @@ function ConversationEntries(props: ConversationEntriesProps) {
 
   React.useEffect(() => {
     const listener = (height: number) => {
-      console.log('new iframe height', height)
       if (iframeRef.current) {
         iframeRef.current.style.height = height + 'px'
+        props.onHeightChanged()
       }
     }
     const id = api.conversationEntriesFrameObserver.childHeightChanged.addListener(listener)
 
     return () => {
-      console.log('iframe unloaded')
       api.conversationEntriesFrameObserver.removeListener(id)
     }
-  }, [])
-
-  React.useEffect(() => {
-    const listener = () => {
-      props.onGeneratedConversationEntryHeightChanged()
-    }
-    const id = api.conversationEntriesFrameObserver.generatedConversationEntryHeightChanged
-      .addListener(listener)
-
-    return () => {
-      api.conversationEntriesFrameObserver.removeListener(id)
-    }
-  }, [props.onGeneratedConversationEntryHeightChanged])
+  }, [props.onHeightChanged])
 
   return (
     <iframe

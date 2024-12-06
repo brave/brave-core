@@ -31,6 +31,7 @@
 }
 
 .scroller {
+  position: relative;
   --scrollbar-width: 6px;
   overflow: auto;
   scrollbar-gutter: stable;

@@ -18,11 +18,7 @@ setIconBasePath('chrome-untrusted://resources/brave-icons')
 function App() {
   return (
     <UntrustedConversationContextProvider>
-      <ConversationEntries
-        onLastElementHeightChange={
-          () => API.getInstance().parentUIFrame.generatedConversationEntryHeightChanged()
-        }
-      />
+      <ConversationEntries />
     </UntrustedConversationContextProvider>
   )
 }

@@ -34,7 +34,7 @@ import ToolsButtonMenu from '../tools_button_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 
-const SCROLL_BOTTOM_THRESHOLD = 10.0
+const SCROLL_BOTTOM_THRESHOLD = 20.0
 
 const SUGGESTION_STATUS_SHOW_BUTTON: Mojom.SuggestionGenerationStatus[] = [
   Mojom.SuggestionGenerationStatus.CanGenerate,
@@ -74,11 +74,8 @@ function Main() {
 
   let currentErrorElement = null
 
-  let scrollerElement: HTMLDivElement | null = null
   const headerElement = React.useRef<HTMLDivElement>(null)
   const conversationContentElement = React.useRef<HTMLDivElement>(null)
-
-  const scrollPos = React.useRef({ isAtBottom: true })
 
   // Determine which, if any, error message should be displayed
   if (aiChatContext.hasAcceptedAgreement && conversationContext.apiHasError) {
@@ -99,22 +96,33 @@ function Main() {
     }
   }
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    // Monitor scroll positions only when Assistant is generating
-    if (!conversationContext.isGenerating) return
-    const el = e.currentTarget
-    scrollPos.current.isAtBottom = Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < SCROLL_BOTTOM_THRESHOLD
-  }
+  // Automatic scroll to bottom of scroll anchor when generating new response lines
+  const scrollIsAtBottom = React.useRef(true)
+  const scrollElement = React.useRef<HTMLDivElement | null>(null)
+  const scrollAnchor = React.useRef<HTMLDivElement | null>(null)
 
-  const handleLastElementHeightChange = () => {
-    console.log('scrolling', scrollerElement)
-    if (!scrollerElement) {
+  const handleScroll = React.useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    // Monitor scroll positions only when Assistant is generating,
+    // but always reset to bottom before next generation
+    if (!conversationContext.isGenerating) {
+      scrollIsAtBottom.current = true
+    } else if (scrollAnchor.current && conversationContentElement.current) {
+      const el = e.currentTarget
+      const idealScrollFromBottom = (el.scrollHeight -
+        (scrollAnchor.current.offsetTop +
+        scrollAnchor.current.offsetHeight)
+      )
+      const scrollBottom = el.scrollHeight - (el.clientHeight + el.scrollTop)
+      scrollIsAtBottom.current = scrollBottom <= (idealScrollFromBottom + SCROLL_BOTTOM_THRESHOLD)
+    }
+  }, [conversationContext.isGenerating])
+
+
+  const handleConversationEntriesHeightChanged = () => {
+    if (!conversationContext.isGenerating || !scrollElement.current || !scrollIsAtBottom.current || !scrollAnchor.current) {
       return
     }
-
-    if (scrollPos.current.isAtBottom) {
-      scrollerElement.scrollTop = scrollerElement.scrollHeight - scrollerElement.clientHeight
-    }
+    scrollElement.current.scrollTop = (scrollAnchor.current.offsetTop + scrollAnchor.current?.offsetHeight) - scrollElement.current.clientHeight
   }
 
   // Ask for opt-in once the first message is sent
@@ -203,7 +211,7 @@ function Main() {
         [styles.scroller]: true,
         [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement
       })}
-        ref={node => (scrollerElement = node)}
+        ref={scrollElement}
         onScroll={handleScroll}
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
@@ -224,12 +232,14 @@ function Main() {
                 </div>
               )}
 
+              <div ref={scrollAnchor}>
               {!!conversationContext.conversationUuid &&
               <aiChatContext.conversationEntriesComponent
                 onLoad={() => setIsContentReady(true)}
-                onGeneratedConversationEntryHeightChanged={handleLastElementHeightChange}
+                onHeightChanged={handleConversationEntriesHeightChanged}
               />
               }
+              </div>
 
               {conversationContext.isFeedbackFormVisible &&
                 <div className={classnames([styles.promptContainer, styles.feedbackForm])}>
