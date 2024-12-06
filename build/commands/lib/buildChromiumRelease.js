@@ -98,7 +98,6 @@ function getChromiumGnArgs() {
     target_cpu: targetArch,
     target_os: targetOs,
     is_official_build: true,
-    enable_keystone_registration_framework: false,
     ffmpeg_branding: 'Chrome',
     enable_widevine: true,
     ignore_missing_widevine_signing_cert: true,
