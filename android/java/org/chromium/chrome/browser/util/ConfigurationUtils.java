@@ -22,11 +22,7 @@ public class ConfigurationUtils {
 
     public static boolean isLandscape(Context context) {
         int orientation = context.getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            return true;
-        } else {
-            return false;
-        }
+        return orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     public static boolean isTablet(Context context) {

@@ -34,15 +34,16 @@ import java.util.List;
 import java.util.Locale;
 
 public class HighlightDialogFragment extends DialogFragment {
-    final public static String TAG_FRAGMENT = "HIGHLIGHT_FRAG";
-    private final static String NTP_TUTORIAL_PAGE = "https://brave.com/ja/android-ntp-tutorial";
+    public static final String TAG_FRAGMENT = "HIGHLIGHT_FRAG";
+    private static final String NTP_TUTORIAL_PAGE = "https://brave.com/ja/android-ntp-tutorial";
 
     public interface HighlightDialogListener {
         void onNextPage();
+
         void onLearnMore();
     }
 
-    private static final List<Integer> highlightViews =
+    private static final List<Integer> sHighlightViews =
             Arrays.asList(
                     R.id.brave_stats_ads,
                     R.id.brave_stats_data_saved,
@@ -154,7 +155,7 @@ public class HighlightDialogFragment extends DialogFragment {
         if (position == 3) {
             viewId = R.id.ntp_stats_layout;
         } else {
-            viewId = highlightViews.get(position);
+            viewId = sHighlightViews.get(position);
         }
         View view = getActivity().findViewById(viewId);
         if (view != null) {
