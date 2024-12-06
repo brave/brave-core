@@ -21,10 +21,7 @@ public class BraveDefaultBrowserPromoUtils extends DefaultBrowserPromoUtils {
 
     @Override
     public boolean prepareLaunchPromoIfNeeded(
-            Activity activity,
-            WindowAndroid windowAndroid,
-            Tracker tracker,
-            boolean ignoreMaxCount) {
+            Activity activity, WindowAndroid windowAndroid, Tracker tracker) {
         return false;
     }
 }
