@@ -21,15 +21,13 @@ void BraveVPNController::ShowBraveVPNBubble(bool show_select) {
   GetBraveBrowserView()->ShowBraveVPNBubble(show_select);
 }
 
-void BraveVPNController::OpenVPNAccountPage() {
+void BraveVPNController::OpenVPNAccountPage(const std::string& intent) {
   auto* browser = browser_view_->browser();
   auto* profile = browser->profile();
   auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
-  auto url =
+  const auto url =
       GURL(brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment()));
-  GURL::Replacements replacements;
-  replacements.SetQueryStr("intent=checkout&product=vpn");
-  ShowSingletonTab(browser, url.ReplaceComponents(replacements));
+  ShowSingletonTab(browser, brave_vpn::GetManageURLForUIType(intent, url));
 }
 
 BraveBrowserView* BraveVPNController::GetBraveBrowserView() {

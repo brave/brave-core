@@ -24,6 +24,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/version_info/channel.h"
+#include "url/gurl.h"
 
 namespace brave_vpn {
 
@@ -139,8 +140,24 @@ void EnableWireguardIfPossible(PrefService* local_prefs) {
         base::FeatureList::IsEnabled(features::kBraveVPNUseWireguardService));
   }
 }
-
 #endif  // BUILDFLAG(IS_WIN)
+
+GURL GetManageURLForUIType(const std::string& type, const GURL& manage_url) {
+  if (type == "recover" || type == "checkout") {
+    DCHECK(manage_url.is_valid());
+    std::string query = "intent=" + type + "&product=vpn";
+    GURL::Replacements replacements;
+    replacements.SetQueryStr(query);
+    return manage_url.ReplaceComponents(replacements);
+  } else if (type == "privacy") {
+    return GURL("https://brave.com/privacy/browser/#vpn");
+  } else if (type == "about") {
+    return GURL(brave_vpn::kAboutUrl);
+  }
+  DCHECK_EQ(type, "manage");
+  return manage_url;
+}
+
 void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   if (local_prefs->GetBoolean(prefs::kBraveVPNLocalStateMigrated)) {
     return;
