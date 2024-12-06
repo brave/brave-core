@@ -14,7 +14,7 @@ export default function StorybookConversationEntries (props: ConversationEntries
   const conversationContext = useConversation()
   React.useEffect(() => {
     setTimeout(() => {
-      props.onLoad()
+      props.onIsContentReady(true)
     }, 0)
   }, [conversationContext.conversationUuid])
 

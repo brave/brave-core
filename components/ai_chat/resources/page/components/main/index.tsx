@@ -47,10 +47,6 @@ function Main() {
   const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
   const [isContentReady, setIsContentReady] = React.useState(false)
 
-  React.useEffect(() => {
-    setIsContentReady(false)
-  }, [conversationContext.conversationUuid])
-
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
     !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
@@ -239,7 +235,7 @@ function Main() {
               <div ref={scrollAnchor}>
               {!!conversationContext.conversationUuid &&
               <aiChatContext.conversationEntriesComponent
-                onLoad={() => setIsContentReady(true)}
+                onIsContentReady={setIsContentReady}
                 onHeightChanged={handleConversationEntriesHeightChanged}
               />
               }

@@ -10,7 +10,7 @@ import getAPI, * as AIChat from '../api'
 import useMediaQuery from '$web-common/useMediaQuery'
 
 export interface ConversationEntriesProps {
-  onLoad: () => unknown
+  onIsContentReady: (isContentReady: boolean) => unknown
   onHeightChanged: () => unknown
 }
 

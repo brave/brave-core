@@ -182,7 +182,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   // Initialization
   React.useEffect(() => {
-    console.debug('conversation context init')
     async function updateHistory() {
       const { conversationHistory } =
         await conversationHandler.getConversationHistory()
