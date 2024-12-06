@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import { Optional } from '../../shared/lib/optional'
+import { TextSkeleton } from './text_skeleton'
 
 const balanceFormatter = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 2,
@@ -18,7 +19,7 @@ interface Props {
 
 export function AccountBalance(props: Props) {
   if (!props.balance.hasValue()) {
-    return <></>
+    return <TextSkeleton length={12} />
   }
   return <>
     {balanceFormatter.format(props.balance.valueOr(0)) + ' BAT'}

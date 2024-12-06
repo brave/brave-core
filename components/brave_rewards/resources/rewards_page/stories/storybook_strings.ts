@@ -126,7 +126,7 @@ export const localeStrings: { [K in StringKey]: string }  = {
   countrySelectTitle: 'Select your region',
   countrySelectText: 'Select your region so we can show you the right options and ads for your region.',
   doneButtonLabel: 'Done',
-  earningsAdsReceivedText: '$1 ads received this month',
+  earningsAdsReceivedText: '$1 Ads received this month',
   helpButtonLabel: 'Help',
   learnMoreLink: 'Learn more',
   merchStoreTitle: 'Brave merch store',

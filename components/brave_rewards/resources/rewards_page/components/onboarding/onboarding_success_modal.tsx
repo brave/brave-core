@@ -7,7 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 import { AppModelContext } from '../../lib/app_model_context'
-import { TabOpenerContext , NewTabLink } from '../../../shared/components/new_tab_link'
+import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { Modal } from '../modal'
 import { WdpOptInModal } from './wdp_opt_in_modal'
@@ -21,7 +21,6 @@ interface Props {
 
 export function OnboardingSuccessModal(props: Props) {
   const model = React.useContext(AppModelContext)
-  const tabOpener = React.useContext(TabOpenerContext)
   const { getString } = useLocaleContext()
   const [showWdpModal, setShowWdpModal] = React.useState(true)
 
@@ -36,11 +35,6 @@ export function OnboardingSuccessModal(props: Props) {
     )
   }
 
-  function onDoneClick() {
-    tabOpener.openTab(urls.rewardsTourURL)
-    props.onClose()
-  }
-
   return (
     <Modal className='onboarding-success' onEscape={props.onClose}>
       <Modal.Header onClose={props.onClose} />
@@ -53,7 +47,7 @@ export function OnboardingSuccessModal(props: Props) {
           {getString('onboardingSuccessText')}
         </div>
         <div className='action'>
-          <Button onClick={onDoneClick}>
+          <Button onClick={props.onClose}>
             {getString('doneButtonLabel')}
           </Button>
         </div>
