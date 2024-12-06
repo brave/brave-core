@@ -200,13 +200,13 @@
 </service>
 
 <activity
-    android:name="org.chromium.chrome.browser.playlist.kotlin.activity.PlaylistMenuOnboardingActivity"
+    android:name="org.chromium.chrome.browser.playlist.activity.PlaylistMenuOnboardingActivity"
     android:exported="false"
     android:launchMode="singleTask"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen" />
 
 <service
-    android:name="org.chromium.chrome.browser.playlist.kotlin.playback_service.VideoPlaybackService"
+    android:name="org.chromium.chrome.browser.playlist.playback_service.VideoPlaybackService"
     android:foregroundServiceType="mediaPlayback"
     android:exported="false">
     <intent-filter>
