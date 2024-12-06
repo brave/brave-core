@@ -162,7 +162,7 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(
 
   for (const auto& direct_publisher : direct_publishers) {
     direct_feed_fetcher_.DownloadFeed(
-        direct_publisher->feed_source, direct_publisher->publisher_id, false,
+        direct_publisher->feed_source, direct_publisher->publisher_id,
         base::BindOnce(
             [](base::RepeatingCallback<void(FeedSourceResult)> cb,
                std::string publisher_id, DirectFeedResponse response) {

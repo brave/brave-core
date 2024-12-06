@@ -16,6 +16,7 @@
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/rust/lib.rs.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -152,14 +153,29 @@ DirectFeedFetcher::~DirectFeedFetcher() = default;
 
 void DirectFeedFetcher::DownloadFeed(GURL url,
                                      std::string publisher_id,
-                                     bool no_https_upgrade,
                                      DownloadFeedCallback callback) {
+  if (url.SchemeIs(url::kHttpScheme)) {
+    content::GetUIThreadTaskRunner({})->PostTaskAndReplyWithResult(
+        FROM_HERE,
+        base::BindOnce(&Delegate::ShouldUpgradeToHttps,
+                       base::Unretained(delegate_), url),
+        base::BindOnce(&DirectFeedFetcher::DownloadFeedHelper,
+                       weak_ptr_factory_.GetWeakPtr(), url, publisher_id,
+                       std::move(callback)));
+    return;
+  }
+  DownloadFeedHelper(url, publisher_id, std::move(callback), false);
+}
+
+void DirectFeedFetcher::DownloadFeedHelper(GURL url,
+                                           std::string publisher_id,
+                                           DownloadFeedCallback callback,
+                                           bool should_https_upgrade) {
   // Make request
   auto request = std::make_unique<network::ResourceRequest>();
   bool https_upgraded = false;
 
-  if (!no_https_upgrade && url.SchemeIs(url::kHttpScheme) &&
-      delegate_->ShouldUpgradeToHttps(url)) {
+  if (should_https_upgrade) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(url::kHttpsScheme);
     url = url.ReplaceComponents(replacements);
@@ -221,7 +237,7 @@ void DirectFeedFetcher::OnFeedDownloaded(
       GURL::Replacements replacements;
       replacements.SetSchemeStr(url::kHttpScheme);
       feed_url = feed_url.ReplaceComponents(replacements);
-      DownloadFeed(feed_url, publisher_id, true, std::move(callback));
+      DownloadFeedHelper(feed_url, publisher_id, std::move(callback), false);
       return;
     }
     DirectFeedError error;
