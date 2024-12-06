@@ -5,13 +5,20 @@
 
 package org.chromium.chrome.browser;
 
+import org.chromium.base.Log;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
 import org.chromium.content_public.browser.WebContents;
 
+/**
+ * @noinspection unused
+ */
 @JNINamespace("chrome::android")
 public class BackgroundVideoPlaybackTabHelper {
+    private static final String TAG = "BackgroundVideoPlaybackTabHelper";
 
     public static void setFullscreen(WebContents webContents) {
         BackgroundVideoPlaybackTabHelperJni.get().setFullscreen(webContents);
@@ -26,5 +33,15 @@ public class BackgroundVideoPlaybackTabHelper {
         void setFullscreen(WebContents webContents);
 
         boolean isPlayingMedia(WebContents webContents);
+    }
+
+    @CalledByNative
+    public static void showYouTubeFeaturesLayout(boolean show) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.showYouTubeFeaturesLayout(show);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "showYouTubeFeaturesLayout", e);
+        }
     }
 }
