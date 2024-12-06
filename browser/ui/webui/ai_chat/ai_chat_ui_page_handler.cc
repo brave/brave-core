@@ -95,7 +95,7 @@ void AIChatUIPageHandler::OpenAIChatSettings() {
       (active_chat_tab_helper_) ? active_chat_tab_helper_->web_contents()
                                 : owner_web_contents_.get();
 #if !BUILDFLAG(IS_ANDROID)
-  const GURL url("brave://settings/leo-assistant");
+  const GURL url("brave://settings/leo-ai");
   if (auto* browser = chrome::FindBrowserWithTab(contents_to_navigate)) {
     ShowSingletonTab(browser, url);
   } else {
