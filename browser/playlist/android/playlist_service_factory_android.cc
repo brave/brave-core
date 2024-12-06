@@ -6,7 +6,7 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 
 #include "base/android/jni_android.h"
-#include "brave/android/java/org/chromium/chrome/browser/playlist/playlist_jni_headers/PlaylistServiceFactoryAndroid_jni.h"
+#include "brave/build/android/jni_headers/PlaylistServiceFactoryAndroid_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 

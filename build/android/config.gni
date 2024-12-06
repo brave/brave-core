@@ -20,12 +20,12 @@ brave_android_manifest_includes = [
 ]
 
 brave_chrome_java_deps = [
-  "//brave/android/java/org/chromium/chrome/browser/playlist:playlist_java_sources",
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
   "//brave/browser/download/android:java",
   "//brave/browser/download/internal/android:java",
   "//brave/browser/notifications/android:brave_java",
   "//brave/browser/notifications/android:java",
+  "//brave/browser/playlist/android:playlist_java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
   "//brave/browser/tabmodel/android:java",
   "//brave/browser/ui/android/logo:java",
@@ -68,6 +68,7 @@ brave_chrome_java_deps = [
 ]
 
 brave_chrome_java_deps += brave_app_billing_deps
+brave_chrome_java_deps += brave_app_playlist_deps
 
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
@@ -86,9 +87,8 @@ brave_chrome_java_srcjar_deps = [
 ]
 
 brave_chrome_app_java_resources_deps = [
-  "//brave/android/java/org/chromium/chrome/browser/playlist:playlist_resources",
+  "//brave/browser/playlist/android:playlist_resources",
   "//brave/build/android:android_brave_strings_grd",
-  "//brave/build/android:android_playlist_strings_grd",
   "//brave/build/android:brave_java_xml_preprocess_resources",
 ]
 
@@ -124,6 +124,7 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/notifications/channels/BraveSiteChannelsManagerBridge.java",
   "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
+  "//brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
   "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
   "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   "//brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",

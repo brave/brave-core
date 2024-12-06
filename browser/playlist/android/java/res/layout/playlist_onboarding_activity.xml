@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) 2023 The Brave Authors. All rights reserved.
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  ~ You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/onboardingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <org.chromium.chrome.browser.playlist.view.PlaylistToolbar
+            android:id="@+id/playlistToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/playlist_toolbar_height" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/playlistOnboardingViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btNextOnboarding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_button_bg"
+            android:text="@string/playlist_next"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/playlistOnboardingTabLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            app:tabBackground="@drawable/playlist_onboarding_tab_selector"
+            app:tabIndicatorHeight="0dp"
+            app:tabPaddingEnd="-2dp"
+            app:tabPaddingStart="-2dp"
+            app:tabRippleColor="@android:color/transparent" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</ScrollView>
