@@ -2300,7 +2300,7 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testContainsOnlyMethods() throws Exception {
-        final List<String> methods =
+        List<String> methods =
                 Arrays.asList(
                         "mediaSessionDestroyed",
                         "mediaSessionStateChanged",
@@ -2315,6 +2315,13 @@ public class BytecodeTest {
                 methods,
                 "BraveMediaSessionHelper.createMediaSessionObserver",
                 "MediaSessionHelper.createMediaSessionObserver");
+
+        methods = Arrays.asList("inflate", "whenLoaded");
+        doesHaveOnlyListedMethods(
+                "org/chromium/ui/ViewProvider",
+                methods,
+                "BraveAutocompleteCoordinator.createViewProvider",
+                "AutocompleteCoordinator.createViewProvider");
     }
 
     private boolean classExists(String className) {
@@ -2325,7 +2332,7 @@ public class BytecodeTest {
             String className, List<String> methods, String whereToOverride, String overrideIf) {
         Class c = getClassForPath(className);
         if (c == null) {
-            fail("Get class " + className + "error");
+            fail("Get class " + className + " error");
         }
         for (Method m : c.getDeclaredMethods()) {
             if (!methods.contains(m.getName())) {
