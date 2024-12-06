@@ -329,7 +329,7 @@
     Shop Now
   </message>
 
-  <!-- Profiles (OS settings) -->
+  <!-- People (OS settings) -->
   <message name="IDS_OS_SETTINGS_PROFILE_NAME" desc="Label with device account first name, showing which user is currently signed in.">
     Currently signed in as <ph name="NAME">$1<ex>John</ex></ph>
   </message>
@@ -400,7 +400,7 @@
     Fingerprint
   </message>
   <message name="IDS_SETTINGS_PEOPLE_MANAGE_OTHER_PEOPLE" desc="Label for the button that opens the multi-profile user manager.">
-    Manage other profiles
+    Manage other people
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_EDUCATION_ACCOUNT" desc="Status label which indicates that specified account is a school/EDU account.">
     School account
@@ -1670,19 +1670,19 @@
   <message name="IDS_SETTINGS_GREYSCALE_LABEL" desc="Label for slider which controls grayscale UI filter.">
     Grayscale
   </message>
-  <message name="IDS_SETTINGS_PROTANOMALY_FILTER" desc="Label for a setting drop-down menu option for a color filter that helps profiles with protanomaly.">
+  <message name="IDS_SETTINGS_PROTANOMALY_FILTER" desc="Label for a setting drop-down menu option for a color filter that helps people with protanomaly.">
     Red-green, red weak (Protanomaly)
   </message>
-  <message name="IDS_SETTINGS_TRITANOMALY_FILTER" desc="Label for a setting drop-down menu option for a color filter that helps profiles with tritanomaly.">
+  <message name="IDS_SETTINGS_TRITANOMALY_FILTER" desc="Label for a setting drop-down menu option for a color filter that helps people with tritanomaly.">
     Blue-yellow (Tritanomaly)
   </message>
-  <message name="IDS_SETTINGS_DEUTERANOMALY_FILTER" desc="Label for a setting drop-down menu option for a color filter that helps profiles with deuteranomaly.">
+  <message name="IDS_SETTINGS_DEUTERANOMALY_FILTER" desc="Label for a setting drop-down menu option for a color filter that helps people with deuteranomaly.">
     Red-green, green weak (Deuteranomaly)
   </message>
   <message name="IDS_SETTINGS_COLOR_VISION_DEFICIENCY_TYPE_LABEL" desc="Label for a drop-down menu option that provides color vision correction filters">
     Filter
   </message>
-  <message name="IDS_SETTINGS_COLOR_VISION_FILTER_INTENSITY_LABEL" desc="Label for a slider that allows profiles to control the intensity of the color vision correction filter">
+  <message name="IDS_SETTINGS_COLOR_VISION_FILTER_INTENSITY_LABEL" desc="Label for a slider that allows people to control the intensity of the color vision correction filter">
     Intensity
   </message>
   <message name="IDS_SETTINGS_COLOR_FILTER_MINIMUM_LABEL" desc="Label for the side of the color filter slider control that causes the least visual change.">
@@ -3747,7 +3747,7 @@ Press an assigned switch or key to remove assignment.
     Focused voice
   </message>
   <message name="IDS_SETTINGS_AUDIO_INPUT_BEAMFORMING_DESCRIPTION" desc="In Device Settings, the description of the beamforming effect under the input section in audio settings subpage.">
-    Beamforming mic so the profile using the Chromebook sounds clear.
+    Beamforming mic so the person using the Chromebook sounds clear.
   </message>
   <message name="IDS_SETTINGS_AUDIO_DEVICE_FRONT_MIC_LABEL" desc="In Device Settings, the label used for the front microphone.">
     Front microphone
@@ -5192,7 +5192,7 @@ Press an assigned switch or key to remove assignment.
     Limit who can sign in
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_USERS_RESTRICT_SIGNIN_DESCRIPTION" desc="Description for the setting for restricting sign in to specific users.">
-    You can limit sign-in to certain users. This removes the "Add profile" option on the sign-in screen. You can also remove current users.
+    You can limit sign-in to certain users. This removes the "Add person" option on the sign-in screen. You can also remove current users.
   </message>
   <message name="IDS_SETTINGS_USERS_DEVICE_OWNER_LABEL" desc="Label for a user who is the device owner.">
     <ph name="USER_NAME">$1<ex>John Smith</ex></ph> (owner)
@@ -5575,7 +5575,7 @@ Press an assigned switch or key to remove assignment.
       =1 {1 fingerprint set up}
       other {{COUNT} fingerprints set up}}
   </message>
-  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NONE" desc="Text on the profiles page which notifies the user that the device will not show lock screen or prompt for auth after waking from sleep.">
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NONE" desc="Text on the people page which notifies the user that the device will not show lock screen or prompt for auth after waking from sleep.">
     Sign in automatically
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_NEW_FINGERPRINT_DEFAULT_NAME" desc="The default name (plus a number for a newly added fingerprint).">
@@ -5644,16 +5644,16 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_SIGN_IN_OPTIONS" desc="Heading for the list of sign-in factor options on the lock screen page.">
     Sign-in options
   </message>
-  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOCK" desc="Text on the profiles page which opens up the quick unlock subpage and the title of the quick unlock subpage.">
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOCK" desc="Text on the people page which opens up the quick unlock subpage and the title of the quick unlock subpage.">
     Lock screen
   </message>
-  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOGIN_LOCK" desc="Text on the profiles page which opens up the security and sign-in section.">
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOGIN_LOCK" desc="Text on the people page which opens up the security and sign-in section.">
     Security and sign-in
   </message>
-  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOGIN_LOCK_V2" desc="Text on the profiles page which opens up the security and sign-in section.">
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_TITLE_LOGIN_LOCK_V2" desc="Text on the people page which opens up the security and sign-in section.">
     Lock screen and sign-in
   </message>
-  <message name="IDS_SETTINGS_PEOPLE_SCREEN_LOCK_TITLE" desc="Text on the profiles page which opens up the screen lock and sign-in section.">
+  <message name="IDS_SETTINGS_PEOPLE_SCREEN_LOCK_TITLE" desc="Text on the people page which opens up the screen lock and sign-in section.">
     Screen lock and sign-in
   </message>
   <message name="IDS_SETTINGS_PEOPLE_PASSWORD_PROMPT_ENTER_PASSWORD_LOCK" desc="Text above a password input field that tells the user they need to submit their password to configure these settings.">
@@ -7026,7 +7026,7 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
     Screen privacy
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_DESC" desc="The text explaining to the user the manner in which their presence is sensed and data usage policy.">
-    Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> uses a built-in sensor to detect profiles in front of your device. All data is processed on your device immediately and then deleted. Sensor data is never sent to Brave. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> uses a built-in sensor to detect people in front of your device. All data is processed on your device immediately and then deleted. Sensor data is never sent to Brave. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_QUICK_DIM_TITLE" desc="The name of the quick dim feature shown as the label of a toggle in the smart privacy subpage.">
     Lock-on-leave

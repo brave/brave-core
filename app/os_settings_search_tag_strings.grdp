@@ -408,11 +408,11 @@
   </message>
 
 
-  <!-- Profiles section. -->
-  <message name="IDS_OS_SETTINGS_TAG_PEOPLE" desc="Text for search result item which, when clicked, navigates the user to profiles settings.">
-    Profiles
+  <!-- People section. -->
+  <message name="IDS_OS_SETTINGS_TAG_PEOPLE" desc="Text for search result item which, when clicked, navigates the user to people settings.">
+    People
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_PEOPLE_V2" desc="Text for search result item which, when clicked, navigates the user to profiles settings.">
+  <message name="IDS_OS_SETTINGS_TAG_PEOPLE_V2" desc="Text for search result item which, when clicked, navigates the user to people settings.">
     Accounts
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PEOPLE_ACCOUNTS" desc="Text for search result item which, when clicked, navigates the user to accounts settings.">
@@ -446,7 +446,7 @@
     Screen lock password
   </message>
   <message name="IDS_OS_SETTINGS_TAG_MANAGE_OTHER_PEOPLE_PAGE" desc="Text for search result item which, when clicked, navigates the user to manage other user account privileges.">
-    Manage other profiles
+    Manage other people
   </message>
   <message name="IDS_OS_SETTINGS_TAG_GUEST_BROWSING" desc="Text for search result item which, when clicked, navigates the user to account settings, with a toggle to enable/disable guest browsing.">
     Guest browsing

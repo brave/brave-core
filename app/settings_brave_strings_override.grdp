@@ -29,10 +29,7 @@
   <if expr="not chromeos_ash">
   </if>
   <if expr="chromeos_ash">
-  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION_V2" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
-    You can manage your signed-in Brave sync chains. Your Brave sync chains are used for Brave browser, Play Store, Gmail, and more. If you want to add an account for someone else, like a family member, add a new profile to your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> instead. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
-</if>
+  </if>
   <message name="IDS_SETTINGS_SUGGEST_PREF_DESC" desc="The description of the checkbox to enable/disable sending omnibox input to the user's default search engine to get additional suggestions.">
     When you type in the address bar or search box, Brave sends what you type to your default search engine to get better suggestions. This is off in Private.
   </message>

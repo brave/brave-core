@@ -436,9 +436,6 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_FENCED_FRAME_INCOGNITO_PREFIX" desc="The prefix for a Private fenced frame row in the Task Manager">
           Private Fenced Frame: <ph name="FENCEDFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_TOOL_PREFIX" desc="The prefix for a tool process row in the Task Manager">
-          Tool: <ph name="PRINT_NAME">$1<ex>Manage Profiles</ex></ph>
-        </message>
         </if>
 
       <if expr="chromeos_ash">
@@ -879,16 +876,7 @@ are declared in tools/grit/grit_rule.gni.
           </if>
         <if expr="not use_titlecase">
                 </if>
-      <message name="IDS_DATA_SHARING_JOIN_WARNING" desc="The warning at the top of join dialog.">
-          Make sure you trust the profile that sent this invitation
-        </message>
-        <message name="IDS_DATA_SHARING_GROUP_FULL_BODY" desc="The body text of the group being full dialog when joining.">
-          Contact the profile who sent this link
-        </message>
-        <message name="IDS_DATA_SHARING_PEOPLE_WITH_ACCESS" desc="Text describing a list of members of a group.">
-          Profiles with access
-        </message>
-        <if expr="not use_titlecase">
+      <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
         </if>
