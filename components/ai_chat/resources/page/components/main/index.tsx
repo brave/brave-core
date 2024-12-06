@@ -34,7 +34,12 @@ import ToolsButtonMenu from '../tools_button_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 
-const SCROLL_BOTTOM_THRESHOLD = 20.0
+// Amount of pixels user has to scroll up to break out of
+// automatic scroll to bottom when new response lines are generated.
+const SCROLL_BOTTOM_THRESHOLD = 20
+// Amount of pixels below the currently generated line to show
+// when automatically scrolling to bottom.
+const SCROLL_BOTTOM_PADDING = 18
 
 const SUGGESTION_STATUS_SHOW_BUTTON: Mojom.SuggestionGenerationStatus[] = [
   Mojom.SuggestionGenerationStatus.CanGenerate,
@@ -119,10 +124,13 @@ function Main() {
 
 
   const handleConversationEntriesHeightChanged = () => {
-    if (!conversationContext.isGenerating || !scrollElement.current || !scrollIsAtBottom.current || !scrollAnchor.current) {
+    if (!conversationContext.isGenerating || !scrollElement.current ||
+        !scrollIsAtBottom.current || !scrollAnchor.current) {
       return
     }
-    scrollElement.current.scrollTop = (scrollAnchor.current.offsetTop + scrollAnchor.current?.offsetHeight) - scrollElement.current.clientHeight
+    scrollElement.current.scrollTop = (
+      scrollAnchor.current.offsetTop + scrollAnchor.current?.offsetHeight
+    ) - scrollElement.current.clientHeight + SCROLL_BOTTOM_PADDING
   }
 
   // Ask for opt-in once the first message is sent
