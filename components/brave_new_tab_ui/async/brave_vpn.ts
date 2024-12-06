@@ -41,9 +41,12 @@ handler.on(Actions.launchVPNPanel.getType(), async (store) => {
   getNTPBrowserAPI().pageHandler.launchVPNPanel()
 })
 
-handler.on(Actions.openVPNAccountPage.getType(), async (store) => {
-  getNTPBrowserAPI().pageHandler.openVPNAccountPage()
-})
+handler.on<string>(
+  Actions.openVPNAccountPage.getType(),
+  async (store, payload) => {
+    getNTPBrowserAPI().pageHandler.openVPNAccountPage(payload)
+  }
+)
 
 handler.on(Actions.toggleConnection.getType(), async (store) => {
   const state = store.getState() as ApplicationState

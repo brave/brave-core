@@ -85,7 +85,7 @@ interface PageHandler {
   // BraveVPN
   RefreshVPNState();
   LaunchVPNPanel();
-  OpenVPNAccountPage();
+  OpenVPNAccountPage(string intent);
 };
 
 // WebUI-side handler for requests from the browser.

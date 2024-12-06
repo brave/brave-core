@@ -426,8 +426,5 @@ Let's get you connected!
   <message name="IDS_BRAVE_VPN_WIDGET_CTA" desc="The text for vpn promo card cta">
     Start free trial
   </message>
-  <message name="IDS_BRAVE_VPN_WIDGET_FREE_TRIAL" desc="The text for vpn promo card free trial label">
-    7-day free trial
-  </message>
 
 </grit-part>
