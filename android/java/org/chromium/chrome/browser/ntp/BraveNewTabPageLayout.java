@@ -1206,7 +1206,7 @@ public class BraveNewTabPageLayout
                 .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 
-    public void setTabProvider(Supplier<Tab> unusedTabProvider) {}
+    public void setTabProvider(Supplier<Tab> unused_tabProvider) {}
 
     private void showNTPImage(NTPImage ntpImage) {
         Display display = mActivity.getWindowManager().getDefaultDisplay();

@@ -5,11 +5,9 @@
 
 package org.chromium.chrome.browser.preferences.website;
 
-/**
- * Allows monitoring of blocked resources via brave shields.
- */
+/** Allows monitoring of blocked resources via brave shields. */
 public interface BraveShieldsContentSettingsObserver {
-    public void blockEvent(int tabId, String block_type, String subresource);
+    public void blockEvent(int tabId, String blockType, String subresource);
+
     public void savedBandwidth(long savings);
 }
-
