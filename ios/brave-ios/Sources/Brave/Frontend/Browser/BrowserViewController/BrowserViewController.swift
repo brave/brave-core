@@ -512,7 +512,6 @@ public class BrowserViewController: UIViewController {
       self.setupAdsNotificationHandler()
       self.recordAdsUsageType()
     }
-    Preferences.Playlist.webMediaSourceCompatibility.observe(from: self)
     Preferences.PrivacyReports.captureShieldsData.observe(from: self)
     Preferences.PrivacyReports.captureVPNAlerts.observe(from: self)
     Preferences.Wallet.defaultEthWallet.observe(from: self)
@@ -3275,11 +3274,9 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.Rewards.hideRewardsIcon.key,
       Preferences.Rewards.rewardsToggledOnce.key:
       updateRewardsButtonState()
-    case Preferences.Playlist.webMediaSourceCompatibility.key,
-      Preferences.General.mediaAutoBackgrounding.key:
+    case Preferences.General.mediaAutoBackgrounding.key:
       tabManager.selectedTab?.setScripts(scripts: [
-        .playlistMediaSource: Preferences.Playlist.webMediaSourceCompatibility.value,
-        .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
+        .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value
       ])
       tabManager.reloadSelectedTab()
     case Preferences.General.youtubeHighQuality.key:

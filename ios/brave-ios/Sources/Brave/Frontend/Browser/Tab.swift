@@ -531,7 +531,6 @@ class Tab: NSObject {
         .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
         .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
         .nightMode: Preferences.General.nightModeEnabled.value,
-        .playlistMediaSource: Preferences.Playlist.webMediaSourceCompatibility.value,
       ]
 
       userScripts = Set(scriptPreferences.filter({ $0.value }).map({ $0.key }))
