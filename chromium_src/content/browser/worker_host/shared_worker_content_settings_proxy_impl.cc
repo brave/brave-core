@@ -9,11 +9,9 @@ namespace content {
 
 void SharedWorkerContentSettingsProxyImpl::GetBraveShieldsSettings(
     GetBraveShieldsSettingsCallback callback) {
-  if (!origin_.opaque()) {
-    owner_->GetBraveShieldsSettings(origin_.GetURL(), std::move(callback));
-  } else {
-    std::move(callback).Run(brave_shields::mojom::ShieldsSettings::New());
-  }
+  // Shields should also work in opaque origins.
+  const GURL url = origin_.GetTupleOrPrecursorTupleIfOpaque().GetURL();
+  owner_->GetBraveShieldsSettings(url, std::move(callback));
 }
 
 }  // namespace content

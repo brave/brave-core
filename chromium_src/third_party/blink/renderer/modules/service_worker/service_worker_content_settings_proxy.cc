@@ -14,13 +14,16 @@ brave_shields::mojom::ShieldsSettingsPtr
 ServiceWorkerContentSettingsProxy::GetBraveShieldsSettings(
     ContentSettingsType webcompat_settings_type) {
   brave_shields::mojom::blink::ShieldsSettingsPtr blink_result;
-  GetService()->GetBraveShieldsSettings(&blink_result);
+  if (!GetService()->GetBraveShieldsSettings(&blink_result)) {
+    return brave_shields::mojom::ShieldsSettings::New();
+  }
 
   // Convert the blink mojo struct into a non-blink mojo struct.
+  CHECK(blink_result);
   brave_shields::mojom::ShieldsSettingsPtr result;
   CHECK(brave_shields::mojom::ShieldsSettings::DeserializeFromMessage(
-      brave_shields::mojom::blink::ShieldsSettings::SerializeAsMessage(
-          &blink_result),
+      brave_shields::mojom::blink::ShieldsSettings::WrapAsMessage(
+          std::move(blink_result)),
       &result));
   return result;
 }

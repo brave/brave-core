@@ -5,6 +5,8 @@
 
 #include "src/content/public/browser/content_browser_client.cc"
 
+#include "base/debug/dump_without_crashing.h"
+
 namespace content {
 
 std::string ContentBrowserClient::GetEffectiveUserAgent(
@@ -30,6 +32,9 @@ brave_shields::mojom::ShieldsSettingsPtr
 ContentBrowserClient::WorkerGetBraveShieldSettings(
     const GURL& url,
     BrowserContext* browser_context) {
+  // BraveContentBrowserClient should implement this. It's possible this is
+  // reached somehow, add dumps to see if it's true.
+  base::debug::DumpWithoutCrashing();
   return brave_shields::mojom::ShieldsSettingsPtr();
 }
 
