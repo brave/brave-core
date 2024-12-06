@@ -24,9 +24,8 @@ UserIdleDetection::~UserIdleDetection() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void UserIdleDetection::OnNotifyUserDidBecomeActive(
-    const base::TimeDelta idle_time,
-    const bool screen_was_locked) {
+void UserIdleDetection::OnNotifyUserDidBecomeActive(base::TimeDelta idle_time,
+                                                    bool screen_was_locked) {
   if (!UserHasJoinedBraveRewards()) {
     // User has not joined Brave Rewards, so we don't need to track idle time.
     return;

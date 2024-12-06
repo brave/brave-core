@@ -15,7 +15,7 @@
 namespace brave_ads {
 
 std::unique_ptr<DepositInterface> DepositsFactory::Build(
-    const mojom::ConfirmationType mojom_confirmation_type) {
+    mojom::ConfirmationType mojom_confirmation_type) {
   if (!UserHasJoinedBraveRewards()) {
     // User has not joined Brave Rewards, so all desposits are non-rewardable.
     return std::make_unique<NonCashDeposit>();

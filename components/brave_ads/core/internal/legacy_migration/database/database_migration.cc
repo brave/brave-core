@@ -46,7 +46,7 @@ void MigrateToV44(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 }
 
 void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-             const int to_version) {
+             int to_version) {
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
@@ -58,7 +58,7 @@ void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 }
 
 void MigrateToVersion(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-                      const int to_version) {
+                      int to_version) {
   CHECK(mojom_db_transaction);
 
   table::CreativeSetConversions creative_set_conversion_database_table;
@@ -122,7 +122,7 @@ void MigrateToVersion(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
 }  // namespace
 
-void MigrateFromVersion(const int from_version, ResultCallback callback) {
+void MigrateFromVersion(int from_version, ResultCallback callback) {
   CHECK_LT(from_version, kVersionNumber);
 
   mojom::DBTransactionInfoPtr mojom_db_transaction =

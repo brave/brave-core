@@ -37,7 +37,7 @@ bool ShouldServeAdsAtRegularIntervals() {
   return PlatformHelper::GetInstance().IsMobile();
 }
 
-void SetServeAdAt(const base::Time serve_ad_at) {
+void SetServeAdAt(base::Time serve_ad_at) {
   SetProfileTimePref(prefs::kServeAdAt, serve_ad_at);
 }
 

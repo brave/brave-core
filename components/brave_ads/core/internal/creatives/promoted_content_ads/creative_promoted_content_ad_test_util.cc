@@ -12,7 +12,7 @@
 
 namespace brave_ads::test {
 
-CreativePromotedContentAdList BuildCreativePromotedContentAds(const int count) {
+CreativePromotedContentAdList BuildCreativePromotedContentAds(int count) {
   CHECK_GT(count, 0);
 
   CreativePromotedContentAdList creative_ads;
@@ -29,7 +29,7 @@ CreativePromotedContentAdList BuildCreativePromotedContentAds(const int count) {
 }
 
 CreativePromotedContentAdInfo BuildCreativePromotedContentAd(
-    const bool should_generate_random_uuids) {
+    bool should_generate_random_uuids) {
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(should_generate_random_uuids);
   CreativePromotedContentAdInfo creative_promoted_content_ad(creative_ad);

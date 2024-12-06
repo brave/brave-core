@@ -71,7 +71,7 @@ ComputeCreativeAdModelBasedPredictorInterestSegmentInputVariable(
 CreativeAdModelBasedPredictorUntargetedSegmentInputVariableInfo
 ComputeCreativeAdModelBasedPredictorUntargetedSegmentInputVariable(
     const std::string& segment,
-    const double weight) {
+    double weight) {
   return CreativeAdModelBasedPredictorUntargetedSegmentInputVariableInfo{
       .value = segment == kUntargetedSegment, .weight = weight};
 }

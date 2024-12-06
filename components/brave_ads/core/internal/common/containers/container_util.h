@@ -15,7 +15,7 @@ namespace brave_ads {
 
 template <typename T>
 std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,
-                                        const int chunk_size) {
+                                        int chunk_size) {
   CHECK_NE(0, chunk_size);
 
   std::vector<std::vector<T>> result;

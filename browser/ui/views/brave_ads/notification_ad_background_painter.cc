@@ -14,8 +14,8 @@
 namespace brave_ads {
 
 NotificationAdBackgroundPainter::NotificationAdBackgroundPainter(
-    const int top_radius,
-    const int bottom_radius,
+    int top_radius,
+    int bottom_radius,
     const SkColor color)
     : top_radius_(SkIntToScalar(top_radius)),
       bottom_radius_(SkIntToScalar(bottom_radius)),

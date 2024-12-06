@@ -77,15 +77,15 @@ void AdsClientIOS::Save(const std::string& name,
 }
 
 void AdsClientIOS::LoadResourceComponent(const std::string& id,
-                                         const int version,
+                                         int version,
                                          brave_ads::LoadFileCallback callback) {
   [bridge_ loadResourceComponent:id
                          version:version
                         callback:std::move(callback)];
 }
 
-void AdsClientIOS::GetSiteHistory(const int max_count,
-                                  const int days_ago,
+void AdsClientIOS::GetSiteHistory(int max_count,
+                                  int days_ago,
                                   brave_ads::GetSiteHistoryCallback callback) {
   [bridge_ getSiteHistory:max_count
                   forDays:days_ago
@@ -107,8 +107,8 @@ void AdsClientIOS::ShowScheduledCaptcha(const std::string& payment_id,
 }
 
 void AdsClientIOS::Log(const char* file,
-                       const int line,
-                       const int verbose_level,
+                       int line,
+                       int verbose_level,
                        const std::string& message) {
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }

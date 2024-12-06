@@ -43,7 +43,7 @@ void MockDeviceId() {
 }
 
 void MockPlatformHelper(const PlatformHelperMock& platform_helper_mock,
-                        const PlatformType type) {
+                        PlatformType type) {
   PlatformHelper::SetForTesting(&platform_helper_mock);
 
   bool is_mobile = false;
@@ -89,7 +89,7 @@ void MockPlatformHelper(const PlatformHelperMock& platform_helper_mock,
   ON_CALL(platform_helper_mock, GetType).WillByDefault(::testing::Return(type));
 }
 
-void MockBuildChannel(const BuildChannelType type) {
+void MockBuildChannel(BuildChannelType type) {
   CHECK(GlobalState::HasInstance());
 
   auto& build_channel = GlobalState::GetInstance()->BuildChannel();
@@ -118,32 +118,31 @@ void MockBuildChannel(const BuildChannelType type) {
 }
 
 void MockIsNetworkConnectionAvailable(const AdsClientMock& ads_client_mock,
-                                      const bool is_available) {
+                                      bool is_available) {
   ON_CALL(ads_client_mock, IsNetworkConnectionAvailable())
       .WillByDefault(::testing::Return(is_available));
 }
 
-void MockIsBrowserActive(const AdsClientMock& ads_client_mock,
-                         const bool is_active) {
+void MockIsBrowserActive(const AdsClientMock& ads_client_mock, bool is_active) {
   ON_CALL(ads_client_mock, IsBrowserActive)
       .WillByDefault(::testing::Return(is_active));
 }
 
 void MockIsBrowserInFullScreenMode(const AdsClientMock& ads_client_mock,
-                                   const bool is_full_screen_mode) {
+                                   bool is_full_screen_mode) {
   ON_CALL(ads_client_mock, IsBrowserInFullScreenMode())
       .WillByDefault(::testing::Return(is_full_screen_mode));
 }
 
 void MockCanShowNotificationAds(const AdsClientMock& ads_client_mock,
-                                const bool can_show) {
+                                bool can_show) {
   ON_CALL(ads_client_mock, CanShowNotificationAds())
       .WillByDefault(::testing::Return(can_show));
 }
 
 void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
     const AdsClientMock& ads_client_mock,
-    const bool can_show) {
+    bool can_show) {
   ON_CALL(ads_client_mock, CanShowNotificationAdsWhileBrowserIsBackgrounded())
       .WillByDefault(::testing::Return(can_show));
 }
@@ -151,10 +150,9 @@ void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
 void MockGetSiteHistory(const AdsClientMock& ads_client_mock,
                         const SiteHistoryList& site_history) {
   ON_CALL(ads_client_mock, GetSiteHistory)
-      .WillByDefault(
-          ::testing::Invoke([site_history](const size_t max_count,
-                                           const size_t /*recent_day_range*/,
-                                           GetSiteHistoryCallback callback) {
+      .WillByDefault(::testing::Invoke(
+          [site_history](size_t max_count, size_t /*recent_day_range*/,
+                         GetSiteHistoryCallback callback) {
             CHECK_LE(site_history.size(), max_count);
 
             std::move(callback).Run(site_history);

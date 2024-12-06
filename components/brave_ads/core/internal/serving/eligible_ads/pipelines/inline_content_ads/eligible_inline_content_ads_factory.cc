@@ -14,7 +14,7 @@ namespace brave_ads {
 
 std::unique_ptr<EligibleInlineContentAdsBase>
 EligibleInlineContentAdsFactory::Build(
-    const int version,
+    int version,
     const SubdivisionTargeting& subdivision_targeting,
     const AntiTargetingResource& anti_targeting_resource) {
   switch (version) {

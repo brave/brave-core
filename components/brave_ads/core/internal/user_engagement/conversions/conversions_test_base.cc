@@ -33,7 +33,7 @@ void BraveAdsConversionsTestBase::TearDown() {
 
 void BraveAdsConversionsTestBase::VerifyOnDidConvertAdExpectation(
     const AdInfo& ad,
-    const ConversionActionType action_type) {
+    ConversionActionType action_type) {
   EXPECT_CALL(conversions_observer_mock_,
               OnDidConvertAd(/*conversion=*/::testing::FieldsAre(
                   ad.type, ad.creative_instance_id, ad.creative_set_id,
@@ -47,7 +47,7 @@ void BraveAdsConversionsTestBase::VerifyOnDidNotConvertAdExpectation() {
 
 void BraveAdsConversionsTestBase::VerifyOnDidConvertVerifiableAdExpectation(
     const AdInfo& ad,
-    const ConversionActionType action_type,
+    ConversionActionType action_type,
     const VerifiableConversionInfo& verifiable_conversion) {
   EXPECT_CALL(
       conversions_observer_mock_,

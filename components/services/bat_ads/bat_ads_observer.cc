@@ -30,7 +30,7 @@ void BatAdsObserver::OnIneligibleWalletToServeAds() {
 }
 
 void BatAdsObserver::OnRemindUser(
-    const brave_ads::mojom::ReminderType mojom_reminder_type) {
+    brave_ads::mojom::ReminderType mojom_reminder_type) {
   bat_ads_observer_remote_->OnRemindUser(mojom_reminder_type);
 }
 

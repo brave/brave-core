@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-int LocalTimeInMinutesSinceMidnight(const base::Time time) {
+int LocalTimeInMinutesSinceMidnight(base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   const base::TimeDelta time_delta =
@@ -63,7 +63,7 @@ base::Time LocalTimeAtEndOfThisMonth() {
   return now + base::Days(remaining_days_in_month) - base::Milliseconds(1);
 }
 
-std::string TimeToPrivacyPreservingIso8601(const base::Time time) {
+std::string TimeToPrivacyPreservingIso8601(base::Time time) {
   base::Time::Exploded exploded;
   time.UTCExplode(&exploded);
 

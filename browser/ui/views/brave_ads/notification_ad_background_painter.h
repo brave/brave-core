@@ -14,8 +14,8 @@ namespace brave_ads {
 // rectangle with rounded corners
 class NotificationAdBackgroundPainter : public views::Painter {
  public:
-  NotificationAdBackgroundPainter(const int top_radius,
-                                  const int bottom_radius,
+  NotificationAdBackgroundPainter(int top_radius,
+                                  int bottom_radius,
                                   const SkColor color = SK_ColorWHITE);
 
   NotificationAdBackgroundPainter(const NotificationAdBackgroundPainter&) =

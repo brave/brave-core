@@ -7,7 +7,7 @@
 
 namespace brave_ads {
 
-cbr::TokenList TokenGenerator::Generate(const size_t count) const {
+cbr::TokenList TokenGenerator::Generate(size_t count) const {
   return cbr::TokenList(count);
 }
 

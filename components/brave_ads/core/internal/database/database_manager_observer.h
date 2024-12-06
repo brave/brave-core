@@ -26,17 +26,14 @@ class DatabaseManagerObserver : public base::CheckedObserver {
 
   // Invoked when about to migrate the database from `from_version` to
   // `to_version`.
-  virtual void OnWillMigrateDatabase(const int from_version,
-                                     const int to_version) {}
+  virtual void OnWillMigrateDatabase(int from_version, int to_version) {}
 
   // Invoked when the database was migrated from `from_version` to `to_version`.
-  virtual void OnDidMigrateDatabase(const int from_version,
-                                    const int to_version) {}
+  virtual void OnDidMigrateDatabase(int from_version, int to_version) {}
 
   // Invoked when the database cannot be migrated from `from_version` to
   // `to_version`.
-  virtual void OnFailedToMigrateDatabase(const int from_version,
-                                         const int to_version) {}
+  virtual void OnFailedToMigrateDatabase(int from_version, int to_version) {}
 
   // Invoked when the database is ready to be queried.
   virtual void OnDatabaseIsReady() {}

@@ -16,7 +16,7 @@
 
 namespace brave_ads::test {
 
-CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {
+CreativeNewTabPageAdList BuildCreativeNewTabPageAds(int count) {
   CHECK_GT(count, 0);
 
   CreativeNewTabPageAdList creative_ads;
@@ -33,7 +33,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {
 }
 
 CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
-    const bool should_generate_random_uuids) {
+    bool should_generate_random_uuids) {
   const CreativeAdInfo creative_ad =
       BuildCreativeAd(should_generate_random_uuids);
   CreativeNewTabPageAdInfo creative_new_tab_page_ad(creative_ad);

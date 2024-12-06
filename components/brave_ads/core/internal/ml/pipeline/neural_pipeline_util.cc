@@ -86,7 +86,7 @@ std::optional<TransformationVector> LoadTransformations(
 }  // namespace
 
 std::optional<PipelineInfo> LoadNeuralPipeline(const uint8_t* const data,
-                                               const size_t length) {
+                                               size_t length) {
   flatbuffers::Verifier verifier(data, length);
   if (!neural_text_classification::flat::VerifyModelBuffer(verifier)) {
     return std::nullopt;

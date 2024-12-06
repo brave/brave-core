@@ -17,8 +17,7 @@
 
 namespace brave_ads {
 
-std::unique_ptr<UrlHostInterface> UrlHostFactory::Build(
-    const UrlHostType type) {
+std::unique_ptr<UrlHostInterface> UrlHostFactory::Build(UrlHostType type) {
   switch (type) {
     case UrlHostType::kStatic: {
       return std::make_unique<StaticUrlHost>();

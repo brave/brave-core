@@ -11,14 +11,14 @@
 
 namespace brave_ads {
 
-bool MatchDayOfWeek(const CreativeDaypartInfo& daypart, const int day_of_week) {
+bool MatchDayOfWeek(const CreativeDaypartInfo& daypart, int day_of_week) {
   CHECK(day_of_week >= 0 && day_of_week <= 6);
 
   const char day_of_week_as_char = static_cast<char>('0' + day_of_week);
   return base::Contains(daypart.days_of_week, day_of_week_as_char);
 }
 
-bool MatchTimeSlot(const CreativeDaypartInfo& daypart, const int minutes) {
+bool MatchTimeSlot(const CreativeDaypartInfo& daypart, int minutes) {
   return minutes >= daypart.start_minute && minutes <= daypart.end_minute;
 }
 

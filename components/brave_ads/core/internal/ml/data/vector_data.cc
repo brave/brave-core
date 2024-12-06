@@ -32,7 +32,7 @@ constexpr double kMinimumVectorLength = 1e-7;
 class VectorDataStorage {
  public:
   VectorDataStorage() = default;
-  VectorDataStorage(const size_t dimension_count,
+  VectorDataStorage(size_t dimension_count,
                     std::vector<uint32_t> points,
                     std::vector<float> values)
       : dimension_count_(dimension_count),
@@ -83,7 +83,7 @@ VectorData::VectorData(std::vector<float> data) : Data(DataType::kVector) {
       data.size(), std::vector<uint32_t>(), std::move(data));
 }
 
-VectorData::VectorData(const size_t dimension_count,
+VectorData::VectorData(size_t dimension_count,
                        const std::map<uint32_t, double>& data)
     : Data(DataType::kVector) {
   std::vector<uint32_t> points(data.size());
@@ -171,7 +171,7 @@ void VectorData::AddElementWise(const VectorData& other) {
   }
 }
 
-void VectorData::DivideByScalar(const float scalar) {
+void VectorData::DivideByScalar(float scalar) {
   if (IsEmpty()) {
     return;
   }
@@ -184,15 +184,13 @@ void VectorData::DivideByScalar(const float scalar) {
 float VectorData::GetSum() const {
   return static_cast<float>(std::accumulate(
       storage_->values().cbegin(), storage_->values().cend(), 0.0,
-      [](const float lhs, const float rhs) -> float { return lhs + rhs; }));
+      [](float lhs, float rhs) -> float { return lhs + rhs; }));
 }
 
 float VectorData::GetNorm() const {
-  return static_cast<float>(sqrt(
-      std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
-                      0.0, [](const float lhs, const float rhs) -> float {
-                        return lhs + rhs * rhs;
-                      })));
+  return static_cast<float>(sqrt(std::accumulate(
+      storage_->values().cbegin(), storage_->values().cend(), 0.0,
+      [](float lhs, float rhs) -> float { return lhs + rhs * rhs; })));
 }
 
 void VectorData::ToDistribution() {
@@ -253,7 +251,7 @@ size_t VectorData::GetNonZeroElementCount() const {
   }
 
   return base::ranges::count_if(storage_->values(),
-                                [](const float value) { return value != 0; });
+                                [](float value) { return value != 0; });
 }
 
 const std::vector<float>& VectorData::GetData() const {

@@ -33,8 +33,7 @@ bool ShouldHaveRedeemedTokensInThePast() {
 
 }  // namespace
 
-void SetNextTokenRedemptionAt(
-    const base::Time next_payment_token_redemption_at) {
+void SetNextTokenRedemptionAt(base::Time next_payment_token_redemption_at) {
   SetProfileTimePref(prefs::kNextPaymentTokenRedemptionAt,
                      next_payment_token_redemption_at);
 }

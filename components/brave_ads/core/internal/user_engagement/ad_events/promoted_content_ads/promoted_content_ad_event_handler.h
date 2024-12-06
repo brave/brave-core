@@ -22,7 +22,7 @@ namespace brave_ads {
 using FirePromotedContentAdEventHandlerCallback = base::OnceCallback<void(
     bool success,
     const std::string& placement_id,
-    const mojom::PromotedContentAdEventType event_tmojom_ad_event_typeype)>;
+    mojom::PromotedContentAdEventType event_tmojom_ad_event_typeype)>;
 
 struct CreativePromotedContentAdInfo;
 struct PromotedContentAdInfo;

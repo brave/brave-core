@@ -77,7 +77,7 @@ bool InlineContentAdServing::CanServeAd(const AdEventList& ad_events) const {
 }
 
 void InlineContentAdServing::GetAdEvents(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   const database::table::AdEvents database_table;
@@ -90,10 +90,10 @@ void InlineContentAdServing::GetAdEvents(
 }
 
 void InlineContentAdServing::GetAdEventsCallback(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
-    const bool success,
+    bool success,
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "Inline content ad not served: Failed to get ad events");
@@ -109,7 +109,7 @@ void InlineContentAdServing::GetAdEventsCallback(
 }
 
 void InlineContentAdServing::GetUserModel(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   BuildUserModel(base::BindOnce(&InlineContentAdServing::GetUserModelCallback,
@@ -118,7 +118,7 @@ void InlineContentAdServing::GetUserModel(
 }
 
 void InlineContentAdServing::GetUserModelCallback(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     UserModelInfo user_model) const {
@@ -129,7 +129,7 @@ void InlineContentAdServing::GetUserModelCallback(
 }
 
 void InlineContentAdServing::GetEligibleAds(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     UserModelInfo user_model) const {
@@ -141,7 +141,7 @@ void InlineContentAdServing::GetEligibleAds(
 }
 
 void InlineContentAdServing::GetEligibleAdsCallback(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     const CreativeInlineContentAdList& creative_ads) const {
@@ -162,7 +162,7 @@ void InlineContentAdServing::GetEligibleAdsCallback(
 }
 
 void InlineContentAdServing::ServeAd(
-    const int32_t tab_id,
+    int32_t tab_id,
     const InlineContentAdInfo& ad,
     MaybeServeInlineContentAdCallback callback) const {
   if (!ad.IsValid()) {
@@ -176,7 +176,7 @@ void InlineContentAdServing::ServeAd(
 }
 
 void InlineContentAdServing::SuccessfullyServedAd(
-    const int32_t tab_id,
+    int32_t tab_id,
     const InlineContentAdInfo& ad,
     MaybeServeInlineContentAdCallback callback) const {
   NotifyDidServeInlineContentAd(tab_id, ad);
@@ -200,7 +200,7 @@ void InlineContentAdServing::NotifyOpportunityAroseToServeInlineContentAd()
 }
 
 void InlineContentAdServing::NotifyDidServeInlineContentAd(
-    const int32_t tab_id,
+    int32_t tab_id,
     const InlineContentAdInfo& ad) const {
   if (delegate_) {
     delegate_->OnDidServeInlineContentAd(tab_id, ad);

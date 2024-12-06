@@ -101,7 +101,7 @@ void ClientStateManager::SaveState() {
   BLOG(9, "Saving client state");
 
   GetAdsClient().Save(kClientJsonFilename, client_.ToJson(),
-                      base::BindOnce([](const bool success) {
+                      base::BindOnce([](bool success) {
                         if (!success) {
                           return BLOG(0, "Failed to save client state");
                         }

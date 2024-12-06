@@ -67,7 +67,7 @@ void LoadResourceComponentCallback(
 template <typename T>
 void LoadAndParseResourceComponent(
     const std::string& id,
-    const int version,
+    int version,
     LoadAndParseResourceComponentCallback<T> callback) {
   GetAdsClient().LoadResourceComponent(
       id, version,

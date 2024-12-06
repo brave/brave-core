@@ -14,7 +14,7 @@ namespace brave_ads::database {
 
 void PurgeExpiredAdHistory() {
   const database::table::AdHistory database_table;
-  database_table.PurgeExpired(base::BindOnce([](const bool success) {
+  database_table.PurgeExpired(base::BindOnce([](bool success) {
     if (!success) {
       return BLOG(0, "Failed to purge expired ad history");
     }
@@ -25,7 +25,7 @@ void PurgeExpiredAdHistory() {
 
 void SaveAdHistory(const AdHistoryList& ad_history) {
   database::table::AdHistory database_table;
-  database_table.Save(ad_history, base::BindOnce([](const bool success) {
+  database_table.Save(ad_history, base::BindOnce([](bool success) {
                         if (!success) {
                           return BLOG(0, "Failed to save ad history");
                         }

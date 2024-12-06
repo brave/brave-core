@@ -91,7 +91,7 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
     ads_client_notifier_.NotifyDidSolveAdaptiveCaptcha();
   }
 
-  void ExpectAdsClientNotifierCallCount(const int expected_call_count) {
+  void ExpectAdsClientNotifierCallCount(int expected_call_count) {
     EXPECT_CALL(ads_client_notifier_observer_mock_, OnNotifyDidInitializeAds())
         .Times(expected_call_count);
 

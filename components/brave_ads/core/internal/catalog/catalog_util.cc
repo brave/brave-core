@@ -86,7 +86,7 @@ int GetCatalogVersion() {
   return GetProfileIntegerPref(prefs::kCatalogVersion);
 }
 
-void SetCatalogVersion(const int version) {
+void SetCatalogVersion(int version) {
   SetProfileIntegerPref(prefs::kCatalogVersion, version);
 }
 
@@ -94,7 +94,7 @@ base::TimeDelta GetCatalogPing() {
   return base::Milliseconds(GetProfileInt64Pref(prefs::kCatalogPing));
 }
 
-void SetCatalogPing(const base::TimeDelta ping) {
+void SetCatalogPing(base::TimeDelta ping) {
   SetProfileInt64Pref(prefs::kCatalogPing, ping.InMilliseconds());
 }
 
@@ -102,7 +102,7 @@ base::Time GetCatalogLastUpdated() {
   return GetProfileTimePref(prefs::kCatalogLastUpdated);
 }
 
-void SetCatalogLastUpdated(const base::Time last_updated_at) {
+void SetCatalogLastUpdated(base::Time last_updated_at) {
   SetProfileTimePref(prefs::kCatalogLastUpdated, last_updated_at);
 }
 

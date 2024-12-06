@@ -19,18 +19,17 @@ class SiteVisitObserver : public base::CheckedObserver {
  public:
   // Invoked when there is a possibility that the user will arrive at the
   // landing page for the given `ad` `after` a period of time.
-  virtual void OnMaybeLandOnPage(const AdInfo& ad,
-                                 const base::TimeDelta after) {}
+  virtual void OnMaybeLandOnPage(const AdInfo& ad, base::TimeDelta after) {}
 
   // Invoked when the given `tab_id` for a page becomes occluded and will resume
   // after `remaining_time` when the tab becomes visible.
   virtual void OnDidSuspendPageLand(int32_t tab_id,
-                                    const base::TimeDelta remaining_time) {}
+                                    base::TimeDelta remaining_time) {}
 
   // Invoked when the given `tab_id` for a page becomes visible and may load
   // after 'remaining_time'.
   virtual void OnDidResumePageLand(int32_t tab_id,
-                                   const base::TimeDelta remaining_time) {}
+                                   base::TimeDelta remaining_time) {}
 
   // Invoked when a user landed on the landing page associated with the given
   // `tab_id`, `http_status_code`, and `ad`.
@@ -43,7 +42,7 @@ class SiteVisitObserver : public base::CheckedObserver {
   virtual void OnDidNotLandOnPage(int32_t tab_id, const AdInfo& ad) {}
 
   // Invoked when canceling a page land for the given `tab_id` and `ad`.
-  virtual void OnCanceledPageLand(const int32_t tab_id, const AdInfo& ad) {}
+  virtual void OnCanceledPageLand(int32_t tab_id, const AdInfo& ad) {}
 };
 
 }  // namespace brave_ads

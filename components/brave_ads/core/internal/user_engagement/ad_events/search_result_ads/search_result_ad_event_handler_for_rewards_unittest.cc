@@ -39,7 +39,7 @@ void VerifyDepositForCreativeInstanceIdExpectation(
   database_table.GetForCreativeInstanceId(creative_instance_id, callback.Get());
 }
 
-void VerifyCreativeSetConversionExpectation(const size_t expected_count) {
+void VerifyCreativeSetConversionExpectation(size_t expected_count) {
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
   EXPECT_CALL(
@@ -67,8 +67,8 @@ class BraveAdsSearchResultAdEventHandlerForRewardsTest : public test::TestBase {
 
   void FireEventAndVerifyExpectations(
       const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
-      const mojom::SearchResultAdEventType mojom_ad_event_type,
-      const bool should_fire_event) {
+      mojom::SearchResultAdEventType mojom_ad_event_type,
+      bool should_fire_event) {
     CHECK(mojom_creative_ad);
 
     base::MockCallback<FireSearchResultAdEventHandlerCallback> callback;

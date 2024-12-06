@@ -290,8 +290,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
     chrome::CloseWebContents(browser(), web_contents, /*add_to_history=*/false);
   }
 
-  void NavigateToURL(std::string_view relative_url,
-                     const bool has_user_gesture) {
+  void NavigateToURL(std::string_view relative_url, bool has_user_gesture) {
     content::WebContents* const web_contents = GetActiveWebContents();
     EXPECT_TRUE(web_contents);
 
@@ -307,7 +306,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
     EXPECT_TRUE(NavigateToURLFromRendererWithoutUserGesture(web_contents, url));
   }
 
-  void SimulateHttpStatusCodePage(const int http_status_code) {
+  void SimulateHttpStatusCodePage(int http_status_code) {
     const std::string relative_url =
         absl::StrFormat("%s?%s=%d", kHandleRequestUrlPath,
                         kHttpStatusCodeQueryKey, http_status_code);
@@ -315,7 +314,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
   }
 
   ::testing::AssertionResult ExecuteJavaScript(const std::string& javascript,
-                                               const bool has_user_gesture) {
+                                               bool has_user_gesture) {
     content::WebContents* const web_contents = GetActiveWebContents();
     return content::ExecJs(web_contents, javascript,
                            has_user_gesture
@@ -351,8 +350,7 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
                                          /*check_for_repost=*/false);
   }
 
-  void SimulateClick(const std::string& selectors,
-                     const bool has_user_gesture) {
+  void SimulateClick(const std::string& selectors, bool has_user_gesture) {
     const std::string javascript = base::ReplaceStringPlaceholders(
         R"(document.querySelector("$1").click();)", {selectors}, nullptr);
     ExecuteJavaScript(javascript, has_user_gesture);

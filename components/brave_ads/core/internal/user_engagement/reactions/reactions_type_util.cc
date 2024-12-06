@@ -11,7 +11,7 @@
 namespace brave_ads {
 
 mojom::ReactionType ToggleLikedReactionType(
-    const mojom::ReactionType mojom_reaction_type) {
+    mojom::ReactionType mojom_reaction_type) {
   switch (mojom_reaction_type) {
     case mojom::ReactionType::kNeutral:
     case mojom::ReactionType::kDisliked: {
@@ -30,7 +30,7 @@ mojom::ReactionType ToggleLikedReactionType(
 }
 
 mojom::ReactionType ToggleDislikedReactionType(
-    const mojom::ReactionType mojom_reaction_type) {
+    mojom::ReactionType mojom_reaction_type) {
   switch (mojom_reaction_type) {
     case mojom::ReactionType::kNeutral:
     case mojom::ReactionType::kLiked: {

@@ -15,7 +15,7 @@ struct IssuersInfo;
 class IssuersUrlRequestDelegate {
  public:
   // Invoked to tell the delegate we will fetch the issuers at `fetch_at`.
-  virtual void OnWillFetchIssuers(const base::Time fetch_at) {}
+  virtual void OnWillFetchIssuers(base::Time fetch_at) {}
 
   // Invoked to tell the delegate we successfully fetched the `issuers`.
   virtual void OnDidFetchIssuers(const IssuersInfo& issuers) {}
@@ -25,7 +25,7 @@ class IssuersUrlRequestDelegate {
 
   // Invoked to tell the delegate we will retry fetching the issuers at
   // `retry_at`.
-  virtual void OnWillRetryFetchingIssuers(const base::Time retry_at) {}
+  virtual void OnWillRetryFetchingIssuers(base::Time retry_at) {}
 
   // Invoked to tell the delegate we retried fetching the issuers.
   virtual void OnDidRetryFetchingIssuers() {}

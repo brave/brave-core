@@ -13,7 +13,7 @@
 namespace brave_ads {
 
 bool HasMinimumWaitTimePermission(const std::vector<base::Time>& history,
-                                  const base::TimeDelta time_constraint) {
+                                  base::TimeDelta time_constraint) {
   if (!DoesHistoryRespectRollingTimeConstraint(history, time_constraint,
                                                /*cap=*/1)) {
     BLOG(2, "Ad cannot be shown as minimum wait time has not passed");

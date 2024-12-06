@@ -9,7 +9,7 @@
 
 namespace brave_ads {
 
-int DayOfWeek(const base::Time time, const bool is_local) {
+int DayOfWeek(base::Time time, bool is_local) {
   base::Time::Exploded exploded;
 
   if (is_local) {

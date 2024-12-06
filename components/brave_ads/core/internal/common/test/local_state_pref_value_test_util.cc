@@ -30,15 +30,15 @@ void SetDefaultLocalStatePrefValue(const std::string& path,
   LocalStatePref(path).default_value = std::move(default_value);
 }
 
-void SetLocalStateBooleanPrefValue(const std::string& path, const bool value) {
+void SetLocalStateBooleanPrefValue(const std::string& path, bool value) {
   SetLocalStatePrefValue(path, base::Value(value));
 }
 
-void SetLocalStateIntegerPrefValue(const std::string& path, const int value) {
+void SetLocalStateIntegerPrefValue(const std::string& path, int value) {
   SetLocalStatePrefValue(path, base::Value(value));
 }
 
-void SetLocalStateDoublePrefValue(const std::string& path, const double value) {
+void SetLocalStateDoublePrefValue(const std::string& path, double value) {
   SetLocalStatePrefValue(path, base::Value(value));
 }
 
@@ -47,12 +47,11 @@ void SetLocalStateStringPrefValue(const std::string& path,
   SetLocalStatePrefValue(path, base::Value(value));
 }
 
-void SetLocalStateInt64PrefValue(const std::string& path, const int64_t value) {
+void SetLocalStateInt64PrefValue(const std::string& path, int64_t value) {
   SetLocalStatePrefValue(path, base::Int64ToValue(value));
 }
 
-void SetLocalStateUint64PrefValue(const std::string& path,
-                                  const uint64_t value) {
+void SetLocalStateUint64PrefValue(const std::string& path, uint64_t value) {
   SetLocalStatePrefValue(path, base::Value(base::NumberToString(value)));
 }
 
@@ -66,8 +65,7 @@ void SetLocalStateListPrefValue(const std::string& path,
   SetLocalStatePrefValue(path, base::Value(std::move(value)));
 }
 
-void SetLocalStateTimePrefValue(const std::string& path,
-                                const base::Time value) {
+void SetLocalStateTimePrefValue(const std::string& path, base::Time value) {
   SetLocalStatePrefValue(path, base::TimeToValue(value));
 }
 

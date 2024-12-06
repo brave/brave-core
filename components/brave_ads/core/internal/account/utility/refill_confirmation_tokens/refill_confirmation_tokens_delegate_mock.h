@@ -31,7 +31,7 @@ class RefillConfirmationTokensDelegateMock
 
   MOCK_METHOD(void,
               OnWillRetryRefillingConfirmationTokens,
-              (const base::Time retry_at));
+              (base::Time retry_at));
   MOCK_METHOD(void, OnDidRetryRefillingConfirmationTokens, ());
 
   MOCK_METHOD(void,

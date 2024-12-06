@@ -36,7 +36,7 @@ bool ShouldRecordAndEmitP2AHistogramName(const PrefService* const prefs,
          prefs->FindPreference(GetPrefPath(name)) != nullptr;
 }
 
-void EmitP2AHistogramName(std::string_view name, const uint64_t sum) {
+void EmitP2AHistogramName(std::string_view name, uint64_t sum) {
   CHECK(kP2AAllowedNames.count(name));
 
   const size_t* const iter =

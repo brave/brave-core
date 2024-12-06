@@ -26,7 +26,7 @@ namespace brave_ads {
 template <typename Range, typename Predicate>
 size_t count_if_until(const Range& range,  // NOLINT
                       const Predicate& predicate,
-                      const size_t stop_count) {
+                      size_t stop_count) {
   size_t count = 0;
 
   for (const auto& element : range) {

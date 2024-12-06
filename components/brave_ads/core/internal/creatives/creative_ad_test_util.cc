@@ -13,7 +13,7 @@
 
 namespace brave_ads::test {
 
-CreativeAdInfo BuildCreativeAd(const bool should_generate_random_uuids) {
+CreativeAdInfo BuildCreativeAd(bool should_generate_random_uuids) {
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id =

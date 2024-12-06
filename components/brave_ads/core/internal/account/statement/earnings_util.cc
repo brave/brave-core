@@ -14,8 +14,8 @@ namespace brave_ads {
 namespace {
 
 double GetUnreconciledEarningsForDateRange(const TransactionList& transactions,
-                                           const base::Time from_time,
-                                           const base::Time to_time) {
+                                           base::Time from_time,
+                                           base::Time to_time) {
   double earnings = 0.0;
 
   for (const auto& transaction : transactions) {
@@ -29,8 +29,8 @@ double GetUnreconciledEarningsForDateRange(const TransactionList& transactions,
 }
 
 double GetReconciledEarningsForDateRange(const TransactionList& transactions,
-                                         const base::Time from_time,
-                                         const base::Time to_time) {
+                                         base::Time from_time,
+                                         base::Time to_time) {
   double earnings = 0.0;
 
   for (const auto& transaction : transactions) {

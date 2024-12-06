@@ -65,7 +65,7 @@ void AdsClientNotifierForTesting::NotifyDidUnregisterResourceComponent(
 }
 
 void AdsClientNotifierForTesting::NotifyTabTextContentDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   AdsClientNotifier::NotifyTabTextContentDidChange(tab_id, redirect_chain,
@@ -75,7 +75,7 @@ void AdsClientNotifierForTesting::NotifyTabTextContentDidChange(
 }
 
 void AdsClientNotifierForTesting::NotifyTabHtmlContentDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   AdsClientNotifier::NotifyTabHtmlContentDidChange(tab_id, redirect_chain,
@@ -85,46 +85,45 @@ void AdsClientNotifierForTesting::NotifyTabHtmlContentDidChange(
 }
 
 void AdsClientNotifierForTesting::NotifyTabDidStartPlayingMedia(
-    const int32_t tab_id) {
+    int32_t tab_id) {
   AdsClientNotifier::NotifyTabDidStartPlayingMedia(tab_id);
 
   RunTaskEnvironmentUntilIdle();
 }
 
-void AdsClientNotifierForTesting::NotifyTabDidStopPlayingMedia(
-    const int32_t tab_id) {
+void AdsClientNotifierForTesting::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
   AdsClientNotifier::NotifyTabDidStopPlayingMedia(tab_id);
 
   RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyTabDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const bool is_new_navigation,
-    const bool is_restoring,
-    const bool is_visible) {
+    bool is_new_navigation,
+    bool is_restoring,
+    bool is_visible) {
   AdsClientNotifier::NotifyTabDidChange(
       tab_id, redirect_chain, is_new_navigation, is_restoring, is_visible);
 
   RunTaskEnvironmentUntilIdle();
 }
 
-void AdsClientNotifierForTesting::NotifyTabDidLoad(const int32_t tab_id,
-                                                   const int http_status_code) {
+void AdsClientNotifierForTesting::NotifyTabDidLoad(int32_t tab_id,
+                                                   int http_status_code) {
   AdsClientNotifier::NotifyTabDidLoad(tab_id, http_status_code);
 
   RunTaskEnvironmentUntilIdle();
 }
 
-void AdsClientNotifierForTesting::NotifyDidCloseTab(const int32_t tab_id) {
+void AdsClientNotifierForTesting::NotifyDidCloseTab(int32_t tab_id) {
   AdsClientNotifier::NotifyDidCloseTab(tab_id);
 
   RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyUserGestureEventTriggered(
-    const int32_t page_transition_type) {
+    int32_t page_transition_type) {
   AdsClientNotifier::NotifyUserGestureEventTriggered(page_transition_type);
 
   RunTaskEnvironmentUntilIdle();
@@ -137,8 +136,8 @@ void AdsClientNotifierForTesting::NotifyUserDidBecomeIdle() {
 }
 
 void AdsClientNotifierForTesting::NotifyUserDidBecomeActive(
-    const base::TimeDelta idle_time,
-    const bool screen_was_locked) {
+    base::TimeDelta idle_time,
+    bool screen_was_locked) {
   AdsClientNotifier::NotifyUserDidBecomeActive(idle_time, screen_was_locked);
 
   RunTaskEnvironmentUntilIdle();
@@ -175,9 +174,9 @@ void AdsClientNotifierForTesting::NotifyDidSolveAdaptiveCaptcha() {
 }
 
 void AdsClientNotifierForTesting::SimulateOpeningNewTab(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const int http_status_code) {
+    int http_status_code) {
   CHECK(!base::Contains(redirect_chains_, tab_id)) << "Tab already open";
 
   redirect_chains_[tab_id] = redirect_chain;
@@ -188,9 +187,9 @@ void AdsClientNotifierForTesting::SimulateOpeningNewTab(
 }
 
 void AdsClientNotifierForTesting::SimulateNavigateToURL(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const int http_status_code) {
+    int http_status_code) {
   CHECK(base::Contains(redirect_chains_, tab_id)) << "Tab does not exist";
 
   redirect_chains_[tab_id] = redirect_chain;
@@ -202,7 +201,7 @@ void AdsClientNotifierForTesting::SimulateNavigateToURL(
   NotifyTabDidLoad(tab_id, http_status_code);
 }
 
-void AdsClientNotifierForTesting::SimulateSelectTab(const int32_t tab_id) {
+void AdsClientNotifierForTesting::SimulateSelectTab(int32_t tab_id) {
   CHECK(base::Contains(redirect_chains_, tab_id)) << "Tab does not exist";
 
   if (visible_tab_id_) {
@@ -221,7 +220,7 @@ void AdsClientNotifierForTesting::SimulateSelectTab(const int32_t tab_id) {
                      /*is_visible=*/true);
 }
 
-void AdsClientNotifierForTesting::SimulateClosingTab(const int32_t tab_id) {
+void AdsClientNotifierForTesting::SimulateClosingTab(int32_t tab_id) {
   CHECK(base::Contains(redirect_chains_, tab_id)) << "Tab does not exist";
 
   NotifyDidCloseTab(tab_id);

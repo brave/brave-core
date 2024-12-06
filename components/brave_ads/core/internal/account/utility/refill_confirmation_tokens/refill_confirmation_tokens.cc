@@ -355,7 +355,7 @@ void RefillConfirmationTokens::NotifyFailedToRefillConfirmationTokens() const {
 }
 
 void RefillConfirmationTokens::NotifyWillRetryRefillingConfirmationTokens(
-    const base::Time retry_at) const {
+    base::Time retry_at) const {
   if (delegate_) {
     delegate_->OnWillRetryRefillingConfirmationTokens(retry_at);
   }

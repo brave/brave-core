@@ -116,7 +116,7 @@ void MockLoadResourceComponent(AdsClientMock& ads_client_mock,
                                const base::FilePath& profile_path) {
   ON_CALL(ads_client_mock, LoadResourceComponent)
       .WillByDefault(::testing::Invoke(
-          [&profile_path](const std::string& id, const int /*version*/,
+          [&profile_path](const std::string& id, int /*version*/,
                           LoadFileCallback callback) {
             base::FilePath path = profile_path.AppendASCII(id);
 

@@ -47,7 +47,7 @@ void ConfirmationQueue::Add(const ConfirmationInfo& confirmation) {
 
 void ConfirmationQueue::AddCallback(
     const ConfirmationQueueItemInfo& confirmation_queue_item,
-    const bool success) {
+    bool success) {
   if (!success) {
     return NotifyFailedToAddConfirmationToQueue(
         confirmation_queue_item.confirmation);
@@ -112,7 +112,7 @@ void ConfirmationQueue::SuccessfullyProcessedQueueItem(
 
 void ConfirmationQueue::SuccessfullyProcessedQueueItemCallback(
     const ConfirmationInfo& confirmation,
-    const bool success) {
+    bool success) {
   is_processing_ = false;
 
   NotifyDidProcessConfirmationQueue(confirmation);
@@ -126,7 +126,7 @@ void ConfirmationQueue::SuccessfullyProcessedQueueItemCallback(
 
 void ConfirmationQueue::FailedToProcessQueueItem(
     const ConfirmationInfo& confirmation,
-    const bool should_retry) {
+    bool should_retry) {
   auto callback =
       base::BindOnce(&ConfirmationQueue::FailedToProcessQueueItemCallback,
                      weak_factory_.GetWeakPtr(), confirmation, should_retry);
@@ -141,8 +141,8 @@ void ConfirmationQueue::FailedToProcessQueueItem(
 
 void ConfirmationQueue::FailedToProcessQueueItemCallback(
     const ConfirmationInfo& confirmation,
-    const bool should_retry,
-    const bool success) {
+    bool should_retry,
+    bool success) {
   is_processing_ = false;
 
   NotifyFailedToProcessConfirmationQueue(confirmation);
@@ -165,7 +165,7 @@ void ConfirmationQueue::ProcessNextQueueItem() {
 }
 
 void ConfirmationQueue::ProcessNextQueueItemCallback(
-    const bool success,
+    bool success,
     const ConfirmationQueueItemList& confirmation_queue_items) {
   if (!success) {
     return NotifyFailedToProcessNextConfirmationInQueue();
@@ -200,7 +200,7 @@ void ConfirmationQueue::NotifyDidAddConfirmationToQueue(
 
 void ConfirmationQueue::NotifyWillProcessConfirmationQueue(
     const ConfirmationInfo& confirmation,
-    const base::Time process_at) const {
+    base::Time process_at) const {
   if (delegate_) {
     delegate_->OnWillProcessConfirmationQueue(confirmation, process_at);
   }
@@ -239,7 +239,7 @@ void ConfirmationQueue::OnDidRedeemConfirmation(
 
 void ConfirmationQueue::OnFailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
-    const bool should_retry) {
+    bool should_retry) {
   FailedToProcessQueueItem(confirmation, should_retry);
 }
 

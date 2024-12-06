@@ -21,13 +21,13 @@ class IssuersUrlRequestDelegateMock : public IssuersUrlRequestDelegate {
 
   ~IssuersUrlRequestDelegateMock() override;
 
-  MOCK_METHOD(void, OnWillFetchIssuers, (const base::Time fetch_at));
+  MOCK_METHOD(void, OnWillFetchIssuers, (base::Time fetch_at));
 
   MOCK_METHOD(void, OnDidFetchIssuers, (const IssuersInfo& issuers));
 
   MOCK_METHOD(void, OnFailedToFetchIssuers, ());
 
-  MOCK_METHOD(void, OnWillRetryFetchingIssuers, (const base::Time retry_at));
+  MOCK_METHOD(void, OnWillRetryFetchingIssuers, (base::Time retry_at));
 
   MOCK_METHOD(void, OnDidRetryFetchingIssuers, ());
 };

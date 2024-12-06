@@ -23,7 +23,7 @@ class TokenGeneratorMock : public TokenGeneratorInterface {
 
   ~TokenGeneratorMock() override;
 
-  MOCK_METHOD(cbr::TokenList, Generate, (const size_t count), (const));
+  MOCK_METHOD(cbr::TokenList, Generate, (size_t count), (const));
 };
 
 }  // namespace brave_ads

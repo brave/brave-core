@@ -22,7 +22,7 @@
 namespace brave_ads::test {
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
-    const bool should_generate_random_uuids) {
+    bool should_generate_random_uuids) {
   CHECK(UserHasJoinedBraveRewards());
 
   const TransactionInfo transaction = BuildUnreconciledTransaction(
@@ -32,7 +32,7 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
 }
 
 std::optional<ConfirmationInfo> BuildRewardConfirmationWithoutDynamicUserData(
-    const bool should_generate_random_uuids) {
+    bool should_generate_random_uuids) {
   const std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(should_generate_random_uuids);
   CHECK(confirmation);

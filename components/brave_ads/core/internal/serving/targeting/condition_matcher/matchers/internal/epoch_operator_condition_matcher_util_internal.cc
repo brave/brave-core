@@ -47,7 +47,7 @@ std::optional<int> ParseDays(std::string_view condition) {
   return days;
 }
 
-bool IsUnixEpochTimestamp(const int64_t timestamp) {
+bool IsUnixEpochTimestamp(int64_t timestamp) {
   // 32-bit Unix epoch timestamps will fail in the Year 2038 (Y2038K), whereas
   // Windows epoch timestamps are 64-bit and will not fail within a foreseeable
   // timeframe. We should support Unix epoch timestamps that were not serialized
@@ -55,12 +55,12 @@ bool IsUnixEpochTimestamp(const int64_t timestamp) {
   return timestamp >= 0 && timestamp <= kMaxUnixEpochTimestamp;
 }
 
-int64_t WindowsToUnixEpoch(const int64_t timestamp) {
+int64_t WindowsToUnixEpoch(int64_t timestamp) {
   return (timestamp - base::Time::kTimeTToMicrosecondsOffset) /
          base::Time::kMicrosecondsPerSecond;
 }
 
-base::TimeDelta TimeDeltaSinceEpoch(const int64_t timestamp) {
+base::TimeDelta TimeDeltaSinceEpoch(int64_t timestamp) {
   base::Time now = base::Time::Now();
 
   if (!IsUnixEpochTimestamp(timestamp)) {

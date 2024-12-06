@@ -50,7 +50,7 @@ AdHandler::~AdHandler() {
 
 void AdHandler::TriggerNotificationAdEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType mojom_ad_event_type,
+    mojom::NotificationAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK(!placement_id.empty());
 
@@ -66,7 +66,7 @@ void AdHandler::MaybeServeNewTabPageAd(
 void AdHandler::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type,
+    mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK(!placement_id.empty());
 
@@ -78,7 +78,7 @@ void AdHandler::TriggerNewTabPageAdEvent(
 void AdHandler::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType mojom_ad_event_type,
+    mojom::PromotedContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK(!placement_id.empty());
 
@@ -98,7 +98,7 @@ void AdHandler::MaybeServeInlineContentAd(
 void AdHandler::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType mojom_ad_event_type,
+    mojom::InlineContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK(!placement_id.empty());
 
@@ -115,7 +115,7 @@ AdHandler::MaybeGetSearchResultAd(const std::string& placement_id) {
 
 void AdHandler::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type,
+    mojom::SearchResultAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK(mojom_creative_ad);
 
@@ -148,27 +148,26 @@ void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {
                                    BuildConversionUserData(conversion));
 }
 
-void AdHandler::OnMaybeLandOnPage(const AdInfo& ad,
-                                  const base::TimeDelta after) {
+void AdHandler::OnMaybeLandOnPage(const AdInfo& ad, base::TimeDelta after) {
   CHECK(ad.IsValid());
 
   BLOG(1, "Maybe land on page for " << ad.target_url << " in " << after);
 }
 
-void AdHandler::OnDidSuspendPageLand(const int32_t tab_id,
-                                     const base::TimeDelta remaining_time) {
+void AdHandler::OnDidSuspendPageLand(int32_t tab_id,
+                                     base::TimeDelta remaining_time) {
   BLOG(1, "Suspended page landing on tab id "
               << tab_id << " with " << remaining_time << " remaining");
 }
 
-void AdHandler::OnDidResumePageLand(const int32_t tab_id,
-                                    const base::TimeDelta remaining_time) {
+void AdHandler::OnDidResumePageLand(int32_t tab_id,
+                                    base::TimeDelta remaining_time) {
   BLOG(1, "Resumed page landing on tab id " << tab_id << " and maybe land in "
                                             << remaining_time);
 }
 
-void AdHandler::OnDidLandOnPage(const int32_t tab_id,
-                                const int32_t http_response_code,
+void AdHandler::OnDidLandOnPage(int32_t tab_id,
+                                int32_t http_response_code,
                                 const AdInfo& ad) {
   CHECK(ad.IsValid());
 
@@ -179,14 +178,14 @@ void AdHandler::OnDidLandOnPage(const int32_t tab_id,
                                    BuildPageLandUserData(http_response_code));
 }
 
-void AdHandler::OnDidNotLandOnPage(const int32_t tab_id, const AdInfo& ad) {
+void AdHandler::OnDidNotLandOnPage(int32_t tab_id, const AdInfo& ad) {
   CHECK(ad.IsValid());
 
   BLOG(1,
        "Did not land on page for " << ad.target_url << " on tab id " << tab_id);
 }
 
-void AdHandler::OnCanceledPageLand(const int32_t tab_id, const AdInfo& ad) {
+void AdHandler::OnCanceledPageLand(int32_t tab_id, const AdInfo& ad) {
   CHECK(ad.IsValid());
 
   BLOG(1, "Canceled page land for creative instance id "

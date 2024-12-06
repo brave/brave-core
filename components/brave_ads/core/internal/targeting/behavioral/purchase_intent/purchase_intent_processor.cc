@@ -65,7 +65,7 @@ void PurchaseIntentProcessor::Process(const GURL& url) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool PurchaseIntentProcessor::ShouldProcess(const int32_t tab_id,
+bool PurchaseIntentProcessor::ShouldProcess(int32_t tab_id,
                                             const GURL& url) const {
   const auto iter = tabs_.find(tab_id);
   if (iter == tabs_.cend()) {
@@ -75,8 +75,7 @@ bool PurchaseIntentProcessor::ShouldProcess(const int32_t tab_id,
   return iter->second != url;
 }
 
-void PurchaseIntentProcessor::MaybeProcess(const int32_t tab_id,
-                                           const GURL& url) {
+void PurchaseIntentProcessor::MaybeProcess(int32_t tab_id, const GURL& url) {
   if (!ShouldProcess(tab_id, url)) {
     return;
   }
@@ -208,7 +207,7 @@ void PurchaseIntentProcessor::OnTabDidChange(const TabInfo& tab) {
   MaybeProcess(tab.id, url);
 }
 
-void PurchaseIntentProcessor::OnDidCloseTab(const int32_t tab_id) {
+void PurchaseIntentProcessor::OnDidCloseTab(int32_t tab_id) {
   tabs_.erase(tab_id);
 }
 

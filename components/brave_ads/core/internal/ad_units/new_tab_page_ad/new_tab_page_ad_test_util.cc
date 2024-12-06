@@ -13,14 +13,13 @@
 
 namespace brave_ads::test {
 
-NewTabPageAdInfo BuildNewTabPageAd(const bool should_generate_random_uuids) {
+NewTabPageAdInfo BuildNewTabPageAd(bool should_generate_random_uuids) {
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(should_generate_random_uuids);
   return BuildNewTabPageAd(creative_ad);
 }
 
-NewTabPageAdInfo BuildAndSaveNewTabPageAd(
-    const bool should_generate_random_uuids) {
+NewTabPageAdInfo BuildAndSaveNewTabPageAd(bool should_generate_random_uuids) {
   const CreativeNewTabPageAdInfo creative_ad =
       BuildCreativeNewTabPageAd(should_generate_random_uuids);
   database::SaveCreativeNewTabPageAds({creative_ad});

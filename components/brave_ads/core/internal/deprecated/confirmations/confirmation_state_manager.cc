@@ -79,7 +79,7 @@ void ConfirmationStateManager::SaveState() {
   BLOG(9, "Saving confirmation state");
 
   GetAdsClient().Save(kConfirmationsJsonFilename, ToJson(),
-                      base::BindOnce([](const bool success) {
+                      base::BindOnce([](bool success) {
                         if (!success) {
                           return BLOG(0, "Failed to save confirmation state");
                         }

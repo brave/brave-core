@@ -75,11 +75,10 @@ void Account::GetStatement(GetStatementOfAccountsCallback callback) {
   return BuildStatement(std::move(callback));
 }
 
-void Account::Deposit(
-    const std::string& creative_instance_id,
-    const std::string& segment,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type) const {
+void Account::Deposit(const std::string& creative_instance_id,
+                      const std::string& segment,
+                      mojom::AdType mojom_ad_type,
+                      mojom::ConfirmationType mojom_confirmation_type) const {
   DepositWithUserData(creative_instance_id, segment, mojom_ad_type,
                       mojom_confirmation_type,
                       /*user_data=*/base::Value::Dict());
@@ -88,8 +87,8 @@ void Account::Deposit(
 void Account::DepositWithUserData(
     const std::string& creative_instance_id,
     const std::string& segment,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type,
     base::Value::Dict user_data) const {
   CHECK(!creative_instance_id.empty());
   CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
@@ -114,14 +113,13 @@ void Account::DepositWithUserData(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Account::DepositCallback(
-    const std::string& creative_instance_id,
-    const std::string& segment,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    base::Value::Dict user_data,
-    const bool success,
-    const double value) const {
+void Account::DepositCallback(const std::string& creative_instance_id,
+                              const std::string& segment,
+                              mojom::AdType mojom_ad_type,
+                              mojom::ConfirmationType mojom_confirmation_type,
+                              base::Value::Dict user_data,
+                              bool success,
+                              double value) const {
   if (!success) {
     return FailedToProcessDeposit(creative_instance_id, mojom_ad_type,
                                   mojom_confirmation_type);
@@ -131,13 +129,12 @@ void Account::DepositCallback(
                  mojom_confirmation_type, std::move(user_data));
 }
 
-void Account::ProcessDeposit(
-    const std::string& creative_instance_id,
-    const std::string& segment,
-    const double value,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    base::Value::Dict user_data) const {
+void Account::ProcessDeposit(const std::string& creative_instance_id,
+                             const std::string& segment,
+                             double value,
+                             mojom::AdType mojom_ad_type,
+                             mojom::ConfirmationType mojom_confirmation_type,
+                             base::Value::Dict user_data) const {
   if (!UserHasJoinedBraveRewards()) {
     // If the user has not joined Brave Rewards, there's no need to record
     // transactions.
@@ -157,10 +154,10 @@ void Account::ProcessDeposit(
 
 void Account::ProcessDepositCallback(
     const std::string& creative_instance_id,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type,
     base::Value::Dict user_data,
-    const bool success,
+    bool success,
     const TransactionInfo& transaction) const {
   if (!success) {
     return FailedToProcessDeposit(creative_instance_id, mojom_ad_type,
@@ -187,8 +184,8 @@ void Account::SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
 
 void Account::FailedToProcessDeposit(
     const std::string& creative_instance_id,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type) const {
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type) const {
   BLOG(0, "Failed to process deposit for "
               << mojom_ad_type << " with creative instance id "
               << creative_instance_id << " and " << mojom_confirmation_type);
@@ -259,8 +256,8 @@ void Account::NotifyDidProcessDeposit(
 
 void Account::NotifyFailedToProcessDeposit(
     const std::string& creative_instance_id,
-    const mojom::AdType mojom_ad_type,
-    const mojom::ConfirmationType mojom_confirmation_type) const {
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type) const {
   for (AccountObserver& observer : observers_) {
     observer.OnFailedToProcessDeposit(creative_instance_id, mojom_ad_type,
                                       mojom_confirmation_type);

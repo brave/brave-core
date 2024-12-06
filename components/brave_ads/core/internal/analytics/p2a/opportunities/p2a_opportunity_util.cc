@@ -35,7 +35,7 @@ std::optional<std::string> NormalizeSegment(const std::string& segment) {
 }
 
 std::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
-    const mojom::AdType mojom_ad_type,
+    mojom::AdType mojom_ad_type,
     const std::string& segment) {
   CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
   CHECK(!segment.empty());
@@ -52,7 +52,7 @@ std::optional<std::string> BuildAdOpportunitiesPerSegmentEvent(
       {ToString(mojom_ad_type), *normalized_segment}, nullptr);
 }
 
-std::string BuildAdOpportunitiesEvent(const mojom::AdType mojom_ad_type) {
+std::string BuildAdOpportunitiesEvent(mojom::AdType mojom_ad_type) {
   CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
 
   return base::ReplaceStringPlaceholders(kAdOpportunitiesEvent,
@@ -62,7 +62,7 @@ std::string BuildAdOpportunitiesEvent(const mojom::AdType mojom_ad_type) {
 }  // namespace
 
 std::vector<std::string> BuildP2AAdOpportunityEvents(
-    const mojom::AdType mojom_ad_type,
+    mojom::AdType mojom_ad_type,
     const SegmentList& segments) {
   CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
 

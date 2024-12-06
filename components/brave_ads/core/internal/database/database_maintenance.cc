@@ -39,7 +39,7 @@ Maintenance::~Maintenance() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Maintenance::RepeatedlyScheduleAfter(const base::TimeDelta after) {
+void Maintenance::RepeatedlyScheduleAfter(base::TimeDelta after) {
   const base::Time at =
       timer_.Start(FROM_HERE, after,
                    base::BindOnce(&Maintenance::RepeatedlyScheduleAfterCallback,

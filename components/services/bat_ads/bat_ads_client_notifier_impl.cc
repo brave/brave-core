@@ -70,7 +70,7 @@ void BatAdsClientNotifierImpl::NotifyRewardsWalletDidUpdate(
 }
 
 void BatAdsClientNotifierImpl::NotifyTabTextContentDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   ads_client_notifier_.NotifyTabTextContentDidChange(tab_id, redirect_chain,
@@ -78,44 +78,42 @@ void BatAdsClientNotifierImpl::NotifyTabTextContentDidChange(
 }
 
 void BatAdsClientNotifierImpl::NotifyTabHtmlContentDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   ads_client_notifier_.NotifyTabHtmlContentDidChange(tab_id, redirect_chain,
                                                      html);
 }
 
-void BatAdsClientNotifierImpl::NotifyTabDidStartPlayingMedia(
-    const int32_t tab_id) {
+void BatAdsClientNotifierImpl::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
   ads_client_notifier_.NotifyTabDidStartPlayingMedia(tab_id);
 }
 
-void BatAdsClientNotifierImpl::NotifyTabDidStopPlayingMedia(
-    const int32_t tab_id) {
+void BatAdsClientNotifierImpl::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
   ads_client_notifier_.NotifyTabDidStopPlayingMedia(tab_id);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const bool is_new_navigation,
-    const bool is_restoring,
-    const bool is_visible) {
+    bool is_new_navigation,
+    bool is_restoring,
+    bool is_visible) {
   ads_client_notifier_.NotifyTabDidChange(
       tab_id, redirect_chain, is_new_navigation, is_restoring, is_visible);
 }
 
-void BatAdsClientNotifierImpl::NotifyTabDidLoad(const int32_t tab_id,
-                                                const int http_status_code) {
+void BatAdsClientNotifierImpl::NotifyTabDidLoad(int32_t tab_id,
+                                                int http_status_code) {
   ads_client_notifier_.NotifyTabDidLoad(tab_id, http_status_code);
 }
 
-void BatAdsClientNotifierImpl::NotifyDidCloseTab(const int32_t tab_id) {
+void BatAdsClientNotifierImpl::NotifyDidCloseTab(int32_t tab_id) {
   ads_client_notifier_.NotifyDidCloseTab(tab_id);
 }
 
 void BatAdsClientNotifierImpl::NotifyUserGestureEventTriggered(
-    const int32_t page_transition_type) {
+    int32_t page_transition_type) {
   ads_client_notifier_.NotifyUserGestureEventTriggered(page_transition_type);
 }
 
@@ -124,8 +122,8 @@ void BatAdsClientNotifierImpl::NotifyUserDidBecomeIdle() {
 }
 
 void BatAdsClientNotifierImpl::NotifyUserDidBecomeActive(
-    const base::TimeDelta idle_time,
-    const bool screen_was_locked) {
+    base::TimeDelta idle_time,
+    bool screen_was_locked) {
   ads_client_notifier_.NotifyUserDidBecomeActive(idle_time, screen_was_locked);
 }
 

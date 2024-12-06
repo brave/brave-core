@@ -13,8 +13,7 @@
 
 namespace brave_ads {
 
-std::string LongFriendlyDateAndTime(const base::Time time,
-                                    const bool use_sentence_style) {
+std::string LongFriendlyDateAndTime(base::Time time, bool use_sentence_style) {
   const std::u16string friendly_date_and_time =
       base::TimeFormatFriendlyDateAndTime(time);
 
@@ -23,8 +22,7 @@ std::string LongFriendlyDateAndTime(const base::Time time,
                        base::UTF16ToUTF8(friendly_date_and_time)});
 }
 
-std::string FriendlyDateAndTime(const base::Time time,
-                                const bool use_sentence_style) {
+std::string FriendlyDateAndTime(base::Time time, bool use_sentence_style) {
   base::TimeDelta time_delta = time - base::Time::Now();
   if (time_delta.is_negative()) {
     time_delta = {};

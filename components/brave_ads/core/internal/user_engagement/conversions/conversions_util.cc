@@ -65,7 +65,7 @@ bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
 
 bool DidAdEventOccurWithinObservationWindow(
     const AdEventInfo& ad_event,
-    const base::TimeDelta observation_window) {
+    base::TimeDelta observation_window) {
   return ad_event.created_at >= base::Time::Now() - observation_window;
 }
 

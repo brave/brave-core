@@ -12,8 +12,8 @@
 namespace brave_ads {
 
 SegmentList GetTopSegments(const UserModelInfo& user_model,
-                           const size_t max_count,
-                           const bool parent_only) {
+                           size_t max_count,
+                           bool parent_only) {
   SegmentList segments;
   segments.reserve(3 * max_count);
 

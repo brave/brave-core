@@ -145,8 +145,7 @@ void Catalog::OnFailedToFetchCatalog() {
   NotifyFailedToFetchCatalog();
 }
 
-void Catalog::OnDidMigrateDatabase(const int /*from_version*/,
-                                   const int /*to_version*/) {
+void Catalog::OnDidMigrateDatabase(int /*from_version*/, int /*to_version*/) {
   ResetCatalog();
 }
 

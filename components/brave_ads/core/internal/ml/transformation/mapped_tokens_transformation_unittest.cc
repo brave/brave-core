@@ -23,7 +23,7 @@ namespace brave_ads::ml {
 class BraveAdsMappedTokensTransformationTest : public test::TestBase {
  public:
   std::optional<MappedTokensTransformation> BuildMappedTokensTransformation(
-      const int vector_dimension,
+      int vector_dimension,
       const std::map<std::string, std::vector<uint16_t>>&
           token_categories_mapping) {
     buffer_ = pipeline::NeuralPipelineBufferBuilder()

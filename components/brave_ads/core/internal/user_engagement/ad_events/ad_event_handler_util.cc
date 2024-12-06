@@ -15,7 +15,7 @@ namespace brave_ads {
 
 bool HasFiredAdEvent(const AdInfo& ad,
                      const AdEventList& ad_events,
-                     const mojom::ConfirmationType mojom_confirmation_type) {
+                     mojom::ConfirmationType mojom_confirmation_type) {
   const auto iter = base::ranges::find_if(
       ad_events, [&ad, mojom_confirmation_type](const AdEventInfo& ad_event) {
         return ad_event.placement_id == ad.placement_id &&
@@ -28,8 +28,8 @@ bool HasFiredAdEvent(const AdInfo& ad,
 bool HasFiredAdEventWithinTimeWindow(
     const AdInfo& ad,
     const AdEventList& ad_events,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    const base::TimeDelta time_window) {
+    mojom::ConfirmationType mojom_confirmation_type,
+    base::TimeDelta time_window) {
   const auto iter = base::ranges::find_if(
       ad_events,
       [&ad, mojom_confirmation_type, time_window](const AdEventInfo& ad_event) {

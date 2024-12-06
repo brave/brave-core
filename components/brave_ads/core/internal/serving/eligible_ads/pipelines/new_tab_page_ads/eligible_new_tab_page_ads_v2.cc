@@ -51,7 +51,7 @@ void EligibleNewTabPageAdsV2::GetForUserModel(
 void EligibleNewTabPageAdsV2::GetEligibleAdsForUserModelCallback(
     UserModelInfo user_model,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
-    const bool success,
+    bool success,
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(0, "Failed to get ad events");
@@ -81,7 +81,7 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
-    const bool success,
+    bool success,
     const SegmentList& /*segments*/,
     const CreativeNewTabPageAdList& creative_ads) {
   if (!success) {

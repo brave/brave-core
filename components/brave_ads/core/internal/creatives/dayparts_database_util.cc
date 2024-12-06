@@ -13,7 +13,7 @@ namespace brave_ads::database {
 
 void DeleteDayparts() {
   const table::Dayparts database_table;
-  database_table.Delete(base::BindOnce([](const bool success) {
+  database_table.Delete(base::BindOnce([](bool success) {
     if (!success) {
       BLOG(0, "Failed to delete dayparts");
     }

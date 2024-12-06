@@ -15,10 +15,10 @@
 namespace brave_ads::test {
 
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
-                         const mojom::AdType mojom_ad_type,
-                         const mojom::ConfirmationType mojom_confirmation_type,
-                         const base::Time created_at,
-                         const bool should_generate_random_uuids) {
+                         mojom::AdType mojom_ad_type,
+                         mojom::ConfirmationType mojom_confirmation_type,
+                         base::Time created_at,
+                         bool should_generate_random_uuids) {
   AdEventInfo ad_event;
 
   ad_event.type = mojom_ad_type;

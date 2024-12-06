@@ -15,8 +15,8 @@ namespace brave_ads {
 
 template <typename T>
 void LogNumberOfUntargetedCreativeAdsForBucket(const T& creative_ads,
-                                               const int priority,
-                                               const int bucket) {
+                                               int priority,
+                                               int bucket) {
   const size_t count = UntargetedCreativeAdCount(creative_ads);
   if (count > 0) {
     BLOG(3, count << " untargeted ads with a priority of " << priority
@@ -26,8 +26,8 @@ void LogNumberOfUntargetedCreativeAdsForBucket(const T& creative_ads,
 
 template <typename T>
 void LogNumberOfTargetedCreativeAdsForBucket(const T& creative_ads,
-                                             const int priority,
-                                             const int bucket) {
+                                             int priority,
+                                             int bucket) {
   const size_t count = TargetedCreativeAdCount(creative_ads);
   if (count > 0) {
     BLOG(3, count << " targeted ads with a priority of " << priority

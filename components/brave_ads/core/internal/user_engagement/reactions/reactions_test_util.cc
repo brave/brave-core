@@ -10,7 +10,7 @@
 
 namespace brave_ads::test {
 
-mojom::ReactionInfoPtr BuildReaction(const mojom::AdType mojom_ad_type) {
+mojom::ReactionInfoPtr BuildReaction(mojom::AdType mojom_ad_type) {
   mojom::ReactionInfoPtr mojom_reaction = mojom::ReactionInfo::New();
 
   mojom_reaction->mojom_ad_type = mojom_ad_type;

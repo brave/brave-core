@@ -44,12 +44,11 @@ void SiteVisit::RemoveObserver(SiteVisitObserver* const observer) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool SiteVisit::IsLandingOnPage(const int32_t tab_id) const {
+bool SiteVisit::IsLandingOnPage(int32_t tab_id) const {
   return page_lands_.contains(tab_id);
 }
 
-void SiteVisit::MaybeLandOnPage(const TabInfo& tab,
-                                const int http_status_code) {
+void SiteVisit::MaybeLandOnPage(const TabInfo& tab, int http_status_code) {
   if (!last_clicked_ad_) {
     // No ad interactions have occurred in the current browsing session.
     return;
@@ -79,9 +78,9 @@ void SiteVisit::MaybeLandOnPage(const TabInfo& tab,
 }
 
 void SiteVisit::MaybeLandOnPageAfter(const TabInfo& tab,
-                                     const int http_status_code,
+                                     int http_status_code,
                                      const AdInfo& ad,
-                                     const base::TimeDelta page_land_after) {
+                                     base::TimeDelta page_land_after) {
   CHECK(!IsLandingOnPage(tab.id));
 
   if (!DomainOrHostExists(tab.redirect_chain, ad.target_url)) {
@@ -107,8 +106,8 @@ void SiteVisit::MaybeLandOnPageAfter(const TabInfo& tab,
   }
 }
 
-void SiteVisit::MaybeLandOnPageAfterCallback(const int32_t tab_id,
-                                             const int http_status_code) {
+void SiteVisit::MaybeLandOnPageAfterCallback(int32_t tab_id,
+                                             int http_status_code) {
   CHECK(IsLandingOnPage(tab_id));
 
   const AdInfo ad = page_lands_[tab_id].ad;
@@ -122,8 +121,8 @@ void SiteVisit::MaybeLandOnPageAfterCallback(const int32_t tab_id,
   StopPageLand(tab_id);
 }
 
-void SiteVisit::LandedOnPage(const int32_t tab_id,
-                             const int http_status_code,
+void SiteVisit::LandedOnPage(int32_t tab_id,
+                             int http_status_code,
                              const AdInfo& ad) {
   RecordAdEvent(
       ad, mojom::ConfirmationType::kLanded,
@@ -131,10 +130,10 @@ void SiteVisit::LandedOnPage(const int32_t tab_id,
                      weak_factory_.GetWeakPtr(), tab_id, http_status_code, ad));
 }
 
-void SiteVisit::LandedOnPageCallback(const int32_t tab_id,
-                                     const int http_status_code,
+void SiteVisit::LandedOnPageCallback(int32_t tab_id,
+                                     int http_status_code,
                                      const AdInfo& ad,
-                                     const bool success) const {
+                                     bool success) const {
   if (!success) {
     BLOG(0, "Failed to record ad page land event");
     return NotifyDidNotLandOnPage(tab_id, ad);
@@ -143,11 +142,11 @@ void SiteVisit::LandedOnPageCallback(const int32_t tab_id,
   NotifyDidLandOnPage(tab_id, http_status_code, ad);
 }
 
-void SiteVisit::DidNotLandOnPage(const int32_t tab_id, const AdInfo& ad) const {
+void SiteVisit::DidNotLandOnPage(int32_t tab_id, const AdInfo& ad) const {
   NotifyDidNotLandOnPage(tab_id, ad);
 }
 
-void SiteVisit::MaybeCancelPageLand(const int32_t tab_id) {
+void SiteVisit::MaybeCancelPageLand(int32_t tab_id) {
   if (!IsLandingOnPage(tab_id)) {
     return;
   }
@@ -160,7 +159,7 @@ void SiteVisit::MaybeCancelPageLand(const int32_t tab_id) {
   }
 }
 
-void SiteVisit::CancelPageLand(const int32_t tab_id) {
+void SiteVisit::CancelPageLand(int32_t tab_id) {
   if (!IsLandingOnPage(tab_id)) {
     return;
   }
@@ -174,7 +173,7 @@ void SiteVisit::CancelPageLand(const int32_t tab_id) {
   NotifyCanceledPageLand(tab_id, ad);
 }
 
-void SiteVisit::StopPageLand(const int32_t tab_id) {
+void SiteVisit::StopPageLand(int32_t tab_id) {
   page_lands_.erase(tab_id);
 }
 
@@ -185,7 +184,7 @@ void SiteVisit::MaybeSuspendOrResumePageLandForVisibleTab() {
   }
 }
 
-void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
+void SiteVisit::MaybeSuspendOrResumePageLand(int32_t tab_id) {
   if (!kShouldSuspendAndResumePageLand.Get()) {
     // Suspend and resume page land is disabled.
     return;
@@ -203,15 +202,14 @@ void SiteVisit::MaybeSuspendOrResumePageLand(const int32_t tab_id) {
   SuspendPageLand(tab_id);
 }
 
-base::TimeDelta SiteVisit::CalculateRemainingTimeToLandOnPage(
-    const int32_t tab_id) {
+base::TimeDelta SiteVisit::CalculateRemainingTimeToLandOnPage(int32_t tab_id) {
   CHECK(IsLandingOnPage(tab_id));
 
   const PageLandInfo& page_land = page_lands_[tab_id];
   return page_land.timer.desired_run_time() - base::TimeTicks::Now();
 }
 
-void SiteVisit::SuspendPageLand(const int32_t tab_id) {
+void SiteVisit::SuspendPageLand(int32_t tab_id) {
   CHECK(IsLandingOnPage(tab_id));
 
   PageLandInfo& page_land = page_lands_[tab_id];
@@ -230,7 +228,7 @@ void SiteVisit::SuspendPageLand(const int32_t tab_id) {
   NotifyDidSuspendPageLand(tab_id, *page_land.remaining_time);
 }
 
-void SiteVisit::ResumePageLand(const int32_t tab_id) {
+void SiteVisit::ResumePageLand(int32_t tab_id) {
   CHECK(IsLandingOnPage(tab_id));
 
   PageLandInfo& page_land = page_lands_[tab_id];
@@ -251,45 +249,41 @@ void SiteVisit::ResumePageLand(const int32_t tab_id) {
 }
 
 void SiteVisit::NotifyMaybeLandOnPage(const AdInfo& ad,
-                                      const base::TimeDelta after) const {
+                                      base::TimeDelta after) const {
   for (SiteVisitObserver& observer : observers_) {
     observer.OnMaybeLandOnPage(ad, after);
   }
 }
 
-void SiteVisit::NotifyDidSuspendPageLand(
-    const int32_t tab_id,
-    const base::TimeDelta remaining_time) const {
+void SiteVisit::NotifyDidSuspendPageLand(int32_t tab_id,
+                                         base::TimeDelta remaining_time) const {
   for (SiteVisitObserver& observer : observers_) {
     observer.OnDidSuspendPageLand(tab_id, remaining_time);
   }
 }
 
-void SiteVisit::NotifyDidResumePageLand(
-    const int32_t tab_id,
-    const base::TimeDelta remaining_time) const {
+void SiteVisit::NotifyDidResumePageLand(int32_t tab_id,
+                                        base::TimeDelta remaining_time) const {
   for (SiteVisitObserver& observer : observers_) {
     observer.OnDidResumePageLand(tab_id, remaining_time);
   }
 }
 
-void SiteVisit::NotifyDidLandOnPage(const int32_t tab_id,
-                                    const int http_status_code,
+void SiteVisit::NotifyDidLandOnPage(int32_t tab_id,
+                                    int http_status_code,
                                     const AdInfo& ad) const {
   for (SiteVisitObserver& observer : observers_) {
     observer.OnDidLandOnPage(tab_id, http_status_code, ad);
   }
 }
 
-void SiteVisit::NotifyDidNotLandOnPage(const int32_t tab_id,
-                                       const AdInfo& ad) const {
+void SiteVisit::NotifyDidNotLandOnPage(int32_t tab_id, const AdInfo& ad) const {
   for (SiteVisitObserver& observer : observers_) {
     observer.OnDidNotLandOnPage(tab_id, ad);
   }
 }
 
-void SiteVisit::NotifyCanceledPageLand(const int32_t tab_id,
-                                       const AdInfo& ad) const {
+void SiteVisit::NotifyCanceledPageLand(int32_t tab_id, const AdInfo& ad) const {
   for (SiteVisitObserver& observer : observers_) {
     observer.OnCanceledPageLand(tab_id, ad);
   }
@@ -319,7 +313,7 @@ void SiteVisit::OnBrowserDidEnterBackground() {
   MaybeSuspendOrResumePageLandForVisibleTab();
 }
 
-void SiteVisit::OnTabDidChangeFocus(const int32_t tab_id) {
+void SiteVisit::OnTabDidChangeFocus(int32_t tab_id) {
   MaybeSuspendOrResumePageLand(tab_id);
 }
 
@@ -327,11 +321,11 @@ void SiteVisit::OnTabDidChange(const TabInfo& tab) {
   MaybeCancelPageLand(tab.id);
 }
 
-void SiteVisit::OnTabDidLoad(const TabInfo& tab, const int http_status_code) {
+void SiteVisit::OnTabDidLoad(const TabInfo& tab, int http_status_code) {
   MaybeLandOnPage(tab, http_status_code);
 }
 
-void SiteVisit::OnDidCloseTab(const int32_t tab_id) {
+void SiteVisit::OnDidCloseTab(int32_t tab_id) {
   CancelPageLand(tab_id);
 }
 

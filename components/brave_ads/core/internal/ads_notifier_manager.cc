@@ -46,7 +46,7 @@ void AdsNotifierManager::NotifyIneligibleWalletToServeAds() const {
 }
 
 void AdsNotifierManager::NotifyRemindUser(
-    const mojom::ReminderType mojom_reminder_type) const {
+    mojom::ReminderType mojom_reminder_type) const {
   for (const auto& ads_observer : observers_) {
     ads_observer->OnRemindUser(mojom_reminder_type);
   }

@@ -10,7 +10,7 @@
 namespace brave_ads {
 
 base::Time BackoffTimer::Start(const base::Location& location,
-                               const base::TimeDelta delay,
+                               base::TimeDelta delay,
                                base::OnceClosure user_task) {
   timer_.Stop();
 
@@ -18,7 +18,7 @@ base::Time BackoffTimer::Start(const base::Location& location,
 }
 
 base::Time BackoffTimer::StartWithPrivacy(const base::Location& location,
-                                          const base::TimeDelta delay,
+                                          base::TimeDelta delay,
                                           base::OnceClosure user_task) {
   timer_.Stop();
 
@@ -40,7 +40,7 @@ bool BackoffTimer::Stop() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-base::TimeDelta BackoffTimer::CalculateDelay(const base::TimeDelta delay) {
+base::TimeDelta BackoffTimer::CalculateDelay(base::TimeDelta delay) {
   const bool should_backoff = backoff_count_ > 0;
 
   int64_t delay_in_seconds = delay.InSeconds();

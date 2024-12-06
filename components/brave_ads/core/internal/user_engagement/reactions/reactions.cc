@@ -256,7 +256,7 @@ void Reactions::Load() {
 
 // static
 void Reactions::Deposit(const mojom::ReactionInfo* const mojom_reaction,
-                        const mojom::ConfirmationType mojom_confirmation_type) {
+                        mojom::ConfirmationType mojom_confirmation_type) {
   CHECK(mojom_reaction);
 
   GetAccount().Deposit(mojom_reaction->creative_instance_id,

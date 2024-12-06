@@ -27,7 +27,7 @@ InlineContentAdEventHandler::~InlineContentAdEventHandler() {
 void InlineContentAdEventHandler::FireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType mojom_ad_event_type,
+    mojom::InlineContentAdEventType mojom_ad_event_type,
     FireInlineContentAdEventHandlerCallback callback) {
   if (placement_id.empty()) {
     BLOG(1,
@@ -57,9 +57,9 @@ void InlineContentAdEventHandler::FireEvent(
 
 void InlineContentAdEventHandler::GetForCreativeInstanceIdCallback(
     const std::string& placement_id,
-    const mojom::InlineContentAdEventType mojom_ad_event_type,
+    mojom::InlineContentAdEventType mojom_ad_event_type,
     FireInlineContentAdEventHandlerCallback callback,
-    const bool success,
+    bool success,
     const std::string& creative_instance_id,
     const CreativeInlineContentAdInfo& creative_ad) {
   if (!success) {
@@ -83,9 +83,9 @@ void InlineContentAdEventHandler::GetForCreativeInstanceIdCallback(
 
 void InlineContentAdEventHandler::GetForTypeCallback(
     const InlineContentAdInfo& ad,
-    const mojom::InlineContentAdEventType mojom_ad_event_type,
+    mojom::InlineContentAdEventType mojom_ad_event_type,
     FireInlineContentAdEventHandlerCallback callback,
-    const bool success,
+    bool success,
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "Inline content ad: Failed to get ad events");
@@ -136,9 +136,9 @@ void InlineContentAdEventHandler::GetForTypeCallback(
 
 void InlineContentAdEventHandler::FireViewedEventCallback(
     const InlineContentAdInfo& ad,
-    const mojom::InlineContentAdEventType mojom_ad_event_type,
+    mojom::InlineContentAdEventType mojom_ad_event_type,
     FireInlineContentAdEventHandlerCallback callback,
-    const bool success) {
+    bool success) {
   if (!success) {
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
@@ -152,9 +152,9 @@ void InlineContentAdEventHandler::FireViewedEventCallback(
 
 void InlineContentAdEventHandler::FireEventCallback(
     const InlineContentAdInfo& ad,
-    const mojom::InlineContentAdEventType mojom_ad_event_type,
+    mojom::InlineContentAdEventType mojom_ad_event_type,
     FireInlineContentAdEventHandlerCallback callback,
-    const bool success) const {
+    bool success) const {
   if (!success) {
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
@@ -165,7 +165,7 @@ void InlineContentAdEventHandler::FireEventCallback(
 
 void InlineContentAdEventHandler::SuccessfullyFiredEvent(
     const InlineContentAdInfo& ad,
-    const mojom::InlineContentAdEventType mojom_ad_event_type,
+    mojom::InlineContentAdEventType mojom_ad_event_type,
     FireInlineContentAdEventHandlerCallback callback) const {
   NotifyDidFireInlineContentAdEvent(ad, mojom_ad_event_type);
 
@@ -176,7 +176,7 @@ void InlineContentAdEventHandler::SuccessfullyFiredEvent(
 void InlineContentAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType mojom_ad_event_type,
+    mojom::InlineContentAdEventType mojom_ad_event_type,
     FireInlineContentAdEventHandlerCallback callback) const {
   BLOG(1, "Failed to fire inline content ad "
               << mojom_ad_event_type << " event for placement id "
@@ -217,7 +217,7 @@ void InlineContentAdEventHandler::NotifyDidFireInlineContentAdEvent(
 void InlineContentAdEventHandler::NotifyFailedToFireInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType mojom_ad_event_type) const {
+    mojom::InlineContentAdEventType mojom_ad_event_type) const {
   if (delegate_) {
     delegate_->OnFailedToFireInlineContentAdEvent(
         placement_id, creative_instance_id, mojom_ad_event_type);
