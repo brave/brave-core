@@ -20,6 +20,8 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
+      # TODO: This is the sha where the PR branched off, so not really what we want, but there seems to be no easy way to get the last pre-merge sha without a checkout
+      TARGET_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
       - name: If a major Chromium bump was merged, rerun compare-chromium-versions in all PRs targeting the same branch
         run: |
@@ -31,7 +33,7 @@ jobs:
           }
 
           pr_ver="$(chromium_ver "${PR_SHA:?}")"
-          target_ver="$(chromium_ver "${GITHUB_BASE_REF:?}")"
+          target_ver="$(chromium_ver "${TARGET_SHA:?}")"
 
           echo "::notice::PR branch: ${GITHUB_HEAD_REF:?} (${pr_ver:?}), target branch: ${GITHUB_BASE_REF:?} (${target_ver:?})"
 
