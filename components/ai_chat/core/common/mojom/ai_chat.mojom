@@ -386,8 +386,8 @@ interface AIChatUIHandler {
   NewConversation(pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui);
 
-  // Untrusted UI can't use chrome://favicon. Backend knows which conversation
-  // ID is associated with the UI, so no arguments needed.
+  // TODO(petemill): WebUI clients won't need this when they can
+  // request via FaviconSource URLs via trusted webui.
   GetFaviconImageData(string conversation_uuid) => (
       array<uint8>? favicon_image_data);
 };
