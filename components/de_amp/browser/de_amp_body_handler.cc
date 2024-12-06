@@ -116,6 +116,8 @@ bool DeAmpBodyHandler::ShouldProcess(
   return navigation_chain_.GetList().size() < kMaxRedirectHops;
 }
 
+void DeAmpBodyHandler::OnBeforeSending() {}
+
 void DeAmpBodyHandler::OnComplete() {}
 
 DeAmpBodyHandler::Action DeAmpBodyHandler::OnBodyUpdated(

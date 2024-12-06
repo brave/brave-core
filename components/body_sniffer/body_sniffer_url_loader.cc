@@ -339,6 +339,13 @@ void BodySnifferURLLoader::CompleteSniffing(bool remove_first,
     Abort();
     return;
   }
+  if (auto* producer = absl::get_if<BodyProducerPtr>(&handler_)) {
+    (*producer)->OnBeforeSending();
+  }
+
+  for (auto& handler : complete_handlers_) {
+    handler->OnBeforeSending();
+  }
   throttle_->Resume();
   // Set up the watcher for the producer handle.
   body_producer_watcher_.Watch(

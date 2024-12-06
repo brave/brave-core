@@ -72,6 +72,8 @@ bool AIChatResourceSniffer::ShouldProcess(
   return true;
 }
 
+void AIChatResourceSniffer::OnBeforeSending() {}
+
 void AIChatResourceSniffer::OnComplete() {}
 
 AIChatResourceSniffer::Action AIChatResourceSniffer::OnBodyUpdated(

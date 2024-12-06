@@ -43,6 +43,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -69,6 +70,12 @@
 #include "brave/components/playlist/browser/playlist_background_web_contentses.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/components/speedreader/speedreader_service.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #endif
 
 constexpr char kAdBlockTestPage[] = "/blocking.html";
@@ -3173,3 +3180,25 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
       EvalJs(iframe, "checkSelector('.div-class-499', 'display', 'block')")
           .ExtractBool());
 }
+
+#if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoCosmeticFiltersOnSpeedreaderPage) {
+  UpdateAdBlockInstanceWithRules(
+      "##body,html:style(overflow: auto !important;");
+
+  auto* speedreader_service =
+      speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
+          browser()->profile());
+  speedreader_service->EnableForAllSites(true);
+  const GURL url = embedded_test_server()->GetURL(
+      "a.com", "/speedreader/article/simple.html");
+  NavigateToURL(url);
+
+  const auto& web_prefs = web_contents()->GetOrCreateWebPreferences();
+  EXPECT_TRUE(web_prefs.page_in_reader_mode);
+
+  EXPECT_EQ("visible",
+            EvalJs(web_contents(), "getComputedStyle(document.body).overflow")
+                .ExtractString());
+}
+#endif

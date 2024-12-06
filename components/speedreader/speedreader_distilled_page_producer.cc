@@ -50,9 +50,15 @@ std::string SpeedreaderDistilledPageProducer::TakeContent() {
   return {};
 }
 
-void SpeedreaderDistilledPageProducer::OnComplete() {
+void SpeedreaderDistilledPageProducer::OnBeforeSending() {
   if (speedreader_delegate_) {
     speedreader_delegate_->OnDistillComplete(DistillationResult::kSuccess);
+  }
+}
+
+void SpeedreaderDistilledPageProducer::OnComplete() {
+  if (speedreader_delegate_) {
+    speedreader_delegate_->OnDistilledDocumentSent();
   }
 }
 
