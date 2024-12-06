@@ -70,8 +70,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kAIChatUIHost);
 
-  webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
-                              IDR_AI_CHAT_UI_HTML);
+  webui::SetupWebUIDataSource(source, kAiChatUiGenerated, IDR_AI_CHAT_UI_HTML);
 
   source->AddResourcePath("styles.css", IDR_AI_CHAT_UI_CSS);
 

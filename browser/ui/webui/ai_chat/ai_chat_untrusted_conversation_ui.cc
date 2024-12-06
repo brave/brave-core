@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 
+#include <string>
+#include <utility>
+
 #include "base/strings/escape.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
@@ -126,10 +129,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(),
       kAIChatUntrustedConversationUIURL);
-  webui::SetupWebUIDataSource(
-      source,
-      UNSAFE_TODO(base::make_span(kAiChatUiGenerated, kAiChatUiGeneratedSize)),
-      IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML);
+  webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
+                              IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML);
 
   for (const auto& str : ai_chat::GetLocalizedStrings()) {
     source->AddString(str.name,
