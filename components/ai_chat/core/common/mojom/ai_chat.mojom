@@ -423,6 +423,8 @@ struct ConversationEntriesState {
   // How much of the content has been used by the AI engine, percentage,or null
   // if no content is associated.
   uint32? content_used_percentage;
+  // Whether the content has been refined
+  bool is_content_refined;
   // Whether the UI should represent that the user cannot submit new messages
   // or edits to the conversation.
   bool can_submit_user_entries;

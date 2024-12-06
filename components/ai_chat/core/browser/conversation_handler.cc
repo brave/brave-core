@@ -1641,6 +1641,7 @@ ConversationHandler::GetStateForConversationEntries() {
   mojom::ConversationEntriesStatePtr entries_state =
       mojom::ConversationEntriesState::New();
   entries_state->is_generating = IsRequestInProgress();
+  entries_state->is_content_refined = is_content_refined_;
   entries_state->is_leo_model = is_leo_model;
   entries_state->content_used_percentage =
       (metadata_->associated_content->is_content_association_possible == true)

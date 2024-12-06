@@ -415,6 +415,7 @@ type CustomArgs = {
   isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
+  shouldShowRefinedWarning: boolean
 }
 
 const args: CustomArgs = {
@@ -441,6 +442,7 @@ const args: CustomArgs = {
   isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
+  shouldShowRefinedWarning: false,
 }
 
 const preview: Meta<CustomArgs> = {
@@ -573,7 +575,9 @@ const preview: Meta<CustomArgs> = {
         conversationHistory: conversationContext.conversationHistory,
         isGenerating: conversationContext.isGenerating,
         isLeoModel: conversationContext.isCurrentModelLeo,
-        contentUsedPercentage: options.args.shouldShowLongPageWarning ? 48 : 100,
+        contentUsedPercentage: (options.args.shouldShowLongPageWarning || options.args.shouldShowRefinedWarning)
+          ? 48 : 100,
+        isContentRefined: options.args.shouldShowRefinedWarning,
         canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
         isMobile: aiChatContext.isMobile
       }
