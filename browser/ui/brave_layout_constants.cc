@@ -80,6 +80,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return 16;
     case LOCATION_BAR_ELEMENT_PADDING:
     case LOCATION_BAR_PAGE_INFO_ICON_VERTICAL_PADDING:
+    case LOCATION_BAR_TRAILING_DECORATION_EDGE_PADDING:
       return 2;
     default:
       break;

@@ -15,4 +15,6 @@ TEST(BraveLayoutConstantsTest, BraveValueTest) {
   EXPECT_EQ(gfx::Insets(5), GetLayoutInsets(TOOLBAR_BUTTON));
   EXPECT_EQ(28, GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT));
   EXPECT_EQ(4, GetLayoutConstant(LOCATION_BAR_CHILD_CORNER_RADIUS));
+  EXPECT_EQ(GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING),
+            GetLayoutConstant(LOCATION_BAR_TRAILING_DECORATION_EDGE_PADDING));
 }
