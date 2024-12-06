@@ -29,7 +29,7 @@ import PageContextToggle from '../page_context_toggle'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
 import SiteTitle from '../site_title'
-import { SuggestedQuestion, SuggestionButton } from '../suggested_question'
+import { GenerateSuggestionsButton, SuggestedQuestion } from '../suggested_question'
 import ToolsButtonMenu from '../tools_button_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
@@ -262,14 +262,7 @@ function Main() {
                   {SUGGESTION_STATUS_SHOW_BUTTON.includes(
                     conversationContext.suggestionStatus
                   ) && conversationContext.shouldSendPageContents && (
-                      <SuggestionButton
-                        onClick={() => conversationContext.generateSuggestedQuestions()}
-                        isLoading={conversationContext.suggestionStatus === Mojom.SuggestionGenerationStatus.IsGenerating}
-                      >
-                        <span className={styles.buttonText}>
-                          {getLocale('suggestQuestionsLabel')}
-                        </span>
-                      </SuggestionButton>
+                      <GenerateSuggestionsButton />
                     )}
                 </div>
               </div>
