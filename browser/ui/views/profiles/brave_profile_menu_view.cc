@@ -24,6 +24,12 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 
+// This method is overriden because otherwise we would have to call
+// `SetProfileIdentityInfo` a second time, and this leaves
+// `profile_background_container_`, and `heading_label_` dangling in
+// `ProfileMenuViewBase` for a while in between
+// `identity_info_container_->RemoveAllChildViews()` being called, and the new
+// pointers being assigned to those members.
 void BraveProfileMenuView::SetProfileIdentityInfo(
     const std::u16string& profile_name,
     SkColor profile_background_color,
@@ -34,27 +40,26 @@ void BraveProfileMenuView::SetProfileIdentityInfo(
     const std::u16string& subtitle,
     const std::u16string& management_label,
     const gfx::VectorIcon* header_art_icon) {
-  // This method is overriden because otherwise we would have to call
-  // `SetProfileIdentityInfo` a second time, and this leaves
-  // `profile_background_container_`, and `heading_label_` dangling in
-  // `ProfileMenuViewBase` for a while in between
-  // `identity_info_container_->RemoveAllChildViews()` being called, and the new
-  // pointers being assigned to those members.
-
+  // For non-guest sessions, we want to eliminate the subtitle
+  // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in"). In order to do that, we
+  // must fetch the desired title here so that we can pass it in along with the
+  // given subtitle below.
   Profile* profile = browser()->profile();
-  ProfileAttributesEntry* profile_attributes =
-      g_browser_process->profile_manager()
-          ->GetProfileAttributesStorage()
-          .GetProfileAttributesWithPath(profile->GetPath());
-  // Reset IdentityInfo to get rid of the subtitle string
-  // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in").
+  std::u16string desired_title = title;
+  if (!profile->IsGuestSession()) {
+    ProfileAttributesEntry* profile_attributes =
+        g_browser_process->profile_manager()
+            ->GetProfileAttributesStorage()
+            .GetProfileAttributesWithPath(profile->GetPath());
+    desired_title = profile_attributes->GetName();
+  }
+
+  // We never show the profile name (displayed above the user avatar) nor the
+  // edit buttons, so pass in default values for those parameters.
   ProfileMenuView::SetProfileIdentityInfo(
-      /*profile_name=*/std::u16string(),
-      profile_attributes->GetProfileThemeColors().profile_highlight_color,
-      /*edit_button_params=*/std::nullopt,
-      ui::ImageModel::FromImage(profile_attributes->GetAvatarIcon()),
-      ui::ImageModel(),
-      /*title=*/profile_attributes->GetName());
+      /*profile_name=*/std::u16string(), profile_background_color,
+      /*edit_button_params=*/std::nullopt, image_model, management_badge,
+      desired_title, subtitle, management_label, header_art_icon);
 }
 
 // We don't want autofill buttons in this menu.
@@ -93,4 +98,3 @@ gfx::ImageSkia BraveProfileMenuView::GetSyncIcon() const {
   // We don't need sync overlay.
   return gfx::ImageSkia();
 }
-
