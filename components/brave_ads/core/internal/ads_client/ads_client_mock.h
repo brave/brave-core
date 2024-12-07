@@ -44,8 +44,8 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD(void,
               GetSiteHistory,
-              (const int max_count,
-               const int recent_day_range,
+              (int max_count,
+               int recent_day_range,
                GetSiteHistoryCallback callback));
 
   MOCK_METHOD(void,
@@ -61,9 +61,7 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void, Load, (const std::string& name, LoadCallback callback));
   MOCK_METHOD(void,
               LoadResourceComponent,
-              (const std::string& id,
-               const int version,
-               LoadFileCallback callback));
+              (const std::string& id, int version, LoadFileCallback callback));
   MOCK_METHOD(std::string, LoadDataResource, (const std::string& name));
 
   MOCK_METHOD(void,
@@ -101,8 +99,8 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(void,
               Log,
               (const char* file,
-               const int line,
-               const int verbose_level,
+               int line,
+               int verbose_level,
                const std::string& message));
 };
 

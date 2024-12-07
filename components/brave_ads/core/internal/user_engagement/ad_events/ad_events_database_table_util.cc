@@ -13,7 +13,7 @@ namespace brave_ads::database {
 
 void PurgeExpiredAdEvents() {
   const database::table::AdEvents database_table;
-  database_table.PurgeExpired(base::BindOnce([](const bool success) {
+  database_table.PurgeExpired(base::BindOnce([](bool success) {
     if (!success) {
       return BLOG(0, "Failed to purge expired ad events");
     }
@@ -24,7 +24,7 @@ void PurgeExpiredAdEvents() {
 
 void PurgeAllOrphanedAdEvents() {
   const database::table::AdEvents database_table;
-  database_table.PurgeAllOrphaned(base::BindOnce([](const bool success) {
+  database_table.PurgeAllOrphaned(base::BindOnce([](bool success) {
     if (!success) {
       return BLOG(0, "Failed to purge all orphaned ad events");
     }

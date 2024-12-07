@@ -16,7 +16,7 @@ namespace brave_ads::test {
 namespace {
 
 // Returns true if the given time is in daylight saving time.
-bool IsDaylightSavingTime(const base::Time time) {
+bool IsDaylightSavingTime(base::Time time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
 
@@ -68,7 +68,7 @@ std::string DistantFutureAsIso8601() {
 }
 
 base::Time TimeFromString(const std::string& time_string,
-                          const bool should_adjust_for_dst) {
+                          bool should_adjust_for_dst) {
   base::Time time;
   CHECK(base::Time::FromString(time_string.c_str(), &time));
 
@@ -86,7 +86,7 @@ base::Time TimeFromUTCString(const std::string& time_string) {
 }
 
 base::TimeDelta TimeDeltaFromString(const std::string& time_string,
-                                    const bool should_adjust_for_dst) {
+                                    bool should_adjust_for_dst) {
   return TimeFromString(time_string, should_adjust_for_dst) - base::Time::Now();
 }
 

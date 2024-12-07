@@ -139,7 +139,7 @@ const std::vector<std::string>& Tokens() {
 
 }  // namespace
 
-void MockTokenGenerator(const size_t count) {
+void MockTokenGenerator(size_t count) {
   CHECK_GT(count, 0U);
 
   const auto* const token_generator_mock =
@@ -148,7 +148,7 @@ void MockTokenGenerator(const size_t count) {
       .WillByDefault(::testing::Return(BuildTokens(count)));
 }
 
-cbr::TokenList BuildTokens(const size_t count) {
+cbr::TokenList BuildTokens(size_t count) {
   CHECK_GT(count, 0U);
 
   const size_t modulo = Tokens().size();

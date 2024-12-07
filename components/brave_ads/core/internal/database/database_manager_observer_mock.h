@@ -29,17 +29,13 @@ class DatabaseManagerObserverMock : public DatabaseManagerObserver {
 
   MOCK_METHOD(void, OnFailedToCreateOrOpenDatabase, ());
 
-  MOCK_METHOD(void,
-              OnWillMigrateDatabase,
-              (const int from_version, const int to_version));
+  MOCK_METHOD(void, OnWillMigrateDatabase, (int from_version, int to_version));
 
-  MOCK_METHOD(void,
-              OnDidMigrateDatabase,
-              (const int from_version, const int to_version));
+  MOCK_METHOD(void, OnDidMigrateDatabase, (int from_version, int to_version));
 
   MOCK_METHOD(void,
               OnFailedToMigrateDatabase,
-              (const int from_version, const int to_version));
+              (int from_version, int to_version));
 
   MOCK_METHOD(void, OnDatabaseIsReady, ());
 };

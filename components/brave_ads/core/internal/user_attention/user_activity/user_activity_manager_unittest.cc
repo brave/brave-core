@@ -17,7 +17,7 @@ namespace brave_ads {
 namespace {
 
 void ExpectThatUserActivityEventsMatch(
-    const UserActivityEventType user_activity_event_type) {
+    UserActivityEventType user_activity_event_type) {
   UserActivityEventList user_activity_events;
   UserActivityEventInfo user_activity_event;
   user_activity_event.type = user_activity_event_type;

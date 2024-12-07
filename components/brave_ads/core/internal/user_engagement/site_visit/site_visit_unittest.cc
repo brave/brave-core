@@ -44,9 +44,9 @@ class BraveAdsSiteVisitTest : public test::TestBase {
   }
 
   void SimulateClickingAd(const AdInfo& ad,
-                          const int32_t tab_id,
+                          int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
-                          const int http_status_code) {
+                          int http_status_code) {
     site_visit_->set_last_clicked_ad(ad);
 
     SimulateOpeningNewTab(tab_id, redirect_chain, http_status_code);

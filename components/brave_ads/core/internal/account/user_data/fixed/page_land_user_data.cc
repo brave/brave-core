@@ -17,7 +17,7 @@ constexpr char kNonsensicalHttpStatusCode[] = "---";
 
 }  // namespace
 
-base::Value::Dict BuildPageLandUserData(const int http_status_code) {
+base::Value::Dict BuildPageLandUserData(int http_status_code) {
   if (!UserHasJoinedBraveRewards()) {
     return {};
   }

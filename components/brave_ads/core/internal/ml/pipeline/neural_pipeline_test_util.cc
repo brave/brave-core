@@ -62,7 +62,7 @@ NeuralPipelineBufferBuilder& NeuralPipelineBufferBuilder::CreateClassifier(
 
 NeuralPipelineBufferBuilder&
 NeuralPipelineBufferBuilder::AddMappedTokensTransformation(
-    const int vector_dimension,
+    int vector_dimension,
     const std::map<std::string, std::vector<uint16_t>>&
         token_categories_mapping) {
   std::vector<::flatbuffers::Offset<

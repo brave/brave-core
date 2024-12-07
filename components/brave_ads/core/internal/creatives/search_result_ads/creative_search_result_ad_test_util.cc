@@ -22,7 +22,7 @@ constexpr base::TimeDelta kConversionObservationWindow = base::Days(3);
 }  // namespace
 
 mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAd(
-    const bool should_generate_random_uuids) {
+    bool should_generate_random_uuids) {
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       mojom::CreativeSearchResultAdInfo::New();
 
@@ -45,7 +45,7 @@ mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAd(
 }
 
 mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAdWithConversion(
-    const bool should_generate_random_uuids) {
+    bool should_generate_random_uuids) {
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       BuildCreativeSearchResultAd(should_generate_random_uuids);
   CHECK(mojom_creative_ad);

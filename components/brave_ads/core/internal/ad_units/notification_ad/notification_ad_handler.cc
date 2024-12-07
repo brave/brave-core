@@ -30,11 +30,10 @@ namespace brave_ads {
 
 namespace {
 
-void FireEventCallback(
-    TriggerAdEventCallback callback,
-    const bool success,
-    const std::string& /*placement_id*/,
-    const mojom::NotificationAdEventType /*mojom_ad_event_type*/) {
+void FireEventCallback(TriggerAdEventCallback callback,
+                       bool success,
+                       const std::string& /*placement_id*/,
+                       mojom::NotificationAdEventType /*mojom_ad_event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -77,7 +76,7 @@ void NotificationAdHandler::MaybeServeAtRegularIntervals() {
 
 void NotificationAdHandler::TriggerEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType mojom_ad_event_type,
+    mojom::NotificationAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK_NE(mojom::NotificationAdEventType::kServedImpression,
            mojom_ad_event_type)
@@ -105,9 +104,9 @@ void NotificationAdHandler::TriggerEvent(
 
 void NotificationAdHandler::FireServedEventCallback(
     TriggerAdEventCallback callback,
-    const bool success,
+    bool success,
     const std::string& placement_id,
-    const mojom::NotificationAdEventType /*mojom_ad_event_type*/) {
+    mojom::NotificationAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -130,8 +129,8 @@ void NotificationAdHandler::OnNotifyPrefDidChange(const std::string& path) {
 }
 
 void NotificationAdHandler::OnNotifyUserDidBecomeActive(
-    const base::TimeDelta idle_time,
-    const bool screen_was_locked) {
+    base::TimeDelta idle_time,
+    bool screen_was_locked) {
   if (!CanServeIfUserIsActive() || !ShouldServe()) {
     return;
   }

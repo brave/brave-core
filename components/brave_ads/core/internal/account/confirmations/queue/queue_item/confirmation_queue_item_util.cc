@@ -28,21 +28,21 @@ std::optional<base::TimeDelta>
 
 base::TimeDelta DelayBeforeProcessingQueueItem(
     const ConfirmationQueueItemInfo& confirmation_queue_item,
-    const base::Time time) {
+    base::Time time) {
   CHECK(confirmation_queue_item.process_at);
   return *confirmation_queue_item.process_at - time;
 }
 
 bool ShouldHaveProcessedQueueItemInThePast(
     const ConfirmationQueueItemInfo& confirmation_queue_item,
-    const base::Time time) {
+    base::Time time) {
   return DelayBeforeProcessingQueueItem(confirmation_queue_item, time)
       .is_negative();
 }
 
 bool ShouldProcessQueueItem(
     const ConfirmationQueueItemInfo& confirmation_queue_item,
-    const base::Time time) {
+    base::Time time) {
   return time >= confirmation_queue_item.process_at;
 }
 
@@ -74,7 +74,7 @@ base::TimeDelta CalculateDelayBeforeProcessingConfirmationQueueItem(
 
 ScopedDelayBeforeProcessingConfirmationQueueItemForTesting::
     ScopedDelayBeforeProcessingConfirmationQueueItemForTesting(
-        const base::TimeDelta delay) {
+        base::TimeDelta delay) {
   CHECK_IS_TEST();
 
   g_scoped_delay_before_processing_confirmation_queue_item_for_testing = delay;

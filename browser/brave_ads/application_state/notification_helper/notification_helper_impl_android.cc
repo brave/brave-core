@@ -35,7 +35,7 @@ int GetOperatingSystemMajorVersion() {
   return major_version;
 }
 
-bool IsBraveAdsNotificationChannelEnabled(const bool is_foreground) {
+bool IsBraveAdsNotificationChannelEnabled(bool is_foreground) {
   if (GetOperatingSystemMajorVersion() <
       kMinimumMajorOperatingSystemVersionForNotificationChannels) {
     return true;

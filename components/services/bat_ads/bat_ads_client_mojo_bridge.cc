@@ -159,7 +159,7 @@ void BatAdsClientMojoBridge::Save(const std::string& name,
 
 void BatAdsClientMojoBridge::LoadResourceComponent(
     const std::string& id,
-    const int version,
+    int version,
     brave_ads::LoadFileCallback callback) {
   if (!bat_ads_client_associated_remote_.is_bound()) {
     std::move(callback).Run(base::File());
@@ -171,8 +171,8 @@ void BatAdsClientMojoBridge::LoadResourceComponent(
 }
 
 void BatAdsClientMojoBridge::GetSiteHistory(
-    const int max_count,
-    const int days_ago,
+    int max_count,
+    int days_ago,
     brave_ads::GetSiteHistoryCallback callback) {
   if (!bat_ads_client_associated_remote_.is_bound()) {
     std::move(callback).Run({});
@@ -232,8 +232,8 @@ void BatAdsClientMojoBridge::ShowScheduledCaptcha(
 }
 
 void BatAdsClientMojoBridge::Log(const char* file,
-                                 const int line,
-                                 const int verbose_level,
+                                 int line,
+                                 int verbose_level,
                                  const std::string& message) {
   if (bat_ads_client_associated_remote_.is_bound()) {
     bat_ads_client_associated_remote_->Log(file, line, verbose_level, message);

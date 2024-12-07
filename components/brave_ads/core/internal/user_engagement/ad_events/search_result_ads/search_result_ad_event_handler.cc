@@ -31,7 +31,7 @@ SearchResultAdEventHandler::~SearchResultAdEventHandler() {
 
 void SearchResultAdEventHandler::FireEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type,
+    mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) {
   CHECK(mojom_creative_ad);
 
@@ -85,9 +85,9 @@ void SearchResultAdEventHandler::FireEvent(
 void SearchResultAdEventHandler::MaybeFiredEventCallback(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     FireSearchResultAdEventHandlerCallback callback,
-    const bool success,
+    bool success,
     const std::string& placement_id,
-    const mojom::SearchResultAdEventType mojom_ad_event_type) const {
+    mojom::SearchResultAdEventType mojom_ad_event_type) const {
   if (success) {
     MaybeBuildAndSaveCreativeSetConversion(mojom_creative_ad,
                                            mojom_ad_event_type);
@@ -111,7 +111,7 @@ void SearchResultAdEventHandler::MaybeFireServedEvent(
 void SearchResultAdEventHandler::MaybeFireServedEventCallback(
     const SearchResultAdInfo& ad,
     FireSearchResultAdEventHandlerCallback callback,
-    const bool success,
+    bool success,
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "Search result ad: Failed to get ad events");
@@ -145,7 +145,7 @@ void SearchResultAdEventHandler::MaybeFireViewedEvent(
 void SearchResultAdEventHandler::MaybeFireViewedEventCallback(
     const SearchResultAdInfo& ad,
     FireSearchResultAdEventHandlerCallback callback,
-    const bool success) const {
+    bool success) const {
   if (!success) {
     BLOG(0, "Failed to save search result ad deposit");
     return FailedToFireEvent(ad,
@@ -168,7 +168,7 @@ void SearchResultAdEventHandler::MaybeFireClickedEvent(
 
 void SearchResultAdEventHandler::MaybeFireEvent(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type,
+    mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
   ad_events_database_table_.GetUnexpired(
       mojom::AdType::kSearchResultAd,
@@ -179,9 +179,9 @@ void SearchResultAdEventHandler::MaybeFireEvent(
 
 void SearchResultAdEventHandler::MaybeFireEventCallback(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type,
+    mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback,
-    const bool success,
+    bool success,
     const AdEventList& ad_events) const {
   if (!success) {
     BLOG(1, "Search result ad: Failed to get ad events");
@@ -197,7 +197,7 @@ void SearchResultAdEventHandler::MaybeFireEventCallback(
 
 void SearchResultAdEventHandler::FireEvent(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type,
+    mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
   const auto ad_event = SearchResultAdEventFactory::Build(mojom_ad_event_type);
   ad_event->FireEvent(
@@ -208,9 +208,9 @@ void SearchResultAdEventHandler::FireEvent(
 
 void SearchResultAdEventHandler::FireEventCallback(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type,
+    mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback,
-    const bool success) const {
+    bool success) const {
   if (!success) {
     return FailedToFireEvent(ad, mojom_ad_event_type, std::move(callback));
   }
@@ -220,7 +220,7 @@ void SearchResultAdEventHandler::FireEventCallback(
 
 void SearchResultAdEventHandler::SuccessfullyFiredEvent(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type,
+    mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
   NotifyDidFireSearchResultAdEvent(ad, mojom_ad_event_type);
 
@@ -230,7 +230,7 @@ void SearchResultAdEventHandler::SuccessfullyFiredEvent(
 
 void SearchResultAdEventHandler::FailedToFireEvent(
     const SearchResultAdInfo& ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type,
+    mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
   BLOG(1, "Failed to fire search result ad "
               << mojom_ad_event_type << " event for placement_id "

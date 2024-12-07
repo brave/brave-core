@@ -71,7 +71,7 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadMissingResource) {
                                                   /*version=*/::testing::_,
                                                   /*callback=*/::testing::_))
       .WillByDefault(::testing::Invoke([](const std::string& /*id*/,
-                                          const int /*version*/,
+                                          int /*version*/,
                                           LoadFileCallback callback) {
         const base::FilePath path =
             test::ResourceComponentsDataPath().AppendASCII(

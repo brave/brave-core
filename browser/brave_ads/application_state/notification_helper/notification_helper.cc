@@ -125,8 +125,7 @@ bool NotificationHelper::DoesSupportSystemNotifications() const {
   return does_support_system_notifications_;
 }
 
-void NotificationHelper::OnSystemNotificationPlatformBridgeReady(
-    const bool success) {
+void NotificationHelper::OnSystemNotificationPlatformBridgeReady(bool success) {
   does_support_system_notifications_ = success;
 }
 

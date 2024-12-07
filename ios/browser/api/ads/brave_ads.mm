@@ -245,7 +245,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       base::SysNSStringToUTF8(self.storagePath),
       std::make_unique<AdsClientIOS>(self), std::move(cppSysInfo),
       std::move(cppBuildChannelInfo), std::move(cppWalletInfo),
-      base::BindOnce(^(const bool success) {
+      base::BindOnce(^(bool success) {
         if (success) {
           [self registerAdsResources];
           [self periodicallyCheckForAdsResourceUpdates];
@@ -1258,8 +1258,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       closeNotificationAd:base::SysUTF8ToNSString(placement_id)];
 }
 
-- (void)getSiteHistory:(const int)max_count
-               forDays:(const int)days_ago
+- (void)getSiteHistory:(int)max_count
+               forDays:(int)days_ago
               callback:(brave_ads::GetSiteHistoryCallback)callback {
   // TODO(https://github.com/brave/brave-browser/issues/33681): Unify Brave Ads
   // site history.
@@ -1330,7 +1330,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)loadResourceComponent:(const std::string&)id
-                      version:(const int)version
+                      version:(int)version
                      callback:(brave_ads::LoadFileCallback)callback {
   NSString* bridgedId = base::SysUTF8ToNSString(id);
   NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
@@ -1346,7 +1346,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       base::BindOnce(std::move(callback)));
 }
 
-- (const std::string)loadDataResource:(const std::string&)name {
+- (std::string)loadDataResource:(const std::string&)name {
   const auto bundle = [NSBundle bundleForClass:[BraveAds class]];
   const auto path = [bundle pathForResource:base::SysUTF8ToNSString(name)
                                      ofType:nil];
@@ -1452,8 +1452,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)log:(const char*)file
-            line:(const int)line
-    verboseLevel:(const int)verbose_level
+            line:(int)line
+    verboseLevel:(int)verbose_level
          message:(const std::string&)message {
   if (verbose_level <= logging::GetVlogLevelHelper(file, strlen(file))) {
     logging::LogMessage(file, line, -verbose_level).stream()

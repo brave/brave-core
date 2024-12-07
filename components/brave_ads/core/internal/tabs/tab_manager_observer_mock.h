@@ -26,31 +26,29 @@ class TabManagerObserverMock : public TabManagerObserver {
 
   MOCK_METHOD(void, OnDidOpenNewTab, (const TabInfo& tab));
 
-  MOCK_METHOD(void,
-              OnTabDidLoad,
-              (const TabInfo& tab, const int http_status_code));
+  MOCK_METHOD(void, OnTabDidLoad, (const TabInfo& tab, int http_status_code));
 
-  MOCK_METHOD(void, OnTabDidChangeFocus, (const int32_t tab_id));
+  MOCK_METHOD(void, OnTabDidChangeFocus, (int32_t tab_id));
 
   MOCK_METHOD(void, OnTabDidChange, (const TabInfo& tab));
 
   MOCK_METHOD(void,
               OnTextContentDidChange,
-              (const int32_t tab_id,
+              (int32_t tab_id,
                const std::vector<GURL>& redirect_chain,
                const std::string& text));
 
   MOCK_METHOD(void,
               OnHtmlContentDidChange,
-              (const int32_t tab_id,
+              (int32_t tab_id,
                const std::vector<GURL>& redirect_chain,
                const std::string& html));
 
-  MOCK_METHOD(void, OnDidCloseTab, (const int32_t tab_id));
+  MOCK_METHOD(void, OnDidCloseTab, (int32_t tab_id));
 
-  MOCK_METHOD(void, OnTabDidStartPlayingMedia, (const int32_t tab_id));
+  MOCK_METHOD(void, OnTabDidStartPlayingMedia, (int32_t tab_id));
 
-  MOCK_METHOD(void, OnTabDidStopPlayingMedia, (const int32_t tab_id));
+  MOCK_METHOD(void, OnTabDidStopPlayingMedia, (int32_t tab_id));
 };
 
 }  // namespace brave_ads

@@ -13,15 +13,14 @@
 
 namespace brave_ads::test {
 
-InlineContentAdInfo BuildInlineContentAd(
-    const bool should_generate_random_uuids) {
+InlineContentAdInfo BuildInlineContentAd(bool should_generate_random_uuids) {
   const CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(should_generate_random_uuids);
   return BuildInlineContentAd(creative_ad);
 }
 
 InlineContentAdInfo BuildAndSaveInlineContentAd(
-    const bool should_generate_random_uuids) {
+    bool should_generate_random_uuids) {
   const CreativeInlineContentAdInfo creative_ad =
       BuildCreativeInlineContentAd(should_generate_random_uuids);
   database::SaveCreativeInlineContentAds({creative_ad});

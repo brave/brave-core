@@ -8,7 +8,7 @@
 
 namespace brave_ads::test {
 
-int ConvertHoursAndMinutesToTotalMinutes(const int hours, const int minutes) {
+int ConvertHoursAndMinutesToTotalMinutes(int hours, int minutes) {
   CHECK(hours >= 0 && hours <= 23);
   CHECK(minutes >= 0 && minutes <= 59);
 

@@ -27,7 +27,7 @@ Timer::~Timer() {
 }
 
 base::Time Timer::Start(const base::Location& location,
-                        const base::TimeDelta delay,
+                        base::TimeDelta delay,
                         base::OnceClosure user_task) {
   Stop();
 
@@ -38,7 +38,7 @@ base::Time Timer::Start(const base::Location& location,
 }
 
 base::Time Timer::StartWithPrivacy(const base::Location& location,
-                                   const base::TimeDelta delay,
+                                   base::TimeDelta delay,
                                    base::OnceClosure user_task) {
   base::TimeDelta rand_delay = RandTimeDelta(delay);
   if (rand_delay.is_negative()) {
@@ -67,7 +67,7 @@ bool Timer::Stop() {
 }
 
 ScopedTimerDelaySetterForTesting::ScopedTimerDelaySetterForTesting(
-    const base::TimeDelta delay) {
+    base::TimeDelta delay) {
   CHECK_IS_TEST();
 
   g_timer_delay_for_testing = delay;

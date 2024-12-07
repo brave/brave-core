@@ -45,7 +45,7 @@ PaymentTokens& GetPaymentTokens() {
   return ConfirmationStateManager::GetInstance().GetPaymentTokens();
 }
 
-PaymentTokenList SetPaymentTokens(const int count) {
+PaymentTokenList SetPaymentTokens(int count) {
   CHECK_GT(count, 0);
 
   PaymentTokenList payment_tokens = BuildPaymentTokens(count);
@@ -54,8 +54,8 @@ PaymentTokenList SetPaymentTokens(const int count) {
 }
 
 PaymentTokenInfo BuildPaymentToken(
-    const mojom::ConfirmationType mojom_confirmation_type,
-    const mojom::AdType mojom_ad_type) {
+    mojom::ConfirmationType mojom_confirmation_type,
+    mojom::AdType mojom_ad_type) {
   const std::string payment_token_base64 =
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)";
   PaymentTokenInfo payment_token = BuildPaymentToken(payment_token_base64);
@@ -72,7 +72,7 @@ PaymentTokenInfo BuildPaymentToken() {
   return payment_tokens.front();
 }
 
-PaymentTokenList BuildPaymentTokens(const int count) {
+PaymentTokenList BuildPaymentTokens(int count) {
   CHECK_GT(count, 0);
 
   const std::vector<std::string> payment_tokens_base64 = {

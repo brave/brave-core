@@ -30,15 +30,15 @@ void SetDefaultProfilePrefValue(const std::string& path,
   ProfilePref(path).default_value = std::move(default_value);
 }
 
-void SetProfileBooleanPrefValue(const std::string& path, const bool value) {
+void SetProfileBooleanPrefValue(const std::string& path, bool value) {
   SetProfilePrefValue(path, base::Value(value));
 }
 
-void SetProfileIntegerPrefValue(const std::string& path, const int value) {
+void SetProfileIntegerPrefValue(const std::string& path, int value) {
   SetProfilePrefValue(path, base::Value(value));
 }
 
-void SetProfileDoublePrefValue(const std::string& path, const double value) {
+void SetProfileDoublePrefValue(const std::string& path, double value) {
   SetProfilePrefValue(path, base::Value(value));
 }
 
@@ -47,11 +47,11 @@ void SetProfileStringPrefValue(const std::string& path,
   SetProfilePrefValue(path, base::Value(value));
 }
 
-void SetProfileInt64PrefValue(const std::string& path, const int64_t value) {
+void SetProfileInt64PrefValue(const std::string& path, int64_t value) {
   SetProfilePrefValue(path, base::Int64ToValue(value));
 }
 
-void SetProfileUint64PrefValue(const std::string& path, const uint64_t value) {
+void SetProfileUint64PrefValue(const std::string& path, uint64_t value) {
   SetProfilePrefValue(path, base::Value(base::NumberToString(value)));
 }
 
@@ -63,7 +63,7 @@ void SetProfileListPrefValue(const std::string& path, base::Value::List value) {
   SetProfilePrefValue(path, base::Value(std::move(value)));
 }
 
-void SetProfileTimePrefValue(const std::string& path, const base::Time value) {
+void SetProfileTimePrefValue(const std::string& path, base::Time value) {
   SetProfilePrefValue(path, base::TimeToValue(value));
 }
 

@@ -108,7 +108,7 @@ void AdsImpl::GetInternals(GetInternalsCallback callback) {
 
 void AdsImpl::GetActiveCallback(
     GetInternalsCallback callback,
-    const bool success,
+    bool success,
     const CreativeSetConversionList& creative_set_conversions) {
   if (!success) {
     BLOG(0, "Failed to get creative set conversions");
@@ -166,7 +166,7 @@ void AdsImpl::MaybeServeInlineContentAd(
 void AdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::InlineContentAdEventType mojom_ad_event_type,
+    mojom::InlineContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(
@@ -193,7 +193,7 @@ void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
 void AdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::NewTabPageAdEventType mojom_ad_event_type,
+    mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(
@@ -222,7 +222,7 @@ void AdsImpl::MaybeGetNotificationAd(const std::string& placement_id,
 
 void AdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType mojom_ad_event_type,
+    mojom::NotificationAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(
@@ -237,7 +237,7 @@ void AdsImpl::TriggerNotificationAdEvent(
 void AdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const mojom::PromotedContentAdEventType mojom_ad_event_type,
+    mojom::PromotedContentAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(
@@ -268,7 +268,7 @@ void AdsImpl::MaybeGetSearchResultAd(const std::string& placement_id,
 
 void AdsImpl::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type,
+    mojom::SearchResultAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(
@@ -282,7 +282,7 @@ void AdsImpl::TriggerSearchResultAdEvent(
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(
-    const mojom::AdType mojom_ad_type,
+    mojom::AdType mojom_ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(
@@ -293,9 +293,8 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
   PurgeOrphanedAdEvents(
       mojom_ad_type,
       base::BindOnce(
-          [](const mojom::AdType mojom_ad_type,
-             PurgeOrphanedAdEventsForTypeCallback callback,
-             const bool success) {
+          [](mojom::AdType mojom_ad_type,
+             PurgeOrphanedAdEventsForTypeCallback callback, bool success) {
             if (!success) {
               BLOG(0,
                    "Failed to purge orphaned ad events for " << mojom_ad_type);
@@ -308,8 +307,8 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
           mojom_ad_type, std::move(callback)));
 }
 
-void AdsImpl::GetAdHistory(const base::Time from_time,
-                           const base::Time to_time,
+void AdsImpl::GetAdHistory(base::Time from_time,
+                           base::Time to_time,
                            GetAdHistoryForUICallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(&AdsImpl::GetAdHistory,
@@ -401,7 +400,7 @@ void AdsImpl::CreateOrOpenDatabase(mojom::WalletInfoPtr mojom_wallet,
 
 void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
                                            InitializeCallback callback,
-                                           const bool success) {
+                                           bool success) {
   if (!success) {
     BLOG(0, "Failed to create or open database");
     return FailedToInitialize(std::move(callback));
@@ -432,7 +431,7 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
 
 void AdsImpl::MigrateClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                          InitializeCallback callback,
-                                         const bool success) {
+                                         bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
@@ -444,7 +443,7 @@ void AdsImpl::MigrateClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
 
 void AdsImpl::LoadClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                       InitializeCallback callback,
-                                      const bool success) {
+                                      bool success) {
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
     // potential defects using `DumpWithoutCrashing`.
@@ -463,7 +462,7 @@ void AdsImpl::LoadClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
 void AdsImpl::MigrateConfirmationStateCallback(
     mojom::WalletInfoPtr mojom_wallet,
     InitializeCallback callback,
-    const bool success) {
+    bool success) {
   if (!success) {
     return FailedToInitialize(std::move(callback));
   }
@@ -485,7 +484,7 @@ void AdsImpl::MigrateConfirmationStateCallback(
 
 void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                             InitializeCallback callback,
-                                            const bool success) {
+                                            bool success) {
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
     // potential defects using `DumpWithoutCrashing`.

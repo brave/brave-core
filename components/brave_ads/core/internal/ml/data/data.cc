@@ -7,7 +7,7 @@
 
 namespace brave_ads::ml {
 
-Data::Data(const DataType type) : type_(type) {}
+Data::Data(DataType type) : type_(type) {}
 
 Data::~Data() = default;
 

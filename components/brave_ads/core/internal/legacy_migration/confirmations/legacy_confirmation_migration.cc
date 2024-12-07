@@ -79,7 +79,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
                 kConfirmationsJsonFilename, mutable_json,
                 base::BindOnce(
                     [](const std::string& json, InitializeCallback callback,
-                       const bool success) {
+                       bool success) {
                       if (!success) {
                         BLOG(0, "Failed to migrate confirmation state");
                         return FailedToMigrate(std::move(callback));
@@ -108,8 +108,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
                       database_table.Save(
                           confirmation_queue_items,
                           base::BindOnce(
-                              [](InitializeCallback callback,
-                                 const bool success) {
+                              [](InitializeCallback callback, bool success) {
                                 if (!success) {
                                   BLOG(0,
                                        "Failed to migrate confirmation state");

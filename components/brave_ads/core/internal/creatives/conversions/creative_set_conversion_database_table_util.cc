@@ -13,7 +13,7 @@ namespace brave_ads::database {
 
 void PurgeExpiredCreativeSetConversions() {
   const table::CreativeSetConversions database_table;
-  database_table.PurgeExpired(base::BindOnce([](const bool success) {
+  database_table.PurgeExpired(base::BindOnce([](bool success) {
     if (!success) {
       return BLOG(0, "Failed to purge expired creative set conversions");
     }
@@ -26,7 +26,7 @@ void SaveCreativeSetConversions(
     const CreativeSetConversionList& creative_set_conversions) {
   table::CreativeSetConversions database_table;
   database_table.Save(creative_set_conversions,
-                      base::BindOnce([](const bool success) {
+                      base::BindOnce([](bool success) {
                         if (!success) {
                           return BLOG(
                               0, "Failed to save creative set conversions");

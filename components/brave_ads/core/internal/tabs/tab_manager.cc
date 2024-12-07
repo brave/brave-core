@@ -50,7 +50,7 @@ std::optional<TabInfo> TabManager::MaybeGetVisible() const {
   return MaybeGetForId(*visible_tab_id_);
 }
 
-std::optional<TabInfo> TabManager::MaybeGetForId(const int32_t tab_id) const {
+std::optional<TabInfo> TabManager::MaybeGetForId(int32_t tab_id) const {
   if (!DoesExistForId(tab_id)) {
     return std::nullopt;
   }
@@ -58,7 +58,7 @@ std::optional<TabInfo> TabManager::MaybeGetForId(const int32_t tab_id) const {
   return tabs_.at(tab_id);
 }
 
-bool TabManager::IsPlayingMedia(const int32_t tab_id) const {
+bool TabManager::IsPlayingMedia(int32_t tab_id) const {
   if (const std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
     return tab->is_playing_media;
   }
@@ -68,11 +68,11 @@ bool TabManager::IsPlayingMedia(const int32_t tab_id) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool TabManager::DoesExistForId(const int32_t tab_id) const {
+bool TabManager::DoesExistForId(int32_t tab_id) const {
   return tabs_.contains(tab_id);
 }
 
-TabInfo& TabManager::GetOrCreateForId(const int32_t tab_id) {
+TabInfo& TabManager::GetOrCreateForId(int32_t tab_id) {
   if (!DoesExistForId(tab_id)) {
     // Create a new tab.
     TabInfo tab;
@@ -83,7 +83,7 @@ TabInfo& TabManager::GetOrCreateForId(const int32_t tab_id) {
   return tabs_[tab_id];
 }
 
-void TabManager::RemoveForId(const int32_t tab_id) {
+void TabManager::RemoveForId(int32_t tab_id) {
   tabs_.erase(tab_id);
 
   if (tabs_.empty()) {
@@ -107,13 +107,13 @@ void TabManager::NotifyDidOpenNewTab(const TabInfo& tab) const {
 }
 
 void TabManager::NotifyTabDidLoad(const TabInfo& tab,
-                                  const int http_status_code) const {
+                                  int http_status_code) const {
   for (TabManagerObserver& observer : observers_) {
     observer.OnTabDidLoad(tab, http_status_code);
   }
 }
 
-void TabManager::NotifyTabDidChangeFocus(const int32_t tab_id) const {
+void TabManager::NotifyTabDidChangeFocus(int32_t tab_id) const {
   for (TabManagerObserver& observer : observers_) {
     observer.OnTabDidChangeFocus(tab_id);
   }
@@ -126,7 +126,7 @@ void TabManager::NotifyTabDidChange(const TabInfo& tab) const {
 }
 
 void TabManager::NotifyTextContentDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   for (TabManagerObserver& observer : observers_) {
@@ -135,7 +135,7 @@ void TabManager::NotifyTextContentDidChange(
 }
 
 void TabManager::NotifyHtmlContentDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   for (TabManagerObserver& observer : observers_) {
@@ -143,26 +143,26 @@ void TabManager::NotifyHtmlContentDidChange(
   }
 }
 
-void TabManager::NotifyDidCloseTab(const int32_t tab_id) const {
+void TabManager::NotifyDidCloseTab(int32_t tab_id) const {
   for (TabManagerObserver& observer : observers_) {
     observer.OnDidCloseTab(tab_id);
   }
 }
 
-void TabManager::NotifyTabDidStartPlayingMedia(const int32_t tab_id) const {
+void TabManager::NotifyTabDidStartPlayingMedia(int32_t tab_id) const {
   for (TabManagerObserver& observer : observers_) {
     observer.OnTabDidStartPlayingMedia(tab_id);
   }
 }
 
-void TabManager::NotifyTabDidStopPlayingMedia(const int32_t tab_id) const {
+void TabManager::NotifyTabDidStopPlayingMedia(int32_t tab_id) const {
   for (TabManagerObserver& observer : observers_) {
     observer.OnTabDidStopPlayingMedia(tab_id);
   }
 }
 
 void TabManager::OnNotifyTabHtmlContentDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   CHECK(!redirect_chain.empty());
@@ -179,7 +179,7 @@ void TabManager::OnNotifyTabHtmlContentDidChange(
 }
 
 void TabManager::OnNotifyTabTextContentDidChange(
-    const int32_t tab_id,
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   CHECK(!redirect_chain.empty());
@@ -195,7 +195,7 @@ void TabManager::OnNotifyTabTextContentDidChange(
   NotifyTextContentDidChange(tab_id, redirect_chain, text);
 }
 
-void TabManager::OnNotifyTabDidStartPlayingMedia(const int32_t tab_id) {
+void TabManager::OnNotifyTabDidStartPlayingMedia(int32_t tab_id) {
   TabInfo& tab = GetOrCreateForId(tab_id);
   if (tab.is_playing_media) {
     // Already playing media.
@@ -207,7 +207,7 @@ void TabManager::OnNotifyTabDidStartPlayingMedia(const int32_t tab_id) {
   NotifyTabDidStartPlayingMedia(tab_id);
 }
 
-void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t tab_id) {
+void TabManager::OnNotifyTabDidStopPlayingMedia(int32_t tab_id) {
   TabInfo& tab = GetOrCreateForId(tab_id);
   if (!tab.is_playing_media) {
     // Not playing media.
@@ -219,11 +219,11 @@ void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t tab_id) {
   NotifyTabDidStopPlayingMedia(tab_id);
 }
 
-void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
+void TabManager::OnNotifyTabDidChange(int32_t tab_id,
                                       const std::vector<GURL>& redirect_chain,
-                                      const bool is_new_navigation,
-                                      const bool is_restoring,
-                                      const bool is_visible) {
+                                      bool is_new_navigation,
+                                      bool is_restoring,
+                                      bool is_visible) {
   CHECK(!redirect_chain.empty());
 
   const bool does_exist = DoesExistForId(tab_id);
@@ -274,14 +274,13 @@ void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
   }
 }
 
-void TabManager::OnNotifyTabDidLoad(const int32_t tab_id,
-                                    const int http_status_code) {
+void TabManager::OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) {
   if (const std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
     NotifyTabDidLoad(*tab, http_status_code);
   }
 }
 
-void TabManager::OnNotifyDidCloseTab(const int32_t tab_id) {
+void TabManager::OnNotifyDidCloseTab(int32_t tab_id) {
   BLOG(2, "Tab id " << tab_id << " was closed");
 
   RemoveForId(tab_id);

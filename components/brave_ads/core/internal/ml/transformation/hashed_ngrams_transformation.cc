@@ -21,7 +21,7 @@ HashedNGramsTransformation::HashedNGramsTransformation()
 }
 
 HashedNGramsTransformation::HashedNGramsTransformation(
-    const int bucket_count,
+    int bucket_count,
     std::vector<uint32_t> subgrams)
     : Transformation(TransformationType::kHashedNGrams) {
   hash_vectorizer_ =

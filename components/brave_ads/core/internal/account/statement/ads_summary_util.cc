@@ -12,8 +12,8 @@ namespace brave_ads {
 
 base::flat_map<mojom::AdType, int32_t> GetAdsSummaryForDateRange(
     const TransactionList& transactions,
-    const base::Time from_time,
-    const base::Time to_time) {
+    base::Time from_time,
+    base::Time to_time) {
   base::flat_map<mojom::AdType, int32_t> ads_summary;
 
   for (const auto& transaction : transactions) {

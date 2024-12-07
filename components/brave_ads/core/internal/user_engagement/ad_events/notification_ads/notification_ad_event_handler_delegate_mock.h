@@ -48,7 +48,7 @@ class NotificationAdEventHandlerDelegateMock
   MOCK_METHOD(void,
               OnFailedToFireNotificationAdEvent,
               (const std::string& placement_id,
-               const mojom::NotificationAdEventType mojom_ad_event_type));
+               mojom::NotificationAdEventType mojom_ad_event_type));
 };
 
 }  // namespace brave_ads

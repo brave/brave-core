@@ -30,7 +30,7 @@ class PaddedImageButton : public views::ImageButton {
 
   ~PaddedImageButton() override = default;
 
-  void AdjustBorderInsetToFitHeight(const int height);
+  void AdjustBorderInsetToFitHeight(int height);
 
   // views::Button:
   void OnThemeChanged() override;

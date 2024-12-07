@@ -89,7 +89,7 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   // visible tab otherwise should be set to `false`.
   virtual void OnNotifyTabDidChange(int32_t tab_id,
                                     const std::vector<GURL>& redirect_chain,
-                                    const bool is_new_navigation,
+                                    bool is_new_navigation,
                                     bool is_restoring,
                                     bool is_visible) {}
 

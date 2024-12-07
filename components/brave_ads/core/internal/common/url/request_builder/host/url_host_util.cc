@@ -15,7 +15,7 @@ namespace brave_ads {
 
 namespace {
 
-std::string GetUrlHost(const UrlHostType type) {
+std::string GetUrlHost(UrlHostType type) {
   std::unique_ptr<UrlHostInterface> url_host = UrlHostFactory::Build(type);
   CHECK(url_host);
 

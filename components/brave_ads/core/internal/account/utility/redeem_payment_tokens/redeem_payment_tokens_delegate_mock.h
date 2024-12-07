@@ -29,11 +29,9 @@ class RedeemPaymentTokensDelegateMock : public RedeemPaymentTokensDelegate {
 
   MOCK_METHOD(void,
               OnDidScheduleNextPaymentTokenRedemption,
-              (const base::Time redeem_at));
+              (base::Time redeem_at));
 
-  MOCK_METHOD(void,
-              OnWillRetryRedeemingPaymentTokens,
-              (const base::Time retry_at));
+  MOCK_METHOD(void, OnWillRetryRedeemingPaymentTokens, (base::Time retry_at));
   MOCK_METHOD(void, OnDidRetryRedeemingPaymentTokens, ());
 };
 

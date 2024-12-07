@@ -158,7 +158,7 @@ std::optional<int> AdsTabHelper::HttpStatusCode(
   return std::nullopt;
 }
 
-bool AdsTabHelper::IsErrorPage(const int http_status_code) const {
+bool AdsTabHelper::IsErrorPage(int http_status_code) const {
   const int http_status_code_class = http_status_code / 100;
   return http_status_code_class == kHttpClientErrorResponseStatusCodeClass ||
          http_status_code_class == kHttpServerErrorResponseStatusCodeClass;

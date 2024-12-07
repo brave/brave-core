@@ -27,8 +27,7 @@ namespace brave_ads {
 
 namespace {
 
-void BuildAndSaveAdHistory(const mojom::AdType mojom_ad_type,
-                           const int clicked_count) {
+void BuildAndSaveAdHistory(mojom::AdType mojom_ad_type, int clicked_count) {
   const std::vector<mojom::ConfirmationType> mojom_confirmation_types =
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked, clicked_count);

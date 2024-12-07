@@ -27,11 +27,10 @@ namespace {
 SearchResultAdHandler* g_search_result_ad_handler_for_testing = nullptr;
 bool g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
-void FireEventCallback(
-    TriggerAdEventCallback callback,
-    const bool success,
-    const std::string& /*placement_id*/,
-    const mojom::SearchResultAdEventType /*mojom_ad_event_type*/) {
+void FireEventCallback(TriggerAdEventCallback callback,
+                       bool success,
+                       const std::string& /*placement_id*/,
+                       mojom::SearchResultAdEventType /*mojom_ad_event_type*/) {
   std::move(callback).Run(success);
 }
 
@@ -72,7 +71,7 @@ void SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting() {
 
 void SearchResultAdHandler::TriggerEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    const mojom::SearchResultAdEventType mojom_ad_event_type,
+    mojom::SearchResultAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   CHECK_NE(mojom::SearchResultAdEventType::kServedImpression,
            mojom_ad_event_type)
@@ -107,9 +106,9 @@ void SearchResultAdHandler::TriggerEvent(
 void SearchResultAdHandler::FireServedEventCallback(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     TriggerAdEventCallback callback,
-    const bool success,
+    bool success,
     const std::string& /*placement_id*/,
-    const mojom::SearchResultAdEventType /*mojom_ad_event_type*/) {
+    mojom::SearchResultAdEventType /*mojom_ad_event_type*/) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -142,9 +141,9 @@ void SearchResultAdHandler::MaybeTriggerDeferredAdViewedEvent(
 
 void SearchResultAdHandler::FireAdViewedEventCallback(
     TriggerAdEventCallback callback,
-    const bool success,
+    bool success,
     const std::string& /*placement_id*/,
-    const mojom::SearchResultAdEventType mojom_ad_event_type) {
+    mojom::SearchResultAdEventType mojom_ad_event_type) {
   CHECK_EQ(mojom_ad_event_type,
            mojom::SearchResultAdEventType::kViewedImpression);
 

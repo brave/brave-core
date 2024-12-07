@@ -74,7 +74,7 @@ void TextClassificationProcessor::ClassifyPageCallback(
 ///////////////////////////////////////////////////////////////////////////////
 
 void TextClassificationProcessor::OnTextContentDidChange(
-    const int32_t /*tab_id*/,
+    int32_t /*tab_id*/,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   CHECK(!redirect_chain.empty());

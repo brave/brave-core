@@ -38,7 +38,7 @@ class SearchResultAdEventHandlerDelegateMock
   MOCK_METHOD(void,
               OnFailedToFireSearchResultAdEvent,
               (const SearchResultAdInfo& ad,
-               const mojom::SearchResultAdEventType mojom_ad_event_type));
+               mojom::SearchResultAdEventType mojom_ad_event_type));
 };
 
 }  // namespace brave_ads

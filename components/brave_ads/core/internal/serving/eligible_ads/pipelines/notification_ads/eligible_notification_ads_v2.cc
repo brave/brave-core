@@ -51,7 +51,7 @@ void EligibleNotificationAdsV2::GetForUserModel(
 void EligibleNotificationAdsV2::GetEligibleAdsForUserModelCallback(
     UserModelInfo user_model,
     EligibleAdsCallback<CreativeNotificationAdList> callback,
-    const bool success,
+    bool success,
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(0, "Failed to get ad events");
@@ -81,7 +81,7 @@ void EligibleNotificationAdsV2::GetEligibleAdsCallback(
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeNotificationAdList> callback,
-    const bool success,
+    bool success,
     const SegmentList& /*segments*/,
     const CreativeNotificationAdList& creative_ads) {
   if (!success) {

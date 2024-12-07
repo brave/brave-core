@@ -14,9 +14,9 @@ namespace {
 
 int ComputePurchaseIntentSignalHistoryScore(
     const PurchaseIntentSignalHistoryList& signal_history,
-    const base::Time now,
-    const base::TimeDelta time_window,
-    const int signal_level) {
+    base::Time now,
+    base::TimeDelta time_window,
+    int signal_level) {
   int score = 0;
 
   for (const auto& signal : signal_history) {

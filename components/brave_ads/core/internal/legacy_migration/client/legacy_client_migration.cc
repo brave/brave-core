@@ -51,7 +51,7 @@ void HandleAdHistoryMigration(const std::string& json,
   database::table::AdHistory database_table;
   database_table.Save(*ad_history,
                       base::BindOnce(
-                          [](InitializeCallback callback, const bool success) {
+                          [](InitializeCallback callback, bool success) {
                             if (!success) {
                               return FailedToMigrate(
                                   "Failed to migrate ad history client state",
@@ -70,7 +70,7 @@ void HandleMalformedClientState(InitializeCallback callback) {
   GetAdsClient().Save(
       kClientJsonFilename, /*default state=§*/ "{}",
       base::BindOnce(
-          [](InitializeCallback callback, const bool success) {
+          [](InitializeCallback callback, bool success) {
             if (!success) {
               return FailedToMigrate(
                   "Failed to reset malformed client state to default values",
@@ -101,7 +101,7 @@ void HandleClientStateMigration(InitializeCallback callback,
       kClientJsonFilename, migrated_json,
       base::BindOnce(
           [](const std::string& json, InitializeCallback callback,
-             const bool success) {
+             bool success) {
             if (!success) {
               return FailedToMigrate("Failed to save migrated client state",
                                      std::move(callback));

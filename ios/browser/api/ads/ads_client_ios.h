@@ -42,17 +42,17 @@ class AdsClientIOS : public brave_ads::AdsClient {
             brave_ads::SaveCallback callback) override;
   void Load(const std::string& name, brave_ads::LoadCallback callback) override;
   void LoadResourceComponent(const std::string& id,
-                             const int version,
+                             int version,
                              brave_ads::LoadFileCallback callback) override;
-  void GetSiteHistory(const int max_count,
-                      const int days_ago,
+  void GetSiteHistory(int max_count,
+                      int days_ago,
                       brave_ads::GetSiteHistoryCallback callback) override;
   std::string LoadDataResource(const std::string& name) override;
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
   void Log(const char* file,
-           const int line,
-           const int verbose_level,
+           int line,
+           int verbose_level,
            const std::string& message) override;
   void RunDBTransaction(
       brave_ads::mojom::DBTransactionInfoPtr mojom_db_transaction,

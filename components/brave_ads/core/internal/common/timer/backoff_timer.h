@@ -43,7 +43,7 @@ class BackoffTimer final {
 
   // Optionally call this method to set the maximum backoff delay to
   // `max_delay`. Default maximum backoff delay is 1 hour.
-  void SetMaxBackoffDelay(const base::TimeDelta max_backoff_delay) {
+  void SetMaxBackoffDelay(base::TimeDelta max_backoff_delay) {
     max_backoff_delay_ = max_backoff_delay;
   }
 

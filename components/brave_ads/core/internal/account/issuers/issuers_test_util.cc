@@ -15,7 +15,7 @@ namespace brave_ads::test {
 namespace {
 
 TokenIssuerInfo BuildTokenIssuer(
-    const TokenIssuerType token_issuer_type,
+    TokenIssuerType token_issuer_type,
     const TokenIssuerPublicKeyMap& token_issuer_public_keys) {
   TokenIssuerInfo token_issuer;
   token_issuer.type = token_issuer_type;
@@ -78,7 +78,7 @@ std::string BuildIssuersUrlResponseBody() {
 }
 
 IssuersInfo BuildIssuers(
-    const int ping,
+    int ping,
     const TokenIssuerPublicKeyMap& confirmation_token_issuer_public_keys,
     const TokenIssuerPublicKeyMap& payment_token_issuer_public_keys) {
   IssuersInfo issuers;

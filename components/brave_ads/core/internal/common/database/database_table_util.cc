@@ -63,7 +63,7 @@ void CopyTableColumns(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                       const std::string& to,
                       const std::vector<std::string>& from_columns,
                       const std::vector<std::string>& to_columns,
-                      const bool should_drop) {
+                      bool should_drop) {
   CHECK(mojom_db_transaction);
   CHECK(!from.empty());
   CHECK(!to.empty());
@@ -92,7 +92,7 @@ void CopyTableColumns(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                       const std::string& from,
                       const std::string& to,
                       const std::vector<std::string>& columns,
-                      const bool should_drop) {
+                      bool should_drop) {
   return CopyTableColumns(mojom_db_transaction, from, to, columns, columns,
                           should_drop);
 }

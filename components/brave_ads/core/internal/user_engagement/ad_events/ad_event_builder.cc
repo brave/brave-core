@@ -13,8 +13,8 @@
 namespace brave_ads {
 
 AdEventInfo BuildAdEvent(const AdInfo& ad,
-                         const mojom::ConfirmationType mojom_confirmation_type,
-                         const base::Time created_at) {
+                         mojom::ConfirmationType mojom_confirmation_type,
+                         base::Time created_at) {
   AdEventInfo ad_event;
 
   ad_event.type = ad.type;
@@ -30,10 +30,9 @@ AdEventInfo BuildAdEvent(const AdInfo& ad,
   return ad_event;
 }
 
-AdEventInfo RebuildAdEvent(
-    const AdEventInfo& ad_event,
-    const mojom::ConfirmationType mojom_confirmation_type,
-    const base::Time created_at) {
+AdEventInfo RebuildAdEvent(const AdEventInfo& ad_event,
+                           mojom::ConfirmationType mojom_confirmation_type,
+                           base::Time created_at) {
   AdEventInfo mutable_ad_event(ad_event);
 
   mutable_ad_event.confirmation_type = mojom_confirmation_type;

@@ -14,7 +14,7 @@ constexpr char kFalse[] = "false";
 
 }  // namespace
 
-std::string BoolToString(const bool value) {
+std::string BoolToString(bool value) {
   return value ? kTrue : kFalse;
 }
 

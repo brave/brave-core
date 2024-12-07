@@ -230,8 +230,8 @@ void AdHistory::Save(const AdHistoryList& ad_history,
   RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
 }
 
-void AdHistory::GetForDateRange(const base::Time from_time,
-                                const base::Time to_time,
+void AdHistory::GetForDateRange(base::Time from_time,
+                                base::Time to_time,
                                 GetAdHistoryCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
@@ -270,8 +270,8 @@ void AdHistory::GetForDateRange(const base::Time from_time,
 }
 
 void AdHistory::GetHighestRankedPlacementsForDateRange(
-    const base::Time from_time,
-    const base::Time to_time,
+    base::Time from_time,
+    base::Time to_time,
     GetAdHistoryCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
@@ -467,7 +467,7 @@ void AdHistory::Create(
 }
 
 void AdHistory::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-                        const int to_version) {
+                        int to_version) {
   CHECK(mojom_db_transaction);
 
   switch (to_version) {

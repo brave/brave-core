@@ -23,9 +23,9 @@ struct DepositInfo;
 struct SearchResultAdInfo;
 
 using FireSearchResultAdEventHandlerCallback = base::OnceCallback<void(
-    const bool success,
+    bool success,
     const std::string& placement_id,
-    const mojom::SearchResultAdEventType mojom_ad_event_type)>;
+    mojom::SearchResultAdEventType mojom_ad_event_type)>;
 
 class SearchResultAdEventHandler final
     : public SearchResultAdEventHandlerDelegate {

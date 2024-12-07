@@ -22,18 +22,15 @@ void RegisterProfilePref(const std::string& path, base::Value default_value) {
   ProfilePref(path).default_value = std::move(default_value);
 }
 
-void RegisterProfileBooleanPref(const std::string& path,
-                                const bool default_value) {
+void RegisterProfileBooleanPref(const std::string& path, bool default_value) {
   RegisterProfilePref(path, base::Value(default_value));
 }
 
-void RegisterProfileIntegerPref(const std::string& path,
-                                const int default_value) {
+void RegisterProfileIntegerPref(const std::string& path, int default_value) {
   RegisterProfilePref(path, base::Value(default_value));
 }
 
-void RegisterProfileDoublePref(const std::string& path,
-                               const double default_value) {
+void RegisterProfileDoublePref(const std::string& path, double default_value) {
   RegisterProfilePref(path, base::Value(default_value));
 }
 
@@ -52,23 +49,22 @@ void RegisterProfileListPref(const std::string& path,
   RegisterProfilePref(path, base::Value(std::move(default_value)));
 }
 
-void RegisterProfileInt64Pref(const std::string& path,
-                              const int64_t default_value) {
+void RegisterProfileInt64Pref(const std::string& path, int64_t default_value) {
   RegisterProfilePref(path, base::Int64ToValue(default_value));
 }
 
 void RegisterProfileUint64Pref(const std::string& path,
-                               const uint64_t default_value) {
+                               uint64_t default_value) {
   RegisterProfilePref(path, base::Value((base::NumberToString(default_value))));
 }
 
 void RegisterProfileTimePref(const std::string& path,
-                             const base::Time default_value) {
+                             base::Time default_value) {
   RegisterProfilePref(path, base::TimeToValue(default_value));
 }
 
 void RegisterProfileTimeDeltaPref(const std::string& path,
-                                  const base::TimeDelta default_value) {
+                                  base::TimeDelta default_value) {
   RegisterProfilePref(path, base::TimeDeltaToValue(default_value));
 }
 

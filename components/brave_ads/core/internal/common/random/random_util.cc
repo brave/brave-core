@@ -17,7 +17,7 @@ namespace {
 std::optional<base::TimeDelta> g_rand_time_delta_for_testing;
 }  // namespace
 
-base::TimeDelta RandTimeDelta(const base::TimeDelta time_delta) {
+base::TimeDelta RandTimeDelta(base::TimeDelta time_delta) {
   if (g_rand_time_delta_for_testing) {
     CHECK_IS_TEST();
 
@@ -30,7 +30,7 @@ base::TimeDelta RandTimeDelta(const base::TimeDelta time_delta) {
 }
 
 ScopedRandTimeDeltaSetterForTesting::ScopedRandTimeDeltaSetterForTesting(
-    const base::TimeDelta time_delta) {
+    base::TimeDelta time_delta) {
   CHECK_IS_TEST();
 
   g_rand_time_delta_for_testing = time_delta;

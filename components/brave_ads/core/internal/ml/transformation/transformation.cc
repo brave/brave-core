@@ -7,7 +7,7 @@
 
 namespace brave_ads::ml {
 
-Transformation::Transformation(const TransformationType type) : type_(type) {}
+Transformation::Transformation(TransformationType type) : type_(type) {}
 
 Transformation::~Transformation() = default;
 

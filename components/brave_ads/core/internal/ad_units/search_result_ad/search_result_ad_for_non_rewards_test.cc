@@ -37,8 +37,8 @@ class BraveAdsSearchResultAdForNonRewardsIntegrationTest
 
   void TriggerSearchResultAdEventAndVerifyExpectations(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-      const mojom::SearchResultAdEventType mojom_ad_event_type,
-      const bool should_fire_event) {
+      mojom::SearchResultAdEventType mojom_ad_event_type,
+      bool should_fire_event) {
     base::MockCallback<TriggerAdEventCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event));
     GetAds().TriggerSearchResultAdEvent(std::move(mojom_creative_ad),

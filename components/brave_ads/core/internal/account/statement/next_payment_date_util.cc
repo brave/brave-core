@@ -11,9 +11,8 @@
 
 namespace brave_ads {
 
-base::Time CalculateNextPaymentDate(
-    const base::Time next_payment_token_redemption_at,
-    const TransactionList& transactions) {
+base::Time CalculateNextPaymentDate(base::Time next_payment_token_redemption_at,
+                                    const TransactionList& transactions) {
   const base::Time now = base::Time::Now();
 
   base::Time::Exploded now_exploded;

@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-views::View* CreateFlexibleSpacerView(const int spacing) {
+views::View* CreateFlexibleSpacerView(int spacing) {
   views::View* view = new views::View;
 
   const gfx::Size size(spacing, 1);
@@ -26,7 +26,7 @@ views::View* CreateFlexibleSpacerView(const int spacing) {
   return view;
 }
 
-views::View* CreateFixedSizeSpacerView(const int spacing) {
+views::View* CreateFixedSizeSpacerView(int spacing) {
   views::View* view = new views::View;
 
   const gfx::Size size(spacing, 1);

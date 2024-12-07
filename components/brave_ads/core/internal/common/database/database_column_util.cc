@@ -14,7 +14,7 @@
 
 namespace brave_ads::database {
 
-std::string BuildBindColumnPlaceholder(const size_t column_count) {
+std::string BuildBindColumnPlaceholder(size_t column_count) {
   CHECK_NE(0U, column_count);
 
   const std::vector<std::string> bind_column_placeholders(column_count, "?");
@@ -23,8 +23,7 @@ std::string BuildBindColumnPlaceholder(const size_t column_count) {
       "($1)", {base::JoinString(bind_column_placeholders, ", ")}, nullptr);
 }
 
-std::string BuildBindColumnPlaceholders(const size_t column_count,
-                                        const size_t row_count) {
+std::string BuildBindColumnPlaceholders(size_t column_count, size_t row_count) {
   CHECK_NE(0U, column_count);
   CHECK_NE(0U, row_count);
 
@@ -93,8 +92,8 @@ void BindColumn(sql::Statement* const statement,
 }
 
 void BindColumnInt(const mojom::DBActionInfoPtr& mojom_db_action,
-                   const int32_t index,
-                   const int32_t value) {
+                   int32_t index,
+                   int32_t value) {
   CHECK(mojom_db_action);
 
   mojom::DBBindColumnInfoPtr mojom_db_bind_column =
@@ -106,7 +105,7 @@ void BindColumnInt(const mojom::DBActionInfoPtr& mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-int ColumnInt(const mojom::DBRowInfoPtr& mojom_db_row, const size_t column) {
+int ColumnInt(const mojom::DBRowInfoPtr& mojom_db_row, size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
   CHECK_EQ(mojom::DBColumnValueUnion::Tag::kIntValue,
@@ -116,8 +115,8 @@ int ColumnInt(const mojom::DBRowInfoPtr& mojom_db_row, const size_t column) {
 }
 
 void BindColumnInt64(const mojom::DBActionInfoPtr& mojom_db_action,
-                     const int32_t index,
-                     const int64_t value) {
+                     int32_t index,
+                     int64_t value) {
   CHECK(mojom_db_action);
 
   mojom::DBBindColumnInfoPtr mojom_db_bind_column =
@@ -129,8 +128,7 @@ void BindColumnInt64(const mojom::DBActionInfoPtr& mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-int64_t ColumnInt64(const mojom::DBRowInfoPtr& mojom_db_row,
-                    const size_t column) {
+int64_t ColumnInt64(const mojom::DBRowInfoPtr& mojom_db_row, size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
   CHECK_EQ(mojom::DBColumnValueUnion::Tag::kInt64Value,
@@ -140,8 +138,8 @@ int64_t ColumnInt64(const mojom::DBRowInfoPtr& mojom_db_row,
 }
 
 void BindColumnDouble(const mojom::DBActionInfoPtr& mojom_db_action,
-                      const int32_t index,
-                      const double value) {
+                      int32_t index,
+                      double value) {
   CHECK(mojom_db_action);
 
   mojom::DBBindColumnInfoPtr mojom_db_bind_column =
@@ -153,8 +151,7 @@ void BindColumnDouble(const mojom::DBActionInfoPtr& mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-double ColumnDouble(const mojom::DBRowInfoPtr& mojom_db_row,
-                    const size_t column) {
+double ColumnDouble(const mojom::DBRowInfoPtr& mojom_db_row, size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
   CHECK_EQ(mojom::DBColumnValueUnion::Tag::kDoubleValue,
@@ -164,8 +161,8 @@ double ColumnDouble(const mojom::DBRowInfoPtr& mojom_db_row,
 }
 
 void BindColumnBool(const mojom::DBActionInfoPtr& mojom_db_action,
-                    const int32_t index,
-                    const bool value) {
+                    int32_t index,
+                    bool value) {
   CHECK(mojom_db_action);
 
   mojom::DBBindColumnInfoPtr mojom_db_bind_column =
@@ -177,7 +174,7 @@ void BindColumnBool(const mojom::DBActionInfoPtr& mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-bool ColumnBool(const mojom::DBRowInfoPtr& mojom_db_row, const size_t column) {
+bool ColumnBool(const mojom::DBRowInfoPtr& mojom_db_row, size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
   CHECK_EQ(mojom::DBColumnValueUnion::Tag::kBoolValue,
@@ -187,7 +184,7 @@ bool ColumnBool(const mojom::DBRowInfoPtr& mojom_db_row, const size_t column) {
 }
 
 void BindColumnString(const mojom::DBActionInfoPtr& mojom_db_action,
-                      const int32_t index,
+                      int32_t index,
                       const std::string& value) {
   CHECK(mojom_db_action);
 
@@ -201,7 +198,7 @@ void BindColumnString(const mojom::DBActionInfoPtr& mojom_db_action,
 }
 
 std::string ColumnString(const mojom::DBRowInfoPtr& mojom_db_row,
-                         const size_t column) {
+                         size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
   CHECK_EQ(mojom::DBColumnValueUnion::Tag::kStringValue,
@@ -211,8 +208,8 @@ std::string ColumnString(const mojom::DBRowInfoPtr& mojom_db_row,
 }
 
 void BindColumnTime(const mojom::DBActionInfoPtr& mojom_db_action,
-                    const int32_t index,
-                    const base::Time value) {
+                    int32_t index,
+                    base::Time value) {
   CHECK(mojom_db_action);
 
   mojom::DBBindColumnInfoPtr mojom_db_bind_column =
@@ -224,8 +221,7 @@ void BindColumnTime(const mojom::DBActionInfoPtr& mojom_db_action,
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }
 
-base::Time ColumnTime(const mojom::DBRowInfoPtr& mojom_db_row,
-                      const size_t column) {
+base::Time ColumnTime(const mojom::DBRowInfoPtr& mojom_db_row, size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
   CHECK_EQ(mojom::DBColumnValueUnion::Tag::kTimeValue,
@@ -235,8 +231,8 @@ base::Time ColumnTime(const mojom::DBRowInfoPtr& mojom_db_row,
 }
 
 void BindColumnTimeDelta(const mojom::DBActionInfoPtr& mojom_db_action,
-                         const int32_t index,
-                         const base::TimeDelta value) {
+                         int32_t index,
+                         base::TimeDelta value) {
   CHECK(mojom_db_action);
 
   mojom::DBBindColumnInfoPtr mojom_db_bind_column =
@@ -249,7 +245,7 @@ void BindColumnTimeDelta(const mojom::DBActionInfoPtr& mojom_db_action,
 }
 
 base::TimeDelta ColumnTimeDelta(const mojom::DBRowInfoPtr& mojom_db_row,
-                                const size_t column) {
+                                size_t column) {
   CHECK(mojom_db_row);
   CHECK_LT(column, mojom_db_row->column_values_union.size());
   CHECK_EQ(mojom::DBColumnValueUnion::Tag::kTimeDeltaValue,

@@ -25,7 +25,7 @@ NotificationAdEventHandler::~NotificationAdEventHandler() {
 
 void NotificationAdEventHandler::FireEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType mojom_ad_event_type,
+    mojom::NotificationAdEventType mojom_ad_event_type,
     FireNotificationAdEventHandlerCallback callback) {
   CHECK(!placement_id.empty());
 
@@ -50,9 +50,9 @@ void NotificationAdEventHandler::FireEvent(
 
 void NotificationAdEventHandler::FireEventCallback(
     const NotificationAdInfo& ad,
-    const mojom::NotificationAdEventType mojom_ad_event_type,
+    mojom::NotificationAdEventType mojom_ad_event_type,
     FireNotificationAdEventHandlerCallback callback,
-    const bool success) const {
+    bool success) const {
   if (!success) {
     return FailedToFireEvent(ad.placement_id, mojom_ad_event_type,
                              std::move(callback));
@@ -63,7 +63,7 @@ void NotificationAdEventHandler::FireEventCallback(
 
 void NotificationAdEventHandler::SuccessfullyFiredEvent(
     const NotificationAdInfo& ad,
-    const mojom::NotificationAdEventType mojom_ad_event_type,
+    mojom::NotificationAdEventType mojom_ad_event_type,
     FireNotificationAdEventHandlerCallback callback) const {
   NotifyDidFireNotificationAdEvent(ad, mojom_ad_event_type);
 
@@ -73,7 +73,7 @@ void NotificationAdEventHandler::SuccessfullyFiredEvent(
 
 void NotificationAdEventHandler::FailedToFireEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType mojom_ad_event_type,
+    mojom::NotificationAdEventType mojom_ad_event_type,
     FireNotificationAdEventHandlerCallback callback) const {
   BLOG(1, "Failed to fire notification ad " << mojom_ad_event_type
                                             << " event for placement id "
@@ -121,7 +121,7 @@ void NotificationAdEventHandler::NotifyDidFireNotificationAdEvent(
 
 void NotificationAdEventHandler::NotifyFailedToFireNotificationAdEvent(
     const std::string& placement_id,
-    const mojom::NotificationAdEventType mojom_ad_event_type) const {
+    mojom::NotificationAdEventType mojom_ad_event_type) const {
   if (delegate_) {
     delegate_->OnFailedToFireNotificationAdEvent(placement_id,
                                                  mojom_ad_event_type);

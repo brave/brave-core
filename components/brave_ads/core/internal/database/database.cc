@@ -329,7 +329,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::MaybeVacuum(
   return mojom::DBTransactionResultInfo::StatusCode::kSuccess;
 }
 
-void Database::ErrorCallback(const int extended_error,
+void Database::ErrorCallback(int extended_error,
                              sql::Statement* const statement) {
   // Attempt to recover a corrupt database, if it is eligible to be recovered.
   if (sql::Recovery::RecoverIfPossible(

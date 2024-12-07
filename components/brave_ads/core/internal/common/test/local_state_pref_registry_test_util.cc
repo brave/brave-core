@@ -24,17 +24,16 @@ void RegisterLocalStatePref(const std::string& path,
 }
 
 void RegisterLocalStateBooleanPref(const std::string& path,
-                                   const bool default_value) {
+                                   bool default_value) {
   RegisterLocalStatePref(path, base::Value(default_value));
 }
 
-void RegisterLocalStateIntegerPref(const std::string& path,
-                                   const int default_value) {
+void RegisterLocalStateIntegerPref(const std::string& path, int default_value) {
   RegisterLocalStatePref(path, base::Value(default_value));
 }
 
 void RegisterLocalStateDoublePref(const std::string& path,
-                                  const double default_value) {
+                                  double default_value) {
   RegisterLocalStatePref(path, base::Value(default_value));
 }
 
@@ -54,23 +53,23 @@ void RegisterLocalStateListPref(const std::string& path,
 }
 
 void RegisterLocalStateInt64Pref(const std::string& path,
-                                 const int64_t default_value) {
+                                 int64_t default_value) {
   RegisterLocalStatePref(path, base::Int64ToValue(default_value));
 }
 
 void RegisterLocalStateUint64Pref(const std::string& path,
-                                  const uint64_t default_value) {
+                                  uint64_t default_value) {
   RegisterLocalStatePref(path,
                          base::Value((base::NumberToString(default_value))));
 }
 
 void RegisterLocalStateTimePref(const std::string& path,
-                                const base::Time default_value) {
+                                base::Time default_value) {
   RegisterLocalStatePref(path, base::TimeToValue(default_value));
 }
 
 void RegisterLocalStateTimeDeltaPref(const std::string& path,
-                                     const base::TimeDelta default_value) {
+                                     base::TimeDelta default_value) {
   RegisterLocalStatePref(path, base::TimeDeltaToValue(default_value));
 }
 

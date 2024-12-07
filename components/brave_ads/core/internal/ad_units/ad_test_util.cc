@@ -13,15 +13,14 @@
 
 namespace brave_ads::test {
 
-std::string RandomUuidOr(const bool should_generate_random_uuid,
+std::string RandomUuidOr(bool should_generate_random_uuid,
                          const std::string& or_uuid) {
   return should_generate_random_uuid
              ? base::Uuid::GenerateRandomV4().AsLowercaseString()
              : or_uuid;
 }
 
-AdInfo BuildAd(const mojom::AdType mojom_ad_type,
-               const bool should_generate_random_uuids) {
+AdInfo BuildAd(mojom::AdType mojom_ad_type, bool should_generate_random_uuids) {
   AdInfo ad;
 
   ad.type = mojom_ad_type;

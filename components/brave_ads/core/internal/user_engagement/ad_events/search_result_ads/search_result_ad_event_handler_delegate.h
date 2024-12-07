@@ -29,7 +29,7 @@ class SearchResultAdEventHandlerDelegate {
   // Invoked when the search result `ad` event fails for `mojom_ad_event_type`.
   virtual void OnFailedToFireSearchResultAdEvent(
       const SearchResultAdInfo& ad,
-      const mojom::SearchResultAdEventType mojom_ad_event_type) {}
+      mojom::SearchResultAdEventType mojom_ad_event_type) {}
 
  protected:
   virtual ~SearchResultAdEventHandlerDelegate() = default;
