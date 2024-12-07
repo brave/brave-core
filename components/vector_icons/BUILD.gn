@@ -25,6 +25,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_browser_extensions.icon",
     "leo_browser_extensions_check.icon",
     "leo_browser_extensions_remove.icon",
+    "leo_browser_group.icon",
     "leo_browser_sidebar_right.icon",
     "leo_browser_split_view_unsplit.icon",
     "leo_carat_last.icon",
