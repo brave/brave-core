@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -31,14 +33,15 @@ class BraveAdsNewTabPageAdServingTest : public test::TestBase {
   void MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
     SubdivisionTargeting subdivision_targeting;
     AntiTargetingResource anti_targeting_resource;
-    NewTabPageAdServing ad_serving(subdivision_targeting,
-                                   anti_targeting_resource);
-    ad_serving.SetDelegate(&delegate_mock_);
+    ad_serving_ = std::make_unique<NewTabPageAdServing>(
+        subdivision_targeting, anti_targeting_resource);
+    ad_serving_->SetDelegate(&delegate_mock_);
 
-    ad_serving.MaybeServeAd(std::move(callback));
+    ad_serving_->MaybeServeAd(std::move(callback));
   }
 
   ::testing::StrictMock<NewTabPageAdServingDelegateMock> delegate_mock_;
+  std::unique_ptr<NewTabPageAdServing> ad_serving_;
 };
 
 TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
@@ -57,8 +60,11 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdForUnsupportedVersion) {
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   MaybeServeAd(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
@@ -76,8 +82,11 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
   EXPECT_CALL(delegate_mock_, OnDidServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Ne(std::nullopt)));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Ne(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   MaybeServeAd(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
@@ -95,8 +104,11 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   MaybeServeAd(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
@@ -109,8 +121,11 @@ TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   MaybeServeAd(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsNewTabPageAdServingTest,
@@ -124,8 +139,11 @@ TEST_F(BraveAdsNewTabPageAdServingTest,
   EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   MaybeServeAd(callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

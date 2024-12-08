@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/weak_ptr.h"
 #include "base/test/task_environment.h"
@@ -137,6 +138,7 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
  private:
   void SimulateProfile();
   const base::FilePath& ProfilePath() const { return profile_dir_.GetPath(); }
+  base::FilePath DatabasePath() const;
 
   void MockAdsClientNotifier();
   void MockAdsClient();

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
@@ -49,13 +51,16 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
               RecordP2AEvents(BuildP2AAdOpportunityEvents(
                   mojom::AdType::kNotificationAd, /*segments=*/{})));
 
+  base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([](const NotificationAdInfo& ad) {
+      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         EXPECT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
+        run_loop.Quit();
       }));
 
   ServeAd();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest,
@@ -78,6 +83,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
   // Arrange
   test::ForcePermissionRules();
 
+  base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
@@ -85,22 +91,30 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerViewedEvent) {
 
         // Act & Assert
         base::MockCallback<TriggerAdEventCallback> callback;
-        EXPECT_CALL(callback, Run(/*success=*/true));
+        base::RunLoop ad_event_run_loop(
+            base::RunLoop::Type::kNestableTasksAllowed);
+        EXPECT_CALL(callback, Run(/*success=*/true))
+            .WillOnce(
+                base::test::RunOnceClosure(ad_event_run_loop.QuitClosure()));
         GetAds().TriggerNotificationAdEvent(
             ad.placement_id, mojom::NotificationAdEventType::kViewedImpression,
             callback.Get());
+        ad_event_run_loop.Run();
 
         EXPECT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
+        run_loop.Quit();
       }));
 
   ServeAd();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
   // Arrange
   test::ForcePermissionRules();
 
+  base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
@@ -110,22 +124,30 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
         EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad.placement_id));
 
         base::MockCallback<TriggerAdEventCallback> callback;
-        EXPECT_CALL(callback, Run(/*success=*/true));
+        base::RunLoop ad_event_run_loop(
+            base::RunLoop::Type::kNestableTasksAllowed);
+        EXPECT_CALL(callback, Run(/*success=*/true))
+            .WillOnce(
+                base::test::RunOnceClosure(ad_event_run_loop.QuitClosure()));
         GetAds().TriggerNotificationAdEvent(
             ad.placement_id, mojom::NotificationAdEventType::kClicked,
             callback.Get());
+        ad_event_run_loop.Run();
 
         EXPECT_FALSE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
+        run_loop.Quit();
       }));
 
   ServeAd();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
   // Arrange
   test::ForcePermissionRules();
 
+  base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
@@ -133,22 +155,30 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
 
         // Act & Assert
         base::MockCallback<TriggerAdEventCallback> callback;
-        EXPECT_CALL(callback, Run(/*success=*/true));
+        base::RunLoop ad_event_run_loop(
+            base::RunLoop::Type::kNestableTasksAllowed);
+        EXPECT_CALL(callback, Run(/*success=*/true))
+            .WillOnce(
+                base::test::RunOnceClosure(ad_event_run_loop.QuitClosure()));
         GetAds().TriggerNotificationAdEvent(
             ad.placement_id, mojom::NotificationAdEventType::kDismissed,
             callback.Get());
+        ad_event_run_loop.Run();
 
         EXPECT_FALSE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
+        run_loop.Quit();
       }));
 
   ServeAd();
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
   // Arrange
   test::ForcePermissionRules();
 
+  base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
@@ -156,16 +186,23 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
 
         // Act & Assert
         base::MockCallback<TriggerAdEventCallback> callback;
-        EXPECT_CALL(callback, Run(/*success=*/true));
+        base::RunLoop ad_event_run_loop(
+            base::RunLoop::Type::kNestableTasksAllowed);
+        EXPECT_CALL(callback, Run(/*success=*/true))
+            .WillOnce(
+                base::test::RunOnceClosure(ad_event_run_loop.QuitClosure()));
         GetAds().TriggerNotificationAdEvent(
             ad.placement_id, mojom::NotificationAdEventType::kTimedOut,
             callback.Get());
+        ad_event_run_loop.Run();
 
         EXPECT_FALSE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
+        run_loop.Quit();
       }));
 
   ServeAd();
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

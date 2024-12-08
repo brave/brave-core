@@ -196,6 +196,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_observer_mock.cc",
     "//brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_observer_mock.h",
     "//brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_unittest.cc",
+    "//brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_waiter.cc",
+    "//brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_waiter.h",
     "//brave/components/brave_ads/core/internal/ads_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/ads_observer_mock.cc",
     "//brave/components/brave_ads/core/internal/ads_observer_mock.h",

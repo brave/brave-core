@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
@@ -44,9 +46,12 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, SaveEmptyConfirmationQueue) {
 
   // Assert
   base::MockCallback<GetConfirmationQueueCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*confirmation_queue_items=*/::testing::IsEmpty()));
+                            /*confirmation_queue_items=*/::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, SaveConfirmationQueueItems) {
@@ -67,8 +72,11 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, SaveConfirmationQueueItems) {
 
   // Assert
   base::MockCallback<GetConfirmationQueueCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, confirmation_queue_items));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, confirmation_queue_items))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
@@ -92,9 +100,12 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
   const ConfirmationQueueItemList expected_confirmation_queue_items = {
       confirmation_queue_items.front(), confirmation_queue_items.front()};
   base::MockCallback<GetConfirmationQueueCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback,
-              Run(/*success=*/true, expected_confirmation_queue_items));
+              Run(/*success=*/true, expected_confirmation_queue_items))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
@@ -117,8 +128,11 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 
   // Assert
   base::MockCallback<GetConfirmationQueueCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, confirmation_queue_items));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, confirmation_queue_items))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
@@ -149,9 +163,13 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 
   // Act & Assert
   base::MockCallback<GetConfirmationQueueCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, ConfirmationQueueItemList{
-                                                  confirmation_queue_item_1}));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback,
+              Run(/*success=*/true,
+                  ConfirmationQueueItemList{confirmation_queue_item_1}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetNext(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
@@ -192,11 +210,15 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 
   // Act & Assert
   base::MockCallback<GetConfirmationQueueCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, ConfirmationQueueItemList{
-                                                  confirmation_queue_item_2,
-                                                  confirmation_queue_item_3,
-                                                  confirmation_queue_item_1}));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback,
+              Run(/*success=*/true,
+                  ConfirmationQueueItemList{confirmation_queue_item_2,
+                                            confirmation_queue_item_3,
+                                            confirmation_queue_item_1}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
@@ -226,17 +248,24 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
   test::SaveConfirmationQueueItems(confirmation_queue_items);
 
   base::MockCallback<ResultCallback> delete_callback;
-  EXPECT_CALL(delete_callback, Run(/*success=*/true));
+  base::RunLoop run_loop_delete;
+  EXPECT_CALL(delete_callback, Run(/*success=*/true))
+      .WillOnce(base::test::RunOnceClosure(run_loop_delete.QuitClosure()));
 
   // Act
   database_table_.Delete(confirmation_queue_item_1.confirmation.transaction_id,
                          delete_callback.Get());
+  run_loop_delete.Run();
 
   // Assert
   base::MockCallback<GetConfirmationQueueCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, ConfirmationQueueItemList{
-                                                  confirmation_queue_item_2}));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback,
+              Run(/*success=*/true,
+                  ConfirmationQueueItemList{confirmation_queue_item_2}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
@@ -273,16 +302,22 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
       BuildConfirmationQueueItem(*confirmation_3, /*process_at=*/test::Now());
 
   base::MockCallback<ResultCallback> delete_callback;
-  EXPECT_CALL(delete_callback, Run(/*success=*/true));
+  base::RunLoop run_loop_delete;
+  EXPECT_CALL(delete_callback, Run(/*success=*/true))
+      .WillOnce(base::test::RunOnceClosure(run_loop_delete.QuitClosure()));
 
   // Act
   database_table_.Delete(confirmation_queue_item_3.confirmation.transaction_id,
                          delete_callback.Get());
+  run_loop_delete.Run();
 
   // Assert
   base::MockCallback<GetConfirmationQueueCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, confirmation_queue_items));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, confirmation_queue_items))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, RetryConfirmationQueueItem) {
@@ -303,7 +338,9 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, RetryConfirmationQueueItem) {
   test::SaveConfirmationQueueItems(confirmation_queue_items);
 
   base::MockCallback<ResultCallback> retry_callback;
-  EXPECT_CALL(retry_callback, Run(/*success=*/true));
+  base::RunLoop run_loop_retry;
+  EXPECT_CALL(retry_callback, Run(/*success=*/true))
+      .WillOnce(base::test::RunOnceClosure(run_loop_retry.QuitClosure()));
 
   const ScopedRandTimeDeltaSetterForTesting scoped_rand_time_delta(
       base::Minutes(7));
@@ -311,14 +348,18 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, RetryConfirmationQueueItem) {
   // Act
   database_table_.Retry(confirmation_queue_item.confirmation.transaction_id,
                         retry_callback.Get());
+  run_loop_retry.Run();
 
   // Assert
   confirmation_queue_item.process_at = test::Now() + base::Minutes(7);
   confirmation_queue_item.retry_count = 1;
   base::MockCallback<GetConfirmationQueueCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, ConfirmationQueueItemList{
-                                                  confirmation_queue_item}));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            ConfirmationQueueItemList{confirmation_queue_item}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
@@ -355,16 +396,22 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
       BuildConfirmationQueueItem(*confirmation_3, /*process_at=*/test::Now());
 
   base::MockCallback<ResultCallback> retry_callback;
-  EXPECT_CALL(retry_callback, Run(/*success=*/true));
+  base::RunLoop run_loop_retry;
+  EXPECT_CALL(retry_callback, Run(/*success=*/true))
+      .WillOnce(base::test::RunOnceClosure(run_loop_retry.QuitClosure()));
 
   // Act
   database_table_.Retry(confirmation_queue_item_3.confirmation.transaction_id,
                         retry_callback.Get());
+  run_loop_retry.Run();
 
   // Assert
   base::MockCallback<GetConfirmationQueueCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, confirmation_queue_items));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, confirmation_queue_items))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, GetTableName) {

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
@@ -55,8 +57,11 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsThisMonth) {
       {mojom::AdType::kNotificationAd, 2}};
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_mojom_statement))));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_mojom_statement))))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   BuildStatement(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsStatementTest,
@@ -136,8 +141,11 @@ TEST_F(BraveAdsStatementTest,
       {mojom::AdType::kNotificationAd, 3}};
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   BuildStatement(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
@@ -202,8 +210,11 @@ TEST_F(BraveAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
       {mojom::AdType::kNotificationAd, 3}};
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   BuildStatement(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
@@ -223,8 +234,11 @@ TEST_F(BraveAdsStatementTest, GetForNoTransactions) {
   expected_statement->ads_summary_this_month.clear();
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   BuildStatement(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
@@ -278,8 +292,11 @@ TEST_F(BraveAdsStatementTest, GetWithFilteredTransactions) {
       {mojom::AdType::kNotificationAd, 1}, {mojom::AdType::kNewTabPageAd, 1}};
 
   base::MockCallback<BuildStatementCallback> callback;
-  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_statement))))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   BuildStatement(callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

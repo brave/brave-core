@@ -16,6 +16,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_waiter.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/mock_test_util_internal.h"
@@ -31,6 +32,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/public/ads.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads::test {
@@ -203,6 +205,10 @@ void TestBase::SimulateProfile() {
   std::cout << "SIMULATED PROFILE PATH: " << ProfilePath() << std::endl;
 }
 
+base::FilePath TestBase::DatabasePath() const {
+  return ProfilePath().AppendASCII(kDatabaseFilename);
+}
+
 void TestBase::MockAdsClientNotifier() {
   MockAdsClientNotifierAddObserver(ads_client_mock_, *this);
 }
@@ -293,8 +299,7 @@ void TestBase::SetUpIntegrationTest() {
       << "SetUpIntegrationTest should only be called if SetUp is initialized "
          "for integration testing";
 
-  ads_ = Ads::CreateInstance(ads_client_mock_,
-                             ProfilePath().AppendASCII(kDatabaseFilename));
+  ads_ = Ads::CreateInstance(ads_client_mock_, DatabasePath());
   CHECK(ads_) << "Failed to create ads instance";
 
   // Must be called after `Ads` is instantiated but prior to `Initialize`.
@@ -303,6 +308,8 @@ void TestBase::SetUpIntegrationTest() {
   ads_->Initialize(WalletAsPtr(),
                    base::BindOnce(&TestBase::SetUpIntegrationTestCallback,
                                   weak_factory_.GetWeakPtr()));
+
+  AdsClientNotifierWaiter(*this).WaitForAdsInitialization();
 }
 
 void TestBase::SetUpIntegrationTestCallback(bool success) {
@@ -324,8 +331,7 @@ void TestBase::SetUpUnitTest() {
                                   "SetUp is initialized for unit testing";
 
   global_state_ = std::make_unique<GlobalState>(
-      ads_client_mock_, ProfilePath().AppendASCII(kDatabaseFilename),
-      std::make_unique<TokenGeneratorMock>());
+      ads_client_mock_, DatabasePath(), std::make_unique<TokenGeneratorMock>());
 
   // Must be called after `GlobalState` is instantiated but prior to
   // `MockDefaultAdsServiceState`.

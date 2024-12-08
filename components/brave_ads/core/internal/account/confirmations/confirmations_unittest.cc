@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
@@ -49,9 +51,12 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
 
   // Assert
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*confirmation_queue_items=*/::testing::SizeIs(1)));
+                            /*confirmation_queue_items=*/::testing::SizeIs(1)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   confirmation_queue_database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
@@ -68,9 +73,12 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
 
   // Assert
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*confirmation_queue_items=*/::testing::SizeIs(1)));
+                            /*confirmation_queue_items=*/::testing::SizeIs(1)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   confirmation_queue_database_table_.GetAll(callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

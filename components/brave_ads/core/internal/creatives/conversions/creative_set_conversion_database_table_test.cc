@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
@@ -35,9 +37,12 @@ TEST_F(BraveAdsConversionsDatabaseTableIntegrationTest,
   // Act & Assert
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*creative_set_conversions=*/::testing::SizeIs(2)));
+                            /*creative_set_conversions=*/::testing::SizeIs(2)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table.GetUnexpired(callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

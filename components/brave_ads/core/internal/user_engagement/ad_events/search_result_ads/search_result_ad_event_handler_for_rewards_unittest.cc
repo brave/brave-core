@@ -7,6 +7,8 @@
 #include <string>
 
 #include "base/check.h"
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
@@ -33,21 +35,27 @@ namespace {
 void VerifyDepositForCreativeInstanceIdExpectation(
     const std::string& creative_instance_id) {
   base::MockCallback<database::table::GetDepositsCallback> callback;
+  base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
   EXPECT_CALL(callback, Run(/*success=*/::testing::_,
-                            /*deposit=*/::testing::Ne(std::nullopt)));
+                            /*deposit=*/::testing::Ne(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   const database::table::Deposits database_table;
   database_table.GetForCreativeInstanceId(creative_instance_id, callback.Get());
+  run_loop.Run();
 }
 
 void VerifyCreativeSetConversionExpectation(size_t expected_count) {
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
+  base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
   EXPECT_CALL(
       callback,
       Run(/*success=*/::testing::_,
-          /*creative_set_conversions=*/::testing::SizeIs(expected_count)));
+          /*creative_set_conversions=*/::testing::SizeIs(expected_count)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   const database::table::CreativeSetConversions database_table;
   database_table.GetUnexpired(callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace
@@ -72,11 +80,14 @@ class BraveAdsSearchResultAdEventHandlerForRewardsTest : public test::TestBase {
     CHECK(mojom_creative_ad);
 
     base::MockCallback<FireSearchResultAdEventHandlerCallback> callback;
+    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
     EXPECT_CALL(callback,
                 Run(/*success=*/should_fire_event,
-                    mojom_creative_ad->placement_id, mojom_ad_event_type));
+                    mojom_creative_ad->placement_id, mojom_ad_event_type))
+        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
     event_handler_.FireEvent(mojom_creative_ad.Clone(), mojom_ad_event_type,
                              callback.Get());
+    run_loop.Run();
 
     size_t expected_count = 0;
 
@@ -110,10 +121,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad));
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kServedImpression,
       /*should_fire_event=*/true);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -124,10 +138,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad));
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kServedImpression,
       /*should_fire_event=*/true);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -140,10 +157,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdViewedEvent(ad));
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdViewedEvent(ad))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -155,10 +175,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdViewedEvent(ad));
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdViewedEvent(ad))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -172,12 +195,15 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireSearchResultAdEvent(
-                  ad, mojom::SearchResultAdEventType::kViewedImpression));
+                  ad, mojom::SearchResultAdEventType::kViewedImpression))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -189,12 +215,15 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireSearchResultAdEvent(
-                  ad, mojom::SearchResultAdEventType::kViewedImpression));
+                  ad, mojom::SearchResultAdEventType::kViewedImpression))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -208,10 +237,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdClickedEvent(ad));
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdClickedEvent(ad))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(mojom_creative_ad,
                                  mojom::SearchResultAdEventType::kClicked,
                                  /*should_fire_event=*/true);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -224,10 +256,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdClickedEvent(ad));
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdClickedEvent(ad))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(mojom_creative_ad,
                                  mojom::SearchResultAdEventType::kClicked,
                                  /*should_fire_event=*/true);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -242,12 +277,14 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
                             mojom::ConfirmationType::kClicked});
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_,
-              OnFailedToFireSearchResultAdEvent(
-                  ad, mojom::SearchResultAdEventType::kClicked));
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_mock_, OnFailedToFireSearchResultAdEvent(
+                                  ad, mojom::SearchResultAdEventType::kClicked))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(mojom_creative_ad,
                                  mojom::SearchResultAdEventType::kClicked,
                                  /*should_fire_event=*/false);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -260,13 +297,15 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireSearchResultAdEvent(
-                  ad, mojom::SearchResultAdEventType::kViewedImpression));
-
+                  ad, mojom::SearchResultAdEventType::kViewedImpression))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -279,12 +318,15 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireSearchResultAdEvent(
-                  ad, mojom::SearchResultAdEventType::kServedImpression));
+                  ad, mojom::SearchResultAdEventType::kServedImpression))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kServedImpression,
       /*should_fire_event=*/false);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -297,12 +339,15 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireSearchResultAdEvent(
-                  ad, mojom::SearchResultAdEventType::kServedImpression));
+                  ad, mojom::SearchResultAdEventType::kServedImpression))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kServedImpression,
       /*should_fire_event=*/false);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -322,10 +367,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad));
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kServedImpression,
       /*should_fire_event=*/true);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -345,12 +393,15 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireSearchResultAdEvent(
-                  ad, mojom::SearchResultAdEventType::kServedImpression));
+                  ad, mojom::SearchResultAdEventType::kServedImpression))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kServedImpression,
       /*should_fire_event=*/false);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -370,10 +421,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad));
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdServedEvent(ad))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kServedImpression,
       /*should_fire_event=*/true);
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -393,12 +447,15 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireSearchResultAdEvent(
-                  ad, mojom::SearchResultAdEventType::kServedImpression));
+                  ad, mojom::SearchResultAdEventType::kServedImpression))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(
       mojom_creative_ad, mojom::SearchResultAdEventType::kServedImpression,
       /*should_fire_event=*/false);
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

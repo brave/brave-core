@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_test_util.h"
@@ -61,16 +63,22 @@ TEST_F(BraveAdsConfirmationQueueTest, AddConfirmation) {
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
-  EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
-  EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                  *confirmation, /*process_at=*/test::Now() +
-                                                     base::Minutes(5)));
+  base::RunLoop run_loop_add;
+  EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation))
+      .WillOnce(base::test::RunOnceClosure(run_loop_add.QuitClosure()));
+  base::RunLoop run_loop_process;
+  EXPECT_CALL(delegate_mock_,
+              OnWillProcessConfirmationQueue(
+                  *confirmation, /*process_at=*/test::Now() + base::Minutes(5)))
+      .WillOnce(base::test::RunOnceClosure(run_loop_process.QuitClosure()));
 
   const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
       scoped_delay_before_processing_confirmation_queue_item(base::Minutes(5));
 
   // Act
   confirmation_queue_->Add(*confirmation);
+  run_loop_add.Run();
+  run_loop_process.Run();
 
   // Assert
   EXPECT_TRUE(HasPendingTasks());
@@ -100,19 +108,29 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessConfirmation) {
       test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
-  EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
+  base::RunLoop run_loop_add;
+  EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation))
+      .WillOnce(base::test::RunOnceClosure(run_loop_add.QuitClosure()));
+  base::RunLoop run_loop_process;
   EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
                                   *confirmation, /*process_at=*/test::Now() +
-                                                     base::Minutes(21)));
+                                                     base::Minutes(21)))
+      .WillOnce(base::test::RunOnceClosure(run_loop_process.QuitClosure()));
 
   const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
       scoped_delay_before_processing_confirmation_queue_item(base::Minutes(21));
   confirmation_queue_->Add(*confirmation);
+  run_loop_add.Run();
+  run_loop_process.Run();
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
-  EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);
+  base::RunLoop run_loop_did_process;
+  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue)
+      .WillOnce(base::test::RunOnceClosure(run_loop_did_process.QuitClosure()));
+  EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue)
+      .WillOnce(base::test::RunOnceClosure(run_loop_did_process.QuitClosure()));
   FastForwardClockToNextPendingTask();
+  run_loop_did_process.Run();
 }
 
 TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleConfirmations) {
@@ -123,16 +141,22 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleConfirmations) {
       test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/true);
   ASSERT_TRUE(confirmation_1);
   {
-    EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation_1));
+    base::RunLoop run_loop_add_1;
+    EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation_1))
+        .WillOnce(base::test::RunOnceClosure(run_loop_add_1.QuitClosure()));
+    base::RunLoop run_loop_process_1;
     EXPECT_CALL(
         delegate_mock_,
         OnWillProcessConfirmationQueue(
-            *confirmation_1, /*process_at=*/test::Now() + base::Minutes(7)));
+            *confirmation_1, /*process_at=*/test::Now() + base::Minutes(7)))
+        .WillOnce(base::test::RunOnceClosure(run_loop_process_1.QuitClosure()));
 
     const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
         scoped_delay_before_processing_confirmation_queue_item(
             base::Minutes(7));
     confirmation_queue_->Add(*confirmation_1);
+    run_loop_add_1.Run();
+    run_loop_process_1.Run();
 
     EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
   }
@@ -143,9 +167,12 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleConfirmations) {
       test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/true);
   ASSERT_TRUE(confirmation_2);
   {
-    EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation_2));
+    base::RunLoop run_loop_add_2;
+    EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation_2))
+        .WillOnce(base::test::RunOnceClosure(run_loop_add_2.QuitClosure()));
 
     confirmation_queue_->Add(*confirmation_2);
+    run_loop_add_2.Run();
 
     EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
   }
@@ -160,20 +187,24 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleConfirmations) {
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue(*confirmation_1));
-
+  base::RunLoop run_loop_process_1;
+  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue(*confirmation_1))
+      .WillOnce(base::test::RunOnceClosure(run_loop_process_1.QuitClosure()));
   EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
                                   *confirmation_2,
                                   /*process_at=*/test::Now() +
-                                      base::Minutes(7) + base::Minutes(21)));
-
+                                      base::Minutes(7) + base::Minutes(21)))
+      .WillOnce(base::test::RunOnceClosure(run_loop_process_1.QuitClosure()));
   FastForwardClockToNextPendingTask();
+  run_loop_process_1.Run();
 
-  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue(*confirmation_2));
-
-  EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);
-
+  base::RunLoop run_loop_process_2;
+  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue(*confirmation_2))
+      .WillOnce(base::test::RunOnceClosure(run_loop_process_2.QuitClosure()));
+  EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue)
+      .WillOnce(base::test::RunOnceClosure(run_loop_process_2.QuitClosure()));
   FastForwardClockToNextPendingTask();
+  run_loop_process_2.Run();
 }
 
 }  // namespace brave_ads
