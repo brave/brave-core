@@ -104,7 +104,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   explicit MockConversationHandlerClient(ConversationHandler* driver) {
     driver->Bind(conversation_handler_remote_.BindNewPipeAndPassReceiver(),
                  conversation_ui_receiver_.BindNewPipeAndPassRemote());
-    conversation_handler_ = driver;
   }
 
   ~MockConversationHandlerClient() override = default;
@@ -114,9 +113,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
     conversation_ui_receiver_.reset();
   }
 
-  ConversationHandler* GetConversationHandler() {
-    return conversation_handler_;
-  }
 
   MOCK_METHOD(void, OnConversationHistoryUpdate, (), (override));
 
@@ -147,7 +143,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
  private:
   mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver_{this};
   mojo::Remote<mojom::ConversationHandler> conversation_handler_remote_;
-  raw_ptr<ConversationHandler, DanglingUntriaged> conversation_handler_;
 };
 
 class MockAssociatedContent
@@ -193,10 +188,11 @@ class MockAssociatedContent
 
   void DisassociateWithConversations(std::string archived_text_content,
                                      bool archived_is_video) {
-    std::set<raw_ptr<ConversationHandler>> related_conversations;
+    std::vector<base::WeakPtr<ConversationHandler>> related_conversations;
     for (auto& conversation : related_conversations_) {
-      related_conversations.insert(conversation);
+      related_conversations.push_back(conversation->GetWeakPtr());
     }
+
     for (auto& conversation : related_conversations) {
       if (conversation) {
         conversation->OnAssociatedContentDestroyed(archived_text_content,

@@ -386,10 +386,7 @@ void ConversationHandler::InitEngine() {
 void ConversationHandler::OnAssociatedContentDestroyed(
     std::string last_text_content,
     bool is_video) {
-  // The associated content delegate is destroyed, so we should not try to
-  // fetch. It may be populated later, e.g. through back navigation.
-  // If this conversation is allowed to be associated with content, we can keep
-  // using our current cached content.
+  // The associated content delegate is already or about to be destroyed.
   auto content_id = associated_content_delegate_
                         ? associated_content_delegate_->GetContentId()
                         : -1;
