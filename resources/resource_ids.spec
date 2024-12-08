@@ -225,11 +225,11 @@
     "META": {"sizes": {"includes": [50]}},
     "includes": [34650],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ads_internals/ads_internals.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-creator_detection/creator_detection.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [34700],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-creator_detection/creator_detection.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ads_internals/ads_internals.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [34710],
   },
