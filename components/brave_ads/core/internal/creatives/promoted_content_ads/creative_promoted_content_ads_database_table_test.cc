@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
@@ -34,13 +36,16 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableIntegrationTest,
   const database::table::CreativePromotedContentAds database_table;
 
   // Act & Assert
+  base::RunLoop run_loop;
   base::MockCallback<database::table::GetCreativePromotedContentAdsCallback>
       callback;
   EXPECT_CALL(callback,
               Run(/*success=*/true, SegmentList{"technology & computing"},
-                  ::testing::SizeIs(1)));
+                  ::testing::SizeIs(1)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table.GetForSegments(
       /*segments=*/{"technology & computing"}, callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
@@ -59,11 +61,14 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, Save) {
 
   // Assert
   base::MockCallback<GetAdHistoryCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(::testing::Optional(
-                            ::testing::UnorderedElementsAreArray(ad_history))));
+                            ::testing::UnorderedElementsAreArray(ad_history))))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetForDateRange(/*from_time=*/test::DistantPast(),
                                   /*to_time=*/test::DistantFuture(),
                                   callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveEmpty) {
@@ -72,11 +77,14 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveEmpty) {
 
   // Assert
   base::MockCallback<GetAdHistoryCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback,
-              Run(/*ad_history=*/::testing::Optional(::testing::IsEmpty())));
+              Run(/*ad_history=*/::testing::Optional(::testing::IsEmpty())))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetForDateRange(/*from_time=*/test::DistantPast(),
                                   /*to_time=*/test::DistantFuture(),
                                   callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveInBatches) {
@@ -95,11 +103,14 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveInBatches) {
 
   // Assert
   base::MockCallback<GetAdHistoryCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(::testing::Optional(
-                            ::testing::UnorderedElementsAreArray(ad_history))));
+                            ::testing::UnorderedElementsAreArray(ad_history))))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetForDateRange(/*from_time=*/test::DistantPast(),
                                   /*to_time=*/test::DistantFuture(),
                                   callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForDateRange) {
@@ -124,11 +135,14 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForDateRange) {
 
   // Act & Assert
   base::MockCallback<GetAdHistoryCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback,
               Run(::testing::Optional(
-                  ::testing::UnorderedElementsAreArray(ad_history_2))));
+                  ::testing::UnorderedElementsAreArray(ad_history_2))))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetForDateRange(from_time, /*to_time=*/test::DistantFuture(),
                                   callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest,
@@ -171,11 +185,14 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
   ASSERT_THAT(expected_ad_history, ::testing::SizeIs(3));
 
   base::MockCallback<GetAdHistoryCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback,
               Run(::testing::Optional(
-                  ::testing::UnorderedElementsAreArray(expected_ad_history))));
+                  ::testing::UnorderedElementsAreArray(expected_ad_history))))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetHighestRankedPlacementsForDateRange(
       from_time, /*to_time=*/test::DistantFuture(), callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForCreativeInstanceId) {
@@ -189,10 +206,13 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForCreativeInstanceId) {
 
   // Act & Assert
   base::MockCallback<GetAdHistoryCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(::testing::Optional(
-                            ::testing::UnorderedElementsAreArray(ad_history))));
+                            ::testing::UnorderedElementsAreArray(ad_history))))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetForCreativeInstanceId(test::kCreativeInstanceId,
                                            callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest,
@@ -207,10 +227,13 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
 
   // Act & Assert
   base::MockCallback<GetAdHistoryCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback,
-              Run(/*ad_history=*/::testing::Optional(::testing::IsEmpty())));
+              Run(/*ad_history=*/::testing::Optional(::testing::IsEmpty())))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetForCreativeInstanceId(test::kCreativeInstanceId,
                                            callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, PurgeExpired) {
@@ -233,16 +256,22 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, PurgeExpired) {
 
   // Act & Assert
   base::MockCallback<ResultCallback> purge_expired_callback;
-  EXPECT_CALL(purge_expired_callback, Run(/*success=*/true));
+  base::RunLoop run_loop;
+  EXPECT_CALL(purge_expired_callback, Run(/*success=*/true))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.PurgeExpired(purge_expired_callback.Get());
+  run_loop.Run();
 
   base::MockCallback<GetAdHistoryCallback> callback;
+  base::RunLoop run_loop2;
   EXPECT_CALL(callback,
               Run(::testing::Optional(
-                  ::testing::UnorderedElementsAreArray(ad_history_2))));
+                  ::testing::UnorderedElementsAreArray(ad_history_2))))
+      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
   database_table_.GetForDateRange(/*from_time=*/test::DistantPast(),
                                   /*to_time=*/test::DistantFuture(),
                                   callback.Get());
+  run_loop2.Run();
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, DoNotPurgeOnTheCuspOfExpiration) {
@@ -258,15 +287,21 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, DoNotPurgeOnTheCuspOfExpiration) {
 
   // Act & Assert
   base::MockCallback<ResultCallback> purge_expired_callback;
-  EXPECT_CALL(purge_expired_callback, Run(/*success=*/true));
+  base::RunLoop run_loop;
+  EXPECT_CALL(purge_expired_callback, Run(/*success=*/true))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.PurgeExpired(purge_expired_callback.Get());
+  run_loop.Run();
 
   base::MockCallback<GetAdHistoryCallback> callback;
+  base::RunLoop run_loop2;
   EXPECT_CALL(callback, Run(::testing::Optional(
-                            ::testing::UnorderedElementsAreArray(ad_history))));
+                            ::testing::UnorderedElementsAreArray(ad_history))))
+      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
   database_table_.GetForDateRange(/*from_time=*/test::DistantPast(),
                                   /*to_time=*/test::DistantFuture(),
                                   callback.Get());
+  run_loop2.Run();
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetTableName) {

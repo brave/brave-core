@@ -35,9 +35,12 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsNewTabPageAdTest,
@@ -92,9 +95,12 @@ TEST_F(BraveAdsConversionsNewTabPageAdTest,
                             mojom::ConfirmationType::kClicked});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsNewTabPageAdTest,

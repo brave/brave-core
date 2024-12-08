@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
@@ -58,9 +60,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
 
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, CreativeSetConversionList{
-                                                  *creative_set_conversion}));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback,
+              Run(/*success=*/true,
+                  CreativeSetConversionList{*creative_set_conversion}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   creative_set_conversions_database_table_.GetUnexpired(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
@@ -84,8 +90,11 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Assert
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, ::testing::IsEmpty()));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, ::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   creative_set_conversions_database_table_.GetUnexpired(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
@@ -101,8 +110,11 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Assert
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, ::testing::IsEmpty()));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, ::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   creative_set_conversions_database_table_.GetUnexpired(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
@@ -36,11 +38,14 @@ TEST_F(BraveAdsTransactionsTest, Add) {
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, TransactionList{transaction}));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, TransactionList{transaction}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   const database::table::Transactions database_table;
   database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
                                  /*to_time=*/test::DistantFuture(),
                                  callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
@@ -74,11 +79,14 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
 
   // Act & Assert
   base::MockCallback<GetTransactionsCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true,
-                            TransactionList{transaction_2, transaction_3}));
+                            TransactionList{transaction_2, transaction_3}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   GetTransactionsForDateRange(/*from_time=*/test::Now(),
                               /*to_time=*/test::DistantFuture(),
                               callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

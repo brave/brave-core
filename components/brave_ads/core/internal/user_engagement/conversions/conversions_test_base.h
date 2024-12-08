@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_observer_mock.h"
@@ -35,15 +36,18 @@ class BraveAdsConversionsTestBase : public TestBase {
   void TearDown() override;
 
  protected:
-  void VerifyOnDidConvertAdExpectation(const AdInfo& ad,
-                                       ConversionActionType action_type);
+  void VerifyOnDidConvertAdExpectation(
+      const AdInfo& ad,
+      ConversionActionType action_type,
+      base::OnceClosure did_convert_ad_closure);
 
   void VerifyOnDidNotConvertAdExpectation();
 
   void VerifyOnDidConvertVerifiableAdExpectation(
       const AdInfo& ad,
       ConversionActionType action_type,
-      const VerifiableConversionInfo& verifiable_conversion);
+      const VerifiableConversionInfo& verifiable_conversion,
+      base::OnceClosure did_convert_ad_closure);
 
   std::unique_ptr<Conversions> conversions_;
 

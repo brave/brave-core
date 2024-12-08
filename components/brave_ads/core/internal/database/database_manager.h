@@ -76,7 +76,6 @@ class DatabaseManager final {
   void NotifyDatabaseIsReady() const;
 
   const scoped_refptr<base::SequencedTaskRunner> database_task_runner_;
-
   const base::SequenceBound<Database> database_;
 
   base::ObserverList<DatabaseManagerObserver> observers_;
