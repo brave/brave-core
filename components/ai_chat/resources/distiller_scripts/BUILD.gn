@@ -22,6 +22,6 @@ transpile_web_ui("ai_chat_site_distiller") {
 
 pack_web_resources("generated_resources") {
   resource_name = "ai_chat_site_distiller"
-  output_dir = "$root_gen_dir/brave/components/ai_chat/distiller_scripts"
+  output_dir = "$root_gen_dir/brave/components/ai_chat/resources/distiller_scripts"
   deps = [ ":ai_chat_site_distiller" ]
 }
