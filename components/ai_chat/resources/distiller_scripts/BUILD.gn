@@ -8,6 +8,7 @@ import("//tools/grit/repack.gni")
 
 transpile_web_ui("ai_chat_distiller_scripts") {
   resource_name = "ai_chat_distiller_scripts"
+  visibility = [ ":*" ]
   entry_points = [
     [
       "x_com",
