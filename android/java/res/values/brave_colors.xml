@@ -114,7 +114,9 @@
     <color name="brave_sync_copy_words_text_color">@color/text_secondary</color>
     <color name="brave_sync_btn_transparent_text_color">@color/text_interactive</color>
     <color name="brave_sync_advanced_options_dialog_bg_color">#F0F0F4</color>
-    <!-- <color name="brave_sync_url_disabled_text_color">#76767A</color> -->
+    <color name="brave_sync_url_disabled_text_color">#76767A</color>
+    <color name="brave_sync_disabled_button_bg_color">#3346464A</color>
+    <color name="brave_sync_disabled_button_color">#8021272A</color>
 
     <!-- Sync informer icon colors -->
     <color name="brave_informer_dark_theme_icon_color">@color/baseline_neutral_90</color>
