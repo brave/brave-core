@@ -112,10 +112,11 @@
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
     <color name="brave_sync_main_button_color">@color/button_background</color>
     <color name="brave_sync_copy_words_text_color">@color/text_secondary</color>
-    <color name="brave_sync_btn_transparent_text_color">@color/text_interactive</color>
+    <color name="brave_sync_btn_transparent_text_color">@color/leo_color_text_interactive</color>
     <color name="brave_sync_advanced_options_dialog_bg_color">#F0F0F4</color>
     <color name="brave_sync_url_disabled_text_color">#76767A</color>
     <color name="brave_sync_disabled_button_bg_color">#3346464A</color>
+    <color name="brave_sync_disabled_button_text_color">#8021272A</color>
     <color name="brave_sync_disabled_button_color">#8021272A</color>
 
     <!-- Sync informer icon colors -->
@@ -294,7 +295,7 @@
     <!--  Brave Wallet DApp  -->
     <color name="brave_wallet_dapp_text_color">#171919</color>
 
-     <!--  Tipping Banner color  -->
+    <!--  Tipping Banner color  -->
     <color name="rewards_tipping_text_color">#212529</color>
     <color name="vbat_warning_color">#FFD43B</color>
 
@@ -431,6 +432,7 @@
     <color name="schemes_outline_variant">#e3e3e8</color>
     <color name="schemes_primary">#3e37d4</color>
     <color name="schemes_surface_container_highest">#c7c7cc</color>
+    <color name="leo_color_text_interactive">#3E37D4</color>
 
     <color name="open_yt_dialog_bg">#FFFFFF</color>
 </resources>

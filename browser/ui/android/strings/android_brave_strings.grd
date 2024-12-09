@@ -560,7 +560,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ENTER_FILTER_LIST_URL_HERE" desc="Enter filter list url here edittext hint.">
         Enter filter list URL here
       </message>
-      <message name="IDS_CUSTOM_FILTER_INVALID_URL" desc="Invalid url error text for custom filter.">
+      <message name="IDS_INVALID_URL" desc="Invalid url error text.">
         Invalid URL
       </message>
       <message name="IDS_EDIT_CUSTOM_FILTER_LIST" desc="Edit custom filter list text for menu item.">

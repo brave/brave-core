@@ -71,7 +71,7 @@
                style="@style/BraveSyncBottomButton"
                android:lineSpacingExtra="4sp"
                android:background="@android:color/transparent"
-               android:textColor="@color/modern_grey_600" />
+               android:textColor="@color/schemes_on_surface_variant" />
 
         </LinearLayout>
     </ScrollView>

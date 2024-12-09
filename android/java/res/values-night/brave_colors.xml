@@ -93,6 +93,7 @@
     <color name="brave_sync_advanced_options_dialog_bg_color">#1B1B1F</color>
     <color name="brave_sync_url_disabled_text_color">#909094</color>
     <color name="brave_sync_disabled_button_bg_color">#33EBEEF0</color>
+    <color name="brave_sync_disabled_button_text_color">#80EBEEF0</color>
     <color name="brave_sync_disabled_button_color">#80EBEEF0</color>
 
     <color name="container_background">#0d1214</color>
@@ -267,7 +268,7 @@
     <color name="text_secondary">#BECAD0</color>
     <color name="text_tertiary">#a1b2ba</color>
     <color name="primary_20">#2A118E</color>
-    <color name="button_background">#3f39e8</color>
+    <color name="button_background">#C1C4FF</color>
     <color name="systemfeedback_error_text">#ffb1b0</color>
 
     <color name="location_bar_background_color_for_ntp">#383839</color>
@@ -279,6 +280,7 @@
     <color name="schemes_primary">#c1c4ff</color>
     <color name="schemes_surface_container_highest">#303034</color>
     <color name="text_interactive">#7c91ff</color>
+    <color name="leo_color_text_interactive">#C1C4FF</color>
 
     <color name="open_yt_dialog_bg">#000000</color>
 </resources>
