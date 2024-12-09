@@ -90,6 +90,8 @@
     <color name="brave_sync_bg_color">@android:color/transparent</color>
     <color name="brave_sync_border_color">@color/modern_grey_800</color>
     <color name="brave_sync_bg_secondary_color">#212529</color>
+    <color name="brave_sync_advanced_options_dialog_bg_color">#1B1B1F</color>
+    <!-- <color name="brave_sync_url_disabled_text_color">#909094</color> -->
 
     <color name="container_background">#0d1214</color>
     <color name="divider_interactive">#545ff8</color>

@@ -1181,6 +1181,18 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SYNC_ADVANCED_OPTIONS" desc="Text for Brave Sync advanced options button.">
         Advanced options
       </message>
+      <message name="IDS_BRAVE_SYNC_SELF_HOST_URL_TITLE" desc="Text for Brave Sync self host url title">
+        Self-host sync URL
+      </message>
+      <message name="IDS_BRAVE_SYNC_URL_SAVE_AND_RELAUNCH" desc="Text for Brave Sync url input's save and relaunch button">
+        Save and relaunch
+      </message>
+      <message name="IDS_BRAVE_SYNC_URL_RESET_DEFAULT" desc="Text for Brave Sync self host url reset button">
+        Reset to default
+      </message>
+      <message name="IDS_BRAVE_SYNC_ADVANCED_OPTIONS_DIALOG_DESC" desc="Text for Brave Sync advanced options dialog description.">
+        Brave's sync protocol is open and you can provide your own server implementation. This requires that you host and configure the brave/go-sync implementation yourself. You can then provide the URL to this service and the browser will sync with your implementation instead. To confirm the change, you'll need to restart the browser and re-open sync options to continue.
+      </message>
       <message name="IDS_BRAVE_SYNC_BTN_MOBILE" desc="Text for Brave Sync add a mobile device button.">
         Add a Mobile Device
       </message>

@@ -69,6 +69,7 @@
                android:layout_height="wrap_content"
                android:text="@string/brave_sync_advanced_options"
                style="@style/BraveSyncBottomButton"
+               android:lineSpacingExtra="4sp"
                android:background="@android:color/transparent"
                android:textColor="@color/modern_grey_600" />
 

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="552dp"
+    android:orientation="vertical"
+    android:clipToOutline="true"
+    android:background="@drawable/brave_sync_advanced_options_dialog_background">
+
+    <!-- Advanced Options Title Box -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:orientation="vertical"
+        android:clipToOutline="true"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="16dp">
+
+        <TextView
+            android:id="@+id/advanced_options_title"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:text="@string/brave_sync_advanced_options"
+            android:textAppearance="@style/BraveSyncAdvancedOptionsDialogTitle"
+            android:lineSpacingExtra="2dp"
+            android:gravity="center_vertical" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="296dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:gravity="top">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:text="@string/brave_sync_advanced_options_dialog_desc"
+            android:textAppearance="@style/BraveSyncDescriptionTextDefaultRegular"
+            android:lineSpacingExtra="6dp"
+            android:translationY="-2.8dp"
+            android:gravity="top" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="12dp"
+            android:paddingTop="8dp"
+            app:strokeColor="@android:color/transparent"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="0dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/brave_sync_self_host_url_title"
+                app:boxStrokeColor="@color/schemes_surface_container_highest"
+                app:hintTextColor="@color/schemes_on_surface_variant"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/brave_sync_url_input"
+                    android:layout_width="match_parent"
+                    android:padding="16dp"
+                    android:focusable="true"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri"
+                    android:text="@string/brave_sync_advanced_options"
+                    android:textColor="@color/schemes_on_surface"
+                    android:textSize="16sp"
+                    android:autofillHints="url" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="top">
+
+        <android.widget.Button android:id="@+id/brave_sync_save_and_relaunch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_url_save_and_relaunch"
+            style="@style/BraveSyncButton" />
+
+        <android.widget.Button android:id="@+id/brave_sync_advanced_options_cancel_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_cancel"
+            android:lineSpacingExtra="4sp"
+            android:background="@android:color/transparent"
+            style="@style/BraveSyncCancelButton" />
+
+        <android.widget.Button android:id="@+id/brave_sync_url_reset_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_url_reset_default"
+            style="@style/BraveSyncBottomButton"
+            android:lineSpacingExtra="4sp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/leo_reset_text_color" />
+
+    </LinearLayout>
+
+</LinearLayout>

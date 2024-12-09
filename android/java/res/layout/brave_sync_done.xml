@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:paddingStart="2dip"
         android:paddingTop="2dip"
-        android:paddingEnd="2dip" >
+        android:paddingEnd="2dip">
 
         <TextView android:id="@+id/brave_sync_settings_title"
             android:layout_width="match_parent"
@@ -40,18 +40,46 @@
             android:textColor="@color/modern_grey_500"
             android:visibility="gone" />
 
+        <LinearLayout android:id="@+id/brave_sync_url_block"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="16dp"
+        >
+            <TextView
+                android:layout_width="328dp"
+                android:layout_height="24dp"
+                android:text="@string/brave_sync_self_host_url_title"
+                android:textAppearance="@style/BraveSyncTitleTextHeadingH4"
+                android:gravity="top"
+            />
+            <TextView
+                android:id="@+id/brave_sync_url_display"
+                android:layout_width="328dp"
+                android:layout_height="22dp"
+                android:text="@string/brave_sync_advanced_options"
+                android:textAppearance="@style/BraveSyncUrlDisplay"
+                android:gravity="top"
+            />
+
+        </LinearLayout>
+
+
         <TextView android:id="@+id/brave_sync_devices_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/brave_sync_devices_title"
-            android:paddingStart="15dip"
-            android:paddingTop="30dip"
-            android:textColor="@color/modern_grey_500" />
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:fontWeight="700"
+            android:background="@color/schemes_outline_variant"
+            android:textColor="@color/schemes_on_surface_variant" />
 
         <LinearLayout android:id="@+id/brave_sync_devices"
             android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
+            android:layout_width="match_parent" />
 
         <TextView android:id="@+id/brave_sync_fake"
             android:layout_height="0dp"
