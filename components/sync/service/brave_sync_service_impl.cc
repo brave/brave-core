@@ -13,6 +13,7 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/service/brave_sync_auth_manager.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
@@ -417,5 +418,25 @@ void BraveSyncServiceImpl::OnAccountsInCookieUpdated(
 
 void BraveSyncServiceImpl::OnPrimaryAccountChanged(
     const signin::PrimaryAccountChangeEvent& event_details) {}
+
+std::string BraveSyncServiceImpl::GetCustomSyncServiceURL() {
+  PrefService* prefs = sync_client_->GetPrefService();
+  if (prefs) {
+    std::string custom_sync_url =
+        prefs->GetString(brave_sync::kCustomSyncServiceUrl);
+    return custom_sync_url;
+  }
+  return "";
+}
+
+bool BraveSyncServiceImpl::SetCustomSyncServiceURL(
+    std::string custom_sync_url) {
+  PrefService* prefs = sync_client_->GetPrefService();
+  if (prefs) {
+    prefs->SetString(brave_sync::kCustomSyncServiceUrl, custom_sync_url);
+    return true;
+  }
+  return false;
+}
 
 }  // namespace syncer

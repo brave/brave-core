@@ -10,6 +10,10 @@
 #include "components/signin/public/identity_manager/identity_manager.h"
 
 #define BRAVE_SYNC_SERVICE_IMPL_H_                                             \
+ public:                                                                       \
+  GURL GetBraveSyncServiceURL();                                               \
+  GURL GetBraveDefaultSyncServiceURL();                                        \
+                                                                               \
  private:                                                                      \
   friend class BraveSyncServiceImpl;                                           \
   friend class BraveSyncServiceImplTest;                                       \
