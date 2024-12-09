@@ -15,7 +15,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Browser;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -27,8 +31,10 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
 import org.chromium.ui.util.ColorUtils;
 
-/** New Rewards 3.0 cusyom tab activity */
+/** New Rewards 3.0 custom tab activity */
 public class RewardsPageActivity extends CustomTabActivity {
+    private static final int CLOSE_BUTTON_MARGIN = 32;
+
     @Override
     public boolean supportsAppMenu() {
         return false;
@@ -42,6 +48,22 @@ public class RewardsPageActivity extends CustomTabActivity {
         if (toolbarContainer != null) {
             toolbarContainer.setVisibility(View.GONE);
         }
+
+        FrameLayout.LayoutParams layoutParams =
+                new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.WRAP_CONTENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.gravity = Gravity.TOP | Gravity.START;
+        layoutParams.setMargins(CLOSE_BUTTON_MARGIN, CLOSE_BUTTON_MARGIN, 0, 0);
+
+        ViewGroup parentView = findViewById(android.R.id.content);
+        ImageView closeImg = new ImageView(RewardsPageActivity.this);
+        closeImg.setImageResource(R.drawable.ic_baseline_close_24);
+        closeImg.setOnClickListener(
+                button -> {
+                    finish();
+                });
+        parentView.addView(closeImg, layoutParams);
 
         OnBackPressedCallback callback =
                 new OnBackPressedCallback(true /* enabled by default */) {
