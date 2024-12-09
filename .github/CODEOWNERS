@@ -186,7 +186,7 @@ third_party/boost @brave/deps-reviewers
 browser/net/brave_network_audit_allowed_lists.h @brave/sec-team
 
 # iOS
-ios/ @brave/ios
+/ios/ @brave/ios
 build/ios/ @brave/ios
 
 # Android tests
