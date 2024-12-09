@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveCore
 import BraveShared
 import Foundation
 import Shared
@@ -12,8 +13,10 @@ import UIKit
 class RecentSearchQRCodeScannerController: UIViewController {
 
   private let scannerView = ScannerView()
-  private var didScan: Bool = false
+  private var didScan = false
   private var onDidScan: (_ string: String) -> Void
+
+  private var didProcessScanReusltsTask: Task<Void, Error>?
 
   public static var hasCameraSupport: Bool {
     if ProcessInfo.processInfo.isiOSAppOnVisionOS {
@@ -62,16 +65,36 @@ class RecentSearchQRCodeScannerController: UIViewController {
       // Feedback indicating code scan is finalized
       AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
       UIImpactFeedbackGenerator(style: .medium).vibrate()
-
       self.didScan = true
-      self.onDidScan(string)
-      self.dismiss(animated: true, completion: nil)
+
+      self.scannerView.scannedText = string
+      self.scannerView.scannedDisplayButton.isHidden = false
+      self.scannerView.scannedDisplayButton.addAction(
+        UIAction(handler: { [weak self] _ in
+          guard let self = self else { return }
+
+          self.didProcessScanReusltsTask?.cancel()
+          self.scannerView.scannedDisplayButton.isHidden = true
+          self.onDidScan(string)
+          self.dismiss(animated: true, completion: nil)
+        }),
+        for: .touchUpInside
+      )
+
+      //      didProcessScanReusltsTask = Task.delayed(bySeconds: 3.seconds) { @MainActor [weak self] in
+      //        try Task.checkCancellation()
+      //        guard let self = self else { return }
+      //
+      //        self.scannerView.scannedDisplayButton.isHidden = true
+      //        self.onDidScan(string)
+      //      }
     }
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
 
+    didProcessScanReusltsTask?.cancel()
     scannerView.cameraView.stopRunning()
   }
 
@@ -142,12 +165,88 @@ extension RecentSearchQRCodeScannerController {
       $0.textColor = .braveLabel
     }
 
+    var scannedText: String? {
+      didSet {
+        scannedDisplayButton.setNeedsUpdateConfiguration()
+      }
+    }
+
+    private var scannedTextTruncationMode: NSLineBreakMode = .byTruncatingHead
+
+    private var scannedDisplayButtonConfiguration: UIButton.Configuration {
+      var configuration = UIButton.Configuration.filled()
+      configuration.buttonSize = .small
+      configuration.titleLineBreakMode = .byTruncatingTail
+      configuration.baseForegroundColor = UIColor.white
+      configuration.baseBackgroundColor = UIColor(braveSystemName: .primitivePurple60)
+      configuration.cornerStyle = .capsule
+      return configuration
+    }
+
+    private(set) lazy var scannedDisplayButton = UIButton(
+      configuration: scannedDisplayButtonConfiguration
+    ).then {
+      $0.configurationUpdateHandler = { [unowned self] button in
+        var configuration = scannedDisplayButtonConfiguration
+        let processedScannedResult = processScannedText()
+        let truncationMode = processedScannedResult.truncationMode
+
+        if let scannedText = processedScannedResult.string {
+          let paragraphStyle = NSMutableParagraphStyle()
+          paragraphStyle.lineBreakMode = truncationMode
+          paragraphStyle.baseWritingDirection = .leftToRight
+
+          let title = NSAttributedString(
+            string: scannedText,
+            attributes: [
+              .font: UIFont.preferredFont(forTextStyle: .body),
+              .paragraphStyle: paragraphStyle,
+            ]
+          )
+
+          configuration.attributedTitle = AttributedString(title)
+        }
+
+        button.configuration = configuration
+      }
+      $0.isHidden = true
+    }
+
+    private func processScannedText() -> (string: String?, truncationMode: NSLineBreakMode) {
+      if let text = scannedText, let url = URIFixup.getURL(text) {
+        let isRenderedLeftToRight = url.isRenderedLeftToRight
+        let isMixedCharset = !url.isUnidirectional
+
+        var isLTR = isRenderedLeftToRight && !isMixedCharset
+        if isMixedCharset {
+          isLTR = true
+        }
+
+        let scannedText = URLFormatter.formatURL(
+          URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
+          formatTypes: [
+            .omitDefaults, .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
+          ],
+          unescapeOptions: .normal
+        )
+
+        let truncationMode: NSLineBreakMode =
+          !["http", "https"].contains(url.scheme ?? "") || !isLTR
+          ? .byTruncatingTail : .byTruncatingHead
+
+        return (scannedText, truncationMode)
+      }
+
+      return (scannedText, .byTruncatingTail)
+    }
+
     override init(frame: CGRect) {
       super.init(frame: frame)
 
       backgroundColor = .secondaryBraveBackground
 
       addSubview(cameraView)
+      addSubview(scannedDisplayButton)
       addSubview(scrollView)
       scrollView.addSubview(stackView)
       stackView.addStackViewItems(
@@ -162,6 +261,13 @@ extension RecentSearchQRCodeScannerController {
         $0.centerX.equalToSuperview()
         $0.height.equalTo(cameraView.snp.width)
         $0.width.lessThanOrEqualTo(375)
+      }
+
+      scannedDisplayButton.snp.makeConstraints {
+        $0.centerX.equalTo(cameraView)
+        $0.bottom.equalTo(cameraView).inset(10)
+        $0.leading.greaterThanOrEqualTo(cameraView).inset(40)
+        $0.trailing.lessThanOrEqualTo(cameraView).inset(40)
       }
 
       scrollView.snp.makeConstraints {
