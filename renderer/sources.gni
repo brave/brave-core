@@ -13,6 +13,8 @@ import("//third_party/widevine/cdm/widevine.gni")
 brave_chrome_renderer_sources = [
   "//brave/renderer/brave_content_renderer_client.cc",
   "//brave/renderer/brave_content_renderer_client.h",
+  "//brave/renderer/brave_render_frame_observer.cc",
+  "//brave/renderer/brave_render_frame_observer.h",
   "//brave/renderer/brave_render_thread_observer.cc",
   "//brave/renderer/brave_render_thread_observer.h",
 ]

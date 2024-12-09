@@ -10,6 +10,8 @@
 #include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/renderer/page_content_extractor.h"
+#include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -22,12 +24,14 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/renderer/brave_render_frame_observer.h"
 #include "brave/renderer/brave_render_thread_observer.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
 #include "chrome/renderer/process_state.h"
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
+#include "components/feed/content/renderer/rss_link_reader.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
@@ -35,6 +39,11 @@
 #include "third_party/blink/public/web/web_script_controller.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+#include "brave/components/ai_rewriter/common/features.h"
+#include "brave/components/ai_rewriter/renderer/ai_rewriter_agent.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
@@ -129,6 +138,10 @@ void BraveContentRendererClient::RenderThreadStarted() {
 void BraveContentRendererClient::RenderFrameCreated(
     content::RenderFrame* render_frame) {
   ChromeContentRendererClient::RenderFrameCreated(render_frame);
+  auto* rfo = new BraveRenderFrameObserver(render_frame);
+  auto* registry = rfo->registry();
+
+  new feed::RssLinkReader(render_frame, registry);
 
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveAdblockCosmeticFiltering)) {
@@ -183,6 +196,18 @@ void BraveContentRendererClient::RenderFrameCreated(
           return BraveRenderThreadObserver::GetDynamicParams().playlist_enabled;
         }),
         ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
+#endif
+
+  if (ai_chat::features::IsAIChatEnabled() && !IsIncognitoProcess()) {
+    new ai_chat::PageContentExtractor(render_frame, registry,
+                                      content::ISOLATED_WORLD_ID_GLOBAL,
+                                      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+  if (ai_rewriter::features::IsAIRewriterEnabled()) {
+    new ai_rewriter::AIRewriterAgent(render_frame, registry);
   }
 #endif
 }
