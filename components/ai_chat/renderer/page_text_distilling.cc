@@ -235,33 +235,12 @@ void DistillPageTextViaSiteScript(
     std::string script_content,
     int32_t world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
-  // Concatenates our injector-script (retrieved from the resource bundle) with
-  // our extractor script. Because the injector-script is wrapped in an IIFE, we
-  // leverage custom events dispatched against the window object to communicate
-  // between the two scripts.
-  //
-  // The extractor script is currently hard-coded to request content at level 3.
-  // Level 3 is the "FULL" level, which is the highest content level. The level
-  // could be tied to the currently-active model (e.g., smaller models could be
-  // defaulted to a smaller level).
-  std::string script =
-      script_content + absl::StrFormat(
-                           R"(
-      new Promise(function(resolve, reject) {
-          window.addEventListener('%s', (event) => {
-              if (event?.detail?.result) {
-                  return resolve(event.detail.result);
-              }
-              reject("No result in %s event");
-          });
-      });
-
-      window.dispatchEvent(new CustomEvent(
-          '%s', { detail: { level: 3 } }
-      ));
-    )",
-                           "LEO_DISTILL_RESULT", "LEO_DISTILL_RESULT",
-                           "LEO_DISTILL_REQUESTED");
+  std::string script = absl::StrFormat(
+      R"((()=> {
+        %s
+        return distill(3);
+      })())",
+      script_content);
 
   blink::WebScriptSource source =
       blink::WebScriptSource(blink::WebString::FromUTF8(script));

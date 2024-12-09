@@ -19,6 +19,7 @@ transpile_web_ui("ai_chat_distiller_scripts") {
       rebase_path("scripts/github.com/index.ts"),
     ],
   ]
+  output_module = true
 }
 
 pack_web_resources("generated_resources") {

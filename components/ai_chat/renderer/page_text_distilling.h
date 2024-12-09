@@ -29,6 +29,8 @@ void DistillPageText(
     base::OnceCallback<void(const std::optional<std::string>&)>);
 
 // Attempts to retrieve a host-specific distillation script.
+// Returns a pair consisting of the script content, and a boolean indicating if
+// it is intended for the main world or not
 std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
     std::string_view host);
 
@@ -37,7 +39,7 @@ void DistillPageTextViaSiteScript(
     content::RenderFrame* render_frame,
     std::string script_content,
     int32_t world_id,
-    base::OnceCallback<void(const std::optional<std::string>&)> callback);
+    base::OnceCallback<void(const std::optional<std::string>&)>);
 
 }  // namespace ai_chat
 
