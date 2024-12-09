@@ -231,17 +231,15 @@ void DistillPageTextViaSiteScript(
     std::string script_content,
     int32_t world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
-  /**
-   * Concatenates our injector-script (retrieved from the resource bundle) with
-   * our extractor script. Because the injector-script is wrapped in an IIFE, we
-   * leverage custom events dispatched against the window object to communicate
-   * between the two scripts.
-   *
-   * The extractor script is currently hard-coded to request content at level 3.
-   * Level 3 is the "FULL" level, which is the highest content level. The level
-   * could be tied to the currently-active model (e.g., smaller models could be
-   * defaulted to a smaller level).
-   */
+  // Concatenates our injector-script (retrieved from the resource bundle) with
+  // our extractor script. Because the injector-script is wrapped in an IIFE, we
+  // leverage custom events dispatched against the window object to communicate
+  // between the two scripts.
+  //
+  // The extractor script is currently hard-coded to request content at level 3.
+  // Level 3 is the "FULL" level, which is the highest content level. The level
+  // could be tied to the currently-active model (e.g., smaller models could be
+  // defaulted to a smaller level).
   std::string script =
       script_content + absl::StrFormat(
                            R"(
@@ -284,11 +282,9 @@ void DistillPageTextViaSiteScript(
       base::BindOnce(on_script_executed, std::move(callback)),
       blink::BackForwardCacheAware::kAllow,
       blink::mojom::WantResultOption::kWantResult,
-      /**
-       * Because we are using a promise to resolve the result, we will
-       * use the `kAwait` option to ensure the promise is resolved before
-       * the callback is invoked.
-       */
+      // Because we are using a promise to resolve the result, we will use the
+      // `kAwait` option to ensure the promise is resolved before the callback
+      // is invoked.
       blink::mojom::PromiseResultOption::kAwait);
 }
 
