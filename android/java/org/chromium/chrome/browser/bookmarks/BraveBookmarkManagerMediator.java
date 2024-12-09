@@ -38,10 +38,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-class BraveBookmarkManagerMediator
-        extends BookmarkManagerMediator implements BraveBookmarkDelegate {
+class BraveBookmarkManagerMediator extends BookmarkManagerMediator
+        implements BraveBookmarkDelegate {
     private ActivityWindowAndroid mWindowAndroid;
 
     // Overridden Chromium's BookmarkManagerMediator.mBookmarkModel
@@ -70,6 +71,7 @@ class BraveBookmarkManagerMediator
             BookmarkImageFetcher bookmarkImageFetcher,
             ShoppingService shoppingService,
             SnackbarManager snackbarManager,
+            BooleanSupplier canShowSigninPromo,
             Consumer<OnScrollListener> onScrollListenerConsumer,
             BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager) {
         super(
@@ -90,6 +92,7 @@ class BraveBookmarkManagerMediator
                 bookmarkImageFetcher,
                 shoppingService,
                 snackbarManager,
+                canShowSigninPromo,
                 onScrollListenerConsumer,
                 bookmarkMoveSnackbarManager);
     }
