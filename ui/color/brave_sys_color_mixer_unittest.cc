@@ -26,7 +26,7 @@ TEST(BraveSysColorMixer, DarkModeGrayscaleOverridesAreApplied) {
   // Sanity check these two colors are overriden.
   EXPECT_EQ(provider.GetColor(kColorRefNeutral5),
             provider.GetColor(kColorSysHeader));
-  EXPECT_EQ(provider.GetColor(kColorRefNeutral15),
+  EXPECT_EQ(provider.GetColor(kColorRefNeutral20),
             provider.GetColor(kColorSysBase));
 }
 
@@ -43,7 +43,7 @@ TEST(BraveSysColorMixer, LightModeGrayscaleOverridesAreNotApplied) {
   // theme.
   EXPECT_NE(provider.GetColor(kColorRefNeutral5),
             provider.GetColor(kColorSysHeader));
-  EXPECT_NE(provider.GetColor(kColorRefNeutral15),
+  EXPECT_NE(provider.GetColor(kColorRefNeutral20),
             provider.GetColor(kColorSysBase));
 }
 
@@ -60,7 +60,7 @@ TEST(BraveSysColorMixer, OverridesAreNotAppliedInNonGrayscale) {
   // theme.
   EXPECT_NE(provider_dark.GetColor(kColorRefNeutral5),
             provider_dark.GetColor(kColorSysHeader));
-  EXPECT_NE(provider_dark.GetColor(kColorRefNeutral15),
+  EXPECT_NE(provider_dark.GetColor(kColorRefNeutral20),
             provider_dark.GetColor(kColorSysBase));
 
   key.color_mode = ColorProviderKey::ColorMode::kLight;
@@ -72,7 +72,7 @@ TEST(BraveSysColorMixer, OverridesAreNotAppliedInNonGrayscale) {
   // theme.
   EXPECT_NE(provider_light.GetColor(kColorRefNeutral5),
             provider_light.GetColor(kColorSysHeader));
-  EXPECT_NE(provider_light.GetColor(kColorRefNeutral15),
+  EXPECT_NE(provider_light.GetColor(kColorRefNeutral20),
             provider_light.GetColor(kColorSysBase));
 }
 
