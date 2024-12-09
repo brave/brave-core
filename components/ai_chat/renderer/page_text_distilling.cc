@@ -241,24 +241,24 @@ void DistillPageTextViaSiteScript(
    * could be tied to the currently-active model (e.g., smaller models could be
    * defaulted to a smaller level).
    */
-  std::string script = script_content + R"(
-    new Promise(function(resolve, reject) {
-        window.addEventListener('{complete_key}', (event) => {
-            if (event?.detail?.result) {
-                return resolve(event.detail.result);
-            }
-            reject("No result in {complete_key} event");
-        }, { once: true });
-        window.dispatchEvent(new CustomEvent(
-          '{initiate_key}', { detail: { level: 3 } }
-        ));
-    });
-  )";
+  std::string script =
+      script_content + absl::StrFormat(
+                           R"(
+      new Promise(function(resolve, reject) {
+          window.addEventListener('%s', (event) => {
+              if (event?.detail?.result) {
+                  return resolve(event.detail.result);
+              }
+              reject("No result in %s event");
+          });
+      });
 
-  base::ReplaceSubstringsAfterOffset(&script, 0, "{initiate_key}",
-                                     "LEO_DISTILL_REQUESTED");
-  base::ReplaceSubstringsAfterOffset(&script, 0, "{complete_key}",
-                                     "LEO_DISTILL_RESULT");
+      window.dispatchEvent(new CustomEvent(
+          '%s', { detail: { level: 3 } }
+      ));
+    )",
+                           "LEO_DISTILL_RESULT", "LEO_DISTILL_RESULT",
+                           "LEO_DISTILL_REQUESTED");
 
   blink::WebScriptSource source =
       blink::WebScriptSource(blink::WebString::FromUTF8(script));
