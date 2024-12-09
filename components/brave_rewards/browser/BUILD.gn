@@ -52,6 +52,7 @@ static_library("browser") {
     "//components/os_crypt/sync:os_crypt",
     "//components/prefs",
     "//components/sessions",
+    "//components/user_prefs",
     "//content/public/browser",
     "//extensions/buildflags",
     "//mojo/public/cpp/bindings",
