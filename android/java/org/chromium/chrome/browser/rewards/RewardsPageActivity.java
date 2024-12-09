@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.provider.Browser;
 import android.view.View;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.browser.customtabs.CustomTabsIntent;
 
 import org.chromium.base.IntentUtils;
@@ -41,6 +42,16 @@ public class RewardsPageActivity extends CustomTabActivity {
         if (toolbarContainer != null) {
             toolbarContainer.setVisibility(View.GONE);
         }
+
+        OnBackPressedCallback callback =
+                new OnBackPressedCallback(true /* enabled by default */) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        // Handle the back button event
+                    }
+                };
+
+        getOnBackPressedDispatcher().addCallback(RewardsPageActivity.this, callback);
     }
 
     public static void showPage(Context context, String url) {
