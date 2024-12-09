@@ -41,12 +41,12 @@ bool IsAIChatHistoryEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatHistory);
 }
 
-BASE_FEATURE(kAIHostSpecificDistillation,
-             "AIHostSpecificDistillation",
+BASE_FEATURE(kCustomSiteDistillerScripts,
+             "CustomSiteDistillerScripts",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-bool IsAIHostSpecificDistillationEnabled() {
-  return base::FeatureList::IsEnabled(features::kAIHostSpecificDistillation);
+bool IsCustomSiteDistillerScriptsEnabled() {
+  return base::FeatureList::IsEnabled(features::kCustomSiteDistillerScripts);
 }
 
 BASE_FEATURE(kContextMenuRewriteInPlace,

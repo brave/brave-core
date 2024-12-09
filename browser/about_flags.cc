@@ -377,7 +377,7 @@
           "Brave AI Host-Specific Distillation",                              \
           "Enables support for host-specific distillation scripts",           \
           kOsWin | kOsMac | kOsLinux,                                         \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIHostSpecificDistillation), \
+          FEATURE_VALUE_TYPE(ai_chat::features::kCustomSiteDistillerScripts), \
       },                                                                      \
       {                                                                       \
           "brave-ai-chat-context-menu-rewrite-in-place",                      \

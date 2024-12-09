@@ -20,7 +20,7 @@ static_library("renderer") {
     "//base",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
-    "//brave/components/ai_chat/resources/distiller_scripts:generated_resources",
+    "//brave/components/ai_chat/resources/custom_site_distiller_scripts:generated_resources",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

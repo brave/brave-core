@@ -29,7 +29,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/resources/distiller_scripts/grit/ai_chat_distiller_scripts_generated.h"
+#include "brave/components/ai_chat/resources/custom_site_distiller_scripts/grit/custom_site_distiller_scripts_generated.h"
 #include "content/public/renderer/render_frame.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/mojom/script/script_evaluation_params.mojom-shared.h"
@@ -149,7 +149,7 @@ void DistillPageText(
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
   blink::WebLocalFrame* main_frame = render_frame->GetWebFrame();
 
-  if (ai_chat::features::IsAIHostSpecificDistillationEnabled()) {
+  if (ai_chat::features::IsCustomSiteDistillerScriptsEnabled()) {
     std::string_view host =
         url::Origin(((const blink::WebFrame*)main_frame)->GetSecurityOrigin())
             .host();
@@ -276,8 +276,8 @@ std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
   static const std::map<std::string, std::pair<int, bool>>
       kHostToScriptResource = {
           {"github.com",
-           {IDR_AI_CHAT_DISTILLER_SCRIPTS_GITHUB_COM_BUNDLE_JS, false}},
-          {"x.com", {IDR_AI_CHAT_DISTILLER_SCRIPTS_X_COM_BUNDLE_JS, true}},
+           {IDR_CUSTOM_SITE_DISTILLER_SCRIPTS_GITHUB_COM_BUNDLE_JS, false}},
+          {"x.com", {IDR_CUSTOM_SITE_DISTILLER_SCRIPTS_X_COM_BUNDLE_JS, true}},
       };
 
   auto it = kHostToScriptResource.find(
