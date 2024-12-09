@@ -12,7 +12,7 @@
 
 namespace {
 
-int ClampSplitViewSizeDelta(views::View* contents_view, int size_delta) {
+int ClampSplitViewSizeDelta(const views::View* contents_view, int size_delta) {
   constexpr int kMinWidth = 144;  // From 144p resolution.
   const auto half_size =
       (contents_view->width() -
@@ -40,7 +40,7 @@ SplitViewLayoutManager::~SplitViewLayoutManager() = default;
 
 void SplitViewLayoutManager::OnDoubleClicked() {
   split_view_size_delta_ = ongoing_split_view_size_delta_ = 0;
-  LayoutImpl();
+  InvalidateHost(true);
 }
 
 void SplitViewLayoutManager::OnResize(int resize_amount, bool done_resizing) {
@@ -52,41 +52,57 @@ void SplitViewLayoutManager::OnResize(int resize_amount, bool done_resizing) {
     ongoing_split_view_size_delta_ = 0;
   }
 
-  LayoutImpl();
+  InvalidateHost(true);
 }
 
-void SplitViewLayoutManager::LayoutImpl() {
+views::ProposedLayout SplitViewLayoutManager::CalculateProposedLayout(
+    const views::SizeBounds& size_bounds) const {
+  views::ProposedLayout layouts;
+  if (!size_bounds.is_fully_bounded()) {
+    return layouts;
+  }
+
+  int height = size_bounds.height().value();
+  int width = size_bounds.width().value();
+
+  const gfx::Size container_size(width, height);
+  layouts.host_size = container_size;
+  gfx::Rect bounds(container_size);
+
+  auto add_to_child_layout = [&layouts, &container_size,
+                              host_view = host_view()](
+                                 views::View* child, const gfx::Rect& bounds) {
+    layouts.child_layouts.emplace_back(child, child->GetVisible(),
+                                       host_view->GetMirroredRect(bounds),
+                                       views::SizeBounds(container_size));
+  };
+
   if (!secondary_contents_container_->GetVisible()) {
-    views::FillLayout::LayoutImpl();
-    return;
+    add_to_child_layout(contents_container_.get(), bounds);
+    return layouts;
   }
 
-  const bool is_host_empty = !host_view()->width();
-  if (is_host_empty) {
-    // When minimizing window, this can happen
-    return;
-  }
-
-  gfx::Rect bounds = host_view()->GetLocalBounds();
   const auto size_delta = ClampSplitViewSizeDelta(
       host_view(), split_view_size_delta_ + ongoing_split_view_size_delta_);
   bounds.set_width((bounds.width() - kSpacingBetweenContentsWebViews) / 2 +
                    size_delta);
   if (show_main_web_contents_at_tail_) {
-    secondary_contents_container_->SetBoundsRect(bounds);
+    add_to_child_layout(secondary_contents_container_.get(), bounds);
   } else {
-    contents_container_->SetBoundsRect(bounds);
+    add_to_child_layout(contents_container_.get(), bounds);
   }
 
   bounds.set_x(bounds.right());
   bounds.set_width(kSpacingBetweenContentsWebViews);
-  split_view_separator_->SetBoundsRect(bounds);
+  add_to_child_layout(split_view_separator_.get(), bounds);
 
   bounds.set_x(bounds.right());
   bounds.set_width(host_view()->width() - bounds.x());
   if (show_main_web_contents_at_tail_) {
-    contents_container_->SetBoundsRect(bounds);
+    add_to_child_layout(contents_container_.get(), bounds);
   } else {
-    secondary_contents_container_->SetBoundsRect(bounds);
+    add_to_child_layout(secondary_contents_container_.get(), bounds);
   }
+
+  return layouts;
 }
