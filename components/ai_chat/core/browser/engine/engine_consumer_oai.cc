@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 
-#include <iostream>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -289,8 +288,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
 
   // For first turn, perform a separate request to generate title
   if (conversation_history.size() == 1) {
-    GenerateTitle(truncated_page_content, human_input,
-                  std::move(data_received_callback));
+    GenerateTitle(truncated_page_content, human_input, data_received_callback);
   }
 }
 
@@ -326,10 +324,12 @@ void EngineConsumerOAIRemote::GenerateTitle(
     title_messages.Append(std::move(message));
   }
 
+  std::vector<std::string> stops = {"</title>"};
   api_->PerformRequest(
       model_options_, std::move(title_messages), base::NullCallback(),
       base::BindOnce(&EngineConsumerOAIRemote::OnTitleGenerationData,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(data_callback)));
+                     weak_ptr_factory_.GetWeakPtr(), data_callback),
+      stops);
 }
 
 void EngineConsumerOAIRemote::OnTitleGenerationData(
@@ -339,37 +339,13 @@ void EngineConsumerOAIRemote::OnTitleGenerationData(
   std::string title = "New Chat";
 
   if (valid_title) {
-    std::string response = base::StrCat({"<title>", *result});
-    std::cerr << "*** Generation: |" << response << "|" << std::endl;
-    size_t start = response.find("<title>");
-    size_t end = response.find("</title>");
-
-    if (start != std::string::npos && end != std::string::npos) {
-      start += 7;  // Length of "<title>"
-      std::string extracted_title =
-          std::string(response.substr(start, end - start));
-      // Trim any whitespace
-      extracted_title = std::string(base::TrimWhitespaceASCII(
-          extracted_title, base::TrimPositions::TRIM_ALL));
-      if (!extracted_title.empty()) {
-        title = std::move(extracted_title);
-      }
-    } else {
-      // Response doesn't contain tags - use entire response
-      std::string extracted_title = std::string(response);
-      // Trim any whitespace
-      extracted_title = std::string(base::TrimWhitespaceASCII(
-          extracted_title, base::TrimPositions::TRIM_ALL));
-      if (!extracted_title.empty()) {
-        title = std::move(extracted_title);
-      }
-    }
+    title = *result;
   }
 
   // Send the title as a ConversationTitleEvent
   auto title_event = mojom::ConversationEntryEvent::NewConversationTitleEvent(
       mojom::ConversationTitleEvent::New(title));
-  std::move(data_callback).Run(std::move(title_event));
+  data_callback.Run(std::move(title_event));
 }
 
 void EngineConsumerOAIRemote::SanitizeInput(std::string& input) {}
