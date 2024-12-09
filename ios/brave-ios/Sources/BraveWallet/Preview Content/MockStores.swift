@@ -242,7 +242,8 @@ extension TransactionStatusStore {
       txProviderError: nil,
       keyringService: MockKeyringService(),
       rpcService: MockJsonRpcService(),
-      txService: MockTxService()
+      txService: MockTxService(),
+      followUpAction: .none
     )
   }
 }
