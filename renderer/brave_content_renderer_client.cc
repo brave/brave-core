@@ -32,6 +32,7 @@
 #include "chrome/renderer/process_state.h"
 #include "chrome/renderer/url_loader_throttle_provider_impl.h"
 #include "components/feed/content/renderer/rss_link_reader.h"
+#include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"

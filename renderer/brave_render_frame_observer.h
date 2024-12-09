@@ -8,12 +8,10 @@
 
 #include <string>
 
-#include "content/common/content_export.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 
-class CONTENT_EXPORT BraveRenderFrameObserver
-    : public content::RenderFrameObserver {
+class BraveRenderFrameObserver : public content::RenderFrameObserver {
  public:
   explicit BraveRenderFrameObserver(content::RenderFrame* render_frame);
   BraveRenderFrameObserver(const BraveRenderFrameObserver&) = delete;
