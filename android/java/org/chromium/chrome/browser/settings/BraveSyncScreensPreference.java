@@ -18,12 +18,14 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +54,7 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,6 +67,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.back_press.BackPressHelper;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
@@ -83,6 +87,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /** Settings fragment that allows to control Sync functionality. */
 public class BraveSyncScreensPreference extends BravePreferenceFragment
@@ -97,11 +102,18 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private static final int RC_HANDLE_CAMERA_PERM = 2;
     // Intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
+    // Default Sync service url
+    private static String sDefaultSyncServiceUrl = "";
+    // Custom Sync service url
+    private static String sCustomSyncServiceUrl = "";
 
     // The have a sync code button displayed in the Sync view.
     private Button mScanChainCodeButton;
     private Button mStartNewChainButton;
     private Button mAdvancedOptionsButton;
+    private Button mSaveAndRelaunchButton;
+    private Button mSyncUrlResetToDefaultButton;
+    private TextInputEditText mCustomSyncUrlInput;
     private Button mEnterCodeWordsButton;
     private Button mDoneButton;
     private Button mDoneLaptopButton;
@@ -116,6 +128,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private Button mDeleteAccountButton;
     private Button mNewCodeWordsButton;
     private Button mNewQrCodeButton;
+    private TextView mBraveSyncCustomSyncUrl;
     private TextView mBraveSyncTextDevicesTitle;
     private TextView mBraveSyncWordCountTitle;
     private TextView mBraveSyncAddDeviceCodeWords;
@@ -325,6 +338,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 }
             }
 
+            // TODO: Check and hide if custom sync URL is empty
+            mBraveSyncCustomSyncUrl.setText(getBraveSyncWorker().getSyncServiceURL());
+
             if (index > 0) {
                 mBraveSyncTextDevicesTitle.setText(
                         getResources().getString(R.string.brave_sync_devices_title));
@@ -333,6 +349,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     insertPoint.addView(separator, index++);
                 }
             }
+
         } catch (Exception ex) {
             Log.e(TAG, "fillDevices exception: ", ex);
         }
@@ -353,6 +370,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         mScrollViewAddLaptop = getView().findViewById(R.id.view_add_laptop);
         mScrollViewEnterCodeWords = getView().findViewById(R.id.view_enter_code_words);
         mScrollViewSyncDone = getView().findViewById(R.id.view_sync_done);
+
+        // Get default sync service url
+        sDefaultSyncServiceUrl = getBraveSyncWorker().getDefaultSyncServiceURL();
 
         if (!DeviceFormFactor.isTablet()) {
             clearBackground(mScrollViewSyncInitial);
@@ -430,6 +450,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mCopyButton.setOnClickListener(this);
         }
 
+        mBraveSyncCustomSyncUrl = getView().findViewById(R.id.brave_sync_url_display);
         mBraveSyncTextDevicesTitle = getView().findViewById(R.id.brave_sync_devices_title);
         mBraveSyncWordCountTitle = getView().findViewById(R.id.brave_sync_text_word_count);
         mBraveSyncWordCountTitle.setText(getString(R.string.brave_sync_word_count_text, 0));
@@ -580,6 +601,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if ((getActivity() == null)
                 || (v != mScanChainCodeButton
                         && v != mStartNewChainButton
+                        && v != mAdvancedOptionsButton
                         && v != mEnterCodeWordsButton
                         && v != mDoneButton
                         && v != mDoneLaptopButton
@@ -604,6 +626,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             getPureWords();
             setNewChainLayout();
             seedWordsReceived(mCodephrase, SyncInputType.NEW);
+        } else if (mAdvancedOptionsButton == v) {
+            showAdvancedOptionsDialog();
         } else if (mMobileButton == v) {
             setAddMobileDeviceLayout();
             selectAddMobileTab();
@@ -1239,17 +1263,130 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         alertDialog.show();
     }
 
+    private void showAdvancedOptionsDialog() {
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View view = inflater.inflate(R.layout.brave_sync_advanced_options_dialog, null);
+
+        AlertDialog.Builder alert =
+                new AlertDialog.Builder(getContext(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
+        AlertDialog alertDialog = alert.setView(view).create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
+
+        // Scrim background while showing dialog
+        Objects.requireNonNull(alertDialog.getWindow())
+                .setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        alertDialog.show();
+
+        mCustomSyncUrlInput = view.findViewById(R.id.brave_sync_url_input);
+        sCustomSyncServiceUrl = getBraveSyncWorker().getCustomSyncServiceURL();
+        sDefaultSyncServiceUrl = getBraveSyncWorker().getDefaultSyncServiceURL();
+
+        mCustomSyncUrlInput.requestFocus();
+
+        mSaveAndRelaunchButton = view.findViewById(R.id.brave_sync_save_and_relaunch);
+        mSyncUrlResetToDefaultButton = view.findViewById(R.id.brave_sync_url_reset_btn);
+
+        setupSyncUrlResetButton();
+        setupSaveAndRelaunchButton();
+        setupCancelButton(alertDialog);
+
+        if (sCustomSyncServiceUrl.isEmpty()) {
+            mCustomSyncUrlInput.setHint(sDefaultSyncServiceUrl);
+            mSyncUrlResetToDefaultButton.setEnabled(false);
+        } else {
+            mCustomSyncUrlInput.setText(sCustomSyncServiceUrl);
+        }
+
+        mCustomSyncUrlInput.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        handleCustomUrlInputChanged(s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {}
+                });
+    }
+
+    private void setupSyncUrlResetButton() {
+        if (mSyncUrlResetToDefaultButton != null) {
+            mSyncUrlResetToDefaultButton.setOnClickListener(v -> resetCustomSyncUrl());
+        }
+    }
+
+    private void setupSaveAndRelaunchButton() {
+        if (mSaveAndRelaunchButton != null) {
+            mSaveAndRelaunchButton.setOnClickListener(v -> saveCustomSyncUrlAndRelaunch());
+        }
+    }
+
+    private void setupCancelButton(AlertDialog alertDialog) {
+        Button cancelButton = alertDialog.findViewById(R.id.brave_sync_advanced_options_cancel_btn);
+        if (cancelButton != null) {
+            cancelButton.setOnClickListener(v -> alertDialog.cancel());
+        }
+    }
+
+    private void handleCustomUrlInputChanged(CharSequence text) {
+        boolean isTextEmpty = text.length() == 0;
+        boolean isTextChanged = !text.toString().equals(sCustomSyncServiceUrl);
+
+        mSyncUrlResetToDefaultButton.setEnabled(!isTextEmpty);
+
+        if (isTextEmpty) {
+            mCustomSyncUrlInput.setHint(sDefaultSyncServiceUrl);
+        }
+
+        mSaveAndRelaunchButton.setEnabled(isTextChanged);
+    }
+
+    private void saveCustomSyncUrlAndRelaunch() {
+        String url = mCustomSyncUrlInput.getText().toString().trim();
+        if (url.isEmpty()) {
+            // Save the empty URL (which may reset to default) and restart
+            getBraveSyncWorker().setCustomSyncServiceURL(url);
+            BraveRelaunchUtils.restart();
+            return;
+        }
+
+        // Check if the URL starts with a valid scheme (http:// or https://)
+        if (!url.matches("^[a-zA-Z][a-zA-Z0-9+.-]*://.*")) {
+            // Prepend 'http://' if it doesn't
+            url = "http://" + url;
+        }
+
+        // Validate the modified URL
+        if (Patterns.WEB_URL.matcher(url).matches()) {
+            getBraveSyncWorker().setCustomSyncServiceURL(url);
+            BraveRelaunchUtils.restart();
+        } else {
+            mCustomSyncUrlInput.setError(getString(R.string.invalid_url));
+        }
+    }
+
+    private void resetCustomSyncUrl() {
+        mCustomSyncUrlInput.setText("");
+    }
+
     private void permanentlyDeleteAccount() {
         AlertDialog.Builder alertBuilder =
                 new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int button) {
-                if (button == AlertDialog.BUTTON_POSITIVE) {
-                    permanentlyDeleteAccountImpl();
-                }
-            }
-        };
+        DialogInterface.OnClickListener onClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == AlertDialog.BUTTON_POSITIVE) {
+                            permanentlyDeleteAccountImpl();
+                        }
+                    }
+                };
 
         AlertDialog alertDialog =
                 alertBuilder
