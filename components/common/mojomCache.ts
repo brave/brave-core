@@ -8,6 +8,37 @@ export type CacheListener<T> = (
   oldValue: T
 ) => void
 
+export function immutableMerge<T extends { [key: string | number]: any; }>(initial: T, patch: Partial<T>): T {
+  if (patch === undefined) return initial
+
+  const result: T = { ...initial }
+
+  for (const key in patch) {
+    const patchedValue = patch[key]
+    const patchedType = typeof patchedValue
+
+    if (Array.isArray(patchedValue)) {
+      const array = [...initial as any]
+      for (const [index, value] of patchedValue.entries()) {
+        if (value === null) {
+          delete array[index]
+        } else {
+          array[index] = value
+        }
+      }
+      result[key as any] = array
+    } else if (patchedType === 'object') {
+      for (const [key, value] of Object.entries(patchedValue as any)) {
+        result[key as any] = value
+      }
+    } else {
+      result[key as any] = patch[key]
+    }
+  }
+
+  return result
+}
+
 /**
  * Allows consumers to subscribe to changes to an object.
  *

@@ -6,31 +6,38 @@
 import {
   BraveNewsControllerRemote,
   Publisher,
-  PublishersListenerInterface,
-  PublishersListenerReceiver,
+  ListenerInterface,
+  ListenerReceiver,
   UserEnabled
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController, { isDirectFeed } from './api'
 
-import { EntityCachingWrapper } from '$web-common/mojomCache'
+import { CachingWrapper } from '$web-common/mojomCache'
+import { Value } from 'gen/mojo/public/mojom/base/values.mojom.m'
 
 export class PublishersCachingWrapper
-  extends EntityCachingWrapper<Publisher>
-  implements PublishersListenerInterface {
-  private receiver = new PublishersListenerReceiver(this)
+  extends CachingWrapper<{ [key: string]: Publisher }>
+  implements ListenerInterface {
+  private receiver = new ListenerReceiver(this)
   private controller: BraveNewsControllerRemote
 
   constructor() {
-    super()
+    super({})
 
     this.controller = getBraveNewsController()
 
     // We can't set up  the mojo pipe in the test environment.
     if (process.env.NODE_ENV !== 'test') {
-      this.controller.addPublishersListener(
+      this.controller.addListener(
         this.receiver.$.bindNewPipeAndPassRemote()
       )
     }
+  }
+
+  changed(diff: Value): void {
+    if (!diff) return
+
+    
   }
 
   setPublisherFollowed(publisherId: string, enabled: boolean) {
