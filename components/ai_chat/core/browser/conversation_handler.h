@@ -140,6 +140,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnSelectedLanguageChanged(
         ConversationHandler* handler,
         const std::string& selected_language) {}
+    virtual void OnAssociatedContentDestroyed(ConversationHandler* handler,
+                                              int content_id) {}
   };
 
   ConversationHandler(
@@ -163,6 +165,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   bool IsAnyClientConnected();
   bool HasAnyHistory();
+
+  // Returns true if the conversation has associated content that is non-archive
+  bool IsAssociatedContentAlive();
 
   // Called when the associated content is destroyed or navigated away. If
   // it's a navigation, the AssociatedContentDelegate will set itself to a new
