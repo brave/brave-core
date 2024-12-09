@@ -73,6 +73,9 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void StopAndClearWithShutdownReason();
   void StopAndClearWithResetLocalDataReason();
 
+  std::string GetCustomSyncServiceURL();
+  bool SetCustomSyncServiceURL(std::string custom_sync_url);
+
  private:
   friend class BraveSyncServiceImplGACookiesTest;
   friend class BraveSyncServiceImplTest;

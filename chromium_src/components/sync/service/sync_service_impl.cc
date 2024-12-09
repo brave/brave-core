@@ -3,6 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "components/sync/service/sync_service_impl.h"
+
+#include <string>
+
 #include "base/command_line.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/sync/service/brave_sync_auth_manager.h"
@@ -16,9 +20,6 @@ namespace syncer {
 GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
                             version_info::Channel channel,
                             PrefService* prefs) {
-// TODO: Currently, we only handle the custom sync URL via GPO/Settings Page
-// on Desktop OSes. However, we should also handle it on Android in the future.
-#if !BUILDFLAG(IS_ANDROID)
   if (prefs) {
     std::string value = prefs->GetString(brave_sync::kCustomSyncServiceUrl);
     if (!value.empty()) {
@@ -48,11 +49,19 @@ GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
       }
     }
   }
-#endif
 
   // Default logic.
   // See `GetSyncServiceURL` in `components/sync/base/sync_util.cc`
   return GetSyncServiceURL(command_line, channel);
+}
+
+GURL SyncServiceImpl::GetBraveSyncServiceURL() {
+  return BraveGetSyncServiceURL(*base::CommandLine::ForCurrentProcess(),
+                                channel_, sync_client_->GetPrefService());
+}
+
+GURL SyncServiceImpl::GetBraveDefaultSyncServiceURL() {
+  return GetSyncServiceURL(*base::CommandLine::ForCurrentProcess(), channel_);
 }
 
 }  // namespace syncer
