@@ -120,8 +120,6 @@ public class BraveSafeBrowsingUtils {
             case SafetyNetJavaThreatType.BILLING:
                 return SafeBrowsingJavaThreatType.BILLING;
             case SafetyNetJavaThreatType.SUBRESOURCE_FILTER:
-                assert false
-                        : "safetyNetToSafeBrowsingJavaThreatType: unexpected SUBRESOURCE_FILTER";
                 return SafeBrowsingJavaThreatType.NO_THREAT;
             case SafetyNetJavaThreatType.SOCIAL_ENGINEERING:
                 return SafeBrowsingJavaThreatType.SOCIAL_ENGINEERING;
@@ -130,7 +128,6 @@ public class BraveSafeBrowsingUtils {
             case SafetyNetJavaThreatType.UNWANTED_SOFTWARE:
                 return SafeBrowsingJavaThreatType.UNWANTED_SOFTWARE;
             case SafetyNetJavaThreatType.CSD_ALLOWLIST:
-                assert false : "safetyNetToSafeBrowsingJavaThreatType: unexpected CSD_ALLOWLIST";
                 return SafeBrowsingJavaThreatType.NO_THREAT;
             default:
                 Log.d(
