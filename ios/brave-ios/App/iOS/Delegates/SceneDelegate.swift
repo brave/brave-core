@@ -598,16 +598,18 @@ extension SceneDelegate {
         Logger.module.info("[SCENE] - SESSION RESTORED")
       } else {
         // Try to restore active window
-        windowId = restoreOrCreateWindow().windowId
-        isPrivate = false
-        privateBrowsingManager.isPrivateBrowsing = false
+        let windowInfo = restoreOrCreateWindow()
+        windowId = windowInfo.windowId
+        isPrivate = windowInfo.isPrivate
+        privateBrowsingManager.isPrivateBrowsing = windowInfo.isPrivate
         urlToOpen = nil
       }
     } else {
       // iPhones don't care about user-activity or session info since it will always have one window anyway
-      windowId = restoreOrCreateWindow().windowId
-      isPrivate = false
-      privateBrowsingManager.isPrivateBrowsing = false
+      let windowInfo = restoreOrCreateWindow()
+      windowId = windowInfo.windowId
+      isPrivate = windowInfo.isPrivate
+      privateBrowsingManager.isPrivateBrowsing = windowInfo.isPrivate
       urlToOpen = nil
     }
 
@@ -682,16 +684,18 @@ extension SceneDelegate {
         // iPhones should not create new windows
         if let activeWindow = activeWindow {
           // If there's no active window, fall through and create one
-          return (activeWindow.windowId, false, nil)
+          let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
+          return (activeWindow.windowId, isPrivate, nil)
         }
       }
 
       // An existing window is already active on screen
       // So create a new window
       let windowId = UUID()
-      SessionWindow.createWindow(isPrivate: false, isSelected: true, uuid: windowId)
+      let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
+      SessionWindow.createWindow(isPrivate: isPrivate, isSelected: true, uuid: windowId)
       Logger.module.info("[SCENE] - CREATED NEW WINDOW")
-      return (windowId, false, nil)
+      return (windowId, isPrivate, nil)
     }
 
     // Restore the active window if possible
@@ -704,9 +708,10 @@ extension SceneDelegate {
     }
 
     // Create a new session window if it does not already exist
-    SessionWindow.createWindow(isPrivate: false, isSelected: true, uuid: windowId)
+    let isPrivate = Preferences.Privacy.privateBrowsingOnly.value
+    SessionWindow.createWindow(isPrivate: isPrivate, isSelected: true, uuid: windowId)
     Logger.module.info("[SCENE] - RESTORING ACTIVE WINDOW OR CREATING A NEW WINDOW")
-    return (windowId, false, nil)
+    return (windowId, isPrivate, nil)
   }
 }
 
