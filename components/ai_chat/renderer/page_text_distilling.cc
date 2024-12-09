@@ -30,6 +30,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/resources/distiller_scripts/grit/ai_chat_site_distiller_generated.h"
 #include "content/public/renderer/render_frame.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/mojom/script/script_evaluation_params.mojom-shared.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/web_document.h"
@@ -146,18 +147,18 @@ void DistillPageText(
     int32_t isolated_world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
   blink::WebLocalFrame* main_frame = render_frame->GetWebFrame();
-  std::string host =
+  std::string_view host =
       url::Origin(((const blink::WebFrame*)main_frame)->GetSecurityOrigin())
           .host();
 
-  // Prepare to load a site script for the host (assume no main world needed)
-  std::string script_content;
-  bool needs_main_world = false;
+  std::optional<std::pair<std::string, bool>> site_script =
+      LoadSiteScriptForHost(host);
 
-  if (LoadSiteScriptForHost(&host, &script_content, &needs_main_world)) {
+  if (site_script.has_value()) {
     VLOG(1) << "Using site script for host: " << host;
-    int32_t world_id = needs_main_world ? global_world_id : isolated_world_id;
-    DistillPageTextViaSiteScript(render_frame, script_content, world_id,
+    int32_t world_id =
+        site_script->second ? global_world_id : isolated_world_id;
+    DistillPageTextViaSiteScript(render_frame, site_script->first, world_id,
                                  std::move(callback));
     return;
   }
@@ -227,7 +228,7 @@ void DistillPageText(
 
 void DistillPageTextViaSiteScript(
     content::RenderFrame* render_frame,
-    const std::string& script_content,
+    std::string script_content,
     int32_t world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
   /**
@@ -291,36 +292,27 @@ void DistillPageTextViaSiteScript(
       blink::mojom::PromiseResultOption::kAwait);
 }
 
-bool LoadSiteScriptForHost(std::string* host,
-                           std::string* script_content,
-                           bool* needs_main_world) {
-  std::string lower_host = base::ToLowerASCII(*host);
+std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
+    std::string_view host) {
+  static const std::map<std::string, std::pair<int, bool>>
+      kHostToScriptResource = {
+          {"github.com",
+           {IDR_AI_CHAT_SITE_DISTILLER_GITHUB_COM_BUNDLE_JS, false}},
+          {"x.com", {IDR_AI_CHAT_SITE_DISTILLER_X_COM_BUNDLE_JS, true}},
+      };
 
-  if (base::StartsWith(lower_host, "www.",
-                       base::CompareCase::INSENSITIVE_ASCII)) {
-    lower_host = lower_host.substr(4);
-  }
-
-  struct ScriptResource {
-    int resource_id;
-    bool needs_main_world;
-  };
-
-  static const std::map<std::string, ScriptResource> kHostToScriptResource = {
-      {"github.com", {IDR_AI_CHAT_SITE_DISTILLER_GITHUB_COM_BUNDLE_JS, false}},
-      {"x.com", {IDR_AI_CHAT_SITE_DISTILLER_X_COM_BUNDLE_JS, true}},
-  };
-
-  auto it = kHostToScriptResource.find(lower_host);
+  auto it = kHostToScriptResource.find(
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          host, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES));
 
   if (it != kHostToScriptResource.end()) {
-    auto& bundle = ui::ResourceBundle::GetSharedInstance();
-    *script_content = bundle.LoadDataResourceString(it->second.resource_id);
-    *needs_main_world = it->second.needs_main_world;
-    return script_content->empty() == false;
+    return std::make_optional(std::make_pair(
+        ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+            it->second.first),
+        it->second.second));
   }
 
-  return false;
+  return std::nullopt;
 }
 
 }  // namespace ai_chat

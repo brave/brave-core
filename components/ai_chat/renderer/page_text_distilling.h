@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "base/functional/callback_forward.h"
 #include "url/gurl.h"
@@ -25,13 +26,12 @@ void DistillPageText(
     int32_t isolated_world_id,
     base::OnceCallback<void(const std::optional<std::string>&)>);
 
-bool LoadSiteScriptForHost(std::string* host,
-                           std::string* script_content,
-                           bool* needs_main_world);
+std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
+    std::string_view host);
 
 void DistillPageTextViaSiteScript(
     content::RenderFrame* render_frame,
-    const std::string& script_content,
+    std::string script_content,
     int32_t world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback);
 
