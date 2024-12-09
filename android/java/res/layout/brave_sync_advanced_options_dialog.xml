@@ -73,10 +73,10 @@
                     android:focusable="true"
                     android:layout_height="wrap_content"
                     android:inputType="textUri"
-                    android:text="@string/brave_sync_advanced_options"
                     android:textColor="@color/schemes_on_surface"
                     android:textSize="16sp"
-                    android:autofillHints="url" />
+                    android:autofillHints="url"
+                    android:textColorHint="@color/brave_sync_url_disabled_text_color" />
 
             </com.google.android.material.textfield.TextInputLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -93,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/brave_sync_url_save_and_relaunch"
+            android:enabled="false"
             style="@style/BraveSyncButton" />
 
         <android.widget.Button android:id="@+id/brave_sync_advanced_options_cancel_btn"
@@ -110,7 +111,7 @@
             style="@style/BraveSyncBottomButton"
             android:lineSpacingExtra="4sp"
             android:background="@android:color/transparent"
-            android:textColor="@color/leo_reset_text_color" />
+            android:textColor="@drawable/brave_sync_reset_btn_selector" />
 
     </LinearLayout>
 

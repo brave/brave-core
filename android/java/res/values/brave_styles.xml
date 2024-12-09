@@ -170,8 +170,8 @@
 
     <!-- Buttons for Brave Sync -->
     <style name="BraveSyncButton">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/brave_sync_btn</item>
+        <item name="android:textColor">@drawable/brave_sync_btn_text_selector</item>
+        <item name="android:background">@drawable/brave_sync_btn_bg_selector</item>
         <item name="android:layout_marginStart">15dp</item>
         <item name="android:layout_marginEnd">15dp</item>
         <item name="android:layout_marginBottom">15dp</item>
@@ -207,6 +207,8 @@
         <item name="android:layout_marginBottom">15dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
+        <item name="fontWeight">600</item>
+        <item name="fontStyle">normal</item>
     </style>
 
     <style name="BraveSyncRedWarningTextSmallSemibold" parent="SmallSemibold">
