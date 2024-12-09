@@ -42,6 +42,7 @@ import { SelectCurrency } from './components/select_currency/select_currency'
 import { SelectAccount } from './components/select_account/select_account'
 import { SelectAsset } from './components/select_asset/select_asset'
 import { BuyQuote } from './components/buy_quote/buy_quote'
+import { CreateAccount } from './components/create_account/create_account'
 
 // Styled Components
 import {
@@ -106,7 +107,10 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
     onBuy,
     searchTerm,
     onSearch,
-    hasQuoteError
+    hasQuoteError,
+    showCreateAccount,
+    onCloseCreateAccount,
+    pendingSelectedToken
   } = useBuy()
 
   // Redux
@@ -388,6 +392,13 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
         }}
         selectedAsset={selectedAsset}
         onClose={() => setIsAccountDialogOpen(false)}
+      />
+
+      <CreateAccount
+        isOpen={showCreateAccount}
+        token={pendingSelectedToken || selectedAsset}
+        onClose={onCloseCreateAccount}
+        onSelectToken={onSelectToken}
       />
     </>
   )

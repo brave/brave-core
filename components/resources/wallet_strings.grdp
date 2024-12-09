@@ -646,6 +646,9 @@
   <message name="IDS_BRAVE_WALLET_TRY_SEARCHING_FOR_DIFFERENT_ASSET" desc="Hint for no provider found for buy asset">Try searching for a different asset.</message>
   <message name="IDS_BRAVE_WALLET_NO_RESULTS_FOUND" desc="No search results for provider title">No results found for <ph name="PROVIDER">$1<ex>Ramp</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_TRY_DIFFERENT_KEYWORDS" desc="Hint for no search result for provider">Try using a different keyword or check your spelling.</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_TITLE" desc="Create account modal title">Do you want to create a <ph name="ACCOUNT_TYPE">$1<ex>Zcash</ex></ph> account?</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_DESCRIPTION" desc="Create account modal description">In order to receive <ph name="TOKEN_SYMBOL">$1<ex>ZEC</ex></ph> you will need a <ph name="ACCOUNT_TYPE">$2<ex>Zcash</ex></ph> account.</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_NAME" desc="Account name input label">Account name</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_TRANSAK" desc="Buy with Transak option label">Buy with Transak</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_STRIPE" desc="Buy with Stripe option label">Buy with Link</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_COINBASE" desc="Buy with Coinbase Pay option label">Buy with Coinbase Pay</message>

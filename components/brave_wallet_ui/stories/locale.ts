@@ -695,6 +695,10 @@ provideStrings({
   braveWalletNoResultsFound: 'No results found for $1',
   braveWalletTryDifferentKeywords:
     'Try using a different keyword or check your spelling.',
+  braveWalletCreateAccountToBuyTitle: 'Do you want to create a $1 Account?',
+  braveWalletCreateAccountToBuyDescription:
+    'In order to receive $1 you will need a $2 account.',
+  braveWalletAccountName: 'Account name',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle:
