@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tasks.tab_management.TabListCoordinator.TabListMode;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
+import org.chromium.chrome.tab_ui.R;
 
 import java.util.function.DoubleConsumer;
 
@@ -38,6 +39,14 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
                 onToolbarAlphaChange,
                 userEducationHelper,
                 edgeToEdgeSupplier);
+        // These checks are to avoid resource not used warning. We use own own UI for the empty
+        // state.
+        assert R.drawable.phone_tab_switcher_empty_state_illustration_background > 0
+                : "Something has changed in the upstream!";
+        assert R.drawable.phone_tab_switcher_empty_state_illustration_bottom_window > 0
+                : "Something has changed in the upstream!";
+        assert R.drawable.phone_tab_switcher_empty_state_illustration_top_window > 0
+                : "Something has changed in the upstream!";
     }
 
     @Override
