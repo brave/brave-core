@@ -17,7 +17,7 @@
             />
         <path
             android:pathData="M0 0V40H80V0"
-            android:fillColor="#C7C7CC"
+            android:fillColor="@color/page_background"
             />
     </group>
 </vector>
