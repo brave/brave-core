@@ -28,6 +28,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/resources/distiller_scripts/grit/ai_chat_site_distiller_generated.h"
 #include "content/public/renderer/render_frame.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -147,20 +148,23 @@ void DistillPageText(
     int32_t isolated_world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
   blink::WebLocalFrame* main_frame = render_frame->GetWebFrame();
-  std::string_view host =
-      url::Origin(((const blink::WebFrame*)main_frame)->GetSecurityOrigin())
-          .host();
 
-  std::optional<std::pair<std::string, bool>> site_script =
-      LoadSiteScriptForHost(host);
+  if (ai_chat::features::IsAIHostSpecificDistillationEnabled()) {
+    std::string_view host =
+        url::Origin(((const blink::WebFrame*)main_frame)->GetSecurityOrigin())
+            .host();
 
-  if (site_script.has_value()) {
-    VLOG(1) << "Using site script for host: " << host;
-    int32_t world_id =
-        site_script->second ? global_world_id : isolated_world_id;
-    DistillPageTextViaSiteScript(render_frame, site_script->first, world_id,
-                                 std::move(callback));
-    return;
+    std::optional<std::pair<std::string, bool>> site_script =
+        LoadSiteScriptForHost(host);
+
+    if (site_script.has_value()) {
+      VLOG(1) << "Using site script for host: " << host;
+      int32_t world_id =
+          site_script->second ? global_world_id : isolated_world_id;
+      DistillPageTextViaSiteScript(render_frame, site_script->first, world_id,
+                                   std::move(callback));
+      return;
+    }
   }
 
   auto snapshotter = render_frame->CreateAXTreeSnapshotter(
