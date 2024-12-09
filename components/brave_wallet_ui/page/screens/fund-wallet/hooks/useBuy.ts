@@ -15,7 +15,8 @@ import {
   MeldCryptoQuote,
   MeldPaymentMethod,
   CryptoBuySessionData,
-  CryptoWidgetCustomerData
+  CryptoWidgetCustomerData,
+  WalletRoutes
 } from '../../../../constants/types'
 
 // Hooks
@@ -136,6 +137,10 @@ export const useBuy = () => {
     string | undefined
   >(undefined)
   const [searchTerm, setSearchTerm] = useState<string>('')
+  const [showCreateAccount, setShowCreateAccount] = useState<boolean>(false)
+  const [pendingSelectedToken, setPendingSelectedToken] = useState<
+    MeldCryptoCurrency | undefined
+  >(undefined)
 
   // Mutations
   const [generateQuotes] = useGenerateMeldCryptoQuotesMutation()
@@ -396,6 +401,13 @@ export const useBuy = () => {
         selectedAccount.accountId.coin !== incomingAssetsCoinType
           ? getFirstAccountByCoinType(incomingAssetsCoinType, accounts)
           : selectedAccount
+      if (!accountToUse) {
+        setPendingSelectedToken(asset)
+        setShowCreateAccount(true)
+        return
+      }
+      setShowCreateAccount(false)
+      setPendingSelectedToken(undefined)
       history.replace(makeFundWalletRoute(asset, accountToUse))
       setQuotes([])
 
@@ -464,6 +476,13 @@ export const useBuy = () => {
     ]
   )
 
+  const onCloseCreateAccount = useCallback(() => {
+    if (!pendingSelectedToken) {
+      history.push(WalletRoutes.FundWalletPageStart)
+    }
+    setShowCreateAccount(false)
+  }, [pendingSelectedToken, history])
+
   // Effects
   useEffect(() => {
     if (fiatCurrencies && fiatCurrencies.length > 0 && !selectedCurrency) {
@@ -509,6 +528,17 @@ export const useBuy = () => {
     }
   }, [selectedAsset, currencyCode, chainId, quotes, hasQuoteError])
 
+  useEffect(() => {
+    if (
+      selectedAsset.currencyCode !== DEFAULT_ASSET.currencyCode &&
+      currencyCode !== undefined &&
+      chainId !== undefined &&
+      selectedAccount === undefined
+    ) {
+      setShowCreateAccount(true)
+    }
+  }, [selectedAsset, currencyCode, chainId, selectedAccount])
+
   return {
     selectedAsset,
     selectedCurrency,
@@ -545,6 +575,9 @@ export const useBuy = () => {
     cryptoEstimate,
     hasQuoteError,
     isLoadingServiceProvider,
-    reset
+    reset,
+    showCreateAccount,
+    onCloseCreateAccount,
+    pendingSelectedToken
   }
 }

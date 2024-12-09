@@ -35,6 +35,7 @@ export const IconWrapper = styled.div<{
 `
 
 export type IconSize =
+  | 'massive'
   | 'huge'
   | 'big'
   | 'medium'
@@ -49,6 +50,8 @@ interface IconProps extends AssetIconProps {
 
 function getNetworkIconWidthFromSize(size?: IconSize): string {
   switch (size) {
+    case 'massive':
+      return '64px'
     case 'huge':
       return '32px'
     case 'big':
