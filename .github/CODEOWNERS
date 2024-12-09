@@ -99,8 +99,6 @@ chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc 
 browser/tor/ @brave/tor-reviewers
 browser/ui/webui/tor_internals_ui.* @brave/tor-reviewers
 browser/ui/webui/settings/brave_tor*.* @brave/tor-reviewers
-chromium_src/chrome/browser/net/proxy_config_monitor.* @brave/tor-reviewers
-chromium_src/net/proxy_resolution/configured_proxy_resolution_service.cc @brave/tor-reviewers
 components/tor/ @brave/tor-reviewers
 net/proxy_resolution/ @brave/tor-reviewers
 
@@ -133,12 +131,10 @@ browser/ui/views/wallet_bubble_focus_observer* @brave/crypto-wallets-core
 components/brave_wallet/ @brave/crypto-wallets-core
 components/brave_wallet/browser/brave_wallet_provider_delegate.h @brave/crypto-wallets-core @brave/crypto-wallets-ios
 components/brave_wallet/common/brave_wallet.mojom @brave/crypto-wallets-ios
-components/brave_wallet/renderer/ @brave/crypto-wallets-ios
 components/brave_wallet/resources/*.js @brave/crypto-wallets-core @brave/crypto-wallets-ios
 components/brave_wallet_ui/ @brave/crypto-wallets-front-end
 ios/browser/brave_wallet/ @brave/crypto-wallets-ios
 ios/browser/api/brave_wallet @brave/crypto-wallets-ios
-renderer/brave_wallet/ @brave/crypto-wallets-core @brave/crypto-wallets-ios
 
 # Brave Referrals Service
 components/brave_referrals/browser/brave_referrals_service* @simonhong
@@ -150,8 +146,6 @@ browser/ui/webui/settings/brave_sync_handler.* @brave/sync-reviewers
 components/brave_sync/ @brave/sync-reviewers
 components/sync/service/ @brave/sync-reviewers
 components/sync_device_info/ @brave/sync-reviewers
-chromium_src/components/sync/ @brave/sync-reviewers
-chromium_src/components/sync_device_info/ @brave/sync-reviewers
 ios/browser/api/sync/brave_sync_worker.* @brave/sync-reviewers
 
 # Speedreader
@@ -186,7 +180,7 @@ third_party/boost @brave/deps-reviewers
 browser/net/brave_network_audit_allowed_lists.h @brave/sec-team
 
 # iOS
-ios/ @brave/ios
+/ios/ @brave/ios
 build/ios/ @brave/ios
 
 # Android tests
