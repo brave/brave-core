@@ -174,6 +174,7 @@ import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingBridge;
 import org.chromium.chrome.browser.safe_browsing.SafeBrowsingState;
+import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
@@ -2599,6 +2600,17 @@ public abstract class BraveActivity extends ChromeActivity
                     }
                 });
 
+        Runnable onQuickSearchEnginesReady =
+                () -> {
+                    if (isActivityFinishingOrDestroyed()) return;
+
+                    quickSearchEnginesReady(recyclerView, keypadHeight);
+                };
+        TemplateUrlServiceFactory.getForProfile(getCurrentProfile())
+                .runWhenLoaded(onQuickSearchEnginesReady);
+    }
+
+    private void quickSearchEnginesReady(RecyclerView recyclerView, int keypadHeight) {
         List<QuickSearchEnginesModel> searchEngines =
                 QuickSearchEnginesUtil.getQuickSearchEnginesForView(getCurrentProfile());
         QuickSearchEnginesModel leoQuickSearchEnginesModel =
