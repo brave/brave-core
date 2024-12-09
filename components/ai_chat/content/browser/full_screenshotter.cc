@@ -296,10 +296,12 @@ void FullScreenshotter::OnBitmapReceived(
 base::expected<std::string, std::string> FullScreenshotter::EncodeBitmap(
     const SkBitmap& bitmap) {
   WriteBitmapToPng(bitmap);
-  std::vector<unsigned char> data;
-  if (!gfx::PNGCodec::EncodeBGRASkBitmap(bitmap, false, &data)) {
+  auto encoded_result = gfx::PNGCodec::EncodeBGRASkBitmap(bitmap, false);
+  if (!encoded_result) {
     return base::unexpected("Failed to encode the bitmap");
   }
+  
+  std::vector<unsigned char> data = std::move(encoded_result.value());
   return base::ok(base::Base64Encode(data));
 }
 
