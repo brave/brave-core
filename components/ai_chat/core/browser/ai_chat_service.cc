@@ -269,9 +269,26 @@ void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
 
 void AIChatService::MaybeEraseConversation(
     ConversationHandler* conversation_handler) {
-  if (!conversation_handler->IsAnyClientConnected() &&
-      (!features::IsAIChatHistoryEnabled() ||
-       !conversation_handler->HasAnyHistory())) {
+  // Don't unload if there is active UI for the conversation
+  if (conversation_handler->IsAnyClientConnected()) {
+    return;
+  }
+
+  bool has_history = conversation_handler->HasAnyHistory();
+
+  // We can keep a conversation with history in memory until there is no active
+  // content.
+  // TODO(petemill): With the history feature enabled, we should unload (if
+  // there is no request in progress). However, we can only do this when
+  // GetOrCreateConversationHandlerForContent allows a callback so that it
+  // can provide an answer after loading the conversation content from storage.
+  if (conversation_handler->IsAssociatedContentAlive() && has_history) {
+    return;
+  }
+
+  // AIChatHistory feature doesn't yet have persistant storage, so keep
+  // handlers and data around if it's enabled.
+  if (!features::IsAIChatHistoryEnabled() || !has_history) {
     // Can erase because no active UI and no history, so it's
     // not a real / persistable conversation
     auto uuid = conversation_handler->get_conversation_uuid();
@@ -326,6 +343,12 @@ void AIChatService::OnConversationTitleChanged(ConversationHandler* handler,
   auto& conversation = conversation_it->second;
   conversation->title = title;
   OnConversationListChanged();
+}
+
+void AIChatService::OnAssociatedContentDestroyed(ConversationHandler* handler,
+                                                 int content_id) {
+  content_conversations_.erase(content_id);
+  MaybeEraseConversation(handler);
 }
 
 void AIChatService::GetVisibleConversations(
