@@ -5048,7 +5048,7 @@ extension Strings {
         "playlist.playlistAutoSaveSettingsTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Auto-Save for Offline",
+        value: "Save Content for Offline Playback",
         comment:
           "Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)"
       )
@@ -5070,7 +5070,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "This option will automatically keep your playlist items on your device so you can play them without an internet connection.",
+          "Once you've opened content in Playlist, this option will keep opened playlist items on your device so you can play them without an internet connection.",
         comment:
           "Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi))"
       )
