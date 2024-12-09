@@ -26,7 +26,7 @@ void AddBraveSysColorMixer(ColorProvider* provider,
   mixer[kColorSysHeader] = {kColorRefNeutral5};
   mixer[kColorSysHeaderInactive] = {kColorRefNeutral5};
 
-  mixer[kColorSysBase] = {kColorRefNeutral15};
+  mixer[kColorSysBase] = {kColorRefNeutral20};
   mixer[kColorSysOmniboxContainer] = {kColorRefNeutral5};
   mixer[kColorSysTonalOutline] = {kColorSysPrimary};
 }
