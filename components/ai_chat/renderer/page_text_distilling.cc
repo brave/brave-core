@@ -29,7 +29,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/resources/distiller_scripts/grit/ai_chat_site_distiller_generated.h"
+#include "brave/components/ai_chat/resources/distiller_scripts/grit/ai_chat_distiller_scripts_generated.h"
 #include "content/public/renderer/render_frame.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/mojom/script/script_evaluation_params.mojom-shared.h"
@@ -297,8 +297,8 @@ std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
   static const std::map<std::string, std::pair<int, bool>>
       kHostToScriptResource = {
           {"github.com",
-           {IDR_AI_CHAT_SITE_DISTILLER_GITHUB_COM_BUNDLE_JS, false}},
-          {"x.com", {IDR_AI_CHAT_SITE_DISTILLER_X_COM_BUNDLE_JS, true}},
+           {IDR_AI_CHAT_DISTILLER_SCRIPTS_GITHUB_COM_BUNDLE_JS, false}},
+          {"x.com", {IDR_AI_CHAT_DISTILLER_SCRIPTS_X_COM_BUNDLE_JS, true}},
       };
 
   auto it = kHostToScriptResource.find(

@@ -60,7 +60,7 @@ repack("resources") {
     "//brave/components/skus/browser/resources:generated_resources",
   ]
   sources = [
-    "$root_gen_dir/brave/components/ai_chat/resources/distiller_scripts/ai_chat_site_distiller_generated.pak",
+    "$root_gen_dir/brave/components/ai_chat/resources/distiller_scripts/ai_chat_distiller_scripts_generated.pak",
     "$root_gen_dir/brave/components/ai_chat/resources/page/ai_chat_ui_generated.pak",
     "$root_gen_dir/brave/components/brave_ads/browser/resources/ads_internals_generated.pak",
     "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",

@@ -6,8 +6,8 @@
 import("//brave/components/common/typescript.gni")
 import("//tools/grit/repack.gni")
 
-transpile_web_ui("ai_chat_site_distiller") {
-  resource_name = "ai_chat_site_distiller"
+transpile_web_ui("ai_chat_distiller_scripts") {
+  resource_name = "ai_chat_distiller_scripts"
   entry_points = [
     [
       "x_com",
@@ -21,8 +21,8 @@ transpile_web_ui("ai_chat_site_distiller") {
 }
 
 pack_web_resources("generated_resources") {
-  resource_name = "ai_chat_site_distiller"
+  resource_name = "ai_chat_distiller_scripts"
   output_dir =
       "$root_gen_dir/brave/components/ai_chat/resources/distiller_scripts"
-  deps = [ ":ai_chat_site_distiller" ]
+  deps = [ ":ai_chat_distiller_scripts" ]
 }
