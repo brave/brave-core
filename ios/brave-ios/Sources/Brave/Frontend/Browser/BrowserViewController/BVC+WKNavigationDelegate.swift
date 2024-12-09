@@ -954,6 +954,8 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // Reset the stored http request now that load has committed.
     tab.upgradedHTTPSRequest = nil
+    tab.upgradeHTTPSTimeoutTimer?.invalidate()
+    tab.upgradeHTTPSTimeoutTimer = nil
 
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.url
@@ -1111,6 +1113,11 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
+      // load cancelled / user stopped load. Cancel https upgrade fallback timer.
+      tab.upgradedHTTPSRequest = nil
+      tab.upgradeHTTPSTimeoutTimer?.invalidate()
+      tab.upgradeHTTPSTimeoutTimer = nil
+
       if tab === tabManager.selectedTab {
         updateToolbarCurrentURL(tab.url?.displayURL)
         updateWebViewPageZoom(tab: tab)
@@ -1863,8 +1870,23 @@ extension BrowserViewController: WKUIDelegate {
           "Upgrading `\(requestURL.absoluteString)` to HTTPS"
         )
         tab.upgradedHTTPSRequest = navigationAction.request
+        tab.upgradeHTTPSTimeoutTimer?.invalidate()
         var request = navigationAction.request
         request.url = upgradedURL
+
+        tab.upgradeHTTPSTimeoutTimer = Timer.scheduledTimer(
+          withTimeInterval: 3.seconds,
+          repeats: false,
+          block: { [weak tab, weak self] timer in
+            guard let self, let tab else { return }
+            if let url = request.url,
+              let request = handleInvalidHTTPSUpgrade(tab: tab, responseURL: url)
+            {
+              tab.webView?.stopLoading()
+              tab.webView?.load(request)
+            }
+          }
+        )
         return request
       }
     }
@@ -1923,6 +1945,8 @@ extension BrowserViewController: WKUIDelegate {
       )
 
       tab.upgradedHTTPSRequest = nil
+      tab.upgradeHTTPSTimeoutTimer?.invalidate()
+      tab.upgradeHTTPSTimeoutTimer = nil
       if let httpsUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: tab.isPrivate),
         let host = originalURL.host
       {
