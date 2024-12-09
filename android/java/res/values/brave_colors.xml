@@ -429,4 +429,6 @@
     <color name="schemes_surface_container_highest">#c7c7cc</color>
 
     <color name="open_yt_dialog_bg">#FFFFFF</color>
+    <color name="page_background">#f0f0f4</color>
+    <color name="icon_default">#46464a</color>
 </resources>
