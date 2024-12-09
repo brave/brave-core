@@ -184,8 +184,7 @@ FeedGenerationInfo::FeedGenerationInfo(
     : subscriptions_(subscriptions),
       locale_(locale),
       channels_(std::move(channels)),
-      suggested_publisher_ids_(suggested_publisher_ids),
-      suggested_publisher_ids_span_(base::span(suggested_publisher_ids_)) {
+      suggested_publisher_ids_(suggested_publisher_ids) {
   this->feed_items_.reserve(feed_items.size());
   for (const auto& item : feed_items) {
     this->feed_items_.push_back(item->Clone());
@@ -210,7 +209,6 @@ FeedGenerationInfo::FeedGenerationInfo(
     }
     this->topics_.emplace_back(topic.first.Clone(), std::move(articles));
   }
-  this->topics_span_ = base::span(this->topics_);
 }
 
 FeedGenerationInfo::FeedGenerationInfo(FeedGenerationInfo&&) = default;
