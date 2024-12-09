@@ -277,4 +277,6 @@
     <color name="text_interactive">#7c91ff</color>
 
     <color name="open_yt_dialog_bg">#000000</color>
+    <color name="page_background">#000000</color>
+    <color name="icon_default">#c7c7cc</color>
 </resources>
