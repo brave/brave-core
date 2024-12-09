@@ -13,10 +13,19 @@ import Strings
 public class TransactionStatusStore: ObservableObject, WalletObserverStore {
   @Published var activeTxStatus: BraveWallet.TransactionStatus {
     didSet {
+      print("Debug - tx status changed to \(activeTxStatus)")
       originalTxStatus = activeTxStatus
     }
   }
   @Published var txProviderError: TransactionProviderError?
+
+  enum FollowUpAction: Equatable {
+    case cancel(toCancelParsedTx: ParsedTransaction)
+    case speedup
+    case none
+  }
+
+  private(set) var followUpAction: FollowUpAction
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -34,13 +43,23 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
     originalTxParsed
   }
 
+  var isCancelAvailable: Bool {
+    guard activeParsedTx.transaction.coin == .eth else { return false }
+    if case .cancel(_) = followUpAction {
+      return false
+    } else {
+      return true
+    }
+  }
+
   init(
     activeTxStatus: BraveWallet.TransactionStatus,
     activeTxParsed: ParsedTransaction,
     txProviderError: TransactionProviderError?,
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
-    txService: BraveWalletTxService
+    txService: BraveWalletTxService,
+    followUpAction: FollowUpAction
   ) {
     self.activeTxStatus = activeTxStatus
     self.originalTxStatus = activeTxStatus
@@ -49,6 +68,7 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
     self.keyringService = keyringService
     self.rpcService = rpcService
     self.txService = txService
+    self.followUpAction = followUpAction
 
     self.setupObservers()
   }
@@ -62,7 +82,7 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
       _onNewUnapprovedTx: { _ in
-        // should only handle tx speed up and tx cancellation
+       // tx speed up and cancellation will be handled inside `TxConfirmationStore`
       },
       _onUnapprovedTxUpdated: { _ in
         // should only handle tx speed up and tx cancellation
@@ -87,5 +107,20 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
       txHash: activeParsedTx.transaction.txHash,
       for: txNetwork.coin
     )
+  }
+
+  @MainActor func handleTransactionFollowUpAction(
+    _ action: TransactionFollowUpAction
+  ) async -> (String?, String?) {
+    let (success, txId, error) = await txService.speedupOrCancelTransaction(
+      coinType: activeParsedTx.transaction.coin,
+      chainId: activeParsedTx.transaction.chainId,
+      txMetaId: activeParsedTx.transaction.id,
+      cancel: action == .cancel
+    )
+    if success {
+      return (txId, nil)
+    }
+    return (nil, error)
   }
 }

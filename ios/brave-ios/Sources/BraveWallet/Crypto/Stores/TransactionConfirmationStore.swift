@@ -76,8 +76,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         isTxSubmitting = false
       }
       if activeTxStatus == .submitted || activeTxStatus == .signed || activeTxStatus == .error {
-        closeTxStatusStore()
-        activeTxStatusStore = openActiveTxStatusStore()
+        Task { @MainActor in
+          closeTxStatusStore()
+          activeTxStatusStore = await openActiveTxStatusStore()
+        }
       }
     }
   }
@@ -184,8 +186,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private var selectedChain: BraveWallet.NetworkInfo = .init()
   private var txServiceObserver: TxServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
-
-  private var cancelTxMap: [BraveWallet.TransactionInfo: [BraveWallet.TransactionInfo]] = [:]
 
   var isObserving: Bool {
     txServiceObserver != nil && walletServiceObserver != nil
@@ -365,14 +365,59 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     }
   }
 
-  func openActiveTxStatusStore() -> TransactionStatusStore {
+  @MainActor func parseTransaction(
+    _ txInfo: BraveWallet.TransactionInfo
+  ) async -> ParsedTransaction? {
+    let allAccountsForCoin = await keyringService.allAccounts().accounts.filter {
+      $0.coin == txInfo.coin
+    }
+    guard let network = allNetworks.first(where: { $0.chainId == txInfo.chainId })
+    else { return nil }
+
+    let allTokens =
+    await blockchainRegistry.allTokens(chainId: network.chainId, coin: txInfo.coin) + tokenInfoCache
+    let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
+      networks: [network],
+      includingUserDeleted: true
+    ).flatMap { $0.tokens }
+
+    return txInfo.parsedTransaction(
+      allNetworks: allNetworks,
+      accountInfos: allAccountsForCoin,
+      userAssets: userAssets,
+      allTokens: allTokens,
+      assetRatios: assetRatios,
+      nftMetadata: [:],
+      currencyFormatter: currencyFormatter
+    )
+  }
+
+  @MainActor func openActiveTxStatusStore() async -> TransactionStatusStore {
+    var followUpAction = TransactionStatusStore.FollowUpAction.none
+    if case .ethSend(let detail) = activeParsedTransaction.details,
+      let fromValue = BDouble(detail.fromAmount),
+       fromValue == 0, activeTransaction.ethTxData.isEmpty
+    {
+      // loop through allTx to find if there is a tx that has the same chain id, coin type, nonce and from address
+      // maxFeePerGas/gasPrice is smaller than this active tx
+      if let txInfo = allTxs.first(where: {
+        $0.id != activeTransaction.id &&
+        $0.coin == activeTransaction.coin &&
+        $0.chainId == activeTransaction.chainId &&
+        $0.ethTxNonce == activeTransaction.ethTxNonce &&
+        $0.fromAddress == activeTransaction.fromAddress
+      }), let parsedTx = await parseTransaction(txInfo) {
+        followUpAction = .cancel(toCancelParsedTx: parsedTx)
+      }
+    }
     let txStatusStore = TransactionStatusStore(
       activeTxStatus: activeTxStatus,
       activeTxParsed: activeParsedTransaction,
       txProviderError: transactionProviderErrorRegistry[activeTransactionId],
       keyringService: keyringService,
       rpcService: rpcService,
-      txService: txService
+      txService: txService,
+      followUpAction: followUpAction
     )
     return txStatusStore
   }
@@ -380,6 +425,15 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   func closeTxStatusStore() {
     self.activeTxStatusStore?.tearDown()
     self.activeTxStatusStore = nil
+  }
+
+  func updateAllTx(with txId: String) async -> Bool {
+    // cancel or speed up only supported for .eth
+    guard let txInfo = await txService.transactionInfo(coinType: .eth, txMetaId: txId),
+      txInfo.txStatus == .unapproved
+    else { return false }
+    onUnapprovedTxAdded(txInfo)
+    return true
   }
 
   private func clearTrasactionInfoBeforeUpdate() {
@@ -913,16 +967,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     )
   }
 
-  @MainActor func cancelActiveTx() async -> Bool {
-    let (success, metaId, errMsg) = await txService.speedupOrCancelTransaction(
-      coinType: activeParsedTransaction.transaction.coin,
-      chainId: activeParsedTransaction.transaction.chainId,
-      txMetaId: activeParsedTransaction.transaction.id,
-      cancel: true
-    )
-    return success
-  }
-
   func updateGasFeeAndLimits(
     for transaction: BraveWallet.TransactionInfo,
     maxPriorityFeePerGas: String,
@@ -1063,25 +1107,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
   func onUnapprovedTxAdded(_ txInfo: BraveWallet.TransactionInfo) {
     Task { @MainActor in
+      guard !allTxs.contains(where: { $0.id == txInfo.id }) else { return }
+      allTxs.insert(txInfo, at: 0)
       activeTransactionId = txInfo.id
       await prepare()
     }
-  }
-
-  func isActiveTxCancelling() -> BraveWallet.TransactionInfo? {
-    if cancelTxMap.keys.contains(where: { $0.id == activeTransactionId }) {
-      return nil
-    }
-    var toCancelTx: BraveWallet.TransactionInfo?
-    for (key, value) in cancelTxMap {
-      if value.contains(where: { tx in
-        tx.id == activeTransactionId
-      }) {
-        toCancelTx = key
-        break
-      }
-    }
-    return toCancelTx
   }
 }
 
