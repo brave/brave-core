@@ -10,11 +10,6 @@
 
 namespace brave_ads {
 
-// Set to `true` to launch as an in process service.
-BASE_DECLARE_FEATURE(kShouldLaunchBraveAdsAsAnInProcessServiceFeature);
-
-bool ShouldLaunchAsInProcessService();
-
 // Set to `true` to always run the ads service, even if Brave Private Ads are
 // disabled.
 BASE_DECLARE_FEATURE(kShouldAlwaysRunBraveAdsServiceFeature);

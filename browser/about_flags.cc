@@ -762,15 +762,6 @@
               brave_rewards::features::kPlatformCreatorDetectionFeature),      \
       },                                                                       \
       {                                                                        \
-          "brave-ads-should-launch-brave-ads-as-an-in-process-service",        \
-          "Launch Brave Ads as an in-process service",                         \
-          "Launch Brave Ads as an in-process service removing the utility "    \
-          "process.",                                                          \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_ads::kShouldLaunchBraveAdsAsAnInProcessServiceFeature),    \
-      },                                                                       \
-      {                                                                        \
           "brave-ads-should-always-run-brave-ads-service",                     \
           "Should always run Brave Ads service",                               \
           "Always run Brave Ads service to support triggering ad events when " \

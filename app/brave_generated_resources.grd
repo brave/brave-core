@@ -640,9 +640,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </if>
 
       <!-- Brave Ads -->
-      <message name="IDS_SERVICE_BAT_ADS" desc="The bat ads utility process">
-        Bat Ads Service
-      </message>
       <message name="IDS_UTILITY_PROCESS_REWARDS_NAME" desc="The utility process running rewards">
         Bat Rewards Service
       </message>
