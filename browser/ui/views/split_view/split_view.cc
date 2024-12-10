@@ -382,7 +382,6 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
         second_tile_is_active_web_contents ? tile->first : tile->second));
     CHECK_NE(contents, contents_web_view_->web_contents());
     if (secondary_contents_web_view_->web_contents() != contents) {
-      secondary_contents_web_view_->SetWebContents(nullptr);
       secondary_contents_web_view_->SetWebContents(contents);
       secondary_location_bar_->SetWebContents(contents);
     }
