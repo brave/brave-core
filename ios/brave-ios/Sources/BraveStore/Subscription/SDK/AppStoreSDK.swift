@@ -22,7 +22,7 @@ public actor AppStoreReceipt {
   public static var receipt: String {
     get throws {
       guard let receiptUrl = Bundle.main.appStoreReceiptURL else {
-        Logger.module.info("[AppStoreReceipt] - Invalid Appstore Receipt URL")
+        Logger.module.info("[AppStoreReceipt] - Invalid App Store Receipt URL")
         throw AppStoreReceiptError.invalidReceiptURL
       }
 
@@ -30,7 +30,7 @@ public actor AppStoreReceipt {
         return try Data(contentsOf: receiptUrl).base64EncodedString
       } catch {
         Logger.module.error(
-          "[AppStoreReceipt] - Failed to retrieve AppStore Receipt: \(error.localizedDescription)"
+          "[AppStoreReceipt] - Failed to retrieve App Store Receipt: \(error.localizedDescription)"
         )
         throw AppStoreReceiptError.invalidReceiptData
       }

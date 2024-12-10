@@ -592,8 +592,8 @@ extension Strings {
     public static let settingsViewReceipt = NSLocalizedString(
       "vpn.settingsViewReceipt",
       bundle: .module,
-      value: "View AppStore Receipt",
-      comment: "Button to allow the user to view the app-store receipt."
+      value: "View App Store Receipt",
+      comment: "Button to allow the user to view the App Store receipt."
     )
 
     public static let settingsServerHost = NSLocalizedString(
@@ -1242,7 +1242,7 @@ extension Strings {
         "vpn.settingsVPNSmartProxyDescription",
         bundle: .module,
         value:
-          "Smart Proxy Routing ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third-party services, such as Netflix, Hulu, BBC iPlayer, Pandora, etc. [Learn More](%@)",
+          "Smart Proxy Routing ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third-party services. [Learn More](%@)",
         comment:
           "The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings."
       )

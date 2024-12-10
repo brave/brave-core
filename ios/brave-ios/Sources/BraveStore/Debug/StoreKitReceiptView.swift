@@ -81,19 +81,19 @@ public struct StoreKitReceiptView: View {
               .frame(maxWidth: .infinity, alignment: .leading)
           }
         )
-        .navigationTitle("AppStore Receipt")
+        .navigationTitle("App Store Receipt")
         .navigationBarTitleDisplayMode(.inline)
         .buttonStyle(PlainButtonStyle())
         .padding()
       }
-      .navigationTitle("AppStore Receipt")
+      .navigationTitle("App Store Receipt")
       .navigationViewStyle(.stack)
       .introspectNavigationController { controller in
         controller.navigationBar.topItem?.backButtonDisplayMode = .minimal
       }
     } else {
-      Text("No AppStore Receipt")
-        .navigationTitle("AppStore Receipt")
+      Text("No App Store Receipt")
+        .navigationTitle("App Store Receipt")
         .navigationViewStyle(.stack)
         .task {
           if let receipt = try? AppStoreReceipt.receipt {

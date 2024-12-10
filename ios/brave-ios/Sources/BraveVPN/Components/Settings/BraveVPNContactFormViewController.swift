@@ -125,7 +125,7 @@ class BraveVPNContactFormViewController: TableViewController {
         cellClass: MultilineSubtitleCell.self
       )
 
-    // MARK: AppStore receipt
+    // MARK: App Store receipt
     let receiptRow = Row(
       text: Strings.VPN.contactFormAppStoreReceipt,
       accessory:
