@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { useAppState } from '../../lib/app_model_context'
-import { UICardItem } from '../../lib/app_state'
+import { CardItemView } from './card_item_view'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 
 import * as urls from '../../../shared/lib/rewards_urls'
@@ -24,28 +24,16 @@ export function CommunityCard() {
     return null
   }
 
-  function renderItem(item: UICardItem) {
-    return (
-      <NewTabLink key={item.url} href={item.url}>
-        <img src={item.thumbnail} />
-        <span className='item-info'>
-          <span className='title'>{item.title}</span>
-          <span className='description'>{item.description}</span>
-        </span>
-      </NewTabLink>
-    )
-  }
-
   return (
     <div className='content-card'>
       <h4>
         {getString('communityTitle')}
         <NewTabLink href={urls.contactSupportURL}>
-        {getString('viewAllLink')}
+          {getString('viewAllLink')}
         </NewTabLink>
       </h4>
       <section>
-        {card.items.map(renderItem)}
+        {card.items.map((item, i) => <CardItemView key={i} item={item} />)}
       </section>
     </div>
   )
