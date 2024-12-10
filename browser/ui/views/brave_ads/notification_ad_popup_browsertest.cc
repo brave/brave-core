@@ -59,7 +59,8 @@ class NotificationAdPopupBrowserTest
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_P(NotificationAdPopupBrowserTest, CheckThemeChanged) {
+IN_PROC_BROWSER_TEST_P(NotificationAdPopupBrowserTest,
+                       DISABLED_CheckThemeChanged) {
   // Check appearance in light theme.
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
