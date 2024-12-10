@@ -148,7 +148,8 @@ class AIChatService : public KeyedService,
   void DeleteConversation(const std::string& id) override;
   void RenameConversation(const std::string& id,
                           const std::string& new_name) override;
-
+  void ConversationExists(const std::string& conversation_uuid,
+                          ConversationExistsCallback callback) override;
   void BindConversation(
       const std::string& uuid,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,

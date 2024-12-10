@@ -608,6 +608,17 @@ void AIChatService::RenameConversation(const std::string& id,
   OnConversationTitleChanged(conversation_handler, new_name);
 }
 
+void AIChatService::ConversationExists(const std::string& conversation_uuid,
+                                       ConversationExistsCallback callback) {
+  GetConversation(conversation_uuid,
+                  base::BindOnce(
+                      [](ConversationExistsCallback callback,
+                         ConversationHandler* conversation) {
+                        std::move(callback).Run(conversation != nullptr);
+                      },
+                      std::move(callback)));
+}
+
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                             mojom::PremiumStatus status,
                                             mojom::PremiumInfoPtr info) {

@@ -27,7 +27,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       content::WebContents::FromJavaWebContents(jweb_contents);
   AIChatService* ai_chat_service = AIChatServiceFactory::GetForBrowserContext(
       web_contents->GetBrowserContext());
-  DCHECK(ai_chat_service);
+  CHECK(ai_chat_service);
   auto conversation_uuid_str =
       base::android::ConvertJavaStringToUTF8(conversation_uuid);
   // This function is either targeted at a specific conversation
@@ -58,7 +58,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       GURL(base::StrCat({kChatUIURL, conversation->get_conversation_uuid()})),
       content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
       ui::PAGE_TRANSITION_FROM_API, false);
-  CHECK(web_contents->OpenURL(params, {}));
+  web_contents->OpenURL(params, {});
 }
 
 static void JNI_BraveLeoUtils_OpenLeoUrlForTab(

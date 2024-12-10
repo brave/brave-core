@@ -115,7 +115,7 @@ function ActiveChatProvider({ children, selectedConversationId, updateSelectedCo
     // If this isn't a visible conversation, it could be an empty tab bound
     // conversation.
     let cancelled = false
-    getAPI().uiHandler.conversationExists(selectedConversationId).then(({ exists }) => {
+    getAPI().service.conversationExists(selectedConversationId).then(({ exists }) => {
       if (cancelled) return
       if (exists) return
       updateSelectedConversationId(undefined)

@@ -32,7 +32,7 @@ export const defaultUIState: State = {
   isPremiumUserDisconnected: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
-  isMobile: true,// loadTimeData.getBoolean('isMobile'),
+  isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
   allActions: [],
 }
