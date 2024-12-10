@@ -28,6 +28,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.quick_search_engines.ItemTouchHelperCallback;
 import org.chromium.chrome.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
+import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.ImageUtils;
 
@@ -137,9 +138,16 @@ public class QuickSearchEnginesFragment extends BravePreferenceFragment
     }
 
     private void refreshData() {
-        List<QuickSearchEnginesModel> quickSearchEngines =
-                QuickSearchEnginesUtil.getQuickSearchEnginesForSettings(getProfile());
-        setRecyclerViewData(quickSearchEngines);
+        Runnable onQuickSearchEnginesReady =
+                () -> {
+                    if (isRemoving() || isDetached()) return;
+
+                    List<QuickSearchEnginesModel> quickSearchEngines =
+                            QuickSearchEnginesUtil.getQuickSearchEnginesForSettings(getProfile());
+                    setRecyclerViewData(quickSearchEngines);
+                };
+        TemplateUrlServiceFactory.getForProfile(getProfile())
+                .runWhenLoaded(onQuickSearchEnginesReady);
     }
 
     private void setRecyclerViewData(List<QuickSearchEnginesModel> searchEngines) {
