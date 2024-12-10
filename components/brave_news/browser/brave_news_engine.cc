@@ -33,7 +33,7 @@ BraveNewsEngine::BraveNewsEngine(
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
         pending_shared_url_loader_factory,
     BackgroundHistoryQuerier history_querier,
-    DirectFeedFetcher::Delegate* direct_feed_fetcher_delegate)
+    base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
     : pending_shared_url_loader_factory_(
           std::move(pending_shared_url_loader_factory)),
       history_querier_(std::move(history_querier)),

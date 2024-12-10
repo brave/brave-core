@@ -51,7 +51,7 @@ class BraveNewsEngine {
       std::unique_ptr<network::PendingSharedURLLoaderFactory>
           pending_shared_url_loader_factory,
       BackgroundHistoryQuerier history_querier,
-      DirectFeedFetcher::Delegate* direct_feed_fetcher_delegate);
+      base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate);
   BraveNewsEngine(const BraveNewsEngine&) = delete;
   BraveNewsEngine& operator=(const BraveNewsEngine&) = delete;
   ~BraveNewsEngine();
@@ -107,7 +107,7 @@ class BraveNewsEngine {
   BackgroundHistoryQuerier history_querier_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
-  raw_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate_;
+  base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate_;
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_
       GUARDED_BY_CONTEXT(sequence_checker_);

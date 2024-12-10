@@ -17,6 +17,8 @@ DirectFeedFetcherDelegateImpl::DirectFeedFetcherDelegateImpl(
       https_upgrade_exceptions_service_(
           g_brave_browser_process->https_upgrade_exceptions_service()) {}
 
+DirectFeedFetcherDelegateImpl::~DirectFeedFetcherDelegateImpl() = default;
+
 bool DirectFeedFetcherDelegateImpl::ShouldUpgradeToHttps(const GURL& url) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!host_content_settings_map_ || !https_upgrade_exceptions_service_) {
@@ -26,10 +28,9 @@ bool DirectFeedFetcherDelegateImpl::ShouldUpgradeToHttps(const GURL& url) {
                                              https_upgrade_exceptions_service_);
 }
 
-void DirectFeedFetcherDelegateImpl::Shutdown() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  host_content_settings_map_ = nullptr;
-  https_upgrade_exceptions_service_ = nullptr;
+base::WeakPtr<DirectFeedFetcher::Delegate>
+DirectFeedFetcherDelegateImpl::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
 }
 
 }  // namespace brave_news

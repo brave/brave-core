@@ -35,7 +35,7 @@ FeedController::FeedController(
     PublishersController* publishers_controller,
     BackgroundHistoryQuerier& history_querier,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    DirectFeedFetcher::Delegate* direct_feed_fetcher_delegate)
+    base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
     : publishers_controller_(publishers_controller),
       history_querier_(history_querier),
       feed_fetcher_(*publishers_controller,

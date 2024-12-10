@@ -147,7 +147,7 @@ DirectFeedResponse::DirectFeedResponse(DirectFeedResponse&&) = default;
 
 DirectFeedFetcher::DirectFeedFetcher(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    Delegate* delegate)
+    base::WeakPtr<Delegate> delegate)
     : url_loader_factory_(url_loader_factory), delegate_(delegate) {}
 DirectFeedFetcher::~DirectFeedFetcher() = default;
 
@@ -155,13 +155,29 @@ void DirectFeedFetcher::DownloadFeed(GURL url,
                                      std::string publisher_id,
                                      DownloadFeedCallback callback) {
   if (url.SchemeIs(url::kHttpScheme)) {
-    content::GetUIThreadTaskRunner({})->PostTaskAndReplyWithResult(
+    content::GetUIThreadTaskRunner({})->PostTask(
         FROM_HERE,
-        base::BindOnce(&Delegate::ShouldUpgradeToHttps,
-                       base::Unretained(delegate_), url),
-        base::BindOnce(&DirectFeedFetcher::DownloadFeedHelper,
-                       weak_ptr_factory_.GetWeakPtr(), url, publisher_id,
-                       std::move(callback)));
+        base::BindOnce(
+            [](base::WeakPtr<Delegate> delegate,
+               scoped_refptr<base::SingleThreadTaskRunner> source_task_runner,
+               base::OnceCallback<void(bool)> callback, GURL url) {
+              if (delegate.WasInvalidated()) {
+                return;
+              }
+              bool should_upgrade = delegate->ShouldUpgradeToHttps(url);
+              source_task_runner->PostTask(
+                  FROM_HERE,
+                  base::BindOnce(
+                      [](base::OnceCallback<void(bool)> callback, bool result) {
+                        std::move(callback).Run(result);
+                      },
+                      std::move(callback), should_upgrade));
+            },
+            delegate_, base::SingleThreadTaskRunner::GetCurrentDefault(),
+            base::BindOnce(&DirectFeedFetcher::DownloadFeedHelper,
+                           weak_ptr_factory_.GetWeakPtr(), url, publisher_id,
+                           std::move(callback)),
+            url));
     return;
   }
   DownloadFeedHelper(url, publisher_id, std::move(callback), false);
