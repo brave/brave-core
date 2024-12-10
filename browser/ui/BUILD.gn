@@ -616,7 +616,6 @@ source_set("ui") {
     ]
 
     deps += [
-      "views/split_view",
       "//chrome/browser/devtools",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",

@@ -16,6 +16,7 @@ source_set("split_view") {
     "//brave/browser/ui:brave_tab_features",
     "//brave/components/vector_icons",
     "//cc",
+    "//chrome/browser/ui/color:mixers",
     "//components/omnibox/browser",
     "//components/prefs",
     "//content/public/browser",
