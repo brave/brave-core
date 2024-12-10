@@ -4,6 +4,7 @@ inline_file('//ios/chrome/app/DEPS', globals(), locals())
 
 include_rules += [
   "+ios/chrome/app",
+  "+ios/web_view",
   "+brave/ios/app",
   "+brave/ios/browser",
 
