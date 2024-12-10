@@ -26,8 +26,8 @@
 @class NTPBackgroundImagesService;
 @class DeAmpPrefs;
 @class AIChat;
-@class HTTPSUpgradeExceptionsService;
 @class DefaultHostContentSettings;
+@class BrowserPrefs;
 @class CWVWebViewConfiguration;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
@@ -68,9 +68,6 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) WebImageDownloader* webImageDownloader;
 
-@property(nonatomic, readonly)
-    HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
-
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///
 /// When a custom log handler is set, it is the responsibility of the client
@@ -102,6 +99,8 @@ OBJC_EXPORT
 @property(readonly) BraveP3AUtils* p3aUtils;
 
 @property(readonly) DeAmpPrefs* deAmpPrefs;
+
+@property(readonly) BrowserPrefs* browserPrefs;
 
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
 

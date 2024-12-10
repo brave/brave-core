@@ -20,7 +20,7 @@ public class ShieldPreferences {
 
   /// Get the level of the https upgrade setting as a stored preference
   /// - Warning: You should not access this directly but  through ``httpsUpgradeLevel``
-  public static var httpsUpgradeLevelRaw = Preferences.Option<String>(
+  public static var httpsUpgradeLevelRawDeprecated = Preferences.Option<String>(
     key: "shields.https-upgrade-level",
     default: defaultHTTPsUpgradeLevel.rawValue
   )
@@ -49,11 +49,11 @@ public class ShieldPreferences {
   }
 
   /// Get the level of HTTPS upgrades
-  public static var httpsUpgradeLevel: HTTPSUpgradeLevel {
+  public static var httpsUpgradeLevelDeprecated: HTTPSUpgradeLevel {
     get {
-      HTTPSUpgradeLevel(rawValue: httpsUpgradeLevelRaw.value) ?? defaultHTTPsUpgradeLevel
+      HTTPSUpgradeLevel(rawValue: httpsUpgradeLevelRawDeprecated.value) ?? defaultHTTPsUpgradeLevel
     }
-    set { httpsUpgradeLevelRaw.value = newValue.rawValue }
+    set { httpsUpgradeLevelRawDeprecated.value = newValue.rawValue }
   }
 
   /// Get the prior enabled level of HTTPS upgrades

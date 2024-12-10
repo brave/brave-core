@@ -61,7 +61,7 @@ extension ContentBlockerHelper: TabContentScript {
   ) {
     defer { replyHandler(nil, nil) }
 
-    guard let currentTabURL = tab.webView?.url else {
+    guard let currentTabURL = tab.webView?.lastCommittedURL else {
       assertionFailure("Missing tab or webView")
       return
     }

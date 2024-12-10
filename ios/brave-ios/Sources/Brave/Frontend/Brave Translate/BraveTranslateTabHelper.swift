@@ -59,7 +59,7 @@ class BraveTranslateTabHelper: NSObject {
     )
 
     urlObserver = tab.webView?.observe(
-      \.url,
+      \.visibleURL,
       options: [.new],
       changeHandler: { [weak self] _, change in
         guard let self = self, let url = change.newValue else { return }

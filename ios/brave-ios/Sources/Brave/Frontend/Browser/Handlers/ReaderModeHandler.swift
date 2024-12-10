@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Foundation
 import Shared
@@ -10,12 +11,14 @@ import WebKit
 
 public class ReaderModeHandler: InternalSchemeResponse {
   private let profile: Profile
+  private let braveCore: BraveCoreMain
   public static let path = InternalURL.Path.readermode.rawValue
   internal static var readerModeCache: ReaderModeCache = DiskReaderModeCache.sharedInstance
   private static let readerModeStyleHash = "sha256-L2W8+0446ay9/L1oMrgucknQXag570zwgQrHwE68qbQ="
 
-  public init(profile: Profile) {
+  public init(profile: Profile, braveCore: BraveCoreMain) {
     self.profile = profile
+    self.braveCore = braveCore
   }
 
   public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
@@ -171,7 +174,8 @@ public class ReaderModeHandler: InternalSchemeResponse {
       // become available.
       ReadabilityService.sharedInstance.process(
         readerModeUrl,
-        cache: ReaderModeHandler.readerModeCache
+        cache: ReaderModeHandler.readerModeCache,
+        braveCore: braveCore
       )
       if let asset = Bundle.module.url(forResource: "ReaderViewLoading", withExtension: "html"),
         var contents = await AsyncFileManager.default.utf8Contents(at: asset)

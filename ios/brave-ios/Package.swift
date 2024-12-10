@@ -352,7 +352,6 @@ var package = Package(
       name: "CredentialProviderUI",
       dependencies: ["BraveCore", "DesignSystem", "BraveShared", "Strings", "BraveUI"]
     ),
-    .testTarget(name: "UserAgentTests", dependencies: ["UserAgent", "Brave"]),
     .testTarget(name: "SharedTests", dependencies: ["Shared"]),
     .testTarget(
       name: "BraveSharedTests",
@@ -378,7 +377,7 @@ var package = Package(
     .testTarget(name: "DataTests", dependencies: ["Data", "TestHelpers"]),
     .testTarget(
       name: "ClientTests",
-      dependencies: ["Brave", "BraveStrings", "TestHelpers"],
+      dependencies: ["Brave", "BraveStrings", "TestHelpers", "BraveCore"],
       resources: [
         .copy("Resources/debouncing.json"),
         .copy("Resources/content-blocking.json"),
@@ -431,6 +430,7 @@ var package = Package(
       ]
     ),
     .testTarget(name: "BrowserMenuTests", dependencies: ["BrowserMenu"]),
+    .target(name: "IsTesting"),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
     .plugin(
@@ -479,6 +479,7 @@ var braveTarget: PackageDescription.Target = .target(
     .product(name: "Collections", package: "swift-collections"),
     "PlaylistUI",
     "BrowserMenu",
+    "IsTesting",
   ],
   exclude: [
     "Frontend/UserContent/UserScripts/AllFrames",
@@ -511,10 +512,6 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Assets/Fonts/NewYorkMedium-Regular.otf"),
     .copy("Assets/Fonts/NewYorkMedium-RegularItalic.otf"),
     .copy("Assets/Interstitial Pages/Pages/BlockedDomain.html"),
-    .copy("Assets/Interstitial Pages/Pages/HTTPBlocked.html"),
-    .copy("Assets/Interstitial Pages/Pages/CertificateError.html"),
-    .copy("Assets/Interstitial Pages/Pages/GenericError.html"),
-    .copy("Assets/Interstitial Pages/Pages/NetworkError.html"),
     .copy("Assets/Interstitial Pages/Pages/Web3Domain.html"),
     .copy("Assets/Interstitial Pages/Images/Carret.png"),
     .copy("Assets/Interstitial Pages/Images/Clock.svg"),
@@ -526,9 +523,7 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Assets/Interstitial Pages/Images/Warning.svg"),
     .copy("Assets/Interstitial Pages/Images/warning-triangle-outline.svg"),
     .copy("Assets/Interstitial Pages/Styles/BlockedDomain.css"),
-    .copy("Assets/Interstitial Pages/Styles/CertificateError.css"),
     .copy("Assets/Interstitial Pages/Styles/InterstitialStyles.css"),
-    .copy("Assets/Interstitial Pages/Styles/NetworkError.css"),
     .copy("Assets/Interstitial Pages/Styles/Web3Domain.css"),
     .copy("Assets/Lottie/shred.json"),
     .copy("Assets/SearchPlugins"),
@@ -605,7 +600,6 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("WebFilters/ContentBlocker/Lists/block-ads.json"),
     .copy("WebFilters/ContentBlocker/Lists/block-cookies.json"),
     .copy("WebFilters/ContentBlocker/Lists/block-trackers.json"),
-    .copy("WebFilters/ContentBlocker/Lists/mixed-content-upgrade.json"),
     .copy("WebFilters/ShieldStats/Adblock/Resources/ABPFilterParserData.dat"),
   ],
   plugins: ["LoggerPlugin"]

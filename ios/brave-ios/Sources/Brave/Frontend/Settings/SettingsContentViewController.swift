@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Shared
 import SnapKit
@@ -13,7 +14,7 @@ let defaultTimeoutTimeInterval = 10.0
 
 /// A controller that manages a single web view and provides a way for
 /// the user to navigate back to Settings.
-class SettingsContentViewController: UIViewController, WKNavigationDelegate {
+class SettingsContentViewController: UIViewController, CWVNavigationDelegate {
   let interstitialBackgroundColor: UIColor
   var settingsTitle: NSAttributedString?
   var url: URL!
@@ -122,8 +123,11 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
     let configuration = WKWebViewConfiguration().then {
       $0.setURLSchemeHandler(InternalSchemeHandler(tab: nil), forURLScheme: InternalURL.scheme)
     }
-    let webView = BraveWebView(frame: frame, configuration: configuration)
-    webView.allowsLinkPreview = false
+    let webView = BraveWebView(
+      frame: frame,
+      wkConfiguration: configuration,
+      configuration: .default()
+    )
     webView.navigationDelegate = self
     return webView
   }
@@ -167,19 +171,13 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
     self.isError = true
   }
 
-  func webView(
-    _ webView: WKWebView,
-    didFailProvisionalNavigation navigation: WKNavigation!,
-    withError error: Error
-  ) {
+  // MARK: - CWVNavigationDelegate
+
+  func webView(_ webView: CWVWebView, didFailNavigationWithError error: any Error) {
     didTimeOut()
   }
 
-  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-    didTimeOut()
-  }
-
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+  func webViewDidFinishNavigation(_ webView: CWVWebView) {
     self.timer?.invalidate()
     self.timer = nil
     self.isLoaded = true

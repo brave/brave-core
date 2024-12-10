@@ -18,7 +18,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
     super.init()
 
     urlObserver = tab.webView?.observe(
-      \.url,
+      \.visibleURL,
       options: [.new],
       changeHandler: { [weak self] object, change in
         guard let self = self, let url = change.newValue else { return }

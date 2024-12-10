@@ -7,23 +7,6 @@ import Foundation
 import Shared
 import WebKit
 
-private let apostropheEncoded = "%27"
-
-extension WKWebView {
-  // Use JS to redirect the page without adding a history entry
-  func replaceLocation(with url: URL) {
-    let safeUrl = url.absoluteString.replacingOccurrences(of: "'", with: apostropheEncoded)
-    evaluateSafeJavaScript(
-      functionName: "location.replace",
-      args: ["'\(safeUrl)'"],
-      contentWorld: .defaultClient,
-      escapeArgs: false,
-      asFunction: true,
-      completion: nil
-    )
-  }
-}
-
 extension InternalSchemeResponse {
   func generateInvalidSchemeResponse(url: String, for originURL: URL) -> (URLResponse, Data)? {
     // Same validation as in WKNavigationDelegate -> decidePolicyFor
@@ -61,6 +44,7 @@ extension InternalSchemeResponse {
       return invalidSchemeResponse
     }
 
+    let apostropheEncoded = "%27"
     urlString = urlString.replacingOccurrences(of: "'", with: apostropheEncoded)
 
     let html = """

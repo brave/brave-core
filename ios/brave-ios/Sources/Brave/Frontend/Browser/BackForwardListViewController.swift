@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Shared
 import SnapKit
@@ -49,8 +50,8 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
 
   var tabManager: TabManager?
   weak var bvc: BrowserViewController?
-  private var currentItem: WKBackForwardListItem?
-  private var backForwardListData = [WKBackForwardListItem]()
+  private var currentItem: CWVBackForwardListItem?
+  private var backForwardListData = [CWVBackForwardListItem]()
 
   var tableHeight: CGFloat {
     assert(
@@ -75,7 +76,7 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
     return tabManager?.privateBrowsingManager.isPrivateBrowsing ?? false
   }
 
-  init(profile: Profile, backForwardList: WKBackForwardList) {
+  init(profile: Profile, backForwardList: CWVBackForwardList) {
     self.profile = profile
     super.init(nibName: nil, bundle: nil)
 
@@ -104,7 +105,7 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
     setupDismissTap()
   }
 
-  func homeAndNormalPagesOnly(_ bfList: WKBackForwardList) {
+  func homeAndNormalPagesOnly(_ bfList: CWVBackForwardList) {
     let items =
       bfList.forwardList.reversed() + [bfList.currentItem].compactMap({ $0 })
       + bfList.backList.reversed()
@@ -115,14 +116,11 @@ class BackForwardListViewController: UIViewController, UIGestureRecognizerDelega
       if internalUrl.isAboutHomeURL {
         return true
       }
-      if let url = internalUrl.originalURLFromErrorPage, InternalURL.isValid(url: url) {
-        return false
-      }
       return true
     }
   }
 
-  func loadSites(_ bfList: WKBackForwardList) {
+  func loadSites(_ bfList: CWVBackForwardList) {
     currentItem = bfList.currentItem
     homeAndNormalPagesOnly(bfList)
   }

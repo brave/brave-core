@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Foundation
 import MobileCoreServices
@@ -49,56 +50,26 @@ extension String {
 }
 
 class DownloadHelper: NSObject {
-  fileprivate let request: URLRequest
-  fileprivate let preflightResponse: URLResponse
-  fileprivate let cookieStore: WKHTTPCookieStore
+  fileprivate let task: CWVDownloadTask
 
-  required init?(
-    request: URLRequest?,
-    response: URLResponse,
-    cookieStore: WKHTTPCookieStore,
-    canShowInWebView: Bool
-  ) {
-    guard let request = request else {
-      return nil
-    }
-
-    let contentDisposition = (response as? HTTPURLResponse)?.value(
-      forHTTPHeaderField: "Content-Disposition"
-    )
-    let mimeType = response.mimeType ?? MIMEType.octetStream
-    let isAttachment =
-      contentDisposition?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
-
-    guard isAttachment || !canShowInWebView else {
-      return nil
-    }
-
-    self.cookieStore = cookieStore
-    self.request = request
-    self.preflightResponse = response
+  required init(task: CWVDownloadTask) {
+    self.task = task
   }
 
   func downloadAlert(
     from view: UIView,
-    okAction: @escaping (HTTPDownload) -> Void
+    okAction: @escaping () -> Void
   ) -> UIAlertController? {
-    guard let host = request.url?.host, let filename = request.url?.lastPathComponent else {
+    guard let host = task.originalURL.host else {
       return nil
     }
 
-    let download = HTTPDownload(
-      cookieStore: cookieStore,
-      preflightResponse: preflightResponse,
-      request: request
-    )
-
     let expectedSize =
-      download.totalBytesExpected != nil
-      ? ByteCountFormatter.string(fromByteCount: download.totalBytesExpected!, countStyle: .file)
+      task.totalBytes != CWVDownloadSizeUnknown
+      ? ByteCountFormatter.string(fromByteCount: task.totalBytes, countStyle: .file)
       : nil
 
-    let title = "\(filename) - \(host)"
+    let title = "\(task.suggestedFileName) - \(host)"
 
     let downloadAlert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
 
@@ -109,7 +80,7 @@ class DownloadHelper: NSObject {
     }
 
     let okAction = UIAlertAction(title: downloadActionText, style: .default) { _ in
-      okAction(download)
+      okAction()
     }
 
     let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel)
@@ -125,6 +96,35 @@ class DownloadHelper: NSObject {
 
     return downloadAlert
   }
+
+  func cancelDownloadAlert(from view: UIView, okAction: @escaping () -> Void) -> UIAlertController?
+  {
+    let alert = UIAlertController(
+      title: Strings.downloadAlreadyInProgressToastLabelTitle,
+      message: Strings.downloadAlreadyInProgressToastLabelText,
+      preferredStyle: .alert
+    )
+
+    alert.addAction(
+      UIAlertAction(
+        title: Strings.OKString,
+        style: .default,
+        handler: { _ in
+          okAction()
+        }
+      )
+    )
+
+    alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
+
+    alert.popoverPresentationController?.do {
+      $0.sourceView = view
+      $0.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.maxY - 16, width: 0, height: 0)
+      $0.permittedArrowDirections = []
+    }
+
+    return alert
+  }
 }
 
 class OpenPassBookHelper: NSObject {
@@ -133,17 +133,14 @@ class OpenPassBookHelper: NSObject {
   fileprivate let browserViewController: BrowserViewController
 
   required init?(
-    request: URLRequest?,
-    response: URLResponse,
-    canShowInWebView: Bool,
-    forceDownload: Bool,
+    mimeType: String,
+    url: URL,
     browserViewController: BrowserViewController
   ) {
-    guard let mimeType = response.mimeType, mimeType == MIMEType.passbook,
-      PKAddPassesViewController.canAddPasses(),
-      let responseURL = response.url, !forceDownload
+    guard mimeType == MIMEType.passbook,
+      PKAddPassesViewController.canAddPasses()
     else { return nil }
-    self.url = responseURL
+    self.url = url
     self.browserViewController = browserViewController
     super.init()
   }

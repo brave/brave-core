@@ -30,14 +30,10 @@ extension URL {
   public var strippedInternalURL: URL? {
     if let internalURL = InternalURL(self) {
       switch internalURL.urlType {
-      case .errorPage:
-        return internalURL.originalURLFromErrorPage
       case .web3Page, .sessionRestorePage, .aboutHomePage:
         return internalURL.extractedUrlParam
       case .blockedPage:
         return decodeEmbeddedInternalURL(for: .blocked)
-      case .httpBlockedPage:
-        return decodeEmbeddedInternalURL(for: .httpBlocked)
       case .readerModePage:
         return decodeEmbeddedInternalURL(for: .readermode)
       default:
@@ -63,13 +59,8 @@ extension URL {
         .havingRemovedAuthorisationComponents()
     }
 
-    if let internalUrl = InternalURL(self), internalUrl.isErrorPage {
-      return internalUrl.originalURLFromErrorPage?.displayURL
-    }
-
     if let internalUrl = InternalURL(self),
-      internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isHTTPBlockedPage
-        || internalUrl.isBlockedPage
+      internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isBlockedPage
     {
       return internalUrl.extractedUrlParam?.displayURL
     }
@@ -80,9 +71,6 @@ extension URL {
 
     if !InternalURL.isValid(url: self) {
       let url = self.havingRemovedAuthorisationComponents()
-      if let internalUrl = InternalURL(url), internalUrl.isErrorPage {
-        return internalUrl.originalURLFromErrorPage?.displayURL
-      }
       return url
     }
 
@@ -191,9 +179,7 @@ extension InternalURL {
 
   enum URLType {
     case blockedPage
-    case httpBlockedPage
     case sessionRestorePage
-    case errorPage
     case readerModePage
     case aboutHomePage
     case web3Page
@@ -201,19 +187,8 @@ extension InternalURL {
   }
 
   var urlType: URLType {
-    // This needs to be before `isBlockedPage`
-    // because http-blocked has the word "blocked" in it
-    // We should refactor this code because its really iffy.
-    if isHTTPBlockedPage {
-      return .httpBlockedPage
-    }
-
     if isBlockedPage {
       return .blockedPage
-    }
-
-    if isErrorPage {
-      return .errorPage
     }
 
     if isWeb3URL {

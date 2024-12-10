@@ -123,7 +123,7 @@ public class FaviconFetcher {
     // Handle internal URLs
     var url = url
     if let internalURL = InternalURL(url),
-      let realUrl = internalURL.originalURLFromErrorPage ?? internalURL.extractedUrlParam
+      let realUrl = internalURL.extractedUrlParam
     {
       url = realUrl
     }

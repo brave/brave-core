@@ -495,7 +495,7 @@ extension BrowserViewController {
     activities: [UIActivity],
     tab: Tab?,
     pageURL: URL?,
-    webView: WKWebView?
+    webView: BraveWebView?
   ) {
     var actions: [Action] = []
     actions.append(vpnMenuAction)
@@ -582,7 +582,7 @@ extension BrowserViewController {
     return
   }
 
-  private func pageActions(for pageURL: URL?, webView: WKWebView?) -> [Action] {
+  private func pageActions(for pageURL: URL?, webView: BraveWebView?) -> [Action] {
     let playlistActivity = addToPlayListActivityItem ?? openInPlaylistActivityItem
     let isPlaylistItemAdded = openInPlaylistActivityItem != nil
     var actions: [Action] = [
@@ -654,7 +654,7 @@ extension BrowserViewController {
         guard let webView else { return .none }
         self.dismiss(animated: true) {
           let printController = UIPrintInteractionController.shared
-          printController.printFormatter = webView.viewPrintFormatter()
+          printController.printFormatter = webView.underlyingWebView?.viewPrintFormatter()
           printController.present(animated: true)
         }
         return .none

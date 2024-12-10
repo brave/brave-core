@@ -6,6 +6,8 @@ import Foundation
 import Preferences
 import UIKit
 
+// FIXME: Delete this, expose WebClient's UserAgent methods from BraveCore instead
+@available(*, deprecated)
 public struct UserAgent {
   public static let mobile = UserAgentBuilder().build(desktopMode: false)
   public static let desktop = UserAgentBuilder().build(desktopMode: true)

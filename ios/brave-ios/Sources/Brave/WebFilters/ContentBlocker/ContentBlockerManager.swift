@@ -49,7 +49,6 @@ import os.log
     case blockAds
     case blockCookies
     case blockTrackers
-    case upgradeMixedContent
 
     func mode(isAggressiveMode: Bool) -> BlockingMode {
       switch self {
@@ -59,7 +58,7 @@ import os.log
         } else {
           return .standard
         }
-      case .blockCookies, .blockTrackers, .upgradeMixedContent:
+      case .blockCookies, .blockTrackers:
         return .general
       }
     }
@@ -69,7 +68,6 @@ import os.log
       case .blockAds: return "block-ads"
       case .blockCookies: return "block-cookies"
       case .blockTrackers: return "block-trackers"
-      case .upgradeMixedContent: return "mixed-content-upgrade"
       }
     }
   }
@@ -576,9 +574,6 @@ import os.log
     if Preferences.Privacy.blockAllCookies.value {
       results.insert(.blockCookies)
     }
-
-    // Always upgrade mixed content
-    results.insert(.upgradeMixedContent)
 
     return results
   }

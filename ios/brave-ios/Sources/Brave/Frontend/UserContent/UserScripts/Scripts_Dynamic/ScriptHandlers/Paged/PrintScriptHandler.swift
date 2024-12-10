@@ -50,7 +50,7 @@ class PrintScriptHandler: TabContentScript {
       return
     }
 
-    if let webView = tab.webView, let url = webView.url {
+    if let webView = tab.webView, let url = webView.lastCommittedURL {
       // If the main-frame's URL has changed
       if let domain = url.baseDomain, domain != currentDomain, message.frameInfo.isMainFrame {
         isBlocking = false

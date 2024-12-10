@@ -106,7 +106,7 @@ public class PlaylistCoordinator: NSObject {
 
     let mediaStreamer = PlaylistMediaStreamer(
       playerView: currentWindow ?? UIView(),
-      webLoaderFactory: LivePlaylistWebLoaderFactory()
+      webLoaderFactory: LivePlaylistWebLoaderFactory(braveCore: browserController?.braveCore)
     )
 
     if FeatureList.kNewPlaylistUI.enabled {
@@ -149,7 +149,7 @@ public class PlaylistCoordinator: NSObject {
     if FeatureList.kNewPlaylistUI.enabled {
       let mediaStreamer = PlaylistMediaStreamer(
         playerView: browserController!.view,
-        webLoaderFactory: LivePlaylistWebLoaderFactory()
+        webLoaderFactory: LivePlaylistWebLoaderFactory(braveCore: browserController?.braveCore)
       )
       let player =
         self.playerModel
@@ -187,6 +187,7 @@ public class PlaylistCoordinator: NSObject {
     let playlistController =
       self.playlistController
       ?? PlaylistViewController(
+        braveCore: browserController?.braveCore,
         openInNewTab: browserController?.openURLInNewTab,
         openPlaylistSettingsMenu: browserController?.openPlaylistSettingsMenu,
         profile: browserController?.profile,

@@ -22,7 +22,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   // be passed directly to this object instead of proxied through the
   // AIChat class.
   private var api: AIChat!
-  private weak var webView: WKWebView?
+  private weak var webView: CWVWebView?
   private let script: any AIChatJavascript.Type
   private let braveTalkScript: AIChatBraveTalkJavascript?
   var querySubmited: String?
@@ -52,7 +52,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   public var isContentAssociationPossible: Bool {
-    return webView?.url?.isWebPage(includeDataURIs: true) == true
+    return webView?.lastCommittedURL?.isWebPage(includeDataURIs: true) == true
   }
 
   public var shouldSendPageContents: Bool {
@@ -117,7 +117,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
 
   public init(
     braveCore: BraveCoreMain,
-    webView: WKWebView?,
+    webView: CWVWebView?,
     script: any AIChatJavascript.Type,
     braveTalkScript: AIChatBraveTalkJavascript?,
     querySubmited: String? = nil
@@ -257,7 +257,7 @@ extension AIChatViewModel: AIChatDelegate {
   }
 
   public func getLastCommittedURL() -> URL? {
-    if let url = webView?.url {
+    if let url = webView?.lastCommittedURL {
       return InternalURL.isValid(url: url) ? nil : url
     }
     return nil

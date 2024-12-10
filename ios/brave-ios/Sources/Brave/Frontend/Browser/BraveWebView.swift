@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import DesignSystem
 import Foundation
@@ -10,7 +11,7 @@ import Shared
 import UserAgent
 import WebKit
 
-class BraveWebView: WKWebView {
+class BraveWebView: CWVWebView {
   /// Stores last position when the webview was touched on.
   private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
 
@@ -27,23 +28,25 @@ class BraveWebView: WKWebView {
 
   init(
     frame: CGRect,
-    configuration: WKWebViewConfiguration = WKWebViewConfiguration(),
+    wkConfiguration: WKWebViewConfiguration?,
+    configuration: CWVWebViewConfiguration,
     isPrivate: Bool = true
   ) {
     if isPrivate {
-      configuration.websiteDataStore = BraveWebView.sharedNonPersistentStore()
+      wkConfiguration?.websiteDataStore = BraveWebView.sharedNonPersistentStore()
     } else {
-      configuration.websiteDataStore = WKWebsiteDataStore.default()
+      wkConfiguration?.websiteDataStore = WKWebsiteDataStore.default()
     }
+    CWVWebView.webInspectorEnabled = true
+    CWVWebView.chromeContextMenuEnabled = false
+    CWVWebView.skipAccountStorageCheckEnabled = true
 
-    super.init(frame: frame, configuration: configuration)
-
-    isFindInteractionEnabled = true
-
-    customUserAgent = UserAgent.userAgentForIdiom()
-    if #available(iOS 16.4, *) {
-      isInspectable = true
-    }
+    super.init(
+      frame: frame,
+      configuration: configuration,
+      wkConfiguration: wkConfiguration,
+      createdWKWebView: nil
+    )
 
     updateBackgroundColor()
     Preferences.General.nightModeEnabled.observe(from: self)
@@ -85,13 +88,11 @@ extension BraveWebView: PreferencesObserver {
   }
 }
 
-extension WKWebView {
+extension CWVWebView {
   public var sessionData: Data? {
-    get {
-      interactionState as? Data
-    }
-    set {
-      interactionState = newValue
-    }
+    if lastCommittedURL == nil { return nil }
+    let coder = NSKeyedArchiver(requiringSecureCoding: false)
+    encodeRestorableState(with: coder)
+    return coder.encodedData
   }
 }

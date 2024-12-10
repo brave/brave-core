@@ -38,7 +38,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     super.init()
 
     urlObserver = tab.webView?.observe(
-      \.url,
+      \.visibleURL,
       options: [.new],
       changeHandler: { [weak self, weak tab] _, change in
         guard let self = self, let url = change.newValue else { return }
@@ -149,7 +149,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     item = PlaylistInfo(
       name: item.name,
       src: item.src,
-      pageSrc: tab.webView?.url?.absoluteString ?? item.pageSrc,
+      pageSrc: tab.webView?.lastCommittedURL?.absoluteString ?? item.pageSrc,
       pageTitle: tab.webView?.title ?? item.pageTitle,
       mimeType: item.mimeType,
       duration: item.duration,

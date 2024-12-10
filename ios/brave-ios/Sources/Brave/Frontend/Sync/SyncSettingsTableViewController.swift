@@ -28,6 +28,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     case history
     case passwords
     case openTabs
+    case autofill
 
     var title: String {
       switch self {
@@ -39,6 +40,9 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
         return Strings.passwordsMenuItem
       case .openTabs:
         return Strings.openTabsMenuItem
+      case .autofill:
+        // FIXME: Needs localization
+        return "Phone numbers, emails, and addresses"
       }
     }
   }
@@ -322,6 +326,8 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
         if Preferences.Chromium.syncOpenTabsEnabled.value {
           tabManager.addRegularTabsToSyncChain()
         }
+      case .autofill:
+        Preferences.Chromium.syncAutofillEnabled.value = !toggleExistingStatus
       }
 
       syncAPI.enableSyncTypes(syncProfileService: syncProfileService)
@@ -575,6 +581,8 @@ extension SyncSettingsTableViewController {
         return Preferences.Chromium.syncPasswordsEnabled.value
       case .openTabs:
         return Preferences.Chromium.syncOpenTabsEnabled.value
+      case .autofill:
+        return Preferences.Chromium.syncAutofillEnabled.value
       }
     }
   }

@@ -90,13 +90,13 @@ protocol JSAlertInfo {
 
 struct MessageAlert: JSAlertInfo {
   let message: String
-  let frame: WKFrameInfo
+  let pageURL: URL
   let completionHandler: () -> Void
   var suppressHandler: SuppressHandler?
 
   func alertController() -> JSPromptAlertController {
     let alertController = JSPromptAlertController(
-      title: titleForJavaScriptPanelInitiatedByFrame(frame),
+      title: pageURL.origin.serialized ?? pageURL.absoluteString,
       message: message,
       info: self,
       showCancel: false
@@ -117,14 +117,14 @@ struct MessageAlert: JSAlertInfo {
 
 struct ConfirmPanelAlert: JSAlertInfo {
   let message: String
-  let frame: WKFrameInfo
+  let pageURL: URL
   let completionHandler: (Bool) -> Void
   var suppressHandler: SuppressHandler?
 
   func alertController() -> JSPromptAlertController {
     // Show JavaScript confirm dialogs.
     let alertController = JSPromptAlertController(
-      title: titleForJavaScriptPanelInitiatedByFrame(frame),
+      title: pageURL.origin.serialized ?? pageURL.absoluteString,
       message: message,
       info: self
     )
@@ -144,14 +144,14 @@ struct ConfirmPanelAlert: JSAlertInfo {
 
 struct TextInputAlert: JSAlertInfo {
   let message: String
-  let frame: WKFrameInfo
+  let pageURL: URL
   let completionHandler: (String?) -> Void
   let defaultText: String?
   var suppressHandler: SuppressHandler?
 
   func alertController() -> JSPromptAlertController {
     let alertController = JSPromptAlertController(
-      title: titleForJavaScriptPanelInitiatedByFrame(frame),
+      title: pageURL.origin.serialized ?? pageURL.absoluteString,
       message: message,
       info: self
     )

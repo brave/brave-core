@@ -206,11 +206,9 @@ public class AppState {
       (AboutHomeHandler.path, AboutHomeHandler()),
       (AboutLicenseHandler.path, AboutLicenseHandler()),
       (SessionRestoreHandler.path, SessionRestoreHandler()),
-      (ErrorPageHandler.path, ErrorPageHandler()),
-      (ReaderModeHandler.path, ReaderModeHandler(profile: profile)),
+      (ReaderModeHandler.path, ReaderModeHandler(profile: profile, braveCore: braveCore)),
       (Web3DomainHandler.path, Web3DomainHandler()),
       (BlockedDomainHandler.path, BlockedDomainHandler()),
-      (HTTPBlockedHandler.path, HTTPBlockedHandler()),
     ]
 
     responders.forEach { (path, responder) in

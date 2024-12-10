@@ -12,7 +12,7 @@ import XCTest
 
 class WKWebViewExtensionsTest: XCTestCase {
   func testGenerateJavascriptFunctionString() {
-    let webView = BraveWebView(frame: .zero, isPrivate: false)
+    let webView = WKWebView(frame: .zero)
     var js = webView.generateJSFunctionString(functionName: "demo_function", args: [])
     XCTAssertNil(js.error)
     XCTAssertEqual(js.javascript, "demo_function()")

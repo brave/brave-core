@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import Shared
 import SnapKit
@@ -29,10 +30,8 @@ class DownloadToast: Toast {
     }
   }
 
-  var combinedBytesDownloaded: Int64 = 0 {
-    didSet {
-      updatePercent()
-    }
+  var combinedBytesDownloaded: Int64 {
+    downloads.reduce(0, { $0 + $1.receivedBytes })
   }
 
   var combinedTotalBytesExpected: Int64? {
@@ -71,22 +70,23 @@ class DownloadToast: Toast {
     )
   }
 
-  var downloads: [Download] = []
+  var downloads: [CWVDownloadTask] = []
 
   let descriptionLabel = UILabel()
   var progressWidthConstraint: Constraint?
 
-  init(download: Download, completion: @escaping (_ buttonPressed: Bool) -> Void) {
+  init(download: CWVDownloadTask, completion: @escaping (_ buttonPressed: Bool) -> Void) {
     super.init(frame: .zero)
 
     self.completionHandler = completion
     self.clipsToBounds = true
 
-    self.combinedTotalBytesExpected = download.totalBytesExpected
+    self.combinedTotalBytesExpected =
+      download.totalBytes != CWVDownloadSizeUnknown ? download.totalBytes : nil
 
     self.downloads.append(download)
 
-    self.addSubview(createView(download.filename, descriptionText: self.descriptionText))
+    self.addSubview(createView(download.suggestedFileName, descriptionText: self.descriptionText))
 
     self.toastView.snp.makeConstraints { make in
       make.left.right.height.equalTo(self)
@@ -102,14 +102,14 @@ class DownloadToast: Toast {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func addDownload(_ download: Download) {
+  func addDownload(_ download: CWVDownloadTask) {
     downloads.append(download)
 
     if let combinedTotalBytesExpected = self.combinedTotalBytesExpected {
-      if let totalBytesExpected = download.totalBytesExpected {
+      if let totalBytesExpected = download.totalBytes != CWVDownloadSizeUnknown
+        ? download.totalBytes : nil
+      {
         self.combinedTotalBytesExpected = combinedTotalBytesExpected + totalBytesExpected
-      } else {
-        self.combinedTotalBytesExpected = nil
       }
     }
   }

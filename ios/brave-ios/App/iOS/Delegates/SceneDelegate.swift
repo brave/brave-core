@@ -40,6 +40,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   private var cancellables: Set<AnyCancellable> = []
 
+  /// Potentially destroys and rebuilds OTR browser states if the there are no private browsing
+  /// sessions active.
+  private func maybeDestroyPrivateModeData() {
+    let privateBrowsingManagers = UIApplication.shared.connectedScenes
+      .compactMap({ ($0 as? UIWindowScene)?.browserViewController?.privateBrowsingManager })
+    if privateBrowsingManagers.allSatisfy({ !$0.isPrivateBrowsing }) {
+      AppState.shared.braveCore.notifyLastPrivateTabClosed()
+    }
+  }
+
   func scene(
     _ scene: UIScene,
     willConnectTo session: UISceneSession,
@@ -93,11 +103,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     browserViewController.privateBrowsingManager.$isPrivateBrowsing
       .removeDuplicates()
       .receive(on: RunLoop.main)
-      .sink { [weak self, weak scene] _ in
+      .sink { [weak self, weak scene] isPrivateBrowsing in
         guard let self = self,
           let scene = scene as? UIWindowScene
         else { return }
         self.updateTheme(for: scene)
+        if !isPrivateBrowsing {
+          maybeDestroyPrivateModeData()
+        }
       }
       .store(in: &cancellables)
 

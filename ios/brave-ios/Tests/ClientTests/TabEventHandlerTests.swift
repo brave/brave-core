@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import WebKit
 import XCTest
@@ -11,7 +12,11 @@ import XCTest
 @MainActor class TabEventHandlerTests: XCTestCase {
 
   func testEventDelivery() {
-    let tab = Tab(configuration: WKWebViewConfiguration())
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
     let handler = DummyHandler()
 
     XCTAssertNil(handler.isFocused)
@@ -24,7 +29,11 @@ import XCTest
   }
 
   func testUnregistration() {
-    let tab = Tab(configuration: WKWebViewConfiguration())
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
     let handler = DummyHandler()
 
     XCTAssertNil(handler.isFocused)
@@ -39,7 +48,11 @@ import XCTest
   }
 
   func testOnlyRegisteredForEvents() {
-    let tab = Tab(configuration: WKWebViewConfiguration())
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
     let handler = DummyHandler()
     handler.doUnregister()
 
@@ -57,7 +70,11 @@ import XCTest
   }
 
   func testOnlyRegisteredForEvents111() {
-    let tab = Tab(configuration: WKWebViewConfiguration(), type: .private)
+    let tab = Tab(
+      wkConfiguration: nil,
+      configuration: nil,
+      contentScriptManager: .init(tabForWebView: { _ in nil })
+    )
 
     let urlTest1 = URL(string: "https://www.brave.com")
     let urlTest2 = URL(string: "http://localhost:8080")

@@ -5,6 +5,7 @@
 
 import AVFoundation
 import AVKit
+import BraveCore
 import CarPlay
 import Combine
 import CoreData
@@ -46,6 +47,7 @@ class PlaylistViewController: UIViewController {
 
   // MARK: Properties
 
+  private let braveCore: BraveCoreMain?
   private let player: MediaPlayer
   private let playerView = VideoView()
   private let mediaStreamer: PlaylistMediaStreamer
@@ -54,6 +56,7 @@ class PlaylistViewController: UIViewController {
   private let splitController = UISplitViewController()
   private let folderController = PlaylistFolderController()
   private lazy var listController = PlaylistListViewController(
+    braveCore: braveCore,
     playerView: playerView,
     isPrivateBrowsing: isPrivateBrowsing
   )
@@ -69,6 +72,7 @@ class PlaylistViewController: UIViewController {
   private var folderSharingUrl: String?
 
   init(
+    braveCore: BraveCoreMain?,
     openInNewTab: ((URL?, Bool, Bool) -> Void)?,
     openPlaylistSettingsMenu: (() -> Void)?,
     profile: Profile?,
@@ -78,12 +82,13 @@ class PlaylistViewController: UIViewController {
     isPrivateBrowsing: Bool
   ) {
 
+    self.braveCore = braveCore
     self.openInNewTab = openInNewTab
     self.openPlaylistSettingsMenu = openPlaylistSettingsMenu
     self.player = mediaPlayer
     self.mediaStreamer = PlaylistMediaStreamer(
       playerView: playerView,
-      webLoaderFactory: LivePlaylistWebLoaderFactory()
+      webLoaderFactory: LivePlaylistWebLoaderFactory(braveCore: braveCore)
     )
     self.isPrivateBrowsing = isPrivateBrowsing
     self.folderSharingUrl = nil

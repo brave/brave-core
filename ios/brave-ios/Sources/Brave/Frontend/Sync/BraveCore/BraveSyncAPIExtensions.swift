@@ -115,6 +115,10 @@ extension BraveSyncAPI {
     if Preferences.Chromium.syncOpenTabsEnabled.value {
       syncProfileService.userSelectedTypes.update(with: .TABS)
     }
+
+    if Preferences.Chromium.syncAutofillEnabled.value {
+      syncProfileService.userSelectedTypes.update(with: .AUTOFILL)
+    }
   }
 
   /// Method to add observer for SyncService for onStateChanged and onSyncShutdown
