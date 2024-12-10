@@ -47,7 +47,7 @@ OBJC_EXPORT
                 actionType:(AiChatActionType)actionType;
 
 - (void)rateMessage:(bool)isLiked
-             turnId:(NSUInteger)turnId
+             turnId:(NSString*)turnId
          completion:
              (void (^_Nullable)(NSString* _Nullable identifier))completion;
 

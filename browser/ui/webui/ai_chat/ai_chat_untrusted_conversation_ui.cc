@@ -152,7 +152,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "img-src 'self' blob: chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
-      "font-src 'self' data: chrome-untrusted://resources;");
+      "font-src 'self' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameAncestors,
       base::StringPrintf("frame-ancestors %s;", kAIChatUIURL));

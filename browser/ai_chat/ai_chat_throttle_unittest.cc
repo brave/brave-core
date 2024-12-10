@@ -77,7 +77,7 @@ INSTANTIATE_TEST_SUITE_P(
 TEST_P(AiChatThrottleUnitTest, CancelNavigationFromTab) {
   content::MockNavigationHandle test_handle(web_contents());
 
-  test_handle.set_url(GURL(kAIChatUIURL)());
+  test_handle.set_url(GURL(kAIChatUIURL));
 
 #if BUILDFLAG(IS_ANDROID)
   ui::PageTransition transition = ui::PageTransitionFromInt(
@@ -105,7 +105,7 @@ TEST_P(AiChatThrottleUnitTest, CancelNavigationFromTab) {
 TEST_P(AiChatThrottleUnitTest, CancelNavigationToFrame) {
   content::MockNavigationHandle test_handle(web_contents());
 
-  test_handle.set_url(GURL(kAIChatUntrustedConversationUIURL)());
+  test_handle.set_url(GURL(kAIChatUntrustedConversationUIURL));
 
 #if BUILDFLAG(IS_ANDROID)
   ui::PageTransition transition = ui::PageTransitionFromInt(
@@ -128,7 +128,7 @@ TEST_P(AiChatThrottleUnitTest, CancelNavigationToFrame) {
 TEST_P(AiChatThrottleUnitTest, AllowNavigationFromPanel) {
   content::MockNavigationHandle test_handle(web_contents());
 
-  test_handle.set_url(GURL(kAIChatUIURL)());
+  test_handle.set_url(GURL(kAIChatUIURL));
 
 #if BUILDFLAG(IS_ANDROID)
   ui::PageTransition transition =

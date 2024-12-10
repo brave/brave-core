@@ -507,7 +507,7 @@ public struct AIChatView: View {
         icon: Image(braveSystemName: "leo.thumb.up"),
         onSelected: {
           Task { @MainActor in
-            let ratingId = await model.rateConversation(isLiked: true, turnId: UInt(turnIndex))
+            let ratingId = await model.rateConversation(isLiked: true, turnId: turn.uuid)
             if ratingId != nil {
               feedbackToast = .success(isLiked: true)
             } else {
@@ -522,7 +522,7 @@ public struct AIChatView: View {
         icon: Image(braveSystemName: "leo.thumb.down"),
         onSelected: {
           Task { @MainActor in
-            let ratingId = await model.rateConversation(isLiked: false, turnId: UInt(turnIndex))
+            let ratingId = await model.rateConversation(isLiked: false, turnId: turn.uuid)
             if let ratingId = ratingId {
               feedbackToast = .success(
                 isLiked: false,

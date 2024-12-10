@@ -193,10 +193,10 @@
 }
 
 - (void)rateMessage:(bool)isLiked
-             turnId:(NSUInteger)turnId
+             turnId:(NSString*)turnId
          completion:(void (^)(NSString* identifier))completion {
   current_conversation_->RateMessage(
-      isLiked, turnId,
+      isLiked, base::SysNSStringToUTF8(turnId),
       base::BindOnce(
           [](void (^completion)(NSString*),
              const std::optional<std::string>& identifier) {
