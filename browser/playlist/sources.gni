@@ -24,7 +24,16 @@ if (enable_playlist) {
     "//components/pref_registry:pref_registry",
   ]
 
-  if (!is_android) {
+  if (is_android) {
+    brave_browser_playlist_sources += [
+      "//brave/browser/playlist/android/playlist_service_factory_android.cc",
+    ]
+
+    brave_browser_playlist_deps += [
+      "//brave/build/android:jni_headers",
+      "//mojo/public/cpp/bindings",
+    ]
+  } else {
     brave_browser_playlist_sources += [
       "//brave/browser/playlist/playlist_data_source.cc",
       "//brave/browser/playlist/playlist_data_source.h",
