@@ -18,6 +18,7 @@
 
 #include "base/compiler_specific.h"
 #include "base/containers/contains.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -269,12 +270,12 @@ void DistillPageTextViaSiteScript(
 
 std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
     std::string_view host) {
-  static const std::map<std::string, std::pair<int, bool>>
-      kHostToScriptResource = {
+  static constexpr auto kHostToScriptResource =
+      base::MakeFixedFlatMap<std::string_view, std::pair<int, bool>>({
           {"github.com",
            {IDR_CUSTOM_SITE_DISTILLER_SCRIPTS_GITHUB_COM_BUNDLE_JS, false}},
           {"x.com", {IDR_CUSTOM_SITE_DISTILLER_SCRIPTS_X_COM_BUNDLE_JS, true}},
-      };
+      });
 
   auto it = kHostToScriptResource.find(
       net::registry_controlled_domains::GetDomainAndRegistry(
