@@ -4886,7 +4886,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Adds a playlist button (it looks like 4 lines with a + symbol) beside the address bar in the Brave browser. This button gives you quick access to open Playlist, or add or remove media.",
+          "Adds a playlist button beside the address bar in the Brave browser. This button gives you quick access to open Playlist, or add or remove media.",
         comment: "Footer for option to disable URL-Bar button"
       )
 
@@ -5048,7 +5048,7 @@ extension Strings {
         "playlist.playlistAutoSaveSettingsTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Auto-Save for Offline",
+        value: "Save Content for Offline Playback",
         comment:
           "Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)"
       )
@@ -5070,7 +5070,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "This option will automatically keep your playlist items on your device so you can play them without an internet connection.",
+          "Once you've opened content in Playlist, this option will keep opened playlist items on your device so you can play them without an internet connection.",
         comment:
           "Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi))"
       )
