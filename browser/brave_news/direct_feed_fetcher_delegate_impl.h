@@ -21,7 +21,7 @@ class DirectFeedFetcherDelegateImpl : public DirectFeedFetcher::Delegate {
  public:
   explicit DirectFeedFetcherDelegateImpl(
       HostContentSettingsMap* host_content_settings_map);
-  ~DirectFeedFetcherDelegateImpl() override = default;
+  ~DirectFeedFetcherDelegateImpl() override;
 
   DirectFeedFetcherDelegateImpl(const DirectFeedFetcherDelegateImpl&) = delete;
   DirectFeedFetcherDelegateImpl& operator=(
@@ -29,12 +29,15 @@ class DirectFeedFetcherDelegateImpl : public DirectFeedFetcher::Delegate {
 
   // Must be called on UI thread
   bool ShouldUpgradeToHttps(const GURL& url) override;
-  void Shutdown() override;
+
+  base::WeakPtr<DirectFeedFetcher::Delegate> AsWeakPtr() override;
 
  private:
   raw_ptr<HostContentSettingsMap> host_content_settings_map_;
   raw_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
       https_upgrade_exceptions_service_;
+
+  base::WeakPtrFactory<DirectFeedFetcherDelegateImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_news

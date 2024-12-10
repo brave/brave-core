@@ -30,7 +30,7 @@ class FeedFetcher {
  public:
   FeedFetcher(PublishersController& publishers_controller,
               scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-              DirectFeedFetcher::Delegate* delegate);
+              base::WeakPtr<DirectFeedFetcher::Delegate> delegate);
   ~FeedFetcher();
   FeedFetcher(const FeedFetcher&) = delete;
   FeedFetcher& operator=(const FeedFetcher&) = delete;

@@ -78,10 +78,8 @@ constexpr char kFeedURL[] = "https://example.com/feed";
 class BraveNewsDirectFeedControllerTest : public testing::Test {
  public:
   BraveNewsDirectFeedControllerTest()
-      : direct_feed_controller_(
-
-            test_url_loader_factory_.GetSafeWeakWrapper(),
-            &direct_feed_fetcher_delegate_) {}
+      : direct_feed_controller_(test_url_loader_factory_.GetSafeWeakWrapper(),
+                                direct_feed_fetcher_delegate_.AsWeakPtr()) {}
 
  protected:
   class MockDirectFeedFetcherDelegate : public DirectFeedFetcher::Delegate {
@@ -90,7 +88,12 @@ class BraveNewsDirectFeedControllerTest : public testing::Test {
 
     bool ShouldUpgradeToHttps(const GURL& url) override { return true; }
 
-    void Shutdown() override {}
+    base::WeakPtr<DirectFeedFetcher::Delegate> AsWeakPtr() override {
+      return weak_ptr_factory_.GetWeakPtr();
+    }
+
+   private:
+    base::WeakPtrFactory<MockDirectFeedFetcherDelegate> weak_ptr_factory_{this};
   };
 
   std::tuple<bool, std::string> VerifyFeedUrl(GURL feed_url) {

@@ -45,7 +45,7 @@ class FeedV2Builder {
       SuggestionsController& suggestions_controller,
       BackgroundHistoryQuerier& history_querier,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      DirectFeedFetcher::Delegate* direct_feed_fetcher_delegate);
+      base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate);
   FeedV2Builder(const FeedV2Builder&) = delete;
   FeedV2Builder& operator=(const FeedV2Builder&) = delete;
   ~FeedV2Builder();

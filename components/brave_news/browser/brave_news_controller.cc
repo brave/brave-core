@@ -117,15 +117,14 @@ BraveNewsController::BraveNewsController(
                                   url_loader_factory),
       history_service_(history_service),
       url_loader_factory_(url_loader_factory),
-      task_runner_(base::ThreadPool::CreateSingleThreadTaskRunner(
-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})),
-      direct_feed_fetcher_delegate_(direct_feed_fetcher_delegate.release(),
-                                    base::OnTaskRunnerDeleter(task_runner_)),
+      direct_feed_fetcher_delegate_(std::move(direct_feed_fetcher_delegate)),
       pref_manager_(*prefs),
       news_metrics_(prefs, pref_manager_),
       direct_feed_controller_(url_loader_factory,
-                              direct_feed_fetcher_delegate_.get()),
+                              direct_feed_fetcher_delegate_->AsWeakPtr()),
+      task_runner_(base::ThreadPool::CreateSingleThreadTaskRunner(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})),
       engine_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
       initialization_promise_(
           3,
@@ -147,7 +146,6 @@ BraveNewsController::BraveNewsController(
 }
 
 BraveNewsController::~BraveNewsController() {
-  direct_feed_fetcher_delegate_->Shutdown();
   net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
 }
 
@@ -800,9 +798,9 @@ void BraveNewsController::Prefetch() {
 }
 
 void BraveNewsController::ResetEngine() {
-  engine_.reset(new BraveNewsEngine(url_loader_factory_->Clone(),
-                                    MakeHistoryQuerier(),
-                                    direct_feed_fetcher_delegate_.get()));
+  engine_.reset(
+      new BraveNewsEngine(url_loader_factory_->Clone(), MakeHistoryQuerier(),
+                          direct_feed_fetcher_delegate_->AsWeakPtr()));
 }
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {

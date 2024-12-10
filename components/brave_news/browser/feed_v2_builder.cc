@@ -614,7 +614,7 @@ FeedV2Builder::FeedV2Builder(
     SuggestionsController& suggestions_controller,
     BackgroundHistoryQuerier& history_querier,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    DirectFeedFetcher::Delegate* direct_feed_fetcher_delegate)
+    base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
     : publishers_controller_(publishers_controller),
       channels_controller_(channels_controller),
       suggestions_controller_(suggestions_controller),

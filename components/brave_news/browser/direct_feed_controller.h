@@ -30,7 +30,7 @@ class DirectFeedController {
  public:
   explicit DirectFeedController(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      DirectFeedFetcher::Delegate* direct_feed_fetcher_delegate);
+      base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate);
   ~DirectFeedController();
   DirectFeedController(const DirectFeedController&) = delete;
   DirectFeedController& operator=(const DirectFeedController&) = delete;

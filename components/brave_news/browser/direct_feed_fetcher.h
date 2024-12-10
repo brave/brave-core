@@ -72,12 +72,12 @@ class DirectFeedFetcher {
     virtual ~Delegate() = default;
 
     virtual bool ShouldUpgradeToHttps(const GURL& url) = 0;
-    virtual void Shutdown();
+    virtual base::WeakPtr<DirectFeedFetcher::Delegate> AsWeakPtr() = 0;
   };
 
   explicit DirectFeedFetcher(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      Delegate* delegate);
+      base::WeakPtr<Delegate> delegate);
   DirectFeedFetcher(const DirectFeedFetcher&) = delete;
   DirectFeedFetcher& operator=(const DirectFeedFetcher&) = delete;
   ~DirectFeedFetcher();
@@ -110,7 +110,7 @@ class DirectFeedFetcher {
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
-  raw_ptr<Delegate> delegate_;
+  base::WeakPtr<Delegate> delegate_;
 
   base::WeakPtrFactory<DirectFeedFetcher> weak_ptr_factory_{this};
 };
