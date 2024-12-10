@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -28,9 +30,12 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, EmptySave) {
   // Assert
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*creative_set_conversions=*/::testing::IsEmpty()));
+                            /*creative_set_conversions=*/::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetUnexpired(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -58,8 +63,11 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   // Assert
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, creative_set_conversions));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, creative_set_conversions))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetUnexpired(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -82,8 +90,11 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   // Assert
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, creative_set_conversions));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, creative_set_conversions))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetUnexpired(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -115,9 +126,13 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   // Assert
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, CreativeSetConversionList{
-                                                  creative_set_conversion_1}));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback,
+              Run(/*success=*/true,
+                  CreativeSetConversionList{creative_set_conversion_1}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetUnexpired(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -151,9 +166,13 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   // Assert
   base::MockCallback<database::table::GetCreativeSetConversionsCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, CreativeSetConversionList{
-                                                  creative_set_conversion_2}));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback,
+              Run(/*success=*/true,
+                  CreativeSetConversionList{creative_set_conversion_2}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table_.GetUnexpired(callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, GetTableName) {

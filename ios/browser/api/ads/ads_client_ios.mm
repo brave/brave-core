@@ -113,13 +113,6 @@ void AdsClientIOS::Log(const char* file,
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }
 
-void AdsClientIOS::RunDBTransaction(
-    brave_ads::mojom::DBTransactionInfoPtr mojom_db_transaction,
-    brave_ads::RunDBTransactionCallback callback) {
-  [bridge_ runDBTransaction:std::move(mojom_db_transaction)
-                   callback:std::move(callback)];
-}
-
 void AdsClientIOS::SetProfilePref(const std::string& path, base::Value value) {
   [bridge_ setProfilePref:path value:std::move(value)];
 }

@@ -23,7 +23,6 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads::database::table {
 
@@ -219,9 +218,8 @@ void CreativeSetConversions::GetUnexpired(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient().RunDBTransaction(
-      std::move(mojom_db_transaction),
-      base::BindOnce(&GetCallback, std::move(callback)));
+  RunDBTransaction(std::move(mojom_db_transaction),
+                   base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void CreativeSetConversions::GetActive(
@@ -251,9 +249,8 @@ void CreativeSetConversions::GetActive(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient().RunDBTransaction(
-      std::move(mojom_db_transaction),
-      base::BindOnce(&GetCallback, std::move(callback)));
+  RunDBTransaction(std::move(mojom_db_transaction),
+                   base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {

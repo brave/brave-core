@@ -10,20 +10,25 @@
 #include "base/check_op.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/database/database.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_creation.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_raze.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
 
-DatabaseManager::DatabaseManager() = default;
+DatabaseManager::DatabaseManager(const base::FilePath& path)
+    : database_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      database_(base::SequenceBound<Database>(database_task_runner_, path)) {}
 
 DatabaseManager::~DatabaseManager() = default;
 
@@ -53,10 +58,21 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
   mojom_db_action->type = mojom::DBActionInfo::Type::kInitialize;
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient().RunDBTransaction(
+  RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void DatabaseManager::RunDBTransaction(
+    mojom::DBTransactionInfoPtr mojom_db_transaction,
+    RunDBTransactionCallback callback) {
+  CHECK(mojom_db_transaction);
+  CHECK(callback);
+
+  database_.AsyncCall(&Database::RunDBTransaction)
+      .WithArgs(std::move(mojom_db_transaction))
+      .Then(std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

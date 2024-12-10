@@ -5,8 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving.h"
 
+#include <memory>
 #include <utility>
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -36,14 +39,15 @@ class BraveAdsInlineContentAdServingTest : public test::TestBase {
 
     SubdivisionTargeting subdivision_targeting;
     AntiTargetingResource anti_targeting_resource;
-    InlineContentAdServing ad_serving(subdivision_targeting,
-                                      anti_targeting_resource);
-    ad_serving.SetDelegate(&delegate_mock_);
+    ad_serving_ = std::make_unique<InlineContentAdServing>(
+        subdivision_targeting, anti_targeting_resource);
+    ad_serving_->SetDelegate(&delegate_mock_);
 
-    ad_serving.MaybeServeAd(dimensions, std::move(callback));
+    ad_serving_->MaybeServeAd(dimensions, std::move(callback));
   }
 
   ::testing::StrictMock<InlineContentAdServingDelegateMock> delegate_mock_;
+  std::unique_ptr<InlineContentAdServing> ad_serving_;
 };
 
 TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
@@ -61,10 +65,13 @@ TEST_F(BraveAdsInlineContentAdServingTest, DoNotServeAdForUnsupportedVersion) {
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeInlineContentAd);
 
+  base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(/*dimensions=*/"200x100",
-                            /*ad=*/::testing::Eq(std::nullopt)));
+                            /*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   MaybeServeAd("200x100", callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
@@ -81,10 +88,13 @@ TEST_F(BraveAdsInlineContentAdServingTest, ServeAd) {
 
   EXPECT_CALL(delegate_mock_, OnDidServeInlineContentAd);
 
+  base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(/*dimensions=*/"200x100",
-                            /*ad=*/::testing::Ne(std::nullopt)));
+                            /*ad=*/::testing::Ne(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   MaybeServeAd("200x100", callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest,
@@ -101,10 +111,13 @@ TEST_F(BraveAdsInlineContentAdServingTest,
 
   EXPECT_CALL(delegate_mock_, OnFailedToServeInlineContentAd);
 
+  base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback,
-              Run(/*dimensions=*/"?x?", /*ad=*/::testing::Eq(std::nullopt)));
+              Run(/*dimensions=*/"?x?", /*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   MaybeServeAd("?x?", callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsInlineContentAdServingTest,
@@ -117,10 +130,13 @@ TEST_F(BraveAdsInlineContentAdServingTest,
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToServeInlineContentAd);
 
+  base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run(/*dimensions=*/"200x100",
-                            /*ad=*/::testing::Eq(std::nullopt)));
+                            /*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   MaybeServeAd("200x100", callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

@@ -26,7 +26,6 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 
 namespace brave_ads::test {
@@ -137,20 +136,6 @@ void MockLoadDataResource(AdsClientMock& ads_client_mock) {
       .WillByDefault(
           ::testing::Invoke([](const std::string& name) -> std::string {
             return MaybeReadDataResourceToString(name).value_or("");
-          }));
-}
-
-void MockRunDBTransaction(AdsClientMock& ads_client_mock, Database& database) {
-  ON_CALL(ads_client_mock, RunDBTransaction)
-      .WillByDefault(::testing::Invoke(
-          [&database](mojom::DBTransactionInfoPtr mojom_db_transaction,
-                      RunDBTransactionCallback callback) {
-            CHECK(mojom_db_transaction);
-
-            mojom::DBTransactionResultInfoPtr mojom_db_transaction_result =
-                database.RunDBTransaction(std::move(mojom_db_transaction));
-
-            std::move(callback).Run(std::move(mojom_db_transaction_result));
           }));
 }
 

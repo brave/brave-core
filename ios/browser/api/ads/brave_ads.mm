@@ -1370,25 +1370,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                               captchaId:base::SysUTF8ToNSString(captcha_id)];
 }
 
-- (void)runDBTransaction:
-            (brave_ads::mojom::DBTransactionInfoPtr)mojom_db_transaction
-                callback:(brave_ads::RunDBTransactionCallback)completion {
-  if (![self isServiceRunning]) {
-    return std::move(completion)
-        .Run(brave_ads::mojom::DBTransactionResultInfo::New());
-  }
-
-  adsService->RunDBTransaction(
-      std::move(mojom_db_transaction),
-      base::BindOnce(
-          ^(brave_ads::RunDBTransactionCallback callback,
-            brave_ads::mojom::DBTransactionResultInfoPtr
-                mojom_db_transaction_result) {
-            std::move(callback).Run(std::move(mojom_db_transaction_result));
-          },
-          std::move(completion)));
-}
-
 - (void)recordP2AEvents:(const std::vector<std::string>&)events {
   // TODO(https://github.com/brave/brave-browser/issues/33786): Unify Brave Ads
   // P3A analytics.

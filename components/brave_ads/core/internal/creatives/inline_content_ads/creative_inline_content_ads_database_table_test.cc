@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
@@ -34,14 +36,17 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   const database::table::CreativeInlineContentAds database_table;
 
   // Act & Assert
+  base::RunLoop run_loop;
   base::MockCallback<database::table::GetCreativeInlineContentAdsCallback>
       callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*segments=*/SegmentList{"technology & computing"},
-                            /*creative_ads=*/::testing::SizeIs(1)));
+                            /*creative_ads=*/::testing::SizeIs(1)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table.GetForSegmentsAndDimensions(
       /*segments=*/{"technology & computing"}, /*dimensions=*/"200x100",
       callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
@@ -50,12 +55,15 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableIntegrationTest,
   const database::table::CreativeInlineContentAds database_table;
 
   // Act & Assert
+  base::RunLoop run_loop;
   base::MockCallback<
       database::table::GetCreativeInlineContentAdsForDimensionsCallback>
       callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*creative_ads=*/::testing::SizeIs(1)));
+                            /*creative_ads=*/::testing::SizeIs(1)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table.GetForDimensions("200x100", callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

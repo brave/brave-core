@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -57,12 +59,15 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
   database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
+  base::RunLoop run_loop;
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
-  EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad_1}));
+  EXPECT_CALL(callback, Run(CreativeNewTabPageAdList{creative_ad_1}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{IntentUserModelInfo{}, LatentInterestUserModelInfo{},
                     InterestUserModelInfo{SegmentList{"untargeted"}}},
       callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoMatchingSegments) {
@@ -82,21 +87,27 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoMatchingSegments) {
   database::SaveCreativeNewTabPageAds(creative_ads);
 
   // Act & Assert
+  base::RunLoop run_loop;
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(/*user_model=*/{}, callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   // Act & Assert
+  base::RunLoop run_loop;
   base::MockCallback<EligibleAdsCallback<CreativeNewTabPageAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{
           IntentUserModelInfo{SegmentList{"parent-child", "parent"}},
           LatentInterestUserModelInfo{},
           InterestUserModelInfo{SegmentList{"parent-child", "parent"}}},
       callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

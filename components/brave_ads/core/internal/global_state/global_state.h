@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/files/file_path.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
@@ -35,9 +36,9 @@ class UserActivityManager;
 
 class GlobalState final {
  public:
-  explicit GlobalState(
-      AdsClient& ads_client,
-      std::unique_ptr<TokenGeneratorInterface> token_generator);
+  GlobalState(AdsClient& ads_client,
+              const base::FilePath& database_path,
+              std::unique_ptr<TokenGeneratorInterface> token_generator);
 
   GlobalState(const GlobalState& other) = delete;
   GlobalState& operator=(const GlobalState& other) = delete;

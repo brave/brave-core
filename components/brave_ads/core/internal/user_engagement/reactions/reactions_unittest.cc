@@ -8,6 +8,8 @@
 #include <optional>
 #include <utility>
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
@@ -49,18 +51,21 @@ TEST_F(BraveAdsReactionsTest, ToggleLikeAd) {
       test::BuildReaction(mojom::AdType::kNotificationAd);
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(
       account_observer_mock_,
       OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
           /*id*/ ::testing::_, /*created_at*/ test::Now(),
           test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
           mojom::AdType::kNotificationAd, mojom::ConfirmationType::kLikedAd,
-          /*reconciled_at*/ std::nullopt)));
+          /*reconciled_at*/ std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
   base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   GetReactions().ToggleLikeAd(std::move(mojom_reaction), callback.Get());
+  run_loop.Run();
   EXPECT_EQ(mojom::ReactionType::kLiked,
             GetReactions().AdReactionTypeForId(test::kAdvertiserId));
 }
@@ -73,18 +78,21 @@ TEST_F(BraveAdsReactionsTest, ToggleDislikeAd) {
       test::BuildReaction(mojom::AdType::kNotificationAd);
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(
       account_observer_mock_,
       OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
           /*id*/ ::testing::_, /*created_at*/ test::Now(),
           test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
           mojom::AdType::kNotificationAd, mojom::ConfirmationType::kDislikedAd,
-          /*reconciled_at*/ std::nullopt)));
+          /*reconciled_at*/ std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
   base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   GetReactions().ToggleDislikeAd(std::move(mojom_reaction), callback.Get());
+  run_loop.Run();
   EXPECT_EQ(mojom::ReactionType::kDisliked,
             GetReactions().AdReactionTypeForId(test::kAdvertiserId));
 }
@@ -232,18 +240,21 @@ TEST_F(BraveAdsReactionsTest, ToggleSaveAd) {
       test::BuildReaction(mojom::AdType::kNotificationAd);
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(
       account_observer_mock_,
       OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
           /*id*/ ::testing::_, /*created_at*/ test::Now(),
           test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
           mojom::AdType::kNotificationAd, mojom::ConfirmationType::kSavedAd,
-          /*reconciled_at*/ std::nullopt)));
+          /*reconciled_at*/ std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
   base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   GetReactions().ToggleSaveAd(std::move(mojom_reaction), callback.Get());
+  run_loop.Run();
   EXPECT_TRUE(GetReactions().IsAdSaved(test::kCreativeInstanceId));
 }
 
@@ -260,19 +271,22 @@ TEST_F(BraveAdsReactionsTest, ToggleMarkAdAsInappropriate) {
       test::BuildReaction(mojom::AdType::kNotificationAd);
 
   // Act & Assert
+  base::RunLoop run_loop;
   EXPECT_CALL(account_observer_mock_,
               OnDidProcessDeposit(/*transaction=*/::testing::FieldsAre(
                   /*id*/ ::testing::_, /*created_at*/ test::Now(),
                   test::kCreativeInstanceId, test::kSegment, /*value*/ 0.0,
                   mojom::AdType::kNotificationAd,
                   mojom::ConfirmationType::kMarkAdAsInappropriate,
-                  /*reconciled_at*/ std::nullopt)));
+                  /*reconciled_at*/ std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
 
   base::MockCallback<ToggleReactionCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true));
   GetReactions().ToggleMarkAdAsInappropriate(std::move(mojom_reaction),
                                              callback.Get());
+  run_loop.Run();
   EXPECT_TRUE(GetReactions().IsAdMarkedAsInappropriate(test::kCreativeSetId));
 }
 

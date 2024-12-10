@@ -25,7 +25,8 @@ class BatAdsClientMojoBridge;
 
 class BatAdsImpl : public mojom::BatAds {
  public:
-  BatAdsImpl(mojo::PendingAssociatedRemote<mojom::BatAdsClient>
+  BatAdsImpl(const base::FilePath& service_path,
+             mojo::PendingAssociatedRemote<mojom::BatAdsClient>
                  bat_ads_client_pending_associated_remote,
              mojo::PendingReceiver<mojom::BatAdsClientNotifier>
                  bat_ads_client_notifier_pending_receiver);

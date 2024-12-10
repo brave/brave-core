@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_base.h"
 
+#include <utility>
+
+#include "base/test/gmock_callback_support.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"  // IWYU pragma: keep
@@ -33,12 +36,14 @@ void BraveAdsConversionsTestBase::TearDown() {
 
 void BraveAdsConversionsTestBase::VerifyOnDidConvertAdExpectation(
     const AdInfo& ad,
-    ConversionActionType action_type) {
+    ConversionActionType action_type,
+    base::OnceClosure did_convert_ad_closure) {
   EXPECT_CALL(conversions_observer_mock_,
               OnDidConvertAd(/*conversion=*/::testing::FieldsAre(
                   ad.type, ad.creative_instance_id, ad.creative_set_id,
                   ad.campaign_id, ad.advertiser_id, ad.segment, action_type,
-                  /*verifiable*/ std::nullopt)));
+                  /*verifiable*/ std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(std::move(did_convert_ad_closure)));
 }
 
 void BraveAdsConversionsTestBase::VerifyOnDidNotConvertAdExpectation() {
@@ -48,12 +53,14 @@ void BraveAdsConversionsTestBase::VerifyOnDidNotConvertAdExpectation() {
 void BraveAdsConversionsTestBase::VerifyOnDidConvertVerifiableAdExpectation(
     const AdInfo& ad,
     ConversionActionType action_type,
-    const VerifiableConversionInfo& verifiable_conversion) {
+    const VerifiableConversionInfo& verifiable_conversion,
+    base::OnceClosure did_convert_ad_closure) {
   EXPECT_CALL(
       conversions_observer_mock_,
       OnDidConvertAd(/*conversion=*/::testing::FieldsAre(
           ad.type, ad.creative_instance_id, ad.creative_set_id, ad.campaign_id,
-          ad.advertiser_id, ad.segment, action_type, verifiable_conversion)));
+          ad.advertiser_id, ad.segment, action_type, verifiable_conversion)))
+      .WillOnce(base::test::RunOnceClosure(std::move(did_convert_ad_closure)));
 }
 
 }  // namespace brave_ads::test

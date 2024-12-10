@@ -5,6 +5,8 @@
 
 #include <optional>
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
@@ -51,10 +53,13 @@ class BraveAdsInlineContentAdIntegrationTest : public test::TestBase {
       const std::string& creative_instance_id,
       mojom::InlineContentAdEventType mojom_ad_event_type,
       bool should_fire_event) {
+    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
     base::MockCallback<TriggerAdEventCallback> callback;
-    EXPECT_CALL(callback, Run(/*success=*/should_fire_event));
+    EXPECT_CALL(callback, Run(/*success=*/should_fire_event))
+        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
     GetAds().TriggerInlineContentAdEvent(placement_id, creative_instance_id,
                                          mojom_ad_event_type, callback.Get());
+    run_loop.Run();
   }
 };
 
@@ -67,9 +72,12 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, ServeAd) {
               RecordP2AEvents(BuildP2AAdOpportunityEvents(
                   mojom::AdType::kInlineContentAd, /*segments=*/{})));
 
+  base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Ne(std::nullopt)));
+  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Ne(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest,
@@ -77,9 +85,12 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
+  base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(std::nullopt)));
+  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest,
@@ -92,15 +103,19 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
+  base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(std::nullopt)));
+  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Eq(std::nullopt)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   test::ForcePermissionRules();
 
+  base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](const std::string& dimensions,
@@ -114,15 +129,18 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
             ad->placement_id, ad->creative_instance_id,
             mojom::InlineContentAdEventType::kViewedImpression,
             /*should_fire_event=*/true);
+        run_loop.Quit();
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   test::ForcePermissionRules();
 
+  base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](const std::string& dimensions,
@@ -141,9 +159,11 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
             ad->placement_id, ad->creative_instance_id,
             mojom::InlineContentAdEventType::kClicked,
             /*should_fire_event=*/true);
+        run_loop.Quit();
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsInlineContentAdIntegrationTest,
@@ -151,6 +171,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
   // Arrange
   test::ForcePermissionRules();
 
+  base::RunLoop run_loop;
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
   EXPECT_CALL(callback, Run)
       .WillOnce([&](const std::string& dimensions,
@@ -164,9 +185,11 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
             ad->placement_id, test::kInvalidCreativeInstanceId,
             mojom::InlineContentAdEventType::kViewedImpression,
             /*should_fire_event=*/false);
+        run_loop.Quit();
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

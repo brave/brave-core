@@ -8,7 +8,6 @@
 
 #include "base/files/file_path.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_mock.h"
-#include "brave/components/brave_ads/core/public/database/database.h"
 
 namespace brave_ads::test {
 
@@ -32,8 +31,6 @@ void MockLoadResourceComponent(AdsClientMock& ads_client_mock,
                                const base::FilePath& profile_path);
 
 void MockLoadDataResource(AdsClientMock& ads_client_mock);
-
-void MockRunDBTransaction(AdsClientMock& ads_client_mock, Database& database);
 
 void MockFindProfilePref(const AdsClientMock& ads_client_mock);
 void MockGetProfilePref(const AdsClientMock& ads_client_mock);

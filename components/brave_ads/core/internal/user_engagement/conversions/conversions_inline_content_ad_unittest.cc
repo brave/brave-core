@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/run_loop.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
@@ -35,9 +36,12 @@ TEST_F(BraveAdsConversionsInlineContentAdTest,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsInlineContentAdTest,
@@ -73,9 +77,12 @@ TEST_F(BraveAdsConversionsInlineContentAdTest,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsInlineContentAdTest,
@@ -91,9 +98,12 @@ TEST_F(BraveAdsConversionsInlineContentAdTest,
                             mojom::ConfirmationType::kClicked});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsInlineContentAdTest,
@@ -131,9 +141,12 @@ TEST_F(BraveAdsConversionsInlineContentAdTest,
                             mojom::ConfirmationType::kClicked});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

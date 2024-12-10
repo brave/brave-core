@@ -45,7 +45,6 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
-#include "brave/components/brave_ads/core/public/database/database.h"
 #include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -349,6 +348,7 @@ void AdsServiceImpl::StartBatAdsService() {
   }
 
   bat_ads_service_remote_->Create(
+      ads_service_path_,
       bat_ads_client_associated_receiver_.BindNewEndpointAndPassRemote(),
       bat_ads_associated_remote_.BindNewEndpointAndPassReceiver(),
       std::move(bat_ads_client_notifier_pending_receiver_),
@@ -408,16 +408,7 @@ void AdsServiceImpl::Initialize(size_t current_start_number) {
     return;
   }
 
-  InitializeDatabase();
-
   InitializeRewardsWallet(current_start_number);
-}
-
-void AdsServiceImpl::InitializeDatabase() {
-  CHECK(!database_);
-
-  database_ = base::SequenceBound<Database>(
-      file_task_runner_, ads_service_path_.AppendASCII(kDatabaseFilename));
 }
 
 void AdsServiceImpl::InitializeRewardsWallet(size_t current_start_number) {
@@ -1096,8 +1087,6 @@ void AdsServiceImpl::ShutdownAdsService() {
 
   CloseAdaptiveCaptcha();
 
-  database_.Reset();
-
   if (is_bat_ads_initialized_) {
     VLOG(2) << "Shutdown Bat Ads Service";
   }
@@ -1731,17 +1720,6 @@ void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
       base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptchaCallback,
                      weak_ptr_factory_.GetWeakPtr()));
 #endif  // !BUILDFLAG(IS_ANDROID)
-}
-
-void AdsServiceImpl::RunDBTransaction(
-    mojom::DBTransactionInfoPtr mojom_db_transaction,
-    RunDBTransactionCallback callback) {
-  CHECK(mojom_db_transaction);
-  CHECK(database_);
-
-  database_.AsyncCall(&Database::RunDBTransaction)
-      .WithArgs(std::move(mojom_db_transaction))
-      .Then(std::move(callback));
 }
 
 void AdsServiceImpl::RecordP2AEvents(const std::vector<std::string>& events) {

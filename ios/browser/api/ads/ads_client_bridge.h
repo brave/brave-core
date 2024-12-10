@@ -49,9 +49,6 @@
 - (void)closeNotificationAd:(const std::string&)placement_id;
 - (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
           callback:(brave_ads::UrlRequestCallback)callback;
-- (void)runDBTransaction:
-            (brave_ads::mojom::DBTransactionInfoPtr)mojom_db_transaction
-                callback:(brave_ads::RunDBTransactionCallback)callback;
 - (void)setProfilePref:(const std::string&)path value:(base::Value)value;
 - (bool)findProfilePref:(const std::string&)path;
 - (std::optional<base::Value>)getProfilePref:(const std::string&)path;

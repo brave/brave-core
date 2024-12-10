@@ -241,9 +241,8 @@ void Transactions::GetForDateRange(base::Time from_time,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  GetAdsClient().RunDBTransaction(
-      std::move(mojom_db_transaction),
-      base::BindOnce(&GetCallback, std::move(callback)));
+  RunDBTransaction(std::move(mojom_db_transaction),
+                   base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void Transactions::Reconcile(const PaymentTokenList& payment_tokens,

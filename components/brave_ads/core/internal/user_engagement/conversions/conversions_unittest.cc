@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions.h"
 
+#include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
@@ -54,10 +55,16 @@ TEST_F(BraveAdsConversionsTest,
                               mojom::ConfirmationType::kClicked});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad_1, ConversionActionType::kViewThrough);
-  VerifyOnDidConvertAdExpectation(ad_2, ConversionActionType::kClickThrough);
+  base::RunLoop view_through_run_loop;
+  VerifyOnDidConvertAdExpectation(ad_1, ConversionActionType::kViewThrough,
+                                  view_through_run_loop.QuitClosure());
+  base::RunLoop click_through_run_loop;
+  VerifyOnDidConvertAdExpectation(ad_2, ConversionActionType::kClickThrough,
+                                  click_through_run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  view_through_run_loop.Run();
+  click_through_run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotCapConversionsWithinTheSameCreativeSet) {
@@ -74,14 +81,20 @@ TEST_F(BraveAdsConversionsTest, DoNotCapConversionsWithinTheSameCreativeSet) {
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop view_through_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  view_through_run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  view_through_run_loop.Run();
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop click_through_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  click_through_run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  click_through_run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest, CapConversionsWithinTheSameCreativeSet) {
@@ -98,13 +111,19 @@ TEST_F(BraveAdsConversionsTest, CapConversionsWithinTheSameCreativeSet) {
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop view_through_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  view_through_run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  view_through_run_loop.Run();
 
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop click_through_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  click_through_run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  click_through_run_loop.Run();
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
@@ -124,9 +143,12 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
                             mojom::ConfirmationType::kDismissed});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
@@ -196,9 +218,12 @@ TEST_F(BraveAdsConversionsTest,
                               mojom::ConfirmationType::kViewedImpression,
                               mojom::ConfirmationType::kDismissed});
 
-  VerifyOnDidConvertAdExpectation(ad_1, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad_1, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 
   AdInfo ad_2 = ad_1;
   ad_2.creative_instance_id = test::kAnotherCreativeInstanceId;
@@ -242,9 +267,12 @@ TEST_F(BraveAdsConversionsTest,
   AdvanceClockBy(base::Days(3) - base::Milliseconds(1));
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -281,9 +309,12 @@ TEST_F(BraveAdsConversionsTest,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildVerifiableConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(
@@ -303,9 +334,12 @@ TEST_F(
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -324,9 +358,12 @@ TEST_F(BraveAdsConversionsTest,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(
       /*redirect_chain=*/{GURL("https://foo.com/bar?qux=quux")}, /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
@@ -344,13 +381,15 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
+  base::RunLoop run_loop;
   VerifyOnDidConvertVerifiableAdExpectation(
       ad, ConversionActionType::kViewThrough,
       VerifiableConversionInfo{
-          /*id=*/"xyzzy",
-          test::kVerifiableConversionAdvertiserPublicKeyBase64});
+          /*id=*/"xyzzy", test::kVerifiableConversionAdvertiserPublicKeyBase64},
+      run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildVerifiableConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -369,9 +408,12 @@ TEST_F(BraveAdsConversionsTest,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain(),
                              /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
@@ -389,14 +431,16 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
+  base::RunLoop run_loop;
   VerifyOnDidConvertVerifiableAdExpectation(
       ad, ConversionActionType::kViewThrough,
       VerifiableConversionInfo{
-          /*id=*/"waldo",
-          test::kVerifiableConversionAdvertiserPublicKeyBase64});
+          /*id=*/"waldo", test::kVerifiableConversionAdvertiserPublicKeyBase64},
+      run_loop.QuitClosure());
   conversions_->MaybeConvert(
       test::BuildDefaultConversionRedirectChain(),
       /*html=*/R"(<html><div id="xyzzy-id">waldo</div></html>)");
+  run_loop.Run();
 }
 
 TEST_F(
@@ -416,9 +460,12 @@ TEST_F(
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(
       /*redirect_chain=*/{GURL("https://qux.com/quux/corge")}, /*html=*/"");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -437,13 +484,16 @@ TEST_F(BraveAdsConversionsTest,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
+  base::RunLoop run_loop;
   VerifyOnDidConvertVerifiableAdExpectation(
       ad, ConversionActionType::kViewThrough,
       VerifiableConversionInfo{
-          /*id=*/"fred", test::kVerifiableConversionAdvertiserPublicKeyBase64});
+          /*id=*/"fred", test::kVerifiableConversionAdvertiserPublicKeyBase64},
+      run_loop.QuitClosure());
   conversions_->MaybeConvert(
       /*redirect_chain=*/{GURL("https://qux.com/quux/corge")},
       /*html=*/R"(<html><meta name="ad-conversion-id" content="fred"></html>)");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest, VerifiableConversion) {
@@ -462,13 +512,16 @@ TEST_F(BraveAdsConversionsTest, VerifiableConversion) {
                             mojom::ConfirmationType::kClicked});
 
   // Act & Assert
+  base::RunLoop run_loop;
   VerifyOnDidConvertVerifiableAdExpectation(
       ad, ConversionActionType::kClickThrough,
       VerifiableConversionInfo{
-          /*id=*/"fred", test::kVerifiableConversionAdvertiserPublicKeyBase64});
+          /*id=*/"fred", test::kVerifiableConversionAdvertiserPublicKeyBase64},
+      run_loop.QuitClosure());
   conversions_->MaybeConvert(
       test::BuildDefaultConversionRedirectChain(),
       /*html=*/R"(<html><meta name="ad-conversion-id" content="fred"></html>)");
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest, FallbackToDefaultConversionForNonRewardsUser) {
@@ -492,10 +545,13 @@ TEST_F(BraveAdsConversionsTest, FallbackToDefaultConversionForNonRewardsUser) {
   test::RecordAdEvent(ad, mojom::ConfirmationType::kClicked);
 
   // Act & Assert
-  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough);
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  run_loop.QuitClosure());
   conversions_->MaybeConvert(
       test::BuildDefaultConversionRedirectChain(),
       /*html=*/R"(<html><meta name="ad-conversion-id" content="fred"></html>)");
+  run_loop.Run();
 }
 
 }  // namespace brave_ads

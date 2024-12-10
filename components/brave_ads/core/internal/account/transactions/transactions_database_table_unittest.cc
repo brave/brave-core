@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
@@ -28,12 +30,15 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
 
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*transactions=*/::testing::IsEmpty()));
+                            /*transactions=*/::testing::IsEmpty()))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   const Transactions database_table;
   database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
                                  /*to_time=*/test::DistantFuture(),
                                  callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
@@ -60,12 +65,15 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
 
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
+  base::RunLoop run_loop;
   EXPECT_CALL(callback,
-              Run(/*success=*/true, ::testing::ElementsAreArray(transactions)));
+              Run(/*success=*/true, ::testing::ElementsAreArray(transactions)))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   const Transactions database_table;
   database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
                                  /*to_time=*/test::DistantFuture(),
                                  callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
@@ -85,11 +93,14 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
 
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, transactions));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, transactions))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   const Transactions database_table;
   database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
                                  /*to_time=*/test::DistantFuture(),
                                  callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
@@ -117,10 +128,13 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
 
   // Act & Assert
   base::MockCallback<GetTransactionsCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/true, TransactionList{transaction_2}));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true, TransactionList{transaction_2}))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table.GetForDateRange(/*from_time=*/test::Now(),
                                  /*to_time=*/test::DistantFuture(),
                                  callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
@@ -159,13 +173,15 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
 
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true,
-                  ::testing::UnorderedElementsAreArray(
-                      TransactionList{transaction_1, transaction_2})));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            ::testing::UnorderedElementsAreArray(
+                                TransactionList{transaction_1, transaction_2})))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
                                  /*to_time=*/test::DistantFuture(),
                                  callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, PurgeExpired) {
@@ -206,13 +222,15 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, PurgeExpired) {
   database_table.PurgeExpired(purge_expired_callback.Get());
 
   base::MockCallback<GetTransactionsCallback> callback;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true,
-                  ::testing::UnorderedElementsAreArray(
-                      TransactionList{transaction_2, transaction_3})));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            ::testing::UnorderedElementsAreArray(
+                                TransactionList{transaction_2, transaction_3})))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
                                  /*to_time=*/test::DistantFuture(),
                                  callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest,
@@ -248,13 +266,15 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest,
   database_table.PurgeExpired(purge_expired_callback.Get());
 
   base::MockCallback<GetTransactionsCallback> callback;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true,
-                  ::testing::UnorderedElementsAreArray(
-                      TransactionList{transaction_1, transaction_2})));
+  base::RunLoop run_loop;
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            ::testing::UnorderedElementsAreArray(
+                                TransactionList{transaction_1, transaction_2})))
+      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
                                  /*to_time=*/test::DistantFuture(),
                                  callback.Get());
+  run_loop.Run();
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTableName) {

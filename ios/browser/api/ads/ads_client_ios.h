@@ -54,9 +54,6 @@ class AdsClientIOS : public brave_ads::AdsClient {
            int line,
            int verbose_level,
            const std::string& message) override;
-  void RunDBTransaction(
-      brave_ads::mojom::DBTransactionInfoPtr mojom_db_transaction,
-      brave_ads::RunDBTransactionCallback callback) override;
   void SetProfilePref(const std::string& path, base::Value value) override;
   bool FindProfilePref(const std::string& path) const override;
   std::optional<base::Value> GetProfilePref(const std::string& path) override;
