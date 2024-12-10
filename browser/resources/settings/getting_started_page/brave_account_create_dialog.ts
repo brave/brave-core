@@ -124,7 +124,6 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
   static override get properties() {
     return {
       email: { type: String },
-      isAccountNameValid: { type: Boolean },
       isCheckboxChecked: { type: Boolean },
       isEmailBraveAlias: { type: Boolean },
       isEmailValid: { type: Boolean },
@@ -138,10 +137,6 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     this.email = detail.value.trim()
     this.isEmailValid = isEmailValid(this.email)
     this.isEmailBraveAlias = (/@bravealias\.com$/i).test(this.email)
-  }
-
-  protected onAccountNameInput(detail: { value: string }) {
-    this.isAccountNameValid = detail.value.length !== 0
   }
 
   protected onPasswordInput(detail: { value: string }) {
@@ -176,7 +171,6 @@ export class SettingsBraveAccountCreateDialogElement extends CrLitElement {
     BraveAccountBrowserProxyImpl.getInstance()
   protected email: string = ''
   protected icon: string = 'warning-triangle-filled'
-  protected isAccountNameValid: boolean = false
   protected isCheckboxChecked: boolean = false
   protected isEmailBraveAlias: boolean = false
   protected isEmailValid: boolean = false

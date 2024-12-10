@@ -32,10 +32,6 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
             <div>$i18n{braveAccountEmailInputErrorMessage}</div>
           </div>
         </leo-input>
-        <leo-input placeholder="$i18n{braveAccountAccountNameInputPlaceholder}"
-                   @input=${this.onAccountNameInput}>
-          <div class="label">$i18n{braveAccountAccountNameInputLabel}</div>
-        </leo-input>
         <leo-input placeholder="$i18n{braveAccountPasswordInputPlaceholder}"
                    showErrors
                    type="password"
@@ -85,7 +81,6 @@ export function getHtml(this: SettingsBraveAccountCreateDialogElement) {
       <div slot="buttons">
         <leo-button ?isDisabled=${!this.isEmailValid
                                || this.isEmailValid && this.isEmailBraveAlias
-                               || !this.isAccountNameValid
                                || this.passwordStrength !== 100
                                || this.passwordConfirmation !== this.password
                                || !this.isCheckboxChecked}
