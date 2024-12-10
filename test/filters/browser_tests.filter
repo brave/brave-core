@@ -1936,6 +1936,11 @@
 -ComponentManagerUpdateCheckBrowserTest.RegisterAndUnregisterTranslateKitLanguagePackComponent
 -ComponentManagerUpdateCheckBrowserTest.RegisterTranslateKitComponent
 
+# We disable the ImageCopied/LinkCopied toast notifications
+-All/ContextMenuBrowserTest.ShowsToastOnImageCopied/*
+-All/ContextMenuBrowserTest.ShowsToastOnLinkCopied/*
+-BrowserCommandsTest.CopyingUrlOpensToast
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
