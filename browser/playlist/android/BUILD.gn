@@ -195,7 +195,6 @@ android_resources("playlist_resources") {
     "java/res/values/playlist_dimens.xml",
     "java/res/values/playlist_ids.xml",
     "java/res/values/playlist_styles.xml",
-    "java/res/xml/brave_playlist_preferences.xml",
   ]
   deps = [ ":java_strings_grd" ]
 }

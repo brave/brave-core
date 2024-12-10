@@ -12,12 +12,14 @@ import android.widget.TextView;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
-import org.chromium.chrome.browser.playlist.R;
+import org.chromium.chrome.R;
 
-/** The preference used to reset Brave Playlist. */
-public class BravePlaylistResetPreference extends Preference
-        implements Preference.OnPreferenceClickListener {
-    private static final String TAG = "BravePlaylistResetPreference";
+/**
+ * The preference used to reset Brave Playlist.
+ */
+public class BravePlaylistResetPreference
+        extends Preference implements Preference.OnPreferenceClickListener {
+    private String TAG = "BravePlaylistResetPreference";
 
     private int mPrefAccentColor;
 

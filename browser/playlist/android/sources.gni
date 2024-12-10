@@ -1,0 +1,21 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
+
+brave_browser_playlist_sources = []
+brave_browser_playlist_deps = []
+
+if (enable_playlist && is_android) {
+  brave_browser_playlist_sources += [ "playlist_service_factory_android.cc" ]
+
+  brave_browser_playlist_deps += [
+    "//brave/build/android:jni_headers",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
+brave_playlist_kt_allowlist =
+    [ "java/src/org/chromium/chrome/browser/playlist/*.kt" ]
