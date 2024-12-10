@@ -22,7 +22,6 @@ export default abstract class API<T> {
   }, 0)
 
   public setPartialState(partialState: Partial<T>) {
-    console.log('setPartialState', partialState)
     this.state = { ...this.state, ...partialState }
     this.dispatchDebouncedStateChange()
   }
