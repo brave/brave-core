@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import selectors from './selectors'
 import { isSupportedPage } from './utils'
 import { distillNotificationElement } from './notifications'
 import { distillPostElement } from './post'
@@ -16,7 +17,7 @@ export function getDistillationLevel() {
 }
 
 export default function distill(distillLevel = LEO_DISTILLATION_LEVEL.LOW) {
-  if (!isSupportedPage) {
+  if (!isSupportedPage(document)) {
     return null
   }
 
@@ -25,16 +26,24 @@ export default function distill(distillLevel = LEO_DISTILLATION_LEVEL.LOW) {
   const column = distillPrimaryColumn()
   const seenUsers = distillSeenUsers(distillLevel)
 
-  return `${seenUsers}\n\n---\n\n${column}`
+  /**
+   * Include helpful metadata about users seen on the page, but in a way that
+   * it isn't confused with the original content.
+   */
+  return (
+    `${seenUsers}\n\nNote: The above user information is supplemental ` +
+    `metadata and not part of the original page content.\n\n--- Page ` +
+    `Content Below ---\n\n${column}`
+  )
 }
 
 const config = {
   'tweet': {
-    'selector': "[data-testid='tweet']",
+    'selector': selectors.tweet,
     'distiller': distillPostElement
   },
   'notification': {
-    'selector': "[data-testid='notification']",
+    'selector': selectors.notification,
     'distiller': distillNotificationElement
   }
 } as Record<string, any>
@@ -48,12 +57,11 @@ const config = {
  * account", tends, and more.
  */
 function distillPrimaryColumn() {
-  const columnSelector = "[data-testid='primaryColumn']"
-  const primaryColumn = document.querySelector(columnSelector)
-  const selectors = Object.values(config)
+  const primaryColumn = document.querySelector(selectors.primaryColumn)
+  const selectorList = Object.values(config)
     .map((item) => item.selector)
     .join(', ')
-  const timelineItems = primaryColumn?.querySelectorAll(selectors) ?? []
+  const timelineItems = primaryColumn?.querySelectorAll(selectorList) ?? []
 
   return Array.from(timelineItems)
     .map((item) => {

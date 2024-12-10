@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import selectors from './selectors';
 import { LEO_DISTILLATION_LEVEL } from '../distillation'
 import { getDistillationLevel } from './distiller'
 
@@ -11,12 +12,15 @@ export function isString(value: any) {
 }
 
 export function isSupportedPage(document: Document) {
+
+  // If this is a user profile page, we can distill it.
+  if (document.querySelector(selectors.userProfileHeaderItems)) {
+    return true;
+  }
+
   const supportedPaths = [
     '/',
     '/home',
-    '/brave',
-    '/bravesampson',
-    '/brendaneich',
     '/notifications',
     /^\/.*?\/status\/\d+/ // Post detail pages
   ]
