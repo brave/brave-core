@@ -14,82 +14,39 @@ import { NavigationHeader } from '../header'
 import Main from '../main'
 import styles from './style.module.scss'
 import { useActiveChat } from '../../state/active_chat_context'
+import { flushSync } from 'react-dom'
 
 export default function FullScreen() {
   const aiChatContext = useAIChat()
   const { createNewConversation } = useActiveChat()
   const conversationContext = useConversation()
 
-  const asideAnimationRef = React.useRef<Animation | null>()
-  const controllerRef = React.useRef(new AbortController())
   const isSmall = useMediaQuery('(max-width: 1024px)')
-  const [isNavigationCollapsed, setIsNavigationCollapsed] = React.useState(isSmall)
-  const [isNavigationRendered, setIsNavigationRendered] = React.useState(!isSmall)
+
+  const [showSidebar, setShowSidebar] = React.useState(!isSmall)
+  const toggleSidebar = () => {
+    (document as any).startViewTransition({
+      update: () => {
+        flushSync(() => {
+          setShowSidebar(s => !s)
+        })
+      },
+      types: [showSidebar ? 'close' : 'open']
+    })
+  }
 
   const canStartNewConversation = aiChatContext.hasAcceptedAgreement &&
     !!conversationContext.conversationHistory.length
 
-  const initAsideAnimation = React.useCallback((node: HTMLElement | null) => {
-    if (!node) return
-    const open = { width: 'var(--navigation-width)', opacity: 1 }
-    const close = { width: '0px', opacity: 0 }
-    const animationOptions: KeyframeAnimationOptions = {
-      duration: 200,
-      easing: 'ease-out',
-      fill: 'forwards'
-    }
-    asideAnimationRef.current = new Animation(
-      new KeyframeEffect(node, [open, close], animationOptions)
-    )
-
-    // Make sure we're in the right state for our screen size when
-    asideAnimationRef.current.playbackRate = isSmall ? 1 : -1
-    asideAnimationRef.current.finish()
-  }, [])
-
-  const toggleAside = () => {
-    const asideAnimation = asideAnimationRef.current
-
-    if (asideAnimation) {
-      if (isNavigationCollapsed) {
-        controllerRef.current.abort()
-        controllerRef.current = new AbortController()
-        asideAnimation.ready.then(() => setIsNavigationRendered(true))
-        asideAnimation.playbackRate = -1
-      } else {
-        // 'finish' triggers in both directions, so we only need this once per close animation
-        // user may rapidly toggle the aside, so we need to abort scheduled listener in open animation
-        asideAnimation.addEventListener(
-          'finish',
-          () => setIsNavigationRendered(false),
-          { once: true, signal: controllerRef.current.signal }
-        )
-        asideAnimation.playbackRate = 1
-      }
-
-      asideAnimation.play()
-      setIsNavigationCollapsed(!isNavigationCollapsed)
-    }
-  }
-
   React.useEffect(() => {
-    const isOpen = asideAnimationRef.current?.playbackRate === 1
-    if (aiChatContext.editingConversationId && isOpen) {
-      toggleAside()
-    }
-  }, [aiChatContext.editingConversationId, isNavigationCollapsed]);
-
-  React.useEffect(() => {
-    const isOpen = asideAnimationRef.current?.playbackRate === 1
-
     // We've just changed to small and the sidebar was open, so close it
-    if (isSmall && !isOpen) {
-      toggleAside()
+    if (isSmall && showSidebar) {
+      toggleSidebar()
     }
 
     // We've just changed to big and the sidebar was closed, so open it
-    if (!isSmall && isOpen) {
-      toggleAside()
+    if (!isSmall && !showSidebar) {
+      toggleSidebar()
     }
 
   }, [isSmall])
@@ -101,11 +58,11 @@ export default function FullScreen() {
           <Button
             fab
             kind='plain-faint'
-            onClick={toggleAside}
+            onClick={toggleSidebar}
           >
-            <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
+            <Icon name={showSidebar ? 'sidenav-collapse' : 'sidenav-expand'} />
           </Button>
-          {!isNavigationRendered && canStartNewConversation && (
+          {!showSidebar && canStartNewConversation && (
             <>
               <Button
                 fab
@@ -118,13 +75,12 @@ export default function FullScreen() {
           )}
         </div>
         <aside
-          ref={initAsideAnimation}
           className={styles.aside}
         >
-          {isNavigationRendered && (
+          {showSidebar && (
             <div className={styles.nav}>
               <NavigationHeader />
-              <ConversationsList setIsConversationsListOpen={setIsNavigationCollapsed} />
+              <ConversationsList setIsConversationsListOpen={toggleSidebar} />
             </div>
           )}
         </aside>
