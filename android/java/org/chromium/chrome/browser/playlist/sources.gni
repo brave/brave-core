@@ -7,16 +7,3 @@ brave_app_playlist_deps = [
   "//brave/third_party/android_deps:androidx_media3_media3_exoplayer_hls_java",
   "//third_party/androidx:androidx_media3_media3_common_java",
 ]
-
-brave_playlist_sources = [
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistHostActivity.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceObserverImpl.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistStreamingObserverImpl.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsServiceImpl.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/settings/BravePlaylistPreferences.java",
-  "../../brave/android/java/org/chromium/chrome/browser/playlist/settings/BravePlaylistResetPreference.java",
-]
-
-brave_java_base_module_playlist_sources = [ "//brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsService.java" ]

@@ -15,6 +15,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.local_database.PlaylistRepository;
 import org.chromium.chrome.browser.playlist.util.PlaylistPreferenceUtils;
@@ -77,6 +78,13 @@ public class BravePlaylistPreferences extends ChromeBaseSettingsFragment
                                     playlistRepository.deleteAllLastPlayedPosition();
                                     playlistRepository.deleteAllHlsContentQueueModel();
                                     PlaylistPreferenceUtils.resetPlaylistPrefs(getActivity());
+                                    getActivity()
+                                            .runOnUiThread(
+                                                    (Runnable)
+                                                            () ->
+                                                                    BraveRelaunchUtils
+                                                                            .askForRelaunch(
+                                                                                    getActivity()));
                                 });
                     }
                     return true;
