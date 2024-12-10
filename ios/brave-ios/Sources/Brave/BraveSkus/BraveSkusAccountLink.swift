@@ -12,7 +12,7 @@ import os.log
 
 extension BraveStoreProduct {
   /// The key to use when storing the receipt in WebKit's LocalStorage
-  fileprivate var localStorageKey: String {
+  var localStorageKey: String {
     switch self {
     case .vpnMonthly, .vpnYearly: return "braveVpn.receipt"
     case .leoMonthly, .leoYearly: return "braveLeo.receipt"

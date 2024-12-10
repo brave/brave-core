@@ -17,6 +17,31 @@ window.__firefox__.includeOnce("BraveSkusScript", function($) {
   if (!window.chrome) {
     window.chrome = {};
   }
+  
+  // Request VPN Receipt
+  sendMessage($<setLocalStorageReceipt>, { "message": "vpn" })
+  .then(function(jsonData) {
+    if (jsonData) {
+      window.localStorage.setItem(jsonData["key"], jsonData["data"]);
+    } else {
+      console.error("No VPN Subscription Data");
+    }
+  }).catch(function(err) {
+    console.error(`An error occurred setting the local storage receipt: ${err}`);
+  });
+  
+  // Request Leo Receipt
+  sendMessage($<setLocalStorageReceipt>, { "message": "leo" })
+  .then(function(jsonData) {
+    if (jsonData) {
+      window.localStorage.setItem("braveLeo.orderId", jsonData["braveLeo.orderId"])
+      window.localStorage.setItem(jsonData["key"], jsonData["data"]);
+    } else {
+      console.error("No Leo Subscription Data");
+    }
+  }).catch(function(err) {
+    console.error(`An error occurred setting the local storage receipt: ${err}`);
+  });
 
   Object.defineProperty(window.chrome, 'braveSkus', {
     enumerable: false,
