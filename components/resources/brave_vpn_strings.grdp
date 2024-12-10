@@ -408,10 +408,10 @@ Let's get you connected!
     </message>
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_MANAGE_ACCOUNT_ITEM" desc="Title of the system tray menu item for the command to open an account page in the browser.">
       Manage Account
-    </message>        
+    </message>
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_ABOUT_ITEM" desc="Title of the system tray menu item for the command to open about page in the browser.">
       About Brave VPN
-    </message>        
+    </message>
     <message name="IDS_BRAVE_VPN_WIREGUARD_TRAY_REMOVE_ICON_ITEM" desc="Title of the system tray menu item for the command to remove the icon from the system tray.">
       Remove icon
     </message>
