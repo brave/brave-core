@@ -282,14 +282,14 @@ std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
       net::registry_controlled_domains::GetDomainAndRegistry(
           host, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES));
 
-  if (it != kHostToScriptResource.end()) {
-    return std::make_optional(std::make_pair(
-        ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
-            it->second.first),
-        it->second.second));
+  if (it == kHostToScriptResource.end()) {
+    return std::nullopt;
   }
 
-  return std::nullopt;
+  return std::make_optional(std::make_pair(
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          it->second.first),
+      it->second.second));
 }
 
 }  // namespace ai_chat
