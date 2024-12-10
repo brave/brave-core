@@ -46,9 +46,11 @@ where
         let _ = cache.put_cap(backend.get_cap()?);
 
         backend.with_checkpoints(backend.checkpoint_count()?, |checkpoint_id, checkpoint| {
+            // TODO: Once MSRV is at least 1.82, replace this (and similar `expect()`s below) with:
+            // `let Ok(_) = cache.add_checkpoint(checkpoint_id.clone(), checkpoint.clone());`
             cache
                 .add_checkpoint(checkpoint_id.clone(), checkpoint.clone())
-                .unwrap();
+                .expect("error type is Infallible");
             Ok(())
         })?;
 
@@ -74,26 +76,37 @@ where
         }
         self.deferred_actions.clear();
 
-        for shard_root in self.cache.get_shard_roots().unwrap() {
+        for shard_root in self
+            .cache
+            .get_shard_roots()
+            .expect("error type is Infallible")
+        {
             self.backend.put_shard(
                 self.cache
                     .get_shard(shard_root)
-                    .unwrap()
+                    .expect("error type is Infallible")
                     .expect("known address"),
             )?;
         }
-        self.backend.put_cap(self.cache.get_cap().unwrap())?;
+        self.backend
+            .put_cap(self.cache.get_cap().expect("error type is Infallible"))?;
 
-        let mut checkpoints = Vec::with_capacity(self.cache.checkpoint_count().unwrap());
+        let mut checkpoints = Vec::with_capacity(
+            self.cache
+                .checkpoint_count()
+                .expect("error type is Infallible"),
+        );
         self.cache
             .with_checkpoints(
-                self.cache.checkpoint_count().unwrap(),
+                self.cache
+                    .checkpoint_count()
+                    .expect("error type is Infallible"),
                 |checkpoint_id, checkpoint| {
                     checkpoints.push((checkpoint_id.clone(), checkpoint.clone()));
                     Ok(())
                 },
             )
-            .unwrap();
+            .expect("error type is Infallible");
         for (checkpoint_id, checkpoint) in checkpoints {
             self.backend.add_checkpoint(checkpoint_id, checkpoint)?;
         }

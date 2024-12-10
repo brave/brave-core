@@ -44,7 +44,7 @@ deps = {
     "url": "https://github.com/ronaldoussoren/macholib.git@36a6777ccd0891c5d1b44ba885573d7c90740015",
     "condition": "checkout_mac",
   },
-  "components/brave_wallet/browser/zcash/rust/librustzcash/src": "https://github.com/brave/librustzcash.git@5b496c6ead39a0e0f32337f9b6bbf63e7ce92830",
+  "components/brave_wallet/browser/zcash/rust/librustzcash/src": "https://github.com/brave/librustzcash.git@127aacc83dc9ed12fc38c3c7f5b52f7f51011e4d",
 }
 
 recursedeps = [

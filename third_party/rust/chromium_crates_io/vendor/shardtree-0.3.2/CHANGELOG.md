@@ -7,6 +7,9 @@ and this project adheres to Rust's notion of
 
 ## Unreleased
 
+## [0.3.2] - 2024-12-09
+- Replaces `unwrap` calls with `expect` calls & documents panics.
+
 ## [0.3.1] - 2024-04-03
 
 ### Fixed

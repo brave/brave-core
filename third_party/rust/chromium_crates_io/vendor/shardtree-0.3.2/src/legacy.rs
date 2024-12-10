@@ -167,6 +167,10 @@ impl<H: Hashable + Clone + PartialEq> LocatedPrunableTree<H> {
     ///
     /// Returns a copy of this tree updated to include the witness nodes, any partial supertree that is
     /// produced from nodes "higher" in the witness tree
+    ///
+    /// # Panics
+    ///
+    /// Panics if `witness` corresponds to the empty tree.
     pub fn insert_witness_nodes<C, const DEPTH: u8>(
         &self,
         witness: IncrementalWitness<H, DEPTH>,
@@ -177,7 +181,11 @@ impl<H: Hashable + Clone + PartialEq> LocatedPrunableTree<H> {
             // construct the subtree and cap based on the frontier containing the
             // witnessed position
             let (past_subtree, past_supertree) = self.insert_frontier_nodes::<C>(
-                witness.tree().to_frontier().take().unwrap(),
+                witness
+                    .tree()
+                    .to_frontier()
+                    .take()
+                    .expect("IncrementalWitness must not be created from the empty tree."),
                 &Retention::Marked,
             )?;
 

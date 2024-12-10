@@ -391,14 +391,21 @@ impl<
     }
 
     /// Adds a checkpoint at the rightmost leaf state of the tree.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `root` represents a parent node but `root_addr` is a depth-0 leaf address.
     pub fn checkpoint(&mut self, checkpoint_id: C) -> Result<bool, ShardTreeError<S::Error>> {
+        /// Pre-condition: `root_addr` must be the address of `root`.
         fn go<H: Hashable + Clone + PartialEq>(
             root_addr: Address,
             root: &PrunableTree<H>,
         ) -> Option<(PrunableTree<H>, Position)> {
             match root {
                 Tree(Node::Parent { ann, left, right }) => {
-                    let (l_addr, r_addr) = root_addr.children().unwrap();
+                    let (l_addr, r_addr) = root_addr
+                        .children()
+                        .expect("has children because we checked `root` is a parent");
                     go(r_addr, right).map_or_else(
                         || {
                             go(l_addr, left).map(|(new_left, pos)| {
@@ -750,7 +757,10 @@ impl<
                         // Compute the roots of the left and right children and hash them together.
                         // We skip computation in any subtrees that will not have data included in
                         // the final result.
-                        let (l_addr, r_addr) = cap.root_addr.children().unwrap();
+                        let (l_addr, r_addr) = cap
+                            .root_addr
+                            .children()
+                            .expect("has children because we checked `cap.root` is a parent");
                         let l_result = if r_addr.contains(&target_addr) {
                             None
                         } else {
@@ -1103,7 +1113,8 @@ impl<
             cur_addr = cur_addr.parent();
         }
 
-        Ok(MerklePath::from_parts(witness, position).unwrap())
+        Ok(MerklePath::from_parts(witness, position)
+            .expect("witness has length DEPTH because we extended it to the root"))
     }
 
     fn witness_internal(

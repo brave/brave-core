@@ -13,16 +13,23 @@
 edition = "2021"
 rust-version = "1.60"
 name = "shardtree"
-version = "0.3.1"
+version = "0.3.2"
 authors = ["Kris Nuttycombe <kris@nutty.land>"]
+build = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "A space-efficient Merkle tree with witnessing of marked leaves, checkpointing & state restoration."
 homepage = "https://github.com/zcash/incrementalmerkletree"
+readme = "README.md"
 categories = [
     "algorithms",
     "data-structures",
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/zcash/incrementalmerkletree"
+resolver = "1"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -30,6 +37,10 @@ rustdoc-args = [
     "--cfg",
     "docsrs",
 ]
+
+[lib]
+name = "shardtree"
+path = "src/lib.rs"
 
 [dependencies.assert_matches]
 version = "1.5"
