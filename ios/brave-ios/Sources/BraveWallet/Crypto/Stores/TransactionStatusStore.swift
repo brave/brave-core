@@ -82,7 +82,7 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
       _onNewUnapprovedTx: { _ in
-       // tx speed up and cancellation will be handled inside `TxConfirmationStore`
+        // tx speed up and cancellation will be handled inside `TxConfirmationStore`
       },
       _onUnapprovedTxUpdated: { _ in
         // should only handle tx speed up and tx cancellation
