@@ -6,6 +6,8 @@
 brave_ui_allow_circular_includes_from =
     [ "//brave/browser/ui/webui/ads_internals" ]
 if (!is_android) {
-  brave_ui_allow_circular_includes_from +=
-      [ "//brave/browser/ui/webui/brave_news_internals" ]
+  brave_ui_allow_circular_includes_from += [
+    "//brave/browser/ui/webui/brave_news_internals",
+    "//brave/browser/ui/views/split_view",
+  ]
 }

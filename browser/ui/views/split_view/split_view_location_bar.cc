@@ -16,7 +16,6 @@
 #include "brave/browser/ui/views/split_view/split_view_location_bar_model_delegate.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "cc/paint/paint_flags.h"
-#include "chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h"
 #include "components/omnibox/browser/location_bar_model_impl.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/prefs/pref_service.h"
