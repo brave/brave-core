@@ -185,6 +185,13 @@ extension URL {
 
     return renderedString.bidiBaseDirection == .leftToRight
   }
+
+  public var fileSystemRepresentation: String? {
+    return self.withUnsafeFileSystemRepresentation { bytes -> String? in
+      guard let bytes = bytes else { return nil }
+      return String(cString: bytes)
+    }
+  }
 }
 
 extension InternalURL {
