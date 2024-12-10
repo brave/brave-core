@@ -488,42 +488,6 @@
         When there will be more places where roboto_mono is used,
         then worth to embed and actually use roboto_mono.
     -->
-    <item name="android:typeface">monospace</item>
-  </style>
-
-  <!-- Playlist styles -->
-  <style name="BraveButton">
-        <item name="android:stateListAnimator">@null</item>
-        <item name="android:paddingStart">22dp</item>
-        <item name="android:paddingEnd">22dp</item>
-        <item name="android:paddingTop">12dp</item>
-        <item name="android:paddingBottom">12dp</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_marginEnd">48dp</item>
-        <item name="android:layout_marginStart">48dp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:typeface">monospace</item>
     </style>
-
-    <style name="TextInputLayout">
-        <item name="colorControlNormal">@color/text_input_layout_activated</item>
-        <item name="colorControlActivated">@color/text_input_layout_activated</item>
-        <item name="colorControlHighlight">@color/text_input_layout_activated</item>
-        <item name="android:textColorHint">@color/hint_color</item>
-    </style>
-
-    <style name="HintStyle" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/hint_color</item>
-    </style>
-
-    <style name="OnboardingWindowAnimation">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-    </style>
-
-    <style name="playlistSeekBar" parent="Widget.AppCompat.SeekBar">
-        <item name="android:progressBackgroundTint">@color/playlist_progress_bar_tint_bg</item>
-        <item name="android:progressTint">@color/playlist_progress_bar_tint</item>
-        <item name="android:thumbTint">@color/playlist_progress_bar_tint</item>
-    </style>
-
 </resources>

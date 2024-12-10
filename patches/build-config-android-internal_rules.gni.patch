@@ -1,12 +1,12 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index b2b04e27db94aa359c5d5a23b974d03dd625ea0a..f0b6a9b437a2388f6a1e091c2ac38ed2390349c7 100644
+index b2b04e27db94aa359c5d5a23b974d03dd625ea0a..06205de618d73bb94ba2abffd3d9d8a36df993d9 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
 @@ -3972,6 +3972,7 @@ if (enable_java_templates) {
            "java/androidx/core/os/BuildCompat.kt",
            "webengine_shell_apk/src/org/chromium/webengine/shell/*.kt",
          ]
-+        import("//brave/android/java/org/chromium/chrome/browser/playlist/sources.gni") _kt_allowlist += brave_playlist_kt_allowlist
++        import("//brave/browser/playlist/android/sources.gni") _kt_allowlist += brave_playlist_kt_allowlist
          _found_kt = filter_exclude(_kt_files, _kt_allowlist)
          assert(
              _found_kt == [],
