@@ -120,11 +120,13 @@ void AIChatTabHelper::BindPageContentExtractorHost(
 }
 
 AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
+                                 AIChatService* ai_chat_service,
                                  std::unique_ptr<PrintPreviewExtractionDelegate>
                                      print_preview_extraction_delegate)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AIChatTabHelper>(*web_contents),
-      AssociatedContentDriver(web_contents->GetBrowserContext()
+      AssociatedContentDriver(ai_chat_service,
+                              web_contents->GetBrowserContext()
                                   ->GetDefaultStoragePartition()
                                   ->GetURLLoaderFactoryForBrowserProcess()),
       print_preview_extraction_delegate_(

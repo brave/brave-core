@@ -269,10 +269,10 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
   if (!conversation) {
     // New conversation needed
     conversation = CreateConversation();
+    // Provide the content delegate, if allowed
+    MaybeAssociateContentWithConversation(conversation, associated_content_id,
+                                          associated_content);
   }
-  // Provide the content delegate, if allowed
-  MaybeAssociateContentWithConversation(conversation, associated_content_id,
-                                        associated_content);
 
   return conversation;
 }
@@ -545,6 +545,21 @@ void AIChatService::MaybeAssociateContentWithConversation(
   // if we don't call SetAssociatedContentDelegate, the conversation still
   // has a default Tab's navigation for which is is associated. The Conversation
   // won't use that Tab's Page for context.
+  if (!IsAIChatHistoryEnabled()) {
+    // First, if we're replacing a conversation and history is not enabled,
+    // then there'll be no way to get back to that conversation so we can
+    // delete it.
+    auto conversation_uuid_it =
+        content_conversations_.find(associated_content_id);
+    if (conversation_uuid_it != content_conversations_.end()) {
+      auto conversation_uuid = conversation_uuid_it->second;
+      ConversationHandler* previous_conversation =
+          GetConversation(conversation_uuid);
+      if (previous_conversation) {
+        MaybeUnloadConversation(previous_conversation);
+      }
+    }
+  }
   content_conversations_.insert_or_assign(
       associated_content_id, conversation->get_conversation_uuid());
 }
@@ -631,23 +646,39 @@ void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
 void AIChatService::MaybeUnloadConversation(
     ConversationHandler* conversation_handler) {
   // Don't unload if there is active UI for the conversation
-  if (conversation_handler->IsAnyClientConnected()) {
+  if (conversation_handler->IsAnyClientConnected() ||
+      conversation_handler->IsRequestInProgress()) {
     return;
   }
 
   bool has_history = conversation_handler->HasAnyHistory();
+  std::string uuid = conversation_handler->get_conversation_uuid();
 
-  // We can keep a conversation with history in memory until there is no active
-  // content.
+  // Some conversations are only associated with content via this Service
+  // but not via the ConversationHandler. This is only for lookup, but is
+  // important if the content is still alive to keep the conversation alive
+  // so that when UI is opened for that content, the conversation still exists.
   // TODO(petemill): With the history feature enabled, we should unload (if
-  // there is no request in progress). However, we can only do this when
+  // there is no request in progress). However, we can only do that when
   // GetOrCreateConversationHandlerForContent allows a callback so that it
   // can provide an answer after loading the conversation content from storage.
-  if (conversation_handler->IsAssociatedContentAlive() && has_history) {
-    return;
+  // We can also only do that when re-loading the conversation for still-alive
+  // content rejoins to that live content instead of creating a content archive.
+  if (has_history) {
+    bool is_content_alive = base::ranges::any_of(
+        content_conversations_,
+        [&uuid](const auto& kv) { return kv.second == uuid; });
+
+    if (IsAIChatHistoryEnabled()) {
+      is_content_alive =
+          is_content_alive || conversation_handler->IsAssociatedContentAlive();
+    }
+
+    if (is_content_alive) {
+      return;
+    }
   }
 
-  auto uuid = conversation_handler->get_conversation_uuid();
   conversation_observations_.RemoveObservation(conversation_handler);
   conversation_handlers_.erase(uuid);
   DVLOG(1) << "Unloaded conversation (" << uuid << ") from memory. Now have "
@@ -828,8 +859,27 @@ void AIChatService::OnConversationTitleChanged(ConversationHandler* handler,
 
 void AIChatService::OnAssociatedContentDestroyed(ConversationHandler* handler,
                                                  int content_id) {
-  content_conversations_.erase(content_id);
+  // This will fire for conversations which are directly associated with the
+  // content, including non-default conversations. They need to be unloaded
+  // too.
   MaybeUnloadConversation(handler);
+}
+
+void AIChatService::OnAssociatedContentDestroyed(int content_id) {
+  // This will fire also for conversations which don't know they are associated
+  // with content (e.g. for chrome:// content) and only content_conversations_
+  // has that knowledge). So we handle calling MaybeUnloadConversation here.
+  auto conversation_uuid_it = content_conversations_.find(content_id);
+  if (conversation_uuid_it == content_conversations_.end()) {
+    return;
+  }
+  std::string conversation_uuid = conversation_uuid_it->second;
+  content_conversations_.erase(conversation_uuid_it);
+  // Maybe unload the conversation when its associated content is destroyed
+  ConversationHandler* conversation = GetConversation(conversation_uuid);
+  if (conversation) {
+    MaybeUnloadConversation(conversation);
+  }
 }
 
 void AIChatService::GetVisibleConversations(

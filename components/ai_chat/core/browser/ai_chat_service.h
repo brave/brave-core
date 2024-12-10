@@ -98,6 +98,11 @@ class AIChatService : public KeyedService,
   void OnAssociatedContentDestroyed(ConversationHandler* handler,
                                     int content_id) override;
 
+  // Content destroyed that may or may not be directly associated with a
+  // ConversationHandler, but may be associated via the content_conversations_
+  // map.
+  void OnAssociatedContentDestroyed(int content_id);
+
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
 
@@ -158,6 +163,7 @@ class AIChatService : public KeyedService,
                     BindObserverCallback callback) override;
 
   bool HasUserOptedIn();
+  bool IsAIChatHistoryEnabled();
   bool IsPremiumStatus();
 
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
@@ -214,8 +220,6 @@ class AIChatService : public KeyedService,
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
 
-  bool IsAIChatHistoryEnabled();
-
   raw_ptr<ModelService> model_service_;
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
@@ -246,11 +250,12 @@ class AIChatService : public KeyedService,
   std::map<std::string, std::unique_ptr<ConversationHandler>>
       conversation_handlers_;
 
-  // Map associated content id (a.k.a navigation id) to conversation uuid. This
-  // acts as a cache for back-navigation to find the most recent conversation
-  // for that navigation. This should be periodically cleaned up by removing any
-  // keys where the ConversationHandler has had a destroyed
-  // associated_content_delegate_ for some time.
+  // Map associated content id (a.k.a navigation id) to defaultconversation
+  // uuid. This is not an exhaustive list because associated content can have
+  // multiple conversations if the history feature is enabled.
+  // TODO(petemill): Use NavigationEntry::SetUserData to store conversation
+  // relationship with specific navigations so that we can support
+  // back-navigation without needing to keep all entries in this map in memory.
   std::map<int, std::string> content_conversations_;
 
   base::ScopedMultiSourceObservation<ConversationHandler,

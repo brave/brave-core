@@ -80,9 +80,10 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
     favicon::ContentFaviconDriver::CreateForWebContents(web_contents(),
                                                         &favicon_service_);
     AIChatTabHelper::CreateForWebContents(
-        web_contents(), is_print_preview_supported_
-                            ? std::make_unique<MockPrintPreviewExtractor>()
-                            : nullptr);
+        web_contents(), nullptr /*ai_chat_service*/,
+        is_print_preview_supported_
+            ? std::make_unique<MockPrintPreviewExtractor>()
+            : nullptr);
     helper_ = AIChatTabHelper::FromWebContents(web_contents());
     helper_->SetPageContentFetcherDelegateForTesting(
         std::make_unique<MockPageContentFetcher>());
