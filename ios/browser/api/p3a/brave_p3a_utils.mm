@@ -131,6 +131,16 @@ NSString* const P3ACreativeMetricPrefix =
   _p3aService->RemoveDynamicMetric(base::SysNSStringToUTF8(histogramName));
 }
 
+- (void)updateMetricValueForSingleFormat:(NSString*)histogramName
+                                  bucket:(size_t)bucket
+                         isConstellation:(BOOL)isConstellation {
+  if (!_p3aService) {
+    return;
+  }
+  _p3aService->UpdateMetricValueForSingleFormat(
+      base::SysNSStringToUTF8(histogramName), bucket, isConstellation);
+}
+
 void UmaHistogramExactLinear(NSString* name,
                              NSInteger sample,
                              NSInteger exclusive_max) {
