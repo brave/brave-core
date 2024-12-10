@@ -47,7 +47,10 @@ import { Column, Row, Text } from '../../../../../components/shared/style'
 interface Props extends DialogProps {
   isOpen: boolean
   token?: MeldCryptoCurrency
-  onSelectToken: (asset: MeldCryptoCurrency) => void
+  onSelectToken: (
+    asset: MeldCryptoCurrency,
+    account?: BraveWallet.AccountInfo
+  ) => void
   onClose: () => void
 }
 
@@ -92,7 +95,7 @@ export const CreateAccount = (props: Props) => {
       }).unwrap()
 
       if (account) {
-        onSelectToken(token)
+        onSelectToken(token, account)
       }
     } catch (error) {
       console.log(error)
