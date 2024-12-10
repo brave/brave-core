@@ -9,21 +9,8 @@
 
 #include "base/no_destructor.h"
 #include "base/sequence_checker.h"
+#include "base/task/single_thread_task_runner.h"
 #include "components/network_time/network_time_tracker.h"
-
-#if defined(OS_IOS)
-#include "ios/web/public/thread/web_task_traits.h"
-#include "ios/web/public/thread/web_thread.h"
-#else
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
-#endif  // defined(OS_IOS)
-
-#if defined(OS_IOS)
-using web::GetUIThreadTaskRunner;
-#else
-using content::GetUIThreadTaskRunner;
-#endif  // defined(OS_IOS)
 
 namespace brave_sync {
 
@@ -37,9 +24,11 @@ NetworkTimeHelper::NetworkTimeHelper() = default;
 NetworkTimeHelper::~NetworkTimeHelper() = default;
 
 void NetworkTimeHelper::SetNetworkTimeTracker(
-    network_time::NetworkTimeTracker* tracker) {
+    network_time::NetworkTimeTracker* tracker,
+    const scoped_refptr<base::SingleThreadTaskRunner>& ui_task_runner) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   network_time_tracker_ = tracker;
+  ui_task_runner_ = ui_task_runner;
 }
 
 void NetworkTimeHelper::GetNetworkTime(GetNetworkTimeCallback cb) {
@@ -47,7 +36,7 @@ void NetworkTimeHelper::GetNetworkTime(GetNetworkTimeCallback cb) {
     std::move(cb).Run(network_time_for_test_);
     return;
   }
-  GetUIThreadTaskRunner({})->PostTask(
+  ui_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&NetworkTimeHelper::GetNetworkTimeOnUIThread,
                                 weak_ptr_factory_.GetWeakPtr(), std::move(cb)));
 }
