@@ -167,27 +167,6 @@ extension RecentSearchQRCodeScannerController {
 
     var scannedText: String? {
       didSet {
-        scannedDisplayButton.setNeedsUpdateConfiguration()
-      }
-    }
-
-    private var scannedTextTruncationMode: NSLineBreakMode = .byTruncatingHead
-
-    private var scannedDisplayButtonConfiguration: UIButton.Configuration {
-      var configuration = UIButton.Configuration.filled()
-      configuration.buttonSize = .small
-      configuration.titleLineBreakMode = .byTruncatingTail
-      configuration.baseForegroundColor = UIColor.white
-      configuration.baseBackgroundColor = UIColor(braveSystemName: .primitivePurple60)
-      configuration.cornerStyle = .capsule
-      return configuration
-    }
-
-    private(set) lazy var scannedDisplayButton = UIButton(
-      configuration: scannedDisplayButtonConfiguration
-    ).then {
-      $0.configurationUpdateHandler = { [unowned self] button in
-        var configuration = scannedDisplayButtonConfiguration
         let processedScannedResult = processScannedText()
         let truncationMode = processedScannedResult.truncationMode
 
@@ -204,24 +183,28 @@ extension RecentSearchQRCodeScannerController {
             ]
           )
 
-          configuration.attributedTitle = AttributedString(title)
+          scannedDisplayButton.titleLabel?.lineBreakMode = truncationMode
+          scannedDisplayButton.setAttributedTitle(title, for: .normal)
+        } else {
+          scannedDisplayButton.setTitle(nil, for: .normal)
         }
-
-        button.configuration = configuration
       }
+    }
+
+    private(set) lazy var scannedDisplayButton = UIButton().then {
+      $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+      $0.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+      $0.titleLabel?.lineBreakMode = .byTruncatingTail
+      $0.setTitleColor(UIColor.white, for: .normal)
+      $0.backgroundColor = UIColor(braveSystemName: .primitivePurple60)
+      $0.layer.cornerRadius = 10
+      $0.layer.cornerCurve = .continuous
+      $0.layer.masksToBounds = true
       $0.isHidden = true
     }
 
     private func processScannedText() -> (string: String?, truncationMode: NSLineBreakMode) {
       if let text = scannedText, let url = URIFixup.getURL(text) {
-        let isRenderedLeftToRight = url.isRenderedLeftToRight
-        let isMixedCharset = !url.isUnidirectional
-
-        var isLTR = isRenderedLeftToRight && !isMixedCharset
-        if isMixedCharset {
-          isLTR = true
-        }
-
         let scannedText = URLFormatter.formatURL(
           URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
           formatTypes: [
@@ -231,9 +214,7 @@ extension RecentSearchQRCodeScannerController {
         )
 
         let truncationMode: NSLineBreakMode =
-          !["http", "https"].contains(url.scheme ?? "") || !isLTR
-          ? .byTruncatingTail : .byTruncatingHead
-
+          ["http", "https"].contains(url.scheme ?? "") ? .byTruncatingHead : .byTruncatingTail
         return (scannedText, truncationMode)
       }
 
