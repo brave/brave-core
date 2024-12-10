@@ -173,6 +173,21 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
 
 #if defined(TOOLKIT_VIEWS)
   if (sidebar::CanUseSidebar(browser())) {
+    auto index = GetNextIndexOfBraveProductsSection();
+    // Remove above separator as sidebar will add its top & bottom
+    // separator.
+    // If |need_separator| is false, there is no item after window section
+    // entry and separator. In this case, need to remove that separator because
+    // we will add different type of separators around sidebar menu entry.
+    if (!need_separator) {
+      RemoveItemAt(index - 1);
+      index--;
+    }
+
+    // Don't need finish this section with more separator as
+    // we'll add another separators around sidebar menu entry below.
+    need_separator = false;
+
     sidebar_show_option_model_ = std::make_unique<ui::ButtonMenuItemModel>(
         IDS_APP_MENU_SIDEBAR_TITLE, this);
 
@@ -182,16 +197,16 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
         IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER, IDS_APP_MENU_SIDEBAR_HOVER);
     sidebar_show_option_model_->AddGroupItemWithStringId(
         IDC_SIDEBAR_SHOW_OPTION_NEVER, IDS_APP_MENU_SIDEBAR_OFF);
-    const auto index = GetNextIndexOfBraveProductsSection();
+
+    // Add additional spacing because LOWER|UPPER separator has more narrow
+    // spacing then normal separator.
+    InsertSeparatorAt(index++, ui::SPACING_SEPARATOR);
+    InsertSeparatorAt(index++, ui::LOWER_SEPARATOR);
     AddButtonItemAt(IDC_SIDEBAR_SHOW_OPTION_MENU,
                     sidebar_show_option_model_.get(),
-                    static_cast<size_t>(index));
-    // Insert separator to the top and bottom
-    InsertSeparatorAt(index, ui::LOWER_SEPARATOR);
-    InsertSeparatorAt(index + 2, ui::UPPER_SEPARATOR);
-
-    // Already added separator.
-    need_separator = false;
+                    static_cast<size_t>(index++));
+    InsertSeparatorAt(index++, ui::UPPER_SEPARATOR);
+    InsertSeparatorAt(index, ui::SPACING_SEPARATOR);
   }
 #endif
   if (need_separator) {
