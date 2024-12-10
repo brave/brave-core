@@ -375,7 +375,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     else { return nil }
 
     let allTokens =
-    await blockchainRegistry.allTokens(chainId: network.chainId, coin: txInfo.coin) + tokenInfoCache
+      await blockchainRegistry.allTokens(chainId: network.chainId, coin: txInfo.coin)
+      + tokenInfoCache
     let userAssets = await assetManager.getAllUserAssetsInNetworkAssets(
       networks: [network],
       includingUserDeleted: true
@@ -396,16 +397,15 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     var followUpAction = TransactionStatusStore.FollowUpAction.none
     if case .ethSend(let detail) = activeParsedTransaction.details,
       let fromValue = BDouble(detail.fromAmount),
-       fromValue == 0, activeTransaction.ethTxData.isEmpty
+      fromValue == 0, activeTransaction.ethTxData.isEmpty
     {
       // loop through allTx to find if there is a tx that has the same chain id, coin type, nonce and from address
       // maxFeePerGas/gasPrice is smaller than this active tx
       if let txInfo = allTxs.first(where: {
-        $0.id != activeTransaction.id &&
-        $0.coin == activeTransaction.coin &&
-        $0.chainId == activeTransaction.chainId &&
-        $0.ethTxNonce == activeTransaction.ethTxNonce &&
-        $0.fromAddress == activeTransaction.fromAddress
+        $0.id != activeTransaction.id && $0.coin == activeTransaction.coin
+          && $0.chainId == activeTransaction.chainId
+          && $0.ethTxNonce == activeTransaction.ethTxNonce
+          && $0.fromAddress == activeTransaction.fromAddress
       }), let parsedTx = await parseTransaction(txInfo) {
         followUpAction = .cancel(toCancelParsedTx: parsedTx)
       }
