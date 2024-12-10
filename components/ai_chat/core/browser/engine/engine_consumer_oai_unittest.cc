@@ -55,7 +55,8 @@ class MockOAIAPIClient : public OAIAPIClient {
               (const mojom::CustomModelOptions&,
                base::Value::List,
                EngineConsumer::GenerationDataCallback,
-               EngineConsumer::GenerationCompletedCallback),
+               EngineConsumer::GenerationCompletedCallback,
+               const std::optional<std::vector<std::string>>& stop_sequences),
               (override));
 };
 
@@ -103,11 +104,12 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   auto* client = GetClient();
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce([&run_loop, this](
                     const mojom::CustomModelOptions& model_options,
                     base::Value::List, EngineConsumer::GenerationDataCallback,
-                    EngineConsumer::GenerationCompletedCallback) {
+                    EngineConsumer::GenerationCompletedCallback,
+                    const std::optional<std::vector<std::string>>&) {
         EXPECT_EQ("https://test.com/", model_options.endpoint.spec());
 
         // Update the model options
@@ -132,11 +134,12 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   run_loop.Run();
 
   base::RunLoop run_loop2;
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce([&run_loop2](const mojom::CustomModelOptions& model_options,
                              base::Value::List,
                              EngineConsumer::GenerationDataCallback,
-                             EngineConsumer::GenerationCompletedCallback) {
+                             EngineConsumer::GenerationCompletedCallback,
+                             const std::optional<std::vector<std::string>>&) {
         EXPECT_EQ("https://updated-test.com/", model_options.endpoint.spec());
         run_loop2.Quit();
       });
@@ -158,13 +161,14 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
     return [result_string](
                const mojom::CustomModelOptions&, base::Value::List,
                EngineConsumer::GenerationDataCallback,
-               EngineConsumer::GenerationCompletedCallback completed_callback) {
+               EngineConsumer::GenerationCompletedCallback completed_callback,
+               const std::optional<std::vector<std::string>>&) {
       std::move(completed_callback)
           .Run(EngineConsumer::GenerationResult(result_string));
     };
   };
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(invoke_completion_callback("Returning non question format"))
       .WillOnce(invoke_completion_callback(
           "<question>Question 1</question><question>Question 2</question>"))
@@ -262,24 +266,41 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
 
-  // Expect a single call to PerformRequest
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
-      .WillOnce(
-          [&expected_system_message, &human_input, &assistant_response](
-              const mojom::CustomModelOptions, base::Value::List messages,
-              EngineConsumer::GenerationDataCallback,
-              EngineConsumer::GenerationCompletedCallback completed_callback) {
-            // system role is added by the engine
-            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
-            EXPECT_EQ(*messages[0].GetDict().Find("content"),
-                      expected_system_message);
+  // Expect both the main request and the title generation request
+  {
+    testing::InSequence seq;
 
-            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[1].GetDict().Find("content"), human_input);
+    // Main request
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+        .WillOnce(
+            [&expected_system_message, &human_input, &assistant_response](
+                const mojom::CustomModelOptions, base::Value::List messages,
+                EngineConsumer::GenerationDataCallback,
+                EngineConsumer::GenerationCompletedCallback completed_callback,
+                const std::optional<std::vector<std::string>>&) {
+              // system role is added by the engine
+              EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+              EXPECT_EQ(*messages[0].GetDict().Find("content"),
+                        expected_system_message);
 
-            std::move(completed_callback)
-                .Run(EngineConsumer::GenerationResult(assistant_response));
-          });
+              EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+              EXPECT_EQ(*messages[1].GetDict().Find("content"), human_input);
+
+              std::move(completed_callback)
+                  .Run(EngineConsumer::GenerationResult(assistant_response));
+            });
+
+    // Title generation request
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+        .WillOnce(
+            [](const mojom::CustomModelOptions, base::Value::List,
+               EngineConsumer::GenerationDataCallback data_callback,
+               EngineConsumer::GenerationCompletedCallback completed_callback,
+               const std::optional<std::vector<std::string>>&) {
+              std::move(completed_callback)
+                  .Run(EngineConsumer::GenerationResult("Greeting Exchange"));
+            });
+  }
 
   // Initiate the test
   engine_->GenerateAssistantResponse(
@@ -321,12 +342,13 @@ TEST_F(EngineConsumerOAIUnitTest,
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce(
           [&expected_system_message, &assistant_input](
               const mojom::CustomModelOptions, base::Value::List messages,
               EngineConsumer::GenerationDataCallback,
-              EngineConsumer::GenerationCompletedCallback completed_callback) {
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>&) {
             // system role is added by the engine
             EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
             EXPECT_EQ(*messages[0].GetDict().Find("content"),
@@ -370,12 +392,13 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Test with a modified server reply.
   run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
       .WillOnce([&expected_system_message](
                     const mojom::CustomModelOptions, base::Value::List messages,
                     EngineConsumer::GenerationDataCallback,
                     EngineConsumer::GenerationCompletedCallback
-                        completed_callback) {
+                        completed_callback,
+                    const std::optional<std::vector<std::string>>&) {
         // system role is added by the engine
         EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
         EXPECT_EQ(*messages[0].GetDict().Find("content"),
@@ -410,7 +433,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
   EngineConsumer::ConversationHistory history;
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _)).Times(0);
   engine_->GenerateAssistantResponse(
       false, "This is my page.", history, "Who?", "", base::DoNothing(),
       base::BindLambdaForTesting(
@@ -429,7 +452,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _)).Times(0);
   run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
       false, "This is my page.", history, "Who?", "", base::DoNothing(),
@@ -447,22 +470,40 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   EngineConsumer::ConversationHistory history;
 
-  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
-      .WillOnce(
-          [](const mojom::CustomModelOptions, base::Value::List messages,
-             EngineConsumer::GenerationDataCallback,
-             EngineConsumer::GenerationCompletedCallback completed_callback) {
-            // Page content should always be attached to the first message
-            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      "This is the text of a web page:\n<page>\nThis is a "
-                      "page.\n</page>\n\n");
-            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[2].GetDict().Find("content"),
-                      "Tell me more about this page");
-            std::move(completed_callback)
-                .Run(EngineConsumer::GenerationResult(""));
-          });
+  // Expect both the main request and the title generation request
+  {
+    testing::InSequence seq;
+
+    // Main request
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+        .WillOnce(
+            [](const mojom::CustomModelOptions, base::Value::List messages,
+               EngineConsumer::GenerationDataCallback,
+               EngineConsumer::GenerationCompletedCallback completed_callback,
+               const std::optional<std::vector<std::string>>&) {
+              // Page content should always be attached to the first message
+              EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+              EXPECT_EQ(*messages[1].GetDict().Find("content"),
+                        "This is the text of a web page:\n<page>\nThis is a "
+                        "page.\n</page>\n\n");
+              EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+              EXPECT_EQ(*messages[2].GetDict().Find("content"),
+                        "Tell me more about this page");
+              std::move(completed_callback)
+                  .Run(EngineConsumer::GenerationResult(""));
+            });
+
+    // Title generation request
+    EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+        .WillOnce(
+            [](const mojom::CustomModelOptions, base::Value::List,
+               EngineConsumer::GenerationDataCallback data_callback,
+               EngineConsumer::GenerationCompletedCallback completed_callback,
+               const std::optional<std::vector<std::string>>&) {
+              std::move(completed_callback)
+                  .Run(EngineConsumer::GenerationResult("Page Summary"));
+            });
+  }
 
   {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
@@ -476,6 +517,50 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
       /* page_content */ "This is a page.", history, "", "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest, GenerateTitle) {
+  auto* client = GetClient();
+  base::RunLoop run_loop;
+
+  std::string page_content = "This is a page.";
+  std::string first_message = "What is this about?";
+
+  auto invoke_generation_data_callback = [](const std::string& result_string) {
+    return [result_string](
+               const mojom::CustomModelOptions&, base::Value::List,
+               EngineConsumer::GenerationDataCallback,
+               EngineConsumer::GenerationCompletedCallback completed_callback,
+               const std::optional<std::vector<std::string>>&) {
+      std::move(completed_callback)
+          .Run(EngineConsumer::GenerationResult(result_string));
+    };
+  };
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+      .WillOnce(invoke_generation_data_callback("Understanding Page Content"))
+      .WillOnce(invoke_generation_data_callback(""));
+
+  engine_->GenerateTitle(
+      page_content, first_message,
+      base::BindLambdaForTesting([](mojom::ConversationEntryEventPtr event) {
+        EXPECT_TRUE(event->is_conversation_title_event());
+        EXPECT_STREQ(event->get_conversation_title_event()->title.c_str(),
+                     "Understanding Page Content");
+      }));
+
+  // Test with empty response
+  engine_->GenerateTitle(
+      page_content, first_message,
+      base::BindLambdaForTesting([&run_loop](
+                                     mojom::ConversationEntryEventPtr event) {
+        EXPECT_TRUE(event->is_conversation_title_event());
+        EXPECT_STREQ(event->get_conversation_title_event()->title.c_str(), "");
+        run_loop.Quit();
+      }));
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);
