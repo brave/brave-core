@@ -617,26 +617,19 @@ const launchElementPicker = (root: ShadowRoot) => {
   )
 
   const svg = root.getElementById('picker-ui')!
-
-  svg.addEventListener(
-    'mousemove',
-    (event) => {
-      console.log('mouse move event')
-      if(window.matchMedia("(any-hover: none)").matches) {
-        console.log('mouse move event: no pointer devide detected')
-        return
-      }
-      console.log('mouse move event: !!! pointer devide detected')
-      if (isAndroid) {
-        return
-      }
-      if (!hasSelectedTarget) {
-        elementPickerHoverCoordsChanged(event.clientX, event.clientY)
-      }
-      event.stopPropagation()
-    },
-    true,
-  )
+  if(window.matchMedia("(pointer: fine)").matches &&
+      window.matchMedia("(hover: hover)").matches) {
+        svg.addEventListener(
+          'mousemove',
+          (event) => {
+            if (!hasSelectedTarget) {
+              elementPickerHoverCoordsChanged(event.clientX, event.clientY)
+            }
+            event.stopPropagation()
+          },
+          true,
+        )
+  }
 
   const rulesTextArea: HTMLInputElement = root.querySelector(
     '#rules-box > textarea',
