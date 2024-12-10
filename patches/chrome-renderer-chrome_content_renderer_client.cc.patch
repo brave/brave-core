@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index a00e0e601bcebe65f9d4c63210dcbd64f97e9ac8..5f8f929d750bfcb8a6caeeb85e8ae065005bc45b 100644
+index a00e0e601bceb..0e0cbc7ba1c89 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -616,7 +616,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
@@ -11,11 +11,3 @@ index a00e0e601bcebe65f9d4c63210dcbd64f97e9ac8..5f8f929d750bfcb8a6caeeb85e8ae065
            render_frame, std::move(content_settings_delegate));
    if (chrome_observer_.get()) {
      if (chrome_observer_->content_settings_manager()) {
-@@ -793,6 +793,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
-   }
- #endif
- 
-+  BRAVE_RENDER_FRAME_CREATED
-   if (render_frame->IsMainFrame()) {
-     new commerce::CommerceWebExtractor(render_frame, registry);
-   }
