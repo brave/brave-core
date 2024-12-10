@@ -31,7 +31,7 @@ window.__firefox__.execute(function($) {
 
     sendInfo.push({
       resourceURL: resourceURL.href,
-      sourceURL: document.location.href,
+      sourceURL: $.windowOrigin,
       resourceType: resourceType
     });
 
