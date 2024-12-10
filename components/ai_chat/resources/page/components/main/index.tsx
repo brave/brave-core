@@ -58,12 +58,16 @@ function Main() {
     !aiChatContext.isPremiumUser &&
     conversationContext.currentModel?.options.leoModelOptions?.access === Mojom.ModelAccess.PREMIUM
 
+  const shouldShowStorageNotice = aiChatContext.hasAcceptedAgreement &&
+    aiChatContext.isHistoryFeatureEnabled &&
+    aiChatContext.isStoragePrefEnabled && !aiChatContext.isStorageNoticeDismissed
+
   const shouldShowPremiumSuggestionStandalone =
     aiChatContext.hasAcceptedAgreement &&
     !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
     !conversationContext.apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
-    !aiChatContext.isStorageNoticeDismissed && // Don't show premium prompt and storage notice
+    !shouldShowStorageNotice && // Don't show premium prompt and storage notice
     aiChatContext.canShowPremiumPrompt &&
     conversationContext.associatedContentInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
@@ -272,7 +276,7 @@ function Main() {
           {currentErrorElement && (
             <div className={styles.promptContainer}>{currentErrorElement}</div>
           )}
-          {aiChatContext.hasAcceptedAgreement && !aiChatContext.isStorageNoticeDismissed && (
+          {shouldShowStorageNotice && (
             <div className={styles.promptContainer}>
               <NoticeConversationStorage />
             </div>
