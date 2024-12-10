@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
-import * as Mojom from '../../../common/mojom'
-import styles from './style.module.scss'
-import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import * as React from 'react'
+import { getLocale } from '$web-common/locale'
+import * as Mojom from '../../mojom'
+import styles from './style.module.scss'
 
 interface ActionTypeLabelProps {
   actionType: Mojom.ActionType

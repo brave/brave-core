@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
-import '@brave/leo/tokens/css/variables.css'
 import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
 import ConversationEntries from './components/conversation_entries'

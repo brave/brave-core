@@ -30,10 +30,6 @@ function FeedbackForm() {
 
   const canSubmit = !!category
 
-  const handleCancelClick = () => {
-    conversationContext.handleFeedbackFormCancel()
-  }
-
   const handleSubmit = () => {
     conversationContext.handleFeedbackFormSubmit(category, feedbackText, shouldSendUrl)
   }
@@ -115,7 +111,7 @@ function FeedbackForm() {
           </div>
         )}
         <fieldset className={styles.actions}>
-          <Button onClick={handleCancelClick} kind='plain-faint'>
+          <Button onClick={conversationContext.handleFeedbackFormCancel} kind='plain-faint'>
             {getLocale('cancelButtonLabel')}
           </Button>
           <Button isDisabled={!canSubmit} onClick={handleSubmit}>

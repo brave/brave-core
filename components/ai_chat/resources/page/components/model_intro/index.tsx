@@ -13,11 +13,12 @@ import * as Mojom from '../../../common/mojom'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
+import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 
 function getCategoryName(category: Mojom.ModelCategory) {
   // To avoid problems when order of enum values change, we base the key
   // on the enum name rather than the number value, e.g. "CHAT" vs 0
-  const categoryKey = Object.keys(Mojom.ModelCategory)[category]
+  const categoryKey = getKeysForMojomEnum(Mojom.ModelCategory)[category]
   const key = `modelCategory-${categoryKey.toLowerCase()}`
   return getLocale(key)
 }

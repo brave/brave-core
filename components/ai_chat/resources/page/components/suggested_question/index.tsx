@@ -26,7 +26,7 @@ export function GenerateSuggestionsButton() {
   const conversationContext = useConversation()
   return (
     <SuggestionButton
-      onClick={() => conversationContext.generateSuggestedQuestions()}
+      onClick={conversationContext.generateSuggestedQuestions}
       isLoading={conversationContext.suggestionStatus === Mojom.SuggestionGenerationStatus.IsGenerating}
     >
       <span className={styles.generateButtonText}>

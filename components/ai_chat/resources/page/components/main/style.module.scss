@@ -67,7 +67,7 @@
 
   &.contentReady {
     opacity: 1;
-    transition: opacity 0.125s ease-out;
+    transition: opacity 0.12s ease-out;
   }
 }
 
@@ -178,7 +178,7 @@
 }
 
 .questionsList {
-  --leo-button-radius: 12px;
+  --leo-button-radius: var(--leo-radius-l);
   display: flex;
   flex-direction: column;
   align-items: start;

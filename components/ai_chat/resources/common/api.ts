@@ -13,23 +13,25 @@ export default abstract class API<T> {
     this.state = {...defaultState}
   }
 
+  // Debounce multiple state changes in the same task causing multiple
+  // events to be dispatched.
   private dispatchDebouncedStateChange = debounce(() => {
-    console.debug('dispatching uistatechange event', {...this.state})
     this.eventTarget.dispatchEvent(
-      new Event('uistatechange')
+      new Event('statechange')
     )
   }, 0)
 
   public setPartialState(partialState: Partial<T>) {
+    console.log('setPartialState', partialState)
     this.state = { ...this.state, ...partialState }
     this.dispatchDebouncedStateChange()
   }
 
   public addStateChangeListener(callback: (event: Event) => void) {
-    this.eventTarget.addEventListener('uistatechange', callback)
+    this.eventTarget.addEventListener('statechange', callback)
   }
 
   public removeStateChangeListener(callback: (event: Event) => void) {
-    this.eventTarget.removeEventListener('uistatechange', callback)
+    this.eventTarget.removeEventListener('statechange', callback)
   }
 }

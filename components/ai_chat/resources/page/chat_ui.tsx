@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
-import '@brave/leo/tokens/css/variables.css'
 import '$web-components/app.global.scss'
 import '$web-common/defaultTrustedTypesPolicy'
 import getAPI from './api'
@@ -57,7 +56,7 @@ function Content() {
 
 function ConversationEntries(props: ConversationEntriesProps) {
   const conversationContext = useConversation()
-  const iframeRef = React.useRef<HTMLIFrameElement|null>(null)
+  const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
   const hasNotifiedContentReady = React.useRef(false)
   const [hasLoaded, setHasLoaded] = React.useState(false)
 
@@ -114,7 +113,8 @@ function ConversationEntries(props: ConversationEntriesProps) {
 
   return (
     <iframe
-      src={"chrome-untrusted://leo-ai-conversation-entries/" + conversationContext.conversationUuid}
+      sandbox='allow-scripts allow-same-origin'
+      src={'chrome-untrusted://leo-ai-conversation-entries/' + conversationContext.conversationUuid}
       ref={iframeRef}
       onLoad={() => setHasLoaded(true)}
     />

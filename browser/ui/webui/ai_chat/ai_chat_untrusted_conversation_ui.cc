@@ -20,7 +20,6 @@
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
@@ -29,6 +28,8 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
+#else
+#include "chrome/browser/ui/browser.h"
 #endif
 
 namespace {
@@ -137,11 +138,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
                       brave_l10n::GetLocalizedResourceUTF16String(str.id));
   }
 
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  constexpr bool kIsMobile = true;
-#else
-  constexpr bool kIsMobile = false;
-#endif
+  constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
   source->AddBoolean("isMobile", kIsMobile);
 
   source->OverrideContentSecurityPolicy(

@@ -6,19 +6,19 @@
 import * as React from 'react'
 import API from './api'
 
-export default function useAPIState<T, Y>(api: API<Y>, defaultState: T) {
+export default function useAPIState<T>(api: API<T>, defaultState: T) {
   // Intialize with global state that may have been set between module-load
   // time and the first React render.
   const [context, setContext] = React.useState<T>({
     ...defaultState,
     ...api.state
   })
-  const updateFromAPIState = (state: Y) => {
+  const updateFromAPIState = React.useCallback((state: T) => {
     setContext((value) => ({
       ...value,
       ...state
     }))
-  }
+  }, [])
 
   React.useEffect(() => {
     // Update with any global state change that may have occurred between
@@ -34,6 +34,6 @@ export default function useAPIState<T, Y>(api: API<Y>, defaultState: T) {
     return () => {
       api.removeStateChangeListener(onGlobalStateChange)
     }
-  }, [])
+  }, [updateFromAPIState])
   return context
 }

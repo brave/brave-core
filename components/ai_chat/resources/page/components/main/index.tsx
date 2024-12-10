@@ -41,10 +41,10 @@ const SCROLL_BOTTOM_THRESHOLD = 20
 // when automatically scrolling to bottom.
 const SCROLL_BOTTOM_PADDING = 18
 
-const SUGGESTION_STATUS_SHOW_BUTTON: Mojom.SuggestionGenerationStatus[] = [
+const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>([
   Mojom.SuggestionGenerationStatus.CanGenerate,
   Mojom.SuggestionGenerationStatus.IsGenerating
-]
+])
 
 function Main() {
   const aiChatContext = useAIChat()
@@ -144,7 +144,7 @@ function Main() {
   const showSuggestions: boolean =
     aiChatContext.hasAcceptedAgreement &&
     (conversationContext.suggestedQuestions.length > 0 ||
-      SUGGESTION_STATUS_SHOW_BUTTON.includes(conversationContext.suggestionStatus))
+      SUGGESTION_STATUS_SHOW_BUTTON.has(conversationContext.suggestionStatus))
 
   const viewPortWithoutKeyboard = React.useRef(0)
   const keyboardSize = React.useRef(0)
@@ -246,11 +246,11 @@ function Main() {
 
               <div ref={scrollAnchor}>
               {!!conversationContext.conversationUuid &&
-              <aiChatContext.conversationEntriesComponent
-                onIsContentReady={setIsContentReady}
-                onHeightChanged={handleConversationEntriesHeightChanged}
-              />
-              }
+                <aiChatContext.conversationEntriesComponent
+                  onIsContentReady={setIsContentReady}
+                  onHeightChanged={handleConversationEntriesHeightChanged}
+                />
+                }
               </div>
 
               {conversationContext.isFeedbackFormVisible &&
@@ -263,7 +263,7 @@ function Main() {
               <div className={styles.suggestionsContainer}>
                 <div className={styles.questionsList}>
                   {conversationContext.suggestedQuestions.map((question, i) => <SuggestedQuestion key={question} question={question} />)}
-                  {SUGGESTION_STATUS_SHOW_BUTTON.includes(
+                  {SUGGESTION_STATUS_SHOW_BUTTON.has(
                     conversationContext.suggestionStatus
                   ) && conversationContext.shouldSendPageContents && (
                       <GenerateSuggestionsButton />

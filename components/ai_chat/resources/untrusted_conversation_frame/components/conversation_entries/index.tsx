@@ -3,23 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+ import Icon from '@brave/leo/react/icon'
 import * as React from 'react'
 import classnames from '$web-common/classnames'
-import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
 import useLongPress from '$web-common/useLongPress'
 import * as Mojom from '../../../common/mojom'
+import ActionTypeLabel from '../../../common/components/action_type_label'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import ContextMenuAssistant from '../context_menu_assistant'
-import { getLocale } from '$web-common/locale'
 import Quote from '../quote'
-import ActionTypeLabel from '../action_type_label'
 import LongPageInfo from '../page_context_message/long_page_info'
 import AssistantResponse from '../assistant_response'
-import styles from './style.module.scss'
 import CopyButton from '../copy_button'
 import EditButton from '../edit_button'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
-import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
+import styles from './style.module.scss'
 
 function ConversationEntries() {
   const conversationContext = useUntrustedConversationContext()
@@ -59,7 +59,7 @@ function ConversationEntries() {
     ) {
       if (
         conversationContext.conversationHistory[i].characterType ===
-        Mojom.CharacterType.ASSISTANT
+            Mojom.CharacterType.ASSISTANT
       ) {
         return i
       }

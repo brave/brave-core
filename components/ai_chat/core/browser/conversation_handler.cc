@@ -51,8 +51,6 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/grit/brave_components_strings.h"
@@ -552,8 +550,14 @@ void ConversationHandler::RateMessage(bool is_liked,
       base::BindOnce(
           [](RateMessageCallback callback, APIRequestResult result) {
             if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
-              std::string id = *result.value_body().GetDict().FindString("id");
-              std::move(callback).Run(id);
+              const std::string* id_result =
+                  result.value_body().GetDict().FindString("id");
+              if (id_result) {
+                std::move(callback).Run(*id_result);
+              } else {
+                DLOG(ERROR) << "Failed to get rating ID";
+                std::move(callback).Run(std::nullopt);
+              }
               return;
             }
             DLOG(ERROR) << "Failed to send rating: " << result.response_code();
@@ -1644,7 +1648,7 @@ ConversationHandler::GetStateForConversationEntries() {
   entries_state->is_content_refined = is_content_refined_;
   entries_state->is_leo_model = is_leo_model;
   entries_state->content_used_percentage =
-      (metadata_->associated_content->is_content_association_possible == true)
+      metadata_->associated_content->is_content_association_possible
           ? std::make_optional(
                 metadata_->associated_content->content_used_percentage)
           : std::nullopt;

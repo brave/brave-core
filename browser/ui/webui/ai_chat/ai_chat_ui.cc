@@ -79,12 +79,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
                       brave_l10n::GetLocalizedResourceUTF16String(str.id));
   }
 
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  constexpr bool kIsMobile = true;
-#else
-  constexpr bool kIsMobile = false;
-#endif
-
+  constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
   source->AddBoolean("isMobile", kIsMobile);
   source->AddBoolean("isHistoryEnabled",
                      ai_chat::features::IsAIChatHistoryEnabled());
@@ -101,7 +96,7 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       "img-src 'self' blob: chrome://resources chrome://favicon2;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
-      "font-src 'self' data: chrome://resources;");
+      "font-src 'self' chrome://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
       base::StringPrintf("child-src %s;", kAIChatUntrustedConversationUIURL));
