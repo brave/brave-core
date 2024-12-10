@@ -43,6 +43,7 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
+#include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -55,6 +56,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "components/grit/brave_components_strings.h"
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
@@ -714,6 +716,8 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
 
   const auto page_url = source_web_contents_->GetLastCommittedURL();
   add_block_elements &= page_url.SchemeIsHTTPOrHTTPS();
+  add_block_elements &= base::FeatureList::IsEnabled(
+      brave_shields::features::kBlockElementFeature);
   if (add_block_elements) {
     std::optional<size_t> inspect_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);

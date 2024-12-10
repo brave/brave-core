@@ -42,10 +42,10 @@ public class BraveCosmeticFiltersUtils {
     }
 
     @CalledByNative
-    public static boolean isNightlyModeEnabled() {
+    public static boolean isNightModeEnabled() {
         boolean isDarkModeEnabled = false;
         try {
-            isDarkModeEnabled = BraveActivity.getBraveActivity().isNightlyModeEnabled();
+            isDarkModeEnabled = BraveActivity.getBraveActivity().isNightModeEnabled();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "Get nightly mode status" + e);
         }

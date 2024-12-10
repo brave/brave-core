@@ -688,6 +688,14 @@
           FEATURE_VALUE_TYPE(brave_shields::features::kBlockAllCookiesToggle), \
       },                                                                       \
       {                                                                        \
+          "block-element-feature",                                             \
+          "Enable Block Element feature",                                      \
+          "Allows to block sekected HTML element on the page"                  \
+          "marked as a known threat.",                                         \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBlockElementFeature),   \
+      },                                                                       \
+      {                                                                        \
           "brave-super-referral",                                              \
           "Enable Brave Super Referral",                                       \
           "Use custom theme for Brave Super Referral",                         \

@@ -224,7 +224,9 @@ declare namespace chrome.windows {
 declare namespace cf_worker {
   const addSiteCosmeticFilter: (selector: string) => void
   const manageCustomFilters: () => void
-  const getElementPickerThemeInfo: () => void
+  const getElementPickerThemeInfo: () =>
+    Promise<{isDarkModeEnabled: boolean; bgcolor: number}>
+  const initElementPicker: () => Promise<number>
 }
 
 declare namespace chrome.test {

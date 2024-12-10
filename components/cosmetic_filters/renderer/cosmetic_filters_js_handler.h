@@ -16,11 +16,12 @@
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
+#include "content/public/renderer/v8_value_converter.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "url/gurl.h"
-#include "v8/include/v8.h"
+#include "v8/include/v8-promise.h"
 
 namespace cosmetic_filters {
 
@@ -59,6 +60,8 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
   void Bind(
       mojo::PendingAssociatedReceiver<mojom::CosmeticFiltersAgent> receiver);
 
+  void OnElementPickerRemoteHandlerDisconnect();
+
   // CosmeticFiltersAgent overrides:
   void LaunchContentPicker() override;
 
@@ -77,9 +80,19 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
   bool OnIsFirstParty(const std::string& url_string);
   void OnAddSiteCosmeticFilter(const std::string& selector);
   void OnManageCustomFilters();
-  void GetCosmeticFilterThemeInfo();
-  void OnGetCosmeticFilterThemeInfo(bool is_dark_mode_enabled,
-                                    int32_t background_color);
+  v8::Local<v8::Promise> InitElementPicker(v8::Isolate* isolate);
+  void OnInitElementPicker(
+      std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+      v8::Isolate* isolate,
+      std::unique_ptr<v8::Global<v8::Context>> context_old,
+      mojom::RunningPlatform platform);
+  v8::Local<v8::Promise> GetCosmeticFilterThemeInfo(v8::Isolate* isolate);
+  void OnGetCosmeticFilterThemeInfo(
+      std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+      v8::Isolate* isolate,
+      std::unique_ptr<v8::Global<v8::Context>> context_old,
+      bool is_dark_mode_enabled,
+      int32_t background_color);
   int OnEventBegin(const std::string& event_name);
   void OnEventEnd(const std::string& event_name, int);
 
@@ -89,7 +102,6 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
 
   mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
   GetElementPickerRemoteHandler();
-  void OnRemoteHandlerDisconnect();
   mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>
       element_picker_actions_handler_;
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
@@ -100,6 +112,7 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
   std::vector<std::string> exceptions_;
   GURL url_;
   std::optional<base::Value::Dict> resources_dict_;
+  std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
 
   // True if the content_cosmetic.bundle.js has injected in the current frame.
   bool bundle_injected_ = false;

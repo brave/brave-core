@@ -6,7 +6,7 @@ const NSSVG = 'http://www.w3.org/2000/svg'
 
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
-const isAndroid = /(android)/i.test(navigator.userAgent)
+let isAndroid: boolean | null
 
 const api = {
   cosmeticFilterCreate: (selector: string) => {
@@ -15,8 +15,15 @@ const api = {
   cosmeticFilterManage: () => {
     cf_worker.manageCustomFilters()
   },
-  getElementPickerThemeInfo: () => {
-    cf_worker.getElementPickerThemeInfo()
+  getElementPickerThemeInfo: (callback: (
+    isDarkModeEnabled: boolean, bgcolor: number) => void) => {
+    cf_worker.getElementPickerThemeInfo().then(
+      (val:{isDarkModeEnabled: boolean; bgcolor: number}) => {
+      callback(val.isDarkModeEnabled, val.bgcolor)
+    })
+  },
+  initElementPicker: (callback: (platform: number) => void) => {
+    cf_worker.initElementPicker().then(callback)
   }
 }
 
@@ -614,6 +621,12 @@ const launchElementPicker = (root: ShadowRoot) => {
   svg.addEventListener(
     'mousemove',
     (event) => {
+      console.log('mouse move event')
+      if(window.matchMedia("(any-hover: none)").matches) {
+        console.log('mouse move event: no pointer devide detected')
+        return
+      }
+      console.log('mouse move event: !!! pointer devide detected')
       if (isAndroid) {
         return
       }
@@ -687,22 +700,23 @@ const launchElementPicker = (root: ShadowRoot) => {
     sc.style.display = 'none'
   }
 
+  const retrieveTheme = () => {
+    api.getElementPickerThemeInfo(
+      (isDarkModeEnabled: boolean, bgcolor: number) => {
+      const colorHex = `#${(bgcolor & 0xFFFFFF).toString(16).padStart(6, '0')}`
+      section.style.setProperty('background-color', colorHex)
+      root.querySelectorAll('.secondary-button').forEach(e =>
+          (e as HTMLElement).style.setProperty('background-color', colorHex))
+
+      setDarkModeButtons(isDarkModeEnabled)
+    })
+  }
   const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
   const handleColorSchemeChange = (event: MediaQueryListEvent) => {
-    api.getElementPickerThemeInfo()
+    retrieveTheme()
   };
   prefersDarkScheme.addEventListener('change', handleColorSchemeChange);
-  window.content_cosmetic.setTheme = (
-    isDarkModeEnabled: boolean, bgcolor: number) => {
-    const colorHex = `#${(bgcolor & 0xFFFFFF).toString(16).padStart(6, '0')}`
-    section.style.setProperty('background-color', colorHex)
-    root.querySelectorAll('.secondary-button').forEach(e =>
-        (e as HTMLElement).style.setProperty('background-color', colorHex))
-
-    setDarkModeButtons(isDarkModeEnabled)
-  }
-
-  api.getElementPickerThemeInfo()
+  retrieveTheme()
 
   const dispatchSelect = () => {
     const { isValid, selector } = elementPickerUserSelectedTarget(
@@ -839,5 +853,8 @@ const highlightElements = () => {
 
 const active = document.getElementById('brave-element-picker')
 if (!active) {
-  launchElementPicker(attachElementPicker())
+  api.initElementPicker((platform: number) => {
+    isAndroid = platform === 1
+    launchElementPicker(attachElementPicker())
+  })
 }

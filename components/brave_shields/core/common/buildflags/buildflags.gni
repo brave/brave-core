@@ -1,0 +1,12 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+declare_args() {
+  enable_block_elements_feature =
+      (brave_channel == "development" || brave_channel == "nightly" ||
+       brave_channel == "beta" || (is_official_build && !is_android)) && !is_ios
+}

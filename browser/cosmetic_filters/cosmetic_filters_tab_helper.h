@@ -34,6 +34,7 @@ class CosmeticFiltersTabHelper
   void ManageCustomFilters() override;
   void GetElementPickerThemeInfo(
       GetElementPickerThemeInfoCallback callback) override;
+  void InitElementPicker(InitElementPickerCallback callback) override;
 
   friend class content::WebContentsUserData<CosmeticFiltersTabHelper>;
 

@@ -1624,7 +1624,7 @@ public abstract class BraveActivity extends ChromeActivity
         settingsLauncher.startSettings(this, ContentFilteringFragment.class);
     }
 
-    public boolean isNightlyModeEnabled() {
+    public boolean isNightModeEnabled() {
         return GlobalNightModeStateProviderHolder.getInstance().isInNightMode();
     }
 

@@ -17,7 +17,6 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_pages.h"
 #include "chrome/browser/themes/theme_service.h"
-#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -108,6 +107,17 @@ void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(
 #else   // !BUILDFLAG(IS_ANDROID)
   std::move(callback).Run(IsDarkModeEnabled(), GetThemeBackgroundColor());
 #endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+void CosmeticFiltersTabHelper::InitElementPicker(
+    InitElementPickerCallback callback) {
+  std::move(callback).Run(
+#if !BUILDFLAG(IS_ANDROID)
+      mojom::RunningPlatform::kDesktop
+#else   // !BUILDFLAG(IS_ANDROID)
+      mojom::RunningPlatform::kAndroid
+#endif  // !BUILDFLAG(IS_ANDROID)
+  );
 }
 
 CosmeticFiltersTabHelper::CosmeticFiltersTabHelper(

@@ -156,33 +156,32 @@
       stroke-width: 2px;
       fill: rgba(121, 116, 224, 0.25);
     }
-  </style>
-  <svg xmlns="http://www.w3.org/2000/svg" id="picker-ui">
-    <defs>
-      <mask id="highlight-mask">
-        <rect x="0" y="0" width="100%" height="100%" fill="white">
-      </mask>
-    </defs>
-    <rect id="darken" x="0" y="0" width="100%" height="100vh" mask="url(#highlight-mask)">
-  </svg>
-  <section id="main-section">
-    <div id="rules-box">
-      <textarea></textarea>
+</style>
+<svg xmlns="http://www.w3.org/2000/svg" id="picker-ui">
+  <defs>
+    <mask id="highlight-mask">
+      <rect x="0" y="0" width="100%" height="100%" fill="white">
+    </mask>
+  </defs>
+  <rect id="darken" x="0" y="0" width="100%" height="100vh" mask="url(#highlight-mask)">
+</svg>
+<section id="main-section">
+  <div id="rules-box">
+    <textarea></textarea>
+  </div>
+  <div>
+    <div id="slider-container">
+      <input id="sliderSpecificity" type="range" min="0" max="4" value="4">
     </div>
-    <div>
-      <div id="slider-container">
-        <input id="sliderSpecificity" type="range" min="0" max="4" value="4">
+    <div id="buttons">
+      <div class="buttons-line">
+        <button id="btnCreate" class="button block-button disabled light">Select element you want to block</button>
       </div>
-      <div id="buttons">
-        <div class="buttons-line">
-          <button id="btnCreate" class="button block-button disabled light">Select element you want to block</button>
-        </div>
-        <div class="buttons-line">
-          <button id="btnManage" class="button secondary-button disabled light">Manage filters</button>
-          <button id="btnShowRulesBox" class="button secondary-button disabled light">Show rules</button>
-          <button id="btnQuit" class="button secondary-button  disabled secondary-button-bordered light">Cancel</button>
-        </div>
+      <div class="buttons-line">
+        <button id="btnManage" class="button secondary-button disabled light">Manage filters</button>
+        <button id="btnShowRulesBox" class="button secondary-button disabled light">Show rules</button>
+        <button id="btnQuit" class="button secondary-button  disabled secondary-button-bordered light">Cancel</button>
       </div>
     </div>
-  </section>
-  
+  </div>
+</section>

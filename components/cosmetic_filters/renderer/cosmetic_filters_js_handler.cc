@@ -119,11 +119,9 @@ constexpr char kHideSelectorsInjectScript[] =
                 ...document.adoptedStyleSheets];
           };
         })();)";
-constexpr char kSePickerThemeInfoScript[] =
-    R"((function() {
-          const CC = window.content_cosmetic
-          CC.setTheme(%d, %d)
-        })();)";
+
+constexpr char kIsDarkModeEnabledPropery[] = "isDarkModeEnabled";
+constexpr char kBackgroundColorPropery[] = "bgcolor";
 
 std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
@@ -197,6 +195,16 @@ MakeCosmeticFiltersHandler(content::RenderFrame* render_frame) {
   return handler;
 }
 
+v8::Maybe<bool> CreateDataProperty(v8::Local<v8::Context> context,
+                                   v8::Local<v8::Object> object,
+                                   std::string_view name,
+                                   v8::Local<v8::Value> value) {
+  const v8::Local<v8::String> name_str =
+      gin::StringToV8(context->GetIsolate(), name);
+
+  return object->CreateDataProperty(context, name_str, value);
+}
+
 }  // namespace
 
 namespace cosmetic_filters {
@@ -240,7 +248,8 @@ CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
     const int32_t isolated_world_id)
     : render_frame_(render_frame),
       isolated_world_id_(isolated_world_id),
-      enabled_1st_party_cf_(false) {
+      enabled_1st_party_cf_(false),
+      v8_value_converter_(content::V8ValueConverter::Create()) {
   EnsureConnected();
 
   render_frame_->GetAssociatedInterfaceRegistry()
@@ -289,36 +298,109 @@ void CosmeticFiltersJSHandler::OnManageCustomFilters() {
 mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
 CosmeticFiltersJSHandler::GetElementPickerRemoteHandler() {
   if (!element_picker_actions_handler_ ||
-      !element_picker_actions_handler_.is_bound() ||
       !element_picker_actions_handler_.is_connected()) {
     element_picker_actions_handler_ = MakeCosmeticFiltersHandler(render_frame_);
-    element_picker_actions_handler_.set_disconnect_handler(
-        base::BindOnce(&CosmeticFiltersJSHandler::OnRemoteHandlerDisconnect,
-                       weak_ptr_factory_.GetWeakPtr()));
+    element_picker_actions_handler_.set_disconnect_handler(base::BindOnce(
+        &CosmeticFiltersJSHandler::OnElementPickerRemoteHandlerDisconnect,
+        weak_ptr_factory_.GetWeakPtr()));
   }
   return element_picker_actions_handler_;
 }
 
-void CosmeticFiltersJSHandler::OnRemoteHandlerDisconnect() {
+void CosmeticFiltersJSHandler::OnElementPickerRemoteHandlerDisconnect() {
   element_picker_actions_handler_.reset();
 }
 
-void CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo() {
-  GetElementPickerRemoteHandler()->GetElementPickerThemeInfo(
-      base::BindOnce(&CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo,
-                     weak_ptr_factory_.GetWeakPtr()));
+v8::Local<v8::Promise> CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo(
+    v8::Isolate* isolate) {
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+
+  if (!resolver.IsEmpty()) {
+    auto promise_resolver =
+        std::make_unique<v8::Global<v8::Promise::Resolver>>();
+    promise_resolver->Reset(isolate, resolver.ToLocalChecked());
+    auto context_old = std::make_unique<v8::Global<v8::Context>>(
+        isolate, isolate->GetCurrentContext());
+
+    GetElementPickerRemoteHandler()->GetElementPickerThemeInfo(base::BindOnce(
+        &CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo,
+        weak_ptr_factory_.GetWeakPtr(), std::move(promise_resolver), isolate,
+        std::move(context_old)));
+
+    return resolver.ToLocalChecked()->GetPromise();
+  }
+
+  return v8::Local<v8::Promise>();
 }
 
 void CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo(
+    std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+    v8::Isolate* isolate,
+    std::unique_ptr<v8::Global<v8::Context>> context_old,
     bool is_dark_mode_enabled,
     int32_t background_color) {
-  blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
-  std::string new_selectors_script = base::StringPrintf(
-      kSePickerThemeInfoScript, is_dark_mode_enabled, background_color);
-  web_frame->ExecuteScriptInIsolatedWorld(
-      isolated_world_id_,
-      blink::WebScriptSource(blink::WebString::FromUTF8(new_selectors_script)),
-      blink::BackForwardCacheAware::kAllow);
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old->Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
+  v8::Local<v8::Value> result;
+  v8::Local<v8::Object> object = v8::Object::New(isolate);
+  CHECK(CreateDataProperty(context, object, kIsDarkModeEnabledPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(is_dark_mode_enabled), context))
+            .ToChecked());
+  CHECK(CreateDataProperty(context, object, kBackgroundColorPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(background_color), context))
+            .ToChecked());
+  result = object;
+
+  std::ignore = resolver->Resolve(context, result);
+}
+
+v8::Local<v8::Promise> CosmeticFiltersJSHandler::InitElementPicker(
+    v8::Isolate* isolate) {
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+
+  if (!resolver.IsEmpty()) {
+    auto promise_resolver =
+        std::make_unique<v8::Global<v8::Promise::Resolver>>();
+    promise_resolver->Reset(isolate, resolver.ToLocalChecked());
+    auto context_old = std::make_unique<v8::Global<v8::Context>>(
+        isolate, isolate->GetCurrentContext());
+
+    GetElementPickerRemoteHandler()->InitElementPicker(base::BindOnce(
+        &CosmeticFiltersJSHandler::OnInitElementPicker,
+        weak_ptr_factory_.GetWeakPtr(), std::move(promise_resolver), isolate,
+        std::move(context_old)));
+
+    return resolver.ToLocalChecked()->GetPromise();
+  }
+
+  return v8::Local<v8::Promise>();
+}
+
+void CosmeticFiltersJSHandler::OnInitElementPicker(
+    std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+    v8::Isolate* isolate,
+    std::unique_ptr<v8::Global<v8::Context>> context_old,
+    mojom::RunningPlatform platform) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old->Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
+  v8::Local<v8::Integer> result;
+  result = v8::Integer::New(isolate, static_cast<int>(platform));
+
+  std::ignore = resolver->Resolve(context, result);
 }
 
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
@@ -398,6 +480,11 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
       isolate, javascript_object, "getElementPickerThemeInfo",
       base::BindRepeating(&CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo,
                           base::Unretained(this)));
+
+  BindFunctionToObject(
+      isolate, javascript_object, "initElementPicker",
+      base::BindRepeating(&CosmeticFiltersJSHandler::InitElementPicker,
+                          base::Unretained(this), isolate));
 
   if (perf_tracker_) {
     BindFunctionToObject(
