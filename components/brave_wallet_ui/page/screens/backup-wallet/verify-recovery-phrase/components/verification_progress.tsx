@@ -20,7 +20,7 @@ export const VerificationProgress = ({ steps, currentStep }: Props) => {
         <Rectangle
           key={index}
           isActive={currentStep >= index}
-          width={index === 0 ? '20px' : '16px'}
+          width={index === currentStep ? '24px' : '12px'}
         />
       ))}
     </Wrapper>
