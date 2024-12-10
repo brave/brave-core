@@ -183,15 +183,6 @@ module.exports = async function (env, argv) {
             configFile: tsConfigPath
           }
         },
-        // Loads font files for Font Awesome
-        {
-          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'url-loader',
-          options: {
-            limit: 13000,
-            mimetype: 'application/font-woff'
-          }
-        },
         {
           test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif|webp)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
           loader: 'file-loader'
