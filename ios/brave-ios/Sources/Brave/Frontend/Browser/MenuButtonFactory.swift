@@ -19,6 +19,7 @@ class MenuItemFactory {
     case settings
     case talk
     case wallet(subtitle: String? = nil)
+    case dataImport
 
     var icon: Image {
       switch self {
@@ -40,6 +41,8 @@ class MenuItemFactory {
         return Image(braveSystemName: "leo.product.brave-talk")
       case .wallet(_):
         return Image(braveSystemName: "leo.product.brave-wallet")
+      case .dataImport:
+        return Image(systemName: "zipper.page")
       }
     }
 
@@ -63,6 +66,8 @@ class MenuItemFactory {
         return Strings.OptionsMenu.braveTalkItemTitle
       case .wallet:
         return Strings.Wallet.wallet
+      case .dataImport:
+        return "Data Importer"
       }
     }
 

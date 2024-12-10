@@ -223,6 +223,19 @@ extension BrowserViewController {
         }
       }
 
+      MenuItemFactory.button(for: .dataImport) { [unowned self] in
+        let vc = UIHostingController(
+          rootView: BraveDataImporterView()
+        )
+
+        Task {
+          try? print(await AsyncFileManager.default.downloadsPath())
+        }
+
+        self.popToBVC()
+        self.present(vc, animated: true)
+      }
+
       if isShownOnWebPage {
         MenuItemFactory.button(for: .wallet()) { [weak self] in
           self?.presentWallet()
