@@ -12,21 +12,6 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsBraveAdsFeatureTest, ShouldLaunchAsInProcessService) {
-  // Act & Assert
-  EXPECT_TRUE(ShouldLaunchAsInProcessService());
-}
-
-TEST(BraveAdsBraveAdsFeatureTest, ShouldNotLaunchAsInProcessService) {
-  // Arrange
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndDisableFeature(
-      kShouldLaunchBraveAdsAsAnInProcessServiceFeature);
-
-  // Act & Assert
-  EXPECT_FALSE(ShouldLaunchAsInProcessService());
-}
-
 TEST(BraveAdsBraveAdsFeatureTest, ShouldAlwaysRunService) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(

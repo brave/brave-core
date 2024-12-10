@@ -13,11 +13,8 @@
 #include "base/task/single_thread_task_runner_thread_mode.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_ads/services/service_sandbox_type.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/service_process_host.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
@@ -46,14 +43,6 @@ mojo::Remote<bat_ads::mojom::BatAdsService> LaunchInProcessBatAdsService() {
   return bat_ads_service_remote;
 }
 
-// Launches a new Bat Ads Service utility process.
-mojo::Remote<bat_ads::mojom::BatAdsService> LaunchOutOfProcessBatAdsService() {
-  return content::ServiceProcessHost::Launch<bat_ads::mojom::BatAdsService>(
-      content::ServiceProcessHost::Options()
-          .WithDisplayName(IDS_SERVICE_BAT_ADS)
-          .Pass());
-}
-
 }  // namespace
 
 BatAdsServiceFactoryImpl::BatAdsServiceFactoryImpl() = default;
@@ -64,8 +53,7 @@ mojo::Remote<bat_ads::mojom::BatAdsService> BatAdsServiceFactoryImpl::Launch()
     const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  return ShouldLaunchAsInProcessService() ? LaunchInProcessBatAdsService()
-                                          : LaunchOutOfProcessBatAdsService();
+  return LaunchInProcessBatAdsService();
 }
 
 }  // namespace brave_ads
