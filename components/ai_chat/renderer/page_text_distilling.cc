@@ -155,7 +155,6 @@ void DistillPageText(
         LoadSiteScriptForHost(host);
 
     if (site_script.has_value()) {
-      VLOG(1) << "Using site script for host: " << host;
       int32_t world_id =
           site_script->second ? global_world_id : isolated_world_id;
       DistillPageTextViaSiteScript(render_frame, site_script->first, world_id,
