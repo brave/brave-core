@@ -1,0 +1,22 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Source exclusions for //ios/web_view
+# - Excludes custom WebUI implementations as we use //ios/chrome's
+# - Excludes the custom WebClient & WebMainParts as we don't use the
+#   //ios/web_view global state setup
+brave_ios_web_view_excluded_sources = [
+  "internal/web_view_web_client.h",
+  "internal/web_view_web_client.mm",
+  "internal/web_view_web_main_parts.h",
+  "internal/web_view_web_main_parts.mm",
+  "internal/webui/web_view_web_ui_ios_controller_factory.h",
+  "internal/webui/web_view_web_ui_ios_controller_factory.mm",
+  "internal/webui/web_view_web_ui_provider.mm",
+]
+
+# Dep exclusions for //ios/web_view
+# - Excludes the bundled resources since these are already bundled
+brave_ios_web_view_excluded_public_deps = [ ":web_view_resources" ]

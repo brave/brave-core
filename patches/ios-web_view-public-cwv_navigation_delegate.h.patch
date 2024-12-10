@@ -1,0 +1,14 @@
+diff --git a/ios/web_view/public/cwv_navigation_delegate.h b/ios/web_view/public/cwv_navigation_delegate.h
+index 0ebe5c3f82c4ce1dae858200f340c6986e558eaf..504cb917329505172de44d3f6960a1d1950a37f7 100644
+--- a/ios/web_view/public/cwv_navigation_delegate.h
++++ b/ios/web_view/public/cwv_navigation_delegate.h
+@@ -130,6 +130,9 @@ typedef NS_ENUM(NSInteger, CWVNavigationResponsePolicy) {
+ // (usually by crashing, though possibly by other means).
+ - (void)webViewWebContentProcessDidTerminate:(CWVWebView*)webView;
+ 
++- (BOOL)webView:(CWVWebView*)webView shouldBlockUniversalLinksForRequest:(NSURLRequest*)request;
++- (BOOL)webView:(CWVWebView*)webView shouldBlockJavaScriptForRequest:(NSURLRequest*)request;
++- (void)webView:(CWVWebView*)webView didRequestHTTPAuthForProtectionSpace:(NSURLProtectionSpace*)protectionSpace proposedCredential:(NSURLCredential*)proposedCredential completionHandler:(void (^)(NSString* _Nullable username, NSString* _Nullable password))handler;
+ @end
+ 
+ NS_ASSUME_NONNULL_END

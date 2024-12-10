@@ -1,0 +1,28 @@
+diff --git a/ios/web_view/internal/cwv_web_view.mm b/ios/web_view/internal/cwv_web_view.mm
+index 6823b138f7536ee41ddd11f5f176f9ad88474fa7..5139865a547ceb633a51d514d2b6d5373a128d29 100644
+--- a/ios/web_view/internal/cwv_web_view.mm
++++ b/ios/web_view/internal/cwv_web_view.mm
+@@ -970,6 +970,7 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
+ #pragma mark - Translation
+ 
+ - (CWVTranslationController*)translationController {
++  BRAVE_NOP_SERVICE
+   if (!_translationController) {
+     _translationController = [self newTranslationController];
+   }
+@@ -990,6 +991,7 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
+ #pragma mark - Autofill
+ 
+ - (CWVAutofillController*)autofillController {
++  BRAVE_NOP_SERVICE
+   if (!_autofillController) {
+     _autofillController = [self newAutofillController];
+   }
+@@ -1129,6 +1131,7 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
+   }
+ 
+   [self attachSecurityInterstitialHelpersToWebStateIfNecessary];
++  BRAVE_ATTACH_TAB_HELPERS
+   WebViewHolder::CreateForWebState(_webState.get());
+   WebViewHolder::FromWebState(_webState.get())->set_web_view(self);
+ 

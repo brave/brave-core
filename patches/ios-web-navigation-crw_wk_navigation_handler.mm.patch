@@ -1,0 +1,44 @@
+diff --git a/ios/web/navigation/crw_wk_navigation_handler.mm b/ios/web/navigation/crw_wk_navigation_handler.mm
+index c0c115abd417ce518f7c3a8b04bfe85f58caeadc..412087a43a75891eda22535ce250074e1700866b 100644
+--- a/ios/web/navigation/crw_wk_navigation_handler.mm
++++ b/ios/web/navigation/crw_wk_navigation_handler.mm
+@@ -250,6 +250,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+   BOOL isMainFrameNavigationAction = [self isMainFrameNavigationAction:action];
+   auto decisionHandler = ^(WKNavigationActionPolicy policy) {
+     preferences.preferredContentMode = contentMode;
++    BRAVE_SHOULD_BLOCK_JAVASCRIPT
+     if (@available(iOS 16.0, *)) {
+       if ((policy == WKNavigationActionPolicyAllow) &&
+           isMainFrameNavigationAction) {
+@@ -278,6 +279,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+ 
+   BOOL forceBlockUniversalLinks = self.blockUniversalLinksOnNextDecidePolicy;
+   self.blockUniversalLinksOnNextDecidePolicy = NO;
++  BRAVE_SHOULD_BLOCK_UNIVERSAL_LINKS
+ 
+   _webProcessCrashed = NO;
+   if (self.beingDestroyed) {
+@@ -689,6 +691,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+                                 code:error.code
+                             userInfo:userInfo];
+   }
++  BRAVE_DID_FAIL_PROVISIONAL_NAVIGATION
+ 
+   // Handle load cancellation for directly cancelled navigations without
+   // handling their potential errors. Otherwise, handle the error.
+@@ -1696,6 +1699,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+           web::CertVerificationError(is_recoverable, certStatus));
+     }
+   }
++  BRAVE_PROCESS_AUTH_CHALLENGE
+   completionHandler(NSURLSessionAuthChallengeRejectProtectionSpace, nil);
+ }
+ 
+@@ -1757,6 +1761,7 @@ void LogPresentingErrorPageFailedWithError(NSError* error) {
+     // automatically be retried by the web view, so early return in this case.
+     return;
+   }
++  BRAVE_HANDLE_LOAD_ERROR
+ 
+   NSError* contextError = web::NetErrorFromError(error);
+   if (policyDecisionCancellationError) {
