@@ -232,6 +232,7 @@ void DistillPageTextViaSiteScript(
     std::string_view script_content,
     int32_t world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
+  // TODO (jonathansampson): Wrap scripts at build/transpile-time instead
   std::string script = absl::StrFormat(
       R"((()=> {
         %s
