@@ -31,7 +31,6 @@ source_set("headers") {
     "ads_feature.h",
     "ads_observer_interface.h",
     "ads_util.h",
-    "database/database.h",
     "export.h",
     "flags/flags_util.h",
     "history/ad_history_feature.h",
@@ -53,7 +52,6 @@ source_set("headers") {
 
   deps = [
     "//base",
-    "//sql",
     "//url",
   ]
 

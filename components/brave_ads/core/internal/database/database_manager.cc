@@ -14,13 +14,13 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/database/database.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_creation.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_raze.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/database/database.h"
 
 namespace brave_ads {
 
