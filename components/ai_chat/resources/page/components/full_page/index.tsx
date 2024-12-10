@@ -84,12 +84,12 @@ export default function FullScreen() {
 
     // We've just changed to small and the sidebar was open, so close it
     if (isSmall && !isOpen) {
-      toggleAside()
+      aiChatContext.toggleSidebar()
     }
 
     // We've just changed to big and the sidebar was closed, so open it
     if (!isSmall && isOpen) {
-      toggleAside()
+      aiChatContext.toggleSidebar()
     }
 
   }, [isSmall])
