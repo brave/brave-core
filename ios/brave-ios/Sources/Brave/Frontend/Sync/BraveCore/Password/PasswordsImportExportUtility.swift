@@ -35,7 +35,7 @@ class PasswordsImportExportUtility {
       }
     }
 
-    guard let nativePath = PasswordsImportExportUtility.nativeURLPathFromURL(path) else {
+    guard let nativePath = path.fileSystemRepresentation else {
       Logger.module.error("Passwords Import - Invalid FileSystem Path")
       return false
     }
@@ -51,55 +51,33 @@ class PasswordsImportExportUtility {
     defer { state = .none }
 
     if path.pathExtension.lowercased() == "zip" {
-      guard
-        let importsPath = try? await uniqueFileName(
-          "SafariImports",
-          folder: AsyncFileManager.default.temporaryDirectory
-        )
-      else {
-        return false
-      }
+      // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
+      // (Note: this is not reference counted)
+      defer { path.stopAccessingSecurityScopedResource() }
 
-      guard let nativeImportsPath = PasswordsImportExportUtility.nativeURLPathFromURL(importsPath)
-      else {
-        return false
-      }
-
-      do {
-        try await AsyncFileManager.default.createDirectory(
-          at: importsPath,
-          withIntermediateDirectories: true
-        )
-      } catch {
+      guard let zipFileExtractedURL = try? await ZipImporter.unzip(path: path) else {
         return false
       }
 
       defer {
         Task {
-          try await AsyncFileManager.default.removeItem(at: importsPath)
+          try await AsyncFileManager.default.removeItem(at: zipFileExtractedURL)
         }
       }
 
-      if await Unzip.unzip(nativePath, toDirectory: nativeImportsPath) {
-        let passwordsFileURL = importsPath.appending(path: "Passwords").appendingPathExtension(
+      let passwordsFileURL = zipFileExtractedURL.appending(path: "Passwords")
+        .appendingPathExtension(
           "csv"
         )
-        guard
-          let nativePasswordsPath = PasswordsImportExportUtility.nativeURLPathFromURL(
-            passwordsFileURL
-          )
-        else {
-          Logger.module.error("Passwords Import - Invalid FileSystem Path")
-          return false
-        }
 
-        // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
-        // (Note: this is not reference counted)
-        defer { path.stopAccessingSecurityScopedResource() }
-        return await doImport(passwordsFileURL, nativePasswordsPath)
+      guard
+        let nativePasswordsPath = passwordsFileURL.fileSystemRepresentation
+      else {
+        Logger.module.error("Passwords Import - Invalid FileSystem Path")
+        return false
       }
 
-      return false
+      return await doImport(passwordsFileURL, nativePasswordsPath)
     }
 
     // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
@@ -116,35 +94,5 @@ class PasswordsImportExportUtility {
     case importing
     case exporting
     case none
-  }
-}
-
-// MARK: - Parsing
-extension PasswordsImportExportUtility {
-  static func nativeURLPathFromURL(_ url: URL) -> String? {
-    return url.withUnsafeFileSystemRepresentation { bytes -> String? in
-      guard let bytes = bytes else { return nil }
-      return String(cString: bytes)
-    }
-  }
-
-  func uniqueFileName(_ filename: String, folder: URL) async throws -> URL {
-    let basePath = folder.appending(path: filename)
-    let fileExtension = basePath.pathExtension
-    let filenameWithoutExtension =
-      !fileExtension.isEmpty ? String(filename.dropLast(fileExtension.count + 1)) : filename
-
-    var proposedPath = basePath
-    var count = 0
-
-    while await AsyncFileManager.default.fileExists(atPath: proposedPath.path) {
-      count += 1
-
-      let proposedFilenameWithoutExtension = "\(filenameWithoutExtension) (\(count))"
-      proposedPath = folder.appending(path: proposedFilenameWithoutExtension)
-        .appending(path: fileExtension)
-    }
-
-    return proposedPath
   }
 }
