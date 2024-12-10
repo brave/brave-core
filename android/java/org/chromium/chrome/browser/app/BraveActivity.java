@@ -270,7 +270,7 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String BRAVE_REWARDS_SETTINGS_MONTHLY_URL = "brave://rewards/#monthly";
     public static final String REWARDS_AC_SETTINGS_URL = "brave://rewards/contribute";
     public static final String BRAVE_REWARDS_RESET_PAGE = "brave://rewards/#reset";
-    public static final String BRAVE_AI_CHAT_URL = "chrome-untrusted://chat";
+    public static final String BRAVE_AI_CHAT_URL = "chrome-untrusted://chat/tab";
     public static final String REWARDS_LEARN_MORE_URL =
             "https://brave.com/faq-rewards/#unclaimed-funds";
     public static final String BRAVE_TERMS_PAGE =
