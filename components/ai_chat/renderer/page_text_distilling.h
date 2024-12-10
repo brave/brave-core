@@ -20,15 +20,15 @@ class RenderFrame;
 
 namespace ai_chat {
 
-// Distills the text content of a page. If possible, it will use a host-specific
-// distillation script. Otherwise, it will fall back to a more general approach.
+// Distills the text content of a page. If possible, it will use a custom site
+// distiller script. Otherwise, it will fall back to a more general approach.
 void DistillPageText(
     content::RenderFrame* render_frame,
     int32_t global_world_id,
     int32_t isolated_world_id,
     base::OnceCallback<void(const std::optional<std::string>&)>);
 
-// Attempts to retrieve a host-specific distillation script.
+// Attempts to retrieve a a custom site distiller script for the given host.
 // Returns a pair consisting of the script content, and a boolean indicating if
 // it is intended for the main world or not
 std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
@@ -37,7 +37,7 @@ std::optional<std::pair<std::string, bool>> LoadSiteScriptForHost(
 // Attempts to distill a page based on the retrieval of a host-specific script.
 void DistillPageTextViaSiteScript(
     content::RenderFrame* render_frame,
-    std::string script_content,
+    std::string_view script_content,
     int32_t world_id,
     base::OnceCallback<void(const std::optional<std::string>&)>);
 

@@ -147,13 +147,9 @@ void DistillPageText(
     int32_t global_world_id,
     int32_t isolated_world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
-  blink::WebLocalFrame* main_frame = render_frame->GetWebFrame();
-
   if (ai_chat::features::IsCustomSiteDistillerScriptsEnabled()) {
-    std::string_view host =
-        url::Origin(((const blink::WebFrame*)main_frame)->GetSecurityOrigin())
-            .host();
-
+    std::string host =
+        render_frame->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
     std::optional<std::pair<std::string, bool>> site_script =
         LoadSiteScriptForHost(host);
 
@@ -232,7 +228,7 @@ void DistillPageText(
 
 void DistillPageTextViaSiteScript(
     content::RenderFrame* render_frame,
-    std::string script_content,
+    std::string_view script_content,
     int32_t world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
   std::string script = absl::StrFormat(
