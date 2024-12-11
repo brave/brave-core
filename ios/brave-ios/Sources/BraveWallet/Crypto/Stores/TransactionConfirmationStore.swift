@@ -394,22 +394,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   }
 
   @MainActor func openActiveTxStatusStore() async -> TransactionStatusStore {
-    var followUpAction = TransactionStatusStore.FollowUpAction.none
-    if case .ethSend(let detail) = activeParsedTransaction.details,
-      let fromValue = BDouble(detail.fromAmount),
-      fromValue == 0, activeTransaction.ethTxData.isEmpty
-    {
-      // loop through allTx to find if there is a tx that has the same chain id, coin type, nonce and from address
-      // maxFeePerGas/gasPrice is smaller than this active tx
-      if let txInfo = allTxs.first(where: {
-        $0.id != activeTransaction.id && $0.coin == activeTransaction.coin
-          && $0.chainId == activeTransaction.chainId
-          && $0.ethTxNonce == activeTransaction.ethTxNonce
-          && $0.fromAddress == activeTransaction.fromAddress
-      }), let parsedTx = await parseTransaction(txInfo) {
-        followUpAction = .cancel(toCancelParsedTx: parsedTx)
-      }
-    }
+    let followUpAction = await determineFollowUpAction()
     let txStatusStore = TransactionStatusStore(
       activeTxStatus: activeTxStatus,
       activeTxParsed: activeParsedTransaction,
@@ -434,6 +419,53 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     else { return false }
     onUnapprovedTxAdded(txInfo)
     return true
+  }
+
+  @MainActor private func determineFollowUpAction() async -> TransactionStatusStore.FollowUpAction {
+    if case .ethSend(let detail) = activeParsedTransaction.details,
+      let fromValue = BDouble(detail.fromAmount),
+      fromValue == 0, activeTransaction.ethTxData.isEmpty
+    {
+      // loop through allTx to find if there is a tx that has the same chain id, coin type, nonce and from address
+      // gasFee of this active tx should be bigger than the original one
+      if let txInfo = allTxs.first(where: {
+        $0.id != activeTransaction.id
+          && $0.coin == activeTransaction.coin
+          && $0.chainId == activeTransaction.chainId
+          && $0.ethTxNonce == activeTransaction.ethTxNonce
+          && $0.fromAddress == activeTransaction.fromAddress
+          && activeTransaction.ethTxData.isEmpty
+      }), let parsedTx = await parseTransaction(txInfo) {
+        if let activeTxGasFee = BDouble(activeParsedTransaction.gasFee?.fee ?? "0"),
+          let originalTxGasFee = BDouble(parsedTx.gasFee?.fee ?? "0"),
+          activeTxGasFee > originalTxGasFee
+        {
+          return .cancel(toCancelParsedTx: parsedTx)
+        }
+      }
+    } else if activeTransaction.coin == .eth {
+      // loop through allTx to find if there is a tx that has the same chain id, coin type, nonce, from address,
+      // to address, data and value
+      // gasFee of this active tx should be bigger than the original one
+      if let txInfo = allTxs.first(where: {
+        $0.id != activeTransaction.id
+          && $0.coin == activeTransaction.coin
+          && $0.chainId == activeTransaction.chainId
+          && $0.ethTxNonce == activeTransaction.ethTxNonce
+          && $0.fromAddress == activeTransaction.fromAddress
+          && $0.ethTxToAddress == activeTransaction.ethTxToAddress
+          && $0.ethTxData == activeTransaction.ethTxData
+          && $0.ethTxValue == activeTransaction.ethTxValue
+      }), let parsedTx = await parseTransaction(txInfo) {
+        if let activeTxGasFee = BDouble(activeParsedTransaction.gasFee?.fee ?? "0"),
+          let originalTxGasFee = BDouble(parsedTx.gasFee?.fee ?? "0"),
+          activeTxGasFee > originalTxGasFee
+        {
+          return .speedUp
+        }
+      }
+    }
+    return .none
   }
 
   private func clearTrasactionInfoBeforeUpdate() {

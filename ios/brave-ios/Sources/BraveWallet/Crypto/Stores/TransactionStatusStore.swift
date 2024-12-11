@@ -20,7 +20,7 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
 
   enum FollowUpAction: Equatable {
     case cancel(toCancelParsedTx: ParsedTransaction)
-    case speedup
+    case speedUp
     case none
   }
 
