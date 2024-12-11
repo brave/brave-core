@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/types/to_address.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -55,7 +56,7 @@ END_METADATA
 
 }  // namespace
 
-SplitView::SplitView(Browser* browser,
+SplitView::SplitView(Browser& browser,
                      views::View* contents_container,
                      ContentsWebView* contents_web_view)
     : browser_(browser),
@@ -76,8 +77,8 @@ SplitView::SplitView(Browser* browser,
   secondary_contents_web_view_ = secondary_contents_container_->AddChildView(
       std::make_unique<ActivatableContentsWebView>(browser_->profile()));
 
-  split_view_separator_ =
-      AddChildView(std::make_unique<SplitViewSeparator>(browser_.get()));
+  split_view_separator_ = AddChildView(
+      std::make_unique<SplitViewSeparator>(base::to_address(browser_)));
 
   secondary_contents_container_->SetLayoutManager(
       std::make_unique<ContentsLayoutManager>(secondary_devtools_web_view_,
@@ -87,7 +88,8 @@ SplitView::SplitView(Browser* browser,
       contents_container_, secondary_contents_container_,
       split_view_separator_));
 
-  auto* split_view_browser_data = SplitViewBrowserData::FromBrowser(browser);
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   split_view_observation_.Observe(split_view_browser_data);
 }
 
@@ -101,7 +103,8 @@ SplitView::WillSetActiveWebContentsToContentsWebView(
   bool need_to_update_secondary_web_view = false;
   // In order to minimize flickering during tab activation, we should update
   // split view only when it's needed.
-  auto* browser_data = SplitViewBrowserData::FromBrowser(browser_.get());
+  auto* browser_data =
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   auto* tab_strip_model = browser_->tab_strip_model();
   if (auto tile =
           browser_data->GetTile(tab_strip_model->GetTabHandleAt(index))) {
@@ -127,7 +130,7 @@ SplitView::WillSetActiveWebContentsToContentsWebView(
     contents_web_view_->SetFastResize(true);
     secondary_contents_web_view_->SetFastResize(true);
 
-    if (!SplitViewBrowserData::FromBrowser(browser_.get())
+    if (!SplitViewBrowserData::FromBrowser(base::to_address(browser_))
              ->GetTile(browser_->tab_strip_model()->GetTabHandleAt(index))) {
       // This will help reduce flickering when switching to non tiled tab by
       // hiding secondary web view before detaching web contents.
@@ -264,7 +267,8 @@ void SplitView::UpdateSplitViewSizeDelta(content::WebContents* old_contents,
     return;
   }
 
-  auto* split_view_browser_data = SplitViewBrowserData::FromBrowser(browser_);
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   auto get_tab_handle = [this, &get_index_of](content::WebContents* contents) {
     return browser_->tab_strip_model()->GetTabHandleAt(get_index_of(contents));
   };
@@ -294,7 +298,7 @@ void SplitView::UpdateSplitViewSizeDelta(content::WebContents* old_contents,
 
 void SplitView::UpdateContentsWebViewVisual() {
   auto* split_view_browser_data =
-      SplitViewBrowserData::FromBrowser(browser_.get());
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   if (!split_view_browser_data) {
     return;
   }
@@ -305,7 +309,7 @@ void SplitView::UpdateContentsWebViewVisual() {
 
 void SplitView::UpdateContentsWebViewBorder() {
   auto* split_view_browser_data =
-      SplitViewBrowserData::FromBrowser(browser_.get());
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   if (!split_view_browser_data) {
     return;
   }
@@ -324,7 +328,8 @@ void SplitView::UpdateContentsWebViewBorder() {
   if (split_view_browser_data->GetTile(GetActiveTabHandle())) {
     auto create_border = [this](SkColor color) {
       constexpr int kBorderThickness = 2;
-      return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())
+      return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+                 base::to_address(browser_))
                  ? views::CreateRoundedRectBorder(
                        kBorderThickness,
                        BraveContentsViewUtil::kBorderRadius +
@@ -353,7 +358,7 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
   }
 
   auto* split_view_browser_data =
-      SplitViewBrowserData::FromBrowser(browser_.get());
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   DCHECK(split_view_browser_data);
 
   auto active_tab_handle = GetActiveTabHandle();

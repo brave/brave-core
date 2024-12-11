@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/pass_key.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
@@ -41,16 +43,15 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
  public:
   using BrowserViewKey = base::PassKey<BraveBrowserView>;
 
-  SplitView(Browser* browser,
+  SplitView(Browser& browser,
             views::View* contents_container,
             ContentsWebView* contents_web_view);
 
   ~SplitView() override;
 
-  // Called that must be called by BraveBrowserView. This must be called before
-  // BrowserView sets the active web contents to contents web view, we don't
-  // observe tab strip model directly. This returns callback that should be
-  // called after swapping active web contents
+  // This must be called before BrowserView sets the active web contents to
+  // contents web view, we don't observe tab strip model directly. This returns
+  // callback that should be called after swapping active web contents
   using AfterSetWebContents =
       base::OnceCallback<void(content::WebContents* old_contents,
                               content::WebContents* new_contents)>;
@@ -116,7 +117,7 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   SplitViewLayoutManager* GetSplitViewLayoutManager();
   const SplitViewLayoutManager* GetSplitViewLayoutManager() const;
 
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ref<Browser> browser_;
 
   raw_ptr<views::View> contents_container_ = nullptr;
   raw_ptr<views::WebView> contents_web_view_ = nullptr;

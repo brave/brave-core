@@ -288,7 +288,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
     split_view_ =
         contents_container_->parent()->AddChildView(std::make_unique<SplitView>(
-            browser_.get(), contents_container_, contents_web_view_));
+            *browser_, contents_container_, contents_web_view_));
     set_contents_view(split_view_);
   }
 
