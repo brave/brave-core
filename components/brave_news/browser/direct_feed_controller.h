@@ -29,7 +29,8 @@ using IsValidCallback =
 class DirectFeedController {
  public:
   explicit DirectFeedController(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate);
   ~DirectFeedController();
   DirectFeedController(const DirectFeedController&) = delete;
   DirectFeedController& operator=(const DirectFeedController&) = delete;

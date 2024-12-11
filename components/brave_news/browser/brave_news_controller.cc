@@ -108,7 +108,8 @@ BraveNewsController::BraveNewsController(
     favicon::FaviconService* favicon_service,
     brave_ads::AdsService* ads_service,
     history::HistoryService* history_service,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
     : favicon_service_(favicon_service),
       ads_service_(ads_service),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
@@ -116,9 +117,11 @@ BraveNewsController::BraveNewsController(
                                   url_loader_factory),
       history_service_(history_service),
       url_loader_factory_(url_loader_factory),
+      direct_feed_fetcher_delegate_(std::move(direct_feed_fetcher_delegate)),
       pref_manager_(*prefs),
       news_metrics_(prefs, pref_manager_),
-      direct_feed_controller_(url_loader_factory),
+      direct_feed_controller_(url_loader_factory,
+                              direct_feed_fetcher_delegate_->AsWeakPtr()),
       task_runner_(base::ThreadPool::CreateSingleThreadTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})),
@@ -796,7 +799,8 @@ void BraveNewsController::Prefetch() {
 
 void BraveNewsController::ResetEngine() {
   engine_.reset(
-      new BraveNewsEngine(url_loader_factory_->Clone(), MakeHistoryQuerier()));
+      new BraveNewsEngine(url_loader_factory_->Clone(), MakeHistoryQuerier(),
+                          direct_feed_fetcher_delegate_->AsWeakPtr()));
 }
 
 void BraveNewsController::ConditionallyStartOrStopTimer() {

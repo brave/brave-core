@@ -105,10 +105,11 @@ std::tuple<FeedItems, ETags> FeedFetcher::CombineFeedSourceResults(
 
 FeedFetcher::FeedFetcher(
     PublishersController& publishers_controller,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
     : publishers_controller_(publishers_controller),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      direct_feed_fetcher_(url_loader_factory) {}
+      direct_feed_fetcher_(url_loader_factory, direct_feed_fetcher_delegate) {}
 
 FeedFetcher::~FeedFetcher() = default;
 

@@ -32,10 +32,12 @@ namespace brave_news {
 BraveNewsEngine::BraveNewsEngine(
     std::unique_ptr<network::PendingSharedURLLoaderFactory>
         pending_shared_url_loader_factory,
-    BackgroundHistoryQuerier history_querier)
+    BackgroundHistoryQuerier history_querier,
+    base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
     : pending_shared_url_loader_factory_(
           std::move(pending_shared_url_loader_factory)),
-      history_querier_(std::move(history_querier)) {
+      history_querier_(std::move(history_querier)),
+      direct_feed_fetcher_delegate_(direct_feed_fetcher_delegate) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
@@ -187,7 +189,7 @@ FeedV2Builder* BraveNewsEngine::MaybeFeedV2Builder() {
     feed_v2_builder_ = std::make_unique<FeedV2Builder>(
         *GetPublishersController(), *GetChannelsController(),
         *GetSuggestionsController(), history_querier_,
-        GetSharedURLLoaderFactory());
+        GetSharedURLLoaderFactory(), direct_feed_fetcher_delegate_);
   }
 
   return feed_v2_builder_.get();
@@ -202,7 +204,7 @@ FeedController* BraveNewsEngine::MaybeFeedV1Builder() {
   if (!feed_controller_) {
     feed_controller_ = std::make_unique<FeedController>(
         GetPublishersController(), history_querier_,
-        GetSharedURLLoaderFactory());
+        GetSharedURLLoaderFactory(), direct_feed_fetcher_delegate_);
   }
 
   return feed_controller_.get();

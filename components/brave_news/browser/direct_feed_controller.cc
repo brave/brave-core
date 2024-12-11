@@ -36,8 +36,9 @@ DirectFeedController::FindFeedRequest::operator=(
 DirectFeedController::FindFeedRequest::~FindFeedRequest() = default;
 
 DirectFeedController::DirectFeedController(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : fetcher_(url_loader_factory) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    base::WeakPtr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
+    : fetcher_(url_loader_factory, direct_feed_fetcher_delegate) {}
 
 DirectFeedController::~DirectFeedController() = default;
 

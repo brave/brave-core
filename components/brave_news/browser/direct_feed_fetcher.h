@@ -67,25 +67,40 @@ void ConvertFeedDataToArticles(std::vector<mojom::ArticlePtr>& articles,
 
 class DirectFeedFetcher {
  public:
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+
+    virtual bool ShouldUpgradeToHttps(const GURL& url) = 0;
+    virtual base::WeakPtr<DirectFeedFetcher::Delegate> AsWeakPtr() = 0;
+  };
+
   explicit DirectFeedFetcher(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      base::WeakPtr<Delegate> delegate);
   DirectFeedFetcher(const DirectFeedFetcher&) = delete;
   DirectFeedFetcher& operator=(const DirectFeedFetcher&) = delete;
   ~DirectFeedFetcher();
 
   // |publisher_id| can be empty, if one we're speculatively downloading a feed.
   // This |publisher_id| will be used for any returned articles.
-  void DownloadFeed(const GURL& url,
+  void DownloadFeed(GURL url,
                     std::string publisher_id,
                     DownloadFeedCallback callback);
 
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
+
+  void DownloadFeedHelper(GURL url,
+                          std::string publisher_id,
+                          DownloadFeedCallback callback,
+                          bool should_https_upgrade);
   void OnFeedDownloaded(SimpleURLLoaderList::iterator iter,
                         DownloadFeedCallback callback,
-                        const GURL& feed_url,
+                        GURL feed_url,
                         std::string publisher_id,
+                        bool https_upgraded,
                         const std::unique_ptr<std::string> response_body);
   void OnParsedFeedData(DownloadFeedCallback callback,
                         DirectFeedResponse result,
@@ -94,6 +109,9 @@ class DirectFeedFetcher {
   SimpleURLLoaderList url_loaders_;
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+
+  base::WeakPtr<Delegate> delegate_;
+
   base::WeakPtrFactory<DirectFeedFetcher> weak_ptr_factory_{this};
 };
 
