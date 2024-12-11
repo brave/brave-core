@@ -3688,6 +3688,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_LEO_SUMMARY" desc="Title for Leo options.">
       Leo is an AI-powered smart assistant, built right into the browser
     </message>
+    <message name="IDS_LEO_HISTORY_PREF" desc="Title for Leo history preference.">
+      Store conversation history
+    </message>
     <message name="IDS_LEO_AUTOCOMPLETE_PREF" desc="Title for Leo Autocomplete suggestions.">
       Show autocomplete suggestions in address bar
     </message>

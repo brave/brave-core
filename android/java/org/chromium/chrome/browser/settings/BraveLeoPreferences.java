@@ -13,6 +13,7 @@ import androidx.preference.PreferenceCategory;
 
 import org.chromium.ai_chat.mojom.ModelWithSubtitle;
 import org.chromium.ai_chat.mojom.PremiumStatus;
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -23,6 +24,7 @@ import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
@@ -36,6 +38,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     private static final String PREF_MANAGE_SUBSCRIPTION = "subscription_manage";
     private static final String PREF_GO_PREMIUM = "go_premium";
     private static final String PREF_AUTOCOMPLETE = "autocomplete_switch";
+    private static final String PREF_HISTORY = "history_switch";
     private static final String PREF_SUBSCRIPTION_CATEGORY = "subscription_category";
     private static final String PREF_DEFAULT_MODEL = "default_model";
 
@@ -66,6 +69,17 @@ public class BraveLeoPreferences extends BravePreferenceFragment
                                                 BravePreferenceKeys.BRAVE_LEO_AUTOCOMPLETE, true));
             }
         }
+
+        Preference history = findPreference(PREF_HISTORY);
+        if (history != null) {
+            history.setOnPreferenceChangeListener(this);
+            if (history instanceof ChromeSwitchPreference) {
+                ((ChromeSwitchPreference) history)
+                        .setChecked(BraveLeoPrefUtils.getIsHistoryEnabled());
+            }
+        }
+        history.setVisible(ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT_HISTORY));
+
         BraveLeoUtils.verifySubscription(
                 (subscriptionActive) -> {
                     checkLinkPurchase();
@@ -151,6 +165,9 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         if (PREF_AUTOCOMPLETE.equals(key)) {
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.BRAVE_LEO_AUTOCOMPLETE, (boolean) o);
+        }
+        if (PREF_HISTORY.equals(key)) {
+            BraveLeoPrefUtils.setIsHistoryEnabled((boolean) o);
         }
 
         return true;

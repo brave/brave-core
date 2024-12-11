@@ -15,6 +15,12 @@
             android:title="@string/leo_autocomplete_pref"
             android:defaultValue="true" />
 
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="history_switch"
+            android:title="@string/leo_history_pref"
+            android:defaultValue="true"
+            app:isPreferenceVisible="false" />
+
         <Preference
             android:fragment="org.chromium.chrome.browser.settings.BraveLeoDefaultModelPreferences"
             android:key="default_model"
