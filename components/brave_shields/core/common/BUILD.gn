@@ -19,10 +19,7 @@ static_library("common") {
     sources += [ "brave_shield_localized_strings.h" ]
   }
 
-  public_deps = [
-    "//brave/components/brave_shields/core/common/buildflags",
-    "//brave/components/resources:strings",
-  ]
+  public_deps = [ "//brave/components/resources:strings" ]
 
   deps = [
     "//base",

@@ -142,7 +142,6 @@ import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
-import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
@@ -1622,10 +1621,6 @@ public abstract class BraveActivity extends ChromeActivity
     public void openBraveContentFilteringSettings() {
         SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
         settingsLauncher.startSettings(this, ContentFilteringFragment.class);
-    }
-
-    public boolean isNightModeEnabled() {
-        return GlobalNightModeStateProviderHolder.getInstance().isInNightMode();
     }
 
     public int getBraveThemeBackgroundColor() {

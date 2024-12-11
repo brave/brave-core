@@ -17,11 +17,6 @@ interface CosmeticFiltersResources {
       mojo_base.mojom.Value result);
 };
 
-enum RunningPlatform {
-  kDesktop,
-  kAndroid
-};
-
 interface CosmeticFiltersHandler {
   // Adds a user cosmetic rule for the current site.
   // (currently from the content picker feature).
@@ -32,8 +27,6 @@ interface CosmeticFiltersHandler {
 
   GetElementPickerThemeInfo() => (
       bool is_nightly_mode_enabled, int32 background_color);
-
-  InitElementPicker() => (RunningPlatform platform);
 };
 
 // An interface to render frame agent `CosmeticFiltersJSHandler` to control

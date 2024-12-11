@@ -12,7 +12,6 @@ namespace cosmetic_filters {
 
 void ShowCustomFilterSettings();
 int GetThemeBackgroundColor();
-bool IsDarkModeEnabled();
 
 }  // namespace cosmetic_filters
 

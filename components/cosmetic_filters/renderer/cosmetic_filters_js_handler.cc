@@ -33,6 +33,7 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "v8/include/v8-primitive.h"
 #include "v8/include/v8.h"
 
 namespace {
@@ -362,45 +363,15 @@ void CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo(
   std::ignore = resolver->Resolve(context, result);
 }
 
-v8::Local<v8::Promise> CosmeticFiltersJSHandler::InitElementPicker(
+v8::Local<v8::Value> CosmeticFiltersJSHandler::GetPlatform(
     v8::Isolate* isolate) {
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-
-  if (!resolver.IsEmpty()) {
-    auto promise_resolver =
-        std::make_unique<v8::Global<v8::Promise::Resolver>>();
-    promise_resolver->Reset(isolate, resolver.ToLocalChecked());
-    auto context_old = std::make_unique<v8::Global<v8::Context>>(
-        isolate, isolate->GetCurrentContext());
-
-    GetElementPickerRemoteHandler()->InitElementPicker(base::BindOnce(
-        &CosmeticFiltersJSHandler::OnInitElementPicker,
-        weak_ptr_factory_.GetWeakPtr(), std::move(promise_resolver), isolate,
-        std::move(context_old)));
-
-    return resolver.ToLocalChecked()->GetPromise();
-  }
-
-  return v8::Local<v8::Promise>();
-}
-
-void CosmeticFiltersJSHandler::OnInitElementPicker(
-    std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
-    v8::Isolate* isolate,
-    std::unique_ptr<v8::Global<v8::Context>> context_old,
-    mojom::RunningPlatform platform) {
-  v8::HandleScope handle_scope(isolate);
-  v8::Local<v8::Context> context = context_old->Get(isolate);
-  v8::Context::Scope context_scope(context);
-  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-
-  v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
-  v8::Local<v8::Integer> result;
-  result = v8::Integer::New(isolate, static_cast<int>(platform));
-
-  std::ignore = resolver->Resolve(context, result);
+  return gin::StringToV8(isolate,
+#if BUILDFLAG(IS_ANDROID)
+                         "android"
+#else   // !BUILDFLAG(IS_ANDROID)
+                         "desktop"
+#endif  // !BUILDFLAG(IS_ANDROID)
+  );
 }
 
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
@@ -482,8 +453,8 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
                           base::Unretained(this)));
 
   BindFunctionToObject(
-      isolate, javascript_object, "initElementPicker",
-      base::BindRepeating(&CosmeticFiltersJSHandler::InitElementPicker,
+      isolate, javascript_object, "getPlatform",
+      base::BindRepeating(&CosmeticFiltersJSHandler::GetPlatform,
                           base::Unretained(this), isolate));
 
   if (perf_tracker_) {

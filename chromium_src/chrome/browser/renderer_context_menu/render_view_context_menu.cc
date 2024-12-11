@@ -717,7 +717,7 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
   const auto page_url = source_web_contents_->GetLastCommittedURL();
   add_block_elements &= page_url.SchemeIsHTTPOrHTTPS();
   add_block_elements &= base::FeatureList::IsEnabled(
-      brave_shields::features::kBlockElementFeature);
+      brave_shields::features::kBraveShieldsElementPicker);
   if (add_block_elements) {
     std::optional<size_t> inspect_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);

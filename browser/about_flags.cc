@@ -693,7 +693,8 @@
           "Allows to block sekected HTML element on the page"                  \
           "marked as a known threat.",                                         \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_shields::features::kBlockElementFeature),   \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveShieldsElementPicker),            \
       },                                                                       \
       {                                                                        \
           "brave-super-referral",                                              \

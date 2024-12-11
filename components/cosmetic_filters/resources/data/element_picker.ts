@@ -22,8 +22,8 @@ const api = {
       callback(val.isDarkModeEnabled, val.bgcolor)
     })
   },
-  initElementPicker: (callback: (platform: number) => void) => {
-    cf_worker.initElementPicker().then(callback)
+  getPlatform: ():string => {
+    return cf_worker.getPlatform()
   }
 }
 
@@ -846,8 +846,6 @@ const highlightElements = () => {
 
 const active = document.getElementById('brave-element-picker')
 if (!active) {
-  api.initElementPicker((platform: number) => {
-    isAndroid = platform === 1
-    launchElementPicker(attachElementPicker())
-  })
+  isAndroid = api.getPlatform() === 'android'
+  launchElementPicker(attachElementPicker())
 }

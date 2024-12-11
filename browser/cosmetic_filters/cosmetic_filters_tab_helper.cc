@@ -24,6 +24,7 @@
 #include "ui/color/color_provider.h"
 #else
 #include "brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h"
+#include "chrome/browser/flags/android/chrome_session_state.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace cosmetic_filters {
@@ -105,19 +106,10 @@ void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(
       GetWebContents().GetColorMode() == ui::ColorProviderKey::ColorMode::kDark,
       color_provider.GetColor(kColorSidePanelBadgeBackground));
 #else   // !BUILDFLAG(IS_ANDROID)
-  std::move(callback).Run(IsDarkModeEnabled(), GetThemeBackgroundColor());
+  std::move(callback).Run(chrome::android::GetDarkModeState() ==
+                              chrome::android::DarkModeState::kDarkModeSystem,
+                          GetThemeBackgroundColor());
 #endif  // !BUILDFLAG(IS_ANDROID)
-}
-
-void CosmeticFiltersTabHelper::InitElementPicker(
-    InitElementPickerCallback callback) {
-  std::move(callback).Run(
-#if !BUILDFLAG(IS_ANDROID)
-      mojom::RunningPlatform::kDesktop
-#else   // !BUILDFLAG(IS_ANDROID)
-      mojom::RunningPlatform::kAndroid
-#endif  // !BUILDFLAG(IS_ANDROID)
-  );
 }
 
 CosmeticFiltersTabHelper::CosmeticFiltersTabHelper(

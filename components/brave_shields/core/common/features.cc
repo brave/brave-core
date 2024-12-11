@@ -6,7 +6,6 @@
 #include "brave/components/brave_shields/core/common/features.h"
 
 #include "base/feature_list.h"
-#include "brave/components/brave_shields/core/common/buildflags/buildflags.h"
 
 namespace brave_shields::features {
 
@@ -135,12 +134,12 @@ BASE_FEATURE(kBlockAllCookiesToggle,
              "BlockAllCookiesToggle",
              base::FEATURE_DISABLED_BY_DEFAULT);
 // when enabled, allow to select and block HTML elements
-BASE_FEATURE(kBlockElementFeature,
-             "BlockElementFeature",
-#if BUILDFLAG(ENABLE_BLOCK_ELEMENT_FEATURE)
-             base::FEATURE_ENABLED_BY_DEFAULT);
-#else
+BASE_FEATURE(kBraveShieldsElementPicker,
+             "BraveShieldsElementPicker",
+#if BUILDFLAG(IS_ANDROID)
              base::FEATURE_DISABLED_BY_DEFAULT);
+#else
+             base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 
 // Enables extra TRACE_EVENTs in content filter js. The feature is

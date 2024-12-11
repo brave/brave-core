@@ -226,7 +226,7 @@ declare namespace cf_worker {
   const manageCustomFilters: () => void
   const getElementPickerThemeInfo: () =>
     Promise<{isDarkModeEnabled: boolean; bgcolor: number}>
-  const initElementPicker: () => Promise<number>
+  const getPlatform: () => string
 }
 
 declare namespace chrome.test {
