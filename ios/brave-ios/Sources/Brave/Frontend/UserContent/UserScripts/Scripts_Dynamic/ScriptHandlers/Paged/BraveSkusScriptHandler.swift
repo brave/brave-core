@@ -38,8 +38,7 @@ class BraveSkusScriptHandler: TabContentScript {
 
     return WKUserScript(
       source: secureScript(
-        handlerNamesMap: ["$<message_handler>": messageHandlerName]
-          .merging(Method.map, uniquingKeysWith: { $1 }),
+        handlerNamesMap: ["$<message_handler>": messageHandlerName],
         securityToken: scriptId,
         script: script
       ),
