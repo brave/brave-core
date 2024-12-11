@@ -610,13 +610,7 @@ void AIChatService::RenameConversation(const std::string& id,
 
 void AIChatService::ConversationExists(const std::string& conversation_uuid,
                                        ConversationExistsCallback callback) {
-  GetConversation(conversation_uuid,
-                  base::BindOnce(
-                      [](ConversationExistsCallback callback,
-                         ConversationHandler* conversation) {
-                        std::move(callback).Run(conversation != nullptr);
-                      },
-                      std::move(callback)));
+  std::move(callback).Run(conversations_.contains(conversation_uuid));
 }
 
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,

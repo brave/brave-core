@@ -121,7 +121,7 @@ class API {
   }
 
   private dispatchDebouncedStateChange = debounce(() => {
-    console.debug('dispatching uistatechange event', { ...this.state })
+    console.debug('dispatching uistatechange event', {...this.state})
     this.eventTarget.dispatchEvent(
       new Event('uistatechange')
     )
