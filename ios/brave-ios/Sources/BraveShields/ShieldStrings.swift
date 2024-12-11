@@ -117,7 +117,7 @@ extension Strings.Shields {
 
 extension Strings.Shields {
   public static let blockedRequestsTitle = NSLocalizedString(
-    "blockedRequestsTitle",
+    "shields.blockedRequestsTitle",
     tableName: "BraveShared",
     bundle: .module,
     value: "Blocked Requests",
@@ -125,7 +125,7 @@ extension Strings.Shields {
       "The title displayed in the navigation bar of Blocked Requests view."
   )
   public static let requestURLLabel = NSLocalizedString(
-    "requestURLLabel",
+    "shields.requestURLLabel",
     tableName: "BraveShared",
     bundle: .module,
     value: "Request URL",
@@ -133,7 +133,7 @@ extension Strings.Shields {
       "A label displayed above the request url that was blocked in Blocked Requests view."
   )
   public static let sourceURLLabel = NSLocalizedString(
-    "sourceURLLabel",
+    "shields.sourceURLLabel",
     tableName: "BraveShared",
     bundle: .module,
     value: "Source URL",
@@ -141,7 +141,7 @@ extension Strings.Shields {
       "A label displayed above the source url of a request that was blocked in Blocked Requests view."
   )
   public static let resourceTypeLabel = NSLocalizedString(
-    "resourceTypeLabel",
+    "shields.resourceTypeLabel",
     tableName: "BraveShared",
     bundle: .module,
     value: "Resource Type",
@@ -149,7 +149,7 @@ extension Strings.Shields {
       "A label displayed above the resource type of a request that was blocked in Blocked Requests view."
   )
   public static let aggressiveLabel = NSLocalizedString(
-    "aggressiveLabel",
+    "shields.aggressiveLabel",
     tableName: "BraveShared",
     bundle: .module,
     value: "Aggressive",
@@ -157,7 +157,7 @@ extension Strings.Shields {
       "A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view."
   )
   public static let blockedByLabel = NSLocalizedString(
-    "blockedByLabel",
+    "shields.blockedByLabel",
     tableName: "BraveShared",
     bundle: .module,
     value: "Blocked By",
@@ -165,7 +165,7 @@ extension Strings.Shields {
       "A label displayed above the location a request was blocked in Blocked Requests view."
   )
   public static let contentBlocker = NSLocalizedString(
-    "contentBlocker",
+    "shields.contentBlocker",
     tableName: "BraveShared",
     bundle: .module,
     value: "Content Blocker",
@@ -173,7 +173,7 @@ extension Strings.Shields {
       "Used to describe when a request was blocked by the Content Blocker in Blocked Requests view."
   )
   public static let requestBlocking = NSLocalizedString(
-    "requestBlocking",
+    "shields.requestBlocking",
     tableName: "BraveShared",
     bundle: .module,
     value: "Request Blocking",

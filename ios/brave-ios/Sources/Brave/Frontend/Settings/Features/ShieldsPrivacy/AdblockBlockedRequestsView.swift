@@ -16,7 +16,7 @@ struct AdblockBlockedRequestsView: View {
 
   private var blockedRequests: [BlockedRequestInfo] {
     let blockedRequests = Array(contentBlockerHelper.blockedRequests)
-    guard !filterText.isEmpty else {
+    if filterText.isEmpty {
       return blockedRequests
     }
     return blockedRequests.filter {
@@ -61,7 +61,7 @@ struct AdblockBlockedRequestsView: View {
     .searchable(text: $filterText)
   }
 
-  @ViewBuilder private func row(title: String, detail: String) -> some View {
+  private func row(title: String, detail: String) -> some View {
     Group {
       Text(title)
       Text(detail)

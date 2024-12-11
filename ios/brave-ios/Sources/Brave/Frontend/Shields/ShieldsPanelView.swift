@@ -27,7 +27,7 @@ struct ShieldsPanelView: View {
   }
 
   private let url: URL
-  private weak var tab: Tab?
+  private var tab: Tab?
   private let displayHost: String
   @AppStorage("advancedShieldsExpanded") private var advancedShieldsExpanded = false
   @ObservedObject private var viewModel: ShieldsSettingsViewModel
