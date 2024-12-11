@@ -4561,6 +4561,20 @@ extension Strings {
       value: "A new transaction will be created to cancel your existing transaction",
       comment: "The description inside the view when asking user to confirm they want to cancel a transaction."
     )
+    public static let speedUpBannerTitle = NSLocalizedString(
+      "wallet.speedUpBannerTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Take longer than expected?",
+      comment: "The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up."
+    )
+    public static let speedUpButtonTitle = NSLocalizedString(
+      "wallet.speedUpButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Speed up",
+      comment: "The button title for the button inside speed up banner."
+    )
     public static let ensOffchainGatewayTitle = NSLocalizedString(
       "wallet.ensOffchainGatewayTitle",
       tableName: "BraveWallet",

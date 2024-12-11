@@ -153,7 +153,7 @@ struct TransactionConfirmationView: View {
                 onDismiss()
                 onViewInActivity()
               },
-              onCancelCreated: { txId in
+              onFollowUpTxCreated: { txId in
                 Task { @MainActor in
                   // fetch and update `confirmationStore.unapprovedTxs` with this new tx with `txId`
                   if await confirmationStore.updateAllTx(with: txId) == false {

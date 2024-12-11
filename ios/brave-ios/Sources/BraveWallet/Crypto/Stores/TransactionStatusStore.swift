@@ -13,7 +13,6 @@ import Strings
 public class TransactionStatusStore: ObservableObject, WalletObserverStore {
   @Published var activeTxStatus: BraveWallet.TransactionStatus {
     didSet {
-      print("Debug - tx status changed to \(activeTxStatus)")
       originalTxStatus = activeTxStatus
     }
   }
@@ -50,6 +49,10 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
     } else {
       return true
     }
+  }
+
+  var isSpeedUpAvailable: Bool {
+    return activeParsedTx.transaction.coin == .eth
   }
 
   init(
