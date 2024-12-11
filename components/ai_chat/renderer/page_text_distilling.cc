@@ -231,7 +231,7 @@ void DistillPageTextViaSiteScript(
     std::string_view script_content,
     int32_t world_id,
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
-      CHECK(ai_chat::features::IsCustomSiteDistillerScriptsEnabled());
+  CHECK(ai_chat::features::IsCustomSiteDistillerScriptsEnabled());
   // TODO (jonathansampson): Wrap scripts at build/transpile-time instead
   std::string script = absl::StrFormat(
       R"((()=> {
@@ -248,10 +248,9 @@ void DistillPageTextViaSiteScript(
          std::optional<base::Value> value, base::TimeTicks start_time) {
         if (value && value->is_string() && !value->GetString().empty()) {
           std::move(callback).Run(value->GetString());
-          return;
+        } else {
+          std::move(callback).Run({});
         }
-
-        std::move(callback).Run({});
       };
 
   // Execute the combined script as a single source
