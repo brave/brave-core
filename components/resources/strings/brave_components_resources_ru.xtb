@@ -482,7 +482,7 @@
 <translation id="7934950257968365573">Войдите в аккаунт <ph name="PROVIDER"/></translation>
 <translation id="8631427463833030968">Настроить рекламу</translation>
 <translation id="590733288489975971">Вознаграждения за рекламу</translation>
-<translation id="5308380583665731573">Connect</translation>
+<translation id="5308380583665731573">Подключиться</translation>
 <translation id="3026978804849658576">Открыть отчет</translation>
 <translation id="1848737374354350807">Баланс:</translation>
 <translation id="6516984207843289176">Подключить аккаунт</translation>
@@ -966,7 +966,7 @@
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="8012452656725205792">Предоставить Brave доступ к вашему устройству <ph name="HARDWARE_DEVICE"/></translation>
-<translation id="4378551569595875038">Connecting...</translation>
+<translation id="4378551569595875038">Подключение…</translation>
 <translation id="1943188256166395881">Добавить проверенные аккаунты</translation>
 <translation id="8554010658308662631">Еще</translation>
 <translation id="6998738230710304743">Загрузка…</translation>
