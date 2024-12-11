@@ -15,15 +15,19 @@ struct TransactionStatusView: View {
 
   let onDismiss: () -> Void
   var onViewInActivity: () -> Void
-  var onCancelCreated: (_ txId: String) -> Void
+  var onFollowUpTxCreated: (_ txId: String) -> Void
 
   @Environment(\.openURL) private var openWalletURL
+  @Environment(\.pixelLength) private var pixelLength
 
   @State private var isSpinning: Bool = false
   @State private var isConfirmSpinning: Bool = false
   @State private var isConfirmSpinningFinished: Bool = false
   @State private var scrollViewContentSize: CGSize = .zero
   @State private var isShowingTxCancellationConfirmation: Bool = false
+  @State private var speedUpTimer: Timer?
+  @State private var isShowingSpeedUpBanner: Bool = false
+  @State private var followUpActionError: String?
 
   @ViewBuilder private var statusIcon: some View {
     switch txStatusStore.activeTxStatus {
@@ -560,11 +564,47 @@ struct TransactionStatusView: View {
       || txStatusStore.activeTxStatus == .confirmed
   }
 
+  private var speedUpView: some View {
+    HStack(spacing: 4) {
+      Text(Strings.Wallet.speedUpBannerTitle)
+        .foregroundColor(Color(braveSystemName: .systemfeedbackInfoText))
+        .font(.subheadline)
+        .multilineTextAlignment(.leading)
+      Spacer()
+      Button {
+        Task { @MainActor in
+          let (txId, error) = await txStatusStore.handleTransactionFollowUpAction(.speedUp)
+          if let error {
+            followUpActionError = error
+          } else if let txId {
+            onFollowUpTxCreated(txId)
+          }
+        }
+      } label: {
+        Text(Strings.Wallet.speedUpButtonTitle)
+          .foregroundColor(Color(braveSystemName: .textInteractive))
+          .font(.caption.weight(.semibold))
+          .padding(6)
+      }
+      .overlay {
+        RoundedRectangle(cornerRadius: 8)
+          .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: pixelLength)
+      }
+    }
+    .padding(16)
+    .background(
+      Color(braveSystemName: .systemfeedbackInfoBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+    )
+  }
+
   var body: some View {
     NavigationStack {
       GeometryReader { geometry in
         ScrollView(.vertical) {
           VStack {
+            speedUpView
+              .hidden(isHidden: !isShowingSpeedUpBanner)
             Spacer()
             txStatusIconView
               .padding(.bottom, 30)
@@ -601,15 +641,52 @@ struct TransactionStatusView: View {
             txStatusStore: txStatusStore,
             onCancelCreationSucceeded: {
               isShowingTxCancellationConfirmation = false
-              onCancelCreated($0)
+              onFollowUpTxCreated($0)
             },
-            onCancelCreationFailed: {
-              isShowingTxCancellationConfirmation = false
-            }
+            cancelError: $followUpActionError
           )
           .padding(16)
         }
       )
+    }
+    .onChange(of: txStatusStore.activeTxStatus) { _ in
+      if txStatusStore.activeTxStatus != .submitted {
+        isShowingSpeedUpBanner = false
+        speedUpTimer?.invalidate()
+        speedUpTimer = nil
+      }
+    }
+    .alert(
+      isPresented: Binding(
+        get: { followUpActionError != nil },
+        set: {
+          if !$0 {
+            followUpActionError = nil
+            isShowingTxCancellationConfirmation = false
+          }
+        }
+      )
+    ) {
+      Alert(
+        title: Text(Strings.genericErrorTitle),
+        message: Text(followUpActionError ?? ""),
+        dismissButton: .default(Text(Strings.OKString))
+      )
+    }
+    .onAppear {
+      if txStatusStore.activeTxStatus == .submitted && txStatusStore.isSpeedUpAvailable {
+        speedUpTimer = Timer.scheduledTimer(
+          withTimeInterval: 5,
+          repeats: false,
+          block: { _ in
+            isShowingSpeedUpBanner = true
+          }
+        )
+      }
+    }
+    .onDisappear {
+      speedUpTimer?.invalidate()
+      speedUpTimer = nil
     }
   }
 }
@@ -617,9 +694,7 @@ struct TransactionStatusView: View {
 struct TxCancellationConfirmationView: View {
   var txStatusStore: TransactionStatusStore
   var onCancelCreationSucceeded: (_ txId: String) -> Void
-  var onCancelCreationFailed: () -> Void
-
-  @State private var cancelError: String?
+  @Binding var cancelError: String?
 
   var body: some View {
     VStack {
@@ -647,23 +722,6 @@ struct TxCancellationConfirmationView: View {
       .buttonStyle(BraveFilledButtonStyle(size: .large))
     }
     .multilineTextAlignment(.center)
-    .alert(
-      isPresented: Binding(
-        get: { cancelError != nil },
-        set: {
-          if !$0 {
-            cancelError = nil
-            onCancelCreationFailed()
-          }
-        }
-      )
-    ) {
-      Alert(
-        title: Text(Strings.genericErrorTitle),
-        message: Text(cancelError ?? ""),
-        dismissButton: .default(Text(Strings.OKString))
-      )
-    }
   }
 }
 
@@ -675,7 +733,7 @@ struct TransactionStatusView_Previews: PreviewProvider {
       networkStore: .previewStore,
       onDismiss: {},
       onViewInActivity: {},
-      onCancelCreated: { _ in }
+      onFollowUpTxCreated: { _ in }
     )
   }
 }
