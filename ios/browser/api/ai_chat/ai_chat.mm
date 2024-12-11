@@ -32,6 +32,9 @@
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 
+@implementation AiChat
+@end
+
 @interface AIChat () {
   raw_ptr<ProfileIOS> profile_;
   raw_ptr<ai_chat::AIChatService> service_;

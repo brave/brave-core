@@ -12,6 +12,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
+@interface AiChat : NSObject  // AiChat Namespace for Swift exports
+- (instancetype)init NS_UNAVAILABLE;
+@end
+
+OBJC_EXPORT
 @interface AIChat : NSObject
 @property(nonatomic) bool isAgreementAccepted;
 
