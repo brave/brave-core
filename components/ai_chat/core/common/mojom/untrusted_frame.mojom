@@ -15,10 +15,10 @@ interface ParentUIFrame {
   // can manually set the same height on the <iframe> to avoid scrolling.
   ChildHeightChanged(uint32 height);
 
-  // This is sent to the UI rather than straight to the browser to allow
-  // for further rating feedback to be attached. The parent frame deals
-  // with it instead of the child frame, due to UI space as well as sensitive
-  // user information being captured.
+  // This is sent to the parent trusted webui rather than straight to the
+  // browser to allow for further rating feedback to be attached. The parent
+  // frame deals with it instead of the child frame, due to UI space as well as
+  // sensitive user information being captured.
   RateMessage(string turn_uuid, bool is_liked);
 };
 
