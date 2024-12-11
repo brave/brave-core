@@ -1071,6 +1071,10 @@ void ConversationHandler::OnFaviconImageDataChanged() {
   }
 }
 
+void ConversationHandler::OnAssociatedContentTitleChanged() {
+  OnAssociatedContentInfoChanged();
+}
+
 void ConversationHandler::OnUserOptedIn() {
   MaybePopPendingRequests();
   MaybeFetchOrClearContentStagedConversation();

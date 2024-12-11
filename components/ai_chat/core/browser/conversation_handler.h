@@ -277,6 +277,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void AddSubmitSelectedTextError(const std::string& selected_text,
                                   mojom::ActionType action_type,
                                   mojom::APIError error);
+  void OnAssociatedContentTitleChanged();
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
 
