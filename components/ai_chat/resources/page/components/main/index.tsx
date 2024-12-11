@@ -141,6 +141,10 @@ function Main() {
   const showAgreementModal = !aiChatContext.hasAcceptedAgreement &&
     !!conversationContext.conversationHistory.length
 
+  const showContent = !aiChatContext.hasAcceptedAgreement ||
+    !conversationContext.conversationUuid ||
+    isContentReady
+
   const showSuggestions: boolean =
     aiChatContext.hasAcceptedAgreement &&
     (conversationContext.suggestedQuestions.length > 0 ||
@@ -230,7 +234,7 @@ function Main() {
         <div
           className={classnames({
             [styles.conversationContent]: true,
-            [styles.contentReady]: !conversationContext.conversationUuid || isContentReady
+            [styles.showContent]: showContent
           })}
           ref={conversationContentElement}
         >

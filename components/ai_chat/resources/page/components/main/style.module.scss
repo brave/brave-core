@@ -65,7 +65,7 @@
   // Hide immediately when changing content
   transition: none;
 
-  &.contentReady {
+  &.showContent {
     opacity: 1;
     transition: opacity 0.12s ease-out;
   }
