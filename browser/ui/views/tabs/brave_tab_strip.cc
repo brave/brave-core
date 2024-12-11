@@ -328,7 +328,7 @@ void BraveTabStrip::UpdateTabContainer() {
       auto* tab = original_container->GetTabAtModelIndex(i);
       // At this point, we don't have group views in the container. So before
       // restoring groups, clears group for tabs.
-      tab->SetGroup(std::nullopt);
+      tab->set_group(std::nullopt);
       tab_container_->AddTab(
           tab->parent()->RemoveChildViewT(tab), i,
           tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned);
