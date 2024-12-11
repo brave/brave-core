@@ -113,6 +113,75 @@ extension Strings.Shields {
   )
 }
 
+// MARK: - Adblock Debugging
+
+extension Strings.Shields {
+  public static let blockedRequestsTitle = NSLocalizedString(
+    "blockedRequestsTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Blocked Requests",
+    comment:
+      "The title displayed in the navigation bar of Blocked Requests view."
+  )
+  public static let requestURLLabel = NSLocalizedString(
+    "requestURLLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Request URL",
+    comment:
+      "A label displayed above the request url that was blocked in Blocked Requests view."
+  )
+  public static let sourceURLLabel = NSLocalizedString(
+    "sourceURLLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Source URL",
+    comment:
+      "A label displayed above the source url of a request that was blocked in Blocked Requests view."
+  )
+  public static let resourceTypeLabel = NSLocalizedString(
+    "resourceTypeLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Resource Type",
+    comment:
+      "A label displayed above the resource type of a request that was blocked in Blocked Requests view."
+  )
+  public static let aggressiveLabel = NSLocalizedString(
+    "aggressiveLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Aggressive",
+    comment:
+      "A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view."
+  )
+  public static let blockedByLabel = NSLocalizedString(
+    "blockedByLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Blocked By",
+    comment:
+      "A label displayed above the location a request was blocked in Blocked Requests view."
+  )
+  public static let contentBlocker = NSLocalizedString(
+    "contentBlocker",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Content Blocker",
+    comment:
+      "Used to describe when a request was blocked by the Content Blocker in Blocked Requests view."
+  )
+  public static let requestBlocking = NSLocalizedString(
+    "requestBlocking",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Request Blocking",
+    comment:
+      "Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view."
+  )
+}
+
 // MARK: - Anti Ad-Block Warning
 
 extension Strings.Shields {

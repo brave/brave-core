@@ -2,7 +2,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
+import Collections
 import Combine
 import Data
 import Shared
@@ -37,7 +39,32 @@ enum BlockingStrength: String {
   static let allOptions: [BlockingStrength] = [.basic, .strict]
 }
 
-class ContentBlockerHelper {
+struct BlockedRequestInfo: Hashable, Identifiable {
+  enum Location: String {
+    case contentBlocker
+    case requestBlocking
+
+    var display: String {
+      switch self {
+      case .contentBlocker:
+        return Strings.Shields.contentBlocker
+      case .requestBlocking:
+        return Strings.Shields.requestBlocking
+      }
+    }
+  }
+  let requestURL: URL
+  let sourceURL: URL
+  let resourceType: AdblockEngine.ResourceType
+  let isAggressive: Bool
+  let location: Location
+
+  var id: String {
+    "\(requestURL)\(sourceURL)\(resourceType.rawValue)\(isAggressive)\(location.rawValue)"
+  }
+}
+
+class ContentBlockerHelper: ObservableObject {
   private(set) weak var tab: Tab?
 
   /// The rule lists that are loaded into the current tab
@@ -54,7 +81,7 @@ class ContentBlockerHelper {
   }
 
   var statsDidChange: ((TPPageStats) -> Void)?
-  var blockedRequests: Set<URL> = []
+  @Published var blockedRequests: OrderedSet<BlockedRequestInfo> = []
 
   init(tab: Tab) {
     self.tab = tab

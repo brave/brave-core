@@ -113,6 +113,13 @@
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(                                                  \
               security_interstitials::features::kHttpsOnlyMode),               \
+      },                                                                       \
+      {                                                                        \
+          "ios-debug-adblock",                                                 \
+          "Enable Debug Adblock views",                                        \
+          "Enable debug view for adblock features in Shields panel",           \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveIOSDebugAdblock),  \
       })
 
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                      \

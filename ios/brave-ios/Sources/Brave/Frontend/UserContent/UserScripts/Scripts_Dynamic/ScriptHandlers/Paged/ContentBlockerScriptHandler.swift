@@ -136,8 +136,18 @@ extension ContentBlockerHelper: TabContentScript {
           }
 
           // First check to make sure we're not counting the same repetitive requests multiple times
-          guard !self.blockedRequests.contains(requestURL) else { return }
-          self.blockedRequests.insert(requestURL)
+          guard !self.blockedRequests.contains(where: { $0.requestURL == requestURL }) else {
+            return
+          }
+          self.blockedRequests.append(
+            .init(
+              requestURL: requestURL,
+              sourceURL: sourceURL,
+              resourceType: dto.resourceType,
+              isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
+              location: .contentBlocker
+            )
+          )
 
           // Increase global stats (here due to BlocklistName being in Client and BraveGlobalShieldStats being
           // in BraveShared)
