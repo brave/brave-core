@@ -233,6 +233,14 @@ void DistillPageTextViaSiteScript(
     base::OnceCallback<void(const std::optional<std::string>&)> callback) {
   CHECK(ai_chat::features::IsCustomSiteDistillerScriptsEnabled());
   // TODO (jonathansampson): Wrap scripts at build/transpile-time instead
+  // This produces an injected script that resembles the following:
+  // (() => {
+  //   function distillPrimaryColumn (level) { ... }
+  //   function distill(level) {
+  //     return distillPrimaryColumn(level);
+  //   }
+  //   return distill(3);
+  // })())
   std::string script = absl::StrFormat(
       R"((()=> {
         %s
