@@ -5,9 +5,14 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
@@ -43,6 +48,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     private static final String PREF_DEFAULT_MODEL = "default_model";
 
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private ChromeSwitchPreference mHistory;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -72,13 +78,13 @@ public class BraveLeoPreferences extends BravePreferenceFragment
 
         Preference history = findPreference(PREF_HISTORY);
         if (history != null) {
-            history.setOnPreferenceChangeListener(this);
             if (history instanceof ChromeSwitchPreference) {
-                ((ChromeSwitchPreference) history)
-                        .setChecked(BraveLeoPrefUtils.getIsHistoryEnabled());
+                mHistory = (ChromeSwitchPreference) history;
+                mHistory.setOnPreferenceChangeListener(this);
+                mHistory.setChecked(BraveLeoPrefUtils.getIsHistoryEnabled());
+                mHistory.setVisible(ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT_HISTORY));
             }
         }
-        history.setVisible(ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT_HISTORY));
 
         BraveLeoUtils.verifySubscription(
                 (subscriptionActive) -> {
@@ -159,15 +165,48 @@ public class BraveLeoPreferences extends BravePreferenceFragment
                 });
     }
 
+    private void showConfirmClearHistoryDialog() {
+        LayoutInflater inflater =
+                (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.brave_leo_clear_history_dialog, null);
+
+        DialogInterface.OnClickListener onClickListener =
+                (dialog, button) -> {
+                    if (button == AlertDialog.BUTTON_POSITIVE) {
+                        BraveLeoPrefUtils.setIsHistoryEnabled(false);
+                        mHistory.setChecked(false);
+                    } else {
+                        dialog.dismiss();
+                    }
+                };
+
+        AlertDialog.Builder alert =
+                new AlertDialog.Builder(getContext(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
+        AlertDialog alertDialog =
+                alert.setTitle(R.string.leo_clear_history_title)
+                        .setView(view)
+                        .setPositiveButton(R.string.brave_leo_confirm_text, onClickListener)
+                        .setNegativeButton(R.string.cancel, onClickListener)
+                        .create();
+        alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
+        alertDialog.show();
+    }
+
     @Override
     public boolean onPreferenceChange(@NonNull Preference preference, Object o) {
         String key = preference.getKey();
+        boolean enabled = (boolean) o;
         if (PREF_AUTOCOMPLETE.equals(key)) {
             ChromeSharedPreferences.getInstance()
-                    .writeBoolean(BravePreferenceKeys.BRAVE_LEO_AUTOCOMPLETE, (boolean) o);
+                    .writeBoolean(BravePreferenceKeys.BRAVE_LEO_AUTOCOMPLETE, enabled);
         }
         if (PREF_HISTORY.equals(key)) {
-            BraveLeoPrefUtils.setIsHistoryEnabled((boolean) o);
+            if (enabled) {
+                BraveLeoPrefUtils.setIsHistoryEnabled(enabled);
+            } else {
+                showConfirmClearHistoryDialog();
+                return false;
+            }
         }
 
         return true;
