@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.annotation.MainThread;
@@ -59,6 +60,7 @@ import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.chrome.browser.youtube.YouTubeFeaturesLayout;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -229,7 +231,6 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
-import org.chromium.url.GURL;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -512,33 +513,28 @@ public abstract class BraveActivity extends ChromeActivity
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
     }
-
-    @Override
-    public void onUserLeaveHint() {
-        super.onUserLeaveHint();
-        if (isActivityFinishingOrDestroyed()) return;
-        Tab currentTab = getActivityTab();
-        if (TabUtils.isYouTubeVideo(currentTab)
-                && !isInPictureInPictureMode()
-                && BackgroundVideoPlaybackTabHelper.isPlayingMedia(currentTab.getWebContents())) {
-            BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
-            try {
-                enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
-            } catch (IllegalStateException | IllegalArgumentException e) {
-                Log.e(TAG, "Error while entering picture in picture mode", e);
-            }
-        }
-    }
-
     @Override
     public void performOnConfigurationChanged(Configuration newConfig) {
         super.performOnConfigurationChanged(newConfig);
+
+        YouTubeFeaturesLayout youtubeFeaturesLayout = findViewById(R.id.youtube_features_layout);
+        if (youtubeFeaturesLayout != null && youtubeFeaturesLayout.getLayoutParams() instanceof FrameLayout.LayoutParams params) {
+            params.bottomMargin = (int) getResources().getDimension(R.dimen.youtube_features_layout_margin_bottom);
+            params.leftMargin = (int) getResources().getDimension(R.dimen.youtube_features_layout_margin_left);
+        }
 
         Tab currentTab = getActivityTab();
         if (TabUtils.isYouTubeVideo(currentTab)
                 && !isInPictureInPictureMode()
                 && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
+        }
+    }
+
+    public void showYouTubeFeaturesLayout(final boolean show) {
+        YouTubeFeaturesLayout youtubeFeaturesLayout = findViewById(R.id.youtube_features_layout);
+        if (youtubeFeaturesLayout != null) {
+            youtubeFeaturesLayout.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 
