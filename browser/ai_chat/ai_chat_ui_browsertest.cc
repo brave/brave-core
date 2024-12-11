@@ -42,25 +42,12 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "printing/buildflags/buildflags.h"
 #include "services/network/public/cpp/network_switches.h"
-#include "services/screen_ai/buildflags/buildflags.h"
 #include "ui/compositor/compositor_switches.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 #include "chrome/browser/printing/test_print_preview_observer.h"
 #endif
-
-#if BUILDFLAG(ENABLE_SCREEN_AI_BROWSERTESTS) && !BUILDFLAG(USE_FAKE_SCREEN_AI)
-#define PDF_OCR_INTEGRATION_TEST_ENABLED
-#endif
-
-#if defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
-#include "chrome/browser/screen_ai/screen_ai_install_state.h"
-#include "components/strings/grit/components_strings.h"
-#include "services/screen_ai/public/cpp/utilities.h"
-#include "ui/accessibility/accessibility_features.h"
-#include "ui/accessibility/ax_features.mojom-features.h"
-#endif  // defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
 
 namespace {
 
@@ -310,9 +297,10 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, ExtractionPrintDialog) {
 #endif  // BUILDFLAG(IS_WIN) && defined(ADDRESS_SANITIZER) &&
         // defined(ARCH_CPU_64_BITS)
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, MAYBE_PrintPreviewFallback) {
-  // Falls back when there is no regular DOM content
-  // pdf test will be in UpstreamPDFIntegratoinTest since we enable upstream pdf
-  // ocr for all pdf files
+  NavigateURL(https_server_.GetURL("a.com", "/text_in_image.pdf"), false);
+  FetchPageContent(
+      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.");
+
   NavigateURL(https_server_.GetURL("a.com", "/canvas.html"), false);
   FetchPageContent(FROM_HERE, "this is the way");
 
@@ -395,110 +383,3 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest,
                                          {{"test query", "test summary"},
                                           {"test query 2", "test summary 2"}}));
 }
-
-#if defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
-// Test ai chat integration with upstream kPdfOcr
-class UpstreamPDFIntegratoinTest : public AIChatUIBrowserTest {
- public:
-  UpstreamPDFIntegratoinTest()
-      : embedded_test_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    feature_list_.InitWithFeatures(
-        {::features::kPdfOcr, ::features::kScreenAITestMode,
-         ax::mojom::features::kScreenAIOCREnabled},
-        {});
-  }
-
-  void SetUpOnMainThread() override {
-    AIChatUIBrowserTest::SetUpOnMainThread();
-
-    content::SetupCrossSiteRedirector(&embedded_test_server_);
-
-    base::FilePath test_data_dir;
-    test_data_dir = base::PathService::CheckedGet(chrome::DIR_TEST_DATA);
-    test_data_dir =
-        test_data_dir.AppendASCII("pdf").AppendASCII("accessibility");
-    embedded_test_server_.ServeFilesFromDirectory(test_data_dir);
-    ASSERT_TRUE(embedded_test_server_.Start());
-
-    screen_ai::ScreenAIInstallState::GetInstance()->SetComponentFolder(
-        screen_ai::GetComponentBinaryPathForTests().DirName());
-  }
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    AIChatUIBrowserTest::SetUpCommandLine(command_line);
-    command_line->RemoveSwitch(network::switches::kHostResolverRules);
-  }
-
-  void FetchPageContentAndWaitForOCR(
-      const base::Location& location,
-      std::string_view expected_text,
-      int ocr_status_message_id = IDS_PDF_OCR_COMPLETED) {
-    SCOPED_TRACE(testing::Message() << location.ToString());
-    base::RunLoop run_loop;
-    chat_tab_helper_->GetPageContent(
-        base::BindLambdaForTesting(
-            [&run_loop, expected_text](std::string text, bool is_video,
-                                       std::string invalidation_token) {
-              EXPECT_FALSE(is_video);
-              EXPECT_EQ(text, expected_text);
-              run_loop.Quit();
-            }),
-        "");
-    auto inner_web_contents = GetActiveWebContents()->GetInnerWebContents();
-    ASSERT_TRUE(inner_web_contents.size() == 1);
-    WaitForAccessibilityTreeToContainNodeWithName(
-        inner_web_contents[0], l10n_util::GetStringUTF8(ocr_status_message_id));
-    run_loop.Run();
-  }
-
- protected:
-  net::test_server::EmbeddedTestServer embedded_test_server_;
-  base::test::ScopedFeatureList feature_list_;
-};
-
-IN_PROC_BROWSER_TEST_F(UpstreamPDFIntegratoinTest, PDFOcr) {
-  // Single paragraph
-  NavigateURL(
-      embedded_test_server_.GetURL("a.com", "/hello-world-in-image.pdf"));
-  FetchPageContentAndWaitForOCR(FROM_HERE, "Hello, world!");
-
-  // Multiple paragraphs
-  NavigateURL(embedded_test_server_.GetURL(
-      "a.com", "/inaccessible-text-in-three-page.pdf"));
-  FetchPageContentAndWaitForOCR(FROM_HERE,
-                                "Hello, world!\n"
-                                "Paragraph 1 on Page 2\n"
-                                "Paragraph 2 on Page 2\n"
-                                "Paragraph 1 on Page 3\n"
-                                "Paragraph 2 on Page 3");
-}
-
-#if BUILDFLAG(ENABLE_TEXT_RECOGNITION) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
-IN_PROC_BROWSER_TEST_F(UpstreamPDFIntegratoinTest,
-                       PDFOcrFailed_PrintPreviewFallback) {
-  // Fallback to print preview extraction when upstream pdf ocr has empty
-  // results.
-  NavigateURL(https_server_.GetURL("b.com", "/text_in_image.pdf"), false);
-  FetchPageContentAndWaitForOCR(
-      FROM_HERE, "This is the way.\n\nI have spoken.\nWherever I Go, He Goes.",
-      IDS_PDF_OCR_NO_RESULT);
-}
-#endif  // BUILDFLAG(ENABLE_TEXT_RECOGNITION) && BUILDFLAG(ENABLE_PRINT_PREVIEW)
-
-IN_PROC_BROWSER_TEST_F(UpstreamPDFIntegratoinTest, PDFOcrWithBlankPage) {
-  // Single paragraph
-  NavigateURL(
-      https_server_.GetURL("a.com", "/hello-world-in-image-has-blank.pdf"));
-  FetchPageContentAndWaitForOCR(FROM_HERE, "Hello, world!");
-
-  // Multiple paragraphs
-  NavigateURL(https_server_.GetURL(
-      "a.com", "/inaccessible-text-in-three-page-has-blank.pdf"));
-  FetchPageContentAndWaitForOCR(FROM_HERE,
-                                "Hello, world!\n\n"
-                                "Paragraph 1 on Page 2\n"
-                                "Paragraph 2 on Page 2\n\n"
-                                "Paragraph 1 on Page 3\n"
-                                "Paragraph 2 on Page 3");
-}
-#endif  // defined(PDF_OCR_INTEGRATION_TEST_ENABLED)
