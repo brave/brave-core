@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:anchor="https://anchor.fm/xmlns">
+    <channel>
+        <title><![CDATA[It’s Not Always Special ]]></title>
+        <description>
+            <![CDATA[This is a podcast about families who have a special needs child. We will talk about what it is to be a parent, sibling and friend. We will also explore what is wrong with the system of care we currently have and where we can do better. We will also introduce new and groundbreaking programs and services you may not be aware of. ]]></description>
+        <link>https://podcasters.spotify.com/pod/show/lisa-mccoy</link>
+        <image>
+            <url>
+                https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/23591441/23591441-1649013735716-25c2d16df92e8.jpg
+            </url>
+            <title>It’s Not Always Special</title>
+            <link>https://podcasters.spotify.com/pod/show/lisa-mccoy</link>
+        </image>
+        <generator>Anchor Podcasts</generator>
+        <lastBuildDate>Fri, 23 Feb 2024 22:19:40 GMT</lastBuildDate>
+        <atom:link href="https://anchor.fm/s/8d364524/podcast/rss" rel="self" type="application/rss+xml"/>
+        <author><![CDATA[Lisa McCoy]]></author>
+        <copyright><![CDATA[Lisa McCoy]]></copyright>
+        <language><![CDATA[en]]></language>
+        <atom:link rel="hub" href="https://pubsubhubbub.appspot.com/"/>
+        <itunes:author>Lisa McCoy</itunes:author>
+        <itunes:summary>This is a podcast about families who have a special needs child. We will talk about what it is
+            to be a parent, sibling and friend. We will also explore what is wrong with the system of care we currently
+            have and where we can do better. We will also introduce new and groundbreaking programs and services you may
+            not be aware of.
+        </itunes:summary>
+        <itunes:type>episodic</itunes:type>
+        <itunes:owner>
+            <itunes:name>Lisa McCoy</itunes:name>
+            <itunes:email>c2fn9prc85@privaterelay.appleid.com</itunes:email>
+        </itunes:owner>
+        <itunes:explicit>No</itunes:explicit>
+        <itunes:category text="Kids &amp; Family">
+            <itunes:category text="Parenting"/>
+        </itunes:category>
+        <itunes:image
+                href="https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/23591441/23591441-1649013735716-25c2d16df92e8.jpg"/>
+        <item>
+            <title><![CDATA[Advocating for our children ]]></title>
+            <description><![CDATA[Taking care of a child with special needs is more than what is considered traditional care. Learn more about advocacy!]]></description>
+            <link>https://podcasters.spotify.com/pod/show/lisa-mccoy/episodes/Advocating-for-our-children-e1oq9fb</link>
+            <guid isPermaLink="false">2fea9218-f154-47be-a501-0a78ea2f36f8</guid>
+            <dc:creator><![CDATA[Lisa McCoy]]></dc:creator>
+            <pubDate>Wed, 08 Feb 2023 20:34:49 GMT</pubDate>
+            <enclosure
+                    url="https://anchor.fm/s/8d364524/podcast/play/58581931/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fproduction%2Fexports%2F8d364524%2F58581931%2Fa48be9475fbbb5c00427f7e733079b03.m4a"
+                    length="36030594" type="audio/x-m4a"/>
+            <itunes:summary>Taking care of a child with special needs is more than what is considered traditional care.
+                Learn more about advocacy!
+            </itunes:summary>
+            <itunes:explicit>No</itunes:explicit>
+            <itunes:duration>00:37:07</itunes:duration>
+            <itunes:image
+                    href="https://d3t3ozftmdmh3i.cloudfront.net/production/podcast_uploaded/23591441/23591441-1649013735716-25c2d16df92e8.jpg"/>
+            <itunes:season>1</itunes:season>
+            <itunes:episode>7</itunes:episode>
+            <itunes:episodeType>full</itunes:episodeType>
+        </item>
+    </channel>
+</rss>

@@ -12,35 +12,35 @@ cargo_crate("lib") {
   crate_name = "feed_rs"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/model.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/atom/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/atom/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/fuzz.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/itunes.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/json/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/json/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/mediarss.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss0/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss0/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss1/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss1/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss2/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/rss2/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/parser/util.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/util/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/util/test.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/xml/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.3.0/src/xml/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/model.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/atom/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/atom/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/itunes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/json/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/json/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/mediarss.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/rss0/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/rss0/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/rss1/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/rss1/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/rss2/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/rss2/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/parser/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/util/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/util/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/xml/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/feed-rs-1.5.3/src/xml/tests.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "1.3.0"
+  cargo_pkg_version = "1.5.3"
   cargo_pkg_authors =
       "Hiroki Kumamoto <kumabook@live.jp>, Mark Pritchard <mpritcha@gmail.com>"
   cargo_pkg_name = "feed-rs"
@@ -53,13 +53,12 @@ cargo_crate("lib") {
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/chrono/v0_4:lib",
-    "//brave/third_party/rust/lazy_static/v1:lib",
     "//brave/third_party/rust/mime/v0_3:lib",
-    "//brave/third_party/rust/quick_xml/v0_27:lib",
+    "//brave/third_party/rust/quick_xml/v0_31:lib",
     "//brave/third_party/rust/regex/v1:lib",
     "//brave/third_party/rust/serde/v1:lib",
     "//brave/third_party/rust/serde_json/v1:lib",
-    "//brave/third_party/rust/siphasher/v0_3:lib",
+    "//brave/third_party/rust/siphasher/v1:lib",
     "//brave/third_party/rust/url/v2:lib",
     "//brave/third_party/rust/uuid/v1:lib",
   ]

@@ -1,9 +1,9 @@
 Name: url
 URL: https://crates.io/crates/url
-Version: 2.3.1
-Revision: 359bc90a4f07224f79cc79c45dc873d44bcd6f14
+Version: 2.5.4
+Revision: 797b2e2a0a31ffd75a004efac859618a634d5fa4
 License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/url-2.3.1/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/url-2.5.4/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

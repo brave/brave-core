@@ -249,6 +249,15 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_build_script_src_roots = [ "../macros/match_token.rs" ]
 build_script_outputs = [ "rules.rs" ]
 
+[crate.icu_locid_transform_data]
+extra_src_roots = [ "../data/macros.rs" ]
+
+[crate.icu_normalizer_data]
+extra_src_roots = [ "../data/macros.rs" ]
+
+[crate.icu_properties_data]
+extra_src_roots = [ "../data/macros.rs" ]
+
 [crate.ipld-core]
 extra_input_roots = [ "../README.md" ]
 
@@ -418,7 +427,7 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.wasi]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
-[crate.windows]
+[crate.windows-core]
 license_files = ['license-apache-2.0']
 
 [crate.windows_aarch64_msvc]
@@ -428,9 +437,6 @@ license_files = ['license-apache-2.0']
 license_files = ['license-apache-2.0']
 
 [crate.windows_x86_64_msvc]
-license_files = ['license-apache-2.0']
-
-[crate.windows-sys]
 license_files = ['license-apache-2.0']
 
 [crate.windows-targets]

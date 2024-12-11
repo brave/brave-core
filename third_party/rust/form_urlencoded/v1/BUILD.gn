@@ -12,13 +12,13 @@ cargo_crate("lib") {
   crate_name = "form_urlencoded"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/form_urlencoded-1.1.0/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/form_urlencoded-1.1.0/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/form_urlencoded-1.2.1/src/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/form_urlencoded-1.2.1/src/lib.rs" ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.1.0"
+  cargo_pkg_version = "1.2.1"
   cargo_pkg_authors = "The rust-url developers"
   cargo_pkg_name = "form_urlencoded"
   cargo_pkg_description = "Parser and serializer for the application/x-www-form-urlencoded syntax, as used by HTML forms."
@@ -29,4 +29,8 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [ "//brave/third_party/rust/percent_encoding/v2:lib" ]
+  features = [
+    "alloc",
+    "std",
+  ]
 }

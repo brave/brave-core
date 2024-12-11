@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <updated>2022-04-27T09:26:27+00:00</updated>
+  <id>https://numi.st/feed.xml</id>
+  <title type="html">my cool website title</title>
+  <entry>
+    <title type="html">my cool entry title</title>
+    <updated>2022-04-21T00:00:00+00:00</updated>
+    <id>https://numi.st/post/2022/travel-uke</id>
+    <content type="html" xml:base="https://numi.st/post/2022/travel-uke/">
+      <![CDATA[<p><img src="IMG_1232.jpeg" /></p>]]>
+    </content>
+    <author><name>Not Blank</name></author>
+  </entry>
+</feed>

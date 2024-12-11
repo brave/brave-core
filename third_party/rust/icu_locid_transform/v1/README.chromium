@@ -1,0 +1,10 @@
+Name: icu_locid_transform
+URL: https://crates.io/crates/icu_locid_transform
+Version: 1.5.0
+Revision: 55cd12ebb25c6261492e1e3dfa2e6453c54dde31
+License: Unicode 3.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: API for Unicode Language and Locale Identifiers canonicalization

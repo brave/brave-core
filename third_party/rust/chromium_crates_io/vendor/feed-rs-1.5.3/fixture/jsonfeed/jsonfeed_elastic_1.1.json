@@ -1,0 +1,72 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "user_comment": "This feed allows you to read the posts from this site in any feed reader that supports the JSON Feed format. To add this feed to your reader, copy the following URL -- https://w2.influxdata.com/blog/feed/json -- and add it your reader.",
+  "home_page_url": "https://www.influxdata.com/blog/",
+  "feed_url": "https://www.influxdata.com",
+  "language": "en-US",
+  "author": {
+    "name": "Fake Author 3"
+  },
+  "authors": [
+    {
+      "name": "Fake Author 3"
+    },
+    {
+      "name": "Fake Author 4"
+    }
+  ],
+  "title": "Blog \u0026#8211; InfluxData",
+  "description": "The Platform for Time-Series Data",
+  "icon": "https://www.influxdata.com/wp-content/uploads/cubo.svg",
+  "items": [
+    {
+      "url": "https://www.influxdata.com/blog/influxdb-outperforms-graphite-in-time-series-data-metrics-benchmark",
+      "title": "InfluxDB vs. Graphite for Time Series Data \u0026 Metrics Benchmark",
+      "content_text": "This blog post has been updated on September 10, 2020 with the latest benchmark results for InfluxDB 1.8.0 and Graphite 1.1.7. This blog is regularly updated with the latest benchmark figures. At InfluxData, one of the common questions we regularly get...",
+      "date_published": "Fri, 31 May 2019 12:17:58 -0700",
+      "date_modified": "Fri, 31 May 2019 12:17:58 -0700",
+      "author": {
+        "name": "Fake Author 2"
+      },
+      "authors": [
+        {
+          "name": "Chris Churilo",
+          "url": "https://www.influxdata.com/blog/author/chrisc/",
+          "avatar": "//images.ctfassets.net/o7xu9whrs0u9/7zDkE49kOljM6JiT78WHUM/654d83d364884bfbbc7353fc8484d25a/Chris-Churilo-1.jpg"
+        },
+        {
+          "name": "Fake Author 1"
+        }
+      ],
+      "tags": [
+        "InfluxDB",
+        "Community",
+        "Elasticsearch",
+        "Time Series Database"
+      ]
+    },
+    {
+      "url": "https://www.influxdata.com/blog/influxdb-markedly-elasticsearch-in-time-series-data-metrics-benchmark",
+      "title": "InfluxDB vs. Elasticsearch for Time Series Data \u0026 Metrics Benchmark",
+      "content_text": "This blog post has been updated on July 17, 2020 with the latest benchmark results for InfluxDB v1.8.0 and Elasticsearch v7.8.0. To provide you with the latest findings, this blog is regularly updated with the latest benchmark figures. At InfluxData, one...",
+      "date_published": "Tue, 06 Feb 2018 06:34:12 -0700",
+      "date_modified": "Tue, 06 Feb 2018 06:34:12 -0700",
+      "language": "en-AU",
+      "tags": [
+        "InfluxDB",
+        "Community",
+        "Elasticsearch",
+        "Time Series Database"
+      ],
+      "author": {
+        "name": "Chris Churilo",
+        "url": "https://www.influxdata.com/blog/author/chrisc/",
+        "avatar": "//images.ctfassets.net/o7xu9whrs0u9/7zDkE49kOljM6JiT78WHUM/654d83d364884bfbbc7353fc8484d25a/Chris-Churilo-1.jpg"
+      }
+    },
+    {
+      "url": "https://example.com",
+      "title": "Fake item"
+    }
+  ]
+}

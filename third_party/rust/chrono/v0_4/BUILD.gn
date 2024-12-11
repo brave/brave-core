@@ -12,54 +12,53 @@ cargo_crate("lib") {
   crate_name = "chrono"
   epoch = "0.4"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/date.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/datetime/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/datetime/rustc_serialize.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/datetime/serde.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/datetime/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/format/locales.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/format/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/format/parse.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/format/parsed.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/format/scan.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/format/strftime.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/month.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/date.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/datetime/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/datetime/rustc_serialize.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/datetime/serde.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/datetime/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/internals.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/isoweek.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/time/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/time/rustc_serialize.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/time/serde.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/naive/time/tests.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/fixed.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/local/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/local/stub.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/local/tz_info/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/local/tz_info/parser.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/local/tz_info/rule.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/local/tz_info/timezone.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/local/unix.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/local/windows.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/offset/utc.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/oldtime.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/round.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/traits.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/src/weekday.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/date.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/datetime/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/datetime/serde.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/datetime/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/format/formatting.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/format/locales.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/format/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/format/parse.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/format/parsed.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/format/scan.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/format/strftime.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/month.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/date/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/date/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/datetime/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/datetime/serde.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/datetime/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/internals.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/isoweek.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/time/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/time/serde.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/naive/time/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/fixed.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/local/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/local/tz_info/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/local/tz_info/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/local/tz_info/rule.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/local/tz_info/timezone.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/local/unix.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/local/win_bindings.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/local/windows.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/offset/utc.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/round.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/time_delta.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/traits.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/src/weekday.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
-  edition = "2018"
-  cargo_pkg_version = "0.4.24"
+  edition = "2021"
+  cargo_pkg_version = "0.4.39"
   cargo_pkg_name = "chrono"
   cargo_pkg_description = "Date and time library for Rust"
   library_configs -= [ "//build/config/compiler:chromium_code" ]
@@ -69,21 +68,27 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//brave/third_party/rust/num_integer/v0_1:lib",
     "//brave/third_party/rust/num_traits/v0_2:lib",
     "//brave/third_party/rust/serde/v1:lib",
   ]
   if (!is_win) {
     deps += [ "//brave/third_party/rust/iana_time_zone/v0_1:lib" ]
   }
+  if (is_android) {
+    deps += [ "//brave/third_party/rust/android_tzdata/v0_1:lib" ]
+  }
   if (is_win) {
-    deps += [ "//brave/third_party/rust/winapi/v0_3:lib" ]
+    deps += [ "//brave/third_party/rust/windows_targets/v0_52:lib" ]
   }
   features = [
+    "alloc",
+    "android-tzdata",
     "clock",
     "iana-time-zone",
+    "now",
     "serde",
     "std",
     "winapi",
+    "windows-targets",
   ]
 }
