@@ -73,6 +73,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
                        GetAccessiblePaneContainsSecondaryViews) {
+  secondary_contents_container().SetVisible(true);
   secondary_contents_view().SetVisible(true);
   secondary_dev_tools().SetVisible(true);
   std::vector<views::View*> panes;

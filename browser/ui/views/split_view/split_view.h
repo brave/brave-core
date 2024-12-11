@@ -55,10 +55,10 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   using AfterSetWebContents =
       base::OnceCallback<void(content::WebContents* old_contents,
                               content::WebContents* new_contents)>;
-  [[nodiscard]] AfterSetWebContents WillSetActiveWebContentsToContentsWebView(
+  [[nodiscard]] AfterSetWebContents WillChangeActiveWebContents(
       BrowserViewKey,
-      content::WebContents* new_contents,
-      int index);
+      content::WebContents* old_contents,
+      content::WebContents* new_contents);
 
   // Called before/after BrowseView::UpdateDevToolsForContents().
   void WillUpdateDevToolsForActiveContents(BrowserViewKey);
@@ -102,12 +102,12 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   friend class SplitViewBrowserTest;
   friend class SplitViewLocationBarBrowserTest;
 
-  void DidSwapActiveWebContents(bool need_to_reset_fast_resize,
-                                content::WebContents* old_contents,
-                                content::WebContents* new_contents);
+  void DidChangeActiveWebContents(content::WebContents* old_contents,
+                                  content::WebContents* new_contents);
 
   tabs::TabHandle GetActiveTabHandle() const;
   bool IsActiveWebContentsTiled(const TabTile& tile) const;
+  bool IsWebContentsTiled(content::WebContents* contents) const;
   void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
                                 content::WebContents* new_contents);
   void UpdateContentsWebViewVisual();

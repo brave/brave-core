@@ -95,54 +95,32 @@ SplitView::SplitView(Browser& browser,
 
 SplitView::~SplitView() = default;
 
-SplitView::AfterSetWebContents
-SplitView::WillSetActiveWebContentsToContentsWebView(
+SplitView::AfterSetWebContents SplitView::WillChangeActiveWebContents(
     BrowserViewKey,
-    content::WebContents* new_contents,
-    int index) {
-  bool need_to_update_secondary_web_view = false;
-  // In order to minimize flickering during tab activation, we should update
-  // split view only when it's needed.
-  auto* browser_data =
-      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
-  auto* tab_strip_model = browser_->tab_strip_model();
-  if (auto tile =
-          browser_data->GetTile(tab_strip_model->GetTabHandleAt(index))) {
-    auto* main_web_contents = tab_strip_model->GetWebContentsAt(
-        tab_strip_model->GetIndexOfTab(tile->first));
-    auto* secondary_web_contents = tab_strip_model->GetWebContentsAt(
-        tab_strip_model->GetIndexOfTab(tile->second));
-    if (main_web_contents != new_contents) {
-      std::swap(main_web_contents, secondary_web_contents);
-    }
-
-    need_to_update_secondary_web_view =
-        contents_web_view_->web_contents() != main_web_contents ||
-        secondary_contents_web_view_->web_contents() != secondary_web_contents;
-  } else {
-    // Old contents was in a split view. We should hide split view.
-    need_to_update_secondary_web_view =
-        secondary_contents_web_view_->web_contents();
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  // Early return with null callback if this active state changes is not related
+  // with split view. |secondary_contents_container_| is not visible if previous
+  // active contents is not in tile.
+  if (!secondary_contents_container_->GetVisible() &&
+      !IsWebContentsTiled(new_contents)) {
+    return base::NullCallback();
   }
 
-  if (need_to_update_secondary_web_view) {
-    // This helps reduce flickering when switching between tiled tabs.
-    contents_web_view_->SetFastResize(true);
-    secondary_contents_web_view_->SetFastResize(true);
+  // This helps reduce flickering when switching between tiled tabs.
+  contents_web_view_->SetFastResize(true);
+  secondary_contents_web_view_->SetFastResize(true);
 
-    if (!SplitViewBrowserData::FromBrowser(base::to_address(browser_))
-             ->GetTile(browser_->tab_strip_model()->GetTabHandleAt(index))) {
-      // This will help reduce flickering when switching to non tiled tab by
-      // hiding secondary web view before detaching web contents.
-      UpdateSecondaryContentsWebViewVisibility();
-    }
-
-    secondary_contents_web_view_->SetWebContents(nullptr);
+  if (!IsWebContentsTiled(new_contents)) {
+    // This will help reduce flickering when switching to non tiled tab by
+    // hiding secondary web view before detaching web contents.
+    UpdateSecondaryContentsWebViewVisibility();
   }
 
-  return base::BindOnce(&SplitView::DidSwapActiveWebContents,
-                        weak_ptr_factory_.GetWeakPtr(),
-                        need_to_update_secondary_web_view);
+  secondary_contents_web_view_->SetWebContents(nullptr);
+
+  return base::BindOnce(&SplitView::DidChangeActiveWebContents,
+                        weak_ptr_factory_.GetWeakPtr());
 }
 
 void SplitView::WillUpdateDevToolsForActiveContents(BrowserViewKey) {
@@ -152,28 +130,28 @@ void SplitView::WillUpdateDevToolsForActiveContents(BrowserViewKey) {
 }
 
 void SplitView::DidUpdateDevToolsForActiveContents(BrowserViewKey) {
-  if (secondary_contents_web_view_->GetVisible()) {
+  if (secondary_contents_container_->GetVisible()) {
     UpdateSecondaryDevtoolsLayoutAndVisibility();
   }
 }
 
-void SplitView::DidSwapActiveWebContents(bool need_to_reset_fast_resize,
-                                         content::WebContents* old_contents,
-                                         content::WebContents* new_contents) {
+void SplitView::DidChangeActiveWebContents(content::WebContents* old_contents,
+                                           content::WebContents* new_contents) {
   UpdateSplitViewSizeDelta(old_contents, new_contents);
-
   UpdateContentsWebViewVisual();
 
-  if (need_to_reset_fast_resize) {
-    // Revert back to default state.
-    contents_web_view_->SetFastResize(false);
-    secondary_contents_web_view_->SetFastResize(false);
-    InvalidateLayout();
-  }
+  // Revert back to default state.
+  contents_web_view_->SetFastResize(false);
+  secondary_contents_web_view_->SetFastResize(false);
+  InvalidateLayout();
 }
 
 void SplitView::GetAccessiblePanes(BrowserViewKey,
                                    std::vector<views::View*>* panes) {
+  if (!secondary_contents_container_->GetVisible()) {
+    return;
+  }
+
   if (secondary_contents_web_view_ &&
       secondary_contents_web_view_->GetVisible()) {
     panes->push_back(secondary_contents_web_view_);
@@ -217,6 +195,9 @@ void SplitView::AddedToWidget() {
   secondary_location_bar_widget_->Init(
       SplitViewLocationBar::GetWidgetInitParams(GetWidget()->GetNativeView(),
                                                 secondary_location_bar_.get()));
+
+  // Initialize secondary view state.
+  UpdateSecondaryContentsWebViewVisibility();
 }
 
 void SplitView::OnTileTabs(const TabTile& tile) {
@@ -254,6 +235,18 @@ tabs::TabHandle SplitView::GetActiveTabHandle() const {
 bool SplitView::IsActiveWebContentsTiled(const TabTile& tile) const {
   auto active_tab_handle = GetActiveTabHandle();
   return tile.first == active_tab_handle || tile.second == active_tab_handle;
+}
+
+bool SplitView::IsWebContentsTiled(content::WebContents* contents) const {
+  const int tab_index =
+      browser_->tab_strip_model()->GetIndexOfWebContents(contents);
+  if (tab_index == TabStripModel::kNoTab) {
+    return false;
+  }
+  const auto tab_handle =
+      browser_->tab_strip_model()->GetTabHandleAt(tab_index);
+  return SplitViewBrowserData::FromBrowser(base::to_address(browser_))
+      ->IsTabTiled(tab_handle);
 }
 
 void SplitView::UpdateSplitViewSizeDelta(content::WebContents* old_contents,
