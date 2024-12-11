@@ -161,6 +161,9 @@ class AIChatService : public KeyedService,
   bool HasUserOptedIn();
   bool IsPremiumStatus();
 
+  // Whether the feature and user preference for history storage is enabled
+  bool IsAIChatHistoryEnabled();
+
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
 
   AIChatCredentialManager* GetCredentialManagerForTesting() {
@@ -214,8 +217,6 @@ class AIChatService : public KeyedService,
   void OnDataDeletedForDisabledStorage(bool success);
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
-
-  bool IsAIChatHistoryEnabled();
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<PrefService> profile_prefs_;

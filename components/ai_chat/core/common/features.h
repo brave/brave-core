@@ -28,6 +28,8 @@ extern const base::FeatureParam<bool> kFreemiumAvailable;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kAIChatSSE;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<bool> kOmniboxOpensFullPage;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kConversationAPIEnabled;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kAITemperature;
