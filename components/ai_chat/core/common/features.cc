@@ -41,6 +41,14 @@ bool IsAIChatHistoryEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatHistory);
 }
 
+BASE_FEATURE(kCustomSiteDistillerScripts,
+             "CustomSiteDistillerScripts",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsCustomSiteDistillerScriptsEnabled() {
+  return base::FeatureList::IsEnabled(features::kCustomSiteDistillerScripts);
+}
+
 BASE_FEATURE(kContextMenuRewriteInPlace,
              "AIChatContextMenuRewriteInPlace",
              base::FEATURE_ENABLED_BY_DEFAULT);
