@@ -233,6 +233,10 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [34710],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-custom_site_distiller_scripts/custom_site_distiller_scripts.grd": {
+    "META": {"sizes": {"includes": [50]}},
+    "includes": [34720],
+  },
   # WARNING: The upstream ChromeOS/Ash strings currently run through 36930. We
   # must be careful not to exceed that maximum when adding new strings here.
 }

@@ -356,51 +356,58 @@
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
 #endif
 
-#define BRAVE_AI_CHAT_FEATURE_ENTRIES                                        \
-  EXPAND_FEATURE_ENTRIES(                                                    \
-      {                                                                      \
-          "brave-ai-chat",                                                   \
-          "Brave AI Chat",                                                   \
-          "Summarize articles and engage in conversation with AI",           \
-          kOsWin | kOsMac | kOsLinux | kOsAndroid,                           \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),                    \
-      },                                                                     \
-      {                                                                      \
-          "brave-ai-chat-history",                                           \
-          "Brave AI Chat History",                                           \
-          "Enables AI Chat History persistence and management",              \
-          kOsWin | kOsMac | kOsLinux,                                        \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),             \
-      },                                                                     \
-      {                                                                      \
-          "brave-ai-chat-context-menu-rewrite-in-place",                     \
-          "Brave AI Chat Rewrite In Place From Context Menu",                \
-          "Enables AI Chat rewrite in place feature from the context menu",  \
-          kOsDesktop,                                                        \
-          FEATURE_VALUE_TYPE(ai_chat::features::kContextMenuRewriteInPlace), \
-      },                                                                     \
-      {                                                                      \
-          "brave-ai-chat-page-content-refine",                               \
-          "Brave AI Chat Page Content Refine",                               \
-          "Enable local text embedding for long page content in order to "   \
-          "find "                                                            \
-          "most relevant parts to the prompt within context limit.",         \
-          kOsDesktop | kOsAndroid,                                           \
-          FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),         \
-      },                                                                     \
-      {                                                                      \
-          "brave-ai-chat-allow-private-ips",                                 \
-          "Private IP Addresses for Custom Model Endpoints",                 \
-          "Permits the use of private IP addresses as model endpoint URLs",  \
-          kOsWin | kOsMac | kOsLinux | kOsAndroid,                           \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAllowPrivateIPs),           \
-      },                                                                     \
-      {                                                                      \
-          "brave-ai-chat-open-leo-from-brave-search",                        \
-          "Open Leo AI Chat from Brave Search",                              \
-          "Enables opening Leo AI Chat from Brave Search",                   \
-          kOsDesktop | kOsAndroid,                                           \
-          FEATURE_VALUE_TYPE(ai_chat::features::kOpenAIChatFromBraveSearch), \
+#define BRAVE_AI_CHAT_FEATURE_ENTRIES                                         \
+  EXPAND_FEATURE_ENTRIES(                                                     \
+      {                                                                       \
+          "brave-ai-chat",                                                    \
+          "Brave AI Chat",                                                    \
+          "Summarize articles and engage in conversation with AI",            \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                            \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),                     \
+      },                                                                      \
+      {                                                                       \
+          "brave-ai-chat-history",                                            \
+          "Brave AI Chat History",                                            \
+          "Enables AI Chat History persistence and management",               \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),              \
+      },                                                                      \
+      {                                                                       \
+          "brave-ai-host-specific-distillation",                              \
+          "Brave AI Host-Specific Distillation",                              \
+          "Enables support for host-specific distillation scripts",           \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          FEATURE_VALUE_TYPE(ai_chat::features::kCustomSiteDistillerScripts), \
+      },                                                                      \
+      {                                                                       \
+          "brave-ai-chat-context-menu-rewrite-in-place",                      \
+          "Brave AI Chat Rewrite In Place From Context Menu",                 \
+          "Enables AI Chat rewrite in place feature from the context menu",   \
+          kOsDesktop,                                                         \
+          FEATURE_VALUE_TYPE(ai_chat::features::kContextMenuRewriteInPlace),  \
+      },                                                                      \
+      {                                                                       \
+          "brave-ai-chat-page-content-refine",                                \
+          "Brave AI Chat Page Content Refine",                                \
+          "Enable local text embedding for long page content in order to "    \
+          "find "                                                             \
+          "most relevant parts to the prompt within context limit.",          \
+          kOsDesktop | kOsAndroid,                                            \
+          FEATURE_VALUE_TYPE(ai_chat::features::kPageContentRefine),          \
+      },                                                                      \
+      {                                                                       \
+          "brave-ai-chat-allow-private-ips",                                  \
+          "Private IP Addresses for Custom Model Endpoints",                  \
+          "Permits the use of private IP addresses as model endpoint URLs",   \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                            \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAllowPrivateIPs),            \
+      },                                                                      \
+      {                                                                       \
+          "brave-ai-chat-open-leo-from-brave-search",                         \
+          "Open Leo AI Chat from Brave Search",                               \
+          "Enables opening Leo AI Chat from Brave Search",                    \
+          kOsDesktop | kOsAndroid,                                            \
+          FEATURE_VALUE_TYPE(ai_chat::features::kOpenAIChatFromBraveSearch),  \
       })
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
