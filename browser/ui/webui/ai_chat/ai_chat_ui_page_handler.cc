@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -115,7 +116,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
   CHECK(active_chat_tab_helper_);
   active_chat_tab_helper_->web_contents()->OpenURL(
       {
-          GURL(kAIChatUIURL).Resolve(conversation_uuid),
+          ConversationUrl(conversation_uuid),
           content::Referrer(),
           WindowOpenDisposition::NEW_FOREGROUND_TAB,
           ui::PAGE_TRANSITION_TYPED,

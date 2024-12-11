@@ -54,8 +54,8 @@ std::unique_ptr<AiChatThrottle> AiChatThrottle::MaybeCreateThrottleFor(
     return nullptr;
   }
 
-  // Purpose of this throttle is to forbid loading of chrome-untrusted://chat
-  // in tab.
+  // Purpose of this throttle is to forbid loading of chrome://leo-ai and
+  // related urls in tab.
   // Parameters check is made different for Android and Desktop because
   // there are different flags:
   // --------+---------------------------------+------------------------------

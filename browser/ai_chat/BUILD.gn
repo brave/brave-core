@@ -11,6 +11,8 @@ static_library("ai_chat") {
     "ai_chat_service_factory.h",
     "ai_chat_settings_helper.cc",
     "ai_chat_settings_helper.h",
+    "ai_chat_urls.cc",
+    "ai_chat_urls.h",
     "ai_chat_utils.cc",
     "ai_chat_utils.h",
   ]

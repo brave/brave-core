@@ -10,6 +10,7 @@
 
 #include "base/strings/escape.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
@@ -36,7 +37,7 @@ namespace {
 constexpr char kURLLearnMoreBraveSearchLeo[] =
     "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo";
 
-// Handle calls from the UI to the browser
+// Implments the interface to calls from the UI to the browser
 class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
  public:
   UIHandler(content::WebContents* owner_web_contents,
@@ -172,9 +173,8 @@ void AIChatUntrustedConversationUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
         receiver) {
   // Get conversation from URL
-  std::string_view conversation_uuid = base::TrimString(
-      web_ui()->GetRenderFrameHost()->GetLastCommittedURL().path_piece(), "/",
-      base::TrimPositions::TRIM_ALL);
+  std::string_view conversation_uuid = ai_chat::ConversationUUIDFromURL(
+      web_ui()->GetRenderFrameHost()->GetLastCommittedURL());
   DVLOG(2) << "Binding conversation frame for conversation uuid:"
            << conversation_uuid;
   if (conversation_uuid.empty()) {
