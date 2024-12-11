@@ -26,6 +26,7 @@ static_library("ai_chat") {
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//brave/net/base:utils",
     "//chrome/browser:browser_process",
