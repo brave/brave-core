@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index c77216fb7f109ae198b10867ff53559c14a4a204..538c11c7ef6c4cbbc8705e401a2dedabfb65d77f 100644
+index c77216fb7f109ae198b10867ff53559c14a4a204..5bd802007ecfb00c5b4a1d88a7aa23bf6f14fc9f 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
 @@ -4797,6 +4797,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
@@ -18,12 +18,11 @@ index c77216fb7f109ae198b10867ff53559c14a4a204..538c11c7ef6c4cbbc8705e401a2dedab
    // If it's a credentialless frame tree, use its nonce even if it's within a
    // fenced frame tree to maintain the guarantee that a credentialless frame
    // tree has a unique nonce.
-@@ -9208,6 +9210,8 @@ void RenderFrameHostImpl::CreateNewWindow(
+@@ -9208,6 +9210,7 @@ void RenderFrameHostImpl::CreateNewWindow(
          dom_storage_context, params->session_storage_namespace_id);
    }
  
 +  params->no_javascript_access = no_javascript_access;
-+
    if (IsCredentialless() || IsNestedWithinFencedFrame() ||
        CoopSuppressOpener(/*opener=*/this)) {
      params->opener_suppressed = true;
