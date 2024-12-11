@@ -23,7 +23,9 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 
@@ -40,10 +42,9 @@ constexpr char kURLLearnMoreBraveSearchLeo[] =
 // Implments the interface to calls from the UI to the browser
 class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
  public:
-  UIHandler(content::WebContents* owner_web_contents,
+  UIHandler(content::WebUI* web_ui,
             mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver)
-      : owner_web_contents_(owner_web_contents),
-        receiver_(this, std::move(receiver)) {}
+      : web_ui_(web_ui), receiver_(this, std::move(receiver)) {}
   UIHandler(const UIHandler&) = delete;
   UIHandler& operator=(const UIHandler&) = delete;
 
@@ -51,10 +52,16 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   // ai_chat::mojom::UntrustedConversationUIHandler
   void OpenLearnMoreAboutBraveSearchWithLeo() override {
+    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
+      return;
+    }
     OpenURL(GURL(kURLLearnMoreBraveSearchLeo));
   }
 
   void OpenSearchURL(const std::string& search_query) override {
+    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
+      return;
+    }
     OpenURL(GURL("https://search.brave.com/search?q=" +
                  base::EscapeQueryParamValue(search_query, true)));
   }
@@ -62,7 +69,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
   void BindParentPage(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
                           parent_ui_frame_receiver) override {
     // Route the receiver to the parent frame
-    auto* rfh = owner_web_contents_->GetPrimaryMainFrame();
+    auto* rfh = web_ui_->GetWebContents()->GetPrimaryMainFrame();
     if (!rfh) {
       return;
     }
@@ -85,7 +92,8 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     }
 
 #if !BUILDFLAG(IS_ANDROID)
-    Browser* browser = ai_chat::GetBrowserForWebContents(owner_web_contents_);
+    Browser* browser =
+        ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
     browser->OpenURL(
         {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
          ui::PAGE_TRANSITION_LINK, false},
@@ -97,7 +105,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 #endif
   }
 
-  raw_ptr<content::WebContents> owner_web_contents_ = nullptr;
+  raw_ptr<content::WebUI> web_ui_ = nullptr;
   mojo::Receiver<ai_chat::mojom::UntrustedUIHandler> receiver_;
 };
 
@@ -165,8 +173,7 @@ AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;
 
 void AIChatUntrustedConversationUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver) {
-  ui_handler_ = std::make_unique<UIHandler>(web_ui()->GetWebContents(),
-                                            std::move(receiver));
+  ui_handler_ = std::make_unique<UIHandler>(web_ui(), std::move(receiver));
 }
 
 void AIChatUntrustedConversationUI::BindInterface(
