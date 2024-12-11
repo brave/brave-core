@@ -13,6 +13,22 @@ export const style = scoped.css`
     gap: 8px;
   }
 
+  .loading {
+    --leo-progressring-size: 32px;
+
+    padding-top: 33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+
+    transition: opacity 500ms 1.5s ease-in-out;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
   .columns {
     display: flex;
     gap: 24px;
