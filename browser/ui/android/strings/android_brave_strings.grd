@@ -1190,6 +1190,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SYNC_URL_RESET_DEFAULT" desc="Text for Brave Sync self host url reset button">
         Reset to default
       </message>
+      <message name="IDS_BRAVE_SYNC_URL_HTTPS_ERROR" desc="Error message for Brave Sync self host url must be an HTTPS URL">
+        Brave Sync only supports HTTPS connections. Please enter a valid HTTPS sync URL.
+      </message>
       <message name="IDS_BRAVE_SYNC_ADVANCED_OPTIONS_DIALOG_DESC" desc="Text for Brave Sync advanced options dialog description.">
         Brave's sync protocol is open and you can provide your own server implementation. This requires that you host and configure the brave/go-sync implementation yourself. You can then provide the URL to this service and the browser will sync with your implementation instead. To confirm the change, you'll need to restart the browser and re-open sync options to continue.
       </message>

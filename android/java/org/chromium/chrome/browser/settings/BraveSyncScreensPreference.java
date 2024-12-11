@@ -80,8 +80,10 @@ import org.chromium.chrome.browser.sync.BraveSyncDevices;
 import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
+import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.sync.SyncService;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.url.GURL;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -128,7 +130,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private Button mDeleteAccountButton;
     private Button mNewCodeWordsButton;
     private Button mNewQrCodeButton;
-    private TextView mBraveSyncCustomSyncUrl;
+    private TextView mBraveReadOnlySyncUrlView;
     private TextView mBraveSyncTextDevicesTitle;
     private TextView mBraveSyncWordCountTitle;
     private TextView mBraveSyncAddDeviceCodeWords;
@@ -338,8 +340,12 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 }
             }
 
-            // TODO: Check and hide if custom sync URL is empty
-            mBraveSyncCustomSyncUrl.setText(getBraveSyncWorker().getSyncServiceURL());
+            LinearLayout customSyncUrlReadOnlyLayout =
+                    getView().findViewById(R.id.brave_read_only_sync_url_layout);
+            if (!sCustomSyncServiceUrl.isEmpty()) {
+                mBraveReadOnlySyncUrlView.setText(sCustomSyncServiceUrl);
+                customSyncUrlReadOnlyLayout.setVisibility(View.VISIBLE);
+            }
 
             if (index > 0) {
                 mBraveSyncTextDevicesTitle.setText(
@@ -450,7 +456,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mCopyButton.setOnClickListener(this);
         }
 
-        mBraveSyncCustomSyncUrl = getView().findViewById(R.id.brave_sync_url_display);
+        mBraveReadOnlySyncUrlView = getView().findViewById(R.id.brave_read_only_sync_url_view);
         mBraveSyncTextDevicesTitle = getView().findViewById(R.id.brave_sync_devices_title);
         mBraveSyncWordCountTitle = getView().findViewById(R.id.brave_sync_text_word_count);
         mBraveSyncWordCountTitle.setText(getString(R.string.brave_sync_word_count_text, 0));
@@ -1356,10 +1362,17 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             return;
         }
 
-        // Check if the URL starts with a valid scheme (http:// or https://)
-        if (!url.matches("^[a-zA-Z][a-zA-Z0-9+.-]*://.*")) {
-            // Prepend 'http://' if it doesn't
-            url = "http://" + url;
+        GURL gurl = new GURL(url);
+        // Check if the URL starts with a valid scheme, if not, just prepend with https scheme.
+        if (!gurl.isValid() || gurl.getScheme().isEmpty()) {
+            url = "https://" + url;
+            gurl = new GURL(url);
+        }
+
+        // Check and show error when it is not an HTTPS Scheme.
+        if (!gurl.getScheme().equals(UrlConstants.HTTPS_SCHEME)) {
+            mCustomSyncUrlInput.setError(getString(R.string.brave_sync_url_https_error));
+            return;
         }
 
         // Validate the modified URL

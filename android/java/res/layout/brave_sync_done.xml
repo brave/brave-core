@@ -40,29 +40,26 @@
             android:textColor="@color/modern_grey_500"
             android:visibility="gone" />
 
-        <LinearLayout android:id="@+id/brave_sync_url_block"
+        <LinearLayout android:id="@+id/brave_read_only_sync_url_layout"
             android:orientation="vertical"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:paddingVertical="12dp"
             android:paddingHorizontal="16dp"
-        >
+            android:visibility="gone">
             <TextView
                 android:layout_width="328dp"
                 android:layout_height="24dp"
                 android:text="@string/brave_sync_self_host_url_title"
                 android:textAppearance="@style/BraveSyncTitleTextHeadingH4"
-                android:gravity="top"
-            />
+                android:gravity="top" />
             <TextView
-                android:id="@+id/brave_sync_url_display"
+                android:id="@+id/brave_read_only_sync_url_view"
                 android:layout_width="328dp"
                 android:layout_height="22dp"
                 android:text="@string/brave_sync_advanced_options"
                 android:textAppearance="@style/BraveSyncUrlDisplay"
-                android:gravity="top"
-            />
-
+                android:gravity="top" />
         </LinearLayout>
 
 
