@@ -8,26 +8,20 @@
 
 brave_resources_extra_grdps_path = "$root_gen_dir/brave/ui/webui/resources"
 
-brave_resources_extra_grdps = []
+brave_resources_extra_grdps = [
+  "$brave_resources_extra_grdps_path/brave_static_resources.grdp",
+  "$root_gen_dir/brave/web-ui-leo/leo.grdp",
+]
 
-brave_resources_extra_grdps_deps = []
+brave_resources_extra_grdps_deps = [ "//brave/ui/webui/resources:grdp" ]
 
-# ios does not need any static resources
-if (is_ios) {
-  brave_resources_extra_grdps += [
-    "$brave_resources_extra_grdps_path/brave_static_resources.grdp",
-    "$root_gen_dir/brave/web-ui-leo/leo.grdp",
-  ]
-} else {
+# ios does not need font or icon resources
+if (!is_ios) {
   brave_resources_extra_grdps += [
     "$brave_resources_extra_grdps_path/brave_fonts_resources.grdp",
-    "$brave_resources_extra_grdps_path/brave_static_resources.grdp",
     "$brave_resources_extra_grdps_path/brave_icons_resources.grdp",
-    "$root_gen_dir/brave/web-ui-leo/leo.grdp",
   ]
 }
-
-brave_resources_extra_grdps_deps += [ "//brave/ui/webui/resources:grdp" ]
 
 # At the moment, all non-static resources are only required for polymer WebUI.
 # This could change and, when it does, the `include_polymer` conditional can be removed
