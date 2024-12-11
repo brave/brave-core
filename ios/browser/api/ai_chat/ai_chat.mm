@@ -32,6 +32,9 @@
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 
+@implementation AiChat
+@end
+
 @interface AIChat () {
   raw_ptr<ProfileIOS> profile_;
   raw_ptr<ai_chat::AIChatService> service_;
@@ -61,6 +64,9 @@
     current_content_ = std::make_unique<ai_chat::AssociatedContentDriverIOS>(
         profile_->GetSharedURLLoaderFactory(), delegate);
 
+    conversation_client_ = std::make_unique<ai_chat::ConversationClient>(
+        service_.get(), delegate_);
+
     [self createNewConversation];
   }
   return self;
@@ -78,8 +84,7 @@
 - (void)createNewConversation {
   current_conversation_ = service_->CreateConversationHandlerForContent(
       current_content_->GetContentId(), current_content_->GetWeakPtr());
-  conversation_client_ = std::make_unique<ai_chat::ConversationClient>(
-      current_conversation_.get(), delegate_);
+  conversation_client_->ChangeConversation(current_conversation_.get());
 }
 
 - (bool)isAgreementAccepted {
@@ -106,7 +111,7 @@
 - (void)submitHumanConversationEntry:(NSString*)text {
   current_conversation_->SubmitHumanConversationEntry(
       ai_chat::mojom::ConversationTurn::New(
-          ai_chat::mojom::CharacterType::HUMAN,
+          std::nullopt, ai_chat::mojom::CharacterType::HUMAN,
           ai_chat::mojom::ActionType::UNSPECIFIED,
           ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
           base::SysNSStringToUTF8(text), std::nullopt, std::nullopt,
@@ -191,10 +196,10 @@
 }
 
 - (void)rateMessage:(bool)isLiked
-             turnId:(NSUInteger)turnId
+             turnId:(NSString*)turnId
          completion:(void (^)(NSString* identifier))completion {
   current_conversation_->RateMessage(
-      isLiked, turnId,
+      isLiked, base::SysNSStringToUTF8(turnId),
       base::BindOnce(
           [](void (^completion)(NSString*),
              const std::optional<std::string>& identifier) {
@@ -220,10 +225,6 @@
 - (void)modifyConversation:(NSUInteger)turnId newText:(NSString*)newText {
   current_conversation_->ModifyConversation(turnId,
                                             base::SysNSStringToUTF8(newText));
-}
-
-- (void)getCanShowPremiumPrompt:(void (^_Nullable)(bool))completion {
-  service_->GetCanShowPremiumPrompt(base::BindOnce(completion));
 }
 
 - (void)dismissPremiumPrompt {

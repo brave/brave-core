@@ -6,10 +6,15 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_FEEDBACK_API_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_FEEDBACK_API_H_
 
+#include <optional>
 #include <string>
 
+#include "base/containers/span.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+
+template <class T>
+class scoped_refptr;
 
 namespace network {
 class SharedURLLoaderFactory;

@@ -5,19 +5,23 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 
+#include <string_view>
 #include <utility>
 
+#include "base/containers/checked_iterators.h"
 #include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 

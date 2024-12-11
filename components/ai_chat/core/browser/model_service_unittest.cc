@@ -5,21 +5,24 @@
 
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
-#include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
+#include "base/metrics/field_trial_params.h"
+#include "base/numerics/safe_math.h"
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 

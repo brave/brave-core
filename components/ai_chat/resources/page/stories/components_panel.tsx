@@ -9,19 +9,22 @@ import { Meta, StoryObj } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
 import '$web-components/app.global.scss'
 import { getKeysForMojomEnum } from '$web-common/mojomUtils'
-import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
-import * as mojom from '../api/'
+import * as Mojom from '../../common/mojom'
+import { ActiveChatContext, SelectedChatDetails } from '../state/active_chat_context'
 import { AIChatContext, AIChatReactContext } from '../state/ai_chat_context'
 import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
 import FeedbackForm from '../components/feedback_form'
 import FullPage from '../components/full_page'
+import Loading from '../components/loading'
 import Main from '../components/main'
-import './locale'
-import ACTIONS_LIST from './actions'
+import './story_utils/locale'
+import ACTIONS_LIST from './story_utils/actions'
 import styles from './style.module.scss'
+import StorybookConversationEntries from './story_utils/ConversationEntries'
+import { UntrustedConversationContext, UntrustedConversationReactContext } from '../../untrusted_conversation_frame/untrusted_conversation_context'
 
-function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
+function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
   return {
     completionEvent: { completion: text },
     pageContentRefineEvent: undefined,
@@ -32,7 +35,7 @@ function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
   }
 }
 
-function getSearchEvent(queries: string[]): mojom.ConversationEntryEvent {
+function getSearchEvent(queries: string[]): Mojom.ConversationEntryEvent {
   return {
     completionEvent: undefined,
     pageContentRefineEvent: undefined,
@@ -43,7 +46,7 @@ function getSearchEvent(queries: string[]): mojom.ConversationEntryEvent {
   }
 }
 
-function getSearchStatusEvent(): mojom.ConversationEntryEvent {
+function getSearchStatusEvent(): Mojom.ConversationEntryEvent {
   return {
     completionEvent: undefined,
     pageContentRefineEvent: undefined,
@@ -54,7 +57,7 @@ function getSearchStatusEvent(): mojom.ConversationEntryEvent {
   }
 }
 
-function getPageContentRefineEvent(): mojom.ConversationEntryEvent {
+function getPageContentRefineEvent(): Mojom.ConversationEntryEvent {
   return {
     completionEvent: undefined,
     pageContentRefineEvent: { isRefining: true },
@@ -65,33 +68,51 @@ function getPageContentRefineEvent(): mojom.ConversationEntryEvent {
   }
 }
 
-const CONVERSATIONS: mojom.Conversation[] = [
+const associatedContentNone: Mojom.SiteInfo =  {
+  uuid: undefined,
+  contentType: Mojom.ContentType.PageContent,
+  isContentAssociationPossible: false,
+  contentUsedPercentage: 0,
+  isContentRefined: false,
+  title: undefined,
+  hostname: undefined,
+  url: undefined,
+}
+
+const CONVERSATIONS: Mojom.Conversation[] = [
   {
     title: 'Star Trek Poem',
     uuid: '1',
     hasContent: true,
-    createdTime: { internalValue: BigInt('13278618001000000') },
+    updatedTime: { internalValue: BigInt('13278618001000000') },
+    associatedContent: associatedContentNone,
+    modelKey: undefined,
   },
   {
     title: 'Sorting C++ vectors is hard especially when you have to have a very long title for your conversation to test text clipping or wrapping',
     uuid: '2',
     hasContent: true,
-    createdTime: { internalValue: BigInt('13278618001000001') },
+    updatedTime: { internalValue: BigInt('13278618001000001') },
+    associatedContent: associatedContentNone,
+    modelKey: undefined,
   },
   {
     title: 'Wedding speech improvements',
     uuid: '3',
     hasContent: true,
-    createdTime: { internalValue: BigInt('13278618001000002') },
+    updatedTime: { internalValue: BigInt('13278618001000002') },
+    associatedContent: associatedContentNone,
+    modelKey: undefined,
   }
 ]
 
-const HISTORY: mojom.ConversationTurn[] = [
+const HISTORY: Mojom.ConversationTurn[] = [
   {
+    uuid: undefined,
     text: 'Summarize this page',
-    characterType: mojom.CharacterType.HUMAN,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    actionType: mojom.ActionType.SUMMARIZE_PAGE,
+    characterType: Mojom.CharacterType.HUMAN,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
+    actionType: Mojom.ActionType.SUMMARIZE_PAGE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -99,10 +120,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
-    characterType: mojom.CharacterType.ASSISTANT,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    actionType: mojom.ActionType.UNSPECIFIED,
+    characterType: Mojom.CharacterType.ASSISTANT,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
+    actionType: Mojom.ActionType.UNSPECIFIED,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -110,10 +132,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'What is pointer compression?\n...and how does it work?\n    - tell me something interesting',
-    characterType: mojom.CharacterType.HUMAN,
-    actionType: mojom.ActionType.QUERY,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -121,10 +144,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
-    characterType: mojom.CharacterType.ASSISTANT,
-    actionType: mojom.ActionType.UNSPECIFIED,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -132,10 +156,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
-    characterType: mojom.CharacterType.ASSISTANT,
-    actionType: mojom.ActionType.UNSPECIFIED,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -143,10 +168,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'What is taylor series?',
-    characterType: mojom.CharacterType.HUMAN,
-    actionType: mojom.ActionType.QUERY,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -154,10 +180,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
-    characterType: mojom.CharacterType.ASSISTANT,
-    actionType: mojom.ActionType.UNSPECIFIED,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -165,10 +192,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'Write a hello world program in c++',
-    characterType: mojom.CharacterType.HUMAN,
-    actionType: mojom.ActionType.QUERY,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -176,10 +204,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
-    characterType: mojom.CharacterType.ASSISTANT,
-    actionType: mojom.ActionType.UNSPECIFIED,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -187,10 +216,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'Summarize this excerpt',
-    characterType: mojom.CharacterType.HUMAN,
-    actionType: mojom.ActionType.SUMMARIZE_SELECTED_TEXT,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.SUMMARIZE_SELECTED_TEXT,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -198,10 +228,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
-    characterType: mojom.CharacterType.ASSISTANT,
-    actionType: mojom.ActionType.UNSPECIFIED,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -209,10 +240,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'Shorten this selected text',
-    characterType: mojom.CharacterType.HUMAN,
-    actionType: mojom.ActionType.SHORTEN,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.SHORTEN,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: 'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -220,10 +252,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
-    characterType: mojom.CharacterType.ASSISTANT,
-    actionType: mojom.ActionType.UNSPECIFIED,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -231,16 +264,18 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: 'Will an LTT store backpack fit in a Tesla Model Y frunk?',
-    characterType: mojom.CharacterType.HUMAN,
-    actionType: mojom.ActionType.SHORTEN,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.SHORTEN,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: '',
     edits: [{
+      uuid: undefined,
       text: 'Will it fit in a Tesla Model Y frunk?',
-      characterType: mojom.CharacterType.HUMAN,
-      actionType: mojom.ActionType.SHORTEN,
-      visibility: mojom.ConversationTurnVisibility.VISIBLE,
+      characterType: Mojom.CharacterType.HUMAN,
+      actionType: Mojom.ActionType.SHORTEN,
+      visibility: Mojom.ConversationTurnVisibility.VISIBLE,
       selectedText: '',
       createdTime: { internalValue: BigInt('13278618001000000') },
       edits: [],
@@ -252,10 +287,11 @@ const HISTORY: mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false
   },
   {
+    uuid: undefined,
     text: '',
-    characterType: mojom.CharacterType.ASSISTANT,
-    actionType: mojom.ActionType.UNSPECIFIED,
-    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    visibility: Mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -264,7 +300,7 @@ const HISTORY: mojom.ConversationTurn[] = [
   }
 ]
 
-const MODELS: mojom.Model[] = [
+const MODELS: Mojom.Model[] = [
   {
     key: '1',
     displayName: 'Model One',
@@ -272,9 +308,9 @@ const MODELS: mojom.Model[] = [
       leoModelOptions: {
         name: 'model-one',
         displayMaker: 'Company',
-        engineType: mojom.ModelEngineType.LLAMA_REMOTE,
-        category: mojom.ModelCategory.CHAT,
-        access: mojom.ModelAccess.BASIC,
+        engineType: Mojom.ModelEngineType.LLAMA_REMOTE,
+        category: Mojom.ModelCategory.CHAT,
+        access: Mojom.ModelAccess.BASIC,
         maxAssociatedContentLength: 10000,
         longConversationWarningCharacterLimit: 9700
       },
@@ -288,9 +324,9 @@ const MODELS: mojom.Model[] = [
       leoModelOptions: {
         name: 'model-two-premium',
         displayMaker: 'Company',
-        engineType: mojom.ModelEngineType.LLAMA_REMOTE,
-        category: mojom.ModelCategory.CHAT,
-        access: mojom.ModelAccess.PREMIUM,
+        engineType: Mojom.ModelEngineType.LLAMA_REMOTE,
+        category: Mojom.ModelCategory.CHAT,
+        access: Mojom.ModelAccess.PREMIUM,
         maxAssociatedContentLength: 10000,
         longConversationWarningCharacterLimit: 9700
       },
@@ -304,9 +340,9 @@ const MODELS: mojom.Model[] = [
       leoModelOptions: {
         name: 'model-three-freemium',
         displayMaker: 'Company',
-        engineType: mojom.ModelEngineType.LLAMA_REMOTE,
-        category: mojom.ModelCategory.CHAT,
-        access: mojom.ModelAccess.BASIC_AND_PREMIUM,
+        engineType: Mojom.ModelEngineType.LLAMA_REMOTE,
+        category: Mojom.ModelCategory.CHAT,
+        access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         maxAssociatedContentLength: 10000,
         longConversationWarningCharacterLimit: 9700
       },
@@ -344,7 +380,9 @@ const SAMPLE_QUESTIONS = [
   'Why did google executives disregard this character in the company?'
 ]
 
-const SITE_INFO: mojom.SiteInfo = {
+const SITE_INFO: Mojom.SiteInfo = {
+  uuid: undefined,
+  contentType: Mojom.ContentType.PageContent,
   title: 'Tiny Tweaks to Neurons Can Rewire Animal Motion',
   contentUsedPercentage: 40,
   isContentAssociationPossible: true,
@@ -354,38 +392,49 @@ const SITE_INFO: mojom.SiteInfo = {
 }
 
 type CustomArgs = {
-  currentErrorState: keyof typeof mojom.APIError
+  initialized: boolean
+  currentErrorState: keyof typeof Mojom.APIError
   model: string
   inputText: string
   hasConversation: boolean
+  hasConversationListItems: boolean
   hasSuggestedQuestions: boolean
   hasSiteInfo: boolean
+  isFeedbackFormVisible: boolean
+  isStorageNoticeDismissed: boolean
   canShowPremiumPrompt: boolean
   hasAcceptedAgreement: boolean
+  isStoragePrefEnabled: boolean
   isPremiumModel: boolean
   isPremiumUser: boolean
   isPremiumUserDisconnected: boolean
-  suggestionStatus: keyof typeof mojom.SuggestionGenerationStatus
+  suggestionStatus: keyof typeof Mojom.SuggestionGenerationStatus
   isMobile: boolean
   isHistoryEnabled: boolean
   isStandalone: boolean
   isDefaultConversation: boolean
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
+  shouldShowRefinedWarning: boolean
 }
 
 const args: CustomArgs = {
+  initialized: true,
   inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
   hasConversation: true,
+  hasConversationListItems: true,
   hasSuggestedQuestions: true,
   hasSiteInfo: true,
+  isFeedbackFormVisible: false,
+  isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
+  isStoragePrefEnabled: true,
   hasAcceptedAgreement: true,
   isPremiumModel: false,
   isPremiumUser: true,
   isPremiumUserDisconnected: false,
-  currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
-  suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
+  currentErrorState: 'ConnectionIssue' satisfies keyof typeof Mojom.APIError,
+  suggestionStatus: 'None' satisfies keyof typeof Mojom.SuggestionGenerationStatus,
   model: MODELS[0].key,
   isMobile: false,
   isHistoryEnabled: true,
@@ -393,6 +442,7 @@ const args: CustomArgs = {
   isDefaultConversation: true,
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
+  shouldShowRefinedWarning: false,
 }
 
 const preview: Meta<CustomArgs> = {
@@ -403,11 +453,11 @@ const preview: Meta<CustomArgs> = {
   argTypes: {
     ...InferControlsFromArgs(args),
     currentErrorState: {
-      options: getKeysForMojomEnum(mojom.APIError),
+      options: getKeysForMojomEnum(Mojom.APIError),
       control: { type: 'select' }
     },
     suggestionStatus: {
-      options: getKeysForMojomEnum(mojom.SuggestionGenerationStatus),
+      options: getKeysForMojomEnum(Mojom.SuggestionGenerationStatus),
       control: { type: 'select' }
     },
     model: {
@@ -420,19 +470,19 @@ const preview: Meta<CustomArgs> = {
     (Story, options) => {
       const [, setArgs] = useArgs()
 
-      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new mojom.SiteInfo()
+      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new Mojom.SiteInfo()
       const suggestedQuestions = options.args.hasSuggestedQuestions
         ? SAMPLE_QUESTIONS
         : siteInfo
           ? [SAMPLE_QUESTIONS[0]]
           : []
 
-      const currentError = mojom.APIError[options.args.currentErrorState]
-      const apiHasError = currentError !== mojom.APIError.None
+      const currentError = Mojom.APIError[options.args.currentErrorState]
+      const apiHasError = currentError !== Mojom.APIError.None
       const currentModel = MODELS.find(m => m.displayName === options.args.model)
 
       const switchToBasicModel = () => {
-        const nonPremiumModel = MODELS.find(model => model.options.leoModelOptions?.access === mojom.ModelAccess.BASIC)
+        const nonPremiumModel = MODELS.find(model => model.options.leoModelOptions?.access === Mojom.ModelAccess.BASIC)
         setArgs({ model: nonPremiumModel })
       }
 
@@ -441,26 +491,39 @@ const preview: Meta<CustomArgs> = {
       }
 
       const aiChatContext: AIChatContext = {
-        isDefaultConversation: options.args.isDefaultConversation,
+        conversationEntriesComponent: StorybookConversationEntries,
+        initialized: options.args.initialized,
         editingConversationId: null,
-        visibleConversations: CONVERSATIONS,
+        visibleConversations: options.args.hasConversationListItems ? CONVERSATIONS : [],
+        isStoragePrefEnabled: options.args.isStoragePrefEnabled,
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
         isPremiumUser: options.args.isPremiumUser,
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
+        isStorageNoticeDismissed: options.args.isStorageNoticeDismissed,
         canShowPremiumPrompt: options.args.canShowPremiumPrompt,
         isMobile: options.args.isMobile,
-        isHistoryEnabled: options.args.isHistoryEnabled,
+        isHistoryFeatureEnabled: options.args.isHistoryEnabled,
         isStandalone: options.args.isStandalone,
         allActions: ACTIONS_LIST,
         goPremium: () => {},
         managePremium: () => {},
         handleAgreeClick: () => {},
+        enableStoragePref: () => {},
+        markStorageNoticeViewed: () => {},
+        dismissStorageNotice: () => {},
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},
-        onNewConversation: () => {},
-        onSelectConversationUuid(id) {},
         setEditingConversationId: () => {}
+      }
+
+      const activeChatContext: SelectedChatDetails = {
+        selectedConversationId: CONVERSATIONS[0].uuid,
+        updateSelectedConversationId: () => {},
+        callbackRouter: undefined!,
+        conversationHandler: undefined!,
+        createNewConversation: () => {},
+        isTabAssociated: options.args.isDefaultConversation
       }
 
       const inputText = options.args.inputText
@@ -473,9 +536,10 @@ const preview: Meta<CustomArgs> = {
         currentModel,
         suggestedQuestions,
         isGenerating: true,
-        suggestionStatus: mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
+        suggestionStatus: Mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
         currentError,
         apiHasError,
+        isFeedbackFormVisible: options.args.isFeedbackFormVisible,
         shouldDisableUserInput: false,
         shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
         shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
@@ -499,16 +563,31 @@ const preview: Meta<CustomArgs> = {
         submitInputTextToAPI: () => {},
         resetSelectedActionType: () => {},
         handleActionTypeClick: () => {},
-        setIsToolsMenuOpen: () => {}
+        setIsToolsMenuOpen: () => {},
+        handleFeedbackFormCancel: () => {},
+        handleFeedbackFormSubmit: () => {}
+      }
+
+      const conversationEntriesContext: UntrustedConversationContext = {
+        conversationHistory: conversationContext.conversationHistory,
+        isGenerating: conversationContext.isGenerating,
+        isLeoModel: conversationContext.isCurrentModelLeo,
+        contentUsedPercentage: (options.args.shouldShowLongPageWarning || options.args.shouldShowRefinedWarning)
+          ? 48 : 100,
+        isContentRefined: options.args.shouldShowRefinedWarning,
+        canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
+        isMobile: aiChatContext.isMobile
       }
 
       return (
         <AIChatReactContext.Provider value={aiChatContext}>
-          <ConversationReactContext.Provider value={conversationContext}>
-          <ThemeProvider>
-            <Story />
-          </ThemeProvider>
-          </ConversationReactContext.Provider>
+          <ActiveChatContext.Provider value={activeChatContext}>
+            <ConversationReactContext.Provider value={conversationContext}>
+              <UntrustedConversationReactContext.Provider value={conversationEntriesContext}>
+                <Story />
+              </UntrustedConversationReactContext.Provider>
+            </ConversationReactContext.Provider>
+          </ActiveChatContext.Provider>
         </AIChatReactContext.Provider>
       )
     }
@@ -541,12 +620,26 @@ export const _FeedbackForm = {
 
 export const _FullPage = {
   args: {
-    isStandalone: true
+    isStandalone: true,
+    isDefaultConversation: false
   },
   render: () => {
     return (
       <div className={styles.containerFull}>
         <FullPage />
+      </div>
+    )
+  }
+}
+
+export const _Loading = {
+  args: {
+    initialized: false
+  },
+  render: () => {
+    return (
+      <div className={styles.container}>
+        <Loading />
       </div>
     )
   }

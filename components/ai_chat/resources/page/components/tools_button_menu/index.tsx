@@ -6,8 +6,7 @@
 import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import classnames from '$web-common/classnames'
-import * as mojom from '../../api/'
-
+import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
 
 interface Props {
@@ -16,8 +15,8 @@ interface Props {
   inputText: string,
   isToolsMenuOpen: boolean,
   setIsToolsMenuOpen: (open: boolean) => void,
-  actionList: mojom.ActionGroup[],
-  handleActionTypeClick: (action: mojom.ActionType) => void
+  actionList: Mojom.ActionGroup[],
+  handleActionTypeClick: (action: Mojom.ActionType) => void
 }
 
 export default function ToolsButtonMenu(props: Props) {
@@ -47,7 +46,7 @@ export default function ToolsButtonMenu(props: Props) {
                     key={i}
                     onClick={() =>
                       props.handleActionTypeClick(
-                        entry.details?.type as mojom.ActionType
+                        entry.details?.type as Mojom.ActionType
                       )
                     }
                   >

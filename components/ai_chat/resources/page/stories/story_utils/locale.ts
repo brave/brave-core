@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { provideStrings } from '../../../../../.storybook/locale'
+import { provideStrings } from '../../../../../../.storybook/locale'
 
 provideStrings({
   summarizeFailedLabel: 'The summarizer feature is currently available only for select articles and other long-form web pages.',
@@ -16,8 +16,15 @@ provideStrings({
   pageContentWarning: 'Disconnect to stop sending this page content to Leo, and start a new conversation',
   errorNetworkLabel: 'There was a network issue connecting to Leo, check your connection and try again.',
   errorRateLimit: 'You\'ve reached the premium rate limit. Please try again in a few hours.',
+  braveLeoAssistantEndpointInvalidError: 'The endpoint URL is invalid. Please check the URL and try again.',
+  braveLeoAssistantEndpointValidAsPrivateIp: 'If you would like to use a private IP address, you must first enable "Private IP Addresses for Custom Model Enpoints" via brave://flags/#brave-ai-chat-allow-private-ips',
   retryButtonLabel: 'Retry',
   learnMore: 'Learn more',
+  noticeConversationHistoryBody: 'Leo will now remember your previous conversations so you can go back to them. They are stored privately on your device, and you can delete them any time.',
+  noticeConversationHistoryEmpty: 'Your conversation history will appear here once you start a conversation.',
+  noticeConversationHistoryTitleDisabledPref: 'History is disabled',
+  noticeConversationHistoryDisabledPref: 'In order to view and search your previous conversations with Leo, you need to enable conversation history.',
+  noticeConversationHistoryDisabledPrefButton: 'Enable',
   dismissButtonLabel: 'Dismiss',
   'introMessage-0': `I'm here to help. What can I assist you with today? $1Learn more$2`,
   'introMessage-1': 'I have a vast base of knowledge and a large memory able to help with more complex challenges. $1Learn more$2',
@@ -25,6 +32,7 @@ provideStrings({
   modelFreemiumLabelNonPremium: 'Limited',
   modelPremiumLabelNonPremium: 'Premium',
   'modelCategory-chat': 'Chat',
+  menuConversationHistory: 'Conversation history',
   menuNewChat: 'New chat',
   menuSettings: 'Advanced Settings',
   menuTitleModels: 'Available language models',
@@ -51,6 +59,7 @@ provideStrings({
   copyButtonLabel: 'Copy',
   likeAnswerButtonLabel: 'Like answer',
   dislikeAnswerButtonLabel: 'Dislike answer',
+  likeDislikeAnswerButtonTitle: 'Sends rating, conversation, model, language, version, and premium status',
   provideFeedbackTitle: 'Provide Brave AI Feedback',
   selectFeedbackTopic: 'Select your feedback topic',
   feedbackCategoryLabel: 'Whats your feedback about?',
@@ -102,4 +111,7 @@ provideStrings({
   sendChatButtonLabel: 'Send message to Leo',
   useMicButtonLabel: 'Use microphone',
   menuTitleCustomModels: 'Custom models',
+  startConversationLabel: 'Start new conversation',
+  goBackToActiveConversationButton: 'Go back to the active conversation',
+  conversationListUntitled: 'New conversation'
 })

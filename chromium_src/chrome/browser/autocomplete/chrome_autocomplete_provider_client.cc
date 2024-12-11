@@ -6,13 +6,19 @@
 #include "src/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc"
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_browser_process.h"
@@ -57,30 +63,47 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
     return;
   }
 
-  auto* chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
-      browser->tab_strip_model()->GetActiveWebContents());
-  DCHECK(chat_tab_helper);
+  ai_chat::ConversationHandler* conversation_handler;
 
-  auto* conversation_handler =
-      ai_chat_service->GetOrCreateConversationHandlerForContent(
-          chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
-  CHECK(conversation_handler);
+  if (ai_chat_service->IsAIChatHistoryEnabled() &&
+      ai_chat::features::kOmniboxOpensFullPage.Get()) {
+    conversation_handler = ai_chat_service->CreateConversation();
+    browser->OpenURL({ai_chat::ConversationUrl(
+                          conversation_handler->get_conversation_uuid()),
+                      content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+                      ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
+                     {});
+  } else {
+    auto* chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
+        browser->tab_strip_model()->GetActiveWebContents());
+    DCHECK(chat_tab_helper);
+    conversation_handler =
+        ai_chat_service->GetOrCreateConversationHandlerForContent(
+            chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
+    if (!conversation_handler) {
+      return;
+    }
 
-  // Before trying to activate the panel, unlink page content if needed.
-  // This needs to be called before activating the panel to check against the
-  // current state.
-  conversation_handler->MaybeUnlinkAssociatedContent();
+    // Before trying to activate the panel, unlink page content if needed.
+    // This needs to be called before activating the panel to check against the
+    // current state.
+    conversation_handler->MaybeUnlinkAssociatedContent();
 
-  // Activate the panel.
-  auto* sidebar_controller =
-      static_cast<BraveBrowser*>(browser)->sidebar_controller();
-  sidebar_controller->ActivatePanelItem(
-      sidebar::SidebarItem::BuiltInItemType::kChatUI);
+    // Activate the panel.
+    auto* sidebar_controller =
+        static_cast<BraveBrowser*>(browser)->sidebar_controller();
+    sidebar_controller->ActivatePanelItem(
+        sidebar::SidebarItem::BuiltInItemType::kChatUI);
+  }
+
+  if (!conversation_handler) {
+    return;
+  }
 
   // Send the query to the AIChat's backend.
   ai_chat::mojom::ConversationTurnPtr turn =
       ai_chat::mojom::ConversationTurn::New(
-          ai_chat::mojom::CharacterType::HUMAN,
+          std::nullopt, ai_chat::mojom::CharacterType::HUMAN,
           ai_chat::mojom::ActionType::QUERY,
           ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
           base::UTF16ToUTF8(query) /* text */, std::nullopt /* selected_text */,

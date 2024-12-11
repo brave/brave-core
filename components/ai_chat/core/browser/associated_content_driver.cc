@@ -5,27 +5,33 @@
 
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 
+#include <ios>
 #include <memory>
+#include <ostream>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
-#include "base/containers/contains.h"
-#include "base/containers/fixed_flat_set.h"
+#include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
+#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
-#include "base/ranges/algorithm.h"
-#include "base/strings/string_util.h"
+#include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/browser/brave_search_responses.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "net/base/url_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/url_constants.h"
 
 namespace ai_chat {
 
@@ -61,7 +67,12 @@ AssociatedContentDriver::AssociatedContentDriver(
     : url_loader_factory_(url_loader_factory) {}
 
 AssociatedContentDriver::~AssociatedContentDriver() {
-  DisassociateWithConversations();
+  for (auto& conversation : associated_conversations_) {
+    if (conversation) {
+      conversation->OnAssociatedContentDestroyed(cached_text_content_,
+                                                 is_video_);
+    }
+  }
 }
 
 void AssociatedContentDriver::AddRelatedConversation(
@@ -267,11 +278,17 @@ void AssociatedContentDriver::OnFaviconImageDataChanged() {
   }
 }
 
-void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
-  // This instance will now be used for different content so existing
-  // conversations need to be disassociated.
-  DisassociateWithConversations();
+void AssociatedContentDriver::OnTitleChanged() {
+  for (auto& conversation : associated_conversations_) {
+    conversation->OnAssociatedContentTitleChanged();
+  }
+}
 
+void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
+  // Tell the associated_conversations_ that we're breaking up
+  for (auto& conversation : associated_conversations_) {
+    conversation->OnAssociatedContentDestroyed(cached_text_content_, is_video_);
+  }
   // Tell the observer how to find the next conversation
   for (auto& observer : observers_) {
     observer.OnAssociatedContentNavigated(navigation_id);
@@ -285,18 +302,6 @@ void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
   is_video_ = false;
   api_request_helper_.reset();
   ConversationHandler::AssociatedContentDelegate::OnNewPage(navigation_id);
-}
-
-void AssociatedContentDriver::DisassociateWithConversations() {
-  // Iterator might be invalidated by destruction, so copy the items
-  std::vector<ConversationHandler*> conversations{
-      associated_conversations_.begin(), associated_conversations_.end()};
-  for (auto& conversation : conversations) {
-    if (conversation) {
-      conversation->OnAssociatedContentDestroyed(cached_text_content_,
-                                                 is_video_);
-    }
-  }
 }
 
 }  // namespace ai_chat

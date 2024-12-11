@@ -29,7 +29,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
 
   @Published var siteInfo: AiChat.SiteInfo?
   @Published var _shouldSendPageContents: Bool = true
-  @Published var canShowPremiumPrompt: Bool = false
+  @Published var _canShowPremiumPrompt: Bool = false
   @Published var premiumStatus: AiChat.PremiumStatus = .inactive
   @Published var suggestedQuestions: [String] = []
   @Published var suggestionsStatus: AiChat.SuggestionGenerationStatus = .none
@@ -68,11 +68,11 @@ public class AIChatViewModel: NSObject, ObservableObject {
 
   public var shouldShowPremiumPrompt: Bool {
     get {
-      return canShowPremiumPrompt
+      return _canShowPremiumPrompt
     }
 
     set {  // swiftlint:disable:this unused_setter_value
-      self.canShowPremiumPrompt = newValue
+      _canShowPremiumPrompt = newValue
       if !newValue {
         api.dismissPremiumPrompt()
       }
@@ -209,7 +209,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   @MainActor
-  func rateConversation(isLiked: Bool, turnId: UInt) async -> String? {
+  func rateConversation(isLiked: Bool, turnId: String) async -> String? {
     return await api.rateMessage(isLiked, turnId: turnId)
   }
 
@@ -332,5 +332,9 @@ extension AIChatViewModel: AIChatDelegate {
   ) {
     self.siteInfo = siteInfo
     self._shouldSendPageContents = shouldSendPageContents
+  }
+
+  public func onServiceStateChanged(_ state: AiChat.ServiceState) {
+    self._canShowPremiumPrompt = state.canShowPremiumPrompt
   }
 }

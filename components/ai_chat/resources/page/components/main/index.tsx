@@ -9,7 +9,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
-import * as mojom from '../../api'
+import * as Mojom from '../../../common/mojom'
 import { useConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
 import { isLeoModel } from '../../model_utils'
@@ -17,38 +17,56 @@ import ErrorConnection from '../alerts/error_connection'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import LongConversationInfo from '../alerts/long_conversation_info'
+import NoticeConversationStorage from '../notices/notice_conversation_storage'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
-import ConversationEntries from '../conversation_entries'
 import ConversationsList from '../conversations_list'
+import FeedbackForm from '../feedback_form'
 import { ConversationHeader } from '../header'
 import InputBox from '../input_box'
 import ModelIntro from '../model_intro'
 import PageContextToggle from '../page_context_toggle'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
+import SiteTitle from '../site_title'
+import { GenerateSuggestionsButton, SuggestedQuestion } from '../suggested_question'
 import ToolsButtonMenu from '../tools_button_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 
-const SCROLL_BOTTOM_THRESHOLD = 10.0
+// Amount of pixels user has to scroll up to break out of
+// automatic scroll to bottom when new response lines are generated.
+const SCROLL_BOTTOM_THRESHOLD = 20
+// Amount of pixels below the currently generated line to show
+// when automatically scrolling to bottom.
+const SCROLL_BOTTOM_PADDING = 18
 
+const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>([
+  Mojom.SuggestionGenerationStatus.CanGenerate,
+  Mojom.SuggestionGenerationStatus.IsGenerating
+])
 
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
+  const [isContentReady, setIsContentReady] = React.useState(false)
 
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
     !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
     !aiChatContext.isPremiumUser &&
-    conversationContext.currentModel?.options.leoModelOptions?.access === mojom.ModelAccess.PREMIUM
+    conversationContext.currentModel?.options.leoModelOptions?.access === Mojom.ModelAccess.PREMIUM
+
+  const shouldShowStorageNotice = aiChatContext.hasAcceptedAgreement &&
+    aiChatContext.isHistoryFeatureEnabled &&
+    aiChatContext.isStoragePrefEnabled && !aiChatContext.isStorageNoticeDismissed
 
   const shouldShowPremiumSuggestionStandalone =
     aiChatContext.hasAcceptedAgreement &&
     !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
     !conversationContext.apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
+    !shouldShowStorageNotice && // Don't show premium prompt and storage notice
     aiChatContext.canShowPremiumPrompt &&
     conversationContext.associatedContentInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
@@ -64,14 +82,11 @@ function Main() {
 
   let currentErrorElement = null
 
-  let scrollerElement: HTMLDivElement | null = null
   const headerElement = React.useRef<HTMLDivElement>(null)
   const conversationContentElement = React.useRef<HTMLDivElement>(null)
 
-  const scrollPos = React.useRef({ isAtBottom: true })
-
   if (aiChatContext.hasAcceptedAgreement) {
-    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.ConnectionIssue) {
+    if (conversationContext.apiHasError && conversationContext.currentError === Mojom.APIError.ConnectionIssue) {
       currentErrorElement = (
         <ErrorConnection
           onRetry={conversationContext.retryAPIRequest}
@@ -79,39 +94,63 @@ function Main() {
       )
     }
 
-    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.RateLimitReached) {
+    if (conversationContext.apiHasError && conversationContext.currentError === Mojom.APIError.RateLimitReached) {
       currentErrorElement = (
         <ErrorRateLimit />
       )
     }
 
-    if (conversationContext.apiHasError && conversationContext.currentError === mojom.APIError.ContextLimitReached) {
+    if (conversationContext.apiHasError && conversationContext.currentError === Mojom.APIError.ContextLimitReached) {
       currentErrorElement = (
         <ErrorConversationEnd />
       )
     }
   }
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    // Monitor scroll positions only when Assistant is generating
-    if (!conversationContext.isGenerating) return
-    const el = e.currentTarget
-    scrollPos.current.isAtBottom = Math.abs(el.scrollHeight - el.clientHeight - el.scrollTop) < SCROLL_BOTTOM_THRESHOLD
-  }
+  // Automatic scroll to bottom of scroll anchor when generating new response lines
+  const scrollIsAtBottom = React.useRef(true)
+  const scrollElement = React.useRef<HTMLDivElement | null>(null)
+  const scrollAnchor = React.useRef<HTMLDivElement | null>(null)
 
-  const handleLastElementHeightChange = () => {
-    if (!scrollerElement) {
+  const handleScroll = React.useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    // Monitor scroll positions only when Assistant is generating,
+    // but always reset to bottom before next generation
+    if (!conversationContext.isGenerating) {
+      scrollIsAtBottom.current = true
+    } else if (scrollAnchor.current && conversationContentElement.current) {
+      const el = e.currentTarget
+      const idealScrollFromBottom = (el.scrollHeight -
+        (scrollAnchor.current.offsetTop +
+        scrollAnchor.current.offsetHeight)
+      )
+      const scrollBottom = el.scrollHeight - (el.clientHeight + el.scrollTop)
+      scrollIsAtBottom.current = scrollBottom <= (idealScrollFromBottom + SCROLL_BOTTOM_THRESHOLD)
+    }
+  }, [conversationContext.isGenerating])
+
+
+  const handleConversationEntriesHeightChanged = () => {
+    if (!conversationContext.isGenerating || !scrollElement.current ||
+        !scrollIsAtBottom.current || !scrollAnchor.current) {
       return
     }
-
-    if (scrollPos.current.isAtBottom) {
-      scrollerElement.scrollTop = scrollerElement.scrollHeight - scrollerElement.clientHeight
-    }
+    scrollElement.current.scrollTop = (
+      scrollAnchor.current.offsetTop + scrollAnchor.current?.offsetHeight
+    ) - scrollElement.current.clientHeight + SCROLL_BOTTOM_PADDING
   }
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal = !aiChatContext.hasAcceptedAgreement &&
     !!conversationContext.conversationHistory.length
+
+  const showContent = !aiChatContext.hasAcceptedAgreement ||
+    !conversationContext.conversationUuid ||
+    isContentReady
+
+  const showSuggestions: boolean =
+    aiChatContext.hasAcceptedAgreement &&
+    (conversationContext.suggestedQuestions.length > 0 ||
+      SUGGESTION_STATUS_SHOW_BUTTON.has(conversationContext.suggestionStatus))
 
   const viewPortWithoutKeyboard = React.useRef(0)
   const keyboardSize = React.useRef(0)
@@ -190,65 +229,107 @@ function Main() {
         [styles.scroller]: true,
         [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement
       })}
-        ref={node => (scrollerElement = node)}
+        ref={scrollElement}
         onScroll={handleScroll}
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        <div className={styles.conversationContent}
-          ref={conversationContentElement}>
-          {aiChatContext.hasAcceptedAgreement && <>
-            <ModelIntro />
-            <ConversationEntries
-              onLastElementHeightChange={handleLastElementHeightChange}
-            />
-          </>}
+        <div
+          className={classnames({
+            [styles.conversationContent]: true,
+            [styles.showContent]: showContent
+          })}
+          ref={conversationContentElement}
+        >
+          {aiChatContext.hasAcceptedAgreement && (
+            <>
+              <ModelIntro />
+
+              {conversationContext.associatedContentInfo?.isContentAssociationPossible && conversationContext.shouldSendPageContents && (
+                <div className={styles.siteTitleContainer}>
+                  <SiteTitle size='default' />
+                </div>
+              )}
+
+              <div ref={scrollAnchor}>
+              {!!conversationContext.conversationUuid &&
+                <aiChatContext.conversationEntriesComponent
+                  onIsContentReady={setIsContentReady}
+                  onHeightChanged={handleConversationEntriesHeightChanged}
+                />
+                }
+              </div>
+
+              {conversationContext.isFeedbackFormVisible &&
+                <div className={classnames([styles.promptContainer, styles.feedbackForm])}>
+                  <FeedbackForm />
+                </div>
+              }
+
+              {showSuggestions && (
+              <div className={styles.suggestionsContainer}>
+                <div className={styles.questionsList}>
+                  {conversationContext.suggestedQuestions.map((question, i) => <SuggestedQuestion key={question} question={question} />)}
+                  {SUGGESTION_STATUS_SHOW_BUTTON.has(
+                    conversationContext.suggestionStatus
+                  ) && conversationContext.shouldSendPageContents && (
+                      <GenerateSuggestionsButton />
+                    )}
+                </div>
+              </div>
+            )}
+            </>
+          )}
           {currentErrorElement && (
             <div className={styles.promptContainer}>{currentErrorElement}</div>
           )}
-          {
-            shouldShowPremiumSuggestionForModel && (
-              <div className={styles.promptContainer}>
-                <PremiumSuggestion
-                  title={getLocale('unlockPremiumTitle')}
-                  secondaryActionButton={
-                    <Button
-                      kind='plain-faint'
-                      onClick={() => conversationContext.switchToBasicModel()}
-                    >
-                      {getLocale('switchToBasicModelButtonLabel')}
-                    </Button>
-                  }
-                />
-              </div>
-            )
-          }
-          {
-            shouldShowPremiumSuggestionStandalone && (
-              <div className={styles.promptContainer}>
-                <PremiumSuggestion
-                  title={getLocale('unlockPremiumTitle')}
-                  secondaryActionButton={
-                    <Button
-                      kind='plain-faint'
-                      onClick={() => aiChatContext.dismissPremiumPrompt()}
-                    >
-                      {getLocale('dismissButtonLabel')}
-                    </Button>
-                  }
-                />
-              </div>
-            )
-          }
-          {aiChatContext.isPremiumUserDisconnected && (!conversationContext.currentModel || isLeoModel(conversationContext.currentModel)) &&
+          {shouldShowStorageNotice && (
+            <div className={styles.promptContainer}>
+              <NoticeConversationStorage />
+            </div>
+          )}
+          {shouldShowPremiumSuggestionForModel && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale('unlockPremiumTitle')}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => conversationContext.switchToBasicModel()}
+                  >
+                    {getLocale('switchToBasicModelButtonLabel')}
+                  </Button>
+                }
+              />
+            </div>
+          )}
+          {shouldShowPremiumSuggestionStandalone && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale('unlockPremiumTitle')}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => aiChatContext.dismissPremiumPrompt()}
+                  >
+                    {getLocale('dismissButtonLabel')}
+                  </Button>
+                }
+              />
+            </div>
+          )}
+          {aiChatContext.isPremiumUserDisconnected && (!conversationContext.currentModel || isLeoModel(conversationContext.currentModel)) && (
             <div className={styles.promptContainer}>
               <WarningPremiumDisconnected />
             </div>
-          }
-          {conversationContext.shouldShowLongConversationInfo &&
+          )}
+          {conversationContext.shouldShowLongConversationInfo && (
             <div className={styles.promptContainer}>
               <LongConversationInfo />
-            </div>}
-          {!aiChatContext.hasAcceptedAgreement && !conversationContext.conversationHistory.length && <WelcomeGuide />}
+            </div>
+          )}
+          {!aiChatContext.hasAcceptedAgreement && !conversationContext.conversationHistory.length && (
+            <WelcomeGuide />
+          )}
         </div>
       </div>
       <div className={styles.input}>

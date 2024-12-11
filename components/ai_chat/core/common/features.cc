@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "build/build_config.h"
 
 namespace ai_chat::features {
 
@@ -24,6 +25,8 @@ const base::FeatureParam<bool> kFreemiumAvailable(&kAIChat,
                                                   "is_freemium_available",
                                                   true);
 const base::FeatureParam<bool> kAIChatSSE{&kAIChat, "ai_chat_sse", true};
+const base::FeatureParam<bool> kOmniboxOpensFullPage{
+    &kAIChat, "omnibox_opens_full_page", true};
 const base::FeatureParam<bool> kConversationAPIEnabled{
     &kAIChat, "conversation_api", true};
 const base::FeatureParam<double> kAITemperature{&kAIChat, "temperature", 0.2};

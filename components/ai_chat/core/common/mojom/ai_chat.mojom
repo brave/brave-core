@@ -5,6 +5,7 @@
 
 module ai_chat.mojom;
 
+import "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
@@ -69,19 +70,59 @@ enum SuggestionGenerationStatus {
   HasGenerated,
 };
 
+// Type of content that is extracted
+enum ContentType {
+  PageContent,
+  VideoTranscript,
+};
+
+// A piece of content associated with a conversation.
+// TODO(petemill): Rename to AssociatedContent and have hostname/url/title be
+// part of a detail property (which would have different structure possibilities
+// depending on content type.
 struct SiteInfo {
-  // Title is present if the site has associated page content
+  string? uuid;
+  ContentType content_type;
+  // Web page specific fields, if available and allowed
   string? title;
-  // Indicates if the URL scheme is of a type that allows for content association.
-  bool is_content_association_possible;
-  // Current tab's url and hostname, if http(s)
   string? hostname;
   url.mojom.Url? url;
+
   // Percentage of the content that has been utilized by remote LLM (0-100)
   int32 content_used_percentage;
   // Indicates content has been refined through extracting most relevant parts
   // from long page content
   bool is_content_refined;
+
+  // Indicates if the URL scheme is of a type that allows for
+  // content association.
+  // TODO(petemill): SiteInfo should just not exist if content-associated is
+  // not possible.
+  bool is_content_association_possible;
+};
+
+struct Conversation {
+  string uuid;
+  // Set by the LLM or the user
+  string title;
+  // Time used for ordering purposes
+  mojo_base.mojom.Time updated_time;
+  // If there are entries and the conversation should be selectable
+  bool has_content;
+  // Model key, if different than default
+  string? model_key;
+
+  SiteInfo associated_content;
+};
+
+struct ContentArchive {
+  string content_uuid;
+  string content;
+};
+
+struct ConversationArchive {
+  array<ConversationTurn> entries;
+  array<ContentArchive> associated_content;
 };
 
 enum ActionType {
@@ -154,6 +195,9 @@ union ConversationEntryEvent {
 // The selected_text attribute contains what user selects in the page when
 // calling from the context menu.
 struct ConversationTurn {
+  // Populated if owned by a conversation
+  string? uuid;
+
   CharacterType character_type;
   ActionType action_type;
   ConversationTurnVisibility visibility;
@@ -253,19 +297,21 @@ struct ActionGroup {
   array<ActionEntry> entries;
 };
 
-struct Conversation {
-  string uuid;
-  // Set by the LLM or the user
-  string title;
-  // Time used for ordering purposes
-  mojo_base.mojom.Time created_time;
-  // If there are entries and the conversation should be selectable
-  bool has_content;
+// This does not cover more specific data that the Service owns, such as the
+// conversation list, but does cover status of preferences and notices.
+struct ServiceState {
+  bool has_accepted_agreement;
+  bool is_storage_pref_enabled;
+  bool is_storage_notice_dismissed;
+  bool can_show_premium_prompt;
 };
 
 interface Service {
-  // User opts-in to the feature at a profile level
+  // Profile-level acknowledgements
   MarkAgreementAccepted();
+  EnableStoragePref();
+  DismissStorageNotice();
+  DismissPremiumPrompt();
 
   // Get metadata for non-archived conversations
   GetVisibleConversations() => (array<Conversation> conversations);
@@ -276,16 +322,11 @@ interface Service {
   // Current status of subscription
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
 
-  // Premium prompt is only shown conditionally (e.g. the user hasn't dismissed
-  // it and it's been some time since the user started using the feature).
-  GetCanShowPremiumPrompt() => (bool can_show);
-  DismissPremiumPrompt();
-
   DeleteConversation(string id);
   RenameConversation(string id, string new_name);
 
-  // Send events to the UI
-  BindObserver(pending_remote<ServiceObserver> ui);
+  // Bind ability to send events to the UI and receive current state
+  BindObserver(pending_remote<ServiceObserver> ui) => (ServiceState state);
 
   // Bind specified Conversation for 2-way communication
   BindConversation(
@@ -296,7 +337,7 @@ interface Service {
 
 interface ServiceObserver {
   OnConversationListChanged(array<Conversation> conversations);
-  OnAgreementAccepted();
+  OnStateChanged(ServiceState state);
 };
 
 // Browser-side handler for general AI Chat UI functions, implemented
@@ -312,7 +353,7 @@ interface AIChatUIHandler {
   OpenConversationFullPage(string conversation_uuid);
 
   OpenURL(url.mojom.Url url);
-  OpenLearnMoreAboutBraveSearchWithLeo();
+
   OpenModelSupportUrl();
   GoPremium();
   RefreshPremiumSession();
@@ -322,7 +363,9 @@ interface AIChatUIHandler {
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 
-  SetChatUI(pending_remote<ChatUI> chat_ui);
+  // Provide a reference of the UI to the UI handler and get some
+  // initial constant state
+  SetChatUI(pending_remote<ChatUI> chat_ui) => (bool is_standalone);
 
   // Bind 2-way communication to the conversation related to the open page in
   // the current browser window. No binding will occur if this isn't a
@@ -342,13 +385,12 @@ interface AIChatUIHandler {
       array<uint8>? favicon_image_data);
 };
 
-// UI-side handler for whole AI Chat UI
+// UI-side handler for messages from the browser WebUI
 interface ChatUI {
-  // Initial Data
-  SetInitialData(bool is_standalone);
   // Notifies that the default conversation for the
   // panel has changed. e.g. Tab navigation with AIChat open in sidebar.
   OnNewDefaultConversation();
+  OnChildFrameBound(pending_receiver<ParentUIFrame> receiver);
 };
 
 struct ConversationState {
@@ -363,6 +405,22 @@ struct ConversationState {
   APIError error;
   // TODO(petemill): include conversation history, once
   // `OnConversationHistoryUpdate` is more intelligent (see TOOD in definition).
+};
+
+// State required to show the conversations entries UI block
+struct ConversationEntriesState {
+  // Whether an answer generation is in progress
+  bool is_generating;
+  // Whether the current model is a built-in Leo model
+  bool is_leo_model;
+  // How much of the content has been used by the AI engine, percentage,or null
+  // if no content is associated.
+  uint32? content_used_percentage;
+  // Whether the content has been refined
+  bool is_content_refined;
+  // Whether the UI should represent that the user cannot submit new messages
+  // or edits to the conversation.
+  bool can_submit_user_entries;
 };
 
 // Browser-side handler for a Conversation
@@ -382,10 +440,6 @@ interface ConversationHandler {
 
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
-
-  // List of all suggested questions
-  GetSuggestedQuestions() => (
-      array<string> questions, SuggestionGenerationStatus suggestion_status);
 
   // The browser should generate some questions and fire an event when they
   // are ready.
@@ -414,7 +468,7 @@ interface ConversationHandler {
   // Send a user-rating for a chat
   // message. |turn_id| is the index of the message in the
   // specified conversation.
-  RateMessage(bool is_liked, uint32 turn_id)
+  RateMessage(bool is_liked, string turn_uuid)
       => (string? rating_id);
   SendFeedback(
       string category,
@@ -422,9 +476,28 @@ interface ConversationHandler {
       string rating_id, bool send_hostname) => (bool is_success);
 };
 
-interface ConversationEntriesHandler {
+// Browser-side handler for a Conversation's UI responsible for displaying
+// untrusted content (e.g. content generated by the AI engine).
+interface UntrustedConversationHandler {
+  BindUntrustedConversationUI(
+      pending_remote<UntrustedConversationUI> untrusted_ui)
+          => (ConversationEntriesState conversation_entries_state);
+
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
+
+  ModifyConversation(uint32 turn_index, string new_text);
+};
+
+// Untrusted-UI-side handler for a Conversation, responsible for displaying
+// content generated by the AI engine.
+interface UntrustedConversationUI {
+  // TODO(petemill): Provide single entry that's been updated so that we don't
+  // need to fetch (and clone) all conversation entries each time text is added
+  // to the most recent entry.
+  OnConversationHistoryUpdate();
+  OnEntriesUIStateChanged(ConversationEntriesState state);
+  OnFaviconImageDataChanged();
 };
 
 interface ConversationUI {

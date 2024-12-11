@@ -11,27 +11,32 @@
   max-width: 680px;
   margin: 0 auto;
 
+  // In case we have multiple notices or notices + conversations
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+
   ol {
     list-style: none;
     padding: 0;
     margin: 0;
   }
+  li {
+    margin-bottom: var(--leo-spacing-s);
+  }
 }
 
 .navItem {
+  all: unset;
+  border-radius: var(--leo-radius-m);
+  display: block;
   font: var(--leo-font-default-regular);
-  width: 100%;
-  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-  border-radius: 8px;
-  position: relative;
-
-  &:hover {
-    background: var(--leo-color-container-background);
-  }
 }
 
 .navItemActive {
   background: var(--leo-color-container-background);
+  border-radius: var(--leo-radius-m);
+  transition: all 0.2s ease-out allow-discrete;
 }
 
 .optionsMenu {
@@ -42,7 +47,7 @@
 
 .optionsButton {
   --leo-icon-size: 20px;
-  color: var(--leo-color-icon-interactive);
+  color: var(--leo-color-icon-default);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -51,9 +56,19 @@
 }
 
 .displayTitle {
-  width: 100%;
+  border-radius: var(--leo-radius-m);
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  position: relative;
+  transition: all 0.2s ease-out allow-discrete;
+  width: 100%;
+
+  &:hover {
+    background: var(--leo-color-container-highlight);
+    box-shadow: var(--leo-effect-elevation-01);
+  }
 }
 
 .displayTitleContent {

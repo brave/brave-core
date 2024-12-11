@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -38,8 +39,7 @@ namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 32;
 constexpr char kURLRefreshPremiumSession[] =
     "https://account.brave.com/?intent=recover&product=leo";
-constexpr char kURLLearnMoreBraveSearchLeo[] =
-    "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo";
+
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kURLGoPremium[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
@@ -96,7 +96,7 @@ void AIChatUIPageHandler::OpenAIChatSettings() {
       (active_chat_tab_helper_) ? active_chat_tab_helper_->web_contents()
                                 : owner_web_contents_.get();
 #if !BUILDFLAG(IS_ANDROID)
-  const GURL url("brave://settings/leo-assistant");
+  const GURL url("brave://settings/leo-ai");
   if (auto* browser = chrome::FindBrowserWithTab(contents_to_navigate)) {
     ShowSingletonTab(browser, url);
   } else {
@@ -116,7 +116,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
   CHECK(active_chat_tab_helper_);
   active_chat_tab_helper_->web_contents()->OpenURL(
       {
-          GURL(kChatUIURL).Resolve(conversation_uuid),
+          ConversationUrl(conversation_uuid),
           content::Referrer(),
           WindowOpenDisposition::NEW_FOREGROUND_TAB,
           ui::PAGE_TRANSITION_TYPED,
@@ -172,10 +172,6 @@ void AIChatUIPageHandler::ManagePremium() {
 #endif
 }
 
-void AIChatUIPageHandler::OpenLearnMoreAboutBraveSearchWithLeo() {
-  OpenURL(GURL(kURLLearnMoreBraveSearchLeo));
-}
-
 void AIChatUIPageHandler::OpenModelSupportUrl() {
   OpenURL(GURL(kLeoModelSupportUrl));
 }
@@ -205,10 +201,10 @@ void AIChatUIPageHandler::CloseUI() {
 #endif
 }
 
-void AIChatUIPageHandler::SetChatUI(
-    mojo::PendingRemote<mojom::ChatUI> chat_ui) {
+void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
+                                    SetChatUICallback callback) {
   chat_ui_.Bind(std::move(chat_ui));
-  chat_ui_->SetInitialData(active_chat_tab_helper_ == nullptr);
+  std::move(callback).Run(active_chat_tab_helper_ == nullptr);
 }
 
 void AIChatUIPageHandler::BindRelatedConversation(
@@ -262,6 +258,11 @@ void AIChatUIPageHandler::GetFaviconImageData(
   conversation->GetAssociatedContentInfo(base::BindOnce(
       &AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(
+    mojo::PendingReceiver<mojom::ParentUIFrame> receiver) {
+  chat_ui_->OnChildFrameBound(std::move(receiver));
 }
 
 void AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent(

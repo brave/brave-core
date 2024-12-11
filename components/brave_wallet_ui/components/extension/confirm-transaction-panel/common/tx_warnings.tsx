@@ -41,7 +41,6 @@ export function TxWarningBanner({
     <FullWidth>
       <Alert
         type={retrySimulation ? 'info' : isCritical ? 'error' : 'warning'}
-        mode='simple'
       >
         <div slot='icon'>{/* No Icon */}</div>
 

@@ -15,7 +15,7 @@
 }
 
 .content {
-  border-radius: var(--leo-radius-xl) 0 0 var(--leo-radius-xl);
+  border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
   flex: 1 1 0%;
   overflow: hidden;
   display: flex;
@@ -27,7 +27,8 @@
 }
 
 .aside {
-  width: 340px;
+  --navigation-width: 340px;
+  width: var(--navigation-width);
   height: 100%;
   overflow: hidden;
   background: var(--leo-color-page-background);
@@ -39,6 +40,12 @@
   }
 
   padding-top: var(--top-padding);
+}
+
+.nav {
+  // Ensure navigation content always stays at full-width even when animation
+  // is decreasing the width of the parent
+  width: var(--navigation-width);
 }
 
 .left {

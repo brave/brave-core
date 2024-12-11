@@ -5,24 +5,27 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
 
-#include <memory>
 #include <optional>
 #include <string>
-#include <utility>
+#include <string_view>
+#include <type_traits>
 #include <vector>
 
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_remote_completion_client.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -71,14 +74,16 @@ class EngineConsumerClaudeUnitTest : public testing::Test {
 TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
   std::vector<mojom::ConversationTurnPtr> history;
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      std::nullopt, mojom::CharacterType::HUMAN,
+      mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
       "Which show is this catchphrase from?", "I have spoken.", std::nullopt,
       base::Time::Now(), std::nullopt, false));
   history.push_back(mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, false));
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "The Mandalorian.", std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, false));
   auto* mock_remote_completion_client = GetMockRemoteCompletionClient();
   std::string prompt_before_time_and_date =
       "\n\nHuman: Here is the text of a web page in <page> tags:\n<page>\nThis "
@@ -247,10 +252,10 @@ TEST_F(EngineConsumerClaudeUnitTest, GenerateAssistantResponseEarlyReturn) {
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-      std::nullopt, false);
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
+      "", std::nullopt, std::vector<mojom::ConversationEntryEventPtr>{},
+      base::Time::Now(), std::nullopt, false);
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));

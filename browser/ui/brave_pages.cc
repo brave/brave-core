@@ -50,7 +50,7 @@ void ShowFullpageChat(Browser* browser) {
   if (!ai_chat::features::IsAIChatHistoryEnabled()) {
     return;
   }
-  ShowSingletonTabOverwritingNTP(browser, GURL(kChatUIURL));
+  ShowSingletonTabOverwritingNTP(browser, GURL(kAIChatUIURL));
 }
 
 void ShowWebcompatReporter(Browser* browser) {

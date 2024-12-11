@@ -4,153 +4,85 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import getAPI, * as mojom from '../api'
-import { loadTimeData } from '$web-common/loadTimeData'
+import useAPIState from '../../common/useAPIState'
+import * as Mojom from '../../common/mojom'
+import getAPI, * as AIChat from '../api'
 
-
-interface Props {
-  // Whether there is a specific conversation selected
-  isDefaultConversation: boolean
-  // Create a new conversation and use it
-  onNewConversation: () => unknown
-  // Select a new conversation
-  onSelectConversationUuid: (id: string | undefined) => unknown
+export interface ConversationEntriesProps {
+  onIsContentReady: (isContentReady: boolean) => void
+  onHeightChanged: () => void
 }
 
-export interface AIChatContext extends Props {
-  visibleConversations: mojom.Conversation[]
-  hasAcceptedAgreement: boolean
-  isPremiumStatusFetching: boolean
-  isPremiumUser: boolean
-  isPremiumUserDisconnected: boolean
-  canShowPremiumPrompt?: boolean
-  isMobile: boolean
-  isStandalone?: boolean
-  isHistoryEnabled: boolean
-  allActions: mojom.ActionGroup[]
+type AIChatContextProps = {
+  conversationEntriesComponent: (props: ConversationEntriesProps) => React.ReactElement
+}
+
+type AIChatContextInternal = AIChatContextProps & {
+  initialized: boolean
   goPremium: () => void
   managePremium: () => void
   handleAgreeClick: () => void
+  enableStoragePref: () => void
+  markStorageNoticeViewed: () => void
+  dismissStorageNotice: () => void
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
-  uiHandler?: mojom.AIChatUIHandlerRemote
+  uiHandler?: Mojom.AIChatUIHandlerRemote
+  service?: Mojom.ServiceRemote
 
   editingConversationId: string | null
   setEditingConversationId: (uuid: string | null) => void
 }
 
+export type AIChatContext = AIChat.State & AIChatContextInternal
+
 const defaultContext: AIChatContext = {
-  isDefaultConversation: true,
-  visibleConversations: [],
-  hasAcceptedAgreement: Boolean(loadTimeData.getBoolean('hasAcceptedAgreement')),
-  isPremiumStatusFetching: true,
-  isPremiumUser: false,
-  isPremiumUserDisconnected: false,
-  canShowPremiumPrompt: undefined,
-  isMobile: Boolean(loadTimeData.getBoolean('isMobile')),
-  isHistoryEnabled: Boolean(loadTimeData.getBoolean('isHistoryEnabled')),
-  allActions: [],
+  ...AIChat.defaultUIState,
+  initialized: false,
   goPremium: () => { },
   managePremium: () => { },
   handleAgreeClick: () => { },
+  enableStoragePref: () => { },
+  markStorageNoticeViewed: () => { },
+  dismissStorageNotice: () => { },
   dismissPremiumPrompt: () => { },
   userRefreshPremiumSession: () => { },
-  onNewConversation: () => { },
-  onSelectConversationUuid: () => { },
 
   editingConversationId: null,
-  setEditingConversationId: () => { }
+  setEditingConversationId: () => { },
+
+  conversationEntriesComponent: () => <></>
 }
 
 export const AIChatReactContext =
   React.createContext<AIChatContext>(defaultContext)
 
-export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
-  const [context, setContext] = React.useState<AIChatContext>(defaultContext)
-  const [editingConversationId, setEditingConversationId] = React.useState<string | null>(null)
-
-  const setPartialContext = (partialContext: Partial<AIChatContext>) => {
-    setContext((value) => ({
-      ...value,
-      ...partialContext
-    }))
-  }
-
-  React.useEffect(() => {
-    const { Service, Observer } = getAPI()
-    async function initialize() {
-      const [
-        { conversations: visibleConversations },
-        { actionList: allActions },
-        { canShow: canShowPremiumPrompt }
-      ] = await Promise.all([
-        Service.getVisibleConversations(),
-        Service.getActionMenuList(),
-        Service.getCanShowPremiumPrompt()
-      ])
-      setPartialContext({
-        visibleConversations,
-        allActions,
-        canShowPremiumPrompt
-      })
-    }
-
-    async function updateCurrentPremiumStatus() {
-      const { status } = await getAPI().Service.getPremiumStatus()
-      setPartialContext({
-        isPremiumStatusFetching: false,
-        isPremiumUser: (status !== undefined && status !== mojom.PremiumStatus.Inactive),
-        isPremiumUserDisconnected: status === mojom.PremiumStatus.ActiveDisconnected
-      })
-    }
-
-    initialize()
-    updateCurrentPremiumStatus()
-
-    if (context.isHistoryEnabled) {
-      Observer.onConversationListChanged.addListener(
-        (conversations: mojom.Conversation[]) => {
-          setPartialContext({
-            visibleConversations: conversations
-          })
-        }
-      )
-    }
-
-    Observer.onAgreementAccepted.addListener(() =>
-      setPartialContext({
-        hasAcceptedAgreement: true
-      })
-    )
-
-    // Since there is no server-side event for premium status changing,
-    // we should check often. And since purchase or login is performed in
-    // a separate WebContents, we can check when focus is returned here.
-    window.addEventListener('focus', () => {
-      updateCurrentPremiumStatus()
-    })
-
-    document.addEventListener('visibilitychange', (e) => {
-      if (document.visibilityState === 'visible') {
-        updateCurrentPremiumStatus()
-      }
-    })
-  }, [])
-
-  const { Service, UIHandler } = getAPI()
+export function AIChatContextProvider(props: React.PropsWithChildren<AIChatContextProps>) {
+  const api = getAPI()
+  const context = useAPIState(api, defaultContext)
+  const [editingConversationId, setEditingConversationId] =
+    React.useState<string | null>(null)
 
   const store: AIChatContext = {
     ...context,
-    ...props,
-    isStandalone: getAPI().isStandalone,
-    goPremium: () => UIHandler.goPremium(),
-    managePremium: () => UIHandler.managePremium(),
-    dismissPremiumPrompt: () => Service.dismissPremiumPrompt(),
-    userRefreshPremiumSession: () => UIHandler.refreshPremiumSession(),
-    handleAgreeClick: () => Service.markAgreementAccepted(),
-    uiHandler: UIHandler,
+    goPremium: () => api.uiHandler.goPremium(),
+    managePremium: () => api.uiHandler.managePremium(),
+    markStorageNoticeViewed: () => api.service.dismissStorageNotice(),
+    dismissStorageNotice: () => {
+      api.setPartialState({
+        isStorageNoticeDismissed: true
+      })
+      api.service.dismissStorageNotice()
+    },
+    enableStoragePref: () => api.service.enableStoragePref(),
+    dismissPremiumPrompt: () => api.service.dismissPremiumPrompt(),
+    userRefreshPremiumSession: () => api.uiHandler.refreshPremiumSession(),
+    handleAgreeClick: () => api.service.markAgreementAccepted(),
+    uiHandler: api.uiHandler,
+    service: api.service,
     editingConversationId,
-    setEditingConversationId
+    setEditingConversationId,
+    conversationEntriesComponent: props.conversationEntriesComponent
   }
 
   return (

@@ -33,7 +33,6 @@ function ErrorRateLimit() {
   return (
     <div className={styles.alert}>
       <Alert
-        mode='full'
         type='warning'
       >
         {getLocale('errorRateLimit')}

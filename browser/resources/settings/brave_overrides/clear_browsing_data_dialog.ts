@@ -133,8 +133,8 @@ RegisterPolymerTemplateModifications({
         <settings-checkbox
           id="leoResetCheckbox"
           pref="{{prefs.browser.clear_data.brave_leo}}"
-          label="[[i18n('leoClearHistoryData')]]"
-          sub-label="[[i18n('leoClearHistoryDataSubLabel')]]"
+          label="[[i18n('aiChatClearHistoryData')]]"
+          sub-label="[[i18n('aiChatClearHistoryDataSubLabel')]]"
           disabled="[[clearingInProgress_]]"
           no-set-pref>
         </settings-checkbox>`)

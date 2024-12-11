@@ -5,43 +5,57 @@
 
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 
-#include <memory>
+#include <string>
+#include <string_view>
 
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "build/build_config.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 
 // static
 std::unique_ptr<AiChatThrottle> AiChatThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle) {
-  // The AI Chat WebUI won't be enabled if the feature is disabled
+  // The throttle's only purpose is to deny navigation in a Tab.
+
+  // The AI Chat WebUI won't be enabled if the feature or policy is disabled
+  // (this is not checking a user preference).
   if (!ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(
           navigation_handle->GetWebContents()->GetBrowserContext()))) {
     return nullptr;
   }
 
-  // We don't need this throttle if the full-page feature is enabled via proxy
-  // of the AIChatHistory feature flag.
-  if (features::IsAIChatHistoryEnabled()) {
+  const GURL& url = navigation_handle->GetURL();
+
+  bool is_main_page_url = url.SchemeIs(content::kChromeUIScheme) &&
+                          url.host_piece() == kAIChatUIHost;
+
+  // We allow main page navigation only if the full-page feature is enabled
+  // via the AIChatHistory feature flag.
+  if (is_main_page_url && features::IsAIChatHistoryEnabled()) {
     return nullptr;
   }
 
-  // We need this throttle to work only for chrome-untrusted://chat page
-  if (!navigation_handle->GetURL().SchemeIs(
-          content::kChromeUIUntrustedScheme) ||
-      navigation_handle->GetURL().host_piece() != kChatUIHost) {
+  bool is_ai_chat_frame =
+      url.SchemeIs(content::kChromeUIUntrustedScheme) &&
+      url.host_piece() == kAIChatUntrustedConversationUIHost;
+
+  // We need this throttle to work only for AI Chat related URLs
+  if (!is_main_page_url && !is_ai_chat_frame) {
     return nullptr;
   }
 
-  // Purpose of this throttle is to forbid loading of chrome-untrusted://chat
-  // in tab.
+  // Purpose of this throttle is to forbid loading of chrome://leo-ai and
+  // related urls in tab.
   // Parameters check is made different for Android and Desktop because
   // there are different flags:
   // --------+---------------------------------+------------------------------

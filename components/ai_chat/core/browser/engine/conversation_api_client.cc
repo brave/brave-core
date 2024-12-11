@@ -5,36 +5,48 @@
 
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 
-#include <cmath>
+#include <ios>
 #include <map>
-#include <memory>
+#include <ostream>
 #include <string>
+#include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/command_line.h"
+#include "base/containers/checked_iterators.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "base/numerics/clamped_math.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
+#include "url/url_constants.h"
 
 namespace ai_chat {
 

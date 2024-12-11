@@ -67,14 +67,24 @@ source_set("ai_chat") {
 
 ios_objc_mojom_wrappers("ai_chat_mojom_wrappers") {
   mojom_target = "//brave/components/ai_chat/core/common/mojom"
-  sources = [ "//brave/components/ai_chat/core/common/mojom/ai_chat.mojom" ]
+  sources = [
+    "//brave/components/ai_chat/core/common/mojom/ai_chat.mojom",
+    "//brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom",
+  ]
   output_dir = "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios"
+  generate_namespace = false
 
   # These types have pending_receiver arguments which aren't
   # supported in objc_mojom_wrappers, but should be refactored to support
   # binding to them for iOS.
   exclude_types = [
     "AIChatUIHandler",
+    "ChatUI",
+    "ConversationEntriesState",
+    "ParentUIFrame",
     "Service",
+    "UntrustedConversationHandler",
+    "UntrustedConversationUI",
+    "UntrustedUIHandler",
   ]
 }

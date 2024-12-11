@@ -6,10 +6,15 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_MOCK_ENGINE_CONSUMER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_MOCK_ENGINE_CONSUMER_H_
 
+#include <string>
+
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ai_chat {
+namespace mojom {
+class ModelOptions;
+}  // namespace mojom
 
 class MockEngineConsumer : public EngineConsumer {
  public:

@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
-
-import styles from './style.module.scss'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import * as React from 'react'
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
 import hljsStyle from 'react-syntax-highlighter/dist/esm/styles/hljs/ir-black'
 import cpp from 'react-syntax-highlighter/dist/esm/languages/hljs/cpp'
 import javascript from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript'
 import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python'
 import json from 'react-syntax-highlighter/dist/esm/languages/hljs/json'
+import { getLocale } from '$web-common/locale'
+import styles from './style.module.scss'
 
 SyntaxHighlighter.registerLanguage('cpp', cpp)
 SyntaxHighlighter.registerLanguage('javascript', javascript)
@@ -59,7 +59,7 @@ function Block(props: CodeBlockProps) {
           <div slot="icon-before">
             <Icon className={styles.icon} name={hasCopied ? 'check-circle-outline' : 'copy'} />
           </div>
-          <div>Copy code</div>
+          <div>{getLocale('copyButtonLabel')}</div>
         </Button>
       </div>
       <SyntaxHighlighter

@@ -6,17 +6,26 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODEL_SERVICE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MODEL_SERVICE_H_
 
+#include <stddef.h>
+
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <string_view>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
+
+class PrefRegistrySimple;
+class PrefService;
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -24,6 +33,7 @@ class SharedURLLoaderFactory;
 
 namespace ai_chat {
 class EngineConsumer;
+class AIChatCredentialManager;
 
 class ModelService : public KeyedService {
  public:

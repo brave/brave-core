@@ -264,6 +264,24 @@
   <message name="IDS_CHAT_UI_LEARN_MORE" desc="Link text to learn more about a feature">
     Learn more
   </message>
+  <message name="IDS_CHAT_UI_CLOSE_NOTICE" desc="Label for button which closes a notice">
+    Close this notice
+  </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history">
+    Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.
+  </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_EMPTY" desc="Main text for a notice that the conversation list is empty">
+    Your conversation history will appear here once you start a conversation.
+  </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_TITLE_DISABLED_PREF" desc="Title for a notice that the conversation history preference is disabled">
+    History is disabled
+  </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF" desc="Main text for a notice that the conversation history preference is disabled">
+    In order to view your previous conversations with Leo, you need to enable conversation history.
+  </message>
+  <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF_BUTTON" desc="Button label to enable conversation history preference">
+    Enable
+  </message>
   <message name="IDS_CHAT_UI_CHAT_BASIC_SUBTITLE" desc="A description for default chat model">
     General purpose chat
   </message>
@@ -398,6 +416,9 @@
   </message>
   <message name="IDS_AI_CHAT_START_CONVERSATION_LABEL" desc="A label for when user starts a new conversation">
     Start new conversation
+  </message>
+  <message name="IDS_AI_CHAT_GO_BACK_TO_ACTIVE_CONVERSATION_BUTTON" desc="A button to go back to the previous conversation">
+    Go back to the active conversation
   </message>
   <message name="IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED" desc="Label for untitled conversations in AI Chat">
     New conversation

@@ -43,7 +43,7 @@ Polymer({
       },
     },
 
-    isLeoAssistantAndHistoryAllowed_: {
+    isAIChatAssistantAndHistoryAllowed_: {
       type: Boolean,
       value: function() {
         return loadTimeData.getBoolean('isLeoAssistantAllowed')

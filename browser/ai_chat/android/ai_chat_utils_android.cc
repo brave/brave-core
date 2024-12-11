@@ -46,7 +46,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   // Send the query
   conversation->MaybeUnlinkAssociatedContent();
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
       base::android::ConvertJavaStringToUTF8(query), std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false);

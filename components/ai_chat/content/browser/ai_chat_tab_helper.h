@@ -6,12 +6,16 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_TAB_HELPER_H_
 
+#include <cstdint>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
+#include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -23,12 +27,32 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+#include "url/gurl.h"
+
+namespace favicon {
+class FaviconDriver;
+}  // namespace favicon
+namespace gfx {
+class Image;
+}  // namespace gfx
+namespace mojo {
+template <typename T>
+class PendingAssociatedReceiver;
+}  // namespace mojo
+namespace ui {
+struct AXUpdatesAndEvents;
+}  // namespace ui
 
 namespace content {
 class ScopedAccessibilityMode;
+class NavigationEntry;
+class RenderFrameHost;
+class WebContents;
+struct LoadCommittedDetails;
 }
 
 class AIChatUIBrowserTest;
+
 namespace ai_chat {
 class AIChatMetrics;
 

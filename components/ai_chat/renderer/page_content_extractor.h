@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer_throttle_delegate.h"
@@ -19,6 +20,19 @@
 #include "content/public/renderer/render_frame_observer_tracker.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "services/service_manager/public/cpp/binder_registry.h"
+
+namespace base {
+class TimeTicks;
+class Value;
+}  // namespace base
+namespace content {
+class RenderFrame;
+}  // namespace content
+namespace mojo {
+template <typename T>
+class PendingReceiver;
+}  // namespace mojo
 
 namespace ai_chat {
 

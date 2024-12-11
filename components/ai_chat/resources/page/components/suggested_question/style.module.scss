@@ -1,0 +1,56 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.suggestion {
+  --leo-button-color: var(--leo-color-neutral-40);
+  --leo-button-padding: 3px;
+  --leo-button-radius: var(--leo-radius-m);
+  --leo-progressring-color: var(--leo-color-neutral-40);
+  --leo-progressring-size: 15px;
+
+  width: 100%;
+  container-type: inline-size;
+
+  leo-progressring {
+    margin-right: var(--leo-spacing-m);
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-l);
+  width: 100cqw;
+  padding: 0 calc(var(--leo-button-padding) + var(--border-width));
+}
+
+.icon {
+  align-self: stretch;
+  min-height: 32px;
+  width: 32px;
+  font-size: 20px;
+  background: var(--leo-color-neutral-10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--leo-radius-s);
+  flex-shrink: 0;
+}
+
+.buttonText {
+  flex: 1 0 0;
+  padding: 5px 0;
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.questionButton {
+  --leo-button-color: var(--leo-color-text-secondary);
+}
+
+.questionButtonText {
+  font: var(--leo-font-default-regular);
+}

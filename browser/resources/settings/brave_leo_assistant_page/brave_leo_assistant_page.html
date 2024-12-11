@@ -115,8 +115,15 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 <template is="dom-if" if="[[isPremium_]]">
   <cr-link-row on-click="openManageAccountPage_" external="true" class="hr" label="$i18n{braveLeoAssistantManageUrlLabel}"></cr-link-row>
 </template>
-<div class="settings-box " on-click="onResetAssistantData_">
+<template is="dom-if" if="[[isHistoryFeatureEnabled_]]">
+  <settings-toggle-button class="cr-row hr"
+    pref="{{prefs.brave.ai_chat.storage_enabled}}"
+    label="$i18n{braveLeoAssistantHistoryPreferenceLabel}"
+    on-settings-boolean-control-change="onStorageEnabledChange_">
+  </settings-toggle-button>
+  <div class="settings-box " on-click="onResetAssistantData_">
     <div class="flex cr-padded-text reset-leo">
       <div>$i18n{braveLeoAssistantResetAndClearDataLabel}</div>
     </div>
-</div>
+  </div>
+</template>

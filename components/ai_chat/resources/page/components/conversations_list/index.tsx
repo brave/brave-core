@@ -12,6 +12,8 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { getLocale } from '$web-common/locale'
 import getAPI from '../../api'
 import { useConversation } from '../../state/conversation_context'
+import Alert from '@brave/leo/react/alert'
+import Button from '@brave/leo/react/button'
 
 interface SimpleInputProps {
   text?: string
@@ -116,19 +118,39 @@ export default function ConversationsList(props: ConversationsListProps) {
     <>
       <div className={styles.scroller}>
         <nav className={styles.nav}>
+          {!aiChatContext.isStoragePrefEnabled &&
+          <Alert type='notice'>
+            <Icon name='history' slot='icon' />
+            <div slot='title'>{getLocale('noticeConversationHistoryTitleDisabledPref')}</div>
+            {getLocale('noticeConversationHistoryDisabledPref')}
+            <div slot='actions'>
+              <Button kind='outline' onClick={aiChatContext.enableStoragePref}>
+                {getLocale('noticeConversationHistoryDisabledPrefButton')}
+              </Button>
+            </div>
+          </Alert>
+          }
+          {aiChatContext.isStoragePrefEnabled && aiChatContext.visibleConversations.length === 0 &&
+          <Alert type='notice'>
+            <Icon name='history' slot='icon' />
+            <div slot='title'>{getLocale('menuConversationHistory')}</div>
+            {getLocale('noticeConversationHistoryEmpty')}
+          </Alert>
+          }
+          {aiChatContext.visibleConversations.length > 0 &&
           <ol>
             {aiChatContext.visibleConversations.map(item => {
               return (
                 <li key={item.uuid}>
-                  <div
+                  <a
                     className={classnames({
                       [styles.navItem]: true,
                       [styles.navItemActive]: item.uuid === conversationContext.conversationUuid
                     })}
                     onClick={() => {
-                      aiChatContext.onSelectConversationUuid(item.uuid)
                       props.setIsConversationsListOpen?.(false)
                     }}
+                    href={`/${item.uuid}`}
                   >
                     {item.uuid === aiChatContext.editingConversationId ? (
                       <div className={styles.editibleTitle}>
@@ -137,7 +159,7 @@ export default function ConversationsList(props: ConversationsListProps) {
                           onBlur={() => aiChatContext.setEditingConversationId(null)}
                           onSubmit={(value) => {
                             aiChatContext.setEditingConversationId(null)
-                            getAPI().Service.renameConversation(item.uuid, value)
+                            getAPI().service.renameConversation(item.uuid, value)
                           }}
                         />
                       </div>
@@ -146,14 +168,15 @@ export default function ConversationsList(props: ConversationsListProps) {
                         title={item.title || getLocale('conversationListUntitled')}
                         description=''
                         onEditTitle={() => aiChatContext.setEditingConversationId(item.uuid)}
-                        onDelete={() => getAPI().Service.deleteConversation(item.uuid)}
+                        onDelete={() => getAPI().service.deleteConversation(item.uuid)}
                       />
                     )}
-                  </div>
+                  </a>
                 </li>
               )
             })}
           </ol>
+          }
         </nav>
       </div>
     </>

@@ -4,18 +4,16 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
-import * as API from '../api/'
+import * as Mojom from '../../common/mojom'
+import useIsConversationVisible from '../hooks/useIsConversationVisible'
+import useSendFeedback, { defaultSendFeedbackState, SendFeedbackState } from './useSendFeedback'
 import { isLeoModel } from '../model_utils'
+import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
 import { useAIChat } from './ai_chat_context'
+import getAPI from '../api'
 
 const MAX_INPUT_CHAR = 2000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
-
-export interface ConversationContextProps {
-  conversationHandler: API.ConversationHandlerRemote
-  callbackRouter: API.ConversationUICallbackRouter
-}
 
 export interface CharCountContext {
   isCharLimitExceeded: boolean
@@ -23,18 +21,18 @@ export interface CharCountContext {
   inputTextCharCountDisplay: string
 }
 
-export interface ConversationContext extends CharCountContext {
+export type ConversationContext = SendFeedbackState & CharCountContext & {
   conversationUuid?: string
-  conversationHistory: mojom.ConversationTurn[]
-  associatedContentInfo?: mojom.SiteInfo
-  allModels: mojom.Model[]
-  currentModel?: mojom.Model
+  conversationHistory: Mojom.ConversationTurn[]
+  associatedContentInfo?: Mojom.SiteInfo
+  allModels: Mojom.Model[]
+  currentModel?: Mojom.Model
   suggestedQuestions: string[]
   isGenerating: boolean
-  suggestionStatus: mojom.SuggestionGenerationStatus
+  suggestionStatus: Mojom.SuggestionGenerationStatus
   faviconUrl?: string
   faviconCacheKey?: string
-  currentError: mojom.APIError | undefined
+  currentError: Mojom.APIError | undefined
   apiHasError: boolean
   shouldDisableUserInput: boolean
   shouldShowLongPageWarning: boolean
@@ -42,11 +40,11 @@ export interface ConversationContext extends CharCountContext {
   shouldSendPageContents: boolean
   inputText: string
   // TODO(petemill): rename to `filteredActions`?
-  actionList: mojom.ActionGroup[]
-  selectedActionType: mojom.ActionType | undefined
+  actionList: Mojom.ActionGroup[]
+  selectedActionType: Mojom.ActionType | undefined
   isToolsMenuOpen: boolean
   isCurrentModelLeo: boolean
-  setCurrentModel: (model: mojom.Model) => void
+  setCurrentModel: (model: Mojom.Model) => void
   switchToBasicModel: () => void
   generateSuggestedQuestions: () => void
   dismissLongConversationInfo: () => void
@@ -56,10 +54,10 @@ export interface ConversationContext extends CharCountContext {
   setInputText: (text: string) => void
   submitInputTextToAPI: () => void
   resetSelectedActionType: () => void
-  handleActionTypeClick: (actionType: mojom.ActionType) => void
+  handleActionTypeClick: (actionType: Mojom.ActionType) => void
   setIsToolsMenuOpen: (isOpen: boolean) => void
   handleVoiceRecognition?: () => void
-  conversationHandler?: API.ConversationHandlerRemote
+  conversationHandler?: Mojom.ConversationHandlerRemote
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -73,10 +71,10 @@ const defaultContext: ConversationContext = {
   allModels: [],
   suggestedQuestions: [],
   isGenerating: false,
-  suggestionStatus: mojom.SuggestionGenerationStatus.None,
+  suggestionStatus: Mojom.SuggestionGenerationStatus.None,
   apiHasError: false,
   shouldDisableUserInput: false,
-  currentError: mojom.APIError.None,
+  currentError: Mojom.APIError.None,
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,
   shouldSendPageContents: true,
@@ -85,18 +83,19 @@ const defaultContext: ConversationContext = {
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
-  setCurrentModel: () => {},
-  switchToBasicModel: () => {},
-  generateSuggestedQuestions: () => {},
-  dismissLongConversationInfo: () => {},
-  updateShouldSendPageContents: () => {},
-  retryAPIRequest: () => {},
-  handleResetError: () => {},
-  setInputText: () => {},
-  submitInputTextToAPI: () => {},
-  resetSelectedActionType: () => {},
-  handleActionTypeClick: () => {},
-  setIsToolsMenuOpen: () => {},
+  setCurrentModel: () => { },
+  switchToBasicModel: () => { },
+  generateSuggestedQuestions: () => { },
+  dismissLongConversationInfo: () => { },
+  updateShouldSendPageContents: () => { },
+  retryAPIRequest: () => { },
+  handleResetError: () => { },
+  setInputText: () => { },
+  submitInputTextToAPI: () => { },
+  resetSelectedActionType: () => { },
+  handleActionTypeClick: () => { },
+  setIsToolsMenuOpen: () => { },
+  ...defaultSendFeedbackState,
   ...defaultCharCountContext
 }
 
@@ -116,14 +115,14 @@ function normalizeText(text: string) {
   return text.trim().replace(/\s/g, '').toLocaleLowerCase()
 }
 
-export const getFirstValidAction = (actionList: mojom.ActionGroup[]) =>
+export const getFirstValidAction = (actionList: Mojom.ActionGroup[]) =>
   actionList
     .flatMap((actionGroup) => actionGroup.entries)
     .find((entries) => entries.details)?.details?.type
 
 export function useActionMenu(
   filter: string,
-  actionList: mojom.ActionGroup[]
+  actionList: Mojom.ActionGroup[]
 ) {
   return React.useMemo(() => {
     const reg = new RegExp(/^\/\w+/)
@@ -151,13 +150,13 @@ export function useActionMenu(
 export const ConversationReactContext =
   React.createContext<ConversationContext>(defaultContext)
 
-export function ConversationContextProvider(
-  props: React.PropsWithChildren<ConversationContextProps>
-) {
+export function ConversationContextProvider(props: React.PropsWithChildren) {
   const [context, setContext] =
     React.useState<ConversationContext>(defaultContext)
 
-  const { conversationHandler, callbackRouter } = props
+  const aiChatContext = useAIChat()
+  const { conversationHandler, callbackRouter, selectedConversationId, updateSelectedConversationId } = useActiveChat()
+  const sendFeedbackState = useSendFeedback(conversationHandler, getAPI().conversationEntriesFrameObserver)
 
   const [
     hasDismissedLongConversationInfo,
@@ -173,7 +172,7 @@ export function ConversationContextProvider(
 
   const getModelContext = (
     currentModelKey: string,
-    allModels: mojom.Model[]
+    allModels: Mojom.Model[]
   ): Partial<ConversationContext> => {
     return {
       allModels,
@@ -183,7 +182,6 @@ export function ConversationContextProvider(
 
   // Initialization
   React.useEffect(() => {
-    console.debug('conversation context init')
     async function updateHistory() {
       const { conversationHistory } =
         await conversationHandler.getConversationHistory()
@@ -235,7 +233,7 @@ export function ConversationContextProvider(
     )
     listenerIds.push(id)
 
-    id = callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) =>
+    id = callbackRouter.onAPIResponseError.addListener((error: Mojom.APIError) =>
       setPartialContext({
         currentError: error
       })
@@ -243,13 +241,13 @@ export function ConversationContextProvider(
     listenerIds.push(id)
 
     id = callbackRouter.onModelDataChanged.addListener(
-      (conversationModelKey: string, allModels: mojom.Model[]) =>
+      (conversationModelKey: string, allModels: Mojom.Model[]) =>
         setPartialContext(getModelContext(conversationModelKey, allModels))
     )
     listenerIds.push(id)
 
     id = callbackRouter.onSuggestedQuestionsChanged.addListener(
-      (questions: string[], status: mojom.SuggestionGenerationStatus) =>
+      (questions: string[], status: Mojom.SuggestionGenerationStatus) =>
         setPartialContext({
           suggestedQuestions: questions,
           suggestionStatus: status
@@ -259,7 +257,7 @@ export function ConversationContextProvider(
 
     id = callbackRouter.onAssociatedContentInfoChanged.addListener(
       (
-        associatedContentInfo: mojom.SiteInfo,
+        associatedContentInfo: Mojom.SiteInfo,
         shouldSendPageContents: boolean
       ) => {
         setPartialContext({
@@ -291,8 +289,6 @@ export function ConversationContextProvider(
     }
   }, [conversationHandler, callbackRouter])
 
-  const aiChatContext = useAIChat()
-
   // Update favicon
   React.useEffect(() => {
     if (!context.conversationUuid || !aiChatContext.uiHandler) {
@@ -310,8 +306,16 @@ export function ConversationContextProvider(
       })
   }, [context.conversationUuid, context.faviconCacheKey])
 
-  const actionList = useActionMenu(context.inputText, aiChatContext.allActions
-  )
+  // Update the location when the visible conversation changes
+  const isVisible = useIsConversationVisible(context.conversationUuid)
+  React.useEffect(() => {
+    if (!isVisible) return
+    if (selectedConversationId === tabAssociatedChatId) return
+    if (context.conversationUuid === selectedConversationId) return
+    updateSelectedConversationId(context.conversationUuid)
+  }, [isVisible, updateSelectedConversationId])
+
+  const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
     const chatHistoryCharTotal = context.conversationHistory.reduce(
@@ -325,7 +329,7 @@ export function ConversationContextProvider(
 
     let totalCharLimit = 0
 
-    if ( options ) {
+    if (options) {
       totalCharLimit += options.longConversationWarningCharacterLimit ?? 0
       totalCharLimit += context.shouldSendPageContents
         ? options.maxAssociatedContentLength ?? 0
@@ -333,32 +337,20 @@ export function ConversationContextProvider(
     }
 
     return !hasDismissedLongConversationInfo
-           && chatHistoryCharTotal >= totalCharLimit
+      && chatHistoryCharTotal >= totalCharLimit
   }, [
     context.conversationHistory,
     context.currentModel,
     hasDismissedLongConversationInfo
   ])
 
-  const shouldShowLongPageWarning = React.useMemo(
-    () =>
-      context.conversationHistory.length >= 1 &&
-      (context.associatedContentInfo?.isContentAssociationPossible ?? false) &&
-      (context.associatedContentInfo?.contentUsedPercentage ?? 0) < 100,
-    [
-      context.conversationHistory.length,
-      context.associatedContentInfo?.isContentAssociationPossible,
-      context.associatedContentInfo?.contentUsedPercentage
-    ]
-  )
-
-  const apiHasError = context.currentError !== mojom.APIError.None
+  const apiHasError = context.currentError !== Mojom.APIError.None
   const shouldDisableUserInput = !!(
     apiHasError ||
     context.isGenerating ||
     (!aiChatContext.isPremiumUser &&
       context.currentModel?.options.leoModelOptions?.access ===
-        mojom.ModelAccess.PREMIUM)
+      Mojom.ModelAccess.PREMIUM)
   )
   const isCharLimitExceeded = context.inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching =
@@ -373,7 +365,7 @@ export function ConversationContextProvider(
     })
   }
 
-  const handleActionTypeClick = (actionType: mojom.ActionType) => {
+  const handleActionTypeClick = (actionType: Mojom.ActionType) => {
     setPartialContext({
       selectedActionType: actionType
     })
@@ -433,7 +425,7 @@ export function ConversationContextProvider(
   const switchToBasicModel = () => {
     // Select the first non-premium model
     const nonPremium = context.allModels.find(
-      (m) => m.options.leoModelOptions?.access !== mojom.ModelAccess.PREMIUM
+      (m) => m.options.leoModelOptions?.access !== Mojom.ModelAccess.PREMIUM
     )
     if (!nonPremium) {
       console.error('Could not find a non-premium model!')
@@ -459,6 +451,7 @@ export function ConversationContextProvider(
 
   const store: ConversationContext = {
     ...context,
+    ...sendFeedbackState,
     actionList,
     apiHasError,
     shouldDisableUserInput,
@@ -467,7 +460,6 @@ export function ConversationContextProvider(
     inputTextCharCountDisplay,
     isCurrentModelLeo,
     shouldShowLongConversationInfo,
-    shouldShowLongPageWarning,
     dismissLongConversationInfo: () =>
       setHasDismissedLongConversationInfo(true),
     retryAPIRequest: () => conversationHandler.retryAPIRequest(),

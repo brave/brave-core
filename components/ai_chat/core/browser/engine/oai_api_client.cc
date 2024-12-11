@@ -5,20 +5,28 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 
+#include <ios>
+#include <optional>
+#include <ostream>
+#include <string>
+#include <string_view>
+#include <type_traits>
+
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "net/http/http_request_headers.h"
-#include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -171,6 +179,7 @@ void OAIAPIClient::OnQueryDataReceived(
   if (choices->front().is_dict()) {
     const base::Value::Dict* delta =
         choices->front().GetDict().FindDict("delta");
+
     const std::string* content = delta->FindString("content");
 
     if (content) {

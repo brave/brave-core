@@ -6,20 +6,43 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_DRIVER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_DRIVER_H_
 
+#include <cstdint>
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 #include <string_view>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "base/one_shot_event.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "url/gurl.h"
 
 FORWARD_DECLARE_TEST(AIChatUIBrowserTest, PrintPreviewFallback);
+class AIChatUIBrowserTest;
+namespace api_request_helper {
+class APIRequestHelper;
+class APIRequestResult;
+}  // namespace api_request_helper
+namespace base {
+class Value;
+}  // namespace base
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
+namespace base {
+class OneShotEvent;
+}  // namespace base
 
 namespace ai_chat {
 
@@ -87,6 +110,9 @@ class AssociatedContentDriver
   // Implementer should call this when the favicon for the content changes
   void OnFaviconImageDataChanged();
 
+  // Implementer should call this when the title is updated
+  void OnTitleChanged();
+
   // Implementer should call this when the content is updated in a way that
   // will not be detected by the on-demand techniques used by GetPageContent.
   // For example for sites where GetPageContent does not read the live DOM but
@@ -122,12 +148,6 @@ class AssociatedContentDriver
       ConversationHandler::GetStagedEntriesCallback callback,
       int64_t navigation_id,
       api_request_helper::APIRequestResult result);
-
-  // Let all conversations using this content know that the content
-  // has been destroyed or changed to represent different content (e.g. a
-  // navigation).
-  void DisassociateWithConversations();
-
   static std::optional<std::vector<SearchQuerySummary>>
   ParseSearchQuerySummaryResponse(const base::Value& value);
 

@@ -96,7 +96,7 @@
     Position
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_EXPANDED_STATE_PER_WINDOW" desc="Title for checkbox to set expanded state per window">
-    Expand vertical tabs independently per window 
+    Expand vertical tabs independently per window
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR" desc="Title for checkbox to show scrollbar on vertical tabs">
     Show scrollbar
@@ -1332,23 +1332,29 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
     Show suggested prompts in the conversation
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL" desc="The text for settings option">
-    Clear Leo data
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_HISTORY_PREFERENCE_LABEL" desc="The label for the checkbox determining whether to store AI Chat conversations">
+    Store my conversation history
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_HISTORY_PREFERENCE_CONFIRM" desc="The confirmation prompt about disabling the AI Chat history preference">
+    Disabling conversation storage will permanently erase all previously stored conversations. This action can't be undone.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_LABEL" desc="The button label for deleteing all AI Chat conversations">
+    Delete all Leo AI conversation data
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_RESET_AND_CLEAR_DATA_CONFIRMATION_LABEL" desc="The confirmation window message for reset option">
-    Resetting the Leo assistant will require you to opt-in to use Brave
-Leo in the future and will also clear your chat history. Clearing your
+    Resetting Leo AI will require you to opt-in to use Brave
+Leo AI in the future and will also clear your chat history. Clearing your
 chat history will delete all your previous conversations with Brave
-Leo. This action can't be undone.
+Leo AI. This action can't be undone.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_AUTOCOMPLETE_LINK" desc="A label for a link to settings page to adjust autocomplete suggestion based on Leo">
     Adjust autocomplete suggestions
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_LABEL" desc="The text for settings option">
-    Leo
+  <message name="IDS_SETTINGS_AI_CHAT_CLEAR_HISTORY_DATA_LABEL" desc="Label for checkbox to select AI assistant conversations for deletion when deleting browser data">
+    Leo AI
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_CLEAR_HISTORY_DATA_SUBLABEL" desc="The text for settings option">
-    Data and chat history
+  <message name="IDS_SETTINGS_AI_CHAT_CLEAR_HISTORY_DATA_SUBLABEL" desc="Label description for checkbox to select AI assistant conversations for deletion when deleting browser data">
+    Chat history
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_SELECTION_LABEL" desc="Label for selecting default model">
     Default model for new conversations

@@ -5,20 +5,21 @@
 
 #include "brave/components/ai_chat/core/common/pref_names.h"
 
-#include <string>
+#include <string_view>
 
-#include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "components/prefs/pref_service.h"
 
 namespace ai_chat::prefs {
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (ai_chat::features::IsAIChatEnabled()) {
     registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
+    registry->RegisterBooleanPref(kStorageEnabled, true);
     registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
     registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
+    registry->RegisterBooleanPref(kUserDismissedStorageNotice, false);
 #if BUILDFLAG(IS_ANDROID)
     registry->RegisterBooleanPref(kBraveChatSubscriptionActiveAndroid, false);
     registry->RegisterStringPref(kBraveChatPurchaseTokenAndroid, "");

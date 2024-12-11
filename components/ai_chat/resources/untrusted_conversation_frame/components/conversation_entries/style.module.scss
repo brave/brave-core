@@ -27,28 +27,6 @@
   background-color: transparent;
 }
 
-.suggestedQuestionsBox {
-  padding: var(--leo-spacing-2xl);
-
-  leo-button {
-    --leo-button-padding: var(--leo-spacing-m) var(--leo-spacing-l);
-  }
-}
-
-.buttonText {
-  display: flex;
-  align-items: flex-start;
-  text-align: left;
-  font: var(--leo-font-default-regular);
-}
-
-.questionsList {
-  --leo-button-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: var(--leo-spacing-m);
-}
 
 .avatarContainer {
   display: flex;
@@ -86,14 +64,6 @@
 
 .humanMessageContent {
   white-space: pre-wrap;
-}
-
-.feedbackFormPortal {
-  padding: 0 16px;
-}
-
-.siteTitleContainer {
-  margin-top: var(--leo-spacing-m);
 }
 
 .rightContainer {

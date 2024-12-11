@@ -6,9 +6,14 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 
 #include <array>
+#include <functional>
+#include <string>
 #include <utility>
 
-#include "base/strings/strcat.h"
+#include "base/containers/flat_tree.h"
+#include "base/strings/string_util.h"
+#include "components/grit/brave_components_strings.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
@@ -120,6 +125,17 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"searchInProgress", IDS_CHAT_UI_SEARCH_IN_PROGRESS},
        {"searchQueries", IDS_CHAT_UI_SEARCH_QUERIES},
        {"learnMore", IDS_CHAT_UI_LEARN_MORE},
+       {"closeNotice", IDS_CHAT_UI_CLOSE_NOTICE},
+       {"noticeConversationHistoryBody",
+        IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY},
+       {"noticeConversationHistoryEmpty",
+        IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_EMPTY},
+       {"noticeConversationHistoryTitleDisabledPref",
+        IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_TITLE_DISABLED_PREF},
+       {"noticeConversationHistoryDisabledPref",
+        IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF},
+       {"noticeConversationHistoryDisabledPrefButton",
+        IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_DISABLED_PREF_BUTTON},
        {"leoSettingsTooltipLabel", IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL},
        {"summarizePageButtonLabel", IDS_CHAT_UI_SUMMARIZE_PAGE},
        {"welcomeGuideTitle", IDS_CHAT_UI_WELCOME_GUIDE_TITLE},
@@ -163,6 +179,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"useMicButtonLabel", IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL},
        {"menuTitleCustomModels", IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS},
        {"startConversationLabel", IDS_AI_CHAT_START_CONVERSATION_LABEL},
+       {"goBackToActiveConversationButton",
+        IDS_AI_CHAT_GO_BACK_TO_ACTIVE_CONVERSATION_BUTTON},
        {"conversationListUntitled", IDS_AI_CHAT_CONVERSATION_LIST_UNTITLED}});
 
   return kLocalizedStrings;

@@ -53,12 +53,12 @@ brave_grit("static_resources") {
 repack("resources") {
   deps = [
     ":static_resources",
-    "//brave/components/ai_chat/resources/page:generated_resources",
+    "//brave/components/ai_chat/resources",
     "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/skus/browser/resources:generated_resources",
   ]
   sources = [
-    "$root_gen_dir/brave/components/ai_chat/resources/page/ai_chat_ui_generated.pak",
+    "$root_gen_dir/brave/components/ai_chat/resources/ai_chat_ui_generated.pak",
     "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",
     "$root_gen_dir/components/brave_components_static.pak",
   ]

@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TEXT_EMBEDDER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TEXT_EMBEDDER_H_
 
+#include <stddef.h>
+
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
@@ -18,7 +21,17 @@
 #include "base/synchronization/lock.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/expected.h"
+#include "tensorflow_lite_support/cc/task/processor/proto/embedding.pb.h"
+#include "third_party/abseil-cpp/absl/status/status.h"
 #include "third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/text_embedder.h"
+
+namespace tflite {
+namespace task {
+namespace text {
+class TextEmbedder;
+}  // namespace text
+}  // namespace task
+}  // namespace tflite
 
 namespace base {
 class SequencedTaskRunner;

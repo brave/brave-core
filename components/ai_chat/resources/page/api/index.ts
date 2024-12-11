@@ -3,59 +3,155 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as mojom from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
+ import { loadTimeData } from '$web-common/loadTimeData'
+ import API from '../../common/api'
+ import * as Mojom from '../../common/mojom'
 
-// Provide access to all the generated types
-export * from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
+// State that is owned by this class because it is global to the UI
+// (loadTimeData / Service / UIHandler).
+export type State = Mojom.ServiceState & {
+  initialized: boolean
+  isStandalone?: boolean
+  visibleConversations: Mojom.Conversation[]
+  isPremiumStatusFetching: boolean
+  isPremiumUser: boolean
+  isPremiumUserDisconnected: boolean
+  isMobile: boolean
+  isHistoryFeatureEnabled: boolean
+  allActions: Mojom.ActionGroup[]
+}
 
-class API {
-  public Service: mojom.ServiceRemote
-  public Observer: mojom.ServiceObserverCallbackRouter
-  public UIHandler: mojom.AIChatUIHandlerRemote
-  public UIObserver: mojom.ChatUICallbackRouter
-  public isStandalone: boolean
+export const defaultUIState: State = {
+  initialized: false,
+  visibleConversations: [],
+  hasAcceptedAgreement: false,
+  isStoragePrefEnabled: false,
+  isPremiumStatusFetching: true,
+  isPremiumUser: false,
+  isPremiumUserDisconnected: false,
+  isStorageNoticeDismissed: false,
+  canShowPremiumPrompt: false,
+  isMobile: loadTimeData.getBoolean('isMobile'),
+  isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
+  allActions: [],
+}
+
+// Owns connections to the browser via mojom as well as global state
+class PageAPI extends API<State> {
+  public service: Mojom.ServiceRemote
+    = Mojom.Service.getRemote()
+
+  public observer: Mojom.ServiceObserverCallbackRouter
+    = new Mojom.ServiceObserverCallbackRouter()
+
+  public uiHandler: Mojom.AIChatUIHandlerRemote
+    = Mojom.AIChatUIHandler.getRemote()
+
+  public uiObserver: Mojom.ChatUICallbackRouter
+    = new Mojom.ChatUICallbackRouter()
+
+  public conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter
+    = new Mojom.ParentUIFrameCallbackRouter()
 
   constructor() {
-    // Connect to service
-    this.Service = mojom.Service.getRemote()
-    this.Observer = new mojom.ServiceObserverCallbackRouter()
-    this.Service.bindObserver(this.Observer.$.bindNewPipeAndPassRemote())
-    // Connect to platform UI handler
-    this.UIHandler = mojom.AIChatUIHandler.getRemote()
-    this.UIObserver = new mojom.ChatUICallbackRouter()
-    this.UIObserver.setInitialData.addListener((isStandalone: boolean) => {
-      this.isStandalone = isStandalone
+    super(defaultUIState)
+    this.initialize()
+    this.updateCurrentPremiumStatus()
+  }
+
+  async initialize() {
+    // Get any global UI state. We can do that here instead of React context
+    // to start as early as possible.
+    // Premium state separately because it takes longer to fetch and we don't
+    // need to wait for it.
+    const [
+      { state },
+      { isStandalone },
+      { conversations: visibleConversations },
+      { actionList: allActions },
+      premiumStatus
+    ] = await Promise.all([
+      this.service.bindObserver(this.observer.$.bindNewPipeAndPassRemote()),
+      this.uiHandler.setChatUI(this.uiObserver.$.bindNewPipeAndPassRemote()),
+      this.service.getVisibleConversations(),
+      this.service.getActionMenuList(),
+      this.getCurrentPremiumStatus()
+    ])
+    this.setPartialState({
+      ...state,
+      ...premiumStatus,
+      initialized: true,
+      isStandalone,
+      visibleConversations,
+      allActions
     })
-    this.UIHandler.setChatUI(this.UIObserver.$.bindNewPipeAndPassRemote())
+
+    this.observer.onStateChanged.addListener((state: Mojom.ServiceState) => {
+      this.setPartialState(state)
+    })
+
+    this.observer.onConversationListChanged.addListener(
+      (conversations: Mojom.Conversation[]) => {
+        this.setPartialState({
+          visibleConversations: conversations
+        })
+      }
+    )
+
+    this.uiObserver.onChildFrameBound.addListener((parentPagePendingReceiver: Mojom.ParentUIFramePendingReceiver) => {
+      this.conversationEntriesFrameObserver.$.bindHandle(parentPagePendingReceiver.handle)
+    })
+
+    // Since there is no browser-side event for premium status changing,
+    // we should check often. And since purchase or login is performed in
+    // a separate WebContents, we can check when focus is returned here.
+    window.addEventListener('focus', () => {
+      this.updateCurrentPremiumStatus()
+    })
+
+    document.addEventListener('visibilitychange', (e) => {
+      if (document.visibilityState === 'visible') {
+        this.updateCurrentPremiumStatus()
+      }
+    })
+  }
+
+  private async getCurrentPremiumStatus() {
+    const { status } = await this.service.getPremiumStatus()
+    return {
+      isPremiumStatusFetching: false,
+      isPremiumUser: (status !== undefined && status !== Mojom.PremiumStatus.Inactive),
+      isPremiumUserDisconnected: status === Mojom.PremiumStatus.ActiveDisconnected
+    }
+  }
+
+  private async updateCurrentPremiumStatus() {
+    this.setPartialState(await this.getCurrentPremiumStatus())
   }
 }
 
-let apiInstance: API
-
-export function setAPIForTesting(instance: API) {
-  apiInstance = instance
-}
+let apiInstance: PageAPI
 
 export default function getAPI() {
   if (!apiInstance) {
-    apiInstance = new API()
+    apiInstance = new PageAPI()
   }
   return apiInstance
 }
 
 export function bindConversation(id: string | undefined) {
-  let conversationHandler: mojom.ConversationHandlerRemote =
-    new mojom.ConversationHandlerRemote()
-  let callbackRouter = new mojom.ConversationUICallbackRouter()
+  let conversationHandler: Mojom.ConversationHandlerRemote =
+    new Mojom.ConversationHandlerRemote()
+  let callbackRouter = new Mojom.ConversationUICallbackRouter()
 
   if (id !== undefined) {
-    getAPI().Service.bindConversation(
+    getAPI().service.bindConversation(
       id,
       conversationHandler.$.bindNewPipeAndPassReceiver(),
       callbackRouter.$.bindNewPipeAndPassRemote()
     )
   } else {
-    getAPI().UIHandler.bindRelatedConversation(
+    getAPI().uiHandler.bindRelatedConversation(
       conversationHandler.$.bindNewPipeAndPassReceiver(),
       callbackRouter.$.bindNewPipeAndPassRemote()
     )
@@ -67,12 +163,13 @@ export function bindConversation(id: string | undefined) {
 }
 
 export function newConversation() {
-  let conversationHandler: mojom.ConversationHandlerRemote =
-      new mojom.ConversationHandlerRemote()
-  let callbackRouter = new mojom.ConversationUICallbackRouter()
-  getAPI().UIHandler.newConversation(
-      conversationHandler.$.bindNewPipeAndPassReceiver(),
-      callbackRouter.$.bindNewPipeAndPassRemote())
+  let conversationHandler: Mojom.ConversationHandlerRemote =
+    new Mojom.ConversationHandlerRemote()
+  let callbackRouter = new Mojom.ConversationUICallbackRouter()
+  getAPI().uiHandler.newConversation(
+    conversationHandler.$.bindNewPipeAndPassReceiver(),
+    callbackRouter.$.bindNewPipeAndPassRemote()
+  )
   return {
     conversationHandler,
     callbackRouter

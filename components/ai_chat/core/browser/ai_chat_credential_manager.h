@@ -10,14 +10,21 @@
 #include <string>
 
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
+#include "build/build_config.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefService;
+namespace mojo {
+template <typename Interface>
+class PendingRemote;
+}  // namespace mojo
 
 namespace ai_chat {
 

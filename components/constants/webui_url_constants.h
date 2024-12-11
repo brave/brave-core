@@ -12,6 +12,7 @@ inline constexpr char kAdblockHost[] = "adblock";
 inline constexpr char kAdblockInternalsHost[] = "adblock-internals";
 inline constexpr char kAdblockJS[] = "brave_adblock.js";
 inline constexpr char kSkusInternalsHost[] = "skus-internals";
+inline constexpr char kAdsInternalsHost[] = "ads-internals";
 inline constexpr char kWebcompatReporterHost[] = "webcompat";
 inline constexpr char kRewardsPageHost[] = "rewards";
 inline constexpr char kRewardsPageURL[] = "chrome://rewards/";
@@ -78,8 +79,12 @@ inline constexpr char kSpeedreaderPanelURL[] =
     "chrome://brave-speedreader.top-chrome";
 inline constexpr char kSpeedreaderPanelHost[] = "brave-speedreader.top-chrome";
 inline constexpr char kShortcutsURL[] = "chrome://settings/system/shortcuts";
-inline constexpr char kChatUIURL[] = "chrome-untrusted://chat/";
-inline constexpr char kChatUIHost[] = "chat";
+inline constexpr char kAIChatUIURL[] = "chrome://leo-ai/";
+inline constexpr char kAIChatUIHost[] = "leo-ai";
+inline constexpr char kAIChatUntrustedConversationUIURL[] =
+    "chrome-untrusted://leo-ai-conversation-entries/";
+inline constexpr char kAIChatUntrustedConversationUIHost[] =
+    "leo-ai-conversation-entries";
 
 inline constexpr char kRewriterUIURL[] = "chrome://rewriter/";
 inline constexpr char kRewriterUIHost[] = "rewriter";

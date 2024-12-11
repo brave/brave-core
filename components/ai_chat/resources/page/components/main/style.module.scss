@@ -4,6 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .main {
+  --conversation-content-margin: var(--leo-spacing-2xl);
+  --conversation-content-max-width: calc(680px + calc(var(--conversation-content-margin) * 2));
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -16,29 +18,56 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 680px;
+  max-width: var(--conversation-content-max-width);
   margin: 0 auto;
-  padding: 0 8px 8px 8px;
+  padding: 0
+           var(--leo-spacing-m)
+           var(--leo-spacing-m)
+           var(--leo-spacing-m);
 }
 
-.conversationContent {
-  width: 100%;
-  max-width: 680px;
-  margin: 0 auto;
+.siteTitleContainer {
+  margin-top: var(--conversation-content-margin);
 }
 
 .scroller {
+  position: relative;
+  --scrollbar-width: 6px;
   overflow: auto;
+  scrollbar-gutter: stable;
   height: 100%;
-  padding-bottom: 16px;
+  padding-bottom: var(--leo-spacing-xl);
 
   &::-webkit-scrollbar {
-    width: 6px;
+    width: var(--scrollbar-width);
   }
 
   &::-webkit-scrollbar-thumb {
     background: var(--leo-color-neutral-20);
     border-radius: var(--leo-spacing-m);
+  }
+}
+
+.conversationContent {
+  margin: 0 auto;
+  width: 100%;
+  max-width: var(--conversation-content-max-width);
+  // Adjust padding to account for scrollbar width so content lines up with
+  // input area which is outside of the scroller.
+  padding:
+    0
+    calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2)
+    0
+    calc(var(--conversation-content-margin) + var(--scrollbar-width) / 2);
+
+  // Hide until content is ready
+  opacity: 0;
+  // Hide immediately when changing content
+  transition: none;
+
+  &.showContent {
+    opacity: 1;
+    transition: opacity 0.12s ease-out;
   }
 }
 
@@ -50,7 +79,7 @@
 }
 
 .header {
-  padding: 8px 16px;
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
   border-bottom: 1px solid var(--leo-color-divider-subtle);
   display: flex;
   align-items: center;
@@ -96,7 +125,8 @@
 }
 
 .promptContainer {
-  margin: 24px;
+  margin: var(--conversation-content-margin) 0;
+  container-type: inline-size;
 }
 
 .badgePremium {
@@ -139,6 +169,22 @@
   min-height: 60px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--leo-spacing-m);
   border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+
+.suggestionsContainer {
+  margin: var(--conversation-content-margin) 0;
+}
+
+.questionsList {
+  --leo-button-radius: var(--leo-radius-l);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--leo-spacing-m);
+}
+
+.feedbackForm {
+  padding: 0 16px;
 }

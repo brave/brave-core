@@ -1,0 +1,90 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.notice {
+  position: relative;
+  border-radius: var(--leo-radius-m);
+  background-color: var(--leo-color-container-highlight);
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  overflow: hidden;;
+  color: var(--leo-color-text-secondary);
+}
+
+.illustration {
+  flex: 0 0 auto;
+  width: 40%;
+  max-width: 260px;
+  background-color: #FF815C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3%;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.content {
+  flex-grow: 1;
+  padding: var(--leo-spacing-xl);
+
+  h4 {
+    margin: 0 0 var(--leo-spacing-s) 0;
+    // width of close button, make sure no overlap
+    padding-right: var(--leo-spacing-2xl);
+    display: block;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    font: var(--leo-font-heading-h4);
+    color: var(--leo-color-text-primary);
+  }
+
+  p {
+    margin: 0 0 var(--leo-spacing-s) 0;
+    font: var(--leo-font-default-regular);
+  }
+
+  a {
+    font: var(--leo-font-default-link);
+    color: inherit;
+  }
+}
+
+.closeButton {
+  --leo-button-color: color-mix(in srgb,
+    transparent 50%,
+    var(--leo-color-container-background));
+  --leo-button-padding: var(--leo-spacing-xs);
+  --leo-button-radius: 100px;
+  position: absolute;
+  top: var(--leo-spacing-xl);
+  right: var(--leo-spacing-xl);
+}
+.closeIcon {
+  --leo-icon-color: var(--leo-color-icon-default);
+}
+
+@container (width < 410px) {
+  .notice {
+    flex-direction: column;
+  }
+  .illustration {
+    max-width: none;
+    width: auto;
+    padding: 3%;
+    height: 136px;
+    img {
+      width: auto;
+      max-width: 260px;
+      height: auto;
+      max-height: 100%;
+    }
+  }
+}

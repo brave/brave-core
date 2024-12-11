@@ -8,20 +8,17 @@ import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
-import { Url } from 'gen/url/mojom/url.mojom.m.js'
-import * as mojom from '../../api/'
-import { useAIChat } from '../../state/ai_chat_context'
+import * as Mojom from '../../../common/mojom'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
 import styles from './style.module.scss'
 
 function SearchSummary (props: { searchQueries: string[] }) {
-  const context = useAIChat()
+  const context = useUntrustedConversationContext()
 
   const handleOpenSearchQuery = React.useCallback((e: React.MouseEvent, query: string) => {
     e.preventDefault()
-    const queryUrl = new Url()
-    queryUrl.url = `https://search.brave.com/search?q=${encodeURIComponent(query)}`
-    context.uiHandler?.openURL(queryUrl)
+    context.uiHandler?.openSearchURL(query)
   }, [])
 
   const handleLearnMore = () => {
@@ -50,7 +47,7 @@ function SearchSummary (props: { searchQueries: string[] }) {
   )
 }
 
-export default function AssistantResponse(props: { entry: mojom.ConversationTurn, isEntryInProgress: boolean }) {
+export default function AssistantResponse(props: { entry: Mojom.ConversationTurn, isEntryInProgress: boolean }) {
   const searchQueriesEvent = props.entry.events?.find(event => !!event.searchQueriesEvent)?.searchQueriesEvent
   const hasCompletionStarted = !props.isEntryInProgress || props.entry.events?.find(event => !!event.completionEvent)
 
