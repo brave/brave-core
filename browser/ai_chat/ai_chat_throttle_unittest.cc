@@ -79,20 +79,16 @@ TEST_P(AiChatThrottleUnitTest, CancelNavigationFromTab) {
 
   test_handle.set_url(GURL(kAIChatUIURL));
 
-#if BUILDFLAG(IS_ANDROID)
-  ui::PageTransition transition = ui::PageTransitionFromInt(
-      ui::PageTransition::PAGE_TRANSITION_FROM_ADDRESS_BAR);
-#else
   ui::PageTransition transition = ui::PageTransitionFromInt(
       ui::PageTransition::PAGE_TRANSITION_FROM_ADDRESS_BAR |
       ui::PageTransition::PAGE_TRANSITION_TYPED);
-#endif
 
   test_handle.set_page_transition(transition);
 
   std::unique_ptr<AiChatThrottle> throttle =
       AiChatThrottle::MaybeCreateThrottleFor(&test_handle);
 
+#if !BUILDFLAG(IS_ANDROID)
   if (IsAIChatHistoryEnabled()) {
     EXPECT_EQ(throttle.get(), nullptr);
   } else {
@@ -100,6 +96,9 @@ TEST_P(AiChatThrottleUnitTest, CancelNavigationFromTab) {
     EXPECT_EQ(content::NavigationThrottle::CANCEL_AND_IGNORE,
               throttle->WillStartRequest().action());
   }
+#else
+  EXPECT_EQ(throttle.get(), nullptr);
+#endif
 }
 
 TEST_P(AiChatThrottleUnitTest, CancelNavigationToFrame) {
@@ -107,22 +106,20 @@ TEST_P(AiChatThrottleUnitTest, CancelNavigationToFrame) {
 
   test_handle.set_url(GURL(kAIChatUntrustedConversationUIURL));
 
-#if BUILDFLAG(IS_ANDROID)
-  ui::PageTransition transition = ui::PageTransitionFromInt(
-      ui::PageTransition::PAGE_TRANSITION_FROM_ADDRESS_BAR);
-#else
   ui::PageTransition transition = ui::PageTransitionFromInt(
       ui::PageTransition::PAGE_TRANSITION_FROM_ADDRESS_BAR |
       ui::PageTransition::PAGE_TRANSITION_TYPED);
-#endif
 
   test_handle.set_page_transition(transition);
 
   std::unique_ptr<AiChatThrottle> throttle =
       AiChatThrottle::MaybeCreateThrottleFor(&test_handle);
-
+#if !BUILDFLAG(IS_ANDROID)
   EXPECT_EQ(content::NavigationThrottle::CANCEL_AND_IGNORE,
             throttle->WillStartRequest().action());
+#else
+  EXPECT_EQ(throttle.get(), nullptr);
+#endif
 }
 
 TEST_P(AiChatThrottleUnitTest, AllowNavigationFromPanel) {
