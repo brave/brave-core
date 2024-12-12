@@ -137,8 +137,8 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
 
   updateScriptletBeforeSave_() {
     this.scriptlet.name = this.scriptlet.name.toLowerCase()
-    if (!this.scriptlet.name.startsWith('brave-')) {
-      this.scriptlet.name = 'brave-' + this.scriptlet.name
+    if (!this.scriptlet.name.startsWith('user-')) {
+      this.scriptlet.name = 'user-' + this.scriptlet.name
     }
     if (!this.scriptlet.name.endsWith('.js')) {
       this.scriptlet.name = this.scriptlet.name + '.js'

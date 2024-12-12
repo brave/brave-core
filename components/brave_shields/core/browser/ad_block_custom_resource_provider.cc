@@ -58,7 +58,7 @@ bool IsValidResource(const base::Value& resource) {
 
   if (*mime == kAppJs) {
     // Resource is a scriptlet:
-    if (!name->starts_with("brave-") || !name->ends_with(".js")) {
+    if (!name->starts_with("user-") || !name->ends_with(".js")) {
       return false;
     }
   } else {

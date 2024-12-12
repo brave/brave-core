@@ -180,15 +180,15 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
     ASSERT_TRUE(custom_resources.is_list());
     ASSERT_EQ(1u, custom_resources.GetList().size());
     CheckCustomScriptlet(custom_resources.GetList().front(),
-                         "brave-custom-script.js", kContent);
+                         "user-custom-script.js", kContent);
   }
 
   constexpr const char kEditedContent[] = "window.test = 'edited'";
 
   ASSERT_TRUE(
-      ClickCustomScriplet(web_contents(), "brave-custom-script.js", "edit"));
+      ClickCustomScriplet(web_contents(), "user-custom-script.js", "edit"));
 
-  EXPECT_EQ("brave-custom-script.js", GetCustomScriptletName(web_contents()));
+  EXPECT_EQ("user-custom-script.js", GetCustomScriptletName(web_contents()));
   EXPECT_EQ(kContent, GetCustomScriptletContent(web_contents()));
   SaveCustomScriptlet("custom-script-edited", kEditedContent);
   {
@@ -196,11 +196,11 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
     ASSERT_TRUE(custom_resources.is_list());
     ASSERT_EQ(1u, custom_resources.GetList().size());
     CheckCustomScriptlet(custom_resources.GetList().front(),
-                         "brave-custom-script-edited.js", kEditedContent);
+                         "user-custom-script-edited.js", kEditedContent);
   }
 
   ASSERT_TRUE(ClickCustomScriplet(web_contents(),
-                                  "brave-custom-script-edited.js", "delete"));
+                                  "user-custom-script-edited.js", "delete"));
   {
     const auto& custom_resources = GetCustomResources();
     ASSERT_TRUE(custom_resources.is_list());
@@ -218,7 +218,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, ExecCustomScriptlet) {
   ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
   SaveCustomScriptlet("custom-script", kContent);
 
-  UpdateAdBlockInstanceWithRules("a.com##+js(brave-custom-script)");
+  UpdateAdBlockInstanceWithRules("a.com##+js(user-custom-script)");
 
   GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
@@ -233,7 +233,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
   constexpr const char kBraveFix[] = "window.test = 'default-script'";
   constexpr const char kBraveFixResource[] = R"json(
     [{
-      "name": "brave-fix.js",
+      "name": "user-fix.js",
       "kind": { "mime": "application/javascript" },
       "content": "$1"
     }]
@@ -247,9 +247,9 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
   constexpr const char kContent[] = "window.test = 'custom-script'";
 
   ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
-  SaveCustomScriptlet("brave-fix", kContent);
+  SaveCustomScriptlet("user-fix", kContent);
 
-  UpdateAdBlockInstanceWithRules("a.com##+js(brave-fix)");
+  UpdateAdBlockInstanceWithRules("a.com##+js(user-fix)");
 
   GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
