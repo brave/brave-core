@@ -14,6 +14,19 @@
   background: var(--leo-color-page-background);
 }
 
+.mobile {
+  --top-padding: 0;
+
+  & .content {
+    border-radius: 0;
+    margin: 0;
+  }
+
+  & .left {
+    min-width: 0;
+  }
+}
+
 .content {
   border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
   flex: 1 1 0%;

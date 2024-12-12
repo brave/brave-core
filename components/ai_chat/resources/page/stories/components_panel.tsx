@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { useArgs } from '@storybook/preview-api'
+import { useArgs, useState } from '@storybook/preview-api'
 import { Meta, StoryObj } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
 import '$web-components/app.global.scss'
@@ -485,6 +485,7 @@ const preview: Meta<CustomArgs> = {
         setArgs({ inputText })
       }
 
+      const [showSidebar, setShowSidebar] = useState(false)
       const aiChatContext: AIChatContext = {
         initialized: options.args.initialized,
         editingConversationId: null,
@@ -508,7 +509,9 @@ const preview: Meta<CustomArgs> = {
         dismissStorageNotice: () => {},
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},
-        setEditingConversationId: () => {}
+        setEditingConversationId: () => {},
+        showSidebar: showSidebar,
+        toggleSidebar: () => setShowSidebar(s => !s)
       }
 
       const activeChatContext: SelectedChatDetails = {

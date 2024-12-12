@@ -327,6 +327,11 @@ interface Service {
   DeleteConversation(string id);
   RenameConversation(string id, string new_name);
 
+  // Determines whether a conversation exists - we need this so we can determine
+  // whether a URL is bogus (i.e. made up) or if it corresponds to a
+  // not-visible-in-sidebar conversation.
+  ConversationExists(string conversation_uuid) => (bool exists);
+
   // Bind ability to send events to the UI and receive current state
   BindObserver(pending_remote<ServiceObserver> ui) => (ServiceState state);
 

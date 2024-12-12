@@ -12,7 +12,9 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "content/public/browser/web_contents.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 
@@ -25,7 +27,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       content::WebContents::FromJavaWebContents(jweb_contents);
   AIChatService* ai_chat_service = AIChatServiceFactory::GetForBrowserContext(
       web_contents->GetBrowserContext());
-  DCHECK(ai_chat_service);
+  CHECK(ai_chat_service);
   auto conversation_uuid_str =
       base::android::ConvertJavaStringToUTF8(conversation_uuid);
   // This function is either targeted at a specific conversation
@@ -51,5 +53,33 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       base::android::ConvertJavaStringToUTF8(query), std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false);
   conversation->SubmitHumanConversationEntry(std::move(turn));
+
+  content::OpenURLParams params(
+      GURL(base::StrCat({kChatUIURL, conversation->get_conversation_uuid()})),
+      content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+      ui::PAGE_TRANSITION_FROM_API, false);
+  web_contents->OpenURL(params, {});
+}
+
+static void JNI_BraveLeoUtils_OpenLeoUrlForTab(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jweb_contents) {
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
+  AIChatService* ai_chat_service = AIChatServiceFactory::GetForBrowserContext(
+      web_contents->GetBrowserContext());
+  DCHECK(ai_chat_service);
+  AIChatTabHelper* chat_tab_helper =
+      AIChatTabHelper::FromWebContents(web_contents);
+  DCHECK(chat_tab_helper);
+  ConversationHandler* conversation =
+      ai_chat_service->GetOrCreateConversationHandlerForContent(
+          chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
+
+  content::OpenURLParams params(
+      GURL(base::StrCat({kChatUIURL, conversation->get_conversation_uuid()})),
+      content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PAGE_TRANSITION_FROM_API, false);
+  web_contents->OpenURL(params, {});
 }
 }  // namespace ai_chat
