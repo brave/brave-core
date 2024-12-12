@@ -28,7 +28,7 @@ struct VPNRegion: Equatable {
   }
 
   private static func flagEmojiForCountryCode(code: String) -> String {
-    // Root Unicode flags index
+    // Regional indicator symbol root Unicode flags index
     let rootIndex: UInt32 = 127397
     var unicodeScalarView = ""
 

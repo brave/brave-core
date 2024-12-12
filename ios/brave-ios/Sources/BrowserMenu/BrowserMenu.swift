@@ -18,11 +18,20 @@ public struct BrowserMenu: View {
   /// Whether or not we may be viewing on a device that doesn't have as much horizontal space
   /// available (such as when Display Zoom is enabled)
   @State private var isHorizontalSpaceRestricted: Bool = false
+  @State private var activeActionHandlers: [Action.ID: Task<Void, Never>] = [:]
 
   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
   private func handleAction(_ action: Binding<Action>) {
-    Task {
+    let id = action.wrappedValue.id
+    if activeActionHandlers[id] != nil {
+      // The action is in progress
+      return
+    }
+    let actionTask = Task {
+      defer {
+        activeActionHandlers[id] = nil
+      }
       let result = await action.wrappedValue.handler(action.wrappedValue)
       switch result {
       case .updateAction(let replacement):
@@ -34,6 +43,7 @@ public struct BrowserMenu: View {
         break
       }
     }
+    activeActionHandlers[id] = actionTask
   }
 
   private var numberOfQuickActions: Int {

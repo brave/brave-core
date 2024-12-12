@@ -6,6 +6,27 @@
 import BraveWallet
 import Foundation
 
+/// The list of action identifiers
+///
+/// Every action that is shown in the menu must have an identifier created here so that it may be
+/// properly displayed and ordered in the new menu customization. The new menu should use every
+/// identifier that is usable even if the the action cannot be made in the current context so that
+/// user ordering & visibility is consistent.
+///
+/// **A note on rankings & visibility**:
+/// The new menu relies on 2 things for default item display: default ranking & default visibility.
+///
+/// Default rankings & visibility are currently based on a list in Figma and shouldn't be altered to
+/// ensure items don't move around on the user.
+///
+/// When a new menu item is added it should be given a new default ranking that isn't currently
+/// used. Currently all rankings are incremented by 100 to allow for new items to be added in
+/// between, so for example a new action identifier could be given a default rank of 175 if we
+/// wanted it to be placed second in the list if no user customization has occured or third in the
+/// list if it has (reordering sets overriden ranks based on the halfway point between items).
+///
+/// Default visibility controls whether or not the item appears on the menu without the user tapping
+/// "Show All…" to display all actions or explicitly adding it to the menu themselves.
 extension Action.Identifier {
 
   public static let vpn: Self = .init(

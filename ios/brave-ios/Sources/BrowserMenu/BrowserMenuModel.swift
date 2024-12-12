@@ -86,7 +86,7 @@ import SwiftUI
   }
 
   func updateActionVisibility(_ action: Action, visibility: Action.Visibility) {
-    actionVisibility.value[action.id.id] = visibility == .visible ? true : false
+    actionVisibility.value[action.id.id] = visibility == .visible
     if visibility == .visible {
       // If the user is making a hidden item visible and the visible list is empty, we won't
       // give it an overridden rank to ensure it ends at the bottom
