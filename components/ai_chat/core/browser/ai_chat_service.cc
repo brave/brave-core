@@ -61,7 +61,8 @@ constexpr auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
     {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
 
 std::vector<mojom::Conversation*> FilterVisibleConversations(
-    std::map<std::string, mojom::ConversationPtr>& conversations_map) {
+    std::map<std::string, mojom::ConversationPtr, std::less<>>&
+        conversations_map) {
   std::vector<mojom::Conversation*> conversations;
   for (const auto& kv : conversations_map) {
     auto& conversation = kv.second;
@@ -602,14 +603,7 @@ void AIChatService::DeleteConversation(const std::string& id) {
 
 void AIChatService::RenameConversation(const std::string& id,
                                        const std::string& new_name) {
-  ConversationHandler* conversation_handler =
-      conversation_handlers_.at(id).get();
-  if (!conversation_handler) {
-    return;
-  }
-
-  DVLOG(1) << "Renamed conversation " << id << " to '" << new_name << "'";
-  OnConversationTitleChanged(conversation_handler, new_name);
+  OnConversationTitleChanged(id, new_name);
 }
 
 void AIChatService::ConversationExists(const std::string& conversation_uuid,
@@ -818,12 +812,17 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
   MaybeUnloadConversation(handler);
 }
 
-void AIChatService::OnConversationTitleChanged(ConversationHandler* handler,
-                                               std::string title) {
-  auto conversation_it = conversations_.find(handler->get_conversation_uuid());
-  CHECK(conversation_it != conversations_.end());
-  auto& conversation = conversation_it->second;
-  conversation->title = title;
+void AIChatService::OnConversationTitleChanged(
+    const std::string& conversation_uuid,
+    const std::string& new_title) {
+  auto conversation_it = conversations_.find(conversation_uuid);
+  if (conversation_it == conversations_.end()) {
+    DLOG(ERROR) << "Conversation not found for title change";
+    return;
+  }
+
+  auto& conversation_metadata = conversation_it->second;
+  conversation_metadata->title = new_title;
 
   OnConversationListChanged();
 
@@ -831,7 +830,7 @@ void AIChatService::OnConversationTitleChanged(ConversationHandler* handler,
   if (ai_chat_db_) {
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateConversationTitle))
-        .WithArgs(handler->get_conversation_uuid(), std::move(title));
+        .WithArgs(conversation_uuid, new_title);
   }
 }
 

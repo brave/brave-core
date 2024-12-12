@@ -166,8 +166,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
     // Called when a mojo client connects or disconnects
     virtual void OnClientConnectionChanged(ConversationHandler* handler) {}
-    virtual void OnConversationTitleChanged(ConversationHandler* handler,
-                                            std::string title) {}
+    virtual void OnConversationTitleChanged(
+        const std::string& conversation_uuid,
+        const std::string& title) {}
     virtual void OnSelectedLanguageChanged(
         ConversationHandler* handler,
         const std::string& selected_language) {}
@@ -407,7 +408,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnSuggestedQuestionsChanged();
   void OnAssociatedContentInfoChanged();
   void OnClientConnectionChanged();
-  void OnConversationTitleChanged(std::string title);
+  void OnConversationTitleChanged(std::string_view title);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnSelectedLanguageChanged(const std::string& selected_language);
   void OnAssociatedContentFaviconImageDataChanged();

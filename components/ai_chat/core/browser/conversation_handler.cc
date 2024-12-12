@@ -1683,9 +1683,9 @@ void ConversationHandler::OnClientConnectionChanged() {
   }
 }
 
-void ConversationHandler::OnConversationTitleChanged(std::string title) {
+void ConversationHandler::OnConversationTitleChanged(std::string_view title) {
   for (auto& observer : observers_) {
-    observer.OnConversationTitleChanged(this, title);
+    observer.OnConversationTitleChanged(metadata_->uuid, std::string(title));
   }
 }
 

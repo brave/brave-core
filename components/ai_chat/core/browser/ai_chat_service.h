@@ -8,6 +8,7 @@
 
 #include <stddef.h>
 
+#include <functional>
 #include <map>
 #include <memory>
 #include <ostream>
@@ -93,8 +94,8 @@ class AIChatService : public KeyedService,
   void OnConversationEntryRemoved(ConversationHandler* handler,
                                   std::string entry_uuid) override;
   void OnClientConnectionChanged(ConversationHandler* handler) override;
-  void OnConversationTitleChanged(ConversationHandler* handler,
-                                  std::string title) override;
+  void OnConversationTitleChanged(const std::string& conversation_uuid,
+                                  const std::string& title) override;
   void OnAssociatedContentDestroyed(ConversationHandler* handler,
                                     int content_id) override;
 
@@ -175,7 +176,8 @@ class AIChatService : public KeyedService,
 
  private:
   // Key is uuid
-  using ConversationMap = std::map<std::string, mojom::ConversationPtr>;
+  using ConversationMap =
+      std::map<std::string, mojom::ConversationPtr, std::less<>>;
   using ConversationMapCallback = base::OnceCallback<void(ConversationMap&)>;
 
   void MaybeInitStorage();
