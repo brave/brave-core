@@ -109,11 +109,21 @@ class RequestBlockingContentScriptHandler: TabContentScript {
           )
         }
 
-        if shouldBlock && !tab.contentBlocker.blockedRequests.contains(requestURL) {
+        if shouldBlock
+          && !tab.contentBlocker.blockedRequests.contains(where: { $0.requestURL == requestURL })
+        {
           BraveGlobalShieldStats.shared.adblock += 1
           let stats = tab.contentBlocker.stats
           tab.contentBlocker.stats = stats.adding(adCount: 1)
-          tab.contentBlocker.blockedRequests.insert(requestURL)
+          tab.contentBlocker.blockedRequests.append(
+            .init(
+              requestURL: requestURL,
+              sourceURL: windowOriginURL,
+              resourceType: dto.data.resourceType,
+              isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
+              location: .requestBlocking
+            )
+          )
         }
 
         replyHandler(shouldBlock, nil)
