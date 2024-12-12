@@ -77,13 +77,11 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         }
 
         Preference history = findPreference(PREF_HISTORY);
-        if (history != null) {
-            if (history instanceof ChromeSwitchPreference) {
-                mHistory = (ChromeSwitchPreference) history;
-                mHistory.setOnPreferenceChangeListener(this);
-                mHistory.setChecked(BraveLeoPrefUtils.getIsHistoryEnabled());
-                mHistory.setVisible(ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT_HISTORY));
-            }
+        if (history instanceof ChromeSwitchPreference) {
+            mHistory = (ChromeSwitchPreference) history;
+            mHistory.setOnPreferenceChangeListener(this);
+            mHistory.setChecked(BraveLeoPrefUtils.getIsHistoryEnabled());
+            mHistory.setVisible(ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT_HISTORY));
         }
 
         BraveLeoUtils.verifySubscription(
