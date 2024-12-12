@@ -62,12 +62,6 @@ extension Preferences {
         default: true
       )
 
-    public static let windowRender =
-      Option<Bool>(
-        key: "userscript.preferences.\(UserScriptManager.ScriptType.windowRenderHelper.rawValue)",
-        default: true
-      )
-
     public static let readyState =
       Option<Bool>(
         key: "userscript.preferences.\(UserScriptManager.ScriptType.readyStateHelper.rawValue)",
