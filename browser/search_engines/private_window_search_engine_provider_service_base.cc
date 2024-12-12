@@ -17,6 +17,7 @@
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
+#include "extensions/browser/install_prefs_helper.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -69,7 +70,7 @@ void PrivateWindowSearchEngineProviderServiceBase::
     auto extension_id = extension_provider_url->GetExtensionId();
     extensions::ExtensionPrefs* prefs =
         extensions::ExtensionPrefs::Get(otr_profile_->GetOriginalProfile());
-    auto time = prefs->GetLastUpdateTime(extension_id);
+    auto time = extensions::GetLastUpdateTime(prefs, extension_id);
 
     auto turl =
         std::make_unique<TemplateURL>(data, type, extension_id, time, true);
