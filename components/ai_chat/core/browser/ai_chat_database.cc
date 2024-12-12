@@ -654,6 +654,8 @@ bool AIChatDatabase::AddConversationEntry(
 bool AIChatDatabase::UpdateConversationTitle(std::string_view conversation_uuid,
                                              std::string_view title) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DVLOG(4) << __func__ << " for " << conversation_uuid << " with title "
+           << title;
   if (!LazyInit()) {
     return false;
   }
