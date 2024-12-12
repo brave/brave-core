@@ -126,13 +126,14 @@
 
 
 #define BRAVE_SPLIT_VIEW_COLOR_IDS \
-    E_CPONLY(kColorBraveSplitViewTileBackground)        \
-    E_CPONLY(kColorBraveSplitViewActiveWebViewBorder) \
-    E_CPONLY(kColorBraveSplitViewInactiveWebViewBorder) \
-    E_CPONLY(kColorBraveSplitViewMenuButtonIcon)        \
-    E_CPONLY(kColorBraveSplitViewMenuButtonBackground)  \
-    E_CPONLY(kColorBraveSplitViewMenuButtonBorder)      \
-    E_CPONLY(kColorBraveSplitViewMenuItemIcon)          \
+    E_CPONLY(kColorBraveSplitViewTileBackgroundHorizontal) \
+    E_CPONLY(kColorBraveSplitViewTileBackgroundVertical)   \
+    E_CPONLY(kColorBraveSplitViewActiveWebViewBorder)      \
+    E_CPONLY(kColorBraveSplitViewInactiveWebViewBorder)    \
+    E_CPONLY(kColorBraveSplitViewMenuButtonIcon)           \
+    E_CPONLY(kColorBraveSplitViewMenuButtonBackground)     \
+    E_CPONLY(kColorBraveSplitViewMenuButtonBorder)         \
+    E_CPONLY(kColorBraveSplitViewMenuItemIcon)             \
     E_CPONLY(kColorBraveSplitViewUrl)
 
 
