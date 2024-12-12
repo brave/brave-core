@@ -95,6 +95,15 @@ class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
       })
   }
 
+  removeExtension_(e: any) {
+    e.stopPropagation()
+    this.browserProxy_.removeExtensionManifestV2(e.target.id)
+  }
+
+  showRemoveButton_(ext: ExtensionV2): boolean {
+    return ext.installed && !ext.enabled
+  }
+
   itemPref_(enabled: boolean) {
     return {
       key: '',

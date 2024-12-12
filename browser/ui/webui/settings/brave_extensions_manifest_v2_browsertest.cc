@@ -30,6 +30,14 @@ bool ClickExtensionToggle(content::WebContents* web_contents) {
       .value.is_none();
 }
 
+bool ClickExtensionRemove(content::WebContents* web_contents) {
+  return EvalJs(web_contents,
+                "window.testing.extensionsV2Subpage.getElementById('"
+                "doojmbjmlfjjnbmnoijecmcbfeoakpjm').querySelector('#"
+                "doojmbjmlfjjnbmnoijecmcbfeoakpjm').click()")
+      .value.is_none();
+}
+
 bool IsExtensionToggled(content::WebContents* web_contents) {
   return EvalJs(web_contents,
                 "window.testing.extensionsV2Subpage.getElementById('"
@@ -84,6 +92,12 @@ class BraveExtensionsManifestV2BrowserTest : public InProcessBrowserTest {
           ->DisableExtension(kExtensionId,
                              extensions::disable_reason::DISABLE_USER_ACTION);
     }
+  }
+
+  bool IsExtensionEnabled() {
+    return extensions::ExtensionRegistry::Get(browser()->profile())
+        ->enabled_extensions()
+        .Contains(kExtensionId);
   }
 
   bool IsExtensionInstalled() {
@@ -147,9 +161,16 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2BrowserTest,
   ClickExtensionToggle(web_contents);
   WaitExtensionToggled(true);
   EXPECT_TRUE(IsExtensionInstalled());
+  EXPECT_TRUE(IsExtensionEnabled());
 
-  // disabled from settings -> uninstalled.
+  // disabled from settings.
   ClickExtensionToggle(web_contents);
   WaitExtensionToggled(false);
+  EXPECT_TRUE(IsExtensionInstalled());
+  EXPECT_FALSE(IsExtensionEnabled());
+
+  // remove from settings.
+  ClickExtensionRemove(web_contents);
   EXPECT_FALSE(IsExtensionInstalled());
+  EXPECT_FALSE(IsExtensionEnabled());
 }
