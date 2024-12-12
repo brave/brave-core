@@ -622,7 +622,10 @@ class TabManager: NSObject {
         && Preferences.Privacy.persistentPrivateBrowsing.value)
 
     // WebKit can sometimes return a URL that isn't valid at all!
-    if let requestURL = request?.url, NSURL(idnString: requestURL.absoluteString) == nil {
+    // Do not allow configuring a tab with a Bookmarklet or Javascript URL
+    if let requestURL = request?.url,
+      NSURL(idnString: requestURL.absoluteString) == nil || requestURL.isBookmarklet
+    {
       request?.url = TabManager.aboutBlankBlockedURL
     }
 
