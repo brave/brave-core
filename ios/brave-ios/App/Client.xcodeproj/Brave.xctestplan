@@ -30,6 +30,44 @@
   },
   "testTargets" : [
     {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "AIChatTests",
+        "name" : "AIChatTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveVPNTests",
+        "name" : "BraveVPNTests"
+      }
+    },
+    {
+      "skippedTests" : [
+        "CertificatePinningTest\/testSelfSignedRootAllowed2()"
+      ],
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "CertificateUtilitiesTests",
+        "name" : "CertificateUtilitiesTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "PrivateCDNTests",
+        "name" : "PrivateCDNTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "DataTests",
+        "name" : "DataTests"
+      }
+    },
+    {
       "skippedTests" : [
         "CertificatePinningTest\/testSelfSignedRootAllowed2()"
       ],
@@ -40,13 +78,38 @@
       }
     },
     {
-      "skippedTests" : [
-        "DecentralizedDNSHelperTests"
-      ],
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "BraveWalletTests",
-        "name" : "BraveWalletTests"
+        "identifier" : "BrowserMenuTests",
+        "name" : "BrowserMenuTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "UserAgentTests",
+        "name" : "UserAgentTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveNewsTests",
+        "name" : "BraveNewsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "StorageTests",
+        "name" : "StorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "SharedTests",
+        "name" : "SharedTests"
       }
     },
     {
@@ -65,48 +128,13 @@
       }
     },
     {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "DataTests",
-        "name" : "DataTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "SharedTests",
-        "name" : "SharedTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "StorageTests",
-        "name" : "StorageTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "BraveNewsTests",
-        "name" : "BraveNewsTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "BraveTalkTests",
-        "name" : "BraveTalkTests"
-      }
-    },
-    {
       "skippedTests" : [
-        "CertificatePinningTest\/testSelfSignedRootAllowed2()"
+        "DecentralizedDNSHelperTests"
       ],
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "CertificateUtilitiesTests",
-        "name" : "CertificateUtilitiesTests"
+        "identifier" : "BraveWalletTests",
+        "name" : "BraveWalletTests"
       }
     },
     {
@@ -119,36 +147,15 @@
     {
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "PrivateCDNTests",
-        "name" : "PrivateCDNTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "BraveVPNTests",
-        "name" : "BraveVPNTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "UserAgentTests",
-        "name" : "UserAgentTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "AIChatTests",
-        "name" : "AIChatTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
         "identifier" : "PlaylistUITests",
         "name" : "PlaylistUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveTalkTests",
+        "name" : "BraveTalkTests"
       }
     }
   ],
