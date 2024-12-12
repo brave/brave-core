@@ -28,7 +28,8 @@ class DirectFeedFetcherDelegateImpl : public DirectFeedFetcher::Delegate {
       const DirectFeedFetcherDelegateImpl&) = delete;
 
   // Must be called on UI thread
-  bool ShouldUpgradeToHttps(const GURL& url) override;
+  DirectFeedFetcher::Delegate::HTTPSUpgradeInfo GetURLHTTPSUpgradeInfo(
+      const GURL& url) override;
 
   base::WeakPtr<DirectFeedFetcher::Delegate> AsWeakPtr() override;
 

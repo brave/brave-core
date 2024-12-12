@@ -71,7 +71,12 @@ class DirectFeedFetcher {
    public:
     virtual ~Delegate() = default;
 
-    virtual bool ShouldUpgradeToHttps(const GURL& url) = 0;
+    struct HTTPSUpgradeInfo {
+      bool should_upgrade;
+      bool should_force;
+    };
+
+    virtual HTTPSUpgradeInfo GetURLHTTPSUpgradeInfo(const GURL& url) = 0;
     virtual base::WeakPtr<DirectFeedFetcher::Delegate> AsWeakPtr() = 0;
   };
 
@@ -92,16 +97,24 @@ class DirectFeedFetcher {
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
-  void DownloadFeedHelper(GURL url,
-                          std::string publisher_id,
-                          DownloadFeedCallback callback,
-                          bool should_https_upgrade);
-  void OnFeedDownloaded(SimpleURLLoaderList::iterator iter,
-                        DownloadFeedCallback callback,
-                        GURL feed_url,
-                        std::string publisher_id,
-                        bool https_upgraded,
-                        const std::unique_ptr<std::string> response_body);
+  void DownloadFeedHelper(
+      GURL url,
+      GURL original_url,
+      std::string publisher_id,
+
+      size_t redirect_count,
+      DownloadFeedCallback callback,
+      std::optional<Delegate::HTTPSUpgradeInfo> https_upgrade_info);
+  void OnFeedDownloaded(
+      SimpleURLLoaderList::iterator iter,
+      DownloadFeedCallback callback,
+      GURL url,
+      GURL original_url,
+      std::string publisher_id,
+      std::optional<Delegate::HTTPSUpgradeInfo> https_upgrade_info,
+      bool https_upgraded,
+      size_t redirect_count,
+      const std::unique_ptr<std::string> response_body);
   void OnParsedFeedData(DownloadFeedCallback callback,
                         DirectFeedResponse result,
                         absl::variant<DirectFeedResult, DirectFeedError> data);
