@@ -690,8 +690,7 @@
       {                                                                        \
           "block-element-feature",                                             \
           "Enable Block Element feature",                                      \
-          "Allows to block sekected HTML element on the page"                  \
-          "marked as a known threat.",                                         \
+          "Allows to block selected HTML element on the page",                 \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveShieldsElementPicker),            \

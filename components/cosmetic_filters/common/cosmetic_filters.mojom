@@ -26,7 +26,7 @@ interface CosmeticFiltersHandler {
   ManageCustomFilters();
 
   GetElementPickerThemeInfo() => (
-      bool is_nightly_mode_enabled, int32 background_color);
+      bool is_dark_mode_enabled, int32 background_color);
 };
 
 // An interface to render frame agent `CosmeticFiltersJSHandler` to control

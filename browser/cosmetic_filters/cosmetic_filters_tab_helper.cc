@@ -106,9 +106,11 @@ void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(
       GetWebContents().GetColorMode() == ui::ColorProviderKey::ColorMode::kDark,
       color_provider.GetColor(kColorSidePanelBadgeBackground));
 #else   // !BUILDFLAG(IS_ANDROID)
-  std::move(callback).Run(chrome::android::GetDarkModeState() ==
-                              chrome::android::DarkModeState::kDarkModeSystem,
-                          GetThemeBackgroundColor());
+  const auto dark_mode_state = chrome::android::GetDarkModeState();
+  std::move(callback).Run(
+      dark_mode_state == chrome::android::DarkModeState::kDarkModeSystem ||
+          dark_mode_state == chrome::android::DarkModeState::kDarkModeApp,
+      GetThemeBackgroundColor());
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
