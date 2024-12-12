@@ -209,7 +209,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   @MainActor
-  func rateConversation(isLiked: Bool, turnId: UInt) async -> String? {
+  func rateConversation(isLiked: Bool, turnId: String) async -> String? {
     return await api.rateMessage(isLiked, turnId: turnId)
   }
 

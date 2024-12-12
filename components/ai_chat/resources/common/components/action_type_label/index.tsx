@@ -3,83 +3,83 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
-import * as mojom from '../../api'
-import styles from './style.module.scss'
-import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import * as React from 'react'
+import { getLocale } from '$web-common/locale'
+import * as Mojom from '../../mojom'
+import styles from './style.module.scss'
 
 interface ActionTypeLabelProps {
-  actionType: mojom.ActionType
+  actionType: Mojom.ActionType
   removable?: boolean
   onCloseClick?: () => void
 }
 
-function getCategoryAndItem(actionType: mojom.ActionType): {
+function getCategoryAndItem(actionType: Mojom.ActionType): {
   category: string | undefined, item: string | undefined
 } {
   switch (actionType) {
-      case mojom.ActionType.SUMMARIZE_SELECTED_TEXT:
+      case Mojom.ActionType.SUMMARIZE_SELECTED_TEXT:
         return { category: undefined, item: getLocale('summarizeLabel')}
-      case mojom.ActionType.EXPLAIN:
+      case Mojom.ActionType.EXPLAIN:
         return { category: undefined, item: getLocale('explainLabel')}
-      case mojom.ActionType.CREATE_TAGLINE:
+      case Mojom.ActionType.CREATE_TAGLINE:
         return {
           category: getLocale('createCategoryTitle'),
           item: getLocale('taglineLabel')
         }
-      case mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
+      case Mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
         return {
           category: getLocale('socialMediaPostLabel'),
           item: getLocale('socialMediaShortLabel')
         }
-      case mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG:
+      case Mojom.ActionType.CREATE_SOCIAL_MEDIA_COMMENT_LONG:
         return {
           category: getLocale('socialMediaPostLabel'),
           item: getLocale('socialMediaLongLabel')
         }
-      case mojom.ActionType.PARAPHRASE:
+      case Mojom.ActionType.PARAPHRASE:
         return {
           category: getLocale('rewriteCategoryTitle'),
           item: getLocale('paraphraseLabel')
         }
-      case mojom.ActionType.IMPROVE:
+      case Mojom.ActionType.IMPROVE:
         return {
           category: getLocale('rewriteCategoryTitle'),
           item: getLocale('improveLabel')
         }
-      case mojom.ActionType.ACADEMICIZE:
+      case Mojom.ActionType.ACADEMICIZE:
         return {
           category: getLocale('changeToneLabel'),
           item: getLocale('academicizeLabel')
         }
-      case mojom.ActionType.PROFESSIONALIZE:
+      case Mojom.ActionType.PROFESSIONALIZE:
         return {
           category: getLocale('changeToneLabel'),
           item: getLocale('professionalizeLabel')
         }
-      case mojom.ActionType.PERSUASIVE_TONE:
+      case Mojom.ActionType.PERSUASIVE_TONE:
         return {
           category: getLocale('changeToneLabel'),
           item: getLocale('persuasiveToneLabel')
         }
-      case mojom.ActionType.CASUALIZE:
+      case Mojom.ActionType.CASUALIZE:
         return {
           category: getLocale('changeToneLabel'),
           item: getLocale('casualizeLabel')
         }
-      case mojom.ActionType.FUNNY_TONE:
+      case Mojom.ActionType.FUNNY_TONE:
         return {
           category: getLocale('changeToneLabel'),
           item: getLocale('funnyToneLabel')
         }
-      case mojom.ActionType.SHORTEN:
+      case Mojom.ActionType.SHORTEN:
         return {
           category: getLocale('changeLengthLabel'),
           item: getLocale('shortenLabel')
         }
-      case mojom.ActionType.EXPAND:
+      case Mojom.ActionType.EXPAND:
         return {
           category: getLocale('changeLengthLabel'),
           item: getLocale('expandLabel')

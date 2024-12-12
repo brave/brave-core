@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as mojom from '../api/'
+import * as Mojom from '../../../common/mojom'
 
-const ACTIONS_LIST: mojom.ActionGroup[] = [
+const ACTIONS_LIST: Mojom.ActionGroup[] = [
   {
     category: 'Quick actions',
     entries: [
       {
         subheading: undefined,
-        details: { label: 'Explain', type: mojom.ActionType.EXPLAIN }
+        details: { label: 'Explain', type: Mojom.ActionType.EXPLAIN }
       }
     ]
   },
@@ -20,21 +20,21 @@ const ACTIONS_LIST: mojom.ActionGroup[] = [
     entries: [
       {
         subheading: undefined,
-        details: { label: 'Paraphrase', type: mojom.ActionType.PARAPHRASE }
+        details: { label: 'Paraphrase', type: Mojom.ActionType.PARAPHRASE }
       },
       { subheading: 'Change tone', details: undefined },
       {
         subheading: undefined,
         details: {
           label: 'Change tone / Academic',
-          type: mojom.ActionType.ACADEMICIZE
+          type: Mojom.ActionType.ACADEMICIZE
         }
       },
       {
         subheading: undefined,
         details: {
           label: 'Change tone / Professional',
-          type: mojom.ActionType.PROFESSIONALIZE
+          type: Mojom.ActionType.PROFESSIONALIZE
         }
       }
     ]

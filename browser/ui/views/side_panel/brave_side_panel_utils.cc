@@ -3,10 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/strings/strcat.h"
+#include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
@@ -29,7 +28,7 @@ std::unique_ptr<views::View> CreateAIChatSidePanelWebView(
   auto web_view = std::make_unique<SidePanelWebUIViewT<AIChatUI>>(
       scope, base::RepeatingClosure(), base::RepeatingClosure(),
       std::make_unique<WebUIContentsWrapperT<AIChatUI>>(
-          GURL(base::StrCat({kChatUIURL, "tab"})), profile.get(),
+          ai_chat::TabAssociatedConversationUrl(), profile.get(),
           IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
           /*esc_closes_ui=*/false));
   web_view->ShowUI();

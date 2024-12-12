@@ -5,20 +5,30 @@
 
 .suggestion {
   --leo-button-color: var(--leo-color-neutral-40);
-  --leo-button-padding: 3px var(--leo-spacing-s) 3px 0;
+  --leo-button-padding: 3px;
   --leo-button-radius: var(--leo-radius-m);
+  --leo-progressring-color: var(--leo-color-neutral-40);
+  --leo-progressring-size: 15px;
+
+  width: 100%;
+  container-type: inline-size;
+
+  leo-progressring {
+    margin-right: var(--leo-spacing-m);
+  }
 }
 
 .container {
   display: flex;
   align-items: center;
-  
   gap: var(--leo-spacing-l);
-  width: min(640px, calc(100cqw - 120px));
+  width: 100cqw;
+  padding: 0 calc(var(--leo-button-padding) + var(--border-width));
 }
 
 .icon {
-  height: 32px;
+  align-self: stretch;
+  min-height: 32px;
   width: 32px;
   font-size: 20px;
   background: var(--leo-color-neutral-10);
@@ -30,9 +40,17 @@
 }
 
 .buttonText {
+  flex: 1 0 0;
+  padding: 5px 0;
   display: flex;
   align-items: flex-start;
   text-align: left;
-  color: var(--leo-color-text-secondary);
+}
+
+.questionButton {
+  --leo-button-color: var(--leo-color-text-secondary);
+}
+
+.questionButtonText {
   font: var(--leo-font-default-regular);
 }

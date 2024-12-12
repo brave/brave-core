@@ -180,6 +180,7 @@ brave_settings_ts_extra_deps =
 brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/settings_helper.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ai_chat.mojom-webui.ts",
+  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",
 ]
 
 brave_settings_mojo_files_deps =

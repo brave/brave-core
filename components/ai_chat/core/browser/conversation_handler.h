@@ -33,6 +33,7 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/browser/types.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -63,6 +64,7 @@ class AIChatCredentialManager;
 // messages to the conversation engine, handling the responses, and owning
 // the in-memory conversation history.
 class ConversationHandler : public mojom::ConversationHandler,
+                            public mojom::UntrustedConversationHandler,
                             public ModelService::Observer {
  public:
   // |invalidation_token| is an optional parameter that will be passed back on
@@ -197,6 +199,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   void Bind(mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler);
   void Bind(mojo::PendingReceiver<mojom::ConversationHandler> receiver,
             mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler);
+  void Bind(
+      mojo::PendingReceiver<mojom::UntrustedConversationHandler> receiver);
+  void BindUntrustedConversationUI(
+      mojo::PendingRemote<mojom::UntrustedConversationUI>
+          untrusted_conversation_ui_handler,
+      BindUntrustedConversationUICallback callback) override;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -229,7 +237,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetState(GetStateCallback callback) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void RateMessage(bool is_liked,
-                   uint32_t turn_id,
+                   const std::string& turn_uuid,
                    RateMessageCallback callback) override;
   void SendFeedback(const std::string& category,
                     const std::string& feedback,
@@ -269,6 +277,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void AddSubmitSelectedTextError(const std::string& selected_text,
                                   mojom::ActionType action_type,
                                   mojom::APIError error);
+  void OnAssociatedContentTitleChanged();
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
 
@@ -345,6 +354,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void InitEngine();
   void BuildAssociatedContentInfo();
+  mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   bool IsContentAssociationPossible();
   int GetContentUsedPercentage();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
@@ -402,6 +412,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnSelectedLanguageChanged(const std::string& selected_language);
   void OnAssociatedContentFaviconImageDataChanged();
   void OnAPIRequestInProgressChanged();
+  void OnStateForConversationEntriesChanged();
 
   base::WeakPtr<AssociatedContentDelegate> associated_content_delegate_;
   std::unique_ptr<AssociatedArchiveContent> archive_content_;
@@ -462,8 +473,10 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   base::ObserverList<Observer> observers_;
   mojo::ReceiverSet<mojom::ConversationHandler> receivers_;
-  // TODO(petemill): Rename to ConversationUIHandler
+  mojo::ReceiverSet<mojom::UntrustedConversationHandler> untrusted_receivers_;
   mojo::RemoteSet<mojom::ConversationUI> conversation_ui_handlers_;
+  mojo::RemoteSet<mojom::UntrustedConversationUI>
+      untrusted_conversation_ui_handlers_;
 
   base::WeakPtrFactory<ConversationHandler> weak_ptr_factory_{this};
 };

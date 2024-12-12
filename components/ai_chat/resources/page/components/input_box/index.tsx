@@ -3,17 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
-
-import classnames from '$web-common/classnames'
-import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
-
-import styles from './style.module.scss'
+import * as React from 'react'
+import classnames from '$web-common/classnames'
+import { getLocale } from '$web-common/locale'
+import ActionTypeLabel from '../../../common/components/action_type_label'
 import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
-import ActionTypeLabel from '../action_type_label'
+import styles from './style.module.scss'
 
 type Props = Pick<
   ConversationContext,

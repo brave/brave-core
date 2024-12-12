@@ -39,6 +39,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -50,6 +51,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_federated/features.h"
@@ -622,6 +624,9 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     registry.ForWebUI<AIChatUI>()
         .Add<ai_chat::mojom::AIChatUIHandler>()
         .Add<ai_chat::mojom::Service>();
+    registry.ForWebUI<AIChatUntrustedConversationUI>()
+        .Add<ai_chat::mojom::UntrustedUIHandler>()
+        .Add<ai_chat::mojom::UntrustedConversationHandler>();
   }
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)

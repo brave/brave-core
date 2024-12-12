@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_AI_CHAT_UI_HTML" file="../ai_chat/resources/page/ai_chat_ui.html"
+    type="BINDATA" />
+  <include name="IDR_AI_CHAT_UI_CSS" file="../ai_chat/resources/page/styles.css" type="BINDATA" />
+  <include name="IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML"
+    file="../ai_chat/resources/untrusted_conversation_frame/untrusted_conversation_frame.html"
+    type="BINDATA" />
+</grit-part>

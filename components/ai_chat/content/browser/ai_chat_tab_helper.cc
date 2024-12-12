@@ -207,6 +207,7 @@ void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
            << " title=" << entry->GetTitle();
   MaybeSameDocumentIsNewPage();
   previous_page_title_ = GetPageTitle();
+  OnTitleChanged();
 }
 
 void AIChatTabHelper::InnerWebContentsAttached(
