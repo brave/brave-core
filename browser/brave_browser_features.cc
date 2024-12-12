@@ -46,7 +46,7 @@ BASE_FEATURE(kBraveDayZeroExperiment,
              "BraveDayZeroExperiment",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-// Enable new onabording on android
+// Enable new onboarding on Android
 BASE_FEATURE(kNewAndroidOnboarding,
              "NewAndroidOnboarding",
              base::FEATURE_DISABLED_BY_DEFAULT);

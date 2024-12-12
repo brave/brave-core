@@ -6,6 +6,7 @@
 #include "base/feature_override.h"
 #include "brave/browser/android/background_video/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/features.h"
@@ -46,7 +47,8 @@
     &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
     &brave_shields::features::kBraveLocalhostAccessPermission,          \
     &brave_shields::features::kBlockAllCookiesToggle,                   \
-    &brave_shields::features::kBraveShieldsElementPicker
+    &brave_shields::features::kBraveShieldsElementPicker,               \
+    &features::kNewAndroidOnboarding,
 
 // clang-format on
 
