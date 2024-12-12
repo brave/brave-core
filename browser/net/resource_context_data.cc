@@ -30,7 +30,6 @@ ResourceContextData::~ResourceContextData() = default;
 // static
 void ResourceContextData::StartProxying(
     content::BrowserContext* browser_context,
-    int render_process_id,
     content::FrameTreeNodeId frame_tree_node_id,
     network::URLLoaderFactoryBuilder& factory_builder,
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner) {
@@ -49,8 +48,8 @@ void ResourceContextData::StartProxying(
   }
 
   auto proxy = std::make_unique<BraveProxyingURLLoaderFactory>(
-      *self->request_handler_, browser_context, render_process_id,
-      frame_tree_node_id, factory_builder, self->request_id_generator_,
+      *self->request_handler_, browser_context, frame_tree_node_id,
+      factory_builder, self->request_id_generator_,
       base::BindOnce(&ResourceContextData::RemoveProxy,
                      self->weak_factory_.GetWeakPtr()),
       navigation_response_task_runner);
@@ -67,7 +66,6 @@ BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
     content::BrowserContext* browser_context,
-    int render_process_id,
     int frame_id,
     content::FrameTreeNodeId frame_tree_node_id,
     const url::Origin& origin) {
@@ -97,8 +95,8 @@ BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
 
   auto proxy = std::make_unique<BraveProxyingWebSocket>(
       std::move(factory), request, std::move(handshake_client),
-      render_process_id, frame_tree_node_id, browser_context,
-      self->request_id_generator_, *self->request_handler_,
+      frame_tree_node_id, browser_context, self->request_id_generator_,
+      *self->request_handler_,
       base::BindOnce(&ResourceContextData::RemoveProxyWebSocket,
                      self->weak_factory_.GetWeakPtr()));
 
