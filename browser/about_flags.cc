@@ -369,7 +369,7 @@
           "brave-ai-chat-history",                                            \
           "Brave AI Chat History",                                            \
           "Enables AI Chat History persistence and management",               \
-          kOsWin | kOsMac | kOsLinux,                                         \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                            \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),              \
       },                                                                      \
       {                                                                       \

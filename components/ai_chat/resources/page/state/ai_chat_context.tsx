@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import getAPI, * as AIChat from '../api'
+import useMediaQuery from '$web-common/useMediaQuery'
 
 type AIChatContextInternal = {
   initialized: boolean
@@ -19,7 +20,10 @@ type AIChatContextInternal = {
   uiHandler?: AIChat.AIChatUIHandlerRemote
 
   editingConversationId: string | null
-  setEditingConversationId: (uuid: string | null) => void
+  setEditingConversationId: (uuid: string | null) => void,
+
+  showSidebar: boolean,
+  toggleSidebar: () => void
 }
 
 export type AIChatContext = AIChat.State & AIChatContextInternal
@@ -37,11 +41,18 @@ const defaultContext: AIChatContext = {
   userRefreshPremiumSession: () => { },
 
   editingConversationId: null,
-  setEditingConversationId: () => { }
+  setEditingConversationId: () => { },
+
+  showSidebar: false,
+  toggleSidebar: () => { }
 }
 
 export const AIChatReactContext =
   React.createContext<AIChatContext>(defaultContext)
+
+export function useIsSmall() {
+  return useMediaQuery('(max-width: 1024px)')
+}
 
 export function AIChatContextProvider(props: React.PropsWithChildren) {
   // Intialize with global state that may have been set between module-load
@@ -51,6 +62,8 @@ export function AIChatContextProvider(props: React.PropsWithChildren) {
     ...getAPI().state
   })
   const [editingConversationId, setEditingConversationId] = React.useState<string | null>(null)
+  const isSmall = useIsSmall()
+  const [showSidebar, setShowSidebar] = React.useState(isSmall)
 
   const updateFromAPIState = (state: AIChat.State) => {
     setContext((value) => ({
@@ -95,7 +108,9 @@ export function AIChatContextProvider(props: React.PropsWithChildren) {
     handleAgreeClick: () => service.markAgreementAccepted(),
     uiHandler,
     editingConversationId,
-    setEditingConversationId
+    setEditingConversationId,
+    showSidebar,
+    toggleSidebar: () => setShowSidebar(s => !s)
   }
 
   return (

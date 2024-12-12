@@ -58,15 +58,11 @@ public class BraveLeoUtils {
             String conversationUuid,
             String query,
             boolean openLeoChatWindow) {
-        try {
-            BraveLeoUtilsJni.get().openLeoQuery(webContents, conversationUuid, query);
-            if (openLeoChatWindow) {
-                BraveActivity activity = BraveActivity.getBraveActivity();
-                activity.openBraveLeo();
-            }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "get BraveActivity exception", e);
-        }
+        BraveLeoUtilsJni.get().openLeoQuery(webContents, conversationUuid, query);
+    }
+
+    public static void openLeoUrlForTab(WebContents webContents) {
+        BraveLeoUtilsJni.get().openLeoUrlForTab(webContents);
     }
 
     public static String getDefaultModelName(ModelWithSubtitle[] models, String defaultModelKey) {
@@ -110,5 +106,7 @@ public class BraveLeoUtils {
     @NativeMethods
     public interface Natives {
         void openLeoQuery(WebContents webContents, String conversationUuid, String query);
+
+        void openLeoUrlForTab(WebContents webContents);
     }
 }
