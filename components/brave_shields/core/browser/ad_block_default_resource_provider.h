@@ -13,11 +13,8 @@
 
 namespace component_updater {
 class ComponentUpdateService;
-}  // namespace component_updater
-
-namespace brave_component_updater {
 class ComponentContentsAccessor;
-}
+}  // namespace component_updater
 
 namespace base {
 class FilePath;
@@ -47,10 +44,9 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
   friend class ::AdBlockServiceTest;
 
   void OnComponentReady(
-      scoped_refptr<brave_component_updater::ComponentContentsAccessor>
-          accessor);
+      scoped_refptr<component_updater::ComponentContentsAccessor> accessor);
 
-  scoped_refptr<brave_component_updater::ComponentContentsAccessor>
+  scoped_refptr<component_updater::ComponentContentsAccessor>
       component_accessor_;
 
   base::WeakPtrFactory<AdBlockDefaultResourceProvider> weak_factory_{this};

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_COMPONENT_CONTENTS_VERIFIER_H_
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_COMPONENT_CONTENTS_VERIFIER_H_
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
@@ -14,27 +15,27 @@
 #include "base/functional/callback.h"
 #include "base/memory/ref_counted.h"
 
-namespace base {
-template <typename T>
-class NoDestructor;
-}  // namespace base
+namespace component_updater {
 
-namespace brave_component_updater {
+class ContentsVerifier {
+ public:
+  virtual ~ContentsVerifier() = default;
+  virtual bool VerifyContents(const base::FilePath& relative_path,
+                              base::span<const uint8_t> contents);
+};
 
 // Use on MAY_BLOCK sequence.
 class ComponentContentsAccessor
     : public base::RefCountedThreadSafe<ComponentContentsAccessor> {
  public:
-  explicit ComponentContentsAccessor(const base::FilePath component_root);
   ComponentContentsAccessor(const ComponentContentsAccessor&) = delete;
   ComponentContentsAccessor(ComponentContentsAccessor&&) = delete;
   ComponentContentsAccessor& operator=(const ComponentContentsAccessor&) =
       delete;
   ComponentContentsAccessor& operator=(ComponentContentsAccessor&&) = delete;
 
-  virtual bool IsComponentSignatureValid() const;
-  virtual bool VerifyContents(const base::FilePath& relative_path,
-                              base::span<const uint8_t> contents);
+  static scoped_refptr<ComponentContentsAccessor> Create(
+      const base::FilePath& component_root);
 
   const base::FilePath& GetComponentRoot() const;
 
@@ -43,35 +44,21 @@ class ComponentContentsAccessor
   std::optional<std::vector<uint8_t>> GetFileAsBytes(
       const base::FilePath& relative_path);
 
- protected:
+ private:
   friend class base::RefCountedThreadSafe<ComponentContentsAccessor>;
-  virtual ~ComponentContentsAccessor() = default;
+  explicit ComponentContentsAccessor(const base::FilePath& component_root);
+  ~ComponentContentsAccessor();
 
   const base::FilePath component_root_;
+  std::unique_ptr<ContentsVerifier> verifier_;
 };
 
-class ComponentContentsVerifier {
- public:
-  using ComponentContentsAccessorFactory =
-      base::RepeatingCallback<scoped_refptr<ComponentContentsAccessor>(
-          const base::FilePath& component_root)>;
+using ContentsVerifierFactory =
+    base::RepeatingCallback<std::unique_ptr<ContentsVerifier>(
+        const base::FilePath& component_root)>;
 
-  static void Setup(ComponentContentsAccessorFactory cca_factory);
-  static ComponentContentsVerifier* GetInstance();
+void SetupContentsVerifierFactory(ContentsVerifierFactory factory);
 
-  // Should be called on MAY_BLOCK sequence.
-  scoped_refptr<ComponentContentsAccessor> CreateContentsAccessor(
-      const base::FilePath& component_root);
-
- private:
-  friend base::NoDestructor<ComponentContentsVerifier>;
-
-  ComponentContentsAccessorFactory cca_factory_;
-
-  ComponentContentsVerifier();
-  ~ComponentContentsVerifier();
-};
-
-}  // namespace brave_component_updater
+}  // namespace component_updater
 
 #endif  // BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_COMPONENT_CONTENTS_VERIFIER_H_
