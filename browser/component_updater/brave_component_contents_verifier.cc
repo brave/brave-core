@@ -14,13 +14,13 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 
 #include "base/command_line.h"
 #include "base/containers/span_reader.h"
-#include "crypto/secure_hash.h"
 #include "crypto/sha2.h"
 #include "extensions/browser/content_hash_tree.h"
 #include "extensions/browser/verified_contents.h"
@@ -58,35 +58,27 @@ constexpr char kVerifiedContentsPath[] = "_metadata/verified_contents.json";
 constexpr char kBraveVerifiedContentsPath[] =
     "brave_metadata/verified_contents.json";
 
-std::string GetRootHasheForContent(base::span<const uint8_t> contents,
-                                   size_t block_size) {
+std::string GetRootHashForContent(base::span<const uint8_t> contents,
+                                  size_t block_size) {
+  CHECK(block_size % crypto::kSHA256Length == 0);
+
   std::vector<std::string> hashes;
   // Even when the contents is empty, we want to output at least one hash
   // block (the hash of the empty string).
   base::SpanReader reader(contents);
   do {
-    auto chunk = reader.Read(std::min(block_size, reader.remaining()));
-    std::unique_ptr<crypto::SecureHash> hash(
-        crypto::SecureHash::Create(crypto::SecureHash::SHA256));
-    hash->Update(chunk.value());
-
-    std::string buffer;
-    buffer.resize(crypto::kSHA256Length);
-    hash->Finish(base::as_writable_byte_span(buffer));
-    hashes.push_back(std::move(buffer));
+    const auto chunk = reader.Read(std::min(block_size, reader.remaining()));
+    const auto hash = crypto::SHA256Hash(chunk.value());
+    hashes.emplace_back(hash.begin(), hash.end());
   } while (reader.remaining() > 0);
 
-  CHECK(block_size % crypto::kSHA256Length == 0);
   return extensions::ComputeTreeHashRoot(hashes,
                                          block_size / crypto::kSHA256Length);
 }
 
-// Proxies the file access and checks the verified_contents.json.
-class ComponentContentsAccessorImpl
-    : public brave_component_updater::ComponentContentsAccessor {
+class SecureContentsVerifier : public component_updater::ContentsVerifier {
  public:
-  explicit ComponentContentsAccessorImpl(const base::FilePath& component_root)
-      : brave_component_updater::ComponentContentsAccessor(component_root) {
+  explicit SecureContentsVerifier(const base::FilePath& component_root) {
     if (base::PathExists(
             component_root.AppendASCII(kBraveVerifiedContentsPath))) {
       verified_contents_ = extensions::VerifiedContents::CreateFromFile(
@@ -104,28 +96,19 @@ class ComponentContentsAccessorImpl
     }
   }
 
-  bool IsComponentSignatureValid() const override {
-    return !!verified_contents_.get();
-  }
-
   bool VerifyContents(const base::FilePath& relative_path,
                       base::span<const uint8_t> contents) override {
-    if (!IsComponentSignatureValid()) {
-      return false;
-    }
-
-    if (!verified_contents_->HasTreeHashRoot(relative_path)) {
+    if (!verified_contents_ ||
+        !verified_contents_->HasTreeHashRoot(relative_path)) {
       return false;
     }
 
     const auto root_hash =
-        GetRootHasheForContent(contents, verified_contents_->block_size());
+        GetRootHashForContent(contents, verified_contents_->block_size());
     return verified_contents_->TreeHashRootEquals(relative_path, root_hash);
   }
 
  private:
-  ~ComponentContentsAccessorImpl() override = default;
-
   std::unique_ptr<extensions::VerifiedContents> verified_contents_;
 };
 
@@ -139,7 +122,6 @@ bool ShouldBypassSignature() {
 }
 
 }  // namespace
-
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 namespace component_updater {
@@ -148,24 +130,22 @@ BASE_FEATURE(kComponentContentsVerifier,
              "ComponentContentsVerifier",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-scoped_refptr<brave_component_updater::ComponentContentsAccessor>
-CreateComponentContentsAccessor(bool with_verifier,
-                                const base::FilePath& component_root) {
+std::unique_ptr<ContentsVerifier> CreateContentsVerifier(
+    const base::FilePath& component_root) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  static const bool kBypassSignature = ShouldBypassSignature();
-  if (with_verifier && !kBypassSignature) {
-    return base::MakeRefCounted<ComponentContentsAccessorImpl>(component_root);
+  const bool bypass = ShouldBypassSignature();
+  if (!bypass) {
+    return std::make_unique<SecureContentsVerifier>(component_root);
   }
 #endif
   // if there is no extensions enabled then we expect that on these platforms
   // the component files are protected by the OS.
-  return base::MakeRefCounted<
-      brave_component_updater::ComponentContentsAccessor>(component_root);
+  return std::make_unique<ContentsVerifier>();
 }
 
 void SetupComponentContentsVerifier() {
-  auto factory = base::BindRepeating(CreateComponentContentsAccessor, true);
-  brave_component_updater::ComponentContentsVerifier::Setup(std::move(factory));
+  auto factory = base::BindRepeating(CreateContentsVerifier);
+  SetupContentsVerifierFactory(std::move(factory));
 }
 
 }  // namespace component_updater

@@ -55,8 +55,7 @@ void AdBlockFilterListCatalogProvider::OnFilterListCatalogLoaded(
 }
 
 void AdBlockFilterListCatalogProvider::OnComponentReady(
-    scoped_refptr<brave_component_updater::ComponentContentsAccessor>
-        accessor) {
+    scoped_refptr<component_updater::ComponentContentsAccessor> accessor) {
   component_accessor_ = std::move(accessor);
     const base::FilePath& path) {
   TRACE_EVENT("brave.adblock",
@@ -87,7 +86,7 @@ void AdBlockFilterListCatalogProvider::LoadFilterListCatalog(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(
-          &brave_component_updater::ComponentContentsAccessor::GetFileAsString,
+          &component_updater::ComponentContentsAccessor::GetFileAsString,
           base::RetainedRef(component_accessor_),
           base::FilePath::FromASCII(kListCatalogFile)),
       std::move(on_load));

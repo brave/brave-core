@@ -27,6 +27,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/component_updater/brave_component_contents_verifier.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
+#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -250,21 +251,10 @@ AdBlockServiceTest::IntsallDefaultAdBlockResources(
   auto* resource_provider =
       static_cast<brave_shields::AdBlockDefaultResourceProvider*>(
           service->resource_provider());
-  base::RunLoop run_loop;
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindLambdaForTesting([&component_path]() {
-        return component_updater::CreateComponentContentsAccessor(
-            true, component_path);
-      }),
-      base::BindLambdaForTesting(
-          [resource_provider, &run_loop](
-              scoped_refptr<brave_component_updater::ComponentContentsAccessor>
-                  accessor) {
-            resource_provider->OnComponentReady(std::move(accessor));
-            run_loop.Quit();
-          }));
-  run_loop.Run();
+
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  resource_provider->OnComponentReady(
+      component_updater::ComponentContentsAccessor::Create(component_path));
   return resource_provider;
 }
 
@@ -276,8 +266,8 @@ void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
 
   static_cast<brave_shields::AdBlockDefaultResourceProvider*>(
       service->resource_provider())
-      ->OnComponentReady(component_updater::CreateComponentContentsAccessor(
-          false, component_path));
+      ->OnComponentReady(
+          component_updater::ComponentContentsAccessor::Create(component_path));
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
@@ -293,8 +283,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   std::string uuid = "default";
   auto& provider = component_providers.at(uuid);
   EXPECT_TRUE(provider);
-  provider->OnComponentReady(component_updater::CreateComponentContentsAccessor(
-      false, component_path));
+  provider->OnComponentReady(
+      component_updater::ComponentContentsAccessor::Create(component_path));
 
   auto* engine = service->default_engine_.get();
   EngineTestObserver engine_observer(engine);
@@ -370,8 +360,7 @@ void AdBlockServiceTest::InstallComponent(
     auto& provider = component_providers.at(catalog_entry.uuid);
     EXPECT_TRUE(provider);
     provider->OnComponentReady(
-        component_updater::CreateComponentContentsAccessor(false,
-                                                           component_path));
+        component_updater::ComponentContentsAccessor::Create(component_path));
 
     auto* engine = catalog_entry.first_party_protections
                        ? service->default_engine_.get()

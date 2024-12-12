@@ -46,8 +46,7 @@ base::FilePath AdBlockDefaultResourceProvider::GetResourcesPath() {
 }
 
 void AdBlockDefaultResourceProvider::OnComponentReady(
-    scoped_refptr<brave_component_updater::ComponentContentsAccessor>
-        accessor) {
+    scoped_refptr<component_updater::ComponentContentsAccessor> accessor) {
   component_accessor_ = std::move(accessor);
 
   // Load the resources (as a string)
@@ -75,7 +74,7 @@ void AdBlockDefaultResourceProvider::LoadResources(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(
-          &brave_component_updater::ComponentContentsAccessor::GetFileAsString,
+          &component_updater::ComponentContentsAccessor::GetFileAsString,
           base::RetainedRef(component_accessor_),
           base::FilePath::FromASCII(kAdBlockResourcesFilename)),
       std::move(handle_file_content));

@@ -11,22 +11,39 @@
 #include "base/check_is_test.h"
 #include "base/files/file_util.h"
 #include "base/no_destructor.h"
-#include "base/task/thread_pool.h"
 
-namespace brave_component_updater {
+namespace component_updater {
 
-ComponentContentsAccessor::ComponentContentsAccessor(
-    const base::FilePath component_root)
-    : component_root_(component_root) {}
+namespace {
+base::NoDestructor<ContentsVerifierFactory> g_verifier_factory;
+}
 
-bool ComponentContentsAccessor::IsComponentSignatureValid() const {
+// static
+void SetupContentsVerifierFactory(ContentsVerifierFactory factory) {
+  *g_verifier_factory = std::move(factory);
+}
+
+bool ContentsVerifier::VerifyContents(const base::FilePath& relative_path,
+                                      base::span<const uint8_t> contents) {
   return true;
 }
 
-bool ComponentContentsAccessor::VerifyContents(
-    const base::FilePath& relative_path,
-    base::span<const uint8_t> contents) {
-  return true;
+ComponentContentsAccessor::ComponentContentsAccessor(
+    const base::FilePath& component_root)
+    : component_root_(component_root),
+      verifier_(*g_verifier_factory ? g_verifier_factory->Run(component_root)
+                                    : std::make_unique<ContentsVerifier>()) {
+  if (!*g_verifier_factory) {
+    CHECK_IS_TEST();
+  }
+}
+
+ComponentContentsAccessor::~ComponentContentsAccessor() = default;
+
+// static
+scoped_refptr<ComponentContentsAccessor> ComponentContentsAccessor::Create(
+    const base::FilePath& component_root) {
+  return base::WrapRefCounted(new ComponentContentsAccessor(component_root));
 }
 
 const base::FilePath& ComponentContentsAccessor::GetComponentRoot() const {
@@ -40,7 +57,7 @@ std::optional<std::string> ComponentContentsAccessor::GetFileAsString(
                               &contents)) {
     return std::nullopt;
   }
-  if (!VerifyContents(relative_path, base::as_byte_span(contents))) {
+  if (!verifier_->VerifyContents(relative_path, base::as_byte_span(contents))) {
     return std::nullopt;
   }
 
@@ -54,35 +71,11 @@ std::optional<std::vector<uint8_t>> ComponentContentsAccessor::GetFileAsBytes(
   if (!contents) {
     return std::nullopt;
   }
-  if (!VerifyContents(relative_path, base::as_byte_span(*contents))) {
+  if (!verifier_->VerifyContents(relative_path,
+                                 base::as_byte_span(*contents))) {
     return std::nullopt;
   }
   return std::move(*contents);
 }
 
-ComponentContentsVerifier::ComponentContentsVerifier() = default;
-ComponentContentsVerifier::~ComponentContentsVerifier() = default;
-
-// static
-void ComponentContentsVerifier::Setup(
-    ComponentContentsVerifier::ComponentContentsAccessorFactory cca_factory) {
-  if (GetInstance()->cca_factory_) {
-    CHECK_IS_TEST();
-  }
-  GetInstance()->cca_factory_ = std::move(cca_factory);
-}
-
-// static
-ComponentContentsVerifier* ComponentContentsVerifier::GetInstance() {
-  static base::NoDestructor<ComponentContentsVerifier> instance;
-  return instance.get();
-}
-
-scoped_refptr<ComponentContentsAccessor>
-ComponentContentsVerifier::CreateContentsAccessor(
-    const base::FilePath& component_root) {
-  CHECK(cca_factory_);
-  return cca_factory_.Run(component_root);
-}
-
-}  // namespace brave_component_updater
+}  // namespace component_updater

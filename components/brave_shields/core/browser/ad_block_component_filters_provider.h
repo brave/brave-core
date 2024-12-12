@@ -17,11 +17,8 @@ using brave_component_updater::DATFileDataBuffer;
 
 namespace component_updater {
 class ComponentUpdateService;
-}  // namespace component_updater
-
-namespace brave_component_updater {
 class ComponentContentsAccessor;
-}
+}  // namespace component_updater
 
 namespace base {
 class FilePath;
@@ -78,10 +75,9 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   friend class ::DebounceBrowserTest;
 
   void OnComponentReady(
-      scoped_refptr<brave_component_updater::ComponentContentsAccessor>
-          accessor);
+      scoped_refptr<component_updater::ComponentContentsAccessor> accessor);
 
-  scoped_refptr<brave_component_updater::ComponentContentsAccessor>
+  scoped_refptr<component_updater::ComponentContentsAccessor>
       component_accessor_;
 
   std::string component_id_;

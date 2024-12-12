@@ -32,7 +32,7 @@ namespace brave_shields {
 namespace {
 
 using OnComponentReadyCallback = base::RepeatingCallback<void(
-    scoped_refptr<brave_component_updater::ComponentContentsAccessor>)>;
+    scoped_refptr<component_updater::ComponentContentsAccessor>)>;
 
 constexpr size_t kHashSize = 32;
 
@@ -74,8 +74,7 @@ class AdBlockComponentInstallerPolicy
   const std::string component_name_;
   OnComponentReadyCallback ready_callback_;
   std::array<uint8_t, crypto::kSHA256Length> component_hash_;
-  mutable scoped_refptr<brave_component_updater::ComponentContentsAccessor>
-      accessor_;
+  mutable scoped_refptr<component_updater::ComponentContentsAccessor> accessor_;
 };
 
 AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
@@ -124,8 +123,7 @@ void AdBlockComponentInstallerPolicy::ComponentReady(
 bool AdBlockComponentInstallerPolicy::VerifyInstallation(
     const base::Value::Dict& manifest,
     const base::FilePath& install_dir) const {
-  accessor_ = brave_component_updater::ComponentContentsVerifier::GetInstance()
-                  ->CreateContentsAccessor(install_dir);
+  accessor_ = component_updater::ComponentContentsAccessor::Create(install_dir);
   return true;
 }
 

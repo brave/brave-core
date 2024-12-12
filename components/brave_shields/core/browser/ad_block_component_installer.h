@@ -18,7 +18,7 @@ class ComponentUpdateService;
 namespace brave_shields {
 
 using OnSecureComponentReadyCallback = base::RepeatingCallback<void(
-    scoped_refptr<brave_component_updater::ComponentContentsAccessor>)>;
+    scoped_refptr<component_updater::ComponentContentsAccessor>)>;
 
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
