@@ -7,6 +7,7 @@
 #include "base/android/jni_string.h"
 #include "base/time/time.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/build/android/jni_headers/BraveLeoUtils_jni.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
@@ -55,7 +56,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   conversation->SubmitHumanConversationEntry(std::move(turn));
 
   content::OpenURLParams params(
-      GURL(base::StrCat({kChatUIURL, conversation->get_conversation_uuid()})),
+      ConversationUrl(conversation->get_conversation_uuid()),
       content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
       ui::PAGE_TRANSITION_FROM_API, false);
   web_contents->OpenURL(params, {});
@@ -77,7 +78,7 @@ static void JNI_BraveLeoUtils_OpenLeoUrlForTab(
           chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
 
   content::OpenURLParams params(
-      GURL(base::StrCat({kChatUIURL, conversation->get_conversation_uuid()})),
+      ConversationUrl(conversation->get_conversation_uuid()),
       content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui::PAGE_TRANSITION_FROM_API, false);
   web_contents->OpenURL(params, {});
