@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_LAYOUT_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_LAYOUT_H_
 
-#include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/views/frame/browser_view_layout.h"
 
 class SidebarContainerView;
