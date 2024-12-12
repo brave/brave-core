@@ -114,6 +114,7 @@ function ConversationEntries(props: ConversationEntriesProps) {
   return (
     <iframe
       sandbox='allow-scripts allow-same-origin'
+      allow='clipboard-write'
       src={'chrome-untrusted://leo-ai-conversation-entries/' + conversationContext.conversationUuid}
       ref={iframeRef}
       onLoad={() => setHasLoaded(true)}
