@@ -41,7 +41,9 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
                 edgeToEdgeSupplier);
         // These checks are to avoid resource not used warning. We use own own UI for the empty
         // state.
-        assert R.drawable.phone_tab_switcher_empty_state_illustration_background > 0
+        assert R.drawable.phone_tab_switcher_empty_state_illustration_cloud_left > 0
+                : "Something has changed in the upstream!";
+        assert R.drawable.phone_tab_switcher_empty_state_illustration_cloud_right > 0
                 : "Something has changed in the upstream!";
         assert R.drawable.phone_tab_switcher_empty_state_illustration_bottom_window > 0
                 : "Something has changed in the upstream!";
