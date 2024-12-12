@@ -6,7 +6,7 @@ import { color } from '@brave/leo/tokens/css/variables';
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import styled, { keyframes } from 'styled-components';
-import SearchBox, { Backdrop } from './SearchBox';
+import SearchBox from './SearchBox';
 import SearchResults from './SearchResults';
 import { searchBoxRadius } from './config';
 
@@ -141,7 +141,6 @@ export default function Component(props: Props) {
     e.preventDefault()
     doClose()
   }}>
-    <Backdrop />
     <SearchBox />
     <SearchResults />
   </Dialog>, document.body)
