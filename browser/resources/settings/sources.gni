@@ -118,7 +118,31 @@ brave_settings_non_web_component_files = [
   "brave_web3_domains_page/brave_web3_domains_browser_proxy.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
+  "getting_started_page/brave_account_browser_proxy.ts",
+  "getting_started_page/brave_account_common.ts",
+  "getting_started_page/brave_account_create_dialog.html.ts",
+  "getting_started_page/brave_account_create_dialog.ts",
+  "getting_started_page/brave_account_dialog.html.ts",
+  "getting_started_page/brave_account_dialog.ts",
+  "getting_started_page/brave_account_entry_dialog.html.ts",
+  "getting_started_page/brave_account_entry_dialog.ts",
+  "getting_started_page/brave_account_forgot_password_dialog.html.ts",
+  "getting_started_page/brave_account_forgot_password_dialog.ts",
+  "getting_started_page/brave_account_row.html.ts",
+  "getting_started_page/brave_account_row.ts",
+  "getting_started_page/brave_account_sign_in_dialog.html.ts",
+  "getting_started_page/brave_account_sign_in_dialog.ts",
   "shortcuts_page/shortcuts_page.ts",
+]
+
+brave_settings_local_css_files = [
+  "getting_started_page/brave_account_common.css",
+  "getting_started_page/brave_account_create_dialog.css",
+  "getting_started_page/brave_account_dialog.css",
+  "getting_started_page/brave_account_entry_dialog.css",
+  "getting_started_page/brave_account_forgot_password_dialog.css",
+  "getting_started_page/brave_account_row.css",
+  "getting_started_page/brave_account_sign_in_dialog.css",
 ]
 
 if (enable_brave_vpn_wireguard) {

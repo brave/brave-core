@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index 98fd56c9308df54eb0f3fa52997a80fd72efa503..5049e89e98f1296199ccffed1f14063f8102515a 100644
+index 98fd56c9308df54eb0f3fa52997a80fd72efa503..c850c31ee115c007f1209abe694f7b62fe006a20 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
 @@ -209,6 +209,7 @@ template("build_webui") {
@@ -15,14 +15,6 @@ index 98fd56c9308df54eb0f3fa52997a80fd72efa503..5049e89e98f1296199ccffed1f14063f
          in_files += invoker.css_files
        }
 +      if (defined(invoker.exclude_html_css_preprocess_files)) { in_files -= invoker.exclude_html_css_preprocess_files } if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps }
-     }
-   }
- 
-@@ -285,6 +287,7 @@ template("build_webui") {
-           }
-         }
-       }
-+      if (defined(invoker.preprocess_deps)) { public_deps = invoker.preprocess_deps }
      }
    }
  

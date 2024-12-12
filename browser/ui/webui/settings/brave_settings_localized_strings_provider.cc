@@ -48,6 +48,13 @@ namespace settings {
 
 namespace {
 
+constexpr char16_t kBraveAccountSelfCustodyLearnMoreURL[] =
+    u"https://search.brave.com";
+constexpr char16_t kBraveAccountTermsOfServiceURL[] =
+    u"https://brave.com/terms-of-use/";
+constexpr char16_t kBraveAccountPrivacyAgreementURL[] =
+    u"https://brave.com/privacy/browser/";
+
 constexpr char16_t kWebRTCLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/"
     u"360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
@@ -125,6 +132,87 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsLocalhostAccessAllowExceptions",
        IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW_EXCEPTIONS},
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
+
+      // <Brave Account>
+      // Row:
+      {"braveAccountRowTitle", IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE},
+      {"braveAccountRowDescription",
+       IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION},
+      {"braveAccountGetStartedButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
+      {"braveAccountManageAccountButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL},
+
+      // 'Entry' dialog:
+      {"braveAccountEntryDialogTitle",
+       IDS_SETTINGS_BRAVE_ACCOUNT_ENTRY_DIALOG_TITLE},
+      {"braveAccountEntryDialogDescription",
+       IDS_SETTINGS_BRAVE_ACCOUNT_ENTRY_DIALOG_DESCRIPTION},
+      {"braveAccountCreateBraveAccountButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_ENTRY_DIALOG_CREATE_BRAVE_ACCOUNT_BUTTON_LABEL},
+      {"braveAccountAlreadyHaveAccountSignInButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL},
+      {"braveAccountSelfCustodyButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_SELF_CUSTODY_BUTTON_LABEL},
+
+      // 'Create' dialog:
+      {"braveAccountCreateDialogTitle",
+       IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_DIALOG_TITLE},
+      {"braveAccountCreateDialogDescription",
+       IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_DIALOG_DESCRIPTION},
+      {"braveAccountEmailInputErrorMessage",
+       IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE},
+      {"braveAccountCreatePasswordInputLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL},
+      {"braveAccountPasswordStrengthMeterWeak",
+       IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK},
+      {"braveAccountPasswordStrengthMeterMedium",
+       IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM},
+      {"braveAccountPasswordStrengthMeterStrong",
+       IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG},
+      {"braveAccountConfirmPasswordInputLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL},
+      {"braveAccountConfirmPasswordInputPlaceholder",
+       IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_PLACEHOLDER},
+      {"braveAccountConfirmPasswordInputErrorMessage",
+       IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE},
+      {"braveAccountConfirmPasswordInputSuccessMessage",
+       IDS_SETTINGS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE},
+      {"braveAccountCreateAccountButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL},
+
+      // 'Sign In' dialog:
+      {"braveAccountSignInDialogTitle",
+       IDS_SETTINGS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE},
+      {"braveAccountSignInDialogDescription",
+       IDS_SETTINGS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_DESCRIPTION},
+      {"braveAccountPasswordInputLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL},
+      {"braveAccountForgotPasswordButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_FORGOT_PASSWORD_BUTTON_LABEL},
+      {"braveAccountSignInButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL},
+
+      // 'Forgot Password' dialog:
+      {"braveAccountForgotPasswordDialogTitle",
+       IDS_SETTINGS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE},
+      {"braveAccountForgotPasswordDialogDescription",
+       IDS_SETTINGS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION},
+      {"braveAccountAlertMessage", IDS_SETTINGS_BRAVE_ACCOUNT_ALERT_MESSAGE},
+      {"braveAccountCancelButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_BUTTON_LABEL},
+      {"braveAccountResetPasswordButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL},
+
+      // Common:
+      {"braveAccountEmailInputLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL},
+      {"braveAccountEmailInputPlaceholder",
+       IDS_SETTINGS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER},
+      {"braveAccountPasswordInputPlaceholder",
+       IDS_SETTINGS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER},
+      // </Brave Account>
+
       {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
       {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
       {"siteSettingsShieldsUp", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP},
@@ -780,6 +868,18 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_BRAVE_SHIELDS_SAVE_CONTACT_INFO_LABEL_SUBLABEL}};
 
   html_source->AddLocalizedStrings(localized_strings);
+  // <Brave Account>
+  html_source->AddString(
+      "braveAccountSelfCustodyDescription",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_BRAVE_ACCOUNT_SELF_CUSTODY_DESCRIPTION,
+          kBraveAccountSelfCustodyLearnMoreURL));
+  html_source->AddString(
+      "braveAccountConsentCheckboxLabel",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_BRAVE_ACCOUNT_CONSENT_CHECKBOX_LABEL,
+          kBraveAccountTermsOfServiceURL, kBraveAccountPrivacyAgreementURL));
+  // </Brave Account>
   html_source->AddString("braveShieldsExampleTemplate", "example.com");
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
