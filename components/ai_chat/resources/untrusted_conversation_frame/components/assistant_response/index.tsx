@@ -28,11 +28,11 @@ function SearchSummary (props: { searchQueries: string[] }) {
   const message = formatMessage(getLocale('searchQueries'), {
     placeholders: {
       $1: props.searchQueries.map((query, i, a) => (
-        <>
+        <React.Fragment key={i}>
           "<a className={styles.searchQueryLink} href='#' onClick={(e) => handleOpenSearchQuery(e, query)}>
             {query}
           </a>"{(i < a.length-1) ? ', ' : null}
-        </>
+        </React.Fragment>
       ))
     }
   })
@@ -47,42 +47,52 @@ function SearchSummary (props: { searchQueries: string[] }) {
   )
 }
 
+function AssistantEvent(props: { event: Mojom.ConversationEntryEvent, hasCompletionStarted: boolean, isEntryInProgress: boolean }) {
+  if (props.event.completionEvent) {
+    return (
+      <MarkdownRenderer
+        shouldShowTextCursor={props.isEntryInProgress}
+        text={props.event.completionEvent.completion}
+      />
+    )
+  }
+  if (props.event.searchStatusEvent && props.isEntryInProgress && !props.hasCompletionStarted) {
+    return (
+      <div className={styles.actionInProgress}><ProgressRing />Improving answer with Brave Search…</div>
+    )
+  }
+  if (props.event.pageContentRefineEvent && props.isEntryInProgress && !props.hasCompletionStarted) {
+    return (
+      <div className={styles.actionInProgress}><ProgressRing />{getLocale('pageContentRefinedInProgress')}</div>
+    )
+  }
+  // TODO(petemill): Consider displaying in-progress queries if the API
+  // timing improves (or worsens for the completion events).
+  // if (event.searchQueriesEvent && props.isEntryInProgress) {
+  //   return (<>
+  //     {event.searchQueriesEvent.searchQueries.map(query => <div className={styles.searchQuery}>Searching for <span className={styles.searchLink}><Icon name="brave-icon-search-color" /><Link href='#'>{query}</Link></span></div>)}
+  //   </>)
+  // }
+
+  // Unknown events should be ignored
+  return null
+}
+
 export default function AssistantResponse(props: { entry: Mojom.ConversationTurn, isEntryInProgress: boolean }) {
-  const searchQueriesEvent = props.entry.events?.find(event => !!event.searchQueriesEvent)?.searchQueriesEvent
-  const hasCompletionStarted = !props.isEntryInProgress || props.entry.events?.find(event => !!event.completionEvent)
+  const searchQueriesEvent = props.entry.events?.find(event => event.searchQueriesEvent)?.searchQueriesEvent
+  const hasCompletionStarted = !props.isEntryInProgress ||
+    (props.entry.events?.some(event => event.completionEvent) ?? false)
 
   return (<>
   {
-    props.entry.events?.map((event) => {
-      if (event.completionEvent) {
-        return (
-          <MarkdownRenderer
-            shouldShowTextCursor={props.isEntryInProgress}
-            text={event.completionEvent.completion}
-          />
-        )
-      }
-      if (event.searchStatusEvent && props.isEntryInProgress && !hasCompletionStarted) {
-        return (
-          <div className={styles.actionInProgress}><ProgressRing />Improving answer with Brave Search…</div>
-        )
-      }
-      if (event.pageContentRefineEvent && props.isEntryInProgress && !hasCompletionStarted) {
-        return (
-          <div className={styles.actionInProgress}><ProgressRing />{getLocale('pageContentRefinedInProgress')}</div>
-        )
-      }
-      // TODO(petemill): Consider displaying in-progress queries if the API
-      // timing improves (or worsens for the completion events).
-      // if (event.searchQueriesEvent && props.isEntryInProgress) {
-      //   return (<>
-      //     {event.searchQueriesEvent.searchQueries.map(query => <div className={styles.searchQuery}>Searching for <span className={styles.searchLink}><Icon name="brave-icon-search-color" /><Link href='#'>{query}</Link></span></div>)}
-      //   </>)
-      // }
-
-      // Unknown events should be ignored
-      return null
-    })
+    props.entry.events?.map((event, i) =>
+      <AssistantEvent
+        key={i}
+        event={event}
+        hasCompletionStarted={hasCompletionStarted}
+        isEntryInProgress={props.isEntryInProgress}
+      />
+    )
   }
   { !props.isEntryInProgress && searchQueriesEvent &&
     <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />
