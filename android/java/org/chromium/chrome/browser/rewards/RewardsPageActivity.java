@@ -53,8 +53,8 @@ public class RewardsPageActivity extends CustomTabActivity {
                 new FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.WRAP_CONTENT,
                         FrameLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity = Gravity.TOP | Gravity.END;
-        layoutParams.setMargins(0, CLOSE_BUTTON_MARGIN, CLOSE_BUTTON_MARGIN, 0);
+        layoutParams.gravity = Gravity.TOP | Gravity.START;
+        layoutParams.setMargins(CLOSE_BUTTON_MARGIN, CLOSE_BUTTON_MARGIN, 0, 0);
 
         ViewGroup parentView = findViewById(android.R.id.content);
         ImageView closeImg = new ImageView(RewardsPageActivity.this);
