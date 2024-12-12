@@ -11,7 +11,8 @@
 
 bool ToastController::MaybeShowToast(ToastParams params) {
   if (params.toast_id == ToastId::kLinkCopied ||
-      params.toast_id == ToastId::kImageCopied) {
+      params.toast_id == ToastId::kImageCopied ||
+      params.toast_id == ToastId::kAddedToReadingList) {
     return false;
   }
   return MaybeShowToast_ChromiumImpl(std::move(params));
