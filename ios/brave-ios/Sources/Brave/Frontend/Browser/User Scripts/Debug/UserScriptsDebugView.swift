@@ -38,9 +38,6 @@ struct UserScriptsDebugView: View {
   private var trackingProtectionStats = Preferences.UserScript.trackingProtectionStats
 
   @ObservedObject
-  private var windowRender = Preferences.UserScript.windowRender
-
-  @ObservedObject
   private var readyState = Preferences.UserScript.readyState
 
   @ObservedObject
@@ -82,8 +79,6 @@ struct UserScriptsDebugView: View {
         Toggle("Request Blocking", isOn: $requestBlocking.value)
 
         Toggle("Tracking Protection Stats", isOn: $trackingProtectionStats.value)
-
-        Toggle("Window Render Helper", isOn: $windowRender.value)
 
         Toggle("Ready State", isOn: $readyState.value)
 

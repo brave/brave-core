@@ -30,10 +30,6 @@ class UserScriptManager {
       scripts.append(.playlist)
     }
 
-    if Preferences.UserScript.windowRender.value {
-      scripts.append(.windowRenderHelper)
-    }
-
     if Preferences.UserScript.readyState.value {
       scripts.append(.readyStateHelper)
     }
@@ -126,7 +122,6 @@ class UserScriptManager {
     case requestBlocking
     case trackerProtectionStats
     case resourceDownloader
-    case windowRenderHelper
     case readyStateHelper
     case ethereumProvider
     case solanaProvider
@@ -170,9 +165,6 @@ class UserScriptManager {
       case .playlist:
         return Preferences.UserScript.playlist.value ? PlaylistScriptHandler.userScript : nil
       case .resourceDownloader: return ResourceDownloadScriptHandler.userScript
-      case .windowRenderHelper:
-        return Preferences.UserScript.windowRender.value
-          ? WindowRenderScriptHandler.userScript : nil
       case .readyStateHelper:
         return Preferences.UserScript.readyState.value ? ReadyStateScriptHandler.userScript : nil
       case .youtubeQuality:

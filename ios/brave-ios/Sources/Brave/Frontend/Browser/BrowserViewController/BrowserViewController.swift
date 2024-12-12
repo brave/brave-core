@@ -438,11 +438,6 @@ public class BrowserViewController: UIViewController {
         #if canImport(BraveTalk)
         self.braveTalkJitsiCoordinator.resetPictureInPictureBounds(.init(size: size))
         #endif
-      },
-      completion: { _ in
-        if let tab = self.tabManager.selectedTab {
-          WindowRenderScriptHandler.executeScript(for: tab)
-        }
       }
     )
   }
@@ -735,11 +730,6 @@ public class BrowserViewController: UIViewController {
           self.updateStatusBarOverlayColor()
           self.bottomBarKeyboardBackground.backgroundColor = self.topToolbar.backgroundColor
           self.setNeedsStatusBarAppearanceUpdate()
-        }
-      },
-      completion: { _ in
-        if let tab = self.tabManager.selectedTab {
-          WindowRenderScriptHandler.executeScript(for: tab)
         }
       }
     )
@@ -2624,7 +2614,6 @@ extension BrowserViewController: TabDelegate {
       BraveSearchScriptHandler(tab: tab, profile: profile, rewards: rewards),
       ResourceDownloadScriptHandler(tab: tab),
       DownloadContentScriptHandler(browserController: self, tab: tab),
-      WindowRenderScriptHandler(tab: tab),
       PlaylistScriptHandler(tab: tab),
       PlaylistFolderSharingScriptHandler(tab: tab),
       RewardsReportingScriptHandler(rewards: rewards, tab: tab),
