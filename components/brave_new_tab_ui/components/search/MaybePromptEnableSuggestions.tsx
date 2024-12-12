@@ -12,8 +12,8 @@ import { color, font, spacing } from '@brave/leo/tokens/css/variables';
 import { getLocale } from '$web-common/locale';
 
 const Container = styled.div`
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7);
+    background: color-mix(in srgb, ${color.container.background} 10%, transparent 90%);
+    color: color-mix(in srgb, ${color.text.primary} 70%, transparent 30%);
 
     padding: ${spacing['2Xl']};
     margin: -8px -8px 4px -8px;
@@ -26,7 +26,7 @@ const Container = styled.div`
 `
 
 const Title = styled.span`
-    color: ${color.white};
+    color: ${color.text.primary};
     font: ${font.default.semibold};
 `
 

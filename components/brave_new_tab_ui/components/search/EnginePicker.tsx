@@ -7,7 +7,7 @@ import Flex from "$web-common/Flex";
 import { getLocale } from "$web-common/locale";
 import Button from '@brave/leo/react/button';
 import Floating from '@brave/leo/react/floating';
-import { radius, spacing } from "@brave/leo/tokens/css/variables";
+import { color, radius, spacing } from "@brave/leo/tokens/css/variables";
 import * as React from "react";
 import styled, { css } from "styled-components";
 import { useSearchContext } from "./SearchContext";
@@ -22,12 +22,12 @@ const Option = styled.div`
   border-radius: ${radius.s};
 
   &:hover, &[data-selected=true] {
-    background: rgba(255,255,255,0.1);
+    background: color-mix(in srgb, ${color.text.primary} 10%, transparent 90%);
   }
 `
 
 const CustomizeButton = styled(Option)`
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid color-mix(in srgb, ${color.text.primary} 10%, transparent 90%);
 
   justify-content: center;
 
@@ -49,15 +49,15 @@ const IconContainer = styled(Flex) <{ open: boolean }>`
   height: 32px;
 
   ${p => p.open && css`
-    background: rgba(255,255,255,0.25);
+    background: color-mix(in srgb, ${color.text.primary} 25%, transparent 75%);
   `}
 `
 
 const Menu = styled.div`
   width: 180px;
 
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(64px);
+  background: ${color.container.background};
+  border: 1px solid ${color.divider.subtle};
 
   border-radius: ${radius.m};
   padding: ${spacing.s};
@@ -106,7 +106,7 @@ export default function EnginePicker() {
       </IconContainer>
     </OpenButton>
     {open && <Floating ref={menuRef} target={findParentWithTag(buttonRef.current, 'LEO-INPUT')!} autoUpdate positionStrategy="fixed" placement="top-start">
-      <Menu data-theme="dark" onClick={e => {
+      <Menu onClick={e => {
         e.preventDefault()
         e.stopPropagation()
       }}>
