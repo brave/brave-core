@@ -359,7 +359,8 @@ public class BraveToolbarManager extends ToolbarManager {
             Runnable openGridTabSwitcherHandler,
             OnClickListener bookmarkClickHandler,
             OnClickListener customTabsBackClickHandler,
-            @Nullable ObservableSupplier<Integer> archivedTabCountSupplier) {
+            @Nullable ObservableSupplier<Integer> archivedTabCountSupplier,
+            ObservableSupplier<Boolean> tabModelNotificationDotSupplier) {
 
         super.initializeWithNative(
                 layoutManager,
@@ -367,7 +368,8 @@ public class BraveToolbarManager extends ToolbarManager {
                 openGridTabSwitcherHandler,
                 bookmarkClickHandler,
                 customTabsBackClickHandler,
-                archivedTabCountSupplier);
+                archivedTabCountSupplier,
+                tabModelNotificationDotSupplier);
 
         if (isToolbarPhone() && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             enableBottomControls();
