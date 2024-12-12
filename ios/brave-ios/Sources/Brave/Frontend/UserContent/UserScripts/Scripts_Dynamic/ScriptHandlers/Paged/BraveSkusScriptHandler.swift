@@ -6,8 +6,10 @@
 import AIChat
 import BraveCore
 import BraveShared
+import BraveStore
 import BraveVPN
 import Foundation
+import Preferences
 import Shared
 import WebKit
 import os.log
@@ -36,8 +38,7 @@ class BraveSkusScriptHandler: TabContentScript {
 
     return WKUserScript(
       source: secureScript(
-        handlerNamesMap: ["$<message_handler>": messageHandlerName]
-          .merging(Method.map, uniquingKeysWith: { $1 }),
+        handlerNamesMap: ["$<message_handler>": messageHandlerName],
         securityToken: scriptId,
         script: script
       ),
@@ -109,6 +110,30 @@ class BraveSkusScriptHandler: TabContentScript {
     case .credentialsSummary:
       let summary = try CredentialSummaryMessage.from(message: message)
       return await skusManager.credentialSummary(for: summary.domain)
+
+    case .setLocalStorageReceipt:
+      let storeMessage = try StoreReceiptMessage.from(message: message)
+      if storeMessage.message == "vpn" {
+        if let vpnSubscriptionProductId = Preferences.VPN.subscriptionProductId.value,
+          let product = BraveStoreProduct(rawValue: vpnSubscriptionProductId)
+        {
+          let storageKey = product.localStorageKey
+          let receipt = try BraveSkusSDK.receipt(for: product)
+          return ["key": storageKey, "data": receipt]
+        }
+      }
+
+      if storeMessage.message == "leo" {
+        if let aiChatSubscriptionProductId = Preferences.AIChat.subscriptionProductId.value,
+          let orderId = Preferences.AIChat.subscriptionOrderId.value,
+          let product = BraveStoreProduct(rawValue: aiChatSubscriptionProductId)
+        {
+          let storageKey = product.localStorageKey
+          let receipt = try BraveSkusSDK.receipt(for: product)
+          return ["key": storageKey, "data": receipt, "braveLeo.orderId": orderId]
+        }
+      }
+      throw SkusWebMessageError.invalidFormat
     }
   }
 }
@@ -119,6 +144,7 @@ extension BraveSkusScriptHandler {
     case fetchOrderCredentials = 2
     case prepareCredentialsPresentation = 3
     case credentialsSummary = 4
+    case setLocalStorageReceipt = 5
 
     static var map: [String: String] {
       var jsDict = [String: String]()
@@ -140,6 +166,10 @@ extension BraveSkusScriptHandler {
 
   private struct CredentialSummaryMessage: SkusWebMessage {
     let domain: String
+  }
+
+  private struct StoreReceiptMessage: SkusWebMessage {
+    let message: String
   }
 }
 

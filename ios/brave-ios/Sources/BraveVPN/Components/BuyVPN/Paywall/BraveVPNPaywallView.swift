@@ -202,9 +202,9 @@ public struct BraveVPNPaywallView: View {
             .font(.body.weight(.semibold))
             .foregroundColor(Color(.white))
             .padding()
-            .frame(maxWidth: .infinity)
           }
         }
+        .frame(maxWidth: .infinity)
         .background(
           LinearGradient(
             gradient:
