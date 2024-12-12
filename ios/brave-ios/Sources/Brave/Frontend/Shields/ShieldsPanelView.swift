@@ -27,6 +27,7 @@ struct ShieldsPanelView: View {
   }
 
   private let url: URL
+  private var tab: Tab?
   private let displayHost: String
   @AppStorage("advancedShieldsExpanded") private var advancedShieldsExpanded = false
   @ObservedObject private var viewModel: ShieldsSettingsViewModel
@@ -34,6 +35,7 @@ struct ShieldsPanelView: View {
 
   @MainActor init(url: URL, tab: Tab, domain: Domain, callback: @escaping (Action) -> Void) {
     self.url = url
+    self.tab = tab
     self.viewModel = ShieldsSettingsViewModel(tab: tab, domain: domain)
     self.actionCallback = callback
     self.displayHost =
@@ -242,6 +244,25 @@ struct ShieldsPanelView: View {
         } label: {
           ShieldSettingsNavigationWrapper {
             Text(Strings.Shields.shredSiteData)
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .multilineTextAlignment(.leading)
+          }
+        }
+        .foregroundStyle(Color(.bravePrimary))
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 4)
+      }
+    }
+    if FeatureList.kBraveIOSDebugAdblock.enabled, let contentBlocker = tab?.contentBlocker {
+      ShieldSettingRow {
+        NavigationLink {
+          AdblockBlockedRequestsView(
+            url: url.baseDomain ?? url.absoluteDisplayString,
+            contentBlockerHelper: contentBlocker
+          )
+        } label: {
+          ShieldSettingsNavigationWrapper {
+            Text(Strings.Shields.blockedRequestsTitle)
               .frame(maxWidth: .infinity, alignment: .leading)
               .multilineTextAlignment(.leading)
           }

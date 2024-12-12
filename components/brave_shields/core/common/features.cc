@@ -107,6 +107,11 @@ BASE_FEATURE(kBraveShredCacheData,
 #else
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif
+// When enabled, will display debug menu for adblock features in the Shields
+// panel.
+BASE_FEATURE(kBraveIOSDebugAdblock,
+             "BraveIOSDebugAdblock",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, show Strict (aggressive) fingerprinting mode in Brave Shields.
 BASE_FEATURE(kBraveShowStrictFingerprintingMode,
              "BraveShowStrictFingerprintingMode",

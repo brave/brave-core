@@ -206,6 +206,11 @@
       initWithFeature:&brave_shields::features::kBraveShredCacheData];
 }
 
++ (Feature*)kBraveIOSDebugAdblock {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBraveIOSDebugAdblock];
+}
+
 + (Feature*)kBraveShowStrictFingerprintingMode {
   return
       [[Feature alloc] initWithFeature:&brave_shields::features::

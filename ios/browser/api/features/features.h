@@ -52,6 +52,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveSearchDefaultAPIFeature;
 @property(class, nonatomic, readonly) Feature* kBraveShredFeature;
 @property(class, nonatomic, readonly) Feature* kBraveShredCacheData;
+@property(class, nonatomic, readonly) Feature* kBraveIOSDebugAdblock;
 @property(class, nonatomic, readonly)
     Feature* kBraveShowStrictFingerprintingMode;
 @property(class, nonatomic, readonly) Feature* kBraveSync;
