@@ -28,9 +28,26 @@
 
 .navItem {
   all: unset;
+  position: relative;
   border-radius: var(--leo-radius-m);
   display: block;
   font: var(--leo-font-default-regular);
+
+  // Display ButtonMenu button when menu is open or title
+  // is hovered.
+  @media (hover: hover) {
+    &:not(.isOptionsMenuOpen,:hover) .optionsMenu {
+      visibility: hidden;
+    }
+  }
+
+  // Dispaly ButtonMenu button when item is active when
+  // primary input method does not have convenient hover.
+  @media (hover: none) {
+    &:not(.navItemActive) .optionsMenu {
+      visibility: hidden;
+    }
+  }
 }
 
 .navItemActive {
@@ -64,8 +81,11 @@
   position: relative;
   transition: all 0.2s ease-out allow-discrete;
   width: 100%;
+  // Take up minimum 1 line in case the title is
+  // somehow empty
+  min-height: 1lh;
 
-  &:hover {
+  &:hover, .isOptionsMenuOpen & {
     background: var(--leo-color-container-highlight);
     box-shadow: var(--leo-effect-elevation-01);
   }
@@ -82,19 +102,15 @@
   text-overflow: ellipsis;
 }
 
-.description {
-  font: var(--leo-font-default-regular);
-  color: var(--leo-color-text-tertiary);
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
 .editibleTitle {
+  // Take up the full size of the parent
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
-  width: 100%;
 
   form,
   input {

@@ -8,6 +8,7 @@ import styles from './style.module.scss'
 import classnames from '$web-common/classnames'
 import Icon from '@brave/leo/react/icon'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
+import * as Mojom from '../../../common/mojom'
 import { useAIChat } from '../../state/ai_chat_context'
 import { getLocale } from '$web-common/locale'
 import getAPI from '../../api'
@@ -54,55 +55,103 @@ function SimpleInput(props: SimpleInputProps) {
   )
 }
 
-interface DisplayTitleProps {
-  title: string
-  description?: string
-  onEditTitle?: () => void
-  onDelete?: () => void
+interface ConversationItemProps extends ConversationsListProps {
+  conversation: Mojom.Conversation
 }
 
-function DisplayTitle(props: DisplayTitleProps) {
-  const [isButtonMenuVisible, setIsButtonMenuVisible] = React.useState(false)
+function ConversationItem(props: ConversationItemProps) {
+  const [isOptionsMenuOpen, setIsOptionsMenuOpen] = React.useState(false)
+
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
+
+  const { uuid } = props.conversation
+  const title = props.conversation.title || getLocale('conversationListUntitled')
+
+  const handleButtonMenuChange = (e: {isOpen: boolean}) => {
+    setIsOptionsMenuOpen(e.isOpen)
+  }
+
+  const handleEditTitle: EventListener = (e) => {
+    e.preventDefault()
+    aiChatContext.setEditingConversationId(uuid)
+  }
+
+  const handleDelete: EventListener = (e) => {
+    e.preventDefault()
+    aiChatContext.service?.deleteConversation(uuid)
+  }
+
+  const isEditing = aiChatContext.editingConversationId === uuid
+  const isActive = uuid === conversationContext.conversationUuid
 
   return (
-    <div
-      className={styles.displayTitle}
-      onMouseEnter={() => setIsButtonMenuVisible(true)}
-      onMouseLeave={() => setIsButtonMenuVisible(false)}
-    >
-      <div className={styles.displayTitleContent}>
+    <li>
+      <a
+        className={classnames(
+          styles.navItem,
+          isActive && styles.navItemActive,
+          isOptionsMenuOpen && styles.isOptionsMenuOpen
+        )}
+        onClick={(e) => {
+          if (isEditing) {
+            e.preventDefault()
+            return
+          }
+          props.setIsConversationsListOpen?.(false)
+        }}
+        onDoubleClick={() => aiChatContext.setEditingConversationId(uuid)}
+        href={`/${uuid}`}
+      >
         <div
-          className={styles.text}
-          onDoubleClick={props.onEditTitle}
-          title={props.title}
+          className={styles.displayTitle}
         >
-          {props.title}
-        </div>
-        <div className={styles.description}>{props.description}</div>
-      </div>
-      {isButtonMenuVisible && (
-        <ButtonMenu className={styles.optionsMenu}>
-          <div
-            slot='anchor-content'
-            className={styles.optionsButton}
-          >
-            <Icon name='more-vertical' />
+          <div className={styles.displayTitleContent}>
+            <div
+              className={styles.text}
+              title={title}
+            >
+              {title}
+            </div>
           </div>
-          <leo-menu-item onClick={props.onEditTitle}>
-            <div className={styles.optionsMenuItemWithIcon}>
-              <Icon name='edit-pencil' />
-              <div>{getLocale('menuRenameConversation')}</div>
+          <ButtonMenu
+            className={styles.optionsMenu}
+            onChange={handleButtonMenuChange}
+          >
+            <div
+              slot='anchor-content'
+              className={styles.optionsButton}
+            >
+              <Icon name='more-vertical' />
             </div>
-          </leo-menu-item>
-          <leo-menu-item onClick={props.onDelete}>
-            <div className={styles.optionsMenuItemWithIcon}>
-              <Icon name='trash' />
-              <div>{getLocale('menuDeleteConversation')}</div>
-            </div>
-          </leo-menu-item>
-        </ButtonMenu>
-      )}
-    </div>
+            <leo-menu-item onClick={handleEditTitle}>
+              <div className={styles.optionsMenuItemWithIcon}>
+                <Icon name='edit-pencil' />
+                <div>{getLocale('menuRenameConversation')}</div>
+              </div>
+            </leo-menu-item>
+            <leo-menu-item onClick={handleDelete}>
+              <div className={styles.optionsMenuItemWithIcon}>
+                <Icon name='trash' />
+                <div>{getLocale('menuDeleteConversation')}</div>
+              </div>
+            </leo-menu-item>
+          </ButtonMenu>
+        </div>
+        {uuid === aiChatContext.editingConversationId && (
+          <div className={styles.editibleTitle}>
+            <SimpleInput
+              text={title}
+              onBlur={() => aiChatContext.setEditingConversationId(null)}
+              onSubmit={(value) => {
+                aiChatContext.setEditingConversationId(null)
+                getAPI().service.renameConversation(uuid, value)
+              }}
+            />
+          </div>
+        )}
+      </a>
+    </li>
   )
 }
 
@@ -112,7 +161,6 @@ interface ConversationsListProps {
 
 export default function ConversationsList(props: ConversationsListProps) {
   const aiChatContext = useAIChat()
-  const conversationContext = useConversation()
 
   return (
     <>
@@ -139,42 +187,13 @@ export default function ConversationsList(props: ConversationsListProps) {
           }
           {aiChatContext.visibleConversations.length > 0 &&
           <ol>
-            {aiChatContext.visibleConversations.map(item => {
-              return (
-                <li key={item.uuid}>
-                  <a
-                    className={classnames({
-                      [styles.navItem]: true,
-                      [styles.navItemActive]: item.uuid === conversationContext.conversationUuid
-                    })}
-                    onClick={() => {
-                      props.setIsConversationsListOpen?.(false)
-                    }}
-                    href={`/${item.uuid}`}
-                  >
-                    {item.uuid === aiChatContext.editingConversationId ? (
-                      <div className={styles.editibleTitle}>
-                        <SimpleInput
-                          text={item.title}
-                          onBlur={() => aiChatContext.setEditingConversationId(null)}
-                          onSubmit={(value) => {
-                            aiChatContext.setEditingConversationId(null)
-                            getAPI().service.renameConversation(item.uuid, value)
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <DisplayTitle
-                        title={item.title || getLocale('conversationListUntitled')}
-                        description=''
-                        onEditTitle={() => aiChatContext.setEditingConversationId(item.uuid)}
-                        onDelete={() => getAPI().service.deleteConversation(item.uuid)}
-                      />
-                    )}
-                  </a>
-                </li>
-              )
-            })}
+            {aiChatContext.visibleConversations.map(conversation =>
+              <ConversationItem
+                key={conversation.uuid}
+                {...props}
+                conversation={conversation}
+              />
+            )}
           </ol>
           }
         </nav>
