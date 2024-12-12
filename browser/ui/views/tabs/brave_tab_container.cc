@@ -23,6 +23,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -340,9 +341,28 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
   DCHECK(cp);
 
   cc::PaintFlags flags;
-  flags.setColor(cp->GetColor(kColorBraveSplitViewTileBackground));
+  flags.setColor(cp->GetColor(
+      is_vertical_tab ? kColorBraveSplitViewTileBackgroundVertical
+                      : kColorBraveSplitViewTileBackgroundHorizontal));
 
   canvas.DrawRoundRect(bounding_rects, kRadius, flags);
+
+  auto active_tab_handle =
+      tab_strip_model->GetTabHandleAt(tab_strip_model->active_index());
+  if (!is_vertical_tab && active_tab_handle != tile.first &&
+      active_tab_handle != tile.second) {
+    constexpr int kSplitViewSeparatorHeight = 24;
+    auto separator_top = bounding_rects.top_center();
+    CHECK_GT(bounding_rects.height(), kSplitViewSeparatorHeight);
+    // Calculate gap between tab bounds top and separator top.
+    const int gap = (bounding_rects.height() - kSplitViewSeparatorHeight) / 2;
+    separator_top.Offset(0, gap);
+    auto separator_bottom = separator_top;
+    separator_bottom.Offset(0, kSplitViewSeparatorHeight);
+    canvas.DrawLine(
+        separator_top, separator_bottom,
+        cp->GetColor(nala::kColorDesktopbrowserTabbarSplitViewDivider));
+  }
 }
 
 void BraveTabContainer::OnUnlockLayout() {
