@@ -319,14 +319,17 @@ void RewardsPageHandler::DismissSelfCustodyInvite(
   std::move(callback).Run();
 }
 
-void RewardsPageHandler::GetPublisherForActiveTab(
-    GetPublisherForActiveTabCallback callback) {
+void RewardsPageHandler::GetPublisherIdForActiveTab(
+    GetPublisherIdForActiveTabCallback callback) {
   if (!bubble_delegate_) {
-    std::move(callback).Run(nullptr);
+    std::move(callback).Run("");
     return;
   }
+  std::move(callback).Run(bubble_delegate_->GetPublisherIdForActiveTab());
+}
 
-  std::string publisher_id = bubble_delegate_->GetPublisherIdForActiveTab();
+void RewardsPageHandler::GetPublisherInfo(const std::string& publisher_id,
+                                          GetPublisherInfoCallback callback) {
   if (publisher_id.empty()) {
     std::move(callback).Run(nullptr);
     return;
@@ -347,14 +350,9 @@ void RewardsPageHandler::GetPublisherForActiveTab(
       base::BindOnce(get_publisher_callback, std::move(callback)));
 }
 
-void RewardsPageHandler::GetPublisherBannerForActiveTab(
-    GetPublisherBannerForActiveTabCallback callback) {
-  if (!bubble_delegate_) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  std::string publisher_id = bubble_delegate_->GetPublisherIdForActiveTab();
+void RewardsPageHandler::GetPublisherBanner(
+    const std::string& publisher_id,
+    GetPublisherBannerCallback callback) {
   if (publisher_id.empty()) {
     std::move(callback).Run(nullptr);
     return;
