@@ -28,7 +28,8 @@
 
 .aside {
   --navigation-width: 340px;
-  width: var(--navigation-width);
+  view-transition-name: sidebar;
+
   height: 100%;
   overflow: hidden;
   background: var(--leo-color-page-background);
@@ -40,6 +41,49 @@
   }
 
   padding-top: var(--top-padding);
+}
+
+@keyframes sidebar-out {
+  from {
+    width: var(--navigation-width);
+  }
+  to {
+    width: var(--navigation-width);
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes sidebar-in {
+  from {
+    width: var(--navigation-width);
+    transform: translateX(-100%);
+  }
+
+  to  {
+    width: var(--navigation-width);
+  }
+}
+
+/* Apply the custom animation to the old and new page states */
+
+html:active-view-transition-type(open) {
+  &::view-transition-new(sidebar) {
+    animation: 0.12s ease-in both sidebar-in;
+  }
+
+  &::view-transition-old(sidebar) {
+    display:none;
+  }
+}
+
+html:active-view-transition-type(close) {
+  &::view-transition-old(sidebar) {
+    animation: 0.12s ease-in both sidebar-out;
+  }
+
+  &::view-transition-new(sidebar) {
+    display:none;
+  }
 }
 
 .nav {
