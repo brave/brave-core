@@ -110,6 +110,9 @@ class AssociatedContentDriver
   // Implementer should call this when the favicon for the content changes
   void OnFaviconImageDataChanged();
 
+  // Implementer should call this when the title is updated
+  void OnTitleChanged();
+
   // Implementer should call this when the content is updated in a way that
   // will not be detected by the on-demand techniques used by GetPageContent.
   // For example for sites where GetPageContent does not read the live DOM but

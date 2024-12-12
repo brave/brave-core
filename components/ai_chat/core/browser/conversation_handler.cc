@@ -51,7 +51,6 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/grit/brave_components_strings.h"
@@ -267,6 +266,20 @@ void ConversationHandler::Bind(
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   receivers_.Add(this, std::move(receiver));
   Bind(std::move(conversation_ui_handler));
+}
+
+void ConversationHandler::Bind(
+    mojo::PendingReceiver<mojom::UntrustedConversationHandler> receiver) {
+  untrusted_receivers_.Add(this, std::move(receiver));
+}
+
+void ConversationHandler::BindUntrustedConversationUI(
+    mojo::PendingRemote<mojom::UntrustedConversationUI>
+        untrusted_conversation_ui_handler,
+    BindUntrustedConversationUICallback callback) {
+  untrusted_conversation_ui_handlers_.Add(
+      std::move(untrusted_conversation_ui_handler));
+  std::move(callback).Run(GetStateForConversationEntries());
 }
 
 void ConversationHandler::OnConversationMetadataUpdated() {
@@ -508,8 +521,9 @@ void ConversationHandler::GetState(GetStateCallback callback) {
 }
 
 void ConversationHandler::RateMessage(bool is_liked,
-                                      uint32_t turn_id,
+                                      const std::string& turn_uuid,
                                       RateMessageCallback callback) {
+  DVLOG(2) << __func__ << ": " << is_liked << ", " << turn_uuid;
   auto& model = GetCurrentModel();
 
   // We only allow Leo models to be rated.
@@ -517,33 +531,39 @@ void ConversationHandler::RateMessage(bool is_liked,
 
   const std::vector<mojom::ConversationTurnPtr>& history = chat_history_;
 
-  // TODO(petemill): Something more robust than relying on message index,
-  // and probably a message uuid.
-  uint32_t current_turn_id = turn_id + 1;
+  auto entry_it =
+      base::ranges::find(history, turn_uuid, &mojom::ConversationTurn::uuid);
 
-  if (current_turn_id <= history.size()) {
-    base::span<const mojom::ConversationTurnPtr> history_slice =
-        base::span(history).first(current_turn_id);
-
-    feedback_api_->SendRating(
-        is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,
-        model.options->get_leo_model_options()->name, selected_language_,
-        base::BindOnce(
-            [](RateMessageCallback callback, APIRequestResult result) {
-              if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
-                std::string id =
-                    *result.value_body().GetDict().FindString("id");
-                std::move(callback).Run(id);
-                return;
-              }
-              std::move(callback).Run(std::nullopt);
-            },
-            std::move(callback)));
-
+  if (entry_it == history.end()) {
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
-  std::move(callback).Run(std::nullopt);
+  const size_t count = std::distance(history.begin(), entry_it) + 1;
+
+  base::span<const mojom::ConversationTurnPtr> history_slice =
+      base::span(history).first(count);
+
+  feedback_api_->SendRating(
+      is_liked, ai_chat_service_->IsPremiumStatus(), history_slice,
+      model.options->get_leo_model_options()->name, selected_language_,
+      base::BindOnce(
+          [](RateMessageCallback callback, APIRequestResult result) {
+            if (result.Is2XXResponseCode() && result.value_body().is_dict()) {
+              const std::string* id_result =
+                  result.value_body().GetDict().FindString("id");
+              if (id_result) {
+                std::move(callback).Run(*id_result);
+              } else {
+                DLOG(ERROR) << "Failed to get rating ID";
+                std::move(callback).Run(std::nullopt);
+              }
+              return;
+            }
+            DLOG(ERROR) << "Failed to send rating: " << result.response_code();
+            std::move(callback).Run(std::nullopt);
+          },
+          std::move(callback)));
 }
 
 void ConversationHandler::SendFeedback(const std::string& category,
@@ -551,13 +571,15 @@ void ConversationHandler::SendFeedback(const std::string& category,
                                        const std::string& rating_id,
                                        bool send_hostname,
                                        SendFeedbackCallback callback) {
+  DVLOG(2) << __func__ << ": " << rating_id << ", " << send_hostname << ", "
+           << category << ", " << feedback;
   auto on_complete = base::BindOnce(
       [](SendFeedbackCallback callback, APIRequestResult result) {
         if (result.Is2XXResponseCode()) {
           std::move(callback).Run(true);
           return;
         }
-
+        DLOG(ERROR) << "Failed to send feedback: " << result.response_code();
         std::move(callback).Run(false);
       },
       std::move(callback));
@@ -1049,6 +1071,10 @@ void ConversationHandler::OnFaviconImageDataChanged() {
   }
 }
 
+void ConversationHandler::OnAssociatedContentTitleChanged() {
+  OnAssociatedContentInfoChanged();
+}
+
 void ConversationHandler::OnUserOptedIn() {
   MaybePopPendingRequests();
   MaybeFetchOrClearContentStagedConversation();
@@ -1508,12 +1534,16 @@ void ConversationHandler::OnModelDataChanged() {
                    [](auto& model) { return model.Clone(); });
     client->OnModelDataChanged(model_key_, std::move(models_copy));
   }
+  OnStateForConversationEntriesChanged();
 }
 
 void ConversationHandler::OnHistoryUpdate() {
   // TODO(petemill): Provide the updated converation history item so that
   // we don't need to clone every entry.
   for (auto& client : conversation_ui_handlers_) {
+    client->OnConversationHistoryUpdate();
+  }
+  for (auto& client : untrusted_conversation_ui_handlers_) {
     client->OnConversationHistoryUpdate();
   }
 }
@@ -1611,12 +1641,37 @@ void ConversationHandler::BuildAssociatedContentInfo() {
   }
 }
 
+mojom::ConversationEntriesStatePtr
+ConversationHandler::GetStateForConversationEntries() {
+  auto& model = GetCurrentModel();
+  bool is_leo_model = model.options->is_leo_model_options();
+
+  mojom::ConversationEntriesStatePtr entries_state =
+      mojom::ConversationEntriesState::New();
+  entries_state->is_generating = IsRequestInProgress();
+  entries_state->is_content_refined = is_content_refined_;
+  entries_state->is_leo_model = is_leo_model;
+  entries_state->content_used_percentage =
+      metadata_->associated_content->is_content_association_possible
+          ? std::make_optional(
+                metadata_->associated_content->content_used_percentage)
+          : std::nullopt;
+  // Can't submit if not a premium user and the model is premium-only
+  entries_state->can_submit_user_entries =
+      !IsRequestInProgress() &&
+      (ai_chat_service_->IsPremiumStatus() || !is_leo_model ||
+       model.options->get_leo_model_options()->access !=
+           mojom::ModelAccess::PREMIUM);
+  return entries_state;
+}
+
 void ConversationHandler::OnAssociatedContentInfoChanged() {
   BuildAssociatedContentInfo();
   for (auto& client : conversation_ui_handlers_) {
     client->OnAssociatedContentInfoChanged(
         metadata_->associated_content->Clone(), should_send_page_contents_);
   }
+  OnStateForConversationEntriesChanged();
 }
 
 void ConversationHandler::OnClientConnectionChanged() {
@@ -1648,6 +1703,9 @@ void ConversationHandler::OnAssociatedContentFaviconImageDataChanged() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnFaviconImageDataChanged();
   }
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnFaviconImageDataChanged();
+  }
 }
 
 void ConversationHandler::OnSuggestedQuestionsChanged() {
@@ -1662,11 +1720,19 @@ void ConversationHandler::OnSuggestedQuestionsChanged() {
 }
 
 void ConversationHandler::OnAPIRequestInProgressChanged() {
+  OnStateForConversationEntriesChanged();
   for (auto& client : conversation_ui_handlers_) {
     client->OnAPIRequestInProgress(is_request_in_progress_);
   }
   for (auto& observer : observers_) {
     observer.OnRequestInProgressChanged(this, is_request_in_progress_);
+  }
+}
+
+void ConversationHandler::OnStateForConversationEntriesChanged() {
+  auto entries_state = GetStateForConversationEntries();
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnEntriesUIStateChanged(entries_state->Clone());
   }
 }
 

@@ -79,8 +79,12 @@ inline constexpr char kSpeedreaderPanelURL[] =
     "chrome://brave-speedreader.top-chrome";
 inline constexpr char kSpeedreaderPanelHost[] = "brave-speedreader.top-chrome";
 inline constexpr char kShortcutsURL[] = "chrome://settings/system/shortcuts";
-inline constexpr char kChatUIURL[] = "chrome-untrusted://chat/";
-inline constexpr char kChatUIHost[] = "chat";
+inline constexpr char kAIChatUIURL[] = "chrome://leo-ai/";
+inline constexpr char kAIChatUIHost[] = "leo-ai";
+inline constexpr char kAIChatUntrustedConversationUIURL[] =
+    "chrome-untrusted://leo-ai-conversation-entries/";
+inline constexpr char kAIChatUntrustedConversationUIHost[] =
+    "leo-ai-conversation-entries";
 
 inline constexpr char kRewriterUIURL[] = "chrome://rewriter/";
 inline constexpr char kRewriterUIHost[] = "rewriter";

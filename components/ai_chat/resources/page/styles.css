@@ -18,3 +18,10 @@ button {
 #mountPoint {
   height: 100%;
 }
+
+iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  overflow: hidden;
+}

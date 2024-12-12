@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "content/public/browser/web_ui_controller.h"
@@ -27,7 +28,7 @@ class BrowserContext;
 
 class Profile;
 
-class AIChatUI : public ui::UntrustedWebUIController {
+class AIChatUI : public ui::MojoWebUIController {
  public:
   explicit AIChatUI(content::WebUI* web_ui);
   AIChatUI(const AIChatUI&) = delete;
@@ -37,6 +38,8 @@ class AIChatUI : public ui::UntrustedWebUIController {
   void BindInterface(
       mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver);
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::Service> receiver);
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
+                         parent_ui_frame_receiver);
 
   // Set by WebUIContentsWrapperT. TopChromeWebUIController provides default
   // implementation for this but we don't use it.
@@ -48,7 +51,7 @@ class AIChatUI : public ui::UntrustedWebUIController {
   static constexpr std::string GetWebUIName() { return "AIChatPanel"; }
 
  private:
-  std::unique_ptr<ai_chat::mojom::AIChatUIHandler> page_handler_;
+  std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
 
   base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
   raw_ptr<Profile> profile_ = nullptr;
@@ -57,13 +60,13 @@ class AIChatUI : public ui::UntrustedWebUIController {
 };
 
 #if !BUILDFLAG(IS_ANDROID)
-class UntrustedChatUIConfig : public DefaultTopChromeWebUIConfig<AIChatUI> {
+class AIChatUIConfig : public DefaultTopChromeWebUIConfig<AIChatUI> {
 #else
-class UntrustedChatUIConfig : public content::WebUIConfig {
+class AIChatUIConfig : public content::WebUIConfig {
 #endif  // #if !BUILDFLAG(IS_ANDROID)
  public:
-  UntrustedChatUIConfig();
-  ~UntrustedChatUIConfig() override = default;
+  AIChatUIConfig();
+  ~AIChatUIConfig() override = default;
 
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 

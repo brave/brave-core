@@ -4,10 +4,21 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import useAPIState from '../../common/useAPIState'
+import * as Mojom from '../../common/mojom'
 import getAPI, * as AIChat from '../api'
 import useMediaQuery from '$web-common/useMediaQuery'
 
-type AIChatContextInternal = {
+export interface ConversationEntriesProps {
+  onIsContentReady: (isContentReady: boolean) => void
+  onHeightChanged: () => void
+}
+
+type AIChatContextProps = {
+  conversationEntriesComponent: (props: ConversationEntriesProps) => React.ReactElement
+}
+
+type AIChatContextInternal = AIChatContextProps & {
   initialized: boolean
   goPremium: () => void
   managePremium: () => void
@@ -17,7 +28,8 @@ type AIChatContextInternal = {
   dismissStorageNotice: () => void
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
-  uiHandler?: AIChat.AIChatUIHandlerRemote
+  uiHandler?: Mojom.AIChatUIHandlerRemote
+  service?: Mojom.ServiceRemote
 
   editingConversationId: string | null
   setEditingConversationId: (uuid: string | null) => void,
@@ -44,7 +56,9 @@ const defaultContext: AIChatContext = {
   setEditingConversationId: () => { },
 
   showSidebar: false,
-  toggleSidebar: () => { }
+  toggleSidebar: () => { },
+
+  conversationEntriesComponent: () => <></>
 }
 
 export const AIChatReactContext =
@@ -54,63 +68,36 @@ export function useIsSmall() {
   return useMediaQuery('(max-width: 1024px)')
 }
 
-export function AIChatContextProvider(props: React.PropsWithChildren) {
-  // Intialize with global state that may have been set between module-load
-  // time and the first React render.
-  const [context, setContext] = React.useState<AIChatContext>({
-    ...defaultContext,
-    ...getAPI().state
-  })
-  const [editingConversationId, setEditingConversationId] = React.useState<string | null>(null)
+export function AIChatContextProvider(props: React.PropsWithChildren<AIChatContextProps>) {
+  const api = getAPI()
+  const context = useAPIState(api, defaultContext)
+  const [editingConversationId, setEditingConversationId] =
+    React.useState<string | null>(null)
   const isSmall = useIsSmall()
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
 
-  const updateFromAPIState = (state: AIChat.State) => {
-    setContext((value) => ({
-      ...value,
-      ...state
-    }))
-  }
-
-  React.useEffect(() => {
-    // Update with any global state change that may have occurred between
-    // first React render and first useEffect run.
-    updateFromAPIState(getAPI().state)
-
-    // Listen for global state changes that occur after now
-    const onGlobalStateChange = () => {
-      updateFromAPIState(getAPI().state)
-    }
-    getAPI().addStateChangeListener(onGlobalStateChange)
-
-    return () => {
-      getAPI().removeStateChangeListener(onGlobalStateChange)
-    }
-  }, [])
-
-  const { service, uiHandler } = getAPI()
-
   const store: AIChatContext = {
     ...context,
-    ...props,
-    goPremium: () => uiHandler.goPremium(),
-    managePremium: () => uiHandler.managePremium(),
-    markStorageNoticeViewed: () => service.dismissStorageNotice(),
+    goPremium: () => api.uiHandler.goPremium(),
+    managePremium: () => api.uiHandler.managePremium(),
+    markStorageNoticeViewed: () => api.service.dismissStorageNotice(),
     dismissStorageNotice: () => {
-      getAPI().setPartialState({
+      api.setPartialState({
         isStorageNoticeDismissed: true
       })
-      service.dismissStorageNotice()
+      api.service.dismissStorageNotice()
     },
-    enableStoragePref: () => service.enableStoragePref(),
-    dismissPremiumPrompt: () => service.dismissPremiumPrompt(),
-    userRefreshPremiumSession: () => uiHandler.refreshPremiumSession(),
-    handleAgreeClick: () => service.markAgreementAccepted(),
-    uiHandler,
+    enableStoragePref: () => api.service.enableStoragePref(),
+    dismissPremiumPrompt: () => api.service.dismissPremiumPrompt(),
+    userRefreshPremiumSession: () => api.uiHandler.refreshPremiumSession(),
+    handleAgreeClick: () => api.service.markAgreementAccepted(),
+    uiHandler: api.uiHandler,
+    service: api.service,
     editingConversationId,
     setEditingConversationId,
     showSidebar,
-    toggleSidebar: () => setShowSidebar(s => !s)
+    toggleSidebar: () => setShowSidebar(s => !s),
+    conversationEntriesComponent: props.conversationEntriesComponent
   }
 
   return (

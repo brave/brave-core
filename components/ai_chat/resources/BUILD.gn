@@ -7,15 +7,22 @@ import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("ai_chat_ui") {
   resource_name = "ai_chat_ui"
-  entry_points = [ [
-        "chat_ui",
-        rebase_path("chat_ui.tsx"),
-      ] ]
+  entry_points = [
+    [
+      "chat_ui",
+      rebase_path("page/chat_ui.tsx"),
+    ],
+    [
+      "untrusted_conversation_frame",
+      rebase_path(
+          "untrusted_conversation_frame/untrusted_conversation_frame.tsx"),
+    ],
+  ]
   deps = [ "//brave/components/ai_chat/core/common/mojom:mojom_js" ]
 }
 
-pack_web_resources("generated_resources") {
+pack_web_resources("resources") {
   resource_name = "ai_chat_ui"
-  output_dir = "$root_gen_dir/brave/components/ai_chat/resources/page"
+  output_dir = "$root_gen_dir/brave/components/ai_chat/resources"
   deps = [ ":ai_chat_ui" ]
 }

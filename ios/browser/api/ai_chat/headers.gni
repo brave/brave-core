@@ -7,6 +7,7 @@ ai_chat_public_headers = [
   "//brave/ios/browser/api/ai_chat/ai_chat.h",
   "//brave/ios/browser/api/ai_chat/ai_chat_delegate.h",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios/ai_chat.mojom.objc.h",
+  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ios/untrusted_frame.mojom.objc.h",
 ]
 
 ai_chat_public_deps =

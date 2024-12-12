@@ -273,6 +273,12 @@ void AssociatedContentDriver::OnFaviconImageDataChanged() {
   }
 }
 
+void AssociatedContentDriver::OnTitleChanged() {
+  for (auto& conversation : associated_conversations_) {
+    conversation->OnAssociatedContentTitleChanged();
+  }
+}
+
 void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
   // This instance will now be used for different content so existing
   // conversations need to be disassociated.

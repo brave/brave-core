@@ -20,13 +20,7 @@ const CATEGORY_OPTIONS = new Map([
   ['other', getLocale('optionOther')]
 ])
 
-interface FeedbackFormProps {
-  onCancel?: () => void
-  onSubmit?: (selectedCategory: string, feedbackText: string, shouldSendUrl: boolean) => void
-  isDisabled?: boolean
-}
-
-function FeedbackForm(props: FeedbackFormProps) {
+function FeedbackForm() {
   const ref = React.useRef<HTMLDivElement>(null)
   const [category, setCategory] = React.useState('')
   const [feedbackText, setFeedbackText] = React.useState('')
@@ -34,14 +28,10 @@ function FeedbackForm(props: FeedbackFormProps) {
   const conversationContext = useConversation()
   const [shouldSendUrl, setShouldSendUrl] = React.useState(true)
 
-  const canSubmit = !!category && !props.isDisabled
-
-  const handleCancelClick = () => {
-    props.onCancel?.()
-  }
+  const canSubmit = !!category
 
   const handleSubmit = () => {
-    props.onSubmit?.(category, feedbackText, shouldSendUrl)
+    conversationContext.handleFeedbackFormSubmit(category, feedbackText, shouldSendUrl)
   }
 
   const handleSelectOnChange = ({ value }: { value: string }) => {
@@ -121,7 +111,7 @@ function FeedbackForm(props: FeedbackFormProps) {
           </div>
         )}
         <fieldset className={styles.actions}>
-          <Button onClick={handleCancelClick} kind='plain-faint'>
+          <Button onClick={conversationContext.handleFeedbackFormCancel} kind='plain-faint'>
             {getLocale('cancelButtonLabel')}
           </Button>
           <Button isDisabled={!canSubmit} onClick={handleSubmit}>

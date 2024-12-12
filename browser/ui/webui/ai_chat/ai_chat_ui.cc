@@ -17,18 +17,22 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/ai_chat/resources/page/grit/ai_chat_ui_generated_map.h"
+#include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
+#include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "ui/webui/mojo_web_ui_controller.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -58,51 +62,51 @@ content::WebContents* GetActiveWebContents(content::BrowserContext* context) {
 #endif
 
 AIChatUI::AIChatUI(content::WebUI* web_ui)
-    : ui::UntrustedWebUIController(web_ui),
-      profile_(Profile::FromWebUI(web_ui)) {
+    : ui::MojoWebUIController(web_ui), profile_(Profile::FromWebUI(web_ui)) {
   DCHECK(profile_);
   DCHECK(profile_->IsRegularProfile());
 
   // Create a URLDataSource and add resources.
-  content::WebUIDataSource* untrusted_source =
-      content::WebUIDataSource::CreateAndAdd(
-          web_ui->GetWebContents()->GetBrowserContext(), kChatUIURL);
+  content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kAIChatUIHost);
 
-  webui::SetupWebUIDataSource(untrusted_source, kAiChatUiGenerated,
-                              IDR_CHAT_UI_HTML);
+  webui::SetupWebUIDataSource(source, kAiChatUiGenerated, IDR_AI_CHAT_UI_HTML);
 
-  untrusted_source->AddResourcePath("styles.css", IDR_CHAT_UI_CSS);
+  source->AddResourcePath("styles.css", IDR_AI_CHAT_UI_CSS);
 
   for (const auto& str : ai_chat::GetLocalizedStrings()) {
-    untrusted_source->AddString(
-        str.name, brave_l10n::GetLocalizedResourceUTF16String(str.id));
+    source->AddString(str.name,
+                      brave_l10n::GetLocalizedResourceUTF16String(str.id));
   }
 
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  constexpr bool kIsMobile = true;
-#else
-  constexpr bool kIsMobile = false;
-#endif
+  constexpr bool kIsMobile = BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS);
+  source->AddBoolean("isMobile", kIsMobile);
+  source->AddBoolean("isHistoryEnabled",
+                     ai_chat::features::IsAIChatHistoryEnabled());
 
-  untrusted_source->AddBoolean("isMobile", kIsMobile);
-  untrusted_source->AddBoolean("isHistoryEnabled",
-                               ai_chat::features::IsAIChatHistoryEnabled());
-
-  untrusted_source->OverrideContentSecurityPolicy(
+  web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
+  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      "script-src 'self' chrome-untrusted://resources;");
-  untrusted_source->OverrideContentSecurityPolicy(
+      "script-src 'self' chrome://resources;");
+  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
-  untrusted_source->OverrideContentSecurityPolicy(
+      "style-src 'self' 'unsafe-inline' chrome://resources;");
+  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src 'self' blob: chrome-untrusted://resources;");
-  untrusted_source->OverrideContentSecurityPolicy(
+      "img-src 'self' blob: chrome://resources chrome://favicon2;");
+  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
-      "font-src 'self' data: chrome-untrusted://resources;");
+      "font-src 'self' chrome://resources;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ChildSrc,
+      base::StringPrintf("child-src %s;", kAIChatUntrustedConversationUIURL));
 
-  untrusted_source->OverrideContentSecurityPolicy(
+  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
+
+  content::URLDataSource::Add(
+      profile_, std::make_unique<FaviconSource>(
+                    profile_, chrome::FaviconUrlFormat::kFavicon2));
 }
 
 AIChatUI::~AIChatUI() = default;
@@ -148,28 +152,34 @@ void AIChatUI::BindInterface(
       std::move(receiver));
 }
 
-bool UntrustedChatUIConfig::IsWebUIEnabled(
-    content::BrowserContext* browser_context) {
+void AIChatUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
+        parent_ui_frame_receiver) {
+  CHECK(page_handler_);
+  page_handler_->BindParentUIFrameFromChildFrame(
+      std::move(parent_ui_frame_receiver));
+}
+
+bool AIChatUIConfig::IsWebUIEnabled(content::BrowserContext* browser_context) {
   return ai_chat::IsAIChatEnabled(
              user_prefs::UserPrefs::Get(browser_context)) &&
          Profile::FromBrowserContext(browser_context)->IsRegularProfile();
 }
 
 #if BUILDFLAG(IS_ANDROID)
-std::unique_ptr<content::WebUIController>
-UntrustedChatUIConfig::CreateWebUIController(content::WebUI* web_ui,
-                                             const GURL& url) {
+std::unique_ptr<content::WebUIController> AIChatUIConfig::CreateWebUIController(
+    content::WebUI* web_ui,
+    const GURL& url) {
   return std::make_unique<AIChatUI>(web_ui);
 }
 #endif  // #if BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-UntrustedChatUIConfig::UntrustedChatUIConfig()
-    : DefaultTopChromeWebUIConfig(content::kChromeUIUntrustedScheme,
-                                  kChatUIHost) {}
+AIChatUIConfig::AIChatUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme, kAIChatUIHost) {}
 #else
-UntrustedChatUIConfig::UntrustedChatUIConfig()
-    : WebUIConfig(content::kChromeUIUntrustedScheme, kChatUIHost) {}
+AIChatUIConfig::AIChatUIConfig()
+    : WebUIConfig(content::kChromeUIScheme, kAIChatUIHost) {}
 #endif  // #if !BUILDFLAG(IS_ANDROID)
 
 WEB_UI_CONTROLLER_TYPE_IMPL(AIChatUI)
