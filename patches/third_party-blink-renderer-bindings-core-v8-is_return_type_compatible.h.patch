@@ -1,0 +1,29 @@
+diff --git a/third_party/blink/renderer/bindings/core/v8/is_return_type_compatible.h b/third_party/blink/renderer/bindings/core/v8/is_return_type_compatible.h
+index 780d795528c993a5cbbe1489710ad9b517ae57a6..f96ab6b03814040edcb13d7a06d7bb9738479bbb 100644
+--- a/third_party/blink/renderer/bindings/core/v8/is_return_type_compatible.h
++++ b/third_party/blink/renderer/bindings/core/v8/is_return_type_compatible.h
+@@ -16,6 +16,7 @@
+ namespace blink {
+ 
+ class KURL;
++class ScriptObject;
+ 
+ namespace bindings {
+ 
+@@ -34,6 +35,16 @@ inline constexpr bool IsReturnTypeCompatible<IDLAny, IDLType> = true;
+ template <typename SameType>
+ inline constexpr bool IsReturnTypeCompatible<SameType, SameType> = true;
+ 
++// TODO(japhet): This will be unnecessary once IDLObject's ImplType switches to
++// ScriptObject.
++template <>
++inline constexpr bool IsReturnTypeCompatible<IDLObject, ScriptObject> = true;
++
++// TODO(caseq): this shouldn't really be allowed, as ScriptValue may carry
++// values that are not objects, but keep it for now.
++template <>
++inline constexpr bool IsReturnTypeCompatible<IDLObject, ScriptValue> = true;
++
+ namespace internal {
+ 
+ // In the normal case, we should not accept a function returning a "const
