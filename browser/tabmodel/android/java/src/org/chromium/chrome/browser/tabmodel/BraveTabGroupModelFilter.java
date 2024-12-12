@@ -22,7 +22,13 @@ public class BraveTabGroupModelFilter {
     public boolean shouldUseParentIds(Tab tab) {
         if (linkClicked(tab.getLaunchType())
                 && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true)
+                        .readBoolean(
+                                BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED,
+                                ChromeSharedPreferences.getInstance()
+                                        .readBoolean(
+                                                BravePreferenceKeys
+                                                        .BRAVE_TAB_GROUPS_ENABLED_DEFAULT_VALUE,
+                                                true))
                 && isTabModelRestored()
                 && !mIsResetting) {
             return true;
