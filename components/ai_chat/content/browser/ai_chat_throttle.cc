@@ -54,38 +54,19 @@ std::unique_ptr<AiChatThrottle> AiChatThrottle::MaybeCreateThrottleFor(
     return nullptr;
   }
 
-  // Purpose of this throttle is to forbid loading of chrome://leo-ai and
-  // related urls in tab.
-  // Parameters check is made different for Android and Desktop because
-  // there are different flags:
-  // --------+---------------------------------+------------------------------
-  //         | Tab                             | Panel
-  // --------+---------------------------------+------------------------------
-  // Android |PAGE_TRANSITION_FROM_ADDRESS_BAR | PAGE_TRANSITION_FROM_API
-  // --------+---------------------------------+------------------------------
-  // Desktop |PAGE_TRANSITION_TYPED|           | PAGE_TRANSITION_AUTO_TOPLEVEL
-  //         |PAGE_TRANSITION_FROM_ADDRESS_BAR |
-  // -------------------------------------------------------------------------
-  //
-  // So for Android the only allowed transition is PAGE_TRANSITION_FROM_API
-  // because it is pretty unique and means the page is loaded in a custom tab
-  // view.
-  // And for the desktop just disallow PAGE_TRANSITION_FROM_ADDRESS_BAR
-  ui::PageTransition transition = navigation_handle->GetPageTransition();
+// On Android, we only have full page chat, so we always allow loading. On
+// desktop we just disallow PAGE_TRANSITION_FROM_ADDRESS_BAR.
 #if BUILDFLAG(IS_ANDROID)
-  if (ui::PageTransitionTypeIncludingQualifiersIs(
-          transition, ui::PageTransition::PAGE_TRANSITION_FROM_API)) {
-    return nullptr;
-  }
+  return nullptr;
 #else
+  ui::PageTransition transition = navigation_handle->GetPageTransition();
   if (!ui::PageTransitionTypeIncludingQualifiersIs(
           ui::PageTransitionGetQualifier(transition),
           ui::PageTransition::PAGE_TRANSITION_FROM_ADDRESS_BAR)) {
     return nullptr;
   }
-#endif  // BUILDFLAG(IS_ANDROID)
-
   return std::make_unique<AiChatThrottle>(navigation_handle);
+#endif  // BUILDFLAG(IS_ANDROID)
 }
 
 AiChatThrottle::AiChatThrottle(content::NavigationHandle* handle)
