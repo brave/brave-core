@@ -29,6 +29,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
@@ -65,7 +66,8 @@ class AIChatCredentialManager;
 // the in-memory conversation history.
 class ConversationHandler : public mojom::ConversationHandler,
                             public mojom::UntrustedConversationHandler,
-                            public ModelService::Observer {
+                            public ModelService::Observer,
+                            public ConversationHandlerForMetrics {
  public:
   // |invalidation_token| is an optional parameter that will be passed back on
   // the next call to |GetPageContent| so that the implementer may determine if
@@ -288,6 +290,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAssociatedContentTitleChanged();
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
+  bool IsConversationStarter(std::string_view title) override;
+  size_t GetConversationHistorySize() override;
 
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
@@ -298,6 +302,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   }
 
   std::string get_conversation_uuid() const { return metadata_->uuid; }
+
+  bool should_send_page_contents() const override;
+
+  mojom::APIError current_error() const override;
 
   void SetEngineForTesting(std::unique_ptr<EngineConsumer> engine_for_testing) {
     engine_ = std::move(engine_for_testing);
@@ -358,7 +366,7 @@ class ConversationHandler : public mojom::ConversationHandler,
     Suggestion(std::string title,
                std::string prompt,
                mojom::ActionType action_type);
-    Suggestion(const Suggestion&) = delete;
+    Suggestion(const Suggestion&);
     Suggestion& operator=(const Suggestion&) = delete;
     Suggestion(Suggestion&&);
     Suggestion& operator=(Suggestion&&);
@@ -376,6 +384,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   std::string invalidation_token = "");
   void SetAPIError(const mojom::APIError& error);
   void UpdateOrCreateLastAssistantEntry(mojom::ConversationEntryEventPtr text);
+  void MaybeInitConversationStarters();
   void MaybeSeedOrClearSuggestions();
   void PerformQuestionGeneration(std::string page_content,
                                  bool is_video,
@@ -433,6 +442,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   std::vector<mojom::ConversationTurnPtr> chat_history_;
   mojom::ConversationTurnPtr pending_conversation_entry_;
   // Any previously-generated suggested questions
+  std::vector<Suggestion> conversation_starters_;
   std::vector<Suggestion> suggestions_;
   std::string selected_language_;
   // Is a conversation engine request in progress (does not include
