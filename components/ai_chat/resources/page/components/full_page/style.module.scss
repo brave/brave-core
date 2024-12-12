@@ -59,6 +59,11 @@
   // Ensure navigation content always stays at full-width even when animation
   // is decreasing the width of the parent
   width: var(--navigation-width);
+  // Ensure fills the height so that there's enough space for the conversation
+  // item context menu
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .left {
