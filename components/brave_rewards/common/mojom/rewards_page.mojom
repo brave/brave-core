@@ -124,11 +124,15 @@ interface RewardsPageHandler {
   // Called when the user dismisses the self-custody invite.
   DismissSelfCustodyInvite() => ();
 
-  // Returns data about the publisher associated with the active tab.
-  GetPublisherForActiveTab() => (PublisherInfo? publisher_info);
+  // Returns the publisher ID associated with the active tab.
+  GetPublisherIdForActiveTab() => (string publisher_id);
 
-  // Returns banner data for the publisher associated with the active tab.
-  GetPublisherBannerForActiveTab() => (PublisherBanner? publisher_banner);
+  // Returns data about the specified publisher.
+  GetPublisherInfo(string publisher_id) => (PublisherInfo? publisher_info);
+
+  // Returns banner data for the specified publisher.
+  GetPublisherBanner(string publisher_id)
+      => (PublisherBanner? publisher_banner);
 
   // Returns the recurring contributions set up for the current user.
   GetRecurringContributions() => (array<PublisherInfo> contributions);
