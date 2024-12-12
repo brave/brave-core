@@ -52,13 +52,13 @@ class BraveExtensionsManifestV2Handler
 
   void NotifyExtensionManifestV2Changed(
       content::BrowserContext* browser_context,
-      const std::string& id,
-      bool enabled);
+      const std::string& id);
 
   extensions::ExtensionRegistry* GetExtensionRegistry();
 
   void GetExtensionsManifestV2(const base::Value::List& args);
   void EnableExtensionManifestV2(const base::Value::List& args);
+  void RemoveExtensionManifestV2(const base::Value::List& args);
   void OnExtensionManifestV2Installed(
       base::Value js_callback,
       bool success,

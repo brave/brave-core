@@ -1213,6 +1213,9 @@
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_TOAST_CONFIRM" desc="The label of the error toast button in settings">
     Close
   </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_REMOVE_BUTTON" desc="The label of the remove button in settings">
+    Remove
+  </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_NAME" desc="Manifest V2 extension toggle's label">
     Enable NoScript&#x2122;
   </message>

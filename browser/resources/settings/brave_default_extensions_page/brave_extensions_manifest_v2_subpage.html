@@ -46,8 +46,13 @@
 
 <template is="dom-repeat" items="[[braveV2Extensions_]]">
   <settings-toggle-button id="[[item.id]]" class="cr-row" label="[[item.name]]" sub-label="[[item.description]]"
-    on-settings-boolean-control-change="onExtensionV2EnabledChange_" checked="[[item.enabled]]" pref="[[itemPref_(item.enabled)]]"
-    no-pref-set disabled="[[installInProgress_]]">
+    on-settings-boolean-control-change="onExtensionV2EnabledChange_" checked="[[item.enabled]]"
+    pref="[[itemPref_(item.enabled)]]" no-pref-set disabled="[[installInProgress_]]">
+    <template is="dom-if" if="[[showRemoveButton_(item)]]" restamp>
+      <cr-button on-click="removeExtension_" id="[[item.id]]" slot="more-actions">
+        $i18n{extensionsV2RemoveButtonLabel}
+      </cr-button>
+    </template>
   </settings-toggle-button>
 </template>
 <template is="dom-if" if="{{showErrorToast_}}">
