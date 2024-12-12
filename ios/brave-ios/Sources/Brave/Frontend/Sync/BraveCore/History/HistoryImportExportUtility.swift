@@ -53,18 +53,19 @@ class HistoryImportExportUtility {
     // While accessing document URL from UIDocumentPickerViewController to access the file
     // startAccessingSecurityScopedResource should be called for that URL
     // Reference: https://stackoverflow.com/a/73912499/2239348
-    guard path.startAccessingSecurityScopedResource() else {
-      return false
+    let hasSecurityAccess = path.startAccessingSecurityScopedResource()
+    defer {
+      // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
+      // (Note: this is not reference counted)
+      if hasSecurityAccess {
+        path.stopAccessingSecurityScopedResource()
+      }
     }
 
     state = .importing
     defer { state = .none }
 
     if path.pathExtension.lowercased() == "zip" {
-      // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
-      // (Note: this is not reference counted)
-      defer { path.stopAccessingSecurityScopedResource() }
-
       guard let zipFileExtractedURL = try? await ZipImporter.unzip(path: path) else {
         return false
       }
@@ -88,9 +89,6 @@ class HistoryImportExportUtility {
       return await doImport(historyFileURL, nativeHistoryPath)
     }
 
-    // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
-    // (Note: this is not reference counted)
-    defer { path.stopAccessingSecurityScopedResource() }
     return await doImport(path, nativePath)
   }
 

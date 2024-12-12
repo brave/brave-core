@@ -187,11 +187,14 @@ struct BraveDataImporterView: View {
         Task {
           do {
             try await files.asyncForEach { file in
-              if file.startAccessingSecurityScopedResource() {
-                defer { file.stopAccessingSecurityScopedResource() }
-
-                try await processFile(file, importType: importerInfo.importType)
+              let hasSecurityAccess = file.startAccessingSecurityScopedResource()
+              defer {
+                if hasSecurityAccess {
+                  file.stopAccessingSecurityScopedResource()
+                }
               }
+
+              try await processFile(file, importType: importerInfo.importType)
             }
 
             importerInfo.didImport = true
