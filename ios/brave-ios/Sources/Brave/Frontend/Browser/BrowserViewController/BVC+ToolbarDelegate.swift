@@ -11,6 +11,7 @@ import BraveStrings
 import BraveUI
 import BraveWallet
 import BraveWidgetsModels
+import BrowserMenu
 import CertificateUtilities
 import Data
 import Lottie
@@ -955,6 +956,17 @@ extension BrowserViewController: ToolbarDelegate {
         arrowDirection: .up
       )
     }
+
+    if FeatureList.kModernBrowserMenuEnabled.enabled {
+      presentBrowserMenu(
+        from: tabToolbar.menuButton,
+        activities: activities,
+        pageURL: selectedTabURL,
+        webView: tabManager.selectedTab?.webView
+      )
+      return
+    }
+
     let initialHeight: CGFloat = selectedTabURL != nil ? 470 : 500
     let menuController = MenuViewController(
       initialHeight: initialHeight,

@@ -24,6 +24,7 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/playlist/features.h"
+#include "brave/ios/browser/ui/browser_menu/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "ios/components/security_interstitials/https_only_mode/feature.h"
@@ -321,6 +322,11 @@
 + (Feature*)kBlockAllCookiesToggle {
   return [[Feature alloc]
       initWithFeature:&brave_shields::features::kBlockAllCookiesToggle];
+}
+
++ (Feature*)kModernBrowserMenuEnabled {
+  return [[Feature alloc]
+      initWithFeature:&brave::features::kModernBrowserMenuEnabled];
 }
 
 @end

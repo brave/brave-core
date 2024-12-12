@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import Foundation
@@ -45,6 +45,7 @@ var package = Package(
     .library(name: "UserAgent", targets: ["UserAgent"]),
     .library(name: "CredentialProviderUI", targets: ["CredentialProviderUI"]),
     .library(name: "PlaylistUI", targets: ["PlaylistUI"]),
+    .library(name: "BrowserMenu", targets: ["BrowserMenu"]),
     .executable(name: "LeoAssetCatalogGenerator", targets: ["LeoAssetCatalogGenerator"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
@@ -422,6 +423,14 @@ var package = Package(
       dependencies: ["PlaylistUI", "Playlist", "Preferences", "Data", "TestHelpers"],
       resources: [.copy("Resources/Big_Buck_Bunny_360_10s_1MB.mp4")]
     ),
+    .target(
+      name: "BrowserMenu",
+      dependencies: [
+        "DesignSystem", "BraveUI", "Preferences", "Strings", "BraveStrings", "BraveVPN",
+        "GuardianConnect", "BraveWallet",
+      ]
+    ),
+    .testTarget(name: "BrowserMenuTests", dependencies: ["BrowserMenu"]),
     .plugin(name: "IntentBuilderPlugin", capability: .buildTool()),
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
     .plugin(
@@ -469,6 +478,7 @@ var braveTarget: PackageDescription.Target = .target(
     .product(name: "Lottie", package: "lottie-spm"),
     .product(name: "Collections", package: "swift-collections"),
     "PlaylistUI",
+    "BrowserMenu",
   ],
   exclude: [
     "Frontend/UserContent/UserScripts/AllFrames",

@@ -9,6 +9,7 @@ import SwiftUI
 import UIKit
 
 protocol MenuActivity: UIActivity {
+  var id: String { get }
   /// The image to use when shown on the menu.
   var menuImage: Image { get }
 }
@@ -21,7 +22,7 @@ class BasicMenuActivity: UIActivity, MenuActivity {
     var braveSystemImage: String
   }
 
-  private var id: String
+  private(set) var id: String
   private var title: String
   private var braveSystemImage: String
   private let callback: () -> Bool

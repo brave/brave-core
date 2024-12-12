@@ -4799,7 +4799,7 @@ extension Strings {
         "playList.toastAddToPlaylistTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Add to Brave Playlist",
+        value: "Add to Playlist",
         comment: "The title for the toast that shows up on a page containing a playlist item"
       )
 
@@ -4808,7 +4808,7 @@ extension Strings {
         "playList.toastAddedToPlaylistTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Added to Brave Playlist",
+        value: "View in Playlist",
         comment:
           "The title for the toast that shows up on a page containing a playlist item that was added to playlist"
       )
