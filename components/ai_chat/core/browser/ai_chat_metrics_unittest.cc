@@ -18,9 +18,11 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
 
@@ -36,14 +38,15 @@ class AIChatMetricsUnitTest : public testing::Test {
     ai_chat_metrics_ = std::make_unique<AIChatMetrics>(&local_state_);
   }
 
-  void RecordPrompts(bool new_chats, size_t chat_count) {
-    for (size_t i = 0; i < chat_count; i++) {
-      if (new_chats) {
-        ai_chat_metrics_->RecordNewChat();
-      }
-      ai_chat_metrics_->RecordNewPrompt();
+  void RecordPrompts(std::string id, size_t prompt_count) {
+    auto conversation_info = CreateConversationAndTurn(id, "test");
+
+    for (size_t j = 0; j < prompt_count; j++) {
+      conversation_handler_.current_history_size_++;
+      ai_chat_metrics_->RecordNewPrompt(&conversation_handler_,
+                                        conversation_info.first,
+                                        conversation_info.second);
     }
-    task_environment_.FastForwardBy(base::Seconds(5));
   }
 
   AIChatMetrics::RetrievePremiumStatusCallback GetPremiumCallback() {
@@ -57,6 +60,44 @@ class AIChatMetricsUnitTest : public testing::Test {
   }
 
  protected:
+  class MockConversationHandler : public ConversationHandlerForMetrics {
+   public:
+    MockConversationHandler() = default;
+    ~MockConversationHandler() override = default;
+
+    size_t GetConversationHistorySize() override {
+      return current_history_size_;
+    }
+    bool should_send_page_contents() const override {
+      return should_send_page_contents_;
+    }
+    mojom::APIError current_error() const override { return current_error_; }
+
+    size_t current_history_size_ = 0;
+    bool should_send_page_contents_ = false;
+    mojom::APIError current_error_ = mojom::APIError::None;
+  };
+
+  std::pair<mojom::ConversationPtr, mojom::ConversationTurnPtr>
+  CreateConversationAndTurn(const std::string& uuid,
+                            const std::string& turn_text) {
+    auto turn = mojom::ConversationTurn::New();
+    turn->uuid = uuid;
+    turn->character_type = mojom::CharacterType::HUMAN;
+    turn->action_type = mojom::ActionType::UNSPECIFIED;
+    turn->text = turn_text;
+    turn->created_time = base::Time::Now();
+    turn->from_brave_search_SERP = false;
+
+    auto conversation = mojom::Conversation::New();
+    conversation->uuid = uuid;
+    conversation->updated_time = turn->created_time;
+    conversation->has_content = true;
+
+    return {std::move(conversation), std::move(turn)};
+  }
+
+  MockConversationHandler conversation_handler_;
   bool is_premium_ = false;
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
@@ -93,13 +134,19 @@ TEST_F(AIChatMetricsUnitTest, ChatCount) {
   ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
   histogram_tester_.ExpectTotalCount(kChatCountHistogramName, 0);
 
-  RecordPrompts(true, 1);
+  RecordPrompts("abc", 5);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectUniqueSample(kChatCountHistogramName, 0, 1);
 
-  RecordPrompts(true, 3);
+  RecordPrompts("def1", 5);
+  RecordPrompts("def2", 5);
+  RecordPrompts("def3", 5);
+  RecordPrompts("def4", 5);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectBucketCount(kChatCountHistogramName, 1, 1);
 
-  RecordPrompts(true, 3);
+  RecordPrompts("xyz1", 3);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectBucketCount(kChatCountHistogramName, 1, 1);
   histogram_tester_.ExpectBucketCount(kChatCountHistogramName, 2, 1);
   histogram_tester_.ExpectTotalCount(kChatCountHistogramName, 3);
@@ -122,16 +169,20 @@ TEST_F(AIChatMetricsUnitTest, AvgPromptsPerChat) {
   ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
   histogram_tester_.ExpectTotalCount(kAvgPromptCountHistogramName, 0);
 
-  RecordPrompts(true, 1);
+  RecordPrompts("abc", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectUniqueSample(kAvgPromptCountHistogramName, 0, 1);
 
-  RecordPrompts(false, 2);
+  RecordPrompts("abc", 2);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectBucketCount(kAvgPromptCountHistogramName, 1, 1);
 
-  RecordPrompts(false, 4);
+  RecordPrompts("abc", 4);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectBucketCount(kAvgPromptCountHistogramName, 2, 1);
 
-  RecordPrompts(true, 1);
+  RecordPrompts("def", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectBucketCount(kAvgPromptCountHistogramName, 1, 2);
   histogram_tester_.ExpectTotalCount(kAvgPromptCountHistogramName, 4);
 
@@ -158,7 +209,8 @@ TEST_F(AIChatMetricsUnitTest, UsageDailyWeeklyAndMonthly) {
   histogram_tester_.ExpectTotalCount(kUsageWeeklyHistogramName, 0);
   histogram_tester_.ExpectTotalCount(kUsageMonthlyHistogramName, 0);
 
-  RecordPrompts(true, 1);
+  RecordPrompts("abc", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectUniqueSample(kUsageDailyHistogramName, 1, 1);
   histogram_tester_.ExpectUniqueSample(kUsageWeeklyHistogramName, 1, 1);
   histogram_tester_.ExpectUniqueSample(kUsageMonthlyHistogramName, 1, 1);
@@ -166,7 +218,8 @@ TEST_F(AIChatMetricsUnitTest, UsageDailyWeeklyAndMonthly) {
   is_premium_ = true;
   ai_chat_metrics_->OnPremiumStatusUpdated(
       true, false, mojom::PremiumStatus::Active, nullptr);
-  RecordPrompts(true, 1);
+  RecordPrompts("def", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectBucketCount(kUsageDailyHistogramName, 2, 1);
   histogram_tester_.ExpectBucketCount(kUsageWeeklyHistogramName, 2, 1);
   histogram_tester_.ExpectBucketCount(kUsageMonthlyHistogramName, 2, 1);
@@ -183,7 +236,8 @@ TEST_F(AIChatMetricsUnitTest, FeatureUsageNotNewUser) {
   // recorded internally
   histogram_tester_.ExpectUniqueSample(kNewUserReturningHistogramName, 1, 1);
 
-  RecordPrompts(true, 1);
+  RecordPrompts("abc", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectUniqueSample(kNewUserReturningHistogramName, 1, 2);
 }
 
@@ -195,7 +249,8 @@ TEST_F(AIChatMetricsUnitTest, FeatureUsage) {
   histogram_tester_.ExpectUniqueSample(kNewUserReturningHistogramName, 0, 2);
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 0);
 
-  RecordPrompts(true, 1);
+  RecordPrompts("abc", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectBucketCount(kNewUserReturningHistogramName, 2, 1);
   histogram_tester_.ExpectUniqueSample(kLastUsageTimeHistogramName, 1, 1);
 
@@ -373,6 +428,235 @@ TEST_F(AIChatMetricsUnitTest, Reset) {
                                        std::numeric_limits<int>::max() - 1, 1);
   histogram_tester_.ExpectUniqueSample(kEnabledHistogramName,
                                        std::numeric_limits<int>::max() - 1, 1);
+}
+
+TEST_F(AIChatMetricsUnitTest, ChatHistory) {
+  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+
+  // Record some prompts with single turns
+  RecordPrompts("chat1", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
+  histogram_tester_.ExpectTotalCount(kChatHistoryUsageHistogramName, 1);
+  histogram_tester_.ExpectUniqueSample(kChatHistoryUsageHistogramName, 0, 1);
+
+  conversation_handler_.current_history_size_ = 1;
+  RecordPrompts("chat1", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
+
+  histogram_tester_.ExpectTotalCount(kChatHistoryUsageHistogramName, 2);
+  histogram_tester_.ExpectUniqueSample(kChatHistoryUsageHistogramName, 0, 2);
+
+  ai_chat_metrics_->RecordConversationUnload("chat1");
+
+  conversation_handler_.current_history_size_ = 1;
+  RecordPrompts("chat1", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
+
+  histogram_tester_.ExpectTotalCount(kChatHistoryUsageHistogramName, 3);
+  histogram_tester_.ExpectBucketCount(kChatHistoryUsageHistogramName, 5, 1);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kChatHistoryUsageHistogramName, 9);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kChatHistoryUsageHistogramName, 9);
+}
+
+TEST_F(AIChatMetricsUnitTest, ChatDuration) {
+  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+
+  RecordPrompts("chat1", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
+  histogram_tester_.ExpectUniqueSample(kMaxChatDurationHistogramName, 0, 1);
+
+  task_environment_.FastForwardBy(base::Minutes(29));
+
+  RecordPrompts("chat1", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
+
+  histogram_tester_.ExpectBucketCount(kMaxChatDurationHistogramName, 4, 1);
+  histogram_tester_.ExpectTotalCount(kMaxChatDurationHistogramName, 2);
+
+  task_environment_.FastForwardBy(base::Minutes(15));
+  RecordPrompts("chat1", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
+
+  histogram_tester_.ExpectBucketCount(kMaxChatDurationHistogramName, 5, 1);
+  histogram_tester_.ExpectTotalCount(kMaxChatDurationHistogramName, 3);
+
+  ai_chat_metrics_->RecordConversationUnload("chat1");
+
+  task_environment_.FastForwardBy(base::Minutes(60));
+  RecordPrompts("chat1", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
+
+  histogram_tester_.ExpectBucketCount(kMaxChatDurationHistogramName, 5, 2);
+  histogram_tester_.ExpectTotalCount(kMaxChatDurationHistogramName, 4);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kMaxChatDurationHistogramName, 10);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kMaxChatDurationHistogramName, 10);
+}
+
+TEST_F(AIChatMetricsUnitTest, FirstChatPrompts) {
+  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+
+  histogram_tester_.ExpectTotalCount(kFirstChatPromptsHistogramName, 0);
+
+  RecordPrompts("chat1", 4);
+  task_environment_.FastForwardBy(base::Seconds(5));
+
+  histogram_tester_.ExpectTotalCount(kFirstChatPromptsHistogramName, 0);
+
+  ai_chat_metrics_->RecordConversationUnload("chat1");
+  task_environment_.FastForwardBy(base::Seconds(5));
+
+  histogram_tester_.ExpectUniqueSample(kFirstChatPromptsHistogramName, 2, 1);
+
+  ai_chat_metrics_->RecordConversationUnload("chat1");
+  RecordPrompts("chat1", 30);
+  task_environment_.FastForwardBy(base::Seconds(5));
+
+  histogram_tester_.ExpectUniqueSample(kFirstChatPromptsHistogramName, 2, 1);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kFirstChatPromptsHistogramName, 1);
+}
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+TEST_F(AIChatMetricsUnitTest, FullPageSwitch) {
+  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+
+  ai_chat_metrics_->RecordSidebarUsage();
+  ai_chat_metrics_->RecordSidebarUsage();
+
+  histogram_tester_.ExpectUniqueSample(kFullPageSwitchesHistogramName, 0, 2);
+
+  ai_chat_metrics_->RecordFullPageSwitch();
+  ai_chat_metrics_->RecordFullPageSwitch();
+
+  histogram_tester_.ExpectBucketCount(kFullPageSwitchesHistogramName, 3, 1);
+  histogram_tester_.ExpectBucketCount(kFullPageSwitchesHistogramName, 4, 1);
+  histogram_tester_.ExpectTotalCount(kFullPageSwitchesHistogramName, 4);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kFullPageSwitchesHistogramName, 10);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kFullPageSwitchesHistogramName, 10);
+}
+#endif
+
+TEST_F(AIChatMetricsUnitTest, ContextSource) {
+  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+
+  histogram_tester_.ExpectTotalCount(kMostUsedContextSourceHistogramName, 0);
+
+  // Test conversation starter context when history size > 1
+  conversation_handler_.current_history_size_ = 2;
+  auto chat = CreateConversationAndTurn("chat10", "hello");
+  chat.second->action_type = mojom::ActionType::CONVERSATION_STARTER;
+  ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
+                                    chat.second);
+  histogram_tester_.ExpectUniqueSample(kMostUsedContextSourceHistogramName, 4,
+                                       1);
+  histogram_tester_.ExpectTotalCount(kMostUsedContextSourceHistogramName, 1);
+
+  conversation_handler_.current_history_size_ = 1;
+  // Test conversation starter context
+  chat = CreateConversationAndTurn("chat2", "hello");
+  chat.second->action_type = mojom::ActionType::CONVERSATION_STARTER;
+  ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
+                                    chat.second);
+  ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
+                                    chat.second);
+  histogram_tester_.ExpectBucketCount(kMostUsedContextSourceHistogramName, 1,
+                                      2);
+
+  // Test page summary context
+  chat = CreateConversationAndTurn("chat1", "test");
+  chat.second->action_type = mojom::ActionType::SUMMARIZE_PAGE;
+  for (int i = 0; i < 3; i++) {
+    ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
+                                      chat.second);
+  }
+  histogram_tester_.ExpectBucketCount(kMostUsedContextSourceHistogramName, 2,
+                                      1);
+
+  // Test text input with page context
+  chat = CreateConversationAndTurn("chat4", "test");
+  conversation_handler_.should_send_page_contents_ = true;
+  for (int i = 0; i < 4; i++) {
+    ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
+                                      chat.second);
+  }
+  histogram_tester_.ExpectBucketCount(kMostUsedContextSourceHistogramName, 3,
+                                      1);
+  conversation_handler_.should_send_page_contents_ = false;
+
+  // Test text input without page context (default)
+  chat = CreateConversationAndTurn("chat6", "test");
+  for (int i = 0; i < 4; i++) {
+    ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
+                                      chat.second);
+  }
+  histogram_tester_.ExpectBucketCount(kMostUsedContextSourceHistogramName, 4,
+                                      2);
+
+  // Test text input via full page context
+  chat = CreateConversationAndTurn("chat5", "test");
+  for (int i = 0; i < 6; i++) {
+    ai_chat_metrics_->OnSendingPromptWithFullPage();
+    ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
+                                      chat.second);
+  }
+  histogram_tester_.ExpectBucketCount(kMostUsedContextSourceHistogramName, 5,
+                                      1);
+
+  // Test quick action context
+  chat = CreateConversationAndTurn("chat3", "test");
+  for (size_t i = 0; i < 7; i++) {
+    ai_chat_metrics_->OnQuickActionStatusChange(true);
+    ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
+                                      chat.second);
+  }
+  histogram_tester_.ExpectBucketCount(kMostUsedContextSourceHistogramName, 6,
+                                      1);
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  chat = CreateConversationAndTurn("chat2", "test");
+  for (size_t i = 0; i < 7; i++) {
+    ai_chat_metrics_->RecordOmniboxOpen();
+    ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
+                                      chat.second);
+  }
+  histogram_tester_.ExpectBucketCount(kMostUsedContextSourceHistogramName, 0,
+                                      1);
+#endif
+}
+
+TEST_F(AIChatMetricsUnitTest, RateLimitMetrics) {
+  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+
+  histogram_tester_.ExpectTotalCount(kRateLimitStopsHistogramName, 0);
+
+  RecordPrompts("chat1", 1);
+  task_environment_.FastForwardBy(base::Seconds(5));
+  histogram_tester_.ExpectUniqueSample(kRateLimitStopsHistogramName, 0, 1);
+
+  conversation_handler_.current_error_ = mojom::APIError::RateLimitReached;
+  ai_chat_metrics_->MaybeRecordLastError(&conversation_handler_);
+
+  histogram_tester_.ExpectBucketCount(kRateLimitStopsHistogramName, 1, 1);
+  histogram_tester_.ExpectTotalCount(kRateLimitStopsHistogramName, 2);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kRateLimitStopsHistogramName, 8);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kRateLimitStopsHistogramName, 8);
 }
 
 }  // namespace ai_chat

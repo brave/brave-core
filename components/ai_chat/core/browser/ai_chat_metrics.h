@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
@@ -19,6 +20,7 @@
 #include "brave/components/time_period_storage/time_period_storage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "build/build_config.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -67,6 +69,22 @@ inline constexpr char kChatCountNebulaHistogramName[] =
     "Brave.AIChat.ChatCount.Nebula";
 inline constexpr char kMostUsedEntryPointHistogramName[] =
     "Brave.AIChat.MostUsedEntryPoint";
+inline constexpr char kFirstChatPromptsHistogramName[] =
+    "Brave.AIChat.FirstChatPrompts";
+inline constexpr char kChatHistoryUsageHistogramName[] =
+    "Brave.AIChat.ChatHistoryUsage";
+inline constexpr char kMaxChatDurationHistogramName[] =
+    "Brave.AIChat.MaxChatDuration";
+inline constexpr char kMostUsedContextSourceHistogramName[] =
+    "Brave.AIChat.MostUsedContextSource";
+inline constexpr char kUsedConversationStarterHistogramName[] =
+    "Brave.AIChat.UsedConversationStarter";
+inline constexpr char kFullPageSwitchesHistogramName[] =
+    "Brave.AIChat.FullPageSwitches";
+inline constexpr char kRateLimitStopsHistogramName[] =
+    "Brave.AIChat.RateLimitStops";
+inline constexpr char kContextLimitsHistogramName[] =
+    "Brave.AIChat.ContextLimits";
 
 enum class EntryPoint {
   kOmniboxItem = 0,
@@ -91,18 +109,39 @@ enum class ContextMenuAction {
   kMaxValue = kChangeLength
 };
 
-class AIChatMetrics {
+enum class ContextSource {
+  kOmniboxInput = 0,
+  kConversationStarter = 1,
+  kPageSummary = 2,
+  kTextInputWithPage = 3,
+  kTextInputWithoutPage = 4,
+  kTextInputViaFullPage = 5,
+  kQuickAction = 6,
+  kMaxValue = kQuickAction
+};
+
+class ConversationHandlerForMetrics {
+ public:
+  virtual ~ConversationHandlerForMetrics() = default;
+  virtual size_t GetConversationHistorySize() = 0;
+  virtual bool should_send_page_contents() const = 0;
+  virtual mojom::APIError current_error() const = 0;
+};
+
+class AIChatMetrics : public mojom::Metrics {
  public:
   using RetrievePremiumStatusCallback =
       base::OnceCallback<void(mojom::Service::GetPremiumStatusCallback)>;
 
   explicit AIChatMetrics(PrefService* local_state);
-  ~AIChatMetrics();
+  ~AIChatMetrics() override;
 
   AIChatMetrics(const AIChatMetrics&) = delete;
   AIChatMetrics& operator=(const AIChatMetrics&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
+
+  void Bind(mojo::PendingReceiver<mojom::Metrics> receiver);
 
   void RecordEnabled(
       bool is_enabled,
@@ -110,8 +149,11 @@ class AIChatMetrics {
       RetrievePremiumStatusCallback retrieve_premium_status_callback);
   void RecordReset();
 
-  void RecordNewChat();
-  void RecordNewPrompt();
+  void RecordNewPrompt(ConversationHandlerForMetrics* handler,
+                       mojom::ConversationPtr& conversation,
+                       mojom::ConversationTurnPtr& entry);
+  void RecordConversationUnload(std::string_view conversation_uuid);
+  void RecordConversationsCleared();
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   void RecordOmniboxOpen();
@@ -119,30 +161,52 @@ class AIChatMetrics {
 
   void RecordContextMenuUsage(ContextMenuAction action);
   void HandleOpenViaEntryPoint(EntryPoint entry_point);
+  void RecordSidebarUsage();
+  void RecordFullPageSwitch();
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   void OnPremiumStatusUpdated(bool is_enabled,
                               bool is_new_user,
                               mojom::PremiumStatus premium_status,
                               mojom::PremiumInfoPtr);
+  void MaybeRecordLastError(ConversationHandlerForMetrics* handler);
+
+  // Metrics:
+  void OnSendingPromptWithFullPage() override;
+  void OnQuickActionStatusChange(bool is_enabled) override;
 
  private:
   void ReportAllMetrics();
   void ReportFeatureUsageMetrics();
   void ReportChatCounts();
+  void ReportContextSource();
+  void ReportFullPageUsage();
+  void ReportLimitMetrics();
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   void ReportOmniboxCounts();
   void ReportContextMenuMetrics();
   void ReportEntryPointUsageMetric();
+  void ReportFullPageUsageMetric();
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+
+  void MaybeReportFirstChatPrompts(bool new_prompt_made);
+  void RecordContextSource(ConversationHandlerForMetrics* handler,
+                           mojom::ConversationTurnPtr& entry);
 
   bool is_enabled_ = false;
   bool is_premium_ = false;
   bool premium_check_in_progress_ = false;
+  bool prompted_via_omnibox_ = false;
+  bool prompted_via_full_page_ = false;
+  bool prompted_via_quick_action_ = false;
   std::optional<EntryPoint> acquisition_source_ = std::nullopt;
 
   WeeklyStorage chat_count_storage_;
+  WeeklyStorage chat_with_history_count_storage_;
+  WeeklyStorage chat_durations_storage_;
   WeeklyStorage prompt_count_storage_;
+  WeeklyStorage rate_limit_storage_;
+  WeeklyStorage context_limit_storage_;
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   base::flat_map<ContextMenuAction, std::unique_ptr<WeeklyStorage>>
       context_menu_usage_storages_;
@@ -152,13 +216,22 @@ class AIChatMetrics {
 
   base::flat_map<EntryPoint, std::unique_ptr<WeeklyStorage>>
       entry_point_storages_;
+  WeeklyStorage sidebar_usage_storage_;
+  WeeklyStorage full_page_switch_storage_;
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  base::flat_map<ContextSource, std::unique_ptr<WeeklyStorage>>
+      context_source_storages_;
+
+  base::flat_map<std::string, base::Time> conversation_start_times_;
 
   base::OneShotTimer report_debounce_timer_;
+  base::OneShotTimer first_chat_report_debounce_timer_;
 
   base::WallClockTimer periodic_report_timer_;
 
   raw_ptr<PrefService> local_state_;
+
+  mojo::ReceiverSet<mojom::Metrics> receivers_;
 
   base::WeakPtrFactory<AIChatMetrics> weak_ptr_factory_{this};
 };
