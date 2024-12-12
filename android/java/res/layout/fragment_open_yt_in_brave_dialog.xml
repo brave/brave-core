@@ -20,6 +20,7 @@
         android:gravity="center"
         android:contentDescription="@null"
         android:adjustViewBounds="true"
+        app:srcCompat="@drawable/ic_youtube_skip_ads"
         android:layout_gravity="center_horizontal" />
 
     <TextView
