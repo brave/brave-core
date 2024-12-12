@@ -41,6 +41,8 @@ class PageAPI extends API<State> {
   public service: Mojom.ServiceRemote
     = Mojom.Service.getRemote()
 
+  public metrics: Mojom.MetricsRemote = new Mojom.MetricsRemote()
+
   public observer: Mojom.ServiceObserverCallbackRouter
     = new Mojom.ServiceObserverCallbackRouter()
 
@@ -85,6 +87,8 @@ class PageAPI extends API<State> {
       visibleConversations,
       allActions
     })
+
+    this.service.bindMetrics(this.metrics.$.bindNewPipeAndPassReceiver())
 
     this.observer.onStateChanged.addListener((state: Mojom.ServiceState) => {
       this.setPartialState(state)
