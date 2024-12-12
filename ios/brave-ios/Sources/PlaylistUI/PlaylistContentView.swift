@@ -31,6 +31,7 @@ struct PlaylistContentView: View {
   @State private var isEditModePresented: Bool = false
   @State private var newPlaylistName: String = ""
   @State private var isPopulatingNewPlaylist: Bool = false
+  @State private var isPresentingSearch: Bool = false
 
   private var selectedItemID: PlaylistItem.ID? {
     playerModel.selectedItemID
@@ -48,37 +49,41 @@ struct PlaylistContentView: View {
     playerModel.selectedItemID.flatMap { PlaylistItem.getItem(id: $0) }
   }
 
+  private var selectedItemIDBinding: Binding<PlaylistItem.ID?> {
+    Binding(
+      get: {
+        selectedItemID
+      },
+      set: { newValue in
+        // Make the item queue prior to setting the `selectedItemID`, which will start playing
+        // said item
+        withAnimation(.snappy) {
+          selectedDetent = .anchor(.mediaControls)
+        }
+        // FIXME: Move this into PlayerModel
+        playerModel.makeItemQueue(selectedItemID: newValue)
+        if selectedItemID == newValue {
+          // Already selected, restart it (based on prior behaviour)
+          Task {
+            await playerModel.seek(to: 0, accurately: true)
+            playerModel.play()
+          }
+          return
+        }
+        playerModel.selectedItemID = newValue
+        Task {
+          await playerModel.prepareToPlaySelectedItem(initialOffset: nil, playImmediately: true)
+        }
+      }
+    )
+  }
+
   public var body: some View {
     PlaylistSplitView(selectedDetent: $selectedDetent) {
       PlaylistSidebarList(
         folders: Array(folders),
         folderID: selectedFolderID,
-        selectedItemID: Binding(
-          get: {
-            selectedItemID
-          },
-          set: { newValue in
-            // Make the item queue prior to setting the `selectedItemID`, which will start playing
-            // said item
-            withAnimation(.snappy) {
-              selectedDetent = .anchor(.mediaControls)
-            }
-            // FIXME: Move this into PlayerModel
-            playerModel.makeItemQueue(selectedItemID: newValue)
-            if selectedItemID == newValue {
-              // Already selected, restart it (based on prior behaviour)
-              Task {
-                await playerModel.seek(to: 0, accurately: true)
-                playerModel.play()
-              }
-              return
-            }
-            playerModel.selectedItemID = newValue
-            Task {
-              await playerModel.prepareToPlaySelectedItem(initialOffset: nil, playImmediately: true)
-            }
-          }
-        ),
+        selectedItemID: selectedItemIDBinding,
         isPlaying: playerModel.isPlaying,
         onPlaylistUpdated: {
           // Update the queue to reflect updated playlist
@@ -150,6 +155,12 @@ struct PlaylistContentView: View {
         .labelStyle(.iconOnly)
         .transition(.opacity.animation(.default))
       }
+      Button {
+        isPresentingSearch = true
+      } label: {
+        Label(Strings.Playlist.searchTitle, braveSystemImage: "leo.search")
+      }
+      .labelStyle(.iconOnly)
     }
     .task {
       await playerModel.prepareItemQueue()
@@ -160,9 +171,7 @@ struct PlaylistContentView: View {
       }
     }
     .onDisappear {
-      if let selectedItem {
-        playerModel.persistPlaybackTimeForSelectedItem(playerModel.currentTime)
-      }
+      playerModel.persistPlaybackTimeForSelectedItem(playerModel.currentTime)
     }
     .sheet(isPresented: $isEditModePresented) {
       if let selectedFolder {
@@ -224,6 +233,19 @@ struct PlaylistContentView: View {
         .presentationDetents([.medium, .large])
         .environment(\.colorScheme, .dark)
         .preferredColorScheme(.dark)
+    }
+    .sheet(isPresented: $isPresentingSearch) {
+      SearchView(
+        folders: Array(folders),
+        selectedItemID: selectedItemIDBinding,
+        selectedFolderID: $playerModel.selectedFolderID,
+        isPlaying: playerModel.isPlaying,
+        onPlaylistUpdated: {
+          playerModel.makeItemQueue(selectedItemID: playerModel.selectedItemID)
+        }
+      )
+      .environment(\.colorScheme, .dark)
+      .preferredColorScheme(.dark)
     }
     .onChange(of: selectedItemID) { newValue in
       if newValue == nil {

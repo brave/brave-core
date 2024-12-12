@@ -387,7 +387,7 @@ public final class PlayerModel: ObservableObject {
 
   @MainActor @Published var selectedItemID: PlaylistItem.ID? {
     willSet {
-      if let selectedItem {
+      if selectedItem != nil {
         let currentTime = currentTime
         let duration = duration.seconds ?? 0
         // Reset the current item's last played time if you changed videos in the last 10s
