@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/probe/BUILD.gn b/third_party/blink/renderer/core/probe/BUILD.gn
-index 3148e66bc1769cc37080ceaa6ee369e93134fa42..979e8dbd5f82024e0b6be11822c0061dc740e282 100644
+index 83312a7f88fc21e290e9a321d02d8033b34d4cbe..a274c35637ff2a7565ccff18e92404b83c7d86d0 100644
 --- a/third_party/blink/renderer/core/probe/BUILD.gn
 +++ b/third_party/blink/renderer/core/probe/BUILD.gn
 @@ -36,6 +36,7 @@ template("probe_generator") {
