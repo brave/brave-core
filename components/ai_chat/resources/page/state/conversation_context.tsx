@@ -405,6 +405,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     if (shouldDisableUserInput) return
     if (handleFilterActivation()) return
 
+    if (!aiChatContext.isStorageNoticeDismissed && aiChatContext.hasAcceptedAgreement) {
+      // Submitting a conversation entry manually, after opt-in,
+      // means the storage notice can be dismissed.
+      aiChatContext.dismissStorageNotice()
+    }
+
     if (context.selectedActionType) {
       conversationHandler.submitHumanConversationEntryWithAction(
         context.inputText,

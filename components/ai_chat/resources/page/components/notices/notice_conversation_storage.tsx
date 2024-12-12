@@ -7,7 +7,6 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
-import VisibilityTimer from '$web-common/visibilityTimer'
 import { useAIChat } from '../../state/ai_chat_context'
 import styles from './notices.module.scss'
 import illustrationUrl from './conversation_storage.svg'
@@ -15,31 +14,9 @@ import illustrationUrl from './conversation_storage.svg'
 export default function NoticeConversationStorage() {
   const aiChatContext = useAIChat()
 
-  const visibilityTimer = React.useRef<VisibilityTimer>()
-
-  const noticeElementRef = React.useCallback((el: HTMLDivElement | null) => {
-    // note: el will be null when we destroy it.
-    // note: In new versions of React (maybe newer than we're using) you can return a cleanup function instead
-    // https://react.dev/blog/2024/04/25/react-19#cleanup-functions-for-refs
-    if (visibilityTimer.current) {
-      visibilityTimer.current.stopTracking()
-    }
-
-    if (!el) {
-      return
-    }
-
-    visibilityTimer.current = new VisibilityTimer(
-      aiChatContext.markStorageNoticeViewed, 4000, el
-    )
-
-    visibilityTimer.current.startTracking()
-  }, [])
-
   return (
     <div
       className={styles.notice}
-      ref={noticeElementRef}
     >
       <div className={styles.illustration}>
         <img src={illustrationUrl} alt="illustration" />
@@ -51,7 +28,7 @@ export default function NoticeConversationStorage() {
           <a
             href='#'
             target='_blank'
-            onClick={() => aiChatContext.uiHandler?.openModelSupportUrl()}
+            onClick={() => aiChatContext.uiHandler?.openStorageSupportUrl()}
           >
             {getLocale('learnMore')}
           </a>
