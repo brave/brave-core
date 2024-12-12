@@ -30,6 +30,8 @@ namespace brave_news {
 
 namespace {
 
+constexpr size_t kMaxRedirectCount = 7;
+
 std::string GetResponseCharset(network::SimpleURLLoader* loader) {
   auto* response_info = loader->ResponseInfo();
   if (!response_info) {
@@ -154,44 +156,53 @@ DirectFeedFetcher::~DirectFeedFetcher() = default;
 void DirectFeedFetcher::DownloadFeed(GURL url,
                                      std::string publisher_id,
                                      DownloadFeedCallback callback) {
-  if (url.SchemeIs(url::kHttpScheme)) {
+  DownloadFeedHelper(url, url, publisher_id, 0, std::move(callback),
+                     std::nullopt);
+}
+
+void DirectFeedFetcher::DownloadFeedHelper(
+    GURL url,
+    GURL original_url,
+    std::string publisher_id,
+    size_t redirect_count,
+    DownloadFeedCallback callback,
+    std::optional<Delegate::HTTPSUpgradeInfo> https_upgrade_info) {
+  if (!https_upgrade_info && url.SchemeIs(url::kHttpScheme)) {
     content::GetUIThreadTaskRunner({})->PostTask(
         FROM_HERE,
         base::BindOnce(
             [](base::WeakPtr<Delegate> delegate,
                scoped_refptr<base::SingleThreadTaskRunner> source_task_runner,
-               base::OnceCallback<void(bool)> callback, GURL url) {
+               base::OnceCallback<void(
+                   std::optional<Delegate::HTTPSUpgradeInfo>)> callback,
+               GURL url) {
               if (delegate.WasInvalidated()) {
                 return;
               }
-              bool should_upgrade = delegate->ShouldUpgradeToHttps(url);
+              auto upgrade_info = delegate->GetURLHTTPSUpgradeInfo(url);
               source_task_runner->PostTask(
                   FROM_HERE,
                   base::BindOnce(
-                      [](base::OnceCallback<void(bool)> callback, bool result) {
+                      [](base::OnceCallback<void(
+                             std::optional<Delegate::HTTPSUpgradeInfo>)>
+                             callback,
+                         Delegate::HTTPSUpgradeInfo result) {
                         std::move(callback).Run(result);
                       },
-                      std::move(callback), should_upgrade));
+                      std::move(callback), upgrade_info));
             },
             delegate_, base::SingleThreadTaskRunner::GetCurrentDefault(),
             base::BindOnce(&DirectFeedFetcher::DownloadFeedHelper,
-                           weak_ptr_factory_.GetWeakPtr(), url, publisher_id,
-                           std::move(callback)),
+                           weak_ptr_factory_.GetWeakPtr(), url, original_url,
+                           publisher_id, redirect_count, std::move(callback)),
             url));
     return;
   }
-  DownloadFeedHelper(url, publisher_id, std::move(callback), false);
-}
-
-void DirectFeedFetcher::DownloadFeedHelper(GURL url,
-                                           std::string publisher_id,
-                                           DownloadFeedCallback callback,
-                                           bool should_https_upgrade) {
   // Make request
   auto request = std::make_unique<network::ResourceRequest>();
   bool https_upgraded = false;
 
-  if (should_https_upgrade) {
+  if (https_upgrade_info && https_upgrade_info->should_upgrade) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(url::kHttpsScheme);
     url = url.ReplaceComponents(replacements);
@@ -202,6 +213,7 @@ void DirectFeedFetcher::DownloadFeedHelper(GURL url,
   request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->method = net::HttpRequestHeaders::kGetMethod;
+  request->redirect_mode = network::mojom::RedirectMode::kError;
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   url_loader->SetRetryOptions(
@@ -216,24 +228,37 @@ void DirectFeedFetcher::DownloadFeedHelper(GURL url,
       // Handle response
       base::BindOnce(&DirectFeedFetcher::OnFeedDownloaded,
                      weak_ptr_factory_.GetWeakPtr(), iter, std::move(callback),
-                     url, std::move(publisher_id), https_upgraded),
+                     url, original_url, std::move(publisher_id),
+                     https_upgrade_info, https_upgraded, redirect_count),
       5 * 1024 * 1024);
 }
 
 void DirectFeedFetcher::OnFeedDownloaded(
     SimpleURLLoaderList::iterator iter,
     DownloadFeedCallback callback,
-    GURL feed_url,
+    GURL url,
+    GURL original_url,
     std::string publisher_id,
+    std::optional<Delegate::HTTPSUpgradeInfo> https_upgrade_info,
     bool https_upgraded,
+    size_t redirect_count,
     std::unique_ptr<std::string> response_body) {
   auto* loader = iter->get();
+
+  if (loader->NetError() == net::ERR_FAILED && loader->GetFinalURL() != url &&
+      redirect_count < kMaxRedirectCount) {
+    // Redirect detected. Make another request
+    DownloadFeedHelper(loader->GetFinalURL(), original_url, publisher_id,
+                       redirect_count + 1, std::move(callback), std::nullopt);
+    return;
+  }
+
   auto response_code = -1;
 
   auto result = DirectFeedResponse();
   result.charset = GetResponseCharset(loader);
-  result.url = feed_url;
-  result.final_url = loader->GetFinalURL();
+  result.url = original_url;
+  result.final_url = url;
 
   if (loader->ResponseInfo()) {
     auto headers_list = loader->ResponseInfo()->headers;
@@ -248,12 +273,15 @@ void DirectFeedFetcher::OnFeedDownloaded(
   std::string body_content = response_body ? *response_body : "";
 
   if (response_code < 200 || response_code >= 300 || body_content.empty()) {
-    VLOG(1) << feed_url.spec() << " invalid response, state: " << response_code;
-    if (https_upgraded) {
+    VLOG(1) << url.spec() << " invalid response, state: " << response_code;
+    if (https_upgraded && https_upgrade_info &&
+        !https_upgrade_info->should_force) {
       GURL::Replacements replacements;
       replacements.SetSchemeStr(url::kHttpScheme);
-      feed_url = feed_url.ReplaceComponents(replacements);
-      DownloadFeedHelper(feed_url, publisher_id, std::move(callback), false);
+      url = url.ReplaceComponents(replacements);
+      https_upgrade_info->should_upgrade = false;
+      DownloadFeedHelper(url, original_url, publisher_id, redirect_count,
+                         std::move(callback), https_upgrade_info);
       return;
     }
     DirectFeedError error;
@@ -264,7 +292,7 @@ void DirectFeedFetcher::OnFeedDownloaded(
   }
 
   ParseFeedDataOffMainThread(
-      feed_url, std::move(publisher_id), std::move(body_content),
+      url, std::move(publisher_id), std::move(body_content),
       base::BindOnce(&DirectFeedFetcher::OnParsedFeedData,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(result)));
