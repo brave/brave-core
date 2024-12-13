@@ -45,10 +45,6 @@ protocol TabContentScript: TabContentScriptLoader {
   )
 }
 
-protocol TabHelper {
-  static var tabHelperName: String { get }
-}
-
 protocol TabDelegate {
   func tab(_ tab: Tab, didAddSnackbar bar: SnackBar)
   func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar)
@@ -175,8 +171,6 @@ class Tab: NSObject {
   }
 
   var sslPinningError: Error?
-
-  private var tabHelpers = [String: TabHelper]()
 
   private let _syncTab: BraveSyncTab?
   private let _faviconDriver: FaviconDriver?
@@ -435,6 +429,8 @@ class Tab: NSObject {
     }
   }
 
+  var translateHelper: BraveTranslateTabHelper?
+
   /// Boolean tracking custom url-scheme alert presented
   var isExternalAppAlertPresented = false
   var externalAppPopup: AlertPopupView?
@@ -634,7 +630,7 @@ class Tab: NSObject {
 
   func deleteWebView() {
     contentScriptManager.uninstall(from: self)
-    tabHelpers.removeAll()
+    translateHelper = nil
 
     if let webView = webView {
       webView.removeObserver(self, forKeyPath: KVOConstants.url.keyPath)
@@ -884,23 +880,6 @@ class Tab: NSObject {
 
     let desktopMode = userAgentOverrides[baseDomain] ?? UserAgent.shouldUseDesktopMode()
     webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
-  }
-
-  func addTabHelper(_ helper: TabHelper) {
-    let helperName = Swift.type(of: helper).tabHelperName
-    if tabHelpers[helperName] != nil {
-      assertionFailure("Tab Helper: \(helperName) already attached to this tab.")
-    }
-
-    self.tabHelpers[helperName] = helper
-  }
-
-  func getTabHelper(named name: String) -> TabHelper? {
-    self.tabHelpers[name]
-  }
-
-  func removeTabHelper(named name: String) {
-    self.tabHelpers.removeValue(forKey: name)
   }
 
   func addContentScript(_ helper: TabContentScript, name: String, contentWorld: WKContentWorld) {

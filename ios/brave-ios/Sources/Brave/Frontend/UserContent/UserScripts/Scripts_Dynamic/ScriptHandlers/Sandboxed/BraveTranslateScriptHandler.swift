@@ -95,7 +95,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     if command == "ready" {
       Task { @MainActor [weak tab] in
         try await
-          (tab?.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
+          (tab?.translateHelper
           as? BraveTranslateTabHelper)?.setupTranslate()
         replyHandler(nil, nil)
       }
@@ -111,15 +111,13 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
             from: JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
           )
 
-          guard let tab = tab,
-            let tabHelper = tab.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
-              as? BraveTranslateTabHelper
+          guard let tab = tab, let translateHelper = tab.translateHelper
           else {
             replyHandler(nil, BraveTranslateError.otherError.rawValue)
             return
           }
 
-          let (data, response) = try await tabHelper.processTranslationRequest(message)
+          let (data, response) = try await translateHelper.processTranslationRequest(message)
 
           replyHandler(
             [
@@ -201,8 +199,7 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
     }
 
     guard
-      let tabHelper = tab?.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
-        as? BraveTranslateTabHelper
+      let translateHelper = tab?.translateHelper
     else {
       return
     }
@@ -214,9 +211,10 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
       )
 
       if message.hasNoTranslate {
-        tabHelper.currentLanguageInfo.pageLanguage = tabHelper.currentLanguageInfo.currentLanguage
+        translateHelper.currentLanguageInfo.pageLanguage =
+          translateHelper.currentLanguageInfo.currentLanguage
       } else {
-        tabHelper.currentLanguageInfo.pageLanguage =
+        translateHelper.currentLanguageInfo.pageLanguage =
           !message.htmlLang.isEmpty ? Locale.Language(identifier: message.htmlLang) : nil
       }
 

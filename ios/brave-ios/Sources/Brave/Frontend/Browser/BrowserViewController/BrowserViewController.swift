@@ -2711,8 +2711,8 @@ extension BrowserViewController: TabDelegate {
     (tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
       as? Web3NameServiceScriptHandler)?.delegate = self
 
-    // Tab Helpers
-    tab.addTabHelper(BraveTranslateTabHelper(tab: tab, delegate: self))
+    // Translate Helper
+    tab.translateHelper = BraveTranslateTabHelper(tab: tab, delegate: self)
   }
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {

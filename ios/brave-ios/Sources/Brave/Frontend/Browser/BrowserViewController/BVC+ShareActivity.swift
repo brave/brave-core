@@ -106,17 +106,13 @@ extension BrowserViewController {
           callback: { [weak self] in
             guard let self = self, let tab = tab else { return }
 
-            let tabHelper =
-              tab.getTabHelper(named: BraveTranslateTabHelper.tabHelperName)
-              as? BraveTranslateTabHelper
-
-            if let tabHelper {
-              tabHelper.presentUI(on: self)
+            if let translateHelper = tab.translateHelper {
+              translateHelper.presentUI(on: self)
 
               if tab.translationState == .active {
-                tabHelper.revertTranslation()
+                translateHelper.revertTranslation()
               } else if tab.translationState != .active {
-                tabHelper.startTranslation(canShowToast: true)
+                translateHelper.startTranslation(canShowToast: true)
               }
             }
           }

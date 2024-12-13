@@ -20,7 +20,7 @@ enum BraveTranslateError: String, Error {
   case otherError
 }
 
-class BraveTranslateTabHelper: NSObject, TabHelper {
+class BraveTranslateTabHelper: NSObject {
   private weak var tab: Tab?
   private weak var delegate: BraveTranslateScriptHandlerDelegate?
   private let recognizer = NLLanguageRecognizer()
@@ -34,8 +34,6 @@ class BraveTranslateTabHelper: NSObject, TabHelper {
   private var canShowToast = false
 
   var currentLanguageInfo = BraveTranslateLanguageInfo()
-
-  static let tabHelperName = String(describing: BraveTranslateTabHelper.self)
 
   // All TabHelpers in Chromium have a `WebState* web_state` parameter in their constructor
   // WebState in Brave, is the same as `Tab`.
