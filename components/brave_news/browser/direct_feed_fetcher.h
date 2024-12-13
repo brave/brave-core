@@ -80,7 +80,7 @@ class DirectFeedFetcher {
     virtual base::WeakPtr<DirectFeedFetcher::Delegate> AsWeakPtr() = 0;
   };
 
-  explicit DirectFeedFetcher(
+  DirectFeedFetcher(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       base::WeakPtr<Delegate> delegate);
   DirectFeedFetcher(const DirectFeedFetcher&) = delete;
@@ -101,7 +101,6 @@ class DirectFeedFetcher {
       GURL url,
       GURL original_url,
       std::string publisher_id,
-
       size_t redirect_count,
       DownloadFeedCallback callback,
       std::optional<Delegate::HTTPSUpgradeInfo> https_upgrade_info);
