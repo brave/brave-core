@@ -82,6 +82,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   const configuration = useCachedValue(stateCache, c => c.configuration)
   const channels = useCachedValue(stateCache, c => c.channels as Channels)
   const publishers = useCachedValue(stateCache, c => c.publishers as Publishers)
+  const suggestedPublisherIds = useCachedValue(stateCache, c => c.suggestedPublisherIds)
 
   // Note: It's okay to fetch the FeedV2 even when the feature isn't enabled
   // because the controller will just return an empty feed.
@@ -93,18 +94,11 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   } = useFeedV2(configuration.isOptedIn && configuration.showOnNTP)
 
   const [customizePage, setCustomizePage] = useState<NewsPage>(null)
-  const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
 
   // Get the default locale on load.
   useEffect(() => {
     getBraveNewsController().getLocale().then(({ locale }) => setLocale(locale))
   }, [configuration.isOptedIn, configuration.showOnNTP])
-
-  const updateSuggestedPublisherIds = useCallback(async () => {
-    setSuggestedPublisherIds([])
-    const { suggestedPublisherIds } = await getBraveNewsController().getSuggestedPublisherIds()
-    setSuggestedPublisherIds(suggestedPublisherIds)
-  }, [])
 
   const sortedPublishers = useMemo(() =>
     Object.values(publishers)
@@ -171,7 +165,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     sortedPublishers,
     filteredPublisherIds,
     subscribedPublisherIds,
-    updateSuggestedPublisherIds,
+    updateSuggestedPublisherIds: () => getBraveNewsController().refreshSuggestedPublisherIds(),
     isOptInPrefEnabled: configuration.isOptedIn,
     isShowOnNTPPrefEnabled: configuration.showOnNTP,
     toggleBraveNewsOnNTP,
@@ -181,7 +175,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     reportVisit,
     reportSidebarFilterUsage,
     reportSessionStart
-  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart])
+  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}

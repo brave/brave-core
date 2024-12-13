@@ -312,7 +312,7 @@ void BraveNewsController::RefreshSuggestedPublisherIds() {
         }
 
         auto changed = base::Value(base::Value::Type::DICT);
-        changed.GetDict().Set("suggested_publisher_ids", mojom::ToValue(ids));
+        changed.GetDict().Set("suggestedPublisherIds", mojom::ToValue(ids));
         controller->NotifyChanged(std::move(changed));
       },
       weak_ptr_factory_.GetWeakPtr()));
