@@ -113,7 +113,6 @@
     E_CPONLY(kColorBraveVerticalTabSeparator)               \
     E_CPONLY(kColorBraveVerticalTabActiveBackground)        \
     E_CPONLY(kColorBraveVerticalTabInactiveBackground)      \
-    E_CPONLY(kColorBraveVerticalTabInactiveHoverBackground) \
     E_CPONLY(kColorBraveVerticalTabNTBIconColor)            \
     E_CPONLY(kColorBraveVerticalTabNTBTextColor)            \
     E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
