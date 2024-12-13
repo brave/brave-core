@@ -14,6 +14,7 @@
 #include "base/rand_util.h"
 #include "base/task/thread_pool.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
@@ -42,8 +43,9 @@ void OnReadDATFileData(
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
     uint8_t permission_mask,
     std::optional<DATFileDataBuffer> buffer) {
-  std::move(cb).Run(base::BindOnce(&AddDATBufferToFilterSet, permission_mask,
-                                   buffer.value_or(DATFileDataBuffer())));
+  std::move(cb).Run(
+      base::BindOnce(&AddDATBufferToFilterSet, permission_mask,
+                     std::move(buffer).value_or(DATFileDataBuffer())));
 }
 
 }  // namespace
@@ -122,16 +124,14 @@ base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
 void AdBlockComponentFiltersProvider::LoadFilterSet(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
-  base::FilePath list_file_path = GetFilterSetPath();
-
   const auto flow = perfetto::Flow::ProcessScoped(base::RandUint64());
   TRACE_EVENT("brave.adblock", "AdBlockComponentFiltersProvider::LoadFilterSet",
               flow);
 
   if (list_file_path.empty()) {
   if (!component_accessor_) {
-    // If the path is not ready yet, provide a no-op callback immediately. An
-    // update will be pushed later to notify about the newly available list.
+    // If the component is not ready yet, provide a no-op callback immediately.
+    // An update will be pushed later to notify about the newly available list.
     std::move(cb).Run(base::DoNothing());
     return;
   }

@@ -10,7 +10,7 @@
 
 #include "base/files/file_path.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
+#include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 
 namespace {
@@ -58,8 +58,8 @@ void AdBlockDefaultResourceProvider::OnComponentReady(
 void AdBlockDefaultResourceProvider::LoadResources(
     base::OnceCallback<void(const std::string& resources_json)> cb) {
   if (!component_accessor_) {
-    // If the path is not ready yet, run the callback with empty resources to
-    // avoid blocking filter data loads.
+    // If the component is not ready yet, run the callback with empty resources
+    // to avoid blocking filter data loads.
     std::move(cb).Run("[]");
     return;
   }
@@ -67,7 +67,7 @@ void AdBlockDefaultResourceProvider::LoadResources(
   auto handle_file_content = base::BindOnce(
       [](base::OnceCallback<void(const std::string& resources_json)> cb,
          std::optional<std::string> content) {
-        std::move(cb).Run(content.value_or("[]"));
+        std::move(cb).Run(std::move(content).value_or("[]"));
       },
       std::move(cb));
 

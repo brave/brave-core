@@ -9,31 +9,31 @@
 #include <string>
 
 #include "base/functional/callback.h"
-#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
 
 namespace component_updater {
 class ComponentUpdateService;
+class ComponentContentsAccessor;
 }  // namespace component_updater
 
 namespace brave_shields {
 
-using OnSecureComponentReadyCallback = base::RepeatingCallback<void(
+using OnComponentReadyCallback = base::RepeatingCallback<void(
     scoped_refptr<component_updater::ComponentContentsAccessor>)>;
 
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
-    OnSecureComponentReadyCallback callback);
+    OnComponentReadyCallback callback);
 
 void RegisterAdBlockFilterListCatalogComponent(
     component_updater::ComponentUpdateService* cus,
-    OnSecureComponentReadyCallback callback);
+    OnComponentReadyCallback callback);
 
 void RegisterAdBlockFiltersComponent(
     component_updater::ComponentUpdateService* cus,
     const std::string& component_public_key,
     const std::string& component_id,
     const std::string& component_name,
-    OnSecureComponentReadyCallback callback);
+    OnComponentReadyCallback callback);
 
 }  // namespace brave_shields
 

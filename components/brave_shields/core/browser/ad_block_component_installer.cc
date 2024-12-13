@@ -15,7 +15,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
+#include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -23,16 +23,9 @@
 
 using brave_component_updater::BraveOnDemandUpdater;
 
-namespace brave_component_updater {
-class ComponentContentsAccessor;
-}
-
 namespace brave_shields {
 
 namespace {
-
-using OnComponentReadyCallback = base::RepeatingCallback<void(
-    scoped_refptr<component_updater::ComponentContentsAccessor>)>;
 
 constexpr size_t kHashSize = 32;
 
@@ -162,7 +155,7 @@ void RegisterAdBlockComponentInternal(
     const std::string& component_public_key,
     const std::string& component_id,
     const std::string& component_name,
-    OnSecureComponentReadyCallback callback) {
+    OnComponentReadyCallback callback) {
   // In test, |cus| could be nullptr.
   if (!cus) {
     return;
@@ -178,7 +171,7 @@ void RegisterAdBlockComponentInternal(
 
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,
-    OnSecureComponentReadyCallback callback) {
+    OnComponentReadyCallback callback) {
   RegisterAdBlockComponentInternal(
       cus, kAdBlockResourceComponentBase64PublicKey,
       kAdBlockResourceComponentId, kAdBlockResourceComponentName,
@@ -187,7 +180,7 @@ void RegisterAdBlockDefaultResourceComponent(
 
 void RegisterAdBlockFilterListCatalogComponent(
     component_updater::ComponentUpdateService* cus,
-    OnSecureComponentReadyCallback callback) {
+    OnComponentReadyCallback callback) {
   RegisterAdBlockComponentInternal(
       cus, kAdBlockFilterListCatalogComponentBase64PublicKey,
       kAdBlockFilterListCatalogComponentId,
@@ -199,7 +192,7 @@ void RegisterAdBlockFiltersComponent(
     const std::string& component_public_key,
     const std::string& component_id,
     const std::string& component_name,
-    OnSecureComponentReadyCallback callback) {
+    OnComponentReadyCallback callback) {
   RegisterAdBlockComponentInternal(cus, component_public_key, component_id,
                                    component_name, std::move(callback));
 }

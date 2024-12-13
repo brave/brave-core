@@ -27,7 +27,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/component_updater/brave_component_contents_verifier.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
-#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
+#include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -244,18 +244,14 @@ base::FilePath AdBlockServiceTest::MakeTestDataCopy(
 }
 
 brave_shields::AdBlockResourceProvider*
-AdBlockServiceTest::IntsallDefaultAdBlockResources(
+AdBlockServiceTest::InstallDefaultAdBlockResources(
     const base::FilePath& component_path) {
   brave_shields::AdBlockService* service =
       g_brave_browser_process->ad_block_service();
-  auto* resource_provider =
-      static_cast<brave_shields::AdBlockDefaultResourceProvider*>(
-          service->resource_provider());
-
   base::ScopedAllowBlockingForTesting allow_blocking;
-  resource_provider->OnComponentReady(
+  service->default_resource_provider()->OnComponentReady(
       component_updater::ComponentContentsAccessor::Create(component_path));
-  return resource_provider;
+  return service->default_resource_provider();
 }
 
 void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
@@ -264,10 +260,8 @@ void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
   brave_shields::AdBlockService* service =
       g_brave_browser_process->ad_block_service();
 
-  static_cast<brave_shields::AdBlockDefaultResourceProvider*>(
-      service->resource_provider())
-      ->OnComponentReady(
-          component_updater::ComponentContentsAccessor::Create(component_path));
+  service->default_resource_provider()->OnComponentReady(
+      component_updater::ComponentContentsAccessor::Create(component_path));
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
@@ -1634,24 +1628,19 @@ class AdBlockServiceSignedComponentsTest : public AdBlockServiceTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#define MAYBE_SafeResourcesComponentAccess SafeResourcesComponentAccess
-#else
-#define MAYBE_SafeResourcesComponentAccess DISABLED_SafeResourcesComponentAccess
-#endif
 IN_PROC_BROWSER_TEST_F(AdBlockServiceSignedComponentsTest,
-                       MAYBE_SafeResourcesComponentAccess) {
+                       SafeResourcesComponentAccess) {
   const auto components_path =
       GetTestDataDir().AppendASCII("adblock-components");
   {
-    auto* resource_provider = IntsallDefaultAdBlockResources(
+    auto* resource_provider = InstallDefaultAdBlockResources(
         components_path.AppendASCII("resources_ok"));
     base::RunLoop run_loop;
     resource_provider->LoadResources(
         base::BindLambdaForTesting([&run_loop](const std::string& resources) {
           constexpr const char kExpectedResources[] =
               "[{\"name\":\"brave-fix.js\",\"aliases\":[],\"kind\":{\"mime\":"
-              "\"application/javascript\"}]";
+              "\"application/javascript\"}}]";
           EXPECT_EQ(kExpectedResources, resources);
           run_loop.Quit();
         }));
@@ -1659,12 +1648,20 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceSignedComponentsTest,
   }
 
   {
-    auto* resource_provider = IntsallDefaultAdBlockResources(
+    auto* resource_provider = InstallDefaultAdBlockResources(
         components_path.AppendASCII("resources_corrupted"));
     base::RunLoop run_loop;
     resource_provider->LoadResources(
         base::BindLambdaForTesting([&run_loop](const std::string& resources) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
           constexpr const char kExpectedResources[] = "[]";
+#else
+          // In case of extensions are disabled we don't check the signature.
+          constexpr const char kExpectedResources[] =
+              "[{\"name\":\"edited.js\",\"aliases\":[],\"kind\":{\"mime\":"
+              "\"application/javascript\"}}]";
+#endif
+
           EXPECT_EQ(kExpectedResources, resources);
           run_loop.Quit();
         }));

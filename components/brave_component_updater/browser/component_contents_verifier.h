@@ -7,13 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_COMPONENT_CONTENTS_VERIFIER_H_
 
 #include <memory>
-#include <optional>
-#include <string>
-#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
-#include "base/memory/ref_counted.h"
 
 namespace component_updater {
 
@@ -21,36 +17,7 @@ class ContentsVerifier {
  public:
   virtual ~ContentsVerifier() = default;
   virtual bool VerifyContents(const base::FilePath& relative_path,
-                              base::span<const uint8_t> contents);
-};
-
-// Use on MAY_BLOCK sequence.
-class ComponentContentsAccessor
-    : public base::RefCountedThreadSafe<ComponentContentsAccessor> {
- public:
-  ComponentContentsAccessor(const ComponentContentsAccessor&) = delete;
-  ComponentContentsAccessor(ComponentContentsAccessor&&) = delete;
-  ComponentContentsAccessor& operator=(const ComponentContentsAccessor&) =
-      delete;
-  ComponentContentsAccessor& operator=(ComponentContentsAccessor&&) = delete;
-
-  static scoped_refptr<ComponentContentsAccessor> Create(
-      const base::FilePath& component_root);
-
-  const base::FilePath& GetComponentRoot() const;
-
-  std::optional<std::string> GetFileAsString(
-      const base::FilePath& relative_path);
-  std::optional<std::vector<uint8_t>> GetFileAsBytes(
-      const base::FilePath& relative_path);
-
- private:
-  friend class base::RefCountedThreadSafe<ComponentContentsAccessor>;
-  explicit ComponentContentsAccessor(const base::FilePath& component_root);
-  ~ComponentContentsAccessor();
-
-  const base::FilePath component_root_;
-  std::unique_ptr<ContentsVerifier> verifier_;
+                              base::span<const uint8_t> contents) = 0;
 };
 
 using ContentsVerifierFactory =
@@ -58,6 +25,10 @@ using ContentsVerifierFactory =
         const base::FilePath& component_root)>;
 
 void SetupContentsVerifierFactory(ContentsVerifierFactory factory);
+
+// Uses factory set above to create the verifier.
+std::unique_ptr<ContentsVerifier> CreateContentsVerifier(
+    const base::FilePath& component_root);
 
 }  // namespace component_updater
 
