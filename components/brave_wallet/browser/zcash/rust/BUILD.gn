@@ -26,8 +26,14 @@ group("test_support") {
 }
 
 source_set("test_support_headers") {
-  visibility = [ ":*" ]
-  sources = [ "orchard_test_utils.h" ]
+  visibility = [
+    ":*",
+    "//brave/components/brave_wallet/browser/internal:test_support",
+  ]
+  sources = [
+    "orchard_test_utils.h",
+    "orchard_testing_shard_tree.h",
+  ]
 
   public_deps = [ ":orchard_headers" ]
 }

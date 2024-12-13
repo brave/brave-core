@@ -11,7 +11,6 @@
 #include "base/containers/extend.h"
 #include "base/types/expected_macros.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_types.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
@@ -146,11 +145,11 @@ bool OrchardSyncState::Truncate(const mojom::AccountIdPtr& account_id,
   return GetOrCreateShardTree(account_id).TruncateToCheckpoint(checkpoint_id);
 }
 
-// Testing
-void OrchardSyncState::OverrideShardTreeForTesting(
-    const mojom::AccountIdPtr& account_id) {
-  shard_trees_[account_id->unique_key] =
-      orchard::OrchardShardTree::CreateForTesting(storage_, account_id);
+void OrchardSyncState::OverrideShardTreeForTesting(  // IN_TEST
+    const mojom::AccountIdPtr& account_id,
+    std::unique_ptr<orchard::OrchardShardTree> shard_tree) {
+  CHECK_IS_TEST();
+  shard_trees_[account_id->unique_key] = std::move(shard_tree);
 }
 
 OrchardStorage& OrchardSyncState::orchard_storage() {

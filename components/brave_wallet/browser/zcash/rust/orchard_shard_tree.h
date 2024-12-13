@@ -40,11 +40,6 @@ class OrchardShardTree {
   static std::unique_ptr<OrchardShardTree> Create(
       ::brave_wallet::OrchardStorage& storage,
       const mojom::AccountIdPtr& account_id);
-
-  // Creates a small tree height of 8 for testing purposes.
-  static std::unique_ptr<OrchardShardTree> CreateForTesting(
-      ::brave_wallet::OrchardStorage& storage,
-      const mojom::AccountIdPtr& account_id);
 };
 
 }  // namespace orchard

@@ -15,12 +15,10 @@
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_types.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_shard_tree.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
-namespace orchard {
-class OrchardShardTree;
-}  // namespace orchard
 
 // Represents the persisted synchronization state for the Zcash blockchain.
 // The synchronization state includes account-specific information regarding
@@ -76,7 +74,9 @@ class OrchardSyncState {
   friend class OrchardSyncStateTest;
 
   // Testing
-  void OverrideShardTreeForTesting(const mojom::AccountIdPtr& account_id);
+  void OverrideShardTreeForTesting(
+      const mojom::AccountIdPtr& account_id,
+      std::unique_ptr<orchard::OrchardShardTree> shard_tree);
   OrchardStorage& orchard_storage();
 
   orchard::OrchardShardTree& GetOrCreateShardTree(

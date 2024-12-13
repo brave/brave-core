@@ -10,6 +10,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_types.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_testing_shard_tree.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -71,7 +72,9 @@ void OrchardSyncStateTest::SetUp() {
   base::FilePath db_path(
       temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
   sync_state_ = std::make_unique<OrchardSyncState>(db_path);
-  sync_state_->OverrideShardTreeForTesting(account_id_);
+  sync_state_->OverrideShardTreeForTesting(
+      account_id_, orchard::CreateShardTreeForTesting(
+                       sync_state_->orchard_storage(), account_id_));
 }
 
 TEST_F(OrchardSyncStateTest, CheckpointsPruned) {

@@ -3,8 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include <memory>
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_testing_shard_tree.h"
 
+#include <memory>
+#include <string>
+#include <utility>
+
+#include "base/check_is_test.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/cxx_orchard_shard_tree_delegate.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
@@ -14,8 +19,7 @@ namespace brave_wallet::orchard {
 
 class OrchardTestingShardTreeImpl : public OrchardShardTree {
  public:
-  OrchardTestingShardTreeImpl(base::PassKey<class OrchardShardTree>,
-                              ::rust::Box<CxxOrchardTestingShardTree>);
+  explicit OrchardTestingShardTreeImpl(::rust::Box<CxxOrchardTestingShardTree>);
   ~OrchardTestingShardTreeImpl() override;
 
   bool TruncateToCheckpoint(uint32_t checkpoint_id) override;
@@ -65,24 +69,23 @@ bool OrchardTestingShardTreeImpl::TruncateToCheckpoint(uint32_t checkpoint_id) {
 }
 
 OrchardTestingShardTreeImpl::OrchardTestingShardTreeImpl(
-    base::PassKey<class OrchardShardTree>,
     rust::Box<CxxOrchardTestingShardTree> cxx_orchard_testing_shard_tree)
     : cxx_orchard_testing_shard_tree_(
           std::move(cxx_orchard_testing_shard_tree)) {}
 
 OrchardTestingShardTreeImpl::~OrchardTestingShardTreeImpl() = default;
 
-// static
-std::unique_ptr<OrchardShardTree> OrchardShardTree::CreateForTesting(
+std::unique_ptr<OrchardShardTree> CreateShardTreeForTesting(  // IN-TEST
     ::brave_wallet::OrchardStorage& storage,
     const mojom::AccountIdPtr& account_id) {
+  CHECK_IS_TEST();
   auto shard_tree_result = create_orchard_testing_shard_tree(
       std::make_unique<CxxOrchardShardTreeDelegate>(storage, account_id));
   if (!shard_tree_result->is_ok()) {
     return nullptr;
   }
   return std::make_unique<OrchardTestingShardTreeImpl>(
-      base::PassKey<class OrchardShardTree>(), shard_tree_result->unwrap());
+      shard_tree_result->unwrap());
 }
 
 }  // namespace brave_wallet::orchard
