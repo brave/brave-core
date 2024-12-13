@@ -1,12 +1,24 @@
 specific_include_rules = {
-  "unauthorized_orchard_bundle_impl.h": [
+  "orchard_unauthorized_bundle_impl.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
-  "extended_spending_key_impl.h": [
+  "orchard_extended_spending_key_impl.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
-  "unauthorized_orchard_bundle_impl.h": [
+  "orchard_unauthorized_bundle_impl.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
+  "orchard_decoded_blocks_bundle_impl.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "cxx_orchard_shard_tree_delegate.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "orchard_shard_tree_impl.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "orchard_testing_shard_tree_impl.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ]
 }
 

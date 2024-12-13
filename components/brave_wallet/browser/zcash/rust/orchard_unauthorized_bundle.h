@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_UNAUTHORIZED_ORCHARD_BUNDLE_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_UNAUTHORIZED_ORCHARD_BUNDLE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_UNAUTHORIZED_BUNDLE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_UNAUTHORIZED_BUNDLE_H_
 
 #include <array>
 #include <memory>
@@ -12,21 +12,23 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/authorized_orchard_bundle.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_authorized_bundle.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet::orchard {
 
-// UnauthorizedOrchardBundle represents input data needed to create
+// OrchardUnauthorizedBundle represents input data needed to create
 // Orchard part for Zcash transaction.
 // Like anchor tree state(which is used for shielded inputs wittness
 // calculation), random number generator, shielded inputs and shielded outputs.
-class UnauthorizedOrchardBundle {
+// References to the Bundle in the Orchard crate with Unauthorized state:
+// https://github.com/zcash/orchard/blob/23a167e3972632586dc628ddbdd69d156dfd607b/src/builder.rs#L375
+class OrchardUnauthorizedBundle {
  public:
-  virtual ~UnauthorizedOrchardBundle() = default;
+  virtual ~OrchardUnauthorizedBundle() = default;
 
-  // Creates UnauthorizedOrchardBundle without shielded inputs
-  static std::unique_ptr<UnauthorizedOrchardBundle> Create(
+  // Creates OrchardUnauthorizedBundle without shielded inputs
+  static std::unique_ptr<OrchardUnauthorizedBundle> Create(
       base::span<const uint8_t> tree_state,
       const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs,
       std::optional<size_t> random_seed_for_testing);
@@ -42,10 +44,10 @@ class UnauthorizedOrchardBundle {
   // Reference in the zcash_primitives crate:
   // https://github.com/zcash/librustzcash/blob/5bd911f63bb9b41f97e4b37c32e79b52a7706543/zcash_primitives/src/transaction/builder.rs#L802
   // Note: this is CPU heavy method, should be executed on background thread.
-  virtual std::unique_ptr<AuthorizedOrchardBundle> Complete(
+  virtual std::unique_ptr<OrchardAuthorizedBundle> Complete(
       const std::array<uint8_t, kZCashDigestSize>& sighash) = 0;
 };
 
 }  // namespace brave_wallet::orchard
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_UNAUTHORIZED_ORCHARD_BUNDLE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_UNAUTHORIZED_BUNDLE_H_

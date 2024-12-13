@@ -8,35 +8,35 @@
 #include <utility>
 
 #include "base/memory/ptr_util.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/extended_spending_key.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_extended_spending_key.h"
 
 namespace brave_wallet {
 
-HDKeyZip32::HDKeyZip32(std::unique_ptr<orchard::ExtendedSpendingKey> esk)
-    : extended_spending_key_(std::move(esk)) {}
+HDKeyZip32::HDKeyZip32(std::unique_ptr<orchard::OrchardExtendedSpendingKey> esk)
+    : orchard_extended_spending_key_(std::move(esk)) {}
 
 HDKeyZip32::~HDKeyZip32() = default;
 
 // static
 std::unique_ptr<HDKeyZip32> HDKeyZip32::GenerateFromSeed(
     base::span<const uint8_t> seed) {
-  return base::WrapUnique(
-      new HDKeyZip32(orchard::ExtendedSpendingKey::GenerateFromSeed(seed)));
+  return base::WrapUnique(new HDKeyZip32(
+      orchard::OrchardExtendedSpendingKey::GenerateFromSeed(seed)));
 }
 
 std::unique_ptr<HDKeyZip32> HDKeyZip32::DeriveHardenedChild(uint32_t index) {
-  return base::WrapUnique(
-      new HDKeyZip32(extended_spending_key_->DeriveHardenedChild(index)));
+  return base::WrapUnique(new HDKeyZip32(
+      orchard_extended_spending_key_->DeriveHardenedChild(index)));
 }
 
 std::optional<OrchardAddrRawPart> HDKeyZip32::GetDiversifiedAddress(
     uint32_t div_index,
     OrchardAddressKind kind) {
-  return extended_spending_key_->GetDiversifiedAddress(div_index, kind);
+  return orchard_extended_spending_key_->GetDiversifiedAddress(div_index, kind);
 }
 
 OrchardFullViewKey HDKeyZip32::GetFullViewKey() {
-  return extended_spending_key_->GetFullViewKey();
+  return orchard_extended_spending_key_->GetFullViewKey();
 }
 
 }  // namespace brave_wallet

@@ -1,0 +1,48 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/config.gni")
+
+source_set("orchard_storage") {
+  sources = [
+    "orchard_shard_tree_types.cc",
+    "orchard_storage.cc",
+  ]
+
+  visibility = [
+    "//brave/components/brave_wallet/browser:*",
+    "//brave/components/brave_wallet/browser/internal:orchard_bundle",
+    "//brave/components/brave_wallet/browser/test:*",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/common",
+    "//sql",
+  ]
+
+  public_deps = [ ":headers" ]
+}
+
+source_set("headers") {
+  sources = [
+    "orchard_shard_tree_types.h",
+    "orchard_storage.h",
+  ]
+
+  visibility = [
+    ":orchard_storage",
+    "//brave/components/brave_wallet/browser/internal:orchard_bundle",
+    "//brave/components/brave_wallet/browser/test:*",
+    "//brave/components/brave_wallet/browser/zcash/rust:*",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/services/brave_wallet/public/mojom",
+    "//sql",
+  ]
+}
