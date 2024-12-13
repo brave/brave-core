@@ -40,9 +40,11 @@
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
+#include "brave/components/brave_news/common/to_value.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "components/favicon/core/favicon_service.h"
@@ -66,21 +68,27 @@ namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 48;
 
 // Creates a ChangeEvent from a lookup of all possible items and a diff.
-template <class MojomType, class EventType>
-mojo::StructPtr<EventType> CreateChangeEvent(
-    SubscriptionsDiff diff,
-    base::flat_map<std::string, MojomType> lookup) {
-  auto event = EventType::New();
+template <class MojomType>
+base::Value CreateChangeEvent(std::string_view state_key,
+                              SubscriptionsDiff diff,
+                              base::flat_map<std::string, MojomType> lookup) {
+  auto event = base::Value::Dict();
   for (const auto& changed_id : diff.changed) {
     auto it = lookup.find(changed_id);
     if (it == lookup.end()) {
       continue;
     }
-    event->addedOrUpdated[changed_id] = it->second->Clone();
+    event.Set(changed_id, mojom::ToValue(it->second));
   }
 
-  event->removed = std::move(diff.removed);
-  return event;
+  // Set removed items to null
+  for (const auto& removed_id : diff.removed) {
+    event.Set(removed_id, base::Value(base::Value::Type::NONE));
+  }
+
+  base::Value result = base::Value(base::Value::Type::DICT);
+  result.GetDict().Set(state_key, std::move(event));
+  return result;
 }
 
 }  // namespace
@@ -284,27 +292,6 @@ void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
   IN_ENGINE(GetPublishers, std::move(callback));
 }
 
-void BraveNewsController::AddPublishersListener(
-    mojo::PendingRemote<mojom::PublishersListener> listener) {
-  DVLOG(1) << __FUNCTION__;
-  // As we've just bound a new listener, let it know about our publishers.
-  // Note: We don't add the listener to the set until |GetPublishers| has
-  // returned to avoid invoking the listener twice if a fetch is in progress.
-  GetPublishers(base::BindOnce(
-      [](BraveNewsController* controller,
-         mojo::PendingRemote<mojom::PublishersListener> listener,
-         Publishers publishers) {
-        auto id = controller->publishers_listeners_.Add(std::move(listener));
-        auto* added_listener = controller->publishers_listeners_.Get(id);
-        if (added_listener) {
-          auto event = mojom::PublishersEvent::New();
-          event->addedOrUpdated = std::move(publishers);
-          added_listener->Changed(std::move(event));
-        }
-      },
-      base::Unretained(this), std::move(listener)));
-}
-
 void BraveNewsController::GetSuggestedPublisherIds(
     GetSuggestedPublisherIdsCallback callback) {
   DVLOG(1) << __FUNCTION__;
@@ -313,6 +300,22 @@ void BraveNewsController::GetSuggestedPublisherIds(
     return;
   }
   IN_ENGINE(GetSuggestedPublisherIds, std::move(callback));
+}
+
+void BraveNewsController::RefreshSuggestedPublisherIds() {
+  DVLOG(1) << __FUNCTION__;
+  GetSuggestedPublisherIds(base::BindOnce(
+      [](base::WeakPtr<BraveNewsController> controller,
+         const std::vector<std::string>& ids) {
+        if (!controller) {
+          return;
+        }
+
+        auto changed = base::Value(base::Value::Type::DICT);
+        changed.GetDict().Set("suggested_publisher_ids", mojom::ToValue(ids));
+        controller->NotifyChanged(std::move(changed));
+      },
+      weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
@@ -337,25 +340,23 @@ void BraveNewsController::GetChannels(GetChannelsCallback callback) {
   IN_ENGINE(GetChannels, std::move(callback));
 }
 
-void BraveNewsController::AddChannelsListener(
-    mojo::PendingRemote<mojom::ChannelsListener> listener) {
+void BraveNewsController::AddListener(
+    mojo::PendingRemote<mojom::Listener> listener) {
   DVLOG(1) << __FUNCTION__;
-  auto id = channels_listeners_.Add(std::move(listener));
-  GetChannels(base::BindOnce(
+  auto id = listeners_.Add(std::move(listener));
+  GetState(base::BindOnce(
       [](mojo::RemoteSetElementId id,
-         base::WeakPtr<BraveNewsController> controller, Channels channels) {
+         base::WeakPtr<BraveNewsController> controller, mojom::StatePtr state) {
         if (!controller) {
           return;
         }
 
-        auto* listener = controller->channels_listeners_.Get(id);
+        auto* listener = controller->listeners_.Get(id);
         if (!listener) {
           return;
         }
 
-        auto event = brave_news::mojom::ChannelsEvent::New();
-        event->addedOrUpdated = std::move(channels);
-        listener->Changed(std::move(event));
+        listener->Changed(mojom::ToValue(state));
       },
       id, weak_ptr_factory_.GetWeakPtr()));
 }
@@ -410,15 +411,15 @@ void BraveNewsController::OnVerifiedDirectFeedUrl(
   std::vector<mojom::PublisherPtr> direct_feeds;
 
   ParseDirectPublisherList(direct_feed_config, &direct_feeds);
-  auto event = mojom::PublishersEvent::New();
+  auto change = base::Value(base::Value::Type::DICT);
+
   for (auto& feed : direct_feeds) {
     auto publisher_id = feed->publisher_id;
-    event->addedOrUpdated[publisher_id] = std::move(feed);
+    change.GetDict().SetByDottedPath(
+        base::StrCat({"publishers.", publisher_id}), mojom::ToValue(feed));
   }
 
-  for (const auto& listener : publishers_listeners_) {
-    listener->Changed(event->Clone());
-  }
+  NotifyChanged(std::move(change));
 
   // Mark feed as requiring update
   // TODO(petemill): expose function to mark direct feeds as dirty
@@ -444,11 +445,11 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
   // Mark feed as requiring update
   IN_ENGINE_FF(EnsurePublishersIsUpdating);
 
-  for (const auto& receiver : publishers_listeners_) {
-    auto event = mojom::PublishersEvent::New();
-    event->removed.push_back(publisher_id);
-    receiver->Changed(std::move(event));
-  }
+  auto diff = base::Value(base::Value::Type::DICT);
+  auto publishers_diff = base::Value::Dict();
+  publishers_diff.Set(publisher_id, base::Value(base::Value::Type::NONE));
+  diff.GetDict().Set("publishers", std::move(publishers_diff));
+  NotifyChanged(std::move(diff));
 }
 
 void BraveNewsController::GetImageData(const GURL& padded_image_url,
@@ -599,17 +600,6 @@ void BraveNewsController::SetConfiguration(
   DVLOG(1) << __FUNCTION__;
   pref_manager_.SetConfig(std::move(configuration));
   std::move(callback).Run();
-}
-
-void BraveNewsController::AddConfigurationListener(
-    mojo::PendingRemote<mojom::ConfigurationListener> pending_listener) {
-  DVLOG(1) << __FUNCTION__;
-  auto id = configuration_listeners_.Add(std::move(pending_listener));
-  auto* listener = configuration_listeners_.Get(id);
-  if (!listener) {
-    return;
-  }
-  listener->Changed(pref_manager_.GetConfig());
 }
 
 void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
@@ -833,11 +823,9 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
             return;
           }
 
-          auto event = brave_news::mojom::PublishersEvent::New();
-          event->addedOrUpdated = std::move(publishers);
-          for (const auto& listener : controller->publishers_listeners_) {
-            listener->Changed(event->Clone());
-          }
+          auto diff = base::Value(base::Value::Type::DICT);
+          diff.GetDict().Set("publishers", mojom::ToValue(publishers));
+          controller->NotifyChanged(std::move(diff));
         },
         weak_ptr_factory_.GetWeakPtr()));
 
@@ -847,11 +835,9 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
           if (!controller) {
             return;
           }
-          auto event = brave_news::mojom::ChannelsEvent::New();
-          event->addedOrUpdated = std::move(channels);
-          for (const auto& listener : controller->channels_listeners_) {
-            listener->Changed(event->Clone());
-          }
+          auto diff = base::Value(base::Value::Type::DICT);
+          diff.GetDict().Set("channels", mojom::ToValue(channels));
+          controller->NotifyChanged(std::move(diff));
         },
         weak_ptr_factory_.GetWeakPtr()));
   } else {
@@ -884,14 +870,13 @@ void BraveNewsController::OnInitializingPrefsComplete() {
   DVLOG(1) << __FUNCTION__;
   // Once we've finished initializing prefs, notify channel & publisher
   // listeners.
-  GetChannels(
-      base::BindOnce([](Channels channels) {
-        auto event = brave_news::mojom::ChannelsEvent::New();
-        event->addedOrUpdated = std::move(channels);
-        return event;
-      })
-          .Then(base::BindOnce(&BraveNewsController::NotifyChannelsChanged,
-                               weak_ptr_factory_.GetWeakPtr())));
+  GetChannels(base::BindOnce([](Channels channels) {
+                auto diff = base::Value(base::Value::Type::DICT);
+                diff.GetDict().Set("channels", mojom::ToValue(channels));
+                return diff;
+              })
+                  .Then(base::BindOnce(&BraveNewsController::NotifyChanged,
+                                       weak_ptr_factory_.GetWeakPtr())));
 }
 
 void BraveNewsController::OnNetworkChanged(
@@ -909,9 +894,10 @@ void BraveNewsController::OnNetworkChanged(
 void BraveNewsController::OnConfigChanged() {
   DVLOG(1) << __FUNCTION__;
   ConditionallyStartOrStopTimer();
-  for (const auto& listener : configuration_listeners_) {
-    listener->Changed(pref_manager_.GetConfig());
-  }
+
+  auto change = base::Value(base::Value::Type::DICT);
+  change.GetDict().Set("config", mojom::ToValue(pref_manager_.GetConfig()));
+  NotifyChanged(std::move(change));
 }
 
 void BraveNewsController::OnPublishersChanged() {
@@ -927,26 +913,16 @@ void BraveNewsController::OnPublishersChanged() {
   last_subscriptions_ = std::move(subscriptions);
 
   // When publishers are changed, see if it affects the feed.
-  GetPublishers(
-      base::BindOnce(
-          &CreateChangeEvent<mojom::PublisherPtr, mojom::PublishersEvent>,
-          std::move(diff))
-          .Then(base::BindOnce(&BraveNewsController::NotifyPublishersChanged,
-                               weak_ptr_factory_.GetWeakPtr())));
+  GetPublishers(base::BindOnce(&CreateChangeEvent<mojom::PublisherPtr>,
+                               "publishers", std::move(diff))
+                    .Then(base::BindOnce(&BraveNewsController::NotifyChanged,
+                                         weak_ptr_factory_.GetWeakPtr())));
 
   // Check for feed update.
   IN_ENGINE(CheckForFeedsUpdate,
             base::BindOnce(&BraveNewsController::NotifyFeedChanged,
                            weak_ptr_factory_.GetWeakPtr()),
             /*refetch_data=*/false);
-}
-
-void BraveNewsController::NotifyPublishersChanged(
-    mojom::PublishersEventPtr event) {
-  DVLOG(1) << __FUNCTION__;
-  for (const auto& observer : publishers_listeners_) {
-    observer->Changed(event->Clone());
-  }
 }
 
 void BraveNewsController::OnChannelsChanged() {
@@ -957,12 +933,10 @@ void BraveNewsController::OnChannelsChanged() {
     auto diff = subscriptions.DiffChannels(last_subscriptions_);
     last_subscriptions_ = std::move(subscriptions);
 
-    GetChannels(
-        base::BindOnce(
-            &CreateChangeEvent<mojom::ChannelPtr, mojom::ChannelsEvent>,
-            std::move(diff))
-            .Then(base::BindOnce(&BraveNewsController::NotifyChannelsChanged,
-                                 weak_ptr_factory_.GetWeakPtr())));
+    GetChannels(base::BindOnce(&CreateChangeEvent<mojom::ChannelPtr>,
+                               "channels", std::move(diff))
+                    .Then(base::BindOnce(&BraveNewsController::NotifyChanged,
+                                         weak_ptr_factory_.GetWeakPtr())));
 
     // When channels are changed, see if it affects the feed.
     // TODO: We should fire a callback if an update is available, and notify
@@ -976,10 +950,21 @@ void BraveNewsController::OnChannelsChanged() {
   }
 }
 
-void BraveNewsController::NotifyChannelsChanged(mojom::ChannelsEventPtr event) {
+void BraveNewsController::GetState(BraveNewsEngine::GetStateCallback callback) {
+  IN_ENGINE(GetState, base::BindOnce(
+                          [](mojom::ConfigurationPtr config,
+                             BraveNewsEngine::GetStateCallback callback,
+                             mojom::StatePtr state) {
+                            state->configuration = std::move(config);
+                            std::move(callback).Run(std::move(state));
+                          },
+                          pref_manager_.GetConfig(), std::move(callback)));
+}
+
+void BraveNewsController::NotifyChanged(base::Value change) {
   DVLOG(1) << __FUNCTION__;
-  for (const auto& observer : channels_listeners_) {
-    observer->Changed(event->Clone());
+  for (const auto& observer : listeners_) {
+    observer->Changed(change.Clone());
   }
 }
 

@@ -34,6 +34,8 @@ static_library("common") {
     "subscriptions_snapshot.cc",
     "subscriptions_snapshot.h",
     "switches.h",
+    "to_value.cc",
+    "to_value.h",
   ]
 
   public_deps = [ ":mojom" ]

@@ -35,9 +35,13 @@ export class PublishersCachingWrapper
   }
 
   changed(diff: Value): void {
-    if (!diff) return
+    const publishersDiff = diff.dictionaryValue!.storage.publishers
+    if (!publishersDiff) return
 
-    
+    this.notifyChanged({
+      ...this.cache,
+      ...publishersDiff,
+    })
   }
 
   setPublisherFollowed(publisherId: string, enabled: boolean) {

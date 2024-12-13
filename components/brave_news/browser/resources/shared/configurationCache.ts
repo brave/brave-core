@@ -6,17 +6,18 @@
 import {
   BraveNewsControllerRemote,
   Configuration,
-  ConfigurationListenerInterface,
-  ConfigurationListenerReceiver,
+  ListenerInterface,
+  ListenerReceiver
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController from './api'
 
 import { CachingWrapper } from '$web-common/mojomCache'
+import { Value } from 'gen/mojo/public/mojom/base/values.mojom.m'
 
 export class ConfigurationCachingWrapper
   extends CachingWrapper<Configuration>
-  implements ConfigurationListenerInterface {
-  private receiver = new ConfigurationListenerReceiver(this)
+  implements ListenerInterface {
+  private receiver = new ListenerReceiver(this)
   private controller: BraveNewsControllerRemote
 
   constructor() {
@@ -30,7 +31,7 @@ export class ConfigurationCachingWrapper
 
     // We can't set up  the mojo pipe in the test environment.
     if (process.env.NODE_ENV !== 'test') {
-      this.controller.addConfigurationListener(
+      this.controller.addListener(
         this.receiver.$.bindNewPipeAndPassRemote()
       )
     }
@@ -43,10 +44,19 @@ export class ConfigurationCachingWrapper
   set(change: Partial<Configuration>) {
     const newValue = {...this.cache, ...change }
     this.controller.setConfiguration(newValue)
-    this.changed(newValue)
+    this.notifyChanged(newValue)
   }
 
-  changed(newConfiguration: Configuration): void {
-    this.notifyChanged(newConfiguration)
+  changed(diff: Value): void {
+    console.log('diff', diff)
+    const configDiff = diff.dictionaryValue!.storage.configuration
+    if (!configDiff) {
+      return
+    }
+
+    this.notifyChanged({
+      ...this.cache,
+      ...configDiff,
+    })
   }
 }

@@ -3,29 +3,30 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { EntityCachingWrapper } from '$web-common/mojomCache'
+import { CachingWrapper } from '$web-common/mojomCache'
 import {
   BraveNewsControllerRemote,
   Channel,
-  ChannelsListenerInterface,
-  ChannelsListenerReceiver
+  ListenerInterface,
+  ListenerReceiver
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController from './api'
+import { Value } from 'gen/mojo/public/mojom/base/values.mojom.m'
 
 export class ChannelsCachingWrapper
-  extends EntityCachingWrapper<Channel>
-  implements ChannelsListenerInterface {
-  private receiver = new ChannelsListenerReceiver(this)
+  extends CachingWrapper<{ [key: string]: Channel }>
+  implements ListenerInterface {
+  private receiver = new ListenerReceiver(this)
   private controller: BraveNewsControllerRemote
 
   constructor() {
-    super()
+    super({})
 
     this.controller = getBraveNewsController()
 
     // We can't setup the mojom pipe in the test environment.
     if (process.env.NODE_ENV !== 'test') {
-      this.controller.addChannelsListener(
+      this.controller.addListener(
         this.receiver.$.bindNewPipeAndPassRemote()
       )
     }
@@ -55,5 +56,16 @@ export class ChannelsCachingWrapper
     })
 
     return this.controller.setChannelSubscribed(locale, channelId, subscribed)
+  }
+
+  changed(diff: Value): void {
+    const channelsDiff = diff.dictionaryValue!.storage.channels
+    if (!channelsDiff) {
+      return
+    }
+    this.notifyChanged({
+      ...this.cache,
+      ...channelsDiff,
+    })
   }
 }

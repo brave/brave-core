@@ -51,6 +51,33 @@ void BraveNewsEngine::GetLocale(SubscriptionsSnapshot snapshot,
   GetPublishersController()->GetLocale(snapshot, std::move(callback));
 }
 
+void BraveNewsEngine::GetState(SubscriptionsSnapshot snapshot,
+                               GetStateCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  GetPublishers(snapshot,
+                base::BindOnce(
+                    [](base::WeakPtr<BraveNewsEngine> engine,
+                       SubscriptionsSnapshot snapshot,
+                       GetStateCallback callback, Publishers publishers) {
+                      if (!engine) {
+                        return;
+                      }
+
+                      engine->GetChannels(
+                          snapshot,
+                          base::BindOnce(
+                              [](GetStateCallback callback,
+                                 Publishers publishers, Channels channels) {
+                                auto state = mojom::State::New();
+                                state->publishers = std::move(publishers);
+                                state->channels = std::move(channels);
+                                std::move(callback).Run(std::move(state));
+                              },
+                              std::move(callback), std::move(publishers)));
+                    },
+                    AsWeakPtr(), snapshot, std::move(callback)));
+}
+
 void BraveNewsEngine::GetSignals(SubscriptionsSnapshot snapshot,
                                  m::GetSignalsCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
