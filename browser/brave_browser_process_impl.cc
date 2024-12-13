@@ -431,7 +431,7 @@ BraveBrowserProcessImpl::brave_referrals_service() {
 brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_) {
     brave_stats_updater_ = std::make_unique<brave_stats::BraveStatsUpdater>(
-        local_state(), g_browser_process->profile_manager());
+        local_state(), profile_manager());
   }
   return brave_stats_updater_.get();
 }
