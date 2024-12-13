@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { Value } from 'gen/mojo/public/mojom/base/values.mojom.m'
+import { useEffect, useState } from 'react';
 
 export type CacheListener<T> = (
   newValue: T,
@@ -68,7 +69,7 @@ export function valueToJS<T>(value: Value): T {
 
   if (value.dictionaryValue) {
     const result: any = {}
-    for (const [key, item] of Object.entries(value.dictionaryValue.storage)) { 
+    for (const [key, item] of Object.entries(value.dictionaryValue.storage)) {
       result[key] = valueToJS<any>(item as Value)
     }
     return result as T
@@ -88,7 +89,7 @@ export function valueToJS<T>(value: Value): T {
  * keeping track of the intermediate value.
  */
 export class CachingWrapper<T> {
-  protected cache: T
+  cache: T
   protected listeners: Array<CacheListener<T>> = []
 
   constructor(defaultValue: T) {
@@ -180,4 +181,14 @@ export class EntityCachingWrapper<Entity> extends CachingWrapper<Cache<Entity>> 
 
     this.notifyChanged(copy)
   }
+}
+
+export function useCachedValue<T, K=T>(wrapper: CachingWrapper<T>, selector: (value: T) => K = v => v as any) {
+  const [value, setValue] = useState(() => selector(wrapper.cache))
+  useEffect(() => {
+    const handler = (newValue: T) => setValue(selector(newValue))
+    wrapper.addListener(handler)
+    return () => wrapper.removeListener(handler)
+  }, [])
+  return value
 }
