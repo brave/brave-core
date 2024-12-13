@@ -1,0 +1,49 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "shardtree"
+  epoch = "0.3"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/batch.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/legacy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/prunable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/store.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/store/caching.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/store/memory.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/testing.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-0.3.2/src/tree.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.3.2"
+  cargo_pkg_authors = "Kris Nuttycombe <kris@nutty.land>"
+  cargo_pkg_name = "shardtree"
+  cargo_pkg_description = "A space-efficient Merkle tree with witnessing of marked leaves, checkpointing & state restoration."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/bitflags/v2:lib",
+    "//brave/third_party/rust/either/v1:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
+    "//brave/third_party/rust/tracing/v0_1:lib",
+  ]
+  features = [ "legacy-api" ]
+}

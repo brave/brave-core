@@ -1,0 +1,42 @@
+[package]
+name = "shardtree"
+version = "0.3.2"
+authors = [
+    "Kris Nuttycombe <kris@nutty.land>",
+]
+edition = "2021"
+rust-version = "1.60"
+license = "MIT OR Apache-2.0"
+description = "A space-efficient Merkle tree with witnessing of marked leaves, checkpointing & state restoration."
+homepage = "https://github.com/zcash/incrementalmerkletree"
+repository = "https://github.com/zcash/incrementalmerkletree"
+categories = ["algorithms", "data-structures"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+assert_matches = { version = "1.5", optional = true }
+bitflags = "2"
+either = "1.8"
+incrementalmerkletree = { version = "0.5", path = "../incrementalmerkletree" }
+proptest = { version = "1.0.0", optional = true }
+tracing = "0.1"
+
+[dev-dependencies]
+assert_matches = "1.5"
+incrementalmerkletree = { version = "0.5", path = "../incrementalmerkletree", features = ["test-dependencies"] }
+proptest = "1.0.0"
+
+[features]
+# The legacy-api feature guards types and functions that are useful for
+# migrating data previously managed using `incrementalmerkletree/legacy-api` 
+# types into the `ShardTree` data structure.
+legacy-api = ["incrementalmerkletree/legacy-api"]
+# The test-depenencies feature can be enabled to expose types and functions
+# that are useful for testing `shardtree` functionality.
+test-dependencies = ["proptest", "assert_matches", "incrementalmerkletree/test-dependencies"]
+
+[target.'cfg(unix)'.dev-dependencies]
+tempfile = ">=3, <3.7.0" # 3.7 has MSRV 1.63

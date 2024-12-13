@@ -2239,6 +2239,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "shardtree"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "bitflags 2.6.0",
+ "either",
+ "incrementalmerkletree",
+ "tracing",
+]
+
+[[package]]
 name = "signature"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2868,7 +2879,19 @@ dependencies = [
  "cxx",
  "orchard",
  "rand 0.8.5",
+ "shardtree",
+ "zcash_client_backend",
  "zcash_note_encryption",
+ "zcash_primitives",
+]
+
+[[package]]
+name = "zcash_client_backend"
+version = "0.12.1"
+dependencies = [
+ "byteorder",
+ "shardtree",
+ "zcash_encoding",
  "zcash_primitives",
 ]
 

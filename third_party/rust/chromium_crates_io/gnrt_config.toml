@@ -453,3 +453,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.zcash_protocol]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.zcash_client_backend]
+license_files = ['../../../../../common/licenses/Apache-2.0']
