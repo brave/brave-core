@@ -11,7 +11,7 @@
 #include "base/files/file_path.h"
 #include "base/task/thread_pool.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
+#include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 
 constexpr char kListCatalogFile[] = "list_catalog.json";
@@ -71,15 +71,15 @@ void AdBlockFilterListCatalogProvider::OnComponentReady(
 void AdBlockFilterListCatalogProvider::LoadFilterListCatalog(
     base::OnceCallback<void(const std::string& catalog_json)> cb) {
   if (!component_accessor_) {
-    // If the path is not ready yet, don't run the callback. An update should be
-    // pushed soon.
+    // If the component is not ready yet, don't run the callback. An update
+    // should be pushed soon.
     return;
   }
 
   auto on_load = base::BindOnce(
       [](base::OnceCallback<void(const std::string& catalog_json)> cb,
          std::optional<std::string> data) {
-        std::move(cb).Run(data.value_or(""));
+        std::move(cb).Run(std::move(data).value_or(std::string()));
       },
       std::move(cb));
 

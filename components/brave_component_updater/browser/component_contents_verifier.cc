@@ -6,76 +6,32 @@
 #include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/check_is_test.h"
-#include "base/files/file_util.h"
 #include "base/no_destructor.h"
 
 namespace component_updater {
 
 namespace {
-base::NoDestructor<ContentsVerifierFactory> g_verifier_factory;
+
+ContentsVerifierFactory& GetContentsVerifierFactory() {
+  static base::NoDestructor<ContentsVerifierFactory> factory;
+  return *factory;
 }
 
-// static
+}  // namespace
+
 void SetupContentsVerifierFactory(ContentsVerifierFactory factory) {
-  *g_verifier_factory = std::move(factory);
+  GetContentsVerifierFactory() = std::move(factory);
 }
 
-bool ContentsVerifier::VerifyContents(const base::FilePath& relative_path,
-                                      base::span<const uint8_t> contents) {
-  return true;
-}
-
-ComponentContentsAccessor::ComponentContentsAccessor(
-    const base::FilePath& component_root)
-    : component_root_(component_root),
-      verifier_(*g_verifier_factory ? g_verifier_factory->Run(component_root)
-                                    : std::make_unique<ContentsVerifier>()) {
-  if (!*g_verifier_factory) {
-    CHECK_IS_TEST();
-  }
-}
-
-ComponentContentsAccessor::~ComponentContentsAccessor() = default;
-
-// static
-scoped_refptr<ComponentContentsAccessor> ComponentContentsAccessor::Create(
+std::unique_ptr<ContentsVerifier> CreateContentsVerifier(
     const base::FilePath& component_root) {
-  return base::WrapRefCounted(new ComponentContentsAccessor(component_root));
-}
-
-const base::FilePath& ComponentContentsAccessor::GetComponentRoot() const {
-  return component_root_;
-}
-
-std::optional<std::string> ComponentContentsAccessor::GetFileAsString(
-    const base::FilePath& relative_path) {
-  std::string contents;
-  if (!base::ReadFileToString(GetComponentRoot().Append(relative_path),
-                              &contents)) {
-    return std::nullopt;
+  if (!GetContentsVerifierFactory()) {
+    CHECK_IS_TEST();
+    return nullptr;
   }
-  if (!verifier_->VerifyContents(relative_path, base::as_byte_span(contents))) {
-    return std::nullopt;
-  }
-
-  return contents;
-}
-
-std::optional<std::vector<uint8_t>> ComponentContentsAccessor::GetFileAsBytes(
-    const base::FilePath& relative_path) {
-  auto contents =
-      base::ReadFileToBytes(GetComponentRoot().Append(relative_path));
-  if (!contents) {
-    return std::nullopt;
-  }
-  if (!verifier_->VerifyContents(relative_path,
-                                 base::as_byte_span(*contents))) {
-    return std::nullopt;
-  }
-  return std::move(*contents);
+  return GetContentsVerifierFactory().Run(component_root);
 }
 
 }  // namespace component_updater

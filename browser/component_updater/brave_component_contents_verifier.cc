@@ -76,9 +76,11 @@ std::string GetRootHashForContent(base::span<const uint8_t> contents,
                                          block_size / crypto::kSHA256Length);
 }
 
-class SecureContentsVerifier : public component_updater::ContentsVerifier {
+class ExtensionsTreeHashContentsVerifier
+    : public component_updater::ContentsVerifier {
  public:
-  explicit SecureContentsVerifier(const base::FilePath& component_root) {
+  explicit ExtensionsTreeHashContentsVerifier(
+      const base::FilePath& component_root) {
     if (base::PathExists(
             component_root.AppendASCII(kBraveVerifiedContentsPath))) {
       verified_contents_ = extensions::VerifiedContents::CreateFromFile(
@@ -130,21 +132,20 @@ BASE_FEATURE(kComponentContentsVerifier,
              "ComponentContentsVerifier",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-std::unique_ptr<ContentsVerifier> CreateContentsVerifier(
+std::unique_ptr<ContentsVerifier> CreateExtensionsTreeHashContentsVerifier(
     const base::FilePath& component_root) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  const bool bypass = ShouldBypassSignature();
-  if (!bypass) {
-    return std::make_unique<SecureContentsVerifier>(component_root);
+  if (!ShouldBypassSignature()) {
+    return std::make_unique<ExtensionsTreeHashContentsVerifier>(component_root);
   }
 #endif
   // if there is no extensions enabled then we expect that on these platforms
   // the component files are protected by the OS.
-  return std::make_unique<ContentsVerifier>();
+  return nullptr;
 }
 
 void SetupComponentContentsVerifier() {
-  auto factory = base::BindRepeating(CreateContentsVerifier);
+  auto factory = base::BindRepeating(CreateExtensionsTreeHashContentsVerifier);
   SetupContentsVerifierFactory(std::move(factory));
 }
 

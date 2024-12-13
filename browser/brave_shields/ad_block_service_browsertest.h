@@ -48,7 +48,7 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   void AddNewRules(const std::string& rules,
                    uint8_t permission_mask = 0,
                    bool first_party_protections = false);
-  brave_shields::AdBlockResourceProvider* IntsallDefaultAdBlockResources(
+  brave_shields::AdBlockResourceProvider* InstallDefaultAdBlockResources(
       const base::FilePath& component_path);
   void UpdateAdBlockResources(const std::string& resources);
   void UpdateAdBlockInstanceWithRules(const std::string& rules);
