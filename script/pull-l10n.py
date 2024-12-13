@@ -22,8 +22,10 @@ BRAVE_SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Pull strings from Transifex')
-    parser.add_argument('--source_string_path', nargs=1,
+    parser = argparse.ArgumentParser(
+        description='Pull strings from Transifex or Crowdin')
+    parser.add_argument('--source_string_path',
+                        nargs=1,
                         help='path to the source file (GRD(P) or JSON)')
     parser.add_argument('--service',
                         nargs=1,
@@ -35,8 +37,8 @@ def parse_args():
                         default='Release')
     parser.add_argument('--debug', dest='debug', action='store_true',
                         help='dump downloaded content for the current ' \
-                             'language to the TransifexCurrent.txt file in ' \
-                             'the temp directory')
+                             'language to the TransifexCurrent.txt or ' \
+                             'CrowdinCurrent.txt file in the temp directory')
     return parser.parse_args()
 
 

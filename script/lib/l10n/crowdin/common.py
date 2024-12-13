@@ -34,7 +34,7 @@ crowdin_handled_files = [
 def should_use_crowdin_for_file(source_string_path, filename):
     """ Determines if the given file should be handled by Crowdin locally"""
     name = crowdin_name_from_filename(source_string_path, filename)
-    return name in crowdin_handled_files or name.startswith('greaselion_')
+    return name in crowdin_handled_files
 
 
 # pylint: disable=inconsistent-return-statements
