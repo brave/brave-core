@@ -28,11 +28,17 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   AdBlockCustomFiltersProvider& operator=(const AdBlockCustomFiltersProvider&) =
       delete;
 
+  void EnableDeveloperMode(bool enabled);
+
   void AddUserCosmeticFilter(const std::string& filter);
   void CreateSiteExemption(const std::string& host);
 
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);
+
+  // Used in BraveAdBlockHandler and updates the manually edited custom filters
+  // only if developer mode is turned on.
+  bool UpdateCustomFiltersFromSettings(const std::string& custom_filters);
 
   // AdBlockFiltersProvider
   void LoadFilterSet(
@@ -42,7 +48,10 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   std::string GetNameForDebugging() override;
 
  private:
+  void AppendCustomFilter(const std::string& filter);
+
   const raw_ptr<PrefService> local_state_;
+  bool developer_mode_enabled_ = false;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

@@ -316,6 +316,14 @@
       </template>
     </div>
 </div>
+
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.ad_block.developer_mode}}"
+  label="$i18n{adblockDeveloperModeLabel}"
+  sub-label="$i18n{adblockDeveloperModeDesc}">
+</settings-toggle-button>
+
 <div class="settings-box">
   <div class="flex">
     <div class="label shields-primary-title">
@@ -323,8 +331,20 @@
     </div>
     <div class="label secondary shields-secondary-title" inner-h-t-m-l="[[getStringHtml_('adblockCustomFiltersDesc', 'https://support.brave.com/hc/en-us/articles/6449369961741')]]"></div>
     <adblock-filter-editor
+      prefs="{{prefs}}"
       value="{{customFilters_}}"
       on-save="handleSave_"
     ></adblock-filter-editor>
   </div>
 </div>
+
+<template is="dom-if" if="[[cosmeticFilteringCustomScriptletsEnabled_]]">
+  <div class="settings-box">
+    <div class="flex">
+      <div class="label shields-primary-title">
+        $i18n{adblockCustomSciptletsListLabel}
+      </div>
+      <adblock-scriptlet-list prefs="{{prefs}}"></adblock-scriptlet-list>
+    </div>
+  </div>
+</template>

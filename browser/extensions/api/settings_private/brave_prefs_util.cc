@@ -100,6 +100,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_shields::prefs::kReduceLanguageEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_shields::prefs::kAdBlockDeveloperMode] =
+      settings_api::PrefType::kBoolean;
 
   // Webcompat Reporter
   (*s_brave_allowlist)[webcompat_reporter::prefs::kContactInfoSaveFlagPrefs] =

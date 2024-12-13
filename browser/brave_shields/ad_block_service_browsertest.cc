@@ -251,9 +251,7 @@ void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
   brave_shields::AdBlockService* service =
       g_brave_browser_process->ad_block_service();
 
-  static_cast<brave_shields::AdBlockDefaultResourceProvider*>(
-      service->resource_provider())
-      ->OnComponentReady(component_path);
+  service->default_resource_provider()->OnComponentReady(component_path);
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
@@ -274,6 +272,11 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   auto* engine = service->default_engine_.get();
   EngineTestObserver engine_observer(engine);
   engine_observer.Wait();
+}
+
+void AdBlockServiceTest::EnableDeveloperMode(bool enabled) {
+  profile()->GetPrefs()->SetBoolean(brave_shields::prefs::kAdBlockDeveloperMode,
+                                    enabled);
 }
 
 void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
@@ -314,7 +317,7 @@ base::FilePath AdBlockServiceTest::GetTestDataDir() {
   return base::PathService::CheckedGet(brave::DIR_TEST_DATA);
 }
 
-void AdBlockServiceTest::NavigateToURL(GURL url) {
+void AdBlockServiceTest::NavigateToURL(const GURL& url) {
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
 }

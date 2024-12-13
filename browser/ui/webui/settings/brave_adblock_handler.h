@@ -8,12 +8,12 @@
 
 #include <string>
 
-#include "base/scoped_observation.h"
-
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
+#include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 
 class Profile;
@@ -49,6 +49,15 @@ class BraveAdBlockHandler : public settings::SettingsPageUIHandler,
   void DeleteSubscription(const base::Value::List& args);
   void ViewSubscriptionSource(const base::Value::List& args);
   void UpdateCustomFilters(const base::Value::List& args);
+  void GetCustomScriptlets(const base::Value::List& args);
+  void OnGetCustomScriptlets(const std::string& callback_id,
+                             base::Value custom_resources);
+  void AddCustomScriptlet(const base::Value::List& args);
+  void UpdateCustomScriptlet(const base::Value::List& args);
+  void RemoveCustomScriptlet(const base::Value::List& args);
+  void OnScriptletUpdateStatus(
+      const std::string& callback_id,
+      brave_shields::AdBlockCustomResourceProvider::ErrorCode error_code);
 
   void RefreshSubscriptionsList();
 

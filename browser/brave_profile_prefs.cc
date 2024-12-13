@@ -256,6 +256,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 true);
   registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
                                 false);
+  registry->RegisterBooleanPref(brave_shields::prefs::kAdBlockDeveloperMode,
+                                false);
 
   // WebTorrent
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

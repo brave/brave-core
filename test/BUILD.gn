@@ -1125,6 +1125,7 @@ test("brave_browser_tests") {
     sources += [
       "//brave/browser/brave_autofill_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",
+      "//brave/browser/brave_shields/ad_block_custom_resources_browsertest.cc",
       "//brave/browser/renderer_context_menu/test/render_view_context_menu_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
       "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",
