@@ -27,7 +27,8 @@ class AdBlockPrefService : public KeyedService,
                            public net::ProxyConfigService::Observer {
  public:
   explicit AdBlockPrefService(AdBlockService* ad_block_service,
-                              PrefService* prefs);
+                              PrefService* prefs,
+                              PrefService* local_state);
   ~AdBlockPrefService() override;
 
   void StartProxyTracker(
@@ -40,6 +41,7 @@ class AdBlockPrefService : public KeyedService,
   void Shutdown() override;
 
   void OnPreferenceChanged(const std::string& pref_name);
+  void OnDeveloperModeChanged();
 
   // net::ProxyConfigService::Observer:
   void OnProxyConfigChanged(

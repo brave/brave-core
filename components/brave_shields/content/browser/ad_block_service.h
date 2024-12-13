@@ -47,6 +47,7 @@ class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
 class AdBlockComponentServiceManager;
 class AdBlockCustomFiltersProvider;
+class AdBlockCustomResourceProvider;
 class AdBlockLocalhostFiltersProvider;
 class AdBlockFilterListCatalogProvider;
 class AdBlockSubscriptionServiceManager;
@@ -81,9 +82,11 @@ class AdBlockService {
     void OnResourcesLoaded(const std::string& resources_json) override;
 
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set_;
-    raw_ptr<AdBlockEngine> adblock_engine_;
-    raw_ptr<AdBlockFiltersProvider> filters_provider_;    // not owned
-    raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned
+    raw_ptr<AdBlockEngine> adblock_engine_ = nullptr;               // not owned
+    raw_ptr<AdBlockFiltersProvider> filters_provider_ = nullptr;    // not owned
+    raw_ptr<AdBlockResourceProvider> resource_provider_ = nullptr;  // not owned
+    raw_ptr<AdBlockResourceProvider> custom_resource_provider_ =
+        nullptr;  // not owned
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
     bool is_filter_provider_manager_;
 
@@ -123,7 +126,9 @@ class AdBlockService {
   AdBlockComponentServiceManager* component_service_manager();
   AdBlockSubscriptionServiceManager* subscription_service_manager();
   AdBlockCustomFiltersProvider* custom_filters_provider();
+  AdBlockCustomResourceProvider* custom_resource_provider();
 
+  void EnableDeveloperMode(bool enabled);
   void EnableTag(const std::string& tag, bool enabled);
   void AddUserCosmeticFilter(const std::string& filter);
 
@@ -149,7 +154,7 @@ class AdBlockService {
 
   static std::string g_ad_block_dat_file_version_;
 
-  AdBlockResourceProvider* resource_provider();
+  AdBlockDefaultResourceProvider* default_resource_provider();
   AdBlockComponentFiltersProvider* default_filters_provider() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return default_filters_provider_.get();
@@ -181,8 +186,12 @@ class AdBlockService {
 
   AdBlockListP3A list_p3a_;
 
-  std::unique_ptr<AdBlockDefaultResourceProvider> resource_provider_
+  std::unique_ptr<AdBlockResourceProvider> resource_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
+  raw_ptr<AdBlockDefaultResourceProvider> default_resource_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_) = nullptr;
+  raw_ptr<AdBlockCustomResourceProvider> custom_resource_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_) = nullptr;
   std::unique_ptr<AdBlockCustomFiltersProvider> custom_filters_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockLocalhostFiltersProvider> localhost_filters_provider_

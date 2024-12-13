@@ -177,13 +177,14 @@ void AdblockDOMHandler::HandleGetListSubscriptions(
 void AdblockDOMHandler::HandleUpdateCustomFilters(
     const base::Value::List& args) {
   DCHECK_EQ(args.size(), 1U);
-  if (!args[0].is_string())
+  if (!args[0].is_string()) {
     return;
+  }
 
   std::string custom_filters = args[0].GetString();
   g_brave_browser_process->ad_block_service()
       ->custom_filters_provider()
-      ->UpdateCustomFilters(custom_filters);
+      ->UpdateCustomFiltersFromSettings(custom_filters);
 }
 
 void AdblockDOMHandler::HandleSubmitNewSubscription(

@@ -9,6 +9,7 @@ import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/icons.html.js';
 import './components/brave_adblock_subscribe_dropdown.js';
 import './components/brave_adblock_editor.js';
+import './components/brave_adblock_scriptlet_list.js';
 
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
@@ -18,6 +19,10 @@ import {BaseMixin} from '../base_mixin.js';
 
 import {BraveAdblockBrowserProxyImpl} from './brave_adblock_browser_proxy.js'
 import {getTemplate} from './brave_adblock_subpage.html.js'
+
+import { loadTimeData } from '../i18n_setup.js'
+
+import type {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js';
 
 const AdBlockSubpageBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
@@ -41,6 +46,12 @@ class AdBlockSubpage extends AdBlockSubpageBase {
         type: Boolean,
         value: false
       },
+      cosmeticFilteringCustomScriptletsEnabled_: {
+        type: Boolean,
+        value: loadTimeData.getBoolean(
+          'cosmeticFilteringCustomScriptletsEnabled'
+        )
+      }
     }
   }
 

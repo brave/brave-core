@@ -6,6 +6,7 @@
 import("//third_party/widevine/cdm/widevine.gni")
 
 brave_chromium_src_chrome_browser_prefs_deps = [
+  "//brave/components/brave_shields/core/common",
   "//brave/components/brave_sync",
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/brave_wallet/browser",

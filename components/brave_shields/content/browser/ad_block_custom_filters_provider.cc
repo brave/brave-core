@@ -37,6 +37,14 @@ AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
 
 AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
 
+void AdBlockCustomFiltersProvider::EnableDeveloperMode(bool enabled) {
+  if (developer_mode_enabled_ == enabled) {
+    return;
+  }
+  developer_mode_enabled_ = enabled;
+  NotifyObservers(engine_is_default_);
+}
+
 void AdBlockCustomFiltersProvider::AddUserCosmeticFilter(
     const std::string& filter) {
   std::string custom_filters = GetCustomFilters();
@@ -73,6 +81,14 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
   NotifyObservers(engine_is_default_);
 
   return true;
+}
+
+bool AdBlockCustomFiltersProvider::UpdateCustomFiltersFromSettings(
+    const std::string& custom_filters) {
+  if (!developer_mode_enabled_) {
+    return false;
+  }
+  return UpdateCustomFilters(custom_filters);
 }
 
 void AdBlockCustomFiltersProvider::LoadFilterSet(

@@ -36,7 +36,7 @@ class AdBlockResourceProvider {
       base::OnceCallback<void(const std::string& resources_json)>) = 0;
 
  protected:
-  void OnResourcesLoaded(const std::string& resources_json);
+  void NotifyResourcesLoaded(const std::string& resources_json);
 
  private:
   base::ObserverList<Observer> observers_;
