@@ -97,6 +97,8 @@ extension BrowserViewController: WKNavigationDelegate {
       }
     }
 
+    hideToastsOnNavigationStartIfNeeded(tabManager)
+
     resetRedirectChain(webView)
 
     // Append source URL to redirect chain
@@ -427,9 +429,20 @@ extension BrowserViewController: WKNavigationDelegate {
       ) {
         // Ensure the webView is not a link preview popup.
         if self.presentedViewController == nil {
+          let showSearchResultAdClickedPrivacyNotice =
+            rewards.ads.shouldShowSearchResultAdClickedInfoBar()
           BraveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(
             requestURL,
-            rewards: rewards
+            rewards: rewards,
+            completion: { [weak self] success in
+              guard let self, success, showSearchResultAdClickedPrivacyNotice else {
+                return
+              }
+              let searchResultClickedInfobar = SearchResultAdClickedInfoBar(
+                tabManager: self.tabManager
+              )
+              self.show(toast: searchResultClickedInfobar, duration: nil)
+            }
           )
         }
       } else {

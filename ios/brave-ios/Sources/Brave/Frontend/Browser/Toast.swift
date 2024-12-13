@@ -14,6 +14,8 @@ class Toast: UIView {
 
   var displayState = State.dismissed
 
+  var tapDismissalMode: TapDismissalMode = .anyTap
+
   lazy var gestureRecognizer: UITapGestureRecognizer = {
     let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
     gestureRecognizer.cancelsTouchesInView = false
@@ -52,7 +54,7 @@ class Toast: UIView {
       UIView.animate(
         withDuration: SimpleToastUX.toastAnimationDuration,
         animations: {
-          self.animationConstraint?.update(offset: 0)
+          self.animationConstraint?.update(offset: -self.bounds.height)
           self.layoutIfNeeded()
         },
         completion: { finished in
@@ -81,7 +83,7 @@ class Toast: UIView {
     UIView.animate(
       withDuration: duration,
       animations: {
-        self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
+        self.animationConstraint?.update(offset: 0)
         self.layoutIfNeeded()
       },
       completion: { finished in
@@ -97,6 +99,14 @@ class Toast: UIView {
   }
 
   @objc func handleTap(_ gestureRecognizer: UIGestureRecognizer) {
+    if tapDismissalMode == .outsideTap {
+      let location = gestureRecognizer.location(in: self)
+      // Check if the tap was inside the toast view
+      if self.point(inside: location, with: nil) {
+        return
+      }
+    }
+
     dismiss(false)
   }
 
@@ -105,5 +115,10 @@ class Toast: UIView {
     case pendingShow
     case pendingDismiss
     case dismissed
+  }
+
+  enum TapDismissalMode {
+    case outsideTap
+    case anyTap
   }
 }
