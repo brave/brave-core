@@ -30,7 +30,8 @@ SOURCE_ROOT = os.path.dirname(BRAVE_SOURCE_ROOT)
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Push strings to Transifex')
+    parser = argparse.ArgumentParser(
+        description='Push strings to Transifex or Crowdin')
     parser.add_argument('--source_string_path', nargs=1, required=True)
     parser.add_argument('--service',
                         nargs=1,
@@ -45,14 +46,15 @@ def parse_args():
                        dest='with_translations',
                        action='store_true',
                        help='Uploads translations from the local .xtb and ' \
-                            '.json files to Transifex. WARNING: This will ' \
-                            'overwrite the Transifex translations with the ' \
-                            'local values')
+                            '.json files to Transifex or Crowdin.' \
+                            'WARNING: This will overwrite the Transifex ' \
+                            'translations with the local values')
     group.add_argument('--with_missing_translations',
                        dest='with_missing_translations', action='store_true',
                        help='Uploads translations from the local .xtb and ' \
-                            '.json files to Transifex, but only for strings '\
-                            'that are not translated in Transifex.')
+                            '.json files to Transifex or Crowdin, but only ' \
+                            'for strings that are not translated in ' \
+                            'Transifex/Crowdin.')
     return parser.parse_args()
 
 
