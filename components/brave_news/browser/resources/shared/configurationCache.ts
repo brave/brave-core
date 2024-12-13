@@ -7,11 +7,12 @@ import {
   BraveNewsControllerRemote,
   Configuration,
   ListenerInterface,
-  ListenerReceiver
+  ListenerReceiver,
+  State
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController from './api'
 
-import { CachingWrapper } from '$web-common/mojomCache'
+import { CachingWrapper, valueToJS } from '$web-common/mojomCache'
 import { Value } from 'gen/mojo/public/mojom/base/values.mojom.m'
 
 export class ConfigurationCachingWrapper
@@ -48,15 +49,15 @@ export class ConfigurationCachingWrapper
   }
 
   changed(diff: Value): void {
-    console.log('diff', diff)
-    const configDiff = diff.dictionaryValue!.storage.configuration
-    if (!configDiff) {
+    const parsed = valueToJS<Partial<State>>(diff).configuration
+    console.log('diff', parsed)
+    if (!diff) {
       return
     }
 
     this.notifyChanged({
       ...this.cache,
-      ...configDiff,
+      ...parsed,
     })
   }
 }

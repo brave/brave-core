@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { Value } from 'gen/mojo/public/mojom/base/values.mojom.m'
+
 export type CacheListener<T> = (
   newValue: T,
   oldValue: T
@@ -37,6 +39,46 @@ export function immutableMerge<T extends { [key: string | number]: any; }>(initi
   }
 
   return result
+}
+
+export function valueToJS<T>(value: Value): T {
+  if (value.binaryValue) {
+    return value.binaryValue as T
+  }
+
+  if (value.boolValue) {
+    return value.boolValue as T
+  }
+
+  if (value.doubleValue) {
+    return value.doubleValue as T
+  }
+
+  if (value.intValue) {
+    return value.intValue as T
+  }
+
+  if (value.stringValue) {
+    return value.stringValue as T
+  }
+
+  if (value.listValue) {
+    return value.listValue.storage.map((item) => valueToJS<any>(item)) as T
+  }
+
+  if (value.dictionaryValue) {
+    const result: any = {}
+    for (const [key, item] of Object.entries(value.dictionaryValue.storage)) { 
+      result[key] = valueToJS<any>(item as Value)
+    }
+    return result as T
+  }
+
+  if (value.nullValue) {
+    return null as T
+  }
+
+  return null as T
 }
 
 /**

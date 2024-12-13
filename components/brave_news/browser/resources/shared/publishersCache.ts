@@ -8,11 +8,12 @@ import {
   Publisher,
   ListenerInterface,
   ListenerReceiver,
-  UserEnabled
+  UserEnabled,
+  State
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController, { isDirectFeed } from './api'
 
-import { CachingWrapper } from '$web-common/mojomCache'
+import { CachingWrapper, valueToJS } from '$web-common/mojomCache'
 import { Value } from 'gen/mojo/public/mojom/base/values.mojom.m'
 
 export class PublishersCachingWrapper
@@ -35,12 +36,12 @@ export class PublishersCachingWrapper
   }
 
   changed(diff: Value): void {
-    const publishersDiff = diff.dictionaryValue!.storage.publishers
-    if (!publishersDiff) return
+    const parsed = valueToJS<Partial<State>>(diff).publishers
+    if (!parsed) return
 
     this.notifyChanged({
       ...this.cache,
-      ...publishersDiff,
+      ...parsed,
     })
   }
 

@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CachingWrapper } from '$web-common/mojomCache'
+import { CachingWrapper, valueToJS } from '$web-common/mojomCache'
 import {
   BraveNewsControllerRemote,
   Channel,
   ListenerInterface,
-  ListenerReceiver
+  ListenerReceiver,
+  State
 } from 'gen/brave/components/brave_news/common/brave_news.mojom.m'
 import getBraveNewsController from './api'
 import { Value } from 'gen/mojo/public/mojom/base/values.mojom.m'
@@ -59,13 +60,13 @@ export class ChannelsCachingWrapper
   }
 
   changed(diff: Value): void {
-    const channelsDiff = diff.dictionaryValue!.storage.channels
-    if (!channelsDiff) {
+    const parsed = valueToJS<Partial<State>>(diff).channels
+    if (!parsed) {
       return
     }
     this.notifyChanged({
       ...this.cache,
-      ...channelsDiff,
+      ...parsed,
     })
   }
 }
