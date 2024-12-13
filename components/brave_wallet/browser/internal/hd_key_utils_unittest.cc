@@ -47,4 +47,14 @@ TEST(HDKeyUtilsUnitTest, ParseFullHDPath) {
   EXPECT_FALSE(ParseFullHDPath("m/1'1"));
 }
 
+TEST(HDKeyUtilsUnitTest, ScopedSecureZeroSpan) {
+  auto array = std::to_array<uint8_t>({1, 2, 3, 4, 5});
+  {
+    ScopedSecureZeroSpan scoped_zero_span(array);
+    EXPECT_EQ(array, std::to_array<uint8_t>({1, 2, 3, 4, 5}));
+  }
+
+  EXPECT_EQ(array, std::to_array<uint8_t>({0, 0, 0, 0, 0}));
+}
+
 }  // namespace brave_wallet

@@ -113,7 +113,12 @@ std::vector<uint8_t> SolanaKeyring::SignMessage(
     return std::vector<uint8_t>();
   }
 
-  return base::ToVector(hd_key->Sign(message));
+  auto signature = hd_key->Sign(message);
+  if (!signature) {
+    return std::vector<uint8_t>();
+  }
+
+  return base::ToVector(*signature);
 }
 
 std::vector<std::string> SolanaKeyring::GetHDAccountsForTesting() const {

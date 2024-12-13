@@ -11,8 +11,16 @@
 #include "base/numerics/checked_math.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
+#include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
+
+namespace internal {
+void SecureZeroBuffer(base::span<uint8_t> data) {
+  crypto::internal::SecureZeroBuffer(data);
+}
+
+}  // namespace internal
 
 std::optional<std::vector<uint32_t>> ParseFullHDPath(std::string_view path) {
   auto entries = base::SplitStringPiece(
@@ -45,6 +53,13 @@ std::optional<std::vector<uint32_t>> ParseFullHDPath(std::string_view path) {
   }
 
   return result;
+}
+
+ScopedSecureZeroSpan::ScopedSecureZeroSpan(base::span<uint8_t> span)
+    : span_(span) {}
+
+ScopedSecureZeroSpan::~ScopedSecureZeroSpan() {
+  crypto::internal::SecureZeroBuffer(span_);
 }
 
 }  // namespace brave_wallet

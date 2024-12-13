@@ -238,8 +238,8 @@ TEST(HDKeyEd25519UnitTest, SignAndVerify) {
   auto key = HDKeyEd25519::GenerateFromSeedAndPath(bytes, "m");
   const std::vector<uint8_t> msg_a(32, 0x00);
   const std::vector<uint8_t> msg_b(32, 0x08);
-  const auto sig_a = key->Sign(msg_a);
-  const auto sig_b = key->Sign(msg_b);
+  const auto sig_a = *key->Sign(msg_a);
+  const auto sig_b = *key->Sign(msg_b);
 
   EXPECT_TRUE(VerifySignature(*key, msg_a, sig_a));
   EXPECT_TRUE(VerifySignature(*key, msg_b, sig_b));
@@ -265,9 +265,16 @@ TEST(HDKeyEd25519UnitTest, GenerateFromPrivateKey) {
   EXPECT_EQ(
       "6260C446B2BA429541722F6BAABBEEAF3D1B5981DA326A2DB66804B5EACE770D"
       "58CFBA0E0D409A3054E80C00505215C7CCD7A040F23364005A47CDE7FCED1400",
-      base::HexEncode(master_key->Sign(base::byte_span_from_cstring("hello"))));
+      base::HexEncode(
+          *master_key->Sign(base::byte_span_from_cstring("hello"))));
 
-  key_pair.back() = 0;
+  // `GenerateFromKeyPair` should fail when private and public key don't match
+  // each other
+  std::array<uint8_t, 64> another_key_pair;
+  std::array<uint8_t, 32> another_pubkey;
+  ED25519_keypair(another_pubkey.data(), another_key_pair.data());
+  // Replace pubkey part with another valid pubkey.
+  base::span(key_pair).last<32>().copy_from(another_pubkey);
   EXPECT_FALSE(HDKeyEd25519::GenerateFromKeyPair(key_pair));
 }
 

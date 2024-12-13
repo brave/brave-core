@@ -7,9 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_ED25519_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/containers/span.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_utils.h"
 
 namespace brave_wallet {
 
@@ -39,7 +41,7 @@ class HDKeyEd25519 {
 
   std::unique_ptr<HDKeyEd25519> DeriveHardenedChild(uint32_t index);
 
-  std::array<uint8_t, kEd25519SignatureSize> Sign(
+  std::optional<std::array<uint8_t, kEd25519SignatureSize>> Sign(
       base::span<const uint8_t> msg);
 
   base::span<const uint8_t, kEd25519SecretKeySize> GetPrivateKeyAsSpan() const
@@ -55,8 +57,8 @@ class HDKeyEd25519 {
 
   std::unique_ptr<HDKeyEd25519> DeriveChild(uint32_t index);
 
-  std::array<uint8_t, kEd25519KeypairSize> key_pair_ = {};
-  std::array<uint8_t, kEd25519ChainCodeSize> chain_code_ = {};
+  SecureByteArray<kEd25519KeypairSize> key_pair_;
+  SecureByteArray<kEd25519ChainCodeSize> chain_code_;
 };
 
 }  // namespace brave_wallet

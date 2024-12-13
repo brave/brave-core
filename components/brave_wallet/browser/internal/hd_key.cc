@@ -134,6 +134,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(base::span<const uint8_t> seed) {
   }
 
   auto hmac = HmacSha512(base::byte_span_from_cstring(kMasterSecret), seed);
+  auto scoped_zero_span = ScopedSecureZeroSpan(hmac);
   auto [IL, IR] = base::span(hmac).split_at(kSHA512HashLength / 2);
 
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
@@ -538,6 +539,7 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
   data.push_back(index & 0xFF);
 
   auto hmac = HmacSha512(chain_code_, data);
+  auto scoped_zero_span = ScopedSecureZeroSpan(hmac);
   auto [IL, IR] = base::span(hmac).split_at(kSHA512HashLength / 2);
 
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();

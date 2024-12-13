@@ -20,7 +20,9 @@
 #include "third_party/boringssl/src/include/openssl/hmac.h"
 
 namespace brave_wallet {
+
 namespace {
+
 std::array<uint8_t, 64> ConcatArrays(const std::array<uint8_t, 32>& arr1,
                                      const std::array<uint8_t, 32>& arr2) {
   std::array<uint8_t, 64> result;
@@ -28,6 +30,7 @@ std::array<uint8_t, 64> ConcatArrays(const std::array<uint8_t, 32>& arr1,
   base::ranges::copy(arr2, result.begin() + 32);
   return result;
 }
+
 }  // namespace
 
 KeccakHashArray KeccakHash(base::span<const uint8_t> input) {

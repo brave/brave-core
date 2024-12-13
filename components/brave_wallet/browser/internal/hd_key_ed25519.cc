@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/containers/span.h"
@@ -24,17 +23,16 @@ namespace {
 
 constexpr char kMasterSecret[] = "ed25519 seed";
 
-// Validate keypair by signing and verifying signature to ensure included
-// private key matches public key.
+// Validate keypair(private key matches public key) by using first half as a
+// seed.
 bool ValidateKeypair(base::span<const uint8_t, kEd25519KeypairSize> key_pair) {
-  std::array<uint8_t, kEd25519SignatureSize> signature = {};
-  auto msg = base::byte_span_from_cstring("brave");
+  std::array<uint8_t, kEd25519KeypairSize> validated_key_pair;
 
-  CHECK(
-      ED25519_sign(signature.data(), msg.data(), msg.size(), key_pair.data()));
+  std::array<uint8_t, ED25519_PUBLIC_KEY_LEN> public_key;
+  ED25519_keypair_from_seed(public_key.data(), validated_key_pair.data(),
+                            key_pair.first<ED25519_PRIVATE_KEY_LEN>().data());
 
-  return !!ED25519_verify(msg.data(), msg.size(), signature.data(),
-                          key_pair.last<kEd25519PublicKeySize>().data());
+  return validated_key_pair == key_pair;
 }
 
 }  // namespace
@@ -47,13 +45,15 @@ HDKeyEd25519::~HDKeyEd25519() = default;
 HDKeyEd25519::HDKeyEd25519(base::span<const uint8_t> key,
                            base::span<const uint8_t> data) {
   auto hmac = HmacSha512(key, data);
+  auto scoped_zero_span = ScopedSecureZeroSpan(hmac);
   auto [il, ir] = base::span(hmac).split_at<32>();
 
   // `public_key` is not used, we use key pair instead.
   std::array<uint8_t, ED25519_PUBLIC_KEY_LEN> public_key;
-  ED25519_keypair_from_seed(public_key.data(), key_pair_.data(), il.data());
+  ED25519_keypair_from_seed(public_key.data(), key_pair_.AsSpan().data(),
+                            il.data());
 
-  base::span(chain_code_).copy_from(ir);
+  chain_code_.AsSpan().copy_from(ir);
 }
 
 // static
@@ -64,7 +64,7 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromKeyPair(
   }
 
   auto result = std::make_unique<HDKeyEd25519>();
-  base::span(result->key_pair_).copy_from(key_pair);
+  result->key_pair_.AsSpan().copy_from(key_pair);
   return result;
 }
 
@@ -81,15 +81,16 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveHardenedChild(
 }
 
 std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveChild(uint32_t index) {
-  std::vector<uint8_t> hmac_payload(37);
+  std::array<uint8_t, 37> hmac_payload = {};
 
   auto span_writer = base::SpanWriter(base::span(hmac_payload));
   // https://github.com/satoshilabs/slips/blob/master/slip-0010.md#private-parent-key--private-child-key
   span_writer.Write(base::U8ToBigEndian(0));
   span_writer.Write(GetPrivateKeyAsSpan());
   span_writer.Write(base::U32ToBigEndian(index));
+  DCHECK_EQ(span_writer.remaining(), 0u);
 
-  return base::WrapUnique(new HDKeyEd25519(chain_code_, hmac_payload));
+  return base::WrapUnique(new HDKeyEd25519(chain_code_.AsSpan(), hmac_payload));
 }
 
 // static
@@ -117,23 +118,25 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeedAndPath(
   return hd_key;
 }
 
-std::array<uint8_t, kEd25519SignatureSize> HDKeyEd25519::Sign(
+std::optional<std::array<uint8_t, kEd25519SignatureSize>> HDKeyEd25519::Sign(
     base::span<const uint8_t> msg) {
   std::array<uint8_t, kEd25519SignatureSize> signature = {};
 
-  CHECK(
-      ED25519_sign(signature.data(), msg.data(), msg.size(), key_pair_.data()));
+  if (!ED25519_sign(signature.data(), msg.data(), msg.size(),
+                    key_pair_.AsSpan().data())) {
+    return std::nullopt;
+  }
   return signature;
 }
 
 base::span<const uint8_t, kEd25519SecretKeySize>
 HDKeyEd25519::GetPrivateKeyAsSpan() const {
-  return base::span(key_pair_).first<kEd25519SecretKeySize>();
+  return key_pair_.AsSpan().first<kEd25519SecretKeySize>();
 }
 
 base::span<const uint8_t, kEd25519PublicKeySize>
 HDKeyEd25519::GetPublicKeyAsSpan() const {
-  return base::span(key_pair_).last<kEd25519PublicKeySize>();
+  return key_pair_.AsSpan().last<kEd25519PublicKeySize>();
 }
 
 std::string HDKeyEd25519::GetBase58EncodedPublicKey() const {
@@ -141,7 +144,7 @@ std::string HDKeyEd25519::GetBase58EncodedPublicKey() const {
 }
 
 std::string HDKeyEd25519::GetBase58EncodedKeypair() const {
-  return EncodeBase58(key_pair_);
+  return EncodeBase58(key_pair_.AsSpan());
 }
 
 }  // namespace brave_wallet
