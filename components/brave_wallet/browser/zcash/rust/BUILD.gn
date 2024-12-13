@@ -17,35 +17,79 @@ group("rust") {
   deps = [ ":orchard_impl" ]
 }
 
+group("test_support") {
+  visibility =
+      [ "//brave/components/brave_wallet/browser/internal:test_support" ]
+
+  public_deps = [ ":test_support_headers" ]
+  deps = [ ":test_support_impl" ]
+}
+
+source_set("test_support_headers") {
+  visibility = [
+    ":*",
+    "//brave/components/brave_wallet/browser/internal:test_support",
+  ]
+  sources = [
+    "orchard_test_utils.h",
+    "orchard_testing_shard_tree.h",
+  ]
+
+  public_deps = [ ":orchard_headers" ]
+}
+
+source_set("test_support_impl") {
+  visibility = [ ":test_support" ]
+  sources = [
+    "orchard_test_utils.cc",
+    "orchard_testing_shard_tree.cc",
+  ]
+
+  deps = [
+    ":orchard_impl",
+    ":rust_lib",
+    ":test_support_headers",
+  ]
+}
+
 source_set("orchard_headers") {
   visibility = [ ":*" ]
 
   sources = [
-    "authorized_orchard_bundle.h",
-    "extended_spending_key.h",
+    "orchard_authorized_bundle.h",
     "orchard_block_decoder.h",
-    "unauthorized_orchard_bundle.h",
+    "orchard_decoded_blocks_bundle.h",
+    "orchard_extended_spending_key.h",
+    "orchard_shard_tree.h",
+    "orchard_unauthorized_bundle.h",
   ]
 
   public_deps = [
     "//base",
+    "//brave/components/brave_wallet/browser/internal/orchard_storage:headers",
     "//brave/components/brave_wallet/common",
     "//brave/components/services/brave_wallet/public/mojom",
   ]
 }
 
 source_set("orchard_impl") {
-  visibility = [ ":rust" ]
+  visibility = [
+    ":rust",
+    ":test_support_impl",
+  ]
 
   sources = [
-    "authorized_orchard_bundle_impl.cc",
-    "authorized_orchard_bundle_impl.h",
-    "extended_spending_key_impl.cc",
-    "extended_spending_key_impl.h",
-    "orchard_block_decoder_impl.cc",
-    "orchard_block_decoder_impl.h",
-    "unauthorized_orchard_bundle_impl.cc",
-    "unauthorized_orchard_bundle_impl.h",
+    "cxx_orchard_shard_tree_delegate.cc",
+    "orchard_authorized_bundle_impl.cc",
+    "orchard_authorized_bundle_impl.h",
+    "orchard_block_decoder.cc",
+    "orchard_decoded_blocks_bundle_impl.cc",
+    "orchard_decoded_blocks_bundle_impl.h",
+    "orchard_extended_spending_key_impl.cc",
+    "orchard_extended_spending_key_impl.h",
+    "orchard_shard_tree.cc",
+    "orchard_unauthorized_bundle_impl.cc",
+    "orchard_unauthorized_bundle_impl.h",
   ]
 
   deps = [
@@ -57,8 +101,22 @@ source_set("orchard_impl") {
   ]
 }
 
+source_set("cxx_interfaces") {
+  visibility = [ ":*" ]
+  sources = [ "cxx_orchard_shard_tree_delegate.h" ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_wallet/common",
+    "//build/rust:cxx_cppdeps",
+  ]
+}
+
 rust_static_library("rust_lib") {
-  visibility = [ ":orchard_impl" ]
+  visibility = [
+    ":orchard_impl",
+    ":test_support_impl",
+  ]
 
   crate_name = "zcash"
   crate_root = "lib.rs"
@@ -69,14 +127,19 @@ rust_static_library("rust_lib") {
   deps = [
     "librustzcash:zcash_client_backend",
     "librustzcash:zcash_primitives",
+    "librustzcash:zcash_protocol",
     "//brave/components/brave_wallet/rust:rust_lib",
     "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
     "//brave/third_party/rust/memuse/v0_2:lib",
     "//brave/third_party/rust/nonempty/v0_7:lib",
     "//brave/third_party/rust/orchard/v0_8:lib",
+    "//brave/third_party/rust/pasta_curves/v0_5:lib",
+    "//brave/third_party/rust/paste/v1:lib",
     "//brave/third_party/rust/rand/v0_8:lib",
     "//brave/third_party/rust/shardtree/v0_3:lib",
     "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
     "//third_party/rust/byteorder/v1:lib",
   ]
+
+  public_deps = [ ":cxx_interfaces" ]
 }

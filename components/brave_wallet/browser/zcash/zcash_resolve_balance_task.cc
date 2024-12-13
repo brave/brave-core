@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_balance_task.h"
 
+#include <utility>
+
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -55,8 +57,8 @@ void ZCashResolveBalanceTask::WorkOnTask() {
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     if (!orchard_notes_) {
-      zcash_wallet_service_->orchard_storage()
-          .AsyncCall(&ZCashOrchardStorage::GetSpendableNotes)
+      zcash_wallet_service_->sync_state()
+          .AsyncCall(&OrchardSyncState::GetSpendableNotes)
           .WithArgs(account_id_.Clone())
           .Then(base::BindOnce(&ZCashResolveBalanceTask::OnGetSpendableNotes,
                                weak_ptr_factory_.GetWeakPtr()));
@@ -76,8 +78,7 @@ void ZCashResolveBalanceTask::WorkOnTask() {
 
 #if BUILDFLAG(ENABLE_ORCHARD)
 void ZCashResolveBalanceTask::OnGetSpendableNotes(
-    base::expected<std::vector<OrchardNote>, ZCashOrchardStorage::Error>
-        result) {
+    base::expected<std::vector<OrchardNote>, OrchardStorage::Error> result) {
   if (!result.has_value()) {
     error_ = result.error().message;
     ScheduleWorkOnTask();

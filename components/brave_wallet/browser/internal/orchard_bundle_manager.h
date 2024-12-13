@@ -11,8 +11,8 @@
 #include <optional>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/zcash/rust/authorized_orchard_bundle.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/unauthorized_orchard_bundle.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_authorized_bundle.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_unauthorized_bundle.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
@@ -45,7 +45,7 @@ class OrchardBundleManager {
   // Returns in unauthorized state
   static std::unique_ptr<OrchardBundleManager> Create(
       base::span<const uint8_t> tree_state,
-      const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs);
+      const std::vector<OrchardOutput>& orchard_outputs);
 
   static void OverrideRandomSeedForTesting(size_t seed) {
     random_seed_for_testing_ = seed;
@@ -53,15 +53,15 @@ class OrchardBundleManager {
 
  private:
   explicit OrchardBundleManager(
-      std::unique_ptr<orchard::UnauthorizedOrchardBundle> unauthorized_bundle);
+      std::unique_ptr<orchard::OrchardUnauthorizedBundle> unauthorized_bundle);
   explicit OrchardBundleManager(
-      std::unique_ptr<orchard::AuthorizedOrchardBundle> authorized_bundle);
+      std::unique_ptr<orchard::OrchardAuthorizedBundle> authorized_bundle);
 
   static std::optional<size_t> random_seed_for_testing_;
 
-  std::unique_ptr<orchard::UnauthorizedOrchardBundle>
+  std::unique_ptr<orchard::OrchardUnauthorizedBundle>
       unauthorized_orchard_bundle_;
-  std::unique_ptr<orchard::AuthorizedOrchardBundle> authorized_orchard_bundle_;
+  std::unique_ptr<orchard::OrchardAuthorizedBundle> authorized_orchard_bundle_;
 };
 
 }  // namespace brave_wallet

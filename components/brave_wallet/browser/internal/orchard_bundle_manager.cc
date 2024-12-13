@@ -22,11 +22,11 @@ std::optional<size_t> OrchardBundleManager::random_seed_for_testing_ =
 // static
 std::unique_ptr<OrchardBundleManager> OrchardBundleManager::Create(
     base::span<const uint8_t> tree_state,
-    const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs) {
+    const std::vector<OrchardOutput>& orchard_outputs) {
   if (orchard_outputs.empty()) {
     return nullptr;
   }
-  auto bundle = orchard::UnauthorizedOrchardBundle::Create(
+  auto bundle = orchard::OrchardUnauthorizedBundle::Create(
       tree_state, orchard_outputs, random_seed_for_testing_);
   if (!bundle) {
     return nullptr;
@@ -36,11 +36,11 @@ std::unique_ptr<OrchardBundleManager> OrchardBundleManager::Create(
 }
 
 OrchardBundleManager::OrchardBundleManager(
-    std::unique_ptr<orchard::UnauthorizedOrchardBundle> unauthorized_bundle)
+    std::unique_ptr<orchard::OrchardUnauthorizedBundle> unauthorized_bundle)
     : unauthorized_orchard_bundle_(std::move(unauthorized_bundle)) {}
 
 OrchardBundleManager::OrchardBundleManager(
-    std::unique_ptr<orchard::AuthorizedOrchardBundle> authorized_bundle)
+    std::unique_ptr<orchard::OrchardAuthorizedBundle> authorized_bundle)
     : authorized_orchard_bundle_(std::move(authorized_bundle)) {}
 
 std::optional<std::array<uint8_t, kZCashDigestSize>>

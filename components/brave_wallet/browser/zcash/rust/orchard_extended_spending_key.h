@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_EXTENDED_SPENDING_KEY_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_EXTENDED_SPENDING_KEY_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_EXTENDED_SPENDING_KEY_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_EXTENDED_SPENDING_KEY_H_
 
 #include <memory>
 #include <optional>
@@ -16,16 +16,16 @@ namespace brave_wallet::orchard {
 
 // Implements Orchard key generation from
 // https://zips.z.cash/zip-0032#orchard-child-key-derivation
-class ExtendedSpendingKey {
+class OrchardExtendedSpendingKey {
  public:
-  virtual ~ExtendedSpendingKey() = default;
+  virtual ~OrchardExtendedSpendingKey() = default;
 
   // Generates master key using provided seed
-  static std::unique_ptr<ExtendedSpendingKey> GenerateFromSeed(
+  static std::unique_ptr<OrchardExtendedSpendingKey> GenerateFromSeed(
       base::span<const uint8_t> seed);
 
   // Derives hardened key using index and the current key
-  virtual std::unique_ptr<ExtendedSpendingKey> DeriveHardenedChild(
+  virtual std::unique_ptr<OrchardExtendedSpendingKey> DeriveHardenedChild(
       uint32_t index) = 0;
 
   // Returns public or internal address that may be used as a recipient address
@@ -39,4 +39,4 @@ class ExtendedSpendingKey {
 
 }  // namespace brave_wallet::orchard
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_EXTENDED_SPENDING_KEY_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_RUST_ORCHARD_EXTENDED_SPENDING_KEY_H_

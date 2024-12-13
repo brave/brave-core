@@ -314,14 +314,13 @@ static_library("browser") {
     sources += [
       "zcash/zcash_create_shield_transaction_task.cc",
       "zcash/zcash_create_shield_transaction_task.h",
-      "zcash/zcash_orchard_storage.cc",
-      "zcash/zcash_orchard_storage.h",
       "zcash/zcash_shield_sync_service.cc",
       "zcash/zcash_shield_sync_service.h",
     ]
 
     deps += [
       "internal:orchard_bundle",
+      "internal/orchard_storage:orchard_storage",
       "//sql",
     ]
   }

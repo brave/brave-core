@@ -12,8 +12,10 @@
 #include <vector>
 
 #include "base/types/expected.h"
-#include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
+#include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
+#include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 
 namespace brave_wallet {
 
@@ -21,20 +23,25 @@ namespace brave_wallet {
 // spendable notes related to the account.
 class OrchardBlockScanner {
  public:
-  enum class ErrorCode { kInputError, kDecoderError };
+  enum class ErrorCode { kInputError, kDiscoveredNotesError, kDecoderError };
 
   struct Result {
     Result();
     Result(std::vector<OrchardNote> discovered_notes,
-           std::vector<OrchardNoteSpend> spent_notes);
-    Result(const Result&);
-    Result& operator=(const Result&);
+           std::vector<OrchardNoteSpend> spent_notes,
+           std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks);
+    Result(const Result&) = delete;
+    Result& operator=(const Result&) = delete;
+    Result(Result&&);
+    Result& operator=(Result&&);
     ~Result();
 
-    // New notes have been discovered
+    // New notes have been discovered.
     std::vector<OrchardNote> discovered_notes;
-    // Nullifiers for the previously discovered notes
-    std::vector<OrchardNoteSpend> spent_notes;
+    // Nullifiers for the previously discovered notes.
+    std::vector<OrchardNoteSpend> found_spends;
+    // Decoded blocks bundle to be insterted in the shard tree.
+    std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks;
   };
 
   explicit OrchardBlockScanner(const OrchardFullViewKey& full_view_key);
@@ -43,11 +50,11 @@ class OrchardBlockScanner {
   // Scans blocks to find incoming notes related to fvk
   // Also checks whether existing notes were spent.
   virtual base::expected<Result, OrchardBlockScanner::ErrorCode> ScanBlocks(
-      std::vector<OrchardNote> known_notes,
-      std::vector<zcash::mojom::CompactBlockPtr> blocks);
+      const OrchardTreeState& tree_state,
+      const std::vector<zcash::mojom::CompactBlockPtr>& blocks);
 
  private:
-  std::unique_ptr<orchard::OrchardBlockDecoder> decoder_;
+  OrchardFullViewKey fvk_;
 };
 
 }  // namespace brave_wallet

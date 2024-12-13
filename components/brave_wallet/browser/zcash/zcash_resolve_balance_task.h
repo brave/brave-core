@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_RESOLVE_BALANCE_TASK_H_
 
 #include <optional>
+#include <string>
+#include <vector>
 
 #include "base/memory/raw_ref.h"
 #include "base/types/expected.h"
@@ -39,8 +41,8 @@ class ZCashResolveBalanceTask {
       base::expected<ZCashWalletService::UtxoMap, std::string> result);
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  void OnGetSpendableNotes(base::expected<std::vector<OrchardNote>,
-                                          ZCashOrchardStorage::Error> result);
+  void OnGetSpendableNotes(
+      base::expected<std::vector<OrchardNote>, OrchardStorage::Error> result);
 
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
