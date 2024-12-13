@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<lint>
+    <issue id="ExportedService" severity="ignore" />
+    <issue id="DuplicateDefinition">
+        <ignore regexp="chrome/android/java/res/values/brave_colors.xml" />
+    </issue>
+    <issue id="StringFormatCount">
+        <ignore regexp="sponsored_images_bottom_sheet_text" />
+        <ignore regexp="notification_marketing" />
+        <ignore regexp="renew_monthly_save" />
+        <ignore regexp="wallet_swap_fees_notice" />
+        <ignore regexp="processing_fee" />
+    </issue>
+    <issue id="WrongConstant">
+        <ignore regexp="ContentSettingsType.BRAVE_CONTENT_SETTINGS_TYPES_LIST" />
+    </issue>
+    <issue id="UnusedResources">
+        <ignore regexp="The resource `R.string.playlist_.*` appears to be unused" />
+        <ignore regexp="The resource `R.string.new_tab_otr.*` appears to be unused" />
+        <ignore regexp="The resource `R.dimen.md_incognito_ntp.*` appears to be unused" />
+        <ignore regexp="The resource `R.layout.incognito.*` appears to be unused" />
+        <ignore regexp="The resource `R.layout.logo_view_layout` appears to be unused" />
+        <ignore regexp="The resource `R.style.*_BrowserUI_Switch_Incognito` appears to be unused" />
+        <ignore regexp="The resource `R.style.CardTransparentForDark` appears to be unused" />
+        <ignore regexp="The resource `R.dimen.toolbar_hairline_height` appears to be unused" />
+        <ignore
+            regexp="The resource `R.style.TextAppearance_IncognitoNewTabLearnMoreLinkModern` appears to be unused" />
+    </issue>
+    <issue id="UnsafeOptInUsageError">
+        <ignore regexp='(markerClass = androidx.media3.common.util.UnstableApi.class)' />
+    </issue>
+</lint>
