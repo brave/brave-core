@@ -6,6 +6,7 @@
 #include "brave/browser/brave_news/direct_feed_fetcher_delegate_impl.h"
 
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -15,17 +16,21 @@ DirectFeedFetcherDelegateImpl::DirectFeedFetcherDelegateImpl(
     HostContentSettingsMap* host_content_settings_map)
     : host_content_settings_map_(host_content_settings_map),
       https_upgrade_exceptions_service_(
-          g_brave_browser_process->https_upgrade_exceptions_service()) {}
+          g_brave_browser_process->https_upgrade_exceptions_service()) {
+  CHECK(host_content_settings_map_);
+  CHECK(https_upgrade_exceptions_service_);
+}
 
 DirectFeedFetcherDelegateImpl::~DirectFeedFetcherDelegateImpl() = default;
 
-bool DirectFeedFetcherDelegateImpl::ShouldUpgradeToHttps(const GURL& url) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (!host_content_settings_map_ || !https_upgrade_exceptions_service_) {
-    return true;
-  }
-  return brave_shields::ShouldUpgradeToHttps(host_content_settings_map_, url,
-                                             https_upgrade_exceptions_service_);
+DirectFeedFetcher::Delegate::HTTPSUpgradeInfo
+DirectFeedFetcherDelegateImpl::GetURLHTTPSUpgradeInfo(const GURL& url) {
+  HTTPSUpgradeInfo info;
+  info.should_upgrade = brave_shields::ShouldUpgradeToHttps(
+      host_content_settings_map_, url, https_upgrade_exceptions_service_);
+  info.should_force =
+      brave_shields::ShouldForceHttps(host_content_settings_map_, url);
+  return info;
 }
 
 base::WeakPtr<DirectFeedFetcher::Delegate>

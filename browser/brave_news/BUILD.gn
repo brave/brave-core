@@ -8,14 +8,19 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   if (!is_android) {
-    sources = [ "brave_news_tab_helper_browsertest.cc" ]
+    sources = [
+      "brave_news_tab_helper_browsertest.cc",
+      "direct_feed_fetcher_browsertest.cc",
+    ]
 
     deps = [
       "//brave/components//brave_rewards/browser",
+      "//brave/components/brave_news/browser",
       "//brave/components/brave_news/common:common",
       "//brave/components/brave_news/common:mojom",
       "//brave/components/constants",
       "//chrome/browser",
+      "//chrome/browser:browser_process",
       "//chrome/browser/profiles",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui:ui",

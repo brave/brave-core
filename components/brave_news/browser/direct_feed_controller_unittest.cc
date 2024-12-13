@@ -86,7 +86,13 @@ class BraveNewsDirectFeedControllerTest : public testing::Test {
    public:
     ~MockDirectFeedFetcherDelegate() override = default;
 
-    bool ShouldUpgradeToHttps(const GURL& url) override { return true; }
+    DirectFeedFetcher::Delegate::HTTPSUpgradeInfo GetURLHTTPSUpgradeInfo(
+        const GURL& url) override {
+      HTTPSUpgradeInfo info;
+      info.should_upgrade = true;
+      info.should_force = false;
+      return info;
+    }
 
     base::WeakPtr<DirectFeedFetcher::Delegate> AsWeakPtr() override {
       return weak_ptr_factory_.GetWeakPtr();
