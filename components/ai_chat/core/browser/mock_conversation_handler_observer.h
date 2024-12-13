@@ -25,24 +25,24 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
 
   MOCK_METHOD(void,
               OnRequestInProgressChanged,
-              (ConversationHandler * handler, bool in_progress),
+              (ConversationHandler*, bool),
               (override));
 
   MOCK_METHOD(void,
               OnConversationEntryAdded,
-              (ConversationHandler * handler,
-               mojom::ConversationTurnPtr& entry,
-               std::optional<std::string_view> associated_content_value),
+              (ConversationHandler*,
+               mojom::ConversationTurnPtr&,
+               std::optional<std::string_view>),
               (override));
 
   MOCK_METHOD(void,
               OnConversationEntryRemoved,
-              (ConversationHandler * handler, std::string turn_uuid),
+              (ConversationHandler*, std::string),
               (override));
 
   MOCK_METHOD(void,
               OnConversationEntryUpdated,
-              (ConversationHandler * handler, mojom::ConversationTurnPtr entry),
+              (ConversationHandler*, mojom::ConversationTurnPtr),
               (override));
 
   MOCK_METHOD(void,
@@ -52,7 +52,7 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
 
   MOCK_METHOD(void,
               OnConversationTitleChanged,
-              (ConversationHandler * handler, std::string title),
+              (const std::string&, const std::string&),
               (override));
 
  private:

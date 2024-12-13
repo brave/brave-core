@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { useArgs, useState } from '@storybook/preview-api'
+import { useArgs } from '@storybook/preview-api'
 import { Meta, StoryObj } from '@storybook/react'
 import '@brave/leo/tokens/css/variables.css'
 import '$web-components/app.global.scss'
@@ -12,7 +12,7 @@ import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
 import * as Mojom from '../../common/mojom'
 import { ActiveChatContext, SelectedChatDetails } from '../state/active_chat_context'
-import { AIChatContext, AIChatReactContext } from '../state/ai_chat_context'
+import { AIChatContext, AIChatReactContext, useIsSmall } from '../state/ai_chat_context'
 import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
 import FeedbackForm from '../components/feedback_form'
 import FullPage from '../components/full_page'
@@ -97,7 +97,7 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     modelKey: undefined,
   },
   {
-    title: 'Wedding speech improvements',
+    title: '',
     uuid: '3',
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000002') },
@@ -397,7 +397,8 @@ type CustomArgs = {
   model: string
   inputText: string
   hasConversation: boolean
-  hasConversationListItems: boolean
+  editingConversationId: string | null
+  visibleConversationListCount: number
   hasSuggestedQuestions: boolean
   hasSiteInfo: boolean
   isFeedbackFormVisible: boolean
@@ -422,9 +423,10 @@ const args: CustomArgs = {
   initialized: true,
   inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
   hasConversation: true,
-  hasConversationListItems: true,
+  visibleConversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
   hasSiteInfo: true,
+  editingConversationId: null,
   isFeedbackFormVisible: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
@@ -445,7 +447,7 @@ const args: CustomArgs = {
   shouldShowRefinedWarning: false,
 }
 
-const preview: Meta<CustomArgs> = {
+const meta: Meta<CustomArgs> = {
   title: 'Chat/Chat',
   parameters: {
     layout: 'centered'
@@ -464,139 +466,162 @@ const preview: Meta<CustomArgs> = {
       options: MODELS.map(model => model.displayName),
       control: { type: 'select' }
     },
+    visibleConversationListCount: {
+      control: { type: 'number' }
+    }
   },
   args,
   decorators: [
     (Story, options) => {
       const [, setArgs] = useArgs()
-
-      const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new Mojom.SiteInfo()
-      const suggestedQuestions = options.args.hasSuggestedQuestions
-        ? SAMPLE_QUESTIONS
-        : siteInfo
-          ? [SAMPLE_QUESTIONS[0]]
-          : []
-
-      const currentError = Mojom.APIError[options.args.currentErrorState]
-      const apiHasError = currentError !== Mojom.APIError.None
-      const currentModel = MODELS.find(m => m.displayName === options.args.model)
-
-      const switchToBasicModel = () => {
-        const nonPremiumModel = MODELS.find(model => model.options.leoModelOptions?.access === Mojom.ModelAccess.BASIC)
-        setArgs({ model: nonPremiumModel })
-      }
-
-      const setInputText = (inputText: string) => {
-        setArgs({ inputText })
-      }
-
-      const [showSidebar, setShowSidebar] = useState(false)
-      const aiChatContext: AIChatContext = {
-        conversationEntriesComponent: StorybookConversationEntries,
-        initialized: options.args.initialized,
-        editingConversationId: null,
-        visibleConversations: options.args.hasConversationListItems ? CONVERSATIONS : [],
-        isStoragePrefEnabled: options.args.isStoragePrefEnabled,
-        hasAcceptedAgreement: options.args.hasAcceptedAgreement,
-        isPremiumStatusFetching: false,
-        isPremiumUser: options.args.isPremiumUser,
-        isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
-        isStorageNoticeDismissed: options.args.isStorageNoticeDismissed,
-        canShowPremiumPrompt: options.args.canShowPremiumPrompt,
-        isMobile: options.args.isMobile,
-        isHistoryFeatureEnabled: options.args.isHistoryEnabled,
-        isStandalone: options.args.isStandalone,
-        allActions: ACTIONS_LIST,
-        goPremium: () => {},
-        managePremium: () => {},
-        handleAgreeClick: () => {},
-        enableStoragePref: () => {},
-        dismissStorageNotice: () => {},
-        dismissPremiumPrompt: () => {},
-        userRefreshPremiumSession: () => {},
-        setEditingConversationId: () => {},
-        showSidebar: showSidebar,
-        toggleSidebar: () => setShowSidebar(s => !s)
-      }
-
-      const activeChatContext: SelectedChatDetails = {
-        selectedConversationId: CONVERSATIONS[0].uuid,
-        updateSelectedConversationId: () => {},
-        callbackRouter: undefined!,
-        conversationHandler: undefined!,
-        createNewConversation: () => {},
-        isTabAssociated: options.args.isDefaultConversation
-      }
-
-      const inputText = options.args.inputText
-
-      const conversationContext: ConversationContext = {
-        conversationUuid: CONVERSATIONS[1].uuid,
-        conversationHistory: options.args.hasConversation ? HISTORY : [],
-        associatedContentInfo: siteInfo,
-        allModels: MODELS,
-        currentModel,
-        suggestedQuestions,
-        isGenerating: true,
-        suggestionStatus: Mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
-        currentError,
-        apiHasError,
-        isFeedbackFormVisible: options.args.isFeedbackFormVisible,
-        shouldDisableUserInput: false,
-        shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
-        shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
-        shouldSendPageContents: siteInfo?.isContentAssociationPossible,
-        inputText,
-        actionList: ACTIONS_LIST,
-        selectedActionType: undefined,
-        isToolsMenuOpen: false,
-        isCurrentModelLeo: true,
-        isCharLimitApproaching: inputText.length > 64,
-        isCharLimitExceeded: inputText.length > 70,
-        inputTextCharCountDisplay: `${inputText.length} / 70`,
-        setInputText,
-        setCurrentModel: () => {},
-        switchToBasicModel,
-        generateSuggestedQuestions: () => {},
-        dismissLongConversationInfo: () => {},
-        updateShouldSendPageContents: () => {},
-        retryAPIRequest: () => {},
-        handleResetError: () => {},
-        submitInputTextToAPI: () => {},
-        resetSelectedActionType: () => {},
-        handleActionTypeClick: () => {},
-        setIsToolsMenuOpen: () => {},
-        handleFeedbackFormCancel: () => {},
-        handleFeedbackFormSubmit: () => {}
-      }
-
-      const conversationEntriesContext: UntrustedConversationContext = {
-        conversationHistory: conversationContext.conversationHistory,
-        isGenerating: conversationContext.isGenerating,
-        isLeoModel: conversationContext.isCurrentModelLeo,
-        contentUsedPercentage: (options.args.shouldShowLongPageWarning || options.args.shouldShowRefinedWarning)
-          ? 48 : 100,
-        isContentRefined: options.args.shouldShowRefinedWarning,
-        canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
-        isMobile: aiChatContext.isMobile
-      }
-
       return (
-        <AIChatReactContext.Provider value={aiChatContext}>
-          <ActiveChatContext.Provider value={activeChatContext}>
-            <ConversationReactContext.Provider value={conversationContext}>
-              <UntrustedConversationReactContext.Provider value={conversationEntriesContext}>
-                <Story />
-              </UntrustedConversationReactContext.Provider>
-            </ConversationReactContext.Provider>
-          </ActiveChatContext.Provider>
-        </AIChatReactContext.Provider>
+        <StoryContext args={options.args} setArgs={setArgs}>
+          <Story/>
+        </StoryContext>
       )
     }
   ]
 }
 
-export default preview
+function StoryContext(props: React.PropsWithChildren<{args: CustomArgs, setArgs: (newArgs: Partial<CustomArgs>) => void}>) {
+  const isSmall = useIsSmall()
+
+  const options = { args: props.args }
+  const { setArgs } = props
+
+  const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new Mojom.SiteInfo()
+  const suggestedQuestions = options.args.hasSuggestedQuestions
+    ? SAMPLE_QUESTIONS
+    : siteInfo
+      ? [SAMPLE_QUESTIONS[0]]
+      : []
+
+  const currentError = Mojom.APIError[options.args.currentErrorState]
+  const apiHasError = currentError !== Mojom.APIError.None
+  const currentModel = MODELS.find(m => m.displayName === options.args.model)
+
+  const switchToBasicModel = () => {
+    const nonPremiumModel = MODELS.find(model => model.options.leoModelOptions?.access === Mojom.ModelAccess.BASIC)
+    setArgs({ model: nonPremiumModel?.key })
+  }
+
+  const setInputText = (inputText: string) => {
+    setArgs({ inputText })
+  }
+
+  const [showSidebar, setShowSidebar] = React.useState(isSmall)
+
+  let visibleConversations: typeof CONVERSATIONS = []
+  for (let i = 0; i < Math.floor(options.args.visibleConversationListCount / CONVERSATIONS.length); i++) {
+    visibleConversations = visibleConversations.concat(CONVERSATIONS)
+  }
+  const remainingConversationsCount = options.args.visibleConversationListCount % CONVERSATIONS.length
+  visibleConversations = visibleConversations.concat(CONVERSATIONS.slice(0, remainingConversationsCount))
+
+  const aiChatContext: AIChatContext = {
+    conversationEntriesComponent: StorybookConversationEntries,
+    initialized: options.args.initialized,
+    editingConversationId: options.args.editingConversationId,
+    visibleConversations,
+    isStoragePrefEnabled: options.args.isStoragePrefEnabled,
+    hasAcceptedAgreement: options.args.hasAcceptedAgreement,
+    isPremiumStatusFetching: false,
+    isPremiumUser: options.args.isPremiumUser,
+    isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
+    isStorageNoticeDismissed: options.args.isStorageNoticeDismissed,
+    canShowPremiumPrompt: options.args.canShowPremiumPrompt,
+    isMobile: options.args.isMobile,
+    isHistoryFeatureEnabled: options.args.isHistoryEnabled,
+    isStandalone: options.args.isStandalone,
+    allActions: ACTIONS_LIST,
+    goPremium: () => {},
+    managePremium: () => {},
+    handleAgreeClick: () => {},
+    enableStoragePref: () => {},
+    dismissStorageNotice: () => {},
+    dismissPremiumPrompt: () => {},
+    userRefreshPremiumSession: () => {},
+    setEditingConversationId: (id: string | null) => setArgs({ editingConversationId: id }),
+    showSidebar: showSidebar,
+    toggleSidebar: () => setShowSidebar(s => !s)
+  }
+
+  const activeChatContext: SelectedChatDetails = {
+    selectedConversationId: CONVERSATIONS[0].uuid,
+    updateSelectedConversationId: () => {},
+    callbackRouter: undefined!,
+    conversationHandler: undefined!,
+    createNewConversation: () => {},
+    isTabAssociated: options.args.isDefaultConversation
+  }
+
+  const inputText = options.args.inputText
+
+  const conversationContext: ConversationContext = {
+    conversationUuid: CONVERSATIONS[1].uuid,
+    conversationHistory: options.args.hasConversation ? HISTORY : [],
+    associatedContentInfo: siteInfo,
+    allModels: MODELS,
+    currentModel,
+    suggestedQuestions,
+    isGenerating: true,
+    suggestionStatus: Mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
+    currentError,
+    apiHasError,
+    isFeedbackFormVisible: options.args.isFeedbackFormVisible,
+    shouldDisableUserInput: false,
+    shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
+    shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
+    shouldSendPageContents: siteInfo?.isContentAssociationPossible,
+    inputText,
+    actionList: ACTIONS_LIST,
+    selectedActionType: undefined,
+    isToolsMenuOpen: false,
+    isCurrentModelLeo: true,
+    isCharLimitApproaching: inputText.length > 64,
+    isCharLimitExceeded: inputText.length > 70,
+    inputTextCharCountDisplay: `${inputText.length} / 70`,
+    setInputText,
+    setCurrentModel: () => {},
+    switchToBasicModel,
+    generateSuggestedQuestions: () => {},
+    dismissLongConversationInfo: () => {},
+    updateShouldSendPageContents: () => {},
+    retryAPIRequest: () => {},
+    handleResetError: () => {},
+    submitInputTextToAPI: () => {},
+    resetSelectedActionType: () => {},
+    handleActionTypeClick: () => {},
+    setIsToolsMenuOpen: () => {},
+    handleFeedbackFormCancel: () => {},
+    handleFeedbackFormSubmit: () => {}
+  }
+
+  const conversationEntriesContext: UntrustedConversationContext = {
+    conversationHistory: conversationContext.conversationHistory,
+    isGenerating: conversationContext.isGenerating,
+    isLeoModel: conversationContext.isCurrentModelLeo,
+    contentUsedPercentage: (options.args.shouldShowLongPageWarning || options.args.shouldShowRefinedWarning)
+      ? 48 : 100,
+    isContentRefined: options.args.shouldShowRefinedWarning,
+    canSubmitUserEntries: !conversationContext.shouldDisableUserInput,
+    isMobile: aiChatContext.isMobile
+  }
+
+  return (
+    <AIChatReactContext.Provider value={aiChatContext}>
+      <ActiveChatContext.Provider value={activeChatContext}>
+        <ConversationReactContext.Provider value={conversationContext}>
+          <UntrustedConversationReactContext.Provider value={conversationEntriesContext}>
+            {props.children}
+          </UntrustedConversationReactContext.Provider>
+        </ConversationReactContext.Provider>
+      </ActiveChatContext.Provider>
+    </AIChatReactContext.Provider>
+  )
+}
+
+export default meta
 
 type Story = StoryObj<CustomArgs>
 
