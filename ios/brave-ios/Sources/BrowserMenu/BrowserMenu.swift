@@ -132,10 +132,8 @@ public struct BrowserMenu: View {
             }
           }
           .modifier(MenuRowButtonStyleModifier())
-          .background(
-            Color(braveSystemName: .iosBrowserContainerHighlightIos),
-            in: .rect(cornerRadius: 14, style: .continuous)
-          )
+          .background(Color(braveSystemName: .iosBrowserContainerHighlightIos))
+          .clipShape(.rect(cornerRadius: 14, style: .continuous))
           .transition(.blurReplace())
         }
         Button {
@@ -144,10 +142,8 @@ public struct BrowserMenu: View {
           Label(Strings.BrowserMenu.allSettingsButtonTitle, braveSystemImage: "leo.settings")
         }
         .modifier(MenuRowButtonStyleModifier())
-        .background(
-          Color(braveSystemName: .iosBrowserContainerHighlightIos),
-          in: .rect(cornerRadius: 14, style: .continuous)
-        )
+        .background(Color(braveSystemName: .iosBrowserContainerHighlightIos))
+        .clipShape(.rect(cornerRadius: 14, style: .continuous))
       }
       .padding()
     }
