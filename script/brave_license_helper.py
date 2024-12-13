@@ -1,7 +1,7 @@
 # Copyright (c) 2019 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at https://mozilla.org/MPL/2.0/. */
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import os
 import re
@@ -60,6 +60,7 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'third_party', 'rust', 'anyhow'),
         os.path.join('brave', 'third_party', 'rust', 'base64'),
         os.path.join('brave', 'third_party', 'rust', 'bitflags'),
+        os.path.join('brave', 'third_party', 'rust', 'bitflags', 'v2'),
         os.path.join('brave', 'third_party', 'rust', 'byteorder', 'v1'),
         os.path.join('brave', 'third_party', 'rust', 'cfg_if'),
         os.path.join('brave', 'third_party', 'rust', 'cxx'),
