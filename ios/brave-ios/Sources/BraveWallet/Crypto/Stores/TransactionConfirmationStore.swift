@@ -440,7 +440,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           let originalTxGasFee = BDouble(parsedTx.gasFee?.fee ?? "0"),
           activeTxGasFee > originalTxGasFee
         {
-          return .cancel(toCancelParsedTx: parsedTx)
+          return .cancel(originalParsedTx: parsedTx)
         }
       }
     } else if activeTransaction.coin == .eth {
@@ -461,7 +461,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           let originalTxGasFee = BDouble(parsedTx.gasFee?.fee ?? "0"),
           activeTxGasFee > originalTxGasFee
         {
-          return .speedUp
+          return .speedUp(originalParsedTx: parsedTx)
         }
       }
     }

@@ -4551,7 +4551,7 @@ extension Strings {
       "wallet.cancelTransactionStatusButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Cancel transaction",
+      value: "Cancel Transaction",
       comment: "The button title that for user to cancel a submitted transaction inside transaction status view."
     )
     public static let cancelTransactionStatusConfirmationDescription = NSLocalizedString(
@@ -4572,8 +4572,29 @@ extension Strings {
       "wallet.speedUpButtonTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Speed up",
+      value: "Speed Up",
       comment: "The button title for the button inside speed up banner."
+    )
+    public static let unableToCancel = NSLocalizedString(
+      "wallet.unableToCancel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Unable to cancel",
+      comment: "The title will be displayed when a cancel tx has been dropped or replaced on chain."
+    )
+    public static let unableToSpeedUp = NSLocalizedString(
+      "wallet.unableToSpeedUp",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Unable to speed up",
+      comment: "The title will be displayed when a speed-up tx has been dropped or replaced on chain."
+    )
+    public static let originalTransactionIsConfirmed = NSLocalizedString(
+      "wallet.originalTransactionIsConfirmed",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "The original transaction has been confirmed.",
+      comment: "The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain."
     )
     public static let ensOffchainGatewayTitle = NSLocalizedString(
       "wallet.ensOffchainGatewayTitle",

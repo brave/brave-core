@@ -603,18 +603,52 @@ struct TransactionStatusView: View {
       GeometryReader { geometry in
         ScrollView(.vertical) {
           VStack {
-            speedUpView
-              .hidden(isHidden: !isShowingSpeedUpBanner)
-            Spacer()
-            txStatusIconView
+            if txStatusStore.isOriginalTxConfirmed {
+              Spacer()
+              ZStack {
+                Circle()
+                  .fill(Color(braveSystemName: .systemfeedbackErrorBackground))
+                  .frame(width: 100, height: 100)
+                Image(braveSystemName: "leo.close")
+                  .font(.title.weight(.semibold))
+                  .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
+              }
               .padding(.bottom, 30)
-            txStatusTextView
+              VStack {
+                Group {
+                  switch txStatusStore.followUpAction {
+                  case .cancel(_):
+                    Text(Strings.Wallet.unableToCancel)
+                  case .speedUp:
+                    Text(Strings.Wallet.unableToSpeedUp)
+                  case .none:
+                    EmptyView()
+                  }
+                }
+                .font(.title2.weight(.semibold))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
+                .padding(.bottom, 8)
+                Text(Strings.Wallet.originalTransactionIsConfirmed)
+                  .font(.subheadline)
+                  .foregroundColor(Color(braveSystemName: .textSecondary))
+              }
+              .multilineTextAlignment(.center)
               .padding(.top, 10)
-            Spacer()
-            disclosureView
-              .padding(.bottom, 8)
-              .hidden(isHidden: hideDisclosureView)
-            buttonContainerView
+              Spacer()
+            } else {
+              speedUpView
+                .hidden(isHidden: !isShowingSpeedUpBanner)
+              Spacer()
+              txStatusIconView
+                .padding(.bottom, 30)
+              txStatusTextView
+                .padding(.top, 10)
+              Spacer()
+              disclosureView
+                .padding(.bottom, 8)
+                .hidden(isHidden: hideDisclosureView)
+              buttonContainerView
+            }
           }
           .frame(maxWidth: .infinity, minHeight: geometry.size.height)
           .padding(.horizontal, 24)

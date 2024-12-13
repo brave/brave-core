@@ -11,16 +11,13 @@ import Preferences
 import Strings
 
 public class TransactionStatusStore: ObservableObject, WalletObserverStore {
-  @Published var activeTxStatus: BraveWallet.TransactionStatus {
-    didSet {
-      originalTxStatus = activeTxStatus
-    }
-  }
+  @Published var activeTxStatus: BraveWallet.TransactionStatus
   @Published var txProviderError: TransactionProviderError?
+  @Published var isOriginalTxConfirmed: Bool = false
 
   enum FollowUpAction: Equatable {
-    case cancel(toCancelParsedTx: ParsedTransaction)
-    case speedUp
+    case cancel(originalParsedTx: ParsedTransaction)
+    case speedUp(originalParsedTx: ParsedTransaction)
     case none
   }
 
@@ -31,16 +28,11 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
   private let txService: BraveWalletTxService
   private var txServiceObserver: TxServiceObserver?
 
-  private var originalTxParsed: ParsedTransaction
-  private var originalTxStatus: BraveWallet.TransactionStatus
-
   var isObserving: Bool {
     txServiceObserver != nil
   }
 
-  var activeParsedTx: ParsedTransaction {
-    originalTxParsed
-  }
+  var activeParsedTx: ParsedTransaction
 
   var isCancelAvailable: Bool {
     guard activeParsedTx.transaction.coin == .eth else { return false }
@@ -65,8 +57,7 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
     followUpAction: FollowUpAction
   ) {
     self.activeTxStatus = activeTxStatus
-    self.originalTxStatus = activeTxStatus
-    self.originalTxParsed = activeTxParsed
+    self.activeParsedTx = activeTxParsed
     self.txProviderError = txProviderError
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -94,6 +85,22 @@ public class TransactionStatusStore: ObservableObject, WalletObserverStore {
         guard let self else { return }
         if self.activeParsedTx.transaction.id == txInfo.id {
           self.activeTxStatus = txInfo.txStatus
+        } else {
+          if case .cancel(let originalParsedTx) = followUpAction,
+            originalParsedTx.transaction.id == txInfo.id,
+            txInfo.txStatus == .confirmed
+          {
+            // cancel tx is submitted
+            // but the original tx is confirmed
+            isOriginalTxConfirmed = true
+          } else if case .speedUp(let originalParsedTx) = followUpAction,
+            originalParsedTx.transaction.id == txInfo.id,
+            txInfo.txStatus == .confirmed
+          {
+            // speed up tx is submitted
+            // but the original tx is confirmed
+            isOriginalTxConfirmed = true
+          }
         }
       }
     )
