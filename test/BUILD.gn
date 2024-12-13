@@ -1134,6 +1134,7 @@ test("brave_browser_tests") {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/ai_chat:browser_tests",
+      "//brave/browser/banners:browser_tests",
       "//brave/browser/brave_ads/creatives/search_result_ad:browser_tests",
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/ui/ai_rewriter:browsertest",

@@ -73,6 +73,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated, IDR_AI_CHAT_UI_HTML);
 
   source->AddResourcePath("styles.css", IDR_AI_CHAT_UI_CSS);
+  source->AddResourcePath("manifest.webmanifest", IDR_AI_CHAT_UI_MANIFEST);
+  source->AddResourcePath("pwa_icon.svg", IDR_AI_CHAT_UI_PWA_ICON);
 
   for (const auto& str : ai_chat::GetLocalizedStrings()) {
     source->AddString(str.name,
