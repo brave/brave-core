@@ -19,7 +19,7 @@ window.__firefox__.includeOnce("BraveSkusScript", function($) {
   }
   
   // Request VPN Receipt
-  sendMessage($<setLocalStorageReceipt>, { "message": "vpn" })
+  sendMessage('$<setLocalStorageReceipt>', { "message": "vpn" })
   .then(function(jsonData) {
     if (jsonData) {
       window.localStorage.setItem(jsonData["key"], jsonData["data"]);
@@ -31,7 +31,7 @@ window.__firefox__.includeOnce("BraveSkusScript", function($) {
   });
   
   // Request Leo Receipt
-  sendMessage($<setLocalStorageReceipt>, { "message": "leo" })
+  sendMessage('$<setLocalStorageReceipt>', { "message": "leo" })
   .then(function(jsonData) {
     if (jsonData) {
       window.localStorage.setItem("braveLeo.orderId", jsonData["braveLeo.orderId"])
@@ -49,19 +49,19 @@ window.__firefox__.includeOnce("BraveSkusScript", function($) {
     writable: false,
       value: {
         refresh_order(orderId) {
-          return sendMessage($<refreshOrder>, { orderId });
+          return sendMessage('$<refreshOrder>', { orderId });
         },
 
         fetch_order_credentials(orderId) {
-          return sendMessage($<fetchOrderCredentials>, { orderId });
+          return sendMessage('$<fetchOrderCredentials>', { orderId });
         },
 
         prepare_credentials_presentation(domain, path) {
-          return sendMessage($<prepareCredentialsPresentation>, { domain, path });
+          return sendMessage('$<prepareCredentialsPresentation>', { domain, path });
         },
 
         credential_summary(domain) {
-          return sendMessage($<credentialsSummary>, { domain });
+          return sendMessage('$<credentialsSummary>', { domain });
         }
       }
   });
