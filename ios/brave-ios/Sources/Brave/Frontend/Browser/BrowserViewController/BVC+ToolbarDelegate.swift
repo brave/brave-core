@@ -961,6 +961,7 @@ extension BrowserViewController: ToolbarDelegate {
       presentBrowserMenu(
         from: tabToolbar.menuButton,
         activities: activities,
+        tab: tabManager.selectedTab,
         pageURL: selectedTabURL,
         webView: tabManager.selectedTab?.webView
       )

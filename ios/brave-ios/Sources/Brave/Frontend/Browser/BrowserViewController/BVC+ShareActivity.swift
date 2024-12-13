@@ -145,9 +145,15 @@ extension BrowserViewController {
       }
 
       // Request Desktop Site Activity
+      let isDesktopSite = tab?.isDesktopSite ?? false
+      var requestDesktopSite = BasicMenuActivity.ActivityType.requestDesktopSite
+      if isDesktopSite {
+        requestDesktopSite.title = Strings.appMenuViewMobileSiteTitleString
+        requestDesktopSite.braveSystemImage = "leo.smartphone"
+      }
       activities.append(
         BasicMenuActivity(
-          activityType: tab?.isDesktopSite == true ? .requestMobileSite : .requestDesktopSite,
+          activityType: requestDesktopSite,
           callback: {
             tab?.switchUserAgent()
           }

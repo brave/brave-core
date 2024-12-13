@@ -493,6 +493,7 @@ extension BrowserViewController {
   func presentBrowserMenu(
     from sourceView: UIView,
     activities: [UIActivity],
+    tab: Tab?,
     pageURL: URL?,
     webView: WKWebView?
   ) {
@@ -500,7 +501,7 @@ extension BrowserViewController {
     actions.append(vpnMenuAction)
     actions.append(contentsOf: destinationMenuActions(for: pageURL))
     actions.append(contentsOf: pageActions(for: pageURL, webView: webView))
-    let pageActivities: Set<Action> = Set(
+    var pageActivities: Set<Action> = Set(
       activities
         .compactMap { activity in
           guard let id = (activity as? MenuActivity)?.id,
@@ -519,6 +520,27 @@ extension BrowserViewController {
           }
         }
     )
+    if let tab,
+      let requestDesktopPageActivity = pageActivities.first(where: { $0.id == .requestDesktopSite })
+    {
+      // Remove the UIActivity version and replace it with a manual version.
+      // The request desktop activity is special in the sense that it is dynamic based on the
+      // current tab user agent, but we don't use rely on the UIActivity information to populate
+      // actions in the new menu UI, so this replaces it with how we would compose it manually
+      pageActivities.remove(requestDesktopPageActivity)
+      pageActivities.insert(
+        .init(
+          id: .requestDesktopSite,
+          title: tab.isDesktopSite ? Strings.appMenuViewMobileSiteTitleString : nil,
+          image: tab.isDesktopSite ? "leo.smartphone" : nil,
+          handler: { @MainActor [unowned self, weak tab] _ in
+            tab?.switchUserAgent()
+            self.dismiss(animated: true)
+            return .none
+          }
+        )
+      )
+    }
     // Sets up empty actions for any page actions that weren't setup as UIActivity's
     let remainingPageActivities: [Action] = Action.ID.allPageActivites
       .subtracting(pageActivities.map(\.id))

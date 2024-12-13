@@ -94,13 +94,8 @@ extension BasicMenuActivity.ActivityType {
     title: Strings.addToFavorites,
     braveSystemImage: "leo.widget.generic"
   )
-  static let requestMobileSite: Self = .init(
-    id: "RequestMobileSite",
-    title: Strings.appMenuViewMobileSiteTitleString,
-    braveSystemImage: "leo.smartphone"
-  )
   static let requestDesktopSite: Self = .init(
-    id: "RequestDesktopSite",
+    id: "ToggleUserAgent",
     title: Strings.appMenuViewDesktopSiteTitleString,
     braveSystemImage: "leo.monitor"
   )
