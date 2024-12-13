@@ -188,7 +188,7 @@ class CrowdinClientWrapper():
             f'Unable to get resource {resource_name} for ' +
             f'branch {branch} because the resource doesn\'t exist')
         url = self.__get_resource_download_url(file_id)
-        r = requests.get(url)
+        r = requests.get(url, timeout=10)
         assert r.status_code == 200, \
             f'Aborting. Status code {r.status_code}: {r.content}'
         r.encoding = 'utf-8'
@@ -210,7 +210,7 @@ class CrowdinClientWrapper():
                 f'branch {branch} because the resource doesn\'t exist')
             url = self.__get_resource_translation_download_url(
                 file_id, lang_code)
-            r = requests.get(url)
+            r = requests.get(url, timeout=10)
             assert r.status_code == 200 or r.status_code == 204, \
                 f'Aborting. Status code {r.status_code}: {r.content}'
             if r.status_code == 200:
