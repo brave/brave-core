@@ -1,0 +1,15 @@
+{
+  "short_name": "$i18n{siteTitle}",
+  "name": "$i18n{siteTitle}",
+  "icons": [
+    {
+      "src": "/pwa_icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "id": "chrome://leo-ai/",
+  "display": "standalone",
+  "scope": "chrome://leo-ai/"
+}
