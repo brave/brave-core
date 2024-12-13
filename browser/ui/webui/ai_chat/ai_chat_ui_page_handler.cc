@@ -39,6 +39,9 @@ namespace {
 constexpr uint32_t kDesiredFaviconSizePixels = 32;
 constexpr char kURLRefreshPremiumSession[] =
     "https://account.brave.com/?intent=recover&product=leo";
+constexpr char kURLLearnMoreAboutStorage[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "32663367857549-How-do-I-use-Chat-History-in-Brave-Leo";
 
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kURLGoPremium[] =
@@ -144,6 +147,10 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
   // window because it's always full screen
   ai_chat::OpenURL(url.spec());
 #endif
+}
+
+void AIChatUIPageHandler::OpenStorageSupportUrl() {
+  OpenURL(GURL(kURLLearnMoreAboutStorage));
 }
 
 void AIChatUIPageHandler::GoPremium() {

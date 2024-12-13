@@ -24,7 +24,6 @@ type AIChatContextInternal = AIChatContextProps & {
   managePremium: () => void
   handleAgreeClick: () => void
   enableStoragePref: () => void
-  markStorageNoticeViewed: () => void
   dismissStorageNotice: () => void
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
@@ -47,7 +46,6 @@ const defaultContext: AIChatContext = {
   managePremium: () => { },
   handleAgreeClick: () => { },
   enableStoragePref: () => { },
-  markStorageNoticeViewed: () => { },
   dismissStorageNotice: () => { },
   dismissPremiumPrompt: () => { },
   userRefreshPremiumSession: () => { },
@@ -80,13 +78,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
     ...context,
     goPremium: () => api.uiHandler.goPremium(),
     managePremium: () => api.uiHandler.managePremium(),
-    markStorageNoticeViewed: () => api.service.dismissStorageNotice(),
-    dismissStorageNotice: () => {
-      api.setPartialState({
-        isStorageNoticeDismissed: true
-      })
-      api.service.dismissStorageNotice()
-    },
+    dismissStorageNotice: () => api.service.dismissStorageNotice(),
     enableStoragePref: () => api.service.enableStoragePref(),
     dismissPremiumPrompt: () => api.service.dismissPremiumPrompt(),
     userRefreshPremiumSession: () => api.uiHandler.refreshPremiumSession(),

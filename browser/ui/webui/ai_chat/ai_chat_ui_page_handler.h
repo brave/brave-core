@@ -47,6 +47,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void OpenAIChatSettings() override;
   void OpenConversationFullPage(const std::string& conversation_uuid) override;
   void OpenURL(const GURL& url) override;
+  void OpenStorageSupportUrl() override;
   void OpenModelSupportUrl() override;
   void GoPremium() override;
   void RefreshPremiumSession() override;
