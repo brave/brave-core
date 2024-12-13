@@ -38,7 +38,8 @@ class BraveSkusScriptHandler: TabContentScript {
 
     return WKUserScript(
       source: secureScript(
-        handlerNamesMap: ["$<message_handler>": messageHandlerName],
+        handlerNamesMap: ["$<message_handler>": messageHandlerName]
+          .merging(Method.map, uniquingKeysWith: { $1 }),
         securityToken: scriptId,
         script: script
       ),
@@ -68,7 +69,7 @@ class BraveSkusScriptHandler: TabContentScript {
       return
     }
 
-    guard let requestedMethod = response["method_id"] as? Int,
+    guard let requestedMethod = response["method_id"] as? String,
       let method = Method(rawValue: requestedMethod)
     else {
       Logger.module.error("Brave skus request with invalid method-id")
@@ -139,12 +140,12 @@ class BraveSkusScriptHandler: TabContentScript {
 }
 
 extension BraveSkusScriptHandler {
-  private enum Method: Int, CaseIterable {
-    case refreshOrder = 1
-    case fetchOrderCredentials = 2
-    case prepareCredentialsPresentation = 3
-    case credentialsSummary = 4
-    case setLocalStorageReceipt = 5
+  private enum Method: String, CaseIterable {
+    case refreshOrder
+    case fetchOrderCredentials
+    case prepareCredentialsPresentation
+    case credentialsSummary
+    case setLocalStorageReceipt
 
     static var map: [String: String] {
       var jsDict = [String: String]()
