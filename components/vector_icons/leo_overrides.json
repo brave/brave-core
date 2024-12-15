@@ -21,6 +21,7 @@
   "//chrome/app/vector_icons/navigate_stop_chrome_refresh.icon": "leo_close",
   "//chrome/app/vector_icons/qrcode_generator.icon": "leo_qr_code",
   "//chrome/app/vector_icons/save_page.icon": "leo_download",
+  "//chrome/app/vector_icons/saved_tab_group_bar_everything.icon": "leo_browser_group",
   "//chrome/app/vector_icons/security.icon": "leo_shield_block",
   "//chrome/app/vector_icons/sharing_hub_screenshot.icon": "leo_screenshot",
   "//chrome/app/vector_icons/zoom_minus.icon": "leo_search_zoom_out",
