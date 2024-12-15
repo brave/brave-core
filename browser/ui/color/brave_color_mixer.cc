@@ -149,30 +149,48 @@ void AddBraveSpeedreaderColorMixer(ui::ColorProvider* provider,
                                    const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorSpeedreaderIcon] = {
-      PickSimilarColorToToolbar(key, mixer, SkColorSetRGB(0x4C, 0x54, 0xD2),
-                                SkColorSetRGB(0x73, 0x7A, 0xDE))};
-  mixer[kColorSpeedreaderToggleThumb] = {
-      PickSimilarColorToToolbar(key, mixer, SkColorSetRGB(0x4C, 0x54, 0xD2),
-                                SkColorSetRGB(0x44, 0x36, 0xE1))};
-  mixer[kColorSpeedreaderToggleTrack] = {
-      PickSimilarColorToToolbar(key, mixer, SkColorSetRGB(0xE1, 0xE2, 0xF6),
-                                SkColorSetRGB(0x76, 0x79, 0xB1))};
+  if (key.custom_theme) {
+    auto mix_custom = [&mixer, &key](ui::ColorId light_id,
+                                     ui::ColorId dark_id) -> SkColor {
+      return PickSimilarColorToToolbar(key, mixer,
+                                       mixer.GetResultColor(light_id),
+                                       mixer.GetResultColor(dark_id));
+    };
+
+    mixer[kColorSpeedreaderIcon] = {mix_custom(nala::kColorPrimitivePrimary35,
+                                               nala::kColorPrimitivePrimary80)};
+
+    mixer[kColorSpeedreaderToolbarForeground] = {mix_custom(
+        nala::kColorPrimitiveNeutral30, nala::kColorPrimitiveNeutral80)};
+
+    mixer[kColorSpeedreaderToolbarBorder] = {mix_custom(
+        nala::kColorPrimitiveNeutral90, nala::kColorPrimitiveNeutral25)};
+
+    mixer[kColorSpeedreaderToolbarButtonHover] = {mix_custom(
+        nala::kColorPrimitiveNeutral95, nala::kColorPrimitiveNeutral10)};
+    mixer[kColorSpeedreaderToolbarButtonActive] = {mix_custom(
+        nala::kColorPrimitiveNeutral90, nala::kColorPrimitiveNeutral5)};
+    mixer[kColorSpeedreaderToolbarButtonActiveText] = {mix_custom(
+        nala::kColorPrimitivePrimary35, nala::kColorPrimitivePrimary80)};
+    mixer[kColorSpeedreaderToolbarButtonBorder] = {mix_custom(
+        nala::kColorPrimitiveNeutral90, nala::kColorPrimitiveNeutral25)};
+  } else {
+    mixer[kColorSpeedreaderIcon] = {nala::kColorIconInteractive};
+    mixer[kColorSpeedreaderToolbarForeground] = {nala::kColorIconDefault};
+    mixer[kColorSpeedreaderToolbarBorder] = {
+        nala::kColorDesktopbrowserToolbarButtonOutline};
+
+    mixer[kColorSpeedreaderToolbarButtonHover] = {
+        nala::kColorDesktopbrowserToolbarButtonHover};
+    mixer[kColorSpeedreaderToolbarButtonActive] = {
+        nala::kColorDesktopbrowserToolbarButtonActive};
+    mixer[kColorSpeedreaderToolbarButtonActiveText] = {
+        nala::kColorIconInteractive};
+    mixer[kColorSpeedreaderToolbarButtonBorder] = {
+        nala::kColorDesktopbrowserToolbarButtonOutline};
+  }
 
   mixer[kColorSpeedreaderToolbarBackground] = {kColorToolbar};
-  mixer[kColorSpeedreaderToolbarBorder] = {kColorToolbarContentAreaSeparator};
-
-  mixer[kColorSpeedreaderToolbarForeground] = {nala::kColorIconDefault};
-
-  mixer[kColorSpeedreaderToolbarButtonHover] = {PickSimilarColorToToolbar(
-      key, mixer, SkColorSetARGB(0x0D, 0x13, 0x16, 0x20),
-      SkColorSetARGB(0x59, 0x0A, 0x0B, 0x10))};
-  mixer[kColorSpeedreaderToolbarButtonActive] = {PickSimilarColorToToolbar(
-      key, mixer, SkColorSetARGB(0x14, 0x13, 0x16, 0x20),
-      SkColorSetARGB(0x80, 0x0A, 0x0B, 0x10))};
-  mixer[kColorSpeedreaderToolbarButtonActiveText] = {
-      nala::kColorIconInteractive};
-  mixer[kColorSpeedreaderToolbarButtonBorder] = {nala::kColorDividerSubtle};
 }
 #endif
 
