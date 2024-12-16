@@ -357,8 +357,17 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/notifications/NotificationPlatformBridge"));
 
         Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/SettingsIntentUtil"));
+        Assert.assertTrue(classExists("org/chromium/content_public/browser/MediaSessionObserver"));
         Assert.assertTrue(
                 classExists("org/chromium/components/browser_ui/media/MediaSessionHelper"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/components/browser_ui/notifications/ForegroundServiceUtils"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/media/ui/ChromeMediaNotificationControllerDelegate")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/media/ui/MediaSessionTabHelper"));
     }
 
     @Test
@@ -895,6 +904,13 @@ public class BytecodeTest {
                         true,
                         MediaSessionObserver.class,
                         MediaSession.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/media/ui/ChromeMediaNotificationControllerDelegate", // presubmit: ignore-long-line
+                        "getContext",
+                        MethodModifier.STATIC,
+                        true,
+                        Context.class));
     }
 
     @Test
@@ -1779,6 +1795,24 @@ public class BytecodeTest {
                         DoubleConsumer.class,
                         UserEducationHelper.class,
                         ObservableSupplier.class));
+
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/browser_ui/notifications/ForegroundServiceUtils", // presubmit: ignore-long-line
+                        "org/chromium/components/browser_ui/notifications/BraveForegroundServiceUtils")); // presubmit: ignore-long-line
+
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/media/ui/ChromeMediaNotificationControllerDelegate", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/media/ui/BraveMediaNotificationControllerDelegate", // presubmit: ignore-long-line
+                        int.class));
+
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/media/ui/MediaSessionTabHelper", // presubmit:
+                        // ignore-long-line
+                        "org/chromium/chrome/browser/media/ui/BraveMediaSessionTabHelper", // presubmit: ignore-long-line
+                        Tab.class));
     }
 
     @Test
@@ -2150,6 +2184,8 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/components/browser_ui/media/MediaSessionHelper",
                         "mMediaSessionActions"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/media/ui/MediaSessionTabHelper", "mTab"));
     }
 
     @Test

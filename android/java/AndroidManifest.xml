@@ -215,6 +215,13 @@
     </intent-filter>
 </service>
 
+<service android:name="org.chromium.chrome.browser.media.ui.BraveMediaNotificationControllerServices$PlaybackListenerMicService"
+    android:foregroundServiceType="mediaPlayback|microphone" android:exported="false">
+    <intent-filter>
+        <action android:name="android.intent.action.MEDIA_BUTTON" />
+    </intent-filter>
+</service>
+
 <!-- This activity is used for search provider widget -->
 <activity android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProviderActivity"
     android:theme="@style/Theme.Chromium.SearchActivity"

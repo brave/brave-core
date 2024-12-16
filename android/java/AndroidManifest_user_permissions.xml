@@ -1,0 +1,1 @@
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
