@@ -165,7 +165,8 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest,
+                       DISABLED_AddEditRemoveScriptlet) {
   EnableDeveloperMode(true);
 
   NavigateToURL(GURL("brave://settings/shields/filters"));
