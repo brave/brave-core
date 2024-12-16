@@ -1,6 +1,6 @@
 {
   "short_name": "$i18n{siteTitle}",
-  "name": "$i18n{siteTitle}",
+  "name": "$i18n{pwaTitle}",
   "icons": [
     {
       "src": "/pwa_icon.svg",
