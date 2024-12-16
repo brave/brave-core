@@ -29,11 +29,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
     private static final List<String> sBraveTalkHosts =
             Arrays.asList("talk.brave.com", "talk.bravesoftware.com", "talk.brave.software");
 
-    private boolean isBraveTalk() {
-        WebContents webContents =
-                (WebContents)
-                        BraveReflectionUtil.getField(
-                                MediaSessionHelper.class, "mWebContents", this);
+    public static boolean isBraveTalk(WebContents webContents) {
         if (webContents == null) {
             return false;
         }
@@ -45,6 +41,15 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         }
 
         return false;
+    }
+
+    private boolean isBraveTalk() {
+        WebContents webContents =
+                (WebContents)
+                        BraveReflectionUtil.getField(
+                                MediaSessionHelper.class, "mWebContents", this);
+
+        return isBraveTalk(webContents);
     }
 
     @Override

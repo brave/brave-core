@@ -27,4 +27,7 @@
     <item type="id" name="menu_item_original_background" />
     <item type="id" name="menu_item_background_drawable_position" />
     <item type="id" name="contextmenu_copy_clean_link" />
+
+    <!-- Brave Talk notification -->
+    <item type="id" name="media_playback_mic_notification" />
 </resources>

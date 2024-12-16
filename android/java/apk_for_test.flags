@@ -19,6 +19,13 @@
 -keep class org.chromium.components.browser_ui.media.BraveMediaSessionHelper { *; }
 -keep class org.chromium.content_public.browser.MediaSessionObserver { *; }
 -keep class org.chromium.ui.ViewProvider { *; }
+-keep class org.chromium.components.browser_ui.media.MediaSessionHelper { *; }
+-keep class org.chromium.components.browser_ui.notifications.ForegroundServiceUtils { *; }
+-keep class org.chromium.chrome.browser.media.ui.ChromeMediaNotificationControllerDelegate { *; }
+-keep class org.chromium.chrome.browser.media.ui.MediaSessionTabHelper { *; }
+-keep class org.chromium.components.browser_ui.notifications.BraveForegroundServiceUtils { *; }
+-keep class org.chromium.chrome.browser.media.ui.BraveMediaNotificationControllerDelegate { *; }
+-keep class org.chromium.chrome.browser.media.ui.BraveMediaSessionTabHelper { *; }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
     *** mNativeBookmarkBridge;
@@ -899,4 +906,12 @@
 
 -keep class org.chromium.chrome.browser.settings.SettingsIntentUtil {
     *** createIntent(...);
+}
+
+-keep class org.chromium.chrome.browser.media.ui.ChromeMediaNotificationControllerDelegate {
+    *** getContext(...);
+}
+
+-keep class org.chromium.chrome.browser.media.ui.MediaSessionTabHelper {
+   *** mTab;
 }
