@@ -35,7 +35,7 @@ std::u16string BraveTab::GetTooltipText(const gfx::Point& p) const {
     return Tab::GetTooltipText(data_.title,
                                GetAlertStateToShow(data_.alert_state));
   }
-  return Tab::GetTooltipText(p);
+  return Tab::GetCachedTooltipText();
 }
 
 int BraveTab::GetWidthOfLargestSelectableRegion() const {
