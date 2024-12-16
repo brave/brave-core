@@ -3,6 +3,9 @@
   <message name="IDS_CHAT_UI_TITLE" translateable="false" desc="Title for the Brave AI product">
     Leo AI
   </message>
+  <message name="IDS_CHAT_UI_PWA_TITLE" translateable="false" desc="Title for the Brave AI product when installed">
+    Brave Leo AI
+  </message>
   <message name="IDS_CHAT_UI_SUMMARIZE_FAILED_LABEL" desc="Label for when summarization is not possible">
     The summarizer feature is currently available only for select articles and other long-form web pages.
   </message>

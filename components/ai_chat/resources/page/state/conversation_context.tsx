@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../common/mojom'
 import useIsConversationVisible from '../hooks/useIsConversationVisible'
 import useSendFeedback, { defaultSendFeedbackState, SendFeedbackState } from './useSendFeedback'
@@ -314,6 +315,33 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     if (context.conversationUuid === selectedConversationId) return
     updateSelectedConversationId(context.conversationUuid)
   }, [isVisible, updateSelectedConversationId])
+
+  // Update page title when conversation changes
+  React.useEffect(() => {
+    const originalTitle = document.title
+    const conversationTitle = aiChatContext.visibleConversations.find(c =>
+      c.uuid === context.conversationUuid
+    )?.title || getLocale('conversationListUntitled')
+
+    function setTitle(isPWA: boolean) {
+      if (isPWA) {
+        document.title = conversationTitle
+      } else {
+        document.title = `${getLocale('siteTitle')} - ${conversationTitle}`
+      }
+    }
+
+    const isPWAQuery = window.matchMedia('(display-mode: standalone)')
+    const handleChange = (e: MediaQueryListEvent) => setTitle(e.matches)
+    isPWAQuery.addEventListener('change', handleChange)
+
+    setTitle(isPWAQuery.matches)
+
+    return () => {
+      document.title = originalTitle
+      isPWAQuery.removeEventListener('change', handleChange)
+    }
+  }, [aiChatContext.visibleConversations, context.conversationUuid])
 
   const actionList = useActionMenu(context.inputText, aiChatContext.allActions)
 
