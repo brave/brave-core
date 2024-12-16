@@ -54,6 +54,11 @@ std::u16string BraveTab::GetTooltipText(const gfx::Point& p) const {
   return Tab::GetTooltipText(p);
 }
 
+void BraveTab::UpdateBorder() {
+  // In vertical tab, different border is used based on split view state.
+  SetBorder(views::CreateEmptyBorder(tab_style_views()->GetContentsInsets()));
+}
+
 int BraveTab::GetWidthOfLargestSelectableRegion() const {
   // Assume the entire region except the area that alert indicator/close buttons
   // occupied is available for click-to-select.

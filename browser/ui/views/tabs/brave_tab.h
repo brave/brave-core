@@ -24,6 +24,7 @@ class BraveTab : public Tab {
 
   // Tab:
   std::u16string GetTooltipText(const gfx::Point& p) const override;
+  void UpdateBorder() override;
 
   // Overridden because we moved alert button to left side in the tab whereas
   // upstream put it on right side. Need to consider this change for calculating

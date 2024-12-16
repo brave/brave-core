@@ -470,7 +470,6 @@ std::optional<BrowserRootView::DropIndex> BraveTabContainer::GetDropIndex(
         continue;
       }
 
-
       const bool is_tab_pinned = tab->data().pinned;
 
       // When dropping text or links onto pinned tabs, we need to take the
@@ -601,10 +600,12 @@ void BraveTabContainer::HandleDragExited() {
 }
 
 void BraveTabContainer::OnTileTabs(const TabTile& tile) {
+  UpdateTabsBorderInTile(tile);
   SchedulePaint();
 }
 
 void BraveTabContainer::OnDidBreakTile(const TabTile& tile) {
+  UpdateTabsBorderInTile(tile);
   SchedulePaint();
 }
 
@@ -755,6 +756,32 @@ void BraveTabContainer::SetDropArrow(
 
   // Reposition the window.
   drop_arrow_->SetWindowBounds(drop_bounds);
+}
+
+bool BraveTabContainer::IsPinnedTabContainer() const {
+  return tabs_view_model_.view_size() > 0 && tabs_view_model_.view_at(0)->data().pinned;
+}
+
+void BraveTabContainer::UpdateTabsBorderInTile(const TabTile& tile) {
+  auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
+  const int offset =
+      IsPinnedTabContainer() ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
+
+  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first) - offset;
+  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second) - offset;
+
+  if (!controller_->IsValidModelIndex(tab1_index) ||
+      !controller_->IsValidModelIndex(tab2_index)) {
+    // In case the tiled tab is not in this container, this can happen.
+    // For instance, this container is for pinned tabs but tabs in the tile
+    // are unpinned.
+    return;
+  }
+
+  auto* tab1 = GetTabAtModelIndex(tab1_index);
+  auto* tab2 = GetTabAtModelIndex(tab2_index);
+  tab1->UpdateBorder();
+  tab2->UpdateBorder();
 }
 
 BEGIN_METADATA(BraveTabContainer)
