@@ -64,6 +64,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_SYNC_AND_SERVICES_LINK = "sync_and_services_link";
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
+    private static final String PREF_HTTPS_FIRST_MODE_LEGACY = "https_first_mode_legacy";
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
@@ -126,6 +127,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_DE_AMP,
         PREF_DEBOUNCE,
         PREF_HTTPS_UPGRADE,
+        PREF_HTTPS_FIRST_MODE_LEGACY,
         PREF_HTTPS_FIRST_MODE,
         PREF_BLOCK_SCRIPTS,
         PREF_BLOCK_CROSS_SITE_COOKIES,
@@ -180,7 +182,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private TextMessagePreference mBlockCrosssiteCookiesLearnMore;
     private ChromeSwitchPreference mDeAmpPref;
     private ChromeSwitchPreference mDebouncePref;
-    private ChromeSwitchPreference mHttpsFirstModePref;
+    private ChromeSwitchPreference mHttpsFirstModePrefLegacy;
+    private Preference mHttpsFirstModePref;
     private BraveDialogPreference mHttpsUpgradePref;
     private BraveDialogPreference mFingerprintingProtectionPref;
     private ChromeSwitchPreference mFingerprintingProtection2Pref;
@@ -264,14 +267,20 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             removePreferenceIfPresent(PREF_DEBOUNCE);
         }
 
-        mHttpsFirstModePref = (ChromeSwitchPreference) findPreference(PREF_HTTPS_FIRST_MODE);
+        boolean httpsByDefaultIsEnabled =
+                ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
+        if (!ChromeFeatureList.isEnabled(ChromeFeatureList.HTTPS_FIRST_BALANCED_MODE)) {
+            mHttpsFirstModePrefLegacy =
+                    (ChromeSwitchPreference) findPreference(PREF_HTTPS_FIRST_MODE_LEGACY);
+            mHttpsFirstModePrefLegacy.setVisible(!httpsByDefaultIsEnabled);
+        } else {
+            mHttpsFirstModePref = (Preference) findPreference(PREF_HTTPS_FIRST_MODE);
+            mHttpsFirstModePref.setVisible(!httpsByDefaultIsEnabled);
+        }
 
         mHttpsUpgradePref = (BraveDialogPreference) findPreference(PREF_HTTPS_UPGRADE);
         mHttpsUpgradePref.setOnPreferenceChangeListener(this);
 
-        boolean httpsByDefaultIsEnabled =
-                ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
-        mHttpsFirstModePref.setVisible(!httpsByDefaultIsEnabled);
         mHttpsUpgradePref.setVisible(httpsByDefaultIsEnabled);
 
         mCanMakePayment = (ChromeSwitchPreference) findPreference(PREF_CAN_MAKE_PAYMENT);
@@ -663,10 +672,14 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         // HTTPS only mode
         boolean httpsByDefaultIsEnabled =
                 ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT);
-        mHttpsFirstModePref.setVisible(!httpsByDefaultIsEnabled);
-        mHttpsFirstModePref.setChecked(
-                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                        .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
+        if (!ChromeFeatureList.isEnabled(ChromeFeatureList.HTTPS_FIRST_BALANCED_MODE)) {
+            mHttpsFirstModePrefLegacy.setVisible(!httpsByDefaultIsEnabled);
+            mHttpsFirstModePrefLegacy.setChecked(
+                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                            .getBoolean(Pref.HTTPS_ONLY_MODE_ENABLED));
+        } else {
+            mHttpsFirstModePref.setVisible(!httpsByDefaultIsEnabled);
+        }
 
         if (blockAdTrackersPref.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             mAdsTrakersBlockPref.setCheckedIndex(0);
