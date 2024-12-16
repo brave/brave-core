@@ -123,17 +123,8 @@ bool ShouldBypassSignature() {
   return kBypass;
 }
 
-}  // namespace
-#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
-
-namespace component_updater {
-
-BASE_FEATURE(kComponentContentsVerifier,
-             "ComponentContentsVerifier",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
-std::unique_ptr<ContentsVerifier> CreateExtensionsTreeHashContentsVerifier(
-    const base::FilePath& component_root) {
+std::unique_ptr<component_updater::ContentsVerifier>
+CreateExtensionsTreeHashContentsVerifier(const base::FilePath& component_root) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (!ShouldBypassSignature()) {
     return std::make_unique<ExtensionsTreeHashContentsVerifier>(component_root);
@@ -144,9 +135,18 @@ std::unique_ptr<ContentsVerifier> CreateExtensionsTreeHashContentsVerifier(
   return nullptr;
 }
 
+}  // namespace
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+
+namespace component_updater {
+
+BASE_FEATURE(kComponentContentsVerifier,
+             "ComponentContentsVerifier",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 void SetupComponentContentsVerifier() {
   auto factory = base::BindRepeating(CreateExtensionsTreeHashContentsVerifier);
-  SetupContentsVerifierFactory(std::move(factory));
+  SetContentsVerifierFactory(std::move(factory));
 }
 
 }  // namespace component_updater

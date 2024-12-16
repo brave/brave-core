@@ -16,7 +16,11 @@
 
 namespace component_updater {
 
-// Use on MAY_BLOCK sequence.
+// This class provides secure access to the component's files. It requires
+// 'verified_contents.json' that should be shipped with the component. If
+// 'verified_contents.json' is missing or signature doesn't match the
+// content of the files then accessor doesn't return data from GetFile*
+// functions. Use on MAY_BLOCK sequence.
 class ComponentContentsAccessor
     : public base::RefCountedThreadSafe<ComponentContentsAccessor> {
  public:
