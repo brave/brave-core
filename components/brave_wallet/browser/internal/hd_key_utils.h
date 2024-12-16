@@ -25,6 +25,9 @@ inline constexpr uint32_t kHardenedOffset = 0x80000000;
 // expected to end with a single quote per BIP-44 style.
 // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 // https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
+// TODO(apaymyshev): We most likely do not need this parsing as at runtime all
+// parsing is done from hardcoded strings. Worth implementing account roots
+// derivations in terms of DeriveHardened/DeriveNormal calls.
 std::optional<std::vector<uint32_t>> ParseFullHDPath(std::string_view path);
 
 class ScopedSecureZeroSpan {
