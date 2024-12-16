@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "src/chrome/browser/importer/profile_writer.cc"
+
 #include "base/uuid.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
-#include "components/autofill/core/browser/personal_data_manager.h"
-
-#include "src/chrome/browser/importer/profile_writer.cc"
+#include "components/autofill/core/browser/data_manager/personal_data_manager.h"
 
 void ProfileWriter::AddCreditCard(const std::u16string& name_on_card,
                                   const std::u16string& expiration_month,
