@@ -69,7 +69,7 @@ initializeDetector(() => {
     }
 
     let elem = document.querySelector<HTMLAnchorElement>('a[aria-label=About]')
-    if (elem) {
+    if (elem && elem.checkVisibility()) {
       channel = getChannelFromURL(elem.href)
       if (channel) {
         return channel
@@ -77,7 +77,7 @@ initializeDetector(() => {
     }
 
     elem = document.querySelector<HTMLAnchorElement>('a.ytp-ce-channel-title')
-    if (elem) {
+    if (elem && elem.checkVisibility()) {
       channel = getChannelFromURL(elem.href)
       if (channel) {
         return channel
