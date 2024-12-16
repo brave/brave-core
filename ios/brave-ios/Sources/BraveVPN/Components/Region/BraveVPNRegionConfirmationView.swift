@@ -25,32 +25,26 @@ public struct BraveVPNRegionConfirmationView: View {
         .resizable()
         .frame(width: 96, height: 96)
       Text(Strings.VPN.vpnRegionChangedTitle)
-        .multilineTextAlignment(.center)
         .font(.headline)
         .foregroundStyle(Color(braveSystemName: .textPrimary))
-      HStack {
-        countryFlag
-          .frame(width: 32, height: 32)
-          .padding(4)
-          .overlay(
-            RoundedRectangle(cornerRadius: 12.0, style: .continuous)
-              .strokeBorder(Color(.lightGray), lineWidth: 1.0)
-          )
-        VStack(alignment: .leading) {
+      VStack {
+        HStack(alignment: .center) {
+          countryFlag
+            .frame(width: 32, height: 32)
           if let country = country {
             Text(country)
               .font(.headline)
               .foregroundStyle(Color(braveSystemName: .textPrimary))
           }
-          if let city = city {
-            Text(city)
-              .font(.subheadline)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
-          }
+        }
+        if let city = city {
+          Text(city)
+            .font(.subheadline)
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
         }
       }
-      .frame(maxWidth: .infinity, alignment: .leading)
     }
+    .multilineTextAlignment(.center)
     .padding(48)
     .frame(maxWidth: 350)
     .background(Color(braveSystemName: .iosBrowserElevatedIos))
