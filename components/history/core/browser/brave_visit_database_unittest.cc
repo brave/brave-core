@@ -6,6 +6,7 @@
 #include "base/time/time.h"
 #include "components/history/core/browser/url_database.h"
 #include "components/history/core/browser/visit_database.h"
+#include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/platform_test.h"
 
@@ -18,7 +19,7 @@ class BraveVisitDatabaseTest : public PlatformTest,
                                public URLDatabase,
                                public VisitDatabase {
  public:
-  BraveVisitDatabaseTest() {}
+  BraveVisitDatabaseTest() : db_(sql::test::kTestTag) {}
 
  private:
   // Test setup.

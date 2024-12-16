@@ -117,7 +117,7 @@ bool HasPaymentMethods(const base::FilePath& payments_path) {
   if (!copy_payments_file.copy_success())
     return false;
 
-  sql::Database db;
+  sql::Database db(/*tag=*/"Payments");
   if (!db.Open(copy_payments_file.copied_file_path())) {
     return false;
   }
