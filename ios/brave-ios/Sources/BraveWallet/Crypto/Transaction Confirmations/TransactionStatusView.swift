@@ -15,14 +15,19 @@ struct TransactionStatusView: View {
 
   let onDismiss: () -> Void
   var onViewInActivity: () -> Void
+  var onFollowUpTxCreated: (_ txId: String) -> Void
 
   @Environment(\.openURL) private var openWalletURL
-  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+  @Environment(\.pixelLength) private var pixelLength
 
   @State private var isSpinning: Bool = false
   @State private var isConfirmSpinning: Bool = false
   @State private var isConfirmSpinningFinished: Bool = false
   @State private var scrollViewContentSize: CGSize = .zero
+  @State private var isShowingTxCancellationConfirmation: Bool = false
+  @State private var speedUpTimer: Timer?
+  @State private var isShowingSpeedUpBanner: Bool = false
+  @State private var followUpActionError: String?
 
   @ViewBuilder private var statusIcon: some View {
     switch txStatusStore.activeTxStatus {
@@ -218,82 +223,124 @@ struct TransactionStatusView: View {
     })
   }
 
+  private func revertFromValue(parsedTx: ParsedTransaction) -> String {
+    switch parsedTx.details {
+    case .erc20Transfer(let detail):
+      return "\(detail.fromAmount) \(detail.fromToken?.symbol ?? "")"
+    case .erc721Transfer(let detail):
+      return "\(detail.fromAmount) \(detail.fromToken?.symbol ?? "")"
+    case .ethSend(let detail):
+      return "\(detail.fromAmount) \(detail.fromToken?.symbol ?? "ETH")"
+    case .ethErc20Approve(let detail):
+      return "\(detail.approvalAmount) \(detail.token?.symbol ?? "")"
+    case .ethSwap(let detail):
+      return "\(detail.fromAmount) \(detail.fromToken?.symbol ?? "")"
+    default:
+      return ""
+    }
+  }
+
+  private func txCancelledMsg(parsedTx: ParsedTransaction) -> String {
+    if case .ethErc20Approve(_) = parsedTx.details {
+      return Strings.Wallet.cancelERC20ApprovalTxRevertMsg
+    } else {
+      return Strings.Wallet.cancelTxRevertMsg
+    }
+  }
+
   @ViewBuilder private var txStatusTextView: some View {
     switch txStatusStore.activeTxStatus {
     case .submitted:
-      // Sending
-      //
-      // Transaction Submitted
-      // Sending 0.1 ETH to Oxabcd
-      //
-      // Approving ERC20
-      //
-      // Transaction Submitted
-      // Approving 1 DAI on Account 1
-      //
-      // Swapping on Eth
-      //
-      // Transaction Submitted
-      // Swapping 0.1 ETH to 2.3 USDC
-      // on Ethereum mainnet
-      //
-      // Swapping on Sol
-      //
-      // Transaction Submitted
-      // Solana Swap
-      // on Solana Mainnet
-      VStack {
-        Text(Strings.Wallet.submittedTransactionTitle)
-          .font(.title2.weight(.semibold))
-          .padding(.bottom, 8)
-        Group {
-          if isTxSolSwap {
-            HStack {
-              Text(Strings.Wallet.transactionSummarySolanaSwap)
-                .fontWeight(.semibold)
-              explorerButton
-            }
-            Text("\(Strings.Wallet.txStatusOn) \(activeTxNetwork?.chainName ?? "")")
-              .foregroundColor(Color(braveSystemName: .textSecondary))
-          } else if isTxERC20Approve {
-            Text("\(Strings.Wallet.txStatusApproving) ")
-              .foregroundColor(Color(braveSystemName: .textSecondary))
-              + Text(txFromValue)
-              .fontWeight(.semibold)
-              + Text(" \(Strings.Wallet.txStatusOn) ")
-              .foregroundColor(Color(braveSystemName: .textSecondary))
-            HStack {
-              Text(txToValue)
-                .fontWeight(.semibold)
-              explorerButton
-            }
-          } else if isTxEthSwap {
-            Text("\(Strings.Wallet.txStatusSwapping) ")
-              .foregroundColor(Color(braveSystemName: .textSecondary))
-              + Text(txFromValue)
-              .fontWeight(.semibold)
-              + Text(" \(Strings.Wallet.txStatusTo) ")
-              .foregroundColor(Color(braveSystemName: .textSecondary))
-              + Text(txToValue)
-              .fontWeight(.semibold)
-          } else {
-            Text("\(Strings.Wallet.txStatusSending) ")
-              .foregroundColor(Color(braveSystemName: .textSecondary))
-              + Text(txFromValue)
-              .fontWeight(.semibold)
-              + Text(" \(Strings.Wallet.txStatusTo) ")
-              .foregroundColor(Color(braveSystemName: .textSecondary))
-            HStack {
-              Text(txToValue)
-                .fontWeight(.semibold)
-              explorerButton
-            }
+      if case .cancel(_) = txStatusStore.followUpAction {
+        // Cancelling transaction
+        // Cancellation request submitted
+        VStack {
+          Text(Strings.Wallet.cancellingTransactionTitle)
+            .font(.title2.weight(.semibold))
+            .padding(.bottom, 8)
+          HStack {
+            Text(Strings.Wallet.cancellingTransactionDescription)
+              .font(.subheadline)
+            explorerButton
           }
         }
-        .font(.subheadline)
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+        .multilineTextAlignment(.center)
+      } else {
+        // Sending (not cancelling)
+        //
+        // Transaction Submitted
+        // Sending 0.1 ETH to Oxabcd
+        //
+        // Approving ERC20
+        //
+        // Transaction Submitted
+        // Approving 1 DAI on Account 1
+        //
+        // Swapping on Eth
+        //
+        // Transaction Submitted
+        // Swapping 0.1 ETH to 2.3 USDC
+        // on Ethereum mainnet
+        //
+        // Swapping on Sol
+        //
+        // Transaction Submitted
+        // Solana Swap
+        // on Solana Mainnet
+        VStack {
+          Text(Strings.Wallet.submittedTransactionTitle)
+            .font(.title2.weight(.semibold))
+            .padding(.bottom, 8)
+          Group {
+            if isTxSolSwap {
+              HStack {
+                Text(Strings.Wallet.transactionSummarySolanaSwap)
+                  .fontWeight(.semibold)
+                explorerButton
+              }
+              Text("\(Strings.Wallet.txStatusOn) \(activeTxNetwork?.chainName ?? "")")
+                .foregroundColor(Color(braveSystemName: .textSecondary))
+            } else if isTxERC20Approve {
+              Text("\(Strings.Wallet.txStatusApproving) ")
+                .foregroundColor(Color(braveSystemName: .textSecondary))
+                + Text(txFromValue)
+                .fontWeight(.semibold)
+                + Text(" \(Strings.Wallet.txStatusOn) ")
+                .foregroundColor(Color(braveSystemName: .textSecondary))
+              HStack {
+                Text(txToValue)
+                  .fontWeight(.semibold)
+                explorerButton
+              }
+            } else if isTxEthSwap {
+              Text("\(Strings.Wallet.txStatusSwapping) ")
+                .foregroundColor(Color(braveSystemName: .textSecondary))
+                + Text(txFromValue)
+                .fontWeight(.semibold)
+                + Text(" \(Strings.Wallet.txStatusTo) ")
+                .foregroundColor(Color(braveSystemName: .textSecondary))
+                + Text(txToValue)
+                .fontWeight(.semibold)
+            } else {
+              Text("\(Strings.Wallet.txStatusSending) ")
+                .foregroundColor(Color(braveSystemName: .textSecondary))
+                + Text(txFromValue)
+                .fontWeight(.semibold)
+                + Text(" \(Strings.Wallet.txStatusTo) ")
+                .foregroundColor(Color(braveSystemName: .textSecondary))
+              HStack {
+                Text(txToValue)
+                  .fontWeight(.semibold)
+                explorerButton
+              }
+            }
+          }
+          .font(.subheadline)
+        }
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+        .multilineTextAlignment(.center)
       }
-      .foregroundColor(Color(braveSystemName: .textPrimary))
-      .multilineTextAlignment(.center)
     case .signed:
       // Signed send tx
       //
@@ -317,82 +364,108 @@ struct TransactionStatusView: View {
       .foregroundColor(Color(braveSystemName: .textPrimary))
       .multilineTextAlignment(.center)
     case .confirmed:
-      // Sending
-      //
-      // Sent!
-      // 0.1 ETH has been sent to account Oxabcd
-      //
-      // Approving ERC20
-      //
-      // Approved!
-      // 1 DAI has been approved on your Account 1
-      //
-      // Swapping on Eth
-      //
-      // Completed!
-      // 2.3 USDC has been added to your Account 1
-      // on Ethereum Mainnet
-      //
-      // Swapping on Sol
-      //
-      // Completed!
-      // Solana Swap
-      // on Solana Mainnet
-      VStack {
-        if isTxSolSwap {
-          Text("\(Strings.Wallet.txStatusCompleted)!")
+      if case .cancel(let parsedTx) = txStatusStore.followUpAction {
+        // Transaction cancellation
+        //
+        // Transaction cancelled!
+        // 0.1 ETH has been reverted to account 0xf333...095F
+        //
+        VStack {
+          Text(Strings.Wallet.confirmedTransactionCancellationTitle)
             .font(.title2.weight(.semibold))
             .padding(.bottom, 8)
-          HStack {
-            Text(Strings.Wallet.transactionSummarySolanaSwap)
-              .fontWeight(.semibold)
-            explorerButton
-          }
-          Text("\(Strings.Wallet.txStatusOn) \(activeTxNetwork?.chainName ?? "")")
-            .foregroundColor(Color(braveSystemName: .textSecondary))
-        } else if isTxEthSwap {
-          Text("\(Strings.Wallet.txStatusCompleted)!")
-            .font(.title2.weight(.semibold))
-            .padding(.bottom, 8)
-          Text(txToValue)
+          Text(revertFromValue(parsedTx: parsedTx))
             .fontWeight(.semibold)
-            + Text(" \(Strings.Wallet.txStatusSwappedMsg)")
+            + Text(" \(txCancelledMsg(parsedTx: parsedTx)) ")
             .foregroundColor(Color(braveSystemName: .textSecondary))
           HStack {
-            Text(txStatusStore.activeParsedTx.fromAccountInfo.name)
-              .fontWeight(.semibold)
-            explorerButton
-          }
-        } else if isTxERC20Approve {
-          Text("\(Strings.Wallet.txStatusCompleted)!")
-            .font(.title2.weight(.semibold))
-            .padding(.bottom, 8)
-          Text(txFromValue)
-            .fontWeight(.semibold)
-            + Text(" \(Strings.Wallet.txStatusERC20ApprovalMsg)")
-            .foregroundColor(Color(braveSystemName: .textSecondary))
-          HStack {
-            Text(txToValue)
-              .fontWeight(.semibold)
-            explorerButton
-          }
-        } else {
-          Text("\(Strings.Wallet.sent)!")
-            .font(.title2.weight(.semibold))
-            .padding(.bottom, 8)
-          Text(txFromValue)
-            .fontWeight(.semibold)
-            + Text(" \(Strings.Wallet.txStatusSentMsg)")
-            .foregroundColor(Color(braveSystemName: .textSecondary))
-          HStack {
-            Text(txToValue)
+            Text("\(Strings.Wallet.confirmedTransactionCancellationAccount) ")
+              .foregroundColor(Color(braveSystemName: .textSecondary))
+              + Text(parsedTx.fromAccountInfo.address.truncatedAddress)
               .fontWeight(.semibold)
             explorerButton
           }
         }
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+        .multilineTextAlignment(.center)
+      } else {
+        // Sending (not cancelling)
+        //
+        // Sent!
+        // 0.1 ETH has been sent to account Oxabcd
+        //
+        // Approving ERC20
+        //
+        // Approved!
+        // 1 DAI has been approved on your Account 1
+        //
+        // Swapping on Eth
+        //
+        // Completed!
+        // 2.3 USDC has been added to your Account 1
+        // on Ethereum Mainnet
+        //
+        // Swapping on Sol
+        //
+        // Completed!
+        // Solana Swap
+        // on Solana Mainnet
+        VStack {
+          if isTxSolSwap {
+            Text("\(Strings.Wallet.txStatusCompleted)!")
+              .font(.title2.weight(.semibold))
+              .padding(.bottom, 8)
+            HStack {
+              Text(Strings.Wallet.transactionSummarySolanaSwap)
+                .fontWeight(.semibold)
+              explorerButton
+            }
+            Text("\(Strings.Wallet.txStatusOn) \(activeTxNetwork?.chainName ?? "")")
+              .foregroundColor(Color(braveSystemName: .textSecondary))
+          } else if isTxEthSwap {
+            Text("\(Strings.Wallet.txStatusCompleted)!")
+              .font(.title2.weight(.semibold))
+              .padding(.bottom, 8)
+            Text(txToValue)
+              .fontWeight(.semibold)
+              + Text(" \(Strings.Wallet.txStatusSwappedMsg)")
+              .foregroundColor(Color(braveSystemName: .textSecondary))
+            HStack {
+              Text(txStatusStore.activeParsedTx.fromAccountInfo.name)
+                .fontWeight(.semibold)
+              explorerButton
+            }
+          } else if isTxERC20Approve {
+            Text("\(Strings.Wallet.txStatusCompleted)!")
+              .font(.title2.weight(.semibold))
+              .padding(.bottom, 8)
+            Text(txFromValue)
+              .fontWeight(.semibold)
+              + Text(" \(Strings.Wallet.txStatusERC20ApprovalMsg)")
+              .foregroundColor(Color(braveSystemName: .textSecondary))
+            HStack {
+              Text(txToValue)
+                .fontWeight(.semibold)
+              explorerButton
+            }
+          } else {
+            Text("\(Strings.Wallet.sent)!")
+              .font(.title2.weight(.semibold))
+              .padding(.bottom, 8)
+            Text(txFromValue)
+              .fontWeight(.semibold)
+              + Text(" \(Strings.Wallet.txStatusSentMsg)")
+              .foregroundColor(Color(braveSystemName: .textSecondary))
+            HStack {
+              Text(txToValue)
+                .fontWeight(.semibold)
+              explorerButton
+            }
+          }
+        }
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+        .multilineTextAlignment(.center)
       }
-      .foregroundColor(Color(braveSystemName: .textPrimary))
-      .multilineTextAlignment(.center)
     case .error:
       VStack {
         Group {
@@ -435,7 +508,28 @@ struct TransactionStatusView: View {
 
   @ViewBuilder private var buttonContainerView: some View {
     switch txStatusStore.activeTxStatus {
-    case .submitted, .confirmed:
+    case .submitted:
+      HStack {
+        if txStatusStore.isCancelAvailable {
+          Button {
+            isShowingTxCancellationConfirmation = true
+          } label: {
+            Text(Strings.Wallet.cancelTransactionStatusButtonTitle)
+              .font(.footnote.weight(.semibold))
+              .frame(maxWidth: .infinity)
+          }
+          .buttonStyle(BraveOutlineButtonStyle(size: .large))
+        }
+        Button {
+          onViewInActivity()
+        } label: {
+          Text(Strings.Wallet.txStatusViewInActivity)
+            .font(.footnote.weight(.semibold))
+            .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(BraveFilledButtonStyle(size: .large))
+      }
+    case .confirmed:
       Button {
         onViewInActivity()
       } label: {
@@ -470,21 +564,91 @@ struct TransactionStatusView: View {
       || txStatusStore.activeTxStatus == .confirmed
   }
 
+  private var speedUpView: some View {
+    HStack(spacing: 4) {
+      Text(Strings.Wallet.speedUpBannerTitle)
+        .foregroundColor(Color(braveSystemName: .systemfeedbackInfoText))
+        .font(.subheadline)
+        .multilineTextAlignment(.leading)
+      Spacer()
+      Button {
+        Task { @MainActor in
+          let (txId, error) = await txStatusStore.handleTransactionFollowUpAction(.speedUp)
+          if let error {
+            followUpActionError = error
+          } else if let txId {
+            onFollowUpTxCreated(txId)
+          }
+        }
+      } label: {
+        Text(Strings.Wallet.speedUpButtonTitle)
+          .foregroundColor(Color(braveSystemName: .textInteractive))
+          .font(.caption.weight(.semibold))
+          .padding(6)
+      }
+      .overlay {
+        RoundedRectangle(cornerRadius: 8)
+          .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: pixelLength)
+      }
+    }
+    .padding(16)
+    .background(
+      Color(braveSystemName: .systemfeedbackInfoBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+    )
+  }
+
   var body: some View {
     NavigationStack {
       GeometryReader { geometry in
         ScrollView(.vertical) {
           VStack {
-            Spacer()
-            txStatusIconView
+            if txStatusStore.isOriginalTxConfirmed {
+              Spacer()
+              ZStack {
+                Circle()
+                  .fill(Color(braveSystemName: .systemfeedbackErrorBackground))
+                  .frame(width: 100, height: 100)
+                Image(braveSystemName: "leo.close")
+                  .font(.title.weight(.semibold))
+                  .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
+              }
               .padding(.bottom, 30)
-            txStatusTextView
+              VStack {
+                Group {
+                  switch txStatusStore.followUpAction {
+                  case .cancel(_):
+                    Text(Strings.Wallet.unableToCancel)
+                  case .speedUp:
+                    Text(Strings.Wallet.unableToSpeedUp)
+                  case .none:
+                    EmptyView()
+                  }
+                }
+                .font(.title2.weight(.semibold))
+                .foregroundColor(Color(braveSystemName: .textPrimary))
+                .padding(.bottom, 8)
+                Text(Strings.Wallet.originalTransactionIsConfirmed)
+                  .font(.subheadline)
+                  .foregroundColor(Color(braveSystemName: .textSecondary))
+              }
+              .multilineTextAlignment(.center)
               .padding(.top, 10)
-            Spacer()
-            disclosureView
-              .padding(.bottom, 8)
-              .hidden(isHidden: hideDisclosureView)
-            buttonContainerView
+              Spacer()
+            } else {
+              speedUpView
+                .hidden(isHidden: !isShowingSpeedUpBanner)
+              Spacer()
+              txStatusIconView
+                .padding(.bottom, 30)
+              txStatusTextView
+                .padding(.top, 10)
+              Spacer()
+              disclosureView
+                .padding(.bottom, 8)
+                .hidden(isHidden: hideDisclosureView)
+              buttonContainerView
+            }
           }
           .frame(maxWidth: .infinity, minHeight: geometry.size.height)
           .padding(.horizontal, 24)
@@ -492,7 +656,7 @@ struct TransactionStatusView: View {
       }
       .interactiveDismissDisabled()
       .background(Color(braveSystemName: .containerBackground).ignoresSafeArea())
-      .transparentNavigationBar()
+      .transparentNavigationBar(backButtonDisplayMode: .minimal)
       .toolbar {
         ToolbarItemGroup(placement: .destructiveAction) {
           Button {
@@ -504,7 +668,94 @@ struct TransactionStatusView: View {
         }
       }
       .navigationBarTitleDisplayMode(.inline)
+      .navigationDestination(
+        isPresented: $isShowingTxCancellationConfirmation,
+        destination: {
+          TxCancellationConfirmationView(
+            txStatusStore: txStatusStore,
+            onCancelCreationSucceeded: {
+              isShowingTxCancellationConfirmation = false
+              onFollowUpTxCreated($0)
+            },
+            cancelError: $followUpActionError
+          )
+          .padding(16)
+        }
+      )
     }
+    .onChange(of: txStatusStore.activeTxStatus) { _ in
+      if txStatusStore.activeTxStatus != .submitted {
+        isShowingSpeedUpBanner = false
+        speedUpTimer?.invalidate()
+        speedUpTimer = nil
+      }
+    }
+    .alert(
+      isPresented: Binding(
+        get: { followUpActionError != nil },
+        set: {
+          if !$0 {
+            followUpActionError = nil
+            isShowingTxCancellationConfirmation = false
+          }
+        }
+      )
+    ) {
+      Alert(
+        title: Text(Strings.genericErrorTitle),
+        message: Text(followUpActionError ?? ""),
+        dismissButton: .default(Text(Strings.OKString))
+      )
+    }
+    .onAppear {
+      if txStatusStore.activeTxStatus == .submitted && txStatusStore.isSpeedUpAvailable {
+        speedUpTimer = Timer.scheduledTimer(
+          withTimeInterval: 5,
+          repeats: false,
+          block: { _ in
+            isShowingSpeedUpBanner = true
+          }
+        )
+      }
+    }
+    .onDisappear {
+      speedUpTimer?.invalidate()
+      speedUpTimer = nil
+    }
+  }
+}
+
+struct TxCancellationConfirmationView: View {
+  var txStatusStore: TransactionStatusStore
+  var onCancelCreationSucceeded: (_ txId: String) -> Void
+  @Binding var cancelError: String?
+
+  var body: some View {
+    VStack {
+      Spacer()
+      Text(Strings.Wallet.cancelTransactionStatusButtonTitle)
+        .foregroundColor(Color(braveSystemName: .textPrimary))
+        .font(.title2.weight(.semibold))
+        .padding(.bottom, 8)
+      Text(Strings.Wallet.cancelTransactionStatusConfirmationDescription)
+        .foregroundColor(Color(braveSystemName: .textTertiary))
+      Spacer()
+      Button {
+        Task { @MainActor in
+          let (txId, error) = await txStatusStore.handleTransactionFollowUpAction(.cancel)
+          if let error {
+            cancelError = error
+          } else if let txId {
+            onCancelCreationSucceeded(txId)
+          }
+        }
+      } label: {
+        Text(Strings.Wallet.cancelTransactionStatusButtonTitle)
+          .frame(maxWidth: .infinity)
+      }
+      .buttonStyle(BraveFilledButtonStyle(size: .large))
+    }
+    .multilineTextAlignment(.center)
   }
 }
 
@@ -515,7 +766,8 @@ struct TransactionStatusView_Previews: PreviewProvider {
       txStatusStore: .previewStore,
       networkStore: .previewStore,
       onDismiss: {},
-      onViewInActivity: {}
+      onViewInActivity: {},
+      onFollowUpTxCreated: { _ in }
     )
   }
 }

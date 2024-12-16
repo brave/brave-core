@@ -4505,6 +4505,97 @@ extension Strings {
       value: "Please save the error message for future reference.",
       comment: "A description of the view that will display the error message."
     )
+    public static let cancelERC20ApprovalTxRevertMsg = NSLocalizedString(
+      "wallet.cancelERC20ApprovalTxRevertMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "allowance has not been approved under",
+      comment: "A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436"
+    )
+    public static let cancelTxRevertMsg = NSLocalizedString(
+      "wallet.cancelTxRevertMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "has been reverted to",
+      comment: "A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436"
+    )
+    public static let cancellingTransactionTitle = NSLocalizedString(
+      "wallet.cancellingTransactionTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Cancelling transaction",
+      comment: "A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction."
+    )
+    public static let cancellingTransactionDescription = NSLocalizedString(
+      "wallet.cancellingTransactionDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Cancellation request submitted",
+      comment: "A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction."
+    )
+    public static let confirmedTransactionCancellationTitle = NSLocalizedString(
+      "wallet.confirmedTransactionCancellationTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Transaction cancelled!",
+      comment: "A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction."
+    )
+    public static let confirmedTransactionCancellationAccount = NSLocalizedString(
+      "wallet.confirmedTransactionCancellationAccount",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "account",
+      comment: "When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456"
+    )
+    public static let cancelTransactionStatusButtonTitle = NSLocalizedString(
+      "wallet.cancelTransactionStatusButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Cancel Transaction",
+      comment: "The button title that for user to cancel a submitted transaction inside transaction status view."
+    )
+    public static let cancelTransactionStatusConfirmationDescription = NSLocalizedString(
+      "wallet.cancelTransactionStatusConfirmationDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "A new transaction will be created to cancel your existing transaction",
+      comment: "The description inside the view when asking user to confirm they want to cancel a transaction."
+    )
+    public static let speedUpBannerTitle = NSLocalizedString(
+      "wallet.speedUpBannerTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Take longer than expected?",
+      comment: "The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up."
+    )
+    public static let speedUpButtonTitle = NSLocalizedString(
+      "wallet.speedUpButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Speed Up",
+      comment: "The button title for the button inside speed up banner."
+    )
+    public static let unableToCancel = NSLocalizedString(
+      "wallet.unableToCancel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Unable to cancel",
+      comment: "The title will be displayed when a cancel tx has been dropped or replaced on chain."
+    )
+    public static let unableToSpeedUp = NSLocalizedString(
+      "wallet.unableToSpeedUp",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Unable to speed up",
+      comment: "The title will be displayed when a speed-up tx has been dropped or replaced on chain."
+    )
+    public static let originalTransactionIsConfirmed = NSLocalizedString(
+      "wallet.originalTransactionIsConfirmed",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "The original transaction has been confirmed.",
+      comment: "The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain."
+    )
     public static let ensOffchainGatewayTitle = NSLocalizedString(
       "wallet.ensOffchainGatewayTitle",
       tableName: "BraveWallet",

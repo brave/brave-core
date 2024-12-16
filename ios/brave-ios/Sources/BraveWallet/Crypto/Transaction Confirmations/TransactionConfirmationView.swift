@@ -152,6 +152,20 @@ struct TransactionConfirmationView: View {
               onViewInActivity: {
                 onDismiss()
                 onViewInActivity()
+              },
+              onFollowUpTxCreated: { txId in
+                Task { @MainActor in
+                  // fetch and update `confirmationStore.unapprovedTxs` with this new tx with `txId`
+                  if await confirmationStore.updateAllTx(with: txId) == false {
+                    if confirmationStore.unapprovedTxs.count == 0 {
+                      onDismiss()
+                    }
+                  }
+                  // update activeTransactionId
+                  confirmationStore.updateActiveTxIdAfterSignedClosed()
+                  // close tx status store
+                  confirmationStore.closeTxStatusStore()
+                }
               }
             )
           }
