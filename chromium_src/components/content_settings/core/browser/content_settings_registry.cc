@@ -253,6 +253,19 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
 
+  // Disable WebNFC by default
+  content_settings_info_.erase(ContentSettingsType::NFC);
+  website_settings_registry_->UnRegister(ContentSettingsType::NFC);
+  Register(ContentSettingsType::NFC, "nfc-devices", CONTENT_SETTING_BLOCK,
+           WebsiteSettingsInfo::UNSYNCABLE, /*allowlisted_primary_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_ASK, CONTENT_SETTING_BLOCK},
+           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+           ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
+
   // Disable motion sensors by default (brave/brave-browser#4789)
   content_settings_info_.erase(ContentSettingsType::SENSORS);
   website_settings_registry_->UnRegister(ContentSettingsType::SENSORS);
