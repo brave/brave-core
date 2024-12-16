@@ -153,12 +153,6 @@ function buildChromiumRelease(buildOptions = {}) {
     chromiumConfig.extraHooks()
   }
 
-  // A workaround for
-  // https://chromium-review.googlesource.com/c/chromium/src/+/6013664
-  const v8CompileFix = '1e3bed631cff17487775e33626121bfd5f0e664e'
-  util.runGit(config.srcDir, ['fetch', 'origin', v8CompileFix])
-  util.runGit(config.srcDir, ['cherry-pick', 'FETCH_HEAD'])
-
   util.runGnGen(config.outputDir, getChromiumGnArgs())
 
   Log.progressScope(`remove recursive symlinks`, () => {
