@@ -15,7 +15,6 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/ntp_background/constants.h"
 #include "brave/components/constants/brave_paths.h"
-#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -112,16 +111,8 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
   EXPECT_TRUE(base::PathExists(test_file()));
 }
 
-#if BUILDFLAG(IS_MAC) && defined(ARCH_CPU_ARM_FAMILY)
-// On Mac ARM CI node, this test is flaky because of timeout.
-// https://github.com/brave/brave-browser/issues/29762
-#define MAYBE_SaveImageMultipleTimes DISABLED_SaveImageMultipleTimes
-#else
-#define MAYBE_SaveImageMultipleTimes SaveImageMultipleTimes
-#endif
-
 IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
-                       MAYBE_SaveImageMultipleTimes) {
+                       SaveImageMultipleTimes) {
   for (int i = 0; i < 3; i++) {
     base::RunLoop run_loop;
     base::FilePath expected_path =
