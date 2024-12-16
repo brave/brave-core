@@ -49,6 +49,7 @@ action("build_opaque_ke") {
   ]
 
   outputs = [
+    "$target_gen_dir/pkg/opaque_ke_bg.js",
     "$target_gen_dir/pkg/opaque_ke_bg.wasm",
     "$target_gen_dir/pkg/opaque_ke_bg.wasm.d.ts",
     "$target_gen_dir/pkg/opaque_ke.d.ts",
@@ -60,8 +61,6 @@ action("build_opaque_ke") {
     rebase_path(wasm_pack_exe),
     "build",
     rebase_path("."),
-    "--target",
-    "web",
     "--out-dir",
     rebase_path("$target_gen_dir/pkg"),
     "--",
