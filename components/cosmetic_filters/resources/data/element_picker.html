@@ -1,87 +1,161 @@
 <style>
-  :host {
-    background: transparent;
-    color: black;
-    font: 14px sans-serif;
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    overflow: hidden;
-    font-family: "Noto Sans", Arial, sans-serif;
-  }
+    :host {
+      background: transparent;
+      color: black;
+      font: 14px sans-serif;
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      overflow: hidden;
+      font-family: "Noto Sans", Arial, sans-serif;
+    }
+  
+    :host :focus {
+      outline: none;
+    }
+  
+    #rules-box {
+      height: 8em;
+      margin-bottom: 5px;
+      background-color: #fff;
+      border-radius: .1em;
+      display: none;
+    }
+  
+    #rules-box>textarea {
+      box-sizing: border-box;
+      height: 100%;
+      width: 100%;
+      resize: none;
+      border: none;
+      padding: 5px;
+      overflow: auto;
+      overflow-wrap: break-word;
+    }
+  
+    section {
+      background-color: #FFFFFF;
+      color-scheme: light only;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      box-sizing: border-box;
+      min-width: 24em;
+      padding-top: 16px;
+      padding-right: 16px;
+      padding-left: 16px;
+      position: fixed;
+      opacity: 1;
+      height: auto;
+    }
 
-  :host :focus {
-    outline: none;
-  }
+    section.desktop {
+      bottom: 4px;
+      right: 4px;
+      left: unset;
+      border-radius: .6em;
+      border: 1px solid #aaa;
+      width: calc(30% - 4px);
+    }
+  
+    section input {
+      width: calc(100% - 4px);
+    }
+  
+    #buttons {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+  
+    .buttons-line {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      padding-bottom: 16px;
+    }
+  
+    .button {
+      min-height: 36px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      flex-grow: 1;
+      border-width: 0px;
+    }
 
-  #rules-box {
-    height: 8em;
-    margin-bottom: 5px;
-    background-color: #fff;
-    border-radius: .1em;
-  }
+    .block-button.light {
+      background-color: #3E37D4;
+      color: #FFFFFF;
+    }
+    .block-button.dark {
+      background-color: #C1C4FF;
+      color: #251491;
+    }
 
-  #rules-box>textarea {
-    box-sizing: border-box;
-    height: 100%;
-    width: 100%;
-    resize: none;
-    border: none;
-    padding: 5px;
-    overflow: auto;
-    overflow-wrap: break-word;
-  }
+    .block-button.disabled.light {
+      background: rgba(70,70,74,0.20);
+      color: rgba(33,39,42,0.50);
+    }
+    .block-button.disabled.dark {
+      background: rgba(235,238,240,0.20);
+      color: rgba(235,238,240,0.50);
+    }
 
-  section {
-    color-scheme: light only;
-    background-color: #eee;
-    border: 1px solid #aaa;
-    border-radius: .1em;
-    bottom: 4px;
-    box-sizing: border-box;
-    min-width: 24em;
-    padding: 4px;
-    position: fixed;
-    right: 4px;
-    width: calc(20% - 4px);
-    opacity: 0.2;
-  }
+    .secondary-button {
+      background-color: #FFFFFF;
+      color: #4036d3;
+      cursor: pointer;
+      padding: 4px 6px;
+      flex-grow: 1;
+      border-width: 0px;      
+    }
+    
+    .secondary-button.dark {
+      color: #c1c4ff;
+    }
 
-  section input {
-    width: 50%;
-  }
+    .secondary-button.light {
+      color: #3E37D4
+    }
+    .secondary-button.disable.dark {
+      color: #c1c4ff;
+    }
 
-  #buttons {
-    display: flex;
-    justify-content: space-between;
-  }
+    .secondary-button.disable.light {
+      color: #3E37D4
+    }
 
-  button {
-    background-color: #ccc;
-    cursor: pointer;
-    padding: 4px 6px;
-    margin: 0 0 0 2px;
-  }
-
-  svg {
-    cursor: crosshair;
-    box-sizing: border-box;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    position: absolute;
-  }
-
-  #darken {
-    fill: rgba(0, 0, 0, 0.5);
-  }
-
-  .target {
-    stroke: #FF6200;
-    stroke-width: 0.5px;
-    fill: rgba(255, 130, 63, 0.25);
-  }
+    .secondary-button-bordered {
+      border-width: 1px;
+      border-color: #4036d3;
+    }
+  
+    svg {
+      cursor: crosshair;
+      box-sizing: border-box;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      position: absolute;
+    }
+  
+    #darken {
+      fill: rgba(0, 0, 0, 0.5);
+    }
+  
+    #slider-container {
+      padding-bottom: 4px;
+    }
+    .target {
+      stroke: #3d39c8;
+      stroke-width: 2px;
+      fill: rgba(121, 116, 224, 0.25);
+    }
 </style>
 <svg xmlns="http://www.w3.org/2000/svg" id="picker-ui">
   <defs>
@@ -89,20 +163,25 @@
       <rect x="0" y="0" width="100%" height="100%" fill="white">
     </mask>
   </defs>
-  <rect id="darken" x="0" y="0" width="100%" height="100%" mask="url(#highlight-mask)">
+  <rect id="darken" x="0" y="0" width="100%" height="100vh" mask="url(#highlight-mask)">
 </svg>
-<section>
+<section id="main-section">
   <div id="rules-box">
     <textarea></textarea>
   </div>
   <div>
-    <div>
+    <div id="slider-container">
       <input id="sliderSpecificity" type="range" min="0" max="4" value="4">
     </div>
     <div id="buttons">
-      <button id="btnCreate">Create</button>
-      <button id="btnManage">Manage filters</button>
-      <button id="btnQuit" >Quit</button>
+      <div class="buttons-line">
+        <button id="btnCreate" class="button block-button disabled light">Select element you want to block</button>
+      </div>
+      <div class="buttons-line">
+        <button id="btnManage" class="button secondary-button disabled light">Manage filters</button>
+        <button id="btnShowRulesBox" class="button secondary-button disabled light">Show rules</button>
+        <button id="btnQuit" class="button secondary-button  disabled secondary-button-bordered light">Cancel</button>
+      </div>
     </div>
   </div>
 </section>

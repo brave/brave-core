@@ -45,7 +45,8 @@
     &net::features::kBraveForgetFirstPartyStorage,                      \
     &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
     &brave_shields::features::kBraveLocalhostAccessPermission,          \
-    &brave_shields::features::kBlockAllCookiesToggle
+    &brave_shields::features::kBlockAllCookiesToggle,                   \
+    &brave_shields::features::kBraveShieldsElementPicker
 
 // clang-format on
 

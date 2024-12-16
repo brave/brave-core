@@ -33,6 +33,7 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "v8/include/v8-primitive.h"
 #include "v8/include/v8.h"
 
 namespace {
@@ -120,6 +121,9 @@ constexpr char kHideSelectorsInjectScript[] =
           };
         })();)";
 
+constexpr char kIsDarkModeEnabledPropery[] = "isDarkModeEnabled";
+constexpr char kBackgroundColorPropery[] = "bgcolor";
+
 std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   if (resource_bundle.IsGzipped(id)) {
@@ -192,6 +196,16 @@ MakeCosmeticFiltersHandler(content::RenderFrame* render_frame) {
   return handler;
 }
 
+v8::Maybe<bool> CreateDataProperty(v8::Local<v8::Context> context,
+                                   v8::Local<v8::Object> object,
+                                   std::string_view name,
+                                   v8::Local<v8::Value> value) {
+  const v8::Local<v8::String> name_str =
+      gin::StringToV8(context->GetIsolate(), name);
+
+  return object->CreateDataProperty(context, name_str, value);
+}
+
 }  // namespace
 
 namespace cosmetic_filters {
@@ -235,7 +249,8 @@ CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
     const int32_t isolated_world_id)
     : render_frame_(render_frame),
       isolated_world_id_(isolated_world_id),
-      enabled_1st_party_cf_(false) {
+      enabled_1st_party_cf_(false),
+      v8_value_converter_(content::V8ValueConverter::Create()) {
   EnsureConnected();
 
   render_frame_->GetAssociatedInterfaceRegistry()
@@ -274,13 +289,89 @@ bool CosmeticFiltersJSHandler::OnIsFirstParty(const std::string& url_string) {
 void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
     const std::string& selector) {
   const auto host = url_.host();
-  auto handler = MakeCosmeticFiltersHandler(render_frame_);
-  handler->AddSiteCosmeticFilter(selector);
+  GetElementPickerRemoteHandler()->AddSiteCosmeticFilter(selector);
 }
 
 void CosmeticFiltersJSHandler::OnManageCustomFilters() {
-  auto handler = MakeCosmeticFiltersHandler(render_frame_);
-  handler->ManageCustomFilters();
+  GetElementPickerRemoteHandler()->ManageCustomFilters();
+}
+
+mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
+CosmeticFiltersJSHandler::GetElementPickerRemoteHandler() {
+  if (!element_picker_actions_handler_ ||
+      !element_picker_actions_handler_.is_connected()) {
+    element_picker_actions_handler_ = MakeCosmeticFiltersHandler(render_frame_);
+    element_picker_actions_handler_.set_disconnect_handler(base::BindOnce(
+        &CosmeticFiltersJSHandler::OnElementPickerRemoteHandlerDisconnect,
+        weak_ptr_factory_.GetWeakPtr()));
+  }
+  return element_picker_actions_handler_;
+}
+
+void CosmeticFiltersJSHandler::OnElementPickerRemoteHandlerDisconnect() {
+  element_picker_actions_handler_.reset();
+}
+
+v8::Local<v8::Promise> CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo(
+    v8::Isolate* isolate) {
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+
+  if (!resolver.IsEmpty()) {
+    auto promise_resolver =
+        std::make_unique<v8::Global<v8::Promise::Resolver>>();
+    promise_resolver->Reset(isolate, resolver.ToLocalChecked());
+    auto context_old = std::make_unique<v8::Global<v8::Context>>(
+        isolate, isolate->GetCurrentContext());
+
+    GetElementPickerRemoteHandler()->GetElementPickerThemeInfo(base::BindOnce(
+        &CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo,
+        weak_ptr_factory_.GetWeakPtr(), std::move(promise_resolver), isolate,
+        std::move(context_old)));
+
+    return resolver.ToLocalChecked()->GetPromise();
+  }
+
+  return v8::Local<v8::Promise>();
+}
+
+void CosmeticFiltersJSHandler::OnGetCosmeticFilterThemeInfo(
+    std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+    v8::Isolate* isolate,
+    std::unique_ptr<v8::Global<v8::Context>> context_old,
+    bool is_dark_mode_enabled,
+    int32_t background_color) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old->Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
+  v8::Local<v8::Value> result;
+  v8::Local<v8::Object> object = v8::Object::New(isolate);
+  CHECK(CreateDataProperty(context, object, kIsDarkModeEnabledPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(is_dark_mode_enabled), context))
+            .ToChecked());
+  CHECK(CreateDataProperty(context, object, kBackgroundColorPropery,
+                           v8_value_converter_->ToV8Value(
+                               base::Value(background_color), context))
+            .ToChecked());
+  result = object;
+
+  std::ignore = resolver->Resolve(context, result);
+}
+
+v8::Local<v8::Value> CosmeticFiltersJSHandler::GetPlatform(
+    v8::Isolate* isolate) {
+  return gin::StringToV8(isolate,
+#if BUILDFLAG(IS_ANDROID)
+                         "android"
+#else   // !BUILDFLAG(IS_ANDROID)
+                         "desktop"
+#endif  // !BUILDFLAG(IS_ANDROID)
+  );
 }
 
 void CosmeticFiltersJSHandler::AddJavaScriptObjectToFrame(
@@ -355,6 +446,16 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
       isolate, javascript_object, "manageCustomFilters",
       base::BindRepeating(&CosmeticFiltersJSHandler::OnManageCustomFilters,
                           base::Unretained(this)));
+
+  BindFunctionToObject(
+      isolate, javascript_object, "getElementPickerThemeInfo",
+      base::BindRepeating(&CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo,
+                          base::Unretained(this)));
+
+  BindFunctionToObject(
+      isolate, javascript_object, "getPlatform",
+      base::BindRepeating(&CosmeticFiltersJSHandler::GetPlatform,
+                          base::Unretained(this), isolate));
 
   if (perf_tracker_) {
     BindFunctionToObject(

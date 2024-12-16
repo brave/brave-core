@@ -1645,6 +1645,9 @@ Are you sure you want to do this?
       <message name="IDS_SITE_BROKEN_TEXT" desc="Shields text for broken text warning message.">
         If this site appears broken, try Shields down.
       </message>
+      <message name="IDS_BRAVE_SHIELDS_BLOCK_ELEMENT_TEXT" desc="Shields block element button label.">
+        Block element
+      </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT" desc="Shields text for broken text warning message.">
         Report a broken site
       </message>
