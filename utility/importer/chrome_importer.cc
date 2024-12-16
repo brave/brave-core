@@ -234,7 +234,7 @@ void ChromeImporter::ImportHistory() {
   if (!copy_history_file.copy_success())
     return;
 
-  sql::Database db;
+  sql::Database db(/*tag=*/"History");
   if (!db.Open(copy_history_file.copied_file_path())) {
     return;
   }
@@ -330,7 +330,7 @@ void ChromeImporter::ImportBookmarks() {
   if (!copy_favicon_file.copy_success())
     return;
 
-  sql::Database db;
+  sql::Database db(/*tag=*/"Favicons");
   if (!db.Open(copy_favicon_file.copied_file_path()))
     return;
 
@@ -504,7 +504,7 @@ void ChromeImporter::ImportPayments() {
   if (!copy_payments_file.copy_success())
     return;
 
-  sql::Database db;
+  sql::Database db(/*tag=*/"Payments");
   if (!db.Open(copy_payments_file.copied_file_path())) {
     return;
   }
