@@ -127,7 +127,7 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Open) {
        "foo.com wants to open"},
       // Subframe alert from a different origin.
       {"subframe different origin", "http://foo.com/", false, "http://bar.com/",
-       "An embedded page on bar.com wants to open"},
+       "An embedded page at bar.com wants to open"},
 
       // file:
       // - main frame:
@@ -175,7 +175,7 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Open) {
       // - subframe:
       {"blob subframe", "http://bar.com/", false,
        "blob:http://foo.com/66666666-6666-6666-6666-666666666666",
-       "An embedded page on foo.com wants to open"},
+       "An embedded page at foo.com wants to open"},
 
       // filesystem:
       // - main frame:
@@ -184,7 +184,7 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Open) {
       // - subframe:
       {"filesystem subframe", "http://bar.com/", false,
        "filesystem:http://foo.com/bar.html",
-       "An embedded page on foo.com wants to open"},
+       "An embedded page at foo.com wants to open"},
   };
 
   brave_l10n::test::ScopedDefaultLocale scoped_locale("en-US");
@@ -230,7 +230,7 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Save) {
        "foo.com wants to save"},
       // Subframe alert from a different origin.
       {"subframe different origin", "http://foo.com/", false, "http://bar.com/",
-       "An embedded page on bar.com wants to save"},
+       "An embedded page at bar.com wants to save"},
 
       // file:
       // - main frame:
@@ -278,7 +278,7 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Save) {
       // - subframe:
       {"blob subframe", "http://bar.com/", false,
        "blob:http://foo.com/66666666-6666-6666-6666-666666666666",
-       "An embedded page on foo.com wants to save"},
+       "An embedded page at foo.com wants to save"},
 
       // filesystem:
       // - main frame:
@@ -287,7 +287,7 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Save) {
       // - subframe:
       {"filesystem subframe", "http://bar.com/", false,
        "filesystem:http://foo.com/bar.html",
-       "An embedded page on foo.com wants to save"},
+       "An embedded page at foo.com wants to save"},
   };
 
   brave_l10n::test::ScopedDefaultLocale scoped_locale("en-US");
