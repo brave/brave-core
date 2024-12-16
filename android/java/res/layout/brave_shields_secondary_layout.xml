@@ -58,4 +58,14 @@
 		android:id="@+id/brave_shields_fingerprinting_switch_id"
 		layout="@layout/brave_shields_switcher"/>
 
+    <TextView
+        android:id="@+id/brave_shields_block_element_text"
+		android:layout_width="wrap_content"
+		android:layout_height="48dp"
+		android:paddingHorizontal="16dp"
+		android:gravity="start|center_vertical"
+        android:textColor="@color/shield_text_color"
+        android:textSize="14sp"
+		android:text="@string/brave_shields_block_element_text" />
+
 </LinearLayout>

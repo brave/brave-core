@@ -16,12 +16,21 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_pages.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
+#include "ui/color/color_provider.h"
+#else
+#include "brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h"
+#include "chrome/browser/flags/android/chrome_session_state.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace cosmetic_filters {
 
 namespace {
+
 bool IsValidFilterText(std::string_view selector) {
   if (!base::IsStringUTF8(selector)) {
     return false;
@@ -85,7 +94,23 @@ void CosmeticFiltersTabHelper::ManageCustomFilters() {
     brave::ShowBraveAdblock(browser);
   }
 #else   // !BUILDFLAG(IS_ANDROID)
-  NOTIMPLEMENTED();
+  ShowCustomFilterSettings();
+#endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(
+    GetElementPickerThemeInfoCallback callback) {
+#if !BUILDFLAG(IS_ANDROID)
+  auto& color_provider = GetWebContents().GetColorProvider();
+  std::move(callback).Run(
+      GetWebContents().GetColorMode() == ui::ColorProviderKey::ColorMode::kDark,
+      color_provider.GetColor(kColorSidePanelBadgeBackground));
+#else   // !BUILDFLAG(IS_ANDROID)
+  const auto dark_mode_state = chrome::android::GetDarkModeState();
+  std::move(callback).Run(
+      dark_mode_state == chrome::android::DarkModeState::kDarkModeSystem ||
+          dark_mode_state == chrome::android::DarkModeState::kDarkModeApp,
+      GetThemeBackgroundColor());
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
