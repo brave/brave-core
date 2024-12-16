@@ -7,6 +7,6 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/brave_sync_disabled_button_bg_color" />
+    <solid android:color="@color/leo_color_button_disabled_20" />
     <corners android:radius="12dp" />
 </shape>

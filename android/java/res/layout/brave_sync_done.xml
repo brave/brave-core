@@ -48,14 +48,14 @@
             android:paddingHorizontal="16dp"
             android:visibility="gone">
             <TextView
-                android:layout_width="328dp"
+                android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:text="@string/brave_sync_self_host_url_title"
                 android:textAppearance="@style/BraveSyncTitleTextHeadingH4"
                 android:gravity="top" />
             <TextView
                 android:id="@+id/brave_read_only_sync_url_view"
-                android:layout_width="328dp"
+                android:layout_width="match_parent"
                 android:layout_height="22dp"
                 android:text="@string/brave_sync_advanced_options"
                 android:textAppearance="@style/BraveSyncUrlDisplay"

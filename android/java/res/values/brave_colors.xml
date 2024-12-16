@@ -113,11 +113,6 @@
     <color name="brave_sync_main_button_color">@color/button_background</color>
     <color name="brave_sync_copy_words_text_color">@color/text_secondary</color>
     <color name="brave_sync_btn_transparent_text_color">@color/leo_color_text_interactive</color>
-    <color name="brave_sync_advanced_options_dialog_bg_color">#F0F0F4</color>
-    <color name="brave_sync_url_disabled_text_color">#76767A</color>
-    <color name="brave_sync_disabled_button_bg_color">#3346464A</color>
-    <color name="brave_sync_disabled_button_text_color">#8021272A</color>
-    <color name="brave_sync_disabled_button_color">#8021272A</color>
 
     <!-- Sync informer icon colors -->
     <color name="brave_informer_dark_theme_icon_color">@color/baseline_neutral_90</color>
@@ -431,8 +426,12 @@
     <color name="schemes_on_surface_variant">#46464a</color>
     <color name="schemes_outline_variant">#e3e3e8</color>
     <color name="schemes_primary">#3e37d4</color>
+    <color name="schemes_surface_container">#f0f0f4</color>
     <color name="schemes_surface_container_highest">#c7c7cc</color>
     <color name="leo_color_text_interactive">#3E37D4</color>
+    <color name="leo_color_text_tertiary">#76767A</color>
+    <color name="leo_color_button_disabled_20">#3346464A</color>
+    <color name="leo_color_text_disabled_50">#8021272A</color>
 
     <color name="open_yt_dialog_bg">#FFFFFF</color>
 </resources>

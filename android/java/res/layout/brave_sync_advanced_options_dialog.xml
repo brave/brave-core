@@ -20,7 +20,8 @@
         android:orientation="vertical"
         android:clipToOutline="true"
         android:paddingHorizontal="24dp"
-        android:paddingVertical="16dp">
+        android:paddingTop="24dp"
+        android:paddingBottom="16dp">
 
         <TextView
             android:id="@+id/advanced_options_title"
@@ -76,7 +77,7 @@
                     android:textColor="@color/schemes_on_surface"
                     android:textSize="16sp"
                     android:autofillHints="url"
-                    android:textColorHint="@color/brave_sync_url_disabled_text_color" />
+                    android:textColorHint="@color/leo_color_text_tertiary" />
 
             </com.google.android.material.textfield.TextInputLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -92,6 +93,8 @@
         <android.widget.Button android:id="@+id/brave_sync_save_and_relaunch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
             android:text="@string/brave_sync_url_save_and_relaunch"
             android:enabled="false"
             style="@style/BraveSyncButton" />

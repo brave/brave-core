@@ -17,9 +17,10 @@
 
 namespace syncer {
 
-GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
-                            version_info::Channel channel,
-                            PrefService* prefs) {
+GURL SyncServiceImpl::BraveGetSyncServiceURL(
+    const base::CommandLine& command_line,
+    version_info::Channel channel,
+    PrefService* prefs) {
   if (prefs) {
     std::string value = prefs->GetString(brave_sync::kCustomSyncServiceUrl);
     if (!value.empty()) {
@@ -53,15 +54,6 @@ GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
   // Default logic.
   // See `GetSyncServiceURL` in `components/sync/base/sync_util.cc`
   return GetSyncServiceURL(command_line, channel);
-}
-
-GURL SyncServiceImpl::GetBraveSyncServiceURL() {
-  return BraveGetSyncServiceURL(*base::CommandLine::ForCurrentProcess(),
-                                channel_, sync_client_->GetPrefService());
-}
-
-GURL SyncServiceImpl::GetBraveDefaultSyncServiceURL() {
-  return GetSyncServiceURL(*base::CommandLine::ForCurrentProcess(), channel_);
 }
 
 }  // namespace syncer

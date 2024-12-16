@@ -76,6 +76,9 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   std::string GetCustomSyncServiceURL();
   bool SetCustomSyncServiceURL(std::string custom_sync_url);
 
+  GURL GetBraveSyncServiceURL();
+  GURL GetBraveDefaultSyncServiceURL();
+
  private:
   friend class BraveSyncServiceImplGACookiesTest;
   friend class BraveSyncServiceImplTest;

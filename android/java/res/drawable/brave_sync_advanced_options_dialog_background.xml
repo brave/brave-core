@@ -6,6 +6,7 @@
 -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/brave_sync_advanced_options_dialog_bg_color" />
+    <solid android:color="@color/schemes_surface_container" />
     <size android:width="320dp" android:height="552dp" />
+    <corners android:radius="28dp" />
 </shape>
