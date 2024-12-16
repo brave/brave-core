@@ -395,10 +395,12 @@ export const useBuy = () => {
   )
 
   const onSelectToken = useCallback(
-    async (asset: MeldCryptoCurrency) => {
+    async (asset: MeldCryptoCurrency, account?: BraveWallet.AccountInfo) => {
       const incomingAssetsCoinType = getMeldTokensCoinType(asset)
       const accountToUse =
-        selectedAccount.accountId.coin !== incomingAssetsCoinType
+        account !== undefined
+          ? account
+          : selectedAccount.accountId.coin !== incomingAssetsCoinType
           ? getFirstAccountByCoinType(incomingAssetsCoinType, accounts)
           : selectedAccount
       if (!accountToUse) {
