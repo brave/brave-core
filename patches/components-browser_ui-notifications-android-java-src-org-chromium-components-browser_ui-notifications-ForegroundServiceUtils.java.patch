@@ -1,0 +1,13 @@
+diff --git a/components/browser_ui/notifications/android/java/src/org/chromium/components/browser_ui/notifications/ForegroundServiceUtils.java b/components/browser_ui/notifications/android/java/src/org/chromium/components/browser_ui/notifications/ForegroundServiceUtils.java
+index e85c68a73c8e624c7e7b1fb782ed7d04c6a33222..f933fe554fe82a5495cddd1d60123466d52a6f03 100644
+--- a/components/browser_ui/notifications/android/java/src/org/chromium/components/browser_ui/notifications/ForegroundServiceUtils.java
++++ b/components/browser_ui/notifications/android/java/src/org/chromium/components/browser_ui/notifications/ForegroundServiceUtils.java
+@@ -24,7 +24,7 @@ import org.chromium.base.ResettersForTesting;
+ public class ForegroundServiceUtils {
+     private static final String TAG = "ForegroundService";
+ 
+-    private ForegroundServiceUtils() {}
++    public ForegroundServiceUtils() {}
+ 
+     /** Gets the singleton instance of ForegroundServiceUtils. */
+     public static ForegroundServiceUtils getInstance() {
