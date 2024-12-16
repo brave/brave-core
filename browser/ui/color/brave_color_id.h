@@ -113,7 +113,6 @@
     E_CPONLY(kColorBraveVerticalTabSeparator)               \
     E_CPONLY(kColorBraveVerticalTabActiveBackground)        \
     E_CPONLY(kColorBraveVerticalTabInactiveBackground)      \
-    E_CPONLY(kColorBraveVerticalTabInactiveHoverBackground) \
     E_CPONLY(kColorBraveVerticalTabNTBIconColor)            \
     E_CPONLY(kColorBraveVerticalTabNTBTextColor)            \
     E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
@@ -126,13 +125,15 @@
 
 
 #define BRAVE_SPLIT_VIEW_COLOR_IDS \
-    E_CPONLY(kColorBraveSplitViewTileBackground)        \
-    E_CPONLY(kColorBraveSplitViewActiveWebViewBorder) \
-    E_CPONLY(kColorBraveSplitViewInactiveWebViewBorder) \
-    E_CPONLY(kColorBraveSplitViewMenuButtonIcon)        \
-    E_CPONLY(kColorBraveSplitViewMenuButtonBackground)  \
-    E_CPONLY(kColorBraveSplitViewMenuButtonBorder)      \
-    E_CPONLY(kColorBraveSplitViewMenuItemIcon)          \
+    E_CPONLY(kColorBraveSplitViewTileBackgroundHorizontal) \
+    E_CPONLY(kColorBraveSplitViewTileBackgroundVertical)   \
+    E_CPONLY(kColorBraveSplitViewTileDivider)              \
+    E_CPONLY(kColorBraveSplitViewActiveWebViewBorder)      \
+    E_CPONLY(kColorBraveSplitViewInactiveWebViewBorder)    \
+    E_CPONLY(kColorBraveSplitViewMenuButtonIcon)           \
+    E_CPONLY(kColorBraveSplitViewMenuButtonBackground)     \
+    E_CPONLY(kColorBraveSplitViewMenuButtonBorder)         \
+    E_CPONLY(kColorBraveSplitViewMenuItemIcon)             \
     E_CPONLY(kColorBraveSplitViewUrl)
 
 
