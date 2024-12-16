@@ -331,8 +331,14 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
   const bool is_vertical_tab =
       tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser());
   if (!is_vertical_tab) {
-    // In order to make gap between the bounding box and toolbar.
-    bounding_rects.Inset(gfx::Insets::VH(1, 0));
+    // In order to make margin between the bounding box and tab strip.
+    // Need to compensate the amount of overlap because it's hidden by overlap
+    // at bottom.
+    constexpr int kVerticalMargin = 2;
+    const int margin_bottom =
+        kVerticalMargin + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+    bounding_rects.Inset(
+        gfx::Insets::TLBR(kVerticalMargin, 0, margin_bottom, 0));
   }
 
   constexpr auto kRadius = 12.f;  // same value with --leo-radius-l

@@ -223,9 +223,8 @@ SkPath BraveVerticalTabStyle::GetPath(
       tab_left += scale * kPaddingForVerticalTab;
       tab_right -= scale * kPaddingForVerticalTab;
     } else {
-      // As the horizontal tab has padding already we only gives 1 dip padding.
-      // Accumulative padding will be 4 dips.
-      constexpr auto kPaddingForHorizontalTab = 1;
+      // Give 2 dip more padding when tab is in tile.
+      constexpr auto kPaddingForHorizontalTab = 2;
       tab_top += scale * kPaddingForHorizontalTab;
       tab_bottom -= scale * kPaddingForHorizontalTab;
       tab()->controller()->IsFirstTabInTile(tab())
