@@ -9,10 +9,15 @@
 #include "base/gtest_prod_util.h"
 #include "components/signin/public/identity_manager/identity_manager.h"
 
+namespace base {
+class CommandLine;
+}
+
 #define BRAVE_SYNC_SERVICE_IMPL_H_                                             \
- public:                                                                       \
-  GURL GetBraveSyncServiceURL();                                               \
-  GURL GetBraveDefaultSyncServiceURL();                                        \
+ protected:                                                                    \
+  static GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,    \
+                                     version_info::Channel channel,            \
+                                     PrefService* prefs);                      \
                                                                                \
  private:                                                                      \
   friend class BraveSyncServiceImpl;                                           \

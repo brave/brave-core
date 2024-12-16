@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/auto_reset.h"
+#include "base/command_line.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/string_util.h"
@@ -19,6 +20,7 @@
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync/base/sync_util.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/model/type_entities_count.h"
 
@@ -437,6 +439,15 @@ bool BraveSyncServiceImpl::SetCustomSyncServiceURL(
     return true;
   }
   return false;
+}
+
+GURL BraveSyncServiceImpl::GetBraveSyncServiceURL() {
+  return BraveGetSyncServiceURL(*base::CommandLine::ForCurrentProcess(),
+                                channel_, sync_client_->GetPrefService());
+}
+
+GURL BraveSyncServiceImpl::GetBraveDefaultSyncServiceURL() {
+  return GetSyncServiceURL(*base::CommandLine::ForCurrentProcess(), channel_);
 }
 
 }  // namespace syncer
