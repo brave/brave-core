@@ -4,5 +4,5 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  enable_speedreader = true
+  enable_speedreader = !is_ios
 }
