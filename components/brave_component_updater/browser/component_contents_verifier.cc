@@ -21,7 +21,7 @@ ContentsVerifierFactory& GetContentsVerifierFactory() {
 
 }  // namespace
 
-void SetupContentsVerifierFactory(ContentsVerifierFactory factory) {
+void SetContentsVerifierFactory(ContentsVerifierFactory factory) {
   GetContentsVerifierFactory() = std::move(factory);
 }
 

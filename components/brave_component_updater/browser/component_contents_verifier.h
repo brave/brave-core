@@ -24,7 +24,7 @@ using ContentsVerifierFactory =
     base::RepeatingCallback<std::unique_ptr<ContentsVerifier>(
         const base::FilePath& component_root)>;
 
-void SetupContentsVerifierFactory(ContentsVerifierFactory factory);
+void SetContentsVerifierFactory(ContentsVerifierFactory factory);
 
 // Uses factory set above to create the verifier.
 std::unique_ptr<ContentsVerifier> CreateContentsVerifier(
