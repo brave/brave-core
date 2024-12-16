@@ -69,9 +69,13 @@ public class KeystoreHelper {
             }
             GCMParameterSpec spec =
                     new GCMParameterSpec(128, Base64.decode(ivBase64, Base64.DEFAULT));
-            SecretKey secretKey =
-                    ((KeyStore.SecretKeyEntry) keyStore.getEntry(BRAVE_WALLET_ALIAS, null))
-                            .getSecretKey();
+
+            KeyStore.SecretKeyEntry secretKeyEntry =
+                    (KeyStore.SecretKeyEntry) keyStore.getEntry(BRAVE_WALLET_ALIAS, null);
+            if (secretKeyEntry == null) {
+                return null;
+            }
+            SecretKey secretKey = secretKeyEntry.getSecretKey();
             final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(Cipher.DECRYPT_MODE, secretKey, spec);
             return cipher;
