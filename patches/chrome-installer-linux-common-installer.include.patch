@@ -1,16 +1,8 @@
 diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
-index 5aca79fa700e4676ef7a1c312ec5782c2dc5e82d..1bb2f1e93668d0bf0dde5cac2b2c3bf327ca56f4 100644
+index d6f17907c9bb0c4ea59530155ca2788f8876bb83..fcc384188f10656d5d2d0744c328043c58ace7a6 100644
 --- a/chrome/installer/linux/common/installer.include
 +++ b/chrome/installer/linux/common/installer.include
-@@ -75,6 +75,7 @@ process_template() (
-     -e "s#@@PACKAGE@@#${PACKAGE}#g" \
-     -e "s#@@PACKAGE_ORIG@@#${PACKAGE_ORIG}#g" \
-     -e "s#@@PACKAGE_FILENAME@@#${PACKAGE_FILENAME}#g" \
-+    -e "s#@@PACKAGEANDCHANNEL@@#${PACKAGEANDCHANNEL}#g" \
-     -e "s#@@PROGNAME@@#${PROGNAME}#g" \
-     -e "s#@@CHANNEL@@#${CHANNEL}#g" \
-     -e "s#@@COMPANY_FULLNAME@@#${COMPANY_FULLNAME}#g" \
-@@ -164,6 +165,8 @@ stage_install_common() {
+@@ -141,6 +141,8 @@ stage_install_common() {
      install -m 644 "${OUTPUTDIR}/ui_resources_100_percent.pak" "${STAGEDIR}/${INSTALLDIR}/"
    fi
  
@@ -19,7 +11,7 @@ index 5aca79fa700e4676ef7a1c312ec5782c2dc5e82d..1bb2f1e93668d0bf0dde5cac2b2c3bf3
    # ICU data file; Necessary when the GN icu_use_data_file flag is true.
    install -m 644 "${OUTPUTDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
  
-@@ -302,13 +305,15 @@ stage_install_common() {
+@@ -279,13 +281,15 @@ stage_install_common() {
  
    # app icons
    local icon_regex=".*product_logo_[0-9]\+\."
