@@ -137,7 +137,7 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarC
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
-import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeStateProvider;
+import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeManager;
 import org.chromium.components.browser_ui.media.MediaNotificationInfo;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
@@ -1552,7 +1552,6 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
-                        Supplier.class,
                         BrowserControlsManager.class,
                         ActivityWindowAndroid.class,
                         ActivityLifecycleDispatcher.class,
@@ -1586,7 +1585,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         View.class,
                         ManualFillingComponentSupplier.class,
-                        EdgeToEdgeStateProvider.class));
+                        EdgeToEdgeManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
