@@ -18,7 +18,8 @@ import { loadTimeData } from '../../i18n_setup.js'
 
 import {
   Scriptlet,
-  BraveAdblockBrowserProxyImpl
+  BraveAdblockBrowserProxyImpl,
+  ErrorCode
 } from '../brave_adblock_browser_proxy.js'
 
 import './brave_adblock_scriptlet_editor.js'
@@ -100,12 +101,13 @@ class AdblockScriptletList extends AdblockScriptletListBase {
       }
     }
 
-    this.browserProxy_.removeCustomScriptlet(
-      this.customScriptletsList_[e.model.index].name
-    )
-    this.browserProxy_.getCustomScriptlets().then((scriptlets) => {
-      this.customScriptletsList_ = scriptlets
-    })
+    this.browserProxy_
+      .removeCustomScriptlet(this.customScriptletsList_[e.model.index].name)
+      .then((_: ErrorCode) =>
+        this.browserProxy_.getCustomScriptlets().then((scriptlets) => {
+          this.customScriptletsList_ = scriptlets
+        })
+      )
   }
 
   scriptletEditorClosed_(_: any) {

@@ -24,18 +24,23 @@ namespace {
 
 void AwaitElement(content::WebContents* web_contents,
                   const std::string& root,
-                  const std::string& id) {
+                  const std::string& id,
+                  bool disappear = false) {
   constexpr const char kScript[] = R"js(
     (async () => {
-      while (!window.testing[$1].getElementById($2)) {
+      let waiter = () => { return !window.testing[$1].getElementById($2); };
+      if ($3) {
+        waiter = () => { return window.testing[$1].getElementById($2); };
+      }
+      while (waiter()) {
         await new Promise(r => setTimeout(r, 10));
       }
       return true;
     })();
   )js";
-  EXPECT_TRUE(
-      content::EvalJs(web_contents, content::JsReplace(kScript, root, id))
-          .ExtractBool());
+  EXPECT_TRUE(content::EvalJs(web_contents,
+                              content::JsReplace(kScript, root, id, disappear))
+                  .ExtractBool());
 }
 
 bool ClickAddCustomScriptlet(content::WebContents* web_contents) {
@@ -90,12 +95,21 @@ std::string GetCustomScriptletContent(content::WebContents* web_contents) {
   return GetCustomScriptletValue(web_contents, "scriptlet-content");
 }
 
-bool ClickSaveCustomScriptlet(content::WebContents* web_contents) {
+bool ClickSaveCustomScriptlet(content::WebContents* web_contents,
+                              const std ::string& name) {
   AwaitElement(web_contents, "adblockScriptletEditor", "save");
-  return EvalJs(web_contents,
-                "window.testing.adblockScriptletEditor.getElementById('save')."
-                "click()")
-      .value.is_none();
+  if (!EvalJs(web_contents,
+              "window.testing.adblockScriptletEditor.getElementById('save')."
+              "click()")
+           .value.is_none()) {
+    return false;
+  }
+  std::string id = name.starts_with("user-") ? name : "user-" + name;
+  if (!id.ends_with(".js")) {
+    id += ".js";
+  }
+  AwaitElement(web_contents, "adblockScriptletList", id);
+  return true;
 }
 
 bool ClickCustomScriplet(content::WebContents* web_contents,
@@ -133,7 +147,7 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
 
     ASSERT_TRUE(SetCustomScriptletContent(web_contents(), value));
     ASSERT_TRUE(SetCustomScriptletName(web_contents(), name));
-    ASSERT_TRUE(ClickSaveCustomScriptlet(web_contents()));
+    ASSERT_TRUE(ClickSaveCustomScriptlet(web_contents(), name));
   }
 
   void CheckCustomScriptlet(const base::Value& custom_scriptlet,
@@ -165,8 +179,7 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest,
-                       DISABLED_AddEditRemoveScriptlet) {
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
   EnableDeveloperMode(true);
 
   NavigateToURL(GURL("brave://settings/shields/filters"));
@@ -202,6 +215,8 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest,
 
   ASSERT_TRUE(ClickCustomScriplet(web_contents(),
                                   "user-custom-script-edited.js", "delete"));
+  AwaitElement(web_contents(), "adblockScriptletList",
+               "user-custom-script-edited.js", true);
   {
     const auto& custom_resources = GetCustomResources();
     ASSERT_TRUE(custom_resources.is_list());
