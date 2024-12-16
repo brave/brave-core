@@ -32,9 +32,9 @@ export const HeaderWrapper = styled.div`
 
 export const BraveLogo = styled(StyledDiv)`
   height: 30px;
-  width: 100px;
+  width: 94px;
   background-image: url(${BraveLogoLight});
-  background-size: cover;
+  background-size: contain;
   margin: 0px 12px 4px 0px;
   @media (prefers-color-scheme: dark) {
     background-image: url(${BraveLogoDark});
