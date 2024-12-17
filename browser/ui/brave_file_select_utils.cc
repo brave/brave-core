@@ -46,41 +46,19 @@ url::Origin UnwrapOriginIfOpaque(const url::Origin& origin) {
 
 std::u16string GetFileSelectTitle(content::WebContents* web_contents,
                                   const url::Origin& alerting_frame_origin,
+                                  const url::Origin& download_origin,
                                   FileSelectTitleType file_select_type) {
-  // This implementation partially mirrors
-  // ChromeAppModalDialogManagerDelegate::GetTitle().
-  // TODO(sko) It's hard to test this behavior is in sync at this moment. Even
-  // upstream tests aren't covering this. Need to figure out how we can test
-  // extension and isolated web app case.
   CHECK(web_contents);
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-
-  UrlIdentity url_identity = UrlIdentity::CreateFromUrl(
-      profile, alerting_frame_origin.GetURL(),
-      /*allowed_types*/
-      {UrlIdentity::Type::kDefault, UrlIdentity::Type::kFile,
-       UrlIdentity::Type::kIsolatedWebApp, UrlIdentity::Type::kChromeExtension},
-      /*default_options*/ {.default_options = {}});
-
-  if (url_identity.type == UrlIdentity::Type::kChromeExtension) {
-    return url_identity.name;
-  }
-
-  if (url_identity.type == UrlIdentity::Type::kIsolatedWebApp) {
-    return url_identity.name;
-  }
-
   const auto main_frame_origin =
       web_contents->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   return GetSiteFrameTitleForFileSelect(
       GetSiteFrameTitleType(main_frame_origin, alerting_frame_origin),
-      alerting_frame_origin, file_select_type);
+      download_origin, file_select_type);
 }
 
 std::u16string GetSiteFrameTitleForFileSelect(
     SiteFrameTitleType frame_type,
-    const url::Origin& alerting_frame_origin,
+    const url::Origin& download_origin,
     FileSelectTitleType file_select_type) {
   constexpr std::array<
       std::array<int, static_cast<size_t>(SiteFrameTitleType::kSize)>,
@@ -112,7 +90,7 @@ std::u16string GetSiteFrameTitleForFileSelect(
       frame_type == SiteFrameTitleType::kStandardDifferentOrigin) {
     std::u16string origin_string =
         url_formatter::FormatOriginForSecurityDisplay(
-            UnwrapOriginIfOpaque(alerting_frame_origin),
+            UnwrapOriginIfOpaque(download_origin),
             url_formatter::SchemeDisplay::OMIT_HTTP_AND_HTTPS);
     return l10n_util::GetStringFUTF16(
         kResourceIDs[static_cast<size_t>(file_select_type)]

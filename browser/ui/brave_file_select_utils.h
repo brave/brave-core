@@ -47,6 +47,7 @@ enum class FileSelectTitleType {
 
 std::u16string GetFileSelectTitle(content::WebContents* contents,
                                   const url::Origin& alerting_frame_origin,
+                                  const url::Origin& download_origin,
                                   FileSelectTitleType file_select_type);
 
 std::u16string GetSiteFrameTitleForFileSelect(

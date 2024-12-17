@@ -153,9 +153,10 @@ void BraveBrowser::RunFileChooser(
     // DownloadFilePicker::DownloadFilePicker directly.
     // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/public/mojom/choosers/file_chooser.mojom;l=27;drc=047c7dc4ee1ce908d7fea38ca063fa2f80f92c77
     CHECK(render_frame_host);
+    const url::Origin& origin = render_frame_host->GetLastCommittedOrigin();
     new_params->title = brave::GetFileSelectTitle(
         content::WebContents::FromRenderFrameHost(render_frame_host),
-        render_frame_host->GetLastCommittedOrigin(),
+        origin, origin,
         params.mode == blink::mojom::FileChooserParams::Mode::kSave
             ? brave::FileSelectTitleType::kSave
             : brave::FileSelectTitleType::kOpen);
