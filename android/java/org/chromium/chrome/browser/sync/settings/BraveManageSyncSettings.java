@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.sync.settings;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -27,9 +28,7 @@ import org.chromium.ui.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * See org.brave.bytecode.BraveManageSyncSettingsClassAdapter
- */
+/** See org.brave.bytecode.BraveManageSyncSettingsClassAdapter */
 public class BraveManageSyncSettings extends ManageSyncSettings {
     private static final String TAG = "BMSS";
 
@@ -48,6 +47,9 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private Boolean mVerboseSyncPasswordsPref = false;
     private static final String VERBOSE_SYNC_PASSWORDS_PREF_COMMAND_LINE_KEY =
             "verbose_sync_passwords_pref";
+
+    public static final String ARC_FEATURE = "org.chromium.arc";
+    public static final String ARC_DEVICE_MANAGEMENT_FEATURE = "org.chromium.arc.device_management";
 
     private void verboseIfEnabled(String message) {
         if (!mVerboseSyncPasswordsPref) {
@@ -105,8 +107,19 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
         mPrefSyncPasswords = findPreference(PREF_SYNC_PASSWORDS);
         assert mPrefSyncPasswords != null : "Something has changed in the upstream!";
 
-        overrideWithAuthConfirmationSyncPasswords();
-        overrideWithAuthConfirmationSyncEverything();
+        // We cannot require Android screenlock if browser runs at ChromeOS
+        // Google App Runtime emulator, because it is managed by ChromeOS and
+        // not by the Android subsystem
+        if (!isRunningOnChromeOS()) {
+            overrideWithAuthConfirmationSyncPasswords();
+            overrideWithAuthConfirmationSyncEverything();
+        }
+    }
+
+    private static boolean isRunningOnChromeOS() {
+        PackageManager pm = ContextUtils.getApplicationContext().getPackageManager();
+        return pm.hasSystemFeature(ARC_FEATURE)
+                || pm.hasSystemFeature(ARC_DEVICE_MANAGEMENT_FEATURE);
     }
 
     private void showScreenLockToast() {
