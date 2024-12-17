@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 #define BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 
+#include <string_view>
+
+#include "base/containers/fixed_flat_set.h"
 #include "build/build_config.h"
 
 inline constexpr char kAdblockHost[] = "adblock";
@@ -91,5 +94,13 @@ inline constexpr char kRewriterUIHost[] = "rewriter";
 
 inline constexpr char16_t kTransactionSimulationLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/Transaction-Simulation";
+
+// Hosts that are allowed to be installed as PWAs, which is usually
+// a blocked action for WebUIs. In Chromium, the "password-manager" host
+// is already allowed.
+inline constexpr auto kInstallablePWAWebUIHosts =
+    base::MakeFixedFlatSet<std::string_view>({
+        kAIChatUIHost,
+    });
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_

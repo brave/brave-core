@@ -6,4 +6,6 @@
   <include name="IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML"
     file="../ai_chat/resources/untrusted_conversation_frame/untrusted_conversation_frame.html"
     type="BINDATA" />
+  <include name="IDR_AI_CHAT_UI_MANIFEST" file="../ai_chat/resources/page/manifest.webmanifest" type="BINDATA" />
+  <include name="IDR_AI_CHAT_UI_PWA_ICON" file="../ai_chat/resources/page/pwa_icon.svg" type="BINDATA" />
 </grit-part>

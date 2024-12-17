@@ -22,6 +22,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
   static constexpr auto kLocalizedStrings = std::to_array<
       webui::LocalizedString>(
       {{"siteTitle", IDS_CHAT_UI_TITLE},
+       {"pwaTitle", IDS_CHAT_UI_PWA_TITLE},
        {"summarizeFailedLabel", IDS_CHAT_UI_SUMMARIZE_FAILED_LABEL},
        {"acceptButtonLabel", IDS_CHAT_UI_ACCEPT_BUTTON_LABEL},
        {"summarizeButtonLabel", IDS_CHAT_UI_SUMMARIZE_BUTTON_LABEL},
