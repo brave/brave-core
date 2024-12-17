@@ -155,8 +155,8 @@ void BraveBrowser::RunFileChooser(
     CHECK(render_frame_host);
     const url::Origin& origin = render_frame_host->GetLastCommittedOrigin();
     new_params->title = brave::GetFileSelectTitle(
-        content::WebContents::FromRenderFrameHost(render_frame_host),
-        origin, origin,
+        content::WebContents::FromRenderFrameHost(render_frame_host), origin,
+        origin,
         params.mode == blink::mojom::FileChooserParams::Mode::kSave
             ? brave::FileSelectTitleType::kSave
             : brave::FileSelectTitleType::kOpen);
