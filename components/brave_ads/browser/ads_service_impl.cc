@@ -106,6 +106,13 @@ std::string URLMethodToRequestType(
   }
 }
 
+bool WriteOnFileTaskRunner(const base::FilePath& path,
+                           const std::string& data) {
+  return base::ImportantFileWriter::WriteFileAtomically(
+      path, data,
+      /*histogram_suffix=*/std::string_view());
+}
+
 std::optional<std::string> LoadOnFileTaskRunner(const base::FilePath& path) {
   std::string value;
   if (!base::ReadFileToString(path, &value)) {
@@ -1631,9 +1638,8 @@ void AdsServiceImpl::Save(const std::string& name,
                           SaveCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&base::ImportantFileWriter::WriteFileAtomically,
-                     ads_service_path_.AppendASCII(name), value,
-                     std::string_view()),
+      base::BindOnce(&WriteOnFileTaskRunner,
+                     ads_service_path_.AppendASCII(name), value),
       std::move(callback));
 }
 
@@ -1642,11 +1648,7 @@ void AdsServiceImpl::Load(const std::string& name, LoadCallback callback) {
       FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner,
                      ads_service_path_.AppendASCII(name)),
-      base::BindOnce(
-          [](LoadCallback callback, const std::optional<std::string>& value) {
-            std::move(callback).Run(value);
-          },
-          std::move(callback)));
+      std::move(callback));
 }
 
 void AdsServiceImpl::LoadResourceComponent(
