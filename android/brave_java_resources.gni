@@ -137,6 +137,7 @@ brave_java_resources = [
   "java/res/drawable-night/ic_vpn_always_on_1.xml",
   "java/res/drawable-night/ic_vpn_always_on_2.xml",
   "java/res/drawable-night/ic_vpn_always_on_3.xml",
+  "java/res/drawable-night/ic_youtube_skip_ads.xml",
   "java/res/drawable-night/incognito_history_placeholder_image.xml",
   "java/res/drawable-night/new_wallet.xml",
   "java/res/drawable-night/phone_recent_tab_empty_state_illustration.xml",
