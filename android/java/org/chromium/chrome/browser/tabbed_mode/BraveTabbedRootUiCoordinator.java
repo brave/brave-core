@@ -6,9 +6,11 @@
 package org.chromium.chrome.browser.tabbed_mode;
 
 import static org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher.ActivityState.RESUMED_WITH_NATIVE;
+import static org.chromium.chrome.browser.util.PictureInPictureUtils.deviceSupportedPictureInPictureMode;
+import static org.chromium.chrome.browser.util.PictureInPictureUtils.hasPictureInPicturePermissionEnabled;
+import static org.chromium.chrome.browser.util.PictureInPictureUtils.launchPictureInPictureSettings;
 
 import android.app.PictureInPictureParams;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -210,8 +212,13 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
 
             @Override
             public void onPictureInPictureClick() {
-                if (!mActivity.getPackageManager().hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)) {
+                if (!deviceSupportedPictureInPictureMode(mActivity)) {
                     Toast.makeText(mActivity, R.string.picture_in_picture_not_supported, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (!hasPictureInPicturePermissionEnabled(mActivity)) {
+                    launchPictureInPictureSettings(mActivity);
                     return;
                 }
 
