@@ -26,12 +26,15 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_remover.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/content_paths.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
@@ -1277,3 +1280,124 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ("", values_after.iframe_1.cookies);
   EXPECT_EQ("", values_after.iframe_2.cookies);
 }
+
+class EphemeralStorageWithDisableThirdPartyStoragePartitioningBrowserTest
+    : public EphemeralStorageBrowserTest,
+      public content::WebContentsObserver,
+      public testing::WithParamInterface<bool> {
+ public:
+  EphemeralStorageWithDisableThirdPartyStoragePartitioningBrowserTest() {}
+
+  void ReadyToCommitNavigation(
+      content::NavigationHandle* navigation_handle) override {
+    if (!navigation_handle->IsInPrimaryMainFrame()) {
+      return;
+    }
+
+    blink::RuntimeFeatureStateContext& context =
+        navigation_handle->GetMutableRuntimeFeatureStateContext();
+    context.SetDisableThirdPartyStoragePartitioning2Enabled(GetParam());
+  }
+};
+
+IN_PROC_BROWSER_TEST_P(
+    EphemeralStorageWithDisableThirdPartyStoragePartitioningBrowserTest,
+    StorageIsPartitionedWithShieldsEnabled) {
+  auto* web_contents = chrome_test_utils::GetActiveWebContents(this);
+  Observe(web_contents);
+  ASSERT_TRUE(
+      brave_shields::GetBraveShieldsEnabled(content_settings(), GURL()));
+
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+
+  // The page this tab is loaded via a.com and has two b.com third-party
+  // iframes. The third-party iframes should be partitioned.
+  SetValuesInFrames(web_contents, "a.com", "from=a.com");
+  ValuesFromFrames third_party_values = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com", third_party_values.main_frame.local_storage);
+  EXPECT_EQ("a.com", third_party_values.iframe_1.local_storage);
+  EXPECT_EQ("a.com", third_party_values.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com", third_party_values.main_frame.session_storage);
+  EXPECT_EQ("a.com", third_party_values.iframe_1.session_storage);
+  EXPECT_EQ("a.com", third_party_values.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", third_party_values.main_frame.cookies);
+  EXPECT_EQ("from=a.com", third_party_values.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", third_party_values.iframe_2.cookies);
+
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+
+  // The storage in the first-party iframes should reflect empty values not
+  // altered by a.com site.
+  ValuesFromFrames first_party_values = GetValuesFromFrames(web_contents);
+  ExpectValuesFromFramesAreEmpty(FROM_HERE, first_party_values);
+}
+
+IN_PROC_BROWSER_TEST_P(
+    EphemeralStorageWithDisableThirdPartyStoragePartitioningBrowserTest,
+    StorageIsPartitionedWithShieldsDisabled) {
+  auto* web_contents = chrome_test_utils::GetActiveWebContents(this);
+  Observe(chrome_test_utils::GetActiveWebContents(this));
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
+                                        a_site_ephemeral_storage_url_);
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
+                                        b_site_ephemeral_storage_url_);
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false,
+                                        c_site_ephemeral_storage_url_);
+
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+
+  // The page this tab is loaded via a.com and has two b.com third-party
+  // iframes. The third-party iframes should be partitioned.
+  SetValuesInFrames(web_contents, "a.com", "from=a.com");
+  ValuesFromFrames third_party_values = GetValuesFromFrames(web_contents);
+  EXPECT_EQ("a.com", third_party_values.main_frame.local_storage);
+  EXPECT_EQ("a.com", third_party_values.iframe_1.local_storage);
+  EXPECT_EQ("a.com", third_party_values.iframe_2.local_storage);
+
+  EXPECT_EQ("a.com", third_party_values.main_frame.session_storage);
+  EXPECT_EQ("a.com", third_party_values.iframe_1.session_storage);
+  EXPECT_EQ("a.com", third_party_values.iframe_2.session_storage);
+
+  EXPECT_EQ("from=a.com", third_party_values.main_frame.cookies);
+  EXPECT_EQ("from=a.com", third_party_values.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", third_party_values.iframe_2.cookies);
+
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+
+  ValuesFromFrames first_party_values = GetValuesFromFrames(web_contents);
+  if (GetParam()) {
+    // If origin trial is enabled, the storage should not be partitioned.
+    EXPECT_EQ("a.com", first_party_values.main_frame.local_storage);
+    EXPECT_EQ("a.com", first_party_values.iframe_1.local_storage);
+    EXPECT_EQ("a.com", first_party_values.iframe_2.local_storage);
+
+    EXPECT_EQ("a.com", first_party_values.main_frame.session_storage);
+    EXPECT_EQ("a.com", first_party_values.iframe_1.session_storage);
+    EXPECT_EQ("a.com", first_party_values.iframe_2.session_storage);
+  } else {
+    // If origin trial is disabled, the storage should be partitioned.
+    EXPECT_EQ(nullptr, first_party_values.main_frame.local_storage);
+    EXPECT_EQ(nullptr, first_party_values.iframe_1.local_storage);
+    EXPECT_EQ(nullptr, first_party_values.iframe_2.local_storage);
+
+    EXPECT_EQ(nullptr, first_party_values.main_frame.session_storage);
+    EXPECT_EQ(nullptr, first_party_values.iframe_1.session_storage);
+    EXPECT_EQ(nullptr, first_party_values.iframe_2.session_storage);
+  }
+
+  // Cookies are not partitioned if shields are disabled.
+  EXPECT_EQ("from=a.com", first_party_values.main_frame.cookies);
+  EXPECT_EQ("from=a.com", first_party_values.iframe_1.cookies);
+  EXPECT_EQ("from=a.com", first_party_values.iframe_2.cookies);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    EphemeralStorageWithDisableThirdPartyStoragePartitioningBrowserTest,
+    testing::Bool());
