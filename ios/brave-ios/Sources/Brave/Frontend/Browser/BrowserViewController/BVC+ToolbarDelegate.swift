@@ -346,10 +346,13 @@ extension BrowserViewController: TopToolbarDelegate {
       }
     )
     let container = UINavigationController(rootViewController: controller)
+    container.presentationController?.delegate = self
     controller.navigationItem.leftBarButtonItem = .init(
       systemItem: .done,
       primaryAction: .init { [unowned container] _ in
-        container.dismiss(animated: true)
+        container.dismiss(animated: true) {
+          self.updateTabsBarVisibility()
+        }
       }
     )
     self.present(container, animated: true)

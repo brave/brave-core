@@ -2981,6 +2981,11 @@ extension BrowserViewController: UIAdaptivePresentationControllerDelegate {
   ) -> UIModalPresentationStyle {
     return .none
   }
+
+  public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    // need to update tab bar visibility after user dismiss the `ChromeWebViewController`
+    updateTabsBarVisibility()
+  }
 }
 
 extension BrowserViewController: SessionRestoreScriptHandlerDelegate {
