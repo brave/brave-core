@@ -31,8 +31,8 @@ inline constexpr auto kPrintPreviewRetrievalHosts =
 
 inline constexpr uint8_t kMaxPreviewPages = 20;
 inline constexpr char kLeoModelSupportUrl[] =
-    "https://support.brave.com/hc/en-us/categories/"
-    "20990938292237-Brave-Leo";
+    "https://support.brave.com/hc/en-us/articles/26727364100493-"
+    "What-are-the-differences-between-Leo-s-AI-Models";
 
 // Upon registering a custom model, users have the ability to explicitly
 // provide a context size (in tokens). When present, we'll use this value to

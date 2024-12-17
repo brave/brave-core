@@ -236,7 +236,7 @@ struct AIChatResponseMessageView: View {
     period.foregroundColor = Color(braveSystemName: .textPrimary)
 
     var learnMoreLink = AttributedString(Strings.learnMore)
-    learnMoreLink.link = AIChatConstants.braveLeoLearnMore
+    learnMoreLink.link = AIChatConstants.braveLeoSearchLearnMore
     learnMoreLink.font = font
     learnMoreLink.foregroundColor = Color(braveSystemName: .textTertiary)
     learnMoreLink.underlineColor = UIColor(braveSystemName: .textTertiary)
