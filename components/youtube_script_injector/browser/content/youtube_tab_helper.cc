@@ -116,7 +116,7 @@ void YouTubeTabHelper::DidFinishNavigation(
 void YouTubeTabHelper::DidToggleFullscreenModeForTab(bool entered_fullscreen,
                                                      bool /*is_user_initiated*/) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  chrome::android::Java_BackgroundVideoPlaybackTabHelper_showYouTubeFeaturesLayout(env, !entered_fullscreen);
+  Java_BackgroundVideoPlaybackTabHelper_showYouTubeFeaturesLayout(env, !entered_fullscreen);
 }
 
 void YouTubeTabHelper::MediaStartedPlaying(
@@ -144,12 +144,6 @@ void YouTubeTabHelper::MediaStoppedPlaying(
 
 //   return true;
 // }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeTabHelper);
-}  // namespace youtube_script_injector
-
-namespace chrome {
-namespace android {
 
 void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
     JNIEnv* env,
@@ -188,5 +182,6 @@ jboolean JNI_BackgroundVideoPlaybackTabHelper_IsPlayingMedia(
       youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
   return helper ? helper->IsMediaPlaying() : false;
 }
-}  // namespace android
-}  // namespace chrome
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeTabHelper);
+}  // namespace youtube_script_injector
