@@ -51,6 +51,8 @@ class OAIAPIClient {
 
   virtual void PerformRequest(const mojom::CustomModelOptions& model_options,
                               base::Value::List messages,
+                              const std::vector<mojom::ToolPtr>& tools,
+                              std::optional<std::string_view> preferred_tool_name,
                               GenerationDataCallback data_received_callback,
                               GenerationCompletedCallback completed_callback);
 
