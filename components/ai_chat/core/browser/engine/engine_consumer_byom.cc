@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_byom.h"
 
 #include <optional>
 #include <string>
@@ -117,27 +117,27 @@ base::Value::List BuildMessages(
 
 }  // namespace
 
-EngineConsumerOAIRemote::EngineConsumerOAIRemote(
+EngineConsumerBYOMRemote::EngineConsumerBYOMRemote(
     const mojom::CustomModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   model_options_ = model_options;
   max_associated_content_length_ = model_options.max_associated_content_length;
 
   // Initialize the API client
-  api_ = std::make_unique<OAIAPIClient>(url_loader_factory);
+  api_ = std::make_unique<BYOMAPIClient>(url_loader_factory);
 }
 
-EngineConsumerOAIRemote::~EngineConsumerOAIRemote() = default;
+EngineConsumerBYOMRemote::~EngineConsumerBYOMRemote() = default;
 
-void EngineConsumerOAIRemote::ClearAllQueries() {
+void EngineConsumerBYOMRemote::ClearAllQueries() {
   api_->ClearAllQueries();
 }
 
-bool EngineConsumerOAIRemote::SupportsDeltaTextResponses() const {
+bool EngineConsumerBYOMRemote::SupportsDeltaTextResponses() const {
   return true;
 }
 
-void EngineConsumerOAIRemote::UpdateModelOptions(
+void EngineConsumerBYOMRemote::UpdateModelOptions(
     const mojom::ModelOptions& options) {
   if (options.is_custom_model_options()) {
     model_options_ = *options.get_custom_model_options();
@@ -146,7 +146,7 @@ void EngineConsumerOAIRemote::UpdateModelOptions(
   }
 }
 
-void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
+void EngineConsumerBYOMRemote::GenerateRewriteSuggestion(
     std::string text,
     const std::string& question,
     const std::string& selected_language,
@@ -173,7 +173,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
                        std::move(completed_callback));
 }
 
-void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
+void EngineConsumerBYOMRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,
     const std::string& selected_language,
@@ -207,11 +207,11 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
   api_->PerformRequest(
       model_options_, std::move(messages), base::NullCallback(),
       base::BindOnce(
-          &EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse,
+          &EngineConsumerBYOMRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
+void EngineConsumerBYOMRemote::OnGenerateQuestionSuggestionsResponse(
     SuggestedQuestionsCallback callback,
     GenerationResult result) {
   if (!result.has_value() || result->empty()) {
@@ -242,7 +242,7 @@ void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
   std::move(callback).Run(std::move(questions));
 }
 
-void EngineConsumerOAIRemote::GenerateAssistantResponse(
+void EngineConsumerBYOMRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
     const ConversationHistory& conversation_history,
@@ -274,6 +274,6 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
                        std::move(completed_callback));
 }
 
-void EngineConsumerOAIRemote::SanitizeInput(std::string& input) {}
+void EngineConsumerBYOMRemote::SanitizeInput(std::string& input) {}
 
 }  // namespace ai_chat

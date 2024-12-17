@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OAI_API_CLIENT_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OAI_API_CLIENT_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_BYOM_API_CLIENT_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_BYOM_API_CLIENT_H_
 
 #include <memory>
 #include <string>
@@ -33,8 +33,8 @@ namespace mojom {
 class CustomModelOptions;
 }  // namespace mojom
 
-// Performs remote request to the OAI format APIs.
-class OAIAPIClient {
+// Performs remote request to BYOM endpoints.
+class BYOMAPIClient {
  public:
   using GenerationResult = base::expected<std::string, mojom::APIError>;
   using GenerationDataCallback =
@@ -42,12 +42,12 @@ class OAIAPIClient {
   using GenerationCompletedCallback =
       base::OnceCallback<void(GenerationResult)>;
 
-  explicit OAIAPIClient(
+  explicit BYOMAPIClient(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
-  OAIAPIClient(const OAIAPIClient&) = delete;
-  OAIAPIClient& operator=(const OAIAPIClient&) = delete;
-  virtual ~OAIAPIClient();
+  BYOMAPIClient(const BYOMAPIClient&) = delete;
+  BYOMAPIClient& operator=(const BYOMAPIClient&) = delete;
+  virtual ~BYOMAPIClient();
 
   virtual void PerformRequest(const mojom::CustomModelOptions& model_options,
                               base::Value::List messages,
@@ -73,9 +73,9 @@ class OAIAPIClient {
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
-  base::WeakPtrFactory<OAIAPIClient> weak_ptr_factory_{this};
+  base::WeakPtrFactory<BYOMAPIClient> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OAI_API_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_BYOM_API_CLIENT_H_

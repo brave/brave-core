@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
+#include "brave/components/ai_chat/core/browser/engine/byom_api_client.h"
 
 #include <list>
 #include <optional>
@@ -40,7 +40,7 @@ using DataReceivedCallback =
     api_request_helper::APIRequestHelper::DataReceivedCallback;
 using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
 using Ticket = api_request_helper::APIRequestHelper::Ticket;
-using GenerationResult = ai_chat::OAIAPIClient::GenerationResult;
+using GenerationResult = ai_chat::BYOMAPIClient::GenerationResult;
 
 namespace ai_chat {
 
@@ -66,26 +66,26 @@ class MockAPIRequestHelper : public api_request_helper::APIRequestHelper {
               (override));
 };
 
-class TestOAIAPIClient : public OAIAPIClient {
+class TestBYOMAPIClient : public BYOMAPIClient {
  public:
-  TestOAIAPIClient() : OAIAPIClient(nullptr) {
+  TestBYOMAPIClient() : BYOMAPIClient(nullptr) {
     SetAPIRequestHelperForTesting(std::make_unique<MockAPIRequestHelper>(
         net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
         nullptr));
   }
-  ~TestOAIAPIClient() override = default;
+  ~TestBYOMAPIClient() override = default;
 
   MockAPIRequestHelper* GetMockAPIRequestHelper() {
     return static_cast<MockAPIRequestHelper*>(GetAPIRequestHelperForTesting());
   }
 };
 
-class OAIAPIUnitTest : public testing::Test {
+class BYOMAPIUnitTest : public testing::Test {
  public:
-  OAIAPIUnitTest() = default;
-  ~OAIAPIUnitTest() override = default;
+  BYOMAPIUnitTest() = default;
+  ~BYOMAPIUnitTest() override = default;
 
-  void SetUp() override { client_ = std::make_unique<TestOAIAPIClient>(); }
+  void SetUp() override { client_ = std::make_unique<TestBYOMAPIClient>(); }
 
   void TearDown() override {}
 
@@ -112,18 +112,58 @@ class OAIAPIUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<TestOAIAPIClient> client_;
+  std::unique_ptr<TestBYOMAPIClient> client_;
 };
 
-TEST_F(OAIAPIUnitTest, PerformRequest) {
+TEST_F(BYOMAPIUnitTest, PerformRequest) {
   mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
       "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
       "test_model");
 
   std::string server_chunk =
-      R"({"id":"chatcmpl-123","object":"chat.completion.chunk","created":1694268190,"model":"gpt-3.5-turbo-0125", "system_fingerprint": "fp_44709d6fcb", "choices":[{"index":0,"delta":{"role":"assistant","content":"It was played in Arlington, Texas."},"logprobs":null,"finish_reason":null}]})";
+      R"({
+        "id": "chatcmpl-123",
+        "object": "chat.completion.chunk",
+        "created": 1694268190,
+        "model": "gpt-3.5-turbo-0125",
+        "system_fingerprint": "fp_44709d6fcb",
+        "choices": [
+          {
+            "index": 0,
+            "delta": {
+              "role": "assistant",
+              "content": "It was played in Arlington, Texas."
+            },
+            "logprobs": null,
+            "finish_reason": null
+          }
+        ]
+      })";
+
   std::string server_completion =
-      R"({"id":"chatcmpl-123","object":"chat.completion","created":1677652288,"model":"gpt-3.5-turbo-0125","system_fingerprint":"fp_44709d6fcb","choices":[{"index":0,"message":{"role":"assistant","content":"\n\nCan I assist you further?"},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":9,"completion_tokens":12,"total_tokens":21}})";
+      R"({
+        "id": "chatcmpl-123",
+        "object": "chat.completion",
+        "created": 1677652288,
+        "model": "gpt-3.5-turbo-0125",
+        "system_fingerprint": "fp_44709d6fcb",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "\n\nCan I assist you further?"
+            },
+            "logprobs": null,
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 9,
+          "completion_tokens": 12,
+          "total_tokens": 21
+        }
+      })";
 
   std::string expected_chunk_response = "It was played in Arlington, Texas.";
   std::string expected_completion_response = "\n\nCan I assist you further?";

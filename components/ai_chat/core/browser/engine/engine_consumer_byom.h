@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_BYOM_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_BYOM_H_
 
 #include <memory>
 #include <string>
@@ -12,8 +12,8 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/engine/byom_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
@@ -32,14 +32,14 @@ namespace ai_chat {
 
 using api_request_helper::APIRequestResult;
 
-class EngineConsumerOAIRemote : public EngineConsumer {
+class EngineConsumerBYOMRemote : public EngineConsumer {
  public:
-  explicit EngineConsumerOAIRemote(
+  explicit EngineConsumerBYOMRemote(
       const mojom::CustomModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  EngineConsumerOAIRemote(const EngineConsumerOAIRemote&) = delete;
-  EngineConsumerOAIRemote& operator=(const EngineConsumerOAIRemote&) = delete;
-  ~EngineConsumerOAIRemote() override;
+  EngineConsumerBYOMRemote(const EngineConsumerBYOMRemote&) = delete;
+  EngineConsumerBYOMRemote& operator=(const EngineConsumerBYOMRemote&) = delete;
+  ~EngineConsumerBYOMRemote() override;
 
   // EngineConsumer
   void GenerateQuestionSuggestions(
@@ -65,10 +65,10 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void ClearAllQueries() override;
   bool SupportsDeltaTextResponses() const override;
 
-  void SetAPIForTesting(std::unique_ptr<OAIAPIClient> api_for_testing) {
+  void SetAPIForTesting(std::unique_ptr<BYOMAPIClient> api_for_testing) {
     api_ = std::move(api_for_testing);
   }
-  OAIAPIClient* GetAPIForTesting() { return api_.get(); }
+  BYOMAPIClient* GetAPIForTesting() { return api_.get(); }
   void UpdateModelOptions(const mojom::ModelOptions& options) override;
 
  private:
@@ -76,12 +76,12 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       SuggestedQuestionsCallback callback,
       GenerationResult result);
 
-  std::unique_ptr<OAIAPIClient> api_ = nullptr;
+  std::unique_ptr<BYOMAPIClient> api_ = nullptr;
   mojom::CustomModelOptions model_options_;
 
-  base::WeakPtrFactory<EngineConsumerOAIRemote> weak_ptr_factory_{this};
+  base::WeakPtrFactory<EngineConsumerBYOMRemote> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_OAI_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_BYOM_H_

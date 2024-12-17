@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_byom.h"
 
 #include <optional>
 #include <string>
@@ -45,10 +45,10 @@ class MockCallback {
   MOCK_METHOD(void, OnCompleted, (EngineConsumer::GenerationResult));
 };
 
-class MockOAIAPIClient : public OAIAPIClient {
+class MockBYOMAPIClient : public BYOMAPIClient {
  public:
-  MockOAIAPIClient() : OAIAPIClient(nullptr) {}
-  ~MockOAIAPIClient() override = default;
+  MockBYOMAPIClient() : BYOMAPIClient(nullptr) {}
+  ~MockBYOMAPIClient() override = default;
 
   MOCK_METHOD(void,
               PerformRequest,
@@ -59,10 +59,10 @@ class MockOAIAPIClient : public OAIAPIClient {
               (override));
 };
 
-class EngineConsumerOAIUnitTest : public testing::Test {
+class EngineConsumerBYOMUnitTest : public testing::Test {
  public:
-  EngineConsumerOAIUnitTest() = default;
-  ~EngineConsumerOAIUnitTest() override = default;
+  EngineConsumerBYOMUnitTest() = default;
+  ~EngineConsumerBYOMUnitTest() override = default;
 
   void SetUp() override {
     auto options = mojom::CustomModelOptions::New();
@@ -81,14 +81,14 @@ class EngineConsumerOAIUnitTest : public testing::Test {
     model_->options =
         mojom::ModelOptions::NewCustomModelOptions(std::move(options));
 
-    engine_ = std::make_unique<EngineConsumerOAIRemote>(
+    engine_ = std::make_unique<EngineConsumerBYOMRemote>(
         *model_->options->get_custom_model_options(), nullptr);
 
-    engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
+    engine_->SetAPIForTesting(std::make_unique<MockBYOMAPIClient>());
   }
 
-  MockOAIAPIClient* GetClient() {
-    return static_cast<MockOAIAPIClient*>(engine_->GetAPIForTesting());
+  MockBYOMAPIClient* GetClient() {
+    return static_cast<MockBYOMAPIClient*>(engine_->GetAPIForTesting());
   }
 
   void TearDown() override {}
@@ -96,10 +96,10 @@ class EngineConsumerOAIUnitTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   mojom::ModelPtr model_;
-  std::unique_ptr<EngineConsumerOAIRemote> engine_;
+  std::unique_ptr<EngineConsumerBYOMRemote> engine_;
 };
 
-TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
+TEST_F(EngineConsumerBYOMUnitTest, UpdateModelOptions) {
   auto* client = GetClient();
 
   base::RunLoop run_loop;
@@ -148,7 +148,7 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
-TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
+TEST_F(EngineConsumerBYOMUnitTest, GenerateQuestionSuggestions) {
   std::string page_content = "This is a test page content";
 
   auto* client = GetClient();
@@ -211,7 +211,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
-TEST_F(EngineConsumerOAIUnitTest,
+TEST_F(EngineConsumerBYOMUnitTest,
        GenerateAssistantResponseWithDefaultSystemPrompt) {
   // Create a set of options WITHOUT a custom system prompt.
   auto options = mojom::CustomModelOptions::New();
@@ -227,9 +227,9 @@ TEST_F(EngineConsumerOAIUnitTest,
       mojom::ModelOptions::NewCustomModelOptions(std::move(options));
 
   // Create a new engine with the new model.
-  engine_ = std::make_unique<EngineConsumerOAIRemote>(
+  engine_ = std::make_unique<EngineConsumerBYOMRemote>(
       *model_->options->get_custom_model_options(), nullptr);
-  engine_->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
+  engine_->SetAPIForTesting(std::make_unique<MockBYOMAPIClient>());
 
   EngineConsumer::ConversationHistory history;
 
@@ -297,7 +297,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
-TEST_F(EngineConsumerOAIUnitTest,
+TEST_F(EngineConsumerBYOMUnitTest,
        TestGenerateAssistantResponseWithCustomSystemPrompt) {
   EngineConsumer::ConversationHistory history;
 
@@ -406,7 +406,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
-TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
+TEST_F(EngineConsumerBYOMUnitTest, GenerateAssistantResponseEarlyReturn) {
   EngineConsumer::ConversationHistory history;
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -441,7 +441,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
-TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
+TEST_F(EngineConsumerBYOMUnitTest, SummarizePage) {
   auto* client = GetClient();
   base::RunLoop run_loop;
 

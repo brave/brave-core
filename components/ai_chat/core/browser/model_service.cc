@@ -30,10 +30,10 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_byom.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -661,8 +661,8 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
   } else if (model->options->is_custom_model_options()) {
     auto& custom_model_opts = model->options->get_custom_model_options();
     DVLOG(1) << "Started AI engine: custom";
-    engine = std::make_unique<EngineConsumerOAIRemote>(*custom_model_opts,
-                                                       url_loader_factory);
+    engine = std::make_unique<EngineConsumerBYOMRemote>(*custom_model_opts,
+                                                        url_loader_factory);
   }
 
   return engine;

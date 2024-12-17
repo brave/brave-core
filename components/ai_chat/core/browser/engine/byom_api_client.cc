@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
+#include "brave/components/ai_chat/core/browser/engine/byom_api_client.h"
 
 #include <ios>
 #include <optional>
@@ -75,19 +75,19 @@ std::string CreateJSONRequestBody(
 
 }  // namespace
 
-OAIAPIClient::OAIAPIClient(
+BYOMAPIClient::BYOMAPIClient(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
       GetNetworkTrafficAnnotationTag(), url_loader_factory);
 }
 
-OAIAPIClient::~OAIAPIClient() = default;
+BYOMAPIClient::~BYOMAPIClient() = default;
 
-void OAIAPIClient::ClearAllQueries() {
+void BYOMAPIClient::ClearAllQueries() {
   api_request_helper_->CancelAll();
 }
 
-void OAIAPIClient::PerformRequest(
+void BYOMAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
     base::Value::List messages,
     GenerationDataCallback data_received_callback,
@@ -108,10 +108,10 @@ void OAIAPIClient::PerformRequest(
   }
 
   if (is_sse_enabled) {
-    auto on_received = base::BindRepeating(&OAIAPIClient::OnQueryDataReceived,
+    auto on_received = base::BindRepeating(&BYOMAPIClient::OnQueryDataReceived,
                                            weak_ptr_factory_.GetWeakPtr(),
                                            std::move(data_received_callback));
-    auto on_complete = base::BindOnce(&OAIAPIClient::OnQueryCompleted,
+    auto on_complete = base::BindOnce(&BYOMAPIClient::OnQueryCompleted,
                                       weak_ptr_factory_.GetWeakPtr(),
                                       std::move(completed_callback));
 
@@ -120,7 +120,7 @@ void OAIAPIClient::PerformRequest(
                                     "application/json", std::move(on_received),
                                     std::move(on_complete), headers, {});
   } else {
-    auto on_complete = base::BindOnce(&OAIAPIClient::OnQueryCompleted,
+    auto on_complete = base::BindOnce(&BYOMAPIClient::OnQueryCompleted,
                                       weak_ptr_factory_.GetWeakPtr(),
                                       std::move(completed_callback));
     api_request_helper_->Request(
@@ -129,8 +129,8 @@ void OAIAPIClient::PerformRequest(
   }
 }
 
-void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
-                                    APIRequestResult result) {
+void BYOMAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
+                                     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
@@ -162,7 +162,7 @@ void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
   std::move(callback).Run(base::unexpected(mojom::APIError::ConnectionIssue));
 }
 
-void OAIAPIClient::OnQueryDataReceived(
+void BYOMAPIClient::OnQueryDataReceived(
     GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
   if (!result.has_value() || !result->is_dict()) {
