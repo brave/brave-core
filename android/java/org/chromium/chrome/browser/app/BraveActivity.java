@@ -100,7 +100,6 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
-import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.DormantUsersEngagementDialogFragment;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.InternetConnection;
@@ -282,7 +281,6 @@ public abstract class BraveActivity extends ChromeActivity
 
     private static final int DAYS_4 = 4;
     private static final int DAYS_7 = 7;
-    private static final int DAYS_12 = 12;
 
     private static final int MONTH_1 = 1;
 
@@ -1143,19 +1141,6 @@ public abstract class BraveActivity extends ChromeActivity
         //     OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
         // }
 
-        if (ChromeSharedPreferences.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                == 1) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_12);
-            OnboardingPrefManager.getInstance().setNextCrossPromoModalDate(
-                    calender.getTimeInMillis());
-        }
-
-        if (OnboardingPrefManager.getInstance().showCrossPromoModal()) {
-            showCrossPromotionalDialog();
-            OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
-        }
         BraveSyncAccountDeletedInformer.show();
 
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted() && isFirstInstall) {
@@ -2064,13 +2049,6 @@ public abstract class BraveActivity extends ChromeActivity
     private void showBraveRateDialog() {
         BraveRateDialogFragment rateDialogFragment = BraveRateDialogFragment.newInstance(false);
         rateDialogFragment.show(getSupportFragmentManager(), BraveRateDialogFragment.TAG_FRAGMENT);
-    }
-
-    private void showCrossPromotionalDialog() {
-        CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment =
-                new CrossPromotionalModalDialogFragment();
-        mCrossPromotionalModalDialogFragment.show(
-                getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
     }
 
     private void openYtInBraveDialog() {
