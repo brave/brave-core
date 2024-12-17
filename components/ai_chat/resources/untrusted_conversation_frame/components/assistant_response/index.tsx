@@ -66,6 +66,12 @@ function AssistantEvent(props: { event: Mojom.ConversationEntryEvent, hasComplet
       <div className={styles.actionInProgress}><ProgressRing />{getLocale('pageContentRefinedInProgress')}</div>
     )
   }
+  if (props.event.toolUseEvent) {
+    const toolUse = props.event.toolUseEvent
+    return (
+      <div>**{toolUse.toolName} - {toolUse.inputJson}</div>
+    )
+  }
   // TODO(petemill): Consider displaying in-progress queries if the API
   // timing improves (or worsens for the completion events).
   // if (event.searchQueriesEvent && props.isEntryInProgress) {

@@ -1142,9 +1142,40 @@ void ConversationHandler::PerformAssistantGeneration(
     OnAssociatedContentInfoChanged();
   }
 
+  // TODO(petemill): Decide when to send tools
+  std::vector<mojom::ToolPtr> tools;
+  {
+    mojom::ToolPtr tool = mojom::Tool::New();
+    tool->name = "check_lights";
+    tool->description = "Determine if the user's lights in a given room in their home are on or off";
+    tool->input_schema_json = R"({
+      "type": "object",
+      "properties": {
+        "room": {
+          "type": "string",
+          "description": "The room to check the lights in"
+        }
+      }
+    })";
+    tool->required_properties = {"room"};
+    tools.push_back(std::move(tool));
+  }
+  {
+    // Computer use tool
+    mojom::ToolPtr tool = mojom::Tool::New();
+    tool->type = "computer_20241022";
+    tool->name = "computer";
+    tool->input_schema_json = R"({
+          "display_width_px": 1280,
+          "display_height_px": 800
+    })";
+    tools.push_back(std::move(tool));
+  }
+
   engine_->GenerateAssistantResponse(
-      is_video, page_content, chat_history_, input, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
+      is_video, page_content, chat_history_, input, selected_language_, tools,
+      std::nullopt, std::move(data_received_callback),
+      std::move(data_completed_callback));
 }
 
 void ConversationHandler::SetAPIError(const mojom::APIError& error) {
@@ -1157,6 +1188,7 @@ void ConversationHandler::SetAPIError(const mojom::APIError& error) {
 
 void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     mojom::ConversationEntryEventPtr event) {
+  LOG(ERROR) << __func__;
   if (chat_history_.empty() ||
       chat_history_.back()->character_type != CharacterType::ASSISTANT) {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
@@ -1199,6 +1231,27 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     // TODO(petemill): Remove ConversationTurn.text backwards compatibility when
     // all UI is updated to instead use ConversationEntryEvent items.
     entry->text = event->get_completion_event()->completion;
+  }
+
+  if (event->is_tool_use_event() && entry->events->size() > 0) {
+    // Tool use events can be partial and may need to be combined with the
+    // previous event.
+    auto& last_event = entry->events->back();
+    auto& tool_use_event = event->get_tool_use_event();
+
+    LOG(ERROR) << __func__ << " Got event for tool use: "
+               << tool_use_event->tool_name
+               << " is empty? " << tool_use_event->tool_name.empty()
+                << " with input: " << tool_use_event->input_json
+                << " is last event tool use? " << last_event->is_tool_use_event();
+
+    if (last_event->is_tool_use_event() && tool_use_event->tool_name.empty()) {
+      last_event->get_tool_use_event()->input_json = base::StrCat(
+          {last_event->get_tool_use_event()->input_json,
+           tool_use_event->input_json});
+      OnHistoryUpdate();
+      return;
+    }
   }
 
   if (event->is_conversation_title_event()) {
@@ -1423,7 +1476,7 @@ void ConversationHandler::OnGetRefinedPageContent(
   }
   engine_->GenerateAssistantResponse(
       is_video, page_content_to_use, chat_history_, input, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
+      {}, std::nullopt, std::move(data_received_callback), std::move(data_completed_callback));
 }
 
 void ConversationHandler::OnEngineCompletionDataReceived(

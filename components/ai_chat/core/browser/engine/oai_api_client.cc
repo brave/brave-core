@@ -14,6 +14,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
@@ -59,6 +60,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 std::string CreateJSONRequestBody(
     base::Value::List messages,
+    const std::vector<mojom::ToolPtr>& tools,
+    std::optional<std::string_view> preferred_tool_name,
     const bool is_sse_enabled,
     const mojom::CustomModelOptions& model_options) {
   base::Value::Dict dict;
@@ -67,6 +70,46 @@ std::string CreateJSONRequestBody(
   dict.Set("stream", is_sse_enabled);
   dict.Set("temperature", 0.7);
   dict.Set("model", model_options.model_request_name);
+
+  if (!tools.empty()) {
+    base::Value::List tools_list;
+    for (const auto& tool : tools) {
+      base::Value::Dict tool_dict;
+
+      tool_dict.Set("type", tool->type.empty() ? "function" : tool->type);
+
+      if (!tool->name.empty()) {
+        base::Value::Dict function_dict;
+        function_dict.Set("name", tool->name);
+
+        if (!tool->description.empty())
+          function_dict.Set("description", tool->description);
+
+        if (tool->input_schema_json != std::nullopt) {
+          // input_schema_json is string of JSON Schema for the input properties of the Tool.
+          // Set it on the "parameters" field as actual Value JSON.
+          std::optional<base::Value> parameters =
+              base::JSONReader::Read(*tool->input_schema_json);
+          CHECK(parameters) << "Failed to parse input_schema_json for tool: " << tool->name;
+
+          function_dict.Set("parameters", std::move(*parameters));
+
+          if (tool->required_properties.has_value() &&
+              !tool->required_properties->empty()) {
+            base::Value::List required_properties;
+            for (const auto& property : *tool->required_properties) {
+              required_properties.Append(property);
+            }
+            function_dict.Set("required", std::move(required_properties));
+          }
+        }
+
+        tool_dict.Set("function", std::move(function_dict));
+      }
+      tools_list.Append(std::move(tool_dict));
+    }
+    dict.Set("tools", std::move(tools_list));
+  }
 
   std::string json;
   base::JSONWriter::Write(dict, &json);
@@ -90,6 +133,8 @@ void OAIAPIClient::ClearAllQueries() {
 void OAIAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
     base::Value::List messages,
+    const std::vector<mojom::ToolPtr>& tools,
+    std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!model_options.endpoint.is_valid()) {
@@ -100,7 +145,8 @@ void OAIAPIClient::PerformRequest(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body =
-      CreateJSONRequestBody(std::move(messages), is_sse_enabled, model_options);
+      CreateJSONRequestBody(std::move(messages), tools,
+                            preferred_tool_name, is_sse_enabled, model_options);
   base::flat_map<std::string, std::string> headers;
   if (!model_options.api_key.empty()) {
     headers.emplace("Authorization",
@@ -176,20 +222,57 @@ void OAIAPIClient::OnQueryDataReceived(
     return;
   }
 
-  if (choices->front().is_dict()) {
-    const base::Value::Dict* delta =
-        choices->front().GetDict().FindDict("delta");
+  // We only support 1 choice
+  const auto& choice = choices->front();
+  if (!choice.is_dict()) {
+    VLOG(2) << "First choice is not a dict.";
+    return;
+  }
+  const base::Value::Dict* delta = choice.GetDict().FindDict("delta");
 
-    if (!delta) {
-      VLOG(2) << "No delta info found in first completion choice.";
-      return;
-    }
+  if (!delta) {
+    VLOG(2) << "No delta info found in first completion choice.";
+    return;
+  }
 
-    const std::string* content = delta->FindString("content");
+  const std::string* content = delta->FindString("content");
+  if (content && !content->empty()) {
+    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(*content));
+    callback.Run(std::move(event));
+  }
 
-    if (content) {
-      auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New(*content));
+  if (const base::Value::List* tool_calls = delta->FindList("tool_calls")) {
+    // https://platform.openai.com/docs/api-reference/chat/create#chat-create-tools
+    for (auto& tool_call_raw : *tool_calls) {
+      if (!tool_call_raw.is_dict()) {
+        continue;
+      }
+      const auto& tool_call = tool_call_raw.GetDict();
+      mojom::ToolUseEventPtr tool_use_event = mojom::ToolUseEvent::New();
+      const base::Value::Dict* function = tool_call.FindDict("function");
+      if (!function) {
+        DVLOG(0) << "No function info found in tool call.";
+        continue;
+      }
+      // Tool call results can be partial and should be added to the previous
+      // event by the event handler.
+      const std::string* id = tool_call.FindString("id");
+      if (id) {
+        tool_use_event->tool_id = *id;
+      }
+
+      const std::string* name = function->FindString("name");
+      if (name) {
+        tool_use_event->tool_name = *name;
+      }
+      const std::string* arguments = function->FindString("arguments");
+      if (arguments) {
+        tool_use_event->input_json = *arguments;
+      }
+
+      auto event = mojom::ConversationEntryEvent::NewToolUseEvent(
+          std::move(tool_use_event));
       callback.Run(std::move(event));
     }
   }

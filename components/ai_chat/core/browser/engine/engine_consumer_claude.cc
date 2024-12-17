@@ -262,6 +262,8 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
     const ConversationHistory& conversation_history,
     const std::string& human_input,
     const std::string& selected_language,
+    const std::vector<mojom::ToolPtr>& tools,
+                              std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {

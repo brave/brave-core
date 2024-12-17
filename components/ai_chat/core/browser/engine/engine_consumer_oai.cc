@@ -96,20 +96,62 @@ base::Value::List BuildMessages(
     message.Set("role", turn->character_type == CharacterType::HUMAN
                             ? "user"
                             : "assistant");
-    const std::string& text = (turn->edits && !turn->edits->empty())
-                                  ? turn->edits->back()->text
-                                  : turn->text;
-    message.Set(
-        "content",
-        turn->selected_text
-            ? base::StrCat(
-                  {base::ReplaceStringPlaceholders(
-                       l10n_util::GetStringUTF8(
-                           IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
-                       {*turn->selected_text}, nullptr),
-                   "\n\n", text})
-            : text);
+    base::Value::List tool_results;
+    // Construct tool calls and responses for each turn
+    if (turn->character_type == CharacterType::ASSISTANT &&
+        turn->events.has_value() && !turn->events->empty()) {
+      base::Value::List tool_calls;
+      for (const auto& event : turn->events.value()) {
+        if (!event->is_tool_use_event()) {
+          continue;
+        }
+
+        // Reconstruct tool call from assistant
+        const auto& tool_event = event->get_tool_use_event();
+        base::Value::Dict tool_call;
+        tool_call.Set("id", tool_event->tool_id);
+        tool_call.Set("type", "function");
+
+        base::Value::Dict function;
+        function.Set("name", tool_event->tool_name);
+        function.Set("arguments", tool_event->input_json);
+        tool_call.Set("function", std::move(function));
+
+        tool_calls.Append(std::move(tool_call));
+
+        // Tool result
+        if (tool_event->output_json.has_value()) {
+          base::Value::Dict tool_result;
+          tool_result.Set("role", "tool");
+          tool_result.Set("tool_call_id", tool_event->tool_id);
+          tool_result.Set("content", tool_event->output_json.value());
+          tool_results.Append(std::move(tool_result));
+        }
+      }
+      message.Set("tool_calls", std::move(tool_calls));
+    } else {
+      const std::string& text = (turn->edits && !turn->edits->empty())
+                                    ? turn->edits->back()->text
+                                    : turn->text;
+      message.Set(
+          "content",
+          turn->selected_text
+              ? base::StrCat(
+                    {base::ReplaceStringPlaceholders(
+                        l10n_util::GetStringUTF8(
+                            IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
+                        {*turn->selected_text}, nullptr),
+                    "\n\n", text})
+              : text);
+    }
+
     messages.Append(std::move(message));
+
+    if (!tool_results.empty()) {
+      for (auto& tool_result : tool_results) {
+        messages.Append(std::move(tool_result));
+      }
+    }
   }
 
   return messages;
@@ -168,7 +210,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     messages.Append(std::move(message));
   }
 
-  api_->PerformRequest(model_options_, std::move(messages),
+  api_->PerformRequest(model_options_, std::move(messages), {}, std::nullopt,
                        std::move(received_callback),
                        std::move(completed_callback));
 }
@@ -205,7 +247,8 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
   }
 
   api_->PerformRequest(
-      model_options_, std::move(messages), base::NullCallback(),
+      model_options_, std::move(messages), {}, std::nullopt,
+      base::NullCallback(),
       base::BindOnce(
           &EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -248,6 +291,8 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
     const ConversationHistory& conversation_history,
     const std::string& human_input,
     const std::string& selected_language,
+    const std::vector<mojom::ToolPtr>& tools,
+    std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -269,8 +314,8 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   base::Value::List messages =
       BuildMessages(model_options_, truncated_page_content, selected_text,
                     is_video, conversation_history);
-  api_->PerformRequest(model_options_, std::move(messages),
-                       std::move(data_received_callback),
+  api_->PerformRequest(model_options_, std::move(messages), tools,
+                       preferred_tool_name, std::move(data_received_callback),
                        std::move(completed_callback));
 }
 

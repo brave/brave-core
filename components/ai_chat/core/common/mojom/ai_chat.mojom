@@ -7,6 +7,7 @@ module ai_chat.mojom;
 
 import "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom";
 import "mojo/public/mojom/base/time.mojom";
+import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
 enum CharacterType {
@@ -151,6 +152,11 @@ enum ActionType {
   EXPAND,
 };
 
+enum ToolType {
+  UNKNOWN,
+  COMPUTER_USE,
+};
+
 struct PageContentRefineEvent {
   bool is_refining = true;
 };
@@ -175,17 +181,40 @@ struct ConversationTitleEvent {
   string title;
 };
 
+struct ToolUseEvent {
+  string tool_name;
+  string tool_id;
+  ToolType? tool_type;
+  string input_json;
+  string? output_json;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
   PageContentRefineEvent page_content_refine_event;
   SearchQueriesEvent search_queries_event;
   SearchStatusEvent search_status_event;
+  ToolUseEvent tool_use_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.
   SelectedLanguageEvent selected_language_event;
   ConversationTitleEvent conversation_title_event;
+};
+
+struct Tool {
+  string name;
+  string description;
+
+  // Usually "function"
+  string type;
+
+  // JSON Schema definition for the input properties to the tool
+  string? input_schema_json;
+  array<string>? required_properties;
+
+  mojo_base.mojom.Value? extra_params;
 };
 
 // Represents a single turn in a conversation.
