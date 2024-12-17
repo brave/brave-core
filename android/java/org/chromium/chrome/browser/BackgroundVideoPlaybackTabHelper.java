@@ -16,7 +16,7 @@ import org.chromium.content_public.browser.WebContents;
 /**
  * @noinspection unused
  */
-@JNINamespace("chrome::android")
+@JNINamespace("youtube_script_injector")
 public class BackgroundVideoPlaybackTabHelper {
     private static final String TAG = "BackgroundVideoPlaybackTabHelper";
 
