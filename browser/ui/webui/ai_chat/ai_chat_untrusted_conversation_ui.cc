@@ -37,7 +37,8 @@
 
 namespace {
 constexpr char kURLLearnMoreBraveSearchLeo[] =
-    "https://support.brave.com/hc/en-us/articles/27586048343309-How-does-Leo-get-current-information";
+    "https://support.brave.com/hc/en-us/articles/"
+    "27586048343309-How-does-Leo-get-current-information";
 
 // Implments the interface to calls from the UI to the browser
 class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
