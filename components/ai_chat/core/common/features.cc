@@ -37,7 +37,7 @@ bool IsAIChatEnabled() {
 
 BASE_FEATURE(kAIChatHistory,
              "AIChatHistory",
-#if BUILDFLAG(IS_IOS)
+#if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
              base::FEATURE_DISABLED_BY_DEFAULT);
 #else
              base::FEATURE_ENABLED_BY_DEFAULT);
