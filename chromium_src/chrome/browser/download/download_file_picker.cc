@@ -30,8 +30,8 @@ std::u16string GetTitle(content::RenderFrameHost* render_frame_host,
   CHECK(caller);
   return brave::GetFileSelectTitle(
       content::WebContents::FromRenderFrameHost(render_frame_host),
-      render_frame_host->GetLastCommittedOrigin(),
-      url::Origin::Create(*caller), brave::FileSelectTitleType::kSave);
+      render_frame_host->GetLastCommittedOrigin(), url::Origin::Create(*caller),
+      brave::FileSelectTitleType::kSave);
 #endif
 }
 
