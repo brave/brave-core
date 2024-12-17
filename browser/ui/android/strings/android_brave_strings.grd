@@ -1708,12 +1708,6 @@ Are you sure you want to do this?
       <message name="IDS_NO_THANK_YOU" desc="Open youtube in brave modal negative action text">
         No, thank you
       </message>
-      <message name="IDS_BRAVE_WORKS_EVERYWHERE" desc="Cross promotional modal title text">
-        Brave works everywhere
-      </message>
-      <message name="IDS_DOWNLOAD_BRAVE" desc="Cross promotional modal text">
-        Download Brave at brave.com on your laptop or tablet for a faster and more private web
-      </message>
       <message name="IDS_PRIVACY_PROTECTION" desc="Title for onboading bottomsheet.">
         Privacy protection
       </message>

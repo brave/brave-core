@@ -33,9 +33,7 @@ public class OnboardingPrefManager {
 
     private static final String PREF_ONBOARDING = "onboarding";
     private static final String PREF_P3A_ONBOARDING = "p3a_onboarding";
-    private static final String PREF_CROSS_PROMO_MODAL = "cross_promo_modal";
     private static final String PREF_ONBOARDING_V2 = "onboarding_v2";
-    private static final String PREF_NEXT_CROSS_PROMO_MODAL_DATE = "next_cross_promo_modal_date";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
     public static final String PREF_BRAVE_STATS = "brave_stats";
     public static final String PREF_BRAVE_STATS_NOTIFICATION = "brave_stats_notification";
@@ -235,33 +233,6 @@ public class OnboardingPrefManager {
             BraveOnboardingNotification.showOnboardingNotification();
             setOnboardingNotificationShown(true);
         }
-    }
-
-    private long getNextCrossPromoModalDate() {
-        return mSharedPreferences.getLong(PREF_NEXT_CROSS_PROMO_MODAL_DATE, 0);
-    }
-
-    public void setNextCrossPromoModalDate(long nextDate) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putLong(PREF_NEXT_CROSS_PROMO_MODAL_DATE, nextDate);
-        sharedPreferencesEditor.apply();
-    }
-
-    public void setCrossPromoModalShown(boolean isShown) {
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_CROSS_PROMO_MODAL, isShown);
-        sharedPreferencesEditor.apply();
-    }
-
-    private boolean hasCrossPromoModalShown() {
-        return mSharedPreferences.getBoolean(PREF_CROSS_PROMO_MODAL, false);
-    }
-
-    public boolean showCrossPromoModal() {
-        boolean shouldShow = !hasCrossPromoModalShown()
-                             && (getNextCrossPromoModalDate() > 0
-                                 && System.currentTimeMillis() > getNextCrossPromoModalDate());
-        return shouldShow;
     }
 
     public static Map<String, SearchEngineEnum> searchEngineMap =
