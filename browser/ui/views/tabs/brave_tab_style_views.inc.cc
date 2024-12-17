@@ -133,6 +133,13 @@ SkPath BraveVerticalTabStyle::GetPath(
         gfx::InsetsF::VH(brave_tabs::kHorizontalTabVerticalSpacing * scale,
                          brave_tabs::kHorizontalTabInset * scale));
 
+    // |aligned_bounds| is tab's bounds(). So, it includes insets also.
+    // Shrink height more if it's overlapped.
+    if (path_type != TabStyle::PathType::kHitTest) {
+      aligned_bounds.Inset(gfx::InsetsF::TLBR(
+          0, 0, GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP) * scale, 0));
+    }
+
     // For hit testing, expand the rectangle so that the visual margins around
     // tabs can be used to select the tab. This will ensure that there is no
     // "dead space" between tabs, or between the tab shape and the tab hover
@@ -250,7 +257,15 @@ gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
   }
 
   // Ignore any stroke widths when determining the horizontal contents insets.
-  return tab_style()->GetContentsInsets();
+  // To make contents vertically align evenly regardless of overlap in non
+  // vertical tab, use it as bottom inset in a tab as it's hidden by
+  // overlapping.
+  const int bottom_inset = ShouldShowVerticalTabs()
+                               ? 0
+                               : GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+
+  return tab_style()->GetContentsInsets() +
+         gfx::Insets::TLBR(0, 0, bottom_inset, 0);
 }
 
 TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
