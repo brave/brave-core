@@ -94,7 +94,7 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
           padding='0px 24px'
         >
           {txCoinType === BraveWallet.CoinType.ETH && showSpeedUpAlert ? (
-            <SpeedUpAlert />
+            <SpeedUpAlert transaction={transaction} />
           ) : (
             <VerticalSpace space='114px' />
           )}
