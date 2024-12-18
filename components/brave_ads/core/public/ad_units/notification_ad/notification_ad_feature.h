@@ -26,7 +26,7 @@ inline constexpr base::FeatureParam<int> kDefaultNotificationAdsPerHour{
     kDefaultBraveRewardsNotificationAdsPerHour};
 
 // Set to 0 to never cap.
-inline constexpr base::FeatureParam<int> kMaximumNotificationAdsPerDay{
+inline constexpr base::FeatureParam<size_t> kMaximumNotificationAdsPerDay{
     &kNotificationAdFeature, "maximum_ads_per_day", 100};
 
 // Set to true to fallback to custom notification ads if native notifications

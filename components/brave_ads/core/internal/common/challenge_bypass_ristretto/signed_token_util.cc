@@ -10,7 +10,7 @@
 namespace brave_ads::cbr {
 
 std::vector<challenge_bypass_ristretto::SignedToken> ToRawSignedTokens(
-    const std::vector<SignedToken>& tokens) {
+    const SignedTokenList& tokens) {
   std::vector<challenge_bypass_ristretto::SignedToken> raw_tokens;
   raw_tokens.reserve(tokens.size());
 

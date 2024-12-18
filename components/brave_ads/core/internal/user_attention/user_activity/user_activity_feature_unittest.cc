@@ -33,12 +33,12 @@ TEST(BraveAdsUserActivityFeatureTest, MaximumUserActivityEvents) {
       kUserActivityFeature, {{"maximum_events", "7"}});
 
   // Act & Assert
-  EXPECT_EQ(7, kMaximumUserActivityEvents.Get());
+  EXPECT_EQ(7U, kMaximumUserActivityEvents.Get());
 }
 
 TEST(BraveAdsUserActivityFeatureTest, DefaultMaximumUserActivityEvents) {
   // Act & Assert
-  EXPECT_EQ(3600, kMaximumUserActivityEvents.Get());
+  EXPECT_EQ(3600U, kMaximumUserActivityEvents.Get());
 }
 
 TEST(BraveAdsUserActivityFeatureTest,
@@ -48,7 +48,7 @@ TEST(BraveAdsUserActivityFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
   // Act & Assert
-  EXPECT_EQ(3600, kMaximumUserActivityEvents.Get());
+  EXPECT_EQ(3600U, kMaximumUserActivityEvents.Get());
 }
 
 TEST(BraveAdsUserActivityFeatureTest, UserActivityTriggers) {

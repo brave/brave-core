@@ -23,8 +23,8 @@ namespace brave_ads::cbr {
 namespace {
 
 std::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
-    const std::vector<BlindedToken>& blinded_tokens,
-    const std::vector<SignedToken>& signed_tokens,
+    const BlindedTokenList& blinded_tokens,
+    const SignedTokenList& signed_tokens,
     const SigningKey& signing_key) {
   if (!signing_key.has_value()) {
     return std::nullopt;
@@ -46,9 +46,9 @@ std::optional<challenge_bypass_ristretto::BatchDLEQProof> Create(
           batch_dleq_proof_base64));
 }
 
-std::vector<UnblindedToken> ToUnblindedTokens(
+UnblindedTokenList ToUnblindedTokens(
     const std::vector<challenge_bypass_ristretto::UnblindedToken>& raw_tokens) {
-  std::vector<UnblindedToken> unblinded_tokens;
+  UnblindedTokenList unblinded_tokens;
   unblinded_tokens.reserve(raw_tokens.size());
 
   for (const auto& raw_token : raw_tokens) {
@@ -70,8 +70,8 @@ BatchDLEQProof::BatchDLEQProof() = default;
 BatchDLEQProof::BatchDLEQProof(const std::string& batch_dleq_proof_base64)
     : batch_dleq_proof_(Create(batch_dleq_proof_base64)) {}
 
-BatchDLEQProof::BatchDLEQProof(const std::vector<BlindedToken>& blinded_tokens,
-                               const std::vector<SignedToken>& signed_tokens,
+BatchDLEQProof::BatchDLEQProof(const BlindedTokenList& blinded_tokens,
+                               const SignedTokenList& signed_tokens,
                                const SigningKey& signing_key)
     : batch_dleq_proof_(Create(blinded_tokens, signed_tokens, signing_key)) {}
 
@@ -102,8 +102,8 @@ std::optional<std::string> BatchDLEQProof::EncodeBase64() const {
   return batch_dleq_proof_->EncodeBase64();
 }
 
-bool BatchDLEQProof::Verify(const std::vector<BlindedToken>& blinded_tokens,
-                            const std::vector<SignedToken>& signed_tokens,
+bool BatchDLEQProof::Verify(const BlindedTokenList& blinded_tokens,
+                            const SignedTokenList& signed_tokens,
                             const PublicKey& public_key) {
   if (!has_value() || !public_key.has_value()) {
     return false;
@@ -120,10 +120,10 @@ bool BatchDLEQProof::Verify(const std::vector<BlindedToken>& blinded_tokens,
       .value_or(false);
 }
 
-std::optional<std::vector<UnblindedToken>> BatchDLEQProof::VerifyAndUnblind(
-    const std::vector<Token>& tokens,
-    const std::vector<BlindedToken>& blinded_tokens,
-    const std::vector<SignedToken>& signed_tokens,
+std::optional<UnblindedTokenList> BatchDLEQProof::VerifyAndUnblind(
+    const TokenList& tokens,
+    const BlindedTokenList& blinded_tokens,
+    const SignedTokenList& signed_tokens,
     const PublicKey& public_key) {
   if (!batch_dleq_proof_ || !has_value() || tokens.empty() ||
       !public_key.has_value()) {

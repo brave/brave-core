@@ -30,14 +30,14 @@ TokenIssuerList BuildTokenIssuers() {
   const TokenIssuerInfo confirmation_token_issuer =
       BuildTokenIssuer(TokenIssuerType::kConfirmations,
                        /*token_issuer_public_keys=*/
-                       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+                       {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
                         {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}});
 
   const TokenIssuerInfo payment_token_issuer =
       BuildTokenIssuer(TokenIssuerType::kPayments,
                        /*token_issuer_public_keys=*/
                        {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+                        {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}});
 
   return {confirmation_token_issuer, payment_token_issuer};
 }
@@ -51,7 +51,7 @@ std::string BuildIssuersUrlResponseBody() {
             "name": "confirmations",
             "publicKeys": [
               {
-                "publicKey": "bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=",
+                "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
                 "associatedValue": ""
               },
               {
@@ -68,7 +68,7 @@ std::string BuildIssuersUrlResponseBody() {
                 "associatedValue": "0.0"
               },
               {
-                "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
+                "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
                 "associatedValue": "0.1"
               }
             ]
@@ -103,11 +103,11 @@ IssuersInfo BuildIssuers(
 IssuersInfo BuildIssuers() {
   return BuildIssuers(/*ping=*/7'200'000,
                       /*confirmation_token_issuer_public_keys=*/
-                      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+                      {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
                        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
                       /*payment_token_issuer_public_keys=*/
                       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+                       {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}});
 }
 
 void BuildAndSetIssuers() {

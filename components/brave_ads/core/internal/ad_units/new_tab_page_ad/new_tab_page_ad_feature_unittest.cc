@@ -33,12 +33,12 @@ TEST(BraveAdsNewTabPageAdFeatureTest, MaximumNewTabPageAdsPerHour) {
       kNewTabPageAdFeature, {{"maximum_ads_per_hour", "42"}});
 
   // Act & Assert
-  EXPECT_EQ(42, kMaximumNewTabPageAdsPerHour.Get());
+  EXPECT_EQ(42U, kMaximumNewTabPageAdsPerHour.Get());
 }
 
 TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumNewTabPageAdsPerHour) {
   // Act & Assert
-  EXPECT_EQ(4, kMaximumNewTabPageAdsPerHour.Get());
+  EXPECT_EQ(4U, kMaximumNewTabPageAdsPerHour.Get());
 }
 
 TEST(BraveAdsNewTabPageAdFeatureTest,
@@ -48,7 +48,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kNewTabPageAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(4, kMaximumNewTabPageAdsPerHour.Get());
+  EXPECT_EQ(4U, kMaximumNewTabPageAdsPerHour.Get());
 }
 
 TEST(BraveAdsNewTabPageAdFeatureTest, MaximumNewTabPageAdsPerDay) {
@@ -58,12 +58,12 @@ TEST(BraveAdsNewTabPageAdFeatureTest, MaximumNewTabPageAdsPerDay) {
       kNewTabPageAdFeature, {{"maximum_ads_per_day", "24"}});
 
   // Act & Assert
-  EXPECT_EQ(24, kMaximumNewTabPageAdsPerDay.Get());
+  EXPECT_EQ(24U, kMaximumNewTabPageAdsPerDay.Get());
 }
 
 TEST(BraveAdsNewTabPageAdFeatureTest, DefaultMaximumNewTabPageAdsPerDay) {
   // Act & Assert
-  EXPECT_EQ(20, kMaximumNewTabPageAdsPerDay.Get());
+  EXPECT_EQ(20U, kMaximumNewTabPageAdsPerDay.Get());
 }
 
 TEST(BraveAdsNewTabPageAdFeatureTest,
@@ -73,7 +73,7 @@ TEST(BraveAdsNewTabPageAdFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kNewTabPageAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(20, kMaximumNewTabPageAdsPerDay.Get());
+  EXPECT_EQ(20U, kMaximumNewTabPageAdsPerDay.Get());
 }
 
 TEST(BraveAdsNewTabPageAdFeatureTest, NewTabPageAdMinimumWaitTime) {

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_DELEGATE_H_
 
+#include <cstddef>
 #include <string>
 
 #include "base/time/time.h"
@@ -15,7 +16,7 @@ namespace brave_ads {
 class RefillConfirmationTokensDelegate {
  public:
   // Invoked to tell the delegate we will refill confirmation tokens.
-  virtual void OnWillRefillConfirmationTokens() {}
+  virtual void OnWillRefillConfirmationTokens(size_t count) {}
 
   // Invoked to tell the delegate we successfully refilled the confirmation
   // tokens.

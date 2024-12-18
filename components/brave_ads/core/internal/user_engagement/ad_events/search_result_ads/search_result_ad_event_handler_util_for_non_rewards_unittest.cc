@@ -77,8 +77,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
           /*should_generate_random_uuids=*/true);
 
   // Act
-  for (int i = 0;
-       i < static_cast<int>(mojom::SearchResultAdEventType::kMaxValue); ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::SearchResultAdEventType::kMaxValue);
+       ++i) {
     const auto mojom_ad_event_type =
         static_cast<mojom::SearchResultAdEventType>(i);
     if (mojom_ad_event_type != mojom::SearchResultAdEventType::kClicked) {
@@ -148,8 +149,9 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
           /*should_generate_random_uuids=*/true);
 
   // Act & Assert
-  for (int i = 0;
-       i < static_cast<int>(mojom::SearchResultAdEventType::kMaxValue); ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::SearchResultAdEventType::kMaxValue);
+       ++i) {
     const auto mojom_ad_event_type =
         static_cast<mojom::SearchResultAdEventType>(i);
     if (mojom_ad_event_type != mojom::SearchResultAdEventType::kClicked) {

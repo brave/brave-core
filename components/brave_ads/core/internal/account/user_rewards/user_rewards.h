@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_REWARDS_USER_REWARDS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_REWARDS_USER_REWARDS_H_
 
+#include <cstddef>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request.h"
@@ -53,7 +54,7 @@ class UserRewards final : public AdsClientNotifierObserver,
       const PaymentTokenList& payment_tokens) override;
 
   // RefillConfirmationTokensDelegate:
-  void OnWillRefillConfirmationTokens() override;
+  void OnWillRefillConfirmationTokens(size_t count) override;
   void OnDidRefillConfirmationTokens() override;
   void OnFailedToRefillConfirmationTokens() override;
   void OnWillRetryRefillingConfirmationTokens(base::Time retry_at) override;

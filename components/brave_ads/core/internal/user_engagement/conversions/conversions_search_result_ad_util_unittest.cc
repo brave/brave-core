@@ -99,8 +99,8 @@ TEST_F(BraveAdsConversionsSearchResultAdUtilTest,
                                   /*should_generate_random_uuids=*/false);
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     const auto confirmation_type = static_cast<mojom::ConfirmationType>(i);
     if (confirmation_type == mojom::ConfirmationType::kViewedImpression ||
         confirmation_type == mojom::ConfirmationType::kClicked) {

@@ -6,11 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NOTIFICATION_ADS_CREATIVE_NOTIFICATION_AD_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NOTIFICATION_ADS_CREATIVE_NOTIFICATION_AD_TEST_UTIL_H_
 
+#include <cstddef>
+
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 
 namespace brave_ads::test {
 
-CreativeNotificationAdList BuildCreativeNotificationAds(int count);
+CreativeNotificationAdList BuildCreativeNotificationAds(size_t count);
 CreativeNotificationAdInfo BuildCreativeNotificationAd(
     bool should_generate_random_uuids);
 

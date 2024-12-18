@@ -60,13 +60,13 @@ TEST(BraveAdsTextClassificationFeatureTest,
       kTextClassificationFeature, {{"page_probabilities_history_size", "3"}});
 
   // Act & Assert
-  EXPECT_EQ(3, kTextClassificationPageProbabilitiesHistorySize.Get());
+  EXPECT_EQ(3U, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
      DefaultTextClassificationPageProbabilitiesHistorySize) {
   // Act & Assert
-  EXPECT_EQ(5, kTextClassificationPageProbabilitiesHistorySize.Get());
+  EXPECT_EQ(5U, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 
 TEST(BraveAdsTextClassificationFeatureTest,
@@ -76,7 +76,7 @@ TEST(BraveAdsTextClassificationFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
   // Act & Assert
-  EXPECT_EQ(5, kTextClassificationPageProbabilitiesHistorySize.Get());
+  EXPECT_EQ(5U, kTextClassificationPageProbabilitiesHistorySize.Get());
 }
 
 }  // namespace brave_ads

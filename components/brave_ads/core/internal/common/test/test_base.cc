@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
-#include <iostream>
 #include <memory>
 
 #include "base/check.h"

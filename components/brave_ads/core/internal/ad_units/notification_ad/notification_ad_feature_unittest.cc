@@ -58,12 +58,12 @@ TEST(BraveAdsNotificationAdFeatureTest, MaximumNotificationAdsPerDay) {
       kNotificationAdFeature, {{"maximum_ads_per_day", "24"}});
 
   // Act & Assert
-  EXPECT_EQ(24, kMaximumNotificationAdsPerDay.Get());
+  EXPECT_EQ(24U, kMaximumNotificationAdsPerDay.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest, DefaultMaximumNotificationAdsPerDay) {
   // Act & Assert
-  EXPECT_EQ(100, kMaximumNotificationAdsPerDay.Get());
+  EXPECT_EQ(100U, kMaximumNotificationAdsPerDay.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest,
@@ -73,7 +73,7 @@ TEST(BraveAdsNotificationAdFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kNotificationAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(100, kMaximumNotificationAdsPerDay.Get());
+  EXPECT_EQ(100U, kMaximumNotificationAdsPerDay.Get());
 }
 
 TEST(BraveAdsNotificationAdFeatureTest,

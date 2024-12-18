@@ -80,7 +80,8 @@ void RefillConfirmationTokens::Refill() {
 
   is_refilling_ = true;
 
-  NotifyWillRefillConfirmationTokens();
+  NotifyWillRefillConfirmationTokens(
+      /*count=*/CalculateAmountOfConfirmationTokensToRefill());
 
   GenerateTokens();
 
@@ -330,9 +331,10 @@ void RefillConfirmationTokens::Reset() {
   is_refilling_ = false;
 }
 
-void RefillConfirmationTokens::NotifyWillRefillConfirmationTokens() const {
+void RefillConfirmationTokens::NotifyWillRefillConfirmationTokens(
+    size_t count) const {
   if (delegate_) {
-    delegate_->OnWillRefillConfirmationTokens();
+    delegate_->OnWillRefillConfirmationTokens(count);
   }
 }
 

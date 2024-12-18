@@ -27,10 +27,10 @@ std::string BuildFetchPaymentTokenUrlResponseBody() {
               "modifiedAt" : "2020-04-20T10:27:11.736Z",
               "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
               "paymentToken" : {
-                "publicKey" : "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
-                "batchProof" : "FWTZ5fOYITYlMWMYaxg254QWs+Pmd0dHzoor0mzIlQ8tWHagc7jm7UVJykqIo+ZSM+iK29mPuWJxPHpG4HypBw==",
+                "publicKey" : "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
+                "batchProof" : "6bAH3z5sAoLdtM5tDrSJkhcYi4lp3GY+jh/ubSxTnQCgfkmKve/7s1bcIzvjsLvvPDuWABRZyBml6IzeG86ICg==",
                 "signedTokens" : [
-                  "DHe4S37Cn1WaTbCC+ytiNTB2s5H0vcLzVcRgzRoO3lU="
+                  "Ktsii4pOKOjfmqziUsdlV3lJETaGXG0rksRujn1i1Qs="
                 ]
               }
             })";

@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_PAYMENT_TOKENS_PAYMENT_TOKENS_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_PAYMENT_TOKENS_PAYMENT_TOKENS_TEST_UTIL_H_
 
+#include <cstddef>
+
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
@@ -16,13 +18,13 @@ class PaymentTokens;
 namespace test {
 
 PaymentTokens& GetPaymentTokens();
-PaymentTokenList SetPaymentTokens(int count);
+PaymentTokenList SetPaymentTokens(size_t count);
 
 PaymentTokenInfo BuildPaymentToken(
     mojom::ConfirmationType mojom_confirmation_type,
     mojom::AdType mojom_ad_type);
 PaymentTokenInfo BuildPaymentToken();
-PaymentTokenList BuildPaymentTokens(int count);
+PaymentTokenList BuildPaymentTokens(size_t count);
 
 }  // namespace test
 

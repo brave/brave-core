@@ -11,13 +11,11 @@
 namespace brave_ads {
 
 bool ShouldRefillConfirmationTokens() {
-  return ConfirmationTokenCount() <
-         static_cast<size_t>(kMinConfirmationTokens.Get());
+  return ConfirmationTokenCount() < kMinConfirmationTokens.Get();
 }
 
 size_t CalculateAmountOfConfirmationTokensToRefill() {
-  return static_cast<size_t>(kMaxConfirmationTokens.Get()) -
-         ConfirmationTokenCount();
+  return kMaxConfirmationTokens.Get() - ConfirmationTokenCount();
 }
 
 }  // namespace brave_ads

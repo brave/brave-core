@@ -28,8 +28,9 @@ PaymentTokenInfo BuildPaymentToken(const std::string& payment_token_base64) {
   payment_token.unblinded_token = cbr::UnblindedToken(payment_token_base64);
   CHECK(payment_token.unblinded_token.has_value());
 
+  // TODO(tmancey): Decouple to cbr::test::GetPublicKey.
   payment_token.public_key =
-      cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
+      cbr::PublicKey("OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=");
   CHECK(payment_token.public_key.has_value());
 
   payment_token.confirmation_type = mojom::ConfirmationType::kViewedImpression;
@@ -45,8 +46,8 @@ PaymentTokens& GetPaymentTokens() {
   return ConfirmationStateManager::GetInstance().GetPaymentTokens();
 }
 
-PaymentTokenList SetPaymentTokens(int count) {
-  CHECK_GT(count, 0);
+PaymentTokenList SetPaymentTokens(size_t count) {
+  CHECK_GT(count, 0U);
 
   PaymentTokenList payment_tokens = BuildPaymentTokens(count);
   GetPaymentTokens().SetTokens(payment_tokens);
@@ -72,9 +73,13 @@ PaymentTokenInfo BuildPaymentToken() {
   return payment_tokens.front();
 }
 
-PaymentTokenList BuildPaymentTokens(int count) {
-  CHECK_GT(count, 0);
+PaymentTokenList BuildPaymentTokens(size_t count) {
+  CHECK_GT(count, 0U);
+  CHECK_LE(count, 50U);
 
+  // TODO(tmancey): Decouple and Generate new tokens using
+  // challenge_bypass_ristretto_test_util.cc. The public key will need adding to
+  // the payment token issuers.
   const std::vector<std::string> payment_tokens_base64 = {
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)",
       R"(hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K)",
@@ -91,7 +96,7 @@ PaymentTokenList BuildPaymentTokens(int count) {
 
   PaymentTokenList payment_tokens;
 
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     const std::string& payment_token_base64 =
         payment_tokens_base64.at(i % modulo);
     const PaymentTokenInfo payment_token =

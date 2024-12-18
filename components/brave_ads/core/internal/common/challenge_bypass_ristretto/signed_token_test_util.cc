@@ -18,11 +18,11 @@ SignedToken GetInvalidSignedToken() {
   return SignedToken(kInvalidBase64);
 }
 
-std::vector<SignedToken> GetSignedTokens() {
+SignedTokenList GetSignedTokens() {
   return {GetSignedToken()};
 }
 
-std::vector<SignedToken> GetInvalidSignedTokens() {
+SignedTokenList GetInvalidSignedTokens() {
   return {GetInvalidSignedToken()};
 }
 

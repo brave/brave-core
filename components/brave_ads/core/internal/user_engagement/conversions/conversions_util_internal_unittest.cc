@@ -26,14 +26,14 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::AdType::kMaxValue); ++i) {
+  for (size_t i = 0; i < static_cast<size_t>(mojom::AdType::kMaxValue); ++i) {
     const auto mojom_ad_type = static_cast<mojom::AdType>(i);
 
     const AdInfo ad = test::BuildAd(mojom_ad_type,
                                     /*should_generate_random_uuids=*/false);
 
-    for (int j = 0; j < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-         ++j) {
+    for (size_t j = 0;
+         j < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++j) {
       const auto confirmation_type = static_cast<mojom::ConfirmationType>(j);
 
       bool expected_can_convert_ad_event;
@@ -59,14 +59,14 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
 
 TEST_F(BraveAdsConversionsUtilInternalTest, CanConvertAdEventForRewardsUser) {
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::AdType::kMaxValue); ++i) {
+  for (size_t i = 0; i < static_cast<size_t>(mojom::AdType::kMaxValue); ++i) {
     const auto mojom_ad_type = static_cast<mojom::AdType>(i);
 
     const AdInfo ad = test::BuildAd(mojom_ad_type,
                                     /*should_generate_random_uuids=*/false);
 
-    for (int j = 0; j < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-         ++j) {
+    for (size_t j = 0;
+         j < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++j) {
       const auto confirmation_type = static_cast<mojom::ConfirmationType>(j);
 
       // Only viewed and clicked ad events are allowed to be converted.

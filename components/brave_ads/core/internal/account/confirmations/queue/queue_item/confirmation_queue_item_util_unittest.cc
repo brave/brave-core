@@ -24,9 +24,9 @@
 
 namespace brave_ads {
 
-class BraveAdsConfirmationQueueItemDelayTest : public test::TestBase {};
+class BraveAdsConfirmationQueueItemUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsConfirmationQueueItemDelayTest,
+TEST_F(BraveAdsConfirmationQueueItemUtilTest,
        CalculateDelayBeforeProcessingConfirmationQueueItem) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
@@ -48,7 +48,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
   EXPECT_EQ(base::Hours(1), delay_before_processing_confirmation_queue_item);
 }
 
-TEST_F(BraveAdsConfirmationQueueItemDelayTest,
+TEST_F(BraveAdsConfirmationQueueItemUtilTest,
        CalculateDelayBeforeProcessingPastDueConfirmationQueueItem) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
@@ -71,7 +71,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
             delay_before_processing_confirmation_queue_item);
 }
 
-TEST_F(BraveAdsConfirmationQueueItemDelayTest,
+TEST_F(BraveAdsConfirmationQueueItemUtilTest,
        CalculateMinimumDelayBeforeProcessingConfirmationQueueItem) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
@@ -95,7 +95,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
             delay_before_processing_confirmation_queue_item);
 }
 
-TEST_F(BraveAdsConfirmationQueueItemDelayTest,
+TEST_F(BraveAdsConfirmationQueueItemUtilTest,
        RebuildConfirmationWithoutDynamicUserData) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
@@ -131,7 +131,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
                            expected_reward, expected_user_data));
 }
 
-TEST_F(BraveAdsConfirmationQueueItemDelayTest,
+TEST_F(BraveAdsConfirmationQueueItemUtilTest,
        RebuildConfirmationDynamicUserData) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
@@ -163,6 +163,17 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
             "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
             "systemTimestamp": "1996-07-08T10:00:00.000Z"
           })");
+
+  EXPECT_EQ(rebuilt_confirmation.reward->blinded_token,
+            expected_reward.blinded_token);
+  EXPECT_EQ(rebuilt_confirmation.reward->unblinded_token,
+            expected_reward.unblinded_token);
+  EXPECT_EQ(rebuilt_confirmation.reward->token, expected_reward.token);
+  EXPECT_EQ(rebuilt_confirmation.reward->credential_base64url,
+            expected_reward.credential_base64url);
+  EXPECT_EQ(rebuilt_confirmation.reward->public_key,
+            expected_reward.public_key);
+  EXPECT_EQ(rebuilt_confirmation.reward->signature, expected_reward.signature);
 
   EXPECT_THAT(
       rebuilt_confirmation,

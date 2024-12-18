@@ -18,11 +18,11 @@ BlindedToken GetInvalidBlindedToken() {
   return BlindedToken(kInvalidBase64);
 }
 
-std::vector<BlindedToken> GetBlindedTokens() {
+BlindedTokenList GetBlindedTokens() {
   return {GetBlindedToken()};
 }
 
-std::vector<BlindedToken> GetInvalidBlindedTokens() {
+BlindedTokenList GetInvalidBlindedTokens() {
   return {GetInvalidBlindedToken()};
 }
 

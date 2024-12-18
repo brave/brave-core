@@ -8,14 +8,13 @@
 
 #include <vector>
 
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 #include "brave/components/challenge_bypass_ristretto/token.h"
 
 namespace brave_ads::cbr {
 
-class Token;
-
 std::vector<challenge_bypass_ristretto::Token> ToRawTokens(
-    const std::vector<Token>& tokens);
+    const TokenList& tokens);
 
 }  // namespace brave_ads::cbr
 

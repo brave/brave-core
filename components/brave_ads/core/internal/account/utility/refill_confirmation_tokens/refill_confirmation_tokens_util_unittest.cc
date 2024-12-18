@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_util.h"
 
+#include <cstddef>
+
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -18,7 +20,7 @@ class BraveAdsRefillConfirmationTokensUtilTest : public test::TestBase {};
 TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
        ShouldRefillConfirmationTokens) {
   // Arrange
-  const int count = kMinConfirmationTokens.Get() - 1;
+  const size_t count = kMinConfirmationTokens.Get() - 1;
   test::RefillConfirmationTokens(count);
 
   // Act & Assert
@@ -28,7 +30,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
 TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
        ShouldNotRefillConfirmationTokens) {
   // Arrange
-  const int count = kMinConfirmationTokens.Get();
+  const size_t count = kMinConfirmationTokens.Get();
   test::RefillConfirmationTokens(count);
 
   // Act & Assert
@@ -42,7 +44,7 @@ TEST_F(BraveAdsRefillConfirmationTokensUtilTest,
 
   // Act & Assert
   EXPECT_EQ(kMaxConfirmationTokens.Get() - 10,
-            static_cast<int>(CalculateAmountOfConfirmationTokensToRefill()));
+            CalculateAmountOfConfirmationTokensToRefill());
 }
 
 }  // namespace brave_ads
