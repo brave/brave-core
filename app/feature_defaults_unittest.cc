@@ -194,8 +194,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &net::features::kTopLevelTpcdOriginTrial,
       &net::features::kTpcdMetadataGrants,
       &net::features::kWaitForFirstPartySetsInit,
-      &network::features::kFledgePst,
-      &network::features::kPrivateStateTokens,
       &network_time::kNetworkTimeServiceQuerying,
       &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
       &ntp_features::kCustomizeChromeWallpaperSearch,

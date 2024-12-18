@@ -33,6 +33,8 @@ public class BraveSiteSettingsDelegate extends ChromeSiteSettingsDelegate {
         switch (type) {
             case SiteSettingsCategory.Type.STORAGE_ACCESS:
                 return false;
+            case SiteSettingsCategory.Type.ANTI_ABUSE:
+                return false;
             default:
                 return super.isCategoryVisible(type);
         }
