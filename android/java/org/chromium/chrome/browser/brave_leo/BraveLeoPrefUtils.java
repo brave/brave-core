@@ -73,6 +73,24 @@ public class BraveLeoPrefUtils {
         }
     }
 
+    public static boolean getIsHistoryEnabled() {
+        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        if (profileToUse == null) {
+            Log.e(TAG, "BraveLeoPrefUtils.getIsHistoryEnabled profile is null");
+            return false;
+        }
+        return UserPrefs.get(profileToUse).getBoolean(BravePref.BRAVE_CHAT_STORAGE_ENABLED);
+    }
+
+    public static void setIsHistoryEnabled(boolean isEnabled) {
+        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        if (profileToUse == null) {
+            Log.e(TAG, "BraveLeoPrefUtils.getIsHistoryEnabled profile is null");
+            return;
+        }
+        UserPrefs.get(profileToUse).setBoolean(BravePref.BRAVE_CHAT_STORAGE_ENABLED, isEnabled);
+    }
+
     private static void createFetchOrder(Profile profileToUse) {
         BraveLeoMojomHelper.getInstance(profileToUse)
                 .createOrderId(

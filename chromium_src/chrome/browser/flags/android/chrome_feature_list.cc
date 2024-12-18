@@ -23,11 +23,12 @@
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
-#define BRAVE_AI_CHAT_FLAG &ai_chat::features::kAIChat,
+#define BRAVE_AI_CHAT_FLAGS \
+  &ai_chat::features::kAIChat, &ai_chat::features::kAIChatHistory,
 
 // clang-format off
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode,            \
-    BRAVE_AI_CHAT_FLAG                                                  \
+    BRAVE_AI_CHAT_FLAGS                                                 \
     &brave_rewards::features::kBraveRewards,                            \
     &brave_search_conversion::features::kOmniboxBanner,                 \
     &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,           \
@@ -54,7 +55,7 @@
 
 #include "src/chrome/browser/flags/android/chrome_feature_list.cc"
 #undef kForceWebContentsDarkMode
-#undef BRAVE_AI_CHAT_FLAG
+#undef BRAVE_AI_CHAT_FLAGS
 
 namespace chrome {
 namespace android {
