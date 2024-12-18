@@ -739,9 +739,6 @@ void ZCashRpc::OnGetAddressTxResponse(
     UrlLoadersList::iterator it,
     StreamHandlersList::iterator handler_it,
     base::expected<bool, std::string> result) {
-  auto current_loader = std::move(*it);
-  auto current_handler = std::move(*handler_it);
-
   url_loaders_list_.erase(it);
   stream_handlers_list_.erase(handler_it);
 
