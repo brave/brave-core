@@ -275,4 +275,6 @@
     <color name="schemes_primary">#c1c4ff</color>
     <color name="schemes_surface_container_highest">#303034</color>
     <color name="text_interactive">#7c91ff</color>
+
+    <color name="open_yt_dialog_bg">#000000</color>
 </resources>

@@ -12,10 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
-
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.util.TabUtils;
 
@@ -37,14 +34,6 @@ public class OpenYtInBraveDialogFragment extends BraveDialogFragment
 
         TextView mIgnoreButton = view.findViewById(R.id.btn_ignore);
         mIgnoreButton.setOnClickListener(this);
-
-        LottieAnimationView mAnimatedView = view.findViewById(R.id.animation_view);
-        String animationFile =
-                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                        ? "moving_ads_dark.json"
-                        : "moving_ads_light.json";
-        mAnimatedView.setAnimation(animationFile);
-        mAnimatedView.playAnimation();
     }
 
     @Override
