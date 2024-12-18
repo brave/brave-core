@@ -10,5 +10,9 @@ public struct AIChatConstants {
   static let braveLeoLearnMore = URL(
     string: "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo"
   )!
+  static let braveLeoSearchLearnMore = URL(
+    string:
+      "https://support.brave.com/hc/en-us/articles/27586048343309-How-does-Leo-get-current-information"
+  )!
   static let braveSearchURL = URL(string: "https://search.brave.com/search")!
 }
