@@ -2,6 +2,7 @@ include_rules = [
   "+brave/components/constants",
   "+brave/components/sync/test",
   "+content/public/test",
+  "+google_apis/gaia/gaia_id.h",
   "+services/network/public",
   "+services/network/test",
 ]
