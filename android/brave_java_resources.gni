@@ -796,6 +796,7 @@ brave_java_resources = [
   "java/res/layout/brave_custom_tabs_toolbar.xml",
   "java/res/layout/brave_dialog_preference.xml",
   "java/res/layout/brave_exit_confirmation.xml",
+  "java/res/layout/brave_leo_clear_history_dialog.xml",
   "java/res/layout/brave_leo_reset_dialog.xml",
   "java/res/layout/brave_news_card_menu.xml",
   "java/res/layout/brave_news_load_new_content.xml",

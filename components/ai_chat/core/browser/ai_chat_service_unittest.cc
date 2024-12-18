@@ -631,7 +631,7 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
   ExpectVisibleConversationsSize(FROM_HERE, 3);
 
   // Disable storage
-  prefs_.SetBoolean(prefs::kStorageEnabled, false);
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
   // Wait for OnConversationListChanged which indicates data has been removed
   task_environment_.RunUntilIdle();
 
@@ -648,7 +648,7 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
   ExpectVisibleConversationsSize(FROM_HERE, 0);
 
   // Re-enable storage preference
-  prefs_.SetBoolean(prefs::kStorageEnabled, true);
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
   // Conversations are no longer in persistant storage
   ExpectVisibleConversationsSize(FROM_HERE, 0);
 }

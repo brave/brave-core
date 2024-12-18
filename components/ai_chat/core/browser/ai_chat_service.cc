@@ -115,7 +115,7 @@ AIChatService::AIChatService(
       base::BindRepeating(&AIChatService::OnUserOptedIn,
                           weak_ptr_factory_.GetWeakPtr()));
   pref_change_registrar_.Add(
-      prefs::kStorageEnabled,
+      prefs::kBraveChatStorageEnabled,
       base::BindRepeating(&AIChatService::MaybeInitStorage,
                           weak_ptr_factory_.GetWeakPtr()));
   pref_change_registrar_.Add(
@@ -382,7 +382,7 @@ void AIChatService::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor,
     return;
   }
   // Pref might have changed since we started this process
-  if (!profile_prefs_->GetBoolean(prefs::kStorageEnabled)) {
+  if (!profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled)) {
     return;
   }
   ai_chat_db_ = base::SequenceBound<AIChatDatabase>(
@@ -559,7 +559,7 @@ void AIChatService::MarkAgreementAccepted() {
 }
 
 void AIChatService::EnableStoragePref() {
-  profile_prefs_->SetBoolean(prefs::kStorageEnabled, true);
+  profile_prefs_->SetBoolean(prefs::kBraveChatStorageEnabled, true);
 }
 
 void AIChatService::DismissStorageNotice() {
@@ -686,7 +686,8 @@ mojom::ServiceStatePtr AIChatService::BuildState() {
       !last_accepted_disclaimer.is_null() &&
       last_accepted_disclaimer < base::Time::Now() - base::Days(1);
 
-  bool is_storage_enabled = profile_prefs_->GetBoolean(prefs::kStorageEnabled);
+  bool is_storage_enabled =
+      profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled);
 
   mojom::ServiceStatePtr state = mojom::ServiceState::New();
   state->has_accepted_agreement = is_user_opted_in;
@@ -705,7 +706,7 @@ void AIChatService::OnStateChanged() {
 
 bool AIChatService::IsAIChatHistoryEnabled() {
   return (features::IsAIChatHistoryEnabled() &&
-          profile_prefs_->GetBoolean(prefs::kStorageEnabled));
+          profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled));
 }
 
 void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
