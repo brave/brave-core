@@ -21,6 +21,7 @@ const PERMISSIONS_ADVANCED_REMOVE_IDS = [
 ]
 const CONTENT_ADVANCED_REMOVE_IDS = [
   ContentSettingsTypes.ADS,
+  ContentSettingsTypes.ANTI_ABUSE,
   ContentSettingsTypes.PERFORMANCE,
 ]
 
