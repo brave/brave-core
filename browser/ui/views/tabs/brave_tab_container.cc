@@ -350,7 +350,9 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
   auto active_tab_handle =
       tab_strip_model->GetTabHandleAt(tab_strip_model->active_index());
   if (!is_vertical_tab && active_tab_handle != tile.first &&
-      active_tab_handle != tile.second) {
+      active_tab_handle != tile.second &&
+      !GetTabAtModelIndex(tab1_index)->IsMouseHovered() &&
+      !GetTabAtModelIndex(tab2_index)->IsMouseHovered()) {
     constexpr int kSplitViewSeparatorHeight = 24;
     auto separator_top = bounding_rects.top_center();
     CHECK_GT(bounding_rects.height(), kSplitViewSeparatorHeight);
