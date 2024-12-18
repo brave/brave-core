@@ -33,6 +33,7 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_SHOW_STRICT_FINGERPRINTING_MODE =
             "BraveShowStrictFingerprintingMode";
     public static final String BRAVE_DAY_ZERO_EXPERIMENT = "BraveDayZeroExperiment";
+    public static final String BRAVE_NEW_ANDROID_ONBOARDING = "NewAndroidOnboarding";
     public static final String BRAVE_FALLBACK_DOH_PROVIDER = "BraveFallbackDoHProvider";
     public static final String BRAVE_BLOCK_ALL_COOKIES_TOGGLE = "BlockAllCookiesToggle";
     public static final String BRAVE_SHIELDS_ELEMENT_PICKER = "BraveShieldsElementPicker";
