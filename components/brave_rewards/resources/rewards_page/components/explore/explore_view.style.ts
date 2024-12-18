@@ -38,6 +38,10 @@ export const style = scoped.css`
       display: flex;
       flex-direction: column;
       gap: 8px;
+
+      &:empty {
+        display: none;
+      }
     }
   }
 
@@ -70,13 +74,28 @@ export const style = scoped.css`
     &:last-child {
       border-bottom: none;
     }
+  }
+
+  .thumbnail {
+    flex: 0 0 56px;
+    height: 56px;
+    width: 56px;
+    overflow: hidden;
+    border-radius: 12px;
+    border: solid 1px ${color.divider.subtle};
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     img {
-      flex: 0 0 56px;
-      height: 56px;
-      width: 56px;
-      border-radius: 12px;
-      border: solid 1px ${color.divider.subtle};
+      width: 100%;
+      height: auto;
+    }
+
+    .favicon {
+      width: 24px;
+      height: auto;
+      border-radius: 4px;
     }
   }
 
