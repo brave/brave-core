@@ -16,7 +16,7 @@ declare_args() {
 if (is_official_build) {
   assert(brave_sync_endpoint != "")
 } else if (brave_sync_endpoint == "") {
-  brave_sync_endpoint = "https://sync-v2.bravesoftware.com/v2"
+  brave_sync_endpoint = "https://sync-v2.brave.software/v2"
 }
 
 buildflag_header("buildflags") {
