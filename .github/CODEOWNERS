@@ -16,6 +16,9 @@ browser/ui/BUILD.gn @bridiver
 # BraveBrowserProcess public interface
 browser/brave_browser_process.h @bridiver
 
+# New WebUI should use RegisterChromeWebUIConfigs
+browser/ui/webui/brave_web_uicontroller_factory.cc @bridiver
+
 # BraveComponent is deprecated
 components/brave_component_updater/browser/brave_component.h @bridiver @antonok-edm
 components/brave_component_updater/browser/local_data_files_observer.h @bridiver @antonok-edm
