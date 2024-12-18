@@ -11,6 +11,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist
 import androidx.media3.exoplayer.hls.playlist.HlsMultivariantPlaylist
 import androidx.media3.exoplayer.hls.playlist.HlsPlaylistParser
@@ -31,13 +32,13 @@ object HLSParsingUtil {
         localManifestFilePath: String
     ): String {
         var contentManifestUrl = ""
-        val newBaseUrl = Uri.parse(baseUrl).buildUpon().clearQuery().build().toString()
+        val newBaseUrl = baseUrl.toUri().buildUpon().clearQuery().build().toString()
         try {
             val hlsParser =
-                context.contentResolver?.openInputStream(Uri.parse(localManifestFilePath))
+                context.contentResolver?.openInputStream(localManifestFilePath.toUri())
                     ?.let {
                         HlsPlaylistParser().parse(
-                            Uri.parse(newBaseUrl),
+                            newBaseUrl.toUri(),
                             it
                         )
                     }
@@ -57,7 +58,7 @@ object HLSParsingUtil {
     ): Queue<HlsMediaPlaylist.Segment> {
         val contentSegments: Queue<HlsMediaPlaylist.Segment> = LinkedList()
         val hlsParser = HlsPlaylistParser().parse(
-            Uri.parse(baseUrl), FileInputStream(
+            baseUrl.toUri(), FileInputStream(
                 File(contentManifestFilePath)
             )
         )

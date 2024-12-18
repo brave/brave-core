@@ -7,8 +7,8 @@
 
 package org.chromium.chrome.browser.playlist.util
 
-import android.net.Uri
 import android.os.Bundle
+import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import org.chromium.chrome.browser.playlist.model.PlaylistItemModel
@@ -37,16 +37,16 @@ object MediaItemUtil {
                 .setExtras(bundle)
                 .setTitle(playlistName)
                 .setArtist(playlistItemModel.name)
-                .setArtworkUri(Uri.parse(playlistItemModel.thumbnailPath))
+                .setArtworkUri(playlistItemModel.thumbnailPath.toUri())
                 .build()
 
         return MediaItem.Builder()
             .setMediaId(playlistItemModel.id)
             .setMediaMetadata(metadata)
             .setRequestMetadata(
-                MediaItem.RequestMetadata.Builder().setMediaUri(Uri.parse(mediaPath)).build()
+                MediaItem.RequestMetadata.Builder().setMediaUri(mediaPath.toUri()).build()
             )
-            .setUri(Uri.parse(mediaPath))
+            .setUri(mediaPath.toUri())
             .build()
     }
 }

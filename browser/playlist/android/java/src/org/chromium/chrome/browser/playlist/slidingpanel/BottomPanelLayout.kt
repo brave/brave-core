@@ -26,12 +26,16 @@ import android.view.ViewGroup
 import android.view.accessibility.AccessibilityEvent
 import android.view.animation.Interpolator
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.withSave
 import androidx.core.view.ViewCompat
-import org.chromium.chrome.browser.playlist.R
+import androidx.core.view.isGone
+import androidx.core.view.isEmpty
+import androidx.core.view.isInvisible
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import org.chromium.chrome.browser.playlist.R
 
 class BottomPanelLayout @JvmOverloads constructor(
     context: Context,
@@ -89,20 +93,24 @@ class BottomPanelLayout @JvmOverloads constructor(
     init {
         val scrollerInterpolator: Interpolator? = null
         if (attrs != null) {
-            val defAttrs = context.obtainStyledAttributes(attrs, DEFAULT_ATTRS)
-            val gravity = defAttrs.getInt(0, Gravity.NO_GRAVITY)
-            setGravity(gravity)
-            defAttrs.recycle()
-            val ta = context.obtainStyledAttributes(attrs, R.styleable.BottomPanelLayout)
-            mPanelHeight =
-                ta.getDimensionPixelSize(R.styleable.BottomPanelLayout_panelHeight, -1)
-            mScrollableViewResId =
-                ta.getResourceId(R.styleable.BottomPanelLayout_scrollableView, -1)
-            mSlideState = PanelState.entries.toTypedArray()[ta.getInt(
-                R.styleable.BottomPanelLayout_initialState,
-                DEFAULT_SLIDE_STATE.ordinal
-            )]
-            ta.recycle()
+            context.obtainStyledAttributes(attrs, DEFAULT_ATTRS).apply {
+                try {
+                    setGravity(getInt(0, Gravity.NO_GRAVITY))
+                } finally {
+                    recycle()
+                }
+            }
+            context.obtainStyledAttributes(attrs, R.styleable.BottomPanelLayout).apply {
+                try {
+                    mPanelHeight = getDimensionPixelSize(R.styleable.BottomPanelLayout_panelHeight, -1)
+                    mScrollableViewResId = getResourceId(R.styleable.BottomPanelLayout_scrollableView, -1)
+                    mSlideState = PanelState.entries.getOrNull(
+                        getInt(R.styleable.BottomPanelLayout_initialState, DEFAULT_SLIDE_STATE.ordinal)
+                    ) ?: DEFAULT_SLIDE_STATE
+                } finally {
+                    recycle()
+                }
+            }
         }
         val density = context.resources.displayMetrics.density
         if (mPanelHeight == -1) {
@@ -250,7 +258,7 @@ class BottomPanelLayout @JvmOverloads constructor(
     }
 
     fun updateObscuredViewVisibility() {
-        if (childCount == 0) {
+        if (isEmpty()) {
             return
         }
         val leftBound = paddingLeft
@@ -288,7 +296,7 @@ class BottomPanelLayout @JvmOverloads constructor(
         val childCount = childCount
         while (i < childCount) {
             val child = getChildAt(i)
-            if (child.visibility == INVISIBLE) {
+            if (child.isInvisible) {
                 child.visibility = VISIBLE
             }
             i++
@@ -333,7 +341,7 @@ class BottomPanelLayout @JvmOverloads constructor(
             val lp = child.layoutParams as LayoutParams
 
             // We always measure the sliding panel in order to know it's height (needed for show panel)
-            if (child.visibility == GONE && i == 0) {
+            if (child.isGone && i == 0) {
                 continue
             }
             var height = layoutHeight
@@ -405,7 +413,7 @@ class BottomPanelLayout @JvmOverloads constructor(
             val lp = child.layoutParams as LayoutParams
 
             // Always layout the sliding view on the first layout
-            if (child.visibility == GONE && (i == 0 || mFirstLayout)) {
+            if (child.isGone && (i == 0 || mFirstLayout)) {
                 continue
             }
             val childHeight = child.measuredHeight
@@ -683,36 +691,36 @@ class BottomPanelLayout @JvmOverloads constructor(
     }
 
     override fun drawChild(canvas: Canvas, child: View, drawingTime: Long): Boolean {
-        val result: Boolean
-        val save = canvas.save()
-        if (mSlideableView != null && mSlideableView !== child) { // if main view
-            // Clip against the slider; no sense drawing what will immediately be covered,
-            // Unless the panel is set to overlay content
-            canvas.getClipBounds(mTmpRect)
-            if (!isOverlayed) {
-                mSlideableView?.let {
-                    if (mIsSlidingUp) {
-                        mTmpRect.bottom = min(mTmpRect.bottom, it.top)
-                    } else {
-                        mTmpRect.top = max(mTmpRect.top, it.bottom)
+        var result: Boolean = false
+        canvas.withSave {
+            if (mSlideableView != null && mSlideableView !== child) { // if main view
+                // Clip against the slider; no sense drawing what will immediately be covered,
+                // Unless the panel is set to overlay content
+                canvas.getClipBounds(mTmpRect)
+                if (!isOverlayed) {
+                    mSlideableView?.let {
+                        if (mIsSlidingUp) {
+                            mTmpRect.bottom = min(mTmpRect.bottom, it.top)
+                        } else {
+                            mTmpRect.top = max(mTmpRect.top, it.bottom)
+                        }
                     }
                 }
+                if (isClipPanel) {
+                    canvas.clipRect(mTmpRect)
+                }
+                result = super.drawChild(canvas, child, drawingTime)
+                if (mCoveredFadeColor != 0 && mSlideOffset > 0) {
+                    val baseAlpha = mCoveredFadeColor and -0x1000000 ushr 24
+                    val imag = (baseAlpha * mSlideOffset).toInt()
+                    val color = imag shl 24 or (mCoveredFadeColor and 0xffffff)
+                    mCoveredFadePaint.color = color
+                    canvas.drawRect(mTmpRect, mCoveredFadePaint)
+                }
+            } else {
+                result = super.drawChild(canvas, child, drawingTime)
             }
-            if (isClipPanel) {
-                canvas.clipRect(mTmpRect)
-            }
-            result = super.drawChild(canvas, child, drawingTime)
-            if (mCoveredFadeColor != 0 && mSlideOffset > 0) {
-                val baseAlpha = mCoveredFadeColor and -0x1000000 ushr 24
-                val imag = (baseAlpha * mSlideOffset).toInt()
-                val color = imag shl 24 or (mCoveredFadeColor and 0xffffff)
-                mCoveredFadePaint.color = color
-                canvas.drawRect(mTmpRect, mCoveredFadePaint)
-            }
-        } else {
-            result = super.drawChild(canvas, child, drawingTime)
         }
-        canvas.restoreToCount(save)
         return result
     }
 
@@ -875,9 +883,13 @@ class BottomPanelLayout @JvmOverloads constructor(
         constructor(source: ViewGroup.LayoutParams?) : super(source)
         constructor(source: MarginLayoutParams?) : super(source)
         constructor(c: Context, attrs: AttributeSet?) : super(c, attrs) {
-            val ta = c.obtainStyledAttributes(attrs, ATTRS)
-            weight = ta.getFloat(0, 0f)
-            ta.recycle()
+            c.obtainStyledAttributes(attrs, ATTRS).apply {
+                try {
+                    weight = getFloat(0, 0f)
+                } finally {
+                    recycle()
+                }
+            }
         }
 
         companion object {

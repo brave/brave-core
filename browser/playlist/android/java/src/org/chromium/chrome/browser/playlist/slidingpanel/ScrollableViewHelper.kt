@@ -8,12 +8,13 @@
 package org.chromium.chrome.browser.playlist.slidingpanel
 
 import android.view.View
+import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.RecyclerView
 
 class ScrollableViewHelper {
     fun getScrollableViewScrollPosition(scrollableView: View?, isSlidingUp: Boolean): Int {
         if (scrollableView == null) return 0
-        return if (scrollableView is RecyclerView && scrollableView.childCount > 0) {
+        return if (scrollableView is RecyclerView && scrollableView.isNotEmpty()) {
             val rv: RecyclerView = scrollableView
             val lm: RecyclerView.LayoutManager? = rv.layoutManager
             if (rv.adapter == null) return 0

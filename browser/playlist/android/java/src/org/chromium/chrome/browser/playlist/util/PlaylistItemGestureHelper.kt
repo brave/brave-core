@@ -16,17 +16,18 @@ import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper.DOWN
 import androidx.recyclerview.widget.ItemTouchHelper.END
-import androidx.recyclerview.widget.ItemTouchHelper.START
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
+import androidx.recyclerview.widget.ItemTouchHelper.START
 import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
+import androidx.core.graphics.drawable.toDrawable
+import kotlin.math.min
 import org.chromium.chrome.browser.playlist.R
 import org.chromium.chrome.browser.playlist.adapter.recyclerview.AbstractRecyclerViewAdapter
 import org.chromium.chrome.browser.playlist.listener.ItemInteractionListener
-import kotlin.math.min
-
 
 class PlaylistItemGestureHelper<VH : AbstractRecyclerViewAdapter.AbstractViewHolder<M>, M : Any>(
     context: Context,
@@ -60,8 +61,8 @@ class PlaylistItemGestureHelper<VH : AbstractRecyclerViewAdapter.AbstractViewHol
         deleteIcon?.setTint(context.getColor(R.color.playlist_progress_bar_tint))
         shareIcon = AppCompatResources.getDrawable(context, R.drawable.ic_share)
         shareIcon?.setTint(context.getColor(R.color.playlist_progress_bar_tint))
-        deleteIconBg = ColorDrawable(context.getColor(R.color.swipe_delete))
-        shareIconBg = ColorDrawable(context.getColor(R.color.upload_option_bg))
+        deleteIconBg = ContextCompat.getColor(context, R.color.swipe_delete).toDrawable()
+        shareIconBg = ContextCompat.getColor(context, R.color.upload_option_bg).toDrawable()
         gestureDetector = GestureDetector(context, gestureListener)
         recyclerView.addOnItemTouchListener(this)
     }
