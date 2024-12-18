@@ -16,6 +16,10 @@ function sanitizeURL(url: string) {
   }
 }
 
+function faviconURL(item: UICardItem) {
+  return `chrome://favicon2/?size=64&pageUrl=${encodeURIComponent(item.url)}`
+}
+
 function thumbnailURL(url: string) {
   url = sanitizeURL(url)
   try {
@@ -34,9 +38,16 @@ interface Props {
 
 export function CardItemView(props: Props) {
   const { item } = props
+  const thumbnail = thumbnailURL(item.thumbnail)
   return (
     <NewTabLink href={sanitizeURL(item.url)}>
-      <img src={thumbnailURL(item.thumbnail)} />
+      <span className='thumbnail'>
+        {
+          thumbnail
+            ? <img src={thumbnail} />
+            : <img className='favicon' src={faviconURL(item)} />
+        }
+      </span>
       <span className='item-info'>
         <span className='title'>{item.title}</span>
         <span className='description'>{item.description}</span>
