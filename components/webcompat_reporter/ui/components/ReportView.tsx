@@ -11,7 +11,6 @@ import {
   ModalTitle,
   TextSection,
   InfoText,
-  NonInteractiveURL,
   DisclaimerText,
   SideBySideButtons,
   PaddedButton,
@@ -23,6 +22,8 @@ import {
   InputLabel,
   ScreenshotLink
 } from './basic'
+
+import ShortenedUrl from './ShortenedUrl'
 
 // Localization data
 import { getLocale } from '../../../common/locale'
@@ -129,7 +130,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
         </InfoText>
         {!isIneligiblePage &&
           <>
-            <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
+            <ShortenedUrl url={siteUrl}/>
             <FieldCtr>
               <TextArea
                 placeholder={getLocale('reportDetails')}

@@ -6,11 +6,12 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_UI_H_
 
-#include <memory>
-#include <string>
+#include <optional>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_multi_source_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom-forward.h"
@@ -19,6 +20,8 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
+#include "ui/aura/window_observer.h"
+#include "ui/gfx/geometry/rect.h"
 
 namespace content {
 class RenderWidgetHostView;
@@ -48,6 +51,8 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
 
+  void OnWindowResize(const gfx::Rect& old_bounds, const gfx::Rect& new_bounds);
+
  private:
   void InitAdditionalParameters(Profile* profile);
 
@@ -61,6 +66,7 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
   void HandleClearScreenshot(const base::Value::List& args);
 
   void HandleSubmitReport(const base::Value::List& args);
+  void HandleInit(const base::Value::List& args);
 
   raw_ptr<WebcompatReporterService> reporter_service_ = nullptr;
   raw_ptr<PrefService> pref_service_ = nullptr;
@@ -72,12 +78,24 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
   base::WeakPtrFactory<WebcompatReporterDOMHandler> weak_ptr_factory_{this};
 };
 
-class WebcompatReporterUI : public ConstrainedWebDialogUI {
+class WebcompatReporterUI : public ConstrainedWebDialogUI,
+                            public aura::WindowObserver {
  public:
   explicit WebcompatReporterUI(content::WebUI* web_ui);
   WebcompatReporterUI(const WebcompatReporterUI&) = delete;
   WebcompatReporterUI& operator=(const WebcompatReporterUI&) = delete;
   ~WebcompatReporterUI() override;
+
+  // aura::WindowObserver
+  void OnWindowBoundsChanged(aura::Window* window,
+                             const gfx::Rect& old_bounds,
+                             const gfx::Rect& new_bounds,
+                             ui::PropertyChangeReason reason) override;
+
+ private:
+  raw_ptr<WebcompatReporterDOMHandler> webcompat_reporter_handler_{nullptr};
+  base::ScopedMultiSourceObservation<aura::Window, aura::WindowObserver>
+      observed_windows_{this};
 };
 
 }  // namespace webcompat_reporter

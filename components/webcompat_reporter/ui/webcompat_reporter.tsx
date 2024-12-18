@@ -18,7 +18,11 @@ import App from './containers/App'
 // Utils
 import store from './store'
 import * as webcompatReporterActions from './actions/webcompatreporter_actions'
-import { getDialogArgs } from './browser_proxy'
+import {
+  getDialogArgs,
+  setViewPortChangeListener,
+  ViewPortSizeChangedObject,
+} from './browser_proxy'
 
 let actions: any
 
@@ -43,8 +47,17 @@ function loadDialogArgs () {
   getActions().setDialogArgs(dialogArgs)
 }
 
+function onViewPortSizeChanged(data: ViewPortSizeChangedObject) {
+  const root = document.getElementById('root')
+  if (root) {
+    root.style.maxHeight = `${data.height}px`
+  }
+}
+
 function initialize () {
   loadDialogArgs()
+
+  setViewPortChangeListener(onViewPortSizeChanged)
 
   new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
   .then((themeType: chrome.braveTheme.ThemeType) => {

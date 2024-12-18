@@ -2,7 +2,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { sendWithPromise } from 'chrome://resources/js/cr.js';
+import {
+  addWebUiListener,
+  sendWithPromise
+} from 'chrome://resources/js/cr.js';
 
 export function submitReport(reportDetails: { [key: string]: any }) {
   chrome.send('webcompat_reporter.submitReport', [
@@ -28,4 +31,14 @@ export function clearScreenshot() {
 
 export function getCapturedScreenshot(): Promise<string> {
   return sendWithPromise('webcompat_reporter.getCapturedScreenshot')
+}
+
+export interface ViewPortSizeChangedObject {
+  height: number
+}
+
+export function setViewPortChangeListener(
+  calback: (data: ViewPortSizeChangedObject) => void) {
+  sendWithPromise('webcompat_reporter.init').then(calback)
+  addWebUiListener('onViewPortSizeChanged', calback)
 }
