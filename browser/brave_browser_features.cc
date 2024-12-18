@@ -46,6 +46,13 @@ BASE_FEATURE(kBraveDayZeroExperiment,
              "BraveDayZeroExperiment",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+#if BUILDFLAG(IS_ANDROID)
+// Enable new onboarding on Android
+BASE_FEATURE(kNewAndroidOnboarding,
+             "NewAndroidOnboarding",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif  // BUILDFLAG(IS_ANDROID)
+
 // The variant of the "day zero" experiment. i.e. A, B, C, D, etc.
 const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant{
     &kBraveDayZeroExperiment,
