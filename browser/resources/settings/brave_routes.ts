@@ -100,6 +100,12 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       console.error(
         '[Settings] could not find expected route site_settings_ads')
     }
+    if (r.SITE_SETTINGS_AUTO_VERIFY) {
+      delete r.SITE_SETTINGS_AUTO_VERIFY
+    } else {
+      console.error(
+        '[Settings] could not find expected route site_settings_auto_verify')
+    }
   } else if (!isGuest) {
     console.error('[Settings] Routes: could not find SITE_SETTINGS page')
   }
