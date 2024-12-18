@@ -408,6 +408,13 @@
           "Enables opening Leo AI Chat from Brave Search",                    \
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(ai_chat::features::kOpenAIChatFromBraveSearch),  \
+      },                                                                      \
+      {                                                                       \
+          "brave-ai-chat-sidebar-page-context",                               \
+          "Brave AI Chat Page Context",                                       \
+          "Use page context to improve AI chat responses in the sidebar",     \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                            \
+          FEATURE_VALUE_TYPE(ai_chat::features::kSidebarUsePageContext),      \
       })
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
