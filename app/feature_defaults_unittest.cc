@@ -153,7 +153,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kPwaNavigationCapturing,
       &features::kReportPakFileIntegrity,
 #endif
-      &features::kResourceTimingForCancelledNavigationInFrame,
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,
       &features::kSupportSearchSuggestionForPrerender2,
