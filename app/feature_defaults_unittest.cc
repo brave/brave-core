@@ -147,7 +147,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kKAnonymityService,
       &features::kKAnonymityServiceOHTTPRequests,
       &features::kNewTabPageTriggerForPrerender2,
-      &features::kNotificationTriggers,
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
