@@ -8,7 +8,7 @@ import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 
-android_library("playlist_java") {
+android_library("java") {
   sources = [
     "java/src/org/chromium/chrome/browser/playlist/PlaylistItemDiffCallback.kt",
     "java/src/org/chromium/chrome/browser/playlist/PlaylistViewModel.kt",
@@ -73,7 +73,7 @@ android_library("playlist_java") {
     "java/src/org/chromium/chrome/browser/playlist/view/bottomsheet/PlaylistOptionsBottomSheet.kt",
   ]
   deps = [
-    ":playlist_resources",
+    ":java_resources",
     "//brave/third_party/android_deps:androidx_media3_media3_exoplayer_hls_java",
     "//brave/third_party/android_deps:androidx_room_room_runtime_java",
     "//brave/third_party/android_deps:com_github_bumptech_glide_java",
@@ -107,7 +107,7 @@ android_library("playlist_java") {
   resources_package = "org.chromium.chrome.browser.playlist"
 }
 
-android_resources("playlist_resources") {
+android_resources("java_resources") {
   sources = [
     "java/res/drawable/above_shadow.xml",
     "java/res/drawable/below_shadow.xml",
