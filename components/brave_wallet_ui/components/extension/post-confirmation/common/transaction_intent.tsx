@@ -59,7 +59,7 @@ interface Props {
 export const TransactionIntent = (props: Props) => {
   const { transaction } = props
 
-  // Computed
+  // Computed & Queries
   const isBridge = isBridgeTransaction(transaction)
   const isSwap = isSwapTransaction(transaction)
   const isSwapOrBridge = isBridge || isSwap
@@ -72,8 +72,13 @@ export const TransactionIntent = (props: Props) => {
   const isSOLSwapOrBridge =
     txCoinType === BraveWallet.CoinType.SOL && isSwapOrBridge
 
-  // Queries
   const { account: txAccount } = useAccountQuery(transaction.fromAccountId)
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
+
+  const transactionsToken = findTransactionToken(
+    transaction,
+    combinedTokensList
+  )
 
   // Custom Hooks
   const transactionNetwork = useTransactionsNetwork(transaction)
@@ -82,6 +87,7 @@ export const TransactionIntent = (props: Props) => {
   const { normalizedTransferredValue } =
     getFormattedTransactionTransferredValue({
       tx: transaction,
+      token: transactionsToken,
       txAccount,
       txNetwork: transactionNetwork
     })
@@ -107,8 +113,6 @@ export const TransactionIntent = (props: Props) => {
 
   const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
     useSwapTransactionParser(transaction)
-
-  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
   const formattedSellAmount = sellToken
     ? sellAmountWei
@@ -143,11 +147,6 @@ export const TransactionIntent = (props: Props) => {
       ? swapOrBridgeRecipient
       : txToAddress,
     accountInfosRegistry
-  )
-
-  const transactionsToken = findTransactionToken(
-    transaction,
-    combinedTokensList
   )
 
   const formattedSendAmount = React.useMemo(() => {
