@@ -73,7 +73,6 @@ import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.widget.Toast;
-import org.chromium.url.GURL;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
@@ -236,152 +235,25 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
 
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         params.bottomMargin = (int) mActivity.getResources().getDimension(R.dimen.youtube_features_layout_margin_bottom);
-        params.leftMargin = (int) mActivity.getResources().getDimension(R.dimen.youtube_features_layout_margin_left);
-        params.gravity = Gravity.BOTTOM | Gravity.START;
+        params.rightMargin = (int) mActivity.getResources().getDimension(R.dimen.youtube_features_layout_margin_right);
+        params.gravity = Gravity.BOTTOM | Gravity.END;
 
         mYouTubeLayout.setLayoutParams(params);
-        mYouTubeLayout.setVisibility(View.GONE);
         viewGroup.addView(mYouTubeLayout);
 
         mTabModelSelectorSupplier.addObserver(selector -> new TabModelSelectorTabObserver(selector) {
-            @Override
-            public void onInitialized(Tab tab, String appId) {
-                Log.d("SIMONE", "onInitialized");
-            }
-
             @Override
             public void onShown(Tab tab, int type) {
                 if (mIsInOverviewModeSupplier.get()) {
                     return;
                 }
-                Log.d("SIMONE", "onShown");
-                if (!tab.isHidden()) {
-                    mYouTubeLayout.setVisibility(TabUtils.isYouTubeVideo(tab) ? View.VISIBLE : View.GONE);
-                }
-            }
 
-            @Override
-            public void onHidden(Tab tab, @TabHidingType int reason) {
-                Log.d("SIMONE", "onHidden");
-            }
-
-            @Override
-            public void onDestroyed(Tab tab) {
-                Log.d("SIMONE", "onDestroyed");
-            }
-
-            @Override
-            public void onContentChanged(Tab tab) {
-                Log.d("SIMONE", "onContentChanged");
-            }
-
-            @Override
-            public void onLoadUrl(Tab tab, LoadUrlParams params, Tab.LoadUrlResult loadUrlResult) {
-                Log.d("SIMONE", "onLoadUrl");
-            }
-
-            @Override
-            public void onPageLoadFinished(Tab tab, GURL url) {
-                Log.d("SIMONE", "onPageLoadFinished");
-            }
-
-            @Override
-            public void onPageLoadFailed(Tab tab, @NetError int errorCode) {
-                Log.d("SIMONE", "onPageLoadFailed");
-            }
-
-            @Override
-            public void onRestoreStarted(Tab tab) {
-                Log.d("SIMONE", "onRestoreStarted");
-            }
-
-            @Override
-            public void onRestoreFailed(Tab tab) {
-                Log.d("SIMONE", "onRestoreFailed");
-            }
-
-            @Override
-            public void onUrlUpdated(Tab tab) {
-                Log.d("SIMONE", "onUrlUpdated");
-            }
-
-            @Override
-            public void onCrash(Tab tab) {
-                Log.d("SIMONE", "onCrash");
-            }
-
-            @Override
-            public void webContentsWillSwap(Tab tab) {
-                Log.d("SIMONE", "webContentsWillSwap");
-            }
-
-            @Override
-            public void onWebContentsSwapped(Tab tab, boolean didStartLoad, boolean didFinishLoad) {
-                Log.d("SIMONE", "onWebContentsSwapped");
-            }
-
-            @Override
-            public void onContextMenuShown(Tab tab) {
-                Log.d("SIMONE", "onContextMenuShown");
-            }
-
-            @Override
-            public void onCloseContents(Tab tab) {
-                Log.d("SIMONE", "onCloseContents");
-            }
-
-            @Override
-            public void onLoadStarted(Tab tab, boolean toDifferentDocument) {
-                Log.d("SIMONE", "onLoadStarted");
-            }
-
-            @Override
-            public void onLoadStopped(Tab tab, boolean toDifferentDocument) {
-                Log.d("SIMONE", "onLoadStopped");
-            }
-
-            @Override
-            public void onLoadProgressChanged(Tab tab, float progress) {
-                Log.d("SIMONE", "onLoadProgressChanged");
-            }
-
-            @Override
-            public void onUpdateUrl(Tab tab, GURL url) {
-                Log.d("SIMONE", "onUpdateUrl");
-            }
-
-            @Override
-            public void onDidStartNavigationInPrimaryMainFrame(
-                    Tab tab, NavigationHandle navigationHandle) {
-                Log.d("SIMONE", "onDidStartNavigationInPrimaryMainFrame");
-            }
-
-            @Override
-            public void onDidRedirectNavigation(Tab tab, NavigationHandle navigationHandle) {
-                Log.d("SIMONE", "onDidRedirectNavigation");
-            }
-
-            @Override
-            public void onDidFinishNavigationEnd() {
-                Log.d("SIMONE", "onDidFinishNavigationEnd");
-            }
-
-            @Override
-            public void onClosingStateChanged(Tab tab, boolean closing) {
-                Log.d("SIMONE", "onClosingStateChanged");
-            }
-
-            @Override
-            public void onPageLoadStarted(Tab tab, GURL url) {
-                Log.d("SIMONE", "onPageLoadStarted");
+                mYouTubeLayout.setVisibility(tab);
             }
 
             @Override
             public void onDidFinishNavigationInPrimaryMainFrame(Tab tab, NavigationHandle navigation) {
-                Log.d("SIMONE", "VISIBILITY_CHANGE onDidFinishNavigationInPrimaryMainFrame isHidden: " + tab.isHidden());
-                if (!tab.isHidden()) {
-                    mYouTubeLayout.setVisibility(TabUtils.isYouTubeVideo(tab) ? View.VISIBLE : View.GONE);
-                }
+                mYouTubeLayout.setVisibility(tab);
             }
         });
     }
@@ -405,27 +277,13 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @Override
             public void onStartedShowing(int layoutType) {
                 LayoutStateProvider.LayoutStateObserver.super.onStartedShowing(layoutType);
-                Log.d("SIMONE", "LAYOUT VISIBILITY_CHANGE onStartedShowing layoutType: " + layoutType);
                 showYouTubeExtraFeatures(true, layoutType, mTabModelSelectorSupplier.get());
-            }
-
-            @Override
-            public void onFinishedShowing(int layoutType) {
-                LayoutStateProvider.LayoutStateObserver.super.onFinishedShowing(layoutType);
-                Log.d("SIMONE", "LAYOUT onFinishedShowing layoutType: " + layoutType);
             }
 
             @Override
             public void onStartedHiding(int layoutType) {
                 LayoutStateProvider.LayoutStateObserver.super.onStartedHiding(layoutType);
-                Log.d("SIMONE", "LAYOUT VISIBILITY_CHANGE onStartedHiding layoutType: " + layoutType);
                 showYouTubeExtraFeatures(false, layoutType, mTabModelSelectorSupplier.get());
-            }
-
-            @Override
-            public void onFinishedHiding(int layoutType) {
-                LayoutStateProvider.LayoutStateObserver.super.onFinishedHiding(layoutType);
-                Log.d("SIMONE", "LAYOUT onFinishedHiding layoutType: " + layoutType);
             }
         });
 
@@ -438,14 +296,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             return;
         }
 
-        if (!TabUtils.isYouTubeVideo(tabModelSelector.getCurrentTab())) {
-            // Toast.makeText(mBraveToolbarLayout.getContext(), "Hide!", Toast.LENGTH_SHORT).show();
-            mYouTubeLayout.setVisibility(View.GONE);
-            return;
-        }
-
-        mYouTubeLayout.setVisibility(show ? View.VISIBLE : View.GONE);
-        // Toast.makeText(mBraveToolbarLayout.getContext(), show ? "Show YT layout" : "Hide YT layout", Toast.LENGTH_SHORT).show();
+        mYouTubeLayout.setVisibility(tabModelSelector.getCurrentTab(), show);
     }
-
 }

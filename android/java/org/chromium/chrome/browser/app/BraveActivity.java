@@ -63,6 +63,10 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
+import org.chromium.chrome.browser.compositor.layouts.Layout;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
+import org.chromium.chrome.browser.layouts.LayoutManager;
+import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.youtube.YouTubeFeaturesLayout;
 import org.jni_zero.JNINamespace;
@@ -526,7 +530,7 @@ public abstract class BraveActivity extends ChromeActivity
         YouTubeFeaturesLayout youtubeFeaturesLayout = findViewById(R.id.youtube_features_layout);
         if (youtubeFeaturesLayout != null && youtubeFeaturesLayout.getLayoutParams() instanceof FrameLayout.LayoutParams params) {
             params.bottomMargin = (int) getResources().getDimension(R.dimen.youtube_features_layout_margin_bottom);
-            params.leftMargin = (int) getResources().getDimension(R.dimen.youtube_features_layout_margin_left);
+            params.rightMargin = (int) getResources().getDimension(R.dimen.youtube_features_layout_margin_right);
         }
 
         Tab currentTab = getActivityTab();
@@ -534,13 +538,6 @@ public abstract class BraveActivity extends ChromeActivity
                 && !isInPictureInPictureMode()
                 && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
-        }
-    }
-
-    public void showYouTubeFeaturesLayout(final boolean show) {
-        YouTubeFeaturesLayout youtubeFeaturesLayout = findViewById(R.id.youtube_features_layout);
-        if (youtubeFeaturesLayout != null) {
-            youtubeFeaturesLayout.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -2731,5 +2728,31 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void onKeyboardClosed() {
         removeQuickActionSearchEnginesView();
+    }
+
+    public void showYouTubeFeaturesLayout(final boolean show) {
+        YouTubeFeaturesLayout youtubeFeaturesLayout = findViewById(R.id.youtube_features_layout);
+        if (youtubeFeaturesLayout != null) {
+            youtubeFeaturesLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+
+        Tab currentTab = getActivityTab();
+        if (TabUtils.isYouTubeVideo(currentTab) &&
+                !getFullscreenManager().getPersistentFullscreenMode() &&
+                !isInPictureInPictureMode()) {
+
+            LayoutManagerImpl layoutManager = (LayoutManagerImpl) getLayoutManagerSupplier().get();
+            int activeLayoutType = LayoutType.NONE;
+            if (layoutManager != null && layoutManager.getActiveLayout() != null) {
+                activeLayoutType = layoutManager.getActiveLayout().getLayoutType();
+            }
+
+            showYouTubeFeaturesLayout(activeLayoutType == LayoutType.BROWSING);
+        }
     }
 }
