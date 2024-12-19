@@ -431,7 +431,7 @@ void ConversationHandler::SetArchiveContent(std::string text_content,
       is_video);
   associated_content_delegate_ = archive_content->GetWeakPtr();
   archive_content_ = std::move(archive_content);
-  should_send_page_contents_ = features::IsSidebarUsePageContextEnabled();
+  should_send_page_contents_ = features::IsPageContextEnabledInitially();
 }
 
 void ConversationHandler::SetAssociatedContentDelegate(
@@ -465,7 +465,7 @@ void ConversationHandler::SetAssociatedContentDelegate(
   // This class should only be provided with a delegate when
   // it is allowed to use it (e.g. not internal WebUI content).
   // The user can toggle this via the UI.
-  should_send_page_contents_ = features::IsSidebarUsePageContextEnabled();
+  should_send_page_contents_ = features::IsPageContextEnabledInitially();
 
   MaybeSeedOrClearSuggestions();
   MaybeFetchOrClearContentStagedConversation();

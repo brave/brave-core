@@ -410,11 +410,13 @@
           FEATURE_VALUE_TYPE(ai_chat::features::kOpenAIChatFromBraveSearch),  \
       },                                                                      \
       {                                                                       \
-          "brave-ai-chat-sidebar-page-context",                               \
+          "brave-ai-chat-page-context",                                       \
           "Brave AI Chat Page Context",                                       \
-          "Use page context to improve AI chat responses in the sidebar",     \
+          "For AI Chat Conversations which are associated with web content, " \
+          "allow the toggle for sending page content to be set to enabled "   \
+          "when the conversation is created.",                                \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                            \
-          FEATURE_VALUE_TYPE(ai_chat::features::kSidebarUsePageContext),      \
+          FEATURE_VALUE_TYPE(ai_chat::features::kPageContextEnabledInitially),\
       })
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)

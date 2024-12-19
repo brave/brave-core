@@ -60,8 +60,8 @@ BASE_DECLARE_FEATURE(kOpenAIChatFromBraveSearch);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsOpenAIChatFromBraveSearchEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-BASE_DECLARE_FEATURE(kSidebarUsePageContext);
-COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsSidebarUsePageContextEnabled();
+BASE_DECLARE_FEATURE(kPageContextEnabledInitially);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsPageContextEnabledInitially();
 
 }  // namespace ai_chat::features
 

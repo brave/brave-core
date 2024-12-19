@@ -90,12 +90,12 @@ bool IsOpenAIChatFromBraveSearchEnabled() {
   return base::FeatureList::IsEnabled(features::kOpenAIChatFromBraveSearch);
 }
 
-BASE_FEATURE(kSidebarUsePageContext,
-             "SidebarUsePageContext",
+BASE_FEATURE(kPageContextEnabledInitially,
+             "PageContextEnabledInitially",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-bool IsSidebarUsePageContextEnabled() {
-  return base::FeatureList::IsEnabled(features::kSidebarUsePageContext);
+bool IsPageContextEnabledInitially() {
+  return base::FeatureList::IsEnabled(features::kPageContextEnabledInitially);
 }
 
 }  // namespace ai_chat::features
