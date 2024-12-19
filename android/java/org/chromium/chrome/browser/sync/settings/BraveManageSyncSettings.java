@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.password_manager.settings.ReauthenticationMan
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.ui.widget.Toast;
 
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -50,6 +51,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
 
     public static final String ARC_FEATURE = "org.chromium.arc";
     public static final String ARC_DEVICE_MANAGEMENT_FEATURE = "org.chromium.arc.device_management";
+    private static Optional<Boolean> sIsChromeOSForTesting = Optional.empty();
 
     private void verboseIfEnabled(String message) {
         if (!mVerboseSyncPasswordsPref) {
@@ -116,7 +118,15 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
         }
     }
 
-    private static boolean isRunningOnChromeOS() {
+    @VisibleForTesting
+    public static void setIsRunningOnChromeOSForTesting(Boolean isRunningOnChromeOS) {
+        sIsChromeOSForTesting = Optional.of(isRunningOnChromeOS);
+    }
+
+    private static Boolean isRunningOnChromeOS() {
+        if (sIsChromeOSForTesting.isPresent()) {
+            return sIsChromeOSForTesting.get();
+        }
         PackageManager pm = ContextUtils.getApplicationContext().getPackageManager();
         return pm.hasSystemFeature(ARC_FEATURE)
                 || pm.hasSystemFeature(ARC_DEVICE_MANAGEMENT_FEATURE);
