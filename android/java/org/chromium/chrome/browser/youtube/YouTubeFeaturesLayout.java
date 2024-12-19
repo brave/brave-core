@@ -10,9 +10,12 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.ViewUtils;
 
 /**
@@ -34,14 +37,23 @@ public class YouTubeFeaturesLayout extends LinearLayout {
    private static final float PADDING_DP = 8f;
    private static final float ELEVATION_DP = 2f;
 
+   private static final int AUTO_HIDE_MS = (int) (2.5 * 1000);
+   private static final int SHOW_DELAY_MS = 350;
+
    @NonNull
    private final Callback mCallback;
+   @NonNull
+   private final Runnable mShowRunnable;
+   @NonNull
+   private final Runnable mHideRunnable;
 
    public YouTubeFeaturesLayout(@NonNull final Context context, @NonNull final Callback callback) {
       super(context);
       mCallback = callback;
       setId(R.id.youtube_features_layout);
       setOrientation(HORIZONTAL);
+      // Initial visibility set as GONE by default.
+      super.setVisibility(View.GONE);
       setBackgroundResource(R.drawable.youtube_features_background);
       final int elevationPx = ViewUtils.dpToPx(context, ELEVATION_DP);
       setElevation(elevationPx);
@@ -69,6 +81,9 @@ public class YouTubeFeaturesLayout extends LinearLayout {
 
       addView(fullscreenButton);
       addView(pictureInPictureButton);
+
+      mShowRunnable = () -> super.setVisibility(View.VISIBLE);
+      mHideRunnable = () -> super.setVisibility(View.GONE);
    }
 
    private void initLayoutButton(@NonNull final ImageButton imageButton,
@@ -86,5 +101,37 @@ public class YouTubeFeaturesLayout extends LinearLayout {
       final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f);
       params.setMargins(0, 0, 0, 0);
       imageButton.setLayoutParams(params);
+   }
+
+   @Override
+   public void setVisibility(final int visibility) {
+      if (visibility == View.VISIBLE) {
+         // Remove any pending callbacks to hide the layout.
+         removeCallbacks(mHideRunnable);
+
+         // Execute the runnable after 2.5 seconds.
+         postDelayed(mHideRunnable, AUTO_HIDE_MS);
+         // Add a small delay before showing the layout.
+         postDelayed(mShowRunnable, SHOW_DELAY_MS);
+      } else {
+         // Remove any pending callback to hide and show the layout.
+         removeCallbacks(mHideRunnable);
+         removeCallbacks(mShowRunnable);
+         super.setVisibility(visibility);
+      }
+   }
+
+   public void setVisibility(@NonNull final Tab tab) {
+      if (!tab.isHidden()) {
+         setVisibility(TabUtils.isYouTubeVideo(tab) ? View.VISIBLE : View.GONE);
+      }
+   }
+
+   public void setVisibility(@Nullable final Tab tab, final boolean show) {
+      if (!TabUtils.isYouTubeVideo(tab)) {
+         setVisibility(View.GONE);
+         return;
+      }
+      setVisibility(show ? View.VISIBLE : View.GONE);
    }
 }
