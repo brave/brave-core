@@ -9,7 +9,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "ui/base/models/simple_menu_model.h"
+#include "ui/menus/simple_menu_model.h"
 
 BraveSystemMenuModelBuilder::BraveSystemMenuModelBuilder(
     ui::AcceleratorProvider* provider,
