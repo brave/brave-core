@@ -217,7 +217,8 @@ SkPath BraveVerticalTabStyle::GetPath(
     }
   }
 
-  if (!is_pinned && IsTabTiled(tab()) && path_type != TabStyle::PathType::kHitTest) {
+  if (!is_pinned && IsTabTiled(tab()) &&
+      path_type != TabStyle::PathType::kHitTest) {
     if (ShouldShowVerticalTabs()) {
       tab()->controller()->IsFirstTabInTile(tab())
           ? tab_top += scale* kPaddingForVerticalTabInTile
@@ -225,13 +226,16 @@ SkPath BraveVerticalTabStyle::GetPath(
       tab_left += scale * kPaddingForVerticalTabInTile;
       tab_right -= scale * kPaddingForVerticalTabInTile;
     } else {
-      // Give 2 dip more padding when tab is in tile.
-      constexpr auto kPaddingForHorizontalTab = 2;
-      tab_top += scale * kPaddingForHorizontalTab;
-      tab_bottom -= scale * kPaddingForHorizontalTab;
+      constexpr int kTotalVerticalPaddingForHorizontalTab = 6;
+      constexpr int kAdditionalVerticalPadding =
+          kTotalVerticalPaddingForHorizontalTab - brave_tabs::kHorizontalTabGap;
+      tab_top += scale * kAdditionalVerticalPadding;
+      tab_bottom -= scale * kAdditionalVerticalPadding;
+
+      constexpr int kAdditionalHorizontalPadding = 4;
       tab()->controller()->IsFirstTabInTile(tab())
-          ? tab_left += scale* kPaddingForHorizontalTab
-          : tab_right -= scale * kPaddingForHorizontalTab;
+          ? tab_left += scale* kAdditionalHorizontalPadding
+          : tab_right -= scale * kAdditionalHorizontalPadding;
     }
   }
 

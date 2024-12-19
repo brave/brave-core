@@ -15,6 +15,7 @@
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
@@ -309,10 +310,8 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
   // implementations in compound_tab_container.cc implementation. Thus, we need
   // to add pinned tab count.
   auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
-  const bool is_pinned_tab_container =
-      tabs_view_model_.view_at(0)->data().pinned;
   const int offset =
-      is_pinned_tab_container ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
+      IsPinnedTabContainer() ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
 
   auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first) - offset;
   auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second) - offset;
@@ -334,11 +333,11 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
     // In order to make margin between the bounding box and tab strip.
     // Need to compensate the amount of overlap because it's hidden by overlap
     // at bottom.
-    constexpr int kVerticalMargin = 2;
-    const int margin_bottom =
-        kVerticalMargin + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
-    bounding_rects.Inset(
-        gfx::Insets::TLBR(kVerticalMargin, 0, margin_bottom, 0));
+    int vertical_margin = GetTabAtModelIndex(tab1_index)->data().pinned ? 4 : 2;
+    bounding_rects.Inset(gfx::Insets::TLBR(
+        vertical_margin, brave_tabs::kHorizontalTabInset,
+        vertical_margin + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP),
+        brave_tabs::kHorizontalTabInset));
   }
 
   constexpr auto kRadius = 12.f;  // same value with --leo-radius-l
@@ -759,7 +758,8 @@ void BraveTabContainer::SetDropArrow(
 }
 
 bool BraveTabContainer::IsPinnedTabContainer() const {
-  return tabs_view_model_.view_size() > 0 && tabs_view_model_.view_at(0)->data().pinned;
+  return tabs_view_model_.view_size() > 0 &&
+         tabs_view_model_.view_at(0)->data().pinned;
 }
 
 void BraveTabContainer::UpdateTabsBorderInTile(const TabTile& tile) {
@@ -780,8 +780,13 @@ void BraveTabContainer::UpdateTabsBorderInTile(const TabTile& tile) {
 
   auto* tab1 = GetTabAtModelIndex(tab1_index);
   auto* tab2 = GetTabAtModelIndex(tab2_index);
-  tab1->UpdateBorder();
-  tab2->UpdateBorder();
+
+  // Tab's border varies per split view state.
+  // See BraveVerticalTabStyle::GetContentsInsets().
+  tab1->SetBorder(
+      views::CreateEmptyBorder(tab1->tab_style_views()->GetContentsInsets()));
+  tab2->SetBorder(
+      views::CreateEmptyBorder(tab2->tab_style_views()->GetContentsInsets()));
 }
 
 BEGIN_METADATA(BraveTabContainer)

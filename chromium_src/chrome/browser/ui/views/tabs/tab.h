@@ -13,7 +13,6 @@ class BraveTab;
   kMinimumContentsWidthForCloseButtons = 55; \
   friend class ::BraveTabTest;               \
   friend class ::BraveTab;                   \
-  virtual void UpdateBorder() {}             \
   static constexpr int kMinimumContentsWidthForCloseButtons_UnUsed
 
 #define GetWidthOfLargestSelectableRegion \
