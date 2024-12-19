@@ -21,6 +21,9 @@ public struct BraveVPNRegionListView: View {
 
   @State
   private var isShowingChangeRegionAlert = false
+  
+  @State
+  private var allRegions: [GRDRegion] = []
 
   @State
   private var selectedIndex = 0
@@ -55,7 +58,7 @@ public struct BraveVPNRegionListView: View {
 
       if !isAutomatic {
         Section {
-          ForEach(Array(BraveVPN.allRegions.enumerated()), id: \.offset) {
+          ForEach(Array(allRegions.enumerated()), id: \.offset) {
             index,
             region in
             countryRegionItem(at: index, region: region)
@@ -80,7 +83,10 @@ public struct BraveVPNRegionListView: View {
       }
     }
     .onAppear {
-      isAutomatic = BraveVPN.isAutomaticRegion
+      Task { @MainActor in
+        isAutomatic = BraveVPN.isAutomaticRegion
+        allRegions = await BraveVPN.fetchRegionData() ?? []
+      }
     }
     .onDisappear {
       cancelTimer()
