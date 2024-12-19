@@ -1209,8 +1209,6 @@ public class BrowserViewController: UIViewController {
     }
     searchController?.additionalSafeAreaInsets = additionalInsets
     favoritesController?.additionalSafeAreaInsets = additionalInsets
-
-    tabsBar.reloadDataAndRestoreSelectedTab(isAnimated: false)
   }
 
   override public var canBecomeFirstResponder: Bool {
@@ -2350,6 +2348,8 @@ public class BrowserViewController: UIViewController {
 
       TabEvent.post(.didChangeURL(url), for: tab)
     }
+
+    tabsBar.reloadDataAndRestoreSelectedTab(isAnimated: false)
 
     if tab === tabManager.selectedTab {
       updateStatusBarOverlayColor()
