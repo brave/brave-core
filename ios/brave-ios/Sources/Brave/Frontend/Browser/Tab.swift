@@ -4,6 +4,7 @@
 
 import BraveCore
 import BraveShields
+import BraveUI
 import BraveWallet
 import CertificateUtilities
 import Data
@@ -429,6 +430,8 @@ class Tab: NSObject {
 
   /// Boolean tracking custom url-scheme alert presented
   var isExternalAppAlertPresented = false
+  var externalAppPopup: AlertPopupView?
+  var externalAppPopupContinuation: CheckedContinuation<Bool, Never>?
   var externalAppAlertCounter = 0
   var isExternalAppAlertSuppressed = false
   var externalAppURLDomain: String?
