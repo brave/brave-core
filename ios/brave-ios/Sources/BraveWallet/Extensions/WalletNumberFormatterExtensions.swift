@@ -19,24 +19,23 @@ extension NumberFormatter {
   /// Values greater than 1 & less than 10 will show 3 digits after the decimal.
   /// All other values will display with grouping and 2 digits after the decimal.
   func formatAsFiat(_ value: Double) -> String? {
-    let currencyFormatter = NumberFormatter.usdCurrencyFormatter
-    let prevUsesSignificantDigits = currencyFormatter.usesSignificantDigits
-    let prevMaxSignificantDigits = currencyFormatter.maximumSignificantDigits
-    let prevMinFractionDigits = currencyFormatter.minimumFractionDigits
-    let prevMaxFractionDigits = currencyFormatter.maximumFractionDigits
+    let prevUsesSignificantDigits = self.usesSignificantDigits
+    let prevMaxSignificantDigits = self.maximumSignificantDigits
+    let prevMinFractionDigits = self.minimumFractionDigits
+    let prevMaxFractionDigits = self.maximumFractionDigits
     let valueDecimalPlaces = value.decimalPlaces
     if abs(value) < 1 && valueDecimalPlaces != 0 {
-      currencyFormatter.usesSignificantDigits = true
-      currencyFormatter.maximumSignificantDigits = 3
+      self.usesSignificantDigits = true
+      self.maximumSignificantDigits = 3
     } else if abs(value) < 10 && valueDecimalPlaces != 0 {
-      currencyFormatter.minimumFractionDigits = 2
-      currencyFormatter.maximumFractionDigits = 3
+      self.minimumFractionDigits = 2
+      self.maximumFractionDigits = 3
     }
-    let result = currencyFormatter.string(from: .init(value: value))
-    currencyFormatter.usesSignificantDigits = prevUsesSignificantDigits
-    currencyFormatter.maximumSignificantDigits = prevMaxSignificantDigits
-    currencyFormatter.minimumFractionDigits = prevMinFractionDigits
-    currencyFormatter.maximumFractionDigits = prevMaxFractionDigits
+    let result = self.string(from: .init(value: value))
+    self.usesSignificantDigits = prevUsesSignificantDigits
+    self.maximumSignificantDigits = prevMaxSignificantDigits
+    self.minimumFractionDigits = prevMinFractionDigits
+    self.maximumFractionDigits = prevMaxFractionDigits
     return result
   }
 

@@ -211,6 +211,7 @@ import XCTest
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
+    walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { priceIds, _, _, completion in
