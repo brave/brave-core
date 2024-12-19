@@ -30,7 +30,10 @@ public class AssetsPricesHelper {
                 new ArrayList<AsyncUtils.GetPriceResponseContext>();
 
         for (BlockchainToken asset : assets) {
-            String assetSymbolLower = asset.symbol.toLowerCase(Locale.getDefault());
+            if (asset == null || asset.symbol == null) {
+                continue;
+            }
+            String assetSymbolLower = asset.symbol.toLowerCase(Locale.ENGLISH);
             String[] fromAssets = new String[] {assetSymbolLower};
             String[] toAssets = new String[] {"usd"};
 
