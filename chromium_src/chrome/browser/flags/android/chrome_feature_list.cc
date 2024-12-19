@@ -6,6 +6,7 @@
 #include "base/feature_override.h"
 #include "brave/browser/android/background_video/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/features.h"
@@ -44,7 +45,8 @@
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
     &net::features::kBraveForgetFirstPartyStorage,                      \
     &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
-    &brave_shields::features::kBraveLocalhostAccessPermission
+    &brave_shields::features::kBraveLocalhostAccessPermission,          \
+    &features::kNewAndroidOnboarding
 
 // clang-format on
 
