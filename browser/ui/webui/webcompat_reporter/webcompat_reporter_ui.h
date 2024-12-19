@@ -20,8 +20,9 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
-#include "ui/aura/window_observer.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/widget/widget_observer.h"
 
 namespace content {
 class RenderWidgetHostView;
@@ -51,7 +52,7 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
 
-  void OnWindowResize(const gfx::Rect& old_bounds, const gfx::Rect& new_bounds);
+  void OnWindowResize(const int& height);
 
  private:
   void InitAdditionalParameters(Profile* profile);
@@ -79,22 +80,20 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
 };
 
 class WebcompatReporterUI : public ConstrainedWebDialogUI,
-                            public aura::WindowObserver {
+                            public views::WidgetObserver {
  public:
   explicit WebcompatReporterUI(content::WebUI* web_ui);
   WebcompatReporterUI(const WebcompatReporterUI&) = delete;
   WebcompatReporterUI& operator=(const WebcompatReporterUI&) = delete;
   ~WebcompatReporterUI() override;
 
-  // aura::WindowObserver
-  void OnWindowBoundsChanged(aura::Window* window,
-                             const gfx::Rect& old_bounds,
-                             const gfx::Rect& new_bounds,
-                             ui::PropertyChangeReason reason) override;
+  // views::WidgetObserver
+  void OnWidgetBoundsChanged(views::Widget* widget,
+                             const gfx::Rect& new_bounds) override;
 
  private:
   raw_ptr<WebcompatReporterDOMHandler> webcompat_reporter_handler_{nullptr};
-  base::ScopedMultiSourceObservation<aura::Window, aura::WindowObserver>
+  base::ScopedMultiSourceObservation<views::Widget, views::WidgetObserver>
       observed_windows_{this};
 };
 

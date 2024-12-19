@@ -19,6 +19,7 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
@@ -45,6 +46,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/aura/window_event_dispatcher.h"
+#include "ui/compositor/compositor.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/geometry/size.h"
 
@@ -60,6 +62,7 @@ namespace {
 constexpr char kUISourceHistogramName[] = "Brave.Webcompat.UISource";
 constexpr int kMaxScreenshotPixelCount = 1280 * 720;
 constexpr char kGetViewPortSizeParamName[] = "height";
+constexpr char kOnViewPortSizeChangedEventName[] = "onViewPortSizeChanged";
 
 content::WebContents* GetWebContents() {
   const auto* browser = BrowserList::GetInstance()->GetLastActive();
@@ -118,12 +121,11 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
 
 WebcompatReporterDOMHandler::~WebcompatReporterDOMHandler() = default;
 
-void WebcompatReporterDOMHandler::OnWindowResize(const gfx::Rect& old_bounds,
-                                                 const gfx::Rect& new_bounds) {
+void WebcompatReporterDOMHandler::OnWindowResize(const int& height) {
   AllowJavascript();
   base::Value::Dict event_data;
-  event_data.Set("height", old_bounds.height());
-  FireWebUIListener("onViewPortSizeChanged", event_data);
+  event_data.Set(kGetViewPortSizeParamName, height);
+  FireWebUIListener(kOnViewPortSizeChangedEventName, event_data);
 }
 
 void WebcompatReporterDOMHandler::RegisterMessages() {
@@ -299,11 +301,6 @@ WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui)
       kWebcompatReporterGeneratedSize, IDR_WEBCOMPAT_REPORTER_HTML);
   auto* profile = Profile::FromWebUI(web_ui);
 
-  auto* web_contents = GetWebContents();
-  if (!web_contents) {
-    return;
-  }
-
   auto webcompat_reporter_handler =
       std::make_unique<WebcompatReporterDOMHandler>(profile);
 
@@ -311,21 +308,36 @@ WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui)
 
   web_ui->AddMessageHandler(std::move(webcompat_reporter_handler));
 
-  observed_windows_.AddObservation(web_contents->GetNativeView());
+  const auto* browser = BrowserList::GetInstance()->GetLastActive();
+
+  if (!browser) {
+    return;
+  }
+
+  auto* widget = views::Widget::GetWidgetForNativeWindow(
+      browser->window()->GetNativeWindow());
+  if (!widget) {
+    return;
+  }
+  observed_windows_.AddObservation(widget);
 }
 
 WebcompatReporterUI::~WebcompatReporterUI() = default;
 
-void WebcompatReporterUI::OnWindowBoundsChanged(
-    aura::Window* window,
-    const gfx::Rect& old_bounds,
-    const gfx::Rect& new_bounds,
-    ui::PropertyChangeReason reason) {
+void WebcompatReporterUI::OnWidgetBoundsChanged(views::Widget* widget,
+                                                const gfx::Rect& new_bounds) {
   if (!webcompat_reporter_handler_) {
     return;
   }
 
-  webcompat_reporter_handler_->OnWindowResize(old_bounds, new_bounds);
+  const auto modal_dialog_bounds = web_ui()
+                                       ->GetWebContents()
+                                       ->GetContentNativeView()
+                                       ->GetActualBoundsInScreen();
+  const auto browser_window_bounds = widget->client_view()->GetBoundsInScreen();
+
+  webcompat_reporter_handler_->OnWindowResize(browser_window_bounds.bottom() -
+                                              modal_dialog_bounds.y());
 }
 
 }  // namespace webcompat_reporter
