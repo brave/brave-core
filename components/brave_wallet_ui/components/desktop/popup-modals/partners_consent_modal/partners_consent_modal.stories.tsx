@@ -20,7 +20,6 @@ export const _PartnersConsentModal = () => {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onContinue={() => setIsOpen(false)}
-        onCancel={() => setIsOpen(false)}
       />
     </WalletPageStory>
   )
