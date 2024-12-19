@@ -3692,22 +3692,22 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Leo is an AI-powered smart assistant, built right into the browser
     </message>
     <message name="IDS_LEO_HISTORY_PREF" desc="Title for Leo history preference.">
-      Store conversation history
+      Store my conversation history
     </message>
     <message name="IDS_LEO_AUTOCOMPLETE_PREF" desc="Title for Leo Autocomplete suggestions.">
       Show autocomplete suggestions in address bar
     </message>
     <message name="IDS_LEO_RESET_DATA" desc="Title for Leo Reset and clear data option.">
-      Reset and clear Leo data
+      Delete all Leo AI conversation data
     </message>
     <message name="IDS_BRAVE_LEO_RESET_CONFIRMATION" desc="Title for preference to reset Leo.">
-      Resetting the Leo assistant will require you to opt-in to use Leo in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Leo. This action cannot be undone.
+      Resetting Leo AI will require you to opt-in to use Brave Leo AI in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Brave Leo AI. This action can't be undone.
     </message>
     <message name="IDS_LEO_CLEAR_HISTORY_TITLE" desc="Title for confirmation dialog to clear Leo history.">
       Clear chat history
     </message>
     <message name="IDS_BRAVE_LEO_CLEAR_HISTORY_CONFIRMATION" desc="Confirmation text for clearing Leo history.">
-      Disabling chat history will delete all your previous conversations with Leo. This action cannot be undone.
+      Disabling conversation storage will permanently erase all previously stored conversations. This action cannot be undone.
     </message>
     <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Leo confirm button text.">
       Confirm
@@ -4125,6 +4125,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_EXIT_CONFIRMATION" desc="A confirmation shown on Exit Brave">
       Are you sure you want to exit Brave?
+    </message>
+    <message name="IDS_BRAVE_CLEAR_AI_HISTORY_TITLE" desc="A title to delete Leo AI history">
+      Leo AI
+    </message>
+    <message name="IDS_BRAVE_CLEAR_AI_HISTORY_SUMMARY" desc="A summary to delete Leo AI history">
+      Chat history
     </message>
   </messages>
   </release>

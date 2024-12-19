@@ -122,6 +122,14 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
         mAIChatAndroidHelper.setDefaultModelKey(modelKey);
     }
 
+    public void deleteConversations() {
+        if (mAIChatAndroidHelper == null) {
+            return;
+        }
+
+        mAIChatAndroidHelper.deleteConversations();
+    }
+
     @Override
     public void onConnectionError(MojoException e) {
         destroy();

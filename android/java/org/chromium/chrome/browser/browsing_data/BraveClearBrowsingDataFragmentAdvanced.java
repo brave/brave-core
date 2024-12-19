@@ -14,6 +14,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference;
@@ -22,15 +23,28 @@ import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
 public class BraveClearBrowsingDataFragmentAdvanced extends ClearBrowsingDataFragmentAdvanced {
+    ClearBrowsingDataCheckBoxPreference mClearBrowsingDataCheckBoxPreference;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
 
+        getPreferenceScreen().addPreference(buildClearLeoAIHistory());
         getPreferenceScreen()
                 .addPreference(
                         BraveRewardsHelper.isRewardsEnabled()
                                 ? buildResetBraveRewardsDataPref()
                                 : buildClearBraveAdsDataPref());
+    }
+
+    private ClearBrowsingDataCheckBoxPreference buildClearLeoAIHistory() {
+        mClearBrowsingDataCheckBoxPreference =
+                new ClearBrowsingDataCheckBoxPreference(getContext(), null);
+        mClearBrowsingDataCheckBoxPreference.setTitle(R.string.brave_clear_ai_history_title);
+        mClearBrowsingDataCheckBoxPreference.setSummary(R.string.brave_clear_ai_history_summary);
+        mClearBrowsingDataCheckBoxPreference.setIcon(R.drawable.ic_brave_ai);
+
+        return mClearBrowsingDataCheckBoxPreference;
     }
 
     private ClickableSpansTextMessagePreference buildResetBraveRewardsDataPref() {
@@ -86,5 +100,18 @@ public class BraveClearBrowsingDataFragmentAdvanced extends ClearBrowsingDataFra
                 getActivity().finish();
             }
         };
+    }
+
+    @Override
+    protected void onClearBrowsingData() {
+        super.onClearBrowsingData();
+        if (mClearBrowsingDataCheckBoxPreference != null
+                && mClearBrowsingDataCheckBoxPreference.isChecked()) {
+            Profile profile = getProfile();
+            if (profile == null) {
+                return;
+            }
+            BraveLeoMojomHelper.getInstance(profile).deleteConversations();
+        }
     }
 }

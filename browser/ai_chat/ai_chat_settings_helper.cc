@@ -10,7 +10,9 @@
 
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -56,7 +58,8 @@ AIChatSettingsHelper::AIChatSettingsHelper(content::BrowserContext* context) {
         return skus::SkusServiceFactory::GetForContext(context);
       },
       context);
-  pref_service_ = Profile::FromBrowserContext(context)->GetPrefs();
+  profile_ = Profile::FromBrowserContext(context);
+  pref_service_ = profile_->GetPrefs();
   model_service_ = ModelServiceFactory::GetForBrowserContext(context);
   models_observer_.Observe(model_service_.get());
 
@@ -199,6 +202,15 @@ void AIChatSettingsHelper::SetDefaultModelKey(const std::string& model_key) {
 void AIChatSettingsHelper::GetDefaultModelKey(
     GetDefaultModelKeyCallback callback) {
   std::move(callback).Run(model_service_->GetDefaultModelKey());
+}
+
+void AIChatSettingsHelper::DeleteConversations() {
+  ai_chat::AIChatService* service =
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);
+  if (!service) {
+    return;
+  }
+  service->DeleteConversations();
 }
 
 void AIChatSettingsHelper::SetClientPage(
