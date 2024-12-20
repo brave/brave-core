@@ -32,13 +32,12 @@ interface PartnerConsentModalProps {
   isOpen: boolean
   onClose: () => void
   onContinue: () => void
-  onCancel: () => void
 }
 
 export function PartnersConsentModal(
   props: Readonly<PartnerConsentModalProps>
 ) {
-  const { isOpen, onCancel, onClose, onContinue } = props
+  const { isOpen, onClose, onContinue } = props
 
   // state
   const [termsAccepted, setTermsAccepted] = React.useState(false)
@@ -98,7 +97,7 @@ export function PartnersConsentModal(
       >
         <Button
           kind='outline'
-          onClick={onCancel}
+          onClick={onClose}
         >
           {getLocale('braveWalletButtonCancel')}
         </Button>
