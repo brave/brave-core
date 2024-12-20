@@ -27,7 +27,7 @@ namespace youtube_script_injector {
 namespace {
 
 // Directory structure of YouTube Script Injector component:
-// lhhcaamjbmbijmjbnnodjaknblkiagon/<component version>/
+// ninjlighifanhiflenpeafpnanjemako/<component version>/
 //  |_ manifest.json
 //  |_ youtube.json
 //  |_ scripts/
@@ -37,15 +37,9 @@ namespace {
 
 constexpr size_t kHashSize = 32;
 constexpr char kYouTubeComponentName[] = "Brave YouTube Injector";
-constexpr char kYouTubeComponentId[] = "lhhcaamjbmbijmjbnnodjaknblkiagon";
+constexpr char kYouTubeComponentId[] = "ninjlighifanhiflenpeafpnanjemako";
 constexpr char kYouTubeComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAphUFFHyK+"
-    "qUOXSw3OJXRQwKs79bt7zqnmkeFp/szXmmhj6/"
-    "i4fmNiXVaxFuVOryM9OiaVxBIGHjN1BWYCQdylgbmgVTqLWpJAy/AAKEH9/"
-    "Q68yWfQnN5sg1miNir+0I1SpCiT/Dx2N7s28WNnzD2e6/"
-    "7Umx+zRXkRtoPX0xAecgUeyOZcrpZXJ4CG8dTJInhv7Fly/U8V/KZhm6ydKlibwsh2CB588/"
-    "FlvQUzi5ZykXnPfzlsNLyyQ8fy6/+8hzSE5x4HTW5fy3TIRvmDi/"
-    "7HmW+evvuMIPl1gtVe4HKOZ7G8UaznjXBfspszHU1fqTiZWeCPb53uemo1a+rdnSHXwIDAQAB";
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnwhDV1BTzTeDNsi+DxnyxrKqugj/a/8dKQE8usNweMkpORdxFxflbJkA5IErDyW3xca63pdMYhArPjHr0OUBACYKBfzEYF/Yo0kNxxJLWylr7FKwZxOKosmlZXUW8J2wtFu8ua6oQB2lEOk7y2jxwUAka/a0JPxeDsU9ByadmAdVZ7aaiCEGsJgEtHrpPha/2AJi8xerYLeB4bFfFc2bdXKEsN4UzjVLYpCfsKAuxEtO2QC2+Rylz60Vq3ANjjnlXINDJrl3jsSwF6GXHEE4Qzl7Qvu142N9G2rsSxMyPlunD8EGrEjK9fGRc6RPGQy1LbyY3imXpiDp0vXicCaYuwIDAQAB";
 
 }  // namespace
 
