@@ -121,7 +121,7 @@ void ExpectConversationEntryEquals(base::Location location,
   EXPECT_EQ(a->character_type, b->character_type);
   EXPECT_EQ(a->selected_text, b->selected_text);
   EXPECT_EQ(a->text, b->text);
-  EXPECT_EQ(a->visibility, b->visibility);
+  EXPECT_EQ(a->prompt, b->prompt);
 
   // compare events
   EXPECT_EQ(a->events.has_value(), b->events.has_value());
@@ -189,10 +189,10 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
     history.push_back(mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-        mojom::ConversationTurnVisibility::VISIBLE,
-        base::StrCat({"query", base::NumberToString(i)}), std::nullopt,
-        std::nullopt, now + base::Seconds(i * 60) + base::Hours(future_hours),
-        std::nullopt, false));
+        base::StrCat({"query", base::NumberToString(i)}),
+        std::nullopt /* prompt */, std::nullopt, std::nullopt,
+        now + base::Seconds(i * 60) + base::Hours(future_hours), std::nullopt,
+        false));
     // response
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.emplace_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -207,9 +207,8 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
             base::StrCat({"Another search query", base::NumberToString(i)})})));
     history.push_back(mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
-        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-        mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-        std::move(events),
+        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
+        std::nullopt /* prompt */, std::nullopt, std::move(events),
         now + base::Seconds((i * 60) + 30) + base::Hours(future_hours),
         std::nullopt, false));
   }

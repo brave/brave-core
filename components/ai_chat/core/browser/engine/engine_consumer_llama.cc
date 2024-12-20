@@ -210,8 +210,7 @@ std::string BuildLlamaPrompt(
     std::string page_content,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
-    const bool& is_mixtral,
-    const std::string& user_message) {
+    const bool& is_mixtral) {
   // Always use a generic system message
   std::string system_message =
       l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC);
@@ -222,26 +221,31 @@ std::string BuildLlamaPrompt(
 
   // Get the raw first user message, which is in the chat history if this is
   // the first sequence.
-  std::string raw_first_user_message;
-  if (conversation_history.size() > 1) {
-    raw_first_user_message =
-        conversation_history[0]->selected_text
-            ? base::StrCat({conversation_history[0]->text,
-                            kSelectedTextPromptPlaceholder,
-                            *conversation_history[0]->selected_text})
-            : conversation_history[0]->text;
-  } else {
-    raw_first_user_message =
-        selected_text
-            ? base::StrCat(
-                  {base::ReplaceStringPlaceholders(
-                       l10n_util::GetStringUTF8(
-                           IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
-                       {*selected_text}, nullptr),
-                   "\n\n", user_message})
-            : user_message;
-  }
 
+  std::string raw_first_user_message;
+  {
+    const ConversationTurnPtr& first_entry = conversation_history.front();
+    std::string first_prompt_text =
+        ai_chat::EngineConsumer::GetPromptForEntry(first_entry);
+    if (conversation_history.size() > 1) {
+      raw_first_user_message =
+          first_entry->selected_text
+              ? base::StrCat({std::move(first_prompt_text),
+                              kSelectedTextPromptPlaceholder,
+                              first_entry->selected_text.value()})
+              : std::move(first_prompt_text);
+    } else {
+      raw_first_user_message =
+          selected_text
+              ? base::StrCat(
+                    {base::ReplaceStringPlaceholders(
+                         l10n_util::GetStringUTF8(
+                             IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
+                         {selected_text.value()}, nullptr),
+                     "\n\n", std::move(first_prompt_text)})
+              : std::move(first_prompt_text);
+    }
+  }
   // Build first_user_message, the first complete message sent to the AI model,
   // which may or may not include injected contents such as article text.
   std::string first_user_message;
@@ -265,7 +269,7 @@ std::string BuildLlamaPrompt(
 
   // If there's no conversation history, then we just send a (partial)
   // first sequence.
-  if (conversation_history.empty() || conversation_history.size() <= 2) {
+  if (conversation_history.size() <= 2) {
     return BuildLlamaFirstSequence(
         today_system_message, first_user_message, std::nullopt,
         (is_mixtral) ? std::optional(kMixtralAssistantTag)
@@ -276,28 +280,23 @@ std::string BuildLlamaPrompt(
 
   // Use the first two messages to build the first sequence,
   // which includes the system prompt.
-
-  auto get_latest_text =
-      [](const ai_chat::mojom::ConversationTurnPtr& turn) -> std::string {
-    return (turn->edits && !turn->edits->empty()) ? turn->edits->back()->text
-                                                  : turn->text;
-  };
-
   std::string prompt = BuildLlamaFirstSequence(
       today_system_message, first_user_message,
-      get_latest_text(conversation_history[1]), std::nullopt, is_mixtral);
+      ai_chat::EngineConsumer::GetPromptForEntry(conversation_history[1]),
+      std::nullopt, is_mixtral);
 
   // Loop through the rest of the history two at a time building subsequent
   // sequences. Ignore the last item since that's the current entry.
   for (size_t i = 2; i + 1 < conversation_history.size() - 1; i += 2) {
     std::string prev_user_message =
         conversation_history[i]->selected_text
-            ? base::StrCat({conversation_history[i]->text,
+            ? base::StrCat({ai_chat::EngineConsumer::GetPromptForEntry(
+                                conversation_history[i]),
                             kSelectedTextPromptPlaceholder,
                             *conversation_history[i]->selected_text})
             : conversation_history[i]->text;
     const std::string& assistant_message =
-        get_latest_text(conversation_history[i + 1]);
+        ai_chat::EngineConsumer::GetPromptForEntry(conversation_history[i + 1]);
     prompt += BuildLlamaSubsequentSequence(
         prev_user_message, assistant_message,
         (is_mixtral) ? std::optional(kMixtralAssistantTag) : std::nullopt,
@@ -305,6 +304,7 @@ std::string BuildLlamaPrompt(
   }
 
   // Build the final subsequent exchange using the current turn.
+  const ConversationTurnPtr& last_entry = conversation_history.back();
   std::string cur_user_message =
       selected_text
           ? base::StrCat(
@@ -312,8 +312,9 @@ std::string BuildLlamaPrompt(
                      l10n_util::GetStringUTF8(
                          IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
                      {*selected_text}, nullptr),
-                 "\n\n", user_message})
-          : user_message;
+                 "\n\n",
+                 ai_chat::EngineConsumer::GetPromptForEntry(last_entry)})
+          : ai_chat::EngineConsumer::GetPromptForEntry(last_entry);
   prompt += BuildLlamaSubsequentSequence(
       cur_user_message, std::nullopt,
       (is_mixtral) ? std::optional(kMixtralAssistantTag)
@@ -445,7 +446,6 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
     const ConversationHistory& conversation_history,
-    const std::string& human_input,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
@@ -465,7 +465,7 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
                        : max_associated_content_length_);
   std::string prompt =
       BuildLlamaPrompt(conversation_history, truncated_page_content,
-                       selected_text, is_video, is_mixtral_, human_input);
+                       selected_text, is_video, is_mixtral_);
   DCHECK(api_);
   api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
                     std::move(data_received_callback));

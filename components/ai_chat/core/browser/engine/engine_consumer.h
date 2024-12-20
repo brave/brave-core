@@ -43,6 +43,8 @@ class EngineConsumer {
 
   using ConversationHistory = std::vector<mojom::ConversationTurnPtr>;
 
+  static std::string GetPromptForEntry(const mojom::ConversationTurnPtr& entry);
+
   EngineConsumer();
   EngineConsumer(const EngineConsumer&) = delete;
   EngineConsumer& operator=(const EngineConsumer&) = delete;
@@ -58,7 +60,6 @@ class EngineConsumer {
       const bool& is_video,
       const std::string& page_content,
       const ConversationHistory& conversation_history,
-      const std::string& human_input,
       const std::string& selected_language,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) = 0;

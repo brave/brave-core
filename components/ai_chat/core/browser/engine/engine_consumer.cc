@@ -6,10 +6,21 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 
 #include <optional>
+#include <string>
+#include <string_view>
 
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
+
+// static
+std::string EngineConsumer::GetPromptForEntry(
+    const mojom::ConversationTurnPtr& entry) {
+  const mojom::ConversationTurnPtr& prompt_entry =
+      (entry->edits && !entry->edits->empty()) ? entry->edits->back() : entry;
+
+  return prompt_entry->prompt.value_or(prompt_entry->text);
+}
 
 EngineConsumer::EngineConsumer() = default;
 EngineConsumer::~EngineConsumer() = default;

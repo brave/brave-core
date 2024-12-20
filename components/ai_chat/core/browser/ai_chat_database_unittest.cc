@@ -30,7 +30,9 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "sql/init_status.h"
+#include "sql/meta_table.h"
 #include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -87,7 +89,6 @@ class AIChatDatabaseTest : public testing::Test,
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   base::CallbackListSubscription encryptor_ready_subscription_;
   std::unique_ptr<AIChatDatabase> db_;
-  base::FilePath path_;
 };
 
 INSTANTIATE_TEST_SUITE_P(
@@ -139,6 +140,8 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
 
     // Persist the first entry (and get the response ready)
     auto history = CreateSampleChatHistory(1u);
+    // Edit the prompt to show that the prompt is persisted
+    history[0]->prompt = "first entry prompt";
 
     EXPECT_TRUE(db_->AddConversation(
         metadata->Clone(),
@@ -204,9 +207,8 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
       last_query->edits->emplace_back(mojom::ConversationTurn::New(
           base::Uuid::GenerateRandomV4().AsLowercaseString(),
           mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-          mojom::ConversationTurnVisibility::VISIBLE, "edited query 1",
-          std::nullopt, std::nullopt, base::Time::Now() + base::Minutes(121),
-          std::nullopt, false));
+          "edited query 1", std::nullopt, std::nullopt, std::nullopt,
+          base::Time::Now() + base::Minutes(121), std::nullopt, false));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -221,9 +223,8 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
       last_query->edits->emplace_back(mojom::ConversationTurn::New(
           base::Uuid::GenerateRandomV4().AsLowercaseString(),
           mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-          mojom::ConversationTurnVisibility::VISIBLE, "edited query 2",
-          std::nullopt, std::nullopt, base::Time::Now() + base::Minutes(122),
-          std::nullopt, false));
+          "edited query 2", std::nullopt, std::nullopt, std::nullopt,
+          base::Time::Now() + base::Minutes(122), std::nullopt, false));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -437,6 +438,141 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   EXPECT_EQ(archive_result->associated_content[0]->content_uuid,
             "first-content");
   EXPECT_EQ(archive_result->associated_content[0]->content, expected_contents);
+}
+
+// Test the migration for each version upgrade
+class AIChatDatabaseMigrationTest : public testing::Test,
+                                    public testing::WithParamInterface<int> {
+ public:
+  AIChatDatabaseMigrationTest() = default;
+
+  void SetUp() override {
+    OSCryptMocker::SetUp();
+    CHECK(temp_directory_.CreateUniqueTempDir());
+    database_dump_location_ = database_dump_location_.AppendASCII("brave")
+                                  .AppendASCII("test")
+                                  .AppendASCII("data")
+                                  .AppendASCII("ai_chat");
+    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
+        /*is_sync_for_unittests=*/true);
+
+    // Create database when os_crypt is ready
+    base::RunLoop run_loop;
+    encryptor_ready_subscription_ =
+        os_crypt_->GetInstance(base::BindLambdaForTesting(
+            [&](os_crypt_async::Encryptor encryptor, bool success) {
+              ASSERT_TRUE(success);
+              CreateDatabase(base::StringPrintf(
+                  "aichat_database_dump_version_%d.sql", version()));
+              db_ = std::make_unique<AIChatDatabase>(db_file_path(),
+                                                     std::move(encryptor));
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TearDown() override {
+    // Verify that the db was init successfully and not using default return
+    // values.
+    EXPECT_TRUE(IsInitOk());
+    db_.reset();
+    // Verify current version of database is latest
+    sql::Database db;
+    sql::MetaTable meta_table;
+    ASSERT_TRUE(db.Open(db_file_path()));
+    ASSERT_TRUE(meta_table.Init(&db, kCurrentDatabaseVersion,
+                                kCompatibleDatabaseVersionNumber));
+    EXPECT_EQ(kCompatibleDatabaseVersionNumber,
+              meta_table.GetCompatibleVersionNumber());
+    EXPECT_EQ(kCurrentDatabaseVersion, meta_table.GetVersionNumber());
+    db.Close();
+    OSCryptMocker::TearDown();
+    task_environment_.RunUntilIdle();
+    ASSERT_TRUE(temp_directory_.Delete());
+  }
+
+  // Creates the database from |sql_file|.
+  void CreateDatabase(std::string_view sql_file) {
+    base::FilePath database_dump =
+        base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
+    database_dump =
+        database_dump.Append(database_dump_location_).AppendASCII(sql_file);
+    ASSERT_TRUE(sql::test::CreateDatabaseFromSQL(db_file_path(), database_dump))
+        << "Could not create database from sql dump file at: "
+        << database_dump.value();
+  }
+
+  bool IsInitOk() {
+    return (db_->db_init_status_.has_value() &&
+            db_->db_init_status_.value() == sql::InitStatus::INIT_OK);
+  }
+
+  base::FilePath db_file_path() {
+    return temp_directory_.GetPath().AppendASCII("test_ai_chat.db");
+  }
+
+  // Returns the database version for the test.
+  int version() const { return GetParam(); }
+
+ protected:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  base::FilePath database_dump_location_;
+  base::ScopedTempDir temp_directory_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
+  base::CallbackListSubscription encryptor_ready_subscription_;
+  std::unique_ptr<AIChatDatabase> db_;
+};
+
+INSTANTIATE_TEST_SUITE_P(,
+                         AIChatDatabaseMigrationTest,
+                         testing::Range(kLowestSupportedDatabaseVersion,
+                                        kCurrentDatabaseVersion));
+
+// Tests the migration of the database from version() to kCurrentVersionNumber
+TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
+  if (version() < 2) {
+    // Verify we have existing entries
+    auto conversations = db_->GetAllConversations();
+    EXPECT_GT(conversations.size(), 0u);
+    EXPECT_GT(db_->GetConversationData(conversations[0]->uuid)->entries.size(),
+              0u);
+    // ConversationEntry table changed, check it persists correctly
+    auto now = base::Time::Now();
+    const std::string uuid = "migrationtest";
+    mojom::SiteInfoPtr associated_content = mojom::SiteInfo::New(
+        std::nullopt, mojom::ContentType::PageContent, std::nullopt,
+        std::nullopt, std::nullopt, 0, false, false);
+    const mojom::ConversationPtr metadata =
+        mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
+                                 std::nullopt, std::move(associated_content));
+
+    // Persist the first entry (and get the response ready)
+    auto history = CreateSampleChatHistory(1u);
+    // Edit the prompt to show that the prompt is persisted
+    history[0]->prompt = "first entry prompt";
+
+    EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
+                                     history[0]->Clone()));
+    // Persist the response entry
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+
+    // Test getting the conversation entries
+    mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
+    ExpectConversationHistoryEquals(FROM_HERE, result->entries, history);
+
+    // Add another pair of entries
+    auto next_history = CreateSampleChatHistory(1u, 1);
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, next_history[0]->Clone()));
+    EXPECT_TRUE(db_->AddConversationEntry(uuid, next_history[1]->Clone()));
+
+    // Verify all entries are returned
+    mojom::ConversationArchivePtr result_2 = db_->GetConversationData(uuid);
+    for (auto& entry : next_history) {
+      history.push_back(std::move(entry));
+    }
+    ExpectConversationHistoryEquals(FROM_HERE, result_2->entries, history);
+  }
 }
 
 }  // namespace ai_chat

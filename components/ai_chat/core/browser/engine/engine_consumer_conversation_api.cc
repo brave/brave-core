@@ -102,7 +102,6 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
     const ConversationHistory& conversation_history,
-    const std::string& human_input,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
@@ -128,11 +127,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     ConversationEvent event;
     event.role = message->character_type;
 
-    const std::string& text = (message->edits && !message->edits->empty())
-                                  ? message->edits->back()->text
-                                  : message->text;
-    const auto& last_turn = conversation_history.back();
-    event.content = (message == last_turn) ? human_input : text;
+    event.content = EngineConsumer::GetPromptForEntry(message);
 
     // TODO(petemill): Shouldn't the server handle the map of mojom::ActionType
     // to prompts in addition to SUMMARIZE_PAGE (e.g. PARAPHRASE, EXPLAIN,

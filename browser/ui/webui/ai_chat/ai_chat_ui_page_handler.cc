@@ -54,7 +54,6 @@ namespace ai_chat {
 
 using mojom::CharacterType;
 using mojom::ConversationTurn;
-using mojom::ConversationTurnVisibility;
 
 AIChatUIPageHandler::ChatContextObserver::ChatContextObserver(
     content::WebContents* web_contents,

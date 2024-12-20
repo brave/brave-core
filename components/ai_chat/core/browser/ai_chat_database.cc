@@ -21,13 +21,6 @@
 
 namespace {
 
-// These database versions should roll together unless we develop migrations.
-// Lowest version we support migrations from - existing database will be deleted
-// if lower.
-constexpr int kLowestSupportedDatabaseVersion = 1;
-// Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 1;
-
 constexpr char kSearchQueriesSeparator[] = "|||";
 
 std::optional<std::string> GetOptionalString(sql::Statement& statement,
@@ -48,9 +41,30 @@ void BindOptionalString(sql::Statement& statement,
   }
 }
 
+bool MigrateFrom1To2(sql::Database* db) {
+  // Add a new column to the associated_content table to store the content type.
+  static constexpr char kAddPromptColumnQuery[] =
+      "ALTER TABLE conversation_entry ADD COLUMN prompt BLOB";
+  sql::Statement statement(db->GetUniqueStatement(kAddPromptColumnQuery));
+
+  return statement.is_valid() && statement.Run();
+}
+
 }  // namespace
 
 namespace ai_chat {
+
+// These database versions should roll together unless we develop migrations.
+// Lowest version we support migrations from - existing database will be deleted
+// if lower.
+constexpr int kLowestSupportedDatabaseVersion = 1;
+
+// The oldest version of the schema such that a legacy Brave client using that
+// version can still read/write the current database.
+constexpr int kCompatibleDatabaseVersionNumber = 1;
+
+// Current version of the database. Increase if breaking changes are made.
+constexpr int kCurrentDatabaseVersion = 2;
 
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
@@ -87,7 +101,7 @@ sql::InitStatus AIChatDatabase::InitInternal() {
 
   sql::MetaTable meta_table;
   if (!meta_table.Init(&GetDB(), kCurrentDatabaseVersion,
-                       /*compatible_version=*/kCurrentDatabaseVersion)) {
+                       kCompatibleDatabaseVersionNumber)) {
     DVLOG(0) << "Failed to init meta table";
     return sql::InitStatus::INIT_FAILURE;
   }
@@ -100,6 +114,23 @@ sql::InitStatus AIChatDatabase::InitInternal() {
   if (!CreateSchema()) {
     DVLOG(0) << "Failure to create tables";
     return sql::InitStatus::INIT_FAILURE;
+  }
+
+  if (meta_table.GetVersionNumber() < kCurrentDatabaseVersion) {
+    bool migration_success = true;
+    if (meta_table.GetVersionNumber() == 1) {
+      migration_success = MigrateFrom1To2(&GetDB());
+      migration_success = meta_table.SetCompatibleVersionNumber(
+                              kCompatibleDatabaseVersionNumber) &&
+                          meta_table.SetVersionNumber(kCurrentDatabaseVersion);
+    }
+    // Migration unsuccessful, raze the database and re-init
+    if (!migration_success) {
+      if (db_.Raze()) {
+        return InitInternal();
+      }
+      return sql::InitStatus::INIT_FAILURE;
+    }
   }
 
   if (!transaction.Commit()) {
@@ -211,7 +242,8 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   static constexpr char kEntriesQuery[] =
-      "SELECT uuid, date, entry_text, character_type, editing_entry_uuid, "
+      "SELECT uuid, date, entry_text, prompt, character_type, "
+      "editing_entry_uuid, "
       "action_type, selected_text"
       " FROM conversation_entry"
       " WHERE conversation_uuid=?"
@@ -233,17 +265,19 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     std::string entry_uuid = statement.ColumnString(0);
     DVLOG(4) << "Found entry row for conversation " << conversation_uuid
              << " with id " << entry_uuid;
-    auto date = statement.ColumnTime(1);
-    auto text = DecryptOptionalColumnToString(statement, 2).value_or("");
+    int index = 1;
+    auto date = statement.ColumnTime(index++);
+    auto text = DecryptOptionalColumnToString(statement, index++).value_or("");
+    auto prompt = DecryptOptionalColumnToString(statement, index++);
     auto character_type =
-        static_cast<mojom::CharacterType>(statement.ColumnInt(3));
-    auto editing_entry_id = GetOptionalString(statement, 4);
-    auto action_type = static_cast<mojom::ActionType>(statement.ColumnInt(5));
-    auto selected_text = DecryptOptionalColumnToString(statement, 6);
+        static_cast<mojom::CharacterType>(statement.ColumnInt(index++));
+    auto editing_entry_id = GetOptionalString(statement, index++);
+    auto action_type =
+        static_cast<mojom::ActionType>(statement.ColumnInt(index++));
+    auto selected_text = DecryptOptionalColumnToString(statement, index++);
 
     auto entry = mojom::ConversationTurn::New(
-        entry_uuid, character_type, action_type,
-        mojom::ConversationTurnVisibility::VISIBLE, text, selected_text,
+        entry_uuid, character_type, action_type, text, prompt, selected_text,
         std::nullopt, date, std::nullopt, false);
 
     // events
@@ -548,16 +582,16 @@ bool AIChatDatabase::AddConversationEntry(
   if (editing_id.has_value()) {
     static constexpr char kInsertEditingConversationEntryQuery[] =
         "INSERT INTO conversation_entry(editing_entry_uuid, uuid,"
-        " conversation_uuid, date, entry_text,"
+        " conversation_uuid, date, entry_text, prompt,"
         " character_type, action_type, selected_text)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertEditingConversationEntryQuery));
   } else {
     static constexpr char kInsertConversationEntryQuery[] =
         "INSERT INTO conversation_entry(uuid, conversation_uuid, date,"
-        " entry_text, character_type, action_type, selected_text)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?)";
+        " entry_text, prompt, character_type, action_type, selected_text)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertConversationEntryQuery));
   }
@@ -572,6 +606,8 @@ bool AIChatDatabase::AddConversationEntry(
   insert_conversation_entry_statement.BindTime(index++, entry->created_time);
   BindAndEncryptOptionalString(insert_conversation_entry_statement, index++,
                                entry->text);
+  BindAndEncryptOptionalString(insert_conversation_entry_statement, index++,
+                               entry->prompt);
   insert_conversation_entry_statement.BindInt(
       index++, base::to_underlying(entry->character_type));
   insert_conversation_entry_statement.BindInt(
@@ -1005,6 +1041,8 @@ bool AIChatDatabase::CreateSchema() {
       // Encrypted text string
       // TODO(petemill): move to event only
       "entry_text BLOB,"
+      // Encrypted optional user-invisible override prompt
+      "prompt BLOB,"
       "character_type INTEGER NOT NULL,"
       // editing_entry points to the ConversationEntry row that is being edited.
       // Edits can be sorted by date.

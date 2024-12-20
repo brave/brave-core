@@ -257,6 +257,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void ModifyConversation(uint32_t turn_index,
                           const std::string& new_text) override;
   void SubmitSummarizationRequest() override;
+  void SubmitSuggestion(const std::string& suggestion_title) override;
   std::vector<std::string> GetSuggestedQuestionsForTest();
   void SetSuggestedQuestionForTest(std::string title, std::string prompt);
   void GenerateQuestions() override;
@@ -337,7 +338,8 @@ class ConversationHandler : public mojom::ConversationHandler,
                            OnGetStagedEntriesFromContent);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            OnGetStagedEntriesFromContent_FailedChecks);
-  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, SelectedLanguage);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest_NoAssociatedContent,
+                           SelectedLanguage);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, LocalModelsUpdater);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedder);
   FRIEND_TEST_ALL_PREFIXES(PageContentRefineTest, TextEmbedderInitialized);
@@ -345,9 +347,13 @@ class ConversationHandler : public mojom::ConversationHandler,
   struct Suggestion {
     std::string title;
     std::optional<std::string> prompt;
+    mojom::ActionType action_type = mojom::ActionType::SUGGESTION;
 
     explicit Suggestion(std::string title);
     Suggestion(std::string title, std::string prompt);
+    Suggestion(std::string title,
+               std::string prompt,
+               mojom::ActionType action_type);
     Suggestion(const Suggestion&) = delete;
     Suggestion& operator=(const Suggestion&) = delete;
     Suggestion(Suggestion&&);
@@ -361,8 +367,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool IsContentAssociationPossible();
   int GetContentUsedPercentage();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
-  void PerformAssistantGeneration(const std::string& input,
-                                  std::string page_content = "",
+  void PerformAssistantGeneration(std::string page_content = "",
                                   bool is_video = false,
                                   std::string invalidation_token = "");
   void SetAPIError(const mojom::APIError& error);
@@ -391,7 +396,6 @@ class ConversationHandler : public mojom::ConversationHandler,
                                      bool is_video,
                                      std::string invalidation_token);
   void OnGetRefinedPageContent(
-      const std::string& input,
       EngineConsumer::GenerationDataCallback data_received_callback,
       EngineConsumer::GenerationCompletedCallback data_completed_callback,
       std::string page_content,

@@ -1,0 +1,16 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE meta(key LONGVARCHAR NOT NULL UNIQUE PRIMARY KEY, value LONGVARCHAR);
+INSERT INTO meta VALUES('mmap_status','-1');
+INSERT INTO meta VALUES('version','1');
+INSERT INTO meta VALUES('last_compatible_version','1');
+CREATE TABLE conversation(uuid TEXT PRIMARY KEY NOT NULL,title BLOB,model_key TEXT);
+INSERT INTO conversation VALUES('1ae484fe-ab33-4f42-8813-14080e4addc1',X'763130a0cdc6b78d502119b80ada83b3b86e4ca7b0a7729e1b079a74c479ef1c3b4fb8',NULL);
+CREATE TABLE associated_content(uuid TEXT PRIMARY KEY NOT NULL,conversation_uuid TEXT NOT NULL,title BLOB,url BLOB,content_type INTEGER NOT NULL,last_contents BLOB,content_used_percentage INTEGER NOT NULL,is_content_refined INTEGER NOT NULL);
+CREATE TABLE conversation_entry(uuid TEXT PRIMARY KEY NOT NULL,conversation_uuid STRING NOT NULL,date INTEGER NOT NULL,entry_text BLOB,character_type INTEGER NOT NULL,editing_entry_uuid TEXT,action_type INTEGER,selected_text BLOB);
+INSERT INTO conversation_entry VALUES('5616a89c-7f56-4e7d-8e74-f882b76623a7','1ae484fe-ab33-4f42-8813-14080e4addc1',13379152669533821,X'763130d5244f5d32beef52f593859d25b33986df182571da857ea74ba49d4c14d72a2e84fc8c4c4df6bfb85728f5249fa9e22e',0,NULL,5,NULL);
+INSERT INTO conversation_entry VALUES('f761af26-4491-4787-ad53-82238b42f534','1ae484fe-ab33-4f42-8813-14080e4addc1',13379152671156556,X'76313080a3088aa5874d731e9b5042cb565dab897e3af6560681aad24ef9c9379de805096188372c73372de010da70dd9231cfd70490087fd074004e3c826852cb400903a589baf91e4b3ad75acfe8b40b2bc6846b9c00edd6a3d32359c98614383d35',1,NULL,1,NULL);
+CREATE TABLE conversation_entry_event_completion(conversation_entry_uuid INTEGER NOT NULL,event_order INTEGER NOT NULL,text BLOB NOT NULL,PRIMARY KEY(conversation_entry_uuid, event_order));
+INSERT INTO conversation_entry_event_completion VALUES('f761af26-4491-4787-ad53-82238b42f534',0,X'76313080a3088aa5874d731e9b5042cb565dab897e3af6560681aad24ef9c9379de805096188372c73372de010da70dd9231cfd70490087fd074004e3c826852cb400903a589baf91e4b3ad75acfe8b40b2bc6846b9c00edd6a3d32359c98614383d35');
+CREATE TABLE conversation_entry_event_search_queries(conversation_entry_uuid INTEGER NOT NULL,event_order INTEGER NOT NULL,queries BLOB NOT NULL,PRIMARY KEY(conversation_entry_uuid, event_order));
+COMMIT;

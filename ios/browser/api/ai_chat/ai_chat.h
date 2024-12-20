@@ -37,6 +37,8 @@ OBJC_EXPORT
 
 - (void)submitHumanConversationEntry:(NSString*)text;
 
+- (void)submitSuggestion:(NSString*)text;
+
 - (void)submitSummarizationRequest;
 
 - (void)retryAPIRequest;

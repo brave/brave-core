@@ -50,8 +50,8 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   conversation->MaybeUnlinkAssociatedContent();
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      mojom::ConversationTurnVisibility::VISIBLE,
-      base::android::ConvertJavaStringToUTF8(query), std::nullopt, std::nullopt,
+      base::android::ConvertJavaStringToUTF8(query), std::nullopt /* prompt */,
+      std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt, false);
   conversation->SubmitHumanConversationEntry(std::move(turn));
 
