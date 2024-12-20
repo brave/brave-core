@@ -26,6 +26,7 @@ import android.view.ViewStub;
 import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.filters.SmallTest;
@@ -1624,7 +1625,9 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerMediator",
-                        Context.class,
+                        Activity.class,
+                        LifecycleOwner.class,
+                        ModalDialogManager.class,
                         BookmarkModel.class,
                         BookmarkOpener.class,
                         SelectableListLayout.class,
