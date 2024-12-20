@@ -60,7 +60,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 std::string CreateJSONRequestBody(
     base::Value::List messages,
-    const std::vector<mojom::ToolPtr>& tools,
+    EngineConsumer::Tools tools,
     std::optional<std::string_view> preferred_tool_name,
     const bool is_sse_enabled,
     const mojom::CustomModelOptions& model_options) {
@@ -76,28 +76,31 @@ std::string CreateJSONRequestBody(
     for (const auto& tool : tools) {
       base::Value::Dict tool_dict;
 
-      tool_dict.Set("type", tool->type.empty() ? "function" : tool->type);
+      tool_dict.Set("type", tool->type().empty() ? "function" : tool->type());
 
-      if (!tool->name.empty()) {
+      if (!tool->name().empty()) {
         base::Value::Dict function_dict;
-        function_dict.Set("name", tool->name);
+        function_dict.Set("name", tool->name());
 
-        if (!tool->description.empty())
-          function_dict.Set("description", tool->description);
+        if (!tool->description().empty()) {
+          function_dict.Set("description", tool->description());
+        }
 
-        if (tool->input_schema_json != std::nullopt) {
-          // input_schema_json is string of JSON Schema for the input properties of the Tool.
-          // Set it on the "parameters" field as actual Value JSON.
+        if (tool->input_schema_json() != std::nullopt) {
+          // input_schema_json is string of JSON Schema for the input properties
+          // of the Tool. Set it on the "parameters" field as actual Value JSON.
           std::optional<base::Value> parameters =
-              base::JSONReader::Read(*tool->input_schema_json);
-          CHECK(parameters) << "Failed to parse input_schema_json for tool: " << tool->name;
+              base::JSONReader::Read(*tool->input_schema_json());
+          CHECK(parameters)
+              << "Failed to parse input_schema_json for tool: " << tool->name();
 
           function_dict.Set("parameters", std::move(*parameters));
 
-          if (tool->required_properties.has_value() &&
-              !tool->required_properties->empty()) {
+          if (tool->required_properties().has_value() &&
+              !tool->required_properties()->empty()) {
             base::Value::List required_properties;
-            for (const auto& property : *tool->required_properties) {
+            const auto properties = tool->required_properties().value();
+            for (const auto& property : properties) {
               required_properties.Append(property);
             }
             function_dict.Set("required", std::move(required_properties));
@@ -133,7 +136,7 @@ void OAIAPIClient::ClearAllQueries() {
 void OAIAPIClient::PerformRequest(
     const mojom::CustomModelOptions& model_options,
     base::Value::List messages,
-    const std::vector<mojom::ToolPtr>& tools,
+    EngineConsumer::Tools tools,
     std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
@@ -145,7 +148,7 @@ void OAIAPIClient::PerformRequest(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body =
-      CreateJSONRequestBody(std::move(messages), tools,
+      CreateJSONRequestBody(std::move(messages), std::move(tools),
                             preferred_tool_name, is_sse_enabled, model_options);
   base::flat_map<std::string, std::string> headers;
   if (!model_options.api_key.empty()) {
