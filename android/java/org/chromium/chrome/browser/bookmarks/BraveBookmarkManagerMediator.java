@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Environment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
@@ -32,6 +33,7 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelega
 import org.chromium.components.commerce.core.ShoppingService;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 import java.io.File;
@@ -54,7 +56,9 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
     private static final String IMPORTED_BOOKMARKS_TEMP_FILENAME = "ImportedBookmarks";
 
     BraveBookmarkManagerMediator(
-            Context context,
+            Activity activity,
+            LifecycleOwner lifecycleOwner,
+            ModalDialogManager modalDialogManager,
             BookmarkModel bookmarkModel,
             BookmarkOpener bookmarkOpener,
             SelectableListLayout<BookmarkId> selectableListLayout,
@@ -75,7 +79,9 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
             Consumer<OnScrollListener> onScrollListenerConsumer,
             BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager) {
         super(
-                context,
+                activity,
+                lifecycleOwner,
+                modalDialogManager,
                 bookmarkModel,
                 bookmarkOpener,
                 selectableListLayout,
