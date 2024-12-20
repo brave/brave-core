@@ -351,12 +351,12 @@ public class TabUtils {
     }
 
     /**
-     * Returns {@code true} when current tab URL matches the URL of a
-     * YouTube video. Current tab or current tab URL might be {@code null}
-     * if the model is not initialized yet.
+     * Returns {@code true} when current tab URL matches the URL of a YouTube video. Current tab or
+     * current tab URL might be {@code null} if the model is not initialized yet.
+     *
      * @param currentTab Current tab holding the URL to check.
-     * @return {@code true} if the current tab URL matches the URL of a
-     *         YouTube video, {@code false} otherwise.
+     * @return {@code true} if the current tab URL matches the URL of a YouTube video, {@code false}
+     *     otherwise.
      */
     public static boolean isYouTubeVideo(@Nullable final Tab currentTab) {
         if (currentTab == null || currentTab.getUrl() == null) {

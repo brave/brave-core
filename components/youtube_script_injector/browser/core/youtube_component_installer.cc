@@ -39,7 +39,13 @@ constexpr size_t kHashSize = 32;
 constexpr char kYouTubeComponentName[] = "Brave YouTube Injector";
 constexpr char kYouTubeComponentId[] = "ninjlighifanhiflenpeafpnanjemako";
 constexpr char kYouTubeComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnwhDV1BTzTeDNsi+DxnyxrKqugj/a/8dKQE8usNweMkpORdxFxflbJkA5IErDyW3xca63pdMYhArPjHr0OUBACYKBfzEYF/Yo0kNxxJLWylr7FKwZxOKosmlZXUW8J2wtFu8ua6oQB2lEOk7y2jxwUAka/a0JPxeDsU9ByadmAdVZ7aaiCEGsJgEtHrpPha/2AJi8xerYLeB4bFfFc2bdXKEsN4UzjVLYpCfsKAuxEtO2QC2+Rylz60Vq3ANjjnlXINDJrl3jsSwF6GXHEE4Qzl7Qvu142N9G2rsSxMyPlunD8EGrEjK9fGRc6RPGQy1LbyY3imXpiDp0vXicCaYuwIDAQAB";
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnwhDV1BTzTeDNsi+DxnyxrKqugj/a/"
+    "8dKQE8usNweMkpORdxFxflbJkA5IErDyW3xca63pdMYhArPjHr0OUBACYKBfzEYF/"
+    "Yo0kNxxJLWylr7FKwZxOKosmlZXUW8J2wtFu8ua6oQB2lEOk7y2jxwUAka/"
+    "a0JPxeDsU9ByadmAdVZ7aaiCEGsJgEtHrpPha/"
+    "2AJi8xerYLeB4bFfFc2bdXKEsN4UzjVLYpCfsKAuxEtO2QC2+"
+    "Rylz60Vq3ANjjnlXINDJrl3jsSwF6GXHEE4Qzl7Qvu142N9G2rsSxMyPlunD8EGrEjK9fGRc6R"
+    "PGQy1LbyY3imXpiDp0vXicCaYuwIDAQAB";
 
 }  // namespace
 
