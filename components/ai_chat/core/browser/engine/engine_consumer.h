@@ -16,6 +16,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/remote_completion_client.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
@@ -42,6 +43,7 @@ class EngineConsumer {
       base::OnceCallback<void(GenerationResult)>;
 
   using ConversationHistory = std::vector<mojom::ConversationTurnPtr>;
+  using Tools = std::vector<Tool*>;
 
   static std::string GetPromptForEntry(const mojom::ConversationTurnPtr& entry);
 
@@ -61,7 +63,7 @@ class EngineConsumer {
       const std::string& page_content,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
-      const std::vector<mojom::ToolPtr>& tools,
+      Tools tools,
       std::optional<std::string_view> preferred_tool_name,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) = 0;
