@@ -12,7 +12,9 @@
 
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/p3a/metric_config.h"
 #include "brave/components/p3a/metric_log_type.h"
+#include "brave/components/p3a/region.h"
 
 class PrefService;
 
@@ -33,15 +35,19 @@ class MessageMetainfo {
 
   void Update();
 
-  const std::string& GetCountryCodeForNormalMetrics() const;
+  const std::string& GetCountryCodeForNormalMetrics(bool raw) const;
 
   const std::string& platform() const { return platform_; }
+  const std::string& general_platform() const { return general_platform_; }
   const std::string& channel() const { return channel_; }
   const std::string& version() const { return version_; }
   const std::string& country_code_from_locale_raw() const {
     return country_code_from_locale_raw_;
   }
   const std::string& ref() const { return ref_; }
+  const RegionIdentifiers& region_identifiers() const {
+    return region_identifiers_;
+  }
   base::Time date_of_install() const { return date_of_install_; }
   base::Time date_of_survey() const { return date_of_survey_; }
   int woi() const { return woi_; }
@@ -59,6 +65,7 @@ class MessageMetainfo {
   void MaybeStripCountry();
 
   std::string platform_;
+  std::string general_platform_;
   std::string version_;
   std::string channel_;
   base::Time date_of_install_;
@@ -66,8 +73,10 @@ class MessageMetainfo {
   int woi_;  // Week of install. Remove this occasionally and extract from
              // above.
   std::string country_code_from_timezone_;
+  std::string country_code_from_timezone_raw_;
   std::string country_code_from_locale_;
   std::string country_code_from_locale_raw_;
+  RegionIdentifiers region_identifiers_;
   // May contain 'none', a 'BRV'-prefixed refcode, or 'other'.
   std::string ref_;
 
@@ -80,12 +89,12 @@ base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
                                          const MessageMetainfo& meta,
                                          const std::string& upload_type);
 
-std::string GenerateP3AConstellationMessage(std::string_view metric_name,
-                                            uint64_t metric_value,
-                                            const MessageMetainfo& meta,
-                                            const std::string& upload_type,
-                                            bool include_refcode,
-                                            bool is_nebula);
+std::string GenerateP3AConstellationMessage(
+    std::string_view metric_name,
+    uint64_t metric_value,
+    const MessageMetainfo& meta,
+    const std::string& upload_type,
+    const std::optional<MetricConfig>& metric_config);
 
 }  // namespace p3a
 

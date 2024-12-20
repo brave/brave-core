@@ -9,7 +9,6 @@
 #include <optional>
 #include <string>
 
-
 namespace p3a {
 
 inline constexpr char kCreativeMetricPrefix[] = "creativeInstanceId.";

@@ -35,12 +35,12 @@ TEST(P3AMetrics, Enumerable) {
   // Check that we can loop through the set members.
   DLOG(INFO) << "Set of collected metrics has " << size << " members:";
   for (auto item : kCollectedTypicalHistograms) {
-    DLOG(INFO) << "  " << item;
+    DLOG(INFO) << "  " << item.first;
     // Each item should be a set member.
-    EXPECT_TRUE(kCollectedTypicalHistograms.contains(item));
+    EXPECT_TRUE(kCollectedTypicalHistograms.contains(item.first));
     // Each item should be different from the previous one.
-    EXPECT_NE(item, last);
-    last = std::string(item);
+    EXPECT_NE(item.first, last);
+    last = std::string(item.first);
     // Count the number of items.
     count++;
   }

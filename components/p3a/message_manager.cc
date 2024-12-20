@@ -311,11 +311,12 @@ void MessageManager::StartScheduledUpload(bool is_constellation,
       is_constellation
           ? constellation_send_log_stores_[log_type]->staged_log_type()
           : json_log_stores_[log_type]->staged_log_type();
-  const bool is_nebula = is_constellation
-                             ? p3a::kNebulaOnlyHistograms.contains(
-                                   constellation_send_log_stores_[log_type]
-                                       ->staged_log_histogram_name())
-                             : false;
+  bool is_nebula = false;
+  if (is_constellation) {
+    const auto* metric_config = GetMetricConfig(
+        constellation_send_log_stores_[log_type]->staged_log_histogram_name());
+    is_nebula = metric_config && *metric_config && (*metric_config)->nebula;
+  }
 
   VLOG(2) << logging_prefix << " - Uploading " << log.size() << " bytes";
   uploader_->UploadLog(log, upload_type, is_constellation, is_nebula, log_type);
@@ -352,9 +353,10 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
   const std::string log_key = log_store->staged_log_key();
   VLOG(2) << "MessageManager::StartScheduledConstellationPrep - Requesting "
              "randomness for histogram: "
-          << log_key;
+          << log_key << " " << log;
 
-  const bool is_nebula = p3a::kNebulaOnlyHistograms.contains(log_key);
+  const auto* metric_config = GetMetricConfig(log_key);
+  bool is_nebula = metric_config && *metric_config && (*metric_config)->nebula;
   if (is_nebula && !features::IsNebulaEnabled()) {
     // Do not report if Nebula feature is not enabled,
     // mark request as successful to avoid transmission.
@@ -394,12 +396,10 @@ std::string MessageManager::SerializeLog(std::string_view histogram_name,
   message_meta_.Update();
 
   if (is_constellation) {
-    const bool include_refcode =
-        p3a::kHistogramsWithRefcodeIncluded.contains(histogram_name);
-    const bool is_nebula = p3a::kNebulaOnlyHistograms.contains(histogram_name);
-    return GenerateP3AConstellationMessage(histogram_name, value, message_meta_,
-                                           upload_type, include_refcode,
-                                           is_nebula);
+    const auto* metric_config = GetMetricConfig(histogram_name);
+    return GenerateP3AConstellationMessage(
+        histogram_name, value, message_meta_, upload_type,
+        metric_config ? *metric_config : std::nullopt);
   } else {
     base::Value::Dict p3a_json_value = GenerateP3AMessageDict(
         histogram_name, value, log_type, message_meta_, upload_type);
@@ -411,6 +411,23 @@ std::string MessageManager::SerializeLog(std::string_view histogram_name,
   }
 }
 
+const std::optional<MetricConfig>* MessageManager::GetMetricConfig(
+    std::string_view histogram_name) const {
+  const std::optional<MetricConfig>* metric_config = nullptr;
+
+  auto it = p3a::kCollectedTypicalHistograms.find(histogram_name);
+  if (it != p3a::kCollectedTypicalHistograms.end()) {
+    metric_config = &it->second;
+  } else if (it = p3a::kCollectedSlowHistograms.find(histogram_name);
+             it != p3a::kCollectedSlowHistograms.end()) {
+    metric_config = &it->second;
+  } else if (it = p3a::kCollectedExpressHistograms.find(histogram_name);
+             it != p3a::kCollectedExpressHistograms.end()) {
+    metric_config = &it->second;
+  }
+  return metric_config;
+}
+
 bool MessageManager::IsActualMetric(const std::string& histogram_name) const {
   return p3a::kCollectedTypicalHistograms.contains(histogram_name) ||
          p3a::kCollectedExpressHistograms.contains(histogram_name) ||
@@ -420,7 +437,9 @@ bool MessageManager::IsActualMetric(const std::string& histogram_name) const {
 
 bool MessageManager::IsEphemeralMetric(
     const std::string& histogram_name) const {
-  return p3a::kEphemeralHistograms.contains(histogram_name) ||
+  const auto* metric_config = GetMetricConfig(histogram_name);
+
+  return (metric_config && *metric_config && (*metric_config)->ephemeral) ||
          delegate_->GetDynamicMetricLogType(histogram_name).has_value();
 }
 
