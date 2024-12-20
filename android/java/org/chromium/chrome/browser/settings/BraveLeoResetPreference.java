@@ -20,6 +20,8 @@ import androidx.preference.PreferenceViewHolder;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
+import org.chromium.chrome.browser.browsing_data.TimePeriod;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -59,25 +61,27 @@ public class BraveLeoResetPreference
                 (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.brave_leo_reset_dialog, null);
 
-        DialogInterface.OnClickListener onClickListener = (dialog, button) -> {
-            if (button == AlertDialog.BUTTON_POSITIVE) {
-                Profile profile = null;
-                try {
-                    BraveActivity activity = BraveActivity.getBraveActivity();
-                    profile = activity.getCurrentProfile();
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "get BraveActivity exception", e);
-                }
-                if (profile == null) {
-                    Log.e(TAG, "showBraveLeoResetDialog profile is null");
-                    return;
-                }
-                UserPrefs.get(profile)
-                        .clearPref(BravePref.LAST_ACCEPTED_DISCLAIMER);
-            } else {
-                dialog.dismiss();
-            }
-        };
+        DialogInterface.OnClickListener onClickListener =
+                (dialog, button) -> {
+                    if (button == AlertDialog.BUTTON_POSITIVE) {
+                        Profile profile = null;
+                        try {
+                            BraveActivity activity = BraveActivity.getBraveActivity();
+                            profile = activity.getCurrentProfile();
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "get BraveActivity exception", e);
+                        }
+                        if (profile == null) {
+                            Log.e(TAG, "showBraveLeoResetDialog profile is null");
+                            return;
+                        }
+                        UserPrefs.get(profile).clearPref(BravePref.LAST_ACCEPTED_DISCLAIMER);
+                        BraveLeoMojomHelper.getInstance(profile)
+                                .deleteConversations(TimePeriod.ALL_TIME);
+                    } else {
+                        dialog.dismiss();
+                    }
+                };
 
         AlertDialog.Builder alert =
                 new AlertDialog.Builder(getContext(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
