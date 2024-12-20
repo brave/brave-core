@@ -5,12 +5,12 @@
 
 package org.chromium.chrome.browser;
 
-import org.chromium.base.Log;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.base.Log;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.content_public.browser.WebContents;
 
 /**
