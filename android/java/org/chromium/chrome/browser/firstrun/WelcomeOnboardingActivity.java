@@ -242,6 +242,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         return !isDefaultBrowser();
     }
 
+    private boolean isNewOnboardingEnabled() {
+        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEW_ANDROID_ONBOARDING);
+    }
+
     private void setDefaultBrowserAndProceedToNextStep() {
         BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
         if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
