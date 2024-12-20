@@ -27,6 +27,9 @@ FORWARD_DECLARE_TEST(YouTubeTabHelperBrowserTest, RuleMatchTestScriptTrue);
 
 // This class loads and stores the rules from the youtube.json file.
 // It is also used for matching based on the URL.
+// - See `youtube_json.h` for an example of the JSON this class loads
+// - See `youtube_component_installer.cc` for example of the component layout.
+//        This the location where the scripts are loaded from.
 class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
  public:
   YouTubeRegistry(const YouTubeRegistry&) = delete;
