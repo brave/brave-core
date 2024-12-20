@@ -1887,6 +1887,18 @@ public class BrowserViewController: UIViewController {
           if let url = webView.url, !url.isLocal, !InternalURL.isValid(url: url) {
             updateToolbarCurrentURL(url.displayURL)
           }
+        } else if tab === tabManager.selectedTab, tab.url?.displayURL?.scheme == "about",
+          !webView.isLoading
+        {
+          if let url = webView.url {
+            tab.url = url
+
+            if !tab.restoring {
+              updateUIForReaderHomeStateForTab(tab)
+            }
+
+            navigateInTab(tab: tab)
+          }
         } else if tab === tabManager.selectedTab, tab.isDisplayingBasicAuthPrompt {
           updateToolbarCurrentURL(
             URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
