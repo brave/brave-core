@@ -51,7 +51,7 @@ class AIChatSettingsHelper : public mojom::AIChatSettingsHelper,
   void SetDefaultModelKey(const std::string& model_key) override;
   void GetDefaultModelKey(GetDefaultModelKeyCallback callback) override;
   void SetClientPage(mojo::PendingRemote<mojom::SettingsPage> page) override;
-  void DeleteConversations() override;
+  void DeleteConversations(int time_period) override;
 
   void BindInterface(
       mojo::PendingReceiver<mojom::AIChatSettingsHelper> pending_receiver);

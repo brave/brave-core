@@ -26,7 +26,7 @@ interface AIChatSettingsHelper {
   SetDefaultModelKey(string key);
   GetDefaultModelKey() => (string key);
   SetClientPage(pending_remote<SettingsPage> page);
-  DeleteConversations();
+  DeleteConversations(int32 time_period);
 
   [EnableIf=is_android]
   CreateOrderId() => (string order_id);

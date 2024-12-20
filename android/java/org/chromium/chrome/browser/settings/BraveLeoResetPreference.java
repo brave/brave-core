@@ -21,6 +21,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
+import org.chromium.chrome.browser.browsing_data.TimePeriod;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -75,7 +76,8 @@ public class BraveLeoResetPreference
                             return;
                         }
                         UserPrefs.get(profile).clearPref(BravePref.LAST_ACCEPTED_DISCLAIMER);
-                        BraveLeoMojomHelper.getInstance(profile).deleteConversations();
+                        BraveLeoMojomHelper.getInstance(profile)
+                                .deleteConversations(TimePeriod.ALL_TIME);
                     } else {
                         dialog.dismiss();
                     }

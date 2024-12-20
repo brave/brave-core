@@ -19,6 +19,7 @@
 #include "brave/net/base/url_util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/browsing_data/core/browsing_data_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
@@ -204,13 +205,16 @@ void AIChatSettingsHelper::GetDefaultModelKey(
   std::move(callback).Run(model_service_->GetDefaultModelKey());
 }
 
-void AIChatSettingsHelper::DeleteConversations() {
+void AIChatSettingsHelper::DeleteConversations(int time_period) {
   ai_chat::AIChatService* service =
       ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);
   if (!service) {
     return;
   }
-  service->DeleteConversations();
+  browsing_data::TimePeriod period =
+      static_cast<browsing_data::TimePeriod>(time_period);
+  service->DeleteConversations(browsing_data::CalculateBeginDeleteTime(period),
+                               browsing_data::CalculateEndDeleteTime(period));
 }
 
 void AIChatSettingsHelper::SetClientPage(
