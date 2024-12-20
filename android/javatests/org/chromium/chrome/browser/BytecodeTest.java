@@ -1651,12 +1651,14 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge",
-                        long.class));
+                        long.class,
+                        Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkModel",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkModel",
-                        long.class));
+                        long.class,
+                        Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkPage",
