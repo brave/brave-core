@@ -439,6 +439,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       aiChatContext.dismissStorageNotice()
     }
 
+    if (aiChatContext.isStandalone) {
+      getAPI().metrics.willSendPromptWithFullPage()
+    }
+
     if (context.selectedActionType) {
       conversationHandler.submitHumanConversationEntryWithAction(
         context.inputText,
