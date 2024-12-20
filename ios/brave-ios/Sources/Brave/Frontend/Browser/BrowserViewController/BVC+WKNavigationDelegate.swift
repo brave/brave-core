@@ -171,6 +171,15 @@ extension BrowserViewController: WKNavigationDelegate {
     guard var requestURL = navigationAction.request.url else {
       return (.cancel, preferences)
     }
+
+    let tab = tab(for: webView)
+    if tab?.isExternalAppAlertPresented == true {
+      tab?.externalAppPopup?.dismissWithType(dismissType: .noAnimation)
+      tab?.externalAppPopupContinuation?.resume(with: .success(false))
+      tab?.externalAppPopupContinuation = nil
+      tab?.externalAppPopup = nil
+    }
+
     if InternalURL.isValid(url: requestURL) {
       if navigationAction.navigationType != .backForward, navigationAction.isInternalUnprivileged,
         navigationAction.sourceFrame != nil || navigationAction.targetFrame?.isMainFrame == false
@@ -204,7 +213,6 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
     // gives us the exact same behaviour as Safari.
-    let tab = tab(for: webView)
 
     if ["sms", "tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
       let shouldOpen = await handleExternalURL(
@@ -1264,6 +1272,8 @@ extension BrowserViewController {
         titleSize: 21
       )
 
+      tab?.externalAppPopup = popup
+
       if isSuppressActive {
         popup.addButton(title: Strings.suppressAlertsActionTitle, type: .destructive) {
           [weak tab] () -> PopupViewDismissType in
@@ -1322,10 +1332,17 @@ extension BrowserViewController {
 
     tab?.externalAppAlertCounter += 1
 
-    return await withCheckedContinuation { continuation in
-      showExternalSchemeAlert(isSuppressActive: tab?.externalAppAlertCounter ?? 0 > 2) {
-        continuation.resume(with: .success($0))
+    return await withTaskCancellationHandler {
+      return await withCheckedContinuation { [weak tab] continuation in
+        tab?.externalAppPopupContinuation = continuation
+        showExternalSchemeAlert(isSuppressActive: tab?.externalAppAlertCounter ?? 0 > 2) {
+          tab?.externalAppPopupContinuation = nil
+          continuation.resume(with: .success($0))
+        }
       }
+    } onCancel: { [weak tab] in
+      tab?.externalAppPopupContinuation?.resume(with: .success(false))
+      tab?.externalAppPopupContinuation = nil
     }
   }
 }
