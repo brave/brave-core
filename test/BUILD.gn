@@ -1136,6 +1136,7 @@ test("brave_browser_tests") {
       "//brave/browser/ai_chat:browser_tests",
       "//brave/browser/banners:browser_tests",
       "//brave/browser/brave_ads/creatives/search_result_ad:browser_tests",
+      "//brave/browser/password_manager:browser_tests",
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/ui/ai_rewriter:browsertest",
       "//brave/browser/ui/geolocation:browser_tests",
