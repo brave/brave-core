@@ -48,6 +48,7 @@
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -77,6 +78,48 @@ using AssociatedContentDelegate =
     ConversationHandler::AssociatedContentDelegate;
 
 constexpr size_t kDefaultSuggestionsCount = 4;
+
+// ai_chat component-level tools
+class PageContentTool : public Tool {
+  public:
+    // static name
+   inline static const std::string_view kName =
+       "active_web_page_content_fetcher";
+
+   ~PageContentTool() override = default;
+
+   std::string_view name() const override { return kName; }
+   std::string_view description() const override {
+     return "Fetches the content of the active Tab in the user's current "
+            "browser session that is open alongside this conversation. This "
+            "web page may or may not be relevant to the user's question. The "
+            "assistant will call this function when determining that the "
+            "user's question could be related to the content they are looking "
+            "at is not a standalone question.  The assistant should only "
+            "query this when it is at last 80\% sure the user's query is "
+            "related to the web page content.";
+    }
+
+    std::optional<std::string_view> input_schema_json() const override {
+      return R"({
+        "type": "object",
+        "properties": {
+          "confidence_percent": {
+            "type": "number",
+            "description": "How confident the assistant is that it needs to content of the active web page to answer the user's query, where 100 is that the user's query is definitely related to the content and 0 is that it is definitely not related to the query."
+          }
+        }
+      })";
+    }
+
+    bool IsContentAssociationRequired() const override {
+      return true;
+    }
+
+    bool RequiresUserInteractionBeforeHandling() const override {
+      return true;
+    }
+};
 
 }  // namespace
 
@@ -205,6 +248,13 @@ ConversationHandler::ConversationHandler(
       credential_manager_(credential_manager),
       feedback_api_(feedback_api),
       url_loader_factory_(url_loader_factory) {
+  // Build tools list
+  if (features::IsAIChatToolsEnabled()) {
+    if (features::kIsSmartPageContentEnabled.Get()) {
+      tools_.push_back(std::make_unique<PageContentTool>());
+    }
+  }
+
   // When a client disconnects, let observers know
   receivers_.set_disconnect_handler(
       base::BindRepeating(&ConversationHandler::OnClientConnectionChanged,
@@ -728,20 +778,25 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
+
   const bool is_page_associated =
       IsContentAssociationPossible() && should_send_page_contents_;
-  if (is_page_associated) {
+
+  if (is_page_associated && (!features::kIsSmartPageContentEnabled.Get() ||
+                             !features::IsAIChatToolsEnabled())) {
     // Fetch updated page content before performing generation
     GeneratePageContent(
         base::BindOnce(&ConversationHandler::PerformAssistantGeneration,
                        weak_ptr_factory_.GetWeakPtr(), question_part));
   } else {
-    // Now the conversation is committed, we can remove some unneccessary data
-    // if we're not associated with a page.
-    suggestions_.clear();
-    DisassociateContentDelegate();
-    OnSuggestedQuestionsChanged();
-    // Perform generation immediately
+    if (!is_page_associated) {
+      // Now the conversation is committed, we can remove some unneccessary data
+      // if we're not associated with a page.
+      suggestions_.clear();
+      DisassociateContentDelegate();
+      OnSuggestedQuestionsChanged();
+    }
+
     PerformAssistantGeneration(question_part);
   }
 }
@@ -851,6 +906,88 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
   }
 
   SubmitHumanConversationEntry(std::move(new_turn));
+}
+
+mojom::ToolUseEvent* ConversationHandler::GetToolUseEventForLastResponse(
+      std::string_view tool_id) {
+   if (!chat_history_.empty()) {
+    auto& last_entry = chat_history_.back();
+    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
+        last_entry->events->size() > 0) {
+      for (auto& event : *last_entry->events) {
+        if (event->is_tool_use_event()) {
+          auto& tool_use_event = event->get_tool_use_event();
+          if (tool_use_event->tool_id != tool_id) {
+            continue;
+          }
+          return tool_use_event.get();
+        }
+      }
+    }
+  }
+  return nullptr;
+}
+
+void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
+                                const std::optional<std::string>& output_json) {
+  auto* tool_use = GetToolUseEventForLastResponse(tool_id);
+  if (!tool_use) {
+    return;
+  }
+  // Some calls to this function are tools that user is giving
+  // permission to use, some are users's giving the answer, and some are to be
+  // run immediately after the tool is requested by the assistant.
+
+  // Some tools are handled by the Tool and some are handled by this class
+  if (tool_use->tool_name == PageContentTool::kName) {
+    GeneratePageContent(base::BindOnce(
+        &ConversationHandler::OnActiveWebPageContentFetcherResponseReady,
+        weak_ptr_factory_.GetWeakPtr(), tool_id));
+  } else {
+    // Get tool
+    auto tool_it = base::ranges::find_if(
+        tools_, [&tool_use](const std::unique_ptr<Tool>& tool) {
+          return tool->name() == tool_use->tool_name;
+        });
+    if (tool_it == tools_.end()) {
+      DLOG(ERROR) << "Tool not found: " << tool_use->tool_name;
+      return;
+    }
+    auto& tool = *tool_it;
+    tool->UseTool(tool_use->input_json,
+                  base::BindOnce(&ConversationHandler::OnToolUseComplete,
+                                 weak_ptr_factory_.GetWeakPtr(), tool_id));
+  }
+}
+
+void ConversationHandler::OnToolUseComplete(
+    const std::string& tool_use_id,
+    std::optional<std::string_view> output_json) {
+  auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
+  if (!tool_use) {
+    DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
+    return;
+  }
+
+  // If there's no output, we don't need to send to the assistant
+  if (!output_json) {
+    return;
+  }
+
+  tool_use->output_json = output_json.value();
+  OnHistoryUpdate();
+  PerformAssistantGeneration("");
+}
+
+void ConversationHandler::OnActiveWebPageContentFetcherResponseReady(
+    const std::string& tool_id,
+    std::string content,
+    bool is_video,
+    std::string invalidation_token) {
+  OnToolUseComplete(tool_id, R"({
+    "web_page_content": ")" + content +
+                                 R"(",
+  })");
 }
 
 void ConversationHandler::SubmitSummarizationRequest() {
@@ -1143,38 +1280,18 @@ void ConversationHandler::PerformAssistantGeneration(
   }
 
   // TODO(petemill): Decide when to send tools
-  std::vector<mojom::ToolPtr> tools;
-  {
-    mojom::ToolPtr tool = mojom::Tool::New();
-    tool->name = "check_lights";
-    tool->description = "Determine if the user's lights in a given room in their home are on or off";
-    tool->input_schema_json = R"({
-      "type": "object",
-      "properties": {
-        "room": {
-          "type": "string",
-          "description": "The room to check the lights in"
-        }
-      }
-    })";
-    tool->required_properties = {"room"};
-    tools.push_back(std::move(tool));
-  }
-  {
-    // Computer use tool
-    mojom::ToolPtr tool = mojom::Tool::New();
-    tool->type = "computer_20241022";
-    tool->name = "computer";
-    tool->input_schema_json = R"({
-          "display_width_px": 1280,
-          "display_height_px": 800
-    })";
-    tools.push_back(std::move(tool));
+  std::vector<Tool*> tools;
+  for (const auto& tool : tools_) {
+    bool is_sending_page_contents =
+        IsContentAssociationPossible() && should_send_page_contents_;
+    if (!tool->IsContentAssociationRequired() || is_sending_page_contents) {
+      tools.push_back(tool.get());
+    }
   }
 
   engine_->GenerateAssistantResponse(
-      is_video, page_content, chat_history_, input, selected_language_, tools,
-      std::nullopt, std::move(data_received_callback),
+      is_video, page_content, chat_history_, input, selected_language_,
+      std::move(tools), std::nullopt, std::move(data_received_callback),
       std::move(data_completed_callback));
 }
 
@@ -1522,6 +1639,31 @@ void ConversationHandler::OnEngineCompletionComplete(
       }
     }
   }
+
+  // Handle tool use requests that do not require user feedback
+  if (!chat_history_.empty()) {
+    auto& last_entry = chat_history_.back();
+    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
+        last_entry->events->size() > 0) {
+      for (auto& event : *last_entry->events) {
+        if (event->is_tool_use_event()) {
+          auto& tool_use_event = event->get_tool_use_event();
+          if (tool_use_event->output_json != std::nullopt) {
+            // already handled
+            continue;
+          }
+          for (auto& tool : tools_) {
+            if (tool->name() == tool_use_event->tool_name &&
+                !tool->RequiresUserInteractionBeforeHandling()) {
+              RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
 
   OnAPIRequestInProgressChanged();
 }

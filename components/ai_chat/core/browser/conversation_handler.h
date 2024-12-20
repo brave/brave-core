@@ -282,6 +282,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
 
+  // mojom::UntrustedConversationHandler
+  void RespondToToolUseRequest(
+      const std::string& tool_id,
+      const std::optional<std::string>& output_json) override;
+
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
   void MaybeFetchOrClearContentStagedConversation();
@@ -415,6 +420,19 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAPIRequestInProgressChanged();
   void OnStateForConversationEntriesChanged();
 
+  mojom::ToolUseEvent* GetToolUseEventForLastResponse(
+      std::string_view tool_id);
+
+  void OnToolUseComplete(
+      const std::string& tool_use_id,
+      std::optional<std::string_view> output_json);
+
+  void OnActiveWebPageContentFetcherResponseReady(
+    const std::string& tool_id,
+    std::string content,
+    bool is_video,
+    std::string invalidation_token);
+
   base::WeakPtr<AssociatedContentDelegate> associated_content_delegate_;
   std::unique_ptr<AssociatedArchiveContent> archive_content_;
 
@@ -428,6 +446,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Is a conversation engine request in progress (does not include
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;
+
+  // All tools available to this conversation
+  std::vector<std::unique_ptr<Tool>> tools_;
 
   // TODO(petemill): Tracking whether the UI is open
   // for a conversation might not be neccessary anymore as there

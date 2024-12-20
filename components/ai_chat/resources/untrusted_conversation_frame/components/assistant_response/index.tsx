@@ -12,6 +12,7 @@ import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
 import styles from './style.module.scss'
+import Button from '@brave/leo/react/button'
 
 function SearchSummary (props: { searchQueries: string[] }) {
   const context = useUntrustedConversationContext()
@@ -48,6 +49,8 @@ function SearchSummary (props: { searchQueries: string[] }) {
 }
 
 function AssistantEvent(props: { event: Mojom.ConversationEntryEvent, hasCompletionStarted: boolean, isEntryInProgress: boolean }) {
+  const context = useUntrustedConversationContext()
+
   if (props.event.completionEvent) {
     return (
       <MarkdownRenderer
@@ -66,8 +69,15 @@ function AssistantEvent(props: { event: Mojom.ConversationEntryEvent, hasComplet
       <div className={styles.actionInProgress}><ProgressRing />{getLocale('pageContentRefinedInProgress')}</div>
     )
   }
-  if (props.event.toolUseEvent) {
+  else if (props.event.toolUseEvent) {
     const toolUse = props.event.toolUseEvent
+    if (toolUse.toolName === 'active_web_page_content_fetcher') {
+      return (
+        <div className={styles.toolUseRequest}>Leo is requesting access to page content
+          <Button onClick={() => context.conversationHandler?.respondToToolUseRequest(toolUse.toolId, null)}>Allow</Button>
+        </div>
+      )
+    }
     return (
       <div>**{toolUse.toolName} - {toolUse.inputJson}</div>
     )

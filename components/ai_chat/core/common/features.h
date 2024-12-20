@@ -33,12 +33,18 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kConversationAPIEnabled;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kAITemperature;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<bool> kIsSmartPageContentEnabled;
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatHistory);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatHistoryEnabled();
+
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatTools);
+
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatToolsEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kCustomSiteDistillerScripts);
