@@ -84,6 +84,17 @@ extension BraveVPN {
     }
   }
 
+  @MainActor
+  public static func fetchRegionData() async -> [GRDRegion]? {
+    helper.setPreferredRegionPrecision(kGRDRegionPrecisionCityByCountry)
+
+    return await withCheckedContinuation { continuation in
+      helper.allRegions { regions, _ in
+        continuation.resume(returning: regions)
+      }
+    }
+  }
+
   static func changeVPNRegionForPrecision(
     to region: GRDRegion?,
     with precision: RegionPrecision
