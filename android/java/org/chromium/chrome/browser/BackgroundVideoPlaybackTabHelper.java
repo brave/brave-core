@@ -18,7 +18,7 @@ import org.chromium.content_public.browser.WebContents;
  */
 @JNINamespace("youtube_script_injector")
 public class BackgroundVideoPlaybackTabHelper {
-    private static final String TAG = "BackgroundVideoPlaybackTabHelper";
+    private static final String TAG = "BackgroundVideoTab";
 
     public static void setFullscreen(WebContents webContents) {
         BackgroundVideoPlaybackTabHelperJni.get().setFullscreen(webContents);
