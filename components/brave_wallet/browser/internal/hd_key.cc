@@ -24,7 +24,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key_utils.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -36,6 +35,7 @@
 #include "crypto/process_bound_string.h"
 #include "crypto/random.h"
 #include "crypto/symmetric_key.h"
+#include "third_party/boringssl/src/include/openssl/hmac.h"
 
 #define SECP256K1_BUILD  // This effectively turns off export attributes.
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1.h"
@@ -47,7 +47,10 @@ using crypto::SymmetricKey;
 namespace brave_wallet {
 
 namespace {
+constexpr char kMasterNode[] = "m";
 constexpr char kMasterSecret[] = "Bitcoin seed";
+constexpr size_t kSHA512Length = 64;
+constexpr uint32_t kHardenedOffset = 0x80000000;
 constexpr size_t kSerializationLength = 78;
 constexpr size_t kMaxDerSignatureSize = 72;
 constexpr size_t kContextRandomizeSize = 32;
@@ -133,11 +136,19 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(base::span<const uint8_t> seed) {
     return nullptr;
   }
 
-  auto hmac = HmacSha512(base::byte_span_from_cstring(kMasterSecret), seed);
-  auto scoped_zero_span = ScopedSecureZeroSpan(hmac);
-  auto [IL, IR] = base::span(hmac).split_at(kSHA512HashLength / 2);
+  SecureVector hmac(kSHA512Length);
+  unsigned int out_len;
+  if (!HMAC(EVP_sha512(), kMasterSecret, sizeof(kMasterSecret), seed.data(),
+            seed.size(), hmac.data(), &out_len)) {
+    LOG(ERROR) << __func__ << ": HMAC_SHA512 failed";
+    return nullptr;
+  }
+  DCHECK(out_len == kSHA512Length);
 
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
+  auto hmac_span = base::make_span(hmac);
+  auto IL = hmac_span.first(kSHA512Length / 2);
+  auto IR = hmac_span.last(kSHA512Length / 2);
   hdkey->SetPrivateKey(IL);
   hdkey->SetChainCode(IR);
   hdkey->path_ = kMasterNode;
@@ -538,9 +549,18 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
   data.push_back((index >> 8) & 0xFF);
   data.push_back(index & 0xFF);
 
-  auto hmac = HmacSha512(chain_code_, data);
-  auto scoped_zero_span = ScopedSecureZeroSpan(hmac);
-  auto [IL, IR] = base::span(hmac).split_at(kSHA512HashLength / 2);
+  SecureVector hmac(kSHA512Length);
+  unsigned int out_len;
+  if (!HMAC(EVP_sha512(), chain_code_.data(), chain_code_.size(), data.data(),
+            data.size(), hmac.data(), &out_len)) {
+    LOG(ERROR) << __func__ << ": HMAC_SHA512 failed";
+    return nullptr;
+  }
+  DCHECK(out_len == kSHA512Length);
+
+  auto hmac_span = base::make_span(hmac);
+  auto IL = hmac_span.first(kSHA512Length / 2);
+  auto IR = hmac_span.last(kSHA512Length / 2);
 
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
   hdkey->SetChainCode(IR);
@@ -605,18 +625,44 @@ std::unique_ptr<HDKey> HDKey::DeriveChildFromPath(const std::string& path) {
     return nullptr;
   }
 
-  const auto hd_path = ParseFullHDPath(path);
-  if (!hd_path) {
+  std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
+  std::vector<std::string> entries =
+      base::SplitString(path, "/", base::WhitespaceHandling::TRIM_WHITESPACE,
+                        base::SplitResult::SPLIT_WANT_NONEMPTY);
+  if (entries.empty()) {
     return nullptr;
   }
 
-  std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
+  // Starting with 'm' node and effectively copying `*this` into `hd_key`.
+  if (entries[0] != kMasterNode) {
+    LOG(ERROR) << __func__ << ": path must start with \"m\"";
+    return nullptr;
+  }
   hd_key->SetPrivateKey(private_key_);
   hd_key->SetChainCode(chain_code_);
   hd_key->path_ = path_;
 
-  for (auto node : *hd_path) {
-    hd_key = hd_key->DeriveChild(node);
+  for (size_t i = 1; i < entries.size(); ++i) {
+    std::string entry = entries[i];
+
+    bool is_hardened = entry.length() > 1 && entry.back() == '\'';
+    if (is_hardened) {
+      entry.pop_back();
+    }
+    unsigned child_index = 0;
+    if (!base::StringToUint(entry, &child_index)) {
+      LOG(ERROR) << __func__ << ": path must contain number or number'";
+      return nullptr;
+    }
+    if (child_index >= kHardenedOffset) {
+      LOG(ERROR) << __func__ << ": index must be less than " << kHardenedOffset;
+      return nullptr;
+    }
+    if (is_hardened) {
+      child_index += kHardenedOffset;
+    }
+
+    hd_key = hd_key->DeriveChild(child_index);
     if (!hd_key) {
       return nullptr;
     }

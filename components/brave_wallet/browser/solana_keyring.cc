@@ -5,13 +5,14 @@
 
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <utility>
 
 #include "base/containers/contains.h"
 #include "base/containers/span.h"
-#include "base/containers/to_vector.h"
+#include "base/containers/span_rust.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -31,18 +32,29 @@ constexpr size_t kMaxSeedLen = 32;
 }  // namespace
 
 SolanaKeyring::SolanaKeyring(base::span<const uint8_t> seed)
-    : root_(ConstructRootHDKey(seed, GetRootPath(mojom::KeyringId::kSolana))) {}
+    : root_(ConstructRootHDKey(seed)) {}
 SolanaKeyring::~SolanaKeyring() = default;
 
 // static
 std::unique_ptr<HDKeyEd25519> SolanaKeyring::ConstructRootHDKey(
-    base::span<const uint8_t> seed,
-    const std::string& hd_path) {
-  if (!seed.empty()) {
-    return HDKeyEd25519::GenerateFromSeedAndPath(seed, hd_path);
+    base::span<const uint8_t> seed) {
+  if (seed.empty()) {
+    return nullptr;
+  }
+  auto result = HDKeyEd25519::GenerateFromSeed(seed);
+  if (!result) {
+    return nullptr;
   }
 
-  return nullptr;
+  // m/44'/501'
+  for (auto index : std::to_array({44, 501})) {
+    result = result->DeriveHardenedChild(index);
+    if (!result) {
+      return nullptr;
+    }
+  }
+
+  return result;
 }
 
 std::optional<AddedAccountInfo> SolanaKeyring::AddNewHDAccount() {
@@ -64,13 +76,12 @@ void SolanaKeyring::RemoveLastHDAccount() {
   accounts_.pop_back();
 }
 
-std::string SolanaKeyring::ImportAccount(base::span<const uint8_t> payload) {
-  auto key_pair = payload.to_fixed_extent<kSolanaKeypairSize>();
-  if (!key_pair) {
-    return std::string();
-  }
+std::string SolanaKeyring::ImportAccount(base::span<const uint8_t> keypair) {
+  // extract private key from keypair
+  std::vector<uint8_t> private_key = std::vector<uint8_t>(
+      keypair.begin(), keypair.begin() + kSolanaPrikeySize);
   std::unique_ptr<HDKeyEd25519> hd_key =
-      HDKeyEd25519::GenerateFromKeyPair(*key_pair);
+      HDKeyEd25519::GenerateFromPrivateKey(private_key);
   if (!hd_key) {
     return std::string();
   }
@@ -108,17 +119,13 @@ std::string SolanaKeyring::EncodePrivateKeyForExport(
 std::vector<uint8_t> SolanaKeyring::SignMessage(
     const std::string& address,
     base::span<const uint8_t> message) {
-  HDKeyEd25519* hd_key = GetHDKeyFromAddress(address);
+  HDKeyEd25519* hd_key =
+      static_cast<HDKeyEd25519*>(GetHDKeyFromAddress(address));
   if (!hd_key) {
     return std::vector<uint8_t>();
   }
 
-  auto signature = hd_key->Sign(message);
-  if (!signature) {
-    return std::vector<uint8_t>();
-  }
-
-  return base::ToVector(*signature);
+  return hd_key->Sign(message);
 }
 
 std::vector<std::string> SolanaKeyring::GetHDAccountsForTesting() const {
@@ -181,14 +188,14 @@ std::optional<std::string> SolanaKeyring::CreateProgramDerivedAddress(
   buffer.insert(buffer.end(), pda_marker.begin(), pda_marker.end());
 
   auto hash_array = crypto::SHA256Hash(buffer);
+  std::vector<uint8_t> hash_vec(hash_array.begin(), hash_array.end());
 
   // Invalid because program derived addresses have to be off-curve.
-  if (bytes_are_curve25519_point(
-          rust::Slice<const uint8_t>{hash_array.data(), hash_array.size()})) {
+  if (bytes_are_curve25519_point(base::SpanToRustSlice(hash_vec))) {
     return std::nullopt;
   }
 
-  return Base58Encode(hash_array);
+  return Base58Encode(hash_vec);
 }
 
 // Find a valid program derived address and its corresponding bump seed.

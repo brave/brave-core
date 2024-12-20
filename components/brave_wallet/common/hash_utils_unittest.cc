@@ -79,30 +79,4 @@ TEST(HashUtilsUnitTest, Hash160) {
             "b472a266d0bd89c13706a4132ccfb16f7c3b9fcb");
 }
 
-TEST(HashUtilsUnitTest, HmacSha512) {
-  // Empty vectors test.
-  EXPECT_EQ(HexEncodeLower(HmacSha512({}, {})),
-            "b936cee86c9f87aa5d3c6f2e84cb5a4239a5fe50480a6ec66b70ab5b1f4ac673"
-            "0c6c515421b327ec1d69402e53dfb49ad7381eb067b338fd7b0cb22247225d47");
-
-  // Large vectors test.
-  EXPECT_EQ(HexEncodeLower(HmacSha512(std::vector<uint8_t>(1000, 0xee),
-                                      std::vector<uint8_t>(2000, 0x45))),
-            "5d6a801cf32c7d5edb17f5287653c86323599de6e8ab76819b3530494e144ec6"
-            "3a40f6e541d6cc8a7db3d0560349d74ca52c1e370c9a70a96096e28761d017fc");
-
-  // https://datatracker.ietf.org/doc/html/rfc4231#section-4.2
-  EXPECT_EQ(
-      HexEncodeLower(HmacSha512(std::vector<uint8_t>(20, 0x0b),
-                                base::byte_span_from_cstring("Hi There"))),
-      "87aa7cdea5ef619d4ff0b4241a1d6cb02379f4e2ce4ec2787ad0b30545e17cde"
-      "daa833b7d6b8a702038b274eaea3f4e4be9d914eeb61f1702e696c203a126854");
-
-  // https://datatracker.ietf.org/doc/html/rfc4231#section-4.4
-  EXPECT_EQ(HexEncodeLower(HmacSha512(std::vector<uint8_t>(20, 0xaa),
-                                      std::vector<uint8_t>(50, 0xdd))),
-            "fa73b0089d56a284efb0f0756c890be9b1b5dbdd8ee81a3655f83e33b2279d39"
-            "bf3e848279a722c806b485a47e67c807b946a337bee8942674278859e13292fb");
-}
-
 }  // namespace brave_wallet

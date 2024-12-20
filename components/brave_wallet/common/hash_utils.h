@@ -17,11 +17,9 @@ namespace brave_wallet {
 
 inline constexpr size_t kKeccakHashLength = 32;
 inline constexpr size_t kRipemd160HashLength = 20;
-inline constexpr size_t kSHA512HashLength = 64;
 
 using KeccakHashArray = std::array<uint8_t, kKeccakHashLength>;
 using SHA256HashArray = std::array<uint8_t, crypto::kSHA256Length>;
-using SHA512HashArray = std::array<uint8_t, kSHA512HashLength>;
 using Ripemd160HashArray = std::array<uint8_t, kRipemd160HashLength>;
 
 KeccakHashArray KeccakHash(base::span<const uint8_t> input);
@@ -41,9 +39,6 @@ SHA256HashArray DoubleSHA256Hash(base::span<const uint8_t> input);
 
 // ripemd160(sha256(input))
 Ripemd160HashArray Hash160(base::span<const uint8_t> input);
-
-SHA512HashArray HmacSha512(base::span<const uint8_t> key,
-                           base::span<const uint8_t> data);
 
 }  // namespace brave_wallet
 

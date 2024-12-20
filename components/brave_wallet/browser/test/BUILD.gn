@@ -58,7 +58,6 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/filecoin_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/internal/hd_key_ed25519_unittest.cc",
     "//brave/components/brave_wallet/browser/internal/hd_key_unittest.cc",
-    "//brave/components/brave_wallet/browser/internal/hd_key_utils_unittest.cc",
     "//brave/components/brave_wallet/browser/json_rpc_requests_helper_unittest.cc",
     "//brave/components/brave_wallet/browser/json_rpc_response_parser_unittest.cc",
     "//brave/components/brave_wallet/browser/json_rpc_service_test_utils_unittest.cc",

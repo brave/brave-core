@@ -17,12 +17,9 @@
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
 #include "brave/third_party/ethash/src/include/ethash/keccak.h"
 #include "crypto/sha2.h"
-#include "third_party/boringssl/src/include/openssl/hmac.h"
 
 namespace brave_wallet {
-
 namespace {
-
 std::array<uint8_t, 64> ConcatArrays(const std::array<uint8_t, 32>& arr1,
                                      const std::array<uint8_t, 32>& arr2) {
   std::array<uint8_t, 64> result;
@@ -30,7 +27,6 @@ std::array<uint8_t, 64> ConcatArrays(const std::array<uint8_t, 32>& arr1,
   base::ranges::copy(arr2, result.begin() + 32);
   return result;
 }
-
 }  // namespace
 
 KeccakHashArray KeccakHash(base::span<const uint8_t> input) {
@@ -77,16 +73,6 @@ Ripemd160HashArray Hash160(base::span<const uint8_t> input) {
       .Finalize(result.data());
 
   return result;
-}
-
-SHA512HashArray HmacSha512(base::span<const uint8_t> key,
-                           base::span<const uint8_t> data) {
-  SHA512HashArray hmac;
-  unsigned int out_len = 0;
-  CHECK(HMAC(EVP_sha512(), key.data(), key.size(), data.data(), data.size(),
-             hmac.data(), &out_len));
-  CHECK_EQ(out_len, hmac.size());
-  return hmac;
 }
 
 }  // namespace brave_wallet

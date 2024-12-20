@@ -7,21 +7,19 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_ED25519_H_
 
 #include <memory>
-#include <optional>
 #include <string>
+#include <vector>
 
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key_utils.h"
 
 namespace brave_wallet {
 
+// https://www.rfc-editor.org/rfc/rfc8032.html#section-5.1.5
 inline constexpr size_t kEd25519PrivateKeySize = 32;
 inline constexpr size_t kEd25519PublicKeySize = 32;
-inline constexpr size_t kEd25519KeypairSize =
-    kEd25519PrivateKeySize + kEd25519PublicKeySize;
-inline constexpr size_t kEd25519ChainCodeSize = 32;
-inline constexpr size_t kEd25519SignatureSize = 64;
+// https://github.com/satoshilabs/slips/blob/de7f963959ccfc80256fb5e001f64ce9ada9fba1/slip-0010.md?plain=1#L116-L117
+inline constexpr size_t kSlip10ChainCodeSize = 32;
 
 // This class implements basic EdDSA over ed25519 functionality of SLIP-0010
 // spec with 32 bytes private key and only allows private key derivation with
@@ -34,19 +32,17 @@ class HDKeyEd25519 {
   HDKeyEd25519(const HDKeyEd25519&) = delete;
   HDKeyEd25519& operator=(const HDKeyEd25519&) = delete;
 
-  static std::unique_ptr<HDKeyEd25519> GenerateFromSeedAndPath(
-      base::span<const uint8_t> seed,
-      std::string_view hd_path);
-  static std::unique_ptr<HDKeyEd25519> GenerateFromKeyPair(
-      base::span<const uint8_t, kEd25519KeypairSize> key_pair);
+  static std::unique_ptr<HDKeyEd25519> GenerateFromSeed(
+      base::span<const uint8_t> seed);
+  static std::unique_ptr<HDKeyEd25519> GenerateFromPrivateKey(
+      base::span<const uint8_t> private_key);
 
   std::unique_ptr<HDKeyEd25519> DeriveHardenedChild(uint32_t index);
 
-  std::optional<std::array<uint8_t, kEd25519SignatureSize>> Sign(
-      base::span<const uint8_t> msg);
+  std::vector<uint8_t> Sign(base::span<const uint8_t> msg);
 
-  base::span<const uint8_t, kEd25519PublicKeySize> GetPublicKeyAsSpan() const
-      LIFETIME_BOUND;
+  std::vector<uint8_t> GetPrivateKeyBytes() const;
+  std::vector<uint8_t> GetPublicKeyBytes() const;
 
   std::string GetBase58EncodedPublicKey() const;
   std::string GetBase58EncodedKeypair() const;
@@ -55,15 +51,13 @@ class HDKeyEd25519 {
   FRIEND_TEST_ALL_PREFIXES(HDKeyEd25519UnitTest, TestVector1);
   FRIEND_TEST_ALL_PREFIXES(HDKeyEd25519UnitTest, TestVector2);
 
-  HDKeyEd25519(base::span<const uint8_t> key, base::span<const uint8_t> data);
+  static std::unique_ptr<HDKeyEd25519> DeriveFromHmacPayload(
+      base::span<const uint8_t> key,
+      base::span<const uint8_t> data);
 
-  base::span<const uint8_t, kEd25519PrivateKeySize> GetPrivateKeyAsSpan() const
-      LIFETIME_BOUND;
-  std::unique_ptr<HDKeyEd25519> DeriveChild(uint32_t index);
-
-  SecureByteArray<kEd25519PrivateKeySize> private_key_;
+  std::array<uint8_t, kEd25519PrivateKeySize> private_key_ = {};
+  std::array<uint8_t, kSlip10ChainCodeSize> chain_code_ = {};
   std::array<uint8_t, kEd25519PublicKeySize> public_key_ = {};
-  SecureByteArray<kEd25519ChainCodeSize> chain_code_;
 };
 
 }  // namespace brave_wallet
