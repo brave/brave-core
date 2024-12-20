@@ -9,15 +9,11 @@ package org.chromium.chrome.browser.playlist.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity
 data class LastPlayedPositionModel(
-    @PrimaryKey @SerializedName("playlist_item_id") @ColumnInfo(name = "playlist_item_id") var playlistItemId: String,
-    @SerializedName("last_played_position") @ColumnInfo(name = "last_played_position") var lastPlayedPosition: Long
+    @SerializedName("playlist_item_id") var playlistItemId: String,
+    @SerializedName("last_played_position") var lastPlayedPosition: Long
 ) : Parcelable {
     companion object {
         @JvmField

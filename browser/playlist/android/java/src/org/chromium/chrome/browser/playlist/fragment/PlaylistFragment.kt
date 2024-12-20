@@ -40,7 +40,6 @@ import org.chromium.chrome.browser.playlist.listener.PlaylistItemClickListener
 import org.chromium.chrome.browser.playlist.listener.PlaylistItemOptionsListener
 import org.chromium.chrome.browser.playlist.listener.PlaylistOptionsListener
 import org.chromium.chrome.browser.playlist.listener.StartDragListener
-import org.chromium.chrome.browser.playlist.local_database.PlaylistRepository
 import org.chromium.chrome.browser.playlist.model.HlsContentQueueModel
 import org.chromium.chrome.browser.playlist.model.MoveOrCopyModel
 import org.chromium.chrome.browser.playlist.model.PlaylistItemModel
@@ -99,10 +98,6 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
     private lateinit var mEmptyView: View
     private lateinit var mPlaylistView: View
     private var isFirstRun: Boolean = true
-
-    private val mPlaylistRepository: PlaylistRepository by lazy {
-        PlaylistRepository(requireContext())
-    }
 
     private fun initializeBrowser() {
         mBrowserFuture =
@@ -280,25 +275,6 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
                         if (it.isCached) {
                             totalFileSize += it.mediaFileBytes
                         }
-                    }
-                    mPlaylistModel.items.forEach { playlistItemModel ->
-                        if (!PlaylistUtils.isPlaylistItemCached(playlistItemModel)) {
-                            val isDownloadQueueModelExists =
-                                mPlaylistRepository.isHlsContentQueueModelExists(playlistItemModel.id)
-                                    ?: false
-                            if (playlistItemModel.isCached && MediaUtils.isHlsFile(playlistItemModel.mediaPath) && !isDownloadQueueModelExists) {
-                                mPlaylistRepository.insertHlsContentQueueModel(
-                                    HlsContentQueueModel(
-                                        playlistItemModel.id,
-                                        HlsContentQueueModel.HlsContentStatus.NOT_READY.name
-                                    )
-                                )
-                            }
-                        }
-                    }
-                    if (isFirstRun) {
-                        PlaylistUtils.checkAndStartHlsDownload(requireContext())
-                        isFirstRun = false
                     }
 
                     activity?.runOnUiThread {
@@ -491,13 +467,11 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist), ItemInteractionLi
         }
         mScope.launch {
             val selectedPlaylistItem = mPlaylistModel.items[position]
-            val lastPlayedPositionModel =
-                mPlaylistRepository.getLastPlayedPositionByPlaylistItemId(selectedPlaylistItem.id)
 
             activity?.runOnUiThread {
                 browser.clearMediaItems()
                 browser.addMediaItems(subItemMediaList)
-                browser.seekTo(position, lastPlayedPositionModel?.lastPlayedPosition ?: 0)
+                browser.seekTo(position, 0)
                 browser.shuffleModeEnabled = isShuffle
                 browser.prepare()
                 browser.play()
