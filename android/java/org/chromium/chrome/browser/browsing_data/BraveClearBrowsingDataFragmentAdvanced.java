@@ -14,23 +14,38 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference;
+import org.chromium.components.browser_ui.settings.SpinnerPreference;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
 public class BraveClearBrowsingDataFragmentAdvanced extends ClearBrowsingDataFragmentAdvanced {
+    ClearBrowsingDataCheckBoxPreference mClearAIChatDataCheckBoxPreference;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
 
+        getPreferenceScreen().addPreference(buildClearLeoAIHistory());
         getPreferenceScreen()
                 .addPreference(
                         BraveRewardsHelper.isRewardsEnabled()
                                 ? buildResetBraveRewardsDataPref()
                                 : buildClearBraveAdsDataPref());
+    }
+
+    private ClearBrowsingDataCheckBoxPreference buildClearLeoAIHistory() {
+        mClearAIChatDataCheckBoxPreference =
+                new ClearBrowsingDataCheckBoxPreference(getContext(), null);
+        mClearAIChatDataCheckBoxPreference.setTitle(R.string.brave_clear_ai_history_title);
+        mClearAIChatDataCheckBoxPreference.setSummary(R.string.brave_clear_ai_history_summary);
+        mClearAIChatDataCheckBoxPreference.setIcon(R.drawable.ic_brave_ai);
+
+        return mClearAIChatDataCheckBoxPreference;
     }
 
     private ClickableSpansTextMessagePreference buildResetBraveRewardsDataPref() {
@@ -86,5 +101,24 @@ public class BraveClearBrowsingDataFragmentAdvanced extends ClearBrowsingDataFra
                 getActivity().finish();
             }
         };
+    }
+
+    @Override
+    protected void onClearBrowsingData() {
+        super.onClearBrowsingData();
+        if (mClearAIChatDataCheckBoxPreference != null
+                && mClearAIChatDataCheckBoxPreference.isChecked()) {
+            Profile profile = getProfile();
+            if (profile == null) {
+                return;
+            }
+            Object spinnerSelection =
+                    ((SpinnerPreference) findPreference(PREF_TIME_RANGE)).getSelectedOption();
+            @TimePeriod
+            int lastSelectedTimePeriod =
+                    ((TimePeriodUtils.TimePeriodSpinnerOption) spinnerSelection).getTimePeriod();
+
+            BraveLeoMojomHelper.getInstance(profile).deleteConversations(lastSelectedTimePeriod);
+        }
     }
 }

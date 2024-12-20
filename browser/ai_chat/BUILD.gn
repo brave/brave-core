@@ -32,6 +32,7 @@ static_library("ai_chat") {
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
     "//chrome/common:channel_info",
+    "//components/browsing_data/core",
     "//components/keyed_service/content",
     "//components/prefs",
     "//components/user_prefs",

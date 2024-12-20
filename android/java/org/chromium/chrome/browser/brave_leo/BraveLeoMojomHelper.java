@@ -11,6 +11,7 @@ import org.jni_zero.NativeMethods;
 import org.chromium.ai_chat.mojom.AiChatSettingsHelper;
 import org.chromium.ai_chat.mojom.ModelWithSubtitle;
 import org.chromium.ai_chat.mojom.PremiumStatus;
+import org.chromium.chrome.browser.browsing_data.TimePeriod;
 import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
@@ -120,6 +121,14 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
         }
 
         mAIChatAndroidHelper.setDefaultModelKey(modelKey);
+    }
+
+    public void deleteConversations(@TimePeriod int timePeriod) {
+        if (mAIChatAndroidHelper == null) {
+            return;
+        }
+
+        mAIChatAndroidHelper.deleteConversations(timePeriod);
     }
 
     @Override

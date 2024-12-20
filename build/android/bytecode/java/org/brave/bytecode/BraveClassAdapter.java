@@ -33,7 +33,7 @@ public class BraveClassAdapter {
         chain = new BraveBottomControlsMediatorClassAdapter(chain);
         chain = new BraveCachedFlagClassAdapter(chain);
         chain = new BraveChromeContextMenuPopulatorAdapter(chain);
-        chain = new BraveClearBrowsingDataFragmentAdapter(chain);
+        chain = new BraveClearBrowsingDataFragmentAdvancedAdapter(chain);
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
         chain = new BraveContentSettingsResourcesClassAdapter(chain);
         chain = new BraveContentViewClassAdapter(chain);

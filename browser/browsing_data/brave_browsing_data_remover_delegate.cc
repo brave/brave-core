@@ -71,6 +71,11 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     }
   }
 
+  // That code executes on desktop only. Android part is done inside
+  // BraveClearBrowsingDataFragmentAdvanced::onClearBrowsingData(). It's done
+  // that way to avoid extensive patching in java files by adding extra
+  // types inside ClearBrowsingDataFragment.DialogOption and surrounding
+  // functions
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY) {
     ai_chat::AIChatService* ai_chat_service =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_);

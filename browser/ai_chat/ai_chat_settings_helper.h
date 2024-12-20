@@ -24,6 +24,7 @@
 #endif
 
 class PrefService;
+class Profile;
 namespace content {
 class BrowserContext;
 }  // namespace content
@@ -50,6 +51,7 @@ class AIChatSettingsHelper : public mojom::AIChatSettingsHelper,
   void SetDefaultModelKey(const std::string& model_key) override;
   void GetDefaultModelKey(GetDefaultModelKeyCallback callback) override;
   void SetClientPage(mojo::PendingRemote<mojom::SettingsPage> page) override;
+  void DeleteConversations(int time_period) override;
 
   void BindInterface(
       mojo::PendingReceiver<mojom::AIChatSettingsHelper> pending_receiver);
@@ -92,6 +94,7 @@ class AIChatSettingsHelper : public mojom::AIChatSettingsHelper,
   mojo::ReceiverSet<mojom::AIChatSettingsHelper> receivers_;
   raw_ptr<PrefService> pref_service_ = nullptr;
   raw_ptr<ModelService> model_service_;
+  raw_ptr<Profile> profile_ = nullptr;
   mojo::Remote<mojom::SettingsPage> client_page_;
   base::WeakPtrFactory<AIChatSettingsHelper> weak_ptr_factory_{this};
 };
