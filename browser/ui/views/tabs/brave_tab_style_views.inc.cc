@@ -226,9 +226,9 @@ SkPath BraveVerticalTabStyle::GetPath(
       tab_left += scale * kPaddingForVerticalTabInTile;
       tab_right -= scale * kPaddingForVerticalTabInTile;
     } else {
-      constexpr int kTotalVerticalPaddingForHorizontalTab = 6;
       constexpr int kAdditionalVerticalPadding =
-          kTotalVerticalPaddingForHorizontalTab - brave_tabs::kHorizontalTabGap;
+          brave_tabs::kHorizontalSplitViewTabVerticalSpacing -
+          brave_tabs::kHorizontalTabGap;
       tab_top += scale * kAdditionalVerticalPadding;
       tab_bottom -= scale * kAdditionalVerticalPadding;
 
