@@ -11,7 +11,7 @@ import SwiftUI
 public struct BraveVPNRegionListView: View {
 
   @State
-  private var isAutomatic: Bool
+  private var isAutomaticRegion: Bool = false
 
   @State
   private var isLoading = false
@@ -21,6 +21,9 @@ public struct BraveVPNRegionListView: View {
 
   @State
   private var isShowingChangeRegionAlert = false
+
+  @State
+  private var allRegions: [GRDRegion] = []
 
   @State
   private var selectedIndex = 0
@@ -39,7 +42,6 @@ public struct BraveVPNRegionListView: View {
   public init(
     onServerRegionSet: ((_ region: GRDRegion?) -> Void)?
   ) {
-    self.isAutomatic = BraveVPN.isAutomaticRegion
     self.onServerRegionSet = onServerRegionSet
   }
 
@@ -53,9 +55,9 @@ public struct BraveVPNRegionListView: View {
         automaticRegionToggle
       }
 
-      if !isAutomatic {
+      if !isAutomaticRegion {
         Section {
-          ForEach(Array(BraveVPN.allRegions.enumerated()), id: \.offset) {
+          ForEach(Array(allRegions.enumerated()), id: \.offset) {
             index,
             region in
             countryRegionItem(at: index, region: region)
@@ -80,7 +82,10 @@ public struct BraveVPNRegionListView: View {
       }
     }
     .onAppear {
-      isAutomatic = BraveVPN.isAutomaticRegion
+      Task { @MainActor in
+        isAutomaticRegion = BraveVPN.isAutomaticRegion
+        allRegions = await BraveVPN.fetchRegionData() ?? []
+      }
     }
     .onDisappear {
       cancelTimer()
@@ -163,14 +168,14 @@ public struct BraveVPNRegionListView: View {
   private var automaticRegionToggle: some View {
     Toggle(
       isOn: Binding(
-        get: { isAutomatic },
+        get: { isAutomaticRegion },
         set: { enableAutomaticServer($0) }
       )
     ) {
       VStack(alignment: .leading) {
         Text(Strings.VPN.automaticServerSelectionToggleTitle)
           .font(.body)
-        if isAutomatic, let regionAutomaticName = BraveVPN.lastKnownRegion?.displayName {
+        if isAutomaticRegion, let regionAutomaticName = BraveVPN.lastKnownRegion?.displayName {
           Text(regionAutomaticName)
             .font(.footnote)
             .foregroundStyle(Color(braveSystemName: .textSecondary))
@@ -201,9 +206,9 @@ public struct BraveVPNRegionListView: View {
   }
 
   private func enableAutomaticServer(_ enabled: Bool) {
-    isAutomatic = enabled
+    isAutomaticRegion = enabled
 
-    guard isAutomatic else {
+    guard isAutomaticRegion else {
       let autoRegion = BraveVPN.allRegions.first(where: {
         $0.countryISOCode == BraveVPN.lastKnownRegion?.countryISOCode
       })
