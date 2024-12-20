@@ -419,11 +419,11 @@ if (is_android) {
     "//brave/browser/ui/webui/new_tab_takeover/android:new_tab_takeover",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
-    "//chrome/android:jni_headers",
-    "//components/sync_device_info",
     "//brave/components/youtube_script_injector/browser/content",
     "//brave/components/youtube_script_injector/browser/core",
     "//brave/components/youtube_script_injector/common",
+    "//chrome/android:jni_headers",
+    "//components/sync_device_info",
   ]
 } else {
   brave_chrome_browser_sources += [
