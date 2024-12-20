@@ -45,7 +45,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "ui/aura/window_event_dispatcher.h"
 #include "ui/compositor/compositor.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/geometry/size.h"
@@ -73,13 +72,23 @@ content::WebContents* GetWebContents() {
   return browser->tab_strip_model()->GetActiveWebContents();
 }
 
-std::optional<gfx::Rect> GetNativeViewBounds() {
-  auto* web_contents = GetWebContents();
-  if (!web_contents) {
+const std::optional<gfx::Rect> GetContainerBounds(content::WebUI* web_ui) {
+  DCHECK(web_ui);
+  if (!web_ui) {
     return std::nullopt;
   }
 
-  return web_contents->GetNativeView()->bounds();
+  return web_ui->GetWebContents()->GetContainerBounds();
+}
+
+views::Widget* GetBrowserWidget() {
+  const auto* browser = BrowserList::GetInstance()->GetLastActive();
+  if (!browser) {
+    return nullptr;
+  }
+
+  return views::Widget::GetWidgetForNativeWindow(
+      browser->window()->GetNativeWindow());
 }
 
 }  // namespace
@@ -120,6 +129,11 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
 }
 
 WebcompatReporterDOMHandler::~WebcompatReporterDOMHandler() = default;
+
+base::WeakPtr<WebcompatReporterDOMHandler>
+WebcompatReporterDOMHandler::GetHandlerWeekPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
 
 void WebcompatReporterDOMHandler::OnWindowResize(const int& height) {
   AllowJavascript();
@@ -232,8 +246,7 @@ void WebcompatReporterDOMHandler::HandleInit(const base::Value::List& args) {
 
   AllowJavascript();
 
-  auto bounds = GetNativeViewBounds();
-
+  const auto bounds = GetContainerBounds(web_ui());
   if (!bounds) {
     return;
   }
@@ -304,40 +317,31 @@ WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui)
   auto webcompat_reporter_handler =
       std::make_unique<WebcompatReporterDOMHandler>(profile);
 
-  webcompat_reporter_handler_ = webcompat_reporter_handler.get();
+  webcompat_reporter_handler_ = webcompat_reporter_handler->GetHandlerWeekPtr();
 
   web_ui->AddMessageHandler(std::move(webcompat_reporter_handler));
 
-  const auto* browser = BrowserList::GetInstance()->GetLastActive();
-
-  if (!browser) {
-    return;
+  if (auto* widget = GetBrowserWidget()) {
+    observed_windows_.AddObservation(widget);
   }
-
-  auto* widget = views::Widget::GetWidgetForNativeWindow(
-      browser->window()->GetNativeWindow());
-  if (!widget) {
-    return;
-  }
-  observed_windows_.AddObservation(widget);
 }
 
 WebcompatReporterUI::~WebcompatReporterUI() = default;
 
 void WebcompatReporterUI::OnWidgetBoundsChanged(views::Widget* widget,
                                                 const gfx::Rect& new_bounds) {
-  if (!webcompat_reporter_handler_) {
+  DCHECK(widget);
+  DCHECK(webcompat_reporter_handler_);
+  if (!webcompat_reporter_handler_ || !widget) {
     return;
   }
 
-  const auto modal_dialog_bounds = web_ui()
-                                       ->GetWebContents()
-                                       ->GetContentNativeView()
-                                       ->GetActualBoundsInScreen();
-  const auto browser_window_bounds = widget->client_view()->GetBoundsInScreen();
+  if (const auto modal_dlg_bounds = GetContainerBounds(web_ui())) {
+    const auto browser_wnd_bounds = widget->client_view()->GetBoundsInScreen();
 
-  webcompat_reporter_handler_->OnWindowResize(browser_window_bounds.bottom() -
-                                              modal_dialog_bounds.y());
+    webcompat_reporter_handler_->OnWindowResize(browser_wnd_bounds.bottom() -
+                                                modal_dlg_bounds->y());
+  }
 }
 
 }  // namespace webcompat_reporter

@@ -27,7 +27,7 @@
 namespace content {
 class RenderWidgetHostView;
 class WebUI;
-}
+}  // namespace content
 
 namespace webcompat_reporter {
 
@@ -49,10 +49,11 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
       delete;
   ~WebcompatReporterDOMHandler() override;
 
+  void OnWindowResize(const int& height);
+  base::WeakPtr<WebcompatReporterDOMHandler> GetHandlerWeekPtr();
+
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
-
-  void OnWindowResize(const int& height);
 
  private:
   void InitAdditionalParameters(Profile* profile);
@@ -71,7 +72,8 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
 
   raw_ptr<WebcompatReporterService> reporter_service_ = nullptr;
   raw_ptr<PrefService> pref_service_ = nullptr;
-  raw_ptr<content::RenderWidgetHostView> render_widget_host_view_;
+  raw_ptr<content::RenderWidgetHostView, DanglingUntriaged>
+      render_widget_host_view_{nullptr};
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
 
   mojom::ReportInfoPtr pending_report_;
@@ -92,7 +94,7 @@ class WebcompatReporterUI : public ConstrainedWebDialogUI,
                              const gfx::Rect& new_bounds) override;
 
  private:
-  raw_ptr<WebcompatReporterDOMHandler> webcompat_reporter_handler_{nullptr};
+  base::WeakPtr<WebcompatReporterDOMHandler> webcompat_reporter_handler_;
   base::ScopedMultiSourceObservation<views::Widget, views::WidgetObserver>
       observed_windows_{this};
 };
