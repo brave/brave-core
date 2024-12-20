@@ -50,7 +50,7 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
   ~WebcompatReporterDOMHandler() override;
 
   void OnWindowResize(const int& height);
-  base::WeakPtr<WebcompatReporterDOMHandler> GetHandlerWeekPtr();
+  base::WeakPtr<WebcompatReporterDOMHandler> AsWeekPtr();
 
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
@@ -72,8 +72,6 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
 
   raw_ptr<WebcompatReporterService> reporter_service_ = nullptr;
   raw_ptr<PrefService> pref_service_ = nullptr;
-  raw_ptr<content::RenderWidgetHostView, DanglingUntriaged>
-      render_widget_host_view_{nullptr};
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
 
   mojom::ReportInfoPtr pending_report_;
