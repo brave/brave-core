@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
@@ -124,11 +125,33 @@ base::Value::List BuildMessages(
           base::Value::Dict tool_result;
           tool_result.Set("role", "tool");
           tool_result.Set("tool_call_id", tool_event->tool_id);
-          tool_result.Set("content", tool_event->output_json.value());
+          // Only send the large results (images) in the last tool result event,
+          // otherwise the context gets filled.
+          if (event == turn->events->back() ||
+                           tool_event->output_json.value().size() < 1000) {
+            auto possible_content = base::JSONReader::Read(tool_event->output_json.value());
+            if (!possible_content.has_value()) {
+              DLOG(ERROR) << "Failed to parse tool output JSON: "
+                         << tool_event->output_json.value();
+              tool_result.Set("content", "");
+            } else if (possible_content->is_list()) {
+              base::Value::List& list = possible_content.value().GetList();
+              tool_result.Set("content", std::move(list));
+            } else if (possible_content->is_dict()) {
+              base::Value::Dict& list = possible_content.value().GetDict();
+              tool_result.Set("content", std::move(list));
+            } else {
+              tool_result.Set("content", possible_content.value().GetString());
+            }
+          } else {
+            tool_result.Set("content", "");
+          }
           tool_results.Append(std::move(tool_result));
         }
       }
-      message.Set("tool_calls", std::move(tool_calls));
+      if (!tool_calls.empty()) {
+        message.Set("tool_calls", std::move(tool_calls));
+      }
     } else {
       const std::string& text = (turn->edits && !turn->edits->empty())
                                     ? turn->edits->back()->text

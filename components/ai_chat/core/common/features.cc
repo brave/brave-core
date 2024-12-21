@@ -30,7 +30,10 @@ const base::FeatureParam<bool> kOmniboxOpensFullPage{
 const base::FeatureParam<bool> kConversationAPIEnabled{
     &kAIChat, "conversation_api", true};
 const base::FeatureParam<double> kAITemperature{&kAIChat, "temperature", 0.2};
-const base::FeatureParam<bool> kIsSmartPageContentEnabled{&kAIChat, "smart_page_content", true};
+const base::FeatureParam<bool> kIsSmartPageContentEnabled{
+    &kAIChat, "smart_page_content", false};
+const base::FeatureParam<bool> kIsAgentEnabled{
+    &kAIChat, "agent", true};
 
 bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);

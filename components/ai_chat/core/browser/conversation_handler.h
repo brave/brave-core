@@ -115,6 +115,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     // within the browser.
     virtual bool HasOpenAIChatPermission() const;
 
+    virtual std::vector<Tool*> GetTools();
+
     void GetTopSimilarityWithPromptTilContextLimit(
         const std::string& prompt,
         const std::string& text,

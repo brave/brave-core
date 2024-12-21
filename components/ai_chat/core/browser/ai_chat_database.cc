@@ -543,6 +543,22 @@ bool AIChatDatabase::AddConversationEntry(
     update_model_key_statement.Run();
   }
 
+  // If existing entry exists, remove it first
+  // TODO(petemill): Add unpersisted events as that's the only reason we'd
+  // get called multiple times for the same entry.
+  static constexpr char kDoesEntryExistQuery[] =
+      "SELECT uuid FROM conversation_entry WHERE uuid=?";
+  sql::Statement get_conversation_entry_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kDoesEntryExistQuery));
+  CHECK(get_conversation_entry_statement.is_valid());
+  get_conversation_entry_statement.BindString(0, entry->uuid.value());
+  if (get_conversation_entry_statement.Step()) {
+    if (!DeleteConversationEntry(entry->uuid.value())) {
+      DVLOG(0) << "Failed to delete existing conversation entry";
+      return false;
+    }
+  }
+
   sql::Statement insert_conversation_entry_statement;
 
   if (editing_id.has_value()) {

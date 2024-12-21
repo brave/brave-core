@@ -55,6 +55,7 @@ class AIChatUIBrowserTest;
 
 namespace ai_chat {
 class AIChatMetrics;
+class AgentClient;
 
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
@@ -180,6 +181,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
                       std::string_view invalidation_token) override;
   std::u16string GetPageTitle() const override;
   void OnNewPage(int64_t navigation_id) override;
+  std::vector<Tool*> GetTools() override;
 
   // Called when an event of significance occurs that, if the page is a
   // same-document navigation, should result in that previous navigation
@@ -210,6 +212,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void SetPendingGetContentCallback(GetPageContentCallback callback);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  std::unique_ptr<AgentClient> agent_client_;
 
   bool is_same_document_navigation_ = false;
   int pending_navigation_id_;

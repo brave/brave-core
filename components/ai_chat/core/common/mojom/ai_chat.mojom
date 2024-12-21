@@ -203,20 +203,6 @@ union ConversationEntryEvent {
   ConversationTitleEvent conversation_title_event;
 };
 
-struct Tool {
-  string name;
-  string description;
-
-  // Usually "function"
-  string type;
-
-  // JSON Schema definition for the input properties to the tool
-  string? input_schema_json;
-  array<string>? required_properties;
-
-  mojo_base.mojom.Value? extra_params;
-};
-
 // Represents a single turn in a conversation.
 // The character type defines which party initiated the turn in the
 // conversation.

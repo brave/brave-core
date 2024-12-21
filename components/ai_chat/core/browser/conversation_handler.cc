@@ -81,27 +81,27 @@ constexpr size_t kDefaultSuggestionsCount = 4;
 
 // ai_chat component-level tools
 class PageContentTool : public Tool {
-  public:
-    // static name
-   inline static const std::string_view kName =
-       "active_web_page_content_fetcher";
+ public:
+  // static name
+  inline static const std::string_view kName =
+      "active_web_page_content_fetcher";
 
-   ~PageContentTool() override = default;
+  ~PageContentTool() override = default;
 
-   std::string_view name() const override { return kName; }
-   std::string_view description() const override {
-     return "Fetches the content of the active Tab in the user's current "
-            "browser session that is open alongside this conversation. This "
-            "web page may or may not be relevant to the user's question. The "
-            "assistant will call this function when determining that the "
-            "user's question could be related to the content they are looking "
-            "at is not a standalone question.  The assistant should only "
-            "query this when it is at last 80\% sure the user's query is "
-            "related to the web page content.";
-    }
+  std::string_view name() const override { return kName; }
+  std::string_view description() const override {
+    return "Fetches the text content of the active Tab in the user's current "
+           "browser session that is open alongside this conversation. This "
+           "web page may or may not be relevant to the user's question. The "
+           "assistant will call this function when determining that the "
+           "user's question could be related to the content they are looking "
+           "at is not a standalone question.  The assistant should only "
+           "query this when it is at last 80\% sure the user's query is "
+           "related to the web page content.";
+  }
 
-    std::optional<std::string_view> input_schema_json() const override {
-      return R"({
+  std::optional<std::string> GetInputSchemaJson() const override {
+    return R"({
         "type": "object",
         "properties": {
           "confidence_percent": {
@@ -110,17 +110,30 @@ class PageContentTool : public Tool {
           }
         }
       })";
-    }
+  }
 
-    bool IsContentAssociationRequired() const override {
-      return true;
-    }
+  bool IsContentAssociationRequired() const override { return true; }
 
-    bool RequiresUserInteractionBeforeHandling() const override {
-      return true;
-    }
+  bool RequiresUserInteractionBeforeHandling() const override { return true; }
 };
 
+// {
+  //   mojom::ToolPtr tool = mojom::Tool::New();
+  //   tool->name = "check_lights";
+  //   tool->description = "Determine if the user's lights in a given room in their home are on or off";
+  //   tool->input_schema_json = R"({
+  //     "type": "object",
+  //     "properties": {
+  //       "room": {
+  //         "type": "string",
+  //         "description": "The room to check the lights in"
+  //       }
+  //     }
+  //   })";
+  //   tool->required_properties = {"room"};
+  //   tools.push_back(std::move(tool));
+  // }
+  // {
 }  // namespace
 
 AssociatedContentDelegate::AssociatedContentDelegate()
@@ -143,6 +156,10 @@ void AssociatedContentDelegate::GetStagedEntriesFromContent(
 
 bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
   return false;
+}
+
+std::vector<Tool*> AssociatedContentDelegate::GetTools() {
+  return {};
 }
 
 void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
@@ -782,8 +799,10 @@ void ConversationHandler::SubmitHumanConversationEntry(
   const bool is_page_associated =
       IsContentAssociationPossible() && should_send_page_contents_;
 
-  if (is_page_associated && (!features::kIsSmartPageContentEnabled.Get() ||
-                             !features::IsAIChatToolsEnabled())) {
+  if (is_page_associated &&
+      !(features::kIsAgentEnabled.Get() && features::IsAIChatToolsEnabled()) &&
+      (!features::kIsSmartPageContentEnabled.Get() ||
+       !features::IsAIChatToolsEnabled())) {
     // Fetch updated page content before performing generation
     GeneratePageContent(
         base::BindOnce(&ConversationHandler::PerformAssistantGeneration,
@@ -934,26 +953,49 @@ void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
   if (!tool_use) {
     return;
   }
+  LOG(ERROR) << __func__;
+  LOG(ERROR) << __func__ << ": " << tool_id << ", " << tool_use->tool_id
+              << ", " << tool_use->tool_name;
   // Some calls to this function are tools that user is giving
   // permission to use, some are users's giving the answer, and some are to be
   // run immediately after the tool is requested by the assistant.
 
   // Some tools are handled by the Tool and some are handled by this class
   if (tool_use->tool_name == PageContentTool::kName) {
+    LOG(ERROR) << __func__;
     GeneratePageContent(base::BindOnce(
         &ConversationHandler::OnActiveWebPageContentFetcherResponseReady,
         weak_ptr_factory_.GetWeakPtr(), tool_id));
   } else {
+    LOG(ERROR) << __func__;
     // Get tool
+    Tool* tool = nullptr;
     auto tool_it = base::ranges::find_if(
         tools_, [&tool_use](const std::unique_ptr<Tool>& tool) {
           return tool->name() == tool_use->tool_name;
         });
-    if (tool_it == tools_.end()) {
+    if (tool_it != tools_.end()) {
+      tool = tool_it->get();
+    } else {
+      // Check content tools
+      if (associated_content_delegate_) {
+        auto content_tools = associated_content_delegate_->GetTools();
+        auto a_tool_it =
+            base::ranges::find_if(content_tools,
+                                  [&tool_use](const Tool* tool) {
+                                    LOG(ERROR) << __func__ << ": " << tool->name() << ", " << tool_use->tool_name;
+                                    return tool->name() == tool_use->tool_name;
+                                  });
+        if (a_tool_it != content_tools.end()) {
+          tool = *a_tool_it;
+        }
+      }
+    }
+    if (!tool) {
       DLOG(ERROR) << "Tool not found: " << tool_use->tool_name;
       return;
     }
-    auto& tool = *tool_it;
+    LOG(ERROR) << __func__ << ": " << tool->name();
     tool->UseTool(tool_use->input_json,
                   base::BindOnce(&ConversationHandler::OnToolUseComplete,
                                  weak_ptr_factory_.GetWeakPtr(), tool_id));
@@ -1281,11 +1323,18 @@ void ConversationHandler::PerformAssistantGeneration(
 
   // TODO(petemill): Decide when to send tools
   std::vector<Tool*> tools;
+  bool is_sending_page_contents =
+      IsContentAssociationPossible() && should_send_page_contents_;
+
   for (const auto& tool : tools_) {
-    bool is_sending_page_contents =
-        IsContentAssociationPossible() && should_send_page_contents_;
     if (!tool->IsContentAssociationRequired() || is_sending_page_contents) {
       tools.push_back(tool.get());
+    }
+  }
+
+  if (is_sending_page_contents) {
+    for (const auto& tool : associated_content_delegate_->GetTools()) {
+      tools.push_back(tool);
     }
   }
 
@@ -1657,6 +1706,15 @@ void ConversationHandler::OnEngineCompletionComplete(
                 !tool->RequiresUserInteractionBeforeHandling()) {
               RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
               break;
+            }
+          }
+          if (associated_content_delegate_ && should_send_page_contents_) {
+            for (auto& tool : associated_content_delegate_->GetTools()) {
+              if (tool->name() == tool_use_event->tool_name &&
+                  !tool->RequiresUserInteractionBeforeHandling()) {
+                RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
+                break;
+              }
             }
           }
         }
