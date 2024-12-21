@@ -85,14 +85,14 @@ std::string CreateJSONRequestBody(
         if (!tool->description().empty()) {
           function_dict.Set("description", tool->description());
         }
-
-        if (tool->input_schema_json() != std::nullopt) {
-          // input_schema_json is string of JSON Schema for the input properties
+        auto input_schema = tool->GetInputSchemaJson();
+        if (input_schema) {
+          // input_schema is string of JSON Schema for the input properties
           // of the Tool. Set it on the "parameters" field as actual Value JSON.
           std::optional<base::Value> parameters =
-              base::JSONReader::Read(*tool->input_schema_json());
+              base::JSONReader::Read(input_schema.value());
           CHECK(parameters)
-              << "Failed to parse input_schema_json for tool: " << tool->name();
+              << "Failed to parse input schema for tool: " << tool->name();
 
           function_dict.Set("parameters", std::move(*parameters));
 

@@ -31,10 +31,12 @@
 #include "base/strings/utf_ostream_operators.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/content/browser/agent_client.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "components/favicon/content/content_favicon_driver.h"
@@ -134,6 +136,7 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   previous_page_title_ = web_contents->GetTitle();
+  agent_client_ = std::make_unique<AgentClient>(web_contents);
 }
 
 AIChatTabHelper::~AIChatTabHelper() = default;
@@ -373,6 +376,10 @@ void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }
+}
+
+std::vector<Tool*> AIChatTabHelper::GetTools() {
+  return {agent_client_.get()};
 }
 
 void AIChatTabHelper::MaybeSameDocumentIsNewPage() {

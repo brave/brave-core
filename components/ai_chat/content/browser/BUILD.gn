@@ -7,6 +7,8 @@ import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 
 static_library("browser") {
   sources = [
+    "agent_client.cc",
+    "agent_client.h",
     "ai_chat_brave_search_throttle.cc",
     "ai_chat_brave_search_throttle.h",
     "ai_chat_tab_helper.cc",
