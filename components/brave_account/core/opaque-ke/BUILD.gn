@@ -52,6 +52,7 @@ action("build_opaque_ke_bundle") {
     "src/index.js",
     "src/lib.rs",
     "webpack.config.js",
+    "xml_http_request_wasm_loader_plugin.js",
   ]
 
   outputs = [
