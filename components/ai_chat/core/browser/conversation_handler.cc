@@ -947,6 +947,47 @@ mojom::ToolUseEvent* ConversationHandler::GetToolUseEventForLastResponse(
   return nullptr;
 }
 
+void ConversationHandler::MaybeRespondToNextToolUseRequest() {
+  // Handle tool use requests that do not require user feedback
+  if (!chat_history_.empty()) {
+    auto& last_entry = chat_history_.back();
+    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
+        last_entry->events->size() > 0) {
+      bool is_handling_tool = false;
+      for (auto& event : *last_entry->events) {
+        if (event->is_tool_use_event()) {
+          auto& tool_use_event = event->get_tool_use_event();
+          if (tool_use_event->output_json != std::nullopt) {
+            // already handled
+            continue;
+          }
+          for (auto& tool : tools_) {
+            if (tool->name() == tool_use_event->tool_name &&
+                !tool->RequiresUserInteractionBeforeHandling()) {
+              is_handling_tool = true;
+              RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
+              break;
+            }
+          }
+          if (!is_handling_tool && associated_content_delegate_ && should_send_page_contents_) {
+            for (auto& tool : associated_content_delegate_->GetTools()) {
+              if (tool->name() == tool_use_event->tool_name &&
+                  !tool->RequiresUserInteractionBeforeHandling()) {
+                is_handling_tool = true;
+                RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
+                break;
+              }
+            }
+          }
+          if (is_handling_tool) {
+            break;
+          }
+        }
+      }
+    }
+  }
+}
+
 void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
                                 const std::optional<std::string>& output_json) {
   auto* tool_use = GetToolUseEventForLastResponse(tool_id);
@@ -1026,7 +1067,15 @@ void ConversationHandler::OnToolUseComplete(
             return !event->is_tool_use_event() ||
                    event->get_tool_use_event()->output_json.has_value();
           })) {
+    is_request_in_progress_ = true;
+    OnAPIRequestInProgressChanged();
     PerformAssistantGeneration("");
+  } else {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&ConversationHandler::MaybeRespondToNextToolUseRequest,
+                       weak_ptr_factory_.GetWeakPtr()),  // The callback
+        base::Seconds(2));
   }
 }
 
@@ -1698,38 +1747,7 @@ void ConversationHandler::OnEngineCompletionComplete(
     }
   }
 
-  // Handle tool use requests that do not require user feedback
-  if (!chat_history_.empty()) {
-    auto& last_entry = chat_history_.back();
-    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
-        last_entry->events->size() > 0) {
-      for (auto& event : *last_entry->events) {
-        if (event->is_tool_use_event()) {
-          auto& tool_use_event = event->get_tool_use_event();
-          if (tool_use_event->output_json != std::nullopt) {
-            // already handled
-            continue;
-          }
-          for (auto& tool : tools_) {
-            if (tool->name() == tool_use_event->tool_name &&
-                !tool->RequiresUserInteractionBeforeHandling()) {
-              RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
-              break;
-            }
-          }
-          if (associated_content_delegate_ && should_send_page_contents_) {
-            for (auto& tool : associated_content_delegate_->GetTools()) {
-              if (tool->name() == tool_use_event->tool_name &&
-                  !tool->RequiresUserInteractionBeforeHandling()) {
-                RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  MaybeRespondToNextToolUseRequest();
 
 
   OnAPIRequestInProgressChanged();
