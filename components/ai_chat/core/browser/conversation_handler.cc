@@ -1018,7 +1018,16 @@ void ConversationHandler::OnToolUseComplete(
 
   tool_use->output_json = output_json.value();
   OnHistoryUpdate();
-  PerformAssistantGeneration("");
+  // Only perform generation if there are no pending tools left to run from
+  // the last entry
+  if (base::ranges::all_of(
+          *chat_history_.back()->events,
+          [](const mojom::ConversationEntryEventPtr& event) {
+            return !event->is_tool_use_event() ||
+                   event->get_tool_use_event()->output_json.has_value();
+          })) {
+    PerformAssistantGeneration("");
+  }
 }
 
 void ConversationHandler::OnActiveWebPageContentFetcherResponseReady(
