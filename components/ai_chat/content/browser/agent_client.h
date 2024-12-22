@@ -38,6 +38,7 @@ class AgentClient : public Tool, public content::DevToolsAgentHostClient {
 
  private:
   void CaptureScreenshot(MessageCallback callback);
+  void TypeText(std::string_view text, MessageCallback callback);
 
   void Execute(std::string_view method, std::string_view params, MessageCallback callback);
 

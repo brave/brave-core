@@ -191,6 +191,7 @@ void AgentClient::UseTool(
       }])");
     return;
   }
+
   devtools_agent_host_->AttachClient(this);
 
   if (!cursor_overlay_) {
@@ -208,6 +209,11 @@ void AgentClient::UseTool(
     do_action =
         base::BindOnce(&AgentClient::CaptureScreenshot, base::Unretained(this),
                        std::move(message_callback));
+  } else if (*action == "type") {
+    do_action = base::BindOnce(&AgentClient::TypeText, base::Unretained(this),
+                               input.FindString("text") ? *input.FindString("text")
+                                                        : "",
+                               std::move(message_callback));
   } else if (*action == "mouse_move") {
     auto* coordinates = input.FindList("coordinate");
     if (!coordinates || coordinates->size() != 2) {
@@ -385,6 +391,15 @@ void AgentClient::CaptureScreenshot(MessageCallback callback) {
                 std::move(callback).Run(base::ok(response));
               },
               std::move(callback)));
+}
+
+void AgentClient::TypeText(std::string_view text, MessageCallback callback) {
+  Execute("Input.insertText",
+          R"({
+    "text": ")" + std::string(text) +
+              R"("
+  })",
+          std::move(callback));
 }
 
 void AgentClient::Execute(std::string_view method,
