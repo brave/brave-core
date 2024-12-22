@@ -1,0 +1,9 @@
+Name: rustversion
+URL: https://crates.io/crates/rustversion
+Version: 1.0.18
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Conditional compilation according to rustc compiler version

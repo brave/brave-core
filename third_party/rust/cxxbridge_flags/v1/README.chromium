@@ -1,7 +1,7 @@
 Name: cxxbridge-flags
 URL: https://crates.io/crates/cxxbridge-flags
-Version: 1.0.129
-License: Apache 2.0
+Version: 1.0.131
+License: Apache-2.0
 License File:
 Shipped: yes
 Security Critical: yes

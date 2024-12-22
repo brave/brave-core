@@ -2,7 +2,7 @@ Name: cssparser
 URL: https://crates.io/crates/cssparser
 Version: 0.28.1
 Revision: 02129220f848246ce8899f45a50d4b15068ebd79
-License: Mozilla Public License 2.0
+License: Mozilla-Public-License-2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/cssparser-0.28.1/LICENSE
 Shipped: yes
 Security Critical: yes
