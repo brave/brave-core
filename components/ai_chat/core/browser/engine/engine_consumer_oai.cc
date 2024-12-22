@@ -11,9 +11,9 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/containers/adapters.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
 #include "base/memory/scoped_refptr.h"
@@ -102,8 +102,10 @@ base::Value::List BuildMessages(
     if (turn->character_type == CharacterType::ASSISTANT &&
         turn->events.has_value() && !turn->events->empty()) {
       base::Value::List tool_calls;
-      for (const auto& event : turn->events.value()) {
-        if (!event->is_tool_use_event()) {
+      std::vector<mojom::ConversationEntryEventPtr>& events = turn->events.value();
+      int large_event_count = 0;
+      for (auto & event : base::Reversed(events)) {
+         if (!event->is_tool_use_event()) {
           continue;
         }
 
@@ -118,17 +120,20 @@ base::Value::List BuildMessages(
         function.Set("arguments", tool_event->input_json);
         tool_call.Set("function", std::move(function));
 
-        tool_calls.Append(std::move(tool_call));
+        tool_calls.Insert(tool_calls.begin(), base::Value(std::move(tool_call)));
 
         // Tool result
         if (tool_event->output_json.has_value()) {
           base::Value::Dict tool_result;
           tool_result.Set("role", "tool");
           tool_result.Set("tool_call_id", tool_event->tool_id);
-          // Only send the large results (images) in the last tool result event,
-          // otherwise the context gets filled.
-          if (event == turn->events->back() ||
+          // Only send the large results (images) in the last 2x tool result
+          // events, otherwise the context gets filled.
+          if (large_event_count < 3 ||
                            tool_event->output_json.value().size() < 1000) {
+            if (tool_event->output_json.value().size() >= 1000) {
+              large_event_count++;
+            }
             auto possible_content = base::JSONReader::Read(tool_event->output_json.value());
             if (!possible_content.has_value()) {
               DLOG(ERROR) << "Failed to parse tool output JSON: "
@@ -171,7 +176,7 @@ base::Value::List BuildMessages(
     messages.Append(std::move(message));
 
     if (!tool_results.empty()) {
-      for (auto& tool_result : tool_results) {
+      for (auto& tool_result : base::Reversed(tool_results)) {
         messages.Append(std::move(tool_result));
       }
     }
