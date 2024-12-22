@@ -11,6 +11,8 @@ static_library("browser") {
     "navigation_tool.h",
     "agent_client.cc",
     "agent_client.h",
+    "ai_chat_cursor.cc",
+    "ai_chat_cursor.h",
     "ai_chat_brave_search_throttle.cc",
     "ai_chat_brave_search_throttle.h",
     "ai_chat_tab_helper.cc",

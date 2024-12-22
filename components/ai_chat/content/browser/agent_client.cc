@@ -14,6 +14,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/to_string.h"
 #include "base/types/expected.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "content/public/browser/render_widget_host_view.h"
@@ -176,16 +177,33 @@ void AgentClient::UseTool(
   }
   base::Value::Dict& input = json_message->GetDict();
   std::string* action = input.FindString("action");
-  devtools_agent_host_->AttachClient(this);
-  auto message_callback =
-      base::BindOnce(&AgentClient::OnMessageForToolUseComplete,
-                     base::Unretained(this), std::move(callback));
-  base::OnceCallback<void()> do_action;
   if (!action) {
     DLOG(ERROR) << "No action found in input_json: " << input_json;
     std::move(callback).Run(std::nullopt);
     return;
   }
+
+  if (*action == "cursor_position") {
+    std::move(callback).Run(R"([{
+      "type": "text",
+        "x": )" + base::ToString(mouse_position_.x()) + R"(,
+        "y": )" + base::ToString(mouse_position_.y()) + R"(,
+      }])");
+    return;
+  }
+  devtools_agent_host_->AttachClient(this);
+
+  if (!cursor_overlay_) {
+    cursor_overlay_ = std::make_unique<AIChatCursorOverlay>(
+        devtools_agent_host_->GetWebContents());
+  }
+  cursor_overlay_->ShowCursor();
+
+  auto message_callback =
+      base::BindOnce(&AgentClient::OnMessageForToolUseComplete,
+                     base::Unretained(this), std::move(callback));
+  base::OnceCallback<void()> do_action;
+
   if (*action == "screenshot") {
     do_action =
         base::BindOnce(&AgentClient::CaptureScreenshot, base::Unretained(this),
@@ -199,6 +217,7 @@ void AgentClient::UseTool(
     }
     mouse_position_ =
         gfx::Point((*coordinates)[0].GetInt(), (*coordinates)[1].GetInt());
+    cursor_overlay_->MoveCursorTo(mouse_position_.x(), mouse_position_.y());
     do_action = base::BindOnce(
         [](AgentClient* instance, MessageCallback callback) {
           instance->Execute("Input.dispatchMouseEvent",
