@@ -1,7 +1,7 @@
 Name: base64
 URL: https://crates.io/crates/base64
 Version: 0.13.1
-License: Apache 2.0
+License: Apache-2.0
 License File:
 Shipped: yes
 Security Critical: yes

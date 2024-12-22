@@ -1,0 +1,9 @@
+Name: foldhash
+URL: https://crates.io/crates/foldhash
+Version: 0.1.3
+License: Zlib
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: A fast, non-cryptographic, minimally DoS-resistant hashing algorithm.
