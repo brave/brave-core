@@ -56,6 +56,7 @@ class AIChatUIBrowserTest;
 namespace ai_chat {
 class AIChatMetrics;
 class AgentClient;
+class NavigationTool;
 
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
@@ -213,6 +214,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
   std::unique_ptr<AgentClient> agent_client_;
+  std::unique_ptr<NavigationTool> navigation_tool_;
 
   bool is_same_document_navigation_ = false;
   int pending_navigation_id_;
