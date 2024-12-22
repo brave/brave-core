@@ -1,7 +1,7 @@
 Name: serde_json
 URL: https://crates.io/crates/serde_json
 Version: 1.0.133
-License: Apache 2.0
+License: Apache-2.0
 License File:
 Shipped: yes
 Security Critical: yes

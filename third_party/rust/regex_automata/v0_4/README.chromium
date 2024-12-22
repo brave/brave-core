@@ -1,7 +1,7 @@
 Name: regex-automata
 URL: https://crates.io/crates/regex-automata
 Version: 0.4.9
-License: Apache 2.0
+License: Apache-2.0
 License File:
 Shipped: yes
 Security Critical: yes
