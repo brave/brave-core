@@ -32,6 +32,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/content/browser/agent_client.h"
+#include "brave/components/ai_chat/content/browser/navigation_tool.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
@@ -135,6 +136,7 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
           std::make_unique<PageContentFetcher>(web_contents)) {
   previous_page_title_ = web_contents->GetTitle();
   agent_client_ = std::make_unique<AgentClient>(web_contents);
+  navigation_tool_ = std::make_unique<NavigationTool>(web_contents);
 }
 
 AIChatTabHelper::~AIChatTabHelper() = default;
@@ -365,7 +367,7 @@ void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
 }
 
 std::vector<Tool*> AIChatTabHelper::GetTools() {
-  return {agent_client_.get()};
+  return {agent_client_.get(), navigation_tool_.get()};
 }
 
 void AIChatTabHelper::MaybeSameDocumentIsNewPage() {
