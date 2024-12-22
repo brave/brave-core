@@ -15,6 +15,7 @@
 #include "base/strings/to_string.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
+#include "brave/components/ai_chat/content/browser/build_devtools_key_event_params.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "content/public/browser/render_widget_host_view.h"
@@ -22,8 +23,6 @@
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkPngDecoder.h"
 #include "include/core/SkBitmap.h"
-#include "include/core/SkPixmap.h"
-#include "include/core/SkStream.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkColor.h"
@@ -273,33 +272,43 @@ void AgentClient::UseTool(
       return;
     }
     do_action = base::BindOnce(
-        [](AgentClient* instance, const std::string& key,
+        [](AgentClient* instance, const std::string& in_key,
            MessageCallback callback) {
-          auto code = key;
-          if (key == "Page_Down") {
-            code = "Enter";
-          }
-          instance->Execute("Input.dispatchKeyEvent",
-                            R"({
-    "type": "keyDown",
-    "windowsVirtualKeyCode": 34,
-    "nativeVirtualKeyCode": 34,
-    "code": "PageDown",
-    "key": "PageDown",
-    "modifiers": 0
-      })",
-                            base::DoNothing());
+          auto params = BuildDevToolsKeyEventParams(in_key);
+          instance->Execute(
+              "Input.dispatchKeyEvent",
+              R"({
+                                "type": "keyDown",
+                                "windowsVirtualKeyCode": )" +
+                  base::ToString(params.windows_native_virtual_key_code) + R"(,
+                                "nativeVirtualKeyCode": )" +
+                  base::ToString(params.native_virtual_key_code) + R"(,
+                                "code": ")" +
+                  params.dom_code_string + R"(",
+                                "modifiers": )" +
+                  base::ToString(params.modifiers) + R"(
+                              })",
+              base::DoNothing());
 
-          instance->Execute("Input.dispatchKeyEvent",
-                            R"({
-    "type": "keyUp",
-    "windowsVirtualKeyCode": 34,
-    "nativeVirtualKeyCode": 34,
-    "code": "PageDown",
-    "key": "PageDown",
-    "modifiers": 0
-      })",
-                            std::move(callback));
+          instance->Execute(
+              "Input.dispatchKeyEvent",
+              R"({
+                                "type": "keyUp",
+                                "windowsVirtualKeyCode": )" +
+                  base::ToString(params.windows_native_virtual_key_code) + R"(,
+                                "nativeVirtualKeyCode": )" +
+                  base::ToString(params.native_virtual_key_code) + R"(,
+                                "code": ")" +
+                  params.dom_code_string + R"(",
+                                "modifiers": )" +
+                  base::ToString(params.modifiers) + R"(
+                              })",
+              base::BindOnce(
+                  [](MessageCallback callback, MessageResult result) {
+                    std::move(callback).Run(
+                        base::ok("{ \"status\": \"success\" }"));
+                  },
+                  std::move(callback)));
         },
         base::Unretained(this), *key, std::move(message_callback));
   } else {

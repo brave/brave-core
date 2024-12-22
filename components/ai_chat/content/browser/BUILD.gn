@@ -7,6 +7,8 @@ import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 
 static_library("browser") {
   sources = [
+    "build_devtools_key_event_params.cc",
+    "build_devtools_key_event_params.h",
     "navigation_tool.cc",
     "navigation_tool.h",
     "agent_client.cc",
