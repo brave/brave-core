@@ -440,6 +440,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAPIRequestInProgressChanged();
   void OnStateForConversationEntriesChanged();
 
+  void MaybeRespondToNextToolUseRequest();
+
   mojom::ToolUseEvent* GetToolUseEventForLastResponse(
       std::string_view tool_id);
 
