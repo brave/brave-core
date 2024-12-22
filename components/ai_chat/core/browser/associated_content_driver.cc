@@ -27,6 +27,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "net/base/url_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -280,6 +281,10 @@ void AssociatedContentDriver::OnTitleChanged() {
 }
 
 void AssociatedContentDriver::OnNewPage(int64_t navigation_id) {
+  if (ai_chat::features::kIsAgentEnabled.Get()) {
+    return;
+  }
+
   // This instance will now be used for different content so existing
   // conversations need to be disassociated.
   DisassociateWithConversations();
