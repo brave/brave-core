@@ -87,18 +87,6 @@ std::string AddBorderToBase64Image(const std::string& base64_input,
     return std::string();
   }
 
-  SkCanvas canvas(bitmap, SkSurfaceProps{});
-
-  SkPaint paint;
-  paint.setStyle(SkPaint::kStroke_Style);
-  paint.setColor(border_color);
-  paint.setStrokeWidth(border_size);  // e.g. 2px for the border line
-
-  SkRect border_rect =
-      SkRect::MakeXYWH(static_cast<SkScalar>(0), static_cast<SkScalar>(0),
-                       static_cast<SkScalar>(bitmap.width()),
-                       static_cast<SkScalar>(bitmap.height()));
-  canvas.drawRect(border_rect, paint);
 
   // PNG (too big):
   // SkPixmap pixmap;
