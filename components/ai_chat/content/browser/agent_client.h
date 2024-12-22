@@ -11,6 +11,7 @@
 #include "content/public/browser/devtools_agent_host.h"
 #include "content/public/browser/devtools_agent_host_client.h"
 #include "content/public/browser/web_contents.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 
 namespace ai_chat {
 
@@ -54,6 +55,8 @@ class AgentClient : public Tool, public content::DevToolsAgentHostClient {
       MessageResult result);
 
   gfx::Point mouse_position_;
+
+  std::unique_ptr<AIChatCursorOverlay> cursor_overlay_;
 
   int request_id_ = 1;
   std::map<int, MessageCallback> message_callbacks_;
