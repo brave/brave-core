@@ -17,6 +17,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
@@ -56,17 +57,36 @@ std::string GetExportEncodedJSON(base::span<const uint8_t> private_key_bytes,
   return base::ToLowerASCII(base::HexEncode(json));
 }
 
+std::unique_ptr<HDKey> ConstructAccountsRootKey(base::span<const uint8_t> seed,
+                                                bool testnet) {
+  auto result = HDKey::GenerateFromSeed(seed);
+  if (!result) {
+    return nullptr;
+  }
+
+  if (testnet) {
+    // Testnet: m/44'/1'/0'/0
+    return result->DeriveChildFromPath({DerivationIndex::Hardened(44),  //
+                                        DerivationIndex::Hardened(1),
+                                        DerivationIndex::Hardened(0),
+                                        DerivationIndex::Normal(0)});
+  } else {
+    // Mainnet: m/44'/461'/0'/0
+    return result->DeriveChildFromPath({DerivationIndex::Hardened(44),  //
+                                        DerivationIndex::Hardened(461),
+                                        DerivationIndex::Hardened(0),
+                                        DerivationIndex::Normal(0)});
+  }
+}
+
 }  // namespace
 
 FilecoinKeyring::~FilecoinKeyring() = default;
 
 FilecoinKeyring::FilecoinKeyring(base::span<const uint8_t> seed,
-                                 const std::string& chain_id)
-    : Secp256k1HDKeyring(
-          seed,
-          GetRootPath(chain_id == mojom::kFilecoinMainnet
-                          ? mojom::KeyringId::kFilecoin
-                          : mojom::KeyringId::kFilecoinTestnet)) {
+                                 const std::string& chain_id) {
+  accounts_root_ =
+      ConstructAccountsRootKey(seed, chain_id == mojom::kFilecoinTestnet);
   network_ = chain_id;
   DCHECK(network_ == mojom::kFilecoinMainnet ||
          network_ == mojom::kFilecoinTestnet);
@@ -219,7 +239,7 @@ std::optional<std::string> FilecoinKeyring::SignTransaction(
 std::unique_ptr<HDKey> FilecoinKeyring::DeriveAccount(uint32_t index) const {
   // Mainnet m/44'/461'/0'/0/{index}
   // Testnet m/44'/1'/0'/0/{index}
-  return root_->DeriveNormalChild(index);
+  return accounts_root_->DeriveChild(DerivationIndex::Normal(index));
 }
 
 }  // namespace brave_wallet

@@ -13,12 +13,17 @@
 
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "crypto/process_bound_string.h"
 
 namespace brave_wallet {
 
 inline constexpr size_t kCompactSignatureSize = 64;
+inline constexpr size_t kSecp256k1PrivateKeySize = 32;
+inline constexpr size_t kSecp256k1ChainCodeSize = 32;
 inline constexpr size_t kSecp256k1PubkeySize = 33;
+inline constexpr size_t kSecp256k1IdentifierSize = 20;
+inline constexpr size_t kSecp256k1FingerprintSize = 4;
 
 using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 
@@ -59,12 +64,7 @@ class HDKey {
   static std::unique_ptr<ParsedExtendedKey> GenerateFromExtendedKey(
       const std::string& key);
   static std::unique_ptr<HDKey> GenerateFromPrivateKey(
-      base::span<const uint8_t> private_key);
-  // https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition
-  static std::unique_ptr<HDKey> GenerateFromV3UTC(const std::string& password,
-                                                  const std::string& json);
-
-  std::string GetPath() const;
+      base::span<const uint8_t, kSecp256k1PrivateKeySize> private_key);
 
   std::string GetPrivateExtendedKey(ExtendedKeyVersion version) const;
   std::vector<uint8_t> GetPrivateKeyBytes() const;
@@ -79,19 +79,14 @@ class HDKey {
       base::span<const uint8_t> ephemeral_public_key,
       base::span<const uint8_t> ciphertext) const;
 
-  // index should be 0 to 2^31-1
+  // Normal/Hardened derivation.
   // If anything failed, nullptr will be returned.
-  std::unique_ptr<HDKey> DeriveNormalChild(uint32_t index);
-  // index should be 0 to 2^31-1
-  // If anything failed, nullptr will be returned.
-  std::unique_ptr<HDKey> DeriveHardenedChild(uint32_t index);
+  std::unique_ptr<HDKey> DeriveChild(const DerivationIndex& index);
 
-  // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
-  // path format: m/[n|n']*/[n|n']*...
-  // n: 0 to 2^31-1 (normal derivation)
-  // n': n + 2^31 (harden derivation)
+  // Sequential path derivation.
   // If path is invalid, nullptr will be returned
-  std::unique_ptr<HDKey> DeriveChildFromPath(const std::string& path);
+  std::unique_ptr<HDKey> DeriveChildFromPath(
+      base::span<const DerivationIndex> path);
 
   // TODO(apaymyshev): make arg and return types fixed size spans and arrays
   // where possible.
@@ -119,6 +114,13 @@ class HDKey {
                                       base::span<const uint8_t> sig,
                                       int recid);
 
+  // Key identifier - hash of pubkey.
+  // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#key-identifiers
+  std::array<uint8_t, kSecp256k1IdentifierSize> GetIdentifier() const;
+
+  // The first 4 bytes of the identifier.
+  std::array<uint8_t, kSecp256k1FingerprintSize> GetFingerprint() const;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(Eip1559TransactionUnitTest,
                            GetSignedTransactionAndHash);
@@ -131,33 +133,23 @@ class HDKey {
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SetPublicKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyUnitTest, SignAndVerifyAndRecover);
 
-  // value must be 32 bytes
-  void SetPrivateKey(base::span<const uint8_t> value);
-  void SetChainCode(base::span<const uint8_t> value);
-  // value must be 33 bytes valid public key (compressed)
-  void SetPublicKey(base::span<const uint8_t, kSecp256k1PubkeySize> value);
+  HDKey& operator=(const HDKey& other);
+  HDKey(const HDKey& other);
 
-  // index should be 0 to 2^32
-  // 0 to 2^31-1 is normal derivation and 2^31 to 2^32-1 is harden derivation
-  // If anything failed, nullptr will be returned
-  std::unique_ptr<HDKey> DeriveChild(uint32_t index);
+  void SetPrivateKey(base::span<const uint8_t, kSecp256k1PrivateKeySize> value);
+  void SetChainCode(base::span<const uint8_t, kSecp256k1ChainCodeSize> value);
+  void SetPublicKey(base::span<const uint8_t, kSecp256k1PubkeySize> value);
 
   void GeneratePublicKey();
   std::string Serialize(ExtendedKeyVersion version,
                         base::span<const uint8_t> key) const;
 
-  std::string path_;
   uint8_t depth_ = 0;
-  uint32_t fingerprint_ = 0;
-  uint32_t parent_fingerprint_ = 0;
+  std::array<uint8_t, kSecp256k1FingerprintSize> parent_fingerprint_ = {};
   uint32_t index_ = 0;
-  std::vector<uint8_t> identifier_;
   SecureVector private_key_;
   std::vector<uint8_t> public_key_;
   SecureVector chain_code_;
-
-  HDKey(const HDKey&) = delete;
-  HDKey& operator=(const HDKey&) = delete;
 };
 
 }  // namespace brave_wallet

@@ -12,12 +12,12 @@
 
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 
 namespace brave_wallet {
 
 // https://www.rfc-editor.org/rfc/rfc8032.html#section-5.1.5
 inline constexpr size_t kEd25519PrivateKeySize = 32;
-inline constexpr size_t kEd25519PublicKeySize = 32;
 inline constexpr size_t kEd25519KeyPairSize =
     kEd25519PrivateKeySize + kEd25519PublicKeySize;
 

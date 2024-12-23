@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 
+#include <array>
 #include <optional>
 #include <utility>
 
@@ -19,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_import_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_task_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -254,15 +256,9 @@ mojom::BitcoinAddressPtr DiscoverExtendedKeyAccountTask::GetAddressById(
     return nullptr;
   }
 
-  auto key = account_key_->DeriveNormalChild(key_id->change);
-  if (!key) {
-    return nullptr;
-  }
-
-  key = key->DeriveNormalChild(key_id->index);
-  if (!key) {
-    return nullptr;
-  }
+  auto key = account_key_->DeriveChildFromPath(
+      std::array{DerivationIndex::Normal(key_id->change),
+                 DerivationIndex::Normal(key_id->index)});
 
   return mojom::BitcoinAddress::New(
       PubkeyToSegwitAddress(key->GetPublicKeyBytes(), testnet_),

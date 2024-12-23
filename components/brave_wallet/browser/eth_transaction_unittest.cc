@@ -113,10 +113,10 @@ TEST(EthTransactionUnitTest, GetMessageToSign) {
 }
 
 TEST(EthTransactionUnitTest, GetSignedTransactionAndHash) {
-  std::vector<uint8_t> private_key;
-  EXPECT_TRUE(base::HexStringToBytes(
+  std::array<uint8_t, 32> private_key;
+  EXPECT_TRUE(base::HexStringToSpan(
       "4646464646464646464646464646464646464646464646464646464646464646",
-      &private_key));
+      private_key));
 
   HDKey key;
   key.SetPrivateKey(private_key);

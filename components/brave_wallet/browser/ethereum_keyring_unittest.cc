@@ -41,11 +41,13 @@ TEST(EthereumKeyringUnitTest, ConstructRootHDKey) {
       &seed));
   EthereumKeyring keyring(seed);
   EXPECT_EQ(
-      keyring.root_.get()->GetPrivateExtendedKey(ExtendedKeyVersion::kXprv),
+      keyring.accounts_root_.get()->GetPrivateExtendedKey(
+          ExtendedKeyVersion::kXprv),
       "xprvA1YGbmYkUq9KMyPwADQehauc1vG7TSbNLc1dwYbvU7VzyAr7TPhj9VoJJoP2CV5kDmXX"
       "SZvbJ79ieLnD7Pt4rhbuaQjVr2JE3vcDBAvDoUg");
   EXPECT_EQ(
-      keyring.root_.get()->GetPublicExtendedKey(ExtendedKeyVersion::kXpub),
+      keyring.accounts_root_.get()->GetPublicExtendedKey(
+          ExtendedKeyVersion::kXpub),
       "xpub6EXd1H5eKChcaTUQGEwf4irLZx6bruKDhpwEjw1Y2T2yqyBFzw1yhJ7nA5EeBKozqYKB"
       "8jHxmhe7bEqyBEdPNWyPgCm2aZfs9tbLVYujvL3");
 }
@@ -115,10 +117,10 @@ TEST(EthereumKeyringUnitTest, SignTransaction) {
 }
 
 TEST(EthereumKeyringUnitTest, SignMessage) {
-  std::vector<uint8_t> private_key;
-  EXPECT_TRUE(base::HexStringToBytes(
+  std::array<uint8_t, 32> private_key;
+  EXPECT_TRUE(base::HexStringToSpan(
       "6969696969696969696969696969696969696969696969696969696969696969",
-      &private_key));
+      private_key));
 
   std::unique_ptr<HDKey> key = std::make_unique<HDKey>();
   key->SetPrivateKey(private_key);

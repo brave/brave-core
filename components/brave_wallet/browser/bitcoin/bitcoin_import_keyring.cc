@@ -98,14 +98,11 @@ std::unique_ptr<HDKey> BitcoinImportKeyring::DeriveKey(
 
   DCHECK(key_id.change == 0 || key_id.change == 1);
 
-  auto key = account_key->DeriveNormalChild(key_id.change);
-  if (!key) {
-    return nullptr;
-  }
-
   // Mainnet - m/84'/0'/{account}'/{key_id.change}/{key_id.index}
   // Testnet - m/84'/1'/{account}'/{key_id.change}/{key_id.index}
-  return key->DeriveNormalChild(key_id.index);
+  return account_key->DeriveChildFromPath(
+      std::array{DerivationIndex::Normal(key_id.change),
+                 DerivationIndex::Normal(key_id.index)});
 }
 
 }  // namespace brave_wallet

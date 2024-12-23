@@ -23,11 +23,6 @@ namespace {
 
 inline constexpr char kMasterSecret[] = "ed25519 seed";
 
-// Equivalent to 2^31 to make sure we're not below this.
-// If the index is below this we'll use the soft path
-// which is susceptible to key attacks on the Ed25519 curve.
-inline constexpr uint32_t kHardenedOffset = 0x80000000;
-
 // OpenSSL has it's own definition of private key which in fact is key pair.
 static_assert(kEd25519KeyPairSize == ED25519_PRIVATE_KEY_LEN);
 static_assert(kEd25519PublicKeySize == ED25519_PUBLIC_KEY_LEN);

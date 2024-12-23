@@ -11,23 +11,9 @@
 
 namespace brave_wallet {
 
-Secp256k1HDKeyring::Secp256k1HDKeyring(base::span<const uint8_t> seed,
-                                       const std::string& hd_path)
-    : root_(ConstructRootHDKey(seed, hd_path)) {}
+Secp256k1HDKeyring::Secp256k1HDKeyring() = default;
 
 Secp256k1HDKeyring::~Secp256k1HDKeyring() = default;
-
-// static
-std::unique_ptr<HDKey> Secp256k1HDKeyring::ConstructRootHDKey(
-    base::span<const uint8_t> seed,
-    const std::string& hd_path) {
-  if (!seed.empty()) {
-    if (auto master_key = HDKey::GenerateFromSeed(seed)) {
-      return master_key->DeriveChildFromPath(hd_path);
-    }
-  }
-  return nullptr;
-}
 
 std::string Secp256k1HDKeyring::GetDiscoveryAddress(size_t index) const {
   if (auto key = DeriveAccount(index)) {
@@ -58,7 +44,7 @@ bool Secp256k1HDKeyring::RemoveImportedAccount(const std::string& address) {
 }
 
 std::optional<AddedAccountInfo> Secp256k1HDKeyring::AddNewHDAccount() {
-  if (!root_) {
+  if (!accounts_root_) {
     return std::nullopt;
   }
 
@@ -78,7 +64,13 @@ void Secp256k1HDKeyring::RemoveLastHDAccount() {
 
 std::string Secp256k1HDKeyring::ImportAccount(
     base::span<const uint8_t> private_key) {
-  std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(private_key);
+  auto private_key_fixed_size =
+      private_key.to_fixed_extent<kSecp256k1PrivateKeySize>();
+  if (!private_key_fixed_size) {
+    return std::string();
+  }
+  std::unique_ptr<HDKey> hd_key =
+      HDKey::GenerateFromPrivateKey(*private_key_fixed_size);
   if (!hd_key) {
     return std::string();
   }

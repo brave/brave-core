@@ -129,6 +129,8 @@ static_library("browser") {
     "fil_tx_meta.h",
     "fil_tx_state_manager.cc",
     "fil_tx_state_manager.h",
+    "json_keystore_parser.cc",
+    "json_keystore_parser.h",
     "json_rpc_requests_helper.cc",
     "json_rpc_requests_helper.h",
     "json_rpc_response_parser.cc",
