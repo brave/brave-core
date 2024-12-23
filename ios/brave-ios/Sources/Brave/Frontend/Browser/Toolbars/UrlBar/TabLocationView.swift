@@ -468,7 +468,7 @@ class TabLocationView: UIView {
         // the URL is likely a broken deceptive URL. Example: `about:blank#https://apple.com`
         if URLOrigin(url: url).url == nil && URIFixup.getURL(url.absoluteString) == nil {
           urlDisplayLabel.isLeftToRight = true
-          urlDisplayLabel.text = ""
+          urlDisplayLabel.text = url.scheme == "about" ? "about:blank" : ""
         } else {
           urlDisplayLabel.text = URLFormatter.formatURL(
             URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
