@@ -42,6 +42,7 @@ import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
+import org.chromium.components.browser_ui.settings.TextMessagePreference;
 
 /** Fragment to keep track of the all the brave privacy related preferences. */
 public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
@@ -101,7 +102,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_REQUEST_OTR = "request_otr";
 
     public static final String PREF_BLOCK_TRACKERS_ADS = "block_trackers_ads";
-    private static final String PREF_BLOCK_CROSS_SITE_COOKIES = "block_cross_site_cookies";
+    private static final String PREF_BLOCK_CROSS_SITE_COOKIES = "block_cross_site_cookies";    
+    private static final String BLOCK_CROSS_SITE_COOKIES_LEARN_MORE = "block_all_cross_site_cookies_learn_more";
     private static final String PREF_SHIELDS_SUMMARY = "shields_summary";
     private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
@@ -117,6 +119,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_HTTPS_FIRST_MODE,
         PREF_BLOCK_SCRIPTS,
         PREF_BLOCK_CROSS_SITE_COOKIES,
+        BLOCK_CROSS_SITE_COOKIES_LEARN_MORE,
         PREF_FINGERPRINTING_PROTECTION,
         PREF_FINGERPRINTING_PROTECTION2,
         PREF_FINGERPRINT_LANGUAGE,
@@ -163,6 +166,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mCanMakePayment;
     private BraveDialogPreference mAdsTrakersBlockPref;
     private BraveDialogPreference mBlockCrosssiteCookies;
+    private TextMessagePreference mBlockCrosssiteCookiesLearnMore;
     private ChromeSwitchPreference mDeAmpPref;
     private ChromeSwitchPreference mDebouncePref;
     private ChromeSwitchPreference mHttpsFirstModePref;
@@ -279,6 +283,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mBlockCrosssiteCookies =
                 (BraveDialogPreference) findPreference(PREF_BLOCK_CROSS_SITE_COOKIES);
         mBlockCrosssiteCookies.setOnPreferenceChangeListener(this);
+
+        mBlockCrosssiteCookiesLearnMore =
+                (TextMessagePreference) findPreference(BLOCK_CROSS_SITE_COOKIES_LEARN_MORE);
 
         mBlockScriptsPref = (ChromeSwitchPreference) findPreference(PREF_BLOCK_SCRIPTS);
         mBlockScriptsPref.setOnPreferenceChangeListener(this);
@@ -511,6 +518,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     0,
                     ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE)
                             || (int) newValue == STRICT);
+            mBlockCrosssiteCookiesLearnMore.itemView.setVisibility(STRICT == (int)newValue);
             switch ((int) newValue) {
                 case STRICT:
                     BraveShieldsContentSettings.setCookiesPref(

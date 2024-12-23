@@ -691,8 +691,10 @@
       },                                                                       \
       {                                                                        \
           "block-all-cookies-toggle",                                          \
-          "If the feature flag is on, we show the Block all Cookies toggle",   \
-          "If the feature flag is on, we show the Block all Cookies toggle",   \
+          "'Block all cookies' option in Shields global defaults",             \
+          "Shows the 'Block all cookies' toggle in Shields global defaults. "  \
+          "This global setting prevents all websites from storing cookies "    \
+          "on your device, but is also very likely to lead to site breakage.", \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_shields::features::kBlockAllCookiesToggle), \
       },                                                                       \

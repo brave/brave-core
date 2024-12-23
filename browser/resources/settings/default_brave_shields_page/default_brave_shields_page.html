@@ -94,7 +94,16 @@
     on-settings-boolean-control-change="onFingerprintingToggleControlChange_">
   </settings-toggle-button>
   <div class="settings-box">
-    <div class="start">$i18n{cookieControlLabel}</div>
+    <div class="start">
+      <div class="label">$i18n{cookieControlLabel}</div>
+      <div class="cr-secondary-text label" hidden="[[!controlEqual_('block', cookieControlType_)]]">
+        <span>Block all cookies option is deprecated. To force-enable, </span>
+        <a id="learnMore" href="https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting" target="_blank">
+          learn more
+        </a>
+        <span>.</span>
+      </div>
+    </div>
     <select id="cookieControlType" class="md-select"
         on-change="onCookieControlChange_">
       <template is="dom-repeat" items="[[cookieControlTypes_]]">
