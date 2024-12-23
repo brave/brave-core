@@ -118,6 +118,9 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     )
     self.walletServiceObserver = WalletServiceObserver(
       walletService: walletService,
+      _onDefaultBaseCurrencyChanged: { [weak self] currency in
+        self?.currencyCode = currency
+      },
       _onNetworkListChanged: { [weak self] in
         Task { @MainActor [self] in
           // A network was added or removed, update our network filters for the change.

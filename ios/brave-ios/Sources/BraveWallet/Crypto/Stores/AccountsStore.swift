@@ -68,6 +68,10 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     self.bitcoinWalletService = bitcoinWalletService
     self.userAssetManager = userAssetManager
     self.setupObservers()
+
+    walletService.defaultBaseCurrency { [self] currencyCode in
+      self.currencyCode = currencyCode
+    }
   }
 
   func setupObservers() {
@@ -81,6 +85,9 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     )
     self.walletServiceObserver = WalletServiceObserver(
       walletService: walletService,
+      _onDefaultBaseCurrencyChanged: { [weak self] currency in
+        self?.currencyCode = currency
+      },
       _onNetworkListChanged: { [weak self] in
         self?.update()
       }
