@@ -28,7 +28,7 @@ class AgentClient : public Tool, public content::DevToolsAgentHostClient {
   std::string_view type() const override;
   std::optional<std::string> GetInputSchemaJson() const override;
   void UseTool(const std::string& input_json,
-               base::OnceCallback<void(std::optional<std::string_view>)> callback)
+               Tool::UseToolCallback callback)
       override;
 
   // <message, error>
@@ -50,10 +50,9 @@ class AgentClient : public Tool, public content::DevToolsAgentHostClient {
       content::RenderFrameHost* render_frame_host) override;
   bool IsTrusted() override;
 
-  void OnMessageForToolUseComplete(
-      base::OnceCallback<void(std::optional<std::string_view>)>
-          tool_use_callback,
-      MessageResult result);
+  void OnMessageForToolUseComplete(Tool::UseToolCallback tool_use_callback,
+                                   int delay_ms,
+                                   MessageResult result);
 
   gfx::Point mouse_position_;
 
