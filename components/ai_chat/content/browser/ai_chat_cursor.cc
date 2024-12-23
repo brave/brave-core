@@ -6,57 +6,73 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 
 #include "base/check.h"
-#include "brave/grit/brave_theme_resources.h"
 // TODO(petemill): Obviously this isn't allowed here, this class will be moved
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
-#include "include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/compositor/layer.h"
 #include "ui/compositor/scoped_layer_animation_settings.h"
 #include "ui/gfx/canvas.h"
-#include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/size.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/views/background.h"
-#include "ui/compositor/layer.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
 namespace {
-
-#define FAKE_CURSOR_RESOURCE_ID IDR_MY_FAKE_CURSOR_ICON
-
-}  // namespace
+  constexpr size_t kIconSize = 40;
+}
 
 AIChatCursorOverlay::AIChatCursorOverlay(content::WebContents* web_contents) {
   DCHECK(web_contents);
 
-  auto* root_view = chrome::FindBrowserWithTab(web_contents)->GetBrowserView().contents_container();//.GetContentsWebView()->parent();
+  // TODO: This should be done in the browser views layer, with a tab strip
+  // observer to obey the correct layering, to hide and show when active
+  // contents changes, and to move to a new window when the webcontents moves.
+
+  // Experiment without layer violation (gets the whole browser window not the content view)
+  // auto* root_view = views::Widget::GetWidgetForNativeView(web_contents->GetNativeView())->GetContentsView();
+
+  auto* root_view = chrome::FindBrowserWithTab(web_contents)->GetBrowserView().contents_container();
   DCHECK(root_view);
 
   cursor_image_ = AddChildView(std::make_unique<views::ImageView>());
   SetPaintToLayer();
+  layer()->SetFillsBoundsOpaquely(false);
+
+  // Experiment Vector icon (doesn't work well due to opacity)
+  // auto icon = gfx::CreateVectorIcon(kAiChatCursorIcon, SK_ColorTRANSPARENT);
+  // cursor_image_->SetImage(icon);
+
+  // PNG resource
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
-  gfx::ImageSkia* image = rb.GetImageSkiaNamed(IDR_SIDEBAR_READING_LIST_PANEL_HEADER);
-  SetBackground(views::CreateSolidBackground(SK_ColorBLUE));
-  DCHECK(image);
+  gfx::ImageSkia* image = rb.GetImageSkiaNamed(IDR_AI_CHAT_UI_CURSOR);
+  if (!image) {
+    DLOG(ERROR) << "Failed to load cursor image resource!";
+    return;
+  }
+
   cursor_image_->SetImage(*image);
-
-  gfx::Size image_size = cursor_image_->GetPreferredSize();
-
-  // SetBoundsRect(gfx::Rect(0, 0, 500, 500));
-  SetBoundsRect(gfx::Rect(0, 0, image_size.width(), image_size.height()));
+  cursor_image_->SetImageSize(gfx::Size(kIconSize, kIconSize));
 
   root_view->AddChildView(this);
 
-  SetVisible(false);
+  cursor_image_->SetBounds(0, 0, kIconSize, kIconSize);
+  SetBoundsRect(gfx::Rect(0, 0, kIconSize, kIconSize));
+
+  SetVisible(true);
 }
 
-AIChatCursorOverlay::~AIChatCursorOverlay() = default;
+AIChatCursorOverlay::~AIChatCursorOverlay() {
+  if (parent())
+    parent()->RemoveChildView(this);
+}
 
 void AIChatCursorOverlay::MoveCursorTo(int x, int y) {
   gfx::Rect start_bounds = bounds();
@@ -67,7 +83,7 @@ void AIChatCursorOverlay::MoveCursorTo(int x, int y) {
   // Scope the animation settings to ensure we only animate once (and can customize easing, etc.).
   ui::ScopedLayerAnimationSettings settings(layer()->GetAnimator());
   settings.SetTransitionDuration(base::Milliseconds(1000));
-  settings.SetTweenType(gfx::Tween::LINEAR);
+  settings.SetTweenType(gfx::Tween::EASE_IN_2);
   // Possible tween types: EASE_IN, EASE_OUT, FAST_OUT_SLOW_IN, etc.
 
   // Trigger the animation by setting new bounds. Chromium will animate from
@@ -85,11 +101,10 @@ void AIChatCursorOverlay::ShowCursor() {
 }
 
 void AIChatCursorOverlay::HideCursor() {
+  // TODO(petemill): Fade out and notify caller so the class can be deleted
+  // and re-created on whichever browser the tab is in next time the cursor
+  // is needed.
   SetVisible(false);
-}
-
-void AIChatCursorOverlay::OnBoundsChanged(const gfx::Rect& previous_bounds) {
-  views::View::OnBoundsChanged(previous_bounds);
 }
 
 BEGIN_METADATA(AIChatCursorOverlay)
