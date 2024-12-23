@@ -217,6 +217,12 @@ public class BraveVPN {
       return (
         city.trimmingCharacters(in: .whitespaces), country.trimmingCharacters(in: .whitespaces)
       )
+    } else if locationComponents.count == 1 {
+      // e.g. Singapore
+      let country = locationComponents[safe: 0] ?? ""
+      return (
+        nil, country.trimmingCharacters(in: .whitespaces)
+      )
     } else {
       return (nil, nil)
     }
