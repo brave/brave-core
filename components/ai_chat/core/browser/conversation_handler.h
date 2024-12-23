@@ -429,7 +429,10 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnToolUseComplete(
       const std::string& tool_use_id,
-      std::optional<std::string_view> output_json);
+      std::optional<std::string_view> output_json,
+      // Amount of time to allow for processing of the event's actions until
+      // running the next event, in milliseconds.
+      int delay_ms);
 
   void OnActiveWebPageContentFetcherResponseReady(
     const std::string& tool_id,

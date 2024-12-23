@@ -50,13 +50,13 @@ bool NavigationTool::RequiresUserInteractionBeforeHandling() const {
 
 void NavigationTool::UseTool(
     const std::string& input_json,
-    base::OnceCallback<void(std::optional<std::string_view>)> callback) {
+    Tool::UseToolCallback callback) {
   // Parse the input JSON
   auto input_value = base::JSONReader::ReadDict(input_json);
 
   if (!input_value) {
     LOG(ERROR) << "Failed to parse input JSON: " << input_json;
-    std::move(callback).Run(std::nullopt);
+    std::move(callback).Run(std::nullopt, 0);
     return;
   }
 
@@ -64,7 +64,7 @@ void NavigationTool::UseTool(
   auto* website_url = input_value->FindString("website_url");
   if (!website_url) {
     LOG(ERROR) << "Missing required property 'website_url' in " << input_json;
-    std::move(callback).Run(std::nullopt);
+    std::move(callback).Run(std::nullopt, 0);
     return;
   }
 
@@ -75,7 +75,7 @@ void NavigationTool::UseTool(
                                          std::string());
   std::move(callback).Run(R"({
     "status": "navigated"
-  })");
+  })", 2000); // Allow time for the navigation to at least partially complete
 }
 
 }  // namespace ai_chat

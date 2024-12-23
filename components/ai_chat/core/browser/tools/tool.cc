@@ -40,9 +40,9 @@ std::optional<base::Value> Tool::extra_params() const {
 
 void Tool::UseTool(
       const std::string& input_json,
-      base::OnceCallback<void(std::optional<std::string_view>)> callback) {
+      Tool::UseToolCallback callback) {
   DLOG(ERROR) << "UseTool called but not implemented";
-  std::move(callback).Run(std::nullopt);
+  std::move(callback).Run(std::nullopt, 0);
 }
 
 }  // namespace ai_chat
