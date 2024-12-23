@@ -8,4 +8,5 @@
     type="BINDATA" />
   <include name="IDR_AI_CHAT_UI_MANIFEST" file="../ai_chat/resources/page/manifest.webmanifest" type="BINDATA" />
   <include name="IDR_AI_CHAT_UI_PWA_ICON" file="../ai_chat/resources/page/pwa_icon.svg" type="BINDATA" />
+  <include name="IDR_AI_CHAT_UI_CURSOR" file="../ai_chat/resources/ai_chat_cursor.png" type="BINDATA" />
 </grit-part>
