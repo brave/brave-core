@@ -22,6 +22,7 @@ namespace brave_wallet {
 
 TEST(ZCashSerializerTest, HashPrevouts) {
   ZCashTransaction zcash_transaciton;
+  zcash_transaciton.set_consensus_brach_id(0xc2d6d0b4);
 
   {
     ZCashTransaction::TxInput tx_input;
@@ -60,6 +61,7 @@ TEST(ZCashSerializerTest, HashPrevouts) {
 
 TEST(ZCashSerializerTest, HashOutputs) {
   ZCashTransaction zcash_transaciton;
+  zcash_transaciton.set_consensus_brach_id(0xc2d6d0b4);
 
   {
     ZCashTransaction::TxOutput tx_output;
@@ -84,6 +86,7 @@ TEST(ZCashSerializerTest, HashOutputs) {
 
 TEST(ZCashSerializerTest, HashSequences) {
   ZCashTransaction zcash_transaciton;
+  zcash_transaciton.set_consensus_brach_id(0xc2d6d0b4);
 
   {
     ZCashTransaction::TxInput tx_input;
@@ -110,6 +113,7 @@ TEST(ZCashSerializerTest, HashSequences) {
 
 TEST(ZCashSerializerTest, HashHeader) {
   ZCashTransaction zcash_transaciton;
+  zcash_transaciton.set_consensus_brach_id(0xc2d6d0b4);
   zcash_transaciton.set_expiry_height(10000);
   zcash_transaciton.set_locktime(1);
   EXPECT_EQ(
@@ -140,7 +144,7 @@ TEST(ZCashSerializerTest, HashTxIn) {
 // https://zcashblockexplorer.com/transactions/360d056309669faf0d7937f41581418be5e46b04e2cea0a7b14261d7bff1d825/raw
 TEST(ZCashSerializerTest, TxId_TransparentOnly) {
   ZCashTransaction tx;
-
+  tx.set_consensus_brach_id(0xc2d6d0b4);
   tx.set_expiry_height(2283846);
   tx.set_locktime(2283826);
 
@@ -203,6 +207,7 @@ TEST(ZCashSerializerTest, OrchardBundle) {
   auto key_id = mojom::ZCashKeyId::New(0, 0, 0);
   auto address = keyring.GetTransparentAddress(*key_id)->address_string;
   ZCashTransaction tx;
+  tx.set_consensus_brach_id(0xc2d6d0b4);
   tx.set_expiry_height(1687144);
   tx.set_locktime(0);
 

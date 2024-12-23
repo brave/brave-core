@@ -77,6 +77,12 @@ struct SubtreeRoot {
   uint32 complete_block_height;
 };
 
+struct LightdInfo {
+  string consensusBranchId;
+  // Other fields mentioned in https://github.com/zcash/lightwalletd/blob/1e63bee7614d8fd2be79c0ee13008f0f4aaaebbd/walletrpc/service.proto#L75C1-L93C1
+  // are skipped for now.
+};
+
 interface ZCashDecoder {
   ParseBlockID(string data) => (BlockID? value);
   ParseGetAddressUtxos(string data) => (GetAddressUtxosResponse? value);
@@ -84,5 +90,6 @@ interface ZCashDecoder {
   ParseRawTransaction(string data) => (RawTransaction? tx);
   ParseTreeState(string data) => (TreeState? tree_state);
   ParseCompactBlocks(array<string> data) => (array<CompactBlock>? compact_blocks);
+  ParseLightdInfo(string data) => (LightdInfo? lightd_info);
 };
 
