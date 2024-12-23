@@ -173,7 +173,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src 'self' blob: chrome-untrusted://resources "
+      "img-src 'self' blob: data: chrome-untrusted://resources "
       "chrome-untrusted://image;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
