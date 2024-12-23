@@ -28,7 +28,7 @@ class NavigationTool : public Tool {
   bool RequiresUserInteractionBeforeHandling() const override;
 
   void UseTool(const std::string& input_json,
-               base::OnceCallback<void(std::optional<std::string_view>)> callback) override;
+               Tool::UseToolCallback callback) override;
 
  private:
   raw_ptr<content::WebContents> web_contents_;

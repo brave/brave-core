@@ -16,8 +16,8 @@
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 #include "brave/components/ai_chat/content/browser/build_devtools_key_event_params.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window.h"
+// #include "chrome/browser/ui/browser.h"
+// #include "chrome/browser/ui/browser_window.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_contents.h"
 #include "include/codec/SkCodec.h"
@@ -25,7 +25,6 @@
 #include "include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
-#include "third_party/skia/include/core/SkColor.h"
 #include "third_party/skia/include/core/SkData.h"
 #include "third_party/skia/include/core/SkImage.h"
 #include "third_party/skia/include/core/SkImageInfo.h"
@@ -40,9 +39,7 @@ namespace {
 constexpr size_t kForcedWidth = 1024;
 constexpr size_t kForcedHeight = 768;
 
-std::string AddBorderToBase64Image(const std::string& base64_input,
-                                   int border_size,
-                                   SkColor border_color) {
+std::string base64PngToBase64Webp(const std::string& base64_input) {
   // 1. Base64-decode into raw bytes
   std::string decoded_bytes;
   if (!base::Base64Decode(base64_input, &decoded_bytes)) {
@@ -87,8 +84,22 @@ std::string AddBorderToBase64Image(const std::string& base64_input,
     return std::string();
   }
 
+  // Experiment with adding border to image to simulate window border (doesn't
+  // seem neccessary anymore).
+  // SkCanvas canvas(bitmap, SkSurfaceProps{});
 
-  // PNG (too big):
+  // SkPaint paint;
+  // paint.setStyle(SkPaint::kStroke_Style);
+  // paint.setColor(border_color);
+  // paint.setStrokeWidth(border_size);  // e.g. 2px for the border line
+
+  // SkRect border_rect =
+  //     SkRect::MakeXYWH(static_cast<SkScalar>(0), static_cast<SkScalar>(0),
+  //                      static_cast<SkScalar>(bitmap.width()),
+  //                      static_cast<SkScalar>(bitmap.height()));
+  // canvas.drawRect(border_rect, paint);
+
+  // Experiment with PNG encoding (too big):
   // SkPixmap pixmap;
   // if (!bitmap.peekPixels(&pixmap)) {
   //   LOG(ERROR) << "Failed to peekPixels";
@@ -148,25 +159,23 @@ std::optional<std::string> AgentClient::GetInputSchemaJson() const {
           "display_height_px": )" +
                 base::ToString(kForcedHeight) + R"(
     })";
-  LOG(ERROR) << __func__ << " schema = " << schema;
   return schema;
 }
 
 void AgentClient::UseTool(
     const std::string& input_json,
-    base::OnceCallback<void(std::optional<std::string_view>)> callback) {
-  LOG(ERROR) << __func__ << " input_json = " << input_json;
+    Tool::UseToolCallback callback) {
   DVLOG(4) << __func__ << " input_json = " << input_json;
   auto json_message = base::JSONReader::Read(input_json);
   if (!json_message || !json_message->is_dict()) {
-    std::move(callback).Run(std::nullopt);
+    std::move(callback).Run(std::nullopt, 0);
     return;
   }
   base::Value::Dict& input = json_message->GetDict();
   std::string* action = input.FindString("action");
   if (!action) {
     DLOG(ERROR) << "No action found in input_json: " << input_json;
-    std::move(callback).Run(std::nullopt);
+    std::move(callback).Run(std::nullopt, 0);
     return;
   }
 
@@ -175,13 +184,14 @@ void AgentClient::UseTool(
       "type": "text",
         "x": )" + base::ToString(mouse_position_.x()) + R"(,
         "y": )" + base::ToString(mouse_position_.y()) + R"(,
-      }])");
+      }])", 0);
     return;
   }
 
   devtools_agent_host_->AttachClient(this);
-
   if (!cursor_overlay_) {
+    // TODO: use a tab helper to show the cursor so that
+    // the browser can only show it when the tab is active
     cursor_overlay_ = std::make_unique<AIChatCursorOverlay>(
         devtools_agent_host_->GetWebContents());
   }
@@ -195,22 +205,25 @@ void AgentClient::UseTool(
   if (*action == "screenshot") {
     do_action =
         base::BindOnce(&AgentClient::CaptureScreenshot, base::Unretained(this),
-                       std::move(message_callback));
+                       base::BindOnce(std::move(message_callback), 100));
   } else if (*action == "type") {
     do_action = base::BindOnce(&AgentClient::TypeText, base::Unretained(this),
                                input.FindString("text") ? *input.FindString("text")
                                                         : "",
-                               std::move(message_callback));
+                               base::BindOnce(std::move(message_callback), 10));
   } else if (*action == "mouse_move") {
     auto* coordinates = input.FindList("coordinate");
     if (!coordinates || coordinates->size() != 2) {
       DLOG(ERROR) << "Invalid coordinates: " << input_json;
-      std::move(callback).Run(std::nullopt);
+      std::move(callback).Run(std::nullopt, 0);
       return;
     }
+
     mouse_position_ =
         gfx::Point((*coordinates)[0].GetInt(), (*coordinates)[1].GetInt());
+
     cursor_overlay_->MoveCursorTo(mouse_position_.x(), mouse_position_.y());
+
     do_action = base::BindOnce(
         [](AgentClient* instance, MessageCallback callback) {
           instance->Execute("Input.dispatchMouseEvent",
@@ -223,7 +236,9 @@ void AgentClient::UseTool(
       })",
                             std::move(callback));
         },
-        base::Unretained(this), std::move(message_callback));
+        base::Unretained(this),
+        base::BindOnce(std::move(message_callback),
+                       1000));  // match mouse cursor animation duration
   } else if (*action == "left_click") {
     do_action = base::BindOnce(
         [](AgentClient* instance, MessageCallback callback) {
@@ -251,12 +266,15 @@ void AgentClient::UseTool(
       })",
                             std::move(callback));
         },
-        base::Unretained(this), std::move(message_callback));
+        base::Unretained(this),
+        base::BindOnce(
+            std::move(message_callback),
+            2000));  // allow time for actions / navigations to happen
   } else if (*action == "key") {
     auto* key = input.FindString("text");
     if (!key) {
       DLOG(ERROR) << "No key found in input_json: " << input_json;
-      std::move(callback).Run(std::nullopt);
+      std::move(callback).Run(std::nullopt, 0);
       return;
     }
     do_action = base::BindOnce(
@@ -298,10 +316,11 @@ void AgentClient::UseTool(
                   },
                   std::move(callback)));
         },
-        base::Unretained(this), *key, std::move(message_callback));
+        base::Unretained(this), *key,
+        base::BindOnce(std::move(message_callback), 100));
   } else {
     DLOG(ERROR) << "Unknown action: " << action;
-    std::move(callback).Run(std::nullopt);
+    std::move(callback).Run(std::nullopt, 0);
     return;
   }
 
@@ -324,13 +343,14 @@ void AgentClient::UseTool(
 }
 
 void AgentClient::OnMessageForToolUseComplete(
-    base::OnceCallback<void(std::optional<std::string_view>)> tool_use_callback,
+    Tool::UseToolCallback tool_use_callback,
+    int delay_ms,
     MessageResult result) {
   if (!result.has_value()) {
-    std::move(tool_use_callback).Run("error");
+    std::move(tool_use_callback).Run("error", 0);
     return;
   }
-  std::move(tool_use_callback).Run(result.value());
+  std::move(tool_use_callback).Run(result.value(), delay_ms);
 }
 
 void AgentClient::CaptureScreenshot(MessageCallback callback) {
@@ -366,16 +386,9 @@ void AgentClient::CaptureScreenshot(MessageCallback callback) {
                   std::move(callback).Run(base::unexpected("error"));
                   return;
                 }
-                // Add a border to the image
-                std::string new_image =
-                    AddBorderToBase64Image(*image_data, 6, SK_ColorGRAY);
-                DLOG(ERROR) << __func__ << " new_image = " << new_image;
 
-                // "source": {
-                //   "type": "base64",
-                //   "media_type": "image/webp",
-                //   "data": ")" + new_image + R"("
-                // }
+                // Re-encode the image to webp for context length considerations
+                std::string new_image = base64PngToBase64Webp(*image_data);
 
                 // This format is not well documented by Anthropic, but it's
                 // what the assistant expects after trial and error:
@@ -426,7 +439,7 @@ void AgentClient::DispatchProtocolMessage(
   std::string_view message_raw(
       reinterpret_cast<const char*>(message_bytes.data()),
       message_bytes.size());
-  LOG(ERROR) << __func__ << " message_raw = " << message_raw;
+  // LOG(ERROR) << __func__ << " message_raw = " << message_raw;
   std::optional<base::Value> message = base::JSONReader::Read(message_raw);
   if (!message || !message->is_dict()) {
     DLOG(ERROR) << "Failed to parse message: " << message_raw;

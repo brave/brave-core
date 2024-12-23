@@ -21,6 +21,11 @@ class ConversationHandler;
 // Base class for Tools that are exposed to the Assistant
 class Tool {
  public:
+
+  // output_json, delay in milliseconds
+  using UseToolCallback =
+      base::OnceCallback<void(std::optional<std::string_view> out, int delay)>;
+
   Tool() = default;
   virtual ~Tool() = default;
 
@@ -58,9 +63,7 @@ class Tool {
 
   // Implementers should handle tool execution unless it is a built-in
   // tool handled directly by the ConversationHandler.
-  virtual void UseTool(
-      const std::string& input_json,
-      base::OnceCallback<void(std::optional<std::string_view>)> callback);
+  virtual void UseTool(const std::string& input_json, UseToolCallback callback);
 };
 
 }  // namespace ai_chat

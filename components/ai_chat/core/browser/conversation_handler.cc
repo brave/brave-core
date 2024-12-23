@@ -1040,7 +1040,8 @@ void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
 
 void ConversationHandler::OnToolUseComplete(
     const std::string& tool_use_id,
-    std::optional<std::string_view> output_json) {
+    std::optional<std::string_view> output_json,
+    int delay_ms) {
   auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
   if (!tool_use) {
     DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
@@ -1066,11 +1067,13 @@ void ConversationHandler::OnToolUseComplete(
     OnAPIRequestInProgressChanged();
     PerformAssistantGeneration("");
   } else {
+    // Still have more tool use requests to handle. Wait for the asked-for delay
+    // and then handle the next tool use request.
     base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&ConversationHandler::MaybeRespondToNextToolUseRequest,
-                       weak_ptr_factory_.GetWeakPtr()),  // The callback
-        base::Seconds(2));
+                       weak_ptr_factory_.GetWeakPtr()),
+        base::Milliseconds(delay_ms));
   }
 }
 
@@ -1082,7 +1085,7 @@ void ConversationHandler::OnActiveWebPageContentFetcherResponseReady(
   OnToolUseComplete(tool_id, R"({
     "web_page_content": ")" + content +
                                  R"(",
-  })");
+  })", 0);
 }
 
 void ConversationHandler::SubmitSummarizationRequest() {
