@@ -75,7 +75,7 @@ void NavigationTool::UseTool(
                                          std::string());
   std::move(callback).Run(R"({
     "status": "navigated"
-  })", 2000); // Allow time for the navigation to at least partially complete
+  })", 4000); // Allow time for the navigation to at least partially complete
 }
 
 }  // namespace ai_chat
