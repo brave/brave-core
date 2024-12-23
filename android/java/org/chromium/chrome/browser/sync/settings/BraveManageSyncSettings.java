@@ -49,6 +49,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private static final String VERBOSE_SYNC_PASSWORDS_PREF_COMMAND_LINE_KEY =
             "verbose_sync_passwords_pref";
 
+    // Android Runtime for Chrome
     public static final String ARC_FEATURE = "org.chromium.arc";
     public static final String ARC_DEVICE_MANAGEMENT_FEATURE = "org.chromium.arc.device_management";
     private static Optional<Boolean> sIsChromeOSForTesting = Optional.empty();
