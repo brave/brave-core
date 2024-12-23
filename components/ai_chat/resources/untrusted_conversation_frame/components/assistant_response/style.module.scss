@@ -44,6 +44,52 @@
   }
 }
 
-.toolUseRequest {
-  border: solid 1px red;
+.toolUse {
+  margin-left: 11px;
+  border-left: var(--leo-color-neutral-20) 2px solid;
+  padding: 8px 12px 8px 22px;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+  position: relative;
+
+  .toolUseIcon {
+    position: absolute;
+    top: calc(8px + 0.5lh - 11px); left: -12px;
+    --leo-icon-size: 16px;
+    --leo-progressring-size: 16px;
+    padding: 2px;
+    width: 22px;
+    height: 22px;
+    // circle
+    border-radius: 50%;
+    border: var(--leo-color-divider-subtle) 1px solid;
+    background: var(--leo-color-container-background);
+  }
+
+  &.toolUseComplete {
+    color: var(--leo-color-text-tertiary);
+
+    .toolUseIcon {
+      background: var(--leo-color-systemfeedback-success-background);
+      border-color: var(--leo-color-green-20);
+      --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+    }
+  }
+
+}
+
+.toolUseLongText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  height: 1lh;
+}
+
+.screenshotPreview {
+  margin: 4px;
+  max-width: 80vw;
+}
+
+.toolUrl {
+  font-style: italic;
 }
