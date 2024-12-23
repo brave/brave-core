@@ -110,7 +110,8 @@ class TransactionDetailsStoreTests: XCTestCase {
         defer { parsedTransactionExpectation.fulfill() }
         XCTAssertNotNil(parsedTransaction)
         XCTAssertEqual(parsedTransaction?.transaction.txHash, transaction.txHash)
-        XCTAssertEqual(parsedTransaction?.gasFee, .init(fee: "0.003402", fiat: "$10.41"))
+        // the currencyFormatter is set to have maximumFractionDigits equals to 6
+        XCTAssertEqual(parsedTransaction?.gasFee, .init(fee: "0.003402", fiat: "$10.410086"))
       }
       .store(in: &cancellables)
     let networkExpectation = expectation(description: "update-network")
