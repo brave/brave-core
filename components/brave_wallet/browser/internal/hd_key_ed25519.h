@@ -18,6 +18,9 @@ namespace brave_wallet {
 // https://www.rfc-editor.org/rfc/rfc8032.html#section-5.1.5
 inline constexpr size_t kEd25519PrivateKeySize = 32;
 inline constexpr size_t kEd25519PublicKeySize = 32;
+inline constexpr size_t kEd25519KeyPairSize =
+    kEd25519PrivateKeySize + kEd25519PublicKeySize;
+
 // https://github.com/satoshilabs/slips/blob/de7f963959ccfc80256fb5e001f64ce9ada9fba1/slip-0010.md?plain=1#L116-L117
 inline constexpr size_t kSlip10ChainCodeSize = 32;
 
@@ -51,13 +54,15 @@ class HDKeyEd25519 {
   FRIEND_TEST_ALL_PREFIXES(HDKeyEd25519UnitTest, TestVector1);
   FRIEND_TEST_ALL_PREFIXES(HDKeyEd25519UnitTest, TestVector2);
 
+  base::span<const uint8_t, kEd25519PrivateKeySize> GetPrivateKeyAsSpan() const;
+  base::span<const uint8_t, kEd25519PublicKeySize> GetPublicKeyAsSpan() const;
+
   static std::unique_ptr<HDKeyEd25519> DeriveFromHmacPayload(
       base::span<const uint8_t> key,
       base::span<const uint8_t> data);
 
-  std::array<uint8_t, kEd25519PrivateKeySize> private_key_ = {};
+  std::array<uint8_t, kEd25519KeyPairSize> key_pair_ = {};
   std::array<uint8_t, kSlip10ChainCodeSize> chain_code_ = {};
-  std::array<uint8_t, kEd25519PublicKeySize> public_key_ = {};
 };
 
 }  // namespace brave_wallet
