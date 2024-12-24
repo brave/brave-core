@@ -44,8 +44,6 @@ class ZCashRpc {
       base::expected<zcash::mojom::TreeStatePtr, std::string>)>;
   using GetCompactBlocksCallback = base::OnceCallback<void(
       base::expected<std::vector<zcash::mojom::CompactBlockPtr>, std::string>)>;
-  using GetSubtreeRootsCallback = base::OnceCallback<void(
-      base::expected<std::vector<zcash::mojom::SubtreeRootPtr>, std::string>)>;
   using GetLightdInfoCallback = base::OnceCallback<void(
       base::expected<zcash::mojom::LightdInfoPtr, std::string>)>;
 
