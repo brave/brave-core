@@ -159,6 +159,11 @@ class ZCashTransaction {
     expiry_height_ = expiry_height;
   }
 
+  uint32_t consensus_brach_id() const { return consensus_brach_id_; }
+  void set_consensus_brach_id(uint32_t consensus_brach_id) {
+    consensus_brach_id_ = consensus_brach_id;
+  }
+
  private:
   TransparentPart transparent_part_;
   OrchardPart orchard_part_;
@@ -169,6 +174,7 @@ class ZCashTransaction {
   std::optional<OrchardMemo> memo_;
   uint64_t amount_ = 0;
   uint64_t fee_ = 0;
+  uint32_t consensus_brach_id_ = 0;
 };
 
 }  // namespace brave_wallet

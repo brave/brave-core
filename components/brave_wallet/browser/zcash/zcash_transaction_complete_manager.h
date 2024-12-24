@@ -53,6 +53,10 @@ class ZCashTransactionCompleteManager {
   void OnGetLatestBlockHeight(
       ParamsBundle params,
       base::expected<zcash::mojom::BlockIDPtr, std::string> result);
+  void GetLightdInfo(ParamsBundle params);
+  void OnGetLightdInfo(
+      ParamsBundle params,
+      base::expected<zcash::mojom::LightdInfoPtr, std::string> result);
 #if BUILDFLAG(ENABLE_ORCHARD)
   void OnGetTreeState(
       ParamsBundle params,
@@ -63,6 +67,9 @@ class ZCashTransactionCompleteManager {
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
   raw_ptr<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
+
+  std::optional<zcash::mojom::LightdInfoPtr> lightd_info_;
+
   base::WeakPtrFactory<ZCashTransactionCompleteManager> weak_ptr_factory_{this};
 };
 
