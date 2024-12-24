@@ -28,6 +28,10 @@
     cursor: pointer;
     margin: 0 20px;
   }
+  .block-all-cookies-warn {
+    cursor: pointer;
+    color: red;
+  }
 </style>
 <div hidden="[[isAdBlockRoute_]]">
   <div class="settings-box first">
@@ -96,10 +100,10 @@
   <div class="settings-box">
     <div class="start">
       <div class="label">$i18n{cookieControlLabel}</div>
-      <div class="cr-secondary-text label" hidden="[[!controlEqual_('block', cookieControlType_)]]">
-        <span>Block all cookies option is deprecated. To force-enable, </span>
+      <div class="cr-secondary-text label block-all-cookies-warn" hidden="[[!controlEqual_('block', cookieControlType_)]]">
+        <span>$i18n{blockAllCookiesDeprecatedLabel}</span>
         <a id="learnMore" href="https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting" target="_blank">
-          learn more
+          $i18n{blockAllCookiesDeprecatedLinkLabel}
         </a>
         <span>.</span>
       </div>
