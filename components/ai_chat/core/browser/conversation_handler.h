@@ -484,6 +484,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   // previous one.
   bool is_content_different_ = true;
 
+  bool needs_new_entry_ = false;
+
   bool is_print_preview_fallback_requested_ = false;
 
   std::unique_ptr<EngineConsumer> engine_ = nullptr;

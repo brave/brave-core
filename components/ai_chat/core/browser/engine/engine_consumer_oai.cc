@@ -92,7 +92,13 @@ base::Value::List BuildMessages(
     messages.Append(std::move(message));
   }
 
-  for (const mojom::ConversationTurnPtr& turn : conversation_history) {
+  auto conversation_message_insertion_it = messages.end();
+
+  // Keep count of large tool results to limit the number of large results,
+  // (mainly screenshots), but keep the ones at the end by iterating in reverse.
+  int large_event_count = 0;
+  for (const mojom::ConversationTurnPtr& turn :
+       base::Reversed(conversation_history)) {
     base::Value::Dict message;
     message.Set("role", turn->character_type == CharacterType::HUMAN
                             ? "user"
@@ -103,7 +109,7 @@ base::Value::List BuildMessages(
         turn->events.has_value() && !turn->events->empty()) {
       base::Value::List tool_calls;
       std::vector<mojom::ConversationEntryEventPtr>& events = turn->events.value();
-      int large_event_count = 0;
+
       for (auto & event : base::Reversed(events)) {
          if (!event->is_tool_use_event()) {
           continue;
@@ -129,8 +135,9 @@ base::Value::List BuildMessages(
           tool_result.Set("tool_call_id", tool_event->tool_id);
           // Only send the large results (images) in the last 2x tool result
           // events, otherwise the context gets filled.
-          if (large_event_count < 3 ||
-                           tool_event->output_json.value().size() < 1000) {
+          if (!tool_event->output_json->empty() &&
+              (large_event_count < 2 ||
+               tool_event->output_json.value().size() < 1000)) {
             if (tool_event->output_json.value().size() >= 1000) {
               large_event_count++;
             }
@@ -157,29 +164,32 @@ base::Value::List BuildMessages(
       if (!tool_calls.empty()) {
         message.Set("tool_calls", std::move(tool_calls));
       }
-    } else {
-      const std::string& text = (turn->edits && !turn->edits->empty())
-                                    ? turn->edits->back()->text
-                                    : turn->text;
-      message.Set(
-          "content",
-          turn->selected_text
-              ? base::StrCat(
-                    {base::ReplaceStringPlaceholders(
-                        l10n_util::GetStringUTF8(
-                            IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
-                        {*turn->selected_text}, nullptr),
-                    "\n\n", text})
-              : text);
     }
+    const std::string& text = (turn->edits && !turn->edits->empty())
+                                  ? turn->edits->back()->text
+                                  : turn->text;
+    message.Set(
+        "content",
+        turn->selected_text
+            ? base::StrCat(
+                  {base::ReplaceStringPlaceholders(
+                      l10n_util::GetStringUTF8(
+                          IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
+                      {*turn->selected_text}, nullptr),
+                  "\n\n", text})
+            : text);
 
-    messages.Append(std::move(message));
-
+    // Tool result should be inserted after the message
     if (!tool_results.empty()) {
-      for (auto& tool_result : base::Reversed(tool_results)) {
-        messages.Append(std::move(tool_result));
+      for (auto& tool_result : tool_results) {
+        conversation_message_insertion_it =
+            messages.Insert(conversation_message_insertion_it,
+                            base::Value(std::move(tool_result)));
       }
     }
+
+    conversation_message_insertion_it = messages.Insert(
+    conversation_message_insertion_it, base::Value(std::move(message)));
   }
 
   return messages;

@@ -1434,6 +1434,10 @@ void ConversationHandler::PerformAssistantGeneration(
     }
   }
 
+  // Always start new entry for assistant response, even if it's a
+  // "continuation" from a tool use request.
+  needs_new_entry_ = true;
+
   engine_->GenerateAssistantResponse(
       is_video, page_content, chat_history_, input, selected_language_,
       std::move(tools), std::nullopt, std::move(data_received_callback),
@@ -1451,7 +1455,7 @@ void ConversationHandler::SetAPIError(const mojom::APIError& error) {
 void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     mojom::ConversationEntryEventPtr event) {
   LOG(ERROR) << __func__;
-  if (chat_history_.empty() ||
+  if (needs_new_entry_ || chat_history_.empty() ||
       chat_history_.back()->character_type != CharacterType::ASSISTANT) {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
@@ -1459,6 +1463,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
         std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
         std::nullopt, false);
+    needs_new_entry_ = false;
     chat_history_.push_back(std::move(entry));
   }
 
