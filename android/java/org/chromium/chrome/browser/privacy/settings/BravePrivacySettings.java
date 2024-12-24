@@ -7,6 +7,10 @@ package org.chromium.chrome.browser.privacy.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -38,25 +42,19 @@ import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFa
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
-import org.chromium.components.browser_ui.settings.TextMessagePreference;
-import org.chromium.components.sync.protocol.SharedTabGroup.Color;
-
-import android.text.SpannableString;
-import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
-import android.text.Spannable;
+import org.chromium.ui.text.SpanApplier;
+import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 /** Fragment to keep track of the all the brave privacy related preferences. */
 public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
     private static final String BLOCK_ALL_COOKIES_LEARN_MORE_LINK =
-        "https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting";
+            "https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting";
 
     // Chromium Prefs
     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
@@ -114,8 +112,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_REQUEST_OTR = "request_otr";
 
     public static final String PREF_BLOCK_TRACKERS_ADS = "block_trackers_ads";
-    private static final String PREF_BLOCK_CROSS_SITE_COOKIES = "block_cross_site_cookies";    
-    private static final String BLOCK_CROSS_SITE_COOKIES_LEARN_MORE = "block_all_cross_site_cookies_learn_more";
+    private static final String PREF_BLOCK_CROSS_SITE_COOKIES = "block_cross_site_cookies";
+    private static final String BLOCK_CROSS_SITE_COOKIES_LEARN_MORE =
+            "block_all_cross_site_cookies_learn_more";
     private static final String PREF_SHIELDS_SUMMARY = "shields_summary";
     private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
@@ -299,8 +298,13 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mBlockCrosssiteCookiesLearnMore =
                 (TextMessagePreference) findPreference(BLOCK_CROSS_SITE_COOKIES_LEARN_MORE);
         if (mBlockCrosssiteCookiesLearnMore != null) {
-            SpannableString blockAllCookiesDeprecatedWarning = new SpannableString(getString(R.string.block_cookies_deprecated_label));
-            blockAllCookiesDeprecatedWarning.setSpan(new ForegroundColorSpan(getContext().getColor(R.color.wallet_error_text_color)), 0, blockAllCookiesDeprecatedWarning.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            SpannableString blockAllCookiesDeprecatedWarning =
+                    new SpannableString(getString(R.string.block_cookies_deprecated_label));
+            blockAllCookiesDeprecatedWarning.setSpan(
+                    new ForegroundColorSpan(getContext().getColor(R.color.wallet_error_text_color)),
+                    0,
+                    blockAllCookiesDeprecatedWarning.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             SpannableString learnMoreDesc =
                     SpanApplier.applySpans(
@@ -319,7 +323,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             SpannableStringBuilder spannableBuilder = new SpannableStringBuilder();
             spannableBuilder.append(blockAllCookiesDeprecatedWarning);
             spannableBuilder.append(learnMoreDesc);
-             mBlockCrosssiteCookiesLearnMore.setSummary(spannableBuilder);
+            mBlockCrosssiteCookiesLearnMore.setSummary(spannableBuilder);
         }
 
         mBlockScriptsPref = (ChromeSwitchPreference) findPreference(PREF_BLOCK_SCRIPTS);
@@ -553,7 +557,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     0,
                     ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE)
                             || (int) newValue == STRICT);
-            mBlockCrosssiteCookiesLearnMore.setVisible(STRICT == (int)newValue);
+            mBlockCrosssiteCookiesLearnMore.setVisible(STRICT == (int) newValue);
             mBlockCrosssiteCookiesLearnMore.setDividerAllowedAbove(false);
             switch ((int) newValue) {
                 case STRICT:
@@ -686,8 +690,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 0,
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE)
                         || cookiesBlockPref == STRICT);
-        mBlockCrosssiteCookiesLearnMore.setVisible(STRICT == (int)cookiesBlockPref);
-        mBlockCrosssiteCookiesLearnMore.setDividerAllowedAbove(false);            
+        mBlockCrosssiteCookiesLearnMore.setVisible(STRICT == (int) cookiesBlockPref);
+        mBlockCrosssiteCookiesLearnMore.setDividerAllowedAbove(false);
         if (cookiesBlockPref == STRICT) {
             mBlockCrosssiteCookies.setCheckedIndex(0);
             mBlockCrosssiteCookies.setSummary(
