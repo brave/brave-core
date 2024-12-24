@@ -66,6 +66,14 @@
     background: var(--leo-color-container-background);
   }
 
+  &:global(.tool-user_choice_tool) {
+    .toolUseIcon {
+      --leo-icon-color: var(--leo-color-primary-5);
+      background-color: var(--leo-color-primary-40);
+      border-color: var(--leo-color-primary-50);
+    }
+  }
+
   &.toolUseComplete {
     color: var(--leo-color-text-tertiary);
 
@@ -92,4 +100,24 @@
 
 .toolUrl {
   font-style: italic;
+}
+
+.choice {
+    margin-bottom: var(--leo-spacing-s);
+}
+
+.completedChoiceIcon {
+  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+}
+
+.choiceNumber {
+  border-radius: 50%;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--leo-color-schemes-on-tertiary);
+  background: var(--leo-color-text-interactive);
 }

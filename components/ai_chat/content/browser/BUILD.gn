@@ -9,6 +9,8 @@ static_library("browser") {
   sources = [
     "build_devtools_key_event_params.cc",
     "build_devtools_key_event_params.h",
+    "navigate_history_tool.cc",
+    "navigate_history_tool.h",
     "navigation_tool.cc",
     "navigation_tool.h",
     "agent_client.cc",
