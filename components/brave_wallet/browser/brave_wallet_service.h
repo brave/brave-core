@@ -84,11 +84,11 @@ class BraveWalletService : public KeyedService,
   static void MigrateDeadNetwork(PrefService* prefs,
                                  const std::string& chain_id,
                                  const std::string& fallback_chain_id,
-                                 const char* pref_key);
+                                 std::string_view pref_key);
   static void MigrateAsCustomNetwork(PrefService* prefs,
                                      const mojom::NetworkInfo& network,
                                      bool is_eip1559,
-                                     const char* pref_key);
+                                     std::string_view pref_key);
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
   static void MigrateGoerliNetwork(PrefService* prefs);
   static void MigrateAuroraMainnetAsCustomNetwork(PrefService* prefs);

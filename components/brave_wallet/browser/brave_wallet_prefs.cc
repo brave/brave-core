@@ -299,8 +299,7 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(kBraveWalletIsSPLTokenProgramMigrated, false);
 
   // Added 11/2024
-  registry->RegisterBooleanPref(kBraveWalletCustomNetworksAuroraMainnetMigrated,
-                                false);
+  registry->RegisterBooleanPref(kBraveWalletAuroraMainnetMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {

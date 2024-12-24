@@ -796,7 +796,7 @@ void BraveWalletService::MigrateAsCustomNetwork(
     PrefService* prefs,
     const mojom::NetworkInfo& network,
     bool is_eip1559,
-    const char* pref_key) {
+    std::string_view pref_key) {
   if (prefs->GetBoolean(pref_key)) {
     return;
   }
@@ -817,7 +817,7 @@ void BraveWalletService::MigrateDeadNetwork(
     PrefService* prefs,
     const std::string& chain_id,
     const std::string& fallback_chain_id,
-    const char* pref_key) {
+    std::string_view pref_key) {
   if (prefs->GetBoolean(pref_key)) {
     return;
   }
@@ -884,7 +884,7 @@ void BraveWalletService::MigrateAuroraMainnetAsCustomNetwork(
       GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
                                      mojom::kAuroraMainnetChainId));
   MigrateAsCustomNetwork(prefs, network, false,
-                         kBraveWalletCustomNetworksAuroraMainnetMigrated);
+                         kBraveWalletAuroraMainnetMigrated);
 }
 
 void BraveWalletService::MigrateAssetsPrefToList(PrefService* prefs) {
