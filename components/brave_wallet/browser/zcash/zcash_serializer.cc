@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/containers/span.h"
-#include "base/containers/to_vector.h"
+#include "base/containers/span_writer.h"
 #include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -94,14 +94,10 @@ std::array<uint8_t, 32> HashScriptPubKeys(const ZCashTransaction& tx) {
 std::array<uint8_t, kBlake2bPersonalizationSize> GetHashPersonalizer(
     const ZCashTransaction& tx) {
   std::array<uint8_t, kBlake2bPersonalizationSize> result;
-  uint32_t consensusBranchId = tx.consensus_brach_id();
-  base::span(result)
-      .subspan(0, sizeof(kTxHashPersonalizerPrefix) - 1)
-      .copy_from(base::byte_span_from_cstring(kTxHashPersonalizerPrefix));
-  base::span(result)
-      .subspan(sizeof(kTxHashPersonalizerPrefix) - 1, sizeof(consensusBranchId))
-      .copy_from(base::byte_span_from_ref(base::numerics::U32FromLittleEndian(
-          base::byte_span_from_ref(consensusBranchId))));
+  auto span_writer = base::SpanWriter(base::span(result));
+  span_writer.Write(base::byte_span_from_cstring(kTxHashPersonalizerPrefix));
+  span_writer.WriteU32LittleEndian(tx.consensus_brach_id());
+  DCHECK_EQ(span_writer.remaining(), 0u);
   return result;
 }
 

@@ -334,6 +334,7 @@ void ZCashWalletService::CompleteTransactionDone(
                             result.error());
     return;
   }
+
   auto tx = ZCashSerializer::SerializeRawTransaction(result.value());
   zcash_rpc_->SendTransaction(
       chain_id, tx,
