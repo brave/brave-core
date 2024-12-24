@@ -119,13 +119,14 @@ class ZCashWalletServiceUnitTest : public testing::Test {
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
-        keyring_service_.get(), std::make_unique<testing::NiceMock<MockZCashRPC>>());
+        keyring_service_.get(),
+        std::make_unique<testing::NiceMock<MockZCashRPC>>());
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
     zcash_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
     ASSERT_TRUE(zcash_account_);
 
-    ON_CALL(zcash_rpc(), GetLightdInfo(_, _))
+    ON_CALL(*zcash_rpc(), GetLightdInfo(_, _))
         .WillByDefault(
             ::testing::Invoke([&](const std::string& chain_id,
                                   ZCashRpc::GetLightdInfoCallback callback) {

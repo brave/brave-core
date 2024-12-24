@@ -174,7 +174,7 @@ void ZCashTransactionCompleteManager::OnGetLightdInfo(
   params.transaction.set_consensus_brach_id(consensus_branch_id);
   std::string chain_id = params.chain_id;
 
-  zcash_wallet_service_->zcash_rpc().GetLatestBlock(
+  zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
       chain_id,
       base::BindOnce(&ZCashTransactionCompleteManager::OnGetLatestBlockHeight,
                      weak_ptr_factory_.GetWeakPtr(), std::move(params)));

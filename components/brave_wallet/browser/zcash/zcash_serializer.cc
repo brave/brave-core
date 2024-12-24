@@ -29,21 +29,6 @@ constexpr char kTxHashPersonalizerPrefix[] = "ZcashTxHash_";
 constexpr uint32_t kV5TxVersion = 5 | 1 << 31 /* overwintered bit */;
 // https://zips.z.cash/protocol/protocol.pdf#txnconsensus
 constexpr uint32_t kV5VersionGroupId = 0x26A7270A;
-constexpr uint32_t kConsensusBranchId = 0xC2D6D0B4;
-
-// https://zips.z.cash/zip-0244#txid-digest-1
-std::string GetTxHashPersonalizer() {
-  std::string personalizer(kTxHashPersonalizerPrefix);
-
-  personalizer.append(sizeof(kConsensusBranchId), '\0');
-  base::as_writable_byte_span(personalizer)
-      .subspan<std::string(kTxHashPersonalizerPrefix).size(),
-               sizeof(kConsensusBranchId)>()
-      .copy_from(base::byte_span_from_ref(base::numerics::U32FromLittleEndian(
-          base::byte_span_from_ref(kConsensusBranchId))));
-
-  return personalizer;
-}
 
 std::array<uint8_t, kZCashDigestSize> blake2b256(
     const std::vector<uint8_t>& payload,
@@ -117,14 +102,17 @@ std::array<uint8_t, 32> HashScriptPubKeys(const ZCashTransaction& tx) {
   return blake2b256(data, "ZTxTrScriptsHash");
 }
 
-std::array<uint8_t, kBlake2bPersonalizationSize> GetHashPersonalizer(
-    const ZCashTransaction& tx) {
-  std::array<uint8_t, kBlake2bPersonalizationSize> result;
-  auto span_writer = base::SpanWriter(base::span(result));
-  span_writer.Write(base::byte_span_from_cstring(kTxHashPersonalizerPrefix));
-  span_writer.WriteU32LittleEndian(tx.consensus_brach_id());
-  DCHECK_EQ(span_writer.remaining(), 0u);
-  return result;
+std::string GetHashPersonalizer(const ZCashTransaction& tx) {
+  std::string personalizer(kTxHashPersonalizerPrefix);
+
+  personalizer.append(sizeof(tx.consensus_brach_id()), '\0');
+  base::as_writable_byte_span(personalizer)
+      .subspan<std::string(kTxHashPersonalizerPrefix).size(),
+               sizeof(tx.consensus_brach_id())>()
+      .copy_from(base::byte_span_from_ref(base::numerics::U32FromLittleEndian(
+          base::byte_span_from_ref(tx.consensus_brach_id()))));
+
+  return personalizer;
 }
 
 }  // namespace
