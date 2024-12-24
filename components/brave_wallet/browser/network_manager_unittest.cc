@@ -472,12 +472,6 @@ TEST_F(NetworkManagerUnitTest, GetZCashSubdomainForKnownChainId) {
 }
 
 TEST_F(NetworkManagerUnitTest, GetKnownChain) {
-  const base::flat_set<std::string> non_eip1559_networks = {
-      brave_wallet::mojom::kLocalhostChainId,
-      brave_wallet::mojom::kBnbSmartChainMainnetChainId,
-      brave_wallet::mojom::kAuroraMainnetChainId,
-      brave_wallet::mojom::kNeonEVMMainnetChainId};
-
   auto known_chains = NetworkManager::GetAllKnownChains(mojom::CoinType::ETH);
   ASSERT_FALSE(known_chains.empty());
   for (const auto& chain : known_chains) {
@@ -654,7 +648,7 @@ TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
       {mojom::kFilecoinEthereumMainnetChainId, true},
       {mojom::kFilecoinEthereumTestnetChainId, true},
       {mojom::kBnbSmartChainMainnetChainId, false},
-      {mojom::kAuroraMainnetChainId, false},
+      {mojom::kBaseMainnetChainId, true},
       {mojom::kNeonEVMMainnetChainId, false},
       {mojom::kLocalhostChainId, false}};
   for (auto& [chain_id, value] : known_states) {

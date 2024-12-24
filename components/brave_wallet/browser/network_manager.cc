@@ -48,7 +48,7 @@ std::optional<bool> GetEip1559ForKnownChain(std::string_view chain_id_lwr) {
         {mojom::kFilecoinEthereumMainnetChainId, true},
         {mojom::kFilecoinEthereumTestnetChainId, true},
         {mojom::kBnbSmartChainMainnetChainId, false},
-        {mojom::kAuroraMainnetChainId, false},
+        {mojom::kBaseMainnetChainId, true},
         {mojom::kNeonEVMMainnetChainId, false},
         {mojom::kLocalhostChainId, false},
     });
