@@ -12,6 +12,8 @@ import classnames from '$web-common/classnames'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
+// TODO: move to common
+import { SuggestionButtonRaw } from '../../../page/components/suggested_question/suggested_question_raw'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
 import styles from './style.module.scss'
@@ -89,6 +91,8 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
   }
 
   let toolText = <>{toolUse.toolName}</>
+  let statusIcon = <Icon name="check-circle-outline" />
+  let progressIcon = <ProgressRing />
 
   if (toolUse.toolName === 'computer') {
     switch (input?.action) {
@@ -130,14 +134,51 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
     toolText = <>Navigating to the URL: <span className={styles.toolUrl}>{input?.website_url}</span></>
   }
 
+  if (toolUse.toolName === 'web_page_history_navigator') {
+    toolText = <>Pressing the browser's <i>{input?.back ? 'back' : 'forwards'}</i> button</>
+  }
+
+  if (toolUse.toolName === 'user_choice_tool') {
+    progressIcon = <Icon name='help-outline' />
+
+    if (output) {
+      toolText = (
+        <SuggestionButtonRaw
+                className={styles.completedChoice}
+                onClick={() => {}}
+                isDisabled={true}
+                icon={<Icon className={styles.completedChoiceIcon} name='checkbox-checked' />}
+              >
+                {output?.user_choice}
+              </SuggestionButtonRaw>
+      )
+    } else {
+      toolText = (
+        <>
+          {input?.choices?.map((choice: string, i: number) => (
+            <div key={i} className={styles.toolChoice}>
+              <SuggestionButtonRaw
+                className={styles.choice}
+                onClick={() => context.conversationHandler?.respondToToolUseRequest(toolUse.toolId, `{ user_choice: ${choice} }`)}
+                isDisabled={false}
+                icon={<div className={styles.choiceNumber}>{i+1}</div>}
+              >
+                {choice}
+              </SuggestionButtonRaw>
+            </div>
+          ))}
+        </>
+      )
+    }
+  }
+
   return (
-    <div className={classnames(styles.toolUse, output && styles.toolUseComplete)}>
+    <div className={classnames(styles.toolUse, output && styles.toolUseComplete, `tool-${toolUse.toolName}`)}>
       <div className={styles.toolUseIcon} title={toolUse.inputJson}>
-        {!output && <ProgressRing />}
-        {output && <Icon name="check-circle-outline" />}
+        {!toolUse.outputJson === undefined && progressIcon}
+        {toolUse.outputJson !== undefined && statusIcon}
       </div>
       {toolText}
-
     </div>
   )
 }

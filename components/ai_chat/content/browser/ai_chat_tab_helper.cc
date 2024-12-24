@@ -139,6 +139,7 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
   previous_page_title_ = web_contents->GetTitle();
   agent_client_ = std::make_unique<AgentClient>(web_contents);
   navigation_tool_ = std::make_unique<NavigationTool>(web_contents);
+  navigate_history_tool_ = std::make_unique<NavigateHistoryTool>(web_contents);
 }
 
 AIChatTabHelper::~AIChatTabHelper() = default;
@@ -381,7 +382,8 @@ void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
 }
 
 std::vector<Tool*> AIChatTabHelper::GetTools() {
-  return {agent_client_.get(), navigation_tool_.get()};
+  return {agent_client_.get(), navigation_tool_.get(),
+          navigate_history_tool_.get()};
 }
 
 void AIChatTabHelper::MaybeSameDocumentIsNewPage() {

@@ -80,6 +80,7 @@ using AssociatedContentDelegate =
 constexpr size_t kDefaultSuggestionsCount = 4;
 
 // ai_chat component-level tools
+// TODO(petemill): move
 class PageContentTool : public Tool {
  public:
   // static name
@@ -117,23 +118,47 @@ class PageContentTool : public Tool {
   bool RequiresUserInteractionBeforeHandling() const override { return true; }
 };
 
-// {
-  //   mojom::ToolPtr tool = mojom::Tool::New();
-  //   tool->name = "check_lights";
-  //   tool->description = "Determine if the user's lights in a given room in their home are on or off";
-  //   tool->input_schema_json = R"({
-  //     "type": "object",
-  //     "properties": {
-  //       "room": {
-  //         "type": "string",
-  //         "description": "The room to check the lights in"
-  //       }
-  //     }
-  //   })";
-  //   tool->required_properties = {"room"};
-  //   tools.push_back(std::move(tool));
-  // }
-  // {
+class UserChoiceTool : public Tool {
+ public:
+  // static name
+  inline static const std::string_view kName =
+      "user_choice_tool";
+
+  ~UserChoiceTool() override = default;
+
+  std::string_view name() const override { return kName; }
+  std::string_view description() const override {
+    return "Presents a list of text choices to the user and returns the user's "
+           "selection. The assistant will call this function when it needs "
+           "the user to make a choice between a list of options in order to "
+           "move forward with a task. Prefer this over asking open-ended "
+           "questions, unless the task is complete or almost complete.";
+  }
+
+  std::optional<std::string> GetInputSchemaJson() const override {
+    return R"({
+        "type": "object",
+        "properties": {
+          "choices": {
+            "type": "array",
+            "description": "A list of choices for the user to select from",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      })";
+  }
+
+  std::optional<std::vector<std::string>> required_properties() const override {
+    return std::optional<std::vector<std::string>>({"choices"});
+  }
+
+  bool IsContentAssociationRequired() const override { return false; }
+
+  bool RequiresUserInteractionBeforeHandling() const override { return true; }
+};
+
 }  // namespace
 
 AssociatedContentDelegate::AssociatedContentDelegate()
@@ -270,6 +295,7 @@ ConversationHandler::ConversationHandler(
     if (features::kIsSmartPageContentEnabled.Get()) {
       tools_.push_back(std::make_unique<PageContentTool>());
     }
+    tools_.push_back(std::make_unique<UserChoiceTool>());
   }
 
   // When a client disconnects, let observers know
@@ -1001,46 +1027,54 @@ void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
   // permission to use, some are users's giving the answer, and some are to be
   // run immediately after the tool is requested by the assistant.
 
-  // Some tools are handled by the Tool and some are handled by this class
-  if (tool_use->tool_name == PageContentTool::kName) {
+  // Some tools are handled by the Tool, some by the UI and some are handled by
+  // this class.
+  if (output_json.has_value()) {
+    // Already handled by the UI
+    OnToolUseComplete(tool_id, output_json, 0);
+    return;
+  }
+  else if (tool_use->tool_name == PageContentTool::kName) {
+    // Handled by this class
     LOG(ERROR) << __func__;
     GeneratePageContent(base::BindOnce(
         &ConversationHandler::OnActiveWebPageContentFetcherResponseReady,
         weak_ptr_factory_.GetWeakPtr(), tool_id));
+    return;
+  }
+  // Handled by the tool itself
+  LOG(ERROR) << __func__;
+  // Get tool
+  Tool* tool = nullptr;
+  auto tool_it = base::ranges::find_if(
+      tools_, [&tool_use](const std::unique_ptr<Tool>& tool) {
+        return tool->name() == tool_use->tool_name;
+      });
+  if (tool_it != tools_.end()) {
+    tool = tool_it->get();
   } else {
-    LOG(ERROR) << __func__;
-    // Get tool
-    Tool* tool = nullptr;
-    auto tool_it = base::ranges::find_if(
-        tools_, [&tool_use](const std::unique_ptr<Tool>& tool) {
-          return tool->name() == tool_use->tool_name;
-        });
-    if (tool_it != tools_.end()) {
-      tool = tool_it->get();
-    } else {
-      // Check content tools
-      if (associated_content_delegate_) {
-        auto content_tools = associated_content_delegate_->GetTools();
-        auto a_tool_it =
-            base::ranges::find_if(content_tools,
-                                  [&tool_use](const Tool* tool) {
-                                    LOG(ERROR) << __func__ << ": " << tool->name() << ", " << tool_use->tool_name;
-                                    return tool->name() == tool_use->tool_name;
-                                  });
-        if (a_tool_it != content_tools.end()) {
-          tool = *a_tool_it;
-        }
+    // Check content tools
+    if (associated_content_delegate_) {
+      auto content_tools = associated_content_delegate_->GetTools();
+      auto a_tool_it =
+          base::ranges::find_if(content_tools,
+                                [&tool_use](const Tool* tool) {
+                                  LOG(ERROR) << __func__ << ": " << tool->name() << ", " << tool_use->tool_name;
+                                  return tool->name() == tool_use->tool_name;
+                                });
+      if (a_tool_it != content_tools.end()) {
+        tool = *a_tool_it;
       }
     }
-    if (!tool) {
-      DLOG(ERROR) << "Tool not found: " << tool_use->tool_name;
-      return;
-    }
-    LOG(ERROR) << __func__ << ": " << tool->name();
-    tool->UseTool(tool_use->input_json,
-                  base::BindOnce(&ConversationHandler::OnToolUseComplete,
-                                 weak_ptr_factory_.GetWeakPtr(), tool_id));
   }
+  if (!tool) {
+    DLOG(ERROR) << "Tool not found: " << tool_use->tool_name;
+    return;
+  }
+  LOG(ERROR) << __func__ << ": " << tool->name();
+  tool->UseTool(tool_use->input_json,
+                base::BindOnce(&ConversationHandler::OnToolUseComplete,
+                                weak_ptr_factory_.GetWeakPtr(), tool_id));
 }
 
 void ConversationHandler::OnToolUseComplete(
