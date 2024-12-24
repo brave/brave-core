@@ -10,6 +10,7 @@
 
 #include "base/big_endian.h"
 #include "base/containers/span.h"
+#include "base/containers/span_writer.h"
 #include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -79,7 +80,7 @@ std::array<uint8_t, kZCashDigestSize> blake2b256(
 void PushHeader(const ZCashTransaction& tx, BtcLikeSerializerStream& stream) {
   stream.Push32AsLE(kV5TxVersion);
   stream.Push32AsLE(kV5VersionGroupId);
-  stream.Push32AsLE(kConsensusBranchId);
+  stream.Push32AsLE(tx.consensus_brach_id());
   stream.Push32AsLE(tx.locktime());
   stream.Push32AsLE(tx.expiry_height());
 }
@@ -114,6 +115,16 @@ std::array<uint8_t, 32> HashScriptPubKeys(const ZCashTransaction& tx) {
     stream.PushSizeAndBytes(input.script_pub_key);
   }
   return blake2b256(data, "ZTxTrScriptsHash");
+}
+
+std::array<uint8_t, kBlake2bPersonalizationSize> GetHashPersonalizer(
+    const ZCashTransaction& tx) {
+  std::array<uint8_t, kBlake2bPersonalizationSize> result;
+  auto span_writer = base::SpanWriter(base::span(result));
+  span_writer.Write(base::byte_span_from_cstring(kTxHashPersonalizerPrefix));
+  span_writer.WriteU32LittleEndian(tx.consensus_brach_id());
+  DCHECK_EQ(span_writer.remaining(), 0u);
+  return result;
 }
 
 }  // namespace
@@ -278,7 +289,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
     stream.PushBytes(sapling_hash);
     stream.PushBytes(orchard_hash);
 
-    digest_hash = blake2b256(data, GetTxHashPersonalizer());
+    digest_hash = blake2b256(data, GetHashPersonalizer(zcash_transaction));
   }
 
   std::reverse(digest_hash.begin(), digest_hash.end());
@@ -328,7 +339,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
     stream.PushBytes(sapling_hash);
     stream.PushBytes(orchard_hash);
 
-    digest_hash = blake2b256(data, GetTxHashPersonalizer());
+    digest_hash = blake2b256(data, GetHashPersonalizer(zcash_transaction));
   }
 
   return digest_hash;

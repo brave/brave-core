@@ -138,4 +138,18 @@ void ZCashDecoder::ParseCompactBlocks(const std::vector<std::string>& data,
   std::move(callback).Run(std::move(parsed_blocks));
 }
 
+void ZCashDecoder::ParseLightdInfo(const std::string& data,
+                                   ParseLightdInfoCallback callback) {
+  ::zcash::LightdInfo result;
+  auto serialized_message = ResolveSerializedMessage(data);
+  if (!serialized_message || serialized_message->empty() ||
+      !result.ParseFromString(serialized_message.value())) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  std::move(callback).Run(
+      zcash::mojom::LightdInfo::New(result.consensusbranchid()));
+}
+
 }  // namespace brave_wallet
