@@ -44,6 +44,10 @@ class ZCashRpc {
       base::expected<zcash::mojom::TreeStatePtr, std::string>)>;
   using GetCompactBlocksCallback = base::OnceCallback<void(
       base::expected<std::vector<zcash::mojom::CompactBlockPtr>, std::string>)>;
+  using GetSubtreeRootsCallback = base::OnceCallback<void(
+      base::expected<std::vector<zcash::mojom::SubtreeRootPtr>, std::string>)>;
+  using GetLightdInfoCallback = base::OnceCallback<void(
+      base::expected<zcash::mojom::LightdInfoPtr, std::string>)>;
 
   ZCashRpc(NetworkManager* network_manager,
            scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -80,6 +84,9 @@ class ZCashRpc {
                                 uint32_t from,
                                 uint32_t to,
                                 GetCompactBlocksCallback callback);
+
+  virtual void GetLightdInfo(const std::string& chain_id,
+                             GetLightdInfoCallback callback);
 
  private:
   friend class base::RefCountedThreadSafe<ZCashRpc>;
@@ -118,6 +125,10 @@ class ZCashRpc {
       UrlLoadersList::iterator it,
       StreamHandlersList::iterator handler_it,
       base::expected<std::vector<std::string>, std::string> result);
+
+  void OnGetLightdInfoResponse(GetLightdInfoCallback callback,
+                               UrlLoadersList::iterator it,
+                               std::unique_ptr<std::string> response_body);
 
   template <typename T>
   void OnParseResult(base::OnceCallback<void(base::expected<T, std::string>)>,

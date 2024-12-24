@@ -36,6 +36,8 @@ class ZCashDecoder : public zcash::mojom::ZCashDecoder {
                       ParseTreeStateCallback callback) override;
   void ParseCompactBlocks(const std::vector<std::string>& data,
                           ParseCompactBlocksCallback callback) override;
+  void ParseLightdInfo(const std::string& data,
+                       ParseLightdInfoCallback callback) override;
 };
 
 }  // namespace brave_wallet
