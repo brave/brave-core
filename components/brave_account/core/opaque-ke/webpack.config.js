@@ -1,6 +1,6 @@
 const path = require('path');
 const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
-const { XMLHttpRequestWasmLoaderPlugin } = require('./xml_http_request_wasm_loader_plugin.js');
+const { XHRCompileAsyncWasmPlugin } = require('./xhr_compile_async_wasm_plugin.js');
 
 module.exports = (env) => {
   // WasmPackPlugin expects wasm-pack to be in $PATH,
@@ -25,8 +25,8 @@ module.exports = (env) => {
       path: path.resolve(env.output_path, 'dist'),
       publicPath: 'chrome://resources/brave/opaque-ke/bundle/',
       webassemblyModuleFilename: 'opaque_ke.module.wasm',
-      enabledWasmLoadingTypes: [ "xml-http-request" ],
-      wasmLoading: "xml-http-request",
+      enabledWasmLoadingTypes: [ "xhr" ],
+      wasmLoading: "xhr",
       // trustedTypes: true,
     },
     plugins: [
@@ -36,7 +36,7 @@ module.exports = (env) => {
         outDir: path.resolve(env.output_path, 'pkg'),
         extraArgs: `--target-dir ${path.resolve(env.output_path, 'target')}`
       }),
-      new XMLHttpRequestWasmLoaderPlugin(),
+      new XHRCompileAsyncWasmPlugin(),
     ],
     devtool: 'source-map',  // suppressing generating eval() calls
     mode: 'development',
