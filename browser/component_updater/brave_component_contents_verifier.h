@@ -6,11 +6,7 @@
 #ifndef BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_CONTENTS_VERIFIER_H_
 #define BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_CONTENTS_VERIFIER_H_
 
-#include "base/feature_list.h"
-
 namespace component_updater {
-
-BASE_DECLARE_FEATURE(kComponentContentsVerifier);
 
 inline constexpr char kBypassComponentContentsVerifier[] =
     "bypass-component-contents-verifier";

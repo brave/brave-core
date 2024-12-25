@@ -25,9 +25,9 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/component_updater/brave_component_contents_verifier.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/components/brave_component_updater/browser/component_contents_accessor.h"
+#include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -1620,7 +1620,7 @@ class AdBlockServiceSignedComponentsTest : public AdBlockServiceTest {
  public:
   AdBlockServiceSignedComponentsTest() {
     feature_list_.InitAndEnableFeature(
-        component_updater::kComponentContentsVerifier);
+        brave_component_updater::kComponentContentsVerifier);
   }
   ~AdBlockServiceSignedComponentsTest() override = default;
 

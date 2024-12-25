@@ -11,17 +11,18 @@
 #include <utility>
 #include <vector>
 
+#include "base/command_line.h"
+#include "base/containers/span_reader.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
+#include "brave/components/brave_component_updater/browser/features.h"
+#include "crypto/sha2.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 
-#include "base/command_line.h"
-#include "base/containers/span_reader.h"
-#include "crypto/sha2.h"
 #include "extensions/browser/content_hash_tree.h"
 #include "extensions/browser/verified_contents.h"
 
@@ -117,7 +118,7 @@ class ExtensionsTreeHashContentsVerifier
 bool ShouldBypassSignature() {
   static const bool kBypass =
       !base::FeatureList::IsEnabled(
-          component_updater::kComponentContentsVerifier) ||
+          brave_component_updater::kComponentContentsVerifier) ||
       base::CommandLine::ForCurrentProcess()->HasSwitch(
           component_updater::kBypassComponentContentsVerifier);
   return kBypass;
@@ -139,10 +140,6 @@ CreateExtensionsTreeHashContentsVerifier(const base::FilePath& component_root) {
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 namespace component_updater {
-
-BASE_FEATURE(kComponentContentsVerifier,
-             "ComponentContentsVerifier",
-             base::FEATURE_DISABLED_BY_DEFAULT);
 
 void SetupComponentContentsVerifier() {
   auto factory = base::BindRepeating(CreateExtensionsTreeHashContentsVerifier);
