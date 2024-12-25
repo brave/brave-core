@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 
+#include <map>
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/big_endian.h"
 #include "base/containers/span.h"
