@@ -39,7 +39,20 @@ def SetupAndroidDevice() -> None:
 def RebootAndroid() -> None:
   logging.debug('Rebooting Android device')
   RunAsRoot('reboot')
-  time.sleep(30)
+
+  # Polling to check if the device is ready
+  attempts_left = 30
+  while attempts_left > 0:
+    time.sleep(5)
+    result, output = GetProcessOutput(
+        [path_util.GetAdbPath(), 'shell', 'getprop', 'sys.boot_completed'])
+    if result and output.strip() == '1':
+      time.sleep(10)  # Extra delay to make sure the device is ready
+      logging.debug('Device is ready after reboot')
+      return
+    attempts_left -= 1
+
+  raise RuntimeError('Device did not become ready after reboot')
 
 
 def GetPackageVersion(package: str) -> str:
