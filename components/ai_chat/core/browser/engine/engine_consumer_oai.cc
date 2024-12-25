@@ -145,7 +145,7 @@ base::Value::List BuildMessages(
             if (!possible_content.has_value()) {
               DLOG(ERROR) << "Failed to parse tool output JSON: "
                          << tool_event->output_json.value();
-              tool_result.Set("content", "");
+              tool_result.Set("content", tool_event->output_json.value());
             } else if (possible_content->is_list()) {
               base::Value::List& list = possible_content.value().GetList();
               tool_result.Set("content", std::move(list));

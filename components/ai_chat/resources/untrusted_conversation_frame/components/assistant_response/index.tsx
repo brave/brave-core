@@ -139,29 +139,31 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
   }
 
   if (toolUse.toolName === 'user_choice_tool') {
-    progressIcon = <Icon name='help-outline' />
-
-    if (output) {
+    if (toolUse.outputJson) {
       toolText = (
         <SuggestionButtonRaw
-                className={styles.completedChoice}
                 onClick={() => {}}
                 isDisabled={true}
                 icon={<Icon className={styles.completedChoiceIcon} name='checkbox-checked' />}
               >
-                {output?.user_choice}
+                {toolUse.outputJson}
               </SuggestionButtonRaw>
       )
     } else {
+      progressIcon = <Icon name='help-outline' />
+      const isDisabled = toolUse.outputJson !== undefined && toolUse.outputJson !== null
+      if (!isDisabled) {
+        statusIcon= <Icon name='help-outline' />
+      }
       toolText = (
         <>
           {input?.choices?.map((choice: string, i: number) => (
             <div key={i} className={styles.toolChoice}>
               <SuggestionButtonRaw
-                className={styles.choice}
-                onClick={() => context.conversationHandler?.respondToToolUseRequest(toolUse.toolId, `{ user_choice: ${choice} }`)}
-                isDisabled={false}
-                icon={<div className={styles.choiceNumber}>{i+1}</div>}
+                className={classnames(styles.choice, isDisabled && styles.isDisabled)}
+                onClick={() => context.conversationHandler?.respondToToolUseRequest(toolUse.toolId, choice)}
+                isDisabled={isDisabled}
+                icon={<div className={classnames(styles.choiceNumber, isDisabled && styles.isDisabled)}>{i+1}</div>}
               >
                 {choice}
               </SuggestionButtonRaw>
@@ -172,11 +174,14 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
     }
   }
 
+  const isComplete = toolUse.outputJson !== undefined && toolUse.outputJson !== null
+
+
   return (
-    <div className={classnames(styles.toolUse, output && styles.toolUseComplete, `tool-${toolUse.toolName}`)}>
+    <div className={classnames(styles.toolUse, isComplete && styles.toolUseComplete, `tool-${toolUse.toolName}`)}>
       <div className={styles.toolUseIcon} title={toolUse.inputJson}>
-        {!toolUse.outputJson === undefined && progressIcon}
-        {toolUse.outputJson !== undefined && statusIcon}
+        {!isComplete && progressIcon}
+        {isComplete && statusIcon}
       </div>
       {toolText}
     </div>

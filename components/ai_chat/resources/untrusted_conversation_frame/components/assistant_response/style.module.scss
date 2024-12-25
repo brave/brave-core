@@ -66,7 +66,7 @@
     background: var(--leo-color-container-background);
   }
 
-  &:global(.tool-user_choice_tool) {
+  &:not(&.toolUseComplete):global(.tool-user_choice_tool) {
     .toolUseIcon {
       --leo-icon-color: var(--leo-color-primary-5);
       background-color: var(--leo-color-primary-40);
@@ -104,6 +104,9 @@
 
 .choice {
     margin-bottom: var(--leo-spacing-s);
+    &.isDisabled {
+      opacity: 0.5;
+    }
 }
 
 .completedChoiceIcon {
@@ -120,4 +123,5 @@
   justify-content: center;
   color: var(--leo-color-schemes-on-tertiary);
   background: var(--leo-color-text-interactive);
+
 }
