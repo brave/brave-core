@@ -404,9 +404,11 @@ void AgentClient::CaptureScreenshot(MessageCallback callback) {
 }
 
 void AgentClient::TypeText(std::string_view text, MessageCallback callback) {
+  std::string escaped;
+  base::EscapeJSONString(text, false, &escaped);
   Execute("Input.insertText",
           R"({
-    "text": ")" + std::string(text) +
+    "text": ")" + escaped +
               R"("
   })",
           std::move(callback));
