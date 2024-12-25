@@ -100,7 +100,7 @@ class ExtensionsTreeHashContentsVerifier
   }
 
   bool VerifyContents(const base::FilePath& relative_path,
-                      base::span<const uint8_t> contents) override {
+                      base::span<const uint8_t> contents) const override {
     if (!verified_contents_ ||
         !verified_contents_->HasTreeHashRoot(relative_path)) {
       return false;
@@ -124,6 +124,12 @@ bool ShouldBypassSignature() {
   return kBypass;
 }
 
+}  // namespace
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+
+namespace component_updater {
+
+namespace {
 std::unique_ptr<component_updater::ContentsVerifier>
 CreateExtensionsTreeHashContentsVerifier(const base::FilePath& component_root) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -135,11 +141,7 @@ CreateExtensionsTreeHashContentsVerifier(const base::FilePath& component_root) {
   // the component files are protected by the OS.
   return nullptr;
 }
-
 }  // namespace
-#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
-
-namespace component_updater {
 
 void SetupComponentContentsVerifier() {
   auto factory = base::BindRepeating(CreateExtensionsTreeHashContentsVerifier);

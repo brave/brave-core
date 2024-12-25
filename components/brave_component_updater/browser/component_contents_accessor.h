@@ -46,7 +46,7 @@ class ComponentContentsAccessor
   ~ComponentContentsAccessor();
 
   const base::FilePath component_root_;
-  const std::unique_ptr<class ContentsVerifier> verifier_;
+  const std::unique_ptr<const class ContentsVerifier> verifier_;
 };
 
 }  // namespace component_updater

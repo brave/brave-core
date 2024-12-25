@@ -17,7 +17,7 @@ class ContentsVerifier {
  public:
   virtual ~ContentsVerifier() = default;
   virtual bool VerifyContents(const base::FilePath& relative_path,
-                              base::span<const uint8_t> contents) = 0;
+                              base::span<const uint8_t> contents) const = 0;
 };
 
 using ContentsVerifierFactory =
