@@ -1,7 +1,7 @@
 Name: unicode-ident
 URL: https://crates.io/crates/unicode-ident
-Version: 1.0.13
-License: Apache-2.0, Unicode-DFS-2016
+Version: 1.0.14
+License: Apache-2.0, Unicode-3.0
 License File:
 Shipped: yes
 Security Critical: yes
