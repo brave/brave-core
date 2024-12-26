@@ -110,6 +110,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "anstyle"
+version = "1.0.10"
+
+[[package]]
 name = "anyhow"
 version = "1.0.94"
 
@@ -425,6 +429,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "clap"
+version = "4.5.23"
+dependencies = [
+ "clap_builder",
+]
+
+[[package]]
+name = "clap_builder"
+version = "4.5.23"
+dependencies = [
+ "anstyle",
+ "clap_lex",
+ "strsim",
+]
+
+[[package]]
+name = "clap_lex"
+version = "0.7.4"
+
+[[package]]
+name = "codespan-reporting"
+version = "0.11.1"
+dependencies = [
+ "termcolor",
+ "unicode-width",
+]
+
+[[package]]
 name = "constant_time_eq"
 version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -565,9 +597,10 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.131"
+version = "1.0.135"
 dependencies = [
  "cc",
+ "cxxbridge-cmd",
  "cxxbridge-flags",
  "cxxbridge-macro",
  "foldhash",
@@ -575,12 +608,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "cxxbridge-cmd"
+version = "1.0.135"
+dependencies = [
+ "clap",
+ "codespan-reporting",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.87",
+]
+
+[[package]]
 name = "cxxbridge-flags"
-version = "1.0.131"
+version = "1.0.135"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.131"
+version = "1.0.135"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1638,7 +1682,7 @@ dependencies = [
  "libc",
  "redox_syscall",
  "smallvec",
- "windows-sys",
+ "windows-sys 0.45.0",
 ]
 
 [[package]]
@@ -2069,7 +2113,7 @@ version = "1.0.24"
 
 [[package]]
 name = "serde"
-version = "1.0.215"
+version = "1.0.216"
 dependencies = [
  "serde_derive",
 ]
@@ -2084,7 +2128,7 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.215"
+version = "1.0.216"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2360,6 +2404,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "strsim"
+version = "0.11.1"
+
+[[package]]
 name = "subtle"
 version = "2.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2417,6 +2465,13 @@ dependencies = [
  "futf",
  "mac",
  "utf-8",
+]
+
+[[package]]
+name = "termcolor"
+version = "1.4.1"
+dependencies = [
+ "winapi-util",
 ]
 
 [[package]]
@@ -2570,7 +2625,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.13"
+version = "1.0.14"
 
 [[package]]
 name = "unicode-normalization"
@@ -2579,6 +2634,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "tinyvec",
 ]
+
+[[package]]
+name = "unicode-width"
+version = "0.1.14"
 
 [[package]]
 name = "unicode-xid"
@@ -2711,6 +2770,13 @@ version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "winapi-util"
+version = "0.1.9"
+dependencies = [
+ "windows-sys 0.52.0",
+]
+
+[[package]]
 name = "winapi-x86_64-pc-windows-gnu"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2720,7 +2786,7 @@ name = "windows"
 version = "0.46.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "windows-targets",
+ "windows-targets 0.42.2",
 ]
 
 [[package]]
@@ -2728,7 +2794,14 @@ name = "windows-sys"
 version = "0.45.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "windows-targets",
+ "windows-targets 0.42.2",
+]
+
+[[package]]
+name = "windows-sys"
+version = "0.52.0"
+dependencies = [
+ "windows-targets 0.52.6",
 ]
 
 [[package]]
@@ -2736,13 +2809,27 @@ name = "windows-targets"
 version = "0.42.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "windows_aarch64_gnullvm",
- "windows_aarch64_msvc",
- "windows_i686_gnu",
- "windows_i686_msvc",
- "windows_x86_64_gnu",
- "windows_x86_64_gnullvm",
- "windows_x86_64_msvc",
+ "windows_aarch64_gnullvm 0.42.2",
+ "windows_aarch64_msvc 0.42.2",
+ "windows_i686_gnu 0.42.2",
+ "windows_i686_msvc 0.42.2",
+ "windows_x86_64_gnu 0.42.2",
+ "windows_x86_64_gnullvm 0.42.2",
+ "windows_x86_64_msvc 0.42.2",
+]
+
+[[package]]
+name = "windows-targets"
+version = "0.52.6"
+dependencies = [
+ "windows_aarch64_gnullvm 0.52.6",
+ "windows_aarch64_msvc 0.52.6",
+ "windows_i686_gnu 0.52.6",
+ "windows_i686_gnullvm",
+ "windows_i686_msvc 0.52.6",
+ "windows_x86_64_gnu 0.52.6",
+ "windows_x86_64_gnullvm 0.52.6",
+ "windows_x86_64_msvc 0.52.6",
 ]
 
 [[package]]
@@ -2751,9 +2838,17 @@ version = "0.42.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "windows_aarch64_gnullvm"
+version = "0.52.6"
+
+[[package]]
 name = "windows_aarch64_msvc"
 version = "0.42.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "windows_aarch64_msvc"
+version = "0.52.6"
 
 [[package]]
 name = "windows_i686_gnu"
@@ -2761,9 +2856,21 @@ version = "0.42.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "windows_i686_gnu"
+version = "0.52.6"
+
+[[package]]
+name = "windows_i686_gnullvm"
+version = "0.52.6"
+
+[[package]]
 name = "windows_i686_msvc"
 version = "0.42.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "windows_i686_msvc"
+version = "0.52.6"
 
 [[package]]
 name = "windows_x86_64_gnu"
@@ -2771,14 +2878,26 @@ version = "0.42.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "windows_x86_64_gnu"
+version = "0.52.6"
+
+[[package]]
 name = "windows_x86_64_gnullvm"
 version = "0.42.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "windows_x86_64_gnullvm"
+version = "0.52.6"
+
+[[package]]
 name = "windows_x86_64_msvc"
 version = "0.42.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "windows_x86_64_msvc"
+version = "0.52.6"
 
 [[package]]
 name = "winnow"
