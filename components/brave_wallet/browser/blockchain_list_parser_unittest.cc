@@ -440,9 +440,9 @@ TEST(BlockchainListParseUnitTest, ParseDappLists) {
   std::optional<DappListMap> dapp_list_map = ParseDappLists(dapp_list);
   ASSERT_TRUE(dapp_list_map);
 
-  // There should be eight lists, for Ethereum, Solana, Polygon, Binance Smart
-  // Chain, Optimism, Aurora, Avalanche, and Fantom
-  ASSERT_EQ(8u, dapp_list_map->size());
+  // There should be seven lists, for Ethereum, Solana, Polygon, Binance Smart
+  // Chain, Optimism, Avalanche, and Fantom
+  ASSERT_EQ(7u, dapp_list_map->size());
 
   // There should be one dapp in the Ethereum list
   auto it = dapp_list_map->find(

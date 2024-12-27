@@ -81,8 +81,17 @@ class BraveWalletService : public KeyedService,
   void Bind(mojo::PendingReceiver<T> receiver);
 
   static void MigrateHiddenNetworks(PrefService* profile_prefs);
+  static void MigrateDeadNetwork(PrefService* prefs,
+                                 const std::string& chain_id,
+                                 const std::string& fallback_chain_id,
+                                 std::string_view pref_key);
+  static void MigrateAsCustomNetwork(PrefService* prefs,
+                                     const mojom::NetworkInfo& network,
+                                     bool is_eip1559,
+                                     std::string_view pref_key);
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
   static void MigrateGoerliNetwork(PrefService* prefs);
+  static void MigrateAuroraMainnetAsCustomNetwork(PrefService* prefs);
   static void MigrateAssetsPrefToList(PrefService* prefs);
   static void MigrateEip1559ForCustomNetworks(PrefService* prefs);
   void MaybeMigrateCompressedNfts();

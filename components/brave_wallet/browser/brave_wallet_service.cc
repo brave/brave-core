@@ -791,52 +791,54 @@ bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
          base::ToLowerASCII(*selected_chain_id) == chain_id;
 }
 
-void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
-    PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated)) {
+// Migrate preloaded network to custom network.
+void BraveWalletService::MigrateAsCustomNetwork(
+    PrefService* prefs,
+    const mojom::NetworkInfo& network,
+    bool is_eip1559,
+    std::string_view pref_key) {
+  if (prefs->GetBoolean(pref_key)) {
     return;
   }
 
-  if (ShouldMigrateRemovedPreloadedNetwork(prefs, mojom::CoinType::ETH,
-                                           mojom::kFantomMainnetChainId)) {
+  if (ShouldMigrateRemovedPreloadedNetwork(prefs, network.coin,
+                                           network.chain_id)) {
     NetworkManager network_manager(prefs);
-    mojom::NetworkInfo network(
-        mojom::kFantomMainnetChainId, "Fantom Opera", {"https://ftmscan.com"},
-        {}, 0, {GURL("https://rpc.ftm.tools")}, "FTM", "Fantom", 18,
-        mojom::CoinType::ETH,
-        GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                       mojom::kFantomMainnetChainId));
     network_manager.AddCustomNetwork(network);
-    network_manager.SetEip1559ForCustomChain(mojom::kFantomMainnetChainId,
-                                             true);
+    network_manager.SetEip1559ForCustomChain(network.chain_id, is_eip1559);
     EnsureNativeTokenForNetwork(prefs, network);
   }
 
-  prefs->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated, true);
+  prefs->SetBoolean(pref_key, true);
 }
 
-void BraveWalletService::MigrateGoerliNetwork(PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletGoerliNetworkMigrated)) {
+// Migrate dead network to fallback network.
+void BraveWalletService::MigrateDeadNetwork(
+    PrefService* prefs,
+    const std::string& chain_id,
+    const std::string& fallback_chain_id,
+    std::string_view pref_key) {
+  if (prefs->GetBoolean(pref_key)) {
     return;
   }
 
   NetworkManager network_manager(prefs);
 
-  // Migrate current chain id to Sepolia for default origin.
+  // Migrate current chain id for default origin
   if (network_manager.GetCurrentChainId(mojom::CoinType::ETH, std::nullopt) ==
-      "0x5") {
+      chain_id) {
     network_manager.SetCurrentChainId(mojom::CoinType::ETH, std::nullopt,
-                                      mojom::kSepoliaChainId);
+                                      fallback_chain_id);
   }
 
-  // Migrate current chain id to Sepolia for all origins.
+  // Migrate current chain id for all origins
   const auto& selected_networks =
       prefs->GetDict(kBraveWalletSelectedNetworksPerOrigin);
 
   const auto* coin_dict =
       selected_networks.FindDict(GetPrefKeyForCoinType(mojom::CoinType::ETH));
   if (!coin_dict) {
-    prefs->SetBoolean(kBraveWalletGoerliNetworkMigrated, true);
+    prefs->SetBoolean(pref_key, true);
     return;
   }
 
@@ -846,14 +848,43 @@ void BraveWalletService::MigrateGoerliNetwork(PrefService* prefs) {
       continue;
     }
 
-    if (base::ToLowerASCII(*chain_id_each) == "0x5") {
+    if (base::ToLowerASCII(*chain_id_each) == chain_id) {
       network_manager.SetCurrentChainId(mojom::CoinType::ETH,
                                         url::Origin::Create(GURL(origin.first)),
-                                        mojom::kSepoliaChainId);
+                                        fallback_chain_id);
     }
   }
 
-  prefs->SetBoolean(kBraveWalletGoerliNetworkMigrated, true);
+  prefs->SetBoolean(pref_key, true);
+}
+
+void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
+    PrefService* prefs) {
+  mojom::NetworkInfo network(
+      mojom::kFantomMainnetChainId, "Fantom Opera", {"https://ftmscan.com"}, {},
+      0, {GURL("https://rpc.ftm.tools")}, "FTM", "Fantom", 18,
+      mojom::CoinType::ETH,
+      GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
+                                     mojom::kFantomMainnetChainId));
+  MigrateAsCustomNetwork(prefs, network, true,
+                         kBraveWalletCustomNetworksFantomMainnetMigrated);
+}
+
+void BraveWalletService::MigrateGoerliNetwork(PrefService* prefs) {
+  MigrateDeadNetwork(prefs, "0x5", mojom::kSepoliaChainId,
+                     kBraveWalletGoerliNetworkMigrated);
+}
+
+void BraveWalletService::MigrateAuroraMainnetAsCustomNetwork(
+    PrefService* prefs) {
+  mojom::NetworkInfo network(
+      mojom::kAuroraMainnetChainId, "Aurora Mainnet", {"https://aurora.dev"},
+      {}, 0, {GURL("https://mainnet.aurora.dev")}, "ETH", "Aurora", 18,
+      mojom::CoinType::ETH,
+      GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
+                                     mojom::kAuroraMainnetChainId));
+  MigrateAsCustomNetwork(prefs, network, false,
+                         kBraveWalletAuroraMainnetMigrated);
 }
 
 void BraveWalletService::MigrateAssetsPrefToList(PrefService* prefs) {

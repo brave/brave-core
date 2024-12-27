@@ -48,7 +48,7 @@ std::optional<bool> GetEip1559ForKnownChain(std::string_view chain_id_lwr) {
         {mojom::kFilecoinEthereumMainnetChainId, true},
         {mojom::kFilecoinEthereumTestnetChainId, true},
         {mojom::kBnbSmartChainMainnetChainId, false},
-        {mojom::kAuroraMainnetChainId, false},
+        {mojom::kBaseMainnetChainId, true},
         {mojom::kNeonEVMMainnetChainId, false},
         {mojom::kLocalhostChainId, false},
     });
@@ -74,7 +74,7 @@ const std::string GetChainSubdomain(std::string_view chain_id) {
                   {mojom::kSepoliaChainId, "ethereum-sepolia"},
                   {mojom::kPolygonMainnetChainId, "polygon-mainnet"},
                   {mojom::kOptimismMainnetChainId, "optimism-mainnet"},
-                  {mojom::kAuroraMainnetChainId, "aurora-mainnet"},
+                  {mojom::kBaseMainnetChainId, "base-mainnet"},
                   {mojom::kAvalancheMainnetChainId, "avalanche-mainnet"},
                   {mojom::kBnbSmartChainMainnetChainId, "bsc-mainnet"},
 
@@ -196,14 +196,14 @@ const mojom::NetworkInfo* GetOptimismMainnet() {
   return network_info.get();
 }
 
-const mojom::NetworkInfo* GetAuroraMainnet() {
+const mojom::NetworkInfo* GetBaseMainnet() {
   const auto coin = mojom::CoinType::ETH;
-  const auto* chain_id = mojom::kAuroraMainnetChainId;
+  const auto* chain_id = mojom::kBaseMainnetChainId;
 
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
-       "Aurora Mainnet",
-       {"https://aurorascan.dev"},
+       "Base",
+       {"https://basescan.org"},
        {},
        0,
        {GetURLForKnownChainId(chain_id).value()},
@@ -315,7 +315,7 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
       // clang-format off
       GetEthMainnet(),
-      GetAuroraMainnet(),
+      GetBaseMainnet(),
       GetPolygonMainnet(),
       GetBscMainnet(),
       GetOptimismMainnet(),
