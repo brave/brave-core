@@ -57,4 +57,7 @@ cargo_crate("lib") {
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.25.1/build.rs" ]
   build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.25.1/src/../macros/match_token.rs" ]
   build_script_outputs = [ "rules.rs" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

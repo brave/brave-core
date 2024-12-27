@@ -64,6 +64,9 @@ cargo_crate("lib") {
   features = [ "std" ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.4.3/build.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/num-bigint-0.4.3/build.rs" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
   if (target_cpu == "arm64" || target_cpu == "x64") {
     rustenv = [ "CARGO_CFG_TARGET_POINTER_WIDTH=64" ]
   } else {
@@ -72,7 +75,7 @@ cargo_crate("lib") {
   if (epoch != "0.2") {
     build_script_outputs = [ "radix_bases.rs" ]
   } else {
-    rustflags = [
+    rustflags += [
       "--cfg",
       "has_i128",
     ]

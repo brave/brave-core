@@ -40,4 +40,7 @@ cargo_crate("lib") {
   build_sources = [
     "//brave/third_party/rust/chromium_crates_io/vendor/slab-0.4.8/build.rs",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

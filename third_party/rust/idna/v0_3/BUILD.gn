@@ -39,4 +39,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/unicode_bidi/v0_3:lib",
     "//brave/third_party/rust/unicode_normalization/v0_1:lib",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

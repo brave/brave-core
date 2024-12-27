@@ -1,5 +1,5 @@
 diff --git a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
-index dd894938f41..ecf0f026241 100644
+index c52a7b360b8..1820b6664bc 100644
 --- a/../third_party/rust/chromium_crates_io/BUILD.gn.hbs
 +++ b/third_party/rust/chromium_crates_io/BUILD.gn.hbs
 @@ -53,14 +53,14 @@ cargo_crate("{{this.name}}") {
@@ -45,20 +45,17 @@ index dd894938f41..ecf0f026241 100644
      {{/each}}
      ]
    }
-@@ -119,21 +119,32 @@ cargo_crate("{{this.name}}") {
+@@ -119,19 +119,33 @@ cargo_crate("{{this.name}}") {
    ]
    {{/with}}
    {{/if}}
--  {{#with extra_kv.allow_unstable_features}}
--  {{#if this}}
--    library_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
--    executable_configs -= [
--      "//build/config/compiler:disallow_unstable_features"
--    ]
--    proc_macro_configs -= [
--      "//build/config/compiler:disallow_unstable_features"
--    ]
--    rustflags = [ "-Zallow-features={{this}}" ]
+-  {{#with extra_kv.configs_to_remove}}
+-  {{#each this}}
+-    library_configs -= [ "{{this}}" ]
+-    executable_configs -= [ "{{this}}" ]
+-    proc_macro_configs -= [ "{{this}}" ]
+-  {{/each}}
+-  {{/with}}
 +  {{#if (or rustenv extra_kv.rustenv)}}
 +  rustenv = [
 +    {{#each rustenv}}
@@ -69,17 +66,17 @@ index dd894938f41..ecf0f026241 100644
 +    {{/each}}
 +  ]
 +  {{/if}}
+   rustflags = [
+     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
 +  {{#if (or rustflags extra_kv.rustflags)}}
-+  rustflags = [
 +    {{#each rustflags}}
 +    "{{this}}",
 +    {{/each}}
 +    {{#each extra_kv.rustflags}}
 +    "{{this}}",
 +    {{/each}}
-+  ]
-   {{/if}}
--  {{/with}}
++  {{/if}}
+   ]
    {{#if output_dir}}
    output_dir = "{{output_dir}}"
    {{/if}}
@@ -89,7 +86,7 @@ index dd894938f41..ecf0f026241 100644
    {{#if native_libs}}
    native_libs = [
    {{#each native_libs}}
-@@ -142,20 +153,6 @@ cargo_crate("{{this.name}}") {
+@@ -140,20 +154,6 @@ cargo_crate("{{this.name}}") {
    ]
    {{/if}}
    {{/with}}

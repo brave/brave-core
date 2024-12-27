@@ -38,4 +38,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/serde/v1:lib",
     "//brave/third_party/rust/serde_bytes/v0_11:lib",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

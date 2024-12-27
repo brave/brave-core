@@ -36,4 +36,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/crypto_mac/v0_8:lib",
     "//brave/third_party/rust/digest/v0_9:lib",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

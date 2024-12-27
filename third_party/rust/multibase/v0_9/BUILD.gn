@@ -39,4 +39,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/data_encoding/v2:lib",
     "//brave/third_party/rust/data_encoding_macro/v0_1:lib",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

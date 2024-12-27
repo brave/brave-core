@@ -58,4 +58,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/itoa/v1:lib",
   ]
   features = [ "std" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

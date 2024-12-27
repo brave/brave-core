@@ -37,4 +37,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/futures_timer/v3:lib",
     "//brave/third_party/rust/pin_project/v0_4:lib",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

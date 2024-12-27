@@ -36,4 +36,7 @@ cargo_crate("lib") {
   deps = [ "//brave/third_party/rust/thiserror_impl/v1:lib" ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-1.0.65/build.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-1.0.65/build.rs" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }
