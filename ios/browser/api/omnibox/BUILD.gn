@@ -15,7 +15,6 @@ source_set("omnibox") {
     "//components/prefs",
     "//ios/chrome/browser/autocomplete/model",
     "//ios/chrome/browser/shared/model/application_context",
-    "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/shared/model/prefs:pref_names",
     "//ios/chrome/browser/shared/model/profile",
     "//net",
