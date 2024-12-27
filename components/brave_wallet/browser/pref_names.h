@@ -15,23 +15,16 @@ inline constexpr char kDefaultBaseCurrency[] =
     "brave.wallet.default_base_currency";
 inline constexpr char kDefaultBaseCryptocurrency[] =
     "brave.wallet.default_base_cryptocurrency";
-inline constexpr char kBraveWalletTransactions[] = "brave.wallet.transactions";
 inline constexpr char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
 inline constexpr char kBraveWalletLastUnlockTime[] =
     "brave.wallet.wallet_last_unlock_time_v2";
 inline constexpr char kBraveWalletPingReportedUnlockTime[] =
     "brave.wallet.wallet_report_unlock_time_ping";
-inline constexpr char kBraveWalletP3ALastReportTimeDeprecated[] =
-    "brave.wallet.wallet_p3a_last_report_time";
-inline constexpr char kBraveWalletP3AFirstReportTimeDeprecated[] =
-    "brave.wallet.wallet_p3a_first_report_time";
 inline constexpr char kBraveWalletP3ANFTGalleryUsed[] =
     "brave.wallet.wallet_p3a_nft_gallery_used";
 inline constexpr char kBraveWalletP3ANewUserBalanceReported[] =
     "brave.wallet.p3a_new_user_balance_reported";
-inline constexpr char kBraveWalletP3AWeeklyStorageDeprecated[] =
-    "brave.wallet.wallet_p3a_weekly_storage";
 inline constexpr char kBraveWalletP3AActiveWalletDict[] =
     "brave.wallet.wallet_p3a_active_wallets";
 inline constexpr char kBraveWalletCustomNetworks[] =
@@ -55,9 +48,6 @@ inline constexpr char kBraveWalletUserAssetsList[] =
     "brave.wallet.wallet_user_assets_list";
 inline constexpr char kBraveWalletEthAllowancesCache[] =
     "brave.wallet.eth_allowances_cache";
-// Added 03/2023 to add networks hidden by default
-inline constexpr char kBraveWalletDefaultHiddenNetworksVersion[] =
-    "brave.wallet.user.assets.default_hidden_networks_version";
 inline constexpr char kBraveWalletAutoLockMinutes[] =
     "brave.wallet.auto_lock_minutes";
 inline constexpr char kBraveWalletP3AFirstUnlockTime[] =
@@ -89,13 +79,6 @@ inline constexpr char kBraveWalletLegacyEthSeedFormat[] =
 inline constexpr char kBraveWalletMnemonicBackedUp[] =
     "brave.wallet.mnemonic_backed_up";
 
-// Added 07/2023 to migrate transactions from prefs to DB.
-inline constexpr char kBraveWalletTransactionsFromPrefsToDBMigrated[] =
-    "brave.wallet.transactions.from_prefs_to_db_migrated";
-// Added 08/2023 to migrate Fantom mainnet, previously a preloaded network,
-// to a custom network.
-inline constexpr char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
-    "brave.wallet.custom_networks.fantom_mainnet_migrated";
 // Added 01/2024 to migrate transactions DB to one-level dict.
 inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
     "brave.wallet.transactions_db_format_migrated";
@@ -106,13 +89,10 @@ inline constexpr char kBraveWalletEip1559ForCustomNetworksMigrated[] =
 inline constexpr char kBraveWalletIsCompressedNftMigrated[] =
     "brave.wallet.is_compressed_nft_migrated";
 
-// 08/2024 to mark fix existign SPL tokens marked as unsupported
+// 08/2024 to mark fix existing SPL tokens marked as unsupported
 inline constexpr char kBraveWalletIsSPLTokenProgramMigrated[] =
     "brave.wallet.is_spl_token_program_migrated";
 
-// 06/2023
-inline constexpr char kBraveWalletSelectedCoinDeprecated[] =
-    "brave.wallet.selected_coin";
 // 01/2024
 inline constexpr char kBraveWalletUserAssetsDeprecated[] =
     "brave.wallet.wallet_user_assets";

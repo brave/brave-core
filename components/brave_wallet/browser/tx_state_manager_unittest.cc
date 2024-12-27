@@ -223,8 +223,6 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
 }
 
 TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
-  prefs_.ClearPref(kBraveWalletTransactions);
-
   std::string addr1 = "0x3535353535353535353535353535353535353535";
   std::string addr2 = "0x2f015c60e0be116b1f0cd534704db9c92118fb6a";
   std::string addr3 = "0x3333333333333333333333333333333333333333";
