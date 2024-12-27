@@ -19,6 +19,7 @@ source_set("keyed_service") {
     "//components/keyed_service/ios:ios",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public/thread",
     "//services/network/public/cpp",
   ]
   public_configs = [ ":external" ]

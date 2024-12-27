@@ -19,6 +19,8 @@ source_set("web_image") {
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/ui/util",
     "//net",
+    "//services/network/public/cpp",
     "//skia",
+    "//ui/gfx",
   ]
 }

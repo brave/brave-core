@@ -53,6 +53,7 @@ source_set("ai_chat") {
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/common",
+    "//ios/web/public/thread",
     "//net/traffic_annotation",
     "//services/data_decoder/public/cpp",
     "//services/network/public/cpp",
