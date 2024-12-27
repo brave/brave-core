@@ -601,14 +601,14 @@ TEST_F(BraveWalletP3AUnitTest, EthTransactionSentObservation) {
   std::string tx_meta_id;
   EXPECT_TRUE(AddUnapprovedEvmTransaction(
       mojom::NewEvmTransactionParams::New(
-          mojom::kAuroraMainnetChainId, eth_from(),
+          mojom::kBnbSmartChainMainnetChainId, eth_from(),
           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
           "0x0974", std::vector<uint8_t>()),
       &tx_meta_id));
 
   // Approve the ETH transaction
-  EXPECT_TRUE(ApproveTransaction(mojom::CoinType::ETH,
-                                 mojom::kAuroraMainnetChainId, tx_meta_id));
+  EXPECT_TRUE(ApproveTransaction(
+      mojom::CoinType::ETH, mojom::kBnbSmartChainMainnetChainId, tx_meta_id));
 
   // Verify EthTransactionSent
   histogram_tester_->ExpectUniqueSample(kEthTransactionSentHistogramName, 1, 1);
