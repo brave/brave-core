@@ -175,7 +175,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::internal::kJourneys,
       &history_clusters::internal::kJourneysImages,
       &history_clusters::internal::kJourneysNamedNewTabGroups,
-      &history_clusters::internal::kJourneysZeroStateFiltering,
       &history_clusters::internal::kOmniboxAction,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
 #if BUILDFLAG(ENABLE_MIRROR)
