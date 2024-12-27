@@ -77,6 +77,9 @@ cargo_crate("lib") {
     "regex-debug-info",
     "selectors",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
   if (is_ios) {
     features += [ "content-blocking" ]
   } else {
